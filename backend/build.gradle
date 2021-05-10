@@ -1,6 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.4.5'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id "org.asciidoctor.convert" version "1.5.9.2"
 	id 'java'
 }
 
@@ -13,10 +14,54 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
+	// spring
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+	// log
+	implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
+
+	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.rest-assured:rest-assured:3.3.0'
+
+	// rest docs
+	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.5.RELEASE'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-restassured:2.0.5.RELEASE'
+
+	runtimeOnly 'com.h2database:h2'
+}
+
+ext {
+	snippetsDir = file('build/generated-snippets')
 }
 
 test {
 	useJUnitPlatform()
+}
+
+asciidoctor {
+	inputs.dir snippetsDir
+	dependsOn test
+}
+
+bootJar {
+	dependsOn asciidoctor
+	from ("${asciidoctor.outputDir}/html5") {
+		into 'static/docs'
+	}
+}
+
+task testDocument(type: Test) {
+	useJUnitPlatform()
+	filter {
+		includeTestsMatching "*.documentation.*"
+	}
+}
+
+task copyDocument(type: Copy) {
+	dependsOn testDocument
+
+	from file("build/asciidoc/html5/index.html")
+	into file("src/main/resources/static/docs")
 }
