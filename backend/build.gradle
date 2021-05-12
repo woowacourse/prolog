@@ -59,7 +59,7 @@ task testDocument(type: Test) {
 	}
 }
 
-task copyDocument(type: Copy) {
+task createDocument(type: Copy) {
 	dependsOn testDocument
 
 	from file("build/asciidoc/html5/index.html")

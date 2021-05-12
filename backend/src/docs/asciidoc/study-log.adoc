@@ -1,0 +1,12 @@
+[[path]]
+== 학습 로그
+
+=== 로그 작성
+
+==== Request
+
+include::{snippets}/study-log/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/study-log/http-response.adoc[]
