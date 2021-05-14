@@ -1,5 +1,11 @@
 # 학습로그 프로젝트 프론트엔드
 
+## 퀵스타트
+```
+yarn
+yarn start
+```
+
 <div style={display:flex}>
   <img src="https://img.shields.io/badge/version-1.0.0-blue?style=flat-square" alt="template version"/>
   <img src="https://img.shields.io/badge/language-html-red.svg?style=flat-square"/>
