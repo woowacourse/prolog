@@ -3,25 +3,25 @@ import PropTypes from 'prop-types';
 import NoProfileImage from '../../assets/images/no-profile-image.png';
 
 const Container = styled.div`
-  height: 3rem;
+  height: 4.8rem;
   border: 1px solid #a7a7a7;
-  border-radius: 1rem;
+  border-radius: 1.6rem;
   background-color: #ffffff;
-  padding: 0.3rem;
+  padding: 0.5rem;
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
 `;
 
 const Image = styled.img`
-  width: 2.3rem;
-  height: 2.3rem;
-  border-radius: 0.8rem;
+  width: 3.8rem;
+  height: 3.8rem;
+  border-radius: 1.3rem;
 `;
 
 const Nickname = styled.span`
-  margin-left: 0.5rem;
-  font-size: 1.25rem;
+  margin-left: 0.8rem;
+  font-size: 2rem;
   line-height: 1.5;
   color: #383838;
 `;
