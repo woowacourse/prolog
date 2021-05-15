@@ -51,6 +51,7 @@ const GlobalStyles = () => (
         border: none;
         background: none;
         cursor: pointer;
+        font-family: inherit;
         &[disabled] {
           cursor: not-allowed;
         }

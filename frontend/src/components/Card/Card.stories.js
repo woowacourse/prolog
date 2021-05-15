@@ -1,10 +1,10 @@
-import Card from './Card';
+import Card, { SIZE } from './Card';
 
 export default {
   title: 'Component/Card',
   component: Card,
   argTypes: {
-    size: { options: ['SMALL', 'LARGE'], control: { type: 'select' } },
+    size: { options: Object.values(SIZE), control: { type: 'select' } },
   },
 };
 
