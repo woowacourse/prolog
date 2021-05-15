@@ -9,6 +9,11 @@ const Container = styled.div`
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
   padding: 0% 1.2rem;
   position: absolute;
+  z-index: 100;
+
+  && {
+    ${(props) => props.css}
+  }
 
   &:before {
     content: '';
@@ -62,12 +67,12 @@ const Container = styled.div`
   }
 `;
 
-const DropdwonMenu = ({ children }) => {
-  return <Container>{children}</Container>;
+const DropdownMenu = ({ children, css }) => {
+  return <Container css={css}>{children}</Container>;
 };
 
-DropdwonMenu.proptyes = {
+DropdownMenu.propTypes = {
   children: PropTypes.node,
 };
 
-export default DropdwonMenu;
+export default DropdownMenu;

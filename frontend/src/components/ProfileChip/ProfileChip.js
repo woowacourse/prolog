@@ -11,6 +11,8 @@ const Container = styled.div`
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
+
+  ${({ css }) => css}
 `;
 
 const Image = styled.img`
@@ -26,16 +28,16 @@ const Nickname = styled.span`
   color: #383838;
 `;
 
-const ProfileChip = ({ imageSrc, children }) => {
+const ProfileChip = ({ imageSrc, children, css }) => {
   return (
-    <Container>
+    <Container css={css}>
       <Image src={imageSrc} alt={`${children} 프로필 이미지`} />
       <Nickname>{children}</Nickname>
     </Container>
   );
 };
 
-ProfileChip.propstypes = {
+ProfileChip.propTypes = {
   imageSrc: PropTypes.string,
   children: PropTypes.string.isRequired,
 };

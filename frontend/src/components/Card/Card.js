@@ -24,16 +24,23 @@ const Container = styled.section`
   border-radius: 26px;
   box-sizing: border-box;
 
+  ${({ css }) => css}
   ${({ size }) => sizeStyle[size] || sizeStyle.SMALL}
 `;
 
-const Card = ({ children, size }) => {
-  return <Container size={size}>{children}</Container>;
+const Card = ({ children, size, css, onClick }) => {
+  return (
+    <Container size={size} css={css} onClick={onClick}>
+      {children}
+    </Container>
+  );
 };
 
 Card.propTypes = {
   children: PropTypes.node.isRequired,
   size: PropTypes.string,
+  css: PropTypes.object,
+  onClick: PropTypes.func,
 };
 
 Card.defaultProps = {
