@@ -1,12 +1,12 @@
-import DropdwonMenu from './DropdownMenu';
+import DropdownMenu from './DropdownMenu';
 
 export default {
-  title: 'Component/DropdwonMenu',
-  component: DropdwonMenu,
+  title: 'Component/DropdownMenu',
+  component: DropdownMenu,
   argTypes: { children: { control: 'text' } },
 };
 
-const Template = (args) => <DropdwonMenu {...args} />;
+const Template = (args) => <DropdownMenu {...args} />;
 
 export const Basic = Template.bind({});
 

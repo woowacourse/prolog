@@ -1,0 +1,40 @@
+{
+  "logs": [
+    {
+      "logId": 0,
+      "author": {
+        "authorId": 0,
+        "nickname": "Brown",
+        "image": "https://img6.yna.co.kr/photo/cms/2019/05/02/02/PCM20190502000402370_P4.jpg"
+      },
+      "issuedDate": "12320000422",
+      "category": { "categoryId": 0, "categoryName": "Lv1 Racing Car" },
+      "title": "[JS] 이벤트 루프",
+      "tags": ["JS", "Router", "History"]
+    },
+    {
+      "logId": 1,
+      "author": {
+        "authorId": 0,
+        "nickname": "Brown",
+        "image": "https://img6.yna.co.kr/photo/cms/2019/05/02/02/PCM20190502000402370_P4.jpg"
+      },
+      "issuedDate": "12320000429",
+      "category": { "categoryId": 0, "categoryName": "Lv1 Racing Car" },
+      "title": "[JS] Single Page App",
+      "tags": ["JS", "Router", "History"]
+    },
+    {
+      "logId": 2,
+      "author": {
+        "authorId": 0,
+        "nickname": "Brown",
+        "image": "https://img6.yna.co.kr/photo/cms/2019/05/02/02/PCM20190502000402370_P4.jpg"
+      },
+      "issuedDate": "12320000666",
+      "category": { "categoryId": 0, "categoryName": "Lv1 Racing Car" },
+      "title": "[JS] This",
+      "tags": ["Scope", "This", "History"]
+    }
+  ]
+}
