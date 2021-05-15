@@ -33,7 +33,7 @@ const Button = styled.button`
   border-radius: 2rem;
 `;
 
-const PostListContaienr = styled.div`
+const PostListContainer = styled.div`
   display: grid;
   grid-row-gap: 2rem;
 `;
@@ -96,7 +96,7 @@ const MainPage = () => {
         </FilterList>
         <Button type="button">글쓰기</Button>
       </HeaderContainer>
-      <PostListContaienr>
+      <PostListContainer>
         {db.logs.map((log) => {
           const { logId, author, category, title, tags } = log;
 
@@ -119,7 +119,7 @@ const MainPage = () => {
             </Card>
           );
         })}
-      </PostListContaienr>
+      </PostListContainer>
     </>
   );
 };

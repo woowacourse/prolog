@@ -91,7 +91,18 @@ const NavBar = () => {
             내정보
           </button>
         </Menu>
-        {isDropdownToggled && <DropdownMenu css={DropdownLocationStyle}></DropdownMenu>}
+        {isDropdownToggled && (
+          <DropdownMenu css={DropdownLocationStyle}>
+            <ul>
+              <li>
+                <button type="button">마이페이지</button>
+              </li>
+              <li>
+                <button type="button">로그아웃</button>
+              </li>
+            </ul>
+          </DropdownMenu>
+        )}
       </Wrapper>
     </Container>
   );

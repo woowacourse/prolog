@@ -7,7 +7,7 @@ import { MainPage, NewPostPage, PostPage } from './pages';
 
 const Content = styled.div`
   max-width: 128rem;
-  margin: 10rem auto;
+  margin: 6rem auto;
 `;
 
 const App = () => {
@@ -19,8 +19,8 @@ const App = () => {
         <Switch>
           <Content>
             <Route exact path={PATH.ROOT} component={MainPage} />
-            <Route exact path={PATH.POST} component={PostPage} />
             <Route exact path={PATH.NEW_POST} component={NewPostPage} />
+            <Route exact path={`${PATH.POST}/:id`} component={PostPage} />
             <Redirect to={PATH.ROOT} />
           </Content>
         </Switch>

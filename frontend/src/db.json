@@ -36,5 +36,46 @@
       "title": "[JS] This",
       "tags": ["Scope", "This", "History"]
     }
+  ],
+  "log": [
+    {
+      "logId": 0,
+      "author": {
+        "authorId": 0,
+        "nickname": "Brown",
+        "image": "https://img6.yna.co.kr/photo/cms/2019/05/02/02/PCM20190502000402370_P4.jpg"
+      },
+      "issuedDate": "12320000666",
+      "category": { "categoryId": 0, "categoryName": "Lv1 Racing Car" },
+      "title": "[JS] 이벤트 루프",
+      "tags": ["Scope", "This", "History"],
+      "content": "모달이 열고 닫힘에 따라 LottoItem이 자신이 몇 등인지를 판별하고, 해당하는 로또 개수에 상태를 전달하는 방식으로 코드를 구현하였습니다. 함수 컴포넌트로 변경함에 따라, 해당 동작을 useEffect 를 이용해서 isModalOpened에 의존성을 가지게끔 구현했습니다. 그런 과정에서 아래와 같은 Warning 이 떠서 dependency 를 부여하니, 모달의 변화 뿐만 아니라 다른 변화 역시 감지해서 원하는 동작이 구현이 안되어 경고를 두고 isModalOpened에만 의존하게 구현하였습니다. 이런 문제를 어떻게 해결할 수 있을까요? 여러 시도를 해보았으나, 해결할 수 없어서 도움 요청 드립니다 ㅠㅠ\n\n모달이 열고 닫힘에 따라 LottoItem이 자신이 몇 등인지를 판별하고, 해당하는 로또 개수에 상태를 전달하는 방식으로 코드를 구현하였습니다. 함수 컴포넌트로 변경함에 따라, 해당 동작을 useEffect 를 이용해서 isModalOpened에 의존성을 가지게끔 구현했습니다. 그런 과정에서 아래와 같은 Warning 이 떠서 dependency 를 부여하니, 모달의 변화 뿐만 아니라 다른 변화 역시 감지해서 원하는 동작이 구현이 안되어 경고를 두고 isModalOpened에만 의존하게 구현하였습니다. 이런 문제를 어떻게 해결할 수 있을까요? 여러 시도를 해보았으나, 해결할 수 없어서 도움 요청 드립니다 ㅠㅠ\n\n모달이 열고 닫힘에 따라 LottoItem이 자신이 몇 등인지를 판별하고, 해당하는 로또 개수에 상태를 전달하는 방식으로 코드를 구현하였습니다. 함수 컴포넌트로 변경함에 따라, 해당 동작을 useEffect 를 이용해서 isModalOpened에 의존성을 가지게끔 구현했습니다. 그런 과정에서 아래와 같은 Warning 이 떠서 dependency 를 부여하니, 모달의 변화 뿐만 아니라 다른 변화 역시 감지해서 원하는 동작이 구현이 안되어 경고를 두고 isModalOpened에만 의존하게 구현하였습니다. 이런 문제를 어떻게 해결할 수 있을까요? 여러 시도를 해보았으나, 해결할 수 없어서 도움 요청 드립니다 ㅠㅠ"
+    },
+    {
+      "logId": 1,
+      "author": {
+        "authorId": 0,
+        "nickname": "Brown",
+        "image": "https://img6.yna.co.kr/photo/cms/2019/05/02/02/PCM20190502000402370_P4.jpg"
+      },
+      "issuedDate": "12320000666",
+      "category": { "categoryId": 0, "categoryName": "Lv1 Racing Car" },
+      "title": "[JS] Single Page App",
+      "tags": ["Scope", "This", "History"],
+      "content": "모달이 열고 닫힘에 따라 LottoItem이 자신이 몇 등인지를 판별하고, 해당하는 로또 개수에 상태를 전달하는 방식으로 코드를 구현하였습니다. 함수 컴포넌트로 변경함에 따라, 해당 동작을 useEffect 를 이용해서 isModalOpened에 의존성을 가지게끔 구현했습니다. 그런 과정에서 아래와 같은 Warning 이 떠서 dependency 를 부여하니, 모달의 변화 뿐만 아니라 다른 변화 역시 감지해서 원하는 동작이 구현이 안되어 경고를 두고 isModalOpened에만 의존하게 구현하였습니다. 이런 문제를 어떻게 해결할 수 있을까요? 여러 시도를 해보았으나, 해결할 수 없어서 도움 요청 드립니다 ㅠㅠ\n\n모달이 열고 닫힘에 따라 LottoItem이 자신이 몇 등인지를 판별하고, 해당하는 로또 개수에 상태를 전달하는 방식으로 코드를 구현하였습니다. 함수 컴포넌트로 변경함에 따라, 해당 동작을 useEffect 를 이용해서 isModalOpened에 의존성을 가지게끔 구현했습니다. 그런 과정에서 아래와 같은 Warning 이 떠서 dependency 를 부여하니, 모달의 변화 뿐만 아니라 다른 변화 역시 감지해서 원하는 동작이 구현이 안되어 경고를 두고 isModalOpened에만 의존하게 구현하였습니다. 이런 문제를 어떻게 해결할 수 있을까요? 여러 시도를 해보았으나, 해결할 수 없어서 도움 요청 드립니다 ㅠㅠ\n\n모달이 열고 닫힘에 따라 LottoItem이 자신이 몇 등인지를 판별하고, 해당하는 로또 개수에 상태를 전달하는 방식으로 코드를 구현하였습니다. 함수 컴포넌트로 변경함에 따라, 해당 동작을 useEffect 를 이용해서 isModalOpened에 의존성을 가지게끔 구현했습니다. 그런 과정에서 아래와 같은 Warning 이 떠서 dependency 를 부여하니, 모달의 변화 뿐만 아니라 다른 변화 역시 감지해서 원하는 동작이 구현이 안되어 경고를 두고 isModalOpened에만 의존하게 구현하였습니다. 이런 문제를 어떻게 해결할 수 있을까요? 여러 시도를 해보았으나, 해결할 수 없어서 도움 요청 드립니다 ㅠㅠ"
+    },
+    {
+      "logId": 2,
+      "author": {
+        "authorId": 0,
+        "nickname": "Brown",
+        "image": "https://img6.yna.co.kr/photo/cms/2019/05/02/02/PCM20190502000402370_P4.jpg"
+      },
+      "issuedDate": "12320000666",
+      "category": { "categoryId": 0, "categoryName": "Lv1 Racing Car" },
+      "title": "[JS] This",
+      "tags": ["Scope", "This", "History"],
+      "content": "모달이 열고 닫힘에 따라 LottoItem이 자신이 몇 등인지를 판별하고, 해당하는 로또 개수에 상태를 전달하는 방식으로 코드를 구현하였습니다. 함수 컴포넌트로 변경함에 따라, 해당 동작을 useEffect 를 이용해서 isModalOpened에 의존성을 가지게끔 구현했습니다. 그런 과정에서 아래와 같은 Warning 이 떠서 dependency 를 부여하니, 모달의 변화 뿐만 아니라 다른 변화 역시 감지해서 원하는 동작이 구현이 안되어 경고를 두고 isModalOpened에만 의존하게 구현하였습니다. 이런 문제를 어떻게 해결할 수 있을까요? 여러 시도를 해보았으나, 해결할 수 없어서 도움 요청 드립니다 ㅠㅠ\n\n모달이 열고 닫힘에 따라 LottoItem이 자신이 몇 등인지를 판별하고, 해당하는 로또 개수에 상태를 전달하는 방식으로 코드를 구현하였습니다. 함수 컴포넌트로 변경함에 따라, 해당 동작을 useEffect 를 이용해서 isModalOpened에 의존성을 가지게끔 구현했습니다. 그런 과정에서 아래와 같은 Warning 이 떠서 dependency 를 부여하니, 모달의 변화 뿐만 아니라 다른 변화 역시 감지해서 원하는 동작이 구현이 안되어 경고를 두고 isModalOpened에만 의존하게 구현하였습니다. 이런 문제를 어떻게 해결할 수 있을까요? 여러 시도를 해보았으나, 해결할 수 없어서 도움 요청 드립니다 ㅠㅠ\n\n모달이 열고 닫힘에 따라 LottoItem이 자신이 몇 등인지를 판별하고, 해당하는 로또 개수에 상태를 전달하는 방식으로 코드를 구현하였습니다. 함수 컴포넌트로 변경함에 따라, 해당 동작을 useEffect 를 이용해서 isModalOpened에 의존성을 가지게끔 구현했습니다. 그런 과정에서 아래와 같은 Warning 이 떠서 dependency 를 부여하니, 모달의 변화 뿐만 아니라 다른 변화 역시 감지해서 원하는 동작이 구현이 안되어 경고를 두고 isModalOpened에만 의존하게 구현하였습니다. 이런 문제를 어떻게 해결할 수 있을까요? 여러 시도를 해보았으나, 해결할 수 없어서 도움 요청 드립니다 ㅠㅠ"
+    }
   ]
 }
