@@ -11,8 +11,8 @@ export const parameters = {
       date: /Date$/,
     },
   },
+  layout: 'centered',
 };
-
 addDecorator((style) => (
   <>
     <GlobalStyles />
