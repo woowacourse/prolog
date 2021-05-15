@@ -5,6 +5,10 @@ const GlobalStyles = () => (
     styles={css`
       @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
+      * {
+        box-sizing: border-box;
+      }
+
       html {
         font-size: 10px;
       }
@@ -15,6 +19,7 @@ const GlobalStyles = () => (
         font-size: 1.6rem;
         min-height: 100vh;
         width: 100%;
+        background-color: #fafafa;
       }
 
       #root {
@@ -49,6 +54,15 @@ const GlobalStyles = () => (
         &[disabled] {
           cursor: not-allowed;
         }
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        margin: 0;
       }
     `}
   />
