@@ -34,6 +34,7 @@ const Card = ({ children, size, css, onClick }) => {
       {children}
     </Container>
   );
+
 };
 
 Card.propTypes = {
