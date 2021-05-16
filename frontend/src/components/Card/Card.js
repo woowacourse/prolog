@@ -22,7 +22,6 @@ const Container = styled.section`
   box-shadow: 0px 4px 4px #0000000d;
   border: 1px solid #c9c9c9;
   border-radius: 26px;
-  box-sizing: border-box;
 
   ${({ css }) => css}
   ${({ size }) => sizeStyle[size] || sizeStyle.SMALL}
