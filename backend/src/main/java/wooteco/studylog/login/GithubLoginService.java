@@ -13,14 +13,19 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class GithubLoginService {
 
+    private JwtTokenProvider jwtTokenProvider;
 
-    public String authenticate(TokenDto tokenDto) {
+    public GithubLoginService(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
+
+    public String createToken(TokenDto tokenDto) {
         String code = tokenDto.getCode();
 
         String githubAccessToken = getAccessTokenFromGithub(code);
         GithubProfileResponse githubProfile = getGithubProfileFromGithub(githubAccessToken);
 
-        return "fake_token";
+        return jwtTokenProvider.createToken(githubProfile);
     }
 
     private String getAccessTokenFromGithub(String code) {

@@ -17,7 +17,7 @@ public class GithubLoginController {
     @PostMapping("/login/token")
     public ResponseEntity<TokenResponse> login(@RequestBody TokenRequest tokenRequest) {
         TokenDto tokenDto = tokenRequest.toTokenDto();
-        String accessToken = githubLoginService.authenticate(tokenDto);
+        String accessToken = githubLoginService.createToken(tokenDto);
         TokenResponse tokenResponse = TokenResponse.of(accessToken);
         return ResponseEntity.ok(tokenResponse);
     }
