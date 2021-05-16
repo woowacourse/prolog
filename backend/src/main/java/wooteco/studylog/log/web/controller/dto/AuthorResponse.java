@@ -5,12 +5,12 @@ import java.util.Objects;
 public class AuthorResponse {
     private Long authorId;
     private String nickName;
-    private String image;
+    private String imageUrl;
 
     public AuthorResponse(Long authorId, String nickName, String image) {
         this.authorId = authorId;
         this.nickName = nickName;
-        this.image = image;
+        this.imageUrl = image;
     }
 
     public Long getAuthorId() {
@@ -21,8 +21,8 @@ public class AuthorResponse {
         return nickName;
     }
 
-    public String getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     @Override
@@ -30,11 +30,11 @@ public class AuthorResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AuthorResponse authorResponse = (AuthorResponse) o;
-        return Objects.equals(authorId, authorResponse.authorId) && Objects.equals(nickName, authorResponse.nickName) && Objects.equals(image, authorResponse.image);
+        return Objects.equals(authorId, authorResponse.authorId) && Objects.equals(nickName, authorResponse.nickName) && Objects.equals(imageUrl, authorResponse.imageUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(authorId, nickName, image);
+        return Objects.hash(authorId, nickName, imageUrl);
     }
 }
