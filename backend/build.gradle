@@ -21,6 +21,9 @@ dependencies {
 	// log
 	implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
 
+	// jwt
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.rest-assured:rest-assured:3.3.0'
