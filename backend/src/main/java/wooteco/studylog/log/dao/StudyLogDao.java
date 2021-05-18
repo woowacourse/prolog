@@ -1,23 +1,23 @@
 package wooteco.studylog.log.dao;
 
 import org.springframework.stereotype.Repository;
-import wooteco.studylog.log.StudyLog;
+import wooteco.studylog.log.Post;
 import wooteco.studylog.log.domain.Category;
 
 import java.util.List;
 
 @Repository
 public class StudyLogDao {
-    public List<StudyLog> findAll() {
+    public List<Post> findAll() {
         return null;
     }
 
-    public StudyLog insert(StudyLog studyLog) {
+    public Post insert(Post post) {
         // TODO : DB에 로그를 삽입한다.
         return null;
     }
 
-    public StudyLog findById(Long logId) {
+    public Post findById(Long logId) {
         // TODO : DB에서 로그 하나를 찾아온다.
         String sql = "SELECT * FROM WHERE logId = ?";
         return null;

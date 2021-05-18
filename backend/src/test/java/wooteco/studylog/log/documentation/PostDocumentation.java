@@ -11,7 +11,7 @@ import wooteco.studylog.Documentation;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StudyLogDocumentation extends Documentation {
+public class PostDocumentation extends Documentation {
     @Test
     void create() {
         // when

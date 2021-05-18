@@ -10,12 +10,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import wooteco.studylog.log.service.StudyLogService;
-import wooteco.studylog.log.web.controller.StudyLogController;
+import wooteco.studylog.log.service.PostService;
+import wooteco.studylog.log.web.controller.PostController;
 import wooteco.studylog.log.web.controller.dto.AuthorResponse;
 import wooteco.studylog.log.web.controller.dto.CategoryResponse;
-import wooteco.studylog.log.web.controller.dto.LogRequest;
-import wooteco.studylog.log.web.controller.dto.LogResponse;
+import wooteco.studylog.log.web.controller.dto.PostRequest;
+import wooteco.studylog.log.web.controller.dto.PostResponse;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -27,19 +27,19 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-public class StudyLogAcceptanceTest {
+public class PostAcceptanceTest {
 
     @Mock
-    StudyLogService studyLogService;
+    PostService postService;
 
     @InjectMocks
-    StudyLogController studyLogController;
+    PostController postController;
 
     @Test
     void 전체_글을_불러온다() {
         // given
-        List<LogResponse> logResponses = Collections.singletonList(
-                new LogResponse(1L,
+        List<PostResponse> postResponse = Collections.singletonList(
+                new PostResponse(1L,
                         new AuthorResponse(1L, "뽀모", "image"),
                         LocalDateTime.now(),
                         new CategoryResponse(1L, "미션1"),
@@ -49,16 +49,16 @@ public class StudyLogAcceptanceTest {
                 )
         );
 
-        List<Long> expectedIds = logResponses.stream()
-                .map(LogResponse::getId)
+        List<Long> expectedIds = postResponse.stream()
+                .map(PostResponse::getId)
                 .collect(Collectors.toList());
         // when
 
         // then
         ExtractableResponse<MockMvcResponse> response = RestAssuredMockMvc.given()
-                .standaloneSetup(studyLogController)
+                .standaloneSetup(postController)
                 .when()
-                .get("/logs")
+                .get("/posts")
                 .then()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .log().all()
@@ -76,13 +76,13 @@ public class StudyLogAcceptanceTest {
     @Test
     void 글_작성하기() {
         // given
-        List<LogRequest> logRequest = Arrays.asList(new LogRequest(1L,
+        List<PostRequest> postRequest = Arrays.asList(new PostRequest(1L,
                 "title",
                 Arrays.asList("자바", "쟈스"),
                 "글 내용"
         ));
 
-        LogResponse expectedResult = new LogResponse(1L,
+        PostResponse expectedResult = new PostResponse(1L,
                 new AuthorResponse(1L, "뽀모", "image"),
                 LocalDateTime.now(),
                 new CategoryResponse(1L, "미션1"),
@@ -95,17 +95,17 @@ public class StudyLogAcceptanceTest {
 
         // then
         ExtractableResponse<MockMvcResponse> response = RestAssuredMockMvc.given()
-                .standaloneSetup(studyLogController)
+                .standaloneSetup(postController)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(logRequest)
+                .body(postRequest)
                 .when()
-                .post("/logs")
+                .post("/posts")
                 .then()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .log().all()
                 .extract();
 
-        LogResponse extracted = response.body().as(LogResponse.class);
+        PostResponse extracted = response.body().as(PostResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(extracted).isEqualTo(expectedResult);
     }
@@ -114,8 +114,8 @@ public class StudyLogAcceptanceTest {
     void 개별_글을_불러온다() {
         // given
         Long logId = 1L;
-        LogResponse logResponse =
-                new LogResponse(1L,
+        PostResponse postResponse =
+                new PostResponse(1L,
                         new AuthorResponse(1L, "웨지", "image"),
                         LocalDateTime.now(),
                         new CategoryResponse(1L, "미션1"),
@@ -129,17 +129,17 @@ public class StudyLogAcceptanceTest {
 
         // then
         ExtractableResponse<MockMvcResponse> response = RestAssuredMockMvc.given()
-                .standaloneSetup(studyLogController)
+                .standaloneSetup(postController)
                 .when()
-                .get("/logs/" + logId)
+                .get("/posts/" + logId)
                 .then()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .log().all()
                 .extract();
 
-        LogResponse extracted = response.body().as(LogResponse.class);
+        PostResponse extracted = response.body().as(PostResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(extracted).isEqualTo(logResponse);
+        assertThat(extracted).isEqualTo(postResponse);
     }
 
     @Test
@@ -159,9 +159,9 @@ public class StudyLogAcceptanceTest {
 
         // then
         ExtractableResponse<MockMvcResponse> response = RestAssuredMockMvc.given()
-                .standaloneSetup(studyLogController)
+                .standaloneSetup(postController)
                 .when()
-                .get("/logs/categories")
+                .get("/posts/categories")
                 .then()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .log().all()

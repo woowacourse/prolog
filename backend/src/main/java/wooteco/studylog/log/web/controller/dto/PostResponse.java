@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-public class LogResponse {
+public class PostResponse {
     private Long id;
     private AuthorResponse author;
     private LocalDateTime issuedDate;
@@ -14,10 +14,10 @@ public class LogResponse {
     private List<String> tags;
 
 
-    public LogResponse() {
+    public PostResponse() {
     }
 
-    public LogResponse(Long id, AuthorResponse author, LocalDateTime issuedDate, CategoryResponse category, String title, String content, List<String> tags) {
+    public PostResponse(Long id, AuthorResponse author, LocalDateTime issuedDate, CategoryResponse category, String title, String content, List<String> tags) {
         this.id = id;
         this.author = author;
         this.issuedDate = issuedDate;
@@ -59,7 +59,7 @@ public class LogResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LogResponse that = (LogResponse) o;
+        PostResponse that = (PostResponse) o;
         return Objects.equals(id, that.id) && Objects.equals(author, that.author) && Objects.equals(category, that.category) && Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(tags, that.tags);
     }
 

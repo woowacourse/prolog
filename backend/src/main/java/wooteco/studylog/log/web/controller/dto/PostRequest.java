@@ -2,16 +2,16 @@ package wooteco.studylog.log.web.controller.dto;
 
 import java.util.List;
 
-public class LogRequest {
+public class PostRequest {
     private Long id;
     private String title;
     private List<String> tags;
     private String content;
 
-    public LogRequest() {
+    public PostRequest() {
     }
 
-    public LogRequest(Long id, String title, List<String> tags, String content) {
+    public PostRequest(Long id, String title, List<String> tags, String content) {
         this.id = id;
         this.title = title;
         this.tags = tags;
