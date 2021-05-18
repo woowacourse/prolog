@@ -7,7 +7,7 @@ import java.util.Objects;
 public class PostResponse {
     private Long id;
     private AuthorResponse author;
-    private LocalDateTime issuedDate;
+    private LocalDateTime createdAt;
     private CategoryResponse category;
     private String title;
     private String content;
@@ -17,10 +17,10 @@ public class PostResponse {
     public PostResponse() {
     }
 
-    public PostResponse(Long id, AuthorResponse author, LocalDateTime issuedDate, CategoryResponse category, String title, String content, List<String> tags) {
+    public PostResponse(Long id, AuthorResponse author, LocalDateTime createdAt, CategoryResponse category, String title, String content, List<String> tags) {
         this.id = id;
         this.author = author;
-        this.issuedDate = issuedDate;
+        this.createdAt = createdAt;
         this.category = category;
         this.title = title;
         this.content = content;
@@ -35,8 +35,8 @@ public class PostResponse {
         return author;
     }
 
-    public LocalDateTime getIssuedDate() {
-        return issuedDate;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     public CategoryResponse getCategory() {
