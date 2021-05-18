@@ -14,9 +14,11 @@ import org.springframework.web.client.RestTemplate;
 public class GithubLoginService {
 
     private JwtTokenProvider jwtTokenProvider;
+    private MemberDao memberDao;
 
-    public GithubLoginService(JwtTokenProvider jwtTokenProvider) {
+    public GithubLoginService(JwtTokenProvider jwtTokenProvider, MemberDao memberDao) {
         this.jwtTokenProvider = jwtTokenProvider;
+        this.memberDao = memberDao;
     }
 
     public String createToken(TokenDto tokenDto) {
@@ -25,7 +27,9 @@ public class GithubLoginService {
         String githubAccessToken = getAccessTokenFromGithub(code);
         GithubProfileResponse githubProfile = getGithubProfileFromGithub(githubAccessToken);
 
-        return jwtTokenProvider.createToken(githubProfile);
+        Member member = memberDao.findByGithubId(githubProfile.getGithubId())
+                .orElseGet(() -> memberDao.insert(Member.of(githubProfile)));
+        return jwtTokenProvider.createToken(member);
     }
 
     private String getAccessTokenFromGithub(String code) {

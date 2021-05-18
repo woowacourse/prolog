@@ -9,27 +9,27 @@ public class GithubProfileResponse {
     @JsonProperty("id")
     private String githubId;
     @JsonProperty("avatar_url")
-    private String image;
+    private String imageUrl;
 
     public GithubProfileResponse() {
 
     }
 
-    public GithubProfileResponse(String nickname, String githubId, String image) {
+    public GithubProfileResponse(String nickname, String githubId, String imageUrl) {
         this.nickname = nickname;
         this.githubId = githubId;
-        this.image = image;
+        this.imageUrl = imageUrl;
     }
 
     public String getNickname() {
         return nickname;
     }
 
-    public String getGithubId() {
-        return githubId;
+    public Long getGithubId() {
+        return Long.valueOf(githubId);
     }
 
-    public String getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

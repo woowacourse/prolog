@@ -13,15 +13,15 @@ public class JwtTokenProvider {
     @Value("${security.jwt.token.expire-length}")
     private long validityInMilliseconds;
 
-    public String createToken(GithubProfileResponse githubProfileResponse) {
+    public String createToken(Member member) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
-                .setSubject(githubProfileResponse.getGithubId())
+                .setSubject(member.getId().toString())
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .claim("role", "CREW")
+                .claim("role", member.getRole())
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }

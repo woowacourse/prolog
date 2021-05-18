@@ -5,13 +5,13 @@
     - [ ] 유효하지 않은 코드일 경우 401과 에러 반환한다.
 
 - [x] 엑세스 토큰으로 깃허브에게 사용자 정보를 요청한다.
-- [ ] 서비스에 이미 등록된 멤버인지 확인한다.
-    - [ ] 처음 방문한 사용자인 경우 사용자 정보를 DB에 저장한다.
+- [x] 서비스에 이미 등록된 멤버인지 확인한다.
+    - [x] 처음 방문한 사용자인 경우 사용자 정보를 DB에 저장한다.
     - [ ] 기존 멤버인 경우 DB에서 정보를 비교한다.
 
 - [x] 토큰 생성
     - [x] 토큰에 사용자 정보를 넣는다.
-    - [ ] DB 구현 후 payload 정보 변경 (githubId -> id)
+    - [x] DB 구현 후 payload 정보 변경 (githubId -> id)
 
 - [x] 클라이언트에게 200 status code와 함께 토큰 전달].
 
@@ -19,12 +19,12 @@
     - [ ] header로 들어온 토큰을 검증한다.
     - [ ] 응답에 id, nickname, imageUrl, role이 포함된다.
 
-- [ ] MEMBER
-    - [ ] Long id
-    - [ ] String nickname
-    - [ ] Long githubId
-    - [ ] String imageUrl
-    - [ ] Role role
+- [x] MEMBER
+    - [x] Long id
+    - [x] String nickname
+    - [x] Long githubId
+    - [x] String imageUrl
+    - [x] Role role
   
 - [x] ROLE
     - [x] INVALID_MEMBER
