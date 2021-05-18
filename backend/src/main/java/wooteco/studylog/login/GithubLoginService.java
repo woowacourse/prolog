@@ -4,17 +4,17 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 public class GithubLoginService {
 
-    private JwtTokenProvider jwtTokenProvider;
-    private MemberDao memberDao;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final MemberDao memberDao;
 
     public GithubLoginService(JwtTokenProvider jwtTokenProvider, MemberDao memberDao) {
         this.jwtTokenProvider = jwtTokenProvider;
@@ -31,11 +31,6 @@ public class GithubLoginService {
         return jwtTokenProvider.createToken(member);
     }
 
-    private Member findOrCreateMember(GithubProfileResponse githubProfile) {
-        return memberDao.findByGithubId(githubProfile.getGithubId())
-                .orElseGet(() -> memberDao.insert(Member.of(githubProfile)));
-    }
-
     private String getAccessTokenFromGithub(String code) {
         String url = "https://github.com/login/oauth/access_token";
 
@@ -50,8 +45,14 @@ public class GithubLoginService {
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, headers);
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<GithubAccessTokenResponse> result = restTemplate.exchange(url, HttpMethod.POST, httpEntity, GithubAccessTokenResponse.class);
-        return result.getBody().getAccessToken();
+        String accessToken = restTemplate
+                .exchange(url, HttpMethod.POST, httpEntity, GithubAccessTokenResponse.class)
+                .getBody()
+                .getAccessToken();
+        if (accessToken == null) {
+            throw new IllegalArgumentException("로그인에 실패했습니다.");
+        }
+        return accessToken;
     }
 
     private GithubProfileResponse getGithubProfileFromGithub(String accessToken) {
@@ -63,8 +64,17 @@ public class GithubLoginService {
         HttpEntity httpEntity = new HttpEntity<>(headers);
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<GithubProfileResponse> result = restTemplate.exchange(url, HttpMethod.GET, httpEntity, GithubProfileResponse.class);
+        try {
+            return restTemplate
+                    .exchange(url, HttpMethod.GET, httpEntity, GithubProfileResponse.class)
+                    .getBody();
+        } catch (HttpClientErrorException e) {
+            throw new IllegalArgumentException("로그인에 실패했습니다.");
+        }
+    }
 
-        return result.getBody();
+    private Member findOrCreateMember(GithubProfileResponse githubProfile) {
+        return memberDao.findByGithubId(githubProfile.getGithubId())
+                .orElseGet(() -> memberDao.insert(Member.of(githubProfile)));
     }
 }
