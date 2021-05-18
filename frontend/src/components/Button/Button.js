@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 
-export const SIZE = {
+export const BUTTON_SIZE = {
   X_SMALL: 'X_SMALL',
   SMALL: 'SMALL',
   MEDIUM: 'MEDIUM',
@@ -103,7 +103,7 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
-  size: SIZE.MEDIUM,
+  size: BUTTON_SIZE.MEDIUM,
   css: {
     backgroundColor: '#153147',
     color: '#ffffff',

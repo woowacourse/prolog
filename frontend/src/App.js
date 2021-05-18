@@ -16,14 +16,14 @@ const App = () => {
       <GlobalStyles />
       <Router>
         <NavBar />
-        <Switch>
-          <Content>
+        <Content>
+          <Switch>
             <Route exact path={PATH.ROOT} component={MainPage} />
             <Route exact path={PATH.NEW_POST} component={NewPostPage} />
             <Route exact path={`${PATH.POST}/:id`} component={PostPage} />
             <Redirect to={PATH.ROOT} />
-          </Content>
-        </Switch>
+          </Switch>
+        </Content>
       </Router>
     </>
   );

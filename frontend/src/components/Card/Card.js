@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 
-export const SIZE = {
+export const CARD_SIZE = {
   SMALL: 'SMALL',
   LARGE: 'LARGE',
 };
@@ -43,7 +43,7 @@ Card.propTypes = {
 };
 
 Card.defaultProps = {
-  size: SIZE.SMALL,
+  size: CARD_SIZE.SMALL,
 };
 
 export default Card;

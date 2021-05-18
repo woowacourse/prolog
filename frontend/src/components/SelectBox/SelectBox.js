@@ -26,6 +26,7 @@ const Select = styled.select`
   width: 100%;
   min-height: 5rem;
   font-size: 2.4rem;
+  font-family: inherit;
 
   background-color: #fff;
   outline: none;
@@ -39,7 +40,7 @@ const SelectItems = styled.ul`
   position: absolute;
   width: 100%;
   max-height: 42rem;
-  overflow-y: scroll;
+  overflow-y: auto;
   top: 0%;
   list-style: none;
   margin: 0;
@@ -78,8 +79,8 @@ const SelectItems = styled.ul`
 const SelectItem = styled.li`
   display: flex;
   align-items: center;
-  padding: 0 4rem;
-  height: 5rem;
+  padding: 1.4rem 4rem;
+  min-height: 5rem;
   font-size: 2.4rem;
   cursor: pointer;
   background-color: #fff;
@@ -181,6 +182,10 @@ const SelectBox = ({ options }) => {
       {selectItems}
     </Label>
   );
+};
+
+SelectBox.defaultProps = {
+  options: ['주제가 등록되지 않았습니다.'],
 };
 
 SelectBox.propTypes = {
