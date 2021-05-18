@@ -13,7 +13,6 @@ public class PostResponse {
     private String content;
     private List<String> tags;
 
-
     public PostResponse() {
     }
 

@@ -52,6 +52,7 @@ public class PostAcceptanceTest {
         List<Long> expectedIds = postResponse.stream()
                 .map(PostResponse::getId)
                 .collect(Collectors.toList());
+
         // when
 
         // then
@@ -175,5 +176,4 @@ public class PostAcceptanceTest {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(extractedName).containsAll(expectedNames);
     }
-
 }

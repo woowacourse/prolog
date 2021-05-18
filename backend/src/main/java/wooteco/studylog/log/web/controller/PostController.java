@@ -55,8 +55,8 @@ public class PostController {
 //        return ResponseEntity.created(URI.create("/logs/" + logResponse.getLogId())).body(logResponse);
     }
 
-    @GetMapping("/{logId}")
-    public ResponseEntity<PostResponse> showPost(@PathVariable Long logId){
+    @GetMapping("/{id}")
+    public ResponseEntity<PostResponse> showPost(@PathVariable Long id){
 //        LogResponse logResponse = studyLogService.findById(logId);
         PostResponse postResponse =
                 new PostResponse(1L,
