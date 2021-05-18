@@ -13,7 +13,7 @@
     - [x] 토큰에 사용자 정보를 넣는다.
     - [ ] DB 구현 후 payload 정보 변경 (githubId -> id)
 
-- [x] 클라이언트에게 200 status code와 함께 토큰 전달.
+- [x] 클라이언트에게 200 status code와 함께 토큰 전달].
 
 - [ ] GET - 멤버 정보 요청에 응답한다.
     - [ ] header로 들어온 토큰을 검증한다.
@@ -26,10 +26,10 @@
     - [ ] String imageUrl
     - [ ] Role role
   
-- [ ] ROLE
-    - [ ] INVALID_MEMBER
-    - [ ] CREW
-    - [ ] COACH
+- [x] ROLE
+    - [x] INVALID_MEMBER
+    - [x] CREW
+    - [x] COACH
 
 - [x] TOKEN
     - [x] 토큰 생성 시간
