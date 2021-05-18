@@ -1,9 +1,9 @@
-package wooteco.studylog.log.web.controller;
+package wooteco.studylog.post.web.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import wooteco.studylog.log.service.PostService;
-import wooteco.studylog.log.web.controller.dto.*;
+import wooteco.studylog.post.service.PostService;
+import wooteco.studylog.post.web.controller.dto.*;
 
 import java.net.URI;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package wooteco.studylog.log;
+package wooteco.studylog.post;
 
 import java.util.List;
 

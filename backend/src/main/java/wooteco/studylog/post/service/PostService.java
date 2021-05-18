@@ -1,11 +1,11 @@
-package wooteco.studylog.log.service;
+package wooteco.studylog.post.service;
 
 import org.springframework.stereotype.Service;
-import wooteco.studylog.log.Post;
-import wooteco.studylog.log.dao.StudyLogDao;
-import wooteco.studylog.log.web.controller.dto.CategoryResponse;
-import wooteco.studylog.log.web.controller.dto.PostRequest;
-import wooteco.studylog.log.web.controller.dto.PostResponse;
+import wooteco.studylog.post.Post;
+import wooteco.studylog.post.dao.StudyLogDao;
+import wooteco.studylog.post.web.controller.dto.CategoryResponse;
+import wooteco.studylog.post.web.controller.dto.PostRequest;
+import wooteco.studylog.post.web.controller.dto.PostResponse;
 
 import java.util.List;
 

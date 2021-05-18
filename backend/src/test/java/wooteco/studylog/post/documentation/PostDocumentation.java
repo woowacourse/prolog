@@ -1,4 +1,4 @@
-package wooteco.studylog.log.documentation;
+package wooteco.studylog.post.documentation;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

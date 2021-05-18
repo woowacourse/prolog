@@ -1,4 +1,4 @@
-package wooteco.studylog.log.web.controller.dto;
+package wooteco.studylog.post.web.controller.dto;
 
 import java.util.List;
 

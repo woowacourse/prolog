@@ -1,4 +1,4 @@
-package wooteco.studylog.log.acceptance;
+package wooteco.studylog.post.acceptance;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
@@ -10,12 +10,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import wooteco.studylog.log.service.PostService;
-import wooteco.studylog.log.web.controller.PostController;
-import wooteco.studylog.log.web.controller.dto.AuthorResponse;
-import wooteco.studylog.log.web.controller.dto.CategoryResponse;
-import wooteco.studylog.log.web.controller.dto.PostRequest;
-import wooteco.studylog.log.web.controller.dto.PostResponse;
+import wooteco.studylog.post.service.PostService;
+import wooteco.studylog.post.web.controller.PostController;
+import wooteco.studylog.post.web.controller.dto.AuthorResponse;
+import wooteco.studylog.post.web.controller.dto.CategoryResponse;
+import wooteco.studylog.post.web.controller.dto.PostRequest;
+import wooteco.studylog.post.web.controller.dto.PostResponse;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;

@@ -1,8 +1,8 @@
-package wooteco.studylog.log.dao;
+package wooteco.studylog.post.dao;
 
 import org.springframework.stereotype.Repository;
-import wooteco.studylog.log.Post;
-import wooteco.studylog.log.domain.Category;
+import wooteco.studylog.post.Post;
+import wooteco.studylog.post.domain.Category;
 
 import java.util.List;
 

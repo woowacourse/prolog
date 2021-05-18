@@ -1,4 +1,4 @@
-package wooteco.studylog.log.domain;
+package wooteco.studylog.post.domain;
 
 public class Category {
     private final Long categoryId;
