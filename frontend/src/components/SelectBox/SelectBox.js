@@ -125,7 +125,8 @@ const SelectBox = ({ options }) => {
     return () => {
       document.removeEventListener('click', onCloseCategoryList);
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectItems]);
 
   useEffect(() => {
     if (!$selectorContainer.current) return;
@@ -163,6 +164,7 @@ const SelectBox = ({ options }) => {
   };
 
   const onCloseCategoryList = (e) => {
+    if (!selectItems) return;
     e.preventDefault();
 
     if (!$label.current?.contains(e.target)) {
