@@ -22,7 +22,7 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<List<PostResponse>> showAll() {
-        List<PostResponse> postRespons = Collections.singletonList(
+        List<PostResponse> postResponse = Collections.singletonList(
                 new PostResponse(1L,
                         new AuthorResponse(1L, "뽀모", "image"),
                         LocalDateTime.now(),
@@ -32,7 +32,7 @@ public class PostController {
                         Arrays.asList("자바", "쟈스")
                 )
         );
-        return ResponseEntity.ok(postRespons);
+        return ResponseEntity.ok(postResponse);
 //        return ResponseEntity.ok(studyLogService.findAll());
     }
 
