@@ -2,14 +2,16 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import db from '../../db.json';
-import { Card, ProfileChip } from '../../components';
+import { Button, Card, ProfileChip } from '../../components';
 import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
+import PencilIcon from '../../assets/images/pencil_icon.svg';
 
 const HeaderContainer = styled.div`
   height: 6.4rem;
   display: flex;
   margin-bottom: 3.7rem;
+  justify-content: space-between;
 `;
 
 const FilterList = styled.div`
@@ -24,13 +26,6 @@ const FilterList = styled.div`
     font-size: 2rem;
     text-align: center;
   }
-`;
-
-const Button = styled.button`
-  width: 18rem;
-  background-color: #153147;
-  margin-left: auto;
-  border-radius: 2rem;
 `;
 
 const PostListContainer = styled.div`
@@ -94,7 +89,9 @@ const MainPage = () => {
           <button>필터 2</button>
           <button>필터 3</button>
         </FilterList>
-        <Button type="button">글쓰기</Button>
+        <Button type="button" size="MEDIUM" icon={PencilIcon} alt="글쓰기 아이콘">
+          글쓰기
+        </Button>
       </HeaderContainer>
       <PostListContainer>
         {db.logs.map((log) => {

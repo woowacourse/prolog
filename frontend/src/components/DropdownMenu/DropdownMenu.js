@@ -62,7 +62,7 @@ const Container = styled.div`
 
   & li:hover {
     & > * {
-      font-size: 2.4rem;
+      font-size: 2.2rem;
     }
   }
 `;

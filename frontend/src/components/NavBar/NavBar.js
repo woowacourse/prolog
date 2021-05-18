@@ -6,6 +6,10 @@ import { useHistory } from 'react-router';
 import LogoImage from '../../assets/images/logo.svg';
 import { PATH } from '../../constants';
 import { DropdownMenu } from '../index';
+import Button from '../Button/Button';
+import PencilIcon from '../../assets/images/pencil_icon.svg';
+import NoProfileImage from '../../assets/images/no-profile-image.png';
+import SearchIcon from '../../assets/images/search_icon.svg';
 
 const DropdownToggledStyle = css`
   &:before {
@@ -46,6 +50,7 @@ const Logo = styled.img`
 `;
 
 const Menu = styled.div`
+  display: flex;
   & > button:not(:last-child) {
     margin-right: 1.6rem;
   }
@@ -54,6 +59,10 @@ const Menu = styled.div`
 const DropdownLocationStyle = css`
   top: 60px;
   right: 0px;
+`;
+
+const whiteBackgroundStyle = css`
+  background-color: #ffffff;
 `;
 
 const NavBar = () => {
@@ -83,13 +92,27 @@ const NavBar = () => {
       <Wrapper>
         <Logo src={LogoImage} alt="STUDYLOG 로고" onClick={goMain} role="link" />
         <Menu role="menu">
-          <button type="button">검색</button>
-          <button type="button" onClick={goNewPost}>
-            글작성
-          </button>
-          <button type="button" onClick={showDropdownMenu}>
-            내정보
-          </button>
+          <Button
+            type="button"
+            size="X_SMALL"
+            icon={SearchIcon}
+            alt="검색 아이콘"
+            css={whiteBackgroundStyle}
+          ></Button>
+          <Button
+            type="button"
+            size="X_SMALL"
+            icon={PencilIcon}
+            alt="글쓰기 아이콘"
+            onClick={goNewPost}
+          ></Button>
+          <Button
+            type="button"
+            size="X_SMALL"
+            backgroundImageUrl={NoProfileImage}
+            onClick={showDropdownMenu}
+            css={whiteBackgroundStyle}
+          ></Button>
         </Menu>
         {isDropdownToggled && (
           <DropdownMenu css={DropdownLocationStyle}>
