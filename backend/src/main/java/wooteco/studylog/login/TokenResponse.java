@@ -2,20 +2,20 @@ package wooteco.studylog.login;
 
 public class TokenResponse {
 
-    private String token;
+    private String accessToken;
 
     public TokenResponse() {
     }
 
-    private TokenResponse(String token) {
-        this.token = token;
+    private TokenResponse(String accessToken) {
+        this.accessToken = accessToken;
     }
 
     public static TokenResponse of(String accessToken) {
         return new TokenResponse(accessToken);
     }
 
-    public String getToken() {
-        return token;
+    public String getAccessToken() {
+        return accessToken;
     }
 }
