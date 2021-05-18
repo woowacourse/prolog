@@ -21,9 +21,7 @@ public class GithubLoginService {
         this.memberDao = memberDao;
     }
 
-    public String createToken(TokenDto tokenDto) {
-        String code = tokenDto.getCode();
-
+    public String createToken(String code) {
         String githubAccessToken = getAccessTokenFromGithub(code);
         GithubProfileResponse githubProfile = getGithubProfileFromGithub(githubAccessToken);
 

@@ -14,8 +14,4 @@ public class TokenRequest {
     public String getCode() {
         return code;
     }
-
-    public TokenDto toTokenDto() {
-        return new TokenDto(code);
-    }
 }
