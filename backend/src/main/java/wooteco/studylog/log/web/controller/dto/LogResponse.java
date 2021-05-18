@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class LogResponse {
-    private Long logId;
+    private Long id;
     private AuthorResponse author;
     private LocalDateTime issuedDate;
     private CategoryResponse category;
@@ -17,8 +17,8 @@ public class LogResponse {
     public LogResponse() {
     }
 
-    public LogResponse(Long logId, AuthorResponse author, LocalDateTime issuedDate, CategoryResponse category, String title, String content, List<String> tags) {
-        this.logId = logId;
+    public LogResponse(Long id, AuthorResponse author, LocalDateTime issuedDate, CategoryResponse category, String title, String content, List<String> tags) {
+        this.id = id;
         this.author = author;
         this.issuedDate = issuedDate;
         this.category = category;
@@ -27,8 +27,8 @@ public class LogResponse {
         this.tags = tags;
     }
 
-    public Long getLogId() {
-        return logId;
+    public Long getId() {
+        return id;
     }
 
     public AuthorResponse getAuthor() {
@@ -60,11 +60,11 @@ public class LogResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LogResponse that = (LogResponse) o;
-        return Objects.equals(logId, that.logId) && Objects.equals(author, that.author) && Objects.equals(category, that.category) && Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(tags, that.tags);
+        return Objects.equals(id, that.id) && Objects.equals(author, that.author) && Objects.equals(category, that.category) && Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(tags, that.tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(logId, author, title, content, tags);
+        return Objects.hash(id, author, title, content, tags);
     }
 }

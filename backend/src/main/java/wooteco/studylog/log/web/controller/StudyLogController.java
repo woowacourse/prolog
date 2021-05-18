@@ -47,7 +47,7 @@ public class StudyLogController {
                 "내용",
                 Arrays.asList("자바", "쟈스"));
         studyLogService.insertLogs(logRequest);
-        return ResponseEntity.created(URI.create("/logs/" + logResponse.getLogId())).body(logResponse);
+        return ResponseEntity.created(URI.create("/logs/" + logResponse.getId())).body(logResponse);
 //        LogResponse logResponse = studyLogService.insertLog(
 //                logRequest.getCategoryId(),
 //                logRequest.getTitle(),

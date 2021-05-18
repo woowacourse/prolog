@@ -3,19 +3,19 @@ package wooteco.studylog.log.web.controller.dto;
 import java.util.Objects;
 
 public class CategoryResponse {
-    private Long categoryId;
+    private Long id;
     private String categoryName;
 
     public CategoryResponse() {
     }
 
-    public CategoryResponse(Long categoryId, String categoryName) {
-        this.categoryId = categoryId;
+    public CategoryResponse(Long id, String categoryName) {
+        this.id = id;
         this.categoryName = categoryName;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public Long getId() {
+        return id;
     }
 
     public String getCategoryName() {
@@ -27,11 +27,11 @@ public class CategoryResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CategoryResponse that = (CategoryResponse) o;
-        return Objects.equals(categoryId, that.categoryId) && Objects.equals(categoryName, that.categoryName);
+        return Objects.equals(id, that.id) && Objects.equals(categoryName, that.categoryName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(categoryId, categoryName);
+        return Objects.hash(id, categoryName);
     }
 }

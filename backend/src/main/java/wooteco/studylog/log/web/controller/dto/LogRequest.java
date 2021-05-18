@@ -3,23 +3,23 @@ package wooteco.studylog.log.web.controller.dto;
 import java.util.List;
 
 public class LogRequest {
-    Long categoryId;
-    String title;
-    List<String> tags;
-    String content;
+    private Long id;
+    private String title;
+    private List<String> tags;
+    private String content;
 
     public LogRequest() {
     }
 
-    public LogRequest(Long categoryId, String title, List<String> tags, String content) {
-        this.categoryId = categoryId;
+    public LogRequest(Long id, String title, List<String> tags, String content) {
+        this.id = id;
         this.title = title;
         this.tags = tags;
         this.content = content;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {

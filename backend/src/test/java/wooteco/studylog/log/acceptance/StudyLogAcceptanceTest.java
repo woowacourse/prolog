@@ -48,7 +48,7 @@ public class StudyLogAcceptanceTest {
         LogResponses studyLogResponses = new LogResponses(rowLogResponses);
 
         // when
-        given(studyLogService.findAll()).willReturn(studyLogResponses);
+//        given(studyLogService.findAll()).willReturn(studyLogResponses);
 
         // then
         ExtractableResponse<MockMvcResponse> response = RestAssuredMockMvc.given()
@@ -84,7 +84,7 @@ public class StudyLogAcceptanceTest {
 
 
         // when
-        given(studyLogService.insertLogs(any(List.class))).willReturn(expectedResult);
+//        given(studyLogService.insertLogs(any(List.class))).willReturn(expectedResult);
 
         // then
         ExtractableResponse<MockMvcResponse> response = RestAssuredMockMvc.given()
@@ -119,7 +119,7 @@ public class StudyLogAcceptanceTest {
         );
 
         // when
-        given(studyLogService.findById(logId)).willReturn(logResponse);
+//        given(studyLogService.findById(logId)).willReturn(logResponse);
 
         // then
         ExtractableResponse<MockMvcResponse> response = RestAssuredMockMvc.given()
@@ -148,7 +148,7 @@ public class StudyLogAcceptanceTest {
         CategoryResponses categoryResponses = new CategoryResponses(categoryFixture);
 
         // when
-        given(studyLogService.findAllCategories()).willReturn(categoryResponses);
+//        given(studyLogService.findAllCategories()).willReturn(categoryResponses);
 
         // then
         ExtractableResponse<MockMvcResponse> response = RestAssuredMockMvc.given()
