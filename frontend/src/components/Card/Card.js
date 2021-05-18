@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 
-export const SIZE = {
+export const CARD_SIZE = {
   SMALL: 'SMALL',
   LARGE: 'LARGE',
 };
@@ -22,7 +22,6 @@ const Container = styled.section`
   box-shadow: 0px 4px 4px #0000000d;
   border: 1px solid #c9c9c9;
   border-radius: 26px;
-  box-sizing: border-box;
 
   ${({ css }) => css}
   ${({ size }) => sizeStyle[size] || sizeStyle.SMALL}
@@ -44,7 +43,7 @@ Card.propTypes = {
 };
 
 Card.defaultProps = {
-  size: SIZE.SMALL,
+  size: CARD_SIZE.SMALL,
 };
 
 export default Card;
