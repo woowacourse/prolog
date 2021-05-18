@@ -4,22 +4,22 @@ import java.util.Objects;
 
 public class CategoryResponse {
     private Long id;
-    private String categoryName;
+    private String name;
 
     public CategoryResponse() {
     }
 
-    public CategoryResponse(Long id, String categoryName) {
+    public CategoryResponse(Long id, String name) {
         this.id = id;
-        this.categoryName = categoryName;
+        this.name = name;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -27,11 +27,11 @@ public class CategoryResponse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CategoryResponse that = (CategoryResponse) o;
-        return Objects.equals(id, that.id) && Objects.equals(categoryName, that.categoryName);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, categoryName);
+        return Objects.hash(id, name);
     }
 }
