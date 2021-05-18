@@ -11,17 +11,20 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.studylog.log.service.StudyLogService;
-import wooteco.studylog.log.web.controller.*;
-import wooteco.studylog.log.web.controller.dto.*;
+import wooteco.studylog.log.web.controller.StudyLogController;
+import wooteco.studylog.log.web.controller.dto.AuthorResponse;
+import wooteco.studylog.log.web.controller.dto.CategoryResponse;
+import wooteco.studylog.log.web.controller.dto.LogRequest;
+import wooteco.studylog.log.web.controller.dto.LogResponse;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 public class StudyLogAcceptanceTest {
@@ -35,7 +38,7 @@ public class StudyLogAcceptanceTest {
     @Test
     void 전체_글을_불러온다() {
         // given
-        List<LogResponse> rowLogResponses = Collections.singletonList(
+        List<LogResponse> logResponses = Collections.singletonList(
                 new LogResponse(1L,
                         new AuthorResponse(1L, "뽀모", "image"),
                         LocalDateTime.now(),
@@ -45,10 +48,11 @@ public class StudyLogAcceptanceTest {
                         Arrays.asList("자바", "쟈스")
                 )
         );
-        LogResponses studyLogResponses = new LogResponses(rowLogResponses);
 
+        List<Long> expectedIds = logResponses.stream()
+                .map(LogResponse::getId)
+                .collect(Collectors.toList());
         // when
-//        given(studyLogService.findAll()).willReturn(studyLogResponses);
 
         // then
         ExtractableResponse<MockMvcResponse> response = RestAssuredMockMvc.given()
@@ -60,9 +64,13 @@ public class StudyLogAcceptanceTest {
                 .log().all()
                 .extract();
 
-        LogResponses extracted = response.body().as(LogResponses.class);
+        List<HashMap<String, Object>> list = response.body().jsonPath().getList("");
+        List<Long> extractedIds = list.stream()
+                .map(map -> (long) (int) map.get("id"))
+                .collect(Collectors.toList());
+
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(extracted).isEqualTo(studyLogResponses);
+        assertThat(extractedIds).containsAll(expectedIds);
     }
 
     @Test
@@ -84,7 +92,6 @@ public class StudyLogAcceptanceTest {
 
 
         // when
-//        given(studyLogService.insertLogs(any(List.class))).willReturn(expectedResult);
 
         // then
         ExtractableResponse<MockMvcResponse> response = RestAssuredMockMvc.given()
@@ -116,10 +123,9 @@ public class StudyLogAcceptanceTest {
                         "매서운감자",
                         Arrays.asList("자바", "자스")
 
-        );
+                );
 
         // when
-//        given(studyLogService.findById(logId)).willReturn(logResponse);
 
         // then
         ExtractableResponse<MockMvcResponse> response = RestAssuredMockMvc.given()
@@ -139,16 +145,17 @@ public class StudyLogAcceptanceTest {
     @Test
     void 카테고리를_불러온다() {
         // given
-        List<CategoryResponse> categoryFixture = Arrays.asList(
+        List<CategoryResponse> categoryResponses = Arrays.asList(
                 new CategoryResponse(1L, "빈지모"),
                 new CategoryResponse(2L, "빈포모"),
                 new CategoryResponse(3L, "웨지노")
         );
 
-        CategoryResponses categoryResponses = new CategoryResponses(categoryFixture);
+        List<String> expectedNames = categoryResponses.stream()
+                .map(CategoryResponse::getName)
+                .collect(Collectors.toList());
 
         // when
-//        given(studyLogService.findAllCategories()).willReturn(categoryResponses);
 
         // then
         ExtractableResponse<MockMvcResponse> response = RestAssuredMockMvc.given()
@@ -160,9 +167,13 @@ public class StudyLogAcceptanceTest {
                 .log().all()
                 .extract();
 
-        CategoryResponses extracted = response.body().as(CategoryResponses.class);
+        List<HashMap<String, Object>> list = response.body().jsonPath().getList("");
+        List<String> extractedName = list.stream()
+                .map(map -> (String) map.get("name"))
+                .collect(Collectors.toList());
+
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(extracted).isEqualTo(categoryResponses);
+        assertThat(extractedName).containsAll(expectedNames);
     }
 
 }

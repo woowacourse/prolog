@@ -21,8 +21,8 @@ public class StudyLogController {
     }
 
     @GetMapping
-    public ResponseEntity<LogResponses> showAll() {
-        List<LogResponse> rowLogResponses = Collections.singletonList(
+    public ResponseEntity<List<LogResponse>> showAll() {
+        List<LogResponse> logResponses = Collections.singletonList(
                 new LogResponse(1L,
                         new AuthorResponse(1L, "뽀모", "image"),
                         LocalDateTime.now(),
@@ -32,8 +32,7 @@ public class StudyLogController {
                         Arrays.asList("자바", "쟈스")
                 )
         );
-        LogResponses studyLogResponses = new LogResponses(rowLogResponses);
-        return ResponseEntity.ok(studyLogResponses);
+        return ResponseEntity.ok(logResponses);
 //        return ResponseEntity.ok(studyLogService.findAll());
     }
 
@@ -73,15 +72,14 @@ public class StudyLogController {
     }
 
     @GetMapping("/categories")
-    public ResponseEntity<CategoryResponses> showCategories() {
+    public ResponseEntity<List<CategoryResponse>> showCategories() {
 //        CategoryResponses allCategories = studyLogService.findAllCategories();
-        List<CategoryResponse> categoryFixture = Arrays.asList(
+        List<CategoryResponse> categoryResponses = Arrays.asList(
                 new CategoryResponse(1L, "빈지모"),
                 new CategoryResponse(2L, "빈포모"),
                 new CategoryResponse(3L, "웨지노")
         );
 
-        CategoryResponses categoryResponses = new CategoryResponses(categoryFixture);
         return ResponseEntity.ok(categoryResponses);
     }
 }

@@ -3,10 +3,9 @@ package wooteco.studylog.log.service;
 import org.springframework.stereotype.Service;
 import wooteco.studylog.log.StudyLog;
 import wooteco.studylog.log.dao.StudyLogDao;
-import wooteco.studylog.log.web.controller.dto.CategoryResponses;
+import wooteco.studylog.log.web.controller.dto.CategoryResponse;
 import wooteco.studylog.log.web.controller.dto.LogRequest;
 import wooteco.studylog.log.web.controller.dto.LogResponse;
-import wooteco.studylog.log.web.controller.dto.LogResponses;
 
 import java.util.List;
 
@@ -18,12 +17,12 @@ public class StudyLogService {
         this.studyLogDao = studyLogDao;
     }
 
-    public LogResponses findAll() {
+    public List<LogResponse> findAll() {
         List<StudyLog> all = studyLogDao.findAll();
         return null;
     }
 
-    public LogResponse insertLogs(List<LogRequest> logRequests) {
+    public List<LogResponse> insertLogs(List<LogRequest> logRequests) {
 //        studyLogDao.insert(studyLogs)
         return null; // TODO : 첫번째 카드만 반환함
     }
@@ -33,7 +32,7 @@ public class StudyLogService {
         return null;
     }
 
-    public CategoryResponses findAllCategories() {
+    public List<CategoryResponse> findAllCategories() {
         studyLogDao.findAllCategories();
         return null;
     }
