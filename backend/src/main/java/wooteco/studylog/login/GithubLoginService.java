@@ -27,9 +27,13 @@ public class GithubLoginService {
         String githubAccessToken = getAccessTokenFromGithub(code);
         GithubProfileResponse githubProfile = getGithubProfileFromGithub(githubAccessToken);
 
-        Member member = memberDao.findByGithubId(githubProfile.getGithubId())
-                .orElseGet(() -> memberDao.insert(Member.of(githubProfile)));
+        Member member = findOrCreateMember(githubProfile);
         return jwtTokenProvider.createToken(member);
+    }
+
+    private Member findOrCreateMember(GithubProfileResponse githubProfile) {
+        return memberDao.findByGithubId(githubProfile.getGithubId())
+                .orElseGet(() -> memberDao.insert(Member.of(githubProfile)));
     }
 
     private String getAccessTokenFromGithub(String code) {

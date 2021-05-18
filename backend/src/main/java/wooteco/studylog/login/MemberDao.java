@@ -25,7 +25,6 @@ public class MemberDao {
                     rs.getString("image_url")
             );
 
-
     public MemberDao(JdbcTemplate jdbcTemplate, DataSource dataSource) {
         this.jdbcTemplate = jdbcTemplate;
         this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
@@ -47,8 +46,4 @@ public class MemberDao {
         }
         return Optional.ofNullable(result.get(0));
     }
-
-//    public boolean findExists(Member member) {
-//        String sql = "EXISTS"
-//    }
 }
