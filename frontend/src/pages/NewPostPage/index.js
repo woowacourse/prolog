@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { SelectBox, Button, BUTTON_SIZE, NewPostCard } from '../../components';
@@ -38,12 +38,50 @@ const options = [
   '죽여줘 임동준.',
   '포초리 딱대.',
   '마이너스 5점.',
-  '야!!!!넣어줘라~~~~~~~~~~~~~~~~~~',
 ];
 
-const NewPostPage = () => {
-  const [posts, setPosts] = useState([{ id: nanoid(), title: '', content: '' }]);
+/**
+ * Represents a isScrolledIntoView.
+ * @function isScrolledIntoView - 화면 scroll 영역을 벗어나는지 체크하는 함수
+ * @param {element}  - current target which focus-in
+ */
+const isScrolledIntoView = (elem) => {
+  const rect = elem.getBoundingClientRect();
+  const elemTop = rect.top;
+  const elemBottom = elem.nodeName === 'SPAN' ? rect.bottom - 370 : rect.bottom;
 
+  const isVisible = elemTop >= 0 && elemBottom <= window.innerHeight;
+
+  return isVisible;
+};
+
+const NewPostPage = () => {
+  const [posts, setPosts] = useState([{ id: nanoid(), title: '', content: '', tags: '#tag' }]);
+  const [currentElement, setCurrentElement] = useState(null);
+
+  useEffect(() => {
+    if (!currentElement) return;
+
+    /**
+     * Represents a blurElem.
+     * window OS 에서 Post에 한글을 입력할 때, focus가 원하는 영역으로 이동하지 않는 문제를 해결하기 위해 작성
+     * @function blurElem - isScrolledIntoView()를 통해 visible 상태가 아니면 focus 를 해제하는 함수
+     */
+    const blurElem = () => {
+      if (!isScrolledIntoView(currentElement)) {
+        currentElement.blur();
+      }
+    };
+
+    document.addEventListener('scroll', blurElem);
+
+    return () => {
+      document.removeEventListener('scroll', blurElem);
+    };
+  }, [currentElement]);
+
+  // TODO : 작성 완료된 Posts를 서버로 보내는 함수 작성하기
+  // TODO : category 등록하기
   const onFinishWriting = (e) => {
     e.preventDefault();
   };
@@ -62,7 +100,7 @@ const NewPostPage = () => {
       <ul>
         {posts.map((post) => (
           <Post key={post.id}>
-            <NewPostCard post={post} setPost={setPost} />
+            <NewPostCard post={post} setPost={setPost} setCurrentElement={setCurrentElement} />
           </Post>
         ))}
       </ul>
@@ -72,7 +110,9 @@ const NewPostPage = () => {
           type="button"
           size={BUTTON_SIZE.LARGE}
           css={LogButtonStyle}
-          onClick={() => setPosts([...posts, { id: nanoid(), title: '', content: '' }])}
+          onClick={() =>
+            setPosts([...posts, { id: nanoid(), title: '', content: '', tags: '#tag' }])
+          }
         >
           로그추가
         </Button>

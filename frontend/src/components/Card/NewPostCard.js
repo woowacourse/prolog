@@ -57,7 +57,7 @@ const TagInput = styled.input`
   }
 `;
 
-const NewPostCard = ({ post, setPost }) => {
+const NewPostCard = ({ post, setPost, setCurrentElement }) => {
   const { id, title, content } = post;
   const [card, setCard] = useState({ id, title, content });
 
@@ -74,7 +74,12 @@ const NewPostCard = ({ post, setPost }) => {
         placeholder="제목을 입력해주세요"
         value={card.title}
         onChange={onChangeTitle}
-        onBlur={() => setPost(card, id)}
+        onBlur={() => {
+          setPost(card, id);
+          setCurrentElement(null);
+        }}
+        onFocus={({ target }) => setCurrentElement(target)}
+        autoFocus
       />
       <hr />
       <TextArea
@@ -82,7 +87,11 @@ const NewPostCard = ({ post, setPost }) => {
         contentEditable
         suppressContentEditableWarning
         tabIndex="0"
-        onBlur={({ target }) => setPost({ ...card, content: target.textContent }, id)}
+        onBlur={({ target }) => {
+          setPost({ ...card, content: target.textContent }, id);
+          setCurrentElement(null);
+        }}
+        onFocus={({ target }) => setCurrentElement(target)}
       >
         {card.content}
       </TextArea>
