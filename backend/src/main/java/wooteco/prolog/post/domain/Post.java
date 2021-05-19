@@ -1,4 +1,4 @@
-package wooteco.studylog.post;
+package wooteco.prolog.post.domain;
 
 import java.util.List;
 
