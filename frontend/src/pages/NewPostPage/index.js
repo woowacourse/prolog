@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { SelectBox, Card, CARD_SIZE, Button, BUTTON_SIZE } from '../../components';
+import { SelectBox, Button, BUTTON_SIZE, NewPostCard } from '../../components';
+import { nanoid } from 'nanoid';
 
 // TODO: section 으로 바꾸기 -> aria-label 주기
 const SelectBoxWrapper = styled.div`
@@ -15,59 +16,8 @@ const Flex = styled.div`
   margin: 3rem 0;
 `;
 
-const TitleInput = styled.input`
-  width: 100%;
-  height: 5.4rem;
-  padding: 0;
-  margin: 1rem 0;
-
-  font-size: 4.4rem;
-  line-height: 6.6rem;
-  font-weight: 700;
-
-  border: none;
-  outline: none;
-
-  &::placeholder {
-    font-weight: 500;
-  }
-`;
-
-const TextArea = styled.span`
-  display: inline-block;
-  width: 100%;
-  padding: 1rem 0;
-
-  font-size: 1.6rem;
-  line-height: 2.4rem;
-  min-height: 41rem;
-  font-weight: 400;
-
-  outline: none;
-
-  &:empty:before {
-    content: attr(placeholder);
-    display: inline-block;
-    color: grey;
-    cursor: text;
-  }
-`;
-
-const TagInput = styled.input`
-  width: 100%;
-  height: 2.4rem;
-  margin: 1rem 0;
-
-  font-size: 2rem;
-  line-height: 3rem;
-  font-weight: 400;
-
-  border: none;
-  outline: none;
-
-  &::placeholder {
-    font-weight: 300;
-  }
+const Post = styled.li`
+  margin-bottom: 4.8rem;
 `;
 
 const LogButtonStyle = css`
@@ -81,51 +31,96 @@ const SubmitButtonStyle = css`
   font-weight: 500;
 `;
 
-const NewPostPage = () => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [hashtag, setHashTag] = useState('');
+const options = [
+  '제가 로이드보다 젊습니다.',
+  '학습로그 안쓰니?',
+  '그 박재성 아닙니다.',
+  '죽여줘 임동준.',
+  '포초리 딱대.',
+  '마이너스 5점.',
+];
 
-  const options = [
-    '제가 로이드보다 젊습니다.',
-    '학습로그 안쓰니?',
-    '그 박재성 아닙니다.',
-    '죽여줘 임동준.',
-    '포초리 딱대.',
-    '마이너스 5점.',
-  ];
+/**
+ * Represents a isScrolledIntoView.
+ * @function isScrolledIntoView - 화면 scroll 영역을 벗어나는지 체크하는 함수
+ * @param {element}  - current target which focus-in
+ */
+const isScrolledIntoView = (elem) => {
+  const rect = elem.getBoundingClientRect();
+  const elemTop = rect.top;
+  const elemBottom = elem.nodeName === 'SPAN' ? rect.bottom - 370 : rect.bottom;
+
+  const isVisible = elemTop >= 0 && elemBottom <= window.innerHeight;
+
+  return isVisible;
+};
+
+const NewPostPage = () => {
+  const [posts, setPosts] = useState([{ id: nanoid(), title: '', content: '', tags: '#tag' }]);
+  const [currentElement, setCurrentElement] = useState(null);
+
+  useEffect(() => {
+    if (!currentElement) return;
+
+    /**
+     * Represents a blurElem.
+     * window OS 에서 Post에 한글을 입력할 때, focus가 원하는 영역으로 이동하지 않는 문제를 해결하기 위해 작성
+     * @function blurElem - isScrolledIntoView()를 통해 visible 상태가 아니면 focus 를 해제하는 함수
+     */
+    const blurElem = () => {
+      if (!isScrolledIntoView(currentElement)) {
+        currentElement.blur();
+      }
+    };
+
+    document.addEventListener('scroll', blurElem);
+
+    return () => {
+      document.removeEventListener('scroll', blurElem);
+    };
+  }, [currentElement]);
+
+  // TODO : 작성 완료된 Posts를 서버로 보내는 함수 작성하기
+  // TODO : category 등록하기
+  const onFinishWriting = (e) => {
+    e.preventDefault();
+  };
+
+  const setPost = (newPost) => {
+    const targetPostIndex = posts.findIndex(({ id }) => newPost.id === id);
+
+    setPosts([...posts.slice(0, targetPostIndex), newPost, ...posts.slice(targetPostIndex + 1)]);
+  };
 
   return (
-    <>
+    <form onSubmit={onFinishWriting}>
       <SelectBoxWrapper>
         <SelectBox options={options} />
       </SelectBoxWrapper>
-
-      <Card size={CARD_SIZE.LARGE}>
-        <TitleInput
-          placeholder="제목을 입력해주세요"
-          onChange={({ target }) => setTitle(target.value)}
-        />
-        <hr />
-        <div>
-          <TextArea
-            placeholder="마크업 형식으로 글을 작성해주세요"
-            contentEditable
-            onInput={({ target }) => setContent(target.innerText)}
-          />
-        </div>
-        <TagInput placeholder="# 태그" />
-      </Card>
+      <ul>
+        {posts.map((post) => (
+          <Post key={post.id}>
+            <NewPostCard post={post} setPost={setPost} setCurrentElement={setCurrentElement} />
+          </Post>
+        ))}
+      </ul>
 
       <Flex>
-        <Button size={BUTTON_SIZE.LARGE} css={LogButtonStyle} onClick>
+        <Button
+          type="button"
+          size={BUTTON_SIZE.LARGE}
+          css={LogButtonStyle}
+          onClick={() =>
+            setPosts([...posts, { id: nanoid(), title: '', content: '', tags: '#tag' }])
+          }
+        >
           로그추가
         </Button>
-        <Button size={BUTTON_SIZE.LARGE} css={SubmitButtonStyle} onClick>
+        <Button size={BUTTON_SIZE.LARGE} css={SubmitButtonStyle}>
           작성완료
         </Button>
       </Flex>
-    </>
+    </form>
   );
 };
 
