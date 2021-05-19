@@ -6,4 +6,5 @@
 :toclevels: 2
 :sectlinks:
 
-include::study-log.adoc[]
+include::login.adoc[]
+include::post.adoc[]
