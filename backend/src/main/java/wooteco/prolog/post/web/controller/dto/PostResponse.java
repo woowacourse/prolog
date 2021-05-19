@@ -1,4 +1,6 @@
-package wooteco.studylog.post.web.controller.dto;
+package wooteco.prolog.post.web.controller.dto;
+
+import wooteco.prolog.category.web.controller.dto.CategoryResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -52,18 +54,5 @@ public class PostResponse {
 
     public List<String> getTags() {
         return tags;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PostResponse that = (PostResponse) o;
-        return Objects.equals(id, that.id) && Objects.equals(author, that.author) && Objects.equals(category, that.category) && Objects.equals(title, that.title) && Objects.equals(content, that.content) && Objects.equals(tags, that.tags);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, author, title, content, tags);
     }
 }
