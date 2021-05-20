@@ -1,4 +1,4 @@
-package wooteco.studylog.login;
+package wooteco.prolog.login;
 
 public class TokenRequest {
 
