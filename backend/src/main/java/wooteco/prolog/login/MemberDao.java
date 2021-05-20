@@ -1,4 +1,4 @@
-package wooteco.studylog.login;
+package wooteco.prolog.login;
 
 import java.util.List;
 import java.util.Optional;

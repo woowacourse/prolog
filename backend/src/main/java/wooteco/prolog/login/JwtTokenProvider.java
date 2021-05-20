@@ -1,4 +1,4 @@
-package wooteco.studylog.login;
+package wooteco.prolog.login;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

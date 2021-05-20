@@ -1,4 +1,4 @@
-package wooteco.studylog.login;
+package wooteco.prolog.login;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
