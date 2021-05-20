@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GithubLoginController {
 
-    wooteco.prolog.login.GithubLoginService githubLoginService;
+    GithubLoginService githubLoginService;
 
-    public GithubLoginController(wooteco.prolog.login.GithubLoginService githubLoginService) {
+    public GithubLoginController(GithubLoginService githubLoginService) {
         this.githubLoginService = githubLoginService;
     }
 
