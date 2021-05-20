@@ -1,10 +1,10 @@
-package wooteco.studylog;
+package wooteco.prolog;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class StudylogApplicationTests {
+class PrologApplicationTests {
 
 	@Test
 	void contextLoads() {

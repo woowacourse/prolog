@@ -1,0 +1,33 @@
+[[post]]
+== 포스트
+
+=== 포스트 작성
+
+==== Request
+
+include::{snippets}/post/create/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post/create/http-response.adoc[]
+
+=== 포스트 목록 조회
+
+==== Request
+
+include::{snippets}/post/list/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post/list/http-response.adoc[]
+
+
+=== 포스트 단건 조회
+
+==== Request
+
+include::{snippets}/post/read/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post/read/http-response.adoc[]

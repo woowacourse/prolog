@@ -1,0 +1,12 @@
+[[login]]
+== 로그인
+
+=== 깃허브 로그인
+
+==== Request
+
+include::{snippets}/login/token/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/login/token/http-response.adoc[]
