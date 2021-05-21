@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { SelectBox, Button, BUTTON_SIZE, NewPostCard } from '../../components';
 import { nanoid } from 'nanoid';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPost } from '../../redux/actions/postAction';
+import { PATH } from '../../constants';
 
 // TODO: section 으로 바꾸기 -> aria-label 주기
 const SelectBoxWrapper = styled.div`
@@ -56,8 +60,14 @@ const isScrolledIntoView = (elem) => {
 };
 
 const NewPostPage = () => {
-  const [posts, setPosts] = useState([{ id: nanoid(), title: '', content: '', tags: '#tag' }]);
+  const [posts, setPosts] = useState([
+    { id: nanoid(), title: '', content: '', tags: '#지하철 #노선도' },
+  ]);
+  const [category, setCategory] = useState(options[0]);
   const [currentElement, setCurrentElement] = useState(null);
+  const history = useHistory();
+  const accessToken = useSelector((state) => state.user.accessToken.data);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!currentElement) return;
@@ -82,20 +92,35 @@ const NewPostPage = () => {
 
   // TODO : 작성 완료된 Posts를 서버로 보내는 함수 작성하기
   // TODO : category 등록하기
-  const onFinishWriting = (e) => {
+  const onFinishWriting = async (e) => {
     e.preventDefault();
+
+    const postData = posts.map((post) => ({
+      title: post.title,
+      content: post.content,
+      category,
+      tags: post.tags.split('#').filter((v) => v),
+    }));
+
+    await dispatch(createPost(postData, accessToken));
+
+    history.push('/');
   };
 
   const setPost = (newPost) => {
     const targetPostIndex = posts.findIndex(({ id }) => newPost.id === id);
 
-    setPosts([...posts.slice(0, targetPostIndex), newPost, ...posts.slice(targetPostIndex + 1)]);
+    setPosts([
+      ...posts.slice(0, targetPostIndex),
+      { ...posts[targetPostIndex], ...newPost },
+      ...posts.slice(targetPostIndex + 1),
+    ]);
   };
 
   return (
     <form onSubmit={onFinishWriting}>
       <SelectBoxWrapper>
-        <SelectBox options={options} />
+        <SelectBox options={options} selectedOption={category} setSelectedOption={setCategory} />
       </SelectBoxWrapper>
       <ul>
         {posts.map((post) => (
@@ -111,7 +136,7 @@ const NewPostPage = () => {
           size={BUTTON_SIZE.LARGE}
           css={LogButtonStyle}
           onClick={() =>
-            setPosts([...posts, { id: nanoid(), title: '', content: '', tags: '#tag' }])
+            setPosts([...posts, { id: nanoid(), title: '', content: '', tags: '#지하철 #노선도' }])
           }
         >
           로그추가

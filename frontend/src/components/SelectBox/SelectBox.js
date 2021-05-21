@@ -112,9 +112,8 @@ const SelectItem = styled.li`
     }`}
 `;
 
-const SelectBox = ({ options }) => {
+const SelectBox = ({ options, selectedOption, setSelectedOption }) => {
   const [selectItems, setSelectItems] = useState(null);
-  const [selectedValue, setSelectedValue] = useState('');
 
   const $label = useRef(null);
   const $selectorContainer = useRef(null);
@@ -132,7 +131,7 @@ const SelectBox = ({ options }) => {
     if (!$selectorContainer.current) return;
 
     const scrollY =
-      ($selectorContainer.current.scrollHeight / options.length) * options.indexOf(selectedValue);
+      ($selectorContainer.current.scrollHeight / options.length) * options.indexOf(selectedOption);
 
     $selectorContainer.current.scroll({ top: scrollY, behavior: 'smooth' });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -144,12 +143,16 @@ const SelectBox = ({ options }) => {
         const onSelectItem = (e) => {
           e.stopPropagation();
 
-          setSelectedValue(option);
+          setSelectedOption(option);
           setSelectItems(null);
         };
 
         return (
-          <SelectItem key={option} onMouseDown={onSelectItem} isSelected={option === selectedValue}>
+          <SelectItem
+            key={option}
+            onMouseDown={onSelectItem}
+            isSelected={option === selectedOption}
+          >
             {option}
           </SelectItem>
         );
@@ -174,7 +177,7 @@ const SelectBox = ({ options }) => {
 
   return (
     <Label ref={$label} onMouseDown={onCreateCategoryList}>
-      <Select name="mission_subjects" value={selectedValue} readOnly>
+      <Select name="mission_subjects" value={selectedOption} readOnly>
         {options.map((option) => (
           <option key={option} value={option}>
             {option}

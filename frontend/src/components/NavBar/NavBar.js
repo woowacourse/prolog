@@ -1,10 +1,12 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import LogoImage from '../../assets/images/logo.svg';
 import { PATH } from '../../constants';
+import GithubLogin from '../GithubLogin/GithubLogin';
 import { DropdownMenu } from '../index';
 import Button from '../Button/Button';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
@@ -67,7 +69,15 @@ const whiteBackgroundStyle = css`
 
 const NavBar = () => {
   const history = useHistory();
+  const accessToken = useSelector((state) => state.user.accessToken.data);
+
   const [isDropdownToggled, setDropdownToggled] = useState(false);
+
+  const isLogin = !!accessToken;
+
+  useEffect(() => {
+    isLogin && history.push(PATH.ROOT);
+  }, [isLogin]);
 
   const goMain = () => {
     history.push(PATH.ROOT);
@@ -92,40 +102,34 @@ const NavBar = () => {
       <Wrapper>
         <Logo src={LogoImage} alt="STUDYLOG 로고" onClick={goMain} role="link" />
         <Menu role="menu">
-          <Button
-            type="button"
-            size="X_SMALL"
-            icon={SearchIcon}
-            alt="검색 아이콘"
-            css={whiteBackgroundStyle}
-          ></Button>
-          <Button
-            type="button"
-            size="X_SMALL"
-            icon={PencilIcon}
-            alt="글쓰기 아이콘"
-            onClick={goNewPost}
-          ></Button>
-          <Button
-            type="button"
-            size="X_SMALL"
-            backgroundImageUrl={NoProfileImage}
-            onClick={showDropdownMenu}
-            css={whiteBackgroundStyle}
-          ></Button>
+          <button type="button">검색</button>
+          <button type="button" onClick={goNewPost}>
+            글작성
+          </button>
+          {isLogin ? (
+            <>
+              <button type="button" onClick={showDropdownMenu}>
+                내정보
+              </button>
+              {isDropdownToggled && (
+                <DropdownMenu css={DropdownLocationStyle}>
+                  <ul>
+                    <li>
+                      <button type="button">마이페이지</button>
+                    </li>
+                    <li>
+                      <button type="button">로그아웃</button>
+                    </li>
+                  </ul>
+                </DropdownMenu>
+              )}
+            </>
+          ) : (
+            <GithubLogin>
+              <button type="button">로그인</button>
+            </GithubLogin>
+          )}
         </Menu>
-        {isDropdownToggled && (
-          <DropdownMenu css={DropdownLocationStyle}>
-            <ul>
-              <li>
-                <button type="button">마이페이지</button>
-              </li>
-              <li>
-                <button type="button">로그아웃</button>
-              </li>
-            </ul>
-          </DropdownMenu>
-        )}
       </Wrapper>
     </Container>
   );
