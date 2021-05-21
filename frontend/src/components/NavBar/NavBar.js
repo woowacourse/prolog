@@ -1,10 +1,12 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import LogoImage from '../../assets/images/logo.svg';
 import { PATH } from '../../constants';
+import GithubLogin from '../GithubLogin/GithubLogin';
 import { DropdownMenu } from '../index';
 
 const DropdownToggledStyle = css`
@@ -58,7 +60,15 @@ const DropdownLocationStyle = css`
 
 const NavBar = () => {
   const history = useHistory();
+  const accessToken = useSelector((state) => state.user.accessToken.data);
+
   const [isDropdownToggled, setDropdownToggled] = useState(false);
+
+  const isLogin = !!accessToken;
+
+  useEffect(() => {
+    isLogin && history.push(PATH.ROOT);
+  }, [isLogin]);
 
   const goMain = () => {
     history.push(PATH.ROOT);
@@ -87,22 +97,30 @@ const NavBar = () => {
           <button type="button" onClick={goNewPost}>
             글작성
           </button>
-          <button type="button" onClick={showDropdownMenu}>
-            내정보
-          </button>
+          {isLogin ? (
+            <>
+              <button type="button" onClick={showDropdownMenu}>
+                내정보
+              </button>
+              {isDropdownToggled && (
+                <DropdownMenu css={DropdownLocationStyle}>
+                  <ul>
+                    <li>
+                      <button type="button">마이페이지</button>
+                    </li>
+                    <li>
+                      <button type="button">로그아웃</button>
+                    </li>
+                  </ul>
+                </DropdownMenu>
+              )}
+            </>
+          ) : (
+            <GithubLogin>
+              <button type="button">로그인</button>
+            </GithubLogin>
+          )}
         </Menu>
-        {isDropdownToggled && (
-          <DropdownMenu css={DropdownLocationStyle}>
-            <ul>
-              <li>
-                <button type="button">마이페이지</button>
-              </li>
-              <li>
-                <button type="button">로그아웃</button>
-              </li>
-            </ul>
-          </DropdownMenu>
-        )}
       </Wrapper>
     </Container>
   );
