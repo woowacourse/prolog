@@ -14,5 +14,4 @@ public class TokenRequest {
     public String getCode() {
         return code;
     }
-
 }

@@ -13,10 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
         String[] allowedOriginPatterns = Arrays.asList(
                 "http://localhost:3000"
         ).toArray(new String[0]);
-        registry.addMapping("/**")
-                .allowedMethods("*")
-                .allowedOriginPatterns(allowedOriginPatterns)
-                .exposedHeaders("*")
-        ;
+        registry.addMapping("/**").allowedMethods("*").allowedOriginPatterns(allowedOriginPatterns);
     }
 }
