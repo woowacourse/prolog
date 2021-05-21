@@ -1,4 +1,4 @@
-package wooteco.studylog;
+package wooteco.prolog;
 
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;

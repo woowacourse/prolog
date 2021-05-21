@@ -1,7 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.4.5'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id "org.asciidoctor.convert" version "1.5.9.2"
+	id "org.asciidoctor.convert" version "1.5.10"
 	id 'java'
 }
 
@@ -21,8 +21,12 @@ dependencies {
 	// log
 	implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
 
+	// jwt
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.rest-assured:spring-mock-mvc:3.3.0'
 	testImplementation 'io.rest-assured:rest-assured:3.3.0'
 
 	// rest docs
@@ -60,7 +64,7 @@ task testDocument(type: Test) {
 }
 
 task createDocument(type: Copy) {
-	dependsOn testDocument
+	dependsOn test
 
 	from file("build/asciidoc/html5/index.html")
 	into file("src/main/resources/static/docs")
