@@ -1,6 +1,6 @@
 const PATH = {
   ROOT: '/',
-  POST: '/post',
+  POST: '/posts',
   NEW_POST: '/post/write',
 };
 

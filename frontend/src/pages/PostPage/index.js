@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useParams } from 'react-router';
 import { Card, ProfileChip } from '../../components';
-import db from '../../db.json';
+import useGetFetch from '../../hooks/useGetFetch';
 
 const CardInner = styled.div`
   display: flex;
@@ -55,26 +55,30 @@ const ProfileChipStyle = css`
 `;
 
 const PostPage = () => {
-  const { id } = useParams();
-  const log = db.log.find((item) => item.logId === Number(id));
-  const { logId, author, issuedDate, category, title, tags, content } = log;
+  const { id: postId } = useParams();
+  const { response: post, error } = useGetFetch({}, 'getData', postId);
+  const { id, author, createdAt, category, title, tags, content } = post;
+
+  if (error) {
+    <>해당 글을 찾을 수 없습니다.</>;
+  }
 
   return (
-    <Card key={logId} size="LARGE">
+    <Card key={id} size="LARGE">
       <CardInner>
         <Header>
           <SubHeader>
-            <Category>{category.categoryName}</Category>
-            <IssuedDate>{Date(issuedDate)}</IssuedDate>
+            <Category>{category?.name}</Category>
+            <IssuedDate>{Date(createdAt)}</IssuedDate>
           </SubHeader>
           <Title>{title}</Title>
-          <ProfileChip imageSrc={author.image} css={ProfileChipStyle}>
-            {author.nickname}
+          <ProfileChip imageSrc={author?.imageUrl} css={ProfileChipStyle}>
+            {author?.nickName}
           </ProfileChip>
         </Header>
         <Content>{content}</Content>
         <Tags>
-          {tags.map((tag) => (
+          {tags?.map((tag) => (
             <span key={tag}>{`#${tag} `}</span>
           ))}
         </Tags>
