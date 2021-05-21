@@ -26,6 +26,7 @@ dependencies {
 
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.rest-assured:spring-mock-mvc:3.3.0'
 	testImplementation 'io.rest-assured:rest-assured:3.3.0'
 
 	// rest docs

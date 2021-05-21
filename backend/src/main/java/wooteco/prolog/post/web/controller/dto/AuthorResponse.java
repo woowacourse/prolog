@@ -1,7 +1,5 @@
 package wooteco.prolog.post.web.controller.dto;
 
-import java.util.Objects;
-
 public class AuthorResponse {
     private Long id;
     private String nickName;
