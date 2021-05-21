@@ -8,6 +8,10 @@ import LogoImage from '../../assets/images/logo.svg';
 import { PATH } from '../../constants';
 import GithubLogin from '../GithubLogin/GithubLogin';
 import { DropdownMenu } from '../index';
+import Button from '../Button/Button';
+import PencilIcon from '../../assets/images/pencil_icon.svg';
+import NoProfileImage from '../../assets/images/no-profile-image.png';
+import SearchIcon from '../../assets/images/search_icon.svg';
 
 const DropdownToggledStyle = css`
   &:before {
@@ -48,6 +52,7 @@ const Logo = styled.img`
 `;
 
 const Menu = styled.div`
+  display: flex;
   & > button:not(:last-child) {
     margin-right: 1.6rem;
   }
@@ -56,6 +61,10 @@ const Menu = styled.div`
 const DropdownLocationStyle = css`
   top: 60px;
   right: 0px;
+`;
+
+const whiteBackgroundStyle = css`
+  background-color: #ffffff;
 `;
 
 const NavBar = () => {
