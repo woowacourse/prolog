@@ -51,6 +51,9 @@ CREATE TABLE IF NOT EXISTS postTag (
     FOREIGN KEY (tag_id)
     REFERENCES tag (id)
 );
+
+drop table if exists MEMBER;
+
 create table if not exists MEMBER
 (
     id bigint auto_increment not null,
