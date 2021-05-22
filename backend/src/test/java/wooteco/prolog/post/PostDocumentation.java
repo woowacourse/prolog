@@ -6,8 +6,7 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
-import wooteco.prolog.post.web.controller.dto.PostRequest;
-import wooteco.prolog.post.web.controller.dto.PostResponse;
+import wooteco.prolog.post.application.dto.PostRequest;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,6 +1,6 @@
-package wooteco.prolog.post.web.controller.dto;
+package wooteco.prolog.post.application.dto;
 
-import wooteco.prolog.category.web.controller.dto.CategoryResponse;
+import wooteco.prolog.category.application.dto.CategoryResponse;
 import wooteco.prolog.post.domain.Post;
 
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package wooteco.prolog.post.web.controller.dto;
+package wooteco.prolog.post.application.dto;
 
 import wooteco.prolog.post.domain.Post;
 
