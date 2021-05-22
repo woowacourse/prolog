@@ -1,63 +1,60 @@
 package wooteco.prolog.post.acceptance;
 
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
-import io.restassured.module.mockmvc.response.MockMvcResponse;
 import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import wooteco.prolog.post.service.PostService;
-import wooteco.prolog.post.web.controller.PostController;
-import wooteco.prolog.post.web.controller.dto.AuthorResponse;
-import wooteco.prolog.post.web.controller.dto.CategoryResponse;
-import wooteco.prolog.post.web.controller.dto.PostRequest;
-import wooteco.prolog.post.web.controller.dto.PostResponse;
+import wooteco.prolog.AcceptanceTest;
+import wooteco.prolog.post.application.dto.PostRequest;
+import wooteco.prolog.post.application.dto.PostResponse;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(MockitoExtension.class)
-public class PostAcceptanceTest {
 
-    @Mock
-    PostService postService;
+public class PostAcceptanceTest extends AcceptanceTest {
 
-    @InjectMocks
-    PostController postController;
+    private static PostRequest FIRST_POST = new PostRequest("[자바][옵셔널] 학습log 제출합니다.",
+            "옵셔널은 NPE를 배제하기 위해 만들어진 자바8에 추가된 라이브러리입니다. \n " +
+                    "다양한 메소드를 호출하여 원하는 대로 활용할 수 있습니다",
+            "backend 지하철 3차 미션",
+            Arrays.asList("자바", "Optional")
+    );
+
+    private static PostRequest SECOND_POST = new PostRequest("[자바스크립트][비동기] 학습log 제출합니다.",
+            "모던 JS의 fetch문, ajax라이브러리인 axios등을 통해 비동기 요청을 \n " +
+                    "편하게 할 수 있습니다. 자바 최고",
+            "FRONTEND 지하철 3차 미션",
+            Arrays.asList("자바스크립트", "비동기")
+    );
+
+    private ExtractableResponse<Response> 글을_작성한다() {
+        List<PostRequest> postRequests = Arrays.asList(
+                FIRST_POST,
+                SECOND_POST
+        );
+
+        return given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(postRequests)
+                .when()
+                .post("/posts")
+                .then()
+                .extract();
+    }
 
     @Test
     void 전체_글을_불러온다() {
         // given
-        List<PostResponse> postResponse = Collections.singletonList(
-                new PostResponse(1L,
-                        new AuthorResponse(1L, "뽀모", "image"),
-                        LocalDateTime.now(),
-                        new CategoryResponse(1L, "미션1"),
-                        "제목",
-                        "내용",
-                        Arrays.asList("자바", "쟈스")
-                )
-        );
-
-        List<Long> expectedIds = postResponse.stream()
-                .map(PostResponse::getId)
-                .collect(Collectors.toList());
+        글을_작성한다();
 
         // when
-
-        // then
-        ExtractableResponse<MockMvcResponse> response = RestAssuredMockMvc.given()
-                .standaloneSetup(postController)
+        ExtractableResponse<Response> response = given()
                 .when()
                 .get("/posts")
                 .then()
@@ -65,115 +62,46 @@ public class PostAcceptanceTest {
                 .log().all()
                 .extract();
 
+        // then
         List<HashMap<String, Object>> list = response.body().jsonPath().getList("");
-        List<Long> extractedIds = list.stream()
-                .map(map -> (long) (int) map.get("id"))
+        List<String> extractedTitles = list.stream()
+                .map(map -> (String) map.get("title"))
                 .collect(Collectors.toList());
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(extractedIds).containsAll(expectedIds);
+        assertThat(extractedTitles).contains(FIRST_POST.getTitle(), SECOND_POST.getTitle());
     }
 
     @Test
-    void 글_작성하기() {
+    void 글_작성하기_테스트() {
         // given
-        List<PostRequest> postRequest = Arrays.asList(new PostRequest(1L,
-                "title",
-                Arrays.asList("자바", "쟈스"),
-                "글 내용"
-        ));
-
-        PostResponse expectedResult = new PostResponse(1L,
-                new AuthorResponse(1L, "뽀모", "image"),
-                LocalDateTime.now(),
-                new CategoryResponse(1L, "미션1"),
-                "제목",
-                "내용",
-                Arrays.asList("자바", "쟈스"));
-
-
         // when
+        ExtractableResponse<Response> response = 글을_작성한다();
 
         // then
-        ExtractableResponse<MockMvcResponse> response = RestAssuredMockMvc.given()
-                .standaloneSetup(postController)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(postRequest)
-                .when()
-                .post("/posts")
-                .then()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .log().all()
-                .extract();
-
-        PostResponse extracted = response.body().as(PostResponse.class);
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(extracted).isEqualTo(expectedResult);
+        assertThat(response.header("Location")).contains("posts/1");
     }
 
     @Test
     void 개별_글을_불러온다() {
         // given
-        Long logId = 1L;
-        PostResponse postResponse =
-                new PostResponse(1L,
-                        new AuthorResponse(1L, "웨지", "image"),
-                        LocalDateTime.now(),
-                        new CategoryResponse(1L, "미션1"),
-                        "매감",
-                        "매서운감자",
-                        Arrays.asList("자바", "자스")
-
-                );
+        ExtractableResponse<Response> response = 글을_작성한다();
+        String path = response.header("Location");
 
         // when
-
-        // then
-        ExtractableResponse<MockMvcResponse> response = RestAssuredMockMvc.given()
-                .standaloneSetup(postController)
+        ExtractableResponse<Response> expected = given()
                 .when()
-                .get("/posts/" + logId)
+                .get(path)
                 .then()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .log().all()
                 .extract();
 
-        PostResponse extracted = response.body().as(PostResponse.class);
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(extracted).isEqualTo(postResponse);
-    }
-
-    @Test
-    void 카테고리를_불러온다() {
-        // given
-        List<CategoryResponse> categoryResponses = Arrays.asList(
-                new CategoryResponse(1L, "빈지모"),
-                new CategoryResponse(2L, "빈포모"),
-                new CategoryResponse(3L, "웨지노")
-        );
-
-        List<String> expectedNames = categoryResponses.stream()
-                .map(CategoryResponse::getName)
-                .collect(Collectors.toList());
-
-        // when
-
         // then
-        ExtractableResponse<MockMvcResponse> response = RestAssuredMockMvc.given()
-                .standaloneSetup(postController)
-                .when()
-                .get("/posts/categories")
-                .then()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .log().all()
-                .extract();
-
-        List<HashMap<String, Object>> list = response.body().jsonPath().getList("");
-        List<String> extractedName = list.stream()
-                .map(map -> (String) map.get("name"))
-                .collect(Collectors.toList());
-
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(extractedName).containsAll(expectedNames);
+        PostResponse extracted = expected.body().as(PostResponse.class);
+        assertThat(expected.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(extracted.getTitle()).isEqualTo(FIRST_POST.getTitle());
+        assertThat(extracted.getContent()).isEqualTo(FIRST_POST.getContent());
+//        assertThat(extracted.getCategory()) // TODO 카테고리는 도메인 추가시 수정해야함 (현재 하드코딩 상태)
+//        assertThat(extracted.getTags()). // TODO 태그는 도메인 추가시 수정해야함 (현재 하드코딩 상태)
     }
 }

@@ -1,4 +1,6 @@
-package wooteco.prolog.post.web.controller.dto;
+package wooteco.prolog.post.application.dto;
+
+import wooteco.prolog.post.domain.Post;
 
 import java.util.List;
 
@@ -32,5 +34,9 @@ public class PostRequest {
 
     public List<String> getTags() {
         return tags;
+    }
+
+    public Post toEntity() {
+        return new Post(null, title, tags, content);
     }
 }
