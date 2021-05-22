@@ -20,7 +20,7 @@ class PostDaoTest {
     private PostDao postDao;
 
     public static final Post FIRST_POST = new Post(1L, "웨지감자", Arrays.asList("자바", "스프링"), "어려워;");
-    public static final Post SECOND_POST = new Post(1L, "웨지 호호", Arrays.asList("자바", "스프링"), "어려워;");
+    public static final Post SECOND_POST = new Post(1L, "웨지 호호", Arrays.asList("자바", "스프링"), "왕 어려워;");
     public static final Post THIRD_POST = new Post(1L, "스터디 로그 작성합니다.", Arrays.asList("자바", "스프링"), "너무 힘들다...졸려...");
     public static final Post FOURTH_POST = new Post(2L, "스터디 로그 작성합니다22", Arrays.asList("자바2", "스프링2"), "너무 힘들다...졸려...2");
 
@@ -44,6 +44,25 @@ class PostDaoTest {
     }
 
     @Test
+    void 다수의_포스트를_저장하는_테스트() {
+        // given
+        List<Post> expectedPosts = Arrays.asList(FIRST_POST, SECOND_POST, THIRD_POST, FOURTH_POST);
+        // when
+        postDao.insert(expectedPosts);
+
+        //then
+        List<Post> results = postDao.findAll();
+
+        for (int i = 0; i < results.size(); i++) {
+            Post result = results.get(i);
+            Post expectedPost = expectedPosts.get(i);
+
+            assertThat(result.getContent()).isEqualTo(expectedPost.getContent());
+            assertThat(result.getTitle()).isEqualTo(expectedPost.getTitle());
+        }
+    }
+
+    @Test
     void 개별_포스트를_불러온다() {
         // given
         Post post = 포스트를_저장한다(SECOND_POST);
@@ -53,6 +72,8 @@ class PostDaoTest {
 
         // then
         assertThat(foundPost.getId()).isEqualTo(post.getId());
+        assertThat(foundPost.getContent()).isEqualTo(SECOND_POST.getContent());
+        assertThat(foundPost.getTitle()).isEqualTo(SECOND_POST.getTitle());
     }
 
     @Test
