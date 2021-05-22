@@ -20,7 +20,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<PostResponse> createPost(@RequestBody List<PostRequest> postRequests) {
+    public ResponseEntity<Void> createPost(@RequestBody List<PostRequest> postRequests) {
         PostResponse postResponse = postService.insertLogs(postRequests);
         return ResponseEntity.created(URI.create("/posts/" + postResponse.getId())).build();
     }
