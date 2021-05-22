@@ -5,9 +5,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import wooteco.prolog.category.web.controller.dto.CategoryResponse;
+import wooteco.prolog.category.application.dto.CategoryResponse;
 import wooteco.prolog.post.domain.Post;
-import wooteco.prolog.post.web.controller.dto.AuthorResponse;
+import wooteco.prolog.post.application.dto.AuthorResponse;
 
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;

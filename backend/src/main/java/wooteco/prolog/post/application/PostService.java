@@ -1,10 +1,10 @@
-package wooteco.prolog.post.service;
+package wooteco.prolog.post.application;
 
 import org.springframework.stereotype.Service;
 import wooteco.prolog.post.dao.PostDao;
 import wooteco.prolog.post.domain.Post;
-import wooteco.prolog.post.web.controller.dto.PostRequest;
-import wooteco.prolog.post.web.controller.dto.PostResponse;
+import wooteco.prolog.post.application.dto.PostRequest;
+import wooteco.prolog.post.application.dto.PostResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;

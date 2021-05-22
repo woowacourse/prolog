@@ -1,10 +1,10 @@
-package wooteco.prolog.post.web.controller;
+package wooteco.prolog.post.ui;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import wooteco.prolog.post.service.PostService;
-import wooteco.prolog.post.web.controller.dto.PostRequest;
-import wooteco.prolog.post.web.controller.dto.PostResponse;
+import wooteco.prolog.post.application.PostService;
+import wooteco.prolog.post.application.dto.PostRequest;
+import wooteco.prolog.post.application.dto.PostResponse;
 
 import java.net.URI;
 import java.util.List;

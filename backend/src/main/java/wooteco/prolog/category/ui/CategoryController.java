@@ -1,10 +1,10 @@
-package wooteco.prolog.category.web.controller;
+package wooteco.prolog.category.ui;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.category.web.controller.dto.CategoryResponse;
+import wooteco.prolog.category.application.dto.CategoryResponse;
 
 import java.util.Arrays;
 import java.util.List;

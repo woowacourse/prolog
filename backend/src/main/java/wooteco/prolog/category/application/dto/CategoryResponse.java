@@ -1,4 +1,4 @@
-package wooteco.prolog.category.web.controller.dto;
+package wooteco.prolog.category.application.dto;
 
 import wooteco.prolog.post.domain.Category;
 

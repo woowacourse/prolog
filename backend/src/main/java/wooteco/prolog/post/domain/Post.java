@@ -1,7 +1,7 @@
 package wooteco.prolog.post.domain;
 
-import wooteco.prolog.category.web.controller.dto.CategoryResponse;
-import wooteco.prolog.post.web.controller.dto.AuthorResponse;
+import wooteco.prolog.category.application.dto.CategoryResponse;
+import wooteco.prolog.post.application.dto.AuthorResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
