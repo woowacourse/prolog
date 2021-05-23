@@ -1,12 +1,12 @@
--- -----------------------------------------------------
--- Table mydb.post
--- -----------------------------------------------------
 DROP TABLE IF EXISTS postTag ;
 DROP TABLE IF EXISTS post ;
 DROP TABLE IF EXISTS tag ;
 DROP TABLE IF EXISTS category ;
 drop table if exists MEMBER;
 
+-- -----------------------------------------------------
+-- Table mydb.post
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS post
 (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -18,20 +18,20 @@ CREATE TABLE IF NOT EXISTS post
     category_id BIGINT NOT NULL,
     PRIMARY KEY (id)
 );
+
 -- -----------------------------------------------------
 -- Table category
 -- -----------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS category
 (
     id BIGINT NOT NULL AUTO_INCREMENT,
     name VARCHAR(45) NOT NULL,
     PRIMARY KEY (id)
 );
+
 -- -----------------------------------------------------
 -- Table tag
 -- -----------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS tag
 (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -42,7 +42,6 @@ CREATE TABLE IF NOT EXISTS tag
 -- -----------------------------------------------------
 -- Table postTag
 -- -----------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS postTag
 (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -57,12 +56,15 @@ CREATE TABLE IF NOT EXISTS postTag
 );
 
 
-create table if not exists MEMBER
+-- -----------------------------------------------------
+-- Table member
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS member
 (
-    id bigint auto_increment not null,
-    nickname varchar(255) not null,
-    role varchar(20) not null,
-    github_id bigint not null unique,
-    image_url varchar(255) not null,
-    primary key(id)
+    id bigint NOT NULL AUTO_INCREMENT,
+    nickname VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL,
+    github_id bigint NOT NULL UNIQUE,
+    image_url VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
 );
