@@ -25,7 +25,13 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:local": "cp ./env/.env.local ./.env && NODE_ENV=local react-scripts start",
+    "start:dev": "cp ./env/.env.development ./.env && NODE_ENV=development react-scripts start",
+    "start:prd": "cp ./env/.env.production ./.env && NODE_ENV=production react-scripts start",
     "build": "react-scripts build",
+    "build:local": "cp ./env/.env.local ./.env && react-scripts build",
+    "build:dev": "cp ./env/.env.development ./.env && GENERATE_SOURCEMAP=false react-scripts build",
+    "build:prd": "cp ./env/.env.production ./.env && GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",

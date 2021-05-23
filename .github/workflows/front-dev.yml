@@ -14,10 +14,10 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache@v2
         with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-              ${{ runner.os }}-yarn-
+            ${{ runner.os }}-node-modules-
 
       - name: Install Dependencies
         run: |
@@ -27,7 +27,9 @@ jobs:
       - name: Build
         run: |
           cd frontend
-          yarn build
+          yarn build:dev
+        env:
+          CI: false
 
       - name: Deploy to S3
         env:
