@@ -24,7 +24,13 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:local": "cp ./.env.local ./.env && NODE_ENV=local react-scripts start",
+    "start:dev": "cp ./.env.development ./.env && NODE_ENV=development react-scripts start",
+    "start:prd": "cp ./.env.production ./.env && NODE_ENV=production react-scripts start",
     "build": "react-scripts build",
+    "build:local": "cp ./.env.local ./.env && react-scripts build && sw-precache --config=sw-precache-config.js",
+    "build:dev": "cp ./.env.development ./.env && GENERATE_SOURCEMAP=false react-scripts build && sw-precache --config=sw-precache-config.js",
+    "build:prd": "cp ./.env.production ./.env && GENERATE_SOURCEMAP=false react-scripts build && sw-precache --config=sw-precache-config.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
