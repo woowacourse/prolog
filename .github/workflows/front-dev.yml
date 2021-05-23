@@ -28,6 +28,8 @@ jobs:
         run: |
           cd frontend
           yarn build:dev
+        env:
+          CI: 'false'
 
       - name: Deploy to S3
         env:
