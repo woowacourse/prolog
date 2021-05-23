@@ -14,10 +14,10 @@ jobs:
       - name: Cache node_modules
         uses: actions/cache@v2
         with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-${{ matrix.node-version }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.node-version }}-nodemodules-
+            ${{ runner.os }}-node-modules-
 
       - name: Install Dependencies
         run: |
