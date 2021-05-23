@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const BASE_URL = 'http://prolog.ap-northeast-2.elasticbeanstalk.com';
+const BASE_URL = process.env.REACT_APP_API_URL;
 
 const fetchURL = {
   getAllData: '/posts',
