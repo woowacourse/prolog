@@ -1,5 +1,6 @@
 package wooteco.prolog.login;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -12,6 +13,10 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class GithubLoginService {
+    @Value("${github.client.id}")
+    private String clientId;
+    @Value("${github.client.secret}")
+    private String clientSecret;
 
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberDao memberDao;
@@ -34,8 +39,8 @@ public class GithubLoginService {
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("code", code);
-        params.add("client_id", "f91b56445e08d44adb76");
-        params.add("client_secret", "f02769f780ed3d40f9db9283f5b7cc79ecf9074e");
+        params.add("client_id", clientId);
+        params.add("client_secret", clientSecret);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
