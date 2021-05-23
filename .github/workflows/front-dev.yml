@@ -16,8 +16,6 @@ jobs:
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-              ${{ runner.os }}-yarn-
 
       - name: Install Dependencies
         run: |
@@ -29,7 +27,7 @@ jobs:
           cd frontend
           yarn build:dev
         env:
-          CI: false
+          CI: ""
 
       - name: Deploy to S3
         env:
