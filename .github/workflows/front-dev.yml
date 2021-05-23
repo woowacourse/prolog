@@ -27,7 +27,7 @@ jobs:
       - name: Build
         run: |
           cd frontend
-          yarn build
+          yarn build:dev
 
       - name: Deploy to S3
         env:
