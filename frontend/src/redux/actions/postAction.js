@@ -2,11 +2,13 @@ export const CREATE_POST = 'post/CREATE_POST';
 export const CREATE_POST_SUCCESS = 'post/CREATE_POST_SUCCESS';
 export const CREATE_POST_FAILURE = 'post/CREATE_POST_FAILURE';
 
+const BASE_URL = process.env.REACT_APP_API_URL;
+
 export const createPost = (posts, accessToken) => async (dispatch) => {
   dispatch({ type: CREATE_POST });
 
   try {
-    const response = await fetch(`http://prolog.ap-northeast-2.elasticbeanstalk.com/posts`, {
+    const response = await fetch(`${BASE_URL}/posts`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',

@@ -5,6 +5,8 @@ export const LOGIN = 'user/LOGIN';
 export const LOGIN_SUCCESS = 'user/LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'user/LOGIN_FAILURE';
 
+const BASE_URL = process.env.REACT_APP_API_URL;
+
 export const login = () => async (dispatch) => {
   dispatch({ type: LOGIN });
 
@@ -15,7 +17,7 @@ export const login = () => async (dispatch) => {
   if (!code) return;
 
   try {
-    const response = await fetch(`http://prolog.ap-northeast-2.elasticbeanstalk.com/login/token`, {
+    const response = await fetch(`${BASE_URL}/login/token`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',

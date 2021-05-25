@@ -1,34 +1,39 @@
+DROP TABLE IF EXISTS postTag ;
+DROP TABLE IF EXISTS post ;
+DROP TABLE IF EXISTS tag ;
+DROP TABLE IF EXISTS category ;
+drop table if exists MEMBER;
+
 -- -----------------------------------------------------
 -- Table mydb.post
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS post ;
-
-CREATE TABLE IF NOT EXISTS post (
+CREATE TABLE IF NOT EXISTS post
+(
     id BIGINT NOT NULL AUTO_INCREMENT,
     member_id BIGINT NOT NULL,
     createdAt DATETIME NOT NULL,
     updatedAt DATETIME NOT NULL,
     title VARCHAR(50) NOT NULL,
-    content VARCHAR (65535) NOT NULL,
+    content TEXT NOT NULL,
     category_id BIGINT NOT NULL,
     PRIMARY KEY (id)
-    );
+);
+
 -- -----------------------------------------------------
 -- Table category
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS category ;
-
-CREATE TABLE IF NOT EXISTS category (
+CREATE TABLE IF NOT EXISTS category
+(
     id BIGINT NOT NULL AUTO_INCREMENT,
     name VARCHAR(45) NOT NULL,
     PRIMARY KEY (id)
 );
+
 -- -----------------------------------------------------
 -- Table tag
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS tag ;
-
-CREATE TABLE IF NOT EXISTS tag (
+CREATE TABLE IF NOT EXISTS tag
+(
     id BIGINT NOT NULL AUTO_INCREMENT,
     name VARCHAR(20) NOT NULL,
     PRIMARY KEY (id)
@@ -37,14 +42,12 @@ CREATE TABLE IF NOT EXISTS tag (
 -- -----------------------------------------------------
 -- Table postTag
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS postTag ;
-
-CREATE TABLE IF NOT EXISTS postTag (
+CREATE TABLE IF NOT EXISTS postTag
+(
     id BIGINT NOT NULL AUTO_INCREMENT,
     post_id BIGINT NOT NULL,
     tag_id BIGINT NOT NULL,
-    PRIMARY KEY (id),
-    CONSTRAINT post_id
+    PRIMARY KEY (id),CONSTRAINT post_id
     FOREIGN KEY (post_id)
     REFERENCES post (id),
     CONSTRAINT tag_id
@@ -52,14 +55,16 @@ CREATE TABLE IF NOT EXISTS postTag (
     REFERENCES tag (id)
 );
 
-drop table if exists MEMBER;
 
-create table if not exists MEMBER
+-- -----------------------------------------------------
+-- Table member
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS member
 (
-    id bigint auto_increment not null,
-    nickname varchar(255) not null,
-    role varchar(20) not null,
-    github_id bigint not null unique,
-    image_url varchar(255) not null,
-    primary key(id)
+    id bigint NOT NULL AUTO_INCREMENT,
+    nickname VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL,
+    github_id bigint NOT NULL UNIQUE,
+    image_url VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
 );

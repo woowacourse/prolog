@@ -1,6 +1,6 @@
 const params = {
-  client_id: 'f91b56445e08d44adb76',
-  redirect_uri: 'http://localhost:3000',
+  client_id: `${process.env.REACT_APP_GITHUB_CLIENT_ID}`,
+  redirect_uri: `${process.env.REACT_APP_URL}`,
 };
 
 const githubOauthURL = 'https://github.com/login/oauth/authorize';
