@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React, { forwardRef } from 'react';
 import styled from '@emotion/styled';
+
 import { Card, CARD_SIZE } from '..';
+import { Editor } from '@toast-ui/react-editor';
+
+import 'codemirror/lib/codemirror.css';
+import '@toast-ui/editor/dist/toastui-editor.css';
 
 const TitleInput = styled.input`
   width: 100%;
@@ -17,26 +22,6 @@ const TitleInput = styled.input`
 
   &::placeholder {
     font-weight: 500;
-  }
-`;
-
-const TextArea = styled.span`
-  display: inline-block;
-  width: 100%;
-  padding: 1rem 0;
-
-  font-size: 1.6rem;
-  line-height: 2.4rem;
-  min-height: 41rem;
-  font-weight: 400;
-
-  outline: none;
-
-  &:empty:before {
-    content: attr(placeholder);
-    display: inline-block;
-    color: grey;
-    cursor: text;
   }
 `;
 
@@ -57,47 +42,29 @@ const TagInput = styled.input`
   }
 `;
 
-const NewPostCard = ({ post, setPost, setCurrentElement }) => {
-  const { id, title, content } = post;
-  const [card, setCard] = useState({ id, title, content });
-
-  const onChangeTitle = ({ target }) => {
-    setCard((prevState) => ({
-      ...prevState,
-      title: target.value,
-    }));
-  };
+const NewPostCard = forwardRef(({ postOrder }, ref) => {
+  const assignRefValue = (key, value) =>
+    (ref.current[postOrder] = { ...ref.current[postOrder], [key]: value });
 
   return (
     <Card size={CARD_SIZE.LARGE}>
       <TitleInput
         placeholder="제목을 입력해주세요"
-        value={card.title}
-        onChange={onChangeTitle}
-        onBlur={() => {
-          setPost(card, id);
-          setCurrentElement(null);
-        }}
-        onFocus={({ target }) => setCurrentElement(target)}
         autoFocus
+        ref={(element) => assignRefValue('title', element)}
       />
       <hr />
-      <TextArea
-        placeholder="마크업 형식으로 글을 작성해주세요"
-        contentEditable
-        suppressContentEditableWarning
-        tabIndex="0"
-        onBlur={({ target }) => {
-          setPost({ ...card, content: target.textContent }, id);
-          setCurrentElement(null);
-        }}
-        onFocus={({ target }) => setCurrentElement(target)}
-      >
-        {card.content}
-      </TextArea>
-      <TagInput placeholder="# 태그" />
+      <Editor
+        placeholder="여기에 학습로그를 작성해주세요."
+        previewStyle="vertical"
+        height="50vh"
+        initialEditType="markdown"
+        toolbarItems={['heading', 'bold', 'italic', 'strike']}
+        ref={(element) => assignRefValue('content', element)}
+      />
+      <TagInput placeholder="# 태그" ref={(element) => assignRefValue('tags', element)} />
     </Card>
   );
-};
+});
 
 export default NewPostCard;
