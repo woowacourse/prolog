@@ -72,7 +72,7 @@ public class GithubLoginService {
                     .exchange(url, HttpMethod.GET, httpEntity, GithubProfileResponse.class)
                     .getBody();
         } catch (HttpClientErrorException e) {
-            throw new IllegalArgumentException("로그인에 실패했습니다.");
+            throw new IllegalArgumentException("github 정보 조회 실패");
         }
     }
 

@@ -10,10 +10,6 @@ import java.util.Arrays;
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        String[] allowedOriginPatterns = Arrays.asList(
-                "http://localhost:3000",
-                "https://d2bibzll86gsid.cloudfront.net"
-        ).toArray(new String[0]);
-        registry.addMapping("/**").allowedMethods("*").allowedOriginPatterns(allowedOriginPatterns);
+        registry.addMapping("/**").allowedMethods("*").allowedOriginPatterns("*");
     }
 }
