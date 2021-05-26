@@ -1,83 +1,35 @@
 package wooteco.prolog.login.application;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
-import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.login.application.dto.TokenRequest;
+import wooteco.prolog.login.application.dto.TokenResponse;
 import wooteco.prolog.login.dao.MemberDao;
-import wooteco.prolog.login.application.dto.GithubAccessTokenResponse;
+import wooteco.prolog.login.domain.Member;
 
 @Service
 public class GithubLoginService {
-    @Value("${github.client.id}")
-    private String clientId;
-    @Value("${github.client.secret}")
-    private String clientSecret;
 
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberDao memberDao;
+    private final GithubClient githubClient;
 
-    public GithubLoginService(JwtTokenProvider jwtTokenProvider, MemberDao memberDao) {
+    public GithubLoginService(
+            JwtTokenProvider jwtTokenProvider,
+            MemberDao memberDao,
+            GithubClient githubClient
+    ) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.memberDao = memberDao;
+        this.githubClient = githubClient;
     }
 
-    public String createToken(String code) {
-        String githubAccessToken = getAccessTokenFromGithub(code);
-        GithubProfileResponse githubProfile = getGithubProfileFromGithub(githubAccessToken);
-
+    public TokenResponse createToken(TokenRequest tokenRequest) {
+        String githubAccessToken = githubClient.getAccessTokenFromGithub(tokenRequest.getCode());
+        GithubProfileResponse githubProfile = githubClient.getGithubProfileFromGithub(githubAccessToken);
         Member member = findOrCreateMember(githubProfile);
-        return jwtTokenProvider.createToken(member);
-    }
-
-    private String getAccessTokenFromGithub(String code) {
-        String url = "https://github.com/login/oauth/access_token";
-
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("code", code);
-        params.add("client_id", clientId);
-        params.add("client_secret", clientSecret);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
-
-        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, headers);
-        RestTemplate restTemplate = new RestTemplate();
-
-        String accessToken = restTemplate
-                .exchange(url, HttpMethod.POST, httpEntity, GithubAccessTokenResponse.class)
-                .getBody()
-                .getAccessToken();
-        if (accessToken == null) {
-            throw new IllegalArgumentException("로그인에 실패했습니다.");
-        }
-        return accessToken;
-    }
-
-    private GithubProfileResponse getGithubProfileFromGithub(String accessToken) {
-        String url = "https://api.github.com/user";
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "token " + accessToken);
-
-        HttpEntity httpEntity = new HttpEntity<>(headers);
-        RestTemplate restTemplate = new RestTemplate();
-
-        try {
-            return restTemplate
-                    .exchange(url, HttpMethod.GET, httpEntity, GithubProfileResponse.class)
-                    .getBody();
-        } catch (HttpClientErrorException e) {
-            throw new IllegalArgumentException("github 정보 조회 실패");
-        }
+        String accessToken = jwtTokenProvider.createToken(member);
+        return TokenResponse.of(accessToken);
     }
 
     private Member findOrCreateMember(GithubProfileResponse githubProfile) {

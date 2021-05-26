@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.application.GithubLoginService;
+import wooteco.prolog.login.application.dto.ErrorMessage;
 import wooteco.prolog.login.application.dto.TokenRequest;
 import wooteco.prolog.login.application.dto.TokenResponse;
-import wooteco.prolog.login.application.dto.ErrorMessage;
 
 @RestController
 public class GithubLoginController {
@@ -22,9 +22,7 @@ public class GithubLoginController {
 
     @PostMapping("/login/token")
     public ResponseEntity<TokenResponse> login(@RequestBody TokenRequest tokenRequest) {
-        String accessToken = githubLoginService.createToken(tokenRequest.getCode());
-        TokenResponse tokenResponse = TokenResponse.of(accessToken);
-        return ResponseEntity.ok(tokenResponse);
+        return ResponseEntity.ok(githubLoginService.createToken(tokenRequest));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

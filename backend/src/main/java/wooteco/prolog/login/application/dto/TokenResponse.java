@@ -18,5 +18,4 @@ public class TokenResponse {
     public String getAccessToken() {
         return accessToken;
     }
-
 }
