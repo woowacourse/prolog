@@ -1,4 +1,4 @@
-package wooteco.prolog.login;
+package wooteco.prolog.login.application;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -10,6 +10,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import wooteco.prolog.login.application.dto.GithubProfileResponse;
+import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.login.dao.MemberDao;
+import wooteco.prolog.login.application.dto.GithubAccessTokenResponse;
 
 @Service
 public class GithubLoginService {

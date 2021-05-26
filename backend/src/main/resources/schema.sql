@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS postTag ;
 DROP TABLE IF EXISTS post ;
 DROP TABLE IF EXISTS tag ;
 DROP TABLE IF EXISTS category ;
-drop table if exists MEMBER;
+DROP TABLE IF EXISTS member;
 
 -- -----------------------------------------------------
 -- Table mydb.post

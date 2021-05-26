@@ -1,4 +1,4 @@
-package wooteco.prolog.login;
+package wooteco.prolog.login.ui;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import wooteco.prolog.login.application.GithubLoginService;
+import wooteco.prolog.login.application.dto.TokenRequest;
+import wooteco.prolog.login.application.dto.TokenResponse;
+import wooteco.prolog.login.application.dto.ErrorMessage;
 
 @RestController
 public class GithubLoginController {

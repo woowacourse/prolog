@@ -1,4 +1,6 @@
-package wooteco.prolog.login;
+package wooteco.prolog.login.domain;
+
+import wooteco.prolog.login.application.dto.GithubProfileResponse;
 
 public class Member {
 

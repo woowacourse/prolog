@@ -1,4 +1,4 @@
-package wooteco.prolog.login;
+package wooteco.prolog.login.domain;
 
 import java.util.Arrays;
 
