@@ -33,6 +33,10 @@ dependencies {
 	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.5.RELEASE'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-restassured:2.0.5.RELEASE'
 
+	//lombok
+	compileOnly 'org.projectlombok:lombok:1.18.20'
+	annotationProcessor 'org.projectlombok:lombok'
+
 	runtimeOnly 'com.h2database:h2'
 }
 
