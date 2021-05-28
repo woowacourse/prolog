@@ -1,5 +1,6 @@
 package wooteco.prolog.post.domain;
 
+import lombok.EqualsAndHashCode;
 import wooteco.prolog.category.application.dto.CategoryResponse;
 import wooteco.prolog.post.application.dto.AuthorResponse;
 
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 // Todo : Author, Category 도메인 객체로 변경해야 함
+@EqualsAndHashCode(of = "id")
 public class Post {
     private Long id;
     private AuthorResponse author;
@@ -71,18 +73,5 @@ public class Post {
 
     public String getContent() {
         return content.getContent();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Post post = (Post) o;
-        return Objects.equals(id, post.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }
