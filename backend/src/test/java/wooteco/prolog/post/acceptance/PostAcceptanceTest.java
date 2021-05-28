@@ -2,6 +2,7 @@ package wooteco.prolog.post.acceptance;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,6 +11,7 @@ import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,12 +35,12 @@ public class PostAcceptanceTest extends AcceptanceTest {
             Arrays.asList("자바스크립트", "비동기")
     );
 
-    private ExtractableResponse<Response> 글을_작성한다() {
-        List<PostRequest> postRequests = Arrays.asList(
-                FIRST_POST,
-                SECOND_POST
-        );
+    private static List<PostRequest> postRequests = Arrays.asList(
+            FIRST_POST,
+            SECOND_POST
+    );
 
+    private ExtractableResponse<Response> 글을_작성한다(List<PostRequest> postRequests) {
         return given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(postRequests)
@@ -51,7 +53,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
     @Test
     void 전체_글을_불러온다() {
         // given
-        글을_작성한다();
+        글을_작성한다(postRequests);
 
         // when
         ExtractableResponse<Response> response = given()
@@ -76,17 +78,28 @@ public class PostAcceptanceTest extends AcceptanceTest {
     void 글_작성하기_테스트() {
         // given
         // when
-        ExtractableResponse<Response> response = 글을_작성한다();
+        ExtractableResponse<Response> response = 글을_작성한다(postRequests);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(response.header("Location")).contains("posts/1");
     }
 
+    @DisplayName("글 작성시 요청한 글 개수가 0개이면 예외가 발생한다.")
+    @Test
+    void 글_작성하기_예외_테스트() {
+        // given
+        // when
+        ExtractableResponse<Response> response = 글을_작성한다(Collections.emptyList());
+
+        //then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
     @Test
     void 개별_글을_불러온다() {
         // given
-        ExtractableResponse<Response> response = 글을_작성한다();
+        ExtractableResponse<Response> response = 글을_작성한다(postRequests);
         String path = response.header("Location");
 
         // when
