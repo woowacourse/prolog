@@ -59,7 +59,7 @@ public class PostDao {
     }
 
     public Post insert(Post post) {
-        String query = "INSERT INTO post(member_id, createdAt, updatedAt, title, content, category_id) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO post(member_id, title, content, category_id) VALUES (?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         this.jdbcTemplate.update(con -> {
@@ -67,11 +67,9 @@ public class PostDao {
                     query,
                     new String[]{"id"});
             pstmt.setLong(1, 1L); // TODO : MEMBER ID
-            pstmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setString(4, post.getTitle());
-            pstmt.setString(5, post.getContent());
-            pstmt.setLong(6, post.getCategory().getId());
+            pstmt.setString(2, post.getTitle());
+            pstmt.setString(3, post.getContent());
+            pstmt.setLong(4, post.getCategory().getId());
             return pstmt;
         }, keyHolder);
         long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
@@ -79,15 +77,13 @@ public class PostDao {
     }
 
     public void insert(List<Post> posts) {
-        String query = "INSERT INTO post(member_id, createdAt, updatedAt, title, content, category_id) VALUES(?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO post(member_id, title, content, category_id) VALUES(?, ?, ?, ?)";
 
         this.jdbcTemplate.batchUpdate(query, posts, posts.size(), (pstmt, post) -> {
             pstmt.setLong(1, 1L);
-            pstmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setString(4, post.getTitle());
-            pstmt.setString(5, post.getContent());
-            pstmt.setLong(6, post.getCategory().getId());
+            pstmt.setString(2, post.getTitle());
+            pstmt.setString(3, post.getContent());
+            pstmt.setLong(4, post.getCategory().getId());
         });
     }
 

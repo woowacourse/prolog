@@ -24,9 +24,9 @@ public class ExceptionController {
     }
 
     private void printErrorLog(Exception e) {
-        log.info(e.toString());
+        log.error(e.toString());
         Arrays.stream(e.getStackTrace())
                 .map(StackTraceElement::toString)
-                .forEach(log::info);
+                .forEach(log::error);
     }
 }
