@@ -14,11 +14,11 @@ public class Post {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private CategoryResponse category;
-    private String title;
+    private Title title;
     private List<String> tags;
-    private String content;
+    private Content content;
 
-    public Post(Long id, AuthorResponse author, LocalDateTime createdAt, LocalDateTime updatedAt, CategoryResponse category, String title, List<String> tags, String content) {
+    public Post(Long id, AuthorResponse author, LocalDateTime createdAt, LocalDateTime updatedAt, CategoryResponse category, Title title, List<String> tags, Content content) {
         this.id = id;
         this.author = author;
         this.createdAt = createdAt;
@@ -30,11 +30,11 @@ public class Post {
     }
 
     public Post(Long id, String title, List<String> tags, String content) {
-        this(id, null, null, null, null, title, tags, content);
+        this(id, null, null, null, null, new Title(title), tags, new Content(content));
     }
 
     public Post(String title, List<String> tags, String content) {
-        this(null, null, null, null, null, title, tags, content);
+        this(null, null, null, null, null, new Title(title), tags, new Content(content));
     }
 
     public static Post of(Long id, Post post) {
@@ -62,7 +62,7 @@ public class Post {
     }
 
     public String getTitle() {
-        return title;
+        return title.getTitle();
     }
 
     public List<String> getTags() {
@@ -70,7 +70,7 @@ public class Post {
     }
 
     public String getContent() {
-        return content;
+        return content.getContent();
     }
 
     @Override

@@ -7,7 +7,9 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import wooteco.prolog.category.application.dto.CategoryResponse;
 import wooteco.prolog.post.application.dto.AuthorResponse;
+import wooteco.prolog.post.domain.Content;
 import wooteco.prolog.post.domain.Post;
+import wooteco.prolog.post.domain.Title;
 
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
@@ -41,9 +43,9 @@ public class PostDao {
                         createdAt,
                         updatedAt,
                         new CategoryResponse(1L, "엄청나게 어려워서 머리 아픈 미션"),
-                        title,
+                        new Title(title),
                         Arrays.asList("이미지", "진짜링크임", "들어가면 웨지사진 있음"),
-                        content
+                        new Content(content)
                 );
             };
 
