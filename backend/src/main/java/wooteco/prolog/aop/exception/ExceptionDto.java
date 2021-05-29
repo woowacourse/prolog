@@ -1,4 +1,4 @@
-package wooteco.prolog.post.application.dto;
+package wooteco.prolog.aop.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
-public class AuthorResponse {
-    private Long id;
-    private String nickName;
-    private String imageUrl;
+public class ExceptionDto {
+    private String message;
 }

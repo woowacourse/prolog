@@ -1,10 +1,12 @@
 package wooteco.prolog.post.application;
 
 import org.springframework.stereotype.Service;
-import wooteco.prolog.post.dao.PostDao;
-import wooteco.prolog.post.domain.Post;
+import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
+import wooteco.prolog.post.dao.PostDao;
+import wooteco.prolog.post.domain.Post;
+import wooteco.prolog.post.exception.PostArgumentException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,12 +26,23 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public PostResponse insertLogs(List<PostRequest> postRequests) {
+        if (postRequests.size() == 0) {
+            throw new PostArgumentException("최소 1개의 글이 있어야 합니다.");
+        }
+
         List<Post> posts = postRequests.stream()
                 .map(PostRequest::toEntity)
                 .collect(Collectors.toList());
         Post firstPost = postDao.insert(posts.get(0));
-        postDao.insert(posts.subList(1, posts.size())); // TODO : Posts가 1개인 경우 실행되지 않음
+
+        try {
+            postDao.insert(posts.subList(1, posts.size()));
+        } catch (IndexOutOfBoundsException e) {
+            return PostResponse.of(firstPost);
+        }
+
         return PostResponse.of(firstPost);
     }
 

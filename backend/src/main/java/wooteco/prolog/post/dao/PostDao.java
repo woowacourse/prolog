@@ -7,7 +7,9 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import wooteco.prolog.category.application.dto.CategoryResponse;
 import wooteco.prolog.post.application.dto.AuthorResponse;
+import wooteco.prolog.post.domain.Content;
 import wooteco.prolog.post.domain.Post;
+import wooteco.prolog.post.domain.Title;
 
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
@@ -41,9 +43,9 @@ public class PostDao {
                         createdAt,
                         updatedAt,
                         new CategoryResponse(1L, "엄청나게 어려워서 머리 아픈 미션"),
-                        title,
+                        new Title(title),
                         Arrays.asList("이미지", "진짜링크임", "들어가면 웨지사진 있음"),
-                        content
+                        new Content(content)
                 );
             };
 
@@ -57,7 +59,7 @@ public class PostDao {
     }
 
     public Post insert(Post post) {
-        String query = "INSERT INTO post(member_id, createdAt, updatedAt, title, content, category_id) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO post(member_id, title, content, category_id) VALUES (?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         this.jdbcTemplate.update(con -> {
@@ -65,11 +67,9 @@ public class PostDao {
                     query,
                     new String[]{"id"});
             pstmt.setLong(1, 1L); // TODO : MEMBER ID
-            pstmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setString(4, post.getTitle());
-            pstmt.setString(5, post.getContent());
-            pstmt.setLong(6, post.getCategory().getId());
+            pstmt.setString(2, post.getTitle());
+            pstmt.setString(3, post.getContent());
+            pstmt.setLong(4, post.getCategory().getId());
             return pstmt;
         }, keyHolder);
         long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
@@ -77,15 +77,13 @@ public class PostDao {
     }
 
     public void insert(List<Post> posts) {
-        String query = "INSERT INTO post(member_id, createdAt, updatedAt, title, content, category_id) VALUES(?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO post(member_id, title, content, category_id) VALUES(?, ?, ?, ?)";
 
         this.jdbcTemplate.batchUpdate(query, posts, posts.size(), (pstmt, post) -> {
             pstmt.setLong(1, 1L);
-            pstmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setString(4, post.getTitle());
-            pstmt.setString(5, post.getContent());
-            pstmt.setLong(6, post.getCategory().getId());
+            pstmt.setString(2, post.getTitle());
+            pstmt.setString(3, post.getContent());
+            pstmt.setLong(4, post.getCategory().getId());
         });
     }
 

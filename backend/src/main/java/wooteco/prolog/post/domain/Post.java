@@ -1,5 +1,6 @@
 package wooteco.prolog.post.domain;
 
+import lombok.EqualsAndHashCode;
 import wooteco.prolog.category.application.dto.CategoryResponse;
 import wooteco.prolog.post.application.dto.AuthorResponse;
 
@@ -8,17 +9,18 @@ import java.util.List;
 import java.util.Objects;
 
 // Todo : Author, Category 도메인 객체로 변경해야 함
+@EqualsAndHashCode(of = "id")
 public class Post {
     private Long id;
     private AuthorResponse author;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private CategoryResponse category;
-    private String title;
+    private Title title;
     private List<String> tags;
-    private String content;
+    private Content content;
 
-    public Post(Long id, AuthorResponse author, LocalDateTime createdAt, LocalDateTime updatedAt, CategoryResponse category, String title, List<String> tags, String content) {
+    public Post(Long id, AuthorResponse author, LocalDateTime createdAt, LocalDateTime updatedAt, CategoryResponse category, Title title, List<String> tags, Content content) {
         this.id = id;
         this.author = author;
         this.createdAt = createdAt;
@@ -30,11 +32,11 @@ public class Post {
     }
 
     public Post(Long id, String title, List<String> tags, String content) {
-        this(id, null, null, null, null, title, tags, content);
+        this(id, null, null, null, null, new Title(title), tags, new Content(content));
     }
 
     public Post(String title, List<String> tags, String content) {
-        this(null, null, null, null, null, title, tags, content);
+        this(null, null, null, null, null, new Title(title), tags, new Content(content));
     }
 
     public static Post of(Long id, Post post) {
@@ -62,7 +64,7 @@ public class Post {
     }
 
     public String getTitle() {
-        return title;
+        return title.getTitle();
     }
 
     public List<String> getTags() {
@@ -70,19 +72,6 @@ public class Post {
     }
 
     public String getContent() {
-        return content;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Post post = (Post) o;
-        return Objects.equals(id, post.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+        return content.getContent();
     }
 }
