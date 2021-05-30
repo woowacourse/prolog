@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.post.domain.Category;
+import wooteco.prolog.category.domain.Category;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,6 +15,6 @@ public class CategoryResponse {
     private String name;
 
     public static CategoryResponse of(Category category) {
-        return new CategoryResponse(category.getCategoryId(), category.getName());
+        return new CategoryResponse(category.getId(), category.getName());
     }
 }

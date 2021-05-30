@@ -10,6 +10,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.test.annotation.DirtiesContext;
 import wooteco.prolog.login.TokenRequest;
 import wooteco.prolog.login.TokenResponse;
 
@@ -18,6 +19,7 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ExtendWith(RestDocumentationExtension.class)
 public class Documentation {
     @LocalServerPort

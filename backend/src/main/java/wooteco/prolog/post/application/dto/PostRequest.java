@@ -5,8 +5,11 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.post.domain.Post;
+import wooteco.prolog.tag.application.dto.TagRequest;
+import wooteco.prolog.tag.domain.Tag;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,10 +18,14 @@ import java.util.List;
 public class PostRequest {
     private String title;
     private String content;
-    private String category;
-    private List<String> tags;
+    private Long categoryId;
+    private List<TagRequest> tags;
 
     public Post toEntity() {
-        return new Post(null, title, tags, content);
+        List<Tag> tagEntities = tags.stream()
+                .map(TagRequest::toEntity)
+                .collect(Collectors.toList());
+
+        return new Post(title, content, categoryId, tagEntities);
     }
 }

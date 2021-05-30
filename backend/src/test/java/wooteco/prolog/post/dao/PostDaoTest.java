@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import wooteco.prolog.post.domain.Post;
+import wooteco.prolog.tag.domain.Tag;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,10 +20,10 @@ class PostDaoTest {
     private JdbcTemplate jdbcTemplate;
     private PostDao postDao;
 
-    public static final Post FIRST_POST = new Post(1L, "웨지감자", Arrays.asList("자바", "스프링"), "어려워;");
-    public static final Post SECOND_POST = new Post(1L, "웨지 호호", Arrays.asList("자바", "스프링"), "왕 어려워;");
-    public static final Post THIRD_POST = new Post(1L, "스터디 로그 작성합니다.", Arrays.asList("자바", "스프링"), "너무 힘들다...졸려...");
-    public static final Post FOURTH_POST = new Post(2L, "스터디 로그 작성합니다22", Arrays.asList("자바2", "스프링2"), "너무 힘들다...졸려...2");
+    public static final Post FIRST_POST = new Post("이것은 제목", "피케이와 포모의 포스트", 1L, Arrays.asList(new Tag("자바"), new Tag("스프링")));
+    public static final Post SECOND_POST = new Post("이것은 두번째 제목", "피케이와 포모의 포스트 2", 1L, Arrays.asList(new Tag("자바"), new Tag("스프링")));
+    public static final Post THIRD_POST = new Post("이것은 3 제목", "피케이 포스트", 1L, Arrays.asList(new Tag("자바"), new Tag("스프링")));
+    public static final Post FOURTH_POST = new Post("이것은 네번 제목", "포모의 포스트", 1L, Arrays.asList(new Tag("자바"), new Tag("스프링")));
 
     @BeforeEach
     void setUp() {

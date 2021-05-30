@@ -33,7 +33,7 @@ class TitleTest {
 
         //when
         Title title1 = new Title(expectedText);
-        Title title2 = new Title("    " +expectedText);
+        Title title2 = new Title("    " + expectedText);
         Title title3 = new Title(expectedText + "   ");
 
         //then

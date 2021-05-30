@@ -21,8 +21,8 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<Void> createPost(@RequestBody List<PostRequest> postRequests) {
-        PostResponse postResponse = postService.insertLogs(postRequests);
-        return ResponseEntity.created(URI.create("/posts/" + postResponse.getId())).build();
+        List<PostResponse> postResponse = postService.insertLogs(postRequests);
+        return ResponseEntity.created(URI.create("/posts/" + postResponse.get(0).getId())).build();
     }
 
     @GetMapping
