@@ -21,9 +21,9 @@ public class GithubClient {
     @Value("${github.client.secret}")
     private String clientSecret;
     @Value("${github.url.access-token}")
-    private String tokenUrl = "https://github.com/login/oauth/access_token";
+    private String tokenUrl;
     @Value("${github.url.profile}")
-    private String profileUrl = "https://api/github.com/user";
+    private String profileUrl;
 
     public String getAccessTokenFromGithub(String code) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();

@@ -23,4 +23,4 @@ github:
     secret: f02769f780ed3d40f9db9283f5b7cc79ecf9074e
   url:
     access-token: https://github.com/login/oauth/access_token
-    profile: https://api/github.com/user
+    profile: https://api.github.com/user
