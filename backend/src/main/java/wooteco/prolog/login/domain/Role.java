@@ -1,4 +1,4 @@
-package wooteco.prolog.login;
+package wooteco.prolog.login.domain;
 
 import java.util.Arrays;
 
@@ -6,7 +6,8 @@ public enum Role {
 
     UNVALIDATED,
     CREW,
-    COACH;
+    COACH,
+    ADMIN;
 
     public static Role of(String role) {
         return Arrays.stream(values())

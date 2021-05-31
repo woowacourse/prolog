@@ -1,42 +1,31 @@
-package wooteco.prolog.login;
+package wooteco.prolog.login.application;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import wooteco.prolog.login.application.dto.GithubAccessTokenResponse;
+import wooteco.prolog.login.application.dto.GithubProfileResponse;
 
-@Service
-public class GithubLoginService {
+@Component
+public class GithubClient {
+
     @Value("${github.client.id}")
     private String clientId;
     @Value("${github.client.secret}")
     private String clientSecret;
+    @Value("${github.url.access-token}")
+    private String tokenUrl;
+    @Value("${github.url.profile}")
+    private String profileUrl;
 
-    private final JwtTokenProvider jwtTokenProvider;
-    private final MemberDao memberDao;
-
-    public GithubLoginService(JwtTokenProvider jwtTokenProvider, MemberDao memberDao) {
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.memberDao = memberDao;
-    }
-
-    public String createToken(String code) {
-        String githubAccessToken = getAccessTokenFromGithub(code);
-        GithubProfileResponse githubProfile = getGithubProfileFromGithub(githubAccessToken);
-
-        Member member = findOrCreateMember(githubProfile);
-        return jwtTokenProvider.createToken(member);
-    }
-
-    private String getAccessTokenFromGithub(String code) {
-        String url = "https://github.com/login/oauth/access_token";
-
+    public String getAccessTokenFromGithub(String code) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("code", code);
         params.add("client_id", clientId);
@@ -49,7 +38,7 @@ public class GithubLoginService {
         RestTemplate restTemplate = new RestTemplate();
 
         String accessToken = restTemplate
-                .exchange(url, HttpMethod.POST, httpEntity, GithubAccessTokenResponse.class)
+                .exchange(tokenUrl, HttpMethod.POST, httpEntity, GithubAccessTokenResponse.class)
                 .getBody()
                 .getAccessToken();
         if (accessToken == null) {
@@ -58,9 +47,7 @@ public class GithubLoginService {
         return accessToken;
     }
 
-    private GithubProfileResponse getGithubProfileFromGithub(String accessToken) {
-        String url = "https://api.github.com/user";
-
+    public GithubProfileResponse getGithubProfileFromGithub(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "token " + accessToken);
 
@@ -69,15 +56,10 @@ public class GithubLoginService {
 
         try {
             return restTemplate
-                    .exchange(url, HttpMethod.GET, httpEntity, GithubProfileResponse.class)
+                    .exchange(profileUrl, HttpMethod.GET, httpEntity, GithubProfileResponse.class)
                     .getBody();
         } catch (HttpClientErrorException e) {
-            throw new IllegalArgumentException("github 정보 조회 실패");
+            throw new IllegalArgumentException("로그인에 실패했습니다.");
         }
-    }
-
-    private Member findOrCreateMember(GithubProfileResponse githubProfile) {
-        return memberDao.findByGithubId(githubProfile.getGithubId())
-                .orElseGet(() -> memberDao.insert(Member.of(githubProfile)));
     }
 }

@@ -1,5 +1,4 @@
-package wooteco.prolog.login;
-
+package wooteco.prolog.login.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -11,9 +10,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @EqualsAndHashCode
 public class TokenResponse {
+
     private String accessToken;
 
     public static TokenResponse of(String accessToken) {
         return new TokenResponse(accessToken);
     }
+
 }

@@ -24,6 +24,10 @@ dependencies {
 	// jwt
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
+	// login binding
+	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.4'
+
+
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.rest-assured:spring-mock-mvc:3.3.0'

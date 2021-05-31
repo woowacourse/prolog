@@ -5,31 +5,22 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
 import wooteco.prolog.category.application.dto.CategoryRequest;
 import wooteco.prolog.category.application.dto.CategoryResponse;
-import wooteco.prolog.login.GithubLoginService;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
 public class CategoryDocumentation extends Documentation {
-    @MockBean
-    private GithubLoginService githubLoginService;
-
     @Test
     void post() {
-        when(githubLoginService.createToken(anyString())).thenReturn("asdf.asdf.asdf");
-
         RestAssured
                 .given(spec).log().all()
                 .filter(document("category/list",

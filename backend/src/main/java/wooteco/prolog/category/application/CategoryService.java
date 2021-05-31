@@ -28,10 +28,9 @@ public class CategoryService {
     }
 
     private void validateName(String name) {
-        categoryDao.findByName(name)
-                .ifPresent((category) -> {
-                    throw new DuplicateCategoryException();
-                });
+        if (categoryDao.findByName(name).isPresent()) {
+            throw new DuplicateCategoryException();
+        }
     }
 
     public List<CategoryResponse> findAll() {
@@ -43,9 +42,7 @@ public class CategoryService {
 
     public CategoryResponse findById(Long id) {
         Category category = categoryDao.findById(id)
-                .orElseThrow(() -> {
-                    throw new CategoryNotFoundException();
-                });
+                .orElseThrow(CategoryNotFoundException::new);
         return CategoryResponse.of(category);
     }
 }
