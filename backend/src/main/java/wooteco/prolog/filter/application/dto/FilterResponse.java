@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.category.application.dto.CategoryResponse;
+import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.tag.dto.TagResponse;
 
 import java.util.List;
@@ -14,6 +14,6 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode
 public class FilterResponse {
-    private List<CategoryResponse> missions;
+    private List<MissionResponse> missions;
     private List<TagResponse> tags;
 }

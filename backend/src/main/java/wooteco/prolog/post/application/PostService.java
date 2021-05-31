@@ -2,8 +2,8 @@ package wooteco.prolog.post.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.category.application.CategoryService;
-import wooteco.prolog.category.application.dto.CategoryResponse;
+import wooteco.prolog.mission.application.MissionService;
+import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.dao.PostDao;
@@ -18,12 +18,12 @@ import java.util.stream.Collectors;
 @Service
 public class PostService {
     private final PostDao postDao;
-    private final CategoryService categoryService;
+    private final MissionService missionService;
     private final TagService tagService;
 
-    public PostService(PostDao postDao, CategoryService categoryService, TagService tagService) {
+    public PostService(PostDao postDao, MissionService missionService, TagService tagService) {
         this.postDao = postDao;
-        this.categoryService = categoryService;
+        this.missionService = missionService;
         this.tagService = tagService;
     }
 
@@ -55,13 +55,13 @@ public class PostService {
         Post createdPost = postDao.insert(requestedPost);
         tagService.addTagToPost(createdPost.getId(), tagIds);
 
-        CategoryResponse categoryResponse = categoryService.findById(requestedPost.getCategoryId());
+        MissionResponse missionResponse = missionService.findById(requestedPost.getMissionId());
         return new PostResponse(
                 createdPost.getId(),
                 createdPost.getAuthor(),
                 createdPost.getCreatedAt(),
                 createdPost.getUpdatedAt(),
-                categoryResponse,
+                missionResponse,
                 createdPost.getTitle(),
                 createdPost.getContent(),
                 tagResponses);
@@ -70,7 +70,7 @@ public class PostService {
     public PostResponse findById(Long id) {
         Post post = postDao.findById(id);
         List<TagResponse> tagResponses = tagService.getTagsOfPost(id);
-        CategoryResponse categoryResponse = categoryService.findById(post.getCategoryId());
-        return new PostResponse(post, categoryResponse, tagResponses);
+        MissionResponse missionResponse = missionService.findById(post.getMissionId());
+        return new PostResponse(post, missionResponse, tagResponses);
     }
 }

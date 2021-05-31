@@ -1,14 +1,14 @@
-package wooteco.prolog.category.domain;
+package wooteco.prolog.mission.domain;
 
-public class Category {
+public class Mission {
     private Long id;
     private String name;
 
-    public Category(String name) {
+    public Mission(String name) {
         this(null, name);
     }
 
-    public Category(Long id, String name) {
+    public Mission(Long id, String name) {
         this.id = id;
         this.name = name;
     }

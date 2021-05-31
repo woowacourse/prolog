@@ -8,5 +8,5 @@
 
 include::login.adoc[]
 include::post.adoc[]
-include::category.adoc[]
+include::mission.adoc[]
 include::filter.adoc[]

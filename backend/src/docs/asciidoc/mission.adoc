@@ -1,0 +1,33 @@
+[[mission]]
+== 미션
+
+=== 미션 생성 성공
+
+==== Request
+
+include::{snippets}/mission/create/success/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/mission/create/success/http-response.adoc[]
+
+
+=== 미션 중복 생성 시 실패
+
+==== Request
+
+include::{snippets}/mission/create/fail/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/mission/create/fail/http-response.adoc[]
+
+=== 미션 목록 조회
+
+==== Request
+
+include::{snippets}/mission/list/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/mission/list/http-response.adoc[]

@@ -7,7 +7,7 @@ import wooteco.prolog.tag.domain.Tag;
 import java.time.LocalDateTime;
 import java.util.List;
 
-// Todo : Author, Category 도메인 객체로 변경해야 함
+// Todo : Author, mission 도메인 객체로 변경해야 함
 @EqualsAndHashCode(of = "id")
 public class Post {
     private Long id;
@@ -16,26 +16,26 @@ public class Post {
     private LocalDateTime updatedAt;
     private Title title;
     private Content content;
-    private Long categoryId;
+    private Long missionId;
     private List<Tag> tags;
 
-    public Post(Long id, AuthorResponse author, LocalDateTime createdAt, LocalDateTime updatedAt, Title title, Content content, Long categoryId, List<Tag> tags) {
+    public Post(Long id, AuthorResponse author, LocalDateTime createdAt, LocalDateTime updatedAt, Title title, Content content, Long missionId, List<Tag> tags) {
         this.id = id;
         this.author = author;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.title = title;
         this.content = content;
-        this.categoryId = categoryId;
+        this.missionId = missionId;
         this.tags = tags;
     }
 
-    public Post(String title, String content, Long categoryId, List<Tag> tags) {
-        this(null, null, null, null, new Title(title), new Content(content), categoryId, tags);
+    public Post(String title, String content, Long missionId, List<Tag> tags) {
+        this(null, null, null, null, new Title(title), new Content(content), missionId, tags);
     }
 
     public static Post of(Long id, Post post) {
-        return new Post(id, post.author, post.createdAt, post.updatedAt, post.title, post.content, post.categoryId, post.tags);
+        return new Post(id, post.author, post.createdAt, post.updatedAt, post.title, post.content, post.missionId, post.tags);
     }
 
     public Long getId() {
@@ -54,8 +54,8 @@ public class Post {
         return updatedAt;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public Long getMissionId() {
+        return missionId;
     }
 
     public String getTitle() {

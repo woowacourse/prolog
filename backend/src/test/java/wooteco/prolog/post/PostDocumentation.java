@@ -7,8 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
-import wooteco.prolog.category.application.dto.CategoryRequest;
-import wooteco.prolog.category.application.dto.CategoryResponse;
+import wooteco.prolog.mission.application.dto.MissionRequest;
+import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.tag.dto.TagRequest;
 
@@ -35,10 +35,10 @@ public class PostDocumentation extends Documentation {
     private PostRequest createPostRequest() {
         String title = "SPA";
         String content = "SPA 방식으로 앱을 구현하였음.\n" + "router 를 구현 하여 이용함.\n";
-        Long categoryId = 카테고리_등록함(new CategoryRequest("레벨1 - 지하철 노선도 미션"));
+        Long missionId = 미션_등록함(new MissionRequest("레벨1 - 지하철 노선도 미션"));
         List<TagRequest> tags = Arrays.asList(new TagRequest("spa"), new TagRequest("router"));
 
-        return new PostRequest(title, content, categoryId, tags);
+        return new PostRequest(title, content, missionId, tags);
     }
 
     private void 포스트_목록을_필터링한다() {
@@ -74,16 +74,16 @@ public class PostDocumentation extends Documentation {
                 .then().log().all().extract();
     }
 
-    private Long 카테고리_등록함(CategoryRequest request) {
+    private Long 미션_등록함(MissionRequest request) {
         return RestAssured.given()
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .post("/categories")
+                .post("/missions")
                 .then()
                 .log().all()
                 .extract()
-                .as(CategoryResponse.class)
+                .as(MissionResponse.class)
                 .getId();
     }
 }

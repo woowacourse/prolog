@@ -19,7 +19,7 @@ import java.util.Objects;
 
 /*
 TODO 1. 멤버가 추가되면 하드 코딩된 AuthorResponse 제거
-TODO 2. Category
+TODO 2. Mission
  */
 
 @Repository
@@ -33,7 +33,7 @@ public class PostDao {
                 long memberId = rs.getLong("member_id");
                 LocalDateTime createdAt = rs.getTimestamp("createdAt").toLocalDateTime();
                 LocalDateTime updatedAt = rs.getTimestamp("updatedAt").toLocalDateTime();
-                long categoryId = rs.getLong("category_id");
+                long missionId = rs.getLong("mission_id");
                 String title = rs.getString("title");
                 String content = rs.getString("content");
                 return new Post(id,
@@ -42,7 +42,7 @@ public class PostDao {
                         updatedAt,
                         new Title(title),
                         new Content(content),
-                        categoryId,
+                        missionId,
                         Collections.emptyList()
                 );
             };
@@ -57,7 +57,7 @@ public class PostDao {
     }
 
     public Post insert(Post post) {
-        String query = "INSERT INTO post(member_id, title, content, category_id) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO post(member_id, title, content, mission_id) VALUES (?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         this.jdbcTemplate.update(con -> {
@@ -67,7 +67,7 @@ public class PostDao {
             pstmt.setLong(1, 1L); // TODO : MEMBER ID
             pstmt.setString(2, post.getTitle());
             pstmt.setString(3, post.getContent());
-            pstmt.setLong(4, post.getCategoryId());
+            pstmt.setLong(4, post.getMissionId());
             return pstmt;
         }, keyHolder);
         long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
@@ -75,13 +75,13 @@ public class PostDao {
     }
 
     public void insert(List<Post> posts) {
-        String query = "INSERT INTO post(member_id, title, content, category_id) VALUES(?, ?, ?, ?)";
+        String query = "INSERT INTO post(member_id, title, content, mission_id) VALUES(?, ?, ?, ?)";
 
         this.jdbcTemplate.batchUpdate(query, posts, posts.size(), (pstmt, post) -> {
             pstmt.setLong(1, 1L);
             pstmt.setString(2, post.getTitle());
             pstmt.setString(3, post.getContent());
-            pstmt.setLong(4, post.getCategoryId());
+            pstmt.setLong(4, post.getMissionId());
         });
     }
 
