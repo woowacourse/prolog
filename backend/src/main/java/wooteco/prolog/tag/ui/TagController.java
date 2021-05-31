@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.tag.application.TagService;
-import wooteco.prolog.tag.application.dto.TagRequest;
-import wooteco.prolog.tag.application.dto.TagResponse;
+import wooteco.prolog.tag.TagService;
+import wooteco.prolog.tag.dto.TagRequest;
+import wooteco.prolog.tag.dto.TagResponse;
 
 import java.util.List;
 

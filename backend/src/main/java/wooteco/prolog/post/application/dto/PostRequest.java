@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.post.domain.Post;
-import wooteco.prolog.tag.application.dto.TagRequest;
+import wooteco.prolog.tag.dto.TagRequest;
 import wooteco.prolog.tag.domain.Tag;
 
 import java.util.List;

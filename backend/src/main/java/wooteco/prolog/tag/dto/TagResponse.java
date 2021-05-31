@@ -1,4 +1,4 @@
-package wooteco.prolog.tag.application.dto;
+package wooteco.prolog.tag.dto;
 
 import wooteco.prolog.tag.domain.Tag;
 

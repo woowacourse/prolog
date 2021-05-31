@@ -6,11 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.category.application.dto.CategoryResponse;
 import wooteco.prolog.post.domain.Post;
-import wooteco.prolog.tag.application.dto.TagResponse;
+import wooteco.prolog.tag.dto.TagResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor

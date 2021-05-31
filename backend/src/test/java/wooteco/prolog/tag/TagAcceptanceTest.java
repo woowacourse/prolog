@@ -1,4 +1,4 @@
-package wooteco.prolog.tag.application;
+package wooteco.prolog.tag;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.AcceptanceTest;
-import wooteco.prolog.tag.application.dto.TagRequest;
-import wooteco.prolog.tag.application.dto.TagResponse;
+import wooteco.prolog.tag.dto.TagRequest;
+import wooteco.prolog.tag.dto.TagResponse;
 
 import java.util.Arrays;
 import java.util.List;

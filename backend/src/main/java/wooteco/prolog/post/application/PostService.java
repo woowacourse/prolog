@@ -9,8 +9,8 @@ import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.dao.PostDao;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.post.exception.PostArgumentException;
-import wooteco.prolog.tag.application.TagService;
-import wooteco.prolog.tag.application.dto.TagResponse;
+import wooteco.prolog.tag.TagService;
+import wooteco.prolog.tag.dto.TagResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,7 +50,6 @@ public class PostService {
         List<Long> tagIds = tagResponses.stream()
                 .map(TagResponse::getId)
                 .collect(Collectors.toList());
-
 
         Post requestedPost = postRequest.toEntity();
         Post createdPost = postDao.insert(requestedPost);
