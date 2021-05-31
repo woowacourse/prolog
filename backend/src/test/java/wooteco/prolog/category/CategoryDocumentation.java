@@ -84,7 +84,6 @@ public class CategoryDocumentation extends Documentation {
 
         // then
         CategoryResponse categoryResponse = response.as(CategoryResponse.class);
-//        assertThat(categoryResponse.getId()).isEqualTo(1L);
         assertThat(categoryResponse.getName()).isEqualTo(request.getName());
     }
 
