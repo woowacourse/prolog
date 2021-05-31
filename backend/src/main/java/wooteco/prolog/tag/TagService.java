@@ -1,11 +1,11 @@
 package wooteco.prolog.tag;
 
 import org.springframework.stereotype.Service;
-import wooteco.prolog.tag.dto.TagRequest;
-import wooteco.prolog.tag.dto.TagResponse;
 import wooteco.prolog.tag.dao.PostTagDao;
 import wooteco.prolog.tag.dao.TagDao;
 import wooteco.prolog.tag.domain.Tag;
+import wooteco.prolog.tag.dto.TagRequest;
+import wooteco.prolog.tag.dto.TagResponse;
 import wooteco.prolog.tag.exception.DuplicateTagException;
 
 import java.util.ArrayList;

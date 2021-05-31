@@ -1,30 +1,26 @@
 package wooteco.prolog.post;
 
+import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
-import wooteco.prolog.login.GithubLoginService;
+import wooteco.prolog.category.application.dto.CategoryRequest;
+import wooteco.prolog.category.application.dto.CategoryResponse;
+import wooteco.prolog.login.TokenResponse;
+import wooteco.prolog.login.application.GithubLoginService;
+import wooteco.prolog.login.application.dto.TokenRequest;
 import wooteco.prolog.post.application.dto.PostRequest;
+import wooteco.prolog.tag.dto.TagRequest;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-
 public class PostDocumentation extends Documentation {
-    @MockBean
-    private GithubLoginService githubLoginService;
-
     @Test
     void post() {
-        when(githubLoginService.createToken(anyString())).thenReturn("asdf.asdf.asdf");
-
         List<PostRequest> params = Arrays.asList(createPostRequest());
 
         ExtractableResponse<Response> createResponse = given("post/create")

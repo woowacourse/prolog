@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
 import wooteco.prolog.login.application.dto.TokenRequest;
-import wooteco.prolog.login.application.dto.TokenResponse;
 
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;

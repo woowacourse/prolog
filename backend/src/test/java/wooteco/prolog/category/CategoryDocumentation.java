@@ -11,25 +11,20 @@ import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
 import wooteco.prolog.category.application.dto.CategoryRequest;
 import wooteco.prolog.category.application.dto.CategoryResponse;
-import wooteco.prolog.login.GithubLoginService;
+import wooteco.prolog.login.TokenResponse;
+import wooteco.prolog.login.application.GithubLoginService;
+import wooteco.prolog.login.application.dto.TokenRequest;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
 public class CategoryDocumentation extends Documentation {
-    @MockBean
-    private GithubLoginService githubLoginService;
-
     @Test
     void post() {
-        when(githubLoginService.createToken(anyString())).thenReturn("asdf.asdf.asdf");
-
         RestAssured
                 .given(spec).log().all()
                 .filter(document("category/list",
