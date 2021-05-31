@@ -26,7 +26,10 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PostResponse>> showAll() {
+    public ResponseEntity<List<PostResponse>> showAll(
+        @RequestParam(required = false) List<String> missions,
+        @RequestParam(required = false) List<String> tags
+    ) {
         List<PostResponse> postResponses = postService.findAll();
         return ResponseEntity.ok(postResponses);
     }
