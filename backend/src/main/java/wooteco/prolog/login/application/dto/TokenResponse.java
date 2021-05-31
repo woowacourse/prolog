@@ -1,4 +1,4 @@
-package wooteco.prolog.login;
+package wooteco.prolog.login.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
