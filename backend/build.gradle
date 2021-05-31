@@ -60,16 +60,9 @@ bootJar {
 	}
 }
 
-task testDocument(type: Test) {
-	useJUnitPlatform()
-	filter {
-		includeTestsMatching "*.documentation.*"
-	}
-}
-
 task createDocument(type: Copy) {
 	dependsOn test
 
 	from file("build/asciidoc/html5/index.html")
-	into file("src/main/resources/static/docs")
+	into file("src/main/resources/static")
 }
