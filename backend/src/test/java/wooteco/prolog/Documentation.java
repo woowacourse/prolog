@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.event.annotation.BeforeTestMethod;
 import wooteco.prolog.login.TokenResponse;
 import wooteco.prolog.login.application.GithubLoginService;
 import wooteco.prolog.login.application.dto.TokenRequest;
