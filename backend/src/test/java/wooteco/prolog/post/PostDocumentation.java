@@ -4,14 +4,10 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
 import wooteco.prolog.category.application.dto.CategoryRequest;
 import wooteco.prolog.category.application.dto.CategoryResponse;
-import wooteco.prolog.login.TokenResponse;
-import wooteco.prolog.login.application.GithubLoginService;
-import wooteco.prolog.login.application.dto.TokenRequest;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.tag.dto.TagRequest;
 
