@@ -65,4 +65,11 @@ public class TagService {
                 .map(TagResponse::of)
                 .collect(Collectors.toList());
     }
+
+    public List<TagResponse> findAll() {
+        return tagDao.findAll()
+                .stream()
+                .map(TagResponse::of)
+                .collect(Collectors.toList());
+    }
 }
