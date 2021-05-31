@@ -59,7 +59,7 @@ const Menu = styled.div`
 `;
 
 const DropdownLocationStyle = css`
-  top: 60px;
+  top: 70px;
   right: 0px;
 `;
 
@@ -102,15 +102,16 @@ const NavBar = () => {
       <Wrapper>
         <Logo src={LogoImage} alt="STUDYLOG 로고" onClick={goMain} role="link" />
         <Menu role="menu">
-          <button type="button">검색</button>
-          <button type="button" onClick={goNewPost}>
-            글작성
-          </button>
+          <Button size="X_SMALL" icon={SearchIcon} type="button" css={whiteBackgroundStyle} />
           {isLogin ? (
-            <>
-              <button type="button" onClick={showDropdownMenu}>
-                내정보
-              </button>
+            <div>
+              <Button size="X_SMALL" icon={PencilIcon} type="button" onClick={goNewPost} />
+              <Button
+                size="X_SMALL"
+                type="button"
+                backgroundImageUrl={NoProfileImage}
+                onClick={showDropdownMenu}
+              />
               {isDropdownToggled && (
                 <DropdownMenu css={DropdownLocationStyle}>
                   <ul>
@@ -123,10 +124,12 @@ const NavBar = () => {
                   </ul>
                 </DropdownMenu>
               )}
-            </>
+            </div>
           ) : (
             <GithubLogin>
-              <button type="button">로그인</button>
+              <Button size="SMALL" type="button" icon={NoProfileImage} css={whiteBackgroundStyle}>
+                로그인
+              </Button>
             </GithubLogin>
           )}
         </Menu>

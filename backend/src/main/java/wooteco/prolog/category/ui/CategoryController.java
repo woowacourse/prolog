@@ -1,26 +1,32 @@
 package wooteco.prolog.category.ui;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import wooteco.prolog.category.application.CategoryService;
+import wooteco.prolog.category.application.dto.CategoryRequest;
 import wooteco.prolog.category.application.dto.CategoryResponse;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {
 
-    @GetMapping
-    public ResponseEntity<List<CategoryResponse>> showCategories() {
-        List<CategoryResponse> categoryResponses = Arrays.asList(
-                new CategoryResponse(1L, "빈지모"),
-                new CategoryResponse(2L, "빈포모"),
-                new CategoryResponse(3L, "웨지노")
-        );
+    private final CategoryService categoryService;
 
-        return ResponseEntity.ok(categoryResponses);
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<CategoryResponse>> showCategories() {
+        List<CategoryResponse> responses = categoryService.findAll();
+        return ResponseEntity.ok(responses);
+    }
+
+    @PostMapping
+    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest) {
+        CategoryResponse categoryResponse = categoryService.create(categoryRequest);
+        return ResponseEntity.ok(categoryResponse);
     }
 }

@@ -1,8 +1,12 @@
-package wooteco.prolog.post.domain;
+package wooteco.prolog.tag.domain;
 
 public class Tag {
     private final Long id;
     private final String name;
+
+    public Tag(String name) {
+        this(null, name);
+    }
 
     public Tag(Long id, String name) {
         this.id = id;
@@ -15,5 +19,9 @@ public class Tag {
 
     public String getName() {
         return name;
+    }
+
+    public boolean sameAs(String name) {
+        return this.name.equals(name);
     }
 }

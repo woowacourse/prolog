@@ -78,9 +78,9 @@ const MainPage = () => {
   const history = useHistory();
   const { response: postList, error } = useGetFetch([], 'getAllData');
 
-  if (error) {
-    return <>글이 없습니다.</>;
-  }
+  // if (error) {
+  //   return <>글이 없습니다.</>;
+  // }
 
   const goTargetPost = (id) => () => {
     history.push(`${PATH.POST}/${id}`);
