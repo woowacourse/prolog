@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.category.application.dto.CategoryResponse;
 import wooteco.prolog.post.domain.Post;
+import wooteco.prolog.tag.dto.TagResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,16 +23,17 @@ public class PostResponse {
     private CategoryResponse category;
     private String title;
     private String content;
-    private List<String> tags;
+    private List<TagResponse> tags;
 
-    public static PostResponse of(Post post) {
-        return new PostResponse(post.getId(),
+    public PostResponse(Post post, CategoryResponse categoryResponse, List<TagResponse> tagResponses) {
+        this(
+                post.getId(),
                 post.getAuthor(),
                 post.getCreatedAt(),
                 post.getUpdatedAt(),
-                post.getCategory(),
+                categoryResponse,
                 post.getTitle(),
                 post.getContent(),
-                post.getTags());
+                tagResponses);
     }
 }

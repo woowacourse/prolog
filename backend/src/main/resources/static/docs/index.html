@@ -452,6 +452,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_포스트_단건_조회">포스트 단건 조회</a></li>
 </ul>
 </li>
+<li><a href="#category">카테고리</a>
+<ul class="sectlevel2">
+<li><a href="#_카테고리_생성_성공">카테고리 생성 성공</a></li>
+<li><a href="#_카테고리_중복_생성_시_실패">카테고리 중복 생성 시 실패</a></li>
+<li><a href="#_카테고리_목록_조회">카테고리 목록 조회</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -467,7 +474,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /login/token HTTP/1.1
 Content-Type: application/json; charset=UTF-8
-Host: localhost:55204
+Host: localhost:59415
 Content-Length: 53
 
 {
@@ -481,15 +488,18 @@ Content-Length: 53
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Wed, 19 May 2021 04:21:29 GMT
+Date: Sun, 30 May 2021 08:02:07 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 351
+Content-Length: 38
 
 {
-  "accessToken" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJpZFwiOjEsXCJlbWFpbFwiOlwiZW1haWxAZW1haWwuY29tXCIsXCJwYXNzd29yZFwiOlwicGFzc3dvcmRcIixcIm5hbWVcIjpcIuyCrOyaqeyekFwiLFwicHJpbmNpcGFsXCI6XCJlbWFpbEBlbWFpbC5jb21cIixcImNyZWRlbnRpYWxzXCI6XCJwYXNzd29yZFwifSIsImlhdCI6MTYyMTM4NDI3NywiZXhwIjoxNjIxMzg3ODc3fQ.x8eWRLUIxCbqwrnokvYMB1VTbFkG3tDSMbkiul4ryMg"
+  "accessToken" : "asdf.asdf.asdf"
 }</code></pre>
 </div>
 </div>
@@ -507,9 +517,9 @@ Content-Length: 351
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /posts HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJpZFwiOjEsXCJlbWFpbFwiOlwiZW1haWxAZW1haWwuY29tXCIsXCJwYXNzd29yZFwiOlwicGFzc3dvcmRcIixcIm5hbWVcIjpcIuyCrOyaqeyekFwiLFwicHJpbmNpcGFsXCI6XCJlbWFpbEBlbWFpbC5jb21cIixcImNyZWRlbnRpYWxzXCI6XCJwYXNzd29yZFwifSIsImlhdCI6MTYyMTM4NDI3NywiZXhwIjoxNjIxMzg3ODc3fQ.x8eWRLUIxCbqwrnokvYMB1VTbFkG3tDSMbkiul4ryMg
+Authorization: Bearer null
 Content-Type: application/json; charset=UTF-8
-Host: localhost:55204
+Host: localhost:59415
 Content-Length: 416
 
 [ {
@@ -531,8 +541,11 @@ Content-Length: 416
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Location: /posts/1
-Date: Wed, 19 May 2021 04:21:29 GMT
+Date: Sun, 30 May 2021 08:02:04 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -546,9 +559,9 @@ Connection: keep-alive</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJpZFwiOjEsXCJlbWFpbFwiOlwiZW1haWxAZW1haWwuY29tXCIsXCJwYXNzd29yZFwiOlwicGFzc3dvcmRcIixcIm5hbWVcIjpcIuyCrOyaqeyekFwiLFwicHJpbmNpcGFsXCI6XCJlbWFpbEBlbWFpbC5jb21cIixcImNyZWRlbnRpYWxzXCI6XCJwYXNzd29yZFwifSIsImlhdCI6MTYyMTM4NDI3NywiZXhwIjoxNjIxMzg3ODc3fQ.x8eWRLUIxCbqwrnokvYMB1VTbFkG3tDSMbkiul4ryMg
+Authorization: Bearer null
 Accept: application/json
-Host: localhost:55204</code></pre>
+Host: localhost:59415</code></pre>
 </div>
 </div>
 </div>
@@ -557,28 +570,48 @@ Host: localhost:55204</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Wed, 19 May 2021 04:21:29 GMT
+Date: Sun, 30 May 2021 08:02:04 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 649
+Content-Length: 1234
 
 [ {
   "id" : 1,
   "author" : {
     "id" : 1,
-    "nickName" : "뽀모",
-    "imageUrl" : "https://avatars.githubusercontent.com/u/34594339?v=4"
+    "nickName" : "웨지",
+    "imageUrl" : "https://i.ytimg.com/vi/3etKkkna-f0/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&amp;rs=AOn4CLAhRhV8s0gUJe5yCOFctyEkGZFgTw"
   },
-  "createdAt" : "2021-05-19T13:21:29.983",
+  "createdAt" : "2021-05-30T17:02:05.309343",
+  "updatedAt" : "2021-05-30T17:02:05.309343",
   "category" : {
     "id" : 1,
-    "name" : "레벨1 - 지하철 미션"
+    "name" : "엄청나게 어려운 미션"
   },
-  "title" : "[JS] Custom Validity",
-  "content" : "input pattern 을 이용해검증 시 안내 메세지가 '유효하지 않은 입력입니다' 라고 뜨는 것을 보완하기 위해 이용함.\nhttps://github.com/woowacourse/javascript-subway/pull/54/files#diff-0abdf7ea3b5e10249e14e579a55250b98b53ea05379f9a9b9226c694f09647f0R50-R62",
-  "tags" : [ "자바", "쟈스" ]
+  "title" : "SPA",
+  "content" : "SPA 방식으로 앱을 구현하였음.\nrouter 를 구현 하여 이용함.\n",
+  "tags" : [ "이미지", "진짜링크임", "들어가면 웨지사진 있음" ]
+}, {
+  "id" : 2,
+  "author" : {
+    "id" : 1,
+    "nickName" : "웨지",
+    "imageUrl" : "https://i.ytimg.com/vi/3etKkkna-f0/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&amp;rs=AOn4CLAhRhV8s0gUJe5yCOFctyEkGZFgTw"
+  },
+  "createdAt" : "2021-05-30T17:02:05.309343",
+  "updatedAt" : "2021-05-30T17:02:05.309343",
+  "category" : {
+    "id" : 1,
+    "name" : "엄청나게 어려운 미션"
+  },
+  "title" : "SPA",
+  "content" : "SPA 방식으로 앱을 구현하였음.\nrouter 를 구현 하여 이용함.\n",
+  "tags" : [ "이미지", "진짜링크임", "들어가면 웨지사진 있음" ]
 } ]</code></pre>
 </div>
 </div>
@@ -591,8 +624,8 @@ Content-Length: 649
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJpZFwiOjEsXCJlbWFpbFwiOlwiZW1haWxAZW1haWwuY29tXCIsXCJwYXNzd29yZFwiOlwicGFzc3dvcmRcIixcIm5hbWVcIjpcIuyCrOyaqeyekFwiLFwicHJpbmNpcGFsXCI6XCJlbWFpbEBlbWFpbC5jb21cIixcImNyZWRlbnRpYWxzXCI6XCJwYXNzd29yZFwifSIsImlhdCI6MTYyMTM4NDI3NywiZXhwIjoxNjIxMzg3ODc3fQ.x8eWRLUIxCbqwrnokvYMB1VTbFkG3tDSMbkiul4ryMg
-Host: localhost:55204</code></pre>
+Authorization: Bearer null
+Host: localhost:59415</code></pre>
 </div>
 </div>
 </div>
@@ -601,29 +634,162 @@ Host: localhost:55204</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Wed, 19 May 2021 04:21:29 GMT
+Date: Sun, 30 May 2021 08:02:04 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 679
+Content-Length: 614
 
 {
   "id" : 1,
   "author" : {
     "id" : 1,
     "nickName" : "웨지",
-    "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?s=64&amp;v=4"
+    "imageUrl" : "https://i.ytimg.com/vi/3etKkkna-f0/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&amp;rs=AOn4CLAhRhV8s0gUJe5yCOFctyEkGZFgTw"
   },
-  "createdAt" : "2021-05-19T13:21:30.01",
+  "createdAt" : "2021-05-30T17:02:05.309343",
+  "updatedAt" : "2021-05-30T17:02:05.309343",
   "category" : {
     "id" : 1,
-    "name" : "레벨1 - 지하철 미션"
+    "name" : "엄청나게 어려운 미션"
   },
-  "title" : "매감",
-  "content" : "매서운감자매서운감자매서운감자매서운감자매서운감자매서운감자매서운감자매서운감자매서운감자매서운감자매서운감자\n매서운감자매서운감자매서운감자매서운감자매서운감자매서운감자매서운감자매서운감자매서운감자매서운감자매서운감자",
-  "tags" : [ "자바", "자스" ]
+  "title" : "SPA",
+  "content" : "SPA 방식으로 앱을 구현하였음.\nrouter 를 구현 하여 이용함.\n",
+  "tags" : [ "이미지", "진짜링크임", "들어가면 웨지사진 있음" ]
 }</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="category"><a class="link" href="#category">카테고리</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_카테고리_생성_성공"><a class="link" href="#_카테고리_생성_성공">카테고리 생성 성공</a></h3>
+<div class="sect3">
+<h4 id="_request_5"><a class="link" href="#_request_5">Request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /categories HTTP/1.1
+Content-Type: application/json; charset=UTF-8
+Host: localhost:59415
+Content-Length: 43
+
+{
+  "name" : "지하철 노선도 미션"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_5"><a class="link" href="#_response_5">Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Sun, 30 May 2021 08:01:58 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 55
+
+{
+  "id" : 3,
+  "name" : "지하철 노선도 미션"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_카테고리_중복_생성_시_실패"><a class="link" href="#_카테고리_중복_생성_시_실패">카테고리 중복 생성 시 실패</a></h3>
+<div class="sect3">
+<h4 id="_request_6"><a class="link" href="#_request_6">Request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /categories HTTP/1.1
+Content-Type: application/json; charset=UTF-8
+Host: localhost:59415
+Content-Length: 43
+
+{
+  "name" : "지하철 노선도 미션"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_6"><a class="link" href="#_response_6">Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Sun, 30 May 2021 08:01:58 GMT
+Connection: close
+Content-Length: 172
+
+{
+  "timestamp" : "2021-05-30T08:01:59.053+00:00",
+  "status" : 400,
+  "error" : "Bad Request",
+  "message" : "카테고리가 중복됩니다.",
+  "path" : "/categories"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_카테고리_목록_조회"><a class="link" href="#_카테고리_목록_조회">카테고리 목록 조회</a></h3>
+<div class="sect3">
+<h4 id="_request_7"><a class="link" href="#_request_7">Request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /categories HTTP/1.1
+Authorization: Bearer null
+Accept: application/json
+Host: localhost:59415</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_7"><a class="link" href="#_response_7">Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Sun, 30 May 2021 08:01:59 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 177
+
+[ {
+  "id" : 1,
+  "name" : "지하철 노선도 미션 1"
+}, {
+  "id" : 2,
+  "name" : "지하철 노선도 미션 2"
+}, {
+  "id" : 3,
+  "name" : "지하철 노선도 미션"
+} ]</code></pre>
 </div>
 </div>
 </div>
@@ -634,7 +800,7 @@ Content-Length: 679
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2021-05-19 13:24:16 +0900
+Last updated 2021-05-30 16:56:13 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">
