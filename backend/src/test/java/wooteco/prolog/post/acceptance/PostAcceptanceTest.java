@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.AcceptanceTest;
-import wooteco.prolog.category.application.dto.CategoryRequest;
-import wooteco.prolog.category.application.dto.CategoryResponse;
+import wooteco.prolog.mission.application.dto.MissionRequest;
+import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.tag.dto.TagRequest;
@@ -30,24 +30,24 @@ public class PostAcceptanceTest extends AcceptanceTest {
     private PostRequest secondPost;
     List<PostRequest> postRequests;
 
-    CategoryRequest categoryRequest1;
-    CategoryRequest categoryRequest2;
+    MissionRequest missionRequest1;
+    MissionRequest missionRequest2;
 
     @BeforeEach
     public void setUp() {
         super.setUp();
 
-        categoryRequest1 = new CategoryRequest("backend 지하철 3차 미션");
-        categoryRequest2 = new CategoryRequest("FRONTEND 지하철 3차 미션");
+        missionRequest1 = new MissionRequest("backend 지하철 3차 미션");
+        missionRequest2 = new MissionRequest("FRONTEND 지하철 3차 미션");
 
-        Long firstCategoryId = 카테고리_등록함(categoryRequest1);
-        Long secondCategoryId = 카테고리_등록함(categoryRequest2);
+        Long firstmissionId = 미션_등록함(missionRequest1);
+        Long secondmissionId = 미션_등록함(missionRequest2);
 
         firstPost = new PostRequest(
                 "[자바][옵셔널] 학습log 제출합니다.",
                 "옵셔널은 NPE를 배제하기 위해 만들어진 자바8에 추가된 라이브러리입니다. \n " +
                         "다양한 메소드를 호출하여 원하는 대로 활용할 수 있습니다",
-                firstCategoryId,
+                firstmissionId,
                 Arrays.asList(
                         new TagRequest("자바"),
                         new TagRequest("Optional")
@@ -57,7 +57,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
         secondPost = new PostRequest("[자바스크립트][비동기] 학습log 제출합니다.",
                 "모던 JS의 fetch문, ajax라이브러리인 axios등을 통해 비동기 요청을 \n " +
                         "편하게 할 수 있습니다. 자바 최고",
-                secondCategoryId,
+                secondmissionId,
                 Arrays.asList(
                         new TagRequest("자바스크립트"),
                         new TagRequest("비동기")
@@ -151,20 +151,20 @@ public class PostAcceptanceTest extends AcceptanceTest {
         assertThat(expected.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(extracted.getTitle()).isEqualTo(firstPost.getTitle());
         assertThat(extracted.getContent()).isEqualTo(firstPost.getContent());
-        assertThat(extracted.getCategory().getId()).isEqualTo(firstPost.getCategoryId());
+        assertThat(extracted.getMission().getId()).isEqualTo(firstPost.getMissionId());
         assertThat(extractedNames).containsAll(expectedNames);
     }
 
-    private Long 카테고리_등록함(CategoryRequest request) {
+    private Long 미션_등록함(MissionRequest request) {
         return given()
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .post("/categories")
+                .post("/missions")
                 .then()
                 .log().all()
                 .extract()
-                .as(CategoryResponse.class)
+                .as(MissionResponse.class)
                 .getId();
     }
 }

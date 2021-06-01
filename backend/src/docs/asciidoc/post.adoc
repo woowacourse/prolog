@@ -21,6 +21,15 @@ include::{snippets}/post/list/http-request.adoc[]
 
 include::{snippets}/post/list/http-response.adoc[]
 
+=== 포스트 필터 조회
+
+==== Request
+
+include::{snippets}/post/filter/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post/filter/http-response.adoc[]
 
 === 포스트 단건 조회
 
