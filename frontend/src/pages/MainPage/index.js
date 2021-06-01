@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { Button, Card, ProfileChip } from '../../components';
+import { Button, Card, FilterList, ProfileChip } from '../../components';
 import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
@@ -12,20 +12,6 @@ const HeaderContainer = styled.div`
   display: flex;
   margin-bottom: 3.7rem;
   justify-content: space-between;
-`;
-
-const FilterList = styled.div`
-  background-color: #f4f4f4;
-  border: 1px solid #707070;
-  border-radius: 2rem;
-  padding: 1rem 3rem;
-
-  & button {
-    height: 100%;
-    margin-right: 2rem;
-    font-size: 2rem;
-    text-align: center;
-  }
 `;
 
 const PostListContainer = styled.div`
@@ -77,7 +63,7 @@ const CardHoverStyle = css`
 const MainPage = () => {
   const history = useHistory();
   const { response: postList, error } = useGetFetch([], 'getAllData');
-
+  const [selectedFilter, setSelectedFilter] = useState('');
   // if (error) {
   //   return <>글이 없습니다.</>;
   // }
@@ -86,14 +72,26 @@ const MainPage = () => {
     history.push(`${PATH.POST}/${id}`);
   };
 
+  const filters = {
+    프로젝트: [
+      { id: 1, name: '자동차경주' },
+      { id: 2, name: '로또' },
+    ],
+
+    태그: [
+      { id: 1, name: '자바스크립트' },
+      { id: 2, name: '리액트' },
+    ],
+  };
+
   return (
     <>
       <HeaderContainer>
-        <FilterList>
-          <button>필터 1</button>
-          <button>필터 2</button>
-          <button>필터 3</button>
-        </FilterList>
+        <FilterList
+          filters={filters}
+          selectedFilter={selectedFilter}
+          setSelectedFilter={setSelectedFilter}
+        />
         <Button
           type="button"
           size="MEDIUM"
