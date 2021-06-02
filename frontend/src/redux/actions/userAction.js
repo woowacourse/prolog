@@ -1,5 +1,6 @@
 import qs from 'qs';
 import ls from 'local-storage';
+import { API } from '../../constants';
 
 export const LOGIN = 'user/LOGIN';
 export const LOGIN_SUCCESS = 'user/LOGIN_SUCCESS';
@@ -29,7 +30,7 @@ export const login = () => async (dispatch) => {
 
     const { accessToken } = await response.json();
 
-    ls.set('login', accessToken);
+    ls.set(API.ACCESS_TOKEN, accessToken);
     dispatch({ type: LOGIN_SUCCESS, payload: accessToken });
   } catch (error) {
     console.error(error);

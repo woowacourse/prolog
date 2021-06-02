@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 
 import { login } from '../../redux/actions/userAction';
 
-const LoginCallback = () => {
+const LoginCallbackPage = () => {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const history = useHistory();
@@ -15,16 +15,15 @@ const LoginCallback = () => {
 
   useEffect(() => {
     if (accessToken) {
-      console.log('login 성공');
-      // history.goBack();
+      history.goBack();
     } else {
       console.error('get accessToken failed');
-      // history.push('/');
+      history.push('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessToken]);
 
-  return <>Login Callback Page</>;
+  return <></>;
 };
 
-export default LoginCallback;
+export default LoginCallbackPage;

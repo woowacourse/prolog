@@ -3,12 +3,7 @@ import { NavBar } from './components';
 import styled from '@emotion/styled';
 import { PATH } from './constants';
 import GlobalStyles from './GlobalStyles';
-import { MainPage, NewPostPage, PostPage } from './pages';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { login } from './redux/actions/userAction';
-
-import LoginCallback from './pages/LoginCallback';
+import { MainPage, NewPostPage, PostPage, LoginCallbackPage } from './pages';
 
 const Content = styled.div`
   max-width: 128rem;
@@ -25,7 +20,7 @@ const App = () => {
           <Switch>
             <Route exact path={PATH.ROOT} component={MainPage} />
             <Route exact path={PATH.LOGIN_CALLBACK}>
-              <LoginCallback />
+              <LoginCallbackPage />
             </Route>
             <Route exact path={PATH.NEW_POST} component={NewPostPage} />
             <Route exact path={`${PATH.POST}/:id`} component={PostPage} />

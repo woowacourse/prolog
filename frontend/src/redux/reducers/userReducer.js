@@ -1,9 +1,11 @@
 import { LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE } from '../actions/userAction';
+import ls from 'local-storage';
+import { API } from '../../constants';
 
 const initialState = {
   accessToken: {
     loading: false,
-    data: '',
+    data: ls.get(API.ACCESS_TOKEN),
     error: null,
   },
 };
