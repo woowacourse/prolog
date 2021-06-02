@@ -53,8 +53,8 @@ const Logo = styled.img`
 
 const Menu = styled.div`
   display: flex;
-  & > button:not(:last-child) {
-    margin-right: 1.6rem;
+  button:not(:first-child) {
+    margin-left: 1.6rem;
   }
 `;
 
@@ -104,7 +104,7 @@ const NavBar = () => {
         <Menu role="menu">
           <Button size="X_SMALL" icon={SearchIcon} type="button" css={whiteBackgroundStyle} />
           {isLogin ? (
-            <div>
+            <>
               <Button size="X_SMALL" icon={PencilIcon} type="button" onClick={goNewPost} />
               <Button
                 size="X_SMALL"
@@ -124,7 +124,7 @@ const NavBar = () => {
                   </ul>
                 </DropdownMenu>
               )}
-            </div>
+            </>
           ) : (
             <GithubLogin>
               <Button size="SMALL" type="button" icon={NoProfileImage} css={whiteBackgroundStyle}>
