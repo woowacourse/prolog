@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { Redirect, useHistory } from 'react-router';
 import LogoImage from '../../assets/images/logo.svg';
 import { PATH } from '../../constants';
 import GithubLogin from '../GithubLogin/GithubLogin';
@@ -103,7 +103,7 @@ const NavBar = () => {
         <Logo src={LogoImage} alt="STUDYLOG 로고" onClick={goMain} role="link" />
         <Menu role="menu">
           <Button size="X_SMALL" icon={SearchIcon} type="button" css={whiteBackgroundStyle} />
-          {true ? (
+          {isLogin ? (
             <>
               <Button size="X_SMALL" icon={PencilIcon} type="button" onClick={goNewPost} />
               <Button

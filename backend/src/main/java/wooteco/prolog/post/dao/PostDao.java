@@ -5,21 +5,21 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import wooteco.prolog.category.application.dto.CategoryResponse;
 import wooteco.prolog.post.application.dto.AuthorResponse;
+import wooteco.prolog.post.domain.Content;
 import wooteco.prolog.post.domain.Post;
+import wooteco.prolog.post.domain.Title;
 
 import java.sql.PreparedStatement;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 
 /*
 TODO 1. 멤버가 추가되면 하드 코딩된 AuthorResponse 제거
-TODO 2. Category
+TODO 2. Mission
  */
 
 @Repository
@@ -33,17 +33,17 @@ public class PostDao {
                 long memberId = rs.getLong("member_id");
                 LocalDateTime createdAt = rs.getTimestamp("createdAt").toLocalDateTime();
                 LocalDateTime updatedAt = rs.getTimestamp("updatedAt").toLocalDateTime();
-                long categoryId = rs.getLong("category_id");
+                long missionId = rs.getLong("mission_id");
                 String title = rs.getString("title");
                 String content = rs.getString("content");
                 return new Post(id,
                         new AuthorResponse(1L, "웨지", "https://i.ytimg.com/vi/3etKkkna-f0/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLAhRhV8s0gUJe5yCOFctyEkGZFgTw"),
                         createdAt,
                         updatedAt,
-                        new CategoryResponse(1L, "엄청나게 어려워서 머리 아픈 미션"),
-                        title,
-                        Arrays.asList("이미지", "진짜링크임", "들어가면 웨지사진 있음"),
-                        content
+                        new Title(title),
+                        new Content(content),
+                        missionId,
+                        Collections.emptyList()
                 );
             };
 
@@ -57,7 +57,7 @@ public class PostDao {
     }
 
     public Post insert(Post post) {
-        String query = "INSERT INTO post(member_id, createdAt, updatedAt, title, content, category_id) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO post(member_id, title, content, mission_id) VALUES (?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         this.jdbcTemplate.update(con -> {
@@ -65,11 +65,9 @@ public class PostDao {
                     query,
                     new String[]{"id"});
             pstmt.setLong(1, 1L); // TODO : MEMBER ID
-            pstmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setString(4, post.getTitle());
-            pstmt.setString(5, post.getContent());
-            pstmt.setLong(6, post.getCategory().getId());
+            pstmt.setString(2, post.getTitle());
+            pstmt.setString(3, post.getContent());
+            pstmt.setLong(4, post.getMissionId());
             return pstmt;
         }, keyHolder);
         long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
@@ -77,15 +75,13 @@ public class PostDao {
     }
 
     public void insert(List<Post> posts) {
-        String query = "INSERT INTO post(member_id, createdAt, updatedAt, title, content, category_id) VALUES(?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO post(member_id, title, content, mission_id) VALUES(?, ?, ?, ?)";
 
         this.jdbcTemplate.batchUpdate(query, posts, posts.size(), (pstmt, post) -> {
             pstmt.setLong(1, 1L);
-            pstmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-            pstmt.setString(4, post.getTitle());
-            pstmt.setString(5, post.getContent());
-            pstmt.setLong(6, post.getCategory().getId());
+            pstmt.setString(2, post.getTitle());
+            pstmt.setString(3, post.getContent());
+            pstmt.setLong(4, post.getMissionId());
         });
     }
 

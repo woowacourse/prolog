@@ -8,18 +8,14 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from './redux/actions/userAction';
 
+import LoginCallback from './pages/LoginCallback';
+
 const Content = styled.div`
   max-width: 128rem;
   margin: 6rem auto;
 `;
 
 const App = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(login());
-  }, [dispatch]);
-
   return (
     <>
       <GlobalStyles />
@@ -28,6 +24,9 @@ const App = () => {
         <Content>
           <Switch>
             <Route exact path={PATH.ROOT} component={MainPage} />
+            <Route exact path={PATH.LOGIN_CALLBACK}>
+              <LoginCallback />
+            </Route>
             <Route exact path={PATH.NEW_POST} component={NewPostPage} />
             <Route exact path={`${PATH.POST}/:id`} component={PostPage} />
             <Redirect to={PATH.ROOT} />

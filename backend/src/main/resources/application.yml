@@ -8,13 +8,19 @@ logging:
 security:
   jwt:
     token:
-      secret-key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.ih1aovtQShabQ7l0cINw4k1fagApg3qLWiB8Kt59Lno
+      secret-key: xpzmzhtmvmfhrmvmfhwprxm
       expire-length: 3600000
 
 server:
   port: 5000
+  error:
+    include-message: always
+    include-binding-errors: always
 
 github:
   client:
     id: f91b56445e08d44adb76
     secret: f02769f780ed3d40f9db9283f5b7cc79ecf9074e
+  url:
+    access-token: https://github.com/login/oauth/access_token
+    profile: https://api.github.com/user

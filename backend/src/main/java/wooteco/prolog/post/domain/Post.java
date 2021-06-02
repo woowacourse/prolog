@@ -1,44 +1,41 @@
 package wooteco.prolog.post.domain;
 
-import wooteco.prolog.category.application.dto.CategoryResponse;
+import lombok.EqualsAndHashCode;
 import wooteco.prolog.post.application.dto.AuthorResponse;
+import wooteco.prolog.tag.domain.Tag;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
-// Todo : Author, Category 도메인 객체로 변경해야 함
+// Todo : Author, mission 도메인 객체로 변경해야 함
+@EqualsAndHashCode(of = "id")
 public class Post {
     private Long id;
     private AuthorResponse author;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private CategoryResponse category;
-    private String title;
-    private List<String> tags;
-    private String content;
+    private Title title;
+    private Content content;
+    private Long missionId;
+    private List<Tag> tags;
 
-    public Post(Long id, AuthorResponse author, LocalDateTime createdAt, LocalDateTime updatedAt, CategoryResponse category, String title, List<String> tags, String content) {
+    public Post(Long id, AuthorResponse author, LocalDateTime createdAt, LocalDateTime updatedAt, Title title, Content content, Long missionId, List<Tag> tags) {
         this.id = id;
         this.author = author;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.category = new CategoryResponse(1L, "엄청나게 어려운 미션");
         this.title = title;
-        this.tags = tags;
         this.content = content;
+        this.missionId = missionId;
+        this.tags = tags;
     }
 
-    public Post(Long id, String title, List<String> tags, String content) {
-        this(id, null, null, null, null, title, tags, content);
-    }
-
-    public Post(String title, List<String> tags, String content) {
-        this(null, null, null, null, null, title, tags, content);
+    public Post(String title, String content, Long missionId, List<Tag> tags) {
+        this(null, null, null, null, new Title(title), new Content(content), missionId, tags);
     }
 
     public static Post of(Long id, Post post) {
-        return new Post(id, post.author, post.createdAt, post.updatedAt, post.category, post.title, post.tags, post.content);
+        return new Post(id, post.author, post.createdAt, post.updatedAt, post.title, post.content, post.missionId, post.tags);
     }
 
     public Long getId() {
@@ -57,32 +54,19 @@ public class Post {
         return updatedAt;
     }
 
-    public CategoryResponse getCategory() {
-        return category;
+    public Long getMissionId() {
+        return missionId;
     }
 
     public String getTitle() {
-        return title;
+        return title.getTitle();
     }
 
-    public List<String> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
     public String getContent() {
-        return content;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Post post = (Post) o;
-        return Objects.equals(id, post.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+        return content.getContent();
     }
 }

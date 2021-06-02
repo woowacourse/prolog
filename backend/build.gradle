@@ -24,6 +24,10 @@ dependencies {
 	// jwt
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
+	// login binding
+	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.4'
+
+
 	// test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.rest-assured:spring-mock-mvc:3.3.0'
@@ -32,6 +36,10 @@ dependencies {
 	// rest docs
 	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.5.RELEASE'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-restassured:2.0.5.RELEASE'
+
+	//lombok
+	compileOnly 'org.projectlombok:lombok:1.18.20'
+	annotationProcessor 'org.projectlombok:lombok'
 
 	runtimeOnly 'com.h2database:h2'
 }
@@ -56,16 +64,9 @@ bootJar {
 	}
 }
 
-task testDocument(type: Test) {
-	useJUnitPlatform()
-	filter {
-		includeTestsMatching "*.documentation.*"
-	}
-}
-
 task createDocument(type: Copy) {
-	dependsOn test
+	dependsOn asciidoctor
 
 	from file("build/asciidoc/html5/index.html")
-	into file("src/main/resources/static/docs")
+	into file("src/main/resources/static")
 }

@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("/posts")
 public class PostController {
 
-    private PostService postService;
+    private final PostService postService;
 
     public PostController(PostService postService) {
         this.postService = postService;
@@ -21,12 +21,15 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<Void> createPost(@RequestBody List<PostRequest> postRequests) {
-        PostResponse postResponse = postService.insertLogs(postRequests);
-        return ResponseEntity.created(URI.create("/posts/" + postResponse.getId())).build();
+        List<PostResponse> postResponse = postService.insertLogs(postRequests);
+        return ResponseEntity.created(URI.create("/posts/" + postResponse.get(0).getId())).build();
     }
 
     @GetMapping
-    public ResponseEntity<List<PostResponse>> showAll() {
+    public ResponseEntity<List<PostResponse>> showAll(
+        @RequestParam(required = false) List<String> missions,
+        @RequestParam(required = false) List<String> tags
+    ) {
         List<PostResponse> postResponses = postService.findAll();
         return ResponseEntity.ok(postResponses);
     }
