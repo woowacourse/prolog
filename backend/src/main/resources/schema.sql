@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS postTag ;
 DROP TABLE IF EXISTS post ;
 DROP TABLE IF EXISTS tag ;
-DROP TABLE IF EXISTS category ;
+DROP TABLE IF EXISTS mission ;
 DROP TABLE IF EXISTS member;
 
 -- -----------------------------------------------------
@@ -15,14 +15,14 @@ CREATE TABLE IF NOT EXISTS post
     updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     title VARCHAR(50) NOT NULL,
     content TEXT NOT NULL,
-    category_id BIGINT NOT NULL,
+    mission_id BIGINT NOT NULL,
     PRIMARY KEY (id)
 );
 
 -- -----------------------------------------------------
--- Table category
+-- Table mission
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS category
+CREATE TABLE IF NOT EXISTS mission
 (
     id BIGINT NOT NULL AUTO_INCREMENT,
     name VARCHAR(45) NOT NULL,

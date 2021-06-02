@@ -23,12 +23,12 @@ public class TagDocumentation extends Documentation {
     void post() {
         RestAssured
                 .given(spec).log().all()
-                .filter(document("category/list",
+                .filter(document("mission/list",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/categories")
+                .when().get("/missions")
                 .then().log().all().extract();
     }
 
