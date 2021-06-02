@@ -29,4 +29,17 @@ public class LoginDocumentation extends Documentation {
                 .then().log().all()
                 .extract().as(TokenResponse.class);
     }
+
+    @Test
+    void findMember() {
+        RestAssured
+                .given(spec).log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .filter(document("members/me",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
+                .when().get("/members/me")
+                .then().log().all()
+                .extract();
+    }
 }
