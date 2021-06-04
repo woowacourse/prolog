@@ -15,22 +15,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
 public class MissionDocumentation extends Documentation {
-    @Test
-    void post() {
-        RestAssured
-                .given(spec).log().all()
-                .filter(document("mission/list",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())))
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/missions")
-                .then().log().all().extract();
-    }
 
     @DisplayName("미션을 조회한다.")
     @Test
@@ -46,7 +32,6 @@ public class MissionDocumentation extends Documentation {
                 .when()
                 .get("/missions")
                 .then()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .log().all()
                 .extract();
 
