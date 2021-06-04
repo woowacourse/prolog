@@ -1,6 +1,5 @@
 package wooteco.prolog.tag;
 
-import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
@@ -15,24 +14,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
 public class TagDocumentation extends Documentation {
-    @Test
-    void post() {
-        RestAssured
-                .given(spec).log().all()
-                .filter(document("mission/list",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())))
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/missions")
-                .then().log().all().extract();
-    }
-
-
     @Test
     void 태그를_생성한다() {
         // given
