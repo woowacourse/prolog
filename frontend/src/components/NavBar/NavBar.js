@@ -2,8 +2,8 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Redirect, useHistory } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import LogoImage from '../../assets/images/logo.svg';
 import { PATH } from '../../constants';
 import GithubLogin from '../GithubLogin/GithubLogin';
@@ -12,6 +12,7 @@ import Button from '../Button/Button';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
 import NoProfileImage from '../../assets/images/no-profile-image.png';
 import SearchIcon from '../../assets/images/search_icon.svg';
+import { getProfile } from '../../redux/actions/userAction';
 
 const DropdownToggledStyle = css`
   &:before {
@@ -69,6 +70,7 @@ const whiteBackgroundStyle = css`
 
 const NavBar = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.user.accessToken.data);
 
   const [isDropdownToggled, setDropdownToggled] = useState(false);
@@ -76,7 +78,10 @@ const NavBar = () => {
   const isLogin = !!accessToken;
 
   useEffect(() => {
-    isLogin && history.push(PATH.ROOT);
+    if (isLogin) {
+      dispatch(getProfile(accessToken));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLogin]);
 
   const goMain = () => {

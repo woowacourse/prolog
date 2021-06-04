@@ -10,3 +10,13 @@ include::{snippets}/login/token/http-request.adoc[]
 ==== Response
 
 include::{snippets}/login/token/http-response.adoc[]
+
+=== 멤버 정보 요청
+
+==== Request
+
+include::{snippets}/members/me/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/members/me/http-response.adoc[]
