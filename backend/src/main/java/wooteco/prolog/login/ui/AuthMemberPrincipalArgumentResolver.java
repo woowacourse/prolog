@@ -29,12 +29,11 @@ public class AuthMemberPrincipalArgumentResolver implements HandlerMethodArgumen
     @Override
     public Member resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         String credentials = AuthorizationExtractor.extract(webRequest.getNativeRequest(HttpServletRequest.class));
-        Long id;
         try {
-            id = Long.valueOf(jwtTokenProvider.extractSubject(credentials));
+            Long id = Long.valueOf(jwtTokenProvider.extractSubject(credentials));
+            return memberService.findById(id);
         } catch (NumberFormatException e) {
             throw new TokenNotValidException("유효하지 않은 토큰입니다.");
         }
-        return memberService.findById(id);
     }
 }
