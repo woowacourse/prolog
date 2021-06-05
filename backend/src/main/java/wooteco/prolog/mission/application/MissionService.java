@@ -1,6 +1,7 @@
 package wooteco.prolog.mission.application;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.mission.application.dto.MissionRequest;
 import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.mission.dao.MissionDao;
@@ -20,6 +21,7 @@ public class MissionService {
         this.missionDao = missionDao;
     }
 
+    @Transactional
     public MissionResponse create(MissionRequest missionRequest) {
         validateName(missionRequest.getName());
 
