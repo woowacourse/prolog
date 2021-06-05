@@ -14,19 +14,19 @@ public class LoginDocumentation extends Documentation {
         TokenRequest params = new TokenRequest(code);
 
         given("login/token")
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(params)
-            .when().post("/login/token")
-            .then().log().all()
-            .extract().as(TokenResponse.class);
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(params)
+                .when().post("/login/token")
+                .then().log().all()
+                .extract().as(TokenResponse.class);
     }
 
     @Test
     void findMember() {
         given("members/me")
-            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-            .when().get("/members/me")
-            .then().log().all()
-            .extract();
+                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+                .when().get("/members/me")
+                .then().log().all()
+                .extract();
     }
 }

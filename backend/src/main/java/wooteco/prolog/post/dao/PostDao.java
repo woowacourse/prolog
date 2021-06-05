@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 
 /*
@@ -54,6 +55,26 @@ public class PostDao {
     public List<Post> findAll() {
         String query = "SELECT * FROM post";
         return this.jdbcTemplate.query(query, postRowMapper);
+    }
+
+    public List<Post> findWithFilter(List<Long> missions, List<Long> tags) {
+        String query = "SELECT * FROM post AS po LEFT JOIN postTag AS pt ON po.id = pt.post_id WHERE 1=1";
+        query += createDynamicColumnQuery("mission_id", missions, "po");
+        query += createDynamicColumnQuery("tag_id", tags, "pt");
+
+        Object[] dynamicElements = Stream.concat(missions.stream(), tags.stream()).toArray();
+        return this.jdbcTemplate.query(query, postRowMapper, dynamicElements);
+    }
+
+    private String createDynamicColumnQuery(String columnName, List<Long> columnIds, String tableName) {
+        if (columnIds.isEmpty()) {
+            return "";
+        }
+        String missionDynamicQuery = " AND " + tableName + "." + columnName + " IN (";
+        String questionMarks = String.join(",", Collections.nCopies(columnIds.size(), "?"));
+        missionDynamicQuery += questionMarks;
+        missionDynamicQuery += ")";
+        return missionDynamicQuery;
     }
 
     public Post insert(Post post) {
