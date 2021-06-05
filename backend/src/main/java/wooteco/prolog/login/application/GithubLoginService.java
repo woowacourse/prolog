@@ -6,6 +6,7 @@ import wooteco.prolog.login.application.dto.TokenRequest;
 import wooteco.prolog.login.application.dto.TokenResponse;
 import wooteco.prolog.login.dao.MemberDao;
 import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.login.excetpion.TokenNotValidException;
 
 @Service
 public class GithubLoginService {
@@ -30,6 +31,12 @@ public class GithubLoginService {
         Member member = findOrCreateMember(githubProfile);
         String accessToken = jwtTokenProvider.createToken(member);
         return TokenResponse.of(accessToken);
+    }
+
+    public void validateToken(String credentials) {
+        if (!jwtTokenProvider.validateToken(credentials)) {
+            throw new TokenNotValidException("JWT 토큰이 유효하지 않습니다.");
+        }
     }
 
     private Member findOrCreateMember(GithubProfileResponse githubProfile) {
