@@ -1,5 +1,6 @@
 package wooteco.prolog.login.ui;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,7 @@ import wooteco.prolog.login.domain.Member;
 @RequestMapping("/members")
 public class MemberController {
 
-    @GetMapping("/me")
+    @GetMapping(value = "/me", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MemberResponse> findMemberInfo(@AuthMemberPrincipal Member member) {
         return ResponseEntity.ok().body(MemberResponse.of(member));
     }

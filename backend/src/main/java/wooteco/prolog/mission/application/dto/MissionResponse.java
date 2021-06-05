@@ -9,7 +9,6 @@ import wooteco.prolog.mission.domain.Mission;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@EqualsAndHashCode
 public class MissionResponse {
     private Long id;
     private String name;

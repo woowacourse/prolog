@@ -22,7 +22,7 @@ public class LoginConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor(githubLoginService))
-                .addPathPatterns("/members/me")
+                .addPathPatterns("/members/**")
                 .excludePathPatterns("/**");
     }
 

@@ -1,7 +1,6 @@
 package wooteco.prolog.post.application.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.mission.application.dto.MissionResponse;
@@ -18,7 +17,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@EqualsAndHashCode
 public class PostResponse {
     private Long id;
     private AuthorResponse author;

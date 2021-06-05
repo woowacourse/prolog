@@ -1,10 +1,9 @@
 package wooteco.prolog.login;
 
-import io.restassured.RestAssured;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import wooteco.prolog.AcceptanceTest;
@@ -19,7 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static wooteco.prolog.Documentation.MEMBER1;
 
-
+@ExtendWith(MockitoExtension.class)
 public class LoginAcceptanceTest extends AcceptanceTest {
     @MockBean
     GithubClient githubClient;
