@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class TagAcceptanceTest extends AcceptanceTest {
 
     @Test
-    void 태그를_생성한다() {
+    public void 태그를_생성한다() {
         // given
         List<TagRequest> tagRequests = Arrays.asList(
                 new TagRequest("자바"),

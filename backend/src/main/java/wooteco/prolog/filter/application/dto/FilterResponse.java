@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@EqualsAndHashCode
 public class FilterResponse {
     private List<MissionResponse> missions;
     private List<TagResponse> tags;

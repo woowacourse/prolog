@@ -13,8 +13,12 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.annotation.DirtiesContext;
 import wooteco.prolog.login.application.GithubLoginService;
+import wooteco.prolog.login.application.JwtTokenProvider;
+import wooteco.prolog.login.application.MemberService;
 import wooteco.prolog.login.application.dto.TokenRequest;
 import wooteco.prolog.login.application.dto.TokenResponse;
+import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.login.domain.Role;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -26,6 +30,8 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ExtendWith(RestDocumentationExtension.class)
 public class Documentation {
+    public static Member MEMBER1 = new Member(1L, "쏘로로롱", Role.CREW, 1L, "https://avatars.githubusercontent.com/u/52682603?v=4");
+
     @LocalServerPort
     int port;
 
@@ -33,6 +39,12 @@ public class Documentation {
 
     @MockBean
     private GithubLoginService githubLoginService;
+
+    @MockBean
+    private JwtTokenProvider tokenProvider;
+
+    @MockBean
+    private MemberService memberService;
 
     protected TokenResponse 로그인_사용자;
 
@@ -46,7 +58,11 @@ public class Documentation {
 
         String code = "1234567890qazwsxedcrfvtgbyhnujmiklop";
         TokenRequest params = new TokenRequest(code);
-        when(githubLoginService.createToken(any())).thenReturn(TokenResponse.of("asdf.adsf.adsf"));
+        when(githubLoginService.createToken(any())).thenReturn(TokenResponse.of("asdf.asdf.asdf"));
+
+        when(tokenProvider.extractSubject(any())).thenReturn("1");
+
+        when(memberService.findById(1L)).thenReturn(MEMBER1);
 
         로그인_사용자 = RestAssured
                 .given(spec).log().all()
