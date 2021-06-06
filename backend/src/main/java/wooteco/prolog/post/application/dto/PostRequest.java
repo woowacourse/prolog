@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.tag.domain.Tag;
 import wooteco.prolog.tag.dto.TagRequest;
@@ -20,11 +21,11 @@ public class PostRequest {
     private Long missionId;
     private List<TagRequest> tags;
 
-    public Post toEntity() {
+    public Post toEntity(Member member) {
         List<Tag> tagEntities = tags.stream()
                 .map(TagRequest::toEntity)
                 .collect(Collectors.toList());
 
-        return new Post(title, content, missionId, tagEntities);
+        return new Post(member, title, content, missionId, tagEntities);
     }
 }

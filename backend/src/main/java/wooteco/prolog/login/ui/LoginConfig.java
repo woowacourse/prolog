@@ -16,18 +16,17 @@ import java.util.List;
 public class LoginConfig implements WebMvcConfigurer {
 
     private final GithubLoginService githubLoginService;
-    private final MemberService memberService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final AuthMemberPrincipalArgumentResolver authMemberPrincipalArgumentResolver;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor(githubLoginService))
                 .addPathPatterns("/members/**")
-                .excludePathPatterns("/**");
+                .addPathPatterns("/posts");
     }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new AuthMemberPrincipalArgumentResolver(memberService, jwtTokenProvider));
+        resolvers.add(authMemberPrincipalArgumentResolver);
     }
 }

@@ -25,6 +25,10 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        if (HttpMethod.GET.matches(request.getMethod())) {
+            return true;
+        }
+
         githubLoginService.validateToken(AuthorizationExtractor.extract(request));
         return true;
     }

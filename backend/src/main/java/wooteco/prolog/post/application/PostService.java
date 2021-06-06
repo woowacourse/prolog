@@ -2,6 +2,8 @@ package wooteco.prolog.post.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.login.application.dto.MemberResponse;
+import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
@@ -54,30 +56,30 @@ public class PostService {
     }
 
     @Transactional
-    public List<PostResponse> insertPosts(List<PostRequest> postRequests) {
+    public List<PostResponse> insertPosts(Member member, List<PostRequest> postRequests) {
         if (postRequests.size() == 0) {
             throw new PostArgumentException("최소 1개의 글이 있어야 합니다.");
         }
 
         return postRequests.stream()
-                .map(this::insertPost)
+                .map(postRequest -> insertPost(member, postRequest))
                 .collect(Collectors.toList());
     }
 
-    private PostResponse insertPost(PostRequest postRequest) {
+    private PostResponse insertPost(Member member, PostRequest postRequest) {
         List<TagResponse> tagResponses = tagService.create(postRequest.getTags());
         List<Long> tagIds = tagResponses.stream()
                 .map(TagResponse::getId)
                 .collect(Collectors.toList());
 
-        Post requestedPost = postRequest.toEntity();
+        Post requestedPost = postRequest.toEntity(member);
         Post createdPost = postDao.insert(requestedPost);
         tagService.addTagToPost(createdPost.getId(), tagIds);
 
         MissionResponse missionResponse = missionService.findById(requestedPost.getMissionId());
         return new PostResponse(
                 createdPost.getId(),
-                createdPost.getAuthor(),
+                MemberResponse.of(createdPost.getMember()),
                 createdPost.getCreatedAt(),
                 createdPost.getUpdatedAt(),
                 missionResponse,
