@@ -7,7 +7,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.login.domain.Role;
-import wooteco.prolog.post.application.dto.AuthorResponse;
 import wooteco.prolog.post.domain.Content;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.post.domain.Title;

@@ -2,6 +2,7 @@ package wooteco.prolog.login.ui;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import wooteco.prolog.login.application.AuthorizationExtractor;
 import wooteco.prolog.login.application.GithubLoginService;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
+@Component
 @AllArgsConstructor
 public class LoginInterceptor implements HandlerInterceptor {
 

@@ -3,7 +3,6 @@ package wooteco.prolog.post.domain;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import wooteco.prolog.login.domain.Member;
-import wooteco.prolog.post.application.dto.AuthorResponse;
 import wooteco.prolog.tag.domain.Tag;
 
 import java.time.LocalDateTime;

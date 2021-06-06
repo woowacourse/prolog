@@ -15,12 +15,12 @@ import java.util.List;
 @AllArgsConstructor
 public class LoginConfig implements WebMvcConfigurer {
 
-    private final GithubLoginService githubLoginService;
     private final AuthMemberPrincipalArgumentResolver authMemberPrincipalArgumentResolver;
+    private final LoginInterceptor loginInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginInterceptor(githubLoginService))
+        registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/members/**")
                 .addPathPatterns("/posts");
     }

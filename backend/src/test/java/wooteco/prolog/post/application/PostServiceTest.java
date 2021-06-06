@@ -15,7 +15,6 @@ import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.login.domain.Role;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionRequest;
-import wooteco.prolog.post.application.dto.AuthorResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.domain.Post;
