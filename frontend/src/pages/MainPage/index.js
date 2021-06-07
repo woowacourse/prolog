@@ -6,6 +6,7 @@ import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
 import useGetFetch from '../../hooks/useGetFetch';
+import { getPosts } from '../../service/requests';
 
 const HeaderContainer = styled.div`
   height: 6.4rem;
@@ -62,7 +63,7 @@ const CardHoverStyle = css`
 
 const MainPage = () => {
   const history = useHistory();
-  const { response: postList, error } = useGetFetch([], 'getAllData');
+  const [postList, error] = useGetFetch([], getPosts);
   const [selectedFilter, setSelectedFilter] = useState('');
   // if (error) {
   //   return <>글이 없습니다.</>;
@@ -104,13 +105,13 @@ const MainPage = () => {
       </HeaderContainer>
       <PostListContainer>
         {postList.map((post) => {
-          const { id, author, category, title, tags } = post;
+          const { id, author, mission, title, tags } = post;
 
           return (
             <Card key={id} size="SMALL" css={CardHoverStyle} onClick={goTargetPost(id)}>
               <Content>
                 <Description>
-                  <Category>{category.categoryName}</Category>
+                  <Category>{mission.name}</Category>
                   <Title>{title}</Title>
                   <Tags>
                     {tags.map((tag) => (

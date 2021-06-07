@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useParams } from 'react-router';
 import { Card, ProfileChip } from '../../components';
 import useGetFetch from '../../hooks/useGetFetch';
+import { getPost } from '../../service/requests';
 
 const CardInner = styled.div`
   display: flex;
@@ -56,7 +57,7 @@ const ProfileChipStyle = css`
 
 const PostPage = () => {
   const { id: postId } = useParams();
-  const { response: post, error } = useGetFetch({}, 'getData', postId);
+  const [post, error] = useGetFetch({}, () => getPost(postId));
   const { id, author, createdAt, category, title, tags, content } = post;
 
   if (error) {
