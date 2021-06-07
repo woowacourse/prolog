@@ -8,7 +8,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
+import wooteco.prolog.login.application.dto.MemberResponse;
+import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.login.domain.Role;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionRequest;
 import wooteco.prolog.post.application.dto.PostRequest;
@@ -34,20 +38,33 @@ class PostServiceTest {
     public static final Tag FOURTH_TAG = new Tag("집필왕웨지");
     public static final Tag FIFTH_TAG = new Tag("피케이");
 
-    private static final Post FIRST_POST = new Post("이것은 제목", "피케이와 포모의 포스트", 1L, Arrays.asList(FIRST_TAG, SECOND_TAG));
-    private static final Post SECOND_POST = new Post("이것은 두번째 제목", "피케이와 포모의 포스트 2", 1L, Arrays.asList(THIRD_TAG, FOURTH_TAG));
-    private static final Post THIRD_POST = new Post("이것은 3 제목", "피케이 포스트", 2L, Arrays.asList(FOURTH_TAG, FIFTH_TAG));
-    private static final Post FOURTH_POST = new Post("이것은 네번 제목", "포모의 포스트", 2L, Arrays.asList(FIRST_TAG, FIFTH_TAG));
+    private static final Member FIRST_MEMBER = new Member(1L, "웨지", Role.CREW, 123456789L, "https://www.youtube.com/watch?v=3etKkkna-f0&t=6s");
+    private static final Member SECOND_MEMBER = new Member(2L, "피카", Role.CREW, 2L, "image");
+
+    private static final Post FIRST_POST = new Post(FIRST_MEMBER, "이것은 제목", "피케이와 포모의 포스트", 1L, Arrays.asList(FIRST_TAG, SECOND_TAG));
+    private static final Post SECOND_POST = new Post(FIRST_MEMBER, "이것은 두번째 제목", "피케이와 포모의 포스트 2", 1L, Arrays.asList(THIRD_TAG, FOURTH_TAG));
+    private static final Post THIRD_POST = new Post(FIRST_MEMBER, "이것은 3 제목", "피케이 포스트", 2L, Arrays.asList(FOURTH_TAG, FIFTH_TAG));
+    private static final Post FOURTH_POST = new Post(FIRST_MEMBER, "이것은 네번 제목", "포모의 포스트", 2L, Arrays.asList(FIRST_TAG, FIFTH_TAG));
 
     @Autowired
     private PostService postService;
     @Autowired
     private MissionService missionService;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @BeforeEach
     void setUp() {
         missionService.create(new MissionRequest("자동차 1주차 미션"));
         missionService.create(new MissionRequest("로또 미션"));
+        insertTestMember(FIRST_MEMBER, SECOND_MEMBER);
+    }
+
+    private void insertTestMember(Member firstMember, Member secondMember) {
+        String sql = "INSERT INTO member (id, nickname, role, github_id, image_url) VALUES (?, ?, ?, ?, ?)";
+
+        jdbcTemplate.update(sql, firstMember.getId(), firstMember.getNickname(), firstMember.getRole().name(), firstMember.getGithubId(), firstMember.getImageUrl());
+        jdbcTemplate.update(sql, secondMember.getId(), firstMember.getNickname(), secondMember.getRole().name(), secondMember.getGithubId(), secondMember.getImageUrl());
     }
 
     @DisplayName("필터 검색")
@@ -112,19 +129,30 @@ class PostServiceTest {
         );
 
         //when
-        List<PostRequest> postRequests = Arrays.asList(postRequest1, postRequest2, postRequest3, postRequest4);
-        List<PostResponse> postResponses = postService.insertPosts(postRequests);
+        List<PostRequest> postRequestsOfFirstMember = Arrays.asList(postRequest1, postRequest2);
+        List<PostResponse> postResponsesOfFirstMember = postService.insertPosts(FIRST_MEMBER, postRequestsOfFirstMember);
+
+        List<PostRequest> postRequestsOfSecondMember = Arrays.asList(postRequest3, postRequest4);
+        List<PostResponse> postResponsesOfSecondMember = postService.insertPosts(SECOND_MEMBER, postRequestsOfSecondMember);
 
         //then
-        List<String> titles = postResponses.stream()
+        List<String> titles = Stream.concat(postResponsesOfFirstMember.stream(), postResponsesOfSecondMember.stream())
                 .map(PostResponse::getTitle)
                 .collect(Collectors.toList());
+
         assertThat(titles).contains(
                 FIRST_POST.getTitle(),
                 SECOND_POST.getTitle(),
                 THIRD_POST.getTitle(),
                 FOURTH_POST.getTitle()
         );
+
+        List<String> members = Stream.concat(postResponsesOfFirstMember.stream(), postResponsesOfSecondMember.stream())
+                .map(PostResponse::getAuthor)
+                .map(MemberResponse::getNickname)
+                .collect(Collectors.toList());
+
+        assertThat(members).contains(FIRST_MEMBER.getNickname(), SECOND_MEMBER.getNickname());
     }
 
     private List<TagRequest> toTagRequests(List<Tag> tags) {

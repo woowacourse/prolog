@@ -2,6 +2,8 @@ package wooteco.prolog.post.ui;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import wooteco.prolog.login.domain.AuthMemberPrincipal;
+import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.post.application.PostService;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
@@ -20,15 +22,15 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createPost(@RequestBody List<PostRequest> postRequests) {
-        List<PostResponse> postResponse = postService.insertPosts(postRequests);
+    public ResponseEntity<Void> createPost(@AuthMemberPrincipal Member member, @RequestBody List<PostRequest> postRequests) {
+        List<PostResponse> postResponse = postService.insertPosts(member, postRequests);
         return ResponseEntity.created(URI.create("/posts/" + postResponse.get(0).getId())).build();
     }
 
     @GetMapping
     public ResponseEntity<List<PostResponse>> showAll(
-        @RequestParam(required = false) List<Long> missions,
-        @RequestParam(required = false) List<Long> tags
+            @RequestParam(required = false) List<Long> missions,
+            @RequestParam(required = false) List<Long> tags
     ) {
         List<PostResponse> postResponses = postService.findPostsWithFilter(missions, tags);
 
