@@ -3,23 +3,20 @@ package wooteco.prolog.post.application.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wooteco.prolog.login.application.dto.MemberResponse;
 import wooteco.prolog.mission.application.dto.MissionResponse;
-import wooteco.prolog.post.domain.Content;
 import wooteco.prolog.post.domain.Post;
-import wooteco.prolog.post.domain.Title;
-import wooteco.prolog.tag.domain.Tag;
 import wooteco.prolog.tag.dto.TagResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 public class PostResponse {
     private Long id;
-    private AuthorResponse author;
+    private MemberResponse author;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private MissionResponse mission;
@@ -30,7 +27,7 @@ public class PostResponse {
     public PostResponse(Post post, MissionResponse missionResponse, List<TagResponse> tagResponses) {
         this(
                 post.getId(),
-                post.getAuthor(),
+                MemberResponse.of(post.getMember()),
                 post.getCreatedAt(),
                 post.getUpdatedAt(),
                 missionResponse,

@@ -5,9 +5,16 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
 import wooteco.prolog.AcceptanceTest;
+import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.login.ui.LoginInterceptor;
 import wooteco.prolog.mission.application.dto.MissionRequest;
 import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
@@ -22,20 +29,32 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
+import static wooteco.prolog.Documentation.MEMBER1;
 
 
+@ExtendWith(MockitoExtension.class)
 public class PostAcceptanceTest extends AcceptanceTest {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     private PostRequest firstPost;
     private PostRequest secondPost;
-    List<PostRequest> postRequests;
+    private List<PostRequest> postRequests;
 
-    MissionRequest missionRequest1;
-    MissionRequest missionRequest2;
+    private MissionRequest missionRequest1;
+    private MissionRequest missionRequest2;
+
+    @MockBean
+    LoginInterceptor loginInterceptor;
 
     @BeforeEach
     public void setUp() {
         super.setUp();
+
+        when(loginInterceptor.preHandle(any(), any(), any())).thenReturn(true);
 
         missionRequest1 = new MissionRequest("backend 지하철 3차 미션");
         missionRequest2 = new MissionRequest("FRONTEND 지하철 3차 미션");
@@ -68,6 +87,14 @@ public class PostAcceptanceTest extends AcceptanceTest {
                 firstPost,
                 secondPost
         );
+
+        insertTestMember(MEMBER1);
+    }
+
+    private void insertTestMember(Member member) {
+        String sql = "INSERT INTO member (id, nickname, role, github_id, image_url) VALUES (?, ?, ?, ?, ?)";
+
+        jdbcTemplate.update(sql, member.getId(), member.getNickname(), member.getRole().name(), member.getGithubId(), member.getImageUrl());
     }
 
     private ExtractableResponse<Response> 글을_작성한다(List<PostRequest> postRequests) {

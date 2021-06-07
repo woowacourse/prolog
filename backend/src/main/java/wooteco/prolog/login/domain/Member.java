@@ -1,7 +1,11 @@
 package wooteco.prolog.login.domain;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 
+@Getter
+@EqualsAndHashCode(of = "id")
 public class Member {
 
     private final Long id;
@@ -31,23 +35,4 @@ public class Member {
         );
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public Long getGithubId() {
-        return githubId;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
 }
