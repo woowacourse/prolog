@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { Button, Card, FilterList, ProfileChip } from '../../components';
@@ -6,7 +6,7 @@ import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
 import useFetch from '../../hooks/useFetch';
-import { getPosts, getFilters } from '../../service/requests';
+import { getPosts, getFilters, getFilteredPosts } from '../../service/requests';
 
 const HeaderContainer = styled.div`
   height: 6.4rem;
@@ -63,9 +63,13 @@ const CardHoverStyle = css`
 
 const MainPage = () => {
   const history = useHistory();
+
+  const [posts, setPosts] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState('');
+  const [selectedMissionFilterId, setSelecetedMissionFilterId] = useState(0);
+
   const [postList] = useFetch([], getPosts);
   const [filters] = useFetch([], getFilters);
-  const [selectedFilter, setSelectedFilter] = useState('');
   // if (error) {
   //   return <>글이 없습니다.</>;
   // }
@@ -74,6 +78,25 @@ const MainPage = () => {
     history.push(`${PATH.POST}/${id}`);
   };
 
+  useEffect(() => {
+    if (selectedMissionFilterId === 0) return;
+    const getFilterdData = async () => {
+      try {
+        const response = await getFilteredPosts(selectedMissionFilterId);
+
+        setPosts(await response.json());
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getFilterdData();
+  }, [selectedMissionFilterId]);
+
+  useEffect(() => {
+    setPosts(postList);
+  }, [postList]);
+
   return (
     <>
       <HeaderContainer>
@@ -81,6 +104,7 @@ const MainPage = () => {
           filters={filters}
           selectedFilter={selectedFilter}
           setSelectedFilter={setSelectedFilter}
+          setSelecetedMissionFilterId={setSelecetedMissionFilterId}
         />
         <Button
           type="button"
@@ -93,7 +117,7 @@ const MainPage = () => {
         </Button>
       </HeaderContainer>
       <PostListContainer>
-        {postList.map((post) => {
+        {posts?.map((post) => {
           const { id, author, mission, title, tags } = post;
 
           return (

@@ -13,7 +13,7 @@ const useFetch = (defaultValue, callback) => {
       }
 
       const json = await response.json();
-
+      console.log(json);
       setResponse(json);
     } catch (error) {
       console.error(error);
