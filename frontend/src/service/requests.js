@@ -1,11 +1,11 @@
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-const getPosts = () => fetch(`${BASE_URL}/posts`);
+const requestGetPosts = () => fetch(`${BASE_URL}/posts`);
 
-const getPost = (id) => fetch(`${BASE_URL}/posts/${id}`);
+const requestGetPost = (postId) => fetch(`${BASE_URL}/posts/${postId}`);
 
-const getFilters = () => fetch(`${BASE_URL}/filters`);
+const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
 
-const getFilteredPosts = (missionId) => fetch(`${BASE_URL}/posts?missions=${missionId}`);
+const requestGetFilteredPosts = (missionId) => fetch(`${BASE_URL}/posts?missions=${missionId}`);
 
-export { getPosts, getPost, getFilters, getFilteredPosts };
+export { requestGetPosts, requestGetPost, requestGetFilters, requestGetFilteredPosts };

@@ -6,7 +6,11 @@ import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
 import useFetch from '../../hooks/useFetch';
-import { getPosts, getFilters, getFilteredPosts } from '../../service/requests';
+import {
+  requestGetPosts,
+  requestGetFilters,
+  requestGetFilteredPosts,
+} from '../../service/requests';
 
 const HeaderContainer = styled.div`
   height: 6.4rem;
@@ -66,10 +70,10 @@ const MainPage = () => {
 
   const [posts, setPosts] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState('');
-  const [selectedMissionFilterId, setSelecetedMissionFilterId] = useState(0);
+  const [selectedFilterMissionId, setSelecetedFilterMissionId] = useState(0);
 
-  const [postList] = useFetch([], getPosts);
-  const [filters] = useFetch([], getFilters);
+  const [postList] = useFetch([], requestGetPosts);
+  const [filters] = useFetch([], requestGetFilters);
   // if (error) {
   //   return <>글이 없습니다.</>;
   // }
@@ -79,10 +83,11 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    if (selectedMissionFilterId === 0) return;
+    if (selectedFilterMissionId === 0) return;
+
     const getFilterdData = async () => {
       try {
-        const response = await getFilteredPosts(selectedMissionFilterId);
+        const response = await requestGetFilteredPosts(selectedFilterMissionId);
 
         setPosts(await response.json());
       } catch (error) {
@@ -91,7 +96,7 @@ const MainPage = () => {
     };
 
     getFilterdData();
-  }, [selectedMissionFilterId]);
+  }, [selectedFilterMissionId]);
 
   useEffect(() => {
     setPosts(postList);
@@ -104,7 +109,7 @@ const MainPage = () => {
           filters={filters}
           selectedFilter={selectedFilter}
           setSelectedFilter={setSelectedFilter}
-          setSelecetedMissionFilterId={setSelecetedMissionFilterId}
+          setSelecetedFilterMissionId={setSelecetedFilterMissionId}
         />
         <Button
           type="button"
