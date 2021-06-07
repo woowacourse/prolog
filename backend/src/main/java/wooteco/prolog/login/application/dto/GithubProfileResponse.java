@@ -1,7 +1,11 @@
 package wooteco.prolog.login.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class GithubProfileResponse {
 
     @JsonProperty("name")
@@ -10,16 +14,6 @@ public class GithubProfileResponse {
     private String githubId;
     @JsonProperty("avatar_url")
     private String imageUrl;
-
-    public GithubProfileResponse() {
-
-    }
-
-    public GithubProfileResponse(String nickname, String githubId, String imageUrl) {
-        this.nickname = nickname;
-        this.githubId = githubId;
-        this.imageUrl = imageUrl;
-    }
 
     public String getNickname() {
         return nickname;

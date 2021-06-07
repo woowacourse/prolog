@@ -41,6 +41,15 @@ public class MemberDao {
         return new Member(id, member.getNickname(), member.getRole(), member.getGithubId(), member.getImageUrl());
     }
 
+    public Optional<Member> findById(final Long userId) {
+        String sql = "SELECT * FROM MEMBER WHERE id = ?";
+        List<Member> result = jdbcTemplate.query(sql, rowMapper, userId);
+        if (result.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(result.get(0));
+    }
+
     public Optional<Member> findByGithubId(final Long githubId) {
         String sql = "SELECT * FROM MEMBER WHERE github_id = ?";
         List<Member> result = jdbcTemplate.query(sql, rowMapper, githubId);

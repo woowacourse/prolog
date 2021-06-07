@@ -15,11 +15,12 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 
 /*
 TODO 1. 멤버가 추가되면 하드 코딩된 AuthorResponse 제거
-TODO 2. Category
+TODO 2. Mission
  */
 
 @Repository
@@ -33,7 +34,7 @@ public class PostDao {
                 long memberId = rs.getLong("member_id");
                 LocalDateTime createdAt = rs.getTimestamp("createdAt").toLocalDateTime();
                 LocalDateTime updatedAt = rs.getTimestamp("updatedAt").toLocalDateTime();
-                long categoryId = rs.getLong("category_id");
+                long missionId = rs.getLong("mission_id");
                 String title = rs.getString("title");
                 String content = rs.getString("content");
                 return new Post(id,
@@ -42,7 +43,7 @@ public class PostDao {
                         updatedAt,
                         new Title(title),
                         new Content(content),
-                        categoryId,
+                        missionId,
                         Collections.emptyList()
                 );
             };
@@ -56,8 +57,28 @@ public class PostDao {
         return this.jdbcTemplate.query(query, postRowMapper);
     }
 
+    public List<Post> findWithFilter(List<Long> missions, List<Long> tags) {
+        String query = "SELECT * FROM post AS po LEFT JOIN postTag AS pt ON po.id = pt.post_id WHERE 1=1";
+        query += createDynamicColumnQuery("mission_id", missions, "po");
+        query += createDynamicColumnQuery("tag_id", tags, "pt");
+
+        Object[] dynamicElements = Stream.concat(missions.stream(), tags.stream()).toArray();
+        return this.jdbcTemplate.query(query, postRowMapper, dynamicElements);
+    }
+
+    private String createDynamicColumnQuery(String columnName, List<Long> columnIds, String tableName) {
+        if (columnIds.isEmpty()) {
+            return "";
+        }
+        String missionDynamicQuery = " AND " + tableName + "." + columnName + " IN (";
+        String questionMarks = String.join(",", Collections.nCopies(columnIds.size(), "?"));
+        missionDynamicQuery += questionMarks;
+        missionDynamicQuery += ")";
+        return missionDynamicQuery;
+    }
+
     public Post insert(Post post) {
-        String query = "INSERT INTO post(member_id, title, content, category_id) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO post(member_id, title, content, mission_id) VALUES (?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         this.jdbcTemplate.update(con -> {
@@ -67,7 +88,7 @@ public class PostDao {
             pstmt.setLong(1, 1L); // TODO : MEMBER ID
             pstmt.setString(2, post.getTitle());
             pstmt.setString(3, post.getContent());
-            pstmt.setLong(4, post.getCategoryId());
+            pstmt.setLong(4, post.getMissionId());
             return pstmt;
         }, keyHolder);
         long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
@@ -75,13 +96,13 @@ public class PostDao {
     }
 
     public void insert(List<Post> posts) {
-        String query = "INSERT INTO post(member_id, title, content, category_id) VALUES(?, ?, ?, ?)";
+        String query = "INSERT INTO post(member_id, title, content, mission_id) VALUES(?, ?, ?, ?)";
 
         this.jdbcTemplate.batchUpdate(query, posts, posts.size(), (pstmt, post) -> {
             pstmt.setLong(1, 1L);
             pstmt.setString(2, post.getTitle());
             pstmt.setString(3, post.getContent());
-            pstmt.setLong(4, post.getCategoryId());
+            pstmt.setLong(4, post.getMissionId());
         });
     }
 

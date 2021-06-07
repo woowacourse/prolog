@@ -1,39 +1,42 @@
 package wooteco.prolog.post.application.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.category.application.dto.CategoryResponse;
+import wooteco.prolog.mission.application.dto.MissionResponse;
+import wooteco.prolog.post.domain.Content;
 import wooteco.prolog.post.domain.Post;
+import wooteco.prolog.post.domain.Title;
+import wooteco.prolog.tag.domain.Tag;
 import wooteco.prolog.tag.dto.TagResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@EqualsAndHashCode
 public class PostResponse {
     private Long id;
     private AuthorResponse author;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private CategoryResponse category;
+    private MissionResponse mission;
     private String title;
     private String content;
     private List<TagResponse> tags;
 
-    public PostResponse(Post post, CategoryResponse categoryResponse, List<TagResponse> tagResponses) {
+    public PostResponse(Post post, MissionResponse missionResponse, List<TagResponse> tagResponses) {
         this(
                 post.getId(),
                 post.getAuthor(),
                 post.getCreatedAt(),
                 post.getUpdatedAt(),
-                categoryResponse,
+                missionResponse,
                 post.getTitle(),
                 post.getContent(),
                 tagResponses);
     }
+
 }

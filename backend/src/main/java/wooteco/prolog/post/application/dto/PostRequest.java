@@ -14,11 +14,10 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@EqualsAndHashCode
 public class PostRequest {
     private String title;
     private String content;
-    private Long categoryId;
+    private Long missionId;
     private List<TagRequest> tags;
 
     public Post toEntity() {
@@ -26,6 +25,6 @@ public class PostRequest {
                 .map(TagRequest::toEntity)
                 .collect(Collectors.toList());
 
-        return new Post(title, content, categoryId, tagEntities);
+        return new Post(title, content, missionId, tagEntities);
     }
 }

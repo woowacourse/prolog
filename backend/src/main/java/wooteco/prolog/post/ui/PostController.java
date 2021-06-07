@@ -21,13 +21,17 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<Void> createPost(@RequestBody List<PostRequest> postRequests) {
-        List<PostResponse> postResponse = postService.insertLogs(postRequests);
+        List<PostResponse> postResponse = postService.insertPosts(postRequests);
         return ResponseEntity.created(URI.create("/posts/" + postResponse.get(0).getId())).build();
     }
 
     @GetMapping
-    public ResponseEntity<List<PostResponse>> showAll() {
-        List<PostResponse> postResponses = postService.findAll();
+    public ResponseEntity<List<PostResponse>> showAll(
+        @RequestParam(required = false) List<Long> missions,
+        @RequestParam(required = false) List<Long> tags
+    ) {
+        List<PostResponse> postResponses = postService.findPostsWithFilter(missions, tags);
+
         return ResponseEntity.ok(postResponses);
     }
 
