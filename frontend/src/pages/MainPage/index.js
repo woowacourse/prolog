@@ -6,7 +6,7 @@ import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
 import useGetFetch from '../../hooks/useGetFetch';
-import { getPosts } from '../../service/requests';
+import { getPosts, getFilters } from '../../service/requests';
 
 const HeaderContainer = styled.div`
   height: 6.4rem;
@@ -63,7 +63,8 @@ const CardHoverStyle = css`
 
 const MainPage = () => {
   const history = useHistory();
-  const [postList, error] = useGetFetch([], getPosts);
+  const [postList] = useGetFetch([], getPosts);
+  const [filters] = useGetFetch([], getFilters);
   const [selectedFilter, setSelectedFilter] = useState('');
   // if (error) {
   //   return <>글이 없습니다.</>;
@@ -71,18 +72,6 @@ const MainPage = () => {
 
   const goTargetPost = (id) => () => {
     history.push(`${PATH.POST}/${id}`);
-  };
-
-  const filters = {
-    프로젝트: [
-      { id: 1, name: '자동차경주' },
-      { id: 2, name: '로또' },
-    ],
-
-    태그: [
-      { id: 1, name: '자바스크립트' },
-      { id: 2, name: '리액트' },
-    ],
   };
 
   return (

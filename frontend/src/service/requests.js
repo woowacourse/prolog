@@ -4,4 +4,6 @@ const getPosts = () => fetch(`${BASE_URL}/posts`);
 
 const getPost = (id) => fetch(`${BASE_URL}/posts/${id}`);
 
-export { getPosts, getPost };
+const getFilters = () => fetch(`${BASE_URL}/filters`);
+
+export { getPosts, getPost, getFilters };
