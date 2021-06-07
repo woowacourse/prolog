@@ -36,7 +36,7 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public List<PostResponse> findWithFilter(List<Long> missions, List<Long> tags) {
+    public List<PostResponse> findPostsWithFilter(List<Long> missions, List<Long> tags) {
         missions = nullToEmptyList(missions);
         tags = nullToEmptyList(tags);
 

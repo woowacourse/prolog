@@ -52,13 +52,13 @@ class PostServiceTest {
 
     @DisplayName("필터 검색")
     @ParameterizedTest
-    @MethodSource
+    @MethodSource("findWithFilter")
     void findWithFilter(List<Long> missions, List<Long> tags, List<String> expectedTitles) {
         //given
         insertPosts();
 
         //when
-        List<PostResponse> postResponsesWithFilter = postService.findWithFilter(missions, tags);
+        List<PostResponse> postResponsesWithFilter = postService.findPostsWithFilter(missions, tags);
 
         //then
         List<String> titles = postResponsesWithFilter.stream()
@@ -87,28 +87,28 @@ class PostServiceTest {
                 FIRST_POST.getTitle(),
                 FIRST_POST.getContent(),
                 FIRST_POST.getMissionId(),
-                toTagDtos(FIRST_POST.getTags())
+                toTagRequests(FIRST_POST.getTags())
         );
 
         PostRequest postRequest2 = new PostRequest(
                 SECOND_POST.getTitle(),
                 SECOND_POST.getContent(),
                 SECOND_POST.getMissionId(),
-                toTagDtos(SECOND_POST.getTags())
+                toTagRequests(SECOND_POST.getTags())
         );
 
         PostRequest postRequest3 = new PostRequest(
                 THIRD_POST.getTitle(),
                 THIRD_POST.getContent(),
                 THIRD_POST.getMissionId(),
-                toTagDtos(THIRD_POST.getTags())
+                toTagRequests(THIRD_POST.getTags())
         );
 
         PostRequest postRequest4 = new PostRequest(
                 FOURTH_POST.getTitle(),
                 FOURTH_POST.getContent(),
                 FOURTH_POST.getMissionId(),
-                toTagDtos(FOURTH_POST.getTags())
+                toTagRequests(FOURTH_POST.getTags())
         );
 
         //when
@@ -127,7 +127,7 @@ class PostServiceTest {
         );
     }
 
-    private List<TagRequest> toTagDtos(List<Tag> tags) {
+    private List<TagRequest> toTagRequests(List<Tag> tags) {
         return tags.stream()
                 .map(tag -> new TagRequest(tag.getName()))
                 .collect(Collectors.toList());

@@ -30,7 +30,7 @@ public class PostController {
         @RequestParam(required = false) List<Long> missions,
         @RequestParam(required = false) List<Long> tags
     ) {
-        List<PostResponse> postResponses = postService.findWithFilter(missions, tags);
+        List<PostResponse> postResponses = postService.findPostsWithFilter(missions, tags);
 
         return ResponseEntity.ok(postResponses);
     }
