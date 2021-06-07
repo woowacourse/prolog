@@ -4,11 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.mission.application.dto.MissionResponse;
+import wooteco.prolog.post.domain.Content;
 import wooteco.prolog.post.domain.Post;
+import wooteco.prolog.post.domain.Title;
+import wooteco.prolog.tag.domain.Tag;
 import wooteco.prolog.tag.dto.TagResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor

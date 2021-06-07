@@ -12,7 +12,9 @@ import wooteco.prolog.post.exception.PostArgumentException;
 import wooteco.prolog.tag.TagService;
 import wooteco.prolog.tag.dto.TagResponse;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,18 +36,35 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
+    public List<PostResponse> findPostsWithFilter(List<Long> missions, List<Long> tags) {
+        missions = nullToEmptyList(missions);
+        tags = nullToEmptyList(tags);
+
+        List<Post> posts = postDao.findWithFilter(missions, tags);
+        return posts.stream()
+                .map(post -> findById(post.getId()))
+                .collect(Collectors.toList());
+    }
+
+    private List<Long> nullToEmptyList(List<Long> filters) {
+        if (Objects.isNull(filters)) {
+            filters = Collections.emptyList();
+        }
+        return filters;
+    }
+
     @Transactional
-    public List<PostResponse> insertLogs(List<PostRequest> postRequests) {
+    public List<PostResponse> insertPosts(List<PostRequest> postRequests) {
         if (postRequests.size() == 0) {
             throw new PostArgumentException("최소 1개의 글이 있어야 합니다.");
         }
 
         return postRequests.stream()
-                .map(this::insertLog)
+                .map(this::insertPost)
                 .collect(Collectors.toList());
     }
 
-    private PostResponse insertLog(PostRequest postRequest) {
+    private PostResponse insertPost(PostRequest postRequest) {
         List<TagResponse> tagResponses = tagService.create(postRequest.getTags());
         List<Long> tagIds = tagResponses.stream()
                 .map(TagResponse::getId)
@@ -73,4 +92,5 @@ public class PostService {
         MissionResponse missionResponse = missionService.findById(post.getMissionId());
         return new PostResponse(post, missionResponse, tagResponses);
     }
+
 }

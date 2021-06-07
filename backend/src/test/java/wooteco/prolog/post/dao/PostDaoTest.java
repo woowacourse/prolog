@@ -1,29 +1,34 @@
 package wooteco.prolog.post.dao;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.test.annotation.DirtiesContext;
 import wooteco.prolog.post.domain.Post;
+import wooteco.prolog.tag.dao.TagDao;
 import wooteco.prolog.tag.domain.Tag;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.setRemoveAssertJRelatedElementsFromStackTrace;
 
 @JdbcTest
-class PostDaoTest {
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+public class PostDaoTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
     private PostDao postDao;
 
-    public static final Post FIRST_POST = new Post("이것은 제목", "피케이와 포모의 포스트", 1L, Arrays.asList(new Tag("자바"), new Tag("스프링")));
-    public static final Post SECOND_POST = new Post("이것은 두번째 제목", "피케이와 포모의 포스트 2", 1L, Arrays.asList(new Tag("자바"), new Tag("스프링")));
-    public static final Post THIRD_POST = new Post("이것은 3 제목", "피케이 포스트", 1L, Arrays.asList(new Tag("자바"), new Tag("스프링")));
-    public static final Post FOURTH_POST = new Post("이것은 네번 제목", "포모의 포스트", 1L, Arrays.asList(new Tag("자바"), new Tag("스프링")));
+    public static final Post FIRST_POST = new Post("이것은 제목", "피케이와 포모의 포스트", 1L, Arrays.asList(new Tag("소롱의글쓰기"), new Tag("스프링")));
+    public static final Post SECOND_POST = new Post("이것은 두번째 제목", "피케이와 포모의 포스트 2", 1L, Arrays.asList(new Tag("자바"), new Tag("집필왕웨지")));
+    public static final Post THIRD_POST = new Post("이것은 3 제목", "피케이 포스트", 2L, Arrays.asList(new Tag("자바"), new Tag("피케이")));
+    public static final Post FOURTH_POST = new Post("이것은 네번 제목", "포모의 포스트", 2L, Arrays.asList(new Tag("감자튀기기"), new Tag("집필왕웨지")));
 
     @BeforeEach
     void setUp() {
