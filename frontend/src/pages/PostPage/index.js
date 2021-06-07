@@ -79,8 +79,8 @@ const PostPage = () => {
         </Header>
         <Content>{content}</Content>
         <Tags>
-          {tags?.map((tag) => (
-            <span key={tag}>{`#${tag} `}</span>
+          {tags?.map(({ id, name }) => (
+            <span key={id}>{`#${name} `}</span>
           ))}
         </Tags>
       </CardInner>

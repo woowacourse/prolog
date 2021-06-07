@@ -103,8 +103,8 @@ const MainPage = () => {
                   <Category>{mission.name}</Category>
                   <Title>{title}</Title>
                   <Tags>
-                    {tags.map((tag) => (
-                      <span key={tag}>{`#${tag} `}</span>
+                    {tags.map(({ id, name }) => (
+                      <span key={id}>{`#${name} `}</span>
                     ))}
                   </Tags>
                 </Description>
