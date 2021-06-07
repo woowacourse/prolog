@@ -5,7 +5,7 @@ import { Button, Card, FilterList, ProfileChip } from '../../components';
 import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
-import useGetFetch from '../../hooks/useGetFetch';
+import useFetch from '../../hooks/useFetch';
 import { getPosts, getFilters } from '../../service/requests';
 
 const HeaderContainer = styled.div`
@@ -63,8 +63,8 @@ const CardHoverStyle = css`
 
 const MainPage = () => {
   const history = useHistory();
-  const [postList] = useGetFetch([], getPosts);
-  const [filters] = useGetFetch([], getFilters);
+  const [postList] = useFetch([], getPosts);
+  const [filters] = useFetch([], getFilters);
   const [selectedFilter, setSelectedFilter] = useState('');
   // if (error) {
   //   return <>글이 없습니다.</>;

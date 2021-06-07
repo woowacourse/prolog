@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useGetFetch = (defaultValue, callback) => {
+const useFetch = (defaultValue, callback) => {
   const [response, setResponse] = useState(defaultValue);
   const [error, setError] = useState('');
 
@@ -28,4 +28,4 @@ const useGetFetch = (defaultValue, callback) => {
   return [response, error];
 };
 
-export default useGetFetch;
+export default useFetch;
