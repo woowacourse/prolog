@@ -1,31 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { Button, Card, ProfileChip } from '../../components';
+import { Button, Card, FilterList, ProfileChip } from '../../components';
 import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
-import useGetFetch from '../../hooks/useGetFetch';
+import useFetch from '../../hooks/useFetch';
+import {
+  requestGetPosts,
+  requestGetFilters,
+  requestGetFilteredPosts,
+} from '../../service/requests';
 
 const HeaderContainer = styled.div`
   height: 6.4rem;
   display: flex;
   margin-bottom: 3.7rem;
   justify-content: space-between;
-`;
-
-const FilterList = styled.div`
-  background-color: #f4f4f4;
-  border: 1px solid #707070;
-  border-radius: 2rem;
-  padding: 1rem 3rem;
-
-  & button {
-    height: 100%;
-    margin-right: 2rem;
-    font-size: 2rem;
-    text-align: center;
-  }
 `;
 
 const PostListContainer = styled.div`
@@ -76,8 +67,13 @@ const CardHoverStyle = css`
 
 const MainPage = () => {
   const history = useHistory();
-  const { response: postList, error } = useGetFetch([], 'getAllData');
 
+  const [posts, setPosts] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState('');
+  const [selectedFilterMissionId, setSelecetedFilterMissionId] = useState(0);
+
+  const [postList] = useFetch([], requestGetPosts);
+  const [filters] = useFetch([], requestGetFilters);
   // if (error) {
   //   return <>글이 없습니다.</>;
   // }
@@ -86,14 +82,35 @@ const MainPage = () => {
     history.push(`${PATH.POST}/${id}`);
   };
 
+  useEffect(() => {
+    if (selectedFilterMissionId === 0) return;
+
+    const getFilterdData = async () => {
+      try {
+        const response = await requestGetFilteredPosts(selectedFilterMissionId);
+
+        setPosts(await response.json());
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getFilterdData();
+  }, [selectedFilterMissionId]);
+
+  useEffect(() => {
+    setPosts(postList);
+  }, [postList]);
+
   return (
     <>
       <HeaderContainer>
-        <FilterList>
-          <button>필터 1</button>
-          <button>필터 2</button>
-          <button>필터 3</button>
-        </FilterList>
+        <FilterList
+          filters={filters}
+          selectedFilter={selectedFilter}
+          setSelectedFilter={setSelectedFilter}
+          setSelecetedFilterMissionId={setSelecetedFilterMissionId}
+        />
         <Button
           type="button"
           size="MEDIUM"
@@ -105,18 +122,18 @@ const MainPage = () => {
         </Button>
       </HeaderContainer>
       <PostListContainer>
-        {postList.map((post) => {
-          const { id, author, category, title, tags } = post;
+        {posts?.map((post) => {
+          const { id, author, mission, title, tags } = post;
 
           return (
             <Card key={id} size="SMALL" css={CardHoverStyle} onClick={goTargetPost(id)}>
               <Content>
                 <Description>
-                  <Category>{category.categoryName}</Category>
+                  <Category>{mission.name}</Category>
                   <Title>{title}</Title>
                   <Tags>
-                    {tags.map((tag) => (
-                      <span key={tag}>{`#${tag} `}</span>
+                    {tags.map(({ id, name }) => (
+                      <span key={id}>{`#${name} `}</span>
                     ))}
                   </Tags>
                 </Description>
