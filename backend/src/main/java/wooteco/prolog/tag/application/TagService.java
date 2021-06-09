@@ -1,4 +1,4 @@
-package wooteco.prolog.tag;
+package wooteco.prolog.tag.application;
 
 import org.springframework.stereotype.Service;
 import wooteco.prolog.tag.dao.PostTagDao;

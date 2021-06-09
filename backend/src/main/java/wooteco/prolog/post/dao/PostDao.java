@@ -1,6 +1,7 @@
 package wooteco.prolog.post.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -10,19 +11,17 @@ import wooteco.prolog.login.domain.Role;
 import wooteco.prolog.post.domain.Content;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.post.domain.Title;
+import wooteco.prolog.tag.domain.Tag;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Stream;
 
 
 /*
-TODO 1. 멤버가 추가되면 하드 코딩된 AuthorResponse 제거
 TODO 2. Mission
  */
 
@@ -31,30 +30,56 @@ public class PostDao {
 
     private JdbcTemplate jdbcTemplate;
 
-    private static RowMapper<Post> postRowMapper =
-            (rs, rowNum) -> {
-                Member member = extractMember(rs);
-
-                long id = rs.getLong("id");
-                LocalDateTime createdAt = rs.getTimestamp("createdAt").toLocalDateTime();
-                LocalDateTime updatedAt = rs.getTimestamp("updatedAt").toLocalDateTime();
-                long missionId = rs.getLong("mission_id");
-                String title = rs.getString("title");
-                String content = rs.getString("content");
-
-                return new Post(id,
-                        member,
-                        createdAt,
-                        updatedAt,
-                        new Title(title),
-                        new Content(content),
-                        missionId,
-                        Collections.emptyList()
-                );
-            };
-
     public PostDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    private static ResultSetExtractor<List<Post>> postsResultSetExtractor = rs -> {
+        List<Post> posts = new ArrayList<>();
+
+        while (rs.next()) {
+            Long id = rs.getLong("id");
+
+            Post existPost = posts.stream()
+                    .filter(it -> it.getId() == id)
+                    .findFirst()
+                    .orElse(null);
+
+            if (existPost == null) {
+                Post post = extractPost(rs);
+                posts.add(post);
+            } else {
+                Long tagId = rs.getLong("tag_id");
+                existPost.addTadId(tagId);
+            }
+        }
+        return posts;
+    };
+
+    private static ResultSetExtractor<Post> postResultSetExtractor = rs -> {
+        Post post = null;
+
+        while (rs.next()) {
+            if (post == null) {
+                post = extractPost(rs);
+            } else {
+                Long tagId = rs.getLong("tag_id");
+                post.addTadId(tagId);
+            }
+        }
+        return post;
+    };
+
+    private static Post extractPost(ResultSet rs) throws SQLException {
+        Long id = rs.getLong("id");
+        LocalDateTime createdAt = rs.getTimestamp("createdAt").toLocalDateTime();
+        LocalDateTime updatedAt = rs.getTimestamp("updatedAt").toLocalDateTime();
+        Long missionId = rs.getLong("mission_id");
+        String title = rs.getString("title");
+        String content = rs.getString("content");
+        Long tagId = rs.getLong("tag_id");
+
+        return new Post(id, extractMember(rs), createdAt, updatedAt, new Title(title), new Content(content), missionId, new ArrayList<>(Arrays.asList(tagId)));
     }
 
     private static Member extractMember(ResultSet rs) throws SQLException {
@@ -67,18 +92,26 @@ public class PostDao {
         return new Member(memberId, nickname, role, githubId, imageUrl);
     }
 
+    private static Tag extractTag(ResultSet rs) throws SQLException {
+        long tagId = rs.getLong("tag_id");
+        String tagName = rs.getString("tag_name");
+
+        return new Tag(tagId, tagName);
+    }
+
     public List<Post> findAll() {
-        String query = "SELECT po.id as id, member_id, createdAt, updatedAt, title, content, mission_id, nickname, role, github_id, image_url FROM post AS po LEFT JOIN member AS me ON po.member_id = me.id";
-        return this.jdbcTemplate.query(query, postRowMapper);
+        String query = "SELECT po.id as id, member_id, createdAt, updatedAt, title, content, mission_id, nickname, role, github_id, image_url, tag.id as tag_id FROM post AS po LEFT JOIN member AS me ON po.member_id = me.id LEFT JOIN postTag AS pt ON po.id = pt.post_id LEFT JOIN tag ON pt.tag_id = tag.id";
+        return jdbcTemplate.query(query, postsResultSetExtractor);
     }
 
     public List<Post> findWithFilter(List<Long> missions, List<Long> tags) {
-        String query = "SELECT po.id as id, member_id, createdAt, updatedAt, title, content, mission_id, nickname, role, github_id, image_url, tag_id, post_id FROM post AS po LEFT JOIN member AS me ON po.member_id = me.id LEFT JOIN postTag AS pt ON po.id = pt.post_id WHERE 1=1";
+        String query = "SELECT po.id as id, member_id, createdAt, updatedAt, title, content, mission_id, nickname, role, github_id, image_url, tag.id as tag_id FROM post AS po LEFT JOIN member AS me ON po.member_id = me.id LEFT JOIN postTag AS pt ON po.id = pt.post_id LEFT JOIN tag ON pt.tag_id = tag.id WHERE 1=1";
         query += createDynamicColumnQuery("mission_id", missions);
         query += createDynamicColumnQuery("tag_id", tags);
 
         Object[] dynamicElements = Stream.concat(missions.stream(), tags.stream()).toArray();
-        return this.jdbcTemplate.query(query, postRowMapper, dynamicElements);
+
+        return jdbcTemplate.query(query, postsResultSetExtractor, dynamicElements);
     }
 
     private String createDynamicColumnQuery(String columnName, List<Long> columnIds) {
@@ -100,7 +133,7 @@ public class PostDao {
             PreparedStatement pstmt = con.prepareStatement(
                     query,
                     new String[]{"id"});
-            pstmt.setLong(1, 1L); // TODO : MEMBER ID
+            pstmt.setLong(1, post.getMember().getId());
             pstmt.setString(2, post.getTitle());
             pstmt.setString(3, post.getContent());
             pstmt.setLong(4, post.getMissionId());
@@ -114,7 +147,7 @@ public class PostDao {
         String query = "INSERT INTO post(member_id, title, content, mission_id) VALUES(?, ?, ?, ?)";
 
         this.jdbcTemplate.batchUpdate(query, posts, posts.size(), (pstmt, post) -> {
-            pstmt.setLong(1, 1L);
+            pstmt.setLong(1, post.getMember().getId());
             pstmt.setString(2, post.getTitle());
             pstmt.setString(3, post.getContent());
             pstmt.setLong(4, post.getMissionId());
@@ -122,7 +155,8 @@ public class PostDao {
     }
 
     public Post findById(Long id) {
-        String sql = "SELECT po.id as id, member_id, createdAt, updatedAt, title, content, mission_id, nickname, role, github_id, image_url FROM post AS po LEFT JOIN member AS me ON po.member_id = me.id WHERE po.id = ?";
-        return this.jdbcTemplate.queryForObject(sql, postRowMapper, id);
+        String sql = "SELECT po.id as id, member_id, createdAt, updatedAt, title, content, mission_id, nickname, role, github_id, image_url, tag.id as tag_id FROM post AS po LEFT JOIN member AS me ON po.member_id = me.id LEFT JOIN postTag AS pt ON po.id = pt.post_id LEFT JOIN tag ON pt.tag_id = tag.id WHERE po.id = ?";
+        return jdbcTemplate.query(sql, postResultSetExtractor, id);
     }
+
 }

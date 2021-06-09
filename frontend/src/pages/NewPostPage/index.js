@@ -43,7 +43,7 @@ const options = [
   '마이너스 5점.',
 ];
 
-const tagsMockData = '#학습로그 #에디터 #힘들어';
+const tagsMockData = JSON.parse('[{"name" : "학습로그"}, {"name" : "에디터"}]');
 
 const NewPostPage = () => {
   const [postIds, setPostIds] = useState([nanoid()]);
@@ -59,10 +59,10 @@ const NewPostPage = () => {
     e.preventDefault();
 
     const prologData = cardRefs.current.map(({ title, content, tags }) => ({
-      category,
+      missionId: 1,
       title: title.value,
       content: content.getInstance().getMarkdown(),
-      tags: tagsMockData.match(/#[가-힣a-z]+/g),
+      tags: tagsMockData
     }));
 
     await dispatch(createPost(prologData, accessToken));

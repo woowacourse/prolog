@@ -20,12 +20,4 @@ public class PostRequest {
     private String content;
     private Long missionId;
     private List<TagRequest> tags;
-
-    public Post toEntity(Member member) {
-        List<Tag> tagEntities = tags.stream()
-                .map(TagRequest::toEntity)
-                .collect(Collectors.toList());
-
-        return new Post(member, title, content, missionId, tagEntities);
-    }
 }

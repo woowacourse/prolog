@@ -1,24 +1,20 @@
 package wooteco.prolog.post.dao;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
 import org.springframework.test.annotation.DirtiesContext;
-import wooteco.prolog.login.dao.MemberDao;
 import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.login.domain.Role;
 import wooteco.prolog.post.domain.Post;
-import wooteco.prolog.tag.dao.TagDao;
 import wooteco.prolog.tag.domain.Tag;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.setRemoveAssertJRelatedElementsFromStackTrace;
 
 @JdbcTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -31,10 +27,19 @@ public class PostDaoTest {
     private static final Member FIRST_MEMBER = new Member(1L, "소롱", Role.CREW, 1L, "image");
     private static final Member SECOND_MEMBER = new Member(2L, "피카", Role.CREW, 2L, "image");
 
-    public static final Post FIRST_POST = new Post(FIRST_MEMBER, "이것은 제목", "피케이와 포모의 포스트", 1L, Arrays.asList(new Tag("소롱의글쓰기"), new Tag("스프링")));
-    public static final Post SECOND_POST = new Post(FIRST_MEMBER, "이것은 두번째 제목", "피케이와 포모의 포스트 2", 1L, Arrays.asList(new Tag("자바"), new Tag("집필왕웨지")));
-    public static final Post THIRD_POST = new Post(SECOND_MEMBER, "이것은 3 제목", "피케이 포스트", 2L, Arrays.asList(new Tag("자바"), new Tag("피케이")));
-    public static final Post FOURTH_POST = new Post(SECOND_MEMBER, "이것은 네번 제목", "포모의 포스트", 2L, Arrays.asList(new Tag("감자튀기기"), new Tag("집필왕웨지")));
+    public static final Tag FIRST_TAG = new Tag(1L, "소롱의글쓰기");
+    public static final Tag SECOND_TAG = new Tag(2L, "스프링");
+    public static final Tag THIRD_TAG = new Tag(3L, "감자튀기기");
+    public static final Tag FOURTH_TAG = new Tag(4L, "집필왕웨지");
+    public static final Tag FIFTH_TAG = new Tag(5L, "피케이");
+    public static final List<Tag> tags = Arrays.asList(
+            FIRST_TAG, SECOND_TAG, THIRD_TAG, FOURTH_TAG, FIFTH_TAG
+    );
+
+    private static final Post FIRST_POST = new Post(FIRST_MEMBER, "이것은 제목", "피케이와 포모의 포스트", 1L, Arrays.asList(FIRST_TAG.getId(), SECOND_TAG.getId()));
+    private static final Post SECOND_POST = new Post(FIRST_MEMBER, "이것은 두번째 제목", "피케이와 포모의 포스트 2", 1L, Arrays.asList(THIRD_TAG.getId(), FOURTH_TAG.getId()));
+    private static final Post THIRD_POST = new Post(FIRST_MEMBER, "이것은 3 제목", "피케이 포스트", 2L, Arrays.asList(FOURTH_TAG.getId(), FIFTH_TAG.getId()));
+    private static final Post FOURTH_POST = new Post(FIRST_MEMBER, "이것은 네번 제목", "포모의 포스트", 2L, Arrays.asList(FIRST_TAG.getId(), FIFTH_TAG.getId()));
 
     @BeforeEach
     void setUp() {

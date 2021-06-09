@@ -32,19 +32,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class PostServiceTest {
-    public static final Tag FIRST_TAG = new Tag("소롱의글쓰기");
-    public static final Tag SECOND_TAG = new Tag("스프링");
-    public static final Tag THIRD_TAG = new Tag("감자튀기기");
-    public static final Tag FOURTH_TAG = new Tag("집필왕웨지");
-    public static final Tag FIFTH_TAG = new Tag("피케이");
+    public static final Tag FIRST_TAG = new Tag(1L, "소롱의글쓰기");
+    public static final Tag SECOND_TAG = new Tag(2L, "스프링");
+    public static final Tag THIRD_TAG = new Tag(3L, "감자튀기기");
+    public static final Tag FOURTH_TAG = new Tag(4L, "집필왕웨지");
+    public static final Tag FIFTH_TAG = new Tag(5L, "피케이");
+    public static final List<Tag> tags = Arrays.asList(
+            FIRST_TAG, SECOND_TAG, THIRD_TAG, FOURTH_TAG, FIFTH_TAG
+    );
 
     private static final Member FIRST_MEMBER = new Member(1L, "웨지", Role.CREW, 123456789L, "https://www.youtube.com/watch?v=3etKkkna-f0&t=6s");
     private static final Member SECOND_MEMBER = new Member(2L, "피카", Role.CREW, 2L, "image");
 
-    private static final Post FIRST_POST = new Post(FIRST_MEMBER, "이것은 제목", "피케이와 포모의 포스트", 1L, Arrays.asList(FIRST_TAG, SECOND_TAG));
-    private static final Post SECOND_POST = new Post(FIRST_MEMBER, "이것은 두번째 제목", "피케이와 포모의 포스트 2", 1L, Arrays.asList(THIRD_TAG, FOURTH_TAG));
-    private static final Post THIRD_POST = new Post(FIRST_MEMBER, "이것은 3 제목", "피케이 포스트", 2L, Arrays.asList(FOURTH_TAG, FIFTH_TAG));
-    private static final Post FOURTH_POST = new Post(FIRST_MEMBER, "이것은 네번 제목", "포모의 포스트", 2L, Arrays.asList(FIRST_TAG, FIFTH_TAG));
+    private static final Post FIRST_POST = new Post(FIRST_MEMBER, "이것은 제목", "피케이와 포모의 포스트", 1L, Arrays.asList(FIRST_TAG.getId(), SECOND_TAG.getId()));
+    private static final Post SECOND_POST = new Post(FIRST_MEMBER, "이것은 두번째 제목", "피케이와 포모의 포스트 2", 1L, Arrays.asList(THIRD_TAG.getId(), FOURTH_TAG.getId()));
+    private static final Post THIRD_POST = new Post(FIRST_MEMBER, "이것은 3 제목", "피케이 포스트", 2L, Arrays.asList(FOURTH_TAG.getId(), FIFTH_TAG.getId()));
+    private static final Post FOURTH_POST = new Post(FIRST_MEMBER, "이것은 네번 제목", "포모의 포스트", 2L, Arrays.asList(FIRST_TAG.getId(), FIFTH_TAG.getId()));
 
     @Autowired
     private PostService postService;
@@ -104,28 +107,28 @@ class PostServiceTest {
                 FIRST_POST.getTitle(),
                 FIRST_POST.getContent(),
                 FIRST_POST.getMissionId(),
-                toTagRequests(FIRST_POST.getTags())
+                toTagRequests(FIRST_POST, tags)
         );
 
         PostRequest postRequest2 = new PostRequest(
                 SECOND_POST.getTitle(),
                 SECOND_POST.getContent(),
                 SECOND_POST.getMissionId(),
-                toTagRequests(SECOND_POST.getTags())
+                toTagRequests(SECOND_POST, tags)
         );
 
         PostRequest postRequest3 = new PostRequest(
                 THIRD_POST.getTitle(),
                 THIRD_POST.getContent(),
                 THIRD_POST.getMissionId(),
-                toTagRequests(THIRD_POST.getTags())
+                toTagRequests(THIRD_POST, tags)
         );
 
         PostRequest postRequest4 = new PostRequest(
                 FOURTH_POST.getTitle(),
                 FOURTH_POST.getContent(),
                 FOURTH_POST.getMissionId(),
-                toTagRequests(FOURTH_POST.getTags())
+                toTagRequests(FOURTH_POST, tags)
         );
 
         //when
@@ -153,6 +156,19 @@ class PostServiceTest {
                 .collect(Collectors.toList());
 
         assertThat(members).contains(FIRST_MEMBER.getNickname(), SECOND_MEMBER.getNickname());
+    }
+
+    private List<TagRequest> toTagRequests(Post firstPost, List<Tag> tags) {
+        return firstPost.getTagIds().stream()
+                .map(it -> mapTag(tags, it))
+                .collect(Collectors.toList());
+    }
+
+    private TagRequest mapTag(List<Tag> tags, Long tagId) {
+        return tags.stream()
+                .filter(it -> it.getId() == tagId)
+                .map(it -> new TagRequest(it.getName()))
+                .findFirst().orElseThrow(RuntimeException::new);
     }
 
     private List<TagRequest> toTagRequests(List<Tag> tags) {
