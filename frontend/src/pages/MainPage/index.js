@@ -35,7 +35,7 @@ const Description = styled.div`
   height: 100%;
 `;
 
-const Category = styled.div`
+const Mission = styled.div`
   font-size: 2rem;
   color: #383838;
 `;
@@ -129,7 +129,7 @@ const MainPage = () => {
             <Card key={id} size="SMALL" css={CardHoverStyle} onClick={goTargetPost(id)}>
               <Content>
                 <Description>
-                  <Category>{mission.name}</Category>
+                  <Mission>{mission.name}</Mission>
                   <Title>{title}</Title>
                   <Tags>
                     {tags.map(({ id, name }) => (

@@ -118,11 +118,26 @@ const SelectBox = ({ options, selectedOption, setSelectedOption }) => {
   const $label = useRef(null);
   const $selectorContainer = useRef(null);
 
+  const onCreateOptionList = (e) => {
+    e.preventDefault();
+
+    setSelectItems(getSelectItems());
+  };
+
+  const onCloseOptionList = (e) => {
+    if (!selectItems) return;
+    e.preventDefault();
+
+    if (!$label.current?.contains(e.target)) {
+      setSelectItems(null);
+    }
+  };
+
   useEffect(() => {
-    document.addEventListener('click', onCloseCategoryList);
+    document.addEventListener('click', onCloseOptionList);
 
     return () => {
-      document.removeEventListener('click', onCloseCategoryList);
+      document.removeEventListener('click', onCloseOptionList);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectItems]);
@@ -160,23 +175,8 @@ const SelectBox = ({ options, selectedOption, setSelectedOption }) => {
     </SelectItems>
   );
 
-  const onCreateCategoryList = (e) => {
-    e.preventDefault();
-
-    setSelectItems(getSelectItems());
-  };
-
-  const onCloseCategoryList = (e) => {
-    if (!selectItems) return;
-    e.preventDefault();
-
-    if (!$label.current?.contains(e.target)) {
-      setSelectItems(null);
-    }
-  };
-
   return (
-    <Label ref={$label} onMouseDown={onCreateCategoryList}>
+    <Label ref={$label} onMouseDown={onCreateOptionList}>
       <Select name="mission_subjects" value={selectedOption} readOnly>
         {options.map((option) => (
           <option key={option} value={option}>

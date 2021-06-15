@@ -22,7 +22,7 @@ const SubHeader = styled.div`
   justify-content: space-between;
 `;
 
-const Category = styled.div`
+const Mission = styled.div`
   font-size: 2rem;
   color: #383838;
   font-weight: lighter;
@@ -57,10 +57,10 @@ const ProfileChipStyle = css`
 
 const PostPage = () => {
   const { id: postId } = useParams();
-  const [post, error] = useFetch({}, () => requestGetPost(postId));
-  const { id, author, createdAt, category, title, tags, content } = post;
+  const [post, getPostError] = useFetch({}, () => requestGetPost(postId));
+  const { id, author, createdAt, mission, title, tags, content } = post;
 
-  if (error) {
+  if (getPostError) {
     <>해당 글을 찾을 수 없습니다.</>;
   }
 
@@ -69,7 +69,7 @@ const PostPage = () => {
       <CardInner>
         <Header>
           <SubHeader>
-            <Category>{category?.name}</Category>
+            <Mission>{mission?.name}</Mission>
             <IssuedDate>{Date(createdAt)}</IssuedDate>
           </SubHeader>
           <Title>{title}</Title>
