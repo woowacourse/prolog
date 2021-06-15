@@ -36,7 +36,7 @@ const SubmitButtonStyle = css`
   font-weight: 500;
 `;
 
-const tagsMockData = '#학습로그 #에디터 #힘들어';
+const tagsMockData = JSON.parse('[{"name" : "학습로그"}, {"name" : "에디터"}]');
 
 const NewPostPage = () => {
   const dispatch = useDispatch();
