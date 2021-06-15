@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
@@ -6,6 +6,8 @@ import { SelectBox, Button, BUTTON_SIZE, NewPostCard } from '../../components';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPost } from '../../redux/actions/postAction';
+import useFetch from '../../hooks/useFetch';
+import { requestGetMissions } from '../../service/requests';
 
 // TODO: section 으로 바꾸기 -> aria-label 주기
 const SelectBoxWrapper = styled.div`
@@ -34,24 +36,19 @@ const SubmitButtonStyle = css`
   font-weight: 500;
 `;
 
-const options = [
-  '제가 로이드보다 젊습니다.',
-  '학습로그 안쓰니?',
-  '그 박재성 아닙니다.',
-  '죽여줘 임동준.',
-  '포초리 딱대.',
-  '마이너스 5점.',
-];
-
-const tagsMockData = JSON.parse('[{"name" : "학습로그"}, {"name" : "에디터"}]');
+const tagsMockData = '#학습로그 #에디터 #힘들어';
 
 const NewPostPage = () => {
-  const [postIds, setPostIds] = useState([nanoid()]);
-  const [category, setCategory] = useState(options[0]);
+  const dispatch = useDispatch();
   const history = useHistory();
+
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const { error } = useSelector((state) => state.post.posts);
-  const dispatch = useDispatch();
+
+  const [postIds, setPostIds] = useState([nanoid()]);
+  const [selectedMission, setSelectedMission] = useState('');
+
+  const [missions] = useFetch([], requestGetMissions);
 
   const cardRefs = useRef([]);
 
@@ -59,10 +56,10 @@ const NewPostPage = () => {
     e.preventDefault();
 
     const prologData = cardRefs.current.map(({ title, content, tags }) => ({
-      missionId: 1,
+      missionId: missions.find((mission) => mission.name === selectedMission).id,
       title: title.value,
       content: content.getInstance().getMarkdown(),
-      tags: tagsMockData
+      tags: tagsMockData,
     }));
 
     await dispatch(createPost(prologData, accessToken));
@@ -77,10 +74,20 @@ const NewPostPage = () => {
     history.push('/');
   };
 
+  useEffect(() => {
+    if (missions.length === 0) return;
+
+    setSelectedMission(missions[0].name);
+  }, [missions]);
+
   return (
     <form onSubmit={onFinishWriting}>
       <SelectBoxWrapper>
-        <SelectBox options={options} selectedOption={category} setSelectedOption={setCategory} />
+        <SelectBox
+          options={missions?.map((mission) => mission.name)}
+          selectedOption={selectedMission}
+          setSelectedOption={setSelectedMission}
+        />
       </SelectBoxWrapper>
       <ul>
         {postIds.map((postId, index) => (
