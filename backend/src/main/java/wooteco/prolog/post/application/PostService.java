@@ -11,7 +11,7 @@ import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.dao.PostDao;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.post.exception.PostArgumentException;
-import wooteco.prolog.tag.TagService;
+import wooteco.prolog.tag.application.TagService;
 import wooteco.prolog.tag.dto.TagResponse;
 
 import java.util.Collections;
@@ -34,7 +34,7 @@ public class PostService {
     public List<PostResponse> findAll() {
         List<Post> posts = postDao.findAll();
         return posts.stream()
-                .map(post -> findById(post.getId()))
+                .map(post -> toResponse(post))
                 .collect(Collectors.toList());
     }
 
@@ -44,7 +44,7 @@ public class PostService {
 
         List<Post> posts = postDao.findWithFilter(missions, tags);
         return posts.stream()
-                .map(post -> findById(post.getId()))
+                .map(post -> toResponse(post))
                 .collect(Collectors.toList());
     }
 
@@ -72,7 +72,7 @@ public class PostService {
                 .map(TagResponse::getId)
                 .collect(Collectors.toList());
 
-        Post requestedPost = postRequest.toEntity(member);
+        Post requestedPost = new Post(member, postRequest.getTitle(), postRequest.getContent(), postRequest.getMissionId(), tagIds);
         Post createdPost = postDao.insert(requestedPost);
         tagService.addTagToPost(createdPost.getId(), tagIds);
 
@@ -90,7 +90,11 @@ public class PostService {
 
     public PostResponse findById(Long id) {
         Post post = postDao.findById(id);
-        List<TagResponse> tagResponses = tagService.getTagsOfPost(id);
+        return toResponse(post);
+    }
+
+    private PostResponse toResponse(Post post) {
+        List<TagResponse> tagResponses = tagService.getTagsOfPost(post.getId());
         MissionResponse missionResponse = missionService.findById(post.getMissionId());
         return new PostResponse(post, missionResponse, tagResponses);
     }

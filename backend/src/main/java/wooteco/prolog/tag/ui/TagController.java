@@ -2,7 +2,7 @@ package wooteco.prolog.tag.ui;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import wooteco.prolog.tag.TagService;
+import wooteco.prolog.tag.application.TagService;
 import wooteco.prolog.tag.dto.TagRequest;
 import wooteco.prolog.tag.dto.TagResponse;
 

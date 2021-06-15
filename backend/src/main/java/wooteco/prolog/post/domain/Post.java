@@ -3,12 +3,11 @@ package wooteco.prolog.post.domain;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import wooteco.prolog.login.domain.Member;
-import wooteco.prolog.tag.domain.Tag;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-// Todo : Author, mission 도메인 객체로 변경해야 함
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Post {
@@ -19,14 +18,14 @@ public class Post {
     private Title title;
     private Content content;
     private Long missionId;
-    private List<Tag> tags;
+    private List<Long> tagIds;
 
-    public Post(Member member, String title, String content, Long missionId, List<Tag> tags) {
-        this(null, member, null, null, new Title(title), new Content(content), missionId, tags);
+    public Post(Member member, String title, String content, Long missionId, List<Long> tagIds) {
+        this(null, member, null, null, new Title(title), new Content(content), missionId, tagIds);
     }
 
     public static Post of(Long id, Post post) {
-        return new Post(id, post.member, post.createdAt, post.updatedAt, post.title, post.content, post.missionId, post.tags);
+        return new Post(id, post.member, post.createdAt, post.updatedAt, post.title, post.content, post.missionId, post.tagIds);
     }
 
     public Long getId() {
@@ -49,15 +48,19 @@ public class Post {
         return missionId;
     }
 
+    public List<Long> getTagIds() {
+        return tagIds;
+    }
+
     public String getTitle() {
         return title.getTitle();
     }
 
-    public List<Tag> getTags() {
-        return tags;
-    }
-
     public String getContent() {
         return content.getContent();
+    }
+
+    public void addTadId(Long tagId) {
+        tagIds.add(tagId);
     }
 }

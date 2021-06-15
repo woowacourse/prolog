@@ -39,7 +39,7 @@ public class GithubLoginService {
         }
     }
 
-    private Member findOrCreateMember(GithubProfileResponse githubProfile) {
+    public Member findOrCreateMember(GithubProfileResponse githubProfile) {
         return memberDao.findByGithubId(githubProfile.getGithubId())
                 .orElseGet(() -> memberDao.insert(Member.of(githubProfile)));
     }
