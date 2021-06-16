@@ -5,3 +5,9 @@
 cd backend
 ./gradlew bootRun
 ```
+
+### 로컬 퀵스타트
+```
+cd backend
+./gradlew bootRun --args='--spring.profiles.active=local'
+```
