@@ -1,7 +1,9 @@
 package wooteco.prolog.tag;
 
+import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +18,43 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TagDocumentation extends Documentation {
+
+    @Test
+    void 태그를_가져온다() {
+        // given
+        List<TagRequest> tagRequests = Arrays.asList(
+                new TagRequest("자바"),
+                new TagRequest("파이썬")
+        );
+
+        RestAssured.given()
+                .body(tagRequests)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .post("/tags")
+                .then()
+                .log().all();
+
+        // when
+        ExtractableResponse<Response> response = given("tag/list")
+                .when()
+                .get("/tags")
+                .then()
+                .log().all()
+                .extract();
+
+        // then
+        List<TagResponse> tagResponses = response.jsonPath().getList(".", TagResponse.class);
+        List<String> tagNames = tagResponses.stream()
+                .map(TagResponse::getName)
+                .collect(Collectors.toList());
+        List<String> expectedNames = tagRequests.stream()
+                .map(TagRequest::getName)
+                .collect(Collectors.toList());
+        assertThat(tagNames).usingRecursiveComparison().isEqualTo(expectedNames);
+    }
+
+
     @Test
     void 태그를_생성한다() {
         // given
