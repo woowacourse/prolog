@@ -39,7 +39,8 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   position: relative;
-  max-width: 128rem;
+  max-width: 112rem;
+  padding: 0 4rem;
   height: 100%;
   margin: 0 auto;
   display: flex;

@@ -13,7 +13,7 @@ import {
 } from '../../service/requests';
 
 const HeaderContainer = styled.div`
-  height: 6.4rem;
+  height: 4.8rem;
   display: flex;
   margin-bottom: 3.7rem;
   justify-content: space-between;
@@ -36,18 +36,18 @@ const Description = styled.div`
 `;
 
 const Mission = styled.div`
-  font-size: 2rem;
+  font-size: 1.6rem;
   color: #383838;
 `;
 
 const Title = styled.h3`
-  font-size: 3.6rem;
+  font-size: 2.8rem;
   color: #383838;
   font-weight: bold;
 `;
 
 const Tags = styled.div`
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: #848484;
   margin-top: auto;
 `;
@@ -61,7 +61,7 @@ const CardHoverStyle = css`
   cursor: pointer;
 
   &:hover {
-    transform: scale(1.015);
+    transform: scale(1.005);
   }
 `;
 
@@ -113,7 +113,7 @@ const MainPage = () => {
         />
         <Button
           type="button"
-          size="MEDIUM"
+          size="SMALL"
           icon={PencilIcon}
           alt="글쓰기 아이콘"
           onClick={() => history.push(PATH.NEW_POST)}

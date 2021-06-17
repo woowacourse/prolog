@@ -6,8 +6,9 @@ import GlobalStyles from './GlobalStyles';
 import { MainPage, NewPostPage, PostPage, LoginCallbackPage } from './pages';
 
 const Content = styled.div`
-  max-width: 128rem;
+  max-width: 112rem;
   margin: 6rem auto;
+  padding: 0 4rem;
 `;
 
 const App = () => {
