@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import styled from '@emotion/styled';
 
-import { Card, CARD_SIZE } from '..';
+import { Card, CARD_SIZE, CreatableSelectBox } from '..';
 import { Editor } from '@toast-ui/react-editor';
 
 import 'codemirror/lib/codemirror.css';
@@ -25,26 +25,16 @@ const TitleInput = styled.input`
   }
 `;
 
-const TagInput = styled.input`
-  width: 100%;
-  height: 2.4rem;
-  margin: 1rem 0;
-
-  font-size: 2rem;
-  line-height: 3rem;
-  font-weight: 400;
-
-  border: none;
-  outline: none;
-
-  &::placeholder {
-    font-weight: 300;
-  }
-`;
-
-const NewPostCard = forwardRef(({ postOrder }, ref) => {
+const NewPostCard = forwardRef(({ postOrder, tagOptions }, ref) => {
   const assignRefValue = (key, value) =>
     (ref.current[postOrder] = { ...ref.current[postOrder], [key]: value });
+
+  const selectTag = (newValue, actionMeta) => {
+    if (actionMeta.action === 'create-option') {
+      actionMeta.option.label = '#' + actionMeta.option.label;
+    }
+    assignRefValue('tags', newValue);
+  };
 
   return (
     <Card size={CARD_SIZE.LARGE}>
@@ -62,7 +52,7 @@ const NewPostCard = forwardRef(({ postOrder }, ref) => {
         toolbarItems={['heading', 'bold', 'italic', 'strike']}
         ref={(element) => assignRefValue('content', element)}
       />
-      <TagInput placeholder="# 태그" ref={(element) => assignRefValue('tags', element)} />
+      <CreatableSelectBox options={tagOptions} placeholder="#태그선택" onChange={selectTag} />
     </Card>
   );
 });

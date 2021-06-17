@@ -8,6 +8,8 @@ const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
 
 const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
 
+const requestGetTags = () => fetch(`${BASE_URL}/tags`);
+
 const requestGetFilteredPosts = (missionId) => fetch(`${BASE_URL}/posts?missions=${missionId}`);
 
 export {
@@ -16,4 +18,5 @@ export {
   requestGetFilters,
   requestGetMissions,
   requestGetFilteredPosts,
+  requestGetTags,
 };

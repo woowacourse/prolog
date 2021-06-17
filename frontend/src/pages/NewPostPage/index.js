@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPost } from '../../redux/actions/postAction';
 import useFetch from '../../hooks/useFetch';
-import { requestGetMissions } from '../../service/requests';
+import { requestGetMissions, requestGetTags } from '../../service/requests';
 
 // TODO: section 으로 바꾸기 -> aria-label 주기
 const SelectBoxWrapper = styled.div`
@@ -36,8 +36,6 @@ const SubmitButtonStyle = css`
   font-weight: 500;
 `;
 
-const tagsMockData = JSON.parse('[{"name" : "학습로그"}, {"name" : "에디터"}]');
-
 const NewPostPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -49,18 +47,23 @@ const NewPostPage = () => {
   const [selectedMission, setSelectedMission] = useState('');
 
   const [missions] = useFetch([], requestGetMissions);
+  const [tags] = useFetch([], requestGetTags);
 
   const cardRefs = useRef([]);
+
+  const tagOptions = tags.map(({ name }) => ({ value: name, label: `#${name}` }));
 
   const onFinishWriting = async (e) => {
     e.preventDefault();
 
-    const prologData = cardRefs.current.map(({ title, content, tags }) => ({
-      missionId: missions.find((mission) => mission.name === selectedMission).id,
-      title: title.value,
-      content: content.getInstance().getMarkdown(),
-      tags: tagsMockData,
-    }));
+    const prologData = cardRefs.current.map(({ title, content, tags }) => {
+      return {
+        missionId: missions.find((mission) => mission.name === selectedMission).id,
+        title: title.value,
+        content: content.getInstance().getMarkdown(),
+        tags: tags.map((tag) => ({ name: tag.value })),
+      };
+    });
 
     await dispatch(createPost(prologData, accessToken));
 
@@ -92,7 +95,7 @@ const NewPostPage = () => {
       <ul>
         {postIds.map((postId, index) => (
           <Post key={postId}>
-            <NewPostCard ref={cardRefs} postOrder={index} />
+            <NewPostCard ref={cardRefs} postOrder={index} tagOptions={tagOptions} />
           </Post>
         ))}
       </ul>
