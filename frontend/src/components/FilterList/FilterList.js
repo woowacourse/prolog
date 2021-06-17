@@ -77,12 +77,7 @@ const Container = styled.div`
   }
 `;
 
-const FilterList = ({
-  selectedFilter,
-  setSelectedFilter,
-  filters,
-  setSelecetedFilterMissionId,
-}) => {
+const FilterList = ({ selectedFilter, setSelectedFilter, filters, setSelectedFilterMissionId }) => {
   const closeDropdown = (event) => {
     if (event.target === event.currentTarget) {
       setSelectedFilter('');
@@ -100,7 +95,7 @@ const FilterList = ({
                 <input type="search" placeholder="filter project" />
               </li>
               {value.map(({ id, name }) => (
-                <li key={id} onClick={() => setSelecetedFilterMissionId(id)}>
+                <li key={id} onClick={() => setSelectedFilterMissionId(id)}>
                   <button>{name}</button>
                 </li>
               ))}
