@@ -11,6 +11,7 @@ import {
   requestGetFilters,
   requestGetFilteredPosts,
 } from '../../service/requests';
+import { useSelector } from 'react-redux';
 
 const HeaderContainer = styled.div`
   height: 4.8rem;
@@ -67,6 +68,7 @@ const CardHoverStyle = css`
 
 const MainPage = () => {
   const history = useHistory();
+  const isUserLoggedIn = useSelector((state) => state.user.accessToken.data);
 
   const [posts, setPosts] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState('');
@@ -111,15 +113,17 @@ const MainPage = () => {
           setSelectedFilter={setSelectedFilter}
           setSelectedFilterMissionId={setSelectedFilterMissionId}
         />
-        <Button
-          type="button"
-          size="SMALL"
-          icon={PencilIcon}
-          alt="글쓰기 아이콘"
-          onClick={() => history.push(PATH.NEW_POST)}
-        >
-          글쓰기
-        </Button>
+        {isUserLoggedIn && (
+          <Button
+            type="button"
+            size="SMALL"
+            icon={PencilIcon}
+            alt="글쓰기 아이콘"
+            onClick={() => history.push(PATH.NEW_POST)}
+          >
+            글쓰기
+          </Button>
+        )}
       </HeaderContainer>
       <PostListContainer>
         {posts?.map((post) => {

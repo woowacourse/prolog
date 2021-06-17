@@ -55,7 +55,8 @@ const Logo = styled.img`
 
 const Menu = styled.div`
   display: flex;
-  button:not(:first-of-type) {
+
+  & > *:not(:first-child) {
     margin-left: 1.6rem;
   }
 `;
