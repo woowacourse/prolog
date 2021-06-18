@@ -11,9 +11,10 @@ import {
   requestGetFilters,
   requestGetFilteredPosts,
 } from '../../service/requests';
+import { useSelector } from 'react-redux';
 
 const HeaderContainer = styled.div`
-  height: 6.4rem;
+  height: 4.8rem;
   display: flex;
   margin-bottom: 3.7rem;
   justify-content: space-between;
@@ -36,18 +37,18 @@ const Description = styled.div`
 `;
 
 const Mission = styled.div`
-  font-size: 2rem;
+  font-size: 1.6rem;
   color: #383838;
 `;
 
 const Title = styled.h3`
-  font-size: 3.6rem;
+  font-size: 2.8rem;
   color: #383838;
   font-weight: bold;
 `;
 
 const Tags = styled.div`
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: #848484;
   margin-top: auto;
 `;
@@ -61,16 +62,17 @@ const CardHoverStyle = css`
   cursor: pointer;
 
   &:hover {
-    transform: scale(1.015);
+    transform: scale(1.005);
   }
 `;
 
 const MainPage = () => {
   const history = useHistory();
+  const isUserLoggedIn = useSelector((state) => state.user.accessToken.data);
 
   const [posts, setPosts] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState('');
-  const [selectedFilterMissionId, setSelecetedFilterMissionId] = useState(0);
+  const [selectedFilterMissionId, setSelectedFilterMissionId] = useState(0);
 
   const [postList] = useFetch([], requestGetPosts);
   const [filters] = useFetch([], requestGetFilters);
@@ -85,7 +87,7 @@ const MainPage = () => {
   useEffect(() => {
     if (selectedFilterMissionId === 0) return;
 
-    const getFilterdData = async () => {
+    const getFilteredData = async () => {
       try {
         const response = await requestGetFilteredPosts(selectedFilterMissionId);
 
@@ -95,7 +97,7 @@ const MainPage = () => {
       }
     };
 
-    getFilterdData();
+    getFilteredData();
   }, [selectedFilterMissionId]);
 
   useEffect(() => {
@@ -109,17 +111,19 @@ const MainPage = () => {
           filters={filters}
           selectedFilter={selectedFilter}
           setSelectedFilter={setSelectedFilter}
-          setSelecetedFilterMissionId={setSelecetedFilterMissionId}
+          setSelectedFilterMissionId={setSelectedFilterMissionId}
         />
-        <Button
-          type="button"
-          size="MEDIUM"
-          icon={PencilIcon}
-          alt="글쓰기 아이콘"
-          onClick={() => history.push(PATH.NEW_POST)}
-        >
-          글쓰기
-        </Button>
+        {isUserLoggedIn && (
+          <Button
+            type="button"
+            size="SMALL"
+            icon={PencilIcon}
+            alt="글쓰기 아이콘"
+            onClick={() => history.push(PATH.NEW_POST)}
+          >
+            글쓰기
+          </Button>
+        )}
       </HeaderContainer>
       <PostListContainer>
         {posts?.map((post) => {

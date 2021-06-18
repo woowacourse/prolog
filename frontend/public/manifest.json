@@ -1,7 +1,12 @@
 {
   "short_name": "Study log",
   "name": "Study log",
-  "icons": [],
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "48x48",
+    },
+  ],
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",

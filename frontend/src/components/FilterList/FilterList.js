@@ -21,12 +21,16 @@ const DropdownToggledStyle = css`
 const Container = styled.div`
   background-color: #f4f4f4;
   border: 1px solid #707070;
-  border-radius: 2rem;
-  padding: 1rem 3rem;
+  border-radius: 1.4rem;
+  padding: 0 2rem;
   display: flex;
   font-size: 1.4rem;
 
   ${({ isDropdownToggled }) => isDropdownToggled && DropdownToggledStyle}
+
+  & > div:not(:last-child) {
+    margin-right: 2rem;
+  }
 
   & > div {
     input[type='search'] {
@@ -46,8 +50,7 @@ const Container = styled.div`
       display: flex;
       align-items: center;
       height: 100%;
-      margin-right: 2rem;
-      font-size: 2rem;
+      font-size: 1.6rem;
       text-align: center;
       color: #666;
 
@@ -55,12 +58,12 @@ const Container = styled.div`
         content: '';
         width: 0;
         height: 0;
-        transform: translateY(40%);
+        transform: translateY(50%);
         margin-left: 0.2rem;
-        border-top: 0.6rem solid #666;
-        border-bottom: 0.6rem solid transparent;
-        border-left: 0.6rem solid transparent;
-        border-right: 0.6rem solid transparent;
+        border-top: 0.5rem solid #666;
+        border-bottom: 0.5rem solid transparent;
+        border-left: 0.5rem solid transparent;
+        border-right: 0.5rem solid transparent;
       }
     }
 
@@ -74,12 +77,7 @@ const Container = styled.div`
   }
 `;
 
-const FilterList = ({
-  selectedFilter,
-  setSelectedFilter,
-  filters,
-  setSelecetedFilterMissionId,
-}) => {
+const FilterList = ({ selectedFilter, setSelectedFilter, filters, setSelectedFilterMissionId }) => {
   const closeDropdown = (event) => {
     if (event.target === event.currentTarget) {
       setSelectedFilter('');
@@ -97,7 +95,7 @@ const FilterList = ({
                 <input type="search" placeholder="filter project" />
               </li>
               {value.map(({ id, name }) => (
-                <li key={id} onClick={() => setSelecetedFilterMissionId(id)}>
+                <li key={id} onClick={() => setSelectedFilterMissionId(id)}>
                   <button>{name}</button>
                 </li>
               ))}
