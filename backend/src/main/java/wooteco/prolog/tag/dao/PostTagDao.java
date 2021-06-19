@@ -15,12 +15,12 @@ public class PostTagDao {
     }
 
     public void insert(Long postId, Long tagId) {
-        String query = "INSERT INTO postTag(post_id, tag_id) VALUES(?, ?)";
+        String query = "INSERT INTO post_tag(post_id, tag_id) VALUES(?, ?)";
         this.jdbcTemplate.update(query, postId, tagId);
     }
 
     public List<Long> findByPostId(Long postId) {
-        String query = "SELECT tag_id FROM postTag WHERE post_id = ?";
+        String query = "SELECT tag_id FROM post_tag WHERE post_id = ?";
         return jdbcTemplate.queryForList(query, Long.class, postId);
     }
 }
