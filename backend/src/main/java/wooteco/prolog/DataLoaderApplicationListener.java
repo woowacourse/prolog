@@ -14,7 +14,6 @@ import wooteco.prolog.post.application.PostService;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.tag.application.TagService;
 import wooteco.prolog.tag.dto.TagRequest;
-import wooteco.prolog.tag.dto.TagResponse;
 
 import java.util.Arrays;
 import java.util.List;
