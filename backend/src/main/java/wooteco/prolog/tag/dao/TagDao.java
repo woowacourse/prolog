@@ -9,6 +9,7 @@ import wooteco.prolog.tag.domain.Tag;
 
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class TagDao {
@@ -32,7 +33,7 @@ public class TagDao {
             };
 
     public Tag insert(String name) {
-        String query = "INSERT INTO Tag(name) VALUES (?)";
+        String query = "INSERT INTO tag(name) VALUES (?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         this.jdbcTemplate.update(con -> {
@@ -43,7 +44,7 @@ public class TagDao {
             return pstmt;
         }, keyHolder);
 
-        Long id = keyHolder.getKeyAs(Long.class);
+        Long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
         return new Tag(id, name);
     }
 
