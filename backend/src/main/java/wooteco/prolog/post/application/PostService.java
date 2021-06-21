@@ -1,7 +1,5 @@
 package wooteco.prolog.post.application;
 
-import java.util.Collection;
-import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.MemberResponse;
@@ -15,7 +13,6 @@ import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.post.exception.AuthorNotValidException;
 import wooteco.prolog.post.exception.PostArgumentException;
 import wooteco.prolog.tag.application.TagService;
-import wooteco.prolog.tag.dto.TagRequest;
 import wooteco.prolog.tag.dto.TagResponse;
 
 import java.util.Collections;
@@ -72,9 +69,7 @@ public class PostService {
 
     private PostResponse insertPost(Member member, PostRequest postRequest) {
         List<TagResponse> tagResponses = tagService.create(postRequest.getTags());
-        List<Long> tagIds = tagResponses.stream()
-                .map(TagResponse::getId)
-                .collect(Collectors.toList());
+        List<Long> tagIds = getTagIds(tagResponses);
 
         Post requestedPost = new Post(member, postRequest.getTitle(), postRequest.getContent(), postRequest.getMissionId(), tagIds);
         Post createdPost = postDao.insert(requestedPost);
@@ -108,17 +103,7 @@ public class PostService {
         validateAuthor(member, post);
 
         List<TagResponse> tags = tagService.create(postRequest.getTags());
-        List<Long> tagIds = tags.stream()
-            .map(TagResponse::getId)
-            .collect(Collectors.toList());
-
-        List<TagResponse> originTags = tagService.getTagsOfPost(id);
-        List<Long> originTagIds = originTags.stream()
-            .map(TagResponse::getId)
-            .collect(Collectors.toList());
-        List<Long> removedTagIds = originTagIds.stream()
-            .filter(tagId -> !tagIds.contains(tagId))
-            .collect(Collectors.toList());
+        List<Long> tagIds = getTagIds(tags);
 
         Post updatedPost = new Post(
                 member,
@@ -128,9 +113,24 @@ public class PostService {
                 tagIds
             );
         postDao.update(id, updatedPost);
-
         tagService.addTagToPost(id, tagIds);
+
+        removeTagsByUpdate(id, tagIds);
+    }
+
+    private void removeTagsByUpdate(Long id, List<Long> tagIds) {
+        List<TagResponse> originTags = tagService.getTagsOfPost(id);
+        List<Long> originTagIds = getTagIds(originTags);
+        List<Long> removedTagIds = originTagIds.stream()
+            .filter(tagId -> !tagIds.contains(tagId))
+            .collect(Collectors.toList());
         tagService.removeTagFromPost(id, removedTagIds);
+    }
+
+    private List<Long> getTagIds(List<TagResponse> originTags) {
+        return originTags.stream()
+            .map(TagResponse::getId)
+            .collect(Collectors.toList());
     }
 
     private void validateAuthor(Member member, PostResponse post) {
