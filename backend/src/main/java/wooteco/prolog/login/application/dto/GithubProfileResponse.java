@@ -10,10 +10,16 @@ public class GithubProfileResponse {
 
     @JsonProperty("name")
     private String nickname;
+    @JsonProperty("login")
+    private String loginName;
     @JsonProperty("id")
     private String githubId;
     @JsonProperty("avatar_url")
     private String imageUrl;
+
+    public String getLoginName() {
+        return loginName;
+    }
 
     public String getNickname() {
         return nickname;

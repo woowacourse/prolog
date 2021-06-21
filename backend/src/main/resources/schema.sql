@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS member
 (
     id bigint NOT NULL AUTO_INCREMENT,
     nickname VARCHAR(255),
+    login_name VARCHAR(255),
     role VARCHAR(20) NOT NULL,
     github_id bigint NOT NULL UNIQUE,
     image_url VARCHAR(255) NOT NULL,
