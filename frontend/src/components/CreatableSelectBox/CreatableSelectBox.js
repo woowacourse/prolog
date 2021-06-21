@@ -30,8 +30,9 @@ const selectStyles = {
   menu: (styles) => ({ ...styles, fontSize: '1.4rem', fontColor: '#333333' }),
 };
 
-const CreatableSelectBox = ({ isMulti = true, options, placeholder, onChange }) => (
+const CreatableSelectBox = ({ isMulti = true, options, placeholder, onChange, ...props }) => (
   <CreatableSelect
+    {...props}
     isMulti={isMulti}
     options={options}
     placeholder={placeholder}
