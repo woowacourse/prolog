@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import React from 'react';
 import { DropdownMenu } from '..';
+import checkIcon from '../../assets/images/check.png';
 
 const DropdownToggledStyle = css`
   &:before {
@@ -77,10 +78,43 @@ const Container = styled.div`
   }
 `;
 
-const FilterList = ({ selectedFilter, setSelectedFilter, filters, setSelectedFilterMissionId }) => {
+const FilterDetail = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  & > img {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+`;
+
+const FilterList = ({
+  selectedFilter,
+  setSelectedFilter,
+  filters,
+  selectedFilterDetails,
+  setSelectedFilterDetails,
+}) => {
   const closeDropdown = (event) => {
     if (event.target === event.currentTarget) {
       setSelectedFilter('');
+    }
+  };
+
+  const findFilterItem = (key, id) =>
+    selectedFilterDetails.find(
+      (filterItem) => filterItem.filterType === key && filterItem.filterDetailId === id
+    );
+
+  const toggleFilterDetails = (filterType, filterDetailId) => {
+    const targetFilterItem = { filterType, filterDetailId };
+    const isExistFilterItem = findFilterItem(filterType, filterDetailId);
+
+    if (isExistFilterItem) {
+      setSelectedFilterDetails((prev) => prev.filter((item) => item !== isExistFilterItem));
+    } else {
+      setSelectedFilterDetails((prev) => [...prev, targetFilterItem]);
     }
   };
 
@@ -95,8 +129,11 @@ const FilterList = ({ selectedFilter, setSelectedFilter, filters, setSelectedFil
                 <input type="search" placeholder="filter project" />
               </li>
               {value.map(({ id, name }) => (
-                <li key={id} onClick={() => setSelectedFilterMissionId(id)}>
-                  <button>{name}</button>
+                <li key={id} onClick={() => toggleFilterDetails(key, id)}>
+                  <FilterDetail>
+                    {name}
+                    {findFilterItem(key, id) ? <img src={checkIcon} alt="선택된 필터 표시" /> : ''}
+                  </FilterDetail>
                 </li>
               ))}
             </DropdownMenu>

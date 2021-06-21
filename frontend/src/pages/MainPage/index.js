@@ -72,7 +72,7 @@ const MainPage = () => {
 
   const [posts, setPosts] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState('');
-  const [selectedFilterMissionId, setSelectedFilterMissionId] = useState(0);
+  const [selectedFilterDetails, setSelectedFilterDetails] = useState([]);
 
   const [postList] = useFetch([], requestGetPosts);
   const [filters] = useFetch([], requestGetFilters);
@@ -85,11 +85,11 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    if (selectedFilterMissionId === 0) return;
+    if (selectedFilterDetails === []) return;
 
     const getFilteredData = async () => {
       try {
-        const response = await requestGetFilteredPosts(selectedFilterMissionId);
+        const response = await requestGetFilteredPosts(selectedFilterDetails);
 
         setPosts(await response.json());
       } catch (error) {
@@ -98,7 +98,7 @@ const MainPage = () => {
     };
 
     getFilteredData();
-  }, [selectedFilterMissionId]);
+  }, [selectedFilterDetails]);
 
   useEffect(() => {
     setPosts(postList);
@@ -111,7 +111,8 @@ const MainPage = () => {
           filters={filters}
           selectedFilter={selectedFilter}
           setSelectedFilter={setSelectedFilter}
-          setSelectedFilterMissionId={setSelectedFilterMissionId}
+          selectedFilterDetails={selectedFilterDetails}
+          setSelectedFilterDetails={setSelectedFilterDetails}
         />
         {isUserLoggedIn && (
           <Button
