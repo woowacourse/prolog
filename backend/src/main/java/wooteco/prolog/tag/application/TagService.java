@@ -55,7 +55,16 @@ public class TagService {
     }
 
     public void addTagToPost(Long postId, List<Long> tagIds) {
-        tagIds.forEach(tagId -> postTagDao.insert(postId, tagId));
+        List<Long> originTags = postTagDao.findByPostId(postId);
+        for (Long tagId : tagIds) {
+            if (!originTags.contains(tagId)) {
+                postTagDao.insert(postId, tagId);
+            }
+        }
+    }
+
+    public void removeTagFromPost(Long postId, List<Long> tagIds) {
+        tagIds.forEach(tagId -> postTagDao.delete(postId, tagId));
     }
 
     public List<TagResponse> getTagsOfPost(Long id) {
