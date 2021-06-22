@@ -42,4 +42,14 @@ public class PostController {
         PostResponse postResponse = postService.findById(id);
         return ResponseEntity.ok(postResponse);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updatePost(
+        @AuthMemberPrincipal Member member,
+        @PathVariable Long id,
+        @RequestBody PostRequest postRequest
+    ) {
+        postService.updatePost(member, id, postRequest);
+        return ResponseEntity.ok().build();
+    }
 }

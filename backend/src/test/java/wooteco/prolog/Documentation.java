@@ -5,6 +5,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -17,6 +18,7 @@ import wooteco.prolog.login.application.JwtTokenProvider;
 import wooteco.prolog.login.application.MemberService;
 import wooteco.prolog.login.application.dto.TokenRequest;
 import wooteco.prolog.login.application.dto.TokenResponse;
+import wooteco.prolog.login.dao.MemberDao;
 import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.login.domain.Role;
 
@@ -46,6 +48,9 @@ public class Documentation {
     @MockBean
     private MemberService memberService;
 
+    @Autowired
+    private MemberDao memberDao;
+
     protected TokenResponse 로그인_사용자;
 
     @BeforeEach
@@ -63,6 +68,8 @@ public class Documentation {
         when(tokenProvider.extractSubject(any())).thenReturn("1");
 
         when(memberService.findById(1L)).thenReturn(MEMBER1);
+
+        memberDao.insert(MEMBER1);
 
         로그인_사용자 = RestAssured
                 .given(spec).log().all()

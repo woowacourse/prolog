@@ -10,6 +10,7 @@ import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.dao.PostDao;
 import wooteco.prolog.post.domain.Post;
+import wooteco.prolog.post.exception.AuthorNotValidException;
 import wooteco.prolog.post.exception.PostArgumentException;
 import wooteco.prolog.tag.application.TagService;
 import wooteco.prolog.tag.dto.TagResponse;
@@ -68,9 +69,7 @@ public class PostService {
 
     private PostResponse insertPost(Member member, PostRequest postRequest) {
         List<TagResponse> tagResponses = tagService.create(postRequest.getTags());
-        List<Long> tagIds = tagResponses.stream()
-                .map(TagResponse::getId)
-                .collect(Collectors.toList());
+        List<Long> tagIds = getTagIds(tagResponses);
 
         Post requestedPost = new Post(member, postRequest.getTitle(), postRequest.getContent(), postRequest.getMissionId(), tagIds);
         Post createdPost = postDao.insert(requestedPost);
@@ -99,4 +98,44 @@ public class PostService {
         return new PostResponse(post, missionResponse, tagResponses);
     }
 
+    public void updatePost(Member member, Long id, PostRequest postRequest) {
+        PostResponse post = findById(id);
+        validateAuthor(member, post);
+
+        List<TagResponse> tags = tagService.create(postRequest.getTags());
+        List<Long> tagIds = getTagIds(tags);
+
+        Post updatedPost = new Post(
+                member,
+                postRequest.getTitle(),
+                postRequest.getContent(),
+                postRequest.getMissionId(),
+                tagIds
+            );
+        postDao.update(id, updatedPost);
+        tagService.addTagToPost(id, tagIds);
+
+        removeTagsByUpdate(id, tagIds);
+    }
+
+    private void removeTagsByUpdate(Long id, List<Long> tagIds) {
+        List<TagResponse> originTags = tagService.getTagsOfPost(id);
+        List<Long> originTagIds = getTagIds(originTags);
+        List<Long> removedTagIds = originTagIds.stream()
+            .filter(tagId -> !tagIds.contains(tagId))
+            .collect(Collectors.toList());
+        tagService.removeTagFromPost(id, removedTagIds);
+    }
+
+    private List<Long> getTagIds(List<TagResponse> originTags) {
+        return originTags.stream()
+            .map(TagResponse::getId)
+            .collect(Collectors.toList());
+    }
+
+    private void validateAuthor(Member member, PostResponse post) {
+        if (!member.getId().equals(post.getAuthor().getId())) {
+            throw new AuthorNotValidException("작성자만 수정할 수 있습니다.");
+        }
+    }
 }

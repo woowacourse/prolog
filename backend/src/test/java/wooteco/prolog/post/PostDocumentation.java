@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
@@ -30,6 +31,8 @@ public class PostDocumentation extends Documentation {
         String location = createResponse.header("Location");
 
         포스트_단건을_조회한다(location);
+
+        포스트를_수정한다(location, editPostRequest());
     }
 
     private PostRequest createPostRequest() {
@@ -37,6 +40,15 @@ public class PostDocumentation extends Documentation {
         String content = "SPA 방식으로 앱을 구현하였음.\n" + "router 를 구현 하여 이용함.\n";
         Long missionId = 미션_등록함(new MissionRequest("레벨1 - 지하철 노선도 미션"));
         List<TagRequest> tags = Arrays.asList(new TagRequest("spa"), new TagRequest("router"));
+
+        return new PostRequest(title, content, missionId, tags);
+    }
+
+    private PostRequest editPostRequest() {
+        String title = "수정된 제목";
+        String content = "수정된 내용";
+        Long missionId = 미션_등록함(new MissionRequest("수정된 미션"));
+        List<TagRequest> tags = Arrays.asList(new TagRequest("spa"), new TagRequest("edit"));
 
         return new PostRequest(title, content, missionId, tags);
     }
@@ -85,5 +97,14 @@ public class PostDocumentation extends Documentation {
                 .extract()
                 .as(MissionResponse.class)
                 .getId();
+    }
+
+    private void 포스트를_수정한다(String location, PostRequest params) {
+        given("post/edit")
+                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+                .body(params)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().put(location)
+                .then().log().all();
     }
 }

@@ -4,6 +4,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -168,5 +169,48 @@ public class PostAcceptanceTest extends AcceptanceTest {
                 .extract()
                 .as(MissionResponse.class)
                 .getId();
+    }
+
+    @Test
+    void 글_수정하기() {
+        // given
+        ExtractableResponse<Response> response = 글을_작성한다(postRequests);
+        String path = response.header("Location");
+
+        PostRequest updateRequest = new PostRequest(
+            "수정된 제목",
+            "수정된 내용",
+            firstPost.getMissionId(),
+            Arrays.asList(
+                new TagRequest("자바"),
+                new TagRequest("수정된태그")
+            )
+        );
+
+        // when
+        ExtractableResponse<Response> updateResponse = given()
+            .auth().oauth2(tokenResponse.getAccessToken())
+            .when()
+            .body(updateRequest)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .put(path)
+            .then().log().all()
+            .extract();
+
+        PostResponse updatedPost = given()
+            .auth().oauth2(tokenResponse.getAccessToken())
+            .when()
+            .get(path)
+            .then()
+            .extract()
+            .as(PostResponse.class);
+
+        // then
+        assertThat(updateResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(updatedPost.getTitle()).contains("수정된 제목");
+        assertThat(updatedPost.getContent()).contains("수정된 내용");
+        assertThat(updatedPost.getTags()).hasSize(2)
+            .extracting(TagResponse::getName)
+            .containsExactlyInAnyOrder("자바", "수정된태그");
     }
 }
