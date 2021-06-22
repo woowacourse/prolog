@@ -10,7 +10,7 @@ import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.login.ui.AuthMemberPrincipalArgumentResolver;
 
-import static wooteco.prolog.Documentation.MEMBER1;
+import static wooteco.prolog.AcceptanceTest.MEMBER1;
 
 @Profile("test")
 @Component

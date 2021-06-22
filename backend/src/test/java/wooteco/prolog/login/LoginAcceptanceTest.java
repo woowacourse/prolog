@@ -9,7 +9,6 @@ import wooteco.prolog.login.application.dto.TokenRequest;
 import wooteco.prolog.login.application.dto.TokenResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static wooteco.prolog.Documentation.MEMBER1;
 
 public class LoginAcceptanceTest extends AcceptanceTest {
     @DisplayName("토큰에서 멤버 찾기 기능")
