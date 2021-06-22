@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 import LogoImage from '../../assets/images/logo.svg';
 import { PATH } from '../../constants';
 import GithubLogin from '../GithubLogin/GithubLogin';
@@ -123,7 +124,9 @@ const NavBar = () => {
                 <DropdownMenu css={DropdownLocationStyle}>
                   <ul>
                     <li>
-                      <button type="button">마이페이지</button>
+                      <Link to={PATH.MYPAGE}>
+                        <button type="button">마이페이지</button>
+                      </Link>
                     </li>
                     <li>
                       <button type="button">로그아웃</button>
