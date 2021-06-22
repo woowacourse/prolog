@@ -9,7 +9,7 @@ import wooteco.prolog.login.application.dto.GithubAccessTokenResponse;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.domain.Member;
 
-import static wooteco.prolog.Documentation.MEMBER1;
+import static wooteco.prolog.AcceptanceTest.MEMBER1;
 
 @Profile("test")
 @RestController
