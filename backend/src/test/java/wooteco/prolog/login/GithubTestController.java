@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.application.dto.GithubAccessTokenResponse;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 
-import static wooteco.prolog.Documentation.MEMBER1;
+import static wooteco.prolog.AcceptanceTest.MEMBER1;
 
 @Profile("test")
 @RestController
