@@ -23,7 +23,7 @@ public class MemberDao {
             new Member(
                     rs.getLong("id"),
                     rs.getString("nickname"),
-                    rs.getString("login_name"),
+                    rs.getString("github_user_name"),
                     Role.of(rs.getString("role")),
                     rs.getLong("github_id"),
                     rs.getString("image_url")
@@ -39,7 +39,7 @@ public class MemberDao {
     public Member insert(Member member) {
         SqlParameterSource params = new BeanPropertySqlParameterSource(member);
         Long id = simpleJdbcInsert.executeAndReturnKey(params).longValue();
-        return new Member(id, member.getNickname(), member.getLoginName(), member.getRole(), member.getGithubId(), member.getImageUrl());
+        return new Member(id, member.getNickname(), member.getGithubUserName(), member.getRole(), member.getGithubId(), member.getImageUrl());
     }
 
     public Optional<Member> findById(final Long userId) {

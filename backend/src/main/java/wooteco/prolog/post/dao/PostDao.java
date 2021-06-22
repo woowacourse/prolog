@@ -84,7 +84,7 @@ public class PostDao {
     private static Member extractMember(ResultSet rs) throws SQLException {
         long memberId = rs.getLong("member_id");
         String nickname = rs.getString("nickname");
-        String loginName = rs.getString("login_name");
+        String loginName = rs.getString("github_user_name");
         Role role = Role.of(rs.getString("role"));
         Long githubId = rs.getLong("github_id");
         String imageUrl = rs.getString("image_url");
@@ -100,12 +100,21 @@ public class PostDao {
     }
 
     public List<Post> findAll() {
-        String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, login_name, role, github_id, image_url, tag.id as tag_id FROM post AS po LEFT JOIN member AS me ON po.member_id = me.id LEFT JOIN post_tag AS pt ON po.id = pt.post_id LEFT JOIN tag ON pt.tag_id = tag.id";
+        String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, github_user_name, role, github_id, image_url, tag.id as tag_id " +
+                "FROM post AS po " +
+                "LEFT JOIN member AS me ON po.member_id = me.id " +
+                "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
+                "LEFT JOIN tag ON pt.tag_id = tag.id";
         return jdbcTemplate.query(query, postsResultSetExtractor);
     }
 
     public List<Post> findWithFilter(List<Long> missions, List<Long> tags) {
-        String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, login_name, role, github_id, image_url, tag.id as tag_id FROM post AS po LEFT JOIN member AS me ON po.member_id = me.id LEFT JOIN post_tag AS pt ON po.id = pt.post_id LEFT JOIN tag ON pt.tag_id = tag.id WHERE 1=1";
+        String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, github_user_name, role, github_id, image_url, tag.id as tag_id " +
+                "FROM post AS po " +
+                "LEFT JOIN member AS me ON po.member_id = me.id " +
+                "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
+                "LEFT JOIN tag ON pt.tag_id = tag.id " +
+                "WHERE 1=1";
         query += createDynamicColumnQuery("mission_id", missions);
         query += createDynamicColumnQuery("tag_id", tags);
 
@@ -155,7 +164,11 @@ public class PostDao {
     }
 
     public Post findById(Long id) {
-        String sql = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, login_name, role, github_id, image_url, tag.id as tag_id FROM post AS po LEFT JOIN member AS me ON po.member_id = me.id LEFT JOIN post_tag AS pt ON po.id = pt.post_id LEFT JOIN tag ON pt.tag_id = tag.id WHERE po.id = ?";
+        String sql = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, github_user_name, role, github_id, image_url, tag.id as tag_id " +
+                "FROM post AS po LEFT JOIN member AS me ON po.member_id = me.id " +
+                "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
+                "LEFT JOIN tag ON pt.tag_id = tag.id " +
+                "WHERE po.id = ?";
         return jdbcTemplate.query(sql, postResultSetExtractor, id);
     }
 

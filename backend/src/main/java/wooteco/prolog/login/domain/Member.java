@@ -12,27 +12,27 @@ public class Member {
 
     private final Long id;
     private final String nickname;
-    private final String loginName;
+    private final String githubUserName;
     private final Role role;
     private final Long githubId;
     private final String imageUrl;
 
-    public Member(String nickname, String loginName, Role role, Long githubId, String imageUrl) {
-        this(null, nickname, loginName, role, githubId, imageUrl);
+    public Member(String nickname, String githubUserName, Role role, Long githubId, String imageUrl) {
+        this(null, nickname, githubUserName, role, githubId, imageUrl);
     }
 
-    public Member(Long id, String nickname, String loginName, Role role, Long githubId, String imageUrl) {
+    public Member(Long id, String nickname, String githubUserName, Role role, Long githubId, String imageUrl) {
         this.id = id;
-        this.nickname = ifAbsentReplace(nickname, loginName);
-        this.loginName = loginName;
+        this.nickname = ifAbsentReplace(nickname, githubUserName);
+        this.githubUserName = githubUserName;
         this.role = role;
         this.githubId = githubId;
         this.imageUrl = imageUrl;
     }
 
-    private String ifAbsentReplace(String nickname, String loginName) {
+    private String ifAbsentReplace(String nickname, String githubUserName) {
         if (Objects.isNull(nickname) || nickname.isEmpty()) {
-            return loginName;
+            return githubUserName;
         }
         return nickname;
     }

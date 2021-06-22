@@ -4,8 +4,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class MemberTest {
     @DisplayName("nickname이 없을 때 loginName으로 대체되는지 확인")
     @Test
