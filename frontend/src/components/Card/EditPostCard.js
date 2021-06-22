@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from 'react';
+import React, { forwardRef } from 'react';
 import styled from '@emotion/styled';
 
 import { Card, CARD_SIZE, CreatableSelectBox } from '..';

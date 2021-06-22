@@ -3,11 +3,11 @@ import { useHistory, useParams } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { SelectBox, Button, BUTTON_SIZE, EditPostCard } from '../../components';
-import { useDispatch, useSelector } from 'react-redux';
-import { createPost } from '../../redux/actions/postAction';
+import { useSelector } from 'react-redux';
 import useFetch from '../../hooks/useFetch';
 import { requestGetMissions, requestGetPost, requestGetTags } from '../../service/requests';
 import { PATH } from '../../constants';
+import usePost from '../../hooks/usePost';
 
 // TODO: section 으로 바꾸기 -> aria-label 주기
 const SelectBoxWrapper = styled.div`
@@ -27,13 +27,12 @@ const SubmitButtonStyle = css`
 `;
 
 const EditPostPage = () => {
-  const dispatch = useDispatch();
   const history = useHistory();
-  const accessToken = useSelector((state) => state.user.accessToken.data);
   const user = useSelector((state) => state.user.profile.data?.nickname);
-  const { error } = useSelector((state) => state.post.posts);
+  const accessToken = useSelector((state) => state.user.accessToken.data);
 
   const { id: postId } = useParams();
+  const [postResponse, postError, getAllPost, getPost, editPost] = usePost({});
   const [post, getPostError] = useFetch({}, () => requestGetPost(postId));
   const { id, author, mission } = post;
 
@@ -43,7 +42,7 @@ const EditPostPage = () => {
 
   const cardRefs = useRef([]);
 
-  const [selectedMission, setSelectedMission] = useState('');
+  const [selectedMission, setSelectedMission] = useState();
 
   useEffect(() => {
     setSelectedMission(mission?.name);
@@ -56,24 +55,21 @@ const EditPostPage = () => {
     }
   }, [user, author]);
 
-  const onFinishWriting = async (e) => {
-    e.preventDefault();
+  const onEditPost = async (event) => {
+    event.preventDefault();
 
-    const prologData = cardRefs.current.map(({ title, content, tags }) => {
-      return {
-        missionId: missions.find((mission) => mission.name === selectedMission).id,
-        title: title.value,
-        content: content.getInstance().getMarkdown(),
-        tags: tags.map((tag) => ({ name: tag.value })),
-      };
-    });
+    const { title, content, tags } = cardRefs.current;
+    const data = {
+      missionId: missions.find((mission) => mission.name === selectedMission).id,
+      title: title.value,
+      content: content.getInstance().getMarkdown(),
+      tags: tags?.map((tag) => ({ name: tag.value })),
+    };
 
-    await dispatch(createPost(prologData, accessToken));
+    await editPost(postId, data, accessToken);
 
-    // TODO : fetch hook 통해서 에러처리 선언적으로 해주기
-    if (error) {
-      alert(error.message);
-
+    if (postError) {
+      alert('글을 수정할 수 없습니다. 다시 시도해주세요');
       return;
     }
 
@@ -81,7 +77,7 @@ const EditPostPage = () => {
   };
 
   return (
-    <form onSubmit={onFinishWriting}>
+    <form onSubmit={onEditPost}>
       <SelectBoxWrapper>
         <SelectBox
           options={missions?.map((mission) => mission.name)}

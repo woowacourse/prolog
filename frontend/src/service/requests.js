@@ -12,6 +12,16 @@ const requestGetTags = () => fetch(`${BASE_URL}/tags`);
 
 const requestGetFilteredPosts = (missionId) => fetch(`${BASE_URL}/posts?missions=${missionId}`);
 
+const requestEditPost = (postId, data, accessToken) =>
+  fetch(`${BASE_URL}/posts/${postId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
 export {
   requestGetPosts,
   requestGetPost,
@@ -19,4 +29,5 @@ export {
   requestGetMissions,
   requestGetFilteredPosts,
   requestGetTags,
+  requestEditPost,
 };

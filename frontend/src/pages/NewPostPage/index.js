@@ -61,7 +61,7 @@ const NewPostPage = () => {
         missionId: missions.find((mission) => mission.name === selectedMission).id,
         title: title.value,
         content: content.getInstance().getMarkdown(),
-        tags: tags.map((tag) => ({ name: tag.value })),
+        tags: tags?.map((tag) => ({ name: tag.value })),
       };
     });
 
