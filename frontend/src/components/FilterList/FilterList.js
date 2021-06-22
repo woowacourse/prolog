@@ -23,14 +23,16 @@ const Container = styled.div`
   background-color: #f4f4f4;
   border: 1px solid #707070;
   border-radius: 1.4rem;
-  padding: 0 2rem;
+  padding: 0 3.2rem;
   display: flex;
   font-size: 1.4rem;
+  height: inherit;
+  align-items: center;
 
   ${({ isDropdownToggled }) => isDropdownToggled && DropdownToggledStyle}
 
   & > div:not(:last-child) {
-    margin-right: 2rem;
+    margin-right: 3.2rem;
   }
 
   & > div {
@@ -89,12 +91,24 @@ const FilterDetail = styled.button`
   }
 `;
 
+const ResetFilter = styled.div`
+  margin-left: auto;
+  color: #666666;
+  cursor: pointer;
+`;
+
+const CheckIcon = styled.img`
+  ${({ checked }) => !checked && 'visibility: hidden;'}
+`;
+
 const FilterList = ({
   selectedFilter,
   setSelectedFilter,
   filters,
   selectedFilterDetails,
   setSelectedFilterDetails,
+  isVisibleResetFilter,
+  onResetFilter,
 }) => {
   const closeDropdown = (event) => {
     if (event.target === event.currentTarget) {
@@ -132,8 +146,12 @@ const FilterList = ({
               {value.map(({ id, name }) => (
                 <li key={id} onClick={() => toggleFilterDetails(key, id)}>
                   <FilterDetail>
-                    {name}
-                    {findFilterItem(key, id) ? <img src={checkIcon} alt="선택된 필터 표시" /> : ''}
+                    <span>{name}</span>
+                    <CheckIcon
+                      src={checkIcon}
+                      alt="선택된 필터 표시"
+                      checked={findFilterItem(key, id)}
+                    />
                   </FilterDetail>
                 </li>
               ))}
@@ -141,6 +159,7 @@ const FilterList = ({
           )}
         </div>
       ))}
+      {isVisibleResetFilter && <ResetFilter onClick={onResetFilter}>필터 초기화 ⟳</ResetFilter>}
     </Container>
   );
 };

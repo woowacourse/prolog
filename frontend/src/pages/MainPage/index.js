@@ -20,6 +20,13 @@ const HeaderContainer = styled.div`
   justify-content: space-between;
 `;
 
+const FilterListWrapper = styled.div`
+  width: 100%;
+  height: inherit;
+  margin-right: 2rem;
+  flex: 1;
+`;
+
 const PostListContainer = styled.div`
   display: grid;
   grid-row-gap: 2rem;
@@ -84,6 +91,10 @@ const MainPage = () => {
     history.push(`${PATH.POST}/${id}`);
   };
 
+  const resetFilter = () => {
+    setSelectedFilterDetails([]);
+  };
+
   useEffect(() => {
     if (selectedFilterDetails === []) return;
 
@@ -107,13 +118,17 @@ const MainPage = () => {
   return (
     <>
       <HeaderContainer>
-        <FilterList
-          filters={filters}
-          selectedFilter={selectedFilter}
-          setSelectedFilter={setSelectedFilter}
-          selectedFilterDetails={selectedFilterDetails}
-          setSelectedFilterDetails={setSelectedFilterDetails}
-        />
+        <FilterListWrapper>
+          <FilterList
+            filters={filters}
+            selectedFilter={selectedFilter}
+            setSelectedFilter={setSelectedFilter}
+            selectedFilterDetails={selectedFilterDetails}
+            setSelectedFilterDetails={setSelectedFilterDetails}
+            isVisibleResetFilter={!!selectedFilterDetails.length}
+            onResetFilter={resetFilter}
+          />
+        </FilterListWrapper>
         {isUserLoggedIn && (
           <Button
             type="button"
