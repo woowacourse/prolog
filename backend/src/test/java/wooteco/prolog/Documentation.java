@@ -13,7 +13,7 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
 @ExtendWith(RestDocumentationExtension.class)
-public class Documentation extends AcceptanceTest{
+public class Documentation extends AcceptanceTest {
     protected RequestSpecification spec;
 
     @BeforeEach
