@@ -41,8 +41,8 @@ class PostServiceTest {
             FIRST_TAG, SECOND_TAG, THIRD_TAG, FOURTH_TAG, FIFTH_TAG
     );
 
-    private static final Member FIRST_MEMBER = new Member(1L, "웨지", Role.CREW, 123456789L, "https://www.youtube.com/watch?v=3etKkkna-f0&t=6s");
-    private static final Member SECOND_MEMBER = new Member(2L, "피카", Role.CREW, 2L, "image");
+    private static final Member FIRST_MEMBER = new Member(1L, "웨지", "wedge", Role.CREW, 123456789L, "https://www.youtube.com/watch?v=3etKkkna-f0&t=6s");
+    private static final Member SECOND_MEMBER = new Member(2L, "피카", "pika", Role.CREW, 2L, "image");
 
     private static final Post FIRST_POST = new Post(FIRST_MEMBER, "이것은 제목", "피케이와 포모의 포스트", 1L, Arrays.asList(FIRST_TAG.getId(), SECOND_TAG.getId()));
     private static final Post SECOND_POST = new Post(FIRST_MEMBER, "이것은 두번째 제목", "피케이와 포모의 포스트 2", 1L, Arrays.asList(THIRD_TAG.getId(), FOURTH_TAG.getId()));

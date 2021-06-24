@@ -17,7 +17,7 @@ import wooteco.prolog.login.domain.Role;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class AcceptanceTest {
-    public static Member MEMBER1 = new Member(1L, "쏘로로롱", Role.CREW, 1L, "https://avatars.githubusercontent.com/u/52682603?v=4");
+    public static Member MEMBER = new Member(1L, "쏘로로롱", "soulG", Role.CREW, 1L, "https://avatars.githubusercontent.com/u/52682603?v=4");
 
     @LocalServerPort
     private int port;

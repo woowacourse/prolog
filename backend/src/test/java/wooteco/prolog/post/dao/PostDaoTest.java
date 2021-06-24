@@ -24,8 +24,8 @@ public class PostDaoTest {
     private JdbcTemplate jdbcTemplate;
     private PostDao postDao;
 
-    private static final Member FIRST_MEMBER = new Member(1L, "소롱", Role.CREW, 1L, "image");
-    private static final Member SECOND_MEMBER = new Member(2L, "피카", Role.CREW, 2L, "image");
+    private static final Member FIRST_MEMBER = new Member(1L, "소롱", "soulg", Role.CREW, 1L, "image");
+    private static final Member SECOND_MEMBER = new Member(2L, "피카", "pika", Role.CREW, 2L, "image");
 
     public static final Tag FIRST_TAG = new Tag(1L, "소롱의글쓰기");
     public static final Tag SECOND_TAG = new Tag(2L, "스프링");

@@ -28,8 +28,8 @@ public class LoginAcceptanceTest extends AcceptanceTest {
                 .then().log().all()
                 .extract().as(MemberResponse.class);
 
-        assertThat(memberResponse.getRole()).isEqualTo(MEMBER1.getRole());
-        assertThat(memberResponse.getNickname()).isEqualTo(MEMBER1.getNickname());
-        assertThat(memberResponse.getImageUrl()).isEqualTo(MEMBER1.getImageUrl());
+        assertThat(memberResponse.getRole()).isEqualTo(MEMBER.getRole());
+        assertThat(memberResponse.getNickname()).isEqualTo(MEMBER.getNickname());
+        assertThat(memberResponse.getImageUrl()).isEqualTo(MEMBER.getImageUrl());
     }
 }

@@ -10,7 +10,7 @@ import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.login.ui.AuthMemberPrincipalArgumentResolver;
 
-import static wooteco.prolog.AcceptanceTest.MEMBER1;
+import static wooteco.prolog.AcceptanceTest.MEMBER;
 
 @Profile("test")
 @Component
@@ -22,6 +22,6 @@ public class AuthMemberPrincipalTestArgumentResolver implements AuthMemberPrinci
 
     @Override
     public Member resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        return MEMBER1;
+        return MEMBER;
     }
 }
