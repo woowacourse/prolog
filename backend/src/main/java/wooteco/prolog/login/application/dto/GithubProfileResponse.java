@@ -3,6 +3,8 @@ package wooteco.prolog.login.application.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.login.domain.Role;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,5 +33,15 @@ public class GithubProfileResponse {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public Member toMember() {
+        return new Member(
+                getNickname(),
+                getLoginName(),
+                Role.CREW,
+                getGithubId(),
+                getImageUrl()
+        );
     }
 }

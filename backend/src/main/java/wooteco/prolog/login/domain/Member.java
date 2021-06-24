@@ -37,14 +37,4 @@ public class Member {
         return nickname;
     }
 
-    public static Member of(GithubProfileResponse githubProfile) {
-        return new Member(
-                githubProfile.getNickname(),
-                githubProfile.getLoginName(),
-                Role.CREW,
-                githubProfile.getGithubId(),
-                githubProfile.getImageUrl()
-        );
-    }
-
 }

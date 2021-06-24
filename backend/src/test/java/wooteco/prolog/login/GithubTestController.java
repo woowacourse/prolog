@@ -7,16 +7,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.application.dto.GithubAccessTokenResponse;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
-import wooteco.prolog.login.domain.Member;
 
-import static wooteco.prolog.AcceptanceTest.MEMBER1;
+import static wooteco.prolog.AcceptanceTest.MEMBER;
 
 @Profile("test")
 @RestController
 public class GithubTestController {
     @GetMapping("/github/user")
     public ResponseEntity<GithubProfileResponse> user() {
-        GithubProfileResponse response = new GithubProfileResponse(MEMBER1.getNickname(), MEMBER1.getNickname(), String.valueOf(MEMBER1.getGithubId()), MEMBER1.getImageUrl());
+        GithubProfileResponse response = new GithubProfileResponse(MEMBER.getNickname(), MEMBER.getNickname(), String.valueOf(MEMBER.getGithubId()), MEMBER.getImageUrl());
         return ResponseEntity.ok(response);
     }
 
