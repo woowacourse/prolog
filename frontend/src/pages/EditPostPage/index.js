@@ -63,7 +63,8 @@ const EditPostPage = () => {
       missionId: missions.find((mission) => mission.name === selectedMission).id,
       title: title.value,
       content: content.getInstance().getMarkdown(),
-      tags: tags?.map((tag) => ({ name: tag.value })),
+      tags:
+        tags?.map((tag) => ({ name: tag.value })) || post.tags.map((tag) => ({ name: tag.name })),
     };
 
     await editPost(postId, data, accessToken);
