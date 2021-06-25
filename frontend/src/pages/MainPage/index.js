@@ -20,6 +20,13 @@ const HeaderContainer = styled.div`
   justify-content: space-between;
 `;
 
+const FilterListWrapper = styled.div`
+  width: 100%;
+  height: inherit;
+  margin-right: 2rem;
+  flex: 1;
+`;
+
 const PostListContainer = styled.div`
   display: grid;
   grid-row-gap: 2rem;
@@ -72,7 +79,7 @@ const MainPage = () => {
 
   const [posts, setPosts] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState('');
-  const [selectedFilterMissionId, setSelectedFilterMissionId] = useState(0);
+  const [selectedFilterDetails, setSelectedFilterDetails] = useState([]);
 
   const [postList] = useFetch([], requestGetPosts);
   const [filters] = useFetch([], requestGetFilters);
@@ -84,12 +91,16 @@ const MainPage = () => {
     history.push(`${PATH.POST}/${id}`);
   };
 
+  const resetFilter = () => {
+    setSelectedFilterDetails([]);
+  };
+
   useEffect(() => {
-    if (selectedFilterMissionId === 0) return;
+    if (selectedFilterDetails === []) return;
 
     const getFilteredData = async () => {
       try {
-        const response = await requestGetFilteredPosts(selectedFilterMissionId);
+        const response = await requestGetFilteredPosts(selectedFilterDetails);
 
         setPosts(await response.json());
       } catch (error) {
@@ -98,7 +109,7 @@ const MainPage = () => {
     };
 
     getFilteredData();
-  }, [selectedFilterMissionId]);
+  }, [selectedFilterDetails]);
 
   useEffect(() => {
     setPosts(postList);
@@ -107,12 +118,17 @@ const MainPage = () => {
   return (
     <>
       <HeaderContainer>
-        <FilterList
-          filters={filters}
-          selectedFilter={selectedFilter}
-          setSelectedFilter={setSelectedFilter}
-          setSelectedFilterMissionId={setSelectedFilterMissionId}
-        />
+        <FilterListWrapper>
+          <FilterList
+            filters={filters}
+            selectedFilter={selectedFilter}
+            setSelectedFilter={setSelectedFilter}
+            selectedFilterDetails={selectedFilterDetails}
+            setSelectedFilterDetails={setSelectedFilterDetails}
+            isVisibleResetFilter={!!selectedFilterDetails.length}
+            onResetFilter={resetFilter}
+          />
+        </FilterListWrapper>
         {isUserLoggedIn && (
           <Button
             type="button"
@@ -142,7 +158,7 @@ const MainPage = () => {
                   </Tags>
                 </Description>
                 <ProfileChip imageSrc={author.imageUrl} css={ProfileChipLocationStyle}>
-                  {author.nickName}
+                  {author.nickname}
                 </ProfileChip>
               </Content>
             </Card>

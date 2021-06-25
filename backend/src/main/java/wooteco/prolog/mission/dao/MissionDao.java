@@ -10,6 +10,7 @@ import wooteco.prolog.mission.domain.Mission;
 
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -33,7 +34,7 @@ public class MissionDao {
             return pstmt;
         }, keyHolder);
 
-        Long id = keyHolder.getKeyAs(Long.class);
+        Long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
         return new Mission(id, mission.getName());
     }
 

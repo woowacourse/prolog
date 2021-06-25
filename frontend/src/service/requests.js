@@ -8,7 +8,15 @@ const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
 
 const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
 
-const requestGetFilteredPosts = (missionId) => fetch(`${BASE_URL}/posts?missions=${missionId}`);
+const requestGetTags = () => fetch(`${BASE_URL}/tags`);
+
+const requestGetFilteredPosts = (filterList) => {
+  const filterQuery = filterList.map(
+    ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
+  );
+
+  return fetch(`${BASE_URL}/posts?${filterQuery.join('&')}`);
+};
 
 export {
   requestGetPosts,
@@ -16,4 +24,5 @@ export {
   requestGetFilters,
   requestGetMissions,
   requestGetFilteredPosts,
+  requestGetTags,
 };

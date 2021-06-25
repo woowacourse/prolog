@@ -9,7 +9,6 @@ import wooteco.prolog.login.application.dto.TokenRequest;
 import wooteco.prolog.login.application.dto.TokenResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static wooteco.prolog.Documentation.MEMBER1;
 
 public class LoginAcceptanceTest extends AcceptanceTest {
     @DisplayName("토큰에서 멤버 찾기 기능")
@@ -29,8 +28,8 @@ public class LoginAcceptanceTest extends AcceptanceTest {
                 .then().log().all()
                 .extract().as(MemberResponse.class);
 
-        assertThat(memberResponse.getRole()).isEqualTo(MEMBER1.getRole());
-        assertThat(memberResponse.getNickname()).isEqualTo(MEMBER1.getNickname());
-        assertThat(memberResponse.getImageUrl()).isEqualTo(MEMBER1.getImageUrl());
+        assertThat(memberResponse.getRole()).isEqualTo(MEMBER.getRole());
+        assertThat(memberResponse.getNickname()).isEqualTo(MEMBER.getNickname());
+        assertThat(memberResponse.getImageUrl()).isEqualTo(MEMBER.getImageUrl());
     }
 }

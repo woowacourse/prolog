@@ -14,7 +14,6 @@ import wooteco.prolog.post.application.PostService;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.tag.application.TagService;
 import wooteco.prolog.tag.dto.TagRequest;
-import wooteco.prolog.tag.dto.TagResponse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -52,7 +51,7 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
         tagService.create(tagRequests);
 
         // member init
-        Member member = githubLoginService.findOrCreateMember(new GithubProfileResponse("류성현", "46308949", "https://avatars.githubusercontent.com/u/46308949?v=4"));
+        Member member = githubLoginService.findOrCreateMember(new GithubProfileResponse("류성현", "gracefulBrown", "46308949", "https://avatars.githubusercontent.com/u/46308949?v=4"));
 
         // post init
         postService.insertPosts(member, Arrays.asList(

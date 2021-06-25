@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import React from 'react';
 import { DropdownMenu } from '..';
+import checkIcon from '../../assets/images/check.png';
 
 const DropdownToggledStyle = css`
   &:before {
@@ -22,14 +23,16 @@ const Container = styled.div`
   background-color: #f4f4f4;
   border: 1px solid #707070;
   border-radius: 1.4rem;
-  padding: 0 2rem;
+  padding: 0 3.2rem;
   display: flex;
   font-size: 1.4rem;
+  height: inherit;
+  align-items: center;
 
   ${({ isDropdownToggled }) => isDropdownToggled && DropdownToggledStyle}
 
   & > div:not(:last-child) {
-    margin-right: 2rem;
+    margin-right: 3.2rem;
   }
 
   & > div {
@@ -77,10 +80,55 @@ const Container = styled.div`
   }
 `;
 
-const FilterList = ({ selectedFilter, setSelectedFilter, filters, setSelectedFilterMissionId }) => {
+const FilterDetail = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  & > img {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+`;
+
+const ResetFilter = styled.div`
+  margin-left: auto;
+  color: #666666;
+  cursor: pointer;
+`;
+
+const CheckIcon = styled.img`
+  ${({ checked }) => !checked && 'visibility: hidden;'}
+`;
+
+const FilterList = ({
+  selectedFilter,
+  setSelectedFilter,
+  filters,
+  selectedFilterDetails,
+  setSelectedFilterDetails,
+  isVisibleResetFilter,
+  onResetFilter,
+}) => {
   const closeDropdown = (event) => {
     if (event.target === event.currentTarget) {
       setSelectedFilter('');
+    }
+  };
+
+  const findFilterItem = (key, id) =>
+    selectedFilterDetails.find(
+      (filterItem) => filterItem.filterType === key && filterItem.filterDetailId === id
+    );
+
+  const toggleFilterDetails = (filterType, filterDetailId) => {
+    const targetFilterItem = { filterType, filterDetailId };
+    const isExistFilterItem = findFilterItem(filterType, filterDetailId);
+
+    if (isExistFilterItem) {
+      setSelectedFilterDetails((prev) => prev.filter((item) => item !== isExistFilterItem));
+    } else {
+      setSelectedFilterDetails((prev) => [...prev, targetFilterItem]);
     }
   };
 
@@ -91,18 +139,27 @@ const FilterList = ({ selectedFilter, setSelectedFilter, filters, setSelectedFil
           <button onClick={() => setSelectedFilter(key)}>{key}</button>
           {selectedFilter === key && (
             <DropdownMenu>
+              {/* 검색 UI
               <li>
                 <input type="search" placeholder="filter project" />
-              </li>
+              </li> */}
               {value.map(({ id, name }) => (
-                <li key={id} onClick={() => setSelectedFilterMissionId(id)}>
-                  <button>{name}</button>
+                <li key={id} onClick={() => toggleFilterDetails(key, id)}>
+                  <FilterDetail>
+                    <span>{name}</span>
+                    <CheckIcon
+                      src={checkIcon}
+                      alt="선택된 필터 표시"
+                      checked={findFilterItem(key, id)}
+                    />
+                  </FilterDetail>
                 </li>
               ))}
             </DropdownMenu>
           )}
         </div>
       ))}
+      {isVisibleResetFilter && <ResetFilter onClick={onResetFilter}>필터 초기화 ⟳</ResetFilter>}
     </Container>
   );
 };

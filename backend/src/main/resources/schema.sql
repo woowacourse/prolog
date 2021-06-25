@@ -1,9 +1,3 @@
-DROP TABLE IF EXISTS postTag ;
-DROP TABLE IF EXISTS post ;
-DROP TABLE IF EXISTS tag ;
-DROP TABLE IF EXISTS mission ;
-DROP TABLE IF EXISTS member;
-
 -- -----------------------------------------------------
 -- Table mydb.post
 -- -----------------------------------------------------
@@ -11,8 +5,8 @@ CREATE TABLE IF NOT EXISTS post
 (
     id BIGINT NOT NULL AUTO_INCREMENT,
     member_id BIGINT NOT NULL,
-    createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     title VARCHAR(50) NOT NULL,
     content TEXT NOT NULL,
     mission_id BIGINT NOT NULL,
@@ -42,7 +36,7 @@ CREATE TABLE IF NOT EXISTS tag
 -- -----------------------------------------------------
 -- Table postTag
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS postTag
+CREATE TABLE IF NOT EXISTS post_tag
 (
     id BIGINT NOT NULL AUTO_INCREMENT,
     post_id BIGINT NOT NULL,
@@ -63,6 +57,7 @@ CREATE TABLE IF NOT EXISTS member
 (
     id bigint NOT NULL AUTO_INCREMENT,
     nickname VARCHAR(255),
+    github_user_name VARCHAR(255),
     role VARCHAR(20) NOT NULL,
     github_id bigint NOT NULL UNIQUE,
     image_url VARCHAR(255) NOT NULL,
