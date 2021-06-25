@@ -74,18 +74,20 @@ const whiteBackgroundStyle = css`
 const NavBar = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+
   const accessToken = useSelector((state) => state.user.accessToken.data);
+  const user = useSelector((state) => state.user.profile);
+  const isLoggedIn = !!user.data;
+  const userError = user.error;
 
   const [isDropdownToggled, setDropdownToggled] = useState(false);
 
-  const isLogin = !!accessToken;
-
   useEffect(() => {
-    if (isLogin) {
+    if (accessToken) {
       dispatch(getProfile(accessToken));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLogin]);
+  }, [accessToken]);
 
   const goMain = () => {
     history.push(PATH.ROOT);
@@ -105,13 +107,23 @@ const NavBar = () => {
     }
   };
 
+  const logout = () => {
+    localStorage.setItem('accessToken', '');
+
+    window.location.reload();
+  };
+
+  if (userError) {
+    localStorage.setItem('accessToken', '');
+  }
+
   return (
     <Container isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>
       <Wrapper>
         <Logo src={LogoImage} alt="STUDYLOG 로고" onClick={goMain} role="link" />
         <Menu role="menu">
           <Button size="X_SMALL" icon={SearchIcon} type="button" css={whiteBackgroundStyle} />
-          {isLogin ? (
+          {isLoggedIn ? (
             <>
               <Button size="X_SMALL" icon={PencilIcon} type="button" onClick={goNewPost} />
               <Button
@@ -129,7 +141,9 @@ const NavBar = () => {
                       </Link>
                     </li>
                     <li>
-                      <button type="button">로그아웃</button>
+                      <button type="button" onClick={logout}>
+                        로그아웃
+                      </button>
                     </li>
                   </ul>
                 </DropdownMenu>
