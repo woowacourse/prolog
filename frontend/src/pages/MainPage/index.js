@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import styled from '@emotion/styled';
-import { css } from '@emotion/react';
 import { Button, Card, FilterList, ProfileChip } from '../../components';
 import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
@@ -12,66 +10,18 @@ import {
   requestGetFilteredPosts,
 } from '../../service/requests';
 import { useSelector } from 'react-redux';
-
-const HeaderContainer = styled.div`
-  height: 4.8rem;
-  display: flex;
-  margin-bottom: 3.7rem;
-  justify-content: space-between;
-`;
-
-const FilterListWrapper = styled.div`
-  width: 100%;
-  height: inherit;
-  margin-right: 2rem;
-  flex: 1;
-`;
-
-const PostListContainer = styled.div`
-  display: grid;
-  grid-row-gap: 2rem;
-`;
-
-const Content = styled.div`
-  display: flex;
-  height: 100%;
-`;
-
-const Description = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-`;
-
-const Mission = styled.div`
-  font-size: 1.6rem;
-  color: #383838;
-`;
-
-const Title = styled.h3`
-  font-size: 2.8rem;
-  color: #383838;
-  font-weight: bold;
-`;
-
-const Tags = styled.div`
-  font-size: 1.2rem;
-  color: #848484;
-  margin-top: auto;
-`;
-
-const ProfileChipLocationStyle = css`
-  margin-left: auto;
-`;
-
-const CardHoverStyle = css`
-  transition: transform 0.2s ease;
-  cursor: pointer;
-
-  &:hover {
-    transform: scale(1.005);
-  }
-`;
+import {
+  HeaderContainer,
+  FilterListWrapper,
+  PostListContainer,
+  Content,
+  Description,
+  Mission,
+  Title,
+  Tags,
+  ProfileChipLocationStyle,
+  CardHoverStyle,
+} from './styles';
 
 const MainPage = () => {
   const history = useHistory();
