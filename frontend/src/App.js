@@ -3,7 +3,7 @@ import { NavBar } from './components';
 import styled from '@emotion/styled';
 import { PATH } from './constants';
 import GlobalStyles from './GlobalStyles';
-import { MainPage, NewPostPage, PostPage, LoginCallbackPage, MyPage } from './pages';
+import { MainPage, NewPostPage, PostPage, LoginCallbackPage, MyPage, MyPagePosts } from './pages';
 
 const Content = styled.div`
   max-width: 112rem;
@@ -25,7 +25,15 @@ const App = () => {
             </Route>
             <Route exact path={PATH.NEW_POST} component={NewPostPage} />
             <Route exact path={`${PATH.POST}/:id`} component={PostPage} />
-            <Route exact path={`${PATH.MYPAGE_POSTS}`} component={MyPage} />
+            <Route
+              exact
+              path={`${PATH.MYPAGE_POSTS}`}
+              render={() => (
+                <MyPage title="글 관리">
+                  <MyPagePosts />
+                </MyPage>
+              )}
+            />
             <Redirect to={PATH.ROOT} />
           </Switch>
         </Content>

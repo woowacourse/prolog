@@ -1,9 +1,5 @@
-import React, { useState } from 'react';
-import { css } from '@emotion/react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import { Button, BUTTON_SIZE } from '../../components';
-import useFetch from '../../hooks/useFetch';
-import { requestGetPosts } from '../../service/requests';
 import {
   Container,
   Profile,
@@ -11,69 +7,13 @@ import {
   Nickname,
   MenuList,
   MenuItem,
-  MyPostList,
-  Content,
-  Description,
-  Mission,
-  Title,
-  Tags,
-  PostItem,
-  SectionTitle,
-  ButtonList,
   Role,
+  Content,
+  Title,
 } from './styles';
-import { useHistory } from 'react-router-dom';
-import { PATH } from '../../constants';
 
-const CardHoverStyle = css`
-  transition: transform 0.2s ease;
-  cursor: pointer;
-
-  &:hover {
-    transform: scale(1.005);
-  }
-`;
-
-const EditButtonStyle = css`
-  border: 1px solid #e6e6e6;
-  background-color: #fff;
-
-  &:hover {
-    background-color: #e8e8e8;
-  }
-`;
-
-const DeleteButtonStyle = css`
-  border: 1px solid #e6e6e6;
-  background-color: #f59898;
-
-  &:hover {
-    background-color: #f08484;
-  }
-`;
-
-const MyPage = () => {
-  const history = useHistory();
+const MyPage = ({ title, children }) => {
   const me = useSelector((state) => state.user.profile.data);
-
-  const [hoverdPostId, setHoveredPostId] = useState(0);
-
-  const [postList] = useFetch([], requestGetPosts);
-
-  const goTargetPost = (id) => (event) => {
-    if (event?.target !== event?.currentTarget) return;
-    history.push(`${PATH.POST}/${id}`);
-    // console.log('go');
-  };
-
-  const goEditTargetPost = (id) => {
-    history.push(`${PATH.POST}/${id}/edit`);
-  };
-
-  const deleteTargetPost = (id) => {
-    console.log(id);
-    // delete
-  };
 
   return (
     <Container>
@@ -92,55 +32,10 @@ const MyPage = () => {
           </MenuItem>
         </MenuList>
       </div>
-      <MyPostList>
-        <SectionTitle>글 관리</SectionTitle>
-        {postList?.map((post) => {
-          const { id, mission, title, tags } = post;
-
-          return (
-            <PostItem
-              key={id}
-              size="SMALL"
-              css={CardHoverStyle}
-              onClick={goTargetPost(id)}
-              onMouseEnter={() => setHoveredPostId(id)}
-              onMouseLeave={() => setHoveredPostId(0)}
-            >
-              <Content>
-                <Description>
-                  <Mission>{mission.name}</Mission>
-                  <Title>{title}</Title>
-                  <Tags>
-                    {tags.map(({ id, name }) => (
-                      <span key={id}>{`#${name} `}</span>
-                    ))}
-                  </Tags>
-                </Description>
-              </Content>
-              {hoverdPostId === id && (
-                <ButtonList>
-                  <Button
-                    size={BUTTON_SIZE.X_SMALL}
-                    css={EditButtonStyle}
-                    alt="수정 버튼"
-                    onClick={() => goEditTargetPost(id)}
-                  >
-                    수정
-                  </Button>
-                  <Button
-                    size={BUTTON_SIZE.X_SMALL}
-                    css={DeleteButtonStyle}
-                    alt="삭제 버튼"
-                    onClick={() => deleteTargetPost(id)}
-                  >
-                    삭제
-                  </Button>
-                </ButtonList>
-              )}
-            </PostItem>
-          );
-        })}
-      </MyPostList>
+      <Content>
+        <Title>{title}</Title>
+        {children}
+      </Content>
     </Container>
   );
 };
