@@ -25,7 +25,7 @@ const App = () => {
             </Route>
             <Route exact path={PATH.NEW_POST} component={NewPostPage} />
             <Route exact path={`${PATH.POST}/:id`} component={PostPage} />
-            <Route exact path={`${PATH.MYPAGE}`} component={MyPage} />
+            <Route exact path={`${PATH.MYPAGE_POSTS}`} component={MyPage} />
             <Redirect to={PATH.ROOT} />
           </Switch>
         </Content>

@@ -158,7 +158,7 @@ const NavBar = () => {
                 <DropdownMenu css={DropdownLocationStyle}>
                   <ul>
                     <li>
-                      <Link to={PATH.MYPAGE}>
+                      <Link to={PATH.MYPAGE_POSTS} onClick={() => setDropdownToggled(false)}>
                         <button type="button">마이페이지</button>
                       </Link>
                     </li>

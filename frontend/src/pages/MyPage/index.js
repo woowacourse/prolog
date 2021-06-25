@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { css } from '@emotion/react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button, BUTTON_SIZE, FilterList, ProfileChip } from '../../components';
+import { useSelector } from 'react-redux';
+import { Button, BUTTON_SIZE } from '../../components';
 import useFetch from '../../hooks/useFetch';
 import { requestGetPosts } from '../../service/requests';
 import {
@@ -60,8 +60,19 @@ const MyPage = () => {
 
   const [postList] = useFetch([], requestGetPosts);
 
-  const goTargetPost = (id) => () => {
+  const goTargetPost = (id) => (event) => {
+    if (event?.target !== event?.currentTarget) return;
     history.push(`${PATH.POST}/${id}`);
+    // console.log('go');
+  };
+
+  const goEditTargetPost = (id) => {
+    history.push(`${PATH.POST}/${id}/edit`);
+  };
+
+  const deleteTargetPost = (id) => {
+    console.log(id);
+    // delete
   };
 
   return (
@@ -73,9 +84,6 @@ const MyPage = () => {
           <Nickname>{me?.nickname}</Nickname>
         </Profile>
         <MenuList>
-          <MenuItem>
-            <button>관리 홈</button>
-          </MenuItem>
           <MenuItem>
             <button>글 관리</button>
           </MenuItem>
@@ -95,7 +103,7 @@ const MyPage = () => {
               size="SMALL"
               css={CardHoverStyle}
               onClick={goTargetPost(id)}
-              onMouseOver={() => setHoveredPostId(id)}
+              onMouseEnter={() => setHoveredPostId(id)}
               onMouseLeave={() => setHoveredPostId(0)}
             >
               <Content>
@@ -111,10 +119,20 @@ const MyPage = () => {
               </Content>
               {hoverdPostId === id && (
                 <ButtonList>
-                  <Button size={BUTTON_SIZE.X_SMALL} css={EditButtonStyle} alt="수정 버튼">
+                  <Button
+                    size={BUTTON_SIZE.X_SMALL}
+                    css={EditButtonStyle}
+                    alt="수정 버튼"
+                    onClick={() => goEditTargetPost(id)}
+                  >
                     수정
                   </Button>
-                  <Button size={BUTTON_SIZE.X_SMALL} css={DeleteButtonStyle} alt="삭제 버튼">
+                  <Button
+                    size={BUTTON_SIZE.X_SMALL}
+                    css={DeleteButtonStyle}
+                    alt="삭제 버튼"
+                    onClick={() => deleteTargetPost(id)}
+                  >
                     삭제
                   </Button>
                 </ButtonList>
