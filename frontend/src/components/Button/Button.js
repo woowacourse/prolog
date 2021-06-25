@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 
 export const BUTTON_SIZE = {
+  XX_SMALL: 'XX_SMALL',
   X_SMALL: 'X_SMALL',
   SMALL: 'SMALL',
   MEDIUM: 'MEDIUM',
@@ -10,8 +11,8 @@ export const BUTTON_SIZE = {
 
 const containerSizeStyle = {
   X_SMALL: {
-    width: '4.8rem',
-    height: '4.8rem',
+    width: '9.2rem',
+    height: '3.6rem',
     lineHeight: '1.5rem',
     borderRadius: '16px',
   },
