@@ -67,8 +67,23 @@ const DropdownLocationStyle = css`
   right: 0px;
 `;
 
+const searchButtonStyle = css`
+  background-color: #ffffff;
+  width: 4.8rem;
+`;
+
 const whiteBackgroundStyle = css`
   background-color: #ffffff;
+`;
+
+const pencilButtonStyle = css`
+  width: 4.8rem;
+  background-color: #153147;
+  color: #ffffff;
+`;
+
+const profileButtonStyle = css`
+  width: 4.8rem;
 `;
 
 const NavBar = () => {
@@ -122,15 +137,22 @@ const NavBar = () => {
       <Wrapper>
         <Logo src={LogoImage} alt="STUDYLOG 로고" onClick={goMain} role="link" />
         <Menu role="menu">
-          <Button size="X_SMALL" icon={SearchIcon} type="button" css={whiteBackgroundStyle} />
+          <Button size="SMALL" icon={SearchIcon} type="button" css={searchButtonStyle} />
           {isLoggedIn ? (
             <>
-              <Button size="X_SMALL" icon={PencilIcon} type="button" onClick={goNewPost} />
               <Button
-                size="X_SMALL"
+                size="SMALL"
+                icon={PencilIcon}
+                type="button"
+                onClick={goNewPost}
+                css={pencilButtonStyle}
+              />
+              <Button
+                size="SMALL"
                 type="button"
                 backgroundImageUrl={NoProfileImage}
                 onClick={showDropdownMenu}
+                css={profileButtonStyle}
               />
               {isDropdownToggled && (
                 <DropdownMenu css={DropdownLocationStyle}>

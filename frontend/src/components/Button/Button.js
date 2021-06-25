@@ -64,8 +64,8 @@ const Container = styled.button`
   align-items: center;
   border: none;
 
-  ${({ css }) => css};
   ${({ size }) => containerSizeStyle[size] || containerSizeStyle.MEDIUM};
+  ${({ css }) => css};
 `;
 
 const Icon = styled.img`
