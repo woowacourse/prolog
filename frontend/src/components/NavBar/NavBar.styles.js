@@ -48,13 +48,20 @@ const Menu = styled.div`
   }
 `;
 
-const DropdownLocationStyle = css`
+const DropdownStyle = css`
   top: 70px;
   right: 0px;
+  transform: translateX(-24%);
+
+  width: 16rem;
+
+  & * {
+    text-align: center;
+  }
 `;
 
 const whiteBackgroundStyle = css`
   background-color: #ffffff;
 `;
 
-export { Container, Wrapper, Logo, Menu, DropdownLocationStyle, whiteBackgroundStyle };
+export { Container, Wrapper, Logo, Menu, DropdownStyle, whiteBackgroundStyle };

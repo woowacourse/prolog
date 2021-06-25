@@ -16,7 +16,7 @@ import {
   Wrapper,
   Logo,
   Menu,
-  DropdownLocationStyle,
+  DropdownStyle,
   whiteBackgroundStyle,
 } from './NavBar.styles';
 
@@ -90,7 +90,7 @@ const NavBar = () => {
                 onClick={showDropdownMenu}
               />
               {isDropdownToggled && (
-                <DropdownMenu css={DropdownLocationStyle}>
+                <DropdownMenu css={DropdownStyle}>
                   <ul>
                     <li>
                       <button type="button">마이페이지</button>
