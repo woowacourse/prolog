@@ -3,7 +3,15 @@ import { NavBar } from './components';
 import styled from '@emotion/styled';
 import { PATH } from './constants';
 import GlobalStyles from './GlobalStyles';
-import { MainPage, NewPostPage, PostPage, LoginCallbackPage, MyPage, MyPagePosts } from './pages';
+import {
+  MainPage,
+  NewPostPage,
+  PostPage,
+  LoginCallbackPage,
+  MyPage,
+  MyPagePosts,
+  MyPageAccount,
+} from './pages';
 
 const Content = styled.div`
   max-width: 112rem;
@@ -31,6 +39,15 @@ const App = () => {
               render={() => (
                 <MyPage title="글 관리">
                   <MyPagePosts />
+                </MyPage>
+              )}
+            />
+            <Route
+              exact
+              path={`${PATH.MYPAGE_ACCOUNT}`}
+              render={() => (
+                <MyPage title="내 정보 수정">
+                  <MyPageAccount />
                 </MyPage>
               )}
             />

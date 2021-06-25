@@ -1,5 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { PATH } from '../../constants';
 import {
   Container,
   Profile,
@@ -13,7 +15,17 @@ import {
 } from './styles';
 
 const MyPage = ({ title, children }) => {
+  const history = useHistory();
+
   const me = useSelector((state) => state.user.profile.data);
+
+  const goMyPagePosts = () => {
+    history.push(PATH.MYPAGE_POSTS);
+  };
+
+  const goMyPageAccount = () => {
+    history.push(PATH.MYPAGE_ACCOUNT);
+  };
 
   return (
     <Container>
@@ -25,10 +37,14 @@ const MyPage = ({ title, children }) => {
         </Profile>
         <MenuList>
           <MenuItem>
-            <button>글 관리</button>
+            <button type="button" onClick={goMyPagePosts}>
+              글 관리
+            </button>
           </MenuItem>
           <MenuItem>
-            <button>내 정보 수정</button>
+            <button type="button" onClick={goMyPageAccount}>
+              내 정보 수정
+            </button>
           </MenuItem>
         </MenuList>
       </div>

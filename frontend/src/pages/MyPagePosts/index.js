@@ -73,6 +73,7 @@ const MyPagePosts = () => {
               <ButtonList>
                 <Button
                   size={BUTTON_SIZE.X_SMALL}
+                  type="button"
                   css={EditButtonStyle}
                   alt="수정 버튼"
                   onClick={() => goEditTargetPost(id)}
@@ -81,6 +82,7 @@ const MyPagePosts = () => {
                 </Button>
                 <Button
                   size={BUTTON_SIZE.X_SMALL}
+                  type="button"
                   css={DeleteButtonStyle}
                   alt="삭제 버튼"
                   onClick={() => deleteTargetPost(id)}
