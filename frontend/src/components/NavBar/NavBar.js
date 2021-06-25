@@ -137,7 +137,7 @@ const NavBar = () => {
       <Wrapper>
         <Logo src={LogoImage} alt="STUDYLOG 로고" onClick={goMain} role="link" />
         <Menu role="menu">
-          <Button size="SMALL" icon={SearchIcon} type="button" css={searchButtonStyle} />
+          {/* <Button size="SMALL" icon={SearchIcon} type="button" css={searchButtonStyle} /> */}
           {isLoggedIn ? (
             <>
               <Button
