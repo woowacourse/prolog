@@ -13,7 +13,7 @@ import wooteco.prolog.login.domain.Member;
 @RequestMapping("/members")
 public class MemberController {
 
-    @GetMapping(value = "/me", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MemberResponse> findMemberInfo(@AuthMemberPrincipal Member member) {
         return ResponseEntity.ok().body(MemberResponse.of(member));
     }

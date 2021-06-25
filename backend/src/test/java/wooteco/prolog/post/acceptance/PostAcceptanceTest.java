@@ -72,7 +72,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
 
     private ExtractableResponse<Response> 글을_작성한다(List<PostRequest> postRequests) {
         return given()
-                .auth().oauth2(tokenResponse.getAccessToken())
+                .auth().oauth2(로그인_사용자.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(postRequests)
                 .when()
@@ -88,7 +88,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
 
         // when
         ExtractableResponse<Response> response = given()
-                .auth().oauth2(tokenResponse.getAccessToken())
+                .auth().oauth2(로그인_사용자.getAccessToken())
                 .when()
                 .get("/posts")
                 .then()
@@ -135,7 +135,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
 
         // when
         ExtractableResponse<Response> expected = given()
-                .auth().oauth2(tokenResponse.getAccessToken())
+                .auth().oauth2(로그인_사용자.getAccessToken())
                 .when()
                 .get(path)
                 .then()
@@ -159,7 +159,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
 
     private Long 미션_등록함(MissionRequest request) {
         return given()
-                .auth().oauth2(tokenResponse.getAccessToken())
+                .auth().oauth2(로그인_사용자.getAccessToken())
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()

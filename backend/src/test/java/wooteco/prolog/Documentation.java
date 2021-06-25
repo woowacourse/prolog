@@ -21,22 +21,15 @@ import wooteco.prolog.login.application.dto.TokenResponse;
 import wooteco.prolog.login.dao.MemberDao;
 import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.login.domain.Role;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ExtendWith(RestDocumentationExtension.class)
-public class Documentation {
-    public static Member MEMBER1 = new Member(1L, "쏘로로롱", Role.CREW, 1L, "https://avatars.githubusercontent.com/u/52682603?v=4");
-
-    @LocalServerPort
-    int port;
-
+public class Documentation extends AcceptanceTest{
     protected RequestSpecification spec;
 
     @MockBean
@@ -55,7 +48,7 @@ public class Documentation {
 
     @BeforeEach
     public void setUp(RestDocumentationContextProvider restDocumentation) {
-        RestAssured.port = port;
+        setUp();
 
         this.spec = new RequestSpecBuilder()
                 .addFilter(documentationConfiguration(restDocumentation))
@@ -67,9 +60,9 @@ public class Documentation {
 
         when(tokenProvider.extractSubject(any())).thenReturn("1");
 
-        when(memberService.findById(1L)).thenReturn(MEMBER1);
+        when(memberService.findById(1L)).thenReturn(MEMBER);
 
-        memberDao.insert(MEMBER1);
+        memberDao.insert(MEMBER);
 
         로그인_사용자 = RestAssured
                 .given(spec).log().all()

@@ -2,8 +2,10 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 
 const Container = styled.div`
-  min-width: 17.5rem;
-  min-height: 5rem;
+  height: fit-content;
+  max-height: 32rem;
+  white-space: nowrap;
+  overflow-y: auto;
   background-color: #ffffff;
   border-radius: 2rem;
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
@@ -57,10 +59,10 @@ const Container = styled.div`
 
   & li {
     height: 5rem;
-    text-align: center;
     display: flex;
-    justify-content: center;
     align-items: center;
+    padding: 0 0.8rem;
+    width: 100%;
 
     & > * {
       width: 100%;
@@ -68,6 +70,7 @@ const Container = styled.div`
       font-weight: 500;
       color: #333;
       transition: font-size 0.1s ease;
+      text-align: left;
     }
   }
 
