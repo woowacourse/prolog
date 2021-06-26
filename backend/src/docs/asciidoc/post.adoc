@@ -40,3 +40,13 @@ include::{snippets}/post/read/http-request.adoc[]
 ==== Response
 
 include::{snippets}/post/read/http-response.adoc[]
+
+=== 포스트 수정
+
+==== Request
+
+include::{snippets}/post/edit/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post/edit/http-response.adoc[]

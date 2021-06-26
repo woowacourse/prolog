@@ -172,4 +172,14 @@ public class PostDao {
         return jdbcTemplate.query(sql, postResultSetExtractor, id);
     }
 
+    public void update(Long id, Post updatedPost) {
+        String query = "UPDATE post SET title = ?, content = ?, mission_id = ? WHERE id = ?";
+
+        this.jdbcTemplate.update(
+            query,
+            updatedPost.getTitle(),
+            updatedPost.getContent(),
+            updatedPost.getMissionId(), id
+        );
+    }
 }
