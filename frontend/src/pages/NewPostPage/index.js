@@ -1,40 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import styled from '@emotion/styled';
-import { css } from '@emotion/react';
 import { SelectBox, Button, BUTTON_SIZE, NewPostCard } from '../../components';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPost } from '../../redux/actions/postAction';
 import useFetch from '../../hooks/useFetch';
 import { requestGetMissions, requestGetTags } from '../../service/requests';
-
-// TODO: section 으로 바꾸기 -> aria-label 주기
-const SelectBoxWrapper = styled.div`
-  margin: 3rem 0;
-`;
-
-const Flex = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 3rem 0;
-`;
-
-const Post = styled.li`
-  margin-bottom: 4.8rem;
-`;
-
-const LogButtonStyle = css`
-  background-color: #e0e0e0;
-  font-weight: 500;
-`;
-
-const SubmitButtonStyle = css`
-  background-color: #153147;
-  color: #ffffff;
-  font-weight: 500;
-`;
+import { SelectBoxWrapper, Flex, Post, LogButtonStyle, SubmitButtonStyle } from './styles';
 
 const NewPostPage = () => {
   const dispatch = useDispatch();
@@ -61,7 +33,7 @@ const NewPostPage = () => {
         missionId: missions.find((mission) => mission.name === selectedMission).id,
         title: title.value,
         content: content.getInstance().getMarkdown(),
-        tags: tags?.map((tag) => ({ name: tag.value })),
+        tags: tags?.map((tag) => ({ name: tag.value })) || [],
       };
     });
 
@@ -100,19 +72,19 @@ const NewPostPage = () => {
         ))}
       </ul>
 
-      <Flex>
-        <Button
+      {/* <Flex> */}
+      {/* <Button
           type="button"
           size={BUTTON_SIZE.LARGE}
           css={LogButtonStyle}
           onClick={() => setPostIds([...postIds, nanoid()])}
         >
           로그추가
-        </Button>
-        <Button size={BUTTON_SIZE.LARGE} css={SubmitButtonStyle}>
-          작성완료
-        </Button>
-      </Flex>
+        </Button> */}
+      <Button size={BUTTON_SIZE.SMALL} css={SubmitButtonStyle}>
+        작성완료
+      </Button>
+      {/* </Flex> */}
     </form>
   );
 };
