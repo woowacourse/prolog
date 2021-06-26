@@ -4,7 +4,6 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -189,7 +188,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
 
         // when
         ExtractableResponse<Response> updateResponse = given()
-            .auth().oauth2(tokenResponse.getAccessToken())
+            .auth().oauth2(로그인_사용자.getAccessToken())
             .when()
             .body(updateRequest)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -198,7 +197,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
             .extract();
 
         PostResponse updatedPost = given()
-            .auth().oauth2(tokenResponse.getAccessToken())
+            .auth().oauth2(로그인_사용자.getAccessToken())
             .when()
             .get(path)
             .then()
