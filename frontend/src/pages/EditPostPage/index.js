@@ -49,8 +49,8 @@ const EditPostPage = () => {
   }, [mission]);
 
   useEffect(() => {
-    if (user !== author) {
-      alert('접근 권한이 없습니다.');
+    if (author && user !== author.nickname) {
+      alert('본인이 작성하지 않은 글은 수정할 수 없습니다.');
       history.push(`${PATH.POST}/${postId}`);
     }
   }, [user, author]);
