@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static wooteco.prolog.aop.exception.BadRequestCode.POST_ARGUMENT;
 
 
 public class PostAcceptanceTest extends AcceptanceTest {
@@ -124,6 +125,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
 
         //then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat((String) response.jsonPath().get("message")).isEqualTo(POST_ARGUMENT.getMessage());
     }
 
     @Test
