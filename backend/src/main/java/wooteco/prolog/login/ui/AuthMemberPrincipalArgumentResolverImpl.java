@@ -36,7 +36,7 @@ public class AuthMemberPrincipalArgumentResolverImpl implements AuthMemberPrinci
             Long id = Long.valueOf(jwtTokenProvider.extractSubject(credentials));
             return memberService.findById(id);
         } catch (NumberFormatException e) {
-            throw new TokenNotValidException("유효하지 않은 토큰입니다.");
+            throw new TokenNotValidException();
         }
     }
 }

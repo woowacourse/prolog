@@ -69,6 +69,6 @@ class TagAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat((String) response.jsonPath().get("message")).isEqualTo("중복된 태그를 입력할 수 없습니다.");
+        assertThat((String) response.jsonPath().get("message")).isEqualTo("태그가 중복됩니다.");
     }
 }

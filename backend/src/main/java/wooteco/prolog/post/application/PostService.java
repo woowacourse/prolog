@@ -58,7 +58,7 @@ public class PostService {
     @Transactional
     public List<PostResponse> insertPosts(Member member, List<PostRequest> postRequests) {
         if (postRequests.size() == 0) {
-            throw new PostArgumentException("최소 1개의 글이 있어야 합니다.");
+            throw new PostArgumentException();
         }
 
         return postRequests.stream()
