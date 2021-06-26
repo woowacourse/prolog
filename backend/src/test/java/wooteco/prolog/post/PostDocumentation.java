@@ -30,6 +30,10 @@ public class PostDocumentation extends Documentation {
         String location = createResponse.header("Location");
 
         포스트_단건을_조회한다(location);
+
+        포스트_목록을_작성자별로_조회한다();
+
+        포스트를_삭제한다(location);
     }
 
     private PostRequest createPostRequest() {
@@ -85,5 +89,19 @@ public class PostDocumentation extends Documentation {
                 .extract()
                 .as(MissionResponse.class)
                 .getId();
+    }
+
+    private void 포스트_목록을_작성자별로_조회한다() {
+        given("post/mine")
+                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/members/{username}/posts", MEMBER.getGithubUserName());
+    }
+
+    private void 포스트를_삭제한다(String location) {
+        given("post/delete")
+                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().delete(location);
     }
 }

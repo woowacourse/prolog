@@ -108,6 +108,16 @@ public class PostDao {
         return jdbcTemplate.query(query, postsResultSetExtractor);
     }
 
+    public List<Post> findAllByMemberId(Long memberId) {
+        String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, github_user_name, role, github_id, image_url, tag.id as tag_id " +
+                "FROM post AS po " +
+                "LEFT JOIN member AS me ON po.member_id = me.id " +
+                "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
+                "LEFT JOIN tag ON pt.tag_id = tag.id " +
+                "WHERE po.member_id = " + memberId;
+        return jdbcTemplate.query(query, postsResultSetExtractor);
+    }
+
     public List<Post> findWithFilter(List<Long> missions, List<Long> tags) {
         String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, github_user_name, role, github_id, image_url, tag.id as tag_id " +
                 "FROM post AS po " +
@@ -172,4 +182,8 @@ public class PostDao {
         return jdbcTemplate.query(sql, postResultSetExtractor, id);
     }
 
+    public void deleteById(Long id) {
+        String sql = "DELETE FROM post WHERE post.id = ?";
+        jdbcTemplate.update(sql, id);
+    }
 }

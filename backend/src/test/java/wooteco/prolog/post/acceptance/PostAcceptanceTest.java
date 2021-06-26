@@ -106,6 +106,50 @@ public class PostAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    void 내가_작성한_글을_불러온다() {
+        // given
+        글을_작성한다(postRequests);
+
+        // when
+        ExtractableResponse<Response> response = given()
+                .auth().oauth2(로그인_사용자.getAccessToken())
+                .when()
+                .get("/members/soulG/posts")
+                .then()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .log().all()
+                .extract();
+
+        // then
+        List<HashMap<String, Object>> list = response.body().jsonPath().getList("");
+        List<String> extractedTitles = list.stream()
+                .map(map -> (String) map.get("title"))
+                .collect(Collectors.toList());
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(extractedTitles).contains(firstPost.getTitle(), secondPost.getTitle());
+    }
+
+    @Test
+    void 내가_작성한_글을_제거한다() {
+        // given
+        String location = 글을_작성한다(postRequests).header("Location");
+
+        ExtractableResponse<Response> deleteResponse = 포스트_삭제_요청(location);
+
+        assertThat(deleteResponse.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    private ExtractableResponse<Response> 포스트_삭제_요청(String location) {
+        return given()
+                .auth().oauth2(로그인_사용자.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(postRequests)
+                .when().delete(location)
+                .then().extract();
+    }
+
+    @Test
     void 글_작성하기_테스트() {
         // when
         ExtractableResponse<Response> response = 글을_작성한다(postRequests);

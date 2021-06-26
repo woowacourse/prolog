@@ -72,4 +72,8 @@ public class TagService {
                 .map(TagResponse::of)
                 .collect(Collectors.toList());
     }
+
+    public void deletePostTagByPostId(Long postId) {
+        postTagDao.deleteByPostId(postId);
+    }
 }

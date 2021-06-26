@@ -21,6 +21,18 @@ include::{snippets}/post/list/http-request.adoc[]
 
 include::{snippets}/post/list/http-response.adoc[]
 
+
+=== 포스트 목록 조회 (작성자별)
+
+==== Request
+
+include::{snippets}/post/mine/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post/mine/http-response.adoc[]
+
+
 === 포스트 필터 조회
 
 ==== Request
@@ -40,3 +52,13 @@ include::{snippets}/post/read/http-request.adoc[]
 ==== Response
 
 include::{snippets}/post/read/http-response.adoc[]
+
+=== 포스트 삭제
+
+==== Request
+
+include::{snippets}/post/delete/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post/delete/http-response.adoc[]

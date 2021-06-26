@@ -23,4 +23,10 @@ public class PostTagDao {
         String query = "SELECT tag_id FROM post_tag WHERE post_id = ?";
         return jdbcTemplate.queryForList(query, Long.class, postId);
     }
+
+    public void deleteByPostId(Long postId) {
+        String query = "DELETE FROM post_tag WHERE post_id = ?";
+
+        this.jdbcTemplate.update(query, postId);
+    }
 }
