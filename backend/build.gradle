@@ -33,6 +33,12 @@ dependencies {
 	testImplementation 'io.rest-assured:spring-mock-mvc:3.3.0'
 	testImplementation 'io.rest-assured:rest-assured:3.3.0'
 
+	// cucumber
+	testImplementation 'io.cucumber:cucumber-java:6.10.4'
+	testImplementation 'io.cucumber:cucumber-spring:6.10.4'
+	testImplementation 'io.cucumber:cucumber-junit-platform-engine:6.10.4'
+	testImplementation 'io.cucumber:cucumber-junit:6.10.4'
+
 	// rest docs
 	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.5.RELEASE'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-restassured:2.0.5.RELEASE'
