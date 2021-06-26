@@ -1,59 +1,17 @@
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
 import { useParams } from 'react-router';
 import { Card, ProfileChip } from '../../components';
 import useFetch from '../../hooks/useFetch';
 import { requestGetPost } from '../../service/requests';
-
-const CardInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-
-  & > *:not(:last-child) {
-    margin-bottom: 6rem;
-  }
-`;
-
-const Header = styled.div``;
-
-const SubHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Mission = styled.div`
-  font-size: 2rem;
-  color: #383838;
-  font-weight: lighter;
-`;
-
-const Title = styled.div`
-  font-size: 3.6rem;
-  color: #383838;
-  font-weight: bold;
-  margin-bottom: 2rem;
-`;
-
-const Content = styled.div`
-  line-break: anywhere;
-  white-space: break-spaces;
-`;
-
-const Tags = styled.div`
-  font-size: 1.4rem;
-  color: #848484;
-  margin-top: auto;
-`;
-
-const IssuedDate = styled.div`
-  color: #444444;
-  font-size: 1.4rem;
-`;
-
-const ProfileChipStyle = css`
-  border: none;
-`;
+import {
+  CardInner,
+  SubHeader,
+  Mission,
+  Title,
+  Content,
+  Tags,
+  IssuedDate,
+  ProfileChipStyle,
+} from './styles';
 
 const PostPage = () => {
   const { id: postId } = useParams();
@@ -64,19 +22,35 @@ const PostPage = () => {
     <>해당 글을 찾을 수 없습니다.</>;
   }
 
+  //   {
+  //     localeMatcher?: "best fit" | "lookup";
+  //     weekday?: "long" | "short" | "narrow";
+  //     era?: "long" | "short" | "narrow";
+  //     year?: "numeric" | "2-digit";
+  //     month?: "numeric" | "2-digit" | "long" | "short" | "narrow";
+  //     day?: "numeric" | "2-digit";
+  //     hour?: "numeric" | "2-digit";
+  //     minute?: "numeric" | "2-digit";
+  //     second?: "numeric" | "2-digit";
+  //     timeZoneName?: "long" | "short";
+  //     formatMatcher?: "best fit" | "basic";
+  //     hour12?: boolean;
+  //     timeZone?: string;
+  // }
+
   return (
     <Card key={id} size="LARGE">
       <CardInner>
-        <Header>
+        <div>
           <SubHeader>
             <Mission>{mission?.name}</Mission>
-            <IssuedDate>{Date(createdAt)}</IssuedDate>
+            <IssuedDate>{new Date(createdAt).toLocaleString('ko-KR')}</IssuedDate>
           </SubHeader>
           <Title>{title}</Title>
           <ProfileChip imageSrc={author?.imageUrl} css={ProfileChipStyle}>
-            {author?.nickName}
+            {author?.nickname}
           </ProfileChip>
-        </Header>
+        </div>
         <Content>{content}</Content>
         <Tags>
           {tags?.map(({ id, name }) => (
