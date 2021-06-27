@@ -51,6 +51,13 @@ public enum GithubResponses {
         return avatarUrl;
     }
 
+    public static GithubResponses findByName(String member) {
+        return Arrays.stream(values())
+                .filter(it -> StringUtils.equals(it.name, member))
+                .findFirst()
+                .orElseThrow(RuntimeException::new);
+    }
+
     public static GithubResponses findByCode(String code) {
         return Arrays.stream(values())
                 .filter(it -> StringUtils.equals(it.code, code))

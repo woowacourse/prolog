@@ -3,10 +3,8 @@ package wooteco.prolog.post.acceptance;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
-import wooteco.prolog.acceptance.AcceptanceContext;
+import wooteco.prolog.acceptance.AcceptanceSteps;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 
@@ -15,10 +13,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Profile("test")
-public class PostAcceptanceSteps {
-    @Autowired
-    public AcceptanceContext context;
+public class PostStepDefinitions extends AcceptanceSteps {
 
     @Given("포스트 여러개를 작성하고")
     public void 포스트여러개를작성하고() {
@@ -50,8 +45,8 @@ public class PostAcceptanceSteps {
         context.invokeHttpGet("/posts");
     }
 
-    @Then("포스트 목록이 조회된다")
-    public void 포스트목록이조회된다() {
+    @Then("포스트 목록을 받는다")
+    public void 포스트목록을받는다() {
         List<PostResponse> posts = context.response.jsonPath().getList(".", PostResponse.class);
 
         assertThat(posts.size()).isEqualTo(2);
@@ -82,11 +77,18 @@ public class PostAcceptanceSteps {
 
     @Then("{long}번째 포스트가 수정된다")
     public void 포스트가수정된다(Long postId) {
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+
         String path = "/posts/" + postId;
         context.invokeHttpGet(path);
         PostResponse post = context.response.as(PostResponse.class);
 
         assertThat(post.getContent()).isEqualTo(PostAcceptanceFixture.secondPost.getContent());
+    }
+
+    @Then("에러 응답을 받는다")
+    public void 에러가응답을받는다() {
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 
     @When("{long}번째 포스트를 삭제하면")

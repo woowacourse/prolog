@@ -3,15 +3,14 @@ package wooteco.prolog.acceptance;
 import io.cucumber.java.Before;
 import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("test")
+@DirtiesContext
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @CucumberContextConfiguration
 public class AcceptanceHooks {
     @LocalServerPort
@@ -22,3 +21,4 @@ public class AcceptanceHooks {
         RestAssured.port = port;
     }
 }
+

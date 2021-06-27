@@ -16,6 +16,16 @@ public class AcceptanceContext {
     public Response response;
     public String accessToken;
 
+    public AcceptanceContext() {
+        reset();
+    }
+
+    private void reset() {
+        request = null;
+        response = null;
+        accessToken = "";
+    }
+
     public void invokeHttpGet(String path, Object... pathParams) {
         request = RestAssured.given().log().all();
         response = request.when().get(path, pathParams);
@@ -27,6 +37,12 @@ public class AcceptanceContext {
                 .given().log().all()
                 .body(data).contentType(ContentType.JSON);
         response = request.post(path);
+        response.then().log().all();
+    }
+    public void invokeHttpGetWithToken(String path, Object... pathParams) {
+        request = RestAssured.given().log().all()
+                .auth().oauth2(accessToken);;
+        response = request.when().get(path, pathParams);
         response.then().log().all();
     }
 
