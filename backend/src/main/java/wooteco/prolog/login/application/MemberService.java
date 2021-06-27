@@ -13,6 +13,6 @@ public class MemberService {
 
     public Member findById(Long id){
         return memberDao.findById(id)
-                .orElseThrow(() -> new MemberNotFoundException("해당 멤버를 찾을 수 없습니다."));
+                .orElseThrow(MemberNotFoundException::new);
     }
 }

@@ -7,8 +7,8 @@ import wooteco.prolog.post.exception.PostArgumentException;
 
 @RestControllerAdvice
 public class ExceptionController {
-    @ExceptionHandler(PostArgumentException.class)
-    public ResponseEntity<Void> post4XXExceptionHandling() {
-        return ResponseEntity.badRequest().build();
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<BadRequestExceptionDto> loginExceptionHandler(BadRequestException e) {
+        return ResponseEntity.badRequest().body(new BadRequestExceptionDto(e.getCode(), e.getMessage()));
     }
 }

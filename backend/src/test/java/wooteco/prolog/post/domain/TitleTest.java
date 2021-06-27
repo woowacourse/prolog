@@ -2,6 +2,7 @@ package wooteco.prolog.post.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import wooteco.prolog.login.excetpion.PostTitleNullOrEmptyException;
 import wooteco.prolog.post.exception.PostArgumentException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,11 +19,11 @@ class TitleTest {
         //when
         //then
         assertThatThrownBy(() -> new Title(empty))
-                .isInstanceOf(PostArgumentException.class);
+                .isInstanceOf(PostTitleNullOrEmptyException.class);
         assertThatThrownBy(() -> new Title(justBlank))
-                .isInstanceOf(PostArgumentException.class);
+                .isInstanceOf(PostTitleNullOrEmptyException.class);
         assertThatThrownBy(() -> new Title(null))
-                .isInstanceOf(PostArgumentException.class);
+                .isInstanceOf(PostTitleNullOrEmptyException.class);
     }
 
     @DisplayName("생성")

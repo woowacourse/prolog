@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
-public class ExceptionDto {
+public class BadRequestExceptionDto {
+    private int code;
     private String message;
 }

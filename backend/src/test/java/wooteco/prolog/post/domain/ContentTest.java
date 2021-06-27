@@ -3,6 +3,7 @@ package wooteco.prolog.post.domain;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.post.exception.PostArgumentException;
+import wooteco.prolog.post.exception.PostContentNullOrEmptyException;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -16,10 +17,10 @@ class ContentTest {
         //when
         //then
         assertThatThrownBy(() -> new Content(empty))
-                .isInstanceOf(PostArgumentException.class);
+                .isInstanceOf(PostContentNullOrEmptyException.class);
         assertThatThrownBy(() -> new Content(justBlank))
-                .isInstanceOf(PostArgumentException.class);
+                .isInstanceOf(PostContentNullOrEmptyException.class);
         assertThatThrownBy(() -> new Content(null))
-                .isInstanceOf(PostArgumentException.class);
+                .isInstanceOf(PostContentNullOrEmptyException.class);
     }
 }

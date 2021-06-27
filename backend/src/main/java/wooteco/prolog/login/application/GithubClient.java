@@ -12,6 +12,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import wooteco.prolog.login.application.dto.GithubAccessTokenResponse;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
+import wooteco.prolog.login.excetpion.GithubApiFailException;
+import wooteco.prolog.login.excetpion.GithubConnectionException;
 
 @Component
 public class GithubClient {
@@ -42,7 +44,7 @@ public class GithubClient {
                 .getBody()
                 .getAccessToken();
         if (accessToken == null) {
-            throw new IllegalArgumentException("로그인에 실패했습니다.");
+            throw new GithubApiFailException();
         }
         return accessToken;
     }
@@ -59,7 +61,7 @@ public class GithubClient {
                     .exchange(profileUrl, HttpMethod.GET, httpEntity, GithubProfileResponse.class)
                     .getBody();
         } catch (HttpClientErrorException e) {
-            throw new IllegalArgumentException("로그인에 실패했습니다.");
+            throw new GithubConnectionException();
         }
     }
 }
