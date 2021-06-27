@@ -7,6 +7,7 @@ import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.post.application.PostService;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
+import wooteco.prolog.post.domain.SortBy;
 
 import java.net.URI;
 import java.util.List;
@@ -30,9 +31,10 @@ public class PostController {
     @GetMapping
     public ResponseEntity<List<PostResponse>> showAll(
             @RequestParam(required = false) List<Long> missions,
-            @RequestParam(required = false) List<Long> tags
+            @RequestParam(required = false) List<Long> tags,
+            @RequestParam(defaultValue = "DESC") SortBy order
     ) {
-        List<PostResponse> postResponses = postService.findPostsWithFilter(missions, tags);
+        List<PostResponse> postResponses = postService.findPostsWithFilter(missions, tags, order);
 
         return ResponseEntity.ok(postResponses);
     }
@@ -45,9 +47,9 @@ public class PostController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updatePost(
-        @AuthMemberPrincipal Member member,
-        @PathVariable Long id,
-        @RequestBody PostRequest postRequest
+            @AuthMemberPrincipal Member member,
+            @PathVariable Long id,
+            @RequestBody PostRequest postRequest
     ) {
         postService.updatePost(member, id, postRequest);
         return ResponseEntity.ok().build();

@@ -90,7 +90,7 @@ public class PostAcceptanceTest extends AcceptanceTest {
         ExtractableResponse<Response> response = given()
                 .auth().oauth2(로그인_사용자.getAccessToken())
                 .when()
-                .get("/posts")
+                .get("/posts?order=desc")
                 .then()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .log().all()

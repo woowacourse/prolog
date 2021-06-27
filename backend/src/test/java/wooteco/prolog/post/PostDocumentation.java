@@ -75,7 +75,7 @@ public class PostDocumentation extends Documentation {
         given("post/list")
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/posts")
+                .when().get("/posts?order=desc")
                 .then().log().all().extract();
     }
 

@@ -10,6 +10,7 @@ import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.dao.PostDao;
 import wooteco.prolog.post.domain.Post;
+import wooteco.prolog.post.domain.SortBy;
 import wooteco.prolog.post.exception.AuthorNotValidException;
 import wooteco.prolog.post.exception.PostArgumentException;
 import wooteco.prolog.tag.application.TagService;
@@ -33,20 +34,28 @@ public class PostService {
     }
 
     public List<PostResponse> findAll() {
+        return findAll(SortBy.DESC);
+    }
+
+    public List<PostResponse> findAll(SortBy sortBy) {
         List<Post> posts = postDao.findAll();
         return posts.stream()
-                .map(post -> toResponse(post))
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public List<PostResponse> findPostsWithFilter(List<Long> missions, List<Long> tags, SortBy sortBy) {
+        missions = nullToEmptyList(missions);
+        tags = nullToEmptyList(tags);
+
+        List<Post> posts = postDao.findWithFilter(missions, tags, sortBy);
+        return posts.stream()
+                .map(this::toResponse)
                 .collect(Collectors.toList());
     }
 
     public List<PostResponse> findPostsWithFilter(List<Long> missions, List<Long> tags) {
-        missions = nullToEmptyList(missions);
-        tags = nullToEmptyList(tags);
-
-        List<Post> posts = postDao.findWithFilter(missions, tags);
-        return posts.stream()
-                .map(post -> toResponse(post))
-                .collect(Collectors.toList());
+        return findPostsWithFilter(missions, tags, SortBy.DESC);
     }
 
     private List<Long> nullToEmptyList(List<Long> filters) {
@@ -111,7 +120,7 @@ public class PostService {
                 postRequest.getContent(),
                 postRequest.getMissionId(),
                 tagIds
-            );
+        );
         postDao.update(id, updatedPost);
         tagService.addTagToPost(id, tagIds);
 
@@ -122,15 +131,15 @@ public class PostService {
         List<TagResponse> originTags = tagService.getTagsOfPost(id);
         List<Long> originTagIds = getTagIds(originTags);
         List<Long> removedTagIds = originTagIds.stream()
-            .filter(tagId -> !tagIds.contains(tagId))
-            .collect(Collectors.toList());
+                .filter(tagId -> !tagIds.contains(tagId))
+                .collect(Collectors.toList());
         tagService.removeTagFromPost(id, removedTagIds);
     }
 
     private List<Long> getTagIds(List<TagResponse> originTags) {
         return originTags.stream()
-            .map(TagResponse::getId)
-            .collect(Collectors.toList());
+                .map(TagResponse::getId)
+                .collect(Collectors.toList());
     }
 
     private void validateAuthor(Member member, PostResponse post) {

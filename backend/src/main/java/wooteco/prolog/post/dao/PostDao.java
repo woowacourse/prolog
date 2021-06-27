@@ -9,6 +9,7 @@ import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.login.domain.Role;
 import wooteco.prolog.post.domain.Content;
 import wooteco.prolog.post.domain.Post;
+import wooteco.prolog.post.domain.SortBy;
 import wooteco.prolog.post.domain.Title;
 import wooteco.prolog.tag.domain.Tag;
 
@@ -108,7 +109,7 @@ public class PostDao {
         return jdbcTemplate.query(query, postsResultSetExtractor);
     }
 
-    public List<Post> findWithFilter(List<Long> missions, List<Long> tags) {
+    public List<Post> findWithFilter(List<Long> missions, List<Long> tags, SortBy sortBy) {
         String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, github_user_name, role, github_id, image_url, tag.id as tag_id " +
                 "FROM post AS po " +
                 "LEFT JOIN member AS me ON po.member_id = me.id " +
@@ -118,20 +119,10 @@ public class PostDao {
         query += createDynamicColumnQuery("mission_id", missions);
         query += createDynamicColumnQuery("tag_id", tags);
 
+        query += createSortQuery(sortBy);
         Object[] dynamicElements = Stream.concat(missions.stream(), tags.stream()).toArray();
 
         return jdbcTemplate.query(query, postsResultSetExtractor, dynamicElements);
-    }
-
-    private String createDynamicColumnQuery(String columnName, List<Long> columnIds) {
-        if (columnIds.isEmpty()) {
-            return "";
-        }
-        String missionDynamicQuery = " AND " + columnName + " IN (";
-        String questionMarks = String.join(",", Collections.nCopies(columnIds.size(), "?"));
-        missionDynamicQuery += questionMarks;
-        missionDynamicQuery += ")";
-        return missionDynamicQuery;
     }
 
     public Post insert(Post post) {
@@ -181,5 +172,22 @@ public class PostDao {
             updatedPost.getContent(),
             updatedPost.getMissionId(), id
         );
+    }
+
+    private String createDynamicColumnQuery(String columnName, List<Long> columnIds) {
+        if (columnIds.isEmpty()) {
+            return "";
+        }
+        String missionDynamicQuery = " AND " + columnName + " IN (";
+        String questionMarks = String.join(",", Collections.nCopies(columnIds.size(), "?"));
+        missionDynamicQuery += questionMarks;
+        missionDynamicQuery += ")";
+        return missionDynamicQuery;
+    }
+
+    private String createSortQuery(SortBy sortBy) {
+        String orderByQuery = " ORDER BY id ";
+        orderByQuery += sortBy.name(); // DESC or ASC
+        return orderByQuery;
     }
 }
