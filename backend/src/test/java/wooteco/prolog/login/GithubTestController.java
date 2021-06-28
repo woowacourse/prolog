@@ -6,9 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import wooteco.prolog.login.application.dto.GithubAccessTokenRequest;
 import wooteco.prolog.login.application.dto.GithubAccessTokenResponse;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
-import wooteco.prolog.login.application.dto.TokenRequest;
 
-@Profile("test")
+@Profile({"test", "docu"})
 @RestController
 public class GithubTestController {
     @PostMapping("/github/login/oauth/access_token")
