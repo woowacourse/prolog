@@ -52,4 +52,10 @@ public class PostController {
         postService.updatePost(member, id, postRequest);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePost(@AuthMemberPrincipal Member member, @PathVariable Long id) {
+        postService.deletePost(member, id);
+        return ResponseEntity.noContent().build();
+    }
 }

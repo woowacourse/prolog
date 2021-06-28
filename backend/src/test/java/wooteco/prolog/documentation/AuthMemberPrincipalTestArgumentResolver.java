@@ -1,4 +1,4 @@
-package wooteco.prolog.login;
+package wooteco.prolog.documentation;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.MethodParameter;
@@ -8,11 +8,10 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.login.domain.Role;
 import wooteco.prolog.login.ui.AuthMemberPrincipalArgumentResolver;
 
-import static wooteco.prolog.AcceptanceTest.MEMBER;
-
-@Profile("test")
+@Profile("docu")
 @Component
 public class AuthMemberPrincipalTestArgumentResolver implements AuthMemberPrincipalArgumentResolver {
     @Override
@@ -22,6 +21,6 @@ public class AuthMemberPrincipalTestArgumentResolver implements AuthMemberPrinci
 
     @Override
     public Member resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        return MEMBER;
+        return new Member(1L, "nickname", "githubUserName", Role.CREW, 1L, "https://avatars.githubusercontent.com/u/52682603?v=4");
     }
 }

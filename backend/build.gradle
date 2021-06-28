@@ -17,6 +17,7 @@ dependencies {
 	// spring
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// log
 	implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
@@ -27,10 +28,13 @@ dependencies {
 	// login binding
 	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.4'
 
-	// test
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'io.rest-assured:spring-mock-mvc:3.3.0'
+	// rest-assured
 	testImplementation 'io.rest-assured:rest-assured:3.3.0'
+
+	// cucumber
+	testImplementation 'io.cucumber:cucumber-java:6.10.4'
+	testImplementation 'io.cucumber:cucumber-spring:6.10.4'
+	testImplementation 'io.cucumber:cucumber-junit-platform-engine:6.10.4'
 
 	// rest docs
 	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.5.RELEASE'

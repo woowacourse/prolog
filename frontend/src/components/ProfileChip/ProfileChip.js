@@ -23,7 +23,7 @@ const Image = styled.img`
 
 const Nickname = styled.span`
   margin-left: 0.8rem;
-  font-size: 2rem;
+  font-size: 1.6rem;
   line-height: 1.5;
   color: #383838;
 `;
