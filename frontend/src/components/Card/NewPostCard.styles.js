@@ -22,6 +22,11 @@ const EditorWrapper = styled.div`
     border: none;
   }
 
+  .CodeMirror pre.CodeMirror-placeholder,
+  pre.CodeMirror-line {
+    padding-left: 0;
+  }
+
   * {
     font-size: 1.6rem;
   }
