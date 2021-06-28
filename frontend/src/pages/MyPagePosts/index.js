@@ -4,8 +4,9 @@ import { useHistory } from 'react-router-dom';
 import { PATH } from '../../constants';
 import { Button, BUTTON_SIZE } from '../../components';
 import useFetch from '../../hooks/useFetch';
-import { requestGetPosts } from '../../service/requests';
+import { requestGetMyPosts } from '../../service/requests';
 import { Content, Description, Mission, Title, Tags, PostItem, ButtonList } from './styles';
+import { useSelector } from 'react-redux';
 
 const EditButtonStyle = css`
   border: 1px solid #e6e6e6;
@@ -24,12 +25,15 @@ const DeleteButtonStyle = css`
     background-color: #f08484;
   }
 `;
+
 const MyPagePosts = () => {
-  const history = useHistory;
+  const history = useHistory();
+  const accessToken = useSelector((state) => state.user.accessToken.data);
+  const nickname = useSelector((state) => state.user.profile.data?.nickname);
 
   const [hoverdPostId, setHoveredPostId] = useState(0);
 
-  const [postList] = useFetch([], requestGetPosts);
+  const [postList] = useFetch([], () => requestGetMyPosts(nickname, accessToken));
 
   const goTargetPost = (id) => (event) => {
     if (event?.target !== event?.currentTarget) return;

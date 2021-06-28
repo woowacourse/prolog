@@ -28,6 +28,15 @@ const requestEditPost = (postId, data, accessToken) =>
     body: JSON.stringify(data),
   });
 
+const requestGetMyPosts = (nickname, accessToken) =>
+  fetch(`${BASE_URL}/members/${nickname}/posts`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
 export {
   requestGetPosts,
   requestGetPost,
@@ -36,4 +45,5 @@ export {
   requestGetFilteredPosts,
   requestGetTags,
   requestEditPost,
+  requestGetMyPosts,
 };
