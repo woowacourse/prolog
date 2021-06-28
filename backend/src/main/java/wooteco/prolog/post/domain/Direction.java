@@ -4,12 +4,12 @@ import wooteco.prolog.post.exception.NotValidSortNameException;
 
 import java.util.Arrays;
 
-public enum SortBy {
+public enum Direction {
     DESC,
     ASC;
 
-    public static SortBy findByName(String name){
-        return Arrays.stream(SortBy.values())
+    public static Direction findByName(String name){
+        return Arrays.stream(Direction.values())
                 .filter(sortBy -> sortBy.name().equalsIgnoreCase(name))
                 .findAny()
                 .orElseThrow(NotValidSortNameException::new);

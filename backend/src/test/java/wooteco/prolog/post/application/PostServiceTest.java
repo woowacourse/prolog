@@ -15,6 +15,7 @@ import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.login.domain.Role;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionRequest;
+import wooteco.prolog.post.application.dto.PageResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.domain.Post;
@@ -78,10 +79,10 @@ class PostServiceTest {
         insertPosts();
 
         //when
-        List<PostResponse> postResponsesWithFilter = postService.findPostsWithFilter(missions, tags);
+        PageResponse postResponsesWithFilter = postService.findPostsWithFilter(missions, tags);
 
         //then
-        List<String> titles = postResponsesWithFilter.stream()
+        List<String> titles = postResponsesWithFilter.getData().stream()
                 .map(PostResponse::getTitle)
                 .collect(Collectors.toList());
 

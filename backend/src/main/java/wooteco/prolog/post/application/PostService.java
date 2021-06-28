@@ -2,15 +2,16 @@ package wooteco.prolog.post.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.post.application.dto.PageRequest;
 import wooteco.prolog.login.application.dto.MemberResponse;
 import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionResponse;
+import wooteco.prolog.post.application.dto.PageResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.dao.PostDao;
 import wooteco.prolog.post.domain.Post;
-import wooteco.prolog.post.domain.SortBy;
 import wooteco.prolog.post.exception.AuthorNotValidException;
 import wooteco.prolog.post.exception.PostArgumentException;
 import wooteco.prolog.tag.application.TagService;
@@ -34,28 +35,28 @@ public class PostService {
     }
 
     public List<PostResponse> findAll() {
-        return findAll(SortBy.DESC);
-    }
-
-    public List<PostResponse> findAll(SortBy sortBy) {
         List<Post> posts = postDao.findAll();
         return posts.stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
     }
 
-    public List<PostResponse> findPostsWithFilter(List<Long> missions, List<Long> tags, SortBy sortBy) {
+    public PageResponse findPostsWithFilter(List<Long> missions, List<Long> tags, PageRequest pageRequest) {
         missions = nullToEmptyList(missions);
         tags = nullToEmptyList(tags);
 
-        List<Post> posts = postDao.findWithFilter(missions, tags, sortBy);
-        return posts.stream()
+        List<Post> posts = postDao.findWithFilter(missions, tags, pageRequest);
+        List<PostResponse> postResponses= posts.stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
+
+        int totalCount = postDao.count();
+        int totalPage = pageRequest.calculateTotalPage(totalCount);
+        return new PageResponse(postResponses, totalCount, totalPage, pageRequest.getPage());
     }
 
-    public List<PostResponse> findPostsWithFilter(List<Long> missions, List<Long> tags) {
-        return findPostsWithFilter(missions, tags, SortBy.DESC);
+    public PageResponse findPostsWithFilter(List<Long> missions, List<Long> tags) {
+        return findPostsWithFilter(missions, tags, new PageRequest());
     }
 
     private List<Long> nullToEmptyList(List<Long> filters) {

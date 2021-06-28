@@ -5,11 +5,12 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import wooteco.prolog.post.application.dto.PageRequest;
 import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.login.domain.Role;
 import wooteco.prolog.post.domain.Content;
 import wooteco.prolog.post.domain.Post;
-import wooteco.prolog.post.domain.SortBy;
+import wooteco.prolog.post.domain.Direction;
 import wooteco.prolog.post.domain.Title;
 import wooteco.prolog.tag.domain.Tag;
 
@@ -100,6 +101,12 @@ public class PostDao {
         return new Tag(tagId, tagName);
     }
 
+    public int count() {
+        String sql = "SELECT COUNT(*) FROM post";
+
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
     public List<Post> findAll() {
         String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, github_user_name, role, github_id, image_url, tag.id as tag_id " +
                 "FROM post AS po " +
@@ -109,9 +116,11 @@ public class PostDao {
         return jdbcTemplate.query(query, postsResultSetExtractor);
     }
 
-    public List<Post> findWithFilter(List<Long> missions, List<Long> tags, SortBy sortBy) {
+    public List<Post> findWithFilter(List<Long> missions, List<Long> tags, PageRequest pageRequest) {
         String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, github_user_name, role, github_id, image_url, tag.id as tag_id " +
-                "FROM post AS po " +
+                "FROM (SELECT * FROM post" +
+                createPagingQuery(pageRequest.getSize(), pageRequest.getPage()) +
+                ") AS po " +
                 "LEFT JOIN member AS me ON po.member_id = me.id " +
                 "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
                 "LEFT JOIN tag ON pt.tag_id = tag.id " +
@@ -119,7 +128,7 @@ public class PostDao {
         query += createDynamicColumnQuery("mission_id", missions);
         query += createDynamicColumnQuery("tag_id", tags);
 
-        query += createSortQuery(sortBy);
+        query += createSortQuery(pageRequest.getDirection());
         Object[] dynamicElements = Stream.concat(missions.stream(), tags.stream()).toArray();
 
         return jdbcTemplate.query(query, postsResultSetExtractor, dynamicElements);
@@ -167,10 +176,10 @@ public class PostDao {
         String query = "UPDATE post SET title = ?, content = ?, mission_id = ? WHERE id = ?";
 
         this.jdbcTemplate.update(
-            query,
-            updatedPost.getTitle(),
-            updatedPost.getContent(),
-            updatedPost.getMissionId(), id
+                query,
+                updatedPost.getTitle(),
+                updatedPost.getContent(),
+                updatedPost.getMissionId(), id
         );
     }
 
@@ -185,9 +194,16 @@ public class PostDao {
         return missionDynamicQuery;
     }
 
-    private String createSortQuery(SortBy sortBy) {
+    private String createSortQuery(Direction direction) {
         String orderByQuery = " ORDER BY id ";
-        orderByQuery += sortBy.name(); // DESC or ASC
+        orderByQuery += direction.name(); // DESC or ASC
         return orderByQuery;
+    }
+
+    private String createPagingQuery(int size, int page) {
+        if (page > 0) {
+            page -= 1;
+        }
+        return " LIMIT " + page * size + " , " + size;
     }
 }

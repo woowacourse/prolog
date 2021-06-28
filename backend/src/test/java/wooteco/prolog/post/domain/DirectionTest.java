@@ -7,7 +7,7 @@ import wooteco.prolog.post.exception.NotValidSortNameException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class SortByTest {
+class DirectionTest {
 
     @DisplayName("정렬 명으로 정렬을 찾아온다.")
     @Test
@@ -19,8 +19,8 @@ class SortByTest {
 
         //when
         //then
-        assertThat(SortBy.findByName(asc)).isEqualTo(SortBy.ASC);
-        assertThat(SortBy.findByName(desc)).isEqualTo(SortBy.DESC);
-        assertThatThrownBy(() -> SortBy.findByName(wrongSortName)).isInstanceOf(NotValidSortNameException.class);
+        assertThat(Direction.findByName(asc)).isEqualTo(Direction.ASC);
+        assertThat(Direction.findByName(desc)).isEqualTo(Direction.DESC);
+        assertThatThrownBy(() -> Direction.findByName(wrongSortName)).isInstanceOf(NotValidSortNameException.class);
     }
 }

@@ -4,7 +4,6 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
@@ -26,6 +25,8 @@ public class PostDocumentation extends Documentation {
 
         포스트_목록을_조회한다();
 
+        포스트_목록을_페이징하여_조회한다();
+
         포스트_목록을_필터링한다();
 
         String location = createResponse.header("Location");
@@ -34,6 +35,7 @@ public class PostDocumentation extends Documentation {
 
         포스트를_수정한다(location, editPostRequest());
     }
+
 
     private PostRequest createPostRequest() {
         String title = "SPA";
@@ -75,7 +77,15 @@ public class PostDocumentation extends Documentation {
         given("post/list")
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/posts?order=desc")
+                .when().get("/posts")
+                .then().log().all().extract();
+    }
+
+    private void 포스트_목록을_페이징하여_조회한다() {
+        given("post/page")
+                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/posts?direction=desc&size=10&page=1")
                 .then().log().all().extract();
     }
 
