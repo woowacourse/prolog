@@ -99,6 +99,6 @@ public class PostStepDefinitions extends AcceptanceSteps {
 
     @Then("{long}번째 포스트가 삭제된다")
     public void 포스트가삭제된다(Long postId) {
-        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 }
