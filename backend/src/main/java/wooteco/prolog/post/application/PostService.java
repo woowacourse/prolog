@@ -39,6 +39,13 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
+    public List<PostResponse> findAllOfMine(Member member) {
+        List<Post> posts = postDao.findAllByMemberId(member.getId());
+        return posts.stream()
+                .map(post -> toResponse(post))
+                .collect(Collectors.toList());
+    }
+
     public List<PostResponse> findPostsWithFilter(List<Long> missions, List<Long> tags) {
         missions = nullToEmptyList(missions);
         tags = nullToEmptyList(tags);
@@ -59,7 +66,7 @@ public class PostService {
     @Transactional
     public List<PostResponse> insertPosts(Member member, List<PostRequest> postRequests) {
         if (postRequests.size() == 0) {
-            throw new PostArgumentException("최소 1개의 글이 있어야 합니다.");
+            throw new PostArgumentException();
         }
 
         return postRequests.stream()
@@ -137,5 +144,14 @@ public class PostService {
         if (!member.getId().equals(post.getAuthor().getId())) {
             throw new AuthorNotValidException("작성자만 수정할 수 있습니다.");
         }
+    }
+    public void deletePost(Member member, Long id) {
+        PostResponse post = findById(id);
+        if (post.getAuthor().getId() != member.getId()) {
+            throw new RuntimeException();
+        }
+
+        tagService.deletePostTagByPostId(id);
+        postDao.deleteById(id);
     }
 }

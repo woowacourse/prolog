@@ -35,7 +35,7 @@ public class GithubLoginService {
 
     public void validateToken(String credentials) {
         if (!jwtTokenProvider.validateToken(credentials)) {
-            throw new TokenNotValidException("JWT 토큰이 유효하지 않습니다.");
+            throw new TokenNotValidException();
         }
     }
 

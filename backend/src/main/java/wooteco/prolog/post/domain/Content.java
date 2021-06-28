@@ -4,7 +4,7 @@ package wooteco.prolog.post.domain;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import wooteco.prolog.post.exception.PostArgumentNullOrEmptyException;
+import wooteco.prolog.post.exception.PostContentNullOrEmptyException;
 
 import java.util.Objects;
 
@@ -28,7 +28,7 @@ public class Content {
 
     private void validateNullOrEmpty(String content, int trimedContentLength) {
         if (Objects.isNull(content) || trimedContentLength == 0) {
-            throw new PostArgumentNullOrEmptyException("내용은 공백일 수 없습니다.");
+            throw new PostContentNullOrEmptyException();
         }
     }
 }

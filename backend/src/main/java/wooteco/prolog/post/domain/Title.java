@@ -3,7 +3,8 @@ package wooteco.prolog.post.domain;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import wooteco.prolog.post.exception.PostArgumentNullOrEmptyException;
+import wooteco.prolog.login.excetpion.PostTitleNullOrEmptyException;
+import wooteco.prolog.post.exception.PostContentNullOrEmptyException;
 
 import java.util.Objects;
 
@@ -28,7 +29,7 @@ public class Title {
 
     private void validateNullOrEmpty(String title) {
         if (Objects.isNull(title) || title.isEmpty()) {
-            throw new PostArgumentNullOrEmptyException("제목은 공백일 수 없습니다.");
+            throw new PostTitleNullOrEmptyException();
         }
     }
 }
