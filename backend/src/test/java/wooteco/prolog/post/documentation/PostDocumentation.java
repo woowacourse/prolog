@@ -1,55 +1,110 @@
 package wooteco.prolog.post.documentation;
 
-import org.junit.jupiter.api.BeforeEach;
+import io.restassured.RestAssured;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.web.context.WebApplicationContext;
-import wooteco.prolog.documentation.Documentation;
-import wooteco.prolog.login.domain.Member;
-import wooteco.prolog.login.domain.Role;
-import wooteco.prolog.login.ui.AuthMemberPrincipalArgumentResolver;
-import wooteco.prolog.login.ui.LoginInterceptor;
-import wooteco.prolog.post.acceptance.PostAcceptanceFixture;
-import wooteco.prolog.post.application.PostService;
+import wooteco.prolog.Documentation;
+import wooteco.prolog.mission.application.dto.MissionRequest;
+import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
-import wooteco.prolog.post.application.dto.PostResponse;
-import wooteco.prolog.post.ui.PostController;
+import wooteco.prolog.tag.dto.TagRequest;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-
-@WebMvcTest(PostController.class)
 public class PostDocumentation extends Documentation {
-    @MockBean
-    private PostService postService;
+    @DisplayName("Post 관련 기능 테스트")
+    @Test
+    void post() {
+        List<PostRequest> params = Arrays.asList(createPostRequest());
 
-    @BeforeEach
-    public void setUp(WebApplicationContext context, RestDocumentationContextProvider restDocumentation) {
-        super.setUp(context, restDocumentation);
+        ExtractableResponse<Response> createResponse = 포스트를_생성한다(params);
+
+        포스트_목록을_조회한다();
+
+        포스트_목록을_필터링한다();
+
+        String location = createResponse.header("Location");
+
+        포스트_단건을_조회한다(location);
+
+        포스트를_수정한다(location, editPostRequest());
     }
 
-    @Test
-    void 포스트를_생성한다() {
-        when(postService.insertPosts(any(), any())).thenReturn(Arrays.asList(new PostResponse()));
+    private PostRequest createPostRequest() {
+        String title = "SPA";
+        String content = "SPA 방식으로 앱을 구현하였음.\n" + "router 를 구현 하여 이용함.\n";
+        Long missionId = 미션_등록함(new MissionRequest("레벨1 - 지하철 노선도 미션"));
+        List<TagRequest> tags = Arrays.asList(new TagRequest("spa"), new TagRequest("router"));
 
-        List<PostRequest> params = Arrays.asList(PostAcceptanceFixture.firstPost);
-        given()
-                .header("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI0NjgzNzE3LCJleHAiOjE2MjQ2ODczMTcsInJvbGUiOiJDUkVXIn0.YiK7iO0HCYVcU1bczbG1KldB4ZgqLETUfBsNM_XFhVM")
+        return new PostRequest(title, content, missionId, tags);
+    }
+
+    private PostRequest editPostRequest() {
+        String title = "수정된 제목";
+        String content = "수정된 내용";
+        Long missionId = 미션_등록함(new MissionRequest("수정된 미션"));
+        List<TagRequest> tags = Arrays.asList(new TagRequest("spa"), new TagRequest("edit"));
+
+        return new PostRequest(title, content, missionId, tags);
+    }
+
+    private void 포스트_목록을_필터링한다() {
+        given("post/filter")
+                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/posts?missions=1&missions=2&tags=1&tags=2")
+                .then().log().all().extract();
+    }
+
+    private ExtractableResponse<Response> 포스트를_생성한다(List<PostRequest> params) {
+        ExtractableResponse<Response> createResponse = given("post/create")
+                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
                 .body(params)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().post("/posts")
-                .then().log().all()
-                .apply(document("post/create",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())));
+                .then().log().all().extract();
+        return createResponse;
+    }
+
+    private void 포스트_목록을_조회한다() {
+        given("post/list")
+                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/posts")
+                .then().log().all().extract();
+    }
+
+    private void 포스트_단건을_조회한다(String location) {
+        given("post/read")
+                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+                .when().get(location)
+                .then().log().all().extract();
+    }
+
+    private Long 미션_등록함(MissionRequest request) {
+        return RestAssured.given()
+                .body(request)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .post("/missions")
+                .then()
+                .log().all()
+                .extract()
+                .as(MissionResponse.class)
+                .getId();
+    }
+
+    private void 포스트를_수정한다(String location, PostRequest params) {
+        given("post/edit")
+                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+                .body(params)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().put(location)
+                .then().log().all();
     }
 }
