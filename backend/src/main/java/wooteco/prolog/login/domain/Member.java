@@ -2,20 +2,22 @@ package wooteco.prolog.login.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 
 import java.util.Objects;
 
+@NoArgsConstructor
 @Getter
 @EqualsAndHashCode(of = "id")
 public class Member {
 
-    private final Long id;
-    private final String nickname;
-    private final String githubUserName;
-    private final Role role;
-    private final Long githubId;
-    private final String imageUrl;
+    private Long id;
+    private String nickname;
+    private String githubUserName;
+    private Role role;
+    private Long githubId;
+    private String imageUrl;
 
     public Member(String nickname, String githubUserName, Role role, Long githubId, String imageUrl) {
         this(null, nickname, githubUserName, role, githubId, imageUrl);

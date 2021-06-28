@@ -1,58 +1,48 @@
 package wooteco.prolog.documentation;
 
-import io.restassured.RestAssured;
-import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.specification.RequestSpecification;
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.MediaType;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.restdocs.operation.preprocess.OperationRequestPreprocessor;
+import org.springframework.restdocs.operation.preprocess.OperationResponsePreprocessor;
 import org.springframework.test.context.ActiveProfiles;
-import wooteco.prolog.login.application.dto.TokenRequest;
-import wooteco.prolog.login.application.dto.TokenResponse;
+import org.springframework.web.context.WebApplicationContext;
+import wooteco.prolog.login.ui.AuthMemberPrincipalArgumentResolver;
+import wooteco.prolog.login.ui.LoginInterceptor;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
-import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
-@ActiveProfiles("test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ExtendWith(RestDocumentationExtension.class)
+@ActiveProfiles("docu")
 public class Documentation {
-    @LocalServerPort
-    private int port;
-
-    public TokenResponse 로그인_사용자;
-
-    protected RequestSpecification spec;
+    @MockBean
+    private AuthMemberPrincipalArgumentResolver argumentResolver;
+    @MockBean
+    private LoginInterceptor loginInterceptor;
 
     @BeforeEach
-    public void setUp(RestDocumentationContextProvider restDocumentation) {
-        RestAssured.port = port;
-
-        this.spec = new RequestSpecBuilder()
-                .addFilter(documentationConfiguration(restDocumentation))
-                .build();
-
-        로그인_사용자 = RestAssured
-                .given().log().all()
-                .body(new TokenRequest("나는 코다 나는 눈이다"))
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/login/token")
-                .then().log().all()
-                .extract().body().as(TokenResponse.class);
+    public void setUp(WebApplicationContext context, RestDocumentationContextProvider restDocumentation) {
+        RestAssuredMockMvc.webAppContextSetup(context, documentationConfiguration(restDocumentation));
     }
 
-    public RequestSpecification given(String identifier) {
-        return RestAssured
-                .given(spec).log().all()
-                .filter(document(identifier,
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())));
+    protected static OperationRequestPreprocessor getDocumentRequest() {
+        return preprocessRequest(
+                modifyUris()
+                        .removePort(),
+                prettyPrint());
+    }
+
+    protected static OperationResponsePreprocessor getDocumentResponse() {
+        return preprocessResponse(prettyPrint());
+    }
+
+    public MockMvcRequestSpecification given() {
+        return RestAssuredMockMvc
+                .given().log().all();
     }
 }
