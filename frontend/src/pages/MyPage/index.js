@@ -41,11 +41,11 @@ const MyPage = ({ title, children }) => {
               글 관리
             </button>
           </MenuItem>
-          <MenuItem>
+          {/* <MenuItem>
             <button type="button" onClick={goMyPageAccount}>
               내 정보 수정
             </button>
-          </MenuItem>
+          </MenuItem> */}
         </MenuList>
       </div>
       <Content>
