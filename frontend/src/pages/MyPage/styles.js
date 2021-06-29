@@ -56,6 +56,7 @@ const MenuItem = styled.li`
 
 const Content = styled.div`
   width: 100%;
+  height: fit-content;
   margin-left: 3.2rem;
   background-color: #fff;
   border: 1px solid #e6e6e6;

@@ -37,6 +37,15 @@ const requestGetMyPosts = (nickname, accessToken) =>
     },
   });
 
+const requestDeletePost = (postId, accessToken) =>
+  fetch(`${BASE_URL}/posts/${postId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
 export {
   requestGetPosts,
   requestGetPost,
@@ -46,4 +55,5 @@ export {
   requestGetTags,
   requestEditPost,
   requestGetMyPosts,
+  requestDeletePost,
 };
