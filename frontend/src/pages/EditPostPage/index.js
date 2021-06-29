@@ -32,7 +32,7 @@ const EditPostPage = () => {
   const accessToken = useSelector((state) => state.user.accessToken.data);
 
   const { id: postId } = useParams();
-  const [postResponse, postError, getAllPost, getPost, editPost] = usePost({});
+  const { error: postError, editData: editPost } = usePost({});
   const [post, getPostError] = useFetch({}, () => requestGetPost(postId));
   const { id, author, mission } = post;
 

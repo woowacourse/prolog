@@ -34,8 +34,7 @@ const MyPagePosts = () => {
   const [hoverdPostId, setHoveredPostId] = useState(0);
   const [posts, setPosts] = useState([]);
 
-  // const [postList] = useFetch([], () => requestGetMyPosts(nickname, accessToken));
-  const [postResponse, postError, getAllPost, getPost, editPost, deletePost] = usePost({});
+  const { error: postError, deleteData: deletePost } = usePost({});
 
   const goTargetPost = (id) => (event) => {
     if (event?.target !== event?.currentTarget) return;

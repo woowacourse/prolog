@@ -4,7 +4,6 @@ import {
   requestGetPost,
   requestGetPosts,
   requestDeletePost,
-  requestGetMyPosts,
 } from '../service/requests';
 
 const usePost = (defaultValue) => {
@@ -75,7 +74,7 @@ const usePost = (defaultValue) => {
     }
   };
 
-  return [response, error, getAllData, getData, editData, deleteData];
+  return { response, error, getAllData, getData, editData, deleteData };
 };
 
 export default usePost;
