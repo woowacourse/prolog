@@ -1,4 +1,4 @@
-package wooteco.prolog.post;
+package wooteco.prolog.post.documentation;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
+import wooteco.prolog.login.GithubResponses;
 import wooteco.prolog.mission.application.dto.MissionRequest;
 import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
@@ -33,7 +34,11 @@ public class PostDocumentation extends Documentation {
 
         포스트_단건을_조회한다(location);
 
+        포스트_목록을_작성자별로_조회한다();
+
         포스트를_수정한다(location, editPostRequest());
+
+        포스트를_삭제한다(location);
     }
 
 
@@ -116,5 +121,19 @@ public class PostDocumentation extends Documentation {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().put(location)
                 .then().log().all();
+    }
+
+    private void 포스트_목록을_작성자별로_조회한다() {
+        given("post/mine")
+                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/members/{username}/posts", GithubResponses.소롱.getLogin());
+    }
+
+    private void 포스트를_삭제한다(String location) {
+        given("post/delete")
+                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when().delete(location);
     }
 }

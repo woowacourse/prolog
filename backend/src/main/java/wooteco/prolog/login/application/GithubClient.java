@@ -10,6 +10,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import wooteco.prolog.login.application.dto.GithubAccessTokenRequest;
 import wooteco.prolog.login.application.dto.GithubAccessTokenResponse;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.excetpion.GithubApiFailException;
@@ -28,15 +29,16 @@ public class GithubClient {
     private String profileUrl;
 
     public String getAccessTokenFromGithub(String code) {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("code", code);
-        params.add("client_id", clientId);
-        params.add("client_secret", clientSecret);
+        GithubAccessTokenRequest githubAccessTokenRequest = new GithubAccessTokenRequest(
+                code,
+                clientId,
+                clientSecret
+        );
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
 
-        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, headers);
+        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity(githubAccessTokenRequest, headers);
         RestTemplate restTemplate = new RestTemplate();
 
         String accessToken = restTemplate

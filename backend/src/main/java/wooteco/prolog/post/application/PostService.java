@@ -55,6 +55,13 @@ public class PostService {
         return new PageResponse(postResponses, totalCount, totalPage, pageRequest.getPage());
     }
 
+    public List<PostResponse> findAllOfMine(Member member) {
+        List<Post> posts = postDao.findAllByMemberId(member.getId());
+        return posts.stream()
+                .map(post -> toResponse(post))
+                .collect(Collectors.toList());
+    }
+
     public PageResponse findPostsWithFilter(List<Long> missions, List<Long> tags) {
         return findPostsWithFilter(missions, tags, new PageRequest());
     }
@@ -147,5 +154,14 @@ public class PostService {
         if (!member.getId().equals(post.getAuthor().getId())) {
             throw new AuthorNotValidException("작성자만 수정할 수 있습니다.");
         }
+    }
+    public void deletePost(Member member, Long id) {
+        PostResponse post = findById(id);
+        if (post.getAuthor().getId() != member.getId()) {
+            throw new RuntimeException();
+        }
+
+        tagService.deletePostTagByPostId(id);
+        postDao.deleteById(id);
     }
 }

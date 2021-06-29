@@ -10,8 +10,7 @@ public class LoginDocumentation extends Documentation {
 
     @Test
     void create() {
-        String code = "1234567890qazwsxedcrfvtgbyhnujmiklop";
-        TokenRequest params = new TokenRequest(code);
+        TokenRequest params = new TokenRequest(GithubResponses.소롱.getCode());
 
         given("login/token")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
