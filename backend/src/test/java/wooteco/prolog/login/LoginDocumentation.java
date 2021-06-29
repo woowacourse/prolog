@@ -9,7 +9,7 @@ import wooteco.prolog.login.application.dto.TokenResponse;
 public class LoginDocumentation extends Documentation {
 
     @Test
-    void create() {
+    void 토큰을_생성한다() {
         TokenRequest params = new TokenRequest(GithubResponses.소롱.getCode());
 
         given("login/token")
@@ -21,7 +21,7 @@ public class LoginDocumentation extends Documentation {
     }
 
     @Test
-    void findMember() {
+    void 사용자_정보를_조회한다() {
         given("members/me")
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
                 .when().get("/members/me")
