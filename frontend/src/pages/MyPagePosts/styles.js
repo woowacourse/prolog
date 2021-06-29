@@ -52,4 +52,12 @@ const ButtonList = styled.div`
   gap: 1.6rem;
 `;
 
-export { Content, Description, Mission, Title, Tags, PostItem, ButtonList };
+const NoPost = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 6rem;
+  font-size: 2rem;
+`;
+
+export { Content, Description, Mission, Title, Tags, PostItem, ButtonList, NoPost };
