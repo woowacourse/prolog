@@ -21,11 +21,11 @@ public class TagDao {
     }
 
     public List<Tag> findAll() {
-        String query = "SELECT * FROM tag";
+        String query = "SELECT id, name FROM tag";
         return jdbcTemplate.query(query, tagRowMapper);
     }
 
-    private static RowMapper<Tag> tagRowMapper =
+    protected static RowMapper<Tag> tagRowMapper =
             (rs, rowNum) -> {
                 long id = rs.getLong(1);
                 String name = rs.getString(2);
