@@ -3,7 +3,7 @@ package wooteco.prolog.post.ui;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
-import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.post.application.PostService;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;

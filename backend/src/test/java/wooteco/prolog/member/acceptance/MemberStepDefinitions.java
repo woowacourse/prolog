@@ -3,7 +3,9 @@ package wooteco.prolog.member.acceptance;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import wooteco.prolog.acceptance.AcceptanceSteps;
-import wooteco.prolog.login.application.dto.MemberResponse;
+import wooteco.prolog.login.GithubResponses;
+import wooteco.prolog.member.application.dto.MemberResponse;
+import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,5 +20,24 @@ public class MemberStepDefinitions extends AcceptanceSteps {
         MemberResponse member = context.response.as(MemberResponse.class);
 
         assertThat(member.getImageUrl()).isNotNull();
+    }
+
+    @When("{string}(이)(이가) 자신의 유저네임을 {string}(로)(으로) 수정하면")
+    public void 자신의유저네임을수정하면(String member, String updatedUsername) {
+        String originUsername = GithubResponses.findByName(member).getLogin();
+
+        MemberUpdateRequest updateRequest = new MemberUpdateRequest(
+                updatedUsername, "", ""
+        );
+
+        context.invokeHttpPutWithToken("/members/" + originUsername, updateRequest);
+    }
+
+    @Then("유저네임이 {string}(로)(으로) 수정")
+    public void 유저네임이으로수정(String username) {
+        context.invokeHttpGet("/members/" + username);
+        MemberResponse member = context.response.as(MemberResponse.class);
+
+        assertThat(member.getUsername()).isEqualTo(username);
     }
 }

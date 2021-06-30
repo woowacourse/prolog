@@ -56,10 +56,10 @@ CREATE TABLE IF NOT EXISTS post_tag
 CREATE TABLE IF NOT EXISTS member
 (
     id bigint NOT NULL AUTO_INCREMENT,
+    username VARCHAR(255),
     nickname VARCHAR(255),
-    github_user_name VARCHAR(255),
     role VARCHAR(20) NOT NULL,
     github_id bigint NOT NULL UNIQUE,
     image_url VARCHAR(255) NOT NULL,
     PRIMARY KEY (id)
-);
+    );

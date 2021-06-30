@@ -3,8 +3,8 @@ package wooteco.prolog.login.application.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.login.domain.Member;
-import wooteco.prolog.login.domain.Role;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,8 +37,8 @@ public class GithubProfileResponse {
 
     public Member toMember() {
         return new Member(
-                getNickname(),
                 getLoginName(),
+                getNickname(),
                 Role.CREW,
                 getGithubId(),
                 getImageUrl()
