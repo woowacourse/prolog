@@ -10,9 +10,10 @@ import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberStepDefinitions extends AcceptanceSteps {
-    @When("자신의 멤버 정보를 조회하면")
-    public void 자신의멤버정보를조회하면() {
-        context.invokeHttpGetWithToken("/members/me");
+    @When("{string}의 멤버 정보를 조회하면")
+    public void 멤버정보를조회하면(String member) {
+        String username = GithubResponses.findByName(member).getLogin();
+        context.invokeHttpGetWithToken("/members/" + username);
     }
 
     @Then("멤버 정보가 조회된다")

@@ -510,13 +510,13 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 28 Jun 2021 09:21:26 GMT
+Date: Wed, 30 Jun 2021 00:47:32 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 168
 
 {
-  "accessToken" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI0ODcyMDg3LCJleHAiOjE2MjQ4NzU2ODcsInJvbGUiOiJDUkVXIn0.5VZLulzS8VlsZiXvsUamNy-peBmLG124f477R-D74K0"
+  "accessToken" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI1MDE0MDUyLCJleHAiOjE2MjUwMTc2NTIsInJvbGUiOiJDUkVXIn0.3HGEOiUWZE_mH4BH9FGQ_nEQy9kQZLw-DJe4UUMsPNc"
 }</code></pre>
 </div>
 </div>
@@ -528,8 +528,8 @@ Content-Length: 168
 <h4 id="_request_2"><a class="link" href="#_request_2">Request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/me HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI0ODcyMDg4LCJleHAiOjE2MjQ4NzU2ODgsInJvbGUiOiJDUkVXIn0.sOy4-9vIRfpwZfM2XR2QtaBeVmDZks8AccA7LstMdQI
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/soulG HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI1MDE0MDUzLCJleHAiOjE2MjUwMTc2NTMsInJvbGUiOiJDUkVXIn0.s4Inn2Wqa5FK5HRrd6CUxnKcTTCWp9CtnDOQUowd53I
 Host: localhost:4000</code></pre>
 </div>
 </div>
@@ -544,14 +544,15 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 28 Jun 2021 09:21:28 GMT
+Date: Wed, 30 Jun 2021 00:47:32 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 131
+Content-Length: 153
 
 {
   "id" : 1,
-  "nickname" : "nickname",
+  "username" : "soulG",
+  "nickname" : "소롱",
   "role" : "CREW",
   "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
 }</code></pre>
@@ -571,7 +572,7 @@ Content-Length: 131
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /posts HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI0ODcyMDgwLCJleHAiOjE2MjQ4NzU2ODAsInJvbGUiOiJDUkVXIn0.v7JCDNB0_73wG7hRwg24eGU-Ab2daBDAtMgdp0xghGQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI1MDE0MDQyLCJleHAiOjE2MjUwMTc2NDIsInJvbGUiOiJDUkVXIn0.ANFLEChaUr8FEmSIjsAuvu983qWuFOn8RCxKOAQMPtc
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
 Content-Length: 211
@@ -598,7 +599,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Location: /posts/1
-Date: Mon, 28 Jun 2021 09:21:20 GMT
+Date: Wed, 30 Jun 2021 00:47:22 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -612,7 +613,7 @@ Connection: keep-alive</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI0ODcyMDgwLCJleHAiOjE2MjQ4NzU2ODAsInJvbGUiOiJDUkVXIn0.v7JCDNB0_73wG7hRwg24eGU-Ab2daBDAtMgdp0xghGQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI1MDE0MDQyLCJleHAiOjE2MjUwMTc2NDIsInJvbGUiOiJDUkVXIn0.ANFLEChaUr8FEmSIjsAuvu983qWuFOn8RCxKOAQMPtc
 Accept: application/json
 Host: localhost:4000</code></pre>
 </div>
@@ -628,21 +629,22 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 28 Jun 2021 09:21:20 GMT
+Date: Wed, 30 Jun 2021 00:47:22 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 559
+Content-Length: 585
 
 [ {
   "id" : 1,
   "author" : {
     "id" : 1,
+    "username" : "soulG",
     "nickname" : "소롱",
     "role" : "CREW",
     "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
   },
-  "createdAt" : "2021-06-28T18:21:20.967",
-  "updatedAt" : "2021-06-28T18:21:20.967",
+  "createdAt" : "2021-06-30T09:47:22.244",
+  "updatedAt" : "2021-06-30T09:47:22.244",
   "mission" : {
     "id" : 1,
     "name" : "레벨1 - 지하철 노선도 미션"
@@ -668,7 +670,7 @@ Content-Length: 559
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/soulG/posts HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI0ODcyMDgwLCJleHAiOjE2MjQ4NzU2ODAsInJvbGUiOiJDUkVXIn0.v7JCDNB0_73wG7hRwg24eGU-Ab2daBDAtMgdp0xghGQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI1MDE0MDQyLCJleHAiOjE2MjUwMTc2NDIsInJvbGUiOiJDUkVXIn0.ANFLEChaUr8FEmSIjsAuvu983qWuFOn8RCxKOAQMPtc
 Accept: application/json
 Host: localhost:4000</code></pre>
 </div>
@@ -684,12 +686,12 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 28 Jun 2021 09:21:20 GMT
+Date: Wed, 30 Jun 2021 00:47:22 GMT
 Connection: close
 Content-Length: 159
 
 {
-  "timestamp" : "2021-06-28T09:21:21.055+00:00",
+  "timestamp" : "2021-06-30T00:47:22.397+00:00",
   "status" : 500,
   "error" : "Internal Server Error",
   "message" : "",
@@ -706,7 +708,7 @@ Content-Length: 159
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts?missions=1&amp;missions=2&amp;tags=1&amp;tags=2 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI0ODcyMDgwLCJleHAiOjE2MjQ4NzU2ODAsInJvbGUiOiJDUkVXIn0.v7JCDNB0_73wG7hRwg24eGU-Ab2daBDAtMgdp0xghGQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI1MDE0MDQyLCJleHAiOjE2MjUwMTc2NDIsInJvbGUiOiJDUkVXIn0.ANFLEChaUr8FEmSIjsAuvu983qWuFOn8RCxKOAQMPtc
 Accept: application/json
 Host: localhost:4000</code></pre>
 </div>
@@ -722,21 +724,22 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 28 Jun 2021 09:21:20 GMT
+Date: Wed, 30 Jun 2021 00:47:22 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 559
+Content-Length: 585
 
 [ {
   "id" : 1,
   "author" : {
     "id" : 1,
+    "username" : "soulG",
     "nickname" : "소롱",
     "role" : "CREW",
     "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
   },
-  "createdAt" : "2021-06-28T18:21:20.967",
-  "updatedAt" : "2021-06-28T18:21:20.967",
+  "createdAt" : "2021-06-30T09:47:22.244",
+  "updatedAt" : "2021-06-30T09:47:22.244",
   "mission" : {
     "id" : 1,
     "name" : "레벨1 - 지하철 노선도 미션"
@@ -762,7 +765,7 @@ Content-Length: 559
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI0ODcyMDgwLCJleHAiOjE2MjQ4NzU2ODAsInJvbGUiOiJDUkVXIn0.v7JCDNB0_73wG7hRwg24eGU-Ab2daBDAtMgdp0xghGQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI1MDE0MDQyLCJleHAiOjE2MjUwMTc2NDIsInJvbGUiOiJDUkVXIn0.ANFLEChaUr8FEmSIjsAuvu983qWuFOn8RCxKOAQMPtc
 Host: localhost:4000</code></pre>
 </div>
 </div>
@@ -777,21 +780,22 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 28 Jun 2021 09:21:20 GMT
+Date: Wed, 30 Jun 2021 00:47:22 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 555
+Content-Length: 581
 
 {
   "id" : 1,
   "author" : {
     "id" : 1,
+    "username" : "soulG",
     "nickname" : "소롱",
     "role" : "CREW",
     "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
   },
-  "createdAt" : "2021-06-28T18:21:20.967",
-  "updatedAt" : "2021-06-28T18:21:20.967",
+  "createdAt" : "2021-06-30T09:47:22.244",
+  "updatedAt" : "2021-06-30T09:47:22.244",
   "mission" : {
     "id" : 1,
     "name" : "레벨1 - 지하철 노선도 미션"
@@ -817,7 +821,7 @@ Content-Length: 555
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /posts/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI0ODcyMDgwLCJleHAiOjE2MjQ4NzU2ODAsInJvbGUiOiJDUkVXIn0.v7JCDNB0_73wG7hRwg24eGU-Ab2daBDAtMgdp0xghGQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI1MDE0MDQyLCJleHAiOjE2MjUwMTc2NDIsInJvbGUiOiJDUkVXIn0.ANFLEChaUr8FEmSIjsAuvu983qWuFOn8RCxKOAQMPtc
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
 Content-Length: 155
@@ -843,7 +847,7 @@ Content-Length: 155
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Mon, 28 Jun 2021 09:21:20 GMT
+Date: Wed, 30 Jun 2021 00:47:22 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -857,7 +861,7 @@ Connection: keep-alive</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /posts/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI0ODcyMDgwLCJleHAiOjE2MjQ4NzU2ODAsInJvbGUiOiJDUkVXIn0.v7JCDNB0_73wG7hRwg24eGU-Ab2daBDAtMgdp0xghGQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI1MDE0MDQyLCJleHAiOjE2MjUwMTc2NDIsInJvbGUiOiJDUkVXIn0.ANFLEChaUr8FEmSIjsAuvu983qWuFOn8RCxKOAQMPtc
 Accept: application/json
 Host: localhost:4000</code></pre>
 </div>
@@ -871,7 +875,7 @@ Host: localhost:4000</code></pre>
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Mon, 28 Jun 2021 09:21:20 GMT
+Date: Wed, 30 Jun 2021 00:47:22 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -910,7 +914,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 28 Jun 2021 09:21:24 GMT
+Date: Wed, 30 Jun 2021 00:47:27 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 55
@@ -950,7 +954,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 28 Jun 2021 09:21:24 GMT
+Date: Wed, 30 Jun 2021 00:47:28 GMT
 Connection: close
 Content-Length: 63
 
@@ -983,7 +987,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 28 Jun 2021 09:21:24 GMT
+Date: Wed, 30 Jun 2021 00:47:27 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 93
@@ -1033,7 +1037,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 28 Jun 2021 09:21:26 GMT
+Date: Wed, 30 Jun 2021 00:47:31 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 79
@@ -1080,7 +1084,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 28 Jun 2021 09:21:25 GMT
+Date: Wed, 30 Jun 2021 00:47:29 GMT
 Connection: close
 Content-Length: 63
 
@@ -1113,7 +1117,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 28 Jun 2021 09:21:26 GMT
+Date: Wed, 30 Jun 2021 00:47:31 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 79
@@ -1156,7 +1160,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 28 Jun 2021 09:21:25 GMT
+Date: Wed, 30 Jun 2021 00:47:29 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 310

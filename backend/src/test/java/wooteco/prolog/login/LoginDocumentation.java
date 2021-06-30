@@ -22,9 +22,9 @@ public class LoginDocumentation extends Documentation {
 
     @Test
     void findMember() {
-        given("members/me")
+        given("members/read")
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .when().get("/members/me")
+                .when().get("/members/{username}", GithubResponses.소롱.getLogin())
                 .then().log().all()
                 .extract();
     }
