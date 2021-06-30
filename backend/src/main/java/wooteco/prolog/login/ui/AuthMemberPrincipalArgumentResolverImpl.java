@@ -17,7 +17,7 @@ import wooteco.prolog.login.excetpion.TokenNotValidException;
 import javax.servlet.http.HttpServletRequest;
 
 @AllArgsConstructor
-@Profile("!test")
+@Profile("!docu")
 @Component
 public class AuthMemberPrincipalArgumentResolverImpl implements AuthMemberPrincipalArgumentResolver {
 
