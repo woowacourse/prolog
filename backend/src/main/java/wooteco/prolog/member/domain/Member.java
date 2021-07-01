@@ -32,9 +32,9 @@ public class Member {
         this.imageUrl = imageUrl;
     }
 
-    private String ifAbsentReplace(String nickname, String githubUserName) {
+    private String ifAbsentReplace(String nickname, String username) {
         if (Objects.isNull(nickname) || nickname.isEmpty()) {
-            return githubUserName;
+            return username;
         }
         return nickname;
     }
