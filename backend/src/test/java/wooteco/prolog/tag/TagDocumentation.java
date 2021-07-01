@@ -3,7 +3,6 @@ package wooteco.prolog.tag;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TagDocumentation extends Documentation {
 
     @Test
-    void 태그를_가져온다() {
+    void 태그_목록을_조회한다() {
         // given
         String title = "SPA";
         String content = "SPA 방식으로 앱을 구현하였음.\n" + "router 를 구현 하여 이용함.\n";
