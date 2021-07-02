@@ -111,7 +111,12 @@ const NavBar = () => {
                 <DropdownMenu css={DropdownStyle}>
                   <ul>
                     <li>
-                      <Link to={PATH.MYPAGE} onClick={() => setDropdownToggled(false)}>
+                      <Link
+                        onClick={() => {
+                          setDropdownToggled(false);
+                          history.push(`/${user?.data.nickname}`);
+                        }}
+                      >
                         <button type="button">마이페이지</button>
                       </Link>
                     </li>

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
-import { PATH } from '../../constants';
 import postIcon from '../../assets/images/post.png';
 import overviewIcon from '../../assets/images/overview.png';
 import {
@@ -16,31 +16,27 @@ import {
   MenuButton,
   Role,
   Content,
-  Title,
 } from './styles';
 
-const MyPage = ({ title, children }) => {
+const MyPage = ({ children }) => {
   const history = useHistory();
+  const { username } = useParams();
   const me = useSelector((state) => state.user.profile.data);
 
   const [selectedMenu, setSelectedMenu] = useState('overview');
 
-  // const onSelectMenu = (event) => {
-  //   setSelectedMenu(event.target.value);
-  // };
-
   const goMyPage = (event) => {
-    setSelectedMenu(event.target.value);
-    history.push(PATH.MYPAGE);
+    setSelectedMenu(event.currentTarget.value);
+    history.push(`/${username}`);
   };
 
   const goMyPagePosts = (event) => {
-    setSelectedMenu(event.target.value);
-    history.push(PATH.MYPAGE_POSTS);
+    setSelectedMenu(event.currentTarget.value);
+    history.push(`/${username}/posts`);
   };
 
   const goMyPageAccount = () => {
-    history.push(PATH.MYPAGE_ACCOUNT);
+    history.push(`/${username}/account`);
   };
 
   return (
@@ -59,7 +55,7 @@ const MyPage = ({ title, children }) => {
             </MenuButton>
           </MenuItem>
           <MenuItem isSelectedMenu={selectedMenu === 'posts'}>
-            <MenuButton value="posts" type="MenuButton" onClick={goMyPagePosts}>
+            <MenuButton value="posts" type="button" onClick={goMyPagePosts}>
               <MenuIcon src={postIcon} alt="posts icon" />
               Posts
             </MenuButton>
@@ -70,10 +66,7 @@ const MyPage = ({ title, children }) => {
             </button>
           </MenuItem> */}
         </MenuList>
-        <Content>
-          <Title>{title}</Title>
-          {children ? children : <div>준비중입니다. 조금만 기다려주세요 🤪</div>}
-        </Content>
+        <Content>{children ? children : <div>준비중입니다. 조금만 기다려주세요 🤪</div>}</Content>
       </RightSection>
     </Container>
   );
