@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.post.application.PostService;
-import wooteco.prolog.post.application.dto.PostResponse;
+import wooteco.prolog.post.application.dto.PostDataResponse;
 
 import java.util.List;
 
@@ -23,12 +23,12 @@ public class MemberPostController {
     }
 
     @GetMapping(value = "/{username}/posts", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PostResponse>> findAllPostsOfMine(@AuthMemberPrincipal Member member, @PathVariable String username) {
+    public ResponseEntity<List<PostDataResponse>> findAllPostsOfMine(@AuthMemberPrincipal Member member, @PathVariable String username) {
         if (!username.equals(member.getGithubUserName())) {
             throw new RuntimeException();
         }
 
-        List<PostResponse> posts = postService.findAllOfMine(member);
+        List<PostDataResponse> posts = postService.findAllOfMine(member);
         return ResponseEntity.ok().body(posts);
     }
 }

@@ -6,7 +6,7 @@ import io.cucumber.java.en.When;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.acceptance.AcceptanceSteps;
 import wooteco.prolog.post.application.dto.PostRequest;
-import wooteco.prolog.post.application.dto.PostResponse;
+import wooteco.prolog.post.application.dto.PostDataResponse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,7 +47,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
 
     @Then("포스트 목록을 받는다")
     public void 포스트목록을받는다() {
-        List<PostResponse> posts = context.response.jsonPath().getList(".", PostResponse.class);
+        List<PostDataResponse> posts = context.response.jsonPath().getList(".", PostDataResponse.class);
 
         assertThat(posts.size()).isEqualTo(2);
     }
@@ -64,7 +64,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
 
         String path = "/posts/" + postId;
         context.invokeHttpGet(path);
-        PostResponse post = context.response.as(PostResponse.class);
+        PostDataResponse post = context.response.as(PostDataResponse.class);
 
         assertThat(post).isNotNull();
     }
@@ -81,7 +81,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
 
         String path = "/posts/" + postId;
         context.invokeHttpGet(path);
-        PostResponse post = context.response.as(PostResponse.class);
+        PostDataResponse post = context.response.as(PostDataResponse.class);
 
         assertThat(post.getContent()).isEqualTo(PostAcceptanceFixture.secondPost.getContent());
     }

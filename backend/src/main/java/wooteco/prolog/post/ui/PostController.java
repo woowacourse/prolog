@@ -6,9 +6,9 @@ import wooteco.prolog.post.application.dto.PageRequest;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.post.application.PostService;
-import wooteco.prolog.post.application.dto.PageResponse;
-import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
+import wooteco.prolog.post.application.dto.PostRequest;
+import wooteco.prolog.post.application.dto.PostDataResponse;
 
 import java.net.URI;
 import java.util.List;
@@ -25,25 +25,25 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<Void> createPost(@AuthMemberPrincipal Member member, @RequestBody List<PostRequest> postRequests) {
-        List<PostResponse> postResponse = postService.insertPosts(member, postRequests);
-        return ResponseEntity.created(URI.create("/posts/" + postResponse.get(0).getId())).build();
+        List<PostDataResponse> postDataResponse = postService.insertPosts(member, postRequests);
+        return ResponseEntity.created(URI.create("/posts/" + postDataResponse.get(0).getId())).build();
     }
 
     @GetMapping
-    public ResponseEntity<PageResponse> showAll(
+    public ResponseEntity<PostResponse> showAll(
             @RequestParam(required = false) List<Long> missions,
             @RequestParam(required = false) List<Long> tags,
             @ModelAttribute PageRequest pageRequest
     ) {
-        PageResponse pageResponse = postService.findPostsWithFilter(missions, tags, pageRequest);
+        PostResponse postResponse = postService.findPostsWithFilter(missions, tags, pageRequest);
 
-        return ResponseEntity.ok(pageResponse);
+        return ResponseEntity.ok(postResponse);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostResponse> showPost(@PathVariable Long id) {
-        PostResponse postResponse = postService.findById(id);
-        return ResponseEntity.ok(postResponse);
+    public ResponseEntity<PostDataResponse> showPost(@PathVariable Long id) {
+        PostDataResponse postDataResponse = postService.findById(id);
+        return ResponseEntity.ok(postDataResponse);
     }
 
     @PutMapping("/{id}")
