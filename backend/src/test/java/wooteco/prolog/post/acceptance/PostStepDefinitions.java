@@ -6,8 +6,10 @@ import io.cucumber.java.en.When;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.acceptance.AcceptanceSteps;
 import wooteco.prolog.post.application.dto.PostRequest;
+import wooteco.prolog.post.application.dto.PostDataResponse;
 import wooteco.prolog.post.application.dto.PostResponse;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,6 +42,30 @@ public class PostStepDefinitions extends AcceptanceSteps {
         assertThat(statusCode).isEqualTo(HttpStatus.CREATED.value());
     }
 
+    @Given("{long}개의 포스트를 작성하고")
+    public void 다수의포스트를작성하면(Long totalSize) {
+        List<PostRequest> postRequests = new ArrayList<>();
+
+        for (int i = 0; i < totalSize; i++) {
+            postRequests.add(PostAcceptanceFixture.firstPost);
+        }
+
+        context.invokeHttpPostWithToken("/posts", postRequests);
+    }
+
+    @When("{long}개, {long}쪽의 페이지를 조회하면")
+    public void 포스트페이지를조회하면(Long pageSize, Long pageNumber) {
+        String path = String.format("/posts?page=%d&size=%d", pageNumber, pageSize);
+        context.invokeHttpGet(path);
+    }
+
+    @Then("{int}개의 포스트 목록을 받는다")
+    public void 다수의포스트목록을받는다(int pageSize) {
+        PostResponse posts = context.response.as(PostResponse.class);
+
+        assertThat(posts.getData().size()).isEqualTo(pageSize);
+    }
+
     @When("포스트 목록을 조회하면")
     public void 포스트목록을조회하면() {
         context.invokeHttpGet("/posts");
@@ -47,9 +73,9 @@ public class PostStepDefinitions extends AcceptanceSteps {
 
     @Then("포스트 목록을 받는다")
     public void 포스트목록을받는다() {
-        List<PostResponse> posts = context.response.jsonPath().getList(".", PostResponse.class);
+        PostResponse posts = context.response.as(PostResponse.class);
 
-        assertThat(posts.size()).isEqualTo(2);
+        assertThat(posts.getData().size()).isEqualTo(2);
     }
 
     @When("{long}번째 포스트를 조회하면")
@@ -64,7 +90,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
 
         String path = "/posts/" + postId;
         context.invokeHttpGet(path);
-        PostResponse post = context.response.as(PostResponse.class);
+        PostDataResponse post = context.response.as(PostDataResponse.class);
 
         assertThat(post).isNotNull();
     }
@@ -81,7 +107,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
 
         String path = "/posts/" + postId;
         context.invokeHttpGet(path);
-        PostResponse post = context.response.as(PostResponse.class);
+        PostDataResponse post = context.response.as(PostDataResponse.class);
 
         assertThat(post.getContent()).isEqualTo(PostAcceptanceFixture.secondPost.getContent());
     }

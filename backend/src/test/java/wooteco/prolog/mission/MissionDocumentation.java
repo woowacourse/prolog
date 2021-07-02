@@ -18,9 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class MissionDocumentation extends Documentation {
 
-    @DisplayName("미션을 조회한다.")
     @Test
-    void showCategories() {
+    void 미션_목록을_조회한다() {
         // given
         MissionRequest request1 = new MissionRequest("로또 미션");
         ExtractableResponse<Response> mission1 = 미션_등록함(request1);
@@ -44,7 +43,7 @@ public class MissionDocumentation extends Documentation {
     }
 
     @Test
-    void 미션를_저장한다() {
+    void 미션을_저장한다() {
         // given
         MissionRequest request = new MissionRequest("지하철 노선도 미션");
 
@@ -64,7 +63,7 @@ public class MissionDocumentation extends Documentation {
     }
 
     @Test
-    void 중복된_이름으로_미션를_저장한다() {
+    void 미션_이름이_중복될_경우_예외처리한다() {
         // given
         MissionRequest request = new MissionRequest("지하철 노선도 미션");
         미션_등록함(request);

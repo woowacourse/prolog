@@ -17,9 +17,9 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
 public class FilterDocumentation extends Documentation {
-    @DisplayName("필터 목록 조회 기능")
+
     @Test
-    void filterTest() {
+    void 필터_목록을_조회한다() {
         MissionRequest request1 = new MissionRequest("지하철 노선도 미션 1");
         미션_등록함(request1);
         MissionRequest request2 = new MissionRequest("지하철 노선도 미션 2");
@@ -32,11 +32,7 @@ public class FilterDocumentation extends Documentation {
         );
         태그_등록함(tagRequests);
 
-        RestAssured
-                .given(spec).log().all()
-                .filter(document("filter/list",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())))
+        given("filter/list")
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/filters")
                 .then().log().all().extract();

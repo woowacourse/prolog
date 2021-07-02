@@ -7,6 +7,12 @@ security:
 server:
   port: 5000
 
+spring:
+  datasource:
+    url: jdbc:h2:mem://localhost/~/testdb;MODE=MYSQL
+    username: sa
+    password:
+
 github:
   client:
     id: f91b56445e08d44adb76
