@@ -35,11 +35,12 @@ const App = () => {
             <Route exact path={PATH.NEW_POST} component={NewPostPage} />
             <Route exact path={`${PATH.POST}/:id`} component={PostPage} />
             <Route exact path={`${PATH.POST}/:id/edit`} component={EditPostPage} />
+            <Route exact path={`${PATH.MYPAGE}`} component={MyPage} />
             <Route
               exact
               path={`${PATH.MYPAGE_POSTS}`}
               render={() => (
-                <MyPage title="글 관리">
+                <MyPage>
                   <MyPagePosts />
                 </MyPage>
               )}
@@ -48,7 +49,7 @@ const App = () => {
               exact
               path={`${PATH.MYPAGE_ACCOUNT}`}
               render={() => (
-                <MyPage title="내 정보 수정">
+                <MyPage>
                   <MyPageAccount />
                 </MyPage>
               )}

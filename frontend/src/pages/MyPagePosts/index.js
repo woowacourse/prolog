@@ -4,7 +4,17 @@ import { useHistory } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
 import { Button, BUTTON_SIZE } from '../../components';
 import { requestGetMyPosts } from '../../service/requests';
-import { Content, Description, Mission, Title, Tags, PostItem, ButtonList, NoPost } from './styles';
+import {
+  Container,
+  Content,
+  Description,
+  Mission,
+  Title,
+  Tags,
+  PostItem,
+  ButtonList,
+  NoPost,
+} from './styles';
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
 
@@ -78,7 +88,7 @@ const MyPagePosts = () => {
   }, [nickname]);
 
   return (
-    <>
+    <Container>
       {posts.length ? (
         posts.map((post) => {
           const { id, mission, title, tags } = post;
@@ -130,7 +140,7 @@ const MyPagePosts = () => {
       ) : (
         <NoPost>작성한 글이 없습니다 🥲</NoPost>
       )}
-    </>
+    </Container>
   );
 };
 
