@@ -61,7 +61,8 @@ const MenuItem = styled.li`
   border-top-right-radius: 1.6rem;
   border-top-left-radius: 1.6rem;
 
-  ${({ isSelectedMenu }) => isSelectedMenu && 'background-color: #fff'};
+  ${({ isSelectedMenu }) =>
+    isSelectedMenu && 'background-color: #fff; box-shadow: 0px 5px 10px #cccccc;'};
 `;
 
 const MenuButton = styled.button`

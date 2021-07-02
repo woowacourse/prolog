@@ -17,13 +17,14 @@ import {
   Role,
   Content,
 } from './styles';
+import { MYPAGE_MENU } from '../../constants';
 
-const MyPage = ({ children }) => {
+const MyPage = ({ children, menu }) => {
   const history = useHistory();
   const { username } = useParams();
   const me = useSelector((state) => state.user.profile.data);
 
-  const [selectedMenu, setSelectedMenu] = useState('overview');
+  const [selectedMenu, setSelectedMenu] = useState('');
 
   const goMyPage = (event) => {
     setSelectedMenu(event.currentTarget.value);
@@ -39,6 +40,10 @@ const MyPage = ({ children }) => {
     history.push(`/${username}/account`);
   };
 
+  useEffect(() => {
+    setSelectedMenu(menu);
+  }, []);
+
   return (
     <Container>
       <Profile>
@@ -48,14 +53,14 @@ const MyPage = ({ children }) => {
       </Profile>
       <RightSection>
         <MenuList>
-          <MenuItem isSelectedMenu={selectedMenu === 'overview'}>
-            <MenuButton value="overview" type="button" onClick={goMyPage}>
-              <MenuIcon src={overviewIcon} />
+          <MenuItem isSelectedMenu={selectedMenu === MYPAGE_MENU.OVERVIEW}>
+            <MenuButton value={MYPAGE_MENU.OVERVIEW} type="button" onClick={goMyPage}>
+              <MenuIcon src={overviewIcon} alt="overview icon" />
               Overview
             </MenuButton>
           </MenuItem>
-          <MenuItem isSelectedMenu={selectedMenu === 'posts'}>
-            <MenuButton value="posts" type="button" onClick={goMyPagePosts}>
+          <MenuItem isSelectedMenu={selectedMenu === MYPAGE_MENU.POSTS}>
+            <MenuButton value={MYPAGE_MENU.POSTS} type="button" onClick={goMyPagePosts}>
               <MenuIcon src={postIcon} alt="posts icon" />
               Posts
             </MenuButton>
