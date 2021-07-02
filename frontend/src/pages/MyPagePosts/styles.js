@@ -1,5 +1,11 @@
 import styled from '@emotion/styled';
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
 const PostItem = styled.div`
   height: 18rem;
   padding: 2.4rem 1.6rem;
@@ -52,4 +58,10 @@ const ButtonList = styled.div`
   gap: 1.6rem;
 `;
 
-export { Content, Description, Mission, Title, Tags, PostItem, ButtonList };
+const NoPost = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export { Container, Content, Description, Mission, Title, Tags, PostItem, ButtonList, NoPost };

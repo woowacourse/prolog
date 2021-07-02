@@ -1,5 +1,10 @@
 import { useState } from 'react';
-import { requestEditPost, requestGetPost, requestGetPosts } from '../service/requests';
+import {
+  requestEditPost,
+  requestGetPost,
+  requestGetPosts,
+  requestDeletePost,
+} from '../service/requests';
 
 const usePost = (defaultValue) => {
   const [response, setResponse] = useState(defaultValue);
@@ -54,7 +59,22 @@ const usePost = (defaultValue) => {
     }
   };
 
-  return [response, error, getAllData, getData, editData];
+  const deleteData = async (postId, accessToken) => {
+    try {
+      const response = await requestDeletePost(postId, accessToken);
+
+      if (!response.ok) {
+        setError(response.status);
+      }
+
+      setResponse(response);
+    } catch (error) {
+      console.error(error);
+      setError(error);
+    }
+  };
+
+  return { response, error, getAllData, getData, editData, deleteData };
 };
 
 export default usePost;
