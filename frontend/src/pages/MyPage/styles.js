@@ -61,7 +61,8 @@ const MenuItem = styled.li`
   border-top-right-radius: 1.6rem;
   border-top-left-radius: 1.6rem;
 
-  ${({ isSelectedMenu }) => isSelectedMenu && 'background-color: #fff'};
+  ${({ isSelectedMenu }) =>
+    isSelectedMenu && 'background-color: #fff; box-shadow: 0px 5px 10px #cccccc;'};
 `;
 
 const MenuButton = styled.button`
@@ -91,6 +92,15 @@ const MenuIcon = styled.img`
   width: 1.6rem;
 `;
 
+const Preparing = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2rem;
+  font-size: 1.8rem;
+`;
+
 export {
   Container,
   Profile,
@@ -104,4 +114,5 @@ export {
   Content,
   Title,
   MenuIcon,
+  Preparing,
 };
