@@ -11,6 +11,7 @@ const Profile = styled.div`
   border-radius: 1.6rem;
   border: 1px solid #e6e6e6;
   padding-bottom: 1.8rem;
+  height: fit-content;
 `;
 
 const Image = styled.img`
@@ -35,40 +36,72 @@ const Role = styled.div`
   color: #888888;
 `;
 
-const MenuList = styled.ul`
+const RightSection = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 3.2rem;
   background-color: #fff;
   border-radius: 1.6rem;
-  padding: 1rem 1.6rem;
-  margin-top: 2.4rem;
   border: 1px solid #e6e6e6;
 `;
 
-const MenuItem = styled.li`
-  height: 4.4rem;
+const MenuList = styled.ul`
+  display: flex;
+  background-color: #dfecf5;
+  border-top-right-radius: 1.6rem;
+  border-top-left-radius: 1.6rem;
+`;
 
+const MenuItem = styled.li`
+  height: 4.8rem;
   display: flex;
   align-items: center;
+  padding: 2rem;
+  border-top-right-radius: 1.6rem;
+  border-top-left-radius: 1.6rem;
 
-  &:not(:last-child) {
-    border-bottom: 1px solid #e6e6e6;
-  }
+  ${({ isSelectedMenu }) => isSelectedMenu && 'background-color: #fff'};
+`;
+
+const MenuButton = styled.button`
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  font-size: 1.6rem;
+  color: #333;
 `;
 
 const Content = styled.div`
   width: 100%;
-  height: fit-content;
-  margin-left: 3.2rem;
   background-color: #fff;
-  border: 1px solid #e6e6e6;
-  border-radius: 1.6rem;
+  border-bottom-left-radius: 1.6rem;
+  border-bottom-right-radius: 1.6rem;
   padding: 2.4rem;
+  display: flex;
+  justify-content: center;
 `;
 
 const Title = styled.div`
   font-size: 2.8rem;
-  padding-bottom: 1.6rem;
   font-weight: 500;
-  border-bottom: 1px solid #e6e6e6;
 `;
 
-export { Container, Profile, Image, Nickname, Role, MenuList, MenuItem, Content, Title };
+const MenuIcon = styled.img`
+  width: 1.6rem;
+`;
+
+export {
+  Container,
+  Profile,
+  Image,
+  Nickname,
+  Role,
+  RightSection,
+  MenuList,
+  MenuItem,
+  MenuButton,
+  Content,
+  Title,
+  MenuIcon,
+};

@@ -1,5 +1,11 @@
 import styled from '@emotion/styled';
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
 const PostItem = styled.div`
   height: 18rem;
   padding: 2.4rem 1.6rem;
@@ -56,8 +62,6 @@ const NoPost = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 6rem;
-  font-size: 2rem;
 `;
 
-export { Content, Description, Mission, Title, Tags, PostItem, ButtonList, NoPost };
+export { Container, Content, Description, Mission, Title, Tags, PostItem, ButtonList, NoPost };
