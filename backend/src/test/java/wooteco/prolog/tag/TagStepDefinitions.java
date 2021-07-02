@@ -1,16 +1,11 @@
 package wooteco.prolog.tag;
 
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.acceptance.AcceptanceSteps;
-import wooteco.prolog.post.acceptance.PostAcceptanceFixture;
-import wooteco.prolog.post.application.dto.PostRequest;
-import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.tag.dto.TagResponse;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;

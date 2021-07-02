@@ -15,8 +15,9 @@ import wooteco.prolog.login.domain.Member;
 import wooteco.prolog.login.domain.Role;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionRequest;
-import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
+import wooteco.prolog.post.application.dto.PostRequest;
+import wooteco.prolog.post.application.dto.PostDataResponse;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.tag.domain.Tag;
 import wooteco.prolog.tag.dto.TagRequest;
@@ -78,11 +79,11 @@ class PostServiceTest {
         insertPosts();
 
         //when
-        List<PostResponse> postResponsesWithFilter = postService.findPostsWithFilter(missions, tags);
+        PostResponse postResponsesWithFilter = postService.findPostsWithFilter(missions, tags);
 
         //then
-        List<String> titles = postResponsesWithFilter.stream()
-                .map(PostResponse::getTitle)
+        List<String> titles = postResponsesWithFilter.getData().stream()
+                .map(PostDataResponse::getTitle)
                 .collect(Collectors.toList());
 
         assertThat(titles).containsAll(
@@ -133,14 +134,14 @@ class PostServiceTest {
 
         //when
         List<PostRequest> postRequestsOfFirstMember = Arrays.asList(postRequest1, postRequest2);
-        List<PostResponse> postResponsesOfFirstMember = postService.insertPosts(FIRST_MEMBER, postRequestsOfFirstMember);
+        List<PostDataResponse> postDataResponsesOfFirstMember = postService.insertPosts(FIRST_MEMBER, postRequestsOfFirstMember);
 
         List<PostRequest> postRequestsOfSecondMember = Arrays.asList(postRequest3, postRequest4);
-        List<PostResponse> postResponsesOfSecondMember = postService.insertPosts(SECOND_MEMBER, postRequestsOfSecondMember);
+        List<PostDataResponse> postDataResponsesOfSecondMember = postService.insertPosts(SECOND_MEMBER, postRequestsOfSecondMember);
 
         //then
-        List<String> titles = Stream.concat(postResponsesOfFirstMember.stream(), postResponsesOfSecondMember.stream())
-                .map(PostResponse::getTitle)
+        List<String> titles = Stream.concat(postDataResponsesOfFirstMember.stream(), postDataResponsesOfSecondMember.stream())
+                .map(PostDataResponse::getTitle)
                 .collect(Collectors.toList());
 
         assertThat(titles).contains(
@@ -150,8 +151,8 @@ class PostServiceTest {
                 FOURTH_POST.getTitle()
         );
 
-        List<String> members = Stream.concat(postResponsesOfFirstMember.stream(), postResponsesOfSecondMember.stream())
-                .map(PostResponse::getAuthor)
+        List<String> members = Stream.concat(postDataResponsesOfFirstMember.stream(), postDataResponsesOfSecondMember.stream())
+                .map(PostDataResponse::getAuthor)
                 .map(MemberResponse::getNickname)
                 .collect(Collectors.toList());
 

@@ -21,6 +21,16 @@ include::{snippets}/post/list/http-request.adoc[]
 
 include::{snippets}/post/list/http-response.adoc[]
 
+=== 포스트 목록 조회 (페이징)
+
+==== Request
+
+include::{snippets}/post/page/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/post/page/http-response.adoc[]
+
 
 === 포스트 목록 조회 (작성자별)
 
