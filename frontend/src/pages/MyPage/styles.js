@@ -92,6 +92,15 @@ const MenuIcon = styled.img`
   width: 1.6rem;
 `;
 
+const Preparing = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2rem;
+  font-size: 1.8rem;
+`;
+
 export {
   Container,
   Profile,
@@ -105,4 +114,5 @@ export {
   Content,
   Title,
   MenuIcon,
+  Preparing,
 };

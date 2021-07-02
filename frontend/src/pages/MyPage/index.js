@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import postIcon from '../../assets/images/post.png';
 import overviewIcon from '../../assets/images/overview.png';
+import waitImage from '../../assets/images/wait.png';
 import {
   Container,
   Profile,
@@ -16,6 +17,7 @@ import {
   MenuButton,
   Role,
   Content,
+  Preparing,
 } from './styles';
 import { MYPAGE_MENU } from '../../constants';
 
@@ -71,7 +73,16 @@ const MyPage = ({ children, menu }) => {
             </button>
           </MenuItem> */}
         </MenuList>
-        <Content>{children ? children : <div>준비중입니다. 조금만 기다려주세요 🤪</div>}</Content>
+        <Content>
+          {children ? (
+            children
+          ) : (
+            <Preparing>
+              <img src={waitImage} alt="준비중 이미지" />
+              <div>준비 중이애오. 조금만 기다려 주새오.</div>
+            </Preparing>
+          )}
+        </Content>
       </RightSection>
     </Container>
   );
