@@ -92,7 +92,7 @@ const MainPage = () => {
         )}
       </HeaderContainer>
       <PostListContainer>
-        {posts?.map((post) => {
+        {posts && posts.data && posts.data.map((post) => {
           const { id, author, mission, title, tags } = post;
 
           return (
@@ -108,7 +108,7 @@ const MainPage = () => {
                   </Tags>
                 </Description>
                 <ProfileChip imageSrc={author.imageUrl} css={ProfileChipLocationStyle}>
-                  {author.nickname}
+                  {author.username}
                 </ProfileChip>
               </Content>
             </Card>

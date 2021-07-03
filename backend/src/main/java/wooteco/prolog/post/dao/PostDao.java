@@ -126,11 +126,8 @@ public class PostDao {
         return jdbcTemplate.query(query, postsResultSetExtractor);
     }
 
-    public List<Post> findWithFilter(List<Long> missions, List<Long> tags) {
-        String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, username, role, github_id, image_url, tag.id as tag_id " +
-                "FROM post AS po " +
     public List<Post> findWithFilter(List<Long> missions, List<Long> tags, PageRequest pageRequest) {
-        String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, github_user_name, role, github_id, image_url, tag.id as tag_id " +
+        String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, username, role, github_id, image_url, tag.id as tag_id " +
                 "FROM (SELECT * FROM post" +
                 createPagingQuery(pageRequest.getSize(), pageRequest.getPage()) +
                 ") AS po " +

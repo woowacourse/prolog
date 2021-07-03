@@ -28,8 +28,8 @@ const requestEditPost = (postId, data, accessToken) =>
     body: JSON.stringify(data),
   });
 
-const requestGetMyPosts = (nickname, accessToken) =>
-  fetch(`${BASE_URL}/members/${nickname}/posts`, {
+const requestGetMyPosts = (username, accessToken) =>
+  fetch(`${BASE_URL}/members/${username}/posts`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',

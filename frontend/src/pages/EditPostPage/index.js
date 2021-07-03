@@ -28,7 +28,7 @@ const SubmitButtonStyle = css`
 
 const EditPostPage = () => {
   const history = useHistory();
-  const user = useSelector((state) => state.user.profile.data?.nickname);
+  const user = useSelector((state) => state.user.profile.data?.username);
   const accessToken = useSelector((state) => state.user.accessToken.data);
 
   const { id: postId } = useParams();
@@ -49,7 +49,7 @@ const EditPostPage = () => {
   }, [mission]);
 
   useEffect(() => {
-    if (author && user !== author.nickname) {
+    if (author && user !== author.username) {
       alert('본인이 작성하지 않은 글은 수정할 수 없습니다.');
       history.push(`${PATH.POST}/${postId}`);
     }
