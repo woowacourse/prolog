@@ -10,6 +10,13 @@ export const BUTTON_SIZE = {
 };
 
 const containerSizeStyle = {
+  XX_SMALL: {
+    width: '3rem',
+    height: '3rem',
+    fontSize: '1.4rem',
+    lineHeight: '1rem',
+    borderRadius: '8px',
+  },
   X_SMALL: {
     width: '9.2rem',
     height: '3.6rem',

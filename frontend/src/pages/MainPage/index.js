@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Card, FilterList, ProfileChip } from '../../components';
+import { Button, BUTTON_SIZE, Card, FilterList, ProfileChip } from '../../components';
 import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
@@ -21,6 +21,9 @@ import {
   Tags,
   ProfileChipLocationStyle,
   CardHoverStyle,
+  PaginationContainer,
+  PageButtonStyle,
+  PageSkipButtonStyle,
 } from './styles';
 
 const MainPage = () => {
@@ -52,7 +55,9 @@ const MainPage = () => {
       try {
         const response = await requestGetFilteredPosts(selectedFilterDetails);
 
-        setPosts(await response.json());
+        const { data } = await response.json();
+        // console.log(data);
+        setPosts(data);
       } catch (error) {
         console.error(error);
       }
@@ -62,7 +67,7 @@ const MainPage = () => {
   }, [selectedFilterDetails]);
 
   useEffect(() => {
-    setPosts(postList);
+    setPosts(postList.data);
   }, [postList]);
 
   return (
@@ -102,7 +107,7 @@ const MainPage = () => {
                   <Mission>{mission.name}</Mission>
                   <Title>{title}</Title>
                   <Tags>
-                    {tags.map(({ id, name }) => (
+                    {tags?.map(({ id, name }) => (
                       <span key={id}>{`#${name} `}</span>
                     ))}
                   </Tags>
@@ -115,6 +120,29 @@ const MainPage = () => {
           );
         })}
       </PostListContainer>
+      <PaginationContainer>
+        <Button size={BUTTON_SIZE.XX_SMALL} css={PageSkipButtonStyle}>
+          {'<'}
+        </Button>
+        <Button size={BUTTON_SIZE.XX_SMALL} css={PageButtonStyle}>
+          1
+        </Button>
+        <Button size={BUTTON_SIZE.XX_SMALL} css={PageButtonStyle}>
+          2
+        </Button>
+        <Button size={BUTTON_SIZE.XX_SMALL} css={PageButtonStyle}>
+          3
+        </Button>
+        <Button size={BUTTON_SIZE.XX_SMALL} css={PageButtonStyle}>
+          4
+        </Button>
+        <Button size={BUTTON_SIZE.XX_SMALL} css={PageButtonStyle}>
+          5
+        </Button>
+        <Button size={BUTTON_SIZE.XX_SMALL} css={PageSkipButtonStyle}>
+          {'>'}
+        </Button>
+      </PaginationContainer>
     </>
   );
 };
