@@ -77,6 +77,7 @@ public class MissionDocumentation extends Documentation {
                 .then()
                 .log().all()
                 .extract();
+
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat((String) response.jsonPath().get("message")).isEqualTo("미션이 중복됩니다.");

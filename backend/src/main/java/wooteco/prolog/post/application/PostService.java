@@ -2,14 +2,14 @@ package wooteco.prolog.post.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.post.application.dto.PageRequest;
-import wooteco.prolog.login.application.dto.MemberResponse;
-import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.member.application.dto.MemberResponse;
+import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionResponse;
+import wooteco.prolog.post.application.dto.PageRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
-import wooteco.prolog.post.application.dto.PostDataResponse;
+import wooteco.prolog.post.application.dto.PostsResponse;
 import wooteco.prolog.post.dao.PostDao;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.post.exception.AuthorNotValidException;
@@ -34,35 +34,35 @@ public class PostService {
         this.tagService = tagService;
     }
 
-    public List<PostDataResponse> findAll() {
+    public List<PostResponse> findAll() {
         List<Post> posts = postDao.findAll();
         return posts.stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
     }
 
-    public PostResponse findPostsWithFilter(List<Long> missions, List<Long> tags, PageRequest pageRequest) {
+    public PostsResponse findPostsWithFilter(List<Long> missions, List<Long> tags, PageRequest pageRequest) {
         missions = nullToEmptyList(missions);
         tags = nullToEmptyList(tags);
 
         List<Post> posts = postDao.findWithFilter(missions, tags, pageRequest);
-        List<PostDataResponse> postDataResponses = posts.stream()
+        List<PostResponse> postResponses = posts.stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
 
         int totalCount = postDao.count();
         int totalPage = pageRequest.calculateTotalPage(totalCount);
-        return new PostResponse(postDataResponses, totalCount, totalPage, pageRequest.getPage());
+        return new PostsResponse(postResponses, totalCount, totalPage, pageRequest.getPage());
     }
 
-    public List<PostDataResponse> findAllOfMine(Member member) {
+    public List<PostResponse> findAllOfMine(Member member) {
         List<Post> posts = postDao.findAllByMemberId(member.getId());
         return posts.stream()
                 .map(post -> toResponse(post))
                 .collect(Collectors.toList());
     }
 
-    public PostResponse findPostsWithFilter(List<Long> missions, List<Long> tags) {
+    public PostsResponse findPostsWithFilter(List<Long> missions, List<Long> tags) {
         return findPostsWithFilter(missions, tags, new PageRequest());
     }
 
@@ -74,7 +74,7 @@ public class PostService {
     }
 
     @Transactional
-    public List<PostDataResponse> insertPosts(Member member, List<PostRequest> postRequests) {
+    public List<PostResponse> insertPosts(Member member, List<PostRequest> postRequests) {
         if (postRequests.size() == 0) {
             throw new PostArgumentException();
         }
@@ -84,7 +84,7 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    private PostDataResponse insertPost(Member member, PostRequest postRequest) {
+    private PostResponse insertPost(Member member, PostRequest postRequest) {
         List<TagResponse> tagResponses = tagService.create(postRequest.getTags());
         List<Long> tagIds = getTagIds(tagResponses);
 
@@ -93,7 +93,7 @@ public class PostService {
         tagService.addTagToPost(createdPost.getId(), tagIds);
 
         MissionResponse missionResponse = missionService.findById(requestedPost.getMissionId());
-        return new PostDataResponse(
+        return new PostResponse(
                 createdPost.getId(),
                 MemberResponse.of(createdPost.getMember()),
                 createdPost.getCreatedAt(),
@@ -104,19 +104,19 @@ public class PostService {
                 tagResponses);
     }
 
-    public PostDataResponse findById(Long id) {
+    public PostResponse findById(Long id) {
         Post post = postDao.findById(id);
         return toResponse(post);
     }
 
-    private PostDataResponse toResponse(Post post) {
+    private PostResponse toResponse(Post post) {
         List<TagResponse> tagResponses = tagService.getTagsOfPost(post.getId());
         MissionResponse missionResponse = missionService.findById(post.getMissionId());
-        return new PostDataResponse(post, missionResponse, tagResponses);
+        return new PostResponse(post, missionResponse, tagResponses);
     }
 
     public void updatePost(Member member, Long id, PostRequest postRequest) {
-        PostDataResponse post = findById(id);
+        PostResponse post = findById(id);
         validateAuthor(member, post);
 
         List<TagResponse> tags = tagService.create(postRequest.getTags());
@@ -150,13 +150,14 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    private void validateAuthor(Member member, PostDataResponse post) {
+    private void validateAuthor(Member member, PostResponse post) {
         if (!member.getId().equals(post.getAuthor().getId())) {
             throw new AuthorNotValidException("작성자만 수정할 수 있습니다.");
         }
     }
+
     public void deletePost(Member member, Long id) {
-        PostDataResponse post = findById(id);
+        PostResponse post = findById(id);
         if (post.getAuthor().getId() != member.getId()) {
             throw new RuntimeException();
         }

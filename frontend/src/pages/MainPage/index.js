@@ -97,7 +97,7 @@ const MainPage = () => {
         )}
       </HeaderContainer>
       <PostListContainer>
-        {posts?.map((post) => {
+        {posts && posts.data && posts.data.map((post) => {
           const { id, author, mission, title, tags } = post;
 
           return (

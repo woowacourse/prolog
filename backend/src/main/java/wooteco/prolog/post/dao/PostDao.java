@@ -5,9 +5,9 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.post.application.dto.PageRequest;
-import wooteco.prolog.login.domain.Member;
-import wooteco.prolog.login.domain.Role;
 import wooteco.prolog.post.domain.Content;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.post.domain.Direction;
@@ -85,13 +85,13 @@ public class PostDao {
 
     private static Member extractMember(ResultSet rs) throws SQLException {
         long memberId = rs.getLong("member_id");
+        String username = rs.getString("username");
         String nickname = rs.getString("nickname");
-        String loginName = rs.getString("github_user_name");
         Role role = Role.of(rs.getString("role"));
         Long githubId = rs.getLong("github_id");
         String imageUrl = rs.getString("image_url");
 
-        return new Member(memberId, nickname, loginName, role, githubId, imageUrl);
+        return new Member(memberId, username, nickname, role, githubId, imageUrl);
     }
 
     private static Tag extractTag(ResultSet rs) throws SQLException {
@@ -108,7 +108,7 @@ public class PostDao {
     }
 
     public List<Post> findAll() {
-        String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, github_user_name, role, github_id, image_url, tag.id as tag_id " +
+        String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, username, role, github_id, image_url, tag.id as tag_id " +
                 "FROM post AS po " +
                 "LEFT JOIN member AS me ON po.member_id = me.id " +
                 "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
@@ -117,7 +117,7 @@ public class PostDao {
     }
 
     public List<Post> findAllByMemberId(Long memberId) {
-        String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, github_user_name, role, github_id, image_url, tag.id as tag_id " +
+        String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, username, role, github_id, image_url, tag.id as tag_id " +
                 "FROM post AS po " +
                 "LEFT JOIN member AS me ON po.member_id = me.id " +
                 "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
@@ -127,7 +127,7 @@ public class PostDao {
     }
 
     public List<Post> findWithFilter(List<Long> missions, List<Long> tags, PageRequest pageRequest) {
-        String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, github_user_name, role, github_id, image_url, tag.id as tag_id " +
+        String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, username, role, github_id, image_url, tag.id as tag_id " +
                 "FROM (SELECT * FROM post" +
                 createPagingQuery(pageRequest.getSize(), pageRequest.getPage()) +
                 ") AS po " +
@@ -174,7 +174,7 @@ public class PostDao {
     }
 
     public Post findById(Long id) {
-        String sql = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, github_user_name, role, github_id, image_url, tag.id as tag_id " +
+        String sql = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, username, role, github_id, image_url, tag.id as tag_id " +
                 "FROM post AS po LEFT JOIN member AS me ON po.member_id = me.id " +
                 "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
                 "LEFT JOIN tag ON pt.tag_id = tag.id " +

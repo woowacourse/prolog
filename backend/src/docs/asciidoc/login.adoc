@@ -15,8 +15,8 @@ include::{snippets}/login/token/http-response.adoc[]
 
 ==== Request
 
-include::{snippets}/members/me/http-request.adoc[]
+include::{snippets}/members/read/http-request.adoc[]
 
 ==== Response
 
-include::{snippets}/members/me/http-response.adoc[]
+include::{snippets}/members/read/http-response.adoc[]

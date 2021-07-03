@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { NavBar } from './components';
 import styled from '@emotion/styled';
-import { PATH } from './constants';
+import { MYPAGE_MENU, PATH } from './constants';
 import GlobalStyles from './GlobalStyles';
 import {
   MainPage,
@@ -21,6 +22,8 @@ const Content = styled.div`
 `;
 
 const App = () => {
+  // const [selectedMenu, setSelectedMenu] = useState('overview');
+
   return (
     <>
       <GlobalStyles />
@@ -37,9 +40,14 @@ const App = () => {
             <Route exact path={`${PATH.POST}/:id/edit`} component={EditPostPage} />
             <Route
               exact
+              path={`${PATH.MYPAGE}`}
+              render={() => <MyPage menu={MYPAGE_MENU.OVERVIEW} />}
+            />
+            <Route
+              exact
               path={`${PATH.MYPAGE_POSTS}`}
               render={() => (
-                <MyPage title="글 관리">
+                <MyPage menu={MYPAGE_MENU.POSTS}>
                   <MyPagePosts />
                 </MyPage>
               )}
@@ -48,7 +56,7 @@ const App = () => {
               exact
               path={`${PATH.MYPAGE_ACCOUNT}`}
               render={() => (
-                <MyPage title="내 정보 수정">
+                <MyPage>
                   <MyPageAccount />
                 </MyPage>
               )}

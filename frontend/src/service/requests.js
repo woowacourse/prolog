@@ -28,6 +28,24 @@ const requestEditPost = (postId, data, accessToken) =>
     body: JSON.stringify(data),
   });
 
+const requestGetMyPosts = (username, accessToken) =>
+  fetch(`${BASE_URL}/members/${username}/posts`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+const requestDeletePost = (postId, accessToken) =>
+  fetch(`${BASE_URL}/posts/${postId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
 export {
   requestGetPosts,
   requestGetPost,
@@ -36,4 +54,6 @@ export {
   requestGetFilteredPosts,
   requestGetTags,
   requestEditPost,
+  requestGetMyPosts,
+  requestDeletePost,
 };

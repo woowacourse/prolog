@@ -3,7 +3,7 @@ package wooteco.prolog.login.application;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.member.domain.Member;
 
 import java.util.Date;
 

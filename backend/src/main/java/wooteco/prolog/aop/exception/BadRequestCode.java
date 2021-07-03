@@ -2,8 +2,9 @@ package wooteco.prolog.aop.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.web.servlet.DispatcherServlet;
 import wooteco.prolog.login.excetpion.*;
+import wooteco.prolog.member.exception.MemberNotAllowedException;
+import wooteco.prolog.member.exception.MemberNotFoundException;
 import wooteco.prolog.mission.exception.DuplicateMissionException;
 import wooteco.prolog.mission.exception.MissionNotFoundException;
 import wooteco.prolog.post.exception.NotValidSortNameException;
@@ -23,6 +24,7 @@ public enum BadRequestCode {
     TOKEN_NOT_VALID(1002, "JWT 토큰이 유효하지 않습니다.", TokenNotValidException.class),
     ROLE_NAME_NOT_FOUND(1003, "해당 이름을 가진 역할이 없습니다.", RoleNameNotFoundException.class),
     MEMBER_NOT_FOUND(1004, "해당 ID를 가진 멤버가 없습니다.", MemberNotFoundException.class),
+    MEMBER_NOT_ALLOWED(1005, "권한이 없습니다.", MemberNotAllowedException.class),
 
     POST_ARGUMENT(2000, "최소 1개의 글이 있어야 합니다.", PostArgumentException.class),
     POST_CONTENT_NULL_OR_EMPTY(2001, "글 내용은 공백일 수 없습나다.", PostContentNullOrEmptyException.class),
