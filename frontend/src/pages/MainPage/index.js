@@ -108,7 +108,7 @@ const MainPage = () => {
                   </Tags>
                 </Description>
                 <ProfileChip imageSrc={author.imageUrl} css={ProfileChipLocationStyle}>
-                  {author.username}
+                  {author.nickname}
                 </ProfileChip>
               </Content>
             </Card>
