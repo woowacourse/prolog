@@ -1,4 +1,4 @@
-package wooteco.prolog.login.domain;
+package wooteco.prolog.member.domain;
 
 import wooteco.prolog.login.excetpion.RoleNameNotFoundException;
 

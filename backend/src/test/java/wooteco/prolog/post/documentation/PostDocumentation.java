@@ -14,7 +14,7 @@ import wooteco.prolog.login.GithubResponses;
 import wooteco.prolog.mission.application.dto.MissionRequest;
 import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
-import wooteco.prolog.post.application.dto.PostDataResponse;
+import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.tag.dto.TagRequest;
 
 import java.util.Arrays;
@@ -87,9 +87,9 @@ public class PostDocumentation extends Documentation {
             .then().log().all().extract();
 
         // then
-        List<PostDataResponse> postDataResponses = response.jsonPath().getList(".", PostDataResponse.class);
-        List<String> postTitles = postDataResponses.stream()
-            .map(PostDataResponse::getTitle)
+        List<PostResponse> postResponses = response.jsonPath().getList(".", PostResponse.class);
+        List<String> postTitles = postResponses.stream()
+            .map(PostResponse::getTitle)
             .collect(Collectors.toList());
         List<String> expectedTitles = postRequests.stream()
             .map(PostRequest::getTitle)
@@ -111,8 +111,8 @@ public class PostDocumentation extends Documentation {
             .then().log().all().extract();
 
         // given
-        List<PostDataResponse> postDataResponses = response.jsonPath().get(".");
-        assertThat(postDataResponses).hasSize(1);
+        List<PostResponse> postResponses = response.jsonPath().get(".");
+        assertThat(postResponses).hasSize(1);
     }
 
     @Test

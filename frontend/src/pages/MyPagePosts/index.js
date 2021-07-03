@@ -39,7 +39,7 @@ const DeleteButtonStyle = css`
 const MyPagePosts = () => {
   const history = useHistory();
   const accessToken = useSelector((state) => state.user.accessToken.data);
-  const nickname = useSelector((state) => state.user.profile.data?.nickname);
+  const username = useSelector((state) => state.user.profile.data?.username);
 
   const [hoverdPostId, setHoveredPostId] = useState(0);
   const [posts, setPosts] = useState([]);
@@ -58,7 +58,7 @@ const MyPagePosts = () => {
 
   const getMyPosts = async () => {
     try {
-      const response = await requestGetMyPosts(nickname, accessToken);
+      const response = await requestGetMyPosts(username, accessToken);
 
       if (!response.ok) {
         throw new Error(response.status);
@@ -85,7 +85,7 @@ const MyPagePosts = () => {
 
   useEffect(() => {
     getMyPosts();
-  }, [nickname]);
+  }, [username]);
 
   return (
     <Container>

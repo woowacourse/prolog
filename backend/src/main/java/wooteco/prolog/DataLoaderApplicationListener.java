@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import wooteco.prolog.login.application.GithubLoginService;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
-import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionRequest;
 import wooteco.prolog.mission.application.dto.MissionResponse;

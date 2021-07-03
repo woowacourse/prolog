@@ -10,14 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
-import wooteco.prolog.login.application.dto.MemberResponse;
-import wooteco.prolog.login.domain.Member;
-import wooteco.prolog.login.domain.Role;
+import wooteco.prolog.member.application.dto.MemberResponse;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionRequest;
-import wooteco.prolog.post.application.dto.PostResponse;
+import wooteco.prolog.post.application.dto.PostsResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
-import wooteco.prolog.post.application.dto.PostDataResponse;
+import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.tag.domain.Tag;
 import wooteco.prolog.tag.dto.TagRequest;
@@ -42,8 +42,8 @@ class PostServiceTest {
             FIRST_TAG, SECOND_TAG, THIRD_TAG, FOURTH_TAG, FIFTH_TAG
     );
 
-    private static final Member FIRST_MEMBER = new Member(1L, "웨지", "wedge", Role.CREW, 123456789L, "https://www.youtube.com/watch?v=3etKkkna-f0&t=6s");
-    private static final Member SECOND_MEMBER = new Member(2L, "피카", "pika", Role.CREW, 2L, "image");
+    private static final Member FIRST_MEMBER = new Member(1L, "wedge", "웨지", Role.CREW, 123456789L, "https://www.youtube.com/watch?v=3etKkkna-f0&t=6s");
+    private static final Member SECOND_MEMBER = new Member(2L, "pika", "피카", Role.CREW, 2L, "image");
 
     private static final Post FIRST_POST = new Post(FIRST_MEMBER, "이것은 제목", "피케이와 포모의 포스트", 1L, Arrays.asList(FIRST_TAG.getId(), SECOND_TAG.getId()));
     private static final Post SECOND_POST = new Post(FIRST_MEMBER, "이것은 두번째 제목", "피케이와 포모의 포스트 2", 1L, Arrays.asList(THIRD_TAG.getId(), FOURTH_TAG.getId()));
@@ -79,11 +79,11 @@ class PostServiceTest {
         insertPosts();
 
         //when
-        PostResponse postResponsesWithFilter = postService.findPostsWithFilter(missions, tags);
+        PostsResponse postResponsesWithFilter = postService.findPostsWithFilter(missions, tags);
 
         //then
         List<String> titles = postResponsesWithFilter.getData().stream()
-                .map(PostDataResponse::getTitle)
+                .map(PostResponse::getTitle)
                 .collect(Collectors.toList());
 
         assertThat(titles).containsAll(
@@ -134,14 +134,14 @@ class PostServiceTest {
 
         //when
         List<PostRequest> postRequestsOfFirstMember = Arrays.asList(postRequest1, postRequest2);
-        List<PostDataResponse> postDataResponsesOfFirstMember = postService.insertPosts(FIRST_MEMBER, postRequestsOfFirstMember);
+        List<PostResponse> postDataResponsesOfFirstMember = postService.insertPosts(FIRST_MEMBER, postRequestsOfFirstMember);
 
         List<PostRequest> postRequestsOfSecondMember = Arrays.asList(postRequest3, postRequest4);
-        List<PostDataResponse> postDataResponsesOfSecondMember = postService.insertPosts(SECOND_MEMBER, postRequestsOfSecondMember);
+        List<PostResponse> postDataResponsesOfSecondMember = postService.insertPosts(SECOND_MEMBER, postRequestsOfSecondMember);
 
         //then
         List<String> titles = Stream.concat(postDataResponsesOfFirstMember.stream(), postDataResponsesOfSecondMember.stream())
-                .map(PostDataResponse::getTitle)
+                .map(PostResponse::getTitle)
                 .collect(Collectors.toList());
 
         assertThat(titles).contains(
@@ -152,7 +152,7 @@ class PostServiceTest {
         );
 
         List<String> members = Stream.concat(postDataResponsesOfFirstMember.stream(), postDataResponsesOfSecondMember.stream())
-                .map(PostDataResponse::getAuthor)
+                .map(PostResponse::getAuthor)
                 .map(MemberResponse::getNickname)
                 .collect(Collectors.toList());
 

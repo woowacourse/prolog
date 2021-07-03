@@ -7,8 +7,8 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
-import wooteco.prolog.login.domain.Member;
-import wooteco.prolog.login.domain.Role;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.login.ui.AuthMemberPrincipalArgumentResolver;
 
 @Profile("docu")
@@ -21,6 +21,6 @@ public class AuthMemberPrincipalTestArgumentResolver implements AuthMemberPrinci
 
     @Override
     public Member resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        return new Member(1L, "nickname", "githubUserName", Role.CREW, 1L, "https://avatars.githubusercontent.com/u/52682603?v=4");
+        return new Member(1L, "githubUserName", "nickname", Role.CREW, 1L, "https://avatars.githubusercontent.com/u/52682603?v=4");
     }
 }

@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
-import wooteco.prolog.login.domain.Member;
-import wooteco.prolog.login.domain.Role;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.tag.domain.Tag;
 
@@ -24,8 +24,8 @@ public class PostDaoTest {
     private JdbcTemplate jdbcTemplate;
     private PostDao postDao;
 
-    private static final Member FIRST_MEMBER = new Member(1L, "소롱", "soulg", Role.CREW, 1L, "image");
-    private static final Member SECOND_MEMBER = new Member(2L, "피카", "pika", Role.CREW, 2L, "image");
+    private static final Member FIRST_MEMBER = new Member(1L, "soulg", "소롱", Role.CREW, 1L, "image");
+    private static final Member SECOND_MEMBER = new Member(2L, "pika", "피카", Role.CREW, 2L, "image");
 
     public static final Tag FIRST_TAG = new Tag(1L, "소롱의글쓰기");
     public static final Tag SECOND_TAG = new Tag(2L, "스프링");

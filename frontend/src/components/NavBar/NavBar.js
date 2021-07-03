@@ -114,7 +114,7 @@ const NavBar = () => {
                       <Link
                         onClick={() => {
                           setDropdownToggled(false);
-                          history.push(`/${user?.data.nickname}`);
+                          history.push(`/${user?.data.username}`);
                         }}
                       >
                         <button type="button">마이페이지</button>

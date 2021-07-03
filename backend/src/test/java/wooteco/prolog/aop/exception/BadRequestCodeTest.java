@@ -1,10 +1,9 @@
 package wooteco.prolog.aop.exception;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.login.excetpion.GithubApiFailException;
-import wooteco.prolog.login.excetpion.MemberNotFoundException;
+import wooteco.prolog.member.exception.MemberNotFoundException;
 
 import static org.assertj.core.api.Assertions.*;
 
