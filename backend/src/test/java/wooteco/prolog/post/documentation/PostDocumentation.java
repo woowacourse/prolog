@@ -19,30 +19,8 @@ import wooteco.prolog.tag.dto.TagRequest;
 
 import java.util.Arrays;
 import java.util.List;
-import wooteco.prolog.tag.dto.TagResponse;
 
 public class PostDocumentation extends Documentation {
-//    @DisplayName("Post 관련 기능 테스트")
-//    @Test
-//    void post() {
-//        List<PostRequest> params = Arrays.asList(createPostRequest());
-//
-//        ExtractableResponse<Response> createResponse = 포스트를_생성한다(params);
-//
-//        포스트_목록을_조회한다();
-//
-//        포스트_목록을_필터링한다();
-//
-//        String location = createResponse.header("Location");
-//
-//        포스트_단건을_조회한다(location);
-//
-//        포스트_목록을_작성자별로_조회한다();
-//
-//        포스트를_수정한다(location, editPostRequest());
-//
-//        포스트를_삭제한다(location);
-//    }
 
     @Test
     public void 포스트를_생성한다() {
@@ -63,15 +41,23 @@ public class PostDocumentation extends Documentation {
         assertThat(createResponse.header("Location")).isNotNull();
     }
 
-    public void 포스트_단건을_조회한다(String location) {
+    @Test
+    public void 포스트_단건을_조회한다() {
         // given
-        List<PostRequest> postRequests = Arrays.asList(createPostRequest1(), createPostRequest2());
-        포스트_등록함(postRequests);
+        List<PostRequest> postRequests = Arrays.asList(createPostRequest1());
+        ExtractableResponse<Response> postResponse = 포스트_등록함(postRequests);
+        String location = postResponse.header("Location");
 
-        given("post/read")
+        // when
+        ExtractableResponse<Response> response = given("post/read")
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .when().get(location)
             .then().log().all().extract();
+
+        // given
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat((String) response.body().jsonPath().get("title"))
+            .isEqualTo(postRequests.get(0).getTitle());
     }
 
     @Test
@@ -133,29 +119,52 @@ public class PostDocumentation extends Documentation {
 
         // when
         ExtractableResponse<Response> editResponse = given("post/edit")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .body(editPostRequest)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().put(location)
-                .then().log().all()
-                .extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(editPostRequest)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().put(location)
+            .then().log().all()
+            .extract();
 
         // then
         assertThat(editResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
+    // TODO : 작성자별 조회 500 에러 해결
+    @Test
     public void 포스트_목록을_작성자별로_조회한다() {
-        given("post/mine")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/members/{username}/posts", GithubResponses.소롱.getLogin());
+        // given
+        List<PostRequest> postRequests = Arrays.asList(createPostRequest1(), createPostRequest2());
+        포스트_등록함(postRequests);
+
+        // when
+        ExtractableResponse<Response> response = given("post/mine")
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when().get("/members/{username}/posts", GithubResponses.소롱.getLogin())
+            .then().log().all()
+            .extract();
+
+        // then
     }
 
-    public void 포스트를_삭제한다(String location) {
-        given("post/delete")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().delete(location);
+    @Test
+    public void 포스트를_삭제한다() {
+        // given
+        List<PostRequest> postRequests = Arrays.asList(createPostRequest1());
+        ExtractableResponse<Response> postResponse = 포스트_등록함(postRequests);
+        String location = postResponse.header("Location");
+
+        // when
+        ExtractableResponse<Response> response = given("post/delete")
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when().delete(location)
+            .then().log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
     private PostRequest createPostRequest1() {
