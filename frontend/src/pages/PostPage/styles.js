@@ -7,7 +7,7 @@ const CardInner = styled.div`
   height: 100%;
 
   & > *:not(:last-child) {
-    margin-bottom: 6rem;
+    margin-bottom: 2rem;
   }
 `;
 
@@ -29,11 +29,6 @@ const Title = styled.div`
   margin-bottom: 2rem;
 `;
 
-const Content = styled.div`
-  line-break: anywhere;
-  white-space: break-spaces;
-`;
-
 const Tags = styled.div`
   font-size: 1.4rem;
   color: #848484;
@@ -50,4 +45,4 @@ const ProfileChipStyle = css`
   padding: 0;
 `;
 
-export { CardInner, SubHeader, Mission, Title, Content, Tags, IssuedDate, ProfileChipStyle };
+export { CardInner, SubHeader, Mission, Title, Tags, IssuedDate, ProfileChipStyle };
