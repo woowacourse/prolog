@@ -65,10 +65,10 @@ class PostServiceTest {
     }
 
     private void insertTestMember(Member firstMember, Member secondMember) {
-        String sql = "INSERT INTO member (id, nickname, role, github_id, image_url) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO member (username, nickname, role, github_id, image_url) VALUES (?, ?, ?, ?, ?)";
 
-        jdbcTemplate.update(sql, firstMember.getId(), firstMember.getNickname(), firstMember.getRole().name(), firstMember.getGithubId(), firstMember.getImageUrl());
-        jdbcTemplate.update(sql, secondMember.getId(), firstMember.getNickname(), secondMember.getRole().name(), secondMember.getGithubId(), secondMember.getImageUrl());
+        jdbcTemplate.update(sql, firstMember.getUsername(), firstMember.getNickname(), firstMember.getRole().name(), firstMember.getGithubId(), firstMember.getImageUrl());
+        jdbcTemplate.update(sql, firstMember.getUsername(), firstMember.getNickname(), secondMember.getRole().name(), secondMember.getGithubId(), secondMember.getImageUrl());
     }
 
     @DisplayName("필터 검색")
