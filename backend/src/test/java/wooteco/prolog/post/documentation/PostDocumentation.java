@@ -63,10 +63,11 @@ public class PostDocumentation extends Documentation {
         assertThat(createResponse.header("Location")).isNotNull();
     }
 
-    public void 포스트_단건을_조회한다(String location) {
+    @Test
+    public void 포스트_단건을_조회한다() {
         // given
-        List<PostRequest> postRequests = Arrays.asList(createPostRequest1(), createPostRequest2());
-        포스트_등록함(postRequests);
+        ExtractableResponse<Response> postResponse = 포스트_등록함(Arrays.asList(createPostRequest1()));
+        String location = postResponse.header("Location");
 
         given("post/read")
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
@@ -145,14 +146,22 @@ public class PostDocumentation extends Documentation {
         assertThat(editResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
+    @Test
     public void 포스트_목록을_작성자별로_조회한다() {
+        ExtractableResponse<Response> postResponse = 포스트_등록함(Arrays.asList(createPostRequest1()));
+        String location = postResponse.header("Location");
+
         given("post/mine")
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/members/{username}/posts", GithubResponses.소롱.getLogin());
     }
 
-    public void 포스트를_삭제한다(String location) {
+    @Test
+    public void 포스트를_삭제한다() {
+        ExtractableResponse<Response> postResponse = 포스트_등록함(Arrays.asList(createPostRequest1()));
+        String location = postResponse.header("Location");
+
         given("post/delete")
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
                 .accept(MediaType.APPLICATION_JSON_VALUE)
