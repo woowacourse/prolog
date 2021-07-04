@@ -3,7 +3,7 @@ package wooteco.prolog.post.application.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.login.application.dto.MemberResponse;
+import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.tag.dto.TagResponse;

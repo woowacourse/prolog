@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.application.dto.TokenRequest;
 import wooteco.prolog.login.application.dto.TokenResponse;
-import wooteco.prolog.login.dao.MemberDao;
-import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.member.dao.MemberDao;
+import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.login.excetpion.TokenNotValidException;
 
 @Service

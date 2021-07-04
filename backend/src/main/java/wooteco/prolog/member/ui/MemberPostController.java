@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
-import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.post.application.PostService;
 import wooteco.prolog.post.application.dto.PostResponse;
 
@@ -24,7 +24,7 @@ public class MemberPostController {
 
     @GetMapping(value = "/{username}/posts", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PostResponse>> findAllPostsOfMine(@AuthMemberPrincipal Member member, @PathVariable String username) {
-        if (!username.equals(member.getGithubUserName())) {
+        if (!username.equals(member.getUsername())) {
             throw new RuntimeException();
         }
 

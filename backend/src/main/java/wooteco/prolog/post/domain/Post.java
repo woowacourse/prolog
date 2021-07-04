@@ -2,10 +2,9 @@ package wooteco.prolog.post.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.member.domain.Member;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor

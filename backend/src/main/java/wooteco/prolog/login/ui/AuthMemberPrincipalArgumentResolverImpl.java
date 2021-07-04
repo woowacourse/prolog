@@ -9,9 +9,9 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import wooteco.prolog.login.application.AuthorizationExtractor;
 import wooteco.prolog.login.application.JwtTokenProvider;
-import wooteco.prolog.login.application.MemberService;
+import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
-import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.login.excetpion.TokenNotValidException;
 
 import javax.servlet.http.HttpServletRequest;

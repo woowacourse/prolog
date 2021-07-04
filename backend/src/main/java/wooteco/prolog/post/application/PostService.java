@@ -2,12 +2,14 @@ package wooteco.prolog.post.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.login.application.dto.MemberResponse;
-import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.member.application.dto.MemberResponse;
+import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionResponse;
-import wooteco.prolog.post.application.dto.PostRequest;
+import wooteco.prolog.post.application.dto.PageRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
+import wooteco.prolog.post.application.dto.PostRequest;
+import wooteco.prolog.post.application.dto.PostsResponse;
 import wooteco.prolog.post.dao.PostDao;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.post.exception.AuthorNotValidException;
@@ -35,8 +37,22 @@ public class PostService {
     public List<PostResponse> findAll() {
         List<Post> posts = postDao.findAll();
         return posts.stream()
-                .map(post -> toResponse(post))
+                .map(this::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    public PostsResponse findPostsWithFilter(List<Long> missions, List<Long> tags, PageRequest pageRequest) {
+        missions = nullToEmptyList(missions);
+        tags = nullToEmptyList(tags);
+
+        List<Post> posts = postDao.findWithFilter(missions, tags, pageRequest);
+        List<PostResponse> postResponses = posts.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+
+        int totalCount = postDao.count();
+        int totalPage = pageRequest.calculateTotalPage(totalCount);
+        return new PostsResponse(postResponses, totalCount, totalPage, pageRequest.getPage());
     }
 
     public List<PostResponse> findAllOfMine(Member member) {
@@ -46,14 +62,8 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public List<PostResponse> findPostsWithFilter(List<Long> missions, List<Long> tags) {
-        missions = nullToEmptyList(missions);
-        tags = nullToEmptyList(tags);
-
-        List<Post> posts = postDao.findWithFilter(missions, tags);
-        return posts.stream()
-                .map(post -> toResponse(post))
-                .collect(Collectors.toList());
+    public PostsResponse findPostsWithFilter(List<Long> missions, List<Long> tags) {
+        return findPostsWithFilter(missions, tags, new PageRequest());
     }
 
     private List<Long> nullToEmptyList(List<Long> filters) {
@@ -118,7 +128,7 @@ public class PostService {
                 postRequest.getContent(),
                 postRequest.getMissionId(),
                 tagIds
-            );
+        );
         postDao.update(id, updatedPost);
         tagService.addTagToPost(id, tagIds);
 
@@ -129,15 +139,15 @@ public class PostService {
         List<TagResponse> originTags = tagService.getTagsOfPost(id);
         List<Long> originTagIds = getTagIds(originTags);
         List<Long> removedTagIds = originTagIds.stream()
-            .filter(tagId -> !tagIds.contains(tagId))
-            .collect(Collectors.toList());
+                .filter(tagId -> !tagIds.contains(tagId))
+                .collect(Collectors.toList());
         tagService.removeTagFromPost(id, removedTagIds);
     }
 
     private List<Long> getTagIds(List<TagResponse> originTags) {
         return originTags.stream()
-            .map(TagResponse::getId)
-            .collect(Collectors.toList());
+                .map(TagResponse::getId)
+                .collect(Collectors.toList());
     }
 
     private void validateAuthor(Member member, PostResponse post) {
@@ -145,6 +155,7 @@ public class PostService {
             throw new AuthorNotValidException("작성자만 수정할 수 있습니다.");
         }
     }
+
     public void deletePost(Member member, Long id) {
         PostResponse post = findById(id);
         if (post.getAuthor().getId() != member.getId()) {

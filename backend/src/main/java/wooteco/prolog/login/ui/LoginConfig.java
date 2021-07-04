@@ -5,9 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import wooteco.prolog.login.application.GithubLoginService;
-import wooteco.prolog.login.application.JwtTokenProvider;
-import wooteco.prolog.login.application.MemberService;
 
 import java.util.List;
 

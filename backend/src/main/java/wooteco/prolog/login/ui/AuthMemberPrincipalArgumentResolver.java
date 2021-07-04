@@ -5,7 +5,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import wooteco.prolog.login.domain.Member;
+import wooteco.prolog.member.domain.Member;
 
 public interface AuthMemberPrincipalArgumentResolver extends HandlerMethodArgumentResolver {
     boolean supportsParameter(MethodParameter parameter);

@@ -76,7 +76,7 @@ public class TagService {
     }
 
     public List<TagResponse> findAll() {
-        return tagDao.findAll()
+        return postTagDao.findAll()
                 .stream()
                 .map(TagResponse::of)
                 .collect(Collectors.toList());

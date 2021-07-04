@@ -1,4 +1,4 @@
-package wooteco.prolog.login.excetpion;
+package wooteco.prolog.member.exception;
 
 import wooteco.prolog.aop.exception.BadRequestException;
 
