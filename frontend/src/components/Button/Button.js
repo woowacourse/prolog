@@ -89,9 +89,19 @@ const Image = styled.div`
   border-radius: inherit;
 `;
 
-const Button = ({ children, size, alt, icon, css, backgroundImageUrl, onClick, type }) => {
+const Button = ({
+  children,
+  size,
+  alt,
+  icon,
+  css,
+  backgroundImageUrl,
+  onClick,
+  type,
+  disabled,
+}) => {
   return (
-    <Container size={size} icon={icon} css={css} onClick={onClick} type={type}>
+    <Container size={size} icon={icon} css={css} onClick={onClick} type={type} disabled={disabled}>
       {icon && <Icon src={icon} alt={alt} size={size} hasText={!!children} />}
       {backgroundImageUrl && <Image backgroundImage={backgroundImageUrl} />}
       {children && <span size={size}>{children}</span>}

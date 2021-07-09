@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Button, BUTTON_SIZE, Card, FilterList, ProfileChip } from '../../components';
+import { Button, Card, FilterList, ProfileChip, Pagination } from '../../components';
 import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
 import useFetch from '../../hooks/useFetch';
-import {
-  requestGetPosts,
-  requestGetFilters,
-  requestGetFilteredPosts,
-} from '../../service/requests';
+import { requestGetFilters, requestGetPosts } from '../../service/requests';
 import { useSelector } from 'react-redux';
 import {
   HeaderContainer,
@@ -21,9 +17,6 @@ import {
   Tags,
   ProfileChipLocationStyle,
   CardHoverStyle,
-  PaginationContainer,
-  PageButtonStyle,
-  PageSkipButtonStyle,
 } from './styles';
 
 const MainPage = () => {
@@ -31,14 +24,16 @@ const MainPage = () => {
   const isUserLoggedIn = useSelector((state) => state.user.accessToken.data);
 
   const [posts, setPosts] = useState([]);
+  const [postQueryParams, setPostQueryParams] = useState({
+    page: 1,
+    size: 10,
+    direction: 'desc',
+  });
   const [selectedFilter, setSelectedFilter] = useState('');
   const [selectedFilterDetails, setSelectedFilterDetails] = useState([]);
 
-  const [postList] = useFetch([], requestGetPosts);
+  const [postsInfo, setPostsInfo] = useState([]);
   const [filters] = useFetch([], requestGetFilters);
-  // if (error) {
-  //   return <>글이 없습니다.</>;
-  // }
 
   const goTargetPost = (id) => () => {
     history.push(`${PATH.POST}/${id}`);
@@ -48,27 +43,27 @@ const MainPage = () => {
     setSelectedFilterDetails([]);
   };
 
+  const onSetPage = (page) => {
+    setPostQueryParams({ ...postQueryParams, page });
+  };
+
   useEffect(() => {
     if (selectedFilterDetails === []) return;
 
-    const getFilteredData = async () => {
+    const getData = async () => {
       try {
-        const response = await requestGetFilteredPosts(selectedFilterDetails);
+        const response = await requestGetPosts(selectedFilterDetails, postQueryParams);
+        const data = await response.json();
 
-        const { data } = await response.json();
-        // console.log(data);
+        setPostsInfo(data);
         setPosts(data);
       } catch (error) {
         console.error(error);
       }
     };
 
-    getFilteredData();
-  }, [selectedFilterDetails]);
-
-  useEffect(() => {
-    setPosts(postList.data);
-  }, [postList]);
+    getData();
+  }, [selectedFilterDetails, postQueryParams]);
 
   return (
     <>
@@ -97,7 +92,7 @@ const MainPage = () => {
         )}
       </HeaderContainer>
       <PostListContainer>
-        {posts && posts.data && posts.data.map((post) => {
+        {posts?.data?.map((post) => {
           const { id, author, mission, title, tags } = post;
 
           return (
@@ -120,29 +115,7 @@ const MainPage = () => {
           );
         })}
       </PostListContainer>
-      <PaginationContainer>
-        <Button size={BUTTON_SIZE.XX_SMALL} css={PageSkipButtonStyle}>
-          {'<'}
-        </Button>
-        <Button size={BUTTON_SIZE.XX_SMALL} css={PageButtonStyle}>
-          1
-        </Button>
-        <Button size={BUTTON_SIZE.XX_SMALL} css={PageButtonStyle}>
-          2
-        </Button>
-        <Button size={BUTTON_SIZE.XX_SMALL} css={PageButtonStyle}>
-          3
-        </Button>
-        <Button size={BUTTON_SIZE.XX_SMALL} css={PageButtonStyle}>
-          4
-        </Button>
-        <Button size={BUTTON_SIZE.XX_SMALL} css={PageButtonStyle}>
-          5
-        </Button>
-        <Button size={BUTTON_SIZE.XX_SMALL} css={PageSkipButtonStyle}>
-          {'>'}
-        </Button>
-      </PaginationContainer>
+      <Pagination postsInfo={postsInfo} onSetPage={onSetPage}></Pagination>
     </>
   );
 };

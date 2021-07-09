@@ -6,5 +6,7 @@ export { default as NewPostCard } from './Card/NewPostCard';
 export { default as EditPostCard } from './Card/EditPostCard';
 export { default as SelectBox } from './SelectBox/SelectBox';
 export { default as Button, BUTTON_SIZE } from './Button/Button';
+export { default as PageButton } from './Button/PageButton';
 export { default as FilterList } from './FilterList/FilterList';
 export { default as CreatableSelectBox } from './CreatableSelectBox/CreatableSelectBox';
+export { default as Pagination } from './Pagination/Pagination';
