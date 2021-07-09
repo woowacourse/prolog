@@ -102,7 +102,7 @@ public class PostDao {
     }
 
     public int count(List<Long> missions, List<Long> tags) {
-        String query = "SELECT COUNT(*) " +
+        String query = "SELECT COUNT(DISTINCT po.id) " +
                 "FROM post AS po " +
                 "LEFT JOIN member AS me ON po.member_id = me.id " +
                 "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
