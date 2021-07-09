@@ -22,27 +22,6 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PostDocumentation extends Documentation {
-//    @DisplayName("Post 관련 기능 테스트")
-//    @Test
-//    void post() {
-//        List<PostRequest> params = Arrays.asList(createPostRequest());
-//
-//        ExtractableResponse<Response> createResponse = 포스트를_생성한다(params);
-//
-//        포스트_목록을_조회한다();
-//
-//        포스트_목록을_필터링한다();
-//
-//        String location = createResponse.header("Location");
-//
-//        포스트_단건을_조회한다(location);
-//
-//        포스트_목록을_작성자별로_조회한다();
-//
-//        포스트를_수정한다(location, editPostRequest());
-//
-//        포스트를_삭제한다(location);
-//    }
 
     @Test
     public void 포스트를_생성한다() {
@@ -58,15 +37,16 @@ public class PostDocumentation extends Documentation {
                 .when().post("/posts")
                 .then().log().all().extract();
 
-        // given
+        // then
         assertThat(createResponse.statusCode()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(createResponse.header("Location")).isNotNull();
     }
 
-    public void 포스트_단건을_조회한다(String location) {
+    @Test
+    public void 포스트_단건을_조회한다() {
         // given
-        List<PostRequest> postRequests = Arrays.asList(createPostRequest1(), createPostRequest2());
-        포스트_등록함(postRequests);
+        ExtractableResponse<Response> postResponse = 포스트_등록함(Arrays.asList(createPostRequest1()));
+        String location = postResponse.header("Location");
 
         given("post/read")
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
@@ -102,8 +82,7 @@ public class PostDocumentation extends Documentation {
     @Test
     public void 포스트_목록을_필터링한다() {
         // given
-        List<PostRequest> postRequests = Arrays.asList(createPostRequest1(), createPostRequest2());
-        포스트_등록함(postRequests);
+        포스트_등록함(Arrays.asList(createPostRequest1(), createPostRequest2()));
 
         // when
         ExtractableResponse<Response> response = given("post/filter")
@@ -145,14 +124,21 @@ public class PostDocumentation extends Documentation {
         assertThat(editResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
+    @Test
     public void 포스트_목록을_작성자별로_조회한다() {
+        포스트_등록함(Arrays.asList(createPostRequest1()));
+
         given("post/mine")
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/members/{username}/posts", GithubResponses.소롱.getLogin());
     }
 
-    public void 포스트를_삭제한다(String location) {
+    @Test
+    public void 포스트를_삭제한다() {
+        ExtractableResponse<Response> postResponse = 포스트_등록함(Arrays.asList(createPostRequest1()));
+        String location = postResponse.header("Location");
+
         given("post/delete")
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
                 .accept(MediaType.APPLICATION_JSON_VALUE)
