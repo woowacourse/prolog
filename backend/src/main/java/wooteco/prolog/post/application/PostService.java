@@ -50,7 +50,7 @@ public class PostService {
                 .map(this::toResponse)
                 .collect(Collectors.toList());
 
-        int totalCount = postDao.count();
+        int totalCount = postDao.count(missions, tags);
         int totalPage = pageRequest.calculateTotalPage(totalCount);
         return new PostsResponse(postResponses, totalCount, totalPage, pageRequest.getPage());
     }
@@ -58,7 +58,7 @@ public class PostService {
     public List<PostResponse> findAllOfMine(Member member) {
         List<Post> posts = postDao.findAllByMemberId(member.getId());
         return posts.stream()
-                .map(post -> toResponse(post))
+                .map(this::toResponse)
                 .collect(Collectors.toList());
     }
 
@@ -158,7 +158,7 @@ public class PostService {
 
     public void deletePost(Member member, Long id) {
         PostResponse post = findById(id);
-        if (post.getAuthor().getId() != member.getId()) {
+        if (!post.getAuthor().getId().equals(member.getId())) {
             throw new RuntimeException();
         }
 

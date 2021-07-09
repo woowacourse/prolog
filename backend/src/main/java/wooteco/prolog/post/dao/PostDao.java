@@ -101,10 +101,19 @@ public class PostDao {
         return new Tag(tagId, tagName);
     }
 
-    public int count() {
-        String sql = "SELECT COUNT(*) FROM post";
+    public int count(List<Long> missions, List<Long> tags) {
+        String query = "SELECT COUNT(*) " +
+                "FROM post AS po " +
+                "LEFT JOIN member AS me ON po.member_id = me.id " +
+                "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
+                "LEFT JOIN tag ON pt.tag_id = tag.id " +
+                "WHERE 1=1";
+        query += createDynamicColumnQuery("mission_id", missions);
+        query += createDynamicColumnQuery("tag_id", tags);
 
-        return jdbcTemplate.queryForObject(sql, Integer.class);
+        Object[] dynamicElements = Stream.concat(missions.stream(), tags.stream()).toArray();
+
+        return jdbcTemplate.queryForObject(query, Integer.class, dynamicElements);
     }
 
     public List<Post> findAll() {
