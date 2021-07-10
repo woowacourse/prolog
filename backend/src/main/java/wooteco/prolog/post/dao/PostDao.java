@@ -138,7 +138,7 @@ public class PostDao {
     public List<Post> findWithFilter(List<Long> missions, List<Long> tags, PageRequest pageRequest) {
         String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, username, role, github_id, image_url, tag.id as tag_id " +
                 "FROM (SELECT * FROM post" +
-                createPagingQuery(pageRequest.getSize(), pageRequest.getPage()) +
+                createPagingQuery(pageRequest.getSize(), pageRequest.getPage(), missions) +
                 ") AS po " +
                 "LEFT JOIN member AS me ON po.member_id = me.id " +
                 "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
@@ -148,7 +148,8 @@ public class PostDao {
         query += createDynamicColumnQuery("tag_id", tags);
 
         query += createSortQuery(pageRequest.getDirection());
-        Object[] dynamicElements = Stream.concat(missions.stream(), tags.stream()).toArray();
+        Stream<Long> missionsElements = Stream.concat(missions.stream(), missions.stream());
+        Object[] dynamicElements = Stream.concat(missionsElements, tags.stream()).toArray();
 
         return jdbcTemplate.query(query, postsResultSetExtractor, dynamicElements);
     }
@@ -223,10 +224,12 @@ public class PostDao {
         return orderByQuery;
     }
 
-    private String createPagingQuery(int size, int page) {
+    private String createPagingQuery(int size, int page, List<Long> missions) {
         if (page > 0) {
             page -= 1;
         }
-        return " LIMIT " + page * size + " , " + size;
+        String query = " WHERE 1=1";
+        query += createDynamicColumnQuery("mission_id", missions);
+        return query += " LIMIT " + page * size + " , " + size;
     }
 }
