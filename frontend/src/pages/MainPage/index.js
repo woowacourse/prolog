@@ -37,12 +37,18 @@ const MainPage = () => {
   //   return <>글이 없습니다.</>;
   // }
 
-  const goTargetPost = (id) => () => {
+  const goTargetPost = (id) => {
     history.push(`${PATH.POST}/${id}`);
   };
 
   const resetFilter = () => {
     setSelectedFilterDetails([]);
+  };
+
+  const goProfilePage = (username) => (event) => {
+    event.stopPropagation();
+
+    history.push(`/${username}`);
   };
 
   useEffect(() => {
@@ -92,28 +98,34 @@ const MainPage = () => {
         )}
       </HeaderContainer>
       <PostListContainer>
-        {posts && posts.data && posts.data.map((post) => {
-          const { id, author, mission, title, tags } = post;
+        {posts &&
+          posts.data &&
+          posts.data.map((post) => {
+            const { id, author, mission, title, tags } = post;
 
-          return (
-            <Card key={id} size="SMALL" css={CardHoverStyle} onClick={goTargetPost(id)}>
-              <Content>
-                <Description>
-                  <Mission>{mission.name}</Mission>
-                  <Title>{title}</Title>
-                  <Tags>
-                    {tags.map(({ id, name }) => (
-                      <span key={id}>{`#${name} `}</span>
-                    ))}
-                  </Tags>
-                </Description>
-                <ProfileChip imageSrc={author.imageUrl} css={ProfileChipLocationStyle}>
-                  {author.nickname}
-                </ProfileChip>
-              </Content>
-            </Card>
-          );
-        })}
+            return (
+              <Card key={id} size="SMALL" css={CardHoverStyle} onClick={() => goTargetPost(id)}>
+                <Content>
+                  <Description>
+                    <Mission>{mission.name}</Mission>
+                    <Title>{title}</Title>
+                    <Tags>
+                      {tags.map(({ id, name }) => (
+                        <span key={id}>{`#${name} `}</span>
+                      ))}
+                    </Tags>
+                  </Description>
+                  <ProfileChip
+                    imageSrc={author.imageUrl}
+                    css={ProfileChipLocationStyle}
+                    onClick={goProfilePage(author.username)}
+                  >
+                    {author.nickname}
+                  </ProfileChip>
+                </Content>
+              </Card>
+            );
+          })}
       </PostListContainer>
     </>
   );
