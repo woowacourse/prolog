@@ -36,7 +36,7 @@ const DeleteButtonStyle = css`
   }
 `;
 
-const MyPagePosts = () => {
+const ProfilePagePosts = () => {
   const history = useHistory();
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const username = useSelector((state) => state.user.profile.data?.username);
@@ -144,4 +144,4 @@ const MyPagePosts = () => {
   );
 };
 
-export default MyPagePosts;
+export default ProfilePagePosts;
