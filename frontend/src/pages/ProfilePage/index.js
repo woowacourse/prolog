@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import postIcon from '../../assets/images/post.png';
@@ -20,13 +19,16 @@ import {
   Preparing,
 } from './styles';
 import { PROFILE_PAGE_MENU } from '../../constants';
+import { requestGetProfile } from '../../service/requests';
+import useFetch from '../../hooks/useFetch';
 
 const ProfilePage = ({ children, menu }) => {
   const history = useHistory();
   const { username } = useParams();
-  const me = useSelector((state) => state.user.profile.data);
 
   const [selectedMenu, setSelectedMenu] = useState('');
+
+  const [user] = useFetch({}, () => requestGetProfile(username));
 
   const goProfilePage = (event) => {
     setSelectedMenu(event.currentTarget.value);
@@ -49,9 +51,9 @@ const ProfilePage = ({ children, menu }) => {
   return (
     <Container>
       <Profile>
-        <Image src={me?.imageUrl} alt="프로필 이미지" />
-        <Role>{me?.role}</Role>
-        <Nickname>{me?.nickname}</Nickname>
+        <Image src={user?.imageUrl} alt="프로필 이미지" />
+        <Role>{user?.role}</Role>
+        <Nickname>{user?.nickname}</Nickname>
       </Profile>
       <RightSection>
         <MenuList>
