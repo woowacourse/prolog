@@ -126,6 +126,16 @@ public class PostDao {
         return jdbcTemplate.query(query, postsResultSetExtractor);
     }
 
+    public List<Post> findAllByUsername(String username) {
+        String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, username, role, github_id, image_url, tag.id as tag_id " +
+                "FROM post AS po " +
+                "LEFT JOIN member AS me ON po.member_id = me.id " +
+                "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
+                "LEFT JOIN tag ON pt.tag_id = tag.id " +
+                "WHERE me.username = ?";
+        return jdbcTemplate.query(query, postsResultSetExtractor, username);
+    }
+
     public List<Post> findWithFilter(List<Long> missions, List<Long> tags, PageRequest pageRequest) {
         String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, username, role, github_id, image_url, tag.id as tag_id " +
                 "FROM (SELECT * FROM post" +
