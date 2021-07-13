@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import wooteco.prolog.login.GithubResponses;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
@@ -21,6 +22,17 @@ public class AuthMemberPrincipalTestArgumentResolver implements AuthMemberPrinci
 
     @Override
     public Member resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+        String header = webRequest.getHeader("Authorization");
+        if (header.contains("Bearer")) {
+            return new Member(
+                1L,
+                GithubResponses.소롱.getLogin(),
+                GithubResponses.소롱.getName(),
+                Role.CREW,
+                Long.parseLong(GithubResponses.소롱.getId()),
+                GithubResponses.소롱.getAvatarUrl()
+            );
+        }
         return new Member(1L, "githubUserName", "nickname", Role.CREW, 1L, "https://avatars.githubusercontent.com/u/52682603?v=4");
     }
 }
