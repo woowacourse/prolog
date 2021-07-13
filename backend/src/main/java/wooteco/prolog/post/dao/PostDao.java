@@ -129,7 +129,6 @@ public class PostDao {
     public List<Post> findWithFilter(List<Long> missions, List<Long> tags, PageRequest pageRequest) {
         String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, username, role, github_id, image_url, tag.id as tag_id " +
                 "FROM (SELECT * FROM post" +
-                createPagingQuery(pageRequest.getSize(), pageRequest.getPage()) +
                 ") AS po " +
                 "LEFT JOIN member AS me ON po.member_id = me.id " +
                 "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
@@ -137,8 +136,9 @@ public class PostDao {
                 "WHERE 1=1";
         query += createDynamicColumnQuery("mission_id", missions);
         query += createDynamicColumnQuery("tag_id", tags);
-
         query += createSortQuery(pageRequest.getDirection());
+        query += createPagingQuery(pageRequest.getSize(), pageRequest.getPage());
+
         Object[] dynamicElements = Stream.concat(missions.stream(), tags.stream()).toArray();
 
         return jdbcTemplate.query(query, postsResultSetExtractor, dynamicElements);
