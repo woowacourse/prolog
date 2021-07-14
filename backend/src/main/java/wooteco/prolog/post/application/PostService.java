@@ -62,6 +62,13 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
+    public List<PostResponse> findPostsOf(String username) {
+        List<Post> posts = postDao.findAllByUsername(username);
+        return posts.stream()
+                .map(post -> toResponse(post))
+                .collect(Collectors.toList());
+    }
+
     public PostsResponse findPostsWithFilter(List<Long> missions, List<Long> tags) {
         return findPostsWithFilter(missions, tags, new PageRequest());
     }
