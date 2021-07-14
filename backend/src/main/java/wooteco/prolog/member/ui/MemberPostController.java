@@ -23,12 +23,8 @@ public class MemberPostController {
     }
 
     @GetMapping(value = "/{username}/posts", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PostResponse>> findAllPostsOfMine(@AuthMemberPrincipal Member member, @PathVariable String username) {
-        if (!username.equals(member.getUsername())) {
-            throw new RuntimeException();
-        }
-
-        List<PostResponse> posts = postService.findAllOfMine(member);
+    public ResponseEntity<List<PostResponse>> findAllPostsOfMine(@PathVariable String username) {
+        List<PostResponse> posts = postService.findPostsOf(username);
         return ResponseEntity.ok().body(posts);
     }
 }

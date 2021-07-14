@@ -53,6 +53,60 @@ public class PostStepDefinitions extends AcceptanceSteps {
         context.invokeHttpPostWithToken("/posts", postRequests);
     }
 
+    @Given("{int}번 미션의 포스트를 {long}개 작성하고")
+    public void 특정미션포스트를다수작성하면(int missionNumber, Long totalSize) {
+        List<PostRequest> postRequests = new ArrayList<>();
+        PostRequest postRequest;
+
+        switch (missionNumber){
+            case 1: postRequest = PostAcceptanceFixture.firstPost;
+                    break;
+            case 2: postRequest = PostAcceptanceFixture.secondPost;
+                    break;
+            default:
+                throw new RuntimeException("해당 미션의 포스트는 없습니다.");
+        }
+
+        for (int i = 0; i < totalSize; i++) {
+            postRequests.add(postRequest);
+        }
+
+        context.invokeHttpPostWithToken("/posts", postRequests);
+    }
+
+    @Given("{int}번 태그의 포스트를 {long}개 작성하고")
+    public void 특정태그포스트를다수작성하면(int tagNumber, Long totalSize) {
+        List<PostRequest> postRequests = new ArrayList<>();
+        PostRequest postRequest;
+
+        switch (tagNumber){
+            case 1: case 2: postRequest = PostAcceptanceFixture.firstPost;
+                break;
+            case 3: case 4: postRequest = PostAcceptanceFixture.secondPost;
+                break;
+            default:
+                throw new RuntimeException("해당 태그의 포스트는 없습니다.");
+        }
+
+        for (int i = 0; i < totalSize; i++) {
+            postRequests.add(postRequest);
+        }
+
+        context.invokeHttpPostWithToken("/posts", postRequests);
+    }
+
+    @When("{int}번 미션의 포스트를 조회하면")
+    public void 특정미션의포스트를조회하면(int missionNumber) {
+        String path = String.format("/posts?missions=%d", missionNumber);
+        context.invokeHttpGet(path);
+    }
+
+    @When("{int}번 태그의 포스트를 조회하면")
+    public void 특정태그의포스트를조회하면(int tagNumber) {
+        String path = String.format("/posts?tags=%d", tagNumber);
+        context.invokeHttpGet(path);
+    }
+
     @When("{long}개, {long}쪽의 페이지를 조회하면")
     public void 포스트페이지를조회하면(Long pageSize, Long pageNumber) {
         String path = String.format("/posts?page=%d&size=%d", pageNumber, pageSize);

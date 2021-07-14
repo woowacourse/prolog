@@ -101,10 +101,19 @@ public class PostDao {
         return new Tag(tagId, tagName);
     }
 
-    public int count() {
-        String sql = "SELECT COUNT(*) FROM post";
+    public int count(List<Long> missions, List<Long> tags) {
+        String query = "SELECT COUNT(DISTINCT po.id) " +
+                "FROM post AS po " +
+                "LEFT JOIN member AS me ON po.member_id = me.id " +
+                "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
+                "LEFT JOIN tag ON pt.tag_id = tag.id " +
+                "WHERE 1=1";
+        query += createDynamicColumnQuery("mission_id", missions);
+        query += createDynamicColumnQuery("tag_id", tags);
 
-        return jdbcTemplate.queryForObject(sql, Integer.class);
+        Object[] dynamicElements = Stream.concat(missions.stream(), tags.stream()).toArray();
+
+        return jdbcTemplate.queryForObject(query, Integer.class, dynamicElements);
     }
 
     public List<Post> findAll() {
@@ -124,6 +133,16 @@ public class PostDao {
                 "LEFT JOIN tag ON pt.tag_id = tag.id " +
                 "WHERE po.member_id = " + memberId;
         return jdbcTemplate.query(query, postsResultSetExtractor);
+    }
+
+    public List<Post> findAllByUsername(String username) {
+        String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, username, role, github_id, image_url, tag.id as tag_id " +
+                "FROM post AS po " +
+                "LEFT JOIN member AS me ON po.member_id = me.id " +
+                "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
+                "LEFT JOIN tag ON pt.tag_id = tag.id " +
+                "WHERE me.username = ?";
+        return jdbcTemplate.query(query, postsResultSetExtractor, username);
     }
 
     public List<Post> findWithFilter(List<Long> missions, List<Long> tags, PageRequest pageRequest) {
