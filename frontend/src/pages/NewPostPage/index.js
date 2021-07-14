@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createPost } from '../../redux/actions/postAction';
 import useFetch from '../../hooks/useFetch';
 import { requestGetMissions, requestGetTags } from '../../service/requests';
-import { SelectBoxWrapper, Flex, Post, LogButtonStyle, SubmitButtonStyle } from './styles';
+import { SelectBoxWrapper, Post, SubmitButtonStyle } from './styles';
+import { ERROR_MESSAGE } from '../../constants/message';
 
 const NewPostPage = () => {
   const dispatch = useDispatch();
@@ -25,10 +26,16 @@ const NewPostPage = () => {
 
   const tagOptions = tags.map(({ name }) => ({ value: name, label: `#${name}` }));
 
+  useEffect(() => {
+    if (error) {
+      alert(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
+    }
+  }, [error]);
+
   const onFinishWriting = async (e) => {
     e.preventDefault();
 
-    const prologData = cardRefs.current.map(({ title, content, tags }) => {
+    const [prologData] = cardRefs.current.map(({ title, content, tags }) => {
       return {
         missionId: missions.find((mission) => mission.name === selectedMission).id,
         title: title.value,
@@ -37,16 +44,21 @@ const NewPostPage = () => {
       };
     });
 
-    await dispatch(createPost(prologData, accessToken));
-
-    // TODO : fetch hook 통해서 에러처리 선언적으로 해주기
-    if (error) {
-      alert(error.message);
-
+    if (!prologData.title) {
+      alert(ERROR_MESSAGE[2002]);
       return;
     }
 
-    history.push('/');
+    if (!prologData.content) {
+      alert(ERROR_MESSAGE[2001]);
+      return;
+    }
+
+    const isSuccess = await dispatch(createPost([prologData], accessToken));
+
+    if (isSuccess) {
+      history.push('/');
+    }
   };
 
   useEffect(() => {

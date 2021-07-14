@@ -21,7 +21,9 @@ export const createPost = (posts, accessToken) => async (dispatch) => {
 
     dispatch({ type: CREATE_POST_SUCCESS });
   } catch (error) {
-    console.error(error);
-    dispatch({ type: CREATE_POST_FAILURE, payload: error });
+    const errorResponse = JSON.parse(error.message);
+
+    console.error(errorResponse);
+    dispatch({ type: CREATE_POST_FAILURE, payload: errorResponse });
   }
 };
