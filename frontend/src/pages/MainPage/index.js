@@ -34,9 +34,6 @@ const MainPage = () => {
 
   const [postList] = useFetch([], requestGetPosts);
   const [filters] = useFetch([], requestGetFilters);
-  // if (error) {
-  //   return <>글이 없습니다.</>;
-  // }
 
   const goTargetPost = (id) => () => {
     history.push(`${PATH.POST}/${id}`);
@@ -93,6 +90,7 @@ const MainPage = () => {
         )}
       </HeaderContainer>
       <PostListContainer>
+        {posts?.data?.length === 0 && '작성된 글이 없습니다.'}
         {posts &&
           posts.data &&
           posts.data.map((post) => {
