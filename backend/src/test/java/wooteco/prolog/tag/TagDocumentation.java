@@ -33,6 +33,7 @@ public class TagDocumentation extends Documentation {
         List<PostRequest> params = Arrays.asList(postRequest);
 
         RestAssured.given()
+                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
                 .body(params)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
