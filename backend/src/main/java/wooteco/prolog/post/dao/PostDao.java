@@ -159,7 +159,7 @@ public class PostDao {
                 "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
                 "LEFT JOIN tag ON pt.tag_id = tag.id " ;
 
-        Object[] dynamicElements = Stream.concat(missions.stream(), tags.stream()).toArray();
+        Object[] dynamicElements = Stream.concat(tags.stream(), missions.stream()).toArray();
 
         return jdbcTemplate.query(query, postsResultSetExtractor, dynamicElements);
     }
