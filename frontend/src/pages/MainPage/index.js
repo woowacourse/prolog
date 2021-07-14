@@ -49,6 +49,11 @@ const MainPage = () => {
     setPostQueryParams({ ...postQueryParams, page });
   };
 
+  const onFilterChange = (value) => {
+    setPostQueryParams({ ...postQueryParams, page: 1 });
+    setSelectedFilterDetails(value);
+  };
+
   useEffect(() => {
     if (selectedFilterDetails === []) return;
 
@@ -76,7 +81,7 @@ const MainPage = () => {
             selectedFilter={selectedFilter}
             setSelectedFilter={setSelectedFilter}
             selectedFilterDetails={selectedFilterDetails}
-            setSelectedFilterDetails={setSelectedFilterDetails}
+            setSelectedFilterDetails={onFilterChange}
             isVisibleResetFilter={!!selectedFilterDetails.length}
             onResetFilter={resetFilter}
           />
