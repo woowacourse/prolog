@@ -72,19 +72,9 @@ const NewPostPage = () => {
         ))}
       </ul>
 
-      {/* <Flex> */}
-      {/* <Button
-          type="button"
-          size={BUTTON_SIZE.LARGE}
-          css={LogButtonStyle}
-          onClick={() => setPostIds([...postIds, nanoid()])}
-        >
-          로그추가
-        </Button> */}
       <Button size={BUTTON_SIZE.SMALL} css={SubmitButtonStyle}>
         작성완료
       </Button>
-      {/* </Flex> */}
     </form>
   );
 };
