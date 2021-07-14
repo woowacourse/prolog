@@ -34,7 +34,7 @@ const NewPostCard = forwardRef(({ postOrder, tagOptions }, ref) => {
           ref={(element) => assignRefValue('content', element)}
           hooks={{
             addImageBlobHook: async (blob, callback) => {
-              alert("이미지는 사용할 수 없습니다.")
+              alert("이미지 업로드를 할 수 없습니다.")
               return false;
             },
           }}
