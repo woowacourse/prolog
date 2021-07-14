@@ -19,16 +19,18 @@ import {
   CardHoverStyle,
 } from './styles';
 
+const initialPostQueryParams = {
+  page: 1,
+  size: 10,
+  direction: 'desc',
+};
+
 const MainPage = () => {
   const history = useHistory();
   const isUserLoggedIn = useSelector((state) => state.user.accessToken.data);
 
   const [posts, setPosts] = useState([]);
-  const [postQueryParams, setPostQueryParams] = useState({
-    page: 1,
-    size: 10,
-    direction: 'desc',
-  });
+  const [postQueryParams, setPostQueryParams] = useState(initialPostQueryParams);
   const [selectedFilter, setSelectedFilter] = useState('');
   const [selectedFilterDetails, setSelectedFilterDetails] = useState([]);
 
