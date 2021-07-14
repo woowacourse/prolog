@@ -7,7 +7,7 @@ import { createPost } from '../../redux/actions/postAction';
 import useFetch from '../../hooks/useFetch';
 import { requestGetMissions, requestGetTags } from '../../service/requests';
 import { SelectBoxWrapper, Post, SubmitButtonStyle } from './styles';
-import { ERROR_MESSAGE } from '../../constants/message';
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
 
 const NewPostPage = () => {
   const dispatch = useDispatch();
@@ -57,6 +57,7 @@ const NewPostPage = () => {
     const isSuccess = await dispatch(createPost([prologData], accessToken));
 
     if (isSuccess) {
+      alert(SUCCESS_MESSAGE.CREATE_POST);
       history.push('/');
     }
   };

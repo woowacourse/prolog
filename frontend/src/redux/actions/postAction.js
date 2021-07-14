@@ -20,6 +20,7 @@ export const createPost = (posts, accessToken) => async (dispatch) => {
     if (!response.ok) throw new Error(await response.text());
 
     dispatch({ type: CREATE_POST_SUCCESS });
+    return true;
   } catch (error) {
     const errorResponse = JSON.parse(error.message);
 
