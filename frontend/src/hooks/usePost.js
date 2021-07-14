@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ERROR_MESSAGE } from '../constants/message';
 import {
   requestEditPost,
   requestGetPost,
@@ -15,15 +16,16 @@ const usePost = (defaultValue) => {
       const response = await requestGetPosts();
 
       if (!response.ok) {
-        throw new Error(response.status);
+        throw new Error(await response.text());
       }
-
       const json = await response.json();
 
       setResponse(json);
     } catch (error) {
-      console.error(error);
-      setError(error);
+      const errorResponse = JSON.parse(error.message);
+
+      console.error(errorResponse);
+      setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
     }
   };
 
@@ -32,15 +34,16 @@ const usePost = (defaultValue) => {
       const response = await requestGetPost(postId);
 
       if (!response.ok) {
-        throw new Error(response.status);
+        throw new Error(await response.text());
       }
-
       const json = await response.json();
 
       setResponse(json);
     } catch (error) {
-      console.error(error);
-      setError(error);
+      const errorResponse = JSON.parse(error.message);
+
+      console.error(errorResponse);
+      setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
     }
   };
 
@@ -49,13 +52,15 @@ const usePost = (defaultValue) => {
       const response = await requestEditPost(postId, data, accessToken);
 
       if (!response.ok) {
-        setError(response.status);
+        throw new Error(await response.text());
       }
 
       setResponse(response);
     } catch (error) {
-      console.error(error);
-      setError(error);
+      const errorResponse = JSON.parse(error.message);
+
+      console.error(errorResponse);
+      setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
     }
   };
 
@@ -64,13 +69,15 @@ const usePost = (defaultValue) => {
       const response = await requestDeletePost(postId, accessToken);
 
       if (!response.ok) {
-        setError(response.status);
+        throw new Error(await response.text());
       }
 
       setResponse(response);
     } catch (error) {
-      console.error(error);
-      setError(error);
+      const errorResponse = JSON.parse(error.message);
+
+      console.error(errorResponse);
+      setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
     }
   };
 
