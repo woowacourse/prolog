@@ -25,7 +25,8 @@ import {
 
 const MainPage = () => {
   const history = useHistory();
-  const isUserLoggedIn = useSelector((state) => state.user.accessToken.data);
+  const user = useSelector((state) => state.user.profile);
+  const isLoggedIn = !!user.data;
 
   const [posts, setPosts] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState('');
@@ -79,7 +80,7 @@ const MainPage = () => {
             onResetFilter={resetFilter}
           />
         </FilterListWrapper>
-        {isUserLoggedIn && (
+        {isLoggedIn && (
           <Button
             type="button"
             size="SMALL"
@@ -92,28 +93,30 @@ const MainPage = () => {
         )}
       </HeaderContainer>
       <PostListContainer>
-        {posts && posts.data && posts.data.map((post) => {
-          const { id, author, mission, title, tags } = post;
+        {posts &&
+          posts.data &&
+          posts.data.map((post) => {
+            const { id, author, mission, title, tags } = post;
 
-          return (
-            <Card key={id} size="SMALL" css={CardHoverStyle} onClick={goTargetPost(id)}>
-              <Content>
-                <Description>
-                  <Mission>{mission.name}</Mission>
-                  <Title>{title}</Title>
-                  <Tags>
-                    {tags.map(({ id, name }) => (
-                      <span key={id}>{`#${name} `}</span>
-                    ))}
-                  </Tags>
-                </Description>
-                <ProfileChip imageSrc={author.imageUrl} css={ProfileChipLocationStyle}>
-                  {author.nickname}
-                </ProfileChip>
-              </Content>
-            </Card>
-          );
-        })}
+            return (
+              <Card key={id} size="SMALL" css={CardHoverStyle} onClick={goTargetPost(id)}>
+                <Content>
+                  <Description>
+                    <Mission>{mission.name}</Mission>
+                    <Title>{title}</Title>
+                    <Tags>
+                      {tags.map(({ id, name }) => (
+                        <span key={id}>{`#${name} `}</span>
+                      ))}
+                    </Tags>
+                  </Description>
+                  <ProfileChip imageSrc={author.imageUrl} css={ProfileChipLocationStyle}>
+                    {author.nickname}
+                  </ProfileChip>
+                </Content>
+              </Card>
+            );
+          })}
       </PostListContainer>
     </>
   );
