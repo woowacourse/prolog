@@ -20,6 +20,7 @@ import {
   DropdownStyle,
   whiteBackgroundStyle,
 } from './NavBar.styles';
+import { ERROR_MESSAGE } from '../../constants/message';
 
 const pencilButtonStyle = css`
   width: 4.8rem;
@@ -54,6 +55,12 @@ const NavBar = () => {
   useEffect(() => {
     if (user.data?.imageUrl) {
       setUserImage(user.data?.imageUrl);
+    }
+
+    if (user.error) {
+      if (user.error) {
+        alert(ERROR_MESSAGE[user.error.code] ?? ERROR_MESSAGE.LOGIN_DEFAULT);
+      }
     }
   }, [user]);
 
