@@ -24,9 +24,8 @@ public class MemberController {
     }
 
     @GetMapping(value = "/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MemberResponse> findMemberInfo(@PathVariable String username) {
-        MemberResponse member = memberService.findMemberByUsername(username);
-        return ResponseEntity.ok().body(member);
+    public ResponseEntity<MemberResponse> findMemberInfo(@AuthMemberPrincipal Member member) {
+        return ResponseEntity.ok().body(MemberResponse.of(member));
     }
 
     @PutMapping("/{username}")

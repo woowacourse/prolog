@@ -1,0 +1,22 @@
+[[profile]]
+== 프로필
+
+=== 프로필 조회
+
+==== Request
+
+include::{snippets}/profile/profile/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/profile/profile/http-response.adoc[]
+
+=== 프로필 포스트 조회
+
+==== Request
+
+include::{snippets}/profile/post/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/profile/post/http-response.adoc[]

@@ -125,16 +125,6 @@ public class PostDocumentation extends Documentation {
     }
 
     @Test
-    public void 포스트_목록을_작성자별로_조회한다() {
-        포스트_등록함(Arrays.asList(createPostRequest1()));
-
-        given("post/mine")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/members/{username}/posts", GithubResponses.소롱.getLogin());
-    }
-
-    @Test
     public void 포스트를_삭제한다() {
         ExtractableResponse<Response> postResponse = 포스트_등록함(Arrays.asList(createPostRequest1()));
         String location = postResponse.header("Location");

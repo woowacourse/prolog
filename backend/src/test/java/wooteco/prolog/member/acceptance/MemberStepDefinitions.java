@@ -41,7 +41,7 @@ public class MemberStepDefinitions extends AcceptanceSteps {
 
     @Then("유저네임이 {string}(로)(으로) 수정")
     public void 유저네임이으로수정(String username) {
-        context.invokeHttpGet("/members/" + username);
+        context.invokeHttpGetWithToken("/members/" + username);
         MemberResponse member = context.response.as(MemberResponse.class);
 
         assertThat(member.getUsername()).isEqualTo(username);
