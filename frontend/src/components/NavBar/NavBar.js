@@ -124,7 +124,7 @@ const NavBar = () => {
                           history.push(`/${user?.data.username}`);
                         }}
                       >
-                        <button type="button">마이페이지</button>
+                        <button type="button">내 프로필</button>
                       </Link>
                     </li>
                     <li>

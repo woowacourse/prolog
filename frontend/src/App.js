@@ -1,8 +1,7 @@
-import { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { NavBar } from './components';
 import styled from '@emotion/styled';
-import { MYPAGE_MENU, PATH } from './constants';
+import { PROFILE_PAGE_MENU, PATH } from './constants';
 import GlobalStyles from './GlobalStyles';
 import {
   MainPage,
@@ -10,9 +9,9 @@ import {
   PostPage,
   LoginCallbackPage,
   EditPostPage,
-  MyPage,
-  MyPagePosts,
-  MyPageAccount,
+  ProfilePage,
+  ProfilePagePosts,
+  ProfilePageAccount,
 } from './pages';
 
 const Content = styled.div`
@@ -40,25 +39,25 @@ const App = () => {
             <Route exact path={`${PATH.POST}/:id/edit`} component={EditPostPage} />
             <Route
               exact
-              path={`${PATH.MYPAGE}`}
-              render={() => <MyPage menu={MYPAGE_MENU.OVERVIEW} />}
+              path={`${PATH.PROFILE}`}
+              render={() => <ProfilePage menu={PROFILE_PAGE_MENU.OVERVIEW} />}
             />
             <Route
               exact
-              path={`${PATH.MYPAGE_POSTS}`}
+              path={`${PATH.PROFILE_POSTS}`}
               render={() => (
-                <MyPage menu={MYPAGE_MENU.POSTS}>
-                  <MyPagePosts />
-                </MyPage>
+                <ProfilePage menu={PROFILE_PAGE_MENU.POSTS}>
+                  <ProfilePagePosts />
+                </ProfilePage>
               )}
             />
             <Route
               exact
-              path={`${PATH.MYPAGE_ACCOUNT}`}
+              path={`${PATH.PROFILE_ACCOUNT}`}
               render={() => (
-                <MyPage>
-                  <MyPageAccount />
-                </MyPage>
+                <ProfilePage>
+                  <ProfilePageAccount />
+                </ProfilePage>
               )}
             />
             <Redirect to={PATH.ROOT} />

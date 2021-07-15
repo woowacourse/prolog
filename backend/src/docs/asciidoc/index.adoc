@@ -8,6 +8,7 @@
 
 include::login.adoc[]
 include::post.adoc[]
+include::profile.adoc[]
 include::mission.adoc[]
 include::tag.adoc[]
 include::filter.adoc[]

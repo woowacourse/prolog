@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { css } from '@emotion/react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
 import { Button, BUTTON_SIZE } from '../../components';
-import { requestGetMyPosts } from '../../service/requests';
+import { requestGetUserPosts } from '../../service/requests';
 import {
   Container,
   Content,
@@ -14,32 +13,17 @@ import {
   PostItem,
   ButtonList,
   NoPost,
+  EditButtonStyle,
+  DeleteButtonStyle,
 } from './styles';
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
 
-const EditButtonStyle = css`
-  border: 1px solid #e6e6e6;
-  background-color: #fff;
-
-  &:hover {
-    background-color: #e8e8e8;
-  }
-`;
-
-const DeleteButtonStyle = css`
-  border: 1px solid #e6e6e6;
-  background-color: #f59898;
-
-  &:hover {
-    background-color: #f08484;
-  }
-`;
-
-const MyPagePosts = () => {
+const ProfilePagePosts = () => {
   const history = useHistory();
   const accessToken = useSelector((state) => state.user.accessToken.data);
-  const username = useSelector((state) => state.user.profile.data?.username);
+  const myName = useSelector((state) => state.user.profile.data?.username);
+  const { username } = useParams();
 
   const [hoverdPostId, setHoveredPostId] = useState(0);
   const [posts, setPosts] = useState([]);
@@ -56,15 +40,16 @@ const MyPagePosts = () => {
     history.push(`${PATH.POST}/${id}/edit`);
   };
 
-  const getMyPosts = async () => {
+  const getUserPosts = async () => {
     try {
-      const response = await requestGetMyPosts(username, accessToken);
+      const response = await requestGetUserPosts(username);
 
       if (!response.ok) {
         throw new Error(response.status);
       }
+      const posts = await response.json();
 
-      setPosts(await response.json());
+      setPosts(posts.data);
     } catch (error) {
       console.error(error);
     }
@@ -80,11 +65,11 @@ const MyPagePosts = () => {
       return;
     }
 
-    getMyPosts();
+    getUserPosts();
   };
 
   useEffect(() => {
-    getMyPosts();
+    getUserPosts();
   }, [username]);
 
   return (
@@ -112,7 +97,7 @@ const MyPagePosts = () => {
                   </Tags>
                 </Description>
               </Content>
-              {hoverdPostId === id && (
+              {hoverdPostId === id && myName === username && (
                 <ButtonList>
                   <Button
                     size={BUTTON_SIZE.X_SMALL}
@@ -144,4 +129,4 @@ const MyPagePosts = () => {
   );
 };
 
-export default MyPagePosts;
+export default ProfilePagePosts;

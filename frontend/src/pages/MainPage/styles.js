@@ -53,6 +53,10 @@ const Tags = styled.div`
 
 const ProfileChipLocationStyle = css`
   margin-left: auto;
+
+  &:hover {
+    background-color: #dfecf5;
+  }
 `;
 
 const CardHoverStyle = css`

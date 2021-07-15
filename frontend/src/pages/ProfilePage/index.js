@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import postIcon from '../../assets/images/post.png';
@@ -19,26 +18,29 @@ import {
   Content,
   Preparing,
 } from './styles';
-import { MYPAGE_MENU } from '../../constants';
+import { PROFILE_PAGE_MENU } from '../../constants';
+import { requestGetProfile } from '../../service/requests';
+import useFetch from '../../hooks/useFetch';
 
-const MyPage = ({ children, menu }) => {
+const ProfilePage = ({ children, menu }) => {
   const history = useHistory();
   const { username } = useParams();
-  const me = useSelector((state) => state.user.profile.data);
 
   const [selectedMenu, setSelectedMenu] = useState('');
 
-  const goMyPage = (event) => {
+  const [user] = useFetch({}, () => requestGetProfile(username));
+
+  const goProfilePage = (event) => {
     setSelectedMenu(event.currentTarget.value);
     history.push(`/${username}`);
   };
 
-  const goMyPagePosts = (event) => {
+  const goProfilePagePosts = (event) => {
     setSelectedMenu(event.currentTarget.value);
     history.push(`/${username}/posts`);
   };
 
-  const goMyPageAccount = () => {
+  const goProfilePageAccount = () => {
     history.push(`/${username}/account`);
   };
 
@@ -49,26 +51,26 @@ const MyPage = ({ children, menu }) => {
   return (
     <Container>
       <Profile>
-        <Image src={me?.imageUrl} alt="프로필 이미지" />
-        <Role>{me?.role}</Role>
-        <Nickname>{me?.nickname}</Nickname>
+        <Image src={user?.imageUrl} alt="프로필 이미지" />
+        <Role>{user?.role}</Role>
+        <Nickname>{user?.nickname}</Nickname>
       </Profile>
       <RightSection>
         <MenuList>
-          <MenuItem isSelectedMenu={selectedMenu === MYPAGE_MENU.OVERVIEW}>
-            <MenuButton value={MYPAGE_MENU.OVERVIEW} type="button" onClick={goMyPage}>
+          <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.OVERVIEW}>
+            <MenuButton value={PROFILE_PAGE_MENU.OVERVIEW} type="button" onClick={goProfilePage}>
               <MenuIcon src={overviewIcon} alt="overview icon" />
               Overview
             </MenuButton>
           </MenuItem>
-          <MenuItem isSelectedMenu={selectedMenu === MYPAGE_MENU.POSTS}>
-            <MenuButton value={MYPAGE_MENU.POSTS} type="button" onClick={goMyPagePosts}>
+          <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.POSTS}>
+            <MenuButton value={PROFILE_PAGE_MENU.POSTS} type="button" onClick={goProfilePagePosts}>
               <MenuIcon src={postIcon} alt="posts icon" />
               Posts
             </MenuButton>
           </MenuItem>
           {/* <MenuItem>
-            <button type="button" onClick={goMyPageAccount}>
+            <button type="button" onClick={goProfilePageAccount}>
               내 정보 수정
             </button>
           </MenuItem> */}
@@ -88,4 +90,4 @@ const MyPage = ({ children, menu }) => {
   );
 };
 
-export default MyPage;
+export default ProfilePage;

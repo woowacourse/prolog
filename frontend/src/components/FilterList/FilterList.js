@@ -126,9 +126,9 @@ const FilterList = ({
     const isExistFilterItem = findFilterItem(filterType, filterDetailId);
 
     if (isExistFilterItem) {
-      setSelectedFilterDetails((prev) => prev.filter((item) => item !== isExistFilterItem));
+      setSelectedFilterDetails(selectedFilterDetails.filter((item) => item !== isExistFilterItem));
     } else {
-      setSelectedFilterDetails((prev) => [...prev, targetFilterItem]);
+      setSelectedFilterDetails([...selectedFilterDetails, targetFilterItem]);
     }
   };
 

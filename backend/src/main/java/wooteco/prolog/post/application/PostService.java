@@ -62,11 +62,15 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public List<PostResponse> findPostsOf(String username) {
-        List<Post> posts = postDao.findAllByUsername(username);
-        return posts.stream()
-                .map(post -> toResponse(post))
+    public PostsResponse findPostsOf(String username, PageRequest pageRequest) {
+        List<Post> posts = postDao.findAllByUsername(username, pageRequest);
+        List<PostResponse> postResponses = posts.stream()
+                .map(this::toResponse)
                 .collect(Collectors.toList());
+
+        int totalCount = postDao.countByUsername(username);
+        int totalPage = pageRequest.calculateTotalPage(totalCount);
+        return new PostsResponse(postResponses, totalCount, totalPage, pageRequest.getPage());
     }
 
     public PostsResponse findPostsWithFilter(List<Long> missions, List<Long> tags) {

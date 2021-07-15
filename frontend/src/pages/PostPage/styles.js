@@ -42,7 +42,12 @@ const IssuedDate = styled.div`
 
 const ProfileChipStyle = css`
   border: none;
-  padding: 0;
+  padding: 0.8rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #dfecf5;
+  }
 `;
 
 export { CardInner, SubHeader, Mission, Title, Tags, IssuedDate, ProfileChipStyle };

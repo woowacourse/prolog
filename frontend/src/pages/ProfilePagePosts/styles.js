@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const Container = styled.div`
@@ -64,4 +65,34 @@ const NoPost = styled.div`
   align-items: center;
 `;
 
-export { Container, Content, Description, Mission, Title, Tags, PostItem, ButtonList, NoPost };
+const EditButtonStyle = css`
+  border: 1px solid #e6e6e6;
+  background-color: #fff;
+
+  &:hover {
+    background-color: #e8e8e8;
+  }
+`;
+
+const DeleteButtonStyle = css`
+  border: 1px solid #e6e6e6;
+  background-color: #f59898;
+
+  &:hover {
+    background-color: #f08484;
+  }
+`;
+
+export {
+  Container,
+  Content,
+  Description,
+  Mission,
+  Title,
+  Tags,
+  PostItem,
+  ButtonList,
+  NoPost,
+  EditButtonStyle,
+  DeleteButtonStyle,
+};

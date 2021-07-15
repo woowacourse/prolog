@@ -1,7 +1,5 @@
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-const requestGetPosts = () => fetch(`${BASE_URL}/posts`);
-
 const requestGetPost = (postId) => fetch(`${BASE_URL}/posts/${postId}`);
 
 const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
@@ -10,12 +8,13 @@ const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
 
 const requestGetTags = () => fetch(`${BASE_URL}/tags`);
 
-const requestGetFilteredPosts = (filterList) => {
+const requestGetPosts = (filterList, postSearchParams) => {
   const filterQuery = filterList.map(
     ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
   );
+  const searchParams = Object.entries(postSearchParams).map(([key, value]) => `${key}=${value}`);
 
-  return fetch(`${BASE_URL}/posts?${filterQuery.join('&')}`);
+  return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`);
 };
 
 const requestEditPost = (postId, data, accessToken) =>
@@ -28,15 +27,6 @@ const requestEditPost = (postId, data, accessToken) =>
     body: JSON.stringify(data),
   });
 
-const requestGetMyPosts = (username, accessToken) =>
-  fetch(`${BASE_URL}/members/${username}/posts`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
 const requestDeletePost = (postId, accessToken) =>
   fetch(`${BASE_URL}/posts/${postId}`, {
     method: 'DELETE',
@@ -46,14 +36,24 @@ const requestDeletePost = (postId, accessToken) =>
     },
   });
 
+const requestGetProfile = (username) =>
+  fetch(`${BASE_URL}/members/${username}/profile`, {
+    method: 'GET',
+  });
+
+const requestGetUserPosts = (username) =>
+  fetch(`${BASE_URL}/members/${username}/posts`, {
+    method: 'GET',
+  });
+
 export {
   requestGetPosts,
   requestGetPost,
   requestGetFilters,
   requestGetMissions,
-  requestGetFilteredPosts,
   requestGetTags,
   requestEditPost,
-  requestGetMyPosts,
+  requestGetUserPosts,
   requestDeletePost,
+  requestGetProfile,
 };
