@@ -1,4 +1,5 @@
 import { useParams } from 'react-router';
+import { useHistory } from 'react-router';
 import useFetch from '../../hooks/useFetch';
 import { requestGetPost } from '../../service/requests';
 
@@ -11,6 +12,8 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import { CardInner, SubHeader, Mission, Title, Tags, IssuedDate, ProfileChipStyle } from './styles';
 
 const PostPage = () => {
+  const history = useHistory();
+
   const { id: postId } = useParams();
   const [post, getPostError] = useFetch({}, () => requestGetPost(postId));
   const { id, author, createdAt, mission, title, tags, content } = post;
@@ -18,6 +21,12 @@ const PostPage = () => {
   if (getPostError) {
     <>해당 글을 찾을 수 없습니다.</>;
   }
+
+  const goProfilePage = (username) => (event) => {
+    event.stopPropagation();
+
+    history.push(`/${username}`);
+  };
 
   return (
     <Card key={id} size="LARGE">
@@ -28,7 +37,11 @@ const PostPage = () => {
             <IssuedDate>{new Date(createdAt).toLocaleString('ko-KR')}</IssuedDate>
           </SubHeader>
           <Title>{title}</Title>
-          <ProfileChip imageSrc={author?.imageUrl} css={ProfileChipStyle}>
+          <ProfileChip
+            imageSrc={author?.imageUrl}
+            css={ProfileChipStyle}
+            onClick={goProfilePage(author?.username)}
+          >
             {author?.nickname}
           </ProfileChip>
         </div>
