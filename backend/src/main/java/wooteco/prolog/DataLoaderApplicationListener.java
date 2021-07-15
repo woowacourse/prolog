@@ -51,7 +51,7 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
         tagService.create(tagRequests);
 
         // member init
-        Member member = githubLoginService.findOrCreateMember(new GithubProfileResponse("엘라", "HyuuunjuKim", "46308949", "https://avatars.githubusercontent.com/u/46308949?v=4"));
+        Member member = githubLoginService.findOrCreateMember(new GithubProfileResponse("류성현", "gracefulBrown", "46308949", "https://avatars.githubusercontent.com/u/46308949?v=4"));
 
         // post init
         postService.insertPosts(member, Arrays.asList(
