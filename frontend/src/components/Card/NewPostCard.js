@@ -32,6 +32,12 @@ const NewPostCard = forwardRef(({ postOrder, tagOptions }, ref) => {
           initialEditType="markdown"
           toolbarItems={['heading', 'bold', 'italic', 'strike']}
           ref={(element) => assignRefValue('content', element)}
+          hooks={{
+            addImageBlobHook: async (blob, callback) => {
+              alert("이미지 업로드를 할 수 없습니다.")
+              return false;
+            },
+          }}
         />
       </EditorWrapper>
       <CreatableSelectBox options={tagOptions} placeholder="#태그선택" onChange={selectTag} />

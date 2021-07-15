@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Card, FilterList, ProfileChip } from '../../components';
+import { Button, Card, FilterList, ProfileChip, Pagination } from '../../components';
 import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
@@ -23,19 +23,23 @@ import {
   CardHoverStyle,
 } from './styles';
 
+const initialPostQueryParams = {
+  page: 1,
+  size: 10,
+  direction: 'desc',
+};
+
 const MainPage = () => {
   const history = useHistory();
   const isUserLoggedIn = useSelector((state) => state.user.accessToken.data);
 
   const [posts, setPosts] = useState([]);
+  const [postQueryParams, setPostQueryParams] = useState(initialPostQueryParams);
   const [selectedFilter, setSelectedFilter] = useState('');
   const [selectedFilterDetails, setSelectedFilterDetails] = useState([]);
 
-  const [postList] = useFetch([], requestGetPosts);
+  const [postsInfo, setPostsInfo] = useState([]);
   const [filters] = useFetch([], requestGetFilters);
-  // if (error) {
-  //   return <>글이 없습니다.</>;
-  // }
 
   const goTargetPost = (id) => {
     history.push(`${PATH.POST}/${id}`);
@@ -51,25 +55,32 @@ const MainPage = () => {
     history.push(`/${username}`);
   };
 
+  const onSetPage = (page) => {
+    setPostQueryParams({ ...postQueryParams, page });
+  };
+
+  const onFilterChange = (value) => {
+    setPostQueryParams({ ...postQueryParams, page: 1 });
+    setSelectedFilterDetails(value);
+  };
+
   useEffect(() => {
     if (selectedFilterDetails === []) return;
 
-    const getFilteredData = async () => {
+    const getData = async () => {
       try {
-        const response = await requestGetFilteredPosts(selectedFilterDetails);
+        const response = await requestGetPosts(selectedFilterDetails, postQueryParams);
+        const data = await response.json();
 
-        setPosts(await response.json());
+        setPostsInfo(data);
+        setPosts(data);
       } catch (error) {
         console.error(error);
       }
     };
 
-    getFilteredData();
-  }, [selectedFilterDetails]);
-
-  useEffect(() => {
-    setPosts(postList);
-  }, [postList]);
+    getData();
+  }, [selectedFilterDetails, postQueryParams]);
 
   return (
     <>
@@ -80,7 +91,7 @@ const MainPage = () => {
             selectedFilter={selectedFilter}
             setSelectedFilter={setSelectedFilter}
             selectedFilterDetails={selectedFilterDetails}
-            setSelectedFilterDetails={setSelectedFilterDetails}
+            setSelectedFilterDetails={onFilterChange}
             isVisibleResetFilter={!!selectedFilterDetails.length}
             onResetFilter={resetFilter}
           />
@@ -110,7 +121,7 @@ const MainPage = () => {
                     <Mission>{mission.name}</Mission>
                     <Title>{title}</Title>
                     <Tags>
-                      {tags.map(({ id, name }) => (
+                      {tags?.map(({ id, name }) => (
                         <span key={id}>{`#${name} `}</span>
                       ))}
                     </Tags>
@@ -127,6 +138,7 @@ const MainPage = () => {
             );
           })}
       </PostListContainer>
+      <Pagination postsInfo={postsInfo} onSetPage={onSetPage}></Pagination>
     </>
   );
 };
