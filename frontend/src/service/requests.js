@@ -38,17 +38,13 @@ const requestDeletePost = (postId, accessToken) =>
   });
 
 const requestGetProfile = (username) =>
-  fetch(`${BASE_URL}/members/${username}`, {
+  fetch(`${BASE_URL}/members/${username}/profile`, {
     method: 'GET',
   });
 
-const requestGetUserPosts = (username, accessToken) =>
+const requestGetUserPosts = (username) =>
   fetch(`${BASE_URL}/members/${username}/posts`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Authorization: `Bearer ${accessToken}`,
-    },
   });
 
 export {

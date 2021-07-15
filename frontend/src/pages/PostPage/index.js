@@ -8,16 +8,7 @@ import { Viewer } from '@toast-ui/react-editor';
 import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
 
-import {
-  CardInner,
-  SubHeader,
-  Mission,
-  Title,
-  Content,
-  Tags,
-  IssuedDate,
-  ProfileChipStyle,
-} from './styles';
+import { CardInner, SubHeader, Mission, Title, Tags, IssuedDate, ProfileChipStyle } from './styles';
 
 const PostPage = () => {
   const { id: postId } = useParams();

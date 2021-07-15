@@ -22,6 +22,7 @@ import usePost from '../../hooks/usePost';
 const ProfilePagePosts = () => {
   const history = useHistory();
   const accessToken = useSelector((state) => state.user.accessToken.data);
+  const myName = useSelector((state) => state.user.profile.data?.username);
   const { username } = useParams();
 
   const [hoverdPostId, setHoveredPostId] = useState(0);
@@ -41,13 +42,14 @@ const ProfilePagePosts = () => {
 
   const getUserPosts = async () => {
     try {
-      const response = await requestGetUserPosts(username, accessToken);
-      console.log(response);
+      const response = await requestGetUserPosts(username);
+
       if (!response.ok) {
         throw new Error(response.status);
       }
+      const posts = await response.json();
 
-      setPosts(await response.json());
+      setPosts(posts.data);
     } catch (error) {
       console.error(error);
     }
@@ -95,7 +97,7 @@ const ProfilePagePosts = () => {
                   </Tags>
                 </Description>
               </Content>
-              {hoverdPostId === id && (
+              {hoverdPostId === id && myName === username && (
                 <ButtonList>
                   <Button
                     size={BUTTON_SIZE.X_SMALL}
