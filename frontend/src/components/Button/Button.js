@@ -10,6 +10,13 @@ export const BUTTON_SIZE = {
 };
 
 const containerSizeStyle = {
+  XX_SMALL: {
+    width: '3rem',
+    height: '3rem',
+    fontSize: '1.4rem',
+    lineHeight: '1rem',
+    borderRadius: '8px',
+  },
   X_SMALL: {
     width: '9.2rem',
     height: '3.6rem',
@@ -82,9 +89,19 @@ const Image = styled.div`
   border-radius: inherit;
 `;
 
-const Button = ({ children, size, alt, icon, css, backgroundImageUrl, onClick, type }) => {
+const Button = ({
+  children,
+  size,
+  alt,
+  icon,
+  css,
+  backgroundImageUrl,
+  onClick,
+  type,
+  disabled,
+}) => {
   return (
-    <Container size={size} icon={icon} css={css} onClick={onClick} type={type}>
+    <Container size={size} icon={icon} css={css} onClick={onClick} type={type} disabled={disabled}>
       {icon && <Icon src={icon} alt={alt} size={size} hasText={!!children} />}
       {backgroundImageUrl && <Image backgroundImage={backgroundImageUrl} />}
       {children && <span size={size}>{children}</span>}

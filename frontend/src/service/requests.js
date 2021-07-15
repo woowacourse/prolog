@@ -1,7 +1,5 @@
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-const requestGetPosts = () => fetch(`${BASE_URL}/posts`);
-
 const requestGetPost = (postId) => fetch(`${BASE_URL}/posts/${postId}`);
 
 const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
@@ -10,12 +8,13 @@ const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
 
 const requestGetTags = () => fetch(`${BASE_URL}/tags`);
 
-const requestGetFilteredPosts = (filterList) => {
+const requestGetPosts = (filterList, postSearchParams) => {
   const filterQuery = filterList.map(
     ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
   );
+  const searchParams = Object.entries(postSearchParams).map(([key, value]) => `${key}=${value}`);
 
-  return fetch(`${BASE_URL}/posts?${filterQuery.join('&')}`);
+  return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`);
 };
 
 const requestEditPost = (postId, data, accessToken) =>
@@ -51,7 +50,6 @@ export {
   requestGetPost,
   requestGetFilters,
   requestGetMissions,
-  requestGetFilteredPosts,
   requestGetTags,
   requestEditPost,
   requestGetMyPosts,
