@@ -37,7 +37,10 @@ export const login = () => async (dispatch) => {
     ls.set(API.ACCESS_TOKEN, accessToken);
     dispatch({ type: LOGIN_SUCCESS, payload: accessToken });
   } catch (error) {
-    dispatch({ type: LOGIN_FAILURE, payload: error });
+    const errorResponse = JSON.parse(error.message);
+
+    console.error(errorResponse);
+    dispatch({ type: LOGIN_FAILURE, payload: errorResponse });
   }
 };
 
@@ -62,7 +65,9 @@ export const getProfile = (accessToken) => async (dispatch) => {
 
     dispatch({ type: GET_PROFILE_SUCCESS, payload: profile });
   } catch (error) {
-    console.error(error);
-    dispatch({ type: GET_PROFILE_FAILURE, payload: error });
+    const errorResponse = JSON.parse(error.message);
+
+    console.error(errorResponse);
+    dispatch({ type: GET_PROFILE_FAILURE, payload: errorResponse });
   }
 };

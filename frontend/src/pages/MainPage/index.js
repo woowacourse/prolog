@@ -31,7 +31,8 @@ const initialPostQueryParams = {
 
 const MainPage = () => {
   const history = useHistory();
-  const isUserLoggedIn = useSelector((state) => state.user.accessToken.data);
+  const user = useSelector((state) => state.user.profile);
+  const isLoggedIn = !!user.data;
 
   const [posts, setPosts] = useState([]);
   const [postQueryParams, setPostQueryParams] = useState(initialPostQueryParams);
@@ -96,7 +97,7 @@ const MainPage = () => {
             onResetFilter={resetFilter}
           />
         </FilterListWrapper>
-        {isUserLoggedIn && (
+        {isLoggedIn && (
           <Button
             type="button"
             size="SMALL"
@@ -109,6 +110,7 @@ const MainPage = () => {
         )}
       </HeaderContainer>
       <PostListContainer>
+        {posts?.data?.length === 0 && '작성된 글이 없습니다.'}
         {posts &&
           posts.data &&
           posts.data.map((post) => {
