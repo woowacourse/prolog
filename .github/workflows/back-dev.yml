@@ -17,12 +17,14 @@ jobs:
           java-version: 1.8
 
       - name: Grant execute permission for gradlew
-        run: chmod +x ./backend/gradlew
+        run: chmod +x ./gradlew
         shell: bash
+        working-directory: backend
 
       - name: Build with Gradle
-        run: ./backend/gradlew build
+        run: ./gradlew bootJar
         shell: bash
+        working-directory: backend
 
       - name: Get current time
         uses: 1466587594/get-current-time@v2
