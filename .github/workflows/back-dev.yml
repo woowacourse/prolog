@@ -17,11 +17,11 @@ jobs:
           java-version: 1.8
 
       - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
+        run: chmod +x ./backend/gradlew
         shell: bash
 
       - name: Build with Gradle
-        run: ./gradlew clean buildJar
+        run: ./backend/gradlew clean buildJar
         shell: bash
 
       - name: Get current time
@@ -31,11 +31,11 @@ jobs:
           format: YYYY-MM-DDTHH-mm-ss
           utcOffset: "+09:00"
 
-      - name: Generate deployment package # (1)
+      - name: Generate deployment package
         run: |
           mkdir -p deploy
-          cp build/libs/*.jar deploy/application.jar
-          cd deploy && zip -r deploy.zip .
+          cp backend/build/libs/*.jar backend/deploy/application.jar
+          cd backend/deploy && zip -r deploy.zip .
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v16
