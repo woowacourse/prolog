@@ -159,11 +159,16 @@ public class PostDao {
 
     public List<Post> findWithFilter(List<Long> missions, List<Long> tags, PageRequest pageRequest) {
         String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, username, role, github_id, image_url, tag.id as tag_id " +
-                "FROM (SELECT * from post where post.id in " +
-                "(SELECT pt.post_id from post_tag as pt where 1=1 " +
-                createDynamicColumnQuery("pt.tag_id", tags) +
-                ") " +
-                createDynamicColumnQuery("post.mission_id", missions) +
+                "FROM (SELECT * from post where 1=1 ";
+
+        if(!Objects.isNull(tags) && !tags.isEmpty()) {
+            query += "and post.id in " +
+                    "(SELECT pt.post_id from post_tag as pt where 1=1 " +
+                    createDynamicColumnQuery("pt.tag_id", tags) +
+                    ") ";
+        }
+
+        query += createDynamicColumnQuery("post.mission_id", missions) +
                 createSortQuery(pageRequest.getDirection()) +
                 createPagingQuery(pageRequest.getSize(), pageRequest.getPage()) +
                 ") AS po " +
