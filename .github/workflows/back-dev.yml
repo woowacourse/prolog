@@ -36,9 +36,8 @@ jobs:
       - name: Generate deployment package
         run: |
           mkdir -p deploy
-          cp build/libs/*.jar deploy/application.jar
+          cp backend/build/libs/*.jar deploy/application.jar
           cd deploy && zip -r deploy.zip .
-        working-directory: backend
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v16
@@ -49,4 +48,4 @@ jobs:
           environment_name: pro-log
           version_label: github-action-${{steps.current-time.outputs.formattedTime}}
           region: ap-northeast-2
-          deployment_package: backend/deploy/deploy.zip
+          deployment_package: deploy/deploy.zip
