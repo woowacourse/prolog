@@ -35,10 +35,10 @@ jobs:
 
       - name: Generate deployment package
         run: |
+          cd backend
           mkdir -p deploy
           cp build/libs/*.jar deploy/application.jar
           cd deploy && zip -r deploy.zip .
-        working-directory: backend
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v16
