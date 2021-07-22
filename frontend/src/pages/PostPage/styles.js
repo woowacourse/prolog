@@ -9,6 +9,10 @@ const CardInner = styled.div`
   & > *:not(:last-child) {
     margin-bottom: 2rem;
   }
+
+  .tui-editor-contents {
+    font-size: 1.6rem;
+  }
 `;
 
 const SubHeader = styled.div`
