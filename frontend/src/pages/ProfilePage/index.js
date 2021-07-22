@@ -20,15 +20,13 @@ import {
 } from './styles';
 import { PROFILE_PAGE_MENU } from '../../constants';
 import { requestGetProfile } from '../../service/requests';
-import useFetch from '../../hooks/useFetch';
 
 const ProfilePage = ({ children, menu }) => {
   const history = useHistory();
   const { username } = useParams();
 
+  const [user, setUser] = useState({});
   const [selectedMenu, setSelectedMenu] = useState('');
-
-  const [user] = useFetch({}, () => requestGetProfile(username));
 
   const goProfilePage = (event) => {
     setSelectedMenu(event.currentTarget.value);
@@ -43,6 +41,25 @@ const ProfilePage = ({ children, menu }) => {
   const goProfilePageAccount = () => {
     history.push(`/${username}/account`);
   };
+
+  const getProfile = async () => {
+    try {
+      const response = await requestGetProfile(username);
+
+      if (!response.ok) {
+        throw new Error();
+      }
+
+      setUser(await response.json());
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getProfile();
+    setSelectedMenu(menu);
+  }, [username]);
 
   useEffect(() => {
     setSelectedMenu(menu);
