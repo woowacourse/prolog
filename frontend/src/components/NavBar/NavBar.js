@@ -56,19 +56,21 @@ const NavBar = () => {
     if (user.data?.imageUrl) {
       setUserImage(user.data?.imageUrl);
     }
-
-    if (user.error) {
-      if (user.error) {
-        alert(ERROR_MESSAGE[user.error.code] ?? ERROR_MESSAGE.LOGIN_DEFAULT);
-      }
-    }
   }, [user]);
 
   const goMain = () => {
     history.push(PATH.ROOT);
   };
 
-  const goNewPost = () => {
+  const goNewPost = async () => {
+    const accessToken = localStorage.getItem('access_token');
+
+    if (!accessToken) {
+      alert(ERROR_MESSAGE.LOGIN_DEFAULT);
+      window.location.reload();
+      return;
+    }
+
     history.push(PATH.NEW_POST);
   };
 
@@ -89,7 +91,7 @@ const NavBar = () => {
   };
 
   if (userError) {
-    localStorage.setItem('accessToken', '');
+    localStorage.removeItem('accessToken');
   }
 
   return (

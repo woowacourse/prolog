@@ -46,6 +46,7 @@ export const login = () => async (dispatch) => {
 
 export const getProfile = (accessToken) => async (dispatch) => {
   dispatch({ type: GET_PROFILE });
+  const accessToken = ls.get(API.ACCESS_TOKEN);
 
   try {
     const response = await fetch(`${BASE_URL}/members/me`, {

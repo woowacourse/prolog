@@ -22,6 +22,7 @@ import {
   ProfileChipLocationStyle,
   CardHoverStyle,
 } from './styles';
+import { ERROR_MESSAGE } from '../../constants/message';
 
 const initialPostQueryParams = {
   page: 1,
@@ -65,6 +66,18 @@ const MainPage = () => {
     setSelectedFilterDetails(value);
   };
 
+  const goNewPost = () => {
+    const accessToken = localStorage.getItem('access_token');
+
+    if (!accessToken) {
+      alert(ERROR_MESSAGE.LOGIN_DEFAULT);
+      window.location.reload();
+      return;
+    }
+
+    history.push(PATH.NEW_POST);
+  };
+
   useEffect(() => {
     if (selectedFilterDetails === []) return;
 
@@ -103,7 +116,7 @@ const MainPage = () => {
             size="SMALL"
             icon={PencilIcon}
             alt="글쓰기 아이콘"
-            onClick={() => history.push(PATH.NEW_POST)}
+            onClick={goNewPost}
           >
             글쓰기
           </Button>
