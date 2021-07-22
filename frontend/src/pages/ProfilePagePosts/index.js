@@ -30,13 +30,13 @@ const ProfilePagePosts = () => {
 
   const { error: postError, deleteData: deletePost } = usePost({});
 
-  const goTargetPost = (id) => (event) => {
-    if (event?.target !== event?.currentTarget) return;
-
+  const goTargetPost = (id) => {
     history.push(`${PATH.POST}/${id}`);
   };
 
-  const goEditTargetPost = (id) => {
+  const goEditTargetPost = (id) => (event) => {
+    event.stopPropagation();
+
     history.push(`${PATH.POST}/${id}/edit`);
   };
 
@@ -82,7 +82,7 @@ const ProfilePagePosts = () => {
             <PostItem
               key={id}
               size="SMALL"
-              onClick={goTargetPost(id)}
+              onClick={() => goTargetPost(id)}
               onMouseEnter={() => setHoveredPostId(id)}
               onMouseLeave={() => setHoveredPostId(0)}
             >
@@ -104,7 +104,7 @@ const ProfilePagePosts = () => {
                     type="button"
                     css={EditButtonStyle}
                     alt="수정 버튼"
-                    onClick={() => goEditTargetPost(id)}
+                    onClick={goEditTargetPost(id)}
                   >
                     수정
                   </Button>
