@@ -1,4 +1,4 @@
-name: back deploy for dev
+name: back deploy for prod
 
 on:
   workflow_dispatch:
