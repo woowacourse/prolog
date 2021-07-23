@@ -21,6 +21,7 @@ dependencies {
 
 	// log
 	implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
+	implementation 'ca.pjer:logback-awslogs-appender:1.5.0'
 
 	// jwt
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'

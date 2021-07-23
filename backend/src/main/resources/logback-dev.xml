@@ -1,0 +1,65 @@
+<configuration packagingData="true">
+
+    <!-- Timestamp used into the Log Stream Name -->
+    <timestamp key="timestamp" datePattern="yyyy-MM-dd-HH-mm-ssSSS"/>
+
+    <!-- The actual AwsLogsAppender (asynchronous mode because of maxFlushTimeMillis > 0) -->
+    <appender name="COLOR" class="ca.pjer.logback.AwsLogsAppender">
+
+        <!-- Send only ERROR and above -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+
+        <!-- Nice layout pattern -->
+        <layout>
+            <pattern>[%date] %highlight([%level]) [%logger{10} %file:%line] %msg%n</pattern>
+        </layout>
+
+        <!-- Hardcoded Log Group Name -->
+        <logGroupName>prolog-log</logGroupName>
+
+        <!-- Log Stream Name UUID Prefix -->
+        <logStreamUuidPrefix>prolog/</logStreamUuidPrefix>
+
+        <!-- AWS Region -->
+        <logRegion>ap-northeast-2</logRegion>
+
+        <!-- Maximum number of events in each batch (50 is the default) -->
+        <!-- will flush when the event queue has 50 elements, even if still in quiet time (see maxFlushTimeMillis) -->
+        <maxBatchLogEvents>50</maxBatchLogEvents>
+
+        <!-- Maximum quiet time in millisecond (0 is the default) -->
+        <!-- will flush when met, even if the batch size is not met (see maxBatchLogEvents) -->
+        <maxFlushTimeMillis>30000</maxFlushTimeMillis>
+
+        <!-- Maximum block time in millisecond (5000 is the default) -->
+        <!-- when > 0: this is the maximum time the logging thread will wait for the logger, -->
+        <!-- when == 0: the logging thread will never wait for the logger, discarding events while the queue is full -->
+        <maxBlockTimeMillis>5000</maxBlockTimeMillis>
+
+        <!-- Retention value for log groups, 0 for infinite see -->
+        <!-- https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_PutRetentionPolicy.html for other -->
+        <!-- possible values -->
+
+        <retentionTimeDays>0</retentionTimeDays>
+    </appender>
+
+    <!-- A console output -->
+    <appender name="ASYNC_AWS_LOGS" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%date] %highlight([%level]) [%logger{10} %file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root with a threshold to INFO and above -->
+    <root level="INFO">
+        <appender-ref ref="COLOR"/>
+        <appender-ref ref="ASYNC_AWS_LOGS"/>
+        <if condition='isDefined("color")'>
+            <then>
+                <appender-ref ref="COLOR"/>
+            </then>
+        </if>
+    </root>
+</configuration>
