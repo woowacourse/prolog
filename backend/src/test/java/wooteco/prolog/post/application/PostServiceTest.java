@@ -10,14 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionRequest;
-import wooteco.prolog.post.application.dto.PostsResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
+import wooteco.prolog.post.application.dto.PostsResponse;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.tag.domain.Tag;
 import wooteco.prolog.tag.dto.TagRequest;
@@ -30,6 +31,7 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ActiveProfiles("test")
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class PostServiceTest {
