@@ -8,7 +8,7 @@
 
         <!-- Send only ERROR and above -->
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>ERROR</level>
+            <level>DEBUG</level>
         </filter>
 
         <!-- Nice layout pattern -->
@@ -17,7 +17,7 @@
         </layout>
 
         <!-- Hardcoded Log Group Name -->
-        <logGroupName>prolog-log</logGroupName>
+        <logGroupName>prolog-dev-log</logGroupName>
 
         <!-- Log Stream Name UUID Prefix -->
         <logStreamUuidPrefix>prolog/</logStreamUuidPrefix>
