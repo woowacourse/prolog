@@ -14,7 +14,3 @@ github:
   url:
     access-token: https://github.com/login/oauth/access_token
     profile: https://api.github.com/user
-
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
