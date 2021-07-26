@@ -97,7 +97,10 @@ const NavBar = () => {
   return (
     <Container isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>
       <Wrapper>
-        <Logo src={LogoImage} alt="STUDYLOG 로고" onClick={goMain} role="link" />
+        <Logo onClick={goMain} role="link">
+          <img src={LogoImage} alt="STUDYLOG 로고" />
+          <span>{process.env.REACT_APP_MODE === 'PROD' ? 'BETA' : process.env.REACT_APP_MODE}</span>
+        </Logo>
         <Menu role="menu">
           {/* <Button size="SMALL" icon={SearchIcon} type="button" css={searchButtonStyle} /> */}
           {isLoggedIn ? (

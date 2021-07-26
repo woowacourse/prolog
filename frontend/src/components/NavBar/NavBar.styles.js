@@ -35,9 +35,27 @@ const Wrapper = styled.div`
   justify-content: space-between;
 `;
 
-const Logo = styled.img`
+const Logo = styled.div`
   height: 3rem;
-  ${({ onClick }) => onClick && 'cursor: pointer;'}
+  position: relative;
+
+  img {
+    height: 100%;
+    ${({ onClick }) => onClick && 'cursor: pointer;'}
+  }
+
+  span {
+    font-size: 1.25rem;
+    font-weight: 500;
+    position: absolute;
+    line-height: 1.5;
+    padding: 0.1rem 0.5rem;
+    top: -10%;
+    left: 105%;
+    color: white;
+    background-color: #383838;
+    border-radius: 2rem;
+  }
 `;
 
 const Menu = styled.div`
