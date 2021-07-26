@@ -67,7 +67,7 @@ const MainPage = () => {
   };
 
   const goNewPost = () => {
-    const accessToken = localStorage.getItem('access_token');
+    const accessToken = localStorage.getItem('accessToken');
 
     if (!accessToken) {
       alert(ERROR_MESSAGE.LOGIN_DEFAULT);
