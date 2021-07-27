@@ -98,7 +98,7 @@ const NavBar = () => {
     <Container isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>
       <Wrapper>
         <Logo onClick={goMain} role="link">
-          <img src={LogoImage} alt="STUDYLOG 로고" />
+          <img src={LogoImage} alt="PROLOG 로고" />
           <span>{process.env.REACT_APP_MODE === 'PROD' ? 'BETA' : process.env.REACT_APP_MODE}</span>
         </Logo>
         <Menu role="menu">
