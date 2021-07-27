@@ -2,13 +2,14 @@ package wooteco.prolog.post.ui;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import wooteco.prolog.post.application.dto.PageRequest;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.post.application.PostService;
-import wooteco.prolog.post.application.dto.PostsResponse;
+import wooteco.prolog.post.application.dto.PageRequest;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
+import wooteco.prolog.post.application.dto.PostsResponse;
+import wooteco.prolog.post.exception.PostNotFoundException;
 
 import java.net.URI;
 import java.util.List;
@@ -41,8 +42,11 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostResponse> showPost(@PathVariable Long id) {
-        PostResponse postResponse = postService.findById(id);
+    public ResponseEntity<PostResponse> showPost(@PathVariable String id) {
+        if (!NumberUtils.isNumeric(id)) {
+            throw new PostNotFoundException();
+        }
+        PostResponse postResponse = postService.findById(Long.parseLong(id));
         return ResponseEntity.ok(postResponse);
     }
 
