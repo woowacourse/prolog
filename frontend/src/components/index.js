@@ -10,3 +10,4 @@ export { default as PageButton } from './Button/PageButton';
 export { default as FilterList } from './FilterList/FilterList';
 export { default as CreatableSelectBox } from './CreatableSelectBox/CreatableSelectBox';
 export { default as Pagination } from './Pagination/Pagination';
+export { default as NotFound } from './NotFound/NotFound';

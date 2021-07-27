@@ -20,6 +20,7 @@ import {
 } from './styles';
 import { PROFILE_PAGE_MENU } from '../../constants';
 import { requestGetProfile } from '../../service/requests';
+import useNotFound from '../../hooks/useNotFound';
 
 const ProfilePage = ({ children, menu }) => {
   const history = useHistory();
@@ -27,6 +28,8 @@ const ProfilePage = ({ children, menu }) => {
 
   const [user, setUser] = useState({});
   const [selectedMenu, setSelectedMenu] = useState('');
+
+  const { isNotFound, setNotFound, NotFound } = useNotFound();
 
   const goProfilePage = (event) => {
     setSelectedMenu(event.currentTarget.value);
@@ -47,12 +50,19 @@ const ProfilePage = ({ children, menu }) => {
       const response = await requestGetProfile(username);
 
       if (!response.ok) {
-        throw new Error();
+        throw new Error(await response.text());
       }
 
       setUser(await response.json());
+      setNotFound(false);
     } catch (error) {
-      console.error(error);
+      const errorResponse = JSON.parse(error.message);
+
+      console.error(errorResponse);
+
+      if (errorResponse.code === 1004) {
+        setNotFound(true);
+      }
     }
   };
 
@@ -64,6 +74,10 @@ const ProfilePage = ({ children, menu }) => {
   useEffect(() => {
     setSelectedMenu(menu);
   }, []);
+
+  if (isNotFound) {
+    return <NotFound />;
+  }
 
   return (
     <Container>

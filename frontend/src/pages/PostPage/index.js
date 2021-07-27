@@ -1,5 +1,4 @@
-import { useParams } from 'react-router';
-import { useHistory } from 'react-router';
+import { useParams, useHistory } from 'react-router';
 import useFetch from '../../hooks/useFetch';
 import { requestGetPost } from '../../service/requests';
 
@@ -10,16 +9,19 @@ import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
 
 import { CardInner, SubHeader, Mission, Title, Tags, IssuedDate, ProfileChipStyle } from './styles';
+import useNotFound from '../../hooks/useNotFound';
 
 const PostPage = () => {
   const history = useHistory();
 
   const { id: postId } = useParams();
   const [post, getPostError] = useFetch({}, () => requestGetPost(postId));
+  const { NotFound } = useNotFound();
+
   const { id, author, createdAt, mission, title, tags, content } = post;
 
   if (getPostError) {
-    <>해당 글을 찾을 수 없습니다.</>;
+    return <NotFound />;
   }
 
   const goProfilePage = (username) => (event) => {
