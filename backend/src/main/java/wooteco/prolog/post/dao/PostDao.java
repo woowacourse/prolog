@@ -42,7 +42,7 @@ public class PostDao {
             Long id = rs.getLong("id");
 
             Post existPost = posts.stream()
-                    .filter(it -> it.getId() == id)
+                    .filter(it -> it.getId().equals(id))
                     .findFirst()
                     .orElse(null);
 
