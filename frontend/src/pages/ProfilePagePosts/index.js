@@ -55,7 +55,9 @@ const ProfilePagePosts = () => {
     }
   };
 
-  const onDeletePost = async (id) => {
+  const onDeletePost = async (event, id) => {
+    event.stopPropagation();
+
     if (!window.confirm(CONFIRM_MESSAGE.DELETE_POST)) return;
 
     await deletePost(id, accessToken);
@@ -113,7 +115,9 @@ const ProfilePagePosts = () => {
                     type="button"
                     css={DeleteButtonStyle}
                     alt="삭제 버튼"
-                    onClick={() => onDeletePost(id)}
+                    onClick={(e) => {
+                      onDeletePost(e, id);
+                    }}
                   >
                     삭제
                   </Button>
