@@ -15,13 +15,18 @@ const PostPage = () => {
   const history = useHistory();
 
   const { id: postId } = useParams();
-  const [post, getPostError] = useFetch({}, () => requestGetPost(postId));
+  const [post, errorStatus] = useFetch({}, () => requestGetPost(postId));
   const { NotFound } = useNotFound();
 
   const { id, author, createdAt, mission, title, tags, content } = post;
 
-  if (getPostError) {
-    return <NotFound />;
+  if (errorStatus) {
+    switch (errorStatus) {
+      case 2004:
+        return <NotFound />;
+      default:
+        return;
+    }
   }
 
   const goProfilePage = (username) => (event) => {

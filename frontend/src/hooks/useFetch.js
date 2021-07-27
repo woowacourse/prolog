@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { ERROR_MESSAGE } from '../constants/message';
 
 const useFetch = (defaultValue, callback) => {
   const [response, setResponse] = useState(defaultValue);
@@ -20,7 +19,7 @@ const useFetch = (defaultValue, callback) => {
       const errorResponse = JSON.parse(error.message);
 
       console.error(errorResponse);
-      setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
+      setError(errorResponse.code);
     }
   };
 

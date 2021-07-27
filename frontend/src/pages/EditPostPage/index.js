@@ -33,27 +33,16 @@ const EditPostPage = () => {
 
   const { id: postId } = useParams();
   const { error: postError, editData: editPost } = usePost({});
-  const [post, getPostError] = useFetch({}, () => requestGetPost(postId));
-  const { id, author, mission } = post;
+  const [post] = useFetch({}, () => requestGetPost(postId));
+
+  const [selectedMission, setSelectedMission] = useState();
+  const cardRefs = useRef([]);
 
   const [missions] = useFetch([], requestGetMissions);
   const [tags] = useFetch([], requestGetTags);
+
+  const { id, author, mission } = post;
   const tagOptions = tags.map(({ name }) => ({ value: name, label: `#${name}` }));
-
-  const cardRefs = useRef([]);
-
-  const [selectedMission, setSelectedMission] = useState();
-
-  useEffect(() => {
-    setSelectedMission(mission?.name);
-  }, [mission]);
-
-  useEffect(() => {
-    if (author && user !== author.username) {
-      alert('본인이 작성하지 않은 글은 수정할 수 없습니다.');
-      history.push(`${PATH.POST}/${postId}`);
-    }
-  }, [user, author]);
 
   const onEditPost = async (event) => {
     event.preventDefault();
@@ -76,6 +65,17 @@ const EditPostPage = () => {
 
     history.push('/');
   };
+
+  useEffect(() => {
+    setSelectedMission(mission?.name);
+  }, [mission]);
+
+  useEffect(() => {
+    if (author && user !== author.username) {
+      alert('본인이 작성하지 않은 글은 수정할 수 없습니다.');
+      history.push(`${PATH.POST}/${postId}`);
+    }
+  }, [user, author]);
 
   return (
     <form onSubmit={onEditPost}>
