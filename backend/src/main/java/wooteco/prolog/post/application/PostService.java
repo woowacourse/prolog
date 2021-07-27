@@ -14,6 +14,7 @@ import wooteco.prolog.post.dao.PostDao;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.post.exception.AuthorNotValidException;
 import wooteco.prolog.post.exception.PostArgumentException;
+import wooteco.prolog.post.exception.PostNotFoundException;
 import wooteco.prolog.tag.application.TagService;
 import wooteco.prolog.tag.dto.TagResponse;
 
@@ -117,6 +118,9 @@ public class PostService {
 
     public PostResponse findById(Long id) {
         Post post = postDao.findById(id);
+        if(Objects.isNull(post)) {
+            throw new PostNotFoundException();
+        }
         return toResponse(post);
     }
 
