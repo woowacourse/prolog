@@ -20,3 +20,13 @@ include::{snippets}/members/read/http-request.adoc[]
 ==== Response
 
 include::{snippets}/members/read/http-response.adoc[]
+
+=== 멤버 정보 수정
+
+==== Request
+
+include::{snippets}/members/edit/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/members/edit/http-response.adoc[]

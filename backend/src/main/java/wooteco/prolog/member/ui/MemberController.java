@@ -28,13 +28,12 @@ public class MemberController {
         return ResponseEntity.ok().body(MemberResponse.of(member));
     }
 
-    @PutMapping("/{username}")
+    @PutMapping("/me")
     public ResponseEntity<Void> updatePost(
             @AuthMemberPrincipal Member member,
-            @PathVariable String username,
             @RequestBody MemberUpdateRequest updateRequest
     ) {
-        memberService.updateMember(member, username, updateRequest);
+        memberService.updateMember(member, updateRequest);
         return ResponseEntity.ok().build();
     }
 }

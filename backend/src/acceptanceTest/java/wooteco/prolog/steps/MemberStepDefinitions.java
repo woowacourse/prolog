@@ -28,12 +28,12 @@ public class MemberStepDefinitions extends AcceptanceSteps {
         assertThat(member.getImageUrl()).isNotNull();
     }
 
-    @When("{string}(이)(이가) 자신의 유저네임을 {string}(로)(으로) 수정하면")
-    public void 자신의유저네임을수정하면(String member, String updatedUsername) {
+    @When("{string}(이)(이가) 자신의 닉네임을 {string}(로)(으로) 수정하면")
+    public void 자신의닉네임을수정하면(String member, String updatedNickname) {
         String originUsername = GithubResponses.findByName(member).getLogin();
 
         MemberUpdateRequest updateRequest = new MemberUpdateRequest(
-                updatedUsername, "", ""
+                updatedNickname, ""
         );
 
         context.invokeHttpPutWithToken("/members/" + originUsername, updateRequest);

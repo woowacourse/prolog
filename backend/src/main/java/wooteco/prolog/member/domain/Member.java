@@ -39,10 +39,7 @@ public class Member {
         return nickname;
     }
 
-    public void update(String username, String nickname, String imageUrl) {
-        if (!ObjectUtils.isEmpty(username)) {
-            this.username = username;
-        }
+    public void update(String nickname, String imageUrl) {
         if (!ObjectUtils.isEmpty(nickname)) {
             this.nickname = nickname;
         }
