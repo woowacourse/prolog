@@ -1,8 +1,9 @@
 plugins {
-	id 'org.springframework.boot' version '2.4.5'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id "org.asciidoctor.convert" version "1.5.10"
-	id 'java'
+    id 'org.springframework.boot' version '2.4.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id "org.asciidoctor.convert" version "1.5.10"
+    id 'java'
+    id 'idea'
 }
 
 group = 'wooteco'
@@ -10,67 +11,111 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
+}
+
+sourceSets {
+    acceptanceTest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+        java {
+        }
+    }
+    documentation {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+        java {
+        }
+    }
+
+}
+
+configurations {
+    acceptanceTestImplementation.extendsFrom(implementation, testImplementation)
+    acceptanceTestRuntimeOnly.extendsFrom(runtimeOnly, testRuntimeOnly)
+    acceptanceTestImplementation.canBeResolved(true)
+    documentationImplementation.extendsFrom(implementation, testImplementation)
+    documentationRuntimeOnly.extendsFrom(runtimeOnly, testRuntimeOnly)
 }
 
 dependencies {
-	// spring
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // spring
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	// log
-	implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
+    // log
+    implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
 
-	// jwt
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
-	// login binding
-	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.4'
+    // login binding
+    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.4'
 
-	// rest-assured
-	testImplementation 'io.rest-assured:rest-assured:3.3.0'
+    // rest-assured
+    acceptanceTestImplementation 'io.rest-assured:rest-assured:3.3.0'
+    documentationImplementation 'io.rest-assured:rest-assured:3.3.0'
 
-	// cucumber
-	testImplementation 'io.cucumber:cucumber-java:6.10.4'
-	testImplementation 'io.cucumber:cucumber-spring:6.10.4'
-	testImplementation 'io.cucumber:cucumber-junit-platform-engine:6.10.4'
+    // cucumber
+    acceptanceTestImplementation 'io.cucumber:cucumber-java:6.10.4'
+    acceptanceTestImplementation 'io.cucumber:cucumber-spring:6.10.4'
+    acceptanceTestImplementation 'io.cucumber:cucumber-junit-platform-engine:6.10.4'
 
-	// rest docs
-	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.5.RELEASE'
-	testImplementation 'org.springframework.restdocs:spring-restdocs-restassured:2.0.5.RELEASE'
+    // rest docs
+    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.5.RELEASE'
+    documentationImplementation 'org.springframework.restdocs:spring-restdocs-restassured:2.0.5.RELEASE'
 
-	//lombok
-	compileOnly 'org.projectlombok:lombok:1.18.20'
-	annotationProcessor 'org.projectlombok:lombok'
+    //lombok
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok'
 
-	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'mysql:mysql-connector-java'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java'
 }
 
 ext {
-	snippetsDir = file('build/generated-snippets')
+    snippetsDir = file('build/generated-snippets')
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
+}
+
+idea {
+    module {
+        sourceDirs -= file('src/acceptanceTest/java')
+        sourceDirs -= file('src/documentation/java')
+        testSourceDirs += file('src/acceptanceTest/java')
+        testSourceDirs += file('src/documentation/java')
+    }
+}
+
+task documentationTest(type: Test) {
+    testClassesDirs = sourceSets.documentation.output.classesDirs
+    classpath = sourceSets.documentation.runtimeClasspath
+    useJUnitPlatform()
 }
 
 asciidoctor {
-	inputs.dir snippetsDir
-	dependsOn test
-}
-
-bootJar {
-	dependsOn asciidoctor
-	from ("${asciidoctor.outputDir}/html5") {
-		into 'static'
-	}
+    inputs.dir snippetsDir
+    sourceDir 'src/documentation/adoc'
+    dependsOn documentationTest
 }
 
 task createDocument(type: Copy) {
-	dependsOn asciidoctor
+    dependsOn asciidoctor
 
-	from file("build/asciidoc/html5/index.html")
-	into file("src/main/resources/static")
+    from file("build/asciidoc/html5/index.html")
+    into file("src/main/resources/static")
+}
+
+bootJar {
+    dependsOn createDocument
+}
+
+task acceptanceTest(type: Test) {
+    testClassesDirs = sourceSets.acceptanceTest.output.classesDirs
+    classpath = sourceSets.acceptanceTest.runtimeClasspath
+    useJUnitPlatform()
 }
