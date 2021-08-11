@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class MemberUpdateRequest {
-    private String username;
     private String nickname;
     private String imageUrl;
 }

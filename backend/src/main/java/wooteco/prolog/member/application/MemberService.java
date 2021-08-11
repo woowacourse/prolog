@@ -29,11 +29,11 @@ public class MemberService {
         return MemberResponse.of(member);
     }
 
-    public void updateMember(Member member, String username, MemberUpdateRequest updateRequest) {
-        Member persistMember = findByUsername(username);
+    public void updateMember(Member member, MemberUpdateRequest updateRequest) {
+        Member persistMember = findByUsername(member.getUsername());
         validateMember(member, persistMember);
 
-        persistMember.update(updateRequest.getUsername(), updateRequest.getNickname(), updateRequest.getImageUrl());
+        persistMember.update(updateRequest.getNickname(), updateRequest.getImageUrl());
 
         memberDao.updateMember(persistMember);
     }
