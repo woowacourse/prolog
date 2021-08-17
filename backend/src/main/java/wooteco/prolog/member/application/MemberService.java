@@ -45,7 +45,6 @@ public class MemberService {
         validateMember(member, persistMember);
 
         persistMember.update(updateRequest.getNickname(), updateRequest.getImageUrl());
-        System.out.println("");
     }
 
     private void validateMember(Member member, Member persistMember) {
