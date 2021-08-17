@@ -32,6 +32,7 @@ public enum BadRequestCode {
     POST_TITLE_NULL_OR_EMPTY(2002, "글 제목은 공백일 수 없습나다.", PostTitleNullOrEmptyException.class),
     NOT_VALID_SORT_NAME(2003, "정렬 형식이 올바르지 않습니다.", NotValidSortNameException.class),
     POST_NOT_FOUND(2004, "존재하지 않는 글입니다.", PostNotFoundException.class),
+    POST_TITLE_TOO_LONG(2005, "글 제목은 50자를 넘길 수 없습니다.", PostTitleTooLongException.class),
 
     MISSION_NOT_FOUND(3000, "존재하지 않는 미션입니다.", MissionNotFoundException.class),
     DUPLICATE_MISSION(3001, "미션이 중복됩니다.", DuplicateMissionException.class),

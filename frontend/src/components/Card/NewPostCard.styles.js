@@ -17,6 +17,13 @@ const TitleInput = styled.input`
   }
 `;
 
+const TitleCount = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  font-size: 1.2rem;
+  color: #808080;
+`;
+
 const EditorWrapper = styled.div`
   *.tui-editor-defaultUI {
     border: none;
@@ -32,4 +39,4 @@ const EditorWrapper = styled.div`
   }
 `;
 
-export { TitleInput, EditorWrapper };
+export { TitleInput, TitleCount, EditorWrapper };
