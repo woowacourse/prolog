@@ -1,5 +1,6 @@
 package wooteco.prolog.login.ui;
 
+import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.MethodParameter;
@@ -9,12 +10,10 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import wooteco.prolog.login.application.AuthorizationExtractor;
 import wooteco.prolog.login.application.JwtTokenProvider;
-import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
-import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.login.excetpion.TokenNotValidException;
-
-import javax.servlet.http.HttpServletRequest;
+import wooteco.prolog.member.application.MemberService;
+import wooteco.prolog.member.domain.Member;
 
 @AllArgsConstructor
 @Profile("!docu")

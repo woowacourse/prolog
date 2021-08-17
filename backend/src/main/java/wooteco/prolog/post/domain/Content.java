@@ -1,12 +1,11 @@
 package wooteco.prolog.post.domain;
 
 
+import java.util.Objects;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import wooteco.prolog.post.exception.PostContentNullOrEmptyException;
-
-import java.util.Objects;
 
 @Getter
 @EqualsAndHashCode

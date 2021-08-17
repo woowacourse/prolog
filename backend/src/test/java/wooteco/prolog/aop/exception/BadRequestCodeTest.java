@@ -1,11 +1,12 @@
 package wooteco.prolog.aop.exception;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.login.excetpion.GithubApiFailException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
-
-import static org.assertj.core.api.Assertions.*;
 
 class BadRequestCodeTest {
 

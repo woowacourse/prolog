@@ -1,12 +1,15 @@
 package wooteco.prolog.tag.ui;
 
+import java.util.List;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.tag.application.TagService;
 import wooteco.prolog.tag.dto.TagRequest;
 import wooteco.prolog.tag.dto.TagResponse;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/tags")

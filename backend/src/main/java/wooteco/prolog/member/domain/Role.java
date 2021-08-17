@@ -1,8 +1,7 @@
 package wooteco.prolog.member.domain;
 
-import wooteco.prolog.login.excetpion.RoleNameNotFoundException;
-
 import java.util.Arrays;
+import wooteco.prolog.login.excetpion.RoleNameNotFoundException;
 
 public enum Role {
 
@@ -13,8 +12,8 @@ public enum Role {
 
     public static Role of(String role) {
         return Arrays.stream(values())
-                .filter(value -> value.name().equals(role))
+                .filter(value -> value.name().equalsIgnoreCase(role))
                 .findFirst()
-                .orElseThrow(() -> new RoleNameNotFoundException());
+                .orElseThrow(RoleNameNotFoundException::new);
     }
 }

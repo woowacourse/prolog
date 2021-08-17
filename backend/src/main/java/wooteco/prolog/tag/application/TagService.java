@@ -1,5 +1,10 @@
 package wooteco.prolog.tag.application;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import wooteco.prolog.tag.dao.PostTagDao;
 import wooteco.prolog.tag.dao.TagDao;
@@ -7,12 +12,6 @@ import wooteco.prolog.tag.domain.Tag;
 import wooteco.prolog.tag.dto.TagRequest;
 import wooteco.prolog.tag.dto.TagResponse;
 import wooteco.prolog.tag.exception.DuplicateTagException;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class TagService {

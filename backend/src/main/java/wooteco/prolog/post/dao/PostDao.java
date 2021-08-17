@@ -1,5 +1,15 @@
 package wooteco.prolog.post.dao;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -13,18 +23,6 @@ import wooteco.prolog.post.domain.Direction;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.post.domain.Title;
 import wooteco.prolog.tag.domain.Tag;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.Stream;
-
-
-/*
-TODO 2. Mission
- */
 
 @Repository
 public class PostDao {
@@ -84,7 +82,7 @@ public class PostDao {
     }
 
     private static Member extractMember(ResultSet rs) throws SQLException {
-        long memberId = rs.getLong("member_id");
+        Long memberId = rs.getLong("member_id");
         String username = rs.getString("username");
         String nickname = rs.getString("nickname");
         Role role = Role.of(rs.getString("role"));
@@ -95,7 +93,7 @@ public class PostDao {
     }
 
     private static Tag extractTag(ResultSet rs) throws SQLException {
-        long tagId = rs.getLong("tag_id");
+        Long tagId = rs.getLong("tag_id");
         String tagName = rs.getString("tag_name");
 
         return new Tag(tagId, tagName);

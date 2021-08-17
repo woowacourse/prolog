@@ -1,11 +1,10 @@
 package wooteco.prolog.post.domain;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import wooteco.prolog.member.domain.Member;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")

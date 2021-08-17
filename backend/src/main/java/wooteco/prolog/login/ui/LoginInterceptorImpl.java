@@ -1,16 +1,14 @@
 package wooteco.prolog.login.ui;
 
+import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerInterceptor;
 import wooteco.prolog.login.application.AuthorizationExtractor;
 import wooteco.prolog.login.application.GithubLoginService;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Objects;
 
 @Profile("!docu")
 @Component

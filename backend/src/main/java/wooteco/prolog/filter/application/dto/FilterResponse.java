@@ -1,13 +1,11 @@
 package wooteco.prolog.filter.application.dto;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.tag.dto.TagResponse;
-
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor

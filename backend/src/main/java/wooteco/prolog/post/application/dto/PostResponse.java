@@ -1,5 +1,7 @@
 package wooteco.prolog.post.application.dto;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,9 +9,6 @@ import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.tag.dto.TagResponse;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor

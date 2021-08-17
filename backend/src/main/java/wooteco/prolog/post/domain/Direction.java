@@ -1,8 +1,7 @@
 package wooteco.prolog.post.domain;
 
-import wooteco.prolog.post.exception.NotValidSortNameException;
-
 import java.util.Arrays;
+import wooteco.prolog.post.exception.NotValidSortNameException;
 
 public enum Direction {
     DESC,

@@ -4,20 +4,20 @@ import org.springframework.stereotype.Service;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.application.dto.TokenRequest;
 import wooteco.prolog.login.application.dto.TokenResponse;
-import wooteco.prolog.member.dao.MemberDao;
-import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.login.excetpion.TokenNotValidException;
+import wooteco.prolog.member.application.MemberService;
+import wooteco.prolog.member.domain.Member;
 
 @Service
 public class GithubLoginService {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final MemberDao memberDao;
+    private final MemberService memberDao;
     private final GithubClient githubClient;
 
     public GithubLoginService(
             JwtTokenProvider jwtTokenProvider,
-            MemberDao memberDao,
+            MemberService memberDao,
             GithubClient githubClient
     ) {
         this.jwtTokenProvider = jwtTokenProvider;
@@ -28,7 +28,7 @@ public class GithubLoginService {
     public TokenResponse createToken(TokenRequest tokenRequest) {
         String githubAccessToken = githubClient.getAccessTokenFromGithub(tokenRequest.getCode());
         GithubProfileResponse githubProfile = githubClient.getGithubProfileFromGithub(githubAccessToken);
-        Member member = findOrCreateMember(githubProfile);
+        Member member = memberDao.findOrCreateMember(githubProfile);
         String accessToken = jwtTokenProvider.createToken(member);
         return TokenResponse.of(accessToken);
     }
@@ -37,10 +37,5 @@ public class GithubLoginService {
         if (!jwtTokenProvider.validateToken(credentials)) {
             throw new TokenNotValidException();
         }
-    }
-
-    public Member findOrCreateMember(GithubProfileResponse githubProfile) {
-        return memberDao.findByGithubId(githubProfile.getGithubId())
-                .orElseGet(() -> memberDao.insert(githubProfile.toMember()));
     }
 }

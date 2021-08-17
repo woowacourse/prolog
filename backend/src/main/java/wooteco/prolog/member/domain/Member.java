@@ -1,22 +1,39 @@
 package wooteco.prolog.member.domain;
 
+import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Objects;
-
-@NoArgsConstructor
+@Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
+@Table(name = "member")
 public class Member {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column
     private String username;
+    @Column
     private String nickname;
+    @Enumerated(EnumType.STRING)
     private Role role;
+    @Column
     private Long githubId;
+    @Column
     private String imageUrl;
 
     public Member(String username, String nickname, Role role, Long githubId, String imageUrl) {

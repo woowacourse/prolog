@@ -1,13 +1,11 @@
 package wooteco.prolog.tag.dao;
 
+import static wooteco.prolog.tag.dao.TagDao.tagRowMapper;
+
+import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import wooteco.prolog.tag.domain.Tag;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static wooteco.prolog.tag.dao.TagDao.tagRowMapper;
 
 @Repository
 public class PostTagDao {

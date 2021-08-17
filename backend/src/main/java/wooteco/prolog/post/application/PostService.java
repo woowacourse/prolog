@@ -1,5 +1,9 @@
 package wooteco.prolog.post.application;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.dto.MemberResponse;
@@ -7,8 +11,8 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.post.application.dto.PageRequest;
-import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
+import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.application.dto.PostsResponse;
 import wooteco.prolog.post.dao.PostDao;
 import wooteco.prolog.post.domain.Post;
@@ -17,11 +21,6 @@ import wooteco.prolog.post.exception.PostArgumentException;
 import wooteco.prolog.post.exception.PostNotFoundException;
 import wooteco.prolog.tag.application.TagService;
 import wooteco.prolog.tag.dto.TagResponse;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -54,13 +53,6 @@ public class PostService {
         int totalCount = postDao.count(missions, tags);
         int totalPage = pageRequest.calculateTotalPage(totalCount);
         return new PostsResponse(postResponses, totalCount, totalPage, pageRequest.getPage());
-    }
-
-    public List<PostResponse> findAllOfMine(Member member) {
-        List<Post> posts = postDao.findAllByMemberId(member.getId());
-        return posts.stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
     }
 
     public PostsResponse findPostsOf(String username, PageRequest pageRequest) {
