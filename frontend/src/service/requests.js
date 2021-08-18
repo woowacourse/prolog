@@ -36,15 +36,17 @@ const requestDeletePost = (postId, accessToken) =>
     },
   });
 
-const requestGetProfile = (username) =>
-  fetch(`${BASE_URL}/members/${username}/profile`, {
-    method: 'GET',
-  });
+const requestGetProfile = (username) => fetch(`${BASE_URL}/members/${username}/profile`);
 
-const requestGetUserPosts = (username) =>
-  fetch(`${BASE_URL}/members/${username}/posts`, {
-    method: 'GET',
-  });
+const requestGetUserPosts = (username, filteringOption) => {
+  const filterQuery = Object.entries(filteringOption).length
+    ? `?${Object.entries(filteringOption)[0].join('=')}`
+    : '';
+
+  return fetch(`${BASE_URL}/members/${username}/posts${filterQuery}`);
+};
+
+const requestGetUserTags = (username) => fetch(`${BASE_URL}/members/${username}/tags`);
 
 export {
   requestGetPosts,
@@ -56,4 +58,5 @@ export {
   requestGetUserPosts,
   requestDeletePost,
   requestGetProfile,
+  requestGetUserTags,
 };

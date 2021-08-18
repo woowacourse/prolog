@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
-import { Button, BUTTON_SIZE } from '../../components';
-import { requestGetUserPosts } from '../../service/requests';
+import { Button, BUTTON_SIZE, Tag } from '../../components';
+import { requestGetUserPosts, requestGetUserTags } from '../../service/requests';
 import {
   Container,
   Content,
@@ -18,6 +18,7 @@ import {
 } from './styles';
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
+import useFetch from '../../hooks/useFetch';
 
 const ProfilePagePosts = () => {
   const history = useHistory();
@@ -27,8 +28,11 @@ const ProfilePagePosts = () => {
 
   const [hoverdPostId, setHoveredPostId] = useState(0);
   const [posts, setPosts] = useState([]);
+  const [selectedTagId, setSelectedTagId] = useState(-1);
+  const [filteringOption, setFilteringOption] = useState({});
 
   const { error: postError, deleteData: deletePost } = usePost({});
+  const [tags] = useFetch([], () => requestGetUserTags(username));
 
   const goTargetPost = (id) => {
     history.push(`${PATH.POST}/${id}`);
@@ -40,9 +44,9 @@ const ProfilePagePosts = () => {
     history.push(`${PATH.POST}/${id}/edit`);
   };
 
-  const getUserPosts = async () => {
+  const getUserPosts = useCallback(async () => {
     try {
-      const response = await requestGetUserPosts(username);
+      const response = await requestGetUserPosts(username, filteringOption);
 
       if (!response.ok) {
         throw new Error(response.status);
@@ -53,7 +57,7 @@ const ProfilePagePosts = () => {
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [username, filteringOption]);
 
   const onDeletePost = async (event, id) => {
     event.stopPropagation();
@@ -72,13 +76,52 @@ const ProfilePagePosts = () => {
 
   useEffect(() => {
     getUserPosts();
-  }, [username]);
+  }, [username, getUserPosts]);
+
+  useEffect(() => {
+    if (selectedTagId === -1) {
+      setFilteringOption({});
+    } else {
+      setFilteringOption({ tagId: selectedTagId });
+    }
+  }, [selectedTagId]);
+
+  /*
+    selectedTagId가 바뀌면 그에따라 
+      1. filteringOption을 {tagId: (ex)2 } 로 바꾸고 
+      2. selectedDate 초기화
+    selectedDate가 바뀌면 그에따라 
+      1. filteringOption을 {date: asdas } 로 바꾸고
+      2. selectedTagId 초기화
+    
+    이렇게 filteringOption을 공유하면 어떨까 합니다!
+   */
 
   return (
     <Container>
+      <div>
+        <Tag
+          id={-1}
+          name="All"
+          postCount={posts.length}
+          selectedTagId={selectedTagId}
+          onClick={() => setSelectedTagId(-1)}
+        />
+        {tags?.data?.map(({ id, name, postCount }) => (
+          <Tag
+            key={id}
+            id={id}
+            name={name}
+            postCount={postCount}
+            selectedTagId={selectedTagId}
+            onClick={() => setSelectedTagId(id)}
+          />
+        ))}
+      </div>
+      <div>calendar을 넣어줘 디토~!</div>
       {posts.length ? (
         posts.map((post) => {
-          const { id, mission, title, tags } = post;
+          const { id, mission, title, tags, content } = post;
 
           return (
             <PostItem
@@ -88,41 +131,38 @@ const ProfilePagePosts = () => {
               onMouseEnter={() => setHoveredPostId(id)}
               onMouseLeave={() => setHoveredPostId(0)}
             >
-              <Content>
-                <Description>
-                  <Mission>{mission.name}</Mission>
-                  <Title>{title}</Title>
-                  <Tags>
-                    {tags.map(({ id, name }) => (
-                      <span key={id}>{`#${name} `}</span>
-                    ))}
-                  </Tags>
-                </Description>
-              </Content>
-              {hoverdPostId === id && myName === username && (
-                <ButtonList>
-                  <Button
-                    size={BUTTON_SIZE.X_SMALL}
-                    type="button"
-                    css={EditButtonStyle}
-                    alt="수정 버튼"
-                    onClick={goEditTargetPost(id)}
-                  >
-                    수정
-                  </Button>
-                  <Button
-                    size={BUTTON_SIZE.X_SMALL}
-                    type="button"
-                    css={DeleteButtonStyle}
-                    alt="삭제 버튼"
-                    onClick={(e) => {
-                      onDeletePost(e, id);
-                    }}
-                  >
-                    삭제
-                  </Button>
-                </ButtonList>
-              )}
+              <Description>
+                <Mission>{mission.name}</Mission>
+                <Title isHovered={id === hoverdPostId}>{title}</Title>
+                <Content>{content}</Content>
+                <Tags>
+                  {tags.map(({ id, name }) => (
+                    <span key={id}>{`#${name} `}</span>
+                  ))}
+                </Tags>
+              </Description>
+              <ButtonList isVisible={hoverdPostId === id && myName === username}>
+                <Button
+                  size={BUTTON_SIZE.X_SMALL}
+                  type="button"
+                  css={EditButtonStyle}
+                  alt="수정 버튼"
+                  onClick={goEditTargetPost(id)}
+                >
+                  수정
+                </Button>
+                <Button
+                  size={BUTTON_SIZE.X_SMALL}
+                  type="button"
+                  css={DeleteButtonStyle}
+                  alt="삭제 버튼"
+                  onClick={(e) => {
+                    onDeletePost(e, id);
+                  }}
+                >
+                  삭제
+                </Button>
+              </ButtonList>
             </PostItem>
           );
         })
