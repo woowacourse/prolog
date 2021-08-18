@@ -22,6 +22,10 @@ const Container = styled.div`
   }
 `;
 
+const CalendarWrapper = styled.div`
+  margin-bottom: 2.4rem;
+`;
+
 const PostItem = styled.div`
   width: 100%;
   padding: 2.4rem 1.6rem;
@@ -115,6 +119,7 @@ const DeleteButtonStyle = css`
 
 export {
   Container,
+  CalendarWrapper,
   Content,
   Description,
   Mission,
