@@ -91,7 +91,7 @@ const Day = styled.button`
   cursor: pointer;
   font-size: inherit;
 
-  ${({ isSunday, isSaturday, isHover, count }) => css`
+  ${({ isSunday, isSaturday, isHover, isSelected, count }) => css`
     ${isHover &&
     css`
       &::after {
@@ -126,6 +126,20 @@ const Day = styled.button`
     ${isSaturday &&
     css`
       color: #1ea7fd;
+    `}
+
+    ${isSelected &&
+    css`
+      &::after {
+        position: absolute;
+        content: '';
+        width: 3rem;
+        height: 0.5rem;
+        transform: translateX(-50%);
+        left: 50%;
+        bottom: -0.5rem;
+        background-color: #1ea7fd;
+      }
     `}
   `}
 `;

@@ -30,8 +30,9 @@ const DAYS_LEAP = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const WEEK = ['일', '월', '화', '수', '목', '금', '토'];
 const MONTHS = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
 
-const Calendar = ({ setSelectedDate }) => {
-  const today = new Date();
+const Calendar = ({ newDate, onClick = () => {}, selectedDay = -1, setSelectedDay = () => {} }) => {
+  const today = newDate ? new Date(newDate.year, newDate.month - 1, newDate.day) : new Date();
+
   const [date, setDate] = useState(today);
   const [currentDay, setCurrentDay] = useState(date.getDate());
   const [currentMonth, setCurrentMonth] = useState(date.getMonth());
@@ -88,7 +89,10 @@ const Calendar = ({ setSelectedDate }) => {
       <Header>
         <button
           type="button"
-          onClick={() => setDate(new Date(currentYear, currentMonth - 1, currentDay))}
+          onClick={() => {
+            setDate(new Date(currentYear, currentMonth - 1, currentDay));
+            setSelectedDay(-1);
+          }}
         >
           <ArrowIcon width="2rem" height="2rem" />
         </button>
@@ -98,7 +102,10 @@ const Calendar = ({ setSelectedDate }) => {
         </div>
         <button
           type="button"
-          onClick={() => setDate(new Date(currentYear, currentMonth + 1, currentDay))}
+          onClick={() => {
+            setDate(new Date(currentYear, currentMonth + 1, currentDay));
+            setSelectedDay(-1);
+          }}
         >
           <ArrowIcon width="2rem" height="2rem" />
         </button>
@@ -140,9 +147,13 @@ const Calendar = ({ setSelectedDate }) => {
                     isSunday={isSunday}
                     isSaturday={isSaturday}
                     isHover={index === titleListIndex}
+                    isSelected={selectedDay === day}
                     onMouseEnter={() => setTitleListIndex(index)}
                     onMouseLeave={() => setTitleListIndex(null)}
-                    onClick={() => setSelectedDate?.(currentYear, currentMonth + 1, day)}
+                    onClick={() => {
+                      onClick(currentYear, currentMonth + 1, day);
+                      setSelectedDay(day);
+                    }}
                     count={targetTitleList.length}
                   >
                     {day}
