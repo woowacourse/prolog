@@ -159,11 +159,25 @@ public class PostDao {
         return jdbcTemplate.query(query, postsResultSetExtractor, username);
     }
 
+    public List<Post> findAllByMemberIdWithPage(Long memberId, PageRequest pageRequest) {
+        String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, username, role, github_id, image_url, tag.id as tag_id " +
+                "FROM (SELECT * from post where member_id = ? ";
+
+        query += createSortQuery(pageRequest.getDirection()) +
+                createPagingQuery(pageRequest.getSize(), pageRequest.getPage()) +
+                ") AS po " +
+                "LEFT JOIN member AS me ON po.member_id = me.id " +
+                "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
+                "LEFT JOIN tag ON pt.tag_id = tag.id";
+
+        return jdbcTemplate.query(query, postsResultSetExtractor, memberId);
+    }
+
     public List<Post> findWithFilter(List<Long> missions, List<Long> tags, PageRequest pageRequest) {
         String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, username, role, github_id, image_url, tag.id as tag_id " +
                 "FROM (SELECT * from post where 1=1 ";
 
-        if(!Objects.isNull(tags) && !tags.isEmpty()) {
+        if (!Objects.isNull(tags) && !tags.isEmpty()) {
             query += "and post.id in " +
                     "(SELECT pt.post_id from post_tag as pt where 1=1 " +
                     createDynamicColumnQuery("pt.tag_id", tags) +
