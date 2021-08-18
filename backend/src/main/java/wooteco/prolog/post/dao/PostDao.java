@@ -146,13 +146,15 @@ public class PostDao {
 
     public List<Post> findAllByUsername(String username, PageRequest pageRequest) {
         String query = "SELECT po.id as id, member_id, created_at, updated_at, title, content, mission_id, nickname, username, role, github_id, image_url, tag.id as tag_id " +
-                "FROM post AS po " +
+                "FROM (SELECT * from post where 1=1 ";
+
+        query += createSortQuery(pageRequest.getDirection()) +
+                createPagingQuery(pageRequest.getSize(), pageRequest.getPage()) +
+                ") AS po " +
                 "LEFT JOIN member AS me ON po.member_id = me.id " +
                 "LEFT JOIN post_tag AS pt ON po.id = pt.post_id " +
                 "LEFT JOIN tag ON pt.tag_id = tag.id " +
                 "WHERE me.username = ?";
-        query += createSortQuery(pageRequest.getDirection());
-        query += createPagingQuery(pageRequest.getSize(), pageRequest.getPage());
 
         return jdbcTemplate.query(query, postsResultSetExtractor, username);
     }
