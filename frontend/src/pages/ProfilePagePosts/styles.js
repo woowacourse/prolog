@@ -5,6 +5,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 1.6rem;
+  padding: 2.4rem;
 `;
 
 const PostItem = styled.div`
