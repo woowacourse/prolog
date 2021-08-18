@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
 import { Button, BUTTON_SIZE, Pagination, Tag, Calendar } from '../../components';
 import { requestGetUserPosts, requestGetUserTags } from '../../service/requests';
@@ -33,16 +33,15 @@ const ProfilePagePosts = () => {
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const myName = useSelector((state) => state.user.profile.data?.username);
   const { username } = useParams();
+  const { state } = useLocation();
 
-  const [hoverdPostId, setHoveredPostId] = useState(0);
+  const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
+  const [hoveredPostId, setHoveredPostId] = useState(0);
   const [posts, setPosts] = useState([]);
   const [selectedTagId, setSelectedTagId] = useState(-1);
+  const [selectedDay, setSelectedDay] = useState(state ? state.date.day : -1);
   const [filteringOption, setFilteringOption] = useState({});
   const [postQueryParams, setPostQueryParams] = useState(initialPostQueryParams);
-  const [selectedDate, setSelectedDate] = useState('');
-
-  const setDate = (year, month, day) =>
-    setSelectedDate(`${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`);
 
   const { error: postError, deleteData: deletePost } = usePost({});
   const [tags] = useFetch([], () => requestGetUserTags(username));
@@ -92,36 +91,30 @@ const ProfilePagePosts = () => {
     setPostQueryParams({ ...postQueryParams, page });
   };
 
+  const resetFilteringOption = () => setFilteringOption({});
+
+  const setFilteringOptionWithTagId = (id) => setFilteringOption({ tagId: id });
+
+  const setFilteringOptionWithDate = (year, month, day) =>
+    setFilteringOption({
+      date: `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`,
+    });
+
   useEffect(() => {
+    if (!shouldInitialLoad) {
+      setShouldInitialLoad(true);
+
+      return;
+    }
+
     getUserPosts();
-  }, [username, getUserPosts]);
+  }, [username, getUserPosts, shouldInitialLoad]);
 
   useEffect(() => {
-    if (selectedTagId === -1) {
-      setFilteringOption({});
-    } else {
-      setFilteringOption({ tagId: selectedTagId });
-    }
-  }, [selectedTagId]);
+    if (!state) return;
 
-  useEffect(() => {
-    if (selectedDate === '') {
-      setFilteringOption({});
-    } else {
-      setFilteringOption({ date: selectedDate });
-    }
-  }, [selectedDate]);
-
-  /*
-    selectedTagId가 바뀌면 그에따라 
-      1. filteringOption을 {tagId: (ex)2 } 로 바꾸고 
-      2. selectedDate 초기화
-    selectedDate가 바뀌면 그에따라 
-      1. filteringOption을 {date: asdas } 로 바꾸고
-      2. selectedTagId 초기화
-    
-    이렇게 filteringOption을 공유하면 어떨까 합니다!
-   */
+    setFilteringOptionWithDate(state.date.year, state.date.month, state.date.day);
+  }, [state]);
 
   return (
     <Container>
@@ -131,7 +124,11 @@ const ProfilePagePosts = () => {
           name="All"
           postCount={posts?.data?.length ?? 0}
           selectedTagId={selectedTagId}
-          onClick={() => setSelectedTagId(-1)}
+          onClick={() => {
+            setSelectedTagId(-1);
+            setSelectedDay(-1);
+            resetFilteringOption();
+          }}
         />
         {tags?.data?.map(({ id, name, postCount }) => (
           <Tag
@@ -140,12 +137,24 @@ const ProfilePagePosts = () => {
             name={name}
             postCount={postCount}
             selectedTagId={selectedTagId}
-            onClick={() => setSelectedTagId(id)}
+            onClick={() => {
+              setSelectedTagId(id);
+              setSelectedDay(-1);
+              setFilteringOptionWithTagId(id);
+            }}
           />
         ))}
       </div>
       <CalendarWrapper>
-        <Calendar setSelectedDate={setDate} />
+        <Calendar
+          newDate={state?.date}
+          onClick={(year, month, day) => {
+            setSelectedTagId(-1);
+            setFilteringOptionWithDate(year, month, day);
+          }}
+          selectedDay={selectedDay}
+          setSelectedDay={setSelectedDay}
+        />
       </CalendarWrapper>
       <PostList>
         {posts?.data?.length ? (
@@ -163,7 +172,7 @@ const ProfilePagePosts = () => {
                 >
                   <Description>
                     <Mission>{mission.name}</Mission>
-                    <Title isHovered={id === hoverdPostId}>{title}</Title>
+                    <Title isHovered={id === hoveredPostId}>{title}</Title>
                     <Content>{content}</Content>
                     <Tags>
                       {tags.map(({ id, name }) => (
@@ -171,7 +180,7 @@ const ProfilePagePosts = () => {
                       ))}
                     </Tags>
                   </Description>
-                  <ButtonList isVisible={hoverdPostId === id && myName === username}>
+                  <ButtonList isVisible={hoveredPostId === id && myName === username}>
                     <Button
                       size={BUTTON_SIZE.X_SMALL}
                       type="button"
