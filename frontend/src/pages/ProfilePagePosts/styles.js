@@ -32,16 +32,28 @@ const CalendarWrapper = styled.div`
 
 const PostItem = styled.div`
   width: 100%;
-  padding: 2.4rem 1.6rem;
+  padding: 2.4rem;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid #e6e6e6;
+  /* border-top: 1px solid #e6e6e6; */
   display: gird;
   grid-template-columns: 8fr 2fr;
 
   &:hover {
     background-color: #f9f9f9;
+  }
+`;
+
+const PostList = styled.div`
+  width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  border-radius: 1.6rem;
+  padding: 2.4rem 0;
+
+  & > *:not(:last-child) {
+    border-bottom: 1px solid #e6e6e6;
   }
 `;
 
@@ -134,4 +146,5 @@ export {
   NoPost,
   EditButtonStyle,
   DeleteButtonStyle,
+  PostList,
 };

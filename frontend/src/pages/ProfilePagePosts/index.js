@@ -16,6 +16,7 @@ import {
   NoPost,
   EditButtonStyle,
   DeleteButtonStyle,
+  PostList,
 } from './styles';
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
@@ -69,7 +70,7 @@ const ProfilePagePosts = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [username, filteringOption]);
+  }, [username, filteringOption, postQueryParams]);
 
   const onDeletePost = async (event, id) => {
     event.stopPropagation();
@@ -127,7 +128,7 @@ const ProfilePagePosts = () => {
         <Tag
           id={-1}
           name="All"
-          postCount={posts.length}
+          postCount={posts?.data?.length ?? 0}
           selectedTagId={selectedTagId}
           onClick={() => setSelectedTagId(-1)}
         />
@@ -145,56 +146,61 @@ const ProfilePagePosts = () => {
       <CalendarWrapper>
         <Calendar />
       </CalendarWrapper>
-      {posts.length ? (
-        posts.map((post) => {
-          const { id, mission, title, tags, content } = post;
+      <PostList>
+        {posts?.data?.length ? (
+          <>
+            {posts?.data?.map((post) => {
+              const { id, mission, title, tags, content } = post;
 
-          return (
-            <PostItem
-              key={id}
-              size="SMALL"
-              onClick={() => goTargetPost(id)}
-              onMouseEnter={() => setHoveredPostId(id)}
-              onMouseLeave={() => setHoveredPostId(0)}
-            >
-              <Description>
-                <Mission>{mission.name}</Mission>
-                <Title isHovered={id === hoverdPostId}>{title}</Title>
-                <Content>{content}</Content>
-                <Tags>
-                  {tags.map(({ id, name }) => (
-                    <span key={id}>{`#${name} `}</span>
-                  ))}
-                </Tags>
-              </Description>
-              <ButtonList isVisible={hoverdPostId === id && myName === username}>
-                <Button
-                  size={BUTTON_SIZE.X_SMALL}
-                  type="button"
-                  css={EditButtonStyle}
-                  alt="수정 버튼"
-                  onClick={goEditTargetPost(id)}
+              return (
+                <PostItem
+                  key={id}
+                  size="SMALL"
+                  onClick={() => goTargetPost(id)}
+                  onMouseEnter={() => setHoveredPostId(id)}
+                  onMouseLeave={() => setHoveredPostId(0)}
                 >
-                  수정
-                </Button>
-                <Button
-                  size={BUTTON_SIZE.X_SMALL}
-                  type="button"
-                  css={DeleteButtonStyle}
-                  alt="삭제 버튼"
-                  onClick={(e) => {
-                    onDeletePost(e, id);
-                  }}
-                >
-                  삭제
-                </Button>
-              </ButtonList>
-            </PostItem>
-          );
-        })
-      ) : (
-        <NoPost>작성한 글이 없습니다 🥲</NoPost>
-      )}
+                  <Description>
+                    <Mission>{mission.name}</Mission>
+                    <Title isHovered={id === hoverdPostId}>{title}</Title>
+                    <Content>{content}</Content>
+                    <Tags>
+                      {tags.map(({ id, name }) => (
+                        <span key={id}>{`#${name} `}</span>
+                      ))}
+                    </Tags>
+                  </Description>
+                  <ButtonList isVisible={hoverdPostId === id && myName === username}>
+                    <Button
+                      size={BUTTON_SIZE.X_SMALL}
+                      type="button"
+                      css={EditButtonStyle}
+                      alt="수정 버튼"
+                      onClick={goEditTargetPost(id)}
+                    >
+                      수정
+                    </Button>
+                    <Button
+                      size={BUTTON_SIZE.X_SMALL}
+                      type="button"
+                      css={DeleteButtonStyle}
+                      alt="삭제 버튼"
+                      onClick={(e) => {
+                        onDeletePost(e, id);
+                      }}
+                    >
+                      삭제
+                    </Button>
+                  </ButtonList>
+                </PostItem>
+              );
+            })}
+            <Pagination postsInfo={posts} onSetPage={onSetPage} />
+          </>
+        ) : (
+          <NoPost>작성한 글이 없습니다 🥲</NoPost>
+        )}
+      </PostList>
     </Container>
   );
 };
