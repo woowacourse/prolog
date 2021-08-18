@@ -20,6 +20,8 @@ import wooteco.prolog.post.exception.AuthorNotValidException;
 import wooteco.prolog.post.exception.PostArgumentException;
 import wooteco.prolog.post.exception.PostNotFoundException;
 import wooteco.prolog.tag.application.TagService;
+import wooteco.prolog.tag.domain.Tag;
+import wooteco.prolog.tag.domain.Tags;
 import wooteco.prolog.tag.dto.TagResponse;
 
 @Service
@@ -89,8 +91,8 @@ public class PostService {
     }
 
     private PostResponse insertPost(Member member, PostRequest postRequest) {
-        List<TagResponse> tagResponses = tagService.create(postRequest.getTags());
-        List<Long> tagIds = getTagIds(tagResponses);
+        Tags tags = tagService.create(postRequest.getTags());
+        List<Long> tagIds = getTagIds(tags.toList());
 
         Post requestedPost = new Post(member, postRequest.getTitle(), postRequest.getContent(), postRequest.getMissionId(), tagIds);
         Post createdPost = postDao.insert(requestedPost);
@@ -105,7 +107,7 @@ public class PostService {
                 missionResponse,
                 createdPost.getTitle(),
                 createdPost.getContent(),
-                tagResponses);
+                toResponse(tags.toList()));
     }
 
     public PostResponse findById(Long id) {
@@ -117,17 +119,24 @@ public class PostService {
     }
 
     private PostResponse toResponse(Post post) {
-        List<TagResponse> tagResponses = tagService.getTagsOfPost(post.getId());
+        List<Tag> tags = tagService.getTagsOfPost(post.getId());
+
         MissionResponse missionResponse = missionService.findById(post.getMissionId());
-        return new PostResponse(post, missionResponse, tagResponses);
+        return new PostResponse(post, missionResponse, toResponse(tags));
+    }
+
+    private List<TagResponse> toResponse(List<Tag> tags){
+        return tags.stream()
+                .map(TagResponse::of)
+                .collect(Collectors.toList());
     }
 
     public void updatePost(Member member, Long id, PostRequest postRequest) {
         PostResponse post = findById(id);
         validateAuthor(member, post);
 
-        List<TagResponse> tags = tagService.create(postRequest.getTags());
-        List<Long> tagIds = getTagIds(tags);
+        tagService.create(postRequest.getTags());
+        List<Long> tagIds = getTagIds(tagService.getTagsOfPost(id));
 
         Post updatedPost = new Post(
                 member,
@@ -143,7 +152,7 @@ public class PostService {
     }
 
     private void removeTagsByUpdate(Long id, List<Long> tagIds) {
-        List<TagResponse> originTags = tagService.getTagsOfPost(id);
+        List<Tag> originTags = tagService.getTagsOfPost(id);
         List<Long> originTagIds = getTagIds(originTags);
         List<Long> removedTagIds = originTagIds.stream()
                 .filter(tagId -> !tagIds.contains(tagId))
@@ -151,9 +160,9 @@ public class PostService {
         tagService.removeTagFromPost(id, removedTagIds);
     }
 
-    private List<Long> getTagIds(List<TagResponse> originTags) {
+    private List<Long> getTagIds(List<Tag> originTags) {
         return originTags.stream()
-                .map(TagResponse::getId)
+                .map(Tag::getId)
                 .collect(Collectors.toList());
     }
 

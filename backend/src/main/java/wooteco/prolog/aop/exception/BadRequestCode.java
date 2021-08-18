@@ -17,6 +17,7 @@ import wooteco.prolog.post.exception.PostArgumentException;
 import wooteco.prolog.post.exception.PostContentNullOrEmptyException;
 import wooteco.prolog.post.exception.PostNotFoundException;
 import wooteco.prolog.tag.exception.DuplicateTagException;
+import wooteco.prolog.tag.exception.TagNameNullOrEmptyException;
 
 @AllArgsConstructor
 @Getter
@@ -38,7 +39,8 @@ public enum BadRequestCode {
 
     MISSION_NOT_FOUND(3000, "존재하지 않는 미션입니다.", MissionNotFoundException.class),
     DUPLICATE_MISSION(3001, "미션이 중복됩니다.", DuplicateMissionException.class),
-    DUPLICATE_TAG(3002, "태그가 중복됩니다.", DuplicateTagException.class)
+    DUPLICATE_TAG(3002, "태그가 중복됩니다.", DuplicateTagException.class),
+    TAG_NAME_NULL_OR_EMPTY(3003, "태그 이름이 null이거나 비어있습니다.", TagNameNullOrEmptyException .class)
     ;
 
     private int code;

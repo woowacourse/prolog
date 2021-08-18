@@ -1,56 +1,40 @@
 package wooteco.prolog.tag.application;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Optional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.tag.dao.PostTagDao;
-import wooteco.prolog.tag.dao.TagDao;
 import wooteco.prolog.tag.domain.Tag;
+import wooteco.prolog.tag.domain.Tags;
+import wooteco.prolog.tag.domain.repository.TagRepository;
 import wooteco.prolog.tag.dto.TagRequest;
 import wooteco.prolog.tag.dto.TagResponse;
-import wooteco.prolog.tag.exception.DuplicateTagException;
 
 @Service
+@AllArgsConstructor
+@Transactional(readOnly = true)
 public class TagService {
 
-    private final TagDao tagDao;
+    private final TagRepository tagRepository;
     private final PostTagDao postTagDao;
 
-    public TagService(TagDao tagDao, PostTagDao postTagDao) {
-        this.tagDao = tagDao;
-        this.postTagDao = postTagDao;
-    }
-
-    public List<TagResponse> create(List<TagRequest> tagRequests) {
-        List<String> requestedTagNames = tagRequests.stream()
+    @Transactional
+    public Tags create(List<TagRequest> tagRequests) {
+        Tags requestTags = tagRequests.stream()
                 .map(TagRequest::getName)
-                .collect(Collectors.toList());
-        validate(requestedTagNames);
+                .collect(collectingAndThen(toList(), Tags::of));
 
-        List<Tag> tags = tagDao.findAll();
+        Tags existTags = new Tags(tagRepository.findByNameValueIn(requestTags.toNames()));
 
-        List<Tag> updateTags = new ArrayList<>();
-        for (String name : requestedTagNames) {
-            Tag insertTag = tags.stream()
-                    .filter(tag -> tag.sameAs(name))
-                    .findAny()
-                    .orElseGet(() -> tagDao.insert(name));
-            updateTags.add(insertTag);
-        }
+        Tags newTags = requestTags.removeAllByName(existTags);
+        tagRepository.saveAll(newTags.toList());
 
-        return updateTags.stream()
-                .map(TagResponse::of)
-                .collect(Collectors.toList());
-    }
-
-    private void validate(List<String> tagNames) {
-        Set<String> stringSet = new HashSet<>(tagNames);
-        if (tagNames.size() != stringSet.size()) {
-            throw new DuplicateTagException();
-        }
+        return existTags.addAll(newTags);
     }
 
     public void addTagToPost(Long postId, List<Long> tagIds) {
@@ -66,19 +50,26 @@ public class TagService {
         tagIds.forEach(tagId -> postTagDao.delete(postId, tagId));
     }
 
-    public List<TagResponse> getTagsOfPost(Long id) {
+    public List<Tag> getTagsOfPost(Long id) {
         List<Long> tagIds = postTagDao.findByPostId(id);
         return tagIds.stream()
-                .map(tagDao::findById)
-                .map(TagResponse::of)
-                .collect(Collectors.toList());
+                .map(tagRepository::findById)
+                .map(Optional::get)
+                .collect(toList());
     }
 
-    public List<TagResponse> findAll() {
+    public List<TagResponse> findAllWithPost() {
         return postTagDao.findAll()
-                .stream()
-                .map(TagResponse::of)
-                .collect(Collectors.toList());
+            .stream()
+            .map(TagResponse::of)
+            .collect(toList());
+    }
+
+    public List<TagResponse> findAll(){
+        return tagRepository.findAll()
+            .stream()
+            .map(TagResponse::of)
+            .collect(toList());
     }
 
     public void deletePostTagByPostId(Long postId) {

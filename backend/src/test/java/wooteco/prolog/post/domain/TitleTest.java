@@ -18,11 +18,11 @@ class TitleTest {
         //when
         //then
         assertThatThrownBy(() -> new Title(empty))
-                .isInstanceOf(PostTitleNullOrEmptyException.class);
+                .isExactlyInstanceOf(PostTitleNullOrEmptyException.class);
         assertThatThrownBy(() -> new Title(justBlank))
-                .isInstanceOf(PostTitleNullOrEmptyException.class);
+                .isExactlyInstanceOf(PostTitleNullOrEmptyException.class);
         assertThatThrownBy(() -> new Title(null))
-                .isInstanceOf(PostTitleNullOrEmptyException.class);
+                .isExactlyInstanceOf(PostTitleNullOrEmptyException.class);
     }
 
     @DisplayName("생성")

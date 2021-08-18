@@ -13,20 +13,30 @@ public class Title {
     private final String title;
 
     public Title(String title) {
-        String trimTitle = trim(title);
-        validateNullOrEmpty(trimTitle);
-        this.title = trim(trimTitle);
+        validateNull(title);
+        validateEmpty(title);
+        validateOnlyBlank(title);
+        this.title = trim(title);
     }
 
-    private String trim(String title) {
-        if (Objects.nonNull(title)) {
-            return title.trim();
+    private String trim(String name) {
+        return name.trim();
+    }
+
+    private void validateNull(String title) {
+        if (Objects.isNull(title)) {
+            throw new PostTitleNullOrEmptyException();
         }
-        return null;
     }
 
-    private void validateNullOrEmpty(String title) {
-        if (Objects.isNull(title) || title.isEmpty()) {
+    private void validateEmpty(String title) {
+        if (title.isEmpty()) {
+            throw new PostTitleNullOrEmptyException();
+        }
+    }
+
+    private void validateOnlyBlank(String title) {
+        if (title.trim().isEmpty()) {
             throw new PostTitleNullOrEmptyException();
         }
     }

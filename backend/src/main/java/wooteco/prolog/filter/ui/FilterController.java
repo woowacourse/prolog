@@ -23,7 +23,7 @@ public class FilterController {
     @GetMapping
     public ResponseEntity<FilterResponse> showAll() {
         List<MissionResponse> missionResponses = missionService.findAll();
-        List<TagResponse> tagResponses = tagService.findAll();
+        List<TagResponse> tagResponses = tagService.findAllWithPost();
         return ResponseEntity.ok().body(new FilterResponse(missionResponses, tagResponses));
     }
 }
