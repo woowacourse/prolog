@@ -13,11 +13,10 @@ import {
   TitleList,
 } from './Calendar.styles';
 import { ReactComponent as ArrowIcon } from '../../assets/images/right-arrow-angle.svg';
-
-const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-const DAYS_LEAP = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-const WEEK = ['일', '월', '화', '수', '목', '금', '토'];
-const MONTHS = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+import useCalendar from '../../hooks/useCalendar';
+import useFetch from '../../hooks/useFetch';
+import { requestGetCalendar } from '../../service/requests';
+import { useParams } from 'react-router';
 
 const getStartDayOfMonth = (year, month) => {
   return new Date(year, month, 1).getDay();
@@ -27,16 +26,28 @@ const isLeapYear = (year) => {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 };
 
-const Calendar = ({ titleData = [] }) => {
+const DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+const DAYS_LEAP = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+const WEEK = ['일', '월', '화', '수', '목', '금', '토'];
+const MONTHS = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+
+const Calendar = () => {
   const today = new Date();
   const [date, setDate] = useState(today);
   const [currentDay, setCurrentDay] = useState(date.getDate());
   const [currentMonth, setCurrentMonth] = useState(date.getMonth());
   const [currentYear, setCurrentYear] = useState(date.getFullYear());
   const [startDay, setStartDay] = useState(getStartDayOfMonth(currentYear, currentMonth));
+  const [titleList, setTitleList] = useState([]);
   const [titleListIndex, setTitleListIndex] = useState(null);
 
-  const [titleList, setTitleList] = useState([]);
+  const { username } = useParams();
+
+  const [{ data: titleData = [] }] = useFetch([], () =>
+    requestGetCalendar(currentYear, currentMonth + 1, username)
+  );
+
+  const { setSelectedDate } = useCalendar();
 
   const days = isLeapYear(currentYear) ? DAYS_LEAP : DAYS;
 
@@ -134,7 +145,7 @@ const Calendar = ({ titleData = [] }) => {
                     isHover={index === titleListIndex}
                     onMouseEnter={() => setTitleListIndex(index)}
                     onMouseLeave={() => setTitleListIndex(null)}
-                    onClick={() => setDate(new Date(currentYear, currentMonth, day))}
+                    onClick={() => setSelectedDate(currentYear, currentMonth + 1, day)}
                     count={targetTitleList.length}
                   >
                     {day}

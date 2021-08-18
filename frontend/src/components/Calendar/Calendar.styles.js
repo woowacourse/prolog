@@ -9,7 +9,7 @@ const countColor = {
 };
 
 const Container = styled.div`
-  width: 60rem;
+  min-width: 30rem;
   border: 1px solid #ccc;
   border-radius: 15px;
   padding-bottom: 1rem;
@@ -19,7 +19,7 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 3rem;
+  padding: 1rem 3rem;
 
   & svg {
     vertical-align: middle;
@@ -32,13 +32,13 @@ const Header = styled.div`
 
 const Year = styled.div`
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
   line-height: 1;
 `;
 
 const Month = styled.div`
   text-align: center;
-  font-size: 4rem;
+  font-size: 2.5rem;
   line-height: 1;
 `;
 
@@ -46,7 +46,7 @@ const CalendarWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 30rem;
+  height: 22rem;
 `;
 
 const WeekWrapper = styled.ul`
@@ -101,7 +101,7 @@ const Day = styled.button`
         height: 0.5rem;
         transform: translateX(-50%);
         left: 50%;
-        bottom: -1rem;
+        bottom: -0.5rem;
         background-color: #1ea7fd8a;
       }
     `}
@@ -109,8 +109,8 @@ const Day = styled.button`
     &::before {
       position: absolute;
       content: '';
-      width: 3rem;
-      height: 3rem;
+      width: 2.5rem;
+      height: 2.5rem;
       transform: translate(-50%, -50%);
       left: 50%;
       top: 50%;
@@ -135,7 +135,7 @@ const TitleList = styled.div`
   top: -0.5rem;
   border: 1px solid #ccc;
   border-radius: 10px;
-  width: 20rem;
+  min-width: 15rem;
   padding: 0.5rem;
   z-index: 1;
   background-color: white;

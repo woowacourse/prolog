@@ -48,6 +48,11 @@ const requestGetUserPosts = (username, filteringOption) => {
 
 const requestGetUserTags = (username) => fetch(`${BASE_URL}/members/${username}/tags`);
 
+const requestGetCalendar = (year, month, username) =>
+  fetch(`${BASE_URL}/members/${username}/calendar-posts?year=${year}&month=${month}`, {
+    method: 'GET',
+  });
+
 export {
   requestGetPosts,
   requestGetPost,
@@ -59,4 +64,5 @@ export {
   requestDeletePost,
   requestGetProfile,
   requestGetUserTags,
+  requestGetCalendar,
 };

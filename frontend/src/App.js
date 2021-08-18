@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import { NavBar } from './components';
+import { CalendarProvider, NavBar } from './components';
 import styled from '@emotion/styled';
 import { PROFILE_PAGE_MENU, PATH } from './constants';
 import GlobalStyles from './GlobalStyles';
@@ -46,9 +46,11 @@ const App = () => {
               exact
               path={`${PATH.PROFILE_POSTS}`}
               render={() => (
-                <ProfilePage menu={PROFILE_PAGE_MENU.POSTS}>
-                  <ProfilePagePosts />
-                </ProfilePage>
+                <CalendarProvider>
+                  <ProfilePage menu={PROFILE_PAGE_MENU.POSTS}>
+                    <ProfilePagePosts />
+                  </ProfilePage>
+                </CalendarProvider>
               )}
             />
             <Route

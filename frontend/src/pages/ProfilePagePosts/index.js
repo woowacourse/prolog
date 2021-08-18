@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
-import { Button, BUTTON_SIZE, Tag } from '../../components';
+import { Button, BUTTON_SIZE, Tag, Calendar } from '../../components';
 import { requestGetUserPosts, requestGetUserTags } from '../../service/requests';
 import {
   Container,
   Content,
+  CalendarWrapper,
   Description,
   Mission,
   Title,
@@ -19,12 +20,15 @@ import {
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
 import useFetch from '../../hooks/useFetch';
+import useCalendar from '../../hooks/useCalendar';
 
 const ProfilePagePosts = () => {
   const history = useHistory();
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const myName = useSelector((state) => state.user.profile.data?.username);
   const { username } = useParams();
+
+  const { selectedDate } = useCalendar();
 
   const [hoverdPostId, setHoveredPostId] = useState(0);
   const [posts, setPosts] = useState([]);
@@ -86,6 +90,14 @@ const ProfilePagePosts = () => {
     }
   }, [selectedTagId]);
 
+  useEffect(() => {
+    if (selectedDate === '') {
+      setFilteringOption({});
+    } else {
+      setFilteringOption({ date: selectedDate });
+    }
+  }, [selectedDate]);
+
   /*
     selectedTagId가 바뀌면 그에따라 
       1. filteringOption을 {tagId: (ex)2 } 로 바꾸고 
@@ -118,7 +130,9 @@ const ProfilePagePosts = () => {
           />
         ))}
       </div>
-      <div>calendar을 넣어줘 디토~!</div>
+      <CalendarWrapper>
+        <Calendar />
+      </CalendarWrapper>
       {posts.length ? (
         posts.map((post) => {
           const { id, mission, title, tags, content } = post;
