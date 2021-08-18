@@ -6,7 +6,7 @@ const PaginationContainer = styled.div`
   justify-content: center;
   margin-top: 3rem;
 
-  *:not(:first-child) {
+  *:not(:first-of-type) {
     margin-left: 1rem;
   }
 `;
