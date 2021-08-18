@@ -4,11 +4,7 @@ import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
 import useFetch from '../../hooks/useFetch';
-import {
-  requestGetPosts,
-  requestGetFilters,
-  requestGetFilteredPosts,
-} from '../../service/requests';
+import { requestGetPosts, requestGetFilters } from '../../service/requests';
 import { useSelector } from 'react-redux';
 import {
   HeaderContainer,
@@ -40,7 +36,6 @@ const MainPage = () => {
   const [selectedFilter, setSelectedFilter] = useState('');
   const [selectedFilterDetails, setSelectedFilterDetails] = useState([]);
 
-  const [postsInfo, setPostsInfo] = useState([]);
   const [filters] = useFetch([], requestGetFilters);
 
   const goTargetPost = (id) => {
@@ -86,7 +81,6 @@ const MainPage = () => {
         const response = await requestGetPosts(selectedFilterDetails, postQueryParams);
         const data = await response.json();
 
-        setPostsInfo(data);
         setPosts(data);
       } catch (error) {
         console.error(error);
@@ -153,7 +147,7 @@ const MainPage = () => {
             );
           })}
       </PostListContainer>
-      <Pagination postsInfo={postsInfo} onSetPage={onSetPage}></Pagination>
+      <Pagination postsInfo={posts} onSetPage={onSetPage}></Pagination>
     </>
   );
 };

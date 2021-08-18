@@ -24,6 +24,10 @@ const Container = styled.div`
 
 const CalendarWrapper = styled.div`
   margin-bottom: 2.4rem;
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 1.6rem;
+  padding: 2.4rem;
 `;
 
 const PostItem = styled.div`

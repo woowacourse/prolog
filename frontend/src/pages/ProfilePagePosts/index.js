@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
-import { Button, BUTTON_SIZE, Tag, Calendar } from '../../components';
+import { Button, BUTTON_SIZE, Pagination, Tag, Calendar } from '../../components';
 import { requestGetUserPosts, requestGetUserTags } from '../../service/requests';
 import {
   Container,
@@ -22,6 +22,12 @@ import usePost from '../../hooks/usePost';
 import useFetch from '../../hooks/useFetch';
 import useCalendar from '../../hooks/useCalendar';
 
+const initialPostQueryParams = {
+  page: 1,
+  size: 10,
+  direction: 'desc',
+};
+
 const ProfilePagePosts = () => {
   const history = useHistory();
   const accessToken = useSelector((state) => state.user.accessToken.data);
@@ -34,6 +40,7 @@ const ProfilePagePosts = () => {
   const [posts, setPosts] = useState([]);
   const [selectedTagId, setSelectedTagId] = useState(-1);
   const [filteringOption, setFilteringOption] = useState({});
+  const [postQueryParams, setPostQueryParams] = useState(initialPostQueryParams);
 
   const { error: postError, deleteData: deletePost } = usePost({});
   const [tags] = useFetch([], () => requestGetUserTags(username));
@@ -50,14 +57,15 @@ const ProfilePagePosts = () => {
 
   const getUserPosts = useCallback(async () => {
     try {
-      const response = await requestGetUserPosts(username, filteringOption);
+      const response = await requestGetUserPosts(username, postQueryParams, filteringOption);
 
       if (!response.ok) {
         throw new Error(response.status);
       }
+
       const posts = await response.json();
 
-      setPosts(posts.data);
+      setPosts(posts);
     } catch (error) {
       console.error(error);
     }
@@ -76,6 +84,10 @@ const ProfilePagePosts = () => {
     }
 
     getUserPosts();
+  };
+
+  const onSetPage = (page) => {
+    setPostQueryParams({ ...postQueryParams, page });
   };
 
   useEffect(() => {

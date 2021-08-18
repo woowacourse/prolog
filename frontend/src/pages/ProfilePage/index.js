@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
-import postIcon from '../../assets/images/post.png';
-import overviewIcon from '../../assets/images/overview.png';
+import { ReactComponent as PostIcon } from '../../assets/images/post.svg';
+import { ReactComponent as OverviewIcon } from '../../assets/images/overview.svg';
 import waitImage from '../../assets/images/wait.png';
 import {
   Container,
   Profile,
   Image,
   Nickname,
-  RightSection,
   MenuList,
   MenuItem,
-  MenuIcon,
   MenuButton,
   Role,
   Content,
   Preparing,
+  SideBar,
 } from './styles';
 import { PROFILE_PAGE_MENU } from '../../constants';
 import { requestGetProfile } from '../../service/requests';
@@ -81,23 +80,30 @@ const ProfilePage = ({ children, menu }) => {
 
   return (
     <Container>
-      <Profile>
-        <Image src={user?.imageUrl} alt="프로필 이미지" />
-        <Role>{user?.role}</Role>
-        <Nickname>{user?.nickname}</Nickname>
-      </Profile>
-      <RightSection>
+      <SideBar>
+        <Profile>
+          <Image src={user?.imageUrl} alt="프로필 이미지" />
+          <Role>{user?.role}</Role>
+          <Nickname>{user?.nickname}</Nickname>
+        </Profile>
         <MenuList>
           <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.OVERVIEW}>
             <MenuButton value={PROFILE_PAGE_MENU.OVERVIEW} type="button" onClick={goProfilePage}>
-              <MenuIcon src={overviewIcon} alt="overview icon" />
-              Overview
+              {/* <MenuIcon src={overviewIcon} alt="overview icon" /> */}
+              <OverviewIcon width="16" height="16" />
+              관리 홈
             </MenuButton>
           </MenuItem>
           <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.POSTS}>
             <MenuButton value={PROFILE_PAGE_MENU.POSTS} type="button" onClick={goProfilePagePosts}>
-              <MenuIcon src={postIcon} alt="posts icon" />
-              Posts
+              <PostIcon width="16" height="16" />
+              학습로그
+            </MenuButton>
+          </MenuItem>
+          <MenuItem isSelectedMenu={selectedMenu === 'asd'}>
+            <MenuButton value={PROFILE_PAGE_MENU.POSTS} type="button" onClick={goProfilePagePosts}>
+              <PostIcon width="16" height="16" />
+              리포트
             </MenuButton>
           </MenuItem>
           {/* <MenuItem>
@@ -106,17 +112,17 @@ const ProfilePage = ({ children, menu }) => {
             </button>
           </MenuItem> */}
         </MenuList>
-        <Content>
-          {children ? (
-            children
-          ) : (
-            <Preparing>
-              <img src={waitImage} alt="준비중 이미지" />
-              <div>준비 중이애오. 조금만 기다려 주새오.</div>
-            </Preparing>
-          )}
-        </Content>
-      </RightSection>
+      </SideBar>
+      <Content>
+        {children ? (
+          children
+        ) : (
+          <Preparing>
+            <img src={waitImage} alt="준비중 이미지" />
+            <div>준비 중이애오. 조금만 기다려 주새오.</div>
+          </Preparing>
+        )}
+      </Content>
     </Container>
   );
 };

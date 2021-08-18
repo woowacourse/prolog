@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.login.excetpion.PostTitleTooLongException;
+import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.mission.application.MissionService;
@@ -14,7 +16,6 @@ import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.post.application.dto.PageRequest;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
-import wooteco.prolog.post.application.dto.PostSearchRequest;
 import wooteco.prolog.post.application.dto.PostsResponse;
 import wooteco.prolog.post.dao.PostDao;
 import wooteco.prolog.post.domain.Post;
@@ -29,11 +30,13 @@ public class PostService {
     private final PostDao postDao;
     private final MissionService missionService;
     private final TagService tagService;
+    private final MemberService memberService;
 
-    public PostService(PostDao postDao, MissionService missionService, TagService tagService) {
+    public PostService(PostDao postDao, MissionService missionService, TagService tagService, MemberService memberService) {
         this.postDao = postDao;
         this.missionService = missionService;
         this.tagService = tagService;
+        this.memberService = memberService;
     }
 
     public List<PostResponse> findAll() {
@@ -64,12 +67,9 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public PostsResponse findPostsOf(String username, PageRequest pageRequest, PostSearchRequest postSearchRequest) {
-        List<Post> posts = postDao.findAllByUsername(username, pageRequest);
-
-        // TODO : JPA 완성 시 동적 쿼리로 이동
-        posts = filterBySearch(posts, postSearchRequest);
-
+    public PostsResponse findPostsOf(String username, PageRequest pageRequest) {
+        Member member = memberService.findByUsername(username);
+        List<Post> posts = postDao.findAllByMemberIdWithPage(member.getId(), pageRequest);
         List<PostResponse> postResponses = posts.stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
@@ -105,6 +105,12 @@ public class PostService {
 
     @Transactional
     public List<PostResponse> insertPosts(Member member, List<PostRequest> postRequests) {
+        postRequests.stream()
+                .filter(it -> it.getTitle().length() > 50)
+                .findAny()
+                .ifPresent(it -> {
+                    throw new PostTitleTooLongException();
+                });
         if (postRequests.size() == 0) {
             throw new PostArgumentException();
         }
@@ -136,7 +142,7 @@ public class PostService {
 
     public PostResponse findById(Long id) {
         Post post = postDao.findById(id);
-        if(Objects.isNull(post)) {
+        if (Objects.isNull(post)) {
             throw new PostNotFoundException();
         }
         return toResponse(post);
