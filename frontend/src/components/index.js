@@ -12,5 +12,4 @@ export { default as CreatableSelectBox } from './CreatableSelectBox/CreatableSel
 export { default as Pagination } from './Pagination/Pagination';
 export { default as NotFound } from './NotFound/NotFound';
 export { default as Tag } from './Tag/Tag';
-export { default as CalendarProvider, CalendarContext } from './Calendar/CalendarProvider';
 export { default as Calendar } from './Calendar/Calendar';

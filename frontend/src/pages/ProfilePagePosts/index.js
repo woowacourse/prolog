@@ -20,7 +20,6 @@ import {
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
 import useFetch from '../../hooks/useFetch';
-import useCalendar from '../../hooks/useCalendar';
 
 const ProfilePagePosts = () => {
   const history = useHistory();
@@ -28,12 +27,14 @@ const ProfilePagePosts = () => {
   const myName = useSelector((state) => state.user.profile.data?.username);
   const { username } = useParams();
 
-  const { selectedDate } = useCalendar();
-
   const [hoverdPostId, setHoveredPostId] = useState(0);
   const [posts, setPosts] = useState([]);
   const [selectedTagId, setSelectedTagId] = useState(-1);
   const [filteringOption, setFilteringOption] = useState({});
+  const [selectedDate, setSelectedDate] = useState('');
+
+  const setDate = (year, month, day) =>
+    setSelectedDate(`${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`);
 
   const { error: postError, deleteData: deletePost } = usePost({});
   const [tags] = useFetch([], () => requestGetUserTags(username));
@@ -131,7 +132,7 @@ const ProfilePagePosts = () => {
         ))}
       </div>
       <CalendarWrapper>
-        <Calendar />
+        <Calendar setSelectedDate={setDate} />
       </CalendarWrapper>
       {posts.length ? (
         posts.map((post) => {
