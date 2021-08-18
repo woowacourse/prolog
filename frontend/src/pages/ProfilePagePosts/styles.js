@@ -24,7 +24,6 @@ const Container = styled.div`
 
 const PostItem = styled.div`
   width: 100%;
-  height: 18.2rem;
   padding: 2.4rem 1.6rem;
   cursor: pointer;
   display: flex;
@@ -48,6 +47,7 @@ const Content = styled.div`
   -webkit-box-orient: vertical;
   height: 4.8rem;
   word-break: break-all;
+  margin: 1.4rem 0;
 `;
 
 const Description = styled.div`
@@ -64,15 +64,15 @@ const Mission = styled.div`
 
 const Title = styled.h3`
   font-size: 2.6rem;
-
-  color: #383838;
+  /* color: ${({ isHovered }) => (isHovered ? '#709EC0' : '#383838')}; */
   font-weight: bold;
 `;
 
 const Tags = styled.div`
   font-size: 1.2rem;
-  color: #848484;
+  color: #777777;
   margin-top: auto;
+  line-height: 1.5;
 `;
 
 const ButtonList = styled.div`
@@ -80,14 +80,8 @@ const ButtonList = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 1.6rem;
-  ${({ isVisible }) =>
-    isVisible
-      ? css`
-          visibility: visible;
-        `
-      : css`
-          visibility: hidden;
-        `}
+
+  visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
 `;
 
 const NoPost = styled.div`
@@ -99,7 +93,9 @@ const NoPost = styled.div`
 const EditButtonStyle = css`
   border: 1px solid #e6e6e6;
   background-color: #fff;
-
+  /* color: #709ec0;
+  width: fit-content;
+  height: fit-content; */
   &:hover {
     background-color: #e8e8e8;
   }
@@ -108,6 +104,9 @@ const EditButtonStyle = css`
 const DeleteButtonStyle = css`
   border: 1px solid #e6e6e6;
   background-color: #f59898;
+  /* width: fit-content;
+  color: #709ec0;
+  height: fit-content; */
 
   &:hover {
     background-color: #f08484;

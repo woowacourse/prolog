@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
 import { Button, BUTTON_SIZE, Tag } from '../../components';
@@ -28,6 +28,8 @@ const ProfilePagePosts = () => {
 
   const [hoverdPostId, setHoveredPostId] = useState(0);
   const [posts, setPosts] = useState([]);
+  const [selectedTagId, setSelectedTagId] = useState(-1);
+  const [filteringOption, setFilteringOption] = useState({});
 
   const { error: postError, deleteData: deletePost } = usePost({});
   const [tags] = useFetch([], () => requestGetUserTags(username));
@@ -42,9 +44,9 @@ const ProfilePagePosts = () => {
     history.push(`${PATH.POST}/${id}/edit`);
   };
 
-  const getUserPosts = async () => {
+  const getUserPosts = useCallback(async () => {
     try {
-      const response = await requestGetUserPosts(username);
+      const response = await requestGetUserPosts(username, filteringOption);
 
       if (!response.ok) {
         throw new Error(response.status);
@@ -55,7 +57,7 @@ const ProfilePagePosts = () => {
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [username, filteringOption]);
 
   const onDeletePost = async (event, id) => {
     event.stopPropagation();
@@ -74,19 +76,51 @@ const ProfilePagePosts = () => {
 
   useEffect(() => {
     getUserPosts();
-  }, [username]);
+  }, [username, getUserPosts]);
+
+  useEffect(() => {
+    if (selectedTagId === -1) {
+      setFilteringOption({});
+    } else {
+      setFilteringOption({ tagId: selectedTagId });
+    }
+  }, [selectedTagId]);
+
+  /*
+    selectedTagId가 바뀌면 그에따라 
+      1. filteringOption을 {tagId: (ex)2 } 로 바꾸고 
+      2. selectedDate 초기화
+    selectedDate가 바뀌면 그에따라 
+      1. filteringOption을 {date: asdas } 로 바꾸고
+      2. selectedTagId 초기화
+    
+    이렇게 filteringOption을 공유하면 어떨까 합니다!
+   */
 
   return (
     <Container>
       <div>
+        <Tag
+          id={-1}
+          name="All"
+          postCount={posts.length}
+          selectedTagId={selectedTagId}
+          onClick={() => setSelectedTagId(-1)}
+        />
         {tags?.data?.map(({ id, name, postCount }) => (
-          <Tag key={id} tag={name} postCount={postCount} />
+          <Tag
+            key={id}
+            id={id}
+            name={name}
+            postCount={postCount}
+            selectedTagId={selectedTagId}
+            onClick={() => setSelectedTagId(id)}
+          />
         ))}
       </div>
       <div>calendar을 넣어줘 디토~!</div>
       {posts.length ? (
         posts.map((post) => {
-          console.log(post);
           const { id, mission, title, tags, content } = post;
 
           return (
@@ -99,7 +133,7 @@ const ProfilePagePosts = () => {
             >
               <Description>
                 <Mission>{mission.name}</Mission>
-                <Title>{title}</Title>
+                <Title isHovered={id === hoverdPostId}>{title}</Title>
                 <Content>{content}</Content>
                 <Tags>
                   {tags.map(({ id, name }) => (
