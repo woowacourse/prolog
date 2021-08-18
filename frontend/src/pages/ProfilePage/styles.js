@@ -104,12 +104,24 @@ const Title = styled.div`
 `;
 
 const Preparing = styled.div`
+  display: grid;
   width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 2rem;
-  font-size: 1.8rem;
+  grid-template-columns: repeat(2, 1fr);
+
+  & > * {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+  & > *:nth-of-type(1) {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    min-height: 28rem;
+  }
+  & > *:nth-of-type(2) {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    min-height: 28rem;
+  }
 `;
 
 const SideBar = styled.div`

@@ -20,6 +20,7 @@ import {
 import { PROFILE_PAGE_MENU } from '../../constants';
 import { requestGetProfile } from '../../service/requests';
 import useNotFound from '../../hooks/useNotFound';
+import { Calendar } from '../../components';
 
 const ProfilePage = ({ children, menu }) => {
   const history = useHistory();
@@ -42,6 +43,11 @@ const ProfilePage = ({ children, menu }) => {
 
   const goProfilePageAccount = () => {
     history.push(`/${username}/account`);
+  };
+
+  const goProfilePagePostsWithDate = (year, month, day) => {
+    history.push(`/${username}/posts`, { date: { year, month, day } });
+    setSelectedMenu(PROFILE_PAGE_MENU.POSTS);
   };
 
   const getProfile = async () => {
@@ -118,8 +124,10 @@ const ProfilePage = ({ children, menu }) => {
           children
         ) : (
           <Preparing>
-            <img src={waitImage} alt="준비중 이미지" />
-            <div>준비 중이애오. 조금만 기다려 주새오.</div>
+            <div>
+              <img src={waitImage} alt="준비중 이미지" />
+            </div>
+            <Calendar onClick={goProfilePagePostsWithDate} />
           </Preparing>
         )}
       </Content>
