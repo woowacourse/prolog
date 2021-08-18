@@ -41,7 +41,7 @@ const requestGetProfile = (username) => fetch(`${BASE_URL}/members/${username}/p
 const requestGetUserPosts = (username, postSearchParams, filteringOption) => {
   const searchParams = Object.entries(postSearchParams).map(([key, value]) => `${key}=${value}`);
   const filterQuery = Object.entries(filteringOption).length
-    ? `?${Object.entries(filteringOption)[0].join('=')}`
+    ? `&${Object.entries(filteringOption)[0].join('=')}`
     : '';
 
   return fetch(`${BASE_URL}/members/${username}/posts?${searchParams.join('&')}${filterQuery}`);
