@@ -17,6 +17,7 @@ import wooteco.prolog.post.application.dto.PageRequest;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.application.dto.PostsResponse;
+import wooteco.prolog.post.application.dto.PostSearchRequest;
 import wooteco.prolog.post.dao.PostDao;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.post.exception.AuthorNotValidException;
@@ -67,9 +68,13 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public PostsResponse findPostsOf(String username, PageRequest pageRequest) {
+    public PostsResponse findPostsOf(String username, PageRequest pageRequest, PostSearchRequest postSearchRequest) {
         Member member = memberService.findByUsername(username);
         List<Post> posts = postDao.findAllByMemberIdWithPage(member.getId(), pageRequest);
+
+        // TODO : JPA 완성 시 동적 쿼리로 이동
+        posts = filterBySearch(posts, postSearchRequest);
+
         List<PostResponse> postResponses = posts.stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
