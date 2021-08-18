@@ -1,5 +1,10 @@
 package wooteco.prolog.post.application;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.dto.MemberResponse;
@@ -7,8 +12,9 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.post.application.dto.PageRequest;
-import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
+import wooteco.prolog.post.application.dto.PostResponse;
+import wooteco.prolog.post.application.dto.PostSearchRequest;
 import wooteco.prolog.post.application.dto.PostsResponse;
 import wooteco.prolog.post.dao.PostDao;
 import wooteco.prolog.post.domain.Post;
@@ -17,11 +23,6 @@ import wooteco.prolog.post.exception.PostArgumentException;
 import wooteco.prolog.post.exception.PostNotFoundException;
 import wooteco.prolog.tag.application.TagService;
 import wooteco.prolog.tag.dto.TagResponse;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -63,8 +64,12 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public PostsResponse findPostsOf(String username, PageRequest pageRequest) {
+    public PostsResponse findPostsOf(String username, PageRequest pageRequest, PostSearchRequest postSearchRequest) {
         List<Post> posts = postDao.findAllByUsername(username, pageRequest);
+
+        // TODO : JPA 완성 시 동적 쿼리로 이동
+        posts = filterBySearch(posts, postSearchRequest);
+
         List<PostResponse> postResponses = posts.stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
@@ -72,6 +77,19 @@ public class PostService {
         int totalCount = postDao.countByUsername(username);
         int totalPage = pageRequest.calculateTotalPage(totalCount);
         return new PostsResponse(postResponses, totalCount, totalPage, pageRequest.getPage());
+    }
+
+    // TODO : JPA 완성 시 동적 쿼리로 이동
+    private List<Post> filterBySearch(List<Post> posts,
+            PostSearchRequest postSearchRequest) {
+        Stream<Post> resultStream = posts.stream();
+        if(postSearchRequest.getDate() != null) {
+            resultStream = resultStream.filter(post -> post.getCreatedAt().toLocalDate().isEqual(postSearchRequest.getDate()));
+        }
+        if(postSearchRequest.getTagId() != null) {
+            resultStream = resultStream.filter(post -> post.getTagIds().contains(postSearchRequest.getTagId()));
+        }
+        return resultStream.collect(Collectors.toList());
     }
 
     public PostsResponse findPostsWithFilter(List<Long> missions, List<Long> tags) {
