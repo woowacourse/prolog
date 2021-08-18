@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
-import { Button, BUTTON_SIZE } from '../../components';
-import { requestGetUserPosts } from '../../service/requests';
+import { Button, BUTTON_SIZE, Tag } from '../../components';
+import { requestGetUserPosts, requestGetUserTags } from '../../service/requests';
 import {
   Container,
   Content,
@@ -18,6 +18,7 @@ import {
 } from './styles';
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
+import useFetch from '../../hooks/useFetch';
 
 const ProfilePagePosts = () => {
   const history = useHistory();
@@ -29,6 +30,7 @@ const ProfilePagePosts = () => {
   const [posts, setPosts] = useState([]);
 
   const { error: postError, deleteData: deletePost } = usePost({});
+  const [tags] = useFetch([], () => requestGetUserTags(username));
 
   const goTargetPost = (id) => {
     history.push(`${PATH.POST}/${id}`);
@@ -76,9 +78,16 @@ const ProfilePagePosts = () => {
 
   return (
     <Container>
+      <div>
+        {tags?.data?.map(({ id, name, postCount }) => (
+          <Tag key={id} tag={name} postCount={postCount} />
+        ))}
+      </div>
+      <div>calendar을 넣어줘 디토~!</div>
       {posts.length ? (
         posts.map((post) => {
-          const { id, mission, title, tags } = post;
+          console.log(post);
+          const { id, mission, title, tags, content } = post;
 
           return (
             <PostItem
@@ -88,41 +97,38 @@ const ProfilePagePosts = () => {
               onMouseEnter={() => setHoveredPostId(id)}
               onMouseLeave={() => setHoveredPostId(0)}
             >
-              <Content>
-                <Description>
-                  <Mission>{mission.name}</Mission>
-                  <Title>{title}</Title>
-                  <Tags>
-                    {tags.map(({ id, name }) => (
-                      <span key={id}>{`#${name} `}</span>
-                    ))}
-                  </Tags>
-                </Description>
-              </Content>
-              {hoverdPostId === id && myName === username && (
-                <ButtonList>
-                  <Button
-                    size={BUTTON_SIZE.X_SMALL}
-                    type="button"
-                    css={EditButtonStyle}
-                    alt="수정 버튼"
-                    onClick={goEditTargetPost(id)}
-                  >
-                    수정
-                  </Button>
-                  <Button
-                    size={BUTTON_SIZE.X_SMALL}
-                    type="button"
-                    css={DeleteButtonStyle}
-                    alt="삭제 버튼"
-                    onClick={(e) => {
-                      onDeletePost(e, id);
-                    }}
-                  >
-                    삭제
-                  </Button>
-                </ButtonList>
-              )}
+              <Description>
+                <Mission>{mission.name}</Mission>
+                <Title>{title}</Title>
+                <Content>{content}</Content>
+                <Tags>
+                  {tags.map(({ id, name }) => (
+                    <span key={id}>{`#${name} `}</span>
+                  ))}
+                </Tags>
+              </Description>
+              <ButtonList isVisible={hoverdPostId === id && myName === username}>
+                <Button
+                  size={BUTTON_SIZE.X_SMALL}
+                  type="button"
+                  css={EditButtonStyle}
+                  alt="수정 버튼"
+                  onClick={goEditTargetPost(id)}
+                >
+                  수정
+                </Button>
+                <Button
+                  size={BUTTON_SIZE.X_SMALL}
+                  type="button"
+                  css={DeleteButtonStyle}
+                  alt="삭제 버튼"
+                  onClick={(e) => {
+                    onDeletePost(e, id);
+                  }}
+                >
+                  삭제
+                </Button>
+              </ButtonList>
             </PostItem>
           );
         })

@@ -54,4 +54,8 @@ const ProfileChipStyle = css`
   }
 `;
 
-export { CardInner, SubHeader, Mission, Title, Tags, IssuedDate, ProfileChipStyle };
+const Content = styled.div`
+  word-break: break-all;
+`;
+
+export { CardInner, SubHeader, Mission, Title, Tags, IssuedDate, ProfileChipStyle, Content };
