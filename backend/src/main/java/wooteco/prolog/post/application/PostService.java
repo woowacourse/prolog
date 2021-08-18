@@ -3,6 +3,7 @@ package wooteco.prolog.post.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.excetpion.PostTitleTooLongException;
+import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.mission.application.MissionService;
@@ -29,11 +30,13 @@ public class PostService {
     private final PostDao postDao;
     private final MissionService missionService;
     private final TagService tagService;
+    private final MemberService memberService;
 
-    public PostService(PostDao postDao, MissionService missionService, TagService tagService) {
+    public PostService(PostDao postDao, MissionService missionService, TagService tagService, MemberService memberService) {
         this.postDao = postDao;
         this.missionService = missionService;
         this.tagService = tagService;
+        this.memberService = memberService;
     }
 
     public List<PostResponse> findAll() {
@@ -65,7 +68,8 @@ public class PostService {
     }
 
     public PostsResponse findPostsOf(String username, PageRequest pageRequest) {
-        List<Post> posts = postDao.findAllByUsername(username, pageRequest);
+        Member member = memberService.findByUsername(username);
+        List<Post> posts = postDao.findAllByMemberIdWithPage(member.getId(), pageRequest);
         List<PostResponse> postResponses = posts.stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());
