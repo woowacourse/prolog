@@ -1,12 +1,22 @@
 [[studylogOverview]]
 == 스터디로그 오버뷰
 
-=== 나의 태그 조회
+=== 멤버 태그 조회
 
 ==== Request
 
-include::{snippets}/me/tags/http-request.adoc[]
+include::{snippets}/members/tags/http-request.adoc[]
 
 ==== Response
 
-include::{snippets}/me/tags/http-response.adoc[]
+include::{snippets}/members/tags/http-response.adoc[]
+
+=== 멤버 달력 포스트 조회
+
+==== Request
+
+include::{snippets}/members/calendar-posts/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/members/calendar-posts/http-response.adoc[]
