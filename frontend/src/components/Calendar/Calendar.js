@@ -13,7 +13,6 @@ import {
   TitleList,
 } from './Calendar.styles';
 import { ReactComponent as ArrowIcon } from '../../assets/images/right-arrow-angle.svg';
-import useFetch from '../../hooks/useFetch';
 import { requestGetCalendar } from '../../service/requests';
 import { useParams } from 'react-router';
 
@@ -43,35 +42,47 @@ const Calendar = ({ newDate, onClick = () => {}, selectedDay = -1, setSelectedDa
 
   const { username } = useParams();
 
-  const [{ data: titleData = [] }] = useFetch([], () =>
-    requestGetCalendar(currentYear, currentMonth + 1, username)
-  );
-
   const days = isLeapYear(currentYear) ? DAYS_LEAP : DAYS;
 
   useEffect(() => {
-    const data = [];
+    const getCalendar = async () => {
+      try {
+        const response = await requestGetCalendar(currentYear, currentMonth + 1, username);
 
-    [...Array(days[currentMonth])].forEach((_, index) => {
-      const day = index + 1;
+        if (!response.ok) {
+          throw new Error(await response.text());
+        }
 
-      const firstIndex = titleData.findIndex(
-        ({ createdAt }) => day === Number(createdAt.slice(8, 10))
-      );
+        const { data: titleData } = await response.json();
 
-      const lastIndex = titleData.findIndex(
-        ({ createdAt }) => day < Number(createdAt.slice(8, 10))
-      );
+        const data = [];
 
-      data.push(
-        firstIndex !== -1
-          ? titleData.slice(firstIndex, lastIndex === -1 ? titleData.length : lastIndex)
-          : []
-      );
-    });
+        [...Array(days[currentMonth])].forEach((_, index) => {
+          const day = index + 1;
 
-    setTitleList(data);
-  }, [currentMonth, days, titleData]);
+          const firstIndex = titleData.findIndex(
+            ({ createdAt }) => day === Number(createdAt.slice(8, 10))
+          );
+
+          const lastIndex = titleData.findIndex(
+            ({ createdAt }) => day < Number(createdAt.slice(8, 10))
+          );
+
+          data.push(
+            firstIndex !== -1
+              ? titleData.slice(firstIndex, lastIndex === -1 ? titleData.length : lastIndex)
+              : []
+          );
+        });
+
+        setTitleList(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getCalendar();
+  }, [currentYear, currentMonth, username, days]);
 
   useEffect(() => {
     const year = date.getFullYear();
