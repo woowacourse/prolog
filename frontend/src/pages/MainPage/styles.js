@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import COLOR from '../../constants/color';
 
 const HeaderContainer = styled.div`
   height: 4.8rem;
@@ -36,18 +37,18 @@ const Description = styled.div`
 
 const Mission = styled.div`
   font-size: 1.6rem;
-  color: #383838;
+  color: ${COLOR.DARK_GRAY_900};
 `;
 
 const Title = styled.h3`
   font-size: 2.8rem;
-  color: #383838;
+  color: ${COLOR.DARK_GRAY_900};
   font-weight: bold;
 `;
 
 const Tags = styled.div`
   font-size: 1.2rem;
-  color: #848484;
+  color: ${COLOR.LIGHT_GRAY_900};
   margin-top: auto;
 `;
 
@@ -55,7 +56,7 @@ const ProfileChipLocationStyle = css`
   margin-left: auto;
 
   &:hover {
-    background-color: #dfecf5;
+    background-color: ${COLOR.LIGHT_BLUE_100};
   }
 `;
 

@@ -1,9 +1,10 @@
 import React from 'react';
 import Button from './Button';
 import { css } from '@emotion/react';
+import COLOR from '../../constants/color';
 
 const selectedStyle = css`
-  background-color: #153147;
+  background-color: ${COLOR.DARK_BLUE_800};
   color: white;
 `;
 
