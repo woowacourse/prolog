@@ -1,4 +1,5 @@
 import { css, Global } from '@emotion/react';
+import COLOR from './constants/color';
 
 const GlobalStyles = () => (
   <Global
@@ -19,8 +20,8 @@ const GlobalStyles = () => (
         font-size: 1.6rem;
         min-height: 100vh;
         width: 100%;
-        background-color: #fafafa;
-        color: #333;
+        background-color: ${COLOR.LIGHT_GRAY_50};
+        color: ${COLOR.DARK_GRAY_900};
       }
 
       #root {
@@ -37,7 +38,7 @@ const GlobalStyles = () => (
       a {
         text-decoration: none;
         outline: none;
-        color: black;
+        color: ${COLOR.BLACK_900};
         &:hover,
         &:active,
         &:visited,

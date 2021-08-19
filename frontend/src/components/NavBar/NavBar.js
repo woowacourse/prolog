@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import { css } from '@emotion/react';
 import LogoImage from '../../assets/images/logo.svg';
 import { PATH } from '../../constants';
 import GithubLogin from '../GithubLogin/GithubLogin';
@@ -19,18 +18,10 @@ import {
   Menu,
   DropdownStyle,
   whiteBackgroundStyle,
+  pencilButtonStyle,
+  profileButtonStyle,
 } from './NavBar.styles';
 import { ERROR_MESSAGE } from '../../constants/message';
-
-const pencilButtonStyle = css`
-  width: 4.8rem;
-  background-color: #153147;
-  color: #ffffff;
-`;
-
-const profileButtonStyle = css`
-  width: 4.8rem;
-`;
 
 const NavBar = () => {
   const history = useHistory();

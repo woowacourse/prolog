@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import COLOR from '../../constants/color';
 
 const CardInner = styled.div`
   display: flex;
@@ -22,25 +23,25 @@ const SubHeader = styled.div`
 
 const Mission = styled.div`
   font-size: 2rem;
-  color: #383838;
+  color: ${COLOR.DARK_GRAY_900};
   font-weight: lighter;
 `;
 
 const Title = styled.div`
   font-size: 3.6rem;
-  color: #383838;
+  color: ${COLOR.DARK_GRAY_900};
   font-weight: bold;
   margin-bottom: 2rem;
 `;
 
 const Tags = styled.div`
   font-size: 1.4rem;
-  color: #848484;
+  color: ${COLOR.LIGHT_GRAY_900};
   margin-top: auto;
 `;
 
 const IssuedDate = styled.div`
-  color: #444444;
+  color: ${COLOR.DARK_GRAY_800};
   font-size: 1.4rem;
 `;
 
@@ -50,7 +51,7 @@ const ProfileChipStyle = css`
   cursor: pointer;
 
   &:hover {
-    background-color: #dfecf5;
+    background-color: ${COLOR.LIGHT_BLUE_100};
   }
 `;
 

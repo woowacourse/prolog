@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
+import COLOR from '../../constants/color';
 
 const Container = styled.div`
   height: 4.8rem;
-  border: 1px solid #a7a7a7;
+  border: 1px solid ${COLOR.LIGHT_GRAY_400};
   border-radius: 1.6rem;
-  background-color: #ffffff;
+  background-color: ${COLOR.WHITE};
   padding: 0.5rem;
   box-sizing: border-box;
   display: inline-flex;
@@ -23,7 +24,7 @@ const Nickname = styled.span`
   margin-left: 0.8rem;
   font-size: 1.6rem;
   line-height: 1.5;
-  color: #383838;
+  color: ${COLOR.DARK_GRAY_900};
 `;
 
 export { Container, Image, Nickname };

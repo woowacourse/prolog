@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import COLOR from '../../constants/color';
 
 const Container = styled.div`
   display: flex;
@@ -8,9 +9,9 @@ const Container = styled.div`
 const Profile = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: ${COLOR.WHITE};
   border-radius: 1.6rem;
-  border: 1px solid #e6e6e6;
+  border: 1px solid ${COLOR.LIGHT_GRAY_200};
   padding-bottom: 1.8rem;
   height: fit-content;
 `;
@@ -34,16 +35,16 @@ const Role = styled.div`
   margin-top: 1rem;
   padding-left: 1.2rem;
   font-size: 1.2rem;
-  color: #888888;
+  color: ${COLOR.LIGHT_GRAY_900};
 `;
 
 const MenuList = styled.ul`
   margin-top: 2.4rem;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: ${COLOR.WHITE};
   border-radius: 1.6rem;
-  border: 1px solid #e6e6e6;
+  border: 1px solid ${COLOR.LIGHT_GRAY_200};
   padding: 1.6rem 0;
 `;
 
@@ -63,7 +64,7 @@ const MenuItem = styled.li`
     ${({ isSelectedMenu }) =>
       isSelectedMenu &&
       css`
-        color: #333;
+        color: ${COLOR.DARK_GRAY_900};
         font-weight: 500;
       `}
   }
@@ -73,7 +74,7 @@ const MenuItem = styled.li`
       css`
         position: absolute;
         content: '';
-        background-color: #888888;
+        background-color: ${COLOR.LIGHT_GRAY_900};
         height: inherit;
         width: 0.5rem;
       `}
@@ -85,7 +86,7 @@ const MenuButton = styled.button`
   gap: 0.6rem;
   align-items: center;
   font-size: 1.6rem;
-  color: #888888;
+  color: ${COLOR.LIGHT_GRAY_900};
   font-weight: 300;
   padding: 2rem;
 `;

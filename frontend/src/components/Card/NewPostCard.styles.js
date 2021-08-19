@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import COLOR from '../../constants/color';
 
 const TitleInput = styled.input`
   width: 100%;
@@ -21,7 +22,7 @@ const TitleCount = styled.div`
   display: flex;
   justify-content: flex-end;
   font-size: 1.2rem;
-  color: #808080;
+  color: ${COLOR.LIGHT_GRAY_900};
 `;
 
 const EditorWrapper = styled.div`
