@@ -2,6 +2,7 @@ package wooteco.prolog.login.ui.auto_interceptor_register;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import wooteco.prolog.login.ui.auto_interceptor_register.scanner.ClassScanner;
 import wooteco.prolog.login.ui.auto_interceptor_register.test_classes.ControllerClass;
 import wooteco.prolog.login.ui.auto_interceptor_register.test_classes.RestControllerClass;
 import wooteco.prolog.login.ui.auto_interceptor_register.test_classes.NormalClass;

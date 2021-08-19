@@ -1,4 +1,4 @@
-package wooteco.prolog.login.ui.auto_interceptor_register;
+package wooteco.prolog.login.ui.auto_interceptor_register.scanner;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
