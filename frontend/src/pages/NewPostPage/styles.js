@@ -1,33 +1,26 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import COLOR from '../../constants/color';
 
 // TODO: section 으로 바꾸기 -> aria-label 주기
 const SelectBoxWrapper = styled.div`
   margin: 3rem 0;
 `;
 
-const Flex = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 3rem 0;
-`;
-
-const Post = styled.li`
+const Post = styled.div`
   margin-bottom: 4.8rem;
-`;
-
-const LogButtonStyle = css`
-  background-color: #e0e0e0;
-  font-weight: 500;
 `;
 
 const SubmitButtonStyle = css`
   width: 100%;
-  background-color: #153147;
-  color: #ffffff;
+  background-color: ${COLOR.DARK_BLUE_800};
+  color: ${COLOR.WHITE};
   font-weight: 500;
   margin: 0;
+
+  &:hover {
+    background-color: ${COLOR.DARK_BLUE_900};
+  }
 `;
 
-export { SelectBoxWrapper, Flex, Post, LogButtonStyle, SubmitButtonStyle };
+export { SelectBoxWrapper, Post, SubmitButtonStyle };

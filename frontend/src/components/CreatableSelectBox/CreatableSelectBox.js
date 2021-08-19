@@ -1,4 +1,5 @@
 import CreatableSelect from 'react-select/creatable';
+import COLOR from '../../constants/color';
 
 const selectStyles = {
   container: (styles) => ({
@@ -15,7 +16,7 @@ const selectStyles = {
   valueContainer: (styles) => ({ ...styles, padding: '0' }),
   multiValue: (styles) => ({
     ...styles,
-    backgroundColor: '#efefef',
+    backgroundColor: COLOR.LIGHT_GRAY_300,
     paddingLeft: '0.3rem',
     borderRadius: '0.6rem',
   }),
@@ -27,7 +28,7 @@ const selectStyles = {
     paddingRight: '0.2rem',
     cursor: 'pointer',
   }),
-  menu: (styles) => ({ ...styles, fontSize: '1.4rem', fontColor: '#333333' }),
+  menu: (styles) => ({ ...styles, fontSize: '1.4rem', fontColor: COLOR.DARK_GRAY_900 }),
 };
 
 const CreatableSelectBox = ({ isMulti = true, options, placeholder, onChange, ...props }) => (
