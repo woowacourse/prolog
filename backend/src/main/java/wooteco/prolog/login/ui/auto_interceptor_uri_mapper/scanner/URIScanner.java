@@ -3,16 +3,15 @@ package wooteco.prolog.login.ui.auto_interceptor_uri_mapper.scanner;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 public class URIScanner {
+
+    public static final String REGEX = "\\{.*?.}";
 
     private final ControllerScanner controllerScanner;
     private final MethodScanner methodScanner;
@@ -32,7 +31,7 @@ public class URIScanner {
             List<Method> methods = methodScanner.extractMethodAnnotatedOnParameter(controller);
             List<String> methodUris = extractMethodUri(methods);
 
-            uriAndMethods.addAll(mergeUris(controllerUris, methodUris));
+            uriAndMethods.addAll(createUris(controllerUris, methodUris));
         }
 
         return uriAndMethods;
@@ -49,9 +48,15 @@ public class URIScanner {
                 .collect(toList());
     }
 
+    private Collection<String> createUris(List<String> controllerUris, List<String> methodUris) {
+        return mergeUris(controllerUris, methodUris).stream()
+                .map(uri -> uri.replaceAll(REGEX, "*"))
+                .collect(toList());
+    }
+
     private Collection<String> mergeUris(List<String> controllerUris, List<String> methodUris) {
         controllerUris = new ArrayList<>(controllerUris);
-        List<String> uris = new ArrayList<>();
+        Set<String> uris = new HashSet<>();
 
         if(controllerUris.isEmpty() && !methodUris.isEmpty()) {
             controllerUris.add("");
