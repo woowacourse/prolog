@@ -1,4 +1,4 @@
-package wooteco.prolog.login.ui.auto_interceptor_register.scanner;
+package wooteco.prolog.login.ui.auto_interceptor_uri_mapper.scanner;
 
 import org.springframework.util.StringUtils;
 

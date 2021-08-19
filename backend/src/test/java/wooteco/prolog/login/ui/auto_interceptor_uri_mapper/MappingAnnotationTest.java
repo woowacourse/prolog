@@ -1,4 +1,4 @@
-package wooteco.prolog.login.ui.auto_interceptor_register;
+package wooteco.prolog.login.ui.auto_interceptor_uri_mapper;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
-import wooteco.prolog.login.ui.auto_interceptor_register.scanner.MappingAnnotation;
-import wooteco.prolog.login.ui.auto_interceptor_register.scanner.MethodScanner;
+import wooteco.prolog.login.ui.auto_interceptor_uri_mapper.scanner.MappingAnnotation;
+import wooteco.prolog.login.ui.auto_interceptor_uri_mapper.scanner.MethodScanner;
 
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;

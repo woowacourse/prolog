@@ -1,12 +1,10 @@
-package wooteco.prolog.login.ui.auto_interceptor_register.scanner;
+package wooteco.prolog.login.ui.auto_interceptor_uri_mapper.scanner;
 
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import static java.util.stream.Collectors.toSet;
 
 public class ClassScanner {
 

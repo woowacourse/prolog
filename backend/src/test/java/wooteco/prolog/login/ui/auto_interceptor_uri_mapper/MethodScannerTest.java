@@ -1,11 +1,11 @@
-package wooteco.prolog.login.ui.auto_interceptor_register;
+package wooteco.prolog.login.ui.auto_interceptor_uri_mapper;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
-import wooteco.prolog.login.ui.auto_interceptor_register.scanner.MethodScanner;
-import wooteco.prolog.login.ui.auto_interceptor_register.test_classes.ControllerClass;
-import wooteco.prolog.login.ui.auto_interceptor_register.test_classes.RestControllerClass;
+import wooteco.prolog.login.ui.auto_interceptor_uri_mapper.scanner.MethodScanner;
+import wooteco.prolog.login.ui.auto_interceptor_uri_mapper.test_classes.ControllerClass;
+import wooteco.prolog.login.ui.auto_interceptor_uri_mapper.test_classes.RestControllerClass;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

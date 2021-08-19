@@ -1,10 +1,9 @@
-package wooteco.prolog.login.ui.auto_interceptor_register.scanner;
+package wooteco.prolog.login.ui.auto_interceptor_uri_mapper.scanner;
 
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.GenericDeclaration;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
