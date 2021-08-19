@@ -28,10 +28,10 @@ public enum MappingAnnotation {
         this.values = values;
     }
 
-    public static List<String> extractUriFrom(GenericDeclaration typeToken) {
+    public static List<String> extractUriFrom(GenericDeclaration declaration) {
         return Arrays.stream(values())
-                .filter(httpMethod -> typeToken.isAnnotationPresent(httpMethod.typeToken))
-                .map(httpMethods -> httpMethods.values.apply(typeToken))
+                .filter(httpMethod -> declaration.isAnnotationPresent(httpMethod.typeToken))
+                .map(httpMethods -> httpMethods.values.apply(declaration))
                 .findAny()
                 .orElse(Collections.emptyList());
     }
