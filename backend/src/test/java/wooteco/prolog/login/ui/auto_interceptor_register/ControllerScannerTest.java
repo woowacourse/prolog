@@ -6,27 +6,29 @@ import wooteco.prolog.login.ui.auto_interceptor_register.test_classes.Controller
 import wooteco.prolog.login.ui.auto_interceptor_register.test_classes.RestControllerClass;
 import wooteco.prolog.login.ui.auto_interceptor_register.test_classes.NormalClass;
 
-import java.util.Set;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ClassScannerTest {
+class ControllerScannerTest {
 
-    @DisplayName("하위 패키지의 모든 컨트롤러를 파싱한다.")
+    @DisplayName("클래스 리스트 중에서 컨트롤러 클래스만 추출한다.")
     @Test
-    void getAllClasses() {
+    void extractControllers() {
         // given
-        final String basePackage = "wooteco.prolog.login.ui.auto_interceptor_register.test_classes";
-        ClassScanner classScanner = new ClassScanner(basePackage);
-
-        // when
-        Set<Class<?>> allClasses = classScanner.getAllClasses();
-
-        // then
-        assertThat(allClasses).containsOnly(
+        ControllerScanner controllerScanner = new ControllerScanner(
                 ControllerClass.class,
                 RestControllerClass.class,
                 NormalClass.class
+        );
+
+        // when
+        List<Class<?>> classes = controllerScanner.extractControllers();
+
+        // then
+        assertThat(classes).containsOnly(
+                ControllerClass.class,
+                RestControllerClass.class
         );
     }
 }
