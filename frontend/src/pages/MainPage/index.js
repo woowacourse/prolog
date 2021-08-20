@@ -17,8 +17,11 @@ import {
   Tags,
   ProfileChipLocationStyle,
   CardHoverStyle,
+  SelectedFilterList,
 } from './styles';
 import { ERROR_MESSAGE } from '../../constants/message';
+import Chip from '../../components/Chip/Chip';
+import FlexBox from '../../components/@shared/FlexBox/FlexBox';
 
 const initialPostQueryParams = {
   page: 1,
@@ -61,6 +64,14 @@ const MainPage = () => {
     setSelectedFilterDetails(value);
   };
 
+  const onUnsetFilter = ({ filterType, filterDetailId }) => () => {
+    const newFilters = selectedFilterDetails.filter(
+      (filter) => !(filter.filterType === filterType && filter.filterDetailId === filterDetailId)
+    );
+
+    setSelectedFilterDetails(newFilters);
+  };
+
   const goNewPost = () => {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -93,29 +104,42 @@ const MainPage = () => {
   return (
     <>
       <HeaderContainer>
-        <FilterListWrapper>
-          <FilterList
-            filters={filters}
-            selectedFilter={selectedFilter}
-            setSelectedFilter={setSelectedFilter}
-            selectedFilterDetails={selectedFilterDetails}
-            setSelectedFilterDetails={onFilterChange}
-            isVisibleResetFilter={!!selectedFilterDetails.length}
-            onResetFilter={resetFilter}
-          />
-        </FilterListWrapper>
-        {isLoggedIn && (
-          <Button
-            type="button"
-            size="SMALL"
-            icon={PencilIcon}
-            alt="글쓰기 아이콘"
-            onClick={goNewPost}
-          >
-            글쓰기
-          </Button>
-        )}
+        <FlexBox>
+          <FilterListWrapper>
+            <FilterList
+              filters={filters}
+              selectedFilter={selectedFilter}
+              setSelectedFilter={setSelectedFilter}
+              selectedFilterDetails={selectedFilterDetails}
+              setSelectedFilterDetails={onFilterChange}
+              isVisibleResetFilter={!!selectedFilterDetails.length}
+              onResetFilter={resetFilter}
+            />
+          </FilterListWrapper>
+          {isLoggedIn && (
+            <Button
+              type="button"
+              size="SMALL"
+              icon={PencilIcon}
+              alt="글쓰기 아이콘"
+              onClick={goNewPost}
+            >
+              글쓰기
+            </Button>
+          )}
+        </FlexBox>
+
+        <SelectedFilterList>
+          <ul>
+            {selectedFilterDetails.map(({ filterType, filterDetailId, name }) => (
+              <li key={filterType + filterDetailId + name}>
+                <Chip onDelete={onUnsetFilter({ filterType, filterDetailId })}>{name}</Chip>
+              </li>
+            ))}
+          </ul>
+        </SelectedFilterList>
       </HeaderContainer>
+
       <PostListContainer>
         {posts?.data?.length === 0 && '작성된 글이 없습니다.'}
         {posts &&
