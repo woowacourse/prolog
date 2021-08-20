@@ -1,30 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import styled from '@emotion/styled';
-import { css } from '@emotion/react';
 import { SelectBox, Button, BUTTON_SIZE, EditPostCard } from '../../components';
 import { useSelector } from 'react-redux';
 import useFetch from '../../hooks/useFetch';
 import { requestGetMissions, requestGetPost, requestGetTags } from '../../service/requests';
 import { PATH } from '../../constants';
 import usePost from '../../hooks/usePost';
-
-// TODO: section 으로 바꾸기 -> aria-label 주기
-const SelectBoxWrapper = styled.div`
-  margin: 3rem 0;
-`;
-
-const Post = styled.div`
-  margin-bottom: 4.8rem;
-`;
-
-const SubmitButtonStyle = css`
-  width: 100%;
-  background-color: #153147;
-  color: #ffffff;
-  font-weight: 500;
-  margin: 0;
-`;
+import { SelectBoxWrapper, Post, SubmitButtonStyle } from '../NewPostPage/styles';
 
 const EditPostPage = () => {
   const history = useHistory();

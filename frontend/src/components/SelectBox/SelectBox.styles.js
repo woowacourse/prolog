@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import COLOR from '../../constants/color';
 
 const Label = styled.label`
   display: inline-block;
@@ -14,7 +15,7 @@ const Label = styled.label`
 
     border-radius: 2px;
     border: solid 0.8rem transparent;
-    border-top-color: #222;
+    border-top-color: ${COLOR.BLACK_600};
   }
 `;
 
@@ -26,9 +27,9 @@ const Select = styled.select`
   font-size: 1.6rem;
   font-family: inherit;
 
-  background-color: #fff;
+  background-color: ${COLOR.WHITE};
   outline: none;
-  border: 2px solid #153147;
+  border: 2px solid ${COLOR.DARK_BLUE_800};
   border-radius: 1.6rem;
   cursor: pointer;
   appearance: none;
@@ -43,11 +44,11 @@ const SelectItems = styled.ul`
   list-style: none;
   margin: 0;
   z-index: 1;
-  color: #153147;
+  color: ${COLOR.DARK_BLUE_800};
 
-  background-color: #e0e0e0;
+  background-color: ${COLOR.DARK_GRAY_200};
   border-radius: 1.6rem;
-  border: 2px solid #153147;
+  border: 2px solid ${COLOR.DARK_BLUE_800};
 
   & {
     ::-webkit-scrollbar {
@@ -60,12 +61,12 @@ const SelectItems = styled.ul`
     }
 
     ::-webkit-scrollbar-thumb {
-      background-color: #153147;
+      background-color: ${COLOR.DARK_BLUE_800};
       border-radius: 10px;
     }
 
     ::-webkit-scrollbar-thumb:hover {
-      background-color: #153147;
+      background-color: ${COLOR.DARK_BLUE_800};
     }
   }
 
@@ -81,10 +82,10 @@ const SelectItem = styled.li`
   min-height: 3rem;
   font-size: 1.6rem;
   cursor: pointer;
-  background-color: #fff;
+  background-color: ${COLOR.WHITE};
 
   &:hover {
-    background-color: #e0e0e0;
+    background-color: ${COLOR.LIGHT_GRAY_200};
   }
 
   &:first-of-type:hover {
@@ -99,7 +100,7 @@ const SelectItem = styled.li`
 
   ${({ isSelected }) =>
     isSelected &&
-    `background-color: #A9CBE5; 
+    `background-color: ${COLOR.LIGHT_BLUE_200};
     
     &:first-of-type {
       border-top-left-radius: 22px;

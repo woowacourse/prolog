@@ -1,12 +1,13 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import COLOR from '../../constants/color';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: #fff;
-  border: 1px solid #e6e6e6;
+  background-color: ${COLOR.WHITE};
+  border: 1px solid ${COLOR.LIGHT_GRAY_200};
   border-radius: 1.6rem;
   padding: 2.4rem;
 `;
@@ -19,11 +20,10 @@ const PostItem = styled.div`
   justify-content: space-between;
 
   &:not(:last-child) {
-    border-bottom: 1px solid #e6e6e6;
-  }
+    border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
 
   &:hover {
-    background-color: #f9f9f9;
+    background-color: ${COLOR.LIGHT_GRAY_50};
   }
 `;
 
@@ -40,19 +40,19 @@ const Description = styled.div`
 
 const Mission = styled.div`
   font-size: 1.6rem;
-  color: #383838;
+  color: ${COLOR.DARK_GRAY_900};
 `;
 
 const Title = styled.h3`
   font-size: 2.8rem;
 
-  color: #383838;
+  color: ${COLOR.DARK_GRAY_900};
   font-weight: bold;
 `;
 
 const Tags = styled.div`
   font-size: 1.2rem;
-  color: #848484;
+  color: ${COLOR.LIGHT_GRAY_900};
   margin-top: auto;
 `;
 
@@ -70,20 +70,20 @@ const NoPost = styled.div`
 `;
 
 const EditButtonStyle = css`
-  border: 1px solid #e6e6e6;
-  background-color: #fff;
+  border: 1px solid ${COLOR.LIGHT_GRAY_200};
+  background-color: ${COLOR.WHITE};
 
   &:hover {
-    background-color: #e8e8e8;
+    background-color: ${COLOR.LIGHT_GRAY_300};
   }
 `;
 
 const DeleteButtonStyle = css`
-  border: 1px solid #e6e6e6;
-  background-color: #f59898;
+  border: 1px solid ${COLOR.LIGHT_GRAY_200};
+  background-color: ${COLOR.RED_300};
 
   &:hover {
-    background-color: #f08484;
+    background-color: ${COLOR.RED_400};
   }
 `;
 

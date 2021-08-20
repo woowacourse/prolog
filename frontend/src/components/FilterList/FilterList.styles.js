@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import COLOR from '../../constants/color';
 
 const DropdownToggledStyle = css`
   &:before {
@@ -17,8 +18,9 @@ const DropdownToggledStyle = css`
 `;
 
 const Container = styled.div`
-  background-color: #f4f4f4;
-  border: 1px solid #707070;
+  background-color: ${COLOR.LIGHT_GRAY_50};
+
+  border: 1px solid ${COLOR.DARK_GRAY_400};
   border-radius: 1.4rem;
   padding: 0 3.2rem;
   display: flex;
@@ -37,12 +39,12 @@ const Container = styled.div`
       font-weight: 500;
       padding: 1rem;
       font-size: 1.4rem;
-      border: 1px solid #aaa;
+      border: 1px solid ${COLOR.LIGHT_GRAY_700};
       border-radius: 1rem;
       outline: none;
 
       :focus {
-        border-color: #777;
+        border-color: ${COLOR.LIGHT_GRAY_700};
       }
     }
 
@@ -52,7 +54,7 @@ const Container = styled.div`
       height: 100%;
       font-size: 1.6rem;
       text-align: center;
-      color: #666;
+      color: ${COLOR.DARK_GRAY_500};
 
       ::after {
         content: '';
@@ -60,7 +62,7 @@ const Container = styled.div`
         height: 0;
         transform: translateY(50%);
         margin-left: 0.2rem;
-        border-top: 0.5rem solid #666;
+        border-top: 0.5rem solid ${COLOR.DARK_GRAY_500};
         border-bottom: 0.5rem solid transparent;
         border-left: 0.5rem solid transparent;
         border-right: 0.5rem solid transparent;
@@ -68,10 +70,10 @@ const Container = styled.div`
     }
 
     :hover {
-      color: #222;
+      color: ${COLOR.BLACK_600};
 
       ::after {
-        border-top-color: #222;
+        border-top-color: ${COLOR.BLACK_600};
       }
     }
   }
@@ -90,7 +92,7 @@ const FilterDetail = styled.button`
 
 const ResetFilter = styled.div`
   margin-left: auto;
-  color: #666666;
+  color: ${COLOR.DARK_GRAY_500};
   cursor: pointer;
 `;
 

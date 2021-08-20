@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import COLOR from '../../constants/color';
 
 const PaginationContainer = styled.div`
   display: flex;
@@ -21,7 +22,7 @@ const PageButtonStyle = css`
 `;
 
 const PageSkipButtonStyle = css`
-  background-color: #e5e5e5;
+  background-color: ${COLOR.LIGHT_GRAY_200};
 
   :disabled {
     visibility: hidden;
