@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
+import COLOR from '../../constants/color';
 
 const Container = styled.div`
   width: fit-content;
-  background-color: ${({ backgroundColor }) => backgroundColor ?? '#efefef'};
-  color: ${({ color }) => color ?? '#383838'};
+  background-color: ${({ backgroundColor }) => backgroundColor ?? COLOR.LIGHT_GRAY_200};
+  color: ${({ color }) => color ?? COLOR.BLACK_900};
   padding: 0.2rem 0.8rem;
   border-radius: 5rem;
   margin-right: 1rem;
@@ -24,10 +25,10 @@ const Container = styled.div`
     align-items: center;
 
     &:hover {
-      background-color: #ffbdad;
+      background-color: ${COLOR.RED_100};
 
       svg {
-        stroke: #ff4020;
+        stroke: ${COLOR.RED_600};
       }
     }
   }

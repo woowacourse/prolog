@@ -1,5 +1,6 @@
 import CancelIcon from '../@shared/Icons/CancelIcon';
 import { Container } from './Chip.styles';
+import COLOR from '../../constants/color';
 
 const Chip = ({ color, backgroundColor, onDelete, children }) => {
   return (
@@ -7,7 +8,7 @@ const Chip = ({ color, backgroundColor, onDelete, children }) => {
       <span>{children}</span>
       {onDelete && (
         <button type="button" onClick={onDelete}>
-          <CancelIcon width="10px" height="10px" strokeWidth="2px" stroke="black" />
+          <CancelIcon width="10px" height="10px" strokeWidth="2px" stroke={COLOR.BLACK_900} />
         </button>
       )}
     </Container>
