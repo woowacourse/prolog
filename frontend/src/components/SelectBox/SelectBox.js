@@ -1,90 +1,86 @@
 import PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
+
+import useCustomSelectBox from '../../hooks/useCustomSelectBox';
+import useScrollToSelected from '../../hooks/useScrollToSelected';
 import { Label, Select, SelectItems, SelectItem } from './SelectBox.styles';
 
-const SelectBox = ({ options, selectedOption, setSelectedOption }) => {
-  const [selectItems, setSelectItems] = useState(null);
-
+const SelectBox = ({
+  options,
+  selectedOption,
+  setSelectedOption,
+  width,
+  maxHeight,
+  title,
+  name,
+}) => {
   const $label = useRef(null);
   const $selectorContainer = useRef(null);
 
-  const onCreateOptionList = (e) => {
-    e.preventDefault();
+  const [isSelectBoxOpen, setIsSelectBoxOpen] = useCustomSelectBox({ targetRef: $label });
+  useScrollToSelected({
+    container: $selectorContainer,
+    dependency: isSelectBoxOpen,
+    options,
+    selectedOption,
+  });
 
-    setSelectItems(getSelectItems());
+  const onSelectItem = (event, option) => {
+    event.stopPropagation();
+
+    option ? setSelectedOption(option) : setSelectedOption(event.target.value);
+    setIsSelectBoxOpen(false);
   };
 
-  const onCloseOptionList = (e) => {
-    if (!selectItems) return;
-    e.preventDefault();
+  const onOpenCustomSelectBox = (event) => {
+    event.preventDefault();
 
-    if (!$label.current?.contains(e.target)) {
-      setSelectItems(null);
-    }
+    setIsSelectBoxOpen(true);
   };
-
-  useEffect(() => {
-    document.addEventListener('click', onCloseOptionList);
-
-    return () => {
-      document.removeEventListener('click', onCloseOptionList);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectItems]);
-
-  useEffect(() => {
-    if (!$selectorContainer.current) return;
-
-    const scrollY =
-      ($selectorContainer.current.scrollHeight / options.length) * options.indexOf(selectedOption);
-
-    $selectorContainer.current.scroll({ top: scrollY, behavior: 'smooth' });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectItems]);
-
-  const getSelectItems = () => (
-    <SelectItems ref={$selectorContainer}>
-      {options.map((option) => {
-        const onSelectItem = (e) => {
-          e.stopPropagation();
-
-          setSelectedOption(option);
-          setSelectItems(null);
-        };
-
-        return (
-          <SelectItem
-            key={option}
-            onMouseDown={onSelectItem}
-            isSelected={option === selectedOption}
-          >
-            {option}
-          </SelectItem>
-        );
-      })}
-    </SelectItems>
-  );
 
   return (
-    <Label ref={$label} onMouseDown={onCreateOptionList}>
-      <Select name="mission_subjects" value={selectedOption} readOnly>
+    <Label ref={$label} onMouseDown={onOpenCustomSelectBox} title={title} width={width}>
+      <Select name={name} onChange={onSelectItem} value={selectedOption}>
         {options.map((option) => (
           <option key={option} value={option}>
             {option}
           </option>
         ))}
       </Select>
-      {selectItems}
+
+      {isSelectBoxOpen && (
+        <SelectItems ref={$selectorContainer} maxHeight={maxHeight}>
+          {options.map((option) => {
+            return (
+              <SelectItem
+                key={option}
+                onMouseDown={(event) => onSelectItem(event, option)}
+                isSelected={option === selectedOption}
+              >
+                {option}
+              </SelectItem>
+            );
+          })}
+        </SelectItems>
+      )}
     </Label>
   );
 };
 
-SelectBox.defaultProps = {
-  options: ['주제가 등록되지 않았습니다.'],
-};
-
 SelectBox.propTypes = {
   options: PropTypes.array.isRequired,
+  selectedOption: PropTypes.string,
+  setSelectedOption: PropTypes.func,
+  title: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  width: PropTypes.string,
+  maxHeight: PropTypes.string,
+};
+
+SelectBox.defaultProps = {
+  options: ['주제가 등록되지 않았습니다.'],
+  width: '100%',
+  maxHeight: '20rem',
 };
 
 export default SelectBox;
