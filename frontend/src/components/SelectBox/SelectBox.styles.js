@@ -6,7 +6,6 @@ const Label = styled.label`
   display: inline-block;
   width: ${({ width }) => width ?? `${width}`};
 
-  // 삼각형 화살표 부분
   &::after {
     content: '';
     display: inline-block;
@@ -55,7 +54,6 @@ const SelectItems = styled.ul`
   border: 2px solid ${COLOR.DARK_BLUE_800};
   border-radius: 1rem;
 
-  // 스크롤바 커스텀을 위한 코드
   & {
     ::-webkit-scrollbar {
       width: 1rem;
