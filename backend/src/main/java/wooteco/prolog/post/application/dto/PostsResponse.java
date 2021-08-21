@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class PostsResponse {
     private List<PostResponse> data;
-    private int totalSize;
+    private Long totalSize;
     private int totalPage;
     private int currPage;
 }

@@ -40,10 +40,14 @@ public class MissionService {
                 .collect(toList());
     }
 
-    public MissionResponse findById(Long id) {
+    public Mission findById(Long id) {
         Mission mission = missionRepository.findById(id)
                 .orElseThrow(MissionNotFoundException::new);
 
-        return MissionResponse.of(mission);
+        return mission;
+    }
+
+    public List<Mission> findByIds(List<Long> missionIds) {
+        return missionRepository.findAllById(missionIds);
     }
 }

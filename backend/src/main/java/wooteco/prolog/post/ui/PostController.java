@@ -2,6 +2,7 @@ package wooteco.prolog.post.ui;
 
 import java.net.URI;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,9 +43,9 @@ public class PostController {
     public ResponseEntity<PostsResponse> showAll(
             @RequestParam(required = false) List<Long> missions,
             @RequestParam(required = false) List<Long> tags,
-            @ModelAttribute PageRequest pageRequest
+            Pageable pageable
     ) {
-        PostsResponse postsResponse = postService.findPostsWithFilter(missions, tags, pageRequest);
+        PostsResponse postsResponse = postService.findPostsWithFilter(missions, tags, pageable);
 
         return ResponseEntity.ok(postsResponse);
     }

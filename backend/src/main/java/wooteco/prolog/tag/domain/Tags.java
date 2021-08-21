@@ -2,6 +2,7 @@ package wooteco.prolog.tag.domain;
 
 import static java.util.stream.Collectors.collectingAndThen;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +28,12 @@ public class Tags {
 
     public List<String> toNames() {
         return toNames(this.tags);
+    }
+
+    public Tags removeAllById(Tags that) {
+        List<Tag> thisTags = new ArrayList<>(this.tags);
+        thisTags.removeAll(that.tags);
+        return new Tags(thisTags);
     }
 
     public Tags removeAllByName(Tags that) {
@@ -56,4 +63,5 @@ public class Tags {
             throw new DuplicateTagException();
         }
     }
+
 }

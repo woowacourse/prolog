@@ -8,6 +8,9 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.posttag.application.PostTagService;
+import wooteco.prolog.posttag.domain.PostTag;
+import wooteco.prolog.posttag.domain.repository.PostTagRepository;
 import wooteco.prolog.tag.dao.PostTagDao;
 import wooteco.prolog.tag.domain.Tag;
 import wooteco.prolog.tag.domain.Tags;
@@ -21,7 +24,7 @@ import wooteco.prolog.tag.dto.TagResponse;
 public class TagService {
 
     private final TagRepository tagRepository;
-    private final PostTagDao postTagDao;
+    private final PostTagService postTagService;
 
     @Transactional
     public Tags create(List<TagRequest> tagRequests) {
@@ -37,32 +40,12 @@ public class TagService {
         return existTags.addAll(newTags);
     }
 
-    public void addTagToPost(Long postId, List<Long> tagIds) {
-        List<Long> originTags = postTagDao.findByPostId(postId);
-        for (Long tagId : tagIds) {
-            if (!originTags.contains(tagId)) {
-                postTagDao.insert(postId, tagId);
-            }
-        }
-    }
-
-    public void removeTagFromPost(Long postId, List<Long> tagIds) {
-        tagIds.forEach(tagId -> postTagDao.delete(postId, tagId));
-    }
-
-    public List<Tag> getTagsOfPost(Long id) {
-        List<Long> tagIds = postTagDao.findByPostId(id);
-        return tagIds.stream()
-                .map(tagRepository::findById)
-                .map(Optional::get)
+    public List<TagResponse> findTagsIncludedInPost() {
+        return postTagService.findAll().stream()
+                .map(PostTag::getTag)
+                .distinct()
+                .map(TagResponse::of)
                 .collect(toList());
-    }
-
-    public List<TagResponse> findAllWithPost() {
-        return postTagDao.findAll()
-            .stream()
-            .map(TagResponse::of)
-            .collect(toList());
     }
 
     public List<TagResponse> findAll(){
@@ -72,7 +55,7 @@ public class TagService {
             .collect(toList());
     }
 
-    public void deletePostTagByPostId(Long postId) {
-        postTagDao.deleteByPostId(postId);
+    public List<Tag> findByIds(List<Long> tagIds) {
+        return tagRepository.findAllById(tagIds);
     }
 }

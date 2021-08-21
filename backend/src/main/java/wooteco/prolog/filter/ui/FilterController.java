@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.filter.application.dto.FilterResponse;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionResponse;
+import wooteco.prolog.posttag.application.PostTagService;
 import wooteco.prolog.tag.application.TagService;
 import wooteco.prolog.tag.dto.TagResponse;
 
@@ -23,7 +24,7 @@ public class FilterController {
     @GetMapping
     public ResponseEntity<FilterResponse> showAll() {
         List<MissionResponse> missionResponses = missionService.findAll();
-        List<TagResponse> tagResponses = tagService.findAllWithPost();
+        List<TagResponse> tagResponses = tagService.findTagsIncludedInPost();
         return ResponseEntity.ok().body(new FilterResponse(missionResponses, tagResponses));
     }
 }
