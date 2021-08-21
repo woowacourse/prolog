@@ -12,23 +12,23 @@ import wooteco.prolog.member.domain.Member;
 public class GithubLoginService {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final MemberService memberDao;
+    private final MemberService memberService;
     private final GithubClient githubClient;
 
     public GithubLoginService(
             JwtTokenProvider jwtTokenProvider,
-            MemberService memberDao,
+            MemberService memberService,
             GithubClient githubClient
     ) {
         this.jwtTokenProvider = jwtTokenProvider;
-        this.memberDao = memberDao;
+        this.memberService = memberService;
         this.githubClient = githubClient;
     }
 
     public TokenResponse createToken(TokenRequest tokenRequest) {
         String githubAccessToken = githubClient.getAccessTokenFromGithub(tokenRequest.getCode());
         GithubProfileResponse githubProfile = githubClient.getGithubProfileFromGithub(githubAccessToken);
-        Member member = memberDao.findOrCreateMember(githubProfile);
+        Member member = memberService.findOrCreateMember(githubProfile);
         String accessToken = jwtTokenProvider.createToken(member);
         return TokenResponse.of(accessToken);
     }
