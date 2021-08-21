@@ -6,6 +6,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.domain.Member;
@@ -28,18 +32,14 @@ import wooteco.prolog.tag.domain.Tags;
 import wooteco.prolog.tag.dto.TagResponse;
 
 @Service
+@AllArgsConstructor
+@Transactional(readOnly = true)
 public class PostService {
 
     private final PostRepository postRepository;
     private final MissionService missionService;
     private final PostTagService postTagService;
     private final TagService tagService;
-
-    public PostService(PostDao postDao, MissionService missionService, TagService tagService) {
-        this.postDao = postDao;
-        this.missionService = missionService;
-        this.tagService = tagService;
-    }
 
     public List<PostResponse> findAll() {
         List<Post> posts = postRepository.findAll();
