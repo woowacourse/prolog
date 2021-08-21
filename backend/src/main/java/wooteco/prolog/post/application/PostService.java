@@ -37,13 +37,6 @@ public class PostService {
     private final MemberService memberService;
     private final TagService tagService;
 
-    public List<PostResponse> findAll() {
-        List<Post> posts = postRepository.findAll();
-        return posts.stream()
-                .map(PostResponse::of)
-                .collect(Collectors.toList());
-    }
-
     public PostsResponse findPostsWithFilter(List<Long> missionIds, List<Long> tagIds,
             Pageable pageable) {
         missionIds = nullToEmptyList(missionIds);
@@ -133,6 +126,7 @@ public class PostService {
         post.update(postRequest.getTitle(), postRequest.getContent(), mission, tags);
     }
 
+    @Transactional
     public void deletePost(Member member, Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);

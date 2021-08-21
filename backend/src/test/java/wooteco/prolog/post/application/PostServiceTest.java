@@ -1,11 +1,13 @@
 package wooteco.prolog.post.application;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,162 +17,265 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import wooteco.prolog.login.application.dto.GithubProfileResponse;
+import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionRequest;
+import wooteco.prolog.mission.application.dto.MissionResponse;
+import wooteco.prolog.mission.domain.Mission;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.application.dto.PostsResponse;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.tag.domain.Tag;
 import wooteco.prolog.tag.dto.TagRequest;
+import wooteco.prolog.tag.dto.TagResponse;
 
 @ActiveProfiles("test")
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class PostServiceTest {
-//
-//   public static final Tag FIRST_TAG = new Tag(1L, "소롱의글쓰기");
-//    public static final Tag SECOND_TAG = new Tag(2L, "스프링");
-//    public static final Tag THIRD_TAG = new Tag(3L, "감자튀기기");
-//    public static final Tag FOURTH_TAG = new Tag(4L, "집필왕웨지");
-//    public static final Tag FIFTH_TAG = new Tag(5L, "피케이");
-//    public static final List<Tag> tags = Arrays.asList(
-//            FIRST_TAG, SECOND_TAG, THIRD_TAG, FOURTH_TAG, FIFTH_TAG
-//    );
-//
-//    private static final Member FIRST_MEMBER = new Member(1L, "wedge", "웨지", Role.CREW, 123456789L, "https://www.youtube.com/watch?v=3etKkkna-f0&t=6s");
-//    private static final Member SECOND_MEMBER = new Member(2L, "pika", "피카", Role.CREW, 2L, "image");
-//
-//    private static final Post FIRST_POST = new Post(FIRST_MEMBER, "이것은 제목", "피케이와 포모의 포스트", 1L, Arrays.asList(FIRST_TAG.getId(), SECOND_TAG.getId()));
-//    private static final Post SECOND_POST = new Post(FIRST_MEMBER, "이것은 두번째 제목", "피케이와 포모의 포스트 2", 1L, Arrays.asList(THIRD_TAG.getId(), FOURTH_TAG.getId()));
-//    private static final Post THIRD_POST = new Post(FIRST_MEMBER, "이것은 3 제목", "피케이 포스트", 2L, Arrays.asList(FOURTH_TAG.getId(), FIFTH_TAG.getId()));
-//    private static final Post FOURTH_POST = new Post(FIRST_MEMBER, "이것은 네번 제목", "포모의 포스트", 2L, Arrays.asList(FIRST_TAG.getId(), FIFTH_TAG.getId()));
-//
-//    @Autowired
-//    private PostService postService;
-//    @Autowired
-//    private MissionService missionService;
-//    @Autowired
-//    private JdbcTemplate jdbcTemplate;
-//
-//    @BeforeEach
-//    void setUp() {
-//        missionService.create(new MissionRequest("자동차 1주차 미션"));
-//        missionService.create(new MissionRequest("로또 미션"));
-//        insertTestMember(FIRST_MEMBER, SECOND_MEMBER);
-//    }
-//
-//    private void insertTestMember(Member firstMember, Member secondMember) {
-//        String sql = "INSERT INTO member (username, nickname, role, github_id, image_url) VALUES (?, ?, ?, ?, ?)";
-//
-//        jdbcTemplate.update(sql, firstMember.getUsername(), firstMember.getNickname(), firstMember.getRole().name(), firstMember.getGithubId(), firstMember.getImageUrl());
-//        jdbcTemplate.update(sql, firstMember.getUsername(), firstMember.getNickname(), secondMember.getRole().name(), secondMember.getGithubId(), secondMember.getImageUrl());
-//    }
-//
-//    @DisplayName("필터 검색")
-//    @ParameterizedTest
-//    @MethodSource("findWithFilter")
-//    void findWithFilter(List<Long> missions, List<Long> tags, List<String> expectedTitles) {
-//        //given
-//        insertPosts();
-//
-//        //when
-//        PostsResponse postResponsesWithFilter = postService.findPostsWithFilter(missions, tags);
-//
-//        //then
-//        List<String> titles = postResponsesWithFilter.getData().stream()
-//                .map(PostResponse::getTitle)
-//                .collect(Collectors.toList());
-//
-//        assertThat(titles).containsAll(
-//                expectedTitles
-//        );
-//    }
-//
-//    private static Stream<Arguments> findWithFilter() {
-//        return Stream.of(
-//                Arguments.of(Arrays.asList(1L), Collections.emptyList(), Arrays.asList(FIRST_POST.getTitle(), SECOND_POST.getTitle())),
-//                Arguments.of(Collections.emptyList(), Arrays.asList(1L), Arrays.asList(FIRST_POST.getTitle(), FOURTH_POST.getTitle())),
-//                Arguments.of(Arrays.asList(1L), Arrays.asList(1L), Arrays.asList(FIRST_POST.getTitle())),
-//                Arguments.of(Arrays.asList(2L), Arrays.asList(4L, 5L), Arrays.asList(THIRD_POST.getTitle(), FOURTH_POST.getTitle()))
-//        );
-//    }
-//
-//    @DisplayName("포스트 여러개 삽입")
-//    @Test
-//    void insertPosts() {
-//        //given
-//        PostRequest postRequest1 = new PostRequest(
-//                FIRST_POST.getTitle(),
-//                FIRST_POST.getContent(),
-//                FIRST_POST.getMissionId(),
-//                toTagRequests(FIRST_POST, tags)
-//        );
-//
-//        PostRequest postRequest2 = new PostRequest(
-//                SECOND_POST.getTitle(),
-//                SECOND_POST.getContent(),
-//                SECOND_POST.getMissionId(),
-//                toTagRequests(SECOND_POST, tags)
-//        );
-//
-//        PostRequest postRequest3 = new PostRequest(
-//                THIRD_POST.getTitle(),
-//                THIRD_POST.getContent(),
-//                THIRD_POST.getMissionId(),
-//                toTagRequests(THIRD_POST, tags)
-//        );
-//
-//        PostRequest postRequest4 = new PostRequest(
-//                FOURTH_POST.getTitle(),
-//                FOURTH_POST.getContent(),
-//                FOURTH_POST.getMissionId(),
-//                toTagRequests(FOURTH_POST, tags)
-//        );
-//
-//        //when
-//        List<PostRequest> postRequestsOfFirstMember = Arrays.asList(postRequest1, postRequest2);
-//        List<PostResponse> postDataResponsesOfFirstMember = postService.insertPosts(FIRST_MEMBER, postRequestsOfFirstMember);
-//
-//        List<PostRequest> postRequestsOfSecondMember = Arrays.asList(postRequest3, postRequest4);
-//        List<PostResponse> postDataResponsesOfSecondMember = postService.insertPosts(SECOND_MEMBER, postRequestsOfSecondMember);
-//
-//        //then
-//        List<String> titles = Stream.concat(postDataResponsesOfFirstMember.stream(), postDataResponsesOfSecondMember.stream())
-//                .map(PostResponse::getTitle)
-//                .collect(Collectors.toList());
-//
-//        assertThat(titles).contains(
-//                FIRST_POST.getTitle(),
-//                SECOND_POST.getTitle(),
-//                THIRD_POST.getTitle(),
-//                FOURTH_POST.getTitle()
-//        );
-//
-//        List<String> members = Stream.concat(postDataResponsesOfFirstMember.stream(), postDataResponsesOfSecondMember.stream())
-//                .map(PostResponse::getAuthor)
-//                .map(MemberResponse::getNickname)
-//                .collect(Collectors.toList());
-//
-//        assertThat(members).contains(FIRST_MEMBER.getNickname(), SECOND_MEMBER.getNickname());
-//    }
-//
-//    private List<TagRequest> toTagRequests(Post firstPost, List<Tag> tags) {
-//        return firstPost.getTagIds().stream()
-//                .map(it -> mapTag(tags, it))
-//                .collect(Collectors.toList());
-//    }
-//
-//    private TagRequest mapTag(List<Tag> tags, Long tagId) {
-//        return tags.stream()
-//                .filter(it -> it.getId() == tagId)
-//                .map(it -> new TagRequest(it.getName()))
-//                .findFirst().orElseThrow(RuntimeException::new);
-//    }
+
+    private static final String POST1_TITLE = "이것은 제목";
+    private static final String POST2_TITLE = "이것은 두번째 제목";
+    private static final String POST3_TITLE = "이것은 3 제목";
+    private static final String POST4_TITLE = "이것은 네번 제목";
+
+    @Autowired
+    private PostService postService;
+    @Autowired
+    private MissionService missionService;
+    @Autowired
+    private MemberService memberService;
+
+    private Member member1;
+    private Member member2;
+
+    private Mission mission1;
+    private Mission mission2;
+
+    private static Tag tag1 = new Tag(1L, "소롱의글쓰기");
+    private static Tag tag2 = new Tag(2L, "스프링");
+    private static Tag tag3 = new Tag(3L, "감자튀기기");
+    private static Tag tag4 = new Tag(4L, "집필왕웨지");
+    private static Tag tag5 = new Tag(5L, "피케이");
+    private static List<Tag> tags = asList(
+            tag1, tag2, tag3, tag4, tag5
+    );
+
+    private Post post1;
+    private Post post2;
+    private Post post3;
+    private Post post4;
+
+    @BeforeEach
+    void setUp() {
+        MissionResponse missionResponse1 = missionService.create(new MissionRequest("자동차 미션"));
+        MissionResponse missionResponse2 = missionService.create(new MissionRequest("수동차 미션"));
+
+        this.mission1 = new Mission(missionResponse1.getId(), missionResponse1.getName());
+        this.mission2 = new Mission(missionResponse2.getId(), missionResponse2.getName());
+
+        this.member1 = memberService.findOrCreateMember(new GithubProfileResponse("이름1", "별명1", "1", "image"));
+        this.member2 = memberService.findOrCreateMember(new GithubProfileResponse("이름2", "별명2", "2", "image"));
+
+        this.post1 = new Post(member1, POST1_TITLE, "피케이와 포모의 포스트", mission1, asList(tag1, tag2));
+        this.post2 = new Post(member1, POST2_TITLE, "피케이와 포모의 포스트 2", mission1, asList(tag2, tag3));
+        this.post3 = new Post(member2, POST3_TITLE, "피케이 포스트", mission2, asList(tag3, tag4, tag5));
+        this.post4 = new Post(member2, POST4_TITLE, "포모의 포스트", mission2);
+    }
+
+    @DisplayName("포스트 여러개 삽입")
+    @Test
+    void insertPostsTest() {
+        //given
+        List<PostResponse> postsOfMember1 = insertPosts(member1, post1, post2);
+        List<PostResponse> postsOfMember2 = insertPosts(member2, post3, post4);
+        //then
+        List<String> titles = Stream.concat(postsOfMember1.stream(), postsOfMember2.stream())
+                .map(PostResponse::getTitle)
+                .collect(toList());
+
+        assertThat(titles).contains(
+                post1.getTitle(),
+                post2.getTitle(),
+                post3.getTitle(),
+                post4.getTitle()
+        );
+
+        List<String> members = Stream.concat(postsOfMember1.stream(), postsOfMember2.stream())
+                .map(PostResponse::getAuthor)
+                .map(MemberResponse::getNickname)
+                .collect(toList());
+
+        assertThat(members).contains(member1.getNickname(), member2.getNickname());
+    }
+
+    @DisplayName("필터 검색")
+    @ParameterizedTest
+    @MethodSource
+    void findWithFilter(List<Long> missionIds, List<Long> tagIds, List<String> expectedPostTitles) {
+        //given
+        List<PostResponse> postsOfMember1 = insertPosts(member1, post1, post2);
+        List<PostResponse> postsOfMember2 = insertPosts(member2, post3, post4);
+
+        PostsResponse postResponsesWithFilter =
+                postService.findPostsWithFilter(missionIds, tagIds, Pageable.unpaged());
+
+        List<String> titles = postResponsesWithFilter.getData().stream()
+                .map(PostResponse::getTitle)
+                .collect(toList());
+
+        assertThat(titles).containsExactlyInAnyOrderElementsOf(
+                expectedPostTitles
+        );
+    }
+
+    private static Stream<Arguments> findWithFilter() {
+        return Stream.of(
+                Arguments.of(emptyList(), asList(tag1.getId(), tag2.getId(), tag3.getId()), asList(POST1_TITLE, POST2_TITLE, POST3_TITLE)),
+                Arguments.of(emptyList(), singletonList(tag2.getId()), asList(POST1_TITLE, POST2_TITLE, POST3_TITLE)),
+                Arguments.of(emptyList(), singletonList(tag3.getId()), asList(POST2_TITLE, POST3_TITLE)),
+                Arguments.of(singletonList(1L), emptyList(), asList(POST1_TITLE, POST2_TITLE)),
+                Arguments.of(singletonList(2L), emptyList(), asList(POST3_TITLE, POST4_TITLE)),
+                Arguments.of(singletonList(1L), singletonList(tag1.getId()), singletonList(POST1_TITLE)),
+                Arguments.of(singletonList(1L), singletonList(tag1.getId()), asList(POST1_TITLE, POST2_TITLE)),
+                Arguments.of(emptyList(), emptyList(), asList(POST1_TITLE, POST2_TITLE, POST3_TITLE, POST4_TITLE))
+        );
+    }
+
+    @DisplayName("유저 이름으로 포스트를 조회한다.")
+    @Test
+    void findPostsOfTest(){
+        insertPosts(member1, post1, post2);
+        insertPosts(member2, post3, post4);
+
+        PostsResponse postsResponseOfMember1 = postService.findPostsOf(member1.getUsername(), Pageable.unpaged());
+        PostsResponse postsResponseOfMember2 = postService.findPostsOf(member2.getUsername(), Pageable.unpaged());
+
+        List<String> expectedResultOfMember1 = postsResponseOfMember1.getData().stream()
+                .map(PostResponse::getTitle)
+                .collect(toList());
+        List<String> expectedResultOfMember2 = postsResponseOfMember2.getData().stream()
+                .map(PostResponse::getTitle)
+                .collect(toList());
+
+        assertThat(expectedResultOfMember1).containsExactly(post1.getTitle(), post2.getTitle());
+        assertThat(expectedResultOfMember2).containsExactly(post3.getTitle(), post4.getTitle());
+    }
+
+    @DisplayName("유저 이름으로 포스트를 조회한다 - 페이징")
+    @ParameterizedTest
+    @MethodSource("findPostsOfPagingTest")
+    void findPostsOfPagingTest(PageRequest pageRequest, int expectedSize){
+        List<Post> largePosts = IntStream.range(0, 50)
+                .mapToObj(it -> post1)
+                .collect(toList());
+
+        insertPosts(member1, largePosts);
+
+        PostsResponse postsResponseOfMember1 = postService.findPostsOf(member1.getUsername(), pageRequest);
+
+        assertThat(postsResponseOfMember1.getData().size()).isEqualTo(expectedSize);
+    }
+
+    private static Stream<Arguments> findPostsOfPagingTest() {
+        return Stream.of(
+                Arguments.of(PageRequest.of(0,10), 10),
+                Arguments.of(PageRequest.of(0,20), 20),
+                Arguments.of(PageRequest.of(0,60), 50),
+                Arguments.of(PageRequest.of(3, 15), 5),
+                Arguments.of(PageRequest.of(1, 50), 0),
+                Arguments.of(PageRequest.of(4, 11), 6)
+        );
+    }
+
+    @DisplayName("포스트를 수정한다")
+    @Test
+    void updatePostTest(){
+        //given
+        List<PostResponse> postResponses = insertPosts(member1, post1);
+        PostResponse targetPost = postResponses.get(0);
+        PostRequest updatePostRequest = new PostRequest("updateTitle", "updateContent", 2L,
+                toTagRequests(tags));
+
+        //when
+        postService.updatePost(member1, targetPost.getId(), updatePostRequest);
+
+        //then
+        PostResponse expectedResult = postService.findById(targetPost.getId());
+        List<String> updateTagNames = tags.stream()
+                .map(Tag::getName)
+                .collect(toList());
+
+        List<String> expectedTagNames = expectedResult.getTags().stream()
+                .map(TagResponse::getName)
+                .collect(toList());
+
+        assertThat(expectedResult.getTitle()).isEqualTo(updatePostRequest.getTitle());
+        assertThat(expectedResult.getContent()).isEqualTo(updatePostRequest.getContent());
+        assertThat(expectedResult.getMission().getId()).isEqualTo(updatePostRequest.getMissionId());
+        assertThat(expectedTagNames).isEqualTo(updateTagNames);
+    }
+
+    @DisplayName("포스트를 삭제한다")
+    @Test
+    void deletePostTest(){
+        //given
+        List<PostResponse> postResponses = insertPosts(member1, post1, post2, post3, post4);
+
+        //when
+        List<Long> postIds = postResponses.stream()
+                .map(PostResponse::getId)
+                .collect(toList());
+
+        Long removedId = postIds.remove(0);
+        postService.deletePost(member1, removedId);
+
+        //then
+        PostsResponse postsResponse = postService.findPostsOf(member1.getUsername(), Pageable.unpaged());
+
+        List<Long> expectedIds = postsResponse.getData().stream()
+                .map(PostResponse::getId)
+                .collect(toList());
+
+        assertThat(expectedIds).containsExactlyElementsOf(postIds);
+    }
+
+    private List<PostResponse> insertPosts(Member member, List<Post> posts) {
+        List<PostRequest> postRequests = posts.stream()
+                .map(post ->
+                        new PostRequest(
+                                post.getTitle(),
+                                post.getContent(),
+                                post.getMission().getId(),
+                                toTagRequests(post1)
+                        )
+                )
+                .collect(toList());
+
+        return postService.insertPosts(member, postRequests);
+    }
+
+    private List<PostResponse> insertPosts(Member member, Post... posts){
+        return insertPosts(member, asList(posts));
+    }
+
+    private List<TagRequest> toTagRequests(Post post) {
+        return post.getPostTags().stream()
+                .map(postTag -> new TagRequest(postTag.getTag().getName()))
+                .collect(toList());
+    }
+
+    private List<TagRequest> toTagRequests(List<Tag> tags) {
+        return tags.stream()
+                .map(tag -> new TagRequest(tag.getName()))
+                .collect(toList());
+    }
 }

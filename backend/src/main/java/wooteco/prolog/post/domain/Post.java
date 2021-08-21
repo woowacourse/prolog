@@ -2,6 +2,7 @@ package wooteco.prolog.post.domain;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
@@ -49,15 +50,20 @@ public class Post {
     private final List<PostTag> postTags = new ArrayList<>();
 
     public Post(Member member, String title, String content, Mission mission) {
-        this(null, member, title, content, mission);
+        this(null, member, title, content, mission, Collections.emptyList());
     }
 
-    public Post(Long id, Member member, String title, String content, Mission mission) {
+    public Post(Member member, String title, String content, Mission mission, List<Tag> tags) {
+        this(null, member, title, content, mission, tags);
+    }
+
+    public Post(Long id, Member member, String title, String content, Mission mission, List<Tag> tags) {
         this.id = id;
         this.member = member;
         this.title = new Title(title);
         this.content = new Content(content);
         this.mission = mission;
+        addTags(new Tags(tags));
     }
 
     public void validateAuthor(Member member) {

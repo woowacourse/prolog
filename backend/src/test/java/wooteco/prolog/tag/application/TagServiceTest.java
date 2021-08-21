@@ -34,56 +34,44 @@ public class TagServiceTest {
     @Autowired
     private TagService tagService;
 
-//    @DisplayName("태그 생성 메서드 테스트")
-//    @Test
-//    void createTest() {
-//        //given
-//        //when
-//        tagService.create(tagRequests);
-//        List<TagResponse> expectedResults = tagService.findAllWithPost();
-//
-//        //then
-//        List<String> givenNames = tagRequests.stream()
-//                .map(TagRequest::getName)
-//                .collect(Collectors.toList());
-//
-//        List<String> expectedNames = expectedResults.stream()
-//                .map(TagResponse::getName)
-//                .collect(Collectors.toList());
-//
-//        assertThat(givenNames).containsExactlyElementsOf(expectedNames);
-//    }
+    @DisplayName("태그 생성 메서드 테스트")
+    @Test
+    void createTest() {
+        //given
+        //when
+        tagService.findOrCreate(tagRequests);
+        List<TagResponse> expectedResults = tagService.findAll();
+
+        //then
+        List<String> givenNames = getNamesFromTagRequest(tagRequests);
+        List<String> expectedNames = getNamesFromTagResponse(expectedResults);
+
+        assertThat(givenNames).containsExactlyElementsOf(expectedNames);
+    }
+
 
     @DisplayName("기존에 저장되어있는 태그가 있을 때, 신규건만 저장되는지 확인")
     @Test
     void onlyNewTagSaveTest() {
         //given
-        tagService.findOrCreate(tagRequests); // 5개 입력
-        //when
+        tagService.findOrCreate(tagRequests);
         List<TagRequest> newTagRequests = Arrays.asList(
                 new TagRequest("새로운태그1"),
                 new TagRequest("새로운태그2"),
                 new TagRequest("새로운태그3")
         );
 
-        ArrayList<TagRequest> addedTagRequest = new ArrayList<>(tagRequests);
+        //when
+        List<TagRequest> addedTagRequest = tagRequests;
         addedTagRequest.addAll(newTagRequests); // 신규 건수 3건 추가, 총 8건
         tagService.findOrCreate(addedTagRequest);
 
         List<TagResponse> expectedResults = tagService.findAll();
 
         //then
-        List<String> givenNames = addedTagRequest.stream()
-                .map(TagRequest::getName)
-                .collect(Collectors.toList());
+        List<String> givenNames = getNamesFromTagRequest(addedTagRequest);
+        List<String> expectedNames = getNamesFromTagResponse(expectedResults);
 
-        List<String> expectedNames = expectedResults.stream()
-                .map(TagResponse::getName)
-                .collect(Collectors.toList());
-
-        for (TagResponse expectedResult : expectedResults) {
-            assertThat(expectedResult.getId()).isEqualTo(addedTagRequest.size()); // 중복된 것은 insert되지 않고 8개만 입력되는지 확인
-        }
         assertThat(expectedResults.size()).isEqualTo(addedTagRequest.size()); // 중복된 것은 insert되지 않고 8개만 입력되는지 확인
         assertThat(givenNames).containsExactlyElementsOf(expectedNames);
     }
@@ -98,5 +86,17 @@ public class TagServiceTest {
         //then
         assertThatThrownBy(() -> tagService.findOrCreate(tagRequests))
                 .isExactlyInstanceOf(DuplicateTagException.class);
+    }
+
+    private List<String> getNamesFromTagRequest(List<TagRequest> tags) {
+        return tags.stream()
+                .map(TagRequest::getName)
+                .collect(Collectors.toList());
+    }
+
+    private List<String> getNamesFromTagResponse(List<TagResponse> expectedResults) {
+        return expectedResults.stream()
+                .map(TagResponse::getName)
+                .collect(Collectors.toList());
     }
 }
