@@ -41,10 +41,8 @@ public class MissionService {
     }
 
     public Mission findById(Long id) {
-        Mission mission = missionRepository.findById(id)
+        return missionRepository.findById(id)
                 .orElseThrow(MissionNotFoundException::new);
-
-        return mission;
     }
 
     public List<Mission> findByIds(List<Long> missionIds) {
