@@ -39,7 +39,7 @@ const SelectBox = ({
   };
 
   return (
-    <Label ref={$label} onMouseDown={onOpenCustomSelectBox} title={title} width={width}>
+    <Label aria-label={title} ref={$label} onMouseDown={onOpenCustomSelectBox} width={width}>
       <Select name={name} onChange={onSelectItem} value={selectedOption}>
         {options.map((option) => (
           <option key={option} value={option}>
@@ -50,17 +50,15 @@ const SelectBox = ({
 
       {isSelectBoxOpen && (
         <SelectItems ref={$selectorContainer} maxHeight={maxHeight}>
-          {options.map((option) => {
-            return (
-              <SelectItem
-                key={option}
-                onMouseDown={(event) => onSelectItem(event, option)}
-                isSelected={option === selectedOption}
-              >
-                {option}
-              </SelectItem>
-            );
-          })}
+          {options.map((option) => (
+            <SelectItem
+              key={option}
+              onMouseDown={(event) => onSelectItem(event, option)}
+              isSelected={option === selectedOption}
+            >
+              {option}
+            </SelectItem>
+          ))}
         </SelectItems>
       )}
     </Label>
