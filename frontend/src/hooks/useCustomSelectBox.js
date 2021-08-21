@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 
 const useCustomSelectBox = ({ targetRef }) => {
-  const [isSelectBoxOpen, setIsSelectBoxOpen] = useState(false);
+  const [selectItems, setSelectItems] = useState(null);
 
   useEffect(() => {
-    const onCloseOptionList = (event) => {
-      event.preventDefault();
+    const onCloseOptionList = (e) => {
+      if (!selectItems) return;
+      e.preventDefault();
 
-      if (!targetRef.current?.contains(event.target)) {
-        setIsSelectBoxOpen(false);
+      if (!targetRef.current?.contains(e.target)) {
+        setSelectItems(null);
       }
     };
 
@@ -17,9 +18,9 @@ const useCustomSelectBox = ({ targetRef }) => {
     return () => {
       document.removeEventListener('click', onCloseOptionList);
     };
-  }, [isSelectBoxOpen, targetRef]);
+  }, [selectItems, targetRef]);
 
-  return [isSelectBoxOpen, setIsSelectBoxOpen];
+  return [selectItems, setSelectItems];
 };
 
 export default useCustomSelectBox;

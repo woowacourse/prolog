@@ -17,10 +17,10 @@ const SelectBox = ({
   const $label = useRef(null);
   const $selectorContainer = useRef(null);
 
-  const [isSelectBoxOpen, setIsSelectBoxOpen] = useCustomSelectBox({ targetRef: $label });
+  const [selectItems, setSelectItems] = useCustomSelectBox({ targetRef: $label });
   useScrollToSelected({
     container: $selectorContainer,
-    dependency: isSelectBoxOpen,
+    dependency: selectItems,
     options,
     selectedOption,
   });
@@ -29,14 +29,28 @@ const SelectBox = ({
     event.stopPropagation();
 
     option ? setSelectedOption(option) : setSelectedOption(event.target.value);
-    setIsSelectBoxOpen(false);
+    setSelectItems(false);
   };
 
   const onOpenCustomSelectBox = (event) => {
     event.preventDefault();
 
-    setIsSelectBoxOpen(true);
+    setSelectItems(getSelectItems());
   };
+
+  const getSelectItems = () => (
+    <SelectItems ref={$selectorContainer} maxHeight={maxHeight}>
+      {options.map((option) => (
+        <SelectItem
+          key={option}
+          onMouseDown={(event) => onSelectItem(event, option)}
+          isSelected={option === selectedOption}
+        >
+          {option}
+        </SelectItem>
+      ))}
+    </SelectItems>
+  );
 
   return (
     <Label aria-label={title} ref={$label} onMouseDown={onOpenCustomSelectBox} width={width}>
@@ -47,20 +61,7 @@ const SelectBox = ({
           </option>
         ))}
       </Select>
-
-      {isSelectBoxOpen && (
-        <SelectItems ref={$selectorContainer} maxHeight={maxHeight}>
-          {options.map((option) => (
-            <SelectItem
-              key={option}
-              onMouseDown={(event) => onSelectItem(event, option)}
-              isSelected={option === selectedOption}
-            >
-              {option}
-            </SelectItem>
-          ))}
-        </SelectItems>
-      )}
+      {selectItems}
     </Label>
   );
 };
