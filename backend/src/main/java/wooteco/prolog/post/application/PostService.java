@@ -74,7 +74,7 @@ public class PostService {
     }
 
     public PostsResponse findPostsOf(String username, Pageable pageable) {
-        Member member = memberService.findMemberByUsername(username);
+        Member member = memberService.findByUsername(username);
         return PostsResponse.of(postRepository.findByMember(member, pageable));
     }
 

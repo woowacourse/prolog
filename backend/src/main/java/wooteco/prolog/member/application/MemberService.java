@@ -39,21 +39,9 @@ public class MemberService {
         return MemberResponse.of(member);
     }
 
-    public Member findMemberByUsername(String username) {
-        return findByUsername(username);
-    }
-
     @Transactional
     public void updateMember(Member member, MemberUpdateRequest updateRequest) {
         Member persistMember = findByUsername(member.getUsername());
-        validateMember(member, persistMember);
-
         persistMember.update(updateRequest.getNickname(), updateRequest.getImageUrl());
-    }
-
-    private void validateMember(Member member, Member persistMember) {
-        if (!member.getId().equals(persistMember.getId())) {
-            throw new MemberNotAllowedException();
-        }
     }
 }
