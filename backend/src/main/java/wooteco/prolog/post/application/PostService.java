@@ -1,7 +1,5 @@
 package wooteco.prolog.post.application;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -9,14 +7,12 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.mission.application.MissionService;
-import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.mission.domain.Mission;
-import wooteco.prolog.post.application.dto.PageRequest;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.application.dto.PostsResponse;
@@ -29,7 +25,6 @@ import wooteco.prolog.posttag.domain.PostTag;
 import wooteco.prolog.tag.application.TagService;
 import wooteco.prolog.tag.domain.Tag;
 import wooteco.prolog.tag.domain.Tags;
-import wooteco.prolog.tag.dto.TagResponse;
 
 @Service
 @AllArgsConstructor
@@ -39,12 +34,13 @@ public class PostService {
     private final PostRepository postRepository;
     private final MissionService missionService;
     private final PostTagService postTagService;
+    private final MemberService memberService;
     private final TagService tagService;
 
     public List<PostResponse> findAll() {
         List<Post> posts = postRepository.findAll();
         return posts.stream()
-                .map(this::toResponse)
+                .map(PostResponse::of)
                 .collect(Collectors.toList());
     }
 
@@ -56,21 +52,17 @@ public class PostService {
         List<Mission> missions = missionService.findByIds(missionIds);
         List<Tag> tags = tagService.findByIds(tagIds);
         List<PostTag> postTags = postTagService.findByTags(tags);
-        //Todo : missions와 postTags가 없을때 (필터가 없을때) 전체 조회
-        //두 개 다 있을 땐 AND, MissonId만 있을땐 Mission IN, Tag만 있을 땐 Tag IN, 둘다 없으면 전체 조회
+        //Todo : explosion zone 폭탄 제거
         Page<Post> posts = elseIfExplosionZone(missionIds, tagIds, missions, postTags, pageable);
-//        List<Post> posts = postRepository.findWithFilter(missions, tags, pageRequest);
-        Page<PostResponse> page = posts.map(this::toResponse);
-//        Page<PostResponse> postResponses = posts.stream()
-//                .map(this::toResponse)
-//                .collect(Collectors.toList());
 
-        return new PostsResponse(page.getContent(), page.getTotalElements(), page.getTotalPages(), pageable.getPageNumber());
+        return PostsResponse.of(posts);
     }
 
-    private Page<Post> elseIfExplosionZone(List<Long> missionIds, List<Long> tagIds, List<Mission> missions,
-            List<PostTag> postTags, Pageable pageable) {
-        if(isNullOrEmpty(missionIds) && isNullOrEmpty(tagIds)){
+    private Page<Post> elseIfExplosionZone(List<Long> missionIds, List<Long> tagIds,
+            List<Mission> missions,
+            List<PostTag> postTags,
+            Pageable pageable) {
+        if (isNullOrEmpty(missionIds) && isNullOrEmpty(tagIds)) {
             return postRepository.findAll(pageable);
         } else if (!isNullOrEmpty(missionIds) && !isNullOrEmpty(tagIds)) {
             return postRepository.findByMissionInAndPostTagsIn(missions, postTags, pageable);
@@ -81,60 +73,9 @@ public class PostService {
         }
     }
 
-    public PostsResponse findPostsOf(String username, PageRequest pageRequest) {
-//        List<Post> posts = postDao.findAllByUsername(username, pageRequest);
-//        List<PostResponse> postResponses = posts.stream()
-//                .map(this::toResponse)
-//                .collect(Collectors.toList());
-//
-//        int totalCount = postDao.countByUsername(username);
-//        int totalPage = pageRequest.calculateTotalPage(totalCount);
-//        return new PostsResponse(postResponses, totalCount, totalPage, pageRequest.getPage());
-        return null;
-    }
-
-    public PostsResponse findPostsWithFilter(List<Long> missions, List<Long> tags) {
-        return findPostsWithFilter(missions, tags, new Pageable() {
-            @Override
-            public int getPageNumber() {
-                return 0;
-            }
-
-            @Override
-            public int getPageSize() {
-                return 0;
-            }
-
-            @Override
-            public long getOffset() {
-                return 0;
-            }
-
-            @Override
-            public Sort getSort() {
-                return null;
-            }
-
-            @Override
-            public Pageable next() {
-                return null;
-            }
-
-            @Override
-            public Pageable previousOrFirst() {
-                return null;
-            }
-
-            @Override
-            public Pageable first() {
-                return null;
-            }
-
-            @Override
-            public boolean hasPrevious() {
-                return false;
-            }
-        });
+    public PostsResponse findPostsOf(String username, Pageable pageable) {
+        Member member = memberService.findMemberByUsername(username);
+        return PostsResponse.of(postRepository.findByMember(member, pageable));
     }
 
     private boolean isNullOrEmpty(List<Long> ids) {
@@ -160,14 +101,17 @@ public class PostService {
     }
 
     private PostResponse insertPost(Member member, PostRequest postRequest) {
-        Tags tags = tagService.create(postRequest.getTags());
+        Tags tags = tagService.findOrCreate(postRequest.getTags());
         Mission mission = missionService.findById(postRequest.getMissionId());
 
-        Post requestedPost = new Post(member, postRequest.getTitle(), postRequest.getContent(),
+        Post requestedPost = new Post(member,
+                postRequest.getTitle(),
+                postRequest.getContent(),
                 mission);
+
         Post createdPost = postRepository.save(requestedPost);
-        postTagService.addTagToPost(createdPost, tags);
-        // TODO: 연관관계 매핑하기!
+        createdPost.addTags(tags);
+
         return PostResponse.of(createdPost);
     }
 
@@ -178,34 +122,15 @@ public class PostService {
         return PostResponse.of(post);
     }
 
-    private PostResponse toResponse(Post post) {
-        // TODO : n+1 조심
-        List<PostTag> postTags = postTagService.getPostTagsOfPost(post);
-        final List<Tag> tags = postTags.stream()
-                .map(PostTag::getTag)
-                .collect(toList());
-
-        return new PostResponse(post, MissionResponse.of(post.getMission()), toResponse(tags));
-    }
-
-    private List<TagResponse> toResponse(List<Tag> tags) {
-        return tags.stream()
-                .map(TagResponse::of)
-                .collect(Collectors.toList());
-    }
-
     @Transactional
     public void updatePost(Member member, Long postId, PostRequest postRequest) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
         post.validateAuthor(member);
 
-        postTagService.removeTagsOfPost(post);
         Mission mission = missionService.findById(postRequest.getMissionId());
-        Tags tags = tagService.create(postRequest.getTags());
+        Tags tags = tagService.findOrCreate(postRequest.getTags());
         post.update(postRequest.getTitle(), postRequest.getContent(), mission, tags);
-
-        postTagService.updateTagToPost(post);
     }
 
     public void deletePost(Member member, Long postId) {
@@ -213,7 +138,6 @@ public class PostService {
                 .orElseThrow(PostNotFoundException::new);
         post.validateAuthor(member);
 
-        postTagService.removeTagsOfPost(post);
         postRepository.delete(post);
     }
 }

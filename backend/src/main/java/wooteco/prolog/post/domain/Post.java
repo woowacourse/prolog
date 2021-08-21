@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,7 +45,7 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "mission_id")
     private Mission mission;
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private final List<PostTag> postTags = new ArrayList<>();
 
     public Post(Member member, String title, String content, Mission mission) {
@@ -66,12 +67,10 @@ public class Post {
     }
 
     //Todo : TAG 중복체크
-    public void addPostTag(PostTag postTag) {
-        postTags.add(postTag);
-    }
-
-    public void removePostTag(PostTag postTag) {
-        this.postTags.remove(postTag);
+    public void addTags(Tags tags) {
+        tags.toList().stream()
+                .map(tag -> new PostTag(this, tag))
+                .forEach(this.postTags::add);
     }
 
     public Long getId() {
@@ -119,10 +118,15 @@ public class Post {
 
     private void updatePostTags(Tags tags) {
         List<PostTag> postTags = tags.toList().stream()
-            .map(tag -> new PostTag(this, tag))
-            .collect(Collectors.toList());
+                .map(tag -> new PostTag(this, tag))
+                .collect(Collectors.toList());
 
-        this.postTags.clear();
+        removeAllPostTags();
         this.postTags.addAll(postTags);
     }
+
+    private void removeAllPostTags() {
+        this.postTags.clear();
+    }
+
 }

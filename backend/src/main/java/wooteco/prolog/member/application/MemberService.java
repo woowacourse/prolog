@@ -34,9 +34,13 @@ public class MemberService {
                 .orElseThrow(MemberNotFoundException::new);
     }
 
-    public MemberResponse findMemberByUsername(String username) {
+    public MemberResponse findMemberResponseByUsername(String username) {
         Member member = findByUsername(username);
         return MemberResponse.of(member);
+    }
+
+    public Member findMemberByUsername(String username) {
+        return findByUsername(username);
     }
 
     @Transactional

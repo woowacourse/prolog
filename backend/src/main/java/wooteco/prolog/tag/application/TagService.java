@@ -27,7 +27,7 @@ public class TagService {
     private final PostTagService postTagService;
 
     @Transactional
-    public Tags create(List<TagRequest> tagRequests) {
+    public Tags findOrCreate(List<TagRequest> tagRequests) {
         Tags requestTags = tagRequests.stream()
                 .map(TagRequest::getName)
                 .collect(collectingAndThen(toList(), Tags::of));
