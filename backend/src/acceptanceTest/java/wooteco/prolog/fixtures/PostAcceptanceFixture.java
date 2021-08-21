@@ -28,7 +28,7 @@ public enum PostAcceptanceFixture {
             "[자바스크립트][비동기] 학습log 제출합니다.",
             "모던 JS의 fetch문, ajax라이브러리인 axios등을 통해 비동기 요청을 \n " +
                     "편하게 할 수 있습니다. 자바 최고",
-            1L,
+            2L,
             TAG3,
             TAG4
     ),

@@ -104,7 +104,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
 
         //first -> 미션은 1, java, optional
         //second -> 미션은 2, 자바스크립트, 비동기
-        //third -> 미션은 2, java, john cena
+        //third -> 미션은 1, java, 알고리즘
 
         for (int i = 0; i < 7; i++) {
             postRequests.add(POST1.getPostRequest()) ;
@@ -112,7 +112,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
         for (int i = 0; i < 5; i++) {
             postRequests.add(POST2.getPostRequest());
         }
-        for (int i = 0; i < 28; i++) {
+        for (int i = 0; i < 6; i++) {
             postRequests.add(POST3.getPostRequest());
         }
 
@@ -121,7 +121,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
 
     @When("미션{int}와 태그{int}똥을 먹으면")
     public void 똥을먹는다(int missionNumber, int tagNumber) {
-        // 자바1, 옵셔녈2, JS3, 비동기4, 존씨나5
+        // post1 - 미션1, 태그 1,2  post2 - 미션 2, 태그 3,4 post3- 미션1, 태그 1,5
         String path = String.format("/posts?tags=%d&missions=%d", tagNumber, missionNumber);
         context.invokeHttpGet(path);
     }
