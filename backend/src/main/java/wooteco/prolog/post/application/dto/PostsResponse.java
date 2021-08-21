@@ -18,6 +18,9 @@ import wooteco.prolog.tag.dto.TagResponse;
 @AllArgsConstructor
 @Getter
 public class PostsResponse {
+
+    private static final int ONE_INDEXED_PARAMETER = 1;
+
     private List<PostResponse> data;
     private Long totalSize;
     private int totalPage;
@@ -28,7 +31,7 @@ public class PostsResponse {
         return new PostsResponse(responsePage.getContent(),
                 responsePage.getTotalElements(),
                 responsePage.getTotalPages(),
-                responsePage.getNumber());
+                responsePage.getNumber() + ONE_INDEXED_PARAMETER);
     }
 
     private static PostResponse toResponse(Post post) {
