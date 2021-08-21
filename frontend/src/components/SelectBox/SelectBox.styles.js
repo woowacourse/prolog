@@ -98,11 +98,11 @@ const SelectItem = styled.li`
     `background-color: ${COLOR.LIGHT_BLUE_200};
     
     &:first-of-type {
-      border-top-left-radius: 22px;
+      border-top-left-radius: 1rem;
     }
 
     &:last-child {
-      border-bottom-left-radius: 22px;
+      border-bottom-left-radius: 1rem;
     }`}
 `;
 
