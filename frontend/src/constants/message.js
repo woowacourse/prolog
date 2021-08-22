@@ -4,6 +4,7 @@ const CONFIRM_MESSAGE = {
 
 const ALERT_MESSAGE = {
   FAIL_TO_DELETE_POST: '글을 삭제할 수 없습니다.',
+  FAIL_TO_UPLOAD_IMAGE: '이미지 업로드를 할 수 없습니다.',
 };
 
 const ERROR_MESSAGE = {
@@ -22,4 +23,10 @@ const SUCCESS_MESSAGE = {
   CREATE_POST: '글이 작성되었습니다.',
 };
 
-export { CONFIRM_MESSAGE, ALERT_MESSAGE, ERROR_MESSAGE, SUCCESS_MESSAGE };
+const PLACEHOLDER = {
+  POST_TITLE: '제목을 입력해주세요',
+  POST_CONTENT: '학습로그를 작성해주세요',
+  TAG: '#태그선택',
+};
+
+export { CONFIRM_MESSAGE, ALERT_MESSAGE, ERROR_MESSAGE, SUCCESS_MESSAGE, PLACEHOLDER };

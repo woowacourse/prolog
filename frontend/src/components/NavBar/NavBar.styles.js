@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import COLOR from '../../constants/color';
 
 const DropdownToggledStyle = css`
   &:before {
@@ -19,7 +20,7 @@ const DropdownToggledStyle = css`
 const Container = styled.div`
   width: 100%;
   height: 6.4rem;
-  background-color: #a9cbe5;
+  background-color: ${COLOR.LIGHT_BLUE_400};
 
   ${({ isDropdownToggled }) => isDropdownToggled && DropdownToggledStyle}
 `;
@@ -53,7 +54,7 @@ const Logo = styled.div`
     top: -10%;
     left: 105%;
     color: white;
-    background-color: #383838;
+    background-color: ${COLOR.DARK_GRAY_900};
     border-radius: 2rem;
   }
 `;
@@ -79,7 +80,25 @@ const DropdownStyle = css`
 `;
 
 const whiteBackgroundStyle = css`
-  background-color: #ffffff;
+  background-color: ${COLOR.WHITE};
 `;
 
-export { Container, Wrapper, Logo, Menu, DropdownStyle, whiteBackgroundStyle };
+const pencilButtonStyle = css`
+  width: 4.8rem;
+  background-color: ${COLOR.DARK_BLUE_800};
+`;
+
+const profileButtonStyle = css`
+  width: 4.8rem;
+`;
+
+export {
+  Container,
+  Wrapper,
+  Logo,
+  Menu,
+  DropdownStyle,
+  whiteBackgroundStyle,
+  pencilButtonStyle,
+  profileButtonStyle,
+};

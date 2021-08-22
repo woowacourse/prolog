@@ -41,10 +41,11 @@ const requestGetProfile = (username) =>
     method: 'GET',
   });
 
-const requestGetUserPosts = (username) =>
-  fetch(`${BASE_URL}/members/${username}/posts`, {
-    method: 'GET',
-  });
+const requestGetUserPosts = (username, postSearchParams) => {
+  const searchParams = Object.entries(postSearchParams).map(([key, value]) => `${key}=${value}`);
+
+  return fetch(`${BASE_URL}/members/${username}/posts?${searchParams.join('&')}`);
+};
 
 export {
   requestGetPosts,

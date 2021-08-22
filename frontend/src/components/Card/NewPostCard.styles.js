@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import COLOR from '../../constants/color';
 
 const TitleInput = styled.input`
   width: 100%;
@@ -17,6 +18,13 @@ const TitleInput = styled.input`
   }
 `;
 
+const TitleCount = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  font-size: 1.2rem;
+  color: ${COLOR.LIGHT_GRAY_900};
+`;
+
 const EditorWrapper = styled.div`
   *.tui-editor-defaultUI {
     border: none;
@@ -32,4 +40,4 @@ const EditorWrapper = styled.div`
   }
 `;
 
-export { TitleInput, EditorWrapper };
+export { TitleInput, TitleCount, EditorWrapper };

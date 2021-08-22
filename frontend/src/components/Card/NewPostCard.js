@@ -1,11 +1,14 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import { Card, CARD_SIZE, CreatableSelectBox } from '..';
 import { Editor } from '@toast-ui/react-editor';
 import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
-import { TitleInput, EditorWrapper } from './NewPostCard.styles';
+import { TitleInput, TitleCount, EditorWrapper } from './NewPostCard.styles';
+import { ALERT_MESSAGE, PLACEHOLDER, POST_TITLE } from '../../constants';
 
 const NewPostCard = forwardRef(({ postOrder, tagOptions }, ref) => {
+  const [title, setTitle] = useState('');
+
   const assignRefValue = (key, value) =>
     (ref.current[postOrder] = { ...ref.current[postOrder], [key]: value });
 
@@ -16,17 +19,30 @@ const NewPostCard = forwardRef(({ postOrder, tagOptions }, ref) => {
     assignRefValue('tags', newValue);
   };
 
+  useEffect(() => {
+    if (title.length <= POST_TITLE.MAX_LENGTH) return;
+
+    setTitle((prevState) => prevState.substr(0, POST_TITLE.MAX_LENGTH));
+  }, [title]);
+
   return (
     <Card size={CARD_SIZE.LARGE}>
+      <TitleCount>{title.length}/50</TitleCount>
       <TitleInput
-        placeholder="제목을 입력해주세요"
+        type="text"
+        placeholder={PLACEHOLDER.POST_TITLE}
+        minLength={POST_TITLE.MIN_LENGTH}
+        maxLength={POST_TITLE.MAX_LENGTH}
+        value={title}
+        onChange={(event) => setTitle(event.target.value)}
+        required
         autoFocus
         ref={(element) => assignRefValue('title', element)}
       />
       <hr />
       <EditorWrapper>
         <Editor
-          placeholder="여기에 학습로그를 작성해주세요."
+          placeholder={PLACEHOLDER.POST_CONTENT}
           previewStyle="vertical"
           height="60vh"
           initialEditType="markdown"
@@ -34,13 +50,13 @@ const NewPostCard = forwardRef(({ postOrder, tagOptions }, ref) => {
           ref={(element) => assignRefValue('content', element)}
           hooks={{
             addImageBlobHook: async (blob, callback) => {
-              alert("이미지 업로드를 할 수 없습니다.")
+              alert(ALERT_MESSAGE.FAIL_TO_UPLOAD_IMAGE);
               return false;
             },
           }}
         />
       </EditorWrapper>
-      <CreatableSelectBox options={tagOptions} placeholder="#태그선택" onChange={selectTag} />
+      <CreatableSelectBox options={tagOptions} placeholder={PLACEHOLDER.TAG} onChange={selectTag} />
     </Card>
   );
 });

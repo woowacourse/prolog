@@ -1,4 +1,6 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import COLOR from '../../constants/color';
 
 const Container = styled.div`
   display: flex;
@@ -7,9 +9,9 @@ const Container = styled.div`
 const Profile = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: ${COLOR.WHITE};
   border-radius: 1.6rem;
-  border: 1px solid #e6e6e6;
+  border: 1px solid ${COLOR.LIGHT_GRAY_200};
   padding-bottom: 1.8rem;
   height: fit-content;
 `;
@@ -33,36 +35,50 @@ const Role = styled.div`
   margin-top: 1rem;
   padding-left: 1.2rem;
   font-size: 1.2rem;
-  color: #888888;
-`;
-
-const RightSection = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin-left: 3.2rem;
-  background-color: #fff;
-  border-radius: 1.6rem;
-  border: 1px solid #e6e6e6;
+  color: ${COLOR.LIGHT_GRAY_900};
 `;
 
 const MenuList = styled.ul`
+  margin-top: 2.4rem;
   display: flex;
-  background-color: #dfecf5;
-  border-top-right-radius: 1.6rem;
-  border-top-left-radius: 1.6rem;
+  flex-direction: column;
+  background-color: ${COLOR.WHITE};
+  border-radius: 1.6rem;
+  border: 1px solid ${COLOR.LIGHT_GRAY_200};
+  padding: 1.6rem 0;
 `;
 
 const MenuItem = styled.li`
-  height: 4.8rem;
+  height: 4rem;
   display: flex;
   align-items: center;
-  padding: 2rem;
-  border-top-right-radius: 1.6rem;
-  border-top-left-radius: 1.6rem;
+  position: relative;
 
   ${({ isSelectedMenu }) =>
-    isSelectedMenu && 'background-color: #fff; box-shadow: 0px 5px 10px #cccccc;'};
+    isSelectedMenu &&
+    css`
+      font-weight: 700;
+    `}
+
+  & > button {
+    ${({ isSelectedMenu }) =>
+      isSelectedMenu &&
+      css`
+        color: ${COLOR.DARK_GRAY_900};
+        font-weight: 500;
+      `}
+  }
+  &:before {
+    ${({ isSelectedMenu }) =>
+      isSelectedMenu &&
+      css`
+        position: absolute;
+        content: '';
+        background-color: ${COLOR.LIGHT_GRAY_900};
+        height: inherit;
+        width: 0.5rem;
+      `}
+  }
 `;
 
 const MenuButton = styled.button`
@@ -70,15 +86,15 @@ const MenuButton = styled.button`
   gap: 0.6rem;
   align-items: center;
   font-size: 1.6rem;
-  color: #333;
+  color: ${COLOR.LIGHT_GRAY_900};
+  font-weight: 300;
+  padding: 2rem;
 `;
 
 const Content = styled.div`
   width: 100%;
-  background-color: #fff;
-  border-bottom-left-radius: 1.6rem;
-  border-bottom-right-radius: 1.6rem;
-  padding: 2.4rem;
+  height: fit-content;
+  margin-left: 2.4rem;
   display: flex;
   justify-content: center;
 `;
@@ -86,10 +102,6 @@ const Content = styled.div`
 const Title = styled.div`
   font-size: 2.8rem;
   font-weight: 500;
-`;
-
-const MenuIcon = styled.img`
-  width: 1.6rem;
 `;
 
 const Preparing = styled.div`
@@ -101,18 +113,22 @@ const Preparing = styled.div`
   font-size: 1.8rem;
 `;
 
+const SideBar = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 export {
   Container,
   Profile,
   Image,
   Nickname,
   Role,
-  RightSection,
   MenuList,
   MenuItem,
   MenuButton,
   Content,
   Title,
-  MenuIcon,
   Preparing,
+  SideBar,
 };

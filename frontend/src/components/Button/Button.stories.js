@@ -3,6 +3,7 @@ import backImage from '../../assets/images/background-image.png';
 import search from '../../assets/images/search.svg';
 import pen from '../../assets/images/pen.svg';
 import person from '../../assets/images/person.svg';
+import COLOR from '../../constants/color';
 
 export default {
   title: 'Component/Button',
@@ -20,7 +21,7 @@ Basic.args = {
   size: 'X_SMALL',
   icon: search,
   css: {
-    backgroundColor: '#ffffff',
+    backgroundColor: COLOR.WHITE,
   },
 };
 
@@ -38,7 +39,7 @@ SMALL.args = {
   icon: person,
   children: '로그인',
   css: {
-    backgroundColor: '#ffffff',
+    backgroundColor: COLOR.WHITE,
   },
 };
 
@@ -56,7 +57,7 @@ LARGE.args = {
   size: 'LARGE',
   children: '작성완료',
   css: {
-    backgroundColor: '#153147',
-    color: '#ffffff',
+    backgroundColor: COLOR.DARK_BLUE_800,
+    color: COLOR.WHITE,
   },
 };
