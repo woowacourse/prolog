@@ -8,10 +8,5 @@ import wooteco.prolog.tag.domain.Tag;
 
 public interface PostTagRepository extends JpaRepository<PostTag, Long> {
 
-
-    List<PostTag> findByPost(Post post);
-
-    void deleteByPost(Post post);
-
     List<PostTag> findByTagIn(List<Tag> tags);
 }

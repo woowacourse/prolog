@@ -97,6 +97,7 @@ class PostServiceTest {
         //given
         List<PostResponse> postsOfMember1 = insertPosts(member1, post1, post2);
         List<PostResponse> postsOfMember2 = insertPosts(member2, post3, post4);
+        //when
         //then
         List<String> titles = Stream.concat(postsOfMember1.stream(), postsOfMember2.stream())
                 .map(PostResponse::getTitle)
@@ -122,11 +123,11 @@ class PostServiceTest {
     @MethodSource
     void findWithFilter(List<Long> missionIds, List<Long> tagIds, List<String> expectedPostTitles) {
         //given
-        List<PostResponse> postsOfMember1 = insertPosts(member1, post1, post2);
-        List<PostResponse> postsOfMember2 = insertPosts(member2, post3, post4);
+        insertPosts(member1, post1, post2);
+        insertPosts(member2, post3, post4);
 
         PostsResponse postResponsesWithFilter =
-                postService.findPostsWithFilter(missionIds, tagIds, Pageable.unpaged());
+                postService.findPostsWithFilter(missionIds, tagIds, PageRequest.of(0,10));
 
         List<String> titles = postResponsesWithFilter.getData().stream()
                 .map(PostResponse::getTitle)
@@ -140,12 +141,14 @@ class PostServiceTest {
     private static Stream<Arguments> findWithFilter() {
         return Stream.of(
                 Arguments.of(emptyList(), asList(tag1.getId(), tag2.getId(), tag3.getId()), asList(POST1_TITLE, POST2_TITLE, POST3_TITLE)),
-                Arguments.of(emptyList(), singletonList(tag2.getId()), asList(POST1_TITLE, POST2_TITLE, POST3_TITLE)),
+                Arguments.of(emptyList(), singletonList(tag2.getId()), asList(POST1_TITLE, POST2_TITLE)),
                 Arguments.of(emptyList(), singletonList(tag3.getId()), asList(POST2_TITLE, POST3_TITLE)),
                 Arguments.of(singletonList(1L), emptyList(), asList(POST1_TITLE, POST2_TITLE)),
                 Arguments.of(singletonList(2L), emptyList(), asList(POST3_TITLE, POST4_TITLE)),
                 Arguments.of(singletonList(1L), singletonList(tag1.getId()), singletonList(POST1_TITLE)),
-                Arguments.of(singletonList(1L), singletonList(tag1.getId()), asList(POST1_TITLE, POST2_TITLE)),
+                Arguments.of(singletonList(1L), asList(tag1.getId(), tag2.getId(), tag3.getId()), asList(POST1_TITLE, POST2_TITLE)),
+                Arguments.of(singletonList(1L), singletonList(tag2.getId()), asList(POST1_TITLE, POST2_TITLE)),
+                Arguments.of(asList(1L, 2L), singletonList(tag3.getId()), asList(POST2_TITLE, POST3_TITLE)),
                 Arguments.of(emptyList(), emptyList(), asList(POST1_TITLE, POST2_TITLE, POST3_TITLE, POST4_TITLE))
         );
     }
@@ -255,7 +258,7 @@ class PostServiceTest {
                                 post.getTitle(),
                                 post.getContent(),
                                 post.getMission().getId(),
-                                toTagRequests(post1)
+                                toTagRequests(post)
                         )
                 )
                 .collect(toList());

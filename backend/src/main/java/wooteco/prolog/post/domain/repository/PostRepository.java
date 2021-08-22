@@ -11,9 +11,9 @@ import wooteco.prolog.posttag.domain.PostTag;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    Page<Post> findByMissionInAndPostTagsIn(List<Mission> missions, List<PostTag> postTags, Pageable pageable);
+    Page<Post> findDistinctByMissionInAndPostTagsIn(List<Mission> missions, List<PostTag> postTags, Pageable pageable);
 
-    Page<Post> findByPostTagsIn(List<PostTag> postTags, Pageable pageable);
+    Page<Post> findDistinctByPostTagsIn(List<PostTag> postTags, Pageable pageable);
 
     Page<Post> findByMissionIn(List<Mission> missions, Pageable pageable);
 

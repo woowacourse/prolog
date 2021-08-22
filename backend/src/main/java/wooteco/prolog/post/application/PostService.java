@@ -58,9 +58,9 @@ public class PostService {
         if (isNullOrEmpty(missionIds) && isNullOrEmpty(tagIds)) {
             return postRepository.findAll(pageable);
         } else if (!isNullOrEmpty(missionIds) && !isNullOrEmpty(tagIds)) {
-            return postRepository.findByMissionInAndPostTagsIn(missions, postTags, pageable);
+            return postRepository.findDistinctByMissionInAndPostTagsIn(missions, postTags, pageable);
         } else if (isNullOrEmpty(missionIds)) {
-            return postRepository.findByPostTagsIn(postTags, pageable);
+            return postRepository.findDistinctByPostTagsIn(postTags, pageable);
         } else {
             return postRepository.findByMissionIn(missions, pageable);
         }
