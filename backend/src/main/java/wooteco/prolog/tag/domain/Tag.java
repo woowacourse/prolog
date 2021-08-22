@@ -1,23 +1,14 @@
 package wooteco.prolog.tag.domain;
 
-import java.util.Objects;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import wooteco.prolog.BaseEntity;
 
-@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-public class Tag {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Entity
+public class Tag extends BaseEntity {
 
     @Embedded
     private TagName name;
@@ -30,32 +21,16 @@ public class Tag {
         this(id, new TagName(name));
     }
 
+    public Tag(Long id, TagName name) {
+        super(id);
+        this.name = name;
+    }
+
     public boolean isSameName(Tag tag) {
         return this.name.equals(tag.name);
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public String getName() {
         return this.name.getValue();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Tag)) {
-            return false;
-        }
-        Tag tag = (Tag) o;
-        return Objects.equals(id, tag.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }
