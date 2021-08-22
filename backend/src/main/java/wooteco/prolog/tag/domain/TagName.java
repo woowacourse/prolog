@@ -8,9 +8,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.tag.exception.TagNameNullOrEmptyException;
 
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
-@EqualsAndHashCode
 public class TagName {
 
     @Column(name = "name")
