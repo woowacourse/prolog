@@ -46,12 +46,12 @@ public class PostService {
         List<Tag> tags = tagService.findByIds(tagIds);
         List<PostTag> postTags = postTagService.findByTags(tags);
         //Todo : explosion zone 폭탄 제거
-        Page<Post> posts = elseIfExplosionZone(missionIds, tagIds, missions, postTags, pageable);
+        Page<Post> posts = findWithFilter(missionIds, tagIds, missions, postTags, pageable);
 
         return PostsResponse.of(posts);
     }
 
-    private Page<Post> elseIfExplosionZone(List<Long> missionIds, List<Long> tagIds,
+    private Page<Post> findWithFilter(List<Long> missionIds, List<Long> tagIds,
             List<Mission> missions,
             List<PostTag> postTags,
             Pageable pageable) {

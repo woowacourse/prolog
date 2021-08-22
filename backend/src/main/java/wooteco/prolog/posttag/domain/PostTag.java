@@ -16,7 +16,7 @@ import wooteco.prolog.tag.domain.Tag;
 public class PostTag extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "tag_id")
+    @JoinColumn(name = "tag_id", nullable = false)
     private Tag tag;
     @ManyToOne
     @JoinColumn(name = "post_id")
