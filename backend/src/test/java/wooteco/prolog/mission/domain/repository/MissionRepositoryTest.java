@@ -30,6 +30,7 @@ class MissionRepositoryTest {
         assertThat(savedMission.getId()).isNotNull();
         assertThat(savedMission.getCreatedAt()).isAfterOrEqualTo(beforeTime);
         assertThat(savedMission).usingRecursiveComparison()
+            .ignoringFields("id", "createdAt", "updatedAt")
             .isEqualTo(mission);
     }
 

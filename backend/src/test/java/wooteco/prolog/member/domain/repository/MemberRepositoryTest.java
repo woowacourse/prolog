@@ -32,6 +32,7 @@ class MemberRepositoryTest {
         assertThat(savedMember.getId()).isNotNull();
         assertThat(savedMember.getCreatedAt()).isAfterOrEqualTo(beforeTime);
         assertThat(savedMember).usingRecursiveComparison()
+            .ignoringFields("id", "createdAt", "updatedAt")
             .isEqualTo(웨지);
     }
 

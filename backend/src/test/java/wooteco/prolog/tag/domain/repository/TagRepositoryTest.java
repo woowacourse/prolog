@@ -31,6 +31,7 @@ class TagRepositoryTest {
         assertThat(savedTag.getId()).isNotNull();
         assertThat(savedTag.getCreatedAt()).isAfterOrEqualTo(beforeTime);
         assertThat(savedTag).usingRecursiveComparison()
+            .ignoringFields("id", "createdAt", "updatedAt")
             .isEqualTo(tag);
     }
 
