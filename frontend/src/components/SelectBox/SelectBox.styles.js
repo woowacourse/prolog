@@ -47,7 +47,7 @@ const SelectItems = styled.ul`
   overflow-y: auto;
 
   list-style: none;
-  z-index: 1;
+  z-index: 7;
 
   color: ${COLOR.DARK_BLUE_800};
   background-color: ${COLOR.LIGHT_GRAY_200};
