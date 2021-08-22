@@ -45,7 +45,7 @@ public class PostService {
         List<Mission> missions = missionService.findByIds(missionIds);
         List<Tag> tags = tagService.findByIds(tagIds);
         List<PostTag> postTags = postTagService.findByTags(tags);
-        //Todo : explosion zone 폭탄 제거
+        // TODO : explosion zone 폭탄 제거
         Page<Post> posts = findWithFilter(missionIds, tagIds, missions, postTags, pageable);
 
         return PostsResponse.of(posts);
@@ -58,9 +58,9 @@ public class PostService {
         if (isNullOrEmpty(missionIds) && isNullOrEmpty(tagIds)) {
             return postRepository.findAll(pageable);
         } else if (!isNullOrEmpty(missionIds) && !isNullOrEmpty(tagIds)) {
-            return postRepository.findDistinctByMissionInAndPostTagsIn(missions, postTags, pageable);
+            return postRepository.findDistinctByMissionInAndPostTagsValuesIn(missions, postTags, pageable);
         } else if (isNullOrEmpty(missionIds)) {
-            return postRepository.findDistinctByPostTagsIn(postTags, pageable);
+            return postRepository.findDistinctByPostTagsValuesIn(postTags, pageable);
         } else {
             return postRepository.findByMissionIn(missions, pageable);
         }
@@ -68,6 +68,7 @@ public class PostService {
 
     public PostsResponse findPostsOf(String username, Pageable pageable) {
         Member member = memberService.findByUsername(username);
+
         return PostsResponse.of(postRepository.findByMember(member, pageable));
     }
 
@@ -79,6 +80,7 @@ public class PostService {
         if (Objects.isNull(filters)) {
             filters = Collections.emptyList();
         }
+
         return filters;
     }
 
