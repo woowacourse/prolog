@@ -2,6 +2,7 @@ package wooteco.prolog.mission.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,23 @@ class MissionRepositoryTest {
 
     @Autowired
     MissionRepository missionRepository;
+
+    @DisplayName("Mission 생성")
+    @Test
+    void createMission() {
+        // given
+        LocalDateTime beforeTime = LocalDateTime.now();
+        Mission mission = new Mission("[BE] 자동차 미션");
+
+        // when
+        Mission savedMission = missionRepository.save(mission);
+
+        // then
+        assertThat(savedMission.getId()).isNotNull();
+        assertThat(savedMission.getCreatedAt()).isAfterOrEqualTo(beforeTime);
+        assertThat(savedMission).usingRecursiveComparison()
+            .isEqualTo(mission);
+    }
 
     @DisplayName("name으로 Mission 검색 - 성공")
     @Test

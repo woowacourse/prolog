@@ -2,6 +2,7 @@ package wooteco.prolog.member.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,22 @@ class MemberRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @DisplayName("Member 생성")
+    @Test
+    void createMember() {
+        // given
+        LocalDateTime beforeTime = LocalDateTime.now();
+
+        // when
+        Member savedMember = memberRepository.save(웨지);
+
+        // then
+        assertThat(savedMember.getId()).isNotNull();
+        assertThat(savedMember.getCreatedAt()).isAfterOrEqualTo(beforeTime);
+        assertThat(savedMember).usingRecursiveComparison()
+            .isEqualTo(웨지);
+    }
 
     @DisplayName("githubId로 Member 검색 - 성공")
     @Test
