@@ -5,15 +5,23 @@ import lombok.Getter;
 import wooteco.prolog.login.excetpion.*;
 import wooteco.prolog.member.exception.MemberNotAllowedException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
+import wooteco.prolog.mission.domain.Mission;
 import wooteco.prolog.mission.exception.DuplicateMissionException;
 import wooteco.prolog.mission.exception.MissionNotFoundException;
+import wooteco.prolog.mission.exception.TooLongMissionNameException;
+import wooteco.prolog.post.domain.Title;
+import wooteco.prolog.post.exception.AuthorNotValidException;
 import wooteco.prolog.post.exception.NotValidSortNameException;
 import wooteco.prolog.post.exception.PostArgumentException;
 import wooteco.prolog.post.exception.PostContentNullOrEmptyException;
 import wooteco.prolog.post.exception.PostNotFoundException;
+import wooteco.prolog.post.exception.TooLongTitleException;
+import wooteco.prolog.tag.domain.TagName;
 import wooteco.prolog.tag.exception.DuplicateTagException;
 
 import java.util.Arrays;
+import wooteco.prolog.tag.exception.TagNameNullOrEmptyException;
+import wooteco.prolog.tag.exception.TooLongTagNameException;
 
 @AllArgsConstructor
 @Getter
@@ -32,13 +40,13 @@ public enum BadRequestCode {
     POST_TITLE_NULL_OR_EMPTY(2002, "글 제목은 공백일 수 없습나다.", PostTitleNullOrEmptyException.class),
     NOT_VALID_SORT_NAME(2003, "정렬 형식이 올바르지 않습니다.", NotValidSortNameException.class),
     POST_NOT_FOUND(2004, "존재하지 않는 글입니다.", PostNotFoundException.class),
-    ONLY_AUTHOR_CAN_EDIT(2005, "작성자만 수정할 수 있습니다.", AuthorNotValidException.class),
-    POST_TITLE_TOO_LONG(2006, String.format("포스트 제목이 %d자 초과입니다.", Title.MAX_LENGTH), TooLongTitleException.class),
+    POST_TITLE_TOO_LONG(2005, String.format("포스트 제목이 %d자 초과입니다.", Title.MAX_LENGTH), TooLongTitleException.class),
+    ONLY_AUTHOR_CAN_EDIT(2006, "작성자만 수정할 수 있습니다.", AuthorNotValidException.class),
 
     MISSION_NOT_FOUND(3000, "존재하지 않는 미션입니다.", MissionNotFoundException.class),
     DUPLICATE_MISSION(3001, "미션이 중복됩니다.", DuplicateMissionException.class),
     DUPLICATE_TAG(3002, "태그가 중복됩니다.", DuplicateTagException.class),
-    TAG_NAME_NULL_OR_EMPTY(3003, "태그 이름이 null이거나 비어있습니다.", TagNameNullOrEmptyException .class),
+    TAG_NAME_NULL_OR_EMPTY(3003, "태그 이름이 null이거나 비어있습니다.", TagNameNullOrEmptyException.class),
     TOO_LONG_TAG_NAME(3004, String.format("태그 이름이 %d자 초과입니다.", TagName.MAX_LENGTH), TooLongTagNameException.class),
     TOO_LONG_MISSION_NAME(3005, String.format("미션 이름이 %d자 초과입니다.", Mission.MAX_LENGTH), TooLongMissionNameException.class)
     ;
