@@ -35,8 +35,6 @@ const Select = styled.select`
   cursor: pointer;
 
   appearance: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
 `;
 
 const SelectItems = styled.ul`
