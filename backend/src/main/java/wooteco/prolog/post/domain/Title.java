@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import wooteco.prolog.login.excetpion.PostTitleNullOrEmptyException;
+import wooteco.prolog.post.exception.TooLongTitleException;
 
 @Embeddable
 @Getter
@@ -16,13 +17,17 @@ import wooteco.prolog.login.excetpion.PostTitleNullOrEmptyException;
 @EqualsAndHashCode
 @ToString
 public class Title {
-    @Column
+
+    public static final int MAX_LENGTH = 50;
+
+    @Column(nullable = false, length = MAX_LENGTH)
     private String title;
 
     public Title(String title) {
         validateNull(title);
         validateEmpty(title);
         validateOnlyBlank(title);
+        validateMaxLength(title);
         this.title = trim(title);
     }
 
@@ -45,6 +50,12 @@ public class Title {
     private void validateOnlyBlank(String title) {
         if (title.trim().isEmpty()) {
             throw new PostTitleNullOrEmptyException();
+        }
+    }
+
+    private void validateMaxLength(String title) {
+        if (title.length() > MAX_LENGTH) {
+            throw new TooLongTitleException();
         }
     }
 }

@@ -16,7 +16,7 @@ import wooteco.prolog.BaseEntity;
 @Entity
 public class Member extends BaseEntity {
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column
@@ -25,10 +25,10 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private Long githubId;
 
-    @Column
+    @Column(nullable = false)
     private String imageUrl;
 
     public Member(String username, String nickname, Role role, Long githubId, String imageUrl) {

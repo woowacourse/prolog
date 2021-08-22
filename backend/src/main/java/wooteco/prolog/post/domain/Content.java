@@ -2,6 +2,7 @@ package wooteco.prolog.post.domain;
 
 
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -16,6 +17,7 @@ import wooteco.prolog.post.exception.PostContentNullOrEmptyException;
 @EqualsAndHashCode
 @ToString
 public class Content {
+    @Column(nullable = false)
     private String content;
 
     public Content(String content) {

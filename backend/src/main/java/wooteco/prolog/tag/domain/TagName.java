@@ -7,20 +7,30 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.tag.exception.TagNameNullOrEmptyException;
+import wooteco.prolog.tag.exception.TooLongTagNameException;
 
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class TagName {
 
-    @Column(name = "name")
+    public static final int MAX_LENGTH = 20;
+
+    @Column(name = "name", nullable = false, length = MAX_LENGTH)
     private String value;
 
     public TagName(String name) {
         validateNull(name);
         validateEmpty(name);
         validateOnlyBlank(name);
+        validateMaxLength(trim(name));
         this.value = trim(name);
+    }
+
+    private void validateMaxLength(String name) {
+        if (name.length() > MAX_LENGTH) {
+            throw new TooLongTagNameException();
+        }
     }
 
     private String trim(String name) {

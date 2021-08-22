@@ -3,10 +3,11 @@ package wooteco.prolog.post.ui;
 import java.net.URI;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.post.application.PostService;
-import wooteco.prolog.post.application.dto.PageRequest;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.application.dto.PostsResponse;
@@ -43,10 +43,9 @@ public class PostController {
     public ResponseEntity<PostsResponse> showAll(
             @RequestParam(required = false) List<Long> missions,
             @RequestParam(required = false) List<Long> tags,
-            Pageable pageable
+            @PageableDefault(size= 20, direction = Direction.DESC, sort = "id") Pageable pageable
     ) {
         PostsResponse postsResponse = postService.findPostsWithFilter(missions, tags, pageable);
-
         return ResponseEntity.ok(postsResponse);
     }
 

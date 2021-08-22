@@ -57,22 +57,31 @@ public enum PostAcceptanceFixture {
             String content,
             Long missionId,
             TagAcceptanceFixture... tags) {
+        this.tags = Arrays.asList(tags);
         List<TagRequest> tagRequests = Arrays.stream(tags)
                 .map(TagAcceptanceFixture::getTagRequest)
                 .collect(toList());
         this.postRequest = new PostRequest(title, content, missionId, tagRequests);
     }
 
-    private PostRequest postRequest;
+    private final PostRequest postRequest;
+    private final List<TagAcceptanceFixture> tags;
 
     public PostRequest getPostRequest() {
         return postRequest;
     }
 
-    public static List<PostRequest> foundByMissionNumber(Long missionId) {
+    public static List<PostRequest> findByMissionNumber(Long missionId) {
         return Arrays.stream(PostAcceptanceFixture.values())
                 .map(PostAcceptanceFixture::getPostRequest)
                 .filter(it -> it.getMissionId().equals(missionId))
+                .collect(toList());
+    }
+
+    public static List<PostRequest> findByTagNumber(Long tagId) {
+        return Arrays.stream(PostAcceptanceFixture.values())
+                .filter(it -> it.tags.stream().anyMatch(tag -> tag.getTagId().equals(tagId)))
+                .map(PostAcceptanceFixture::getPostRequest)
                 .collect(toList());
     }
 }
