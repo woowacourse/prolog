@@ -30,12 +30,6 @@ public class Tags {
         return toNames(this.tags);
     }
 
-    public Tags removeAllById(Tags that) {
-        List<Tag> thisTags = new ArrayList<>(this.tags);
-        thisTags.removeAll(that.tags);
-        return new Tags(thisTags);
-    }
-
     public Tags removeAllByName(Tags that) {
         return this.tags.stream()
                 .filter(tag -> that.tags.stream().noneMatch(tag::isSameName))
@@ -63,5 +57,4 @@ public class Tags {
             throw new DuplicateTagException();
         }
     }
-
 }
