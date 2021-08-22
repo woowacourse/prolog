@@ -1,4 +1,4 @@
-version: '2.2'
+version: '3.3'
 services:
   es01:
     build:
@@ -22,10 +22,6 @@ services:
         soft: 65535
         hard: 65535
     volumes:
-      - type: bind
-        source: ./elasticsearch/config/elasticsearch.yml
-        target: /usr/share/elasticsearch/config/elasticsearch.yml
-        read_only: true
       - data01:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
@@ -54,10 +50,6 @@ services:
         soft: 65535
         hard: 65535
     volumes:
-      - type: bind
-        source: ./elasticsearch/config/elasticsearch.yml
-        target: /usr/share/elasticsearch/config/elasticsearch.yml
-        read_only: true
       - data02:/usr/share/elasticsearch/data
     networks:
       - elastic
@@ -84,10 +76,6 @@ services:
         soft: 65535
         hard: 65535
     volumes:
-      - type: bind
-        source: ./elasticsearch/config/elasticsearch.yml
-        target: /usr/share/elasticsearch/config/elasticsearch.yml
-        read_only: true
       - data03:/usr/share/elasticsearch/data
     networks:
       - elastic
