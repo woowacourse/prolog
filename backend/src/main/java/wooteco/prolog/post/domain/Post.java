@@ -61,7 +61,7 @@ public class Post extends BaseEntity {
             throw new AuthorNotValidException();
         }
     }
-    
+
     public void addTags(Tags tags) {
         postTags.add(convertToPostTags(tags));
     }
