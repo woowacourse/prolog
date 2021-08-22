@@ -19,7 +19,7 @@ public class PostTag extends BaseEntity {
     @JoinColumn(name = "tag_id", nullable = false)
     private Tag tag;
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     public PostTag(Post post, Tag tag) {

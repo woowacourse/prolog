@@ -41,7 +41,6 @@ public class PostResponse {
     }
 
     public static PostResponse of(Post post) {
-        //Todo : PostTags 생성되면 수정
         List<PostTag> postTags = post.getPostTags();
         List<TagResponse> tagResponses = toTagResponses(postTags);
 

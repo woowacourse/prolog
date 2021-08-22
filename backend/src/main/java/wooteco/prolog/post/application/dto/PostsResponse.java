@@ -35,7 +35,6 @@ public class PostsResponse {
     }
 
     private static PostResponse toResponse(Post post) {
-        // TODO : n+1 조심
         List<PostTag> postTags = post.getPostTags();
         final List<Tag> tags = postTags.stream()
                 .map(PostTag::getTag)
