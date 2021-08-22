@@ -66,8 +66,8 @@ const SelectBox = ({
 
 SelectBox.propTypes = {
   options: PropTypes.array.isRequired,
-  selectedOption: PropTypes.string,
-  setSelectedOption: PropTypes.func,
+  selectedOption: PropTypes.string.isRequired,
+  setSelectedOption: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   width: PropTypes.string,
