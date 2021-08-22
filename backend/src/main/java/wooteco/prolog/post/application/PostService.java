@@ -1,6 +1,5 @@
 package wooteco.prolog.post.application;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -37,51 +36,50 @@ public class PostService {
     private final MemberService memberService;
     private final TagService tagService;
 
-    public PostsResponse findPostsWithFilter(List<Long> missionIds, List<Long> tagIds,
-            Pageable pageable) {
-        missionIds = nullToEmptyList(missionIds);
-        tagIds = nullToEmptyList(tagIds);
-
-        List<Mission> missions = missionService.findByIds(missionIds);
-        List<Tag> tags = tagService.findByIds(tagIds);
-        List<PostTag> postTags = postTagService.findByTags(tags);
-        // TODO : explosion zone 폭탄 제거
-        Page<Post> posts = findWithFilter(missionIds, tagIds, missions, postTags, pageable);
+    public PostsResponse findPostsWithFilter(List<Long> missionIds,
+            List<Long> tagIds,
+            Pageable pageable)
+    {
+        Page<Post> posts = findWithFilter(missionIds, tagIds, pageable);
 
         return PostsResponse.of(posts);
     }
 
-    private Page<Post> findWithFilter(List<Long> missionIds, List<Long> tagIds,
-            List<Mission> missions,
-            List<PostTag> postTags,
-            Pageable pageable) {
+    private Page<Post> findWithFilter(List<Long> missionIds,
+            List<Long> tagIds,
+            Pageable pageable)
+    {
         if (isNullOrEmpty(missionIds) && isNullOrEmpty(tagIds)) {
             return postRepository.findAll(pageable);
-        } else if (!isNullOrEmpty(missionIds) && !isNullOrEmpty(tagIds)) {
-            return postRepository.findDistinctByMissionInAndPostTagsValuesIn(missions, postTags, pageable);
-        } else if (isNullOrEmpty(missionIds)) {
-            return postRepository.findDistinctByPostTagsValuesIn(postTags, pageable);
-        } else {
-            return postRepository.findByMissionIn(missions, pageable);
         }
+
+        if (!isNullOrEmpty(missionIds) && !isNullOrEmpty(tagIds)) {
+            return postRepository
+                    .findDistinctByMissionInAndPostTagsValuesIn(
+                            missionService.findByIds(missionIds),
+                            findPostTagBy(tagIds),
+                            pageable);
+        }
+
+        if (isNullOrEmpty(missionIds)) {
+            return postRepository.findDistinctByPostTagsValuesIn(findPostTagBy(tagIds), pageable);
+        }
+
+        return postRepository.findByMissionIn(missionService.findByIds(missionIds), pageable);
+    }
+
+    private List<PostTag> findPostTagBy(List<Long> tagIds) {
+        List<Tag> tags = tagService.findByIds(tagIds);
+        return postTagService.findByTags(tags);
     }
 
     public PostsResponse findPostsOf(String username, Pageable pageable) {
         Member member = memberService.findByUsername(username);
-
         return PostsResponse.of(postRepository.findByMember(member, pageable));
     }
 
     private boolean isNullOrEmpty(List<Long> ids) {
         return Objects.isNull(ids) || ids.isEmpty();
-    }
-
-    private List<Long> nullToEmptyList(List<Long> filters) {
-        if (Objects.isNull(filters)) {
-            filters = Collections.emptyList();
-        }
-
-        return filters;
     }
 
     @Transactional

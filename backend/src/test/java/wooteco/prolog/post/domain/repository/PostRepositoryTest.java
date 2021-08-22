@@ -21,6 +21,7 @@ import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.posttag.domain.PostTag;
 import wooteco.prolog.posttag.domain.repository.PostTagRepository;
 import wooteco.prolog.tag.domain.Tag;
+import wooteco.prolog.tag.domain.repository.TagRepository;
 
 @DataJpaTest
 class PostRepositoryTest {
@@ -37,40 +38,39 @@ class PostRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
+    private TagRepository tagRepository;
+    @Autowired
     private PostTagRepository postTagRepository;
 
-    private Member member1 = new Member("이름1", "별명1", Role.CREW ,1L, "image");;
-    private Member member2 = new Member("이름2", "별명2", Role.CREW ,2L, "image");;
+    private final Member member1 = new Member("이름1", "별명1", Role.CREW ,1L, "image");;
+    private final Member member2 = new Member("이름2", "별명2", Role.CREW ,2L, "image");;
 
-    private Mission mission1 = new Mission("자동차 미션");
-    private Mission mission2 = new Mission("수동차 미션");
+    private final Mission mission1 = new Mission("자동차 미션");
+    private final Mission mission2 = new Mission("수동차 미션");
 
-    private Tag tag1 = new Tag(1L, "소롱의글쓰기");
-    private Tag tag2 = new Tag(2L, "스프링");
-    private Tag tag3 = new Tag(3L, "감자튀기기");
-    private Tag tag4 = new Tag(4L, "집필왕웨지");
-    private Tag tag5 = new Tag(5L, "피케이");
-    private List<Tag> tags = asList(
+    private final Tag tag1 = new Tag("소롱의글쓰기");
+    private final Tag tag2 = new Tag( "스프링");
+    private final Tag tag3 = new Tag( "감자튀기기");
+    private final Tag tag4 = new Tag( "집필왕웨지");
+    private final Tag tag5 = new Tag( "피케이");
+    private final List<Tag> tags = asList(
             tag1, tag2, tag3, tag4, tag5
     );
 
-    private Post post1 = new Post(member1, POST1_TITLE, "피케이와 포모의 포스트", mission1, asList(tag1, tag2));
-    private Post post2 = new Post(member1, POST2_TITLE, "피케이와 포모의 포스트 2", mission1, asList(tag2, tag3));
-    private Post post3 = new Post(member2, POST3_TITLE, "피케이 포스트", mission2, asList(tag3, tag4, tag5));
-    private Post post4 = new Post(member2, POST4_TITLE, "포모의 포스트", mission2);
+    private final Post post1 = new Post(member1, POST1_TITLE, "피케이와 포모의 포스트", mission1, asList(tag1, tag2));
+    private final Post post2 = new Post(member1, POST2_TITLE, "피케이와 포모의 포스트 2", mission1, asList(tag2, tag3));
+    private final Post post3 = new Post(member2, POST3_TITLE, "피케이 포스트", mission2, asList(tag3, tag4, tag5));
+    private final Post post4 = new Post(member2, POST4_TITLE, "포모의 포스트", mission2);
 
     @BeforeEach
     void setUp() {
-        missionRepository.save(mission1);
-        missionRepository.save(mission2);
+        missionRepository.saveAll(asList(mission1, mission2));
 
-        memberRepository.save(member1);
-        memberRepository.save(member2);
+        memberRepository.saveAll(asList(member1, member2));
 
-        postRepository.save(post1);
-        postRepository.save(post2);
-        postRepository.save(post3);
-        postRepository.save(post4);
+        tagRepository.saveAll(tags);
+
+        postRepository.saveAll(asList(post1, post2, post3, post4));
     }
 
     @DisplayName("미션과 포스트태그 목록으로 포스트를 찾을 수 있는지 확인")
@@ -82,7 +82,7 @@ class PostRepositoryTest {
         Page<Post> expectedResult = postRepository
                 .findDistinctByMissionInAndPostTagsValuesIn(singletonList(mission1), postTags, PageRequest.of(0, 10));
         //then
-        assertThat(expectedResult.getContent()).containsExactlyInAnyOrder(post1, post2);
+        assertThat(expectedResult.getContent()).containsExactlyInAnyOrder(post2);
     }
 
     @DisplayName("포스트태그 목록으로 포스트를 찾을 수 있는지 확인")
