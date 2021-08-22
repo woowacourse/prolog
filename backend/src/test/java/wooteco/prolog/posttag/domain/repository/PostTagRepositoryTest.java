@@ -59,6 +59,7 @@ class PostTagRepositoryTest {
         assertThat(savedPostTag.getId()).isNotNull();
         assertThat(savedPostTag.getCreatedAt()).isAfterOrEqualTo(beforeTime);
         assertThat(savedPostTag).usingRecursiveComparison()
+            .ignoringFields("id", "createdAt", "updatedAt")
             .isEqualTo(postTag);
     }
 
