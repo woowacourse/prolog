@@ -18,7 +18,7 @@ import wooteco.prolog.post.exception.PostContentNullOrEmptyException;
 @Embeddable
 public class Content {
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "text")
     private String content;
 
     public Content(String content) {
