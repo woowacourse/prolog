@@ -14,3 +14,9 @@ github:
   url:
     access-token: https://github.com/login/oauth/access_token
     profile: https://api.github.com/user
+
+spring:
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: validate
