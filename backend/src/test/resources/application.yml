@@ -1,6 +1,8 @@
 spring:
   jpa:
     generate-ddl: true
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
     properties:
