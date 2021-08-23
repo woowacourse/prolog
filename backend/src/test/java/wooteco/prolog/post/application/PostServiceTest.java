@@ -53,7 +53,7 @@ class PostServiceTest {
     private static Tag tag4 = new Tag(4L, "집필왕웨지");
     private static Tag tag5 = new Tag(5L, "피케이");
     private static List<Tag> tags = asList(
-            tag1, tag2, tag3, tag4, tag5
+        tag1, tag2, tag3, tag4, tag5
     );
 
     @Autowired
@@ -82,8 +82,10 @@ class PostServiceTest {
         this.mission1 = new Mission(missionResponse1.getId(), missionResponse1.getName());
         this.mission2 = new Mission(missionResponse2.getId(), missionResponse2.getName());
 
-        this.member1 = memberService.findOrCreateMember(new GithubProfileResponse("이름1", "별명1", "1", "image"));
-        this.member2 = memberService.findOrCreateMember(new GithubProfileResponse("이름2", "별명2", "2", "image"));
+        this.member1 = memberService
+            .findOrCreateMember(new GithubProfileResponse("이름1", "별명1", "1", "image"));
+        this.member2 = memberService
+            .findOrCreateMember(new GithubProfileResponse("이름2", "별명2", "2", "image"));
 
         this.post1 = new Post(member1, POST1_TITLE, "피케이와 포모의 포스트", mission1, asList(tag1, tag2));
         this.post2 = new Post(member1, POST2_TITLE, "피케이와 포모의 포스트 2", mission1, asList(tag2, tag3));
@@ -100,20 +102,20 @@ class PostServiceTest {
         //when
         //then
         List<String> titles = Stream.concat(postsOfMember1.stream(), postsOfMember2.stream())
-                .map(PostResponse::getTitle)
-                .collect(toList());
+            .map(PostResponse::getTitle)
+            .collect(toList());
 
         assertThat(titles).contains(
-                post1.getTitle(),
-                post2.getTitle(),
-                post3.getTitle(),
-                post4.getTitle()
+            post1.getTitle(),
+            post2.getTitle(),
+            post3.getTitle(),
+            post4.getTitle()
         );
 
         List<String> members = Stream.concat(postsOfMember1.stream(), postsOfMember2.stream())
-                .map(PostResponse::getAuthor)
-                .map(MemberResponse::getNickname)
-                .collect(toList());
+            .map(PostResponse::getAuthor)
+            .map(MemberResponse::getNickname)
+            .collect(toList());
 
         assertThat(members).contains(member1.getNickname(), member2.getNickname());
     }
@@ -127,86 +129,97 @@ class PostServiceTest {
         insertPosts(member2, post3, post4);
 
         PostsResponse postResponsesWithFilter =
-                postService.findPostsWithFilter(missionIds, tagIds, PageRequest.of(0,10));
+            postService.findPostsWithFilter(missionIds, tagIds, PageRequest.of(0, 10));
 
         List<String> titles = postResponsesWithFilter.getData().stream()
-                .map(PostResponse::getTitle)
-                .collect(toList());
+            .map(PostResponse::getTitle)
+            .collect(toList());
 
         assertThat(titles).containsExactlyInAnyOrderElementsOf(
-                expectedPostTitles
+            expectedPostTitles
         );
     }
 
     private static Stream<Arguments> findWithFilter() {
         return Stream.of(
-                Arguments.of(emptyList(), asList(tag1.getId(), tag2.getId(), tag3.getId()), asList(POST1_TITLE, POST2_TITLE, POST3_TITLE)),
-                Arguments.of(emptyList(), singletonList(tag2.getId()), asList(POST1_TITLE, POST2_TITLE)),
-                Arguments.of(emptyList(), singletonList(tag3.getId()), asList(POST2_TITLE, POST3_TITLE)),
-                Arguments.of(singletonList(1L), emptyList(), asList(POST1_TITLE, POST2_TITLE)),
-                Arguments.of(singletonList(2L), emptyList(), asList(POST3_TITLE, POST4_TITLE)),
-                Arguments.of(singletonList(1L), singletonList(tag1.getId()), singletonList(POST1_TITLE)),
-                Arguments.of(singletonList(1L), asList(tag1.getId(), tag2.getId(), tag3.getId()), asList(POST1_TITLE, POST2_TITLE)),
-                Arguments.of(singletonList(1L), singletonList(tag2.getId()), asList(POST1_TITLE, POST2_TITLE)),
-                Arguments.of(asList(1L, 2L), singletonList(tag3.getId()), asList(POST2_TITLE, POST3_TITLE)),
-                Arguments.of(emptyList(), emptyList(), asList(POST1_TITLE, POST2_TITLE, POST3_TITLE, POST4_TITLE))
+            Arguments.of(emptyList(), asList(tag1.getId(), tag2.getId(), tag3.getId()),
+                asList(POST1_TITLE, POST2_TITLE, POST3_TITLE)),
+            Arguments
+                .of(emptyList(), singletonList(tag2.getId()), asList(POST1_TITLE, POST2_TITLE)),
+            Arguments
+                .of(emptyList(), singletonList(tag3.getId()), asList(POST2_TITLE, POST3_TITLE)),
+            Arguments.of(singletonList(1L), emptyList(), asList(POST1_TITLE, POST2_TITLE)),
+            Arguments.of(singletonList(2L), emptyList(), asList(POST3_TITLE, POST4_TITLE)),
+            Arguments
+                .of(singletonList(1L), singletonList(tag1.getId()), singletonList(POST1_TITLE)),
+            Arguments.of(singletonList(1L), asList(tag1.getId(), tag2.getId(), tag3.getId()),
+                asList(POST1_TITLE, POST2_TITLE)),
+            Arguments.of(singletonList(1L), singletonList(tag2.getId()),
+                asList(POST1_TITLE, POST2_TITLE)),
+            Arguments
+                .of(asList(1L, 2L), singletonList(tag3.getId()), asList(POST2_TITLE, POST3_TITLE)),
+            Arguments.of(emptyList(), emptyList(),
+                asList(POST1_TITLE, POST2_TITLE, POST3_TITLE, POST4_TITLE))
         );
     }
 
     @DisplayName("유저 이름으로 포스트를 조회한다.")
     @Test
-    void findPostsOfTest(){
+    void findPostsOfTest() {
         insertPosts(member1, post1, post2);
         insertPosts(member2, post3, post4);
 
-        PostsResponse postsResponseOfMember1 = postService.findPostsOf(member1.getUsername(), Pageable.unpaged());
-        PostsResponse postsResponseOfMember2 = postService.findPostsOf(member2.getUsername(), Pageable.unpaged());
+        PostsResponse postsResponseOfMember1 = postService
+            .findPostsOf(member1.getUsername(), Pageable.unpaged());
+        PostsResponse postsResponseOfMember2 = postService
+            .findPostsOf(member2.getUsername(), Pageable.unpaged());
 
         List<String> expectedResultOfMember1 = postsResponseOfMember1.getData().stream()
-                .map(PostResponse::getTitle)
-                .collect(toList());
+            .map(PostResponse::getTitle)
+            .collect(toList());
         List<String> expectedResultOfMember2 = postsResponseOfMember2.getData().stream()
-                .map(PostResponse::getTitle)
-                .collect(toList());
+            .map(PostResponse::getTitle)
+            .collect(toList());
 
- //       assertThat(expectedResultOfMember1).containsExactly(post1.getTitle(), post2.getTitle());
+        //       assertThat(expectedResultOfMember1).containsExactly(post1.getTitle(), post2.getTitle());
         assertThat(expectedResultOfMember2).containsExactly(post3.getTitle(), post4.getTitle());
     }
 
     @DisplayName("유저 이름으로 포스트를 조회한다 - 페이징")
     @ParameterizedTest
     @MethodSource("findPostsOfPagingTest")
-    void findPostsOfPagingTest(PageRequest pageRequest, int expectedSize){
+    void findPostsOfPagingTest(PageRequest pageRequest, int expectedSize) {
         List<Post> largePosts = IntStream.range(0, 50)
-                .mapToObj(it -> post1)
-                .collect(toList());
+            .mapToObj(it -> post1)
+            .collect(toList());
 
         insertPosts(member1, largePosts);
 
-        PostsResponse postsResponseOfMember1 = postService.findPostsOf(member1.getUsername(), pageRequest);
+        PostsResponse postsResponseOfMember1 = postService
+            .findPostsOf(member1.getUsername(), pageRequest);
 
         assertThat(postsResponseOfMember1.getData().size()).isEqualTo(expectedSize);
     }
 
     private static Stream<Arguments> findPostsOfPagingTest() {
         return Stream.of(
-                Arguments.of(PageRequest.of(0,10), 10),
-                Arguments.of(PageRequest.of(0,20), 20),
-                Arguments.of(PageRequest.of(0,60), 50),
-                Arguments.of(PageRequest.of(3, 15), 5),
-                Arguments.of(PageRequest.of(1, 50), 0),
-                Arguments.of(PageRequest.of(4, 11), 6)
+            Arguments.of(PageRequest.of(0, 10), 10),
+            Arguments.of(PageRequest.of(0, 20), 20),
+            Arguments.of(PageRequest.of(0, 60), 50),
+            Arguments.of(PageRequest.of(3, 15), 5),
+            Arguments.of(PageRequest.of(1, 50), 0),
+            Arguments.of(PageRequest.of(4, 11), 6)
         );
     }
 
     @DisplayName("포스트를 수정한다")
     @Test
-    void updatePostTest(){
+    void updatePostTest() {
         //given
         List<PostResponse> postResponses = insertPosts(member1, post1);
         PostResponse targetPost = postResponses.get(0);
         PostRequest updatePostRequest = new PostRequest("updateTitle", "updateContent", 2L,
-                toTagRequests(tags));
+            toTagRequests(tags));
 
         //when
         postService.updatePost(member1, targetPost.getId(), updatePostRequest);
@@ -214,12 +227,12 @@ class PostServiceTest {
         //then
         PostResponse expectedResult = postService.findById(targetPost.getId());
         List<String> updateTagNames = tags.stream()
-                .map(Tag::getName)
-                .collect(toList());
+            .map(Tag::getName)
+            .collect(toList());
 
         List<String> expectedTagNames = expectedResult.getTags().stream()
-                .map(TagResponse::getName)
-                .collect(toList());
+            .map(TagResponse::getName)
+            .collect(toList());
 
         assertThat(expectedResult.getTitle()).isEqualTo(updatePostRequest.getTitle());
         assertThat(expectedResult.getContent()).isEqualTo(updatePostRequest.getContent());
@@ -229,56 +242,57 @@ class PostServiceTest {
 
     @DisplayName("포스트를 삭제한다")
     @Test
-    void deletePostTest(){
+    void deletePostTest() {
         //given
         List<PostResponse> postResponses = insertPosts(member1, post1, post2, post3, post4);
 
         //when
         List<Long> postIds = postResponses.stream()
-                .map(PostResponse::getId)
-                .collect(toList());
+            .map(PostResponse::getId)
+            .collect(toList());
 
         Long removedId = postIds.remove(0);
         postService.deletePost(member1, removedId);
 
         //then
-        PostsResponse postsResponse = postService.findPostsOf(member1.getUsername(), Pageable.unpaged());
+        PostsResponse postsResponse = postService
+            .findPostsOf(member1.getUsername(), Pageable.unpaged());
 
         List<Long> expectedIds = postsResponse.getData().stream()
-                .map(PostResponse::getId)
-                .collect(toList());
+            .map(PostResponse::getId)
+            .collect(toList());
 
         assertThat(expectedIds).containsExactlyElementsOf(postIds);
     }
 
     private List<PostResponse> insertPosts(Member member, List<Post> posts) {
         List<PostRequest> postRequests = posts.stream()
-                .map(post ->
-                        new PostRequest(
-                                post.getTitle(),
-                                post.getContent(),
-                                post.getMission().getId(),
-                                toTagRequests(post)
-                        )
+            .map(post ->
+                new PostRequest(
+                    post.getTitle(),
+                    post.getContent(),
+                    post.getMission().getId(),
+                    toTagRequests(post)
                 )
-                .collect(toList());
+            )
+            .collect(toList());
 
         return postService.insertPosts(member, postRequests);
     }
 
-    private List<PostResponse> insertPosts(Member member, Post... posts){
+    private List<PostResponse> insertPosts(Member member, Post... posts) {
         return insertPosts(member, asList(posts));
     }
 
     private List<TagRequest> toTagRequests(Post post) {
         return post.getPostTags().stream()
-                .map(postTag -> new TagRequest(postTag.getTag().getName()))
-                .collect(toList());
+            .map(postTag -> new TagRequest(postTag.getTag().getName()))
+            .collect(toList());
     }
 
     private List<TagRequest> toTagRequests(List<Tag> tags) {
         return tags.stream()
-                .map(tag -> new TagRequest(tag.getName()))
-                .collect(toList());
+            .map(tag -> new TagRequest(tag.getName()))
+            .collect(toList());
     }
 }

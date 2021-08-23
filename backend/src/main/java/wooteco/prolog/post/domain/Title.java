@@ -11,11 +11,11 @@ import lombok.ToString;
 import wooteco.prolog.login.excetpion.PostTitleNullOrEmptyException;
 import wooteco.prolog.post.exception.TooLongTitleException;
 
-@Embeddable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
 @ToString
+@Embeddable
 public class Title {
 
     public static final int MAX_LENGTH = 50;

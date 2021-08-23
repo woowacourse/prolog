@@ -32,8 +32,10 @@ class MemberServiceTest {
     @Test
     void findOrCreateMemberTest() {
         // given
-        GithubProfileResponse brownResponse = new GithubProfileResponse("브라운", "gracefulBrown", "1", "imageUrl1");
-        GithubProfileResponse jasonResponse = new GithubProfileResponse("제이슨", "pjs", "2", "imageUrl2");
+        GithubProfileResponse brownResponse = new GithubProfileResponse("브라운", "gracefulBrown", "1",
+            "imageUrl1");
+        GithubProfileResponse jasonResponse = new GithubProfileResponse("제이슨", "pjs", "2",
+            "imageUrl2");
 
         Member를_생성한다(brownResponse.toMember());
 
@@ -50,7 +52,8 @@ class MemberServiceTest {
     @Test
     void findByIdTest() {
         // given
-        Member savedMember = Member를_생성한다(new Member("gracefulBrown", "브라운", Role.CREW, 1L, "imageUrl"));
+        Member savedMember = Member를_생성한다(
+            new Member("gracefulBrown", "브라운", Role.CREW, 1L, "imageUrl"));
 
         // when
         Member foundMember = memberService.findById(savedMember.getId());
@@ -72,7 +75,8 @@ class MemberServiceTest {
     @Test
     void findByUsernameTest() {
         // given
-        Member savedMember = Member를_생성한다(new Member("gracefulBrown", "브라운", Role.CREW, 1L, "imageUrl"));
+        Member savedMember = Member를_생성한다(
+            new Member("gracefulBrown", "브라운", Role.CREW, 1L, "imageUrl"));
 
         // when
         Member foundMember = memberService.findByUsername(savedMember.getUsername());
@@ -94,11 +98,13 @@ class MemberServiceTest {
     @Test
     void findMemberResponseByUsernameTest() {
         // given
-        Member savedMember = Member를_생성한다(new Member("gracefulBrown", "브라운", Role.CREW, 1L, "imageUrl"));
+        Member savedMember = Member를_생성한다(
+            new Member("gracefulBrown", "브라운", Role.CREW, 1L, "imageUrl"));
         MemberResponse expectMemberResponse = MemberResponse.of(savedMember);
 
         // when
-        MemberResponse foundMemberResponse = memberService.findMemberResponseByUsername(savedMember.getUsername());
+        MemberResponse foundMemberResponse = memberService
+            .findMemberResponseByUsername(savedMember.getUsername());
 
         // then
         assertThat(foundMemberResponse).usingRecursiveComparison()
@@ -122,7 +128,8 @@ class MemberServiceTest {
         String 새로운_닉네임 = "브라운2세";
         String 새로운_이미지 = "superPowerImageUrl";
 
-        Member savedMember = Member를_생성한다(new Member("gracefulBrown", 기존_닉네임, Role.CREW, 1L, 기존_이미지));
+        Member savedMember = Member를_생성한다(
+            new Member("gracefulBrown", 기존_닉네임, Role.CREW, 1L, 기존_이미지));
         MemberUpdateRequest updateRequest = new MemberUpdateRequest(새로운_닉네임, 새로운_이미지);
 
         // when

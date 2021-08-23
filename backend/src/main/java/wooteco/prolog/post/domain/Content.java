@@ -11,12 +11,13 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import wooteco.prolog.post.exception.PostContentNullOrEmptyException;
 
-@Embeddable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
 @ToString
+@Embeddable
 public class Content {
+
     @Column(nullable = false)
     private String content;
 

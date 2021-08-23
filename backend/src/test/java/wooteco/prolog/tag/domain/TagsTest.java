@@ -35,7 +35,7 @@ class TagsTest {
 
         //then
         assertThatThrownBy(() -> new Tags(tags))
-                .isExactlyInstanceOf(DuplicateTagException.class);
+            .isExactlyInstanceOf(DuplicateTagException.class);
     }
 
     @DisplayName("Tags 간 이름비교를 통한 Tag 제거 테스트")
@@ -49,7 +49,7 @@ class TagsTest {
         Tags newTags = thisTags.removeAllByName(thatTags);
 
         //then
-        assertThat(newTags.toList()).containsExactly(자바);
+        assertThat(newTags.getList()).containsExactly(자바);
     }
 
     @DisplayName("Tags 간 이름비교를 통한 Tag 제거 테스트2")
@@ -63,6 +63,6 @@ class TagsTest {
         Tags newTags = thisTags.removeAllByName(thatTags);
 
         //then
-        assertThat(newTags.toList()).isEmpty();
+        assertThat(newTags.getList()).isEmpty();
     }
 }

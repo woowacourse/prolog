@@ -8,7 +8,6 @@ import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.member.exception.MemberNotAllowedException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
 
 @Service
@@ -21,17 +20,17 @@ public class MemberService {
     @Transactional
     public Member findOrCreateMember(GithubProfileResponse githubProfile) {
         return memberRepository.findByGithubId(githubProfile.getGithubId())
-                .orElseGet(() -> memberRepository.save(githubProfile.toMember()));
+            .orElseGet(() -> memberRepository.save(githubProfile.toMember()));
     }
 
     public Member findById(Long id) {
         return memberRepository.findById(id)
-                .orElseThrow(MemberNotFoundException::new);
+            .orElseThrow(MemberNotFoundException::new);
     }
 
     public Member findByUsername(String username) {
         return memberRepository.findByUsername(username)
-                .orElseThrow(MemberNotFoundException::new);
+            .orElseThrow(MemberNotFoundException::new);
     }
 
     public MemberResponse findMemberResponseByUsername(String username) {
@@ -42,6 +41,7 @@ public class MemberService {
     @Transactional
     public void updateMember(Member member, MemberUpdateRequest updateRequest) {
         Member persistMember = findByUsername(member.getUsername());
-        persistMember.update(updateRequest.getNickname(), updateRequest.getImageUrl());
+        persistMember.updateImageUrl(updateRequest.getImageUrl());
+        persistMember.updateNickname(updateRequest.getNickname());
     }
 }

@@ -22,6 +22,7 @@ import wooteco.prolog.tag.dto.TagRequest;
 @AllArgsConstructor
 @Configuration
 public class DataLoaderApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
+
     private MissionService missionService;
     private TagService tagService;
     private MemberService memberService;
@@ -37,10 +38,10 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
 
         // filter init
         List<TagRequest> tagRequests = Arrays.asList(
-                new TagRequest("자바"),
-                new TagRequest("자바스크립트"),
-                new TagRequest("스프링"),
-                new TagRequest("리액트")
+            new TagRequest("자바"),
+            new TagRequest("자바스크립트"),
+            new TagRequest("스프링"),
+            new TagRequest("리액트")
         );
         tagService.findOrCreate(tagRequests);
 

@@ -16,7 +16,7 @@ public class MissionRequest {
         this.name = name;
     }
 
-    public Mission toEntity(){
+    public Mission toEntity() {
         return new Mission(this.name);
     }
 }

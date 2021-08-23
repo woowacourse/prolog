@@ -11,6 +11,7 @@ import wooteco.prolog.tag.dto.TagResponse;
 @AllArgsConstructor
 @Getter
 public class FilterResponse {
+
     private List<MissionResponse> missions;
     private List<TagResponse> tags;
 }

@@ -39,8 +39,8 @@ public class PostTagDao {
 
     public List<Tag> findAll() {
         String query = "SELECT DISTINCT t.id as id, t.name " +
-                "FROM post_tag pt " +
-                "INNER JOIN tag t ON pt.tag_id = t.id";
+            "FROM post_tag pt " +
+            "INNER JOIN tag t ON pt.tag_id = t.id";
         return this.jdbcTemplate.query(query, tagRowMapper);
     }
 }

@@ -10,6 +10,7 @@ import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberStepDefinitions extends AcceptanceSteps {
+
     @When("{string}의 멤버 정보를 조회하면")
     public void 멤버정보를조회하면(String member) {
         String username = GithubResponses.findByName(member).getLogin();
@@ -31,7 +32,7 @@ public class MemberStepDefinitions extends AcceptanceSteps {
     @When("자신의 닉네임을 {string}(로)(으로) 수정하면")
     public void 자신의닉네임을수정하면(String updatedNickname) {
         MemberUpdateRequest updateRequest = new MemberUpdateRequest(
-                updatedNickname, ""
+            updatedNickname, ""
         );
 
         context.invokeHttpPutWithToken("/members/me", updateRequest);

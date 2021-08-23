@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import wooteco.prolog.tag.exception.TagNameNullOrEmptyException;
 
 class TagNameTest {
+
     @DisplayName("값이 null이거나 empty면 예외")
     @Test
     void tagNameNullOrEmptyTest() {
@@ -17,11 +18,11 @@ class TagNameTest {
         //when
         //then
         assertThatThrownBy(() -> new TagName(empty))
-                .isExactlyInstanceOf(TagNameNullOrEmptyException.class);
+            .isExactlyInstanceOf(TagNameNullOrEmptyException.class);
         assertThatThrownBy(() -> new TagName(justBlank))
-                .isExactlyInstanceOf(TagNameNullOrEmptyException.class);
+            .isExactlyInstanceOf(TagNameNullOrEmptyException.class);
         assertThatThrownBy(() -> new TagName(null))
-                .isExactlyInstanceOf(TagNameNullOrEmptyException.class);
+            .isExactlyInstanceOf(TagNameNullOrEmptyException.class);
     }
 
     @DisplayName("생성")

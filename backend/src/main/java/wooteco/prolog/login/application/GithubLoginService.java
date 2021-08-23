@@ -16,9 +16,9 @@ public class GithubLoginService {
     private final GithubClient githubClient;
 
     public GithubLoginService(
-            JwtTokenProvider jwtTokenProvider,
-            MemberService memberService,
-            GithubClient githubClient
+        JwtTokenProvider jwtTokenProvider,
+        MemberService memberService,
+        GithubClient githubClient
     ) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.memberService = memberService;
@@ -27,7 +27,8 @@ public class GithubLoginService {
 
     public TokenResponse createToken(TokenRequest tokenRequest) {
         String githubAccessToken = githubClient.getAccessTokenFromGithub(tokenRequest.getCode());
-        GithubProfileResponse githubProfile = githubClient.getGithubProfileFromGithub(githubAccessToken);
+        GithubProfileResponse githubProfile = githubClient
+            .getGithubProfileFromGithub(githubAccessToken);
         Member member = memberService.findOrCreateMember(githubProfile);
         String accessToken = jwtTokenProvider.createToken(member);
         return TokenResponse.of(accessToken);

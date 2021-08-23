@@ -1,6 +1,5 @@
 package wooteco.prolog.tag.dto;
 
-import java.util.List;
 import wooteco.prolog.tag.domain.Tag;
 
 public class TagResponse {

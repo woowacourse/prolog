@@ -42,24 +42,29 @@ class PostRepositoryTest {
     @Autowired
     private PostTagRepository postTagRepository;
 
-    private final Member member1 = new Member("이름1", "별명1", Role.CREW ,1L, "image");;
-    private final Member member2 = new Member("이름2", "별명2", Role.CREW ,2L, "image");;
+    private final Member member1 = new Member("이름1", "별명1", Role.CREW, 1L, "image");
+    ;
+    private final Member member2 = new Member("이름2", "별명2", Role.CREW, 2L, "image");
+    ;
 
     private final Mission mission1 = new Mission("자동차 미션");
     private final Mission mission2 = new Mission("수동차 미션");
 
     private final Tag tag1 = new Tag("소롱의글쓰기");
-    private final Tag tag2 = new Tag( "스프링");
-    private final Tag tag3 = new Tag( "감자튀기기");
-    private final Tag tag4 = new Tag( "집필왕웨지");
-    private final Tag tag5 = new Tag( "피케이");
+    private final Tag tag2 = new Tag("스프링");
+    private final Tag tag3 = new Tag("감자튀기기");
+    private final Tag tag4 = new Tag("집필왕웨지");
+    private final Tag tag5 = new Tag("피케이");
     private final List<Tag> tags = asList(
-            tag1, tag2, tag3, tag4, tag5
+        tag1, tag2, tag3, tag4, tag5
     );
 
-    private final Post post1 = new Post(member1, POST1_TITLE, "피케이와 포모의 포스트", mission1, asList(tag1, tag2));
-    private final Post post2 = new Post(member1, POST2_TITLE, "피케이와 포모의 포스트 2", mission1, asList(tag2, tag3));
-    private final Post post3 = new Post(member2, POST3_TITLE, "피케이 포스트", mission2, asList(tag3, tag4, tag5));
+    private final Post post1 = new Post(member1, POST1_TITLE, "피케이와 포모의 포스트", mission1,
+        asList(tag1, tag2));
+    private final Post post2 = new Post(member1, POST2_TITLE, "피케이와 포모의 포스트 2", mission1,
+        asList(tag2, tag3));
+    private final Post post3 = new Post(member2, POST3_TITLE, "피케이 포스트", mission2,
+        asList(tag3, tag4, tag5));
     private final Post post4 = new Post(member2, POST4_TITLE, "포모의 포스트", mission2);
 
     @BeforeEach
@@ -80,7 +85,8 @@ class PostRepositoryTest {
         //when
         List<PostTag> postTags = postTagRepository.findByTagIn(singletonList(tag3));
         Page<Post> expectedResult = postRepository
-                .findDistinctByMissionInAndPostTagsValuesIn(singletonList(mission1), postTags, PageRequest.of(0, 10));
+            .findDistinctByMissionInAndPostTagsValuesIn(singletonList(mission1), postTags,
+                PageRequest.of(0, 10));
         //then
         assertThat(expectedResult.getContent()).containsExactlyInAnyOrder(post2);
     }
@@ -92,7 +98,7 @@ class PostRepositoryTest {
         //when
         List<PostTag> postTags = postTagRepository.findByTagIn(asList(tag1, tag2));
         Page<Post> expectedResult = postRepository
-                .findDistinctByPostTagsValuesIn(postTags, PageRequest.of(0, 10));
+            .findDistinctByPostTagsValuesIn(postTags, PageRequest.of(0, 10));
         //then
         assertThat(expectedResult.getContent()).containsExactlyInAnyOrder(post1, post2);
     }
@@ -103,7 +109,7 @@ class PostRepositoryTest {
         //given
         //when
         Page<Post> expectedResult = postRepository
-                .findByMissionIn(singletonList(mission2), PageRequest.of(0, 10));
+            .findByMissionIn(singletonList(mission2), PageRequest.of(0, 10));
         //then
         assertThat(expectedResult.getContent()).containsExactlyInAnyOrder(post3, post4);
     }
@@ -114,7 +120,7 @@ class PostRepositoryTest {
         //given
         //when
         Page<Post> expectedResult = postRepository
-                .findByMember(member1, PageRequest.of(0, 10));
+            .findByMember(member1, PageRequest.of(0, 10));
         //then
         assertThat(expectedResult.getContent()).containsExactlyInAnyOrder(post1, post2);
     }

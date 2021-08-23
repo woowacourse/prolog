@@ -28,7 +28,7 @@ public class TagServiceTest {
     public static final TagRequest fourthRequest = new TagRequest("집필왕웨지");
     public static final TagRequest fifthRequest = new TagRequest("PK대신현구막");
     public static final List<TagRequest> tagRequests = new ArrayList<>(Arrays.asList(
-            firstRequest, secondRequest, thirdRequest, fourthRequest, fifthRequest
+        firstRequest, secondRequest, thirdRequest, fourthRequest, fifthRequest
     ));
 
     @Autowired
@@ -56,9 +56,9 @@ public class TagServiceTest {
         //given
         tagService.findOrCreate(tagRequests);
         List<TagRequest> newTagRequests = Arrays.asList(
-                new TagRequest("새로운태그1"),
-                new TagRequest("새로운태그2"),
-                new TagRequest("새로운태그3")
+            new TagRequest("새로운태그1"),
+            new TagRequest("새로운태그2"),
+            new TagRequest("새로운태그3")
         );
 
         //when
@@ -72,7 +72,8 @@ public class TagServiceTest {
         List<String> givenNames = getNamesFromTagRequest(addedTagRequest);
         List<String> expectedNames = getNamesFromTagResponse(expectedResults);
 
-        assertThat(expectedResults.size()).isEqualTo(addedTagRequest.size()); // 중복된 것은 insert되지 않고 8개만 입력되는지 확인
+        assertThat(expectedResults.size())
+            .isEqualTo(addedTagRequest.size()); // 중복된 것은 insert되지 않고 8개만 입력되는지 확인
         assertThat(givenNames).containsExactlyElementsOf(expectedNames);
     }
 
@@ -85,18 +86,18 @@ public class TagServiceTest {
         //when
         //then
         assertThatThrownBy(() -> tagService.findOrCreate(tagRequests))
-                .isExactlyInstanceOf(DuplicateTagException.class);
+            .isExactlyInstanceOf(DuplicateTagException.class);
     }
 
     private List<String> getNamesFromTagRequest(List<TagRequest> tags) {
         return tags.stream()
-                .map(TagRequest::getName)
-                .collect(Collectors.toList());
+            .map(TagRequest::getName)
+            .collect(Collectors.toList());
     }
 
     private List<String> getNamesFromTagResponse(List<TagResponse> expectedResults) {
         return expectedResults.stream()
-                .map(TagResponse::getName)
-                .collect(Collectors.toList());
+            .map(TagResponse::getName)
+            .collect(Collectors.toList());
     }
 }

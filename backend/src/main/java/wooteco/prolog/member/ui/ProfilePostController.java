@@ -19,12 +19,13 @@ import wooteco.prolog.post.application.dto.PostsResponse;
 @AllArgsConstructor
 @RequestMapping("/members")
 public class ProfilePostController {
+
     private PostService postService;
     private MemberService memberService;
 
     @GetMapping(value = "/{username}/posts", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PostsResponse> findAllPostsOfMine(@PathVariable String username,
-            @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
+        @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
         PostsResponse posts = postService.findPostsOf(username, pageable);
         return ResponseEntity.ok().body(posts);
     }

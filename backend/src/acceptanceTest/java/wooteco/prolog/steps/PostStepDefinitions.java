@@ -24,8 +24,8 @@ public class PostStepDefinitions extends AcceptanceSteps {
     @Given("포스트 여러개를 작성하고")
     public void 포스트여러개를작성하고() {
         List<PostRequest> postRequests = Arrays.asList(
-                POST1.getPostRequest(),
-                POST2.getPostRequest()
+            POST1.getPostRequest(),
+            POST2.getPostRequest()
         );
 
         context.invokeHttpPostWithToken("/posts", postRequests);
@@ -34,7 +34,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
     @When("포스트를 작성하면")
     public void 포스트를작성하면() {
         List<PostRequest> postRequests = Arrays.asList(
-                POST1.getPostRequest()
+            POST1.getPostRequest()
         );
 
         context.invokeHttpPostWithToken("/posts", postRequests);
@@ -62,7 +62,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
         List<PostRequest> postRequests = new ArrayList<>();
 
         List<PostRequest> requests = PostAcceptanceFixture.findByMissionNumber(
-                (long) missionNumber);
+            (long) missionNumber);
 
         if (requests.isEmpty()) {
             throw new RuntimeException("해당 미션의 포스트는 없습니다.");
@@ -80,7 +80,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
         List<PostRequest> postRequests = new ArrayList<>();
 
         List<PostRequest> requests = PostAcceptanceFixture.findByTagNumber(
-                (long) tagNumber);
+            (long) tagNumber);
 
         if (requests.isEmpty()) {
             throw new RuntimeException("해당 미션의 포스트는 없습니다.");
@@ -98,7 +98,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
         List<PostRequest> postRequests = new ArrayList<>();
 
         for (int i = 0; i < 7; i++) {
-            postRequests.add(POST1.getPostRequest()) ;
+            postRequests.add(POST1.getPostRequest());
         }
         for (int i = 0; i < 5; i++) {
             postRequests.add(POST2.getPostRequest());

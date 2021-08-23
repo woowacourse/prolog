@@ -18,6 +18,7 @@ import wooteco.prolog.member.domain.Member;
 @AllArgsConstructor
 @RequestMapping("/members")
 public class MemberController {
+
     private MemberService memberService;
 
     @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,8 +33,8 @@ public class MemberController {
 
     @PutMapping("/me")
     public ResponseEntity<Void> updatePost(
-            @AuthMemberPrincipal Member member,
-            @RequestBody MemberUpdateRequest updateRequest
+        @AuthMemberPrincipal Member member,
+        @RequestBody MemberUpdateRequest updateRequest
     ) {
         memberService.updateMember(member, updateRequest);
         return ResponseEntity.ok().build();

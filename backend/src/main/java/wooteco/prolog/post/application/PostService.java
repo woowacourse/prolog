@@ -37,28 +37,26 @@ public class PostService {
     private final TagService tagService;
 
     public PostsResponse findPostsWithFilter(List<Long> missionIds,
-            List<Long> tagIds,
-            Pageable pageable)
-    {
+        List<Long> tagIds,
+        Pageable pageable) {
         Page<Post> posts = findWithFilter(missionIds, tagIds, pageable);
 
         return PostsResponse.of(posts);
     }
 
     private Page<Post> findWithFilter(List<Long> missionIds,
-            List<Long> tagIds,
-            Pageable pageable)
-    {
+        List<Long> tagIds,
+        Pageable pageable) {
         if (isNullOrEmpty(missionIds) && isNullOrEmpty(tagIds)) {
             return postRepository.findAll(pageable);
         }
 
         if (!isNullOrEmpty(missionIds) && !isNullOrEmpty(tagIds)) {
             return postRepository
-                    .findDistinctByMissionInAndPostTagsValuesIn(
-                            missionService.findByIds(missionIds),
-                            findPostTagBy(tagIds),
-                            pageable);
+                .findDistinctByMissionInAndPostTagsValuesIn(
+                    missionService.findByIds(missionIds),
+                    findPostTagBy(tagIds),
+                    pageable);
         }
 
         if (isNullOrEmpty(missionIds)) {
@@ -89,8 +87,8 @@ public class PostService {
         }
 
         return postRequests.stream()
-                .map(postRequest -> insertPost(member, postRequest))
-                .collect(Collectors.toList());
+            .map(postRequest -> insertPost(member, postRequest))
+            .collect(Collectors.toList());
     }
 
     private PostResponse insertPost(Member member, PostRequest postRequest) {
@@ -98,19 +96,19 @@ public class PostService {
         Mission mission = missionService.findById(postRequest.getMissionId());
 
         Post requestedPost = new Post(member,
-                postRequest.getTitle(),
-                postRequest.getContent(),
-                mission);
+            postRequest.getTitle(),
+            postRequest.getContent(),
+            mission,
+            tags.getList());
 
         Post createdPost = postRepository.save(requestedPost);
-        createdPost.addTags(tags);
 
         return PostResponse.of(createdPost);
     }
 
     public PostResponse findById(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(PostNotFoundException::new);
+            .orElseThrow(PostNotFoundException::new);
 
         return PostResponse.of(post);
     }
@@ -118,7 +116,7 @@ public class PostService {
     @Transactional
     public void updatePost(Member member, Long postId, PostRequest postRequest) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(PostNotFoundException::new);
+            .orElseThrow(PostNotFoundException::new);
         post.validateAuthor(member);
 
         Mission mission = missionService.findById(postRequest.getMissionId());
@@ -129,7 +127,7 @@ public class PostService {
     @Transactional
     public void deletePost(Member member, Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(PostNotFoundException::new);
+            .orElseThrow(PostNotFoundException::new);
         post.validateAuthor(member);
 
         postRepository.delete(post);

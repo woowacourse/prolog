@@ -26,26 +26,26 @@ public class TagService {
     @Transactional
     public Tags findOrCreate(List<TagRequest> tagRequests) {
         Tags requestTags = tagRequests.stream()
-                .map(TagRequest::getName)
-                .collect(collectingAndThen(toList(), Tags::of));
+            .map(TagRequest::getName)
+            .collect(collectingAndThen(toList(), Tags::of));
 
         Tags existTags = new Tags(tagRepository.findByNameValueIn(requestTags.toNames()));
 
         Tags newTags = requestTags.removeAllByName(existTags);
-        tagRepository.saveAll(newTags.toList());
+        tagRepository.saveAll(newTags.getList());
 
         return existTags.addAll(newTags);
     }
 
     public List<TagResponse> findTagsIncludedInPost() {
         return postTagService.findAll().stream()
-                .map(PostTag::getTag)
-                .distinct()
-                .map(TagResponse::of)
-                .collect(toList());
+            .map(PostTag::getTag)
+            .distinct()
+            .map(TagResponse::of)
+            .collect(toList());
     }
 
-    public List<TagResponse> findAll(){
+    public List<TagResponse> findAll() {
         return tagRepository.findAll()
             .stream()
             .map(TagResponse::of)

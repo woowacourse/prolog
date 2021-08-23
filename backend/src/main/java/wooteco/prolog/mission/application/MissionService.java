@@ -35,14 +35,14 @@ public class MissionService {
 
     public List<MissionResponse> findAll() {
         return missionRepository.findAll()
-                .stream()
-                .map(MissionResponse::of)
-                .collect(toList());
+            .stream()
+            .map(MissionResponse::of)
+            .collect(toList());
     }
 
     public Mission findById(Long id) {
         return missionRepository.findById(id)
-                .orElseThrow(MissionNotFoundException::new);
+            .orElseThrow(MissionNotFoundException::new);
     }
 
     public List<Mission> findByIds(List<Long> missionIds) {

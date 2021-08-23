@@ -25,11 +25,11 @@ public class TagDao {
     }
 
     protected static RowMapper<Tag> tagRowMapper =
-            (rs, rowNum) -> {
-                long id = rs.getLong(1);
-                String name = rs.getString(2);
-                return new Tag(id, name);
-            };
+        (rs, rowNum) -> {
+            long id = rs.getLong(1);
+            String name = rs.getString(2);
+            return new Tag(id, name);
+        };
 
     public Tag insert(String name) {
         String query = "INSERT INTO tag(name) VALUES (?)";
@@ -37,8 +37,8 @@ public class TagDao {
 
         this.jdbcTemplate.update(con -> {
             PreparedStatement pstmt = con.prepareStatement(
-                    query,
-                    new String[]{"id"});
+                query,
+                new String[]{"id"});
             pstmt.setString(1, name);
             return pstmt;
         }, keyHolder);

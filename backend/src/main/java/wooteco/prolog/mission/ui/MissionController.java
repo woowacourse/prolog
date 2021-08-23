@@ -28,7 +28,8 @@ public class MissionController {
     }
 
     @PostMapping
-    public ResponseEntity<MissionResponse> createMission(@RequestBody MissionRequest missionRequest) {
+    public ResponseEntity<MissionResponse> createMission(
+        @RequestBody MissionRequest missionRequest) {
         MissionResponse missionResponse = missionService.create(missionRequest);
         return ResponseEntity.ok(missionResponse);
     }

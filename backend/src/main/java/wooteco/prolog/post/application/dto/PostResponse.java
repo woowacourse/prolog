@@ -1,6 +1,6 @@
 package wooteco.prolog.post.application.dto;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,16 +28,16 @@ public class PostResponse {
     private List<TagResponse> tags;
 
     public PostResponse(Post post, MissionResponse missionResponse,
-            List<TagResponse> tagResponses) {
+        List<TagResponse> tagResponses) {
         this(
-                post.getId(),
-                MemberResponse.of(post.getMember()),
-                post.getCreatedAt(),
-                post.getUpdatedAt(),
-                missionResponse,
-                post.getTitle(),
-                post.getContent(),
-                tagResponses);
+            post.getId(),
+            MemberResponse.of(post.getMember()),
+            post.getCreatedAt(),
+            post.getUpdatedAt(),
+            missionResponse,
+            post.getTitle(),
+            post.getContent(),
+            tagResponses);
     }
 
     public static PostResponse of(Post post) {
@@ -58,8 +58,8 @@ public class PostResponse {
 
     private static List<TagResponse> toTagResponses(List<PostTag> postTags) {
         return postTags.stream()
-                .map(PostTag::getTag)
-                .map(TagResponse::of)
-                .collect(toList());
+            .map(PostTag::getTag)
+            .map(TagResponse::of)
+            .collect(toList());
     }
 }

@@ -18,7 +18,8 @@ import wooteco.prolog.member.domain.Member;
 @AllArgsConstructor
 @Profile("!docu")
 @Component
-public class AuthMemberPrincipalArgumentResolverImpl implements AuthMemberPrincipalArgumentResolver {
+public class AuthMemberPrincipalArgumentResolverImpl implements
+    AuthMemberPrincipalArgumentResolver {
 
     private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -29,8 +30,10 @@ public class AuthMemberPrincipalArgumentResolverImpl implements AuthMemberPrinci
     }
 
     @Override
-    public Member resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        String credentials = AuthorizationExtractor.extract(webRequest.getNativeRequest(HttpServletRequest.class));
+    public Member resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+        NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+        String credentials = AuthorizationExtractor
+            .extract(webRequest.getNativeRequest(HttpServletRequest.class));
         try {
             Long id = Long.valueOf(jwtTokenProvider.extractSubject(credentials));
             return memberService.findById(id);

@@ -54,22 +54,22 @@ public enum GithubResponses {
 
     public static GithubResponses findByName(String member) {
         return Arrays.stream(values())
-                .filter(it -> StringUtils.equals(it.name, member))
-                .findFirst()
-                .orElseThrow(RuntimeException::new);
+            .filter(it -> StringUtils.equals(it.name, member))
+            .findFirst()
+            .orElseThrow(RuntimeException::new);
     }
 
     public static GithubResponses findByCode(String code) {
         return Arrays.stream(values())
-                .filter(it -> StringUtils.equals(it.code, code))
-                .findFirst()
-                .orElseThrow(RuntimeException::new);
+            .filter(it -> StringUtils.equals(it.code, code))
+            .findFirst()
+            .orElseThrow(RuntimeException::new);
     }
 
     public static GithubResponses findByToken(String accessToken) {
         return Arrays.stream(values())
-                .filter(it -> StringUtils.equals(it.accessToken, accessToken))
-                .findFirst()
-                .orElseThrow(RuntimeException::new);
+            .filter(it -> StringUtils.equals(it.accessToken, accessToken))
+            .findFirst()
+            .orElseThrow(RuntimeException::new);
     }
 }

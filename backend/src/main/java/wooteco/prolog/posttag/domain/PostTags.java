@@ -22,7 +22,8 @@ public class PostTags {
 
     private List<PostTag> duplicateFilter(List<PostTag> postTags) {
         return postTags.stream()
-            .filter(postTag -> values.stream().map(PostTag::getTag).noneMatch(newTag -> newTag.isSameName(postTag.getTag())))
+            .filter(postTag -> values.stream().map(PostTag::getTag)
+                .noneMatch(newTag -> newTag.isSameName(postTag.getTag())))
             .collect(Collectors.toList());
     }
 

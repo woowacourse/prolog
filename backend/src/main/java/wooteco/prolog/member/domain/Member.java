@@ -35,7 +35,13 @@ public class Member extends BaseEntity {
         this(null, username, nickname, role, githubId, imageUrl);
     }
 
-    public Member(Long id, String username, String nickname, Role role, Long githubId, String imageUrl) {
+    public Member(Long id,
+        String username,
+        String nickname,
+        Role role,
+        Long githubId,
+        String imageUrl)
+    {
         super(id);
         this.username = username;
         this.nickname = ifAbsentReplace(nickname, username);
@@ -51,16 +57,15 @@ public class Member extends BaseEntity {
         return nickname;
     }
 
-    public void update(String nickname, String imageUrl) {
+    public void updateNickname(String nickname) {
         if (!ObjectUtils.isEmpty(nickname)) {
             this.nickname = nickname;
         }
+    }
+
+    public void updateImageUrl(String imageUrl) {
         if (!ObjectUtils.isEmpty(imageUrl)) {
             this.imageUrl = imageUrl;
         }
-    }
-
-    public boolean isNotAuthor(Member member){
-        return !this.equals(member);
     }
 }

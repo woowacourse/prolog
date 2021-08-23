@@ -23,12 +23,12 @@ public class JwtTokenProvider {
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
-                .setSubject(member.getId().toString())
-                .setIssuedAt(now)
-                .setExpiration(validity)
-                .claim("role", member.getRole())
-                .signWith(SignatureAlgorithm.HS256, secretKey)
-                .compact();
+            .setSubject(member.getId().toString())
+            .setIssuedAt(now)
+            .setExpiration(validity)
+            .claim("role", member.getRole())
+            .signWith(SignatureAlgorithm.HS256, secretKey)
+            .compact();
     }
 
     public boolean validateToken(String token) {

@@ -34,16 +34,17 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createPost(@AuthMemberPrincipal Member member, @RequestBody List<PostRequest> postRequests) {
+    public ResponseEntity<Void> createPost(@AuthMemberPrincipal Member member,
+        @RequestBody List<PostRequest> postRequests) {
         List<PostResponse> postResponse = postService.insertPosts(member, postRequests);
         return ResponseEntity.created(URI.create("/posts/" + postResponse.get(0).getId())).build();
     }
 
     @GetMapping
     public ResponseEntity<PostsResponse> showAll(
-            @RequestParam(required = false) List<Long> missions,
-            @RequestParam(required = false) List<Long> tags,
-            @PageableDefault(size= 20, direction = Direction.DESC, sort = "id") Pageable pageable
+        @RequestParam(required = false) List<Long> missions,
+        @RequestParam(required = false) List<Long> tags,
+        @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable
     ) {
         PostsResponse postsResponse = postService.findPostsWithFilter(missions, tags, pageable);
         return ResponseEntity.ok(postsResponse);
@@ -60,16 +61,17 @@ public class PostController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updatePost(
-            @AuthMemberPrincipal Member member,
-            @PathVariable Long id,
-            @RequestBody PostRequest postRequest
+        @AuthMemberPrincipal Member member,
+        @PathVariable Long id,
+        @RequestBody PostRequest postRequest
     ) {
         postService.updatePost(member, id, postRequest);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@AuthMemberPrincipal Member member, @PathVariable Long id) {
+    public ResponseEntity<Void> deletePost(@AuthMemberPrincipal Member member,
+        @PathVariable Long id) {
         postService.deletePost(member, id);
         return ResponseEntity.noContent().build();
     }

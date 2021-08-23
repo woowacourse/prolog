@@ -22,7 +22,8 @@ public class LoginInterceptorImpl implements LoginInterceptor {
     private final GithubLoginService githubLoginService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+        Object handler) {
         if (isPreflighted(request)) {
             return true;
         }
@@ -37,9 +38,9 @@ public class LoginInterceptorImpl implements LoginInterceptor {
 
     private boolean isPreflighted(HttpServletRequest request) {
         return isOptionsMethod(request)
-                && hasOrigin(request)
-                && hasRequestHeaders(request)
-                && hasRequestMethods(request);
+            && hasOrigin(request)
+            && hasRequestHeaders(request)
+            && hasRequestMethods(request);
     }
 
     public boolean isOptionsMethod(HttpServletRequest request) {

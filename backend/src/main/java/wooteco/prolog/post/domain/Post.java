@@ -3,7 +3,6 @@ package wooteco.prolog.post.domain;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -38,7 +37,7 @@ public class Post extends BaseEntity {
     private Mission mission;
 
     @Embedded
-    private final PostTags postTags = new PostTags();
+    private PostTags postTags;
 
     public Post(Member member, String title, String content, Mission mission) {
         this(null, member, title, content, mission, Collections.emptyList());
@@ -48,19 +47,34 @@ public class Post extends BaseEntity {
         this(null, member, title, content, mission, tags);
     }
 
-    public Post(Long id, Member member, String title, String content, Mission mission, List<Tag> tags) {
+    public Post(Long id, Member member, String title, String content, Mission mission,
+        List<Tag> tags) {
         super(id);
         this.member = member;
         this.title = new Title(title);
         this.content = new Content(content);
         this.mission = mission;
+        this.postTags = new PostTags();
         addTags(new Tags(tags));
     }
 
     public void validateAuthor(Member member) {
-        if (this.member.isNotAuthor(member)) {
+        if (!this.member.equals(member)) {
             throw new AuthorNotValidException();
         }
+    }
+
+    public void update(String title, String content, Mission mission, Tags tags) {
+        this.title = new Title(title);
+        this.content = new Content(content);
+        this.mission = mission;
+        this.postTags.update(convertToPostTags(tags));
+    }
+
+    private List<PostTag> convertToPostTags(Tags tags) {
+        return tags.getList().stream()
+            .map(tag -> new PostTag(this, tag))
+            .collect(Collectors.toList());
     }
 
     public void addTags(Tags tags) {
@@ -87,20 +101,4 @@ public class Post extends BaseEntity {
         return content.getContent();
     }
 
-    public void setMission(Mission mission) {
-        this.mission = mission;
-    }
-
-    public void update(String title, String content, Mission mission, Tags tags) {
-        this.title = new Title(title);
-        this.content = new Content(content);
-        this.mission = mission;
-        this.postTags.update(convertToPostTags(tags));
-    }
-
-    private List<PostTag> convertToPostTags(Tags tags) {
-        return tags.toList().stream()
-                .map(tag -> new PostTag(this, tag))
-                .collect(Collectors.toList());
-    }
 }
