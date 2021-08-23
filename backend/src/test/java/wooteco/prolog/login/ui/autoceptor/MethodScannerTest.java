@@ -1,5 +1,6 @@
 package wooteco.prolog.login.ui.autoceptor;
 
+import java.util.Collections;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
@@ -21,7 +22,8 @@ class MethodScannerTest {
     @Test
     void extractMethodAnnotatedOnParameter() {
         // given
-        List<Class<? extends Annotation>> targetAnnotations = Arrays.asList(AuthMemberPrincipal.class);
+        List<Class<? extends Annotation>> targetAnnotations =
+            Collections.singletonList(AuthMemberPrincipal.class);
         List<Class<?>> classes = Arrays.asList(ControllerClass.class, RestControllerClass.class);
 
         MethodScanner methodScanner = new MethodScanner(targetAnnotations);
@@ -34,7 +36,7 @@ class MethodScannerTest {
                 .map(Method::getName)
                 .collect(toList());
 
-        assertThat(methodName).containsOnly("annotationExists");
+        assertThat(methodName).containsOnly("annotationExists", "pattern");
 
     }
 }

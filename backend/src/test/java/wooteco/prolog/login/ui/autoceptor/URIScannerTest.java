@@ -18,14 +18,17 @@ class URIScannerTest {
 
     @Test
     void extractUriAndMethods() {
-        List<Class<? extends Annotation>> targetAnnotations = Collections.singletonList(AuthMemberPrincipal.class);
-        ControllerScanner controllerScanner = new ControllerScanner(ControllerClass.class, RestControllerClass.class);
+        List<Class<? extends Annotation>> targetAnnotations =
+            Collections.singletonList(AuthMemberPrincipal.class);
+        ControllerScanner controllerScanner =
+            new ControllerScanner(ControllerClass.class, RestControllerClass.class);
         MethodScanner methodScanner = new MethodScanner(targetAnnotations);
 
         List<String> uris = new URIScanner(controllerScanner, methodScanner).extractUri();
 
         assertThat(uris).containsOnly(
-                "/api2/test"
+            "/api2/test",
+            "/api2/test/*"
         );
     }
 }
