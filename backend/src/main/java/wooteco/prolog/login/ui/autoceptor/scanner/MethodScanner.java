@@ -1,4 +1,4 @@
-package wooteco.prolog.login.ui.auto_interceptor_uri_mapper.scanner;
+package wooteco.prolog.login.ui.autoceptor.scanner;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;

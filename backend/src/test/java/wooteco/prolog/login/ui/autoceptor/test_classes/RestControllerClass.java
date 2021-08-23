@@ -1,4 +1,4 @@
-package wooteco.prolog.login.ui.auto_interceptor_uri_mapper.test_classes;
+package wooteco.prolog.login.ui.autoceptor.test_classes;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
