@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Profile;
 
 @Profile("acceptance")
 public class AcceptanceSteps {
+
     @Autowired
     public AcceptanceContext context;
 }

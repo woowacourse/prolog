@@ -14,3 +14,13 @@ github:
   url:
     access-token: https://github.com/login/oauth/access_token
     profile: https://api.github.com/user
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5Dialect

@@ -1,11 +1,12 @@
 package wooteco.prolog.aop.exception;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.login.excetpion.GithubApiFailException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
-
-import static org.assertj.core.api.Assertions.*;
 
 class BadRequestCodeTest {
 
@@ -25,10 +26,13 @@ class BadRequestCodeTest {
 
         //then
         assertThat(githubApiFailExceptionCode).isEqualTo(BadRequestCode.GITHUB_API_FAIL.getCode());
-        assertThat(githubApiFailExceptionMessage).isEqualTo(BadRequestCode.GITHUB_API_FAIL.getMessage());
+        assertThat(githubApiFailExceptionMessage)
+            .isEqualTo(BadRequestCode.GITHUB_API_FAIL.getMessage());
 
-        assertThat(memberNotFoundExceptionCode).isEqualTo(BadRequestCode.MEMBER_NOT_FOUND.getCode());
-        assertThat(memberNotFoundExceptionMessage).isEqualTo(BadRequestCode.MEMBER_NOT_FOUND.getMessage());
+        assertThat(memberNotFoundExceptionCode)
+            .isEqualTo(BadRequestCode.MEMBER_NOT_FOUND.getCode());
+        assertThat(memberNotFoundExceptionMessage)
+            .isEqualTo(BadRequestCode.MEMBER_NOT_FOUND.getMessage());
     }
 
     @DisplayName("해당하는 예외가 없을 때 오류가 나는지 확인한다.")
@@ -38,6 +42,6 @@ class BadRequestCodeTest {
         //when
         //then
         assertThatThrownBy(BadRequestException::new)
-                .isInstanceOf(NotFoundErrorCodeException.class);
+            .isInstanceOf(NotFoundErrorCodeException.class);
     }
 }

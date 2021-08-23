@@ -9,7 +9,8 @@ public enum GithubResponses {
     웨지("2", "access_token_2", "웨지", "sihyung92", "222222", "https://avatars.githubusercontent.com/u/51393021?v=4"),
     서니("3", "access_token_3", "서니", "sunhpark42", "333333", "https://avatars.githubusercontent.com/u/67677561?v=4"),
     엘라("4", "access_token_4", "엘라", "HyuuunjuKim", "444444", "https://avatars.githubusercontent.com/u/43339385?v=4"),
-    브라운("5", "access_token_5", "브라운", "gracefulBrown", "555555", "https://avatars.githubusercontent.com/u/46308949?v=4");
+    브라운("5", "access_token_5", "브라운", "gracefulBrown", "555555", "https://avatars.githubusercontent.com/u/46308949?v=4"),
+    현구막("6", "access_token_6", "현구막", "Hyeon9mak", "666666", "https://avatars.githubusercontent.com/u/37354145?v=4");
 
     private String code;
     private String accessToken;
@@ -53,22 +54,22 @@ public enum GithubResponses {
 
     public static GithubResponses findByName(String member) {
         return Arrays.stream(values())
-                .filter(it -> StringUtils.equals(it.name, member))
-                .findFirst()
-                .orElseThrow(RuntimeException::new);
+            .filter(it -> StringUtils.equals(it.name, member))
+            .findFirst()
+            .orElseThrow(RuntimeException::new);
     }
 
     public static GithubResponses findByCode(String code) {
         return Arrays.stream(values())
-                .filter(it -> StringUtils.equals(it.code, code))
-                .findFirst()
-                .orElseThrow(RuntimeException::new);
+            .filter(it -> StringUtils.equals(it.code, code))
+            .findFirst()
+            .orElseThrow(RuntimeException::new);
     }
 
     public static GithubResponses findByToken(String accessToken) {
         return Arrays.stream(values())
-                .filter(it -> StringUtils.equals(it.accessToken, accessToken))
-                .findFirst()
-                .orElseThrow(RuntimeException::new);
+            .filter(it -> StringUtils.equals(it.accessToken, accessToken))
+            .findFirst()
+            .orElseThrow(RuntimeException::new);
     }
 }
