@@ -15,17 +15,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static wooteco.prolog.fixtures.PostAcceptanceFixture.POST1;
-import static wooteco.prolog.fixtures.PostAcceptanceFixture.POST2;
-import static wooteco.prolog.fixtures.PostAcceptanceFixture.POST3;
 
 public class PostStepDefinitions extends AcceptanceSteps {
 
     @Given("포스트 여러개를 작성하고")
     public void 포스트여러개를작성하고() {
         List<PostRequest> postRequests = Arrays.asList(
-            POST1.getPostRequest(),
-            POST2.getPostRequest()
+                PostAcceptanceFixture.firstPost,
+                PostAcceptanceFixture.secondPost
         );
 
         context.invokeHttpPostWithToken("/posts", postRequests);
@@ -34,7 +31,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
     @When("포스트를 작성하면")
     public void 포스트를작성하면() {
         List<PostRequest> postRequests = Arrays.asList(
-            POST1.getPostRequest()
+                PostAcceptanceFixture.firstPost
         );
 
         context.invokeHttpPostWithToken("/posts", postRequests);
@@ -51,7 +48,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
         List<PostRequest> postRequests = new ArrayList<>();
 
         for (int i = 0; i < totalSize; i++) {
-            postRequests.add(POST1.getPostRequest());
+            postRequests.add(PostAcceptanceFixture.firstPost);
         }
 
         context.invokeHttpPostWithToken("/posts", postRequests);
@@ -60,16 +57,19 @@ public class PostStepDefinitions extends AcceptanceSteps {
     @Given("{int}번 미션의 포스트를 {long}개 작성하고")
     public void 특정미션포스트를다수작성하면(int missionNumber, Long totalSize) {
         List<PostRequest> postRequests = new ArrayList<>();
+        PostRequest postRequest;
 
-        List<PostRequest> requests = PostAcceptanceFixture.findByMissionNumber(
-            (long) missionNumber);
-
-        if (requests.isEmpty()) {
-            throw new RuntimeException("해당 미션의 포스트는 없습니다.");
+        switch (missionNumber){
+            case 1: postRequest = PostAcceptanceFixture.firstPost;
+                    break;
+            case 2: postRequest = PostAcceptanceFixture.secondPost;
+                    break;
+            default:
+                throw new RuntimeException("해당 미션의 포스트는 없습니다.");
         }
 
         for (int i = 0; i < totalSize; i++) {
-            postRequests.add(requests.get(0));
+            postRequests.add(postRequest);
         }
 
         context.invokeHttpPostWithToken("/posts", postRequests);
@@ -78,42 +78,22 @@ public class PostStepDefinitions extends AcceptanceSteps {
     @Given("{int}번 태그의 포스트를 {long}개 작성하고")
     public void 특정태그포스트를다수작성하면(int tagNumber, Long totalSize) {
         List<PostRequest> postRequests = new ArrayList<>();
+        PostRequest postRequest;
 
-        List<PostRequest> requests = PostAcceptanceFixture.findByTagNumber(
-            (long) tagNumber);
-
-        if (requests.isEmpty()) {
-            throw new RuntimeException("해당 미션의 포스트는 없습니다.");
+        switch (tagNumber){
+            case 1: case 2: postRequest = PostAcceptanceFixture.firstPost;
+                break;
+            case 3: case 4: postRequest = PostAcceptanceFixture.secondPost;
+                break;
+            default:
+                throw new RuntimeException("해당 태그의 포스트는 없습니다.");
         }
 
         for (int i = 0; i < totalSize; i++) {
-            postRequests.add(requests.get(0));
+            postRequests.add(postRequest);
         }
 
         context.invokeHttpPostWithToken("/posts", postRequests);
-    }
-
-    @Given("서로 다른 태그와 미션을 가진 포스트를 다수 생성하고")
-    public void 서로다른태그와미션을가진포스트를생성() {
-        List<PostRequest> postRequests = new ArrayList<>();
-
-        for (int i = 0; i < 7; i++) {
-            postRequests.add(POST1.getPostRequest());
-        }
-        for (int i = 0; i < 5; i++) {
-            postRequests.add(POST2.getPostRequest());
-        }
-        for (int i = 0; i < 6; i++) {
-            postRequests.add(POST3.getPostRequest());
-        }
-
-        context.invokeHttpPostWithToken("/posts", postRequests);
-    }
-
-    @When("{int}번 미션과 {int}번 태그로 조회하면")
-    public void 미션태그필터조회를한다(int missionNumber, int tagNumber) {
-        String path = String.format("/posts?tags=%d&missions=%d", tagNumber, missionNumber);
-        context.invokeHttpGet(path);
     }
 
     @When("{int}번 미션의 포스트를 조회하면")
@@ -173,7 +153,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
     @When("{long}번째 포스트를 수정하면")
     public void 포스트를수정하면(Long postId) {
         String path = "/posts/" + postId;
-        context.invokeHttpPutWithToken(path, POST3.getPostRequest());
+        context.invokeHttpPutWithToken(path, PostAcceptanceFixture.secondPost);
     }
 
     @Then("{long}번째 포스트가 수정된다")
@@ -184,12 +164,12 @@ public class PostStepDefinitions extends AcceptanceSteps {
         context.invokeHttpGet(path);
         PostResponse post = context.response.as(PostResponse.class);
 
-        assertThat(post.getContent()).isEqualTo(POST3.getPostRequest().getContent());
+        assertThat(post.getContent()).isEqualTo(PostAcceptanceFixture.secondPost.getContent());
     }
 
     @Then("에러 응답을 받는다")
     public void 에러가응답을받는다() {
-        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 
     @When("{long}번째 포스트를 삭제하면")
@@ -198,8 +178,8 @@ public class PostStepDefinitions extends AcceptanceSteps {
         context.invokeHttpDeleteWithToken(path);
     }
 
-    @Then("포스트가 삭제된다")
-    public void 포스트가삭제된다() {
+    @Then("{long}번째 포스트가 삭제된다")
+    public void 포스트가삭제된다(Long postId) {
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 }

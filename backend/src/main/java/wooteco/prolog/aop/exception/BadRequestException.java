@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class BadRequestException extends RuntimeException {
-
     private BadRequestCode codeAndMessage = BadRequestCode.findByClass(this.getClass());
 
     private String message;

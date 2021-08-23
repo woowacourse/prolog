@@ -10,7 +10,6 @@ import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberStepDefinitions extends AcceptanceSteps {
-
     @When("{string}의 멤버 정보를 조회하면")
     public void 멤버정보를조회하면(String member) {
         String username = GithubResponses.findByName(member).getLogin();
@@ -29,21 +28,22 @@ public class MemberStepDefinitions extends AcceptanceSteps {
         assertThat(member.getImageUrl()).isNotNull();
     }
 
-    @When("자신의 닉네임을 {string}(로)(으로) 수정하면")
-    public void 자신의닉네임을수정하면(String updatedNickname) {
+    @When("{string}(이)(이가) 자신의 닉네임을 {string}(로)(으로) 수정하면")
+    public void 자신의닉네임을수정하면(String member, String updatedNickname) {
+        String originUsername = GithubResponses.findByName(member).getLogin();
+
         MemberUpdateRequest updateRequest = new MemberUpdateRequest(
-            updatedNickname, ""
+                updatedNickname, ""
         );
 
-        context.invokeHttpPutWithToken("/members/me", updateRequest);
+        context.invokeHttpPutWithToken("/members/" + originUsername, updateRequest);
     }
 
-    @Then("{string}의 닉네임이 {string}(로)(으로) 수정")
-    public void 닉네임이으로수정(String member, String nickname) {
-        String username = GithubResponses.findByName(member).getLogin();
+    @Then("유저네임이 {string}(로)(으로) 수정")
+    public void 유저네임이으로수정(String username) {
         context.invokeHttpGetWithToken("/members/" + username);
-        String updatedNickname = context.response.as(MemberResponse.class).getNickname();
+        MemberResponse member = context.response.as(MemberResponse.class);
 
-        assertThat(updatedNickname).isEqualTo(nickname);
+        assertThat(member.getUsername()).isEqualTo(username);
     }
 }

@@ -1,11 +1,13 @@
 package wooteco.prolog.tag.dao;
 
-import static wooteco.prolog.tag.dao.TagDao.tagRowMapper;
-
-import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import wooteco.prolog.tag.domain.Tag;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static wooteco.prolog.tag.dao.TagDao.tagRowMapper;
 
 @Repository
 public class PostTagDao {
@@ -39,8 +41,8 @@ public class PostTagDao {
 
     public List<Tag> findAll() {
         String query = "SELECT DISTINCT t.id as id, t.name " +
-            "FROM post_tag pt " +
-            "INNER JOIN tag t ON pt.tag_id = t.id";
+                "FROM post_tag pt " +
+                "INNER JOIN tag t ON pt.tag_id = t.id";
         return this.jdbcTemplate.query(query, tagRowMapper);
     }
 }

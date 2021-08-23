@@ -15,11 +15,7 @@ public class GithubAccessTokenResponse {
 
     }
 
-    public GithubAccessTokenResponse(String accessToken,
-        String tokenType,
-        String scope,
-        String bearer)
-    {
+    public GithubAccessTokenResponse(String accessToken, String tokenType, String scope, String bearer) {
         this.accessToken = accessToken;
         this.tokenType = tokenType;
         this.scope = scope;

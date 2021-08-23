@@ -14,19 +14,3 @@ security:
     token:
       secret-key: xpzmzhtmvmfhrmvmfhwprxm
       expire-length: 3600000
-
-spring:
-  jpa:
-    generate-ddl: true
-    hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-        use_sql_comment: true
-logging:
-  level:
-    org:
-      hibernate:
-        type: trace

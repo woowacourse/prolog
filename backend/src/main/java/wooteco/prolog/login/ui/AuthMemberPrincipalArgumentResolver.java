@@ -8,9 +8,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import wooteco.prolog.member.domain.Member;
 
 public interface AuthMemberPrincipalArgumentResolver extends HandlerMethodArgumentResolver {
-
     boolean supportsParameter(MethodParameter parameter);
 
-    Member resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-        NativeWebRequest webRequest, WebDataBinderFactory binderFactory);
+    Member resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory);
 }

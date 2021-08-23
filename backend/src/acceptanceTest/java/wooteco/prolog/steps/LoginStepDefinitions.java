@@ -12,7 +12,6 @@ import java.util.HashMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoginStepDefinitions extends AcceptanceSteps {
-
     @Given("{string}(이)(가) 로그인을 하고")
     public void 멤버가로그인을하고(String member) {
         HashMap<String, Object> data = new HashMap<>();
