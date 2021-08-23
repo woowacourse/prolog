@@ -13,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @CucumberContextConfiguration
 public class AcceptanceHooks {
+
     @LocalServerPort
     private int port;
 

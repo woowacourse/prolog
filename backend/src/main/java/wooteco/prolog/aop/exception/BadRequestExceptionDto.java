@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @EqualsAndHashCode
 public class BadRequestExceptionDto {
+
     private int code;
     private String message;
 }

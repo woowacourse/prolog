@@ -1,7 +1,21 @@
 package wooteco.prolog.mission.domain;
 
-public class Mission {
-    private Long id;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import wooteco.prolog.BaseEntity;
+import wooteco.prolog.mission.exception.TooLongMissionNameException;
+
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+public class Mission extends BaseEntity {
+
+    public static final int MAX_LENGTH = 45;
+
+    @Column(nullable = false, length = MAX_LENGTH)
     private String name;
 
     public Mission(String name) {
@@ -9,15 +23,14 @@ public class Mission {
     }
 
     public Mission(Long id, String name) {
-        this.id = id;
+        super(id);
+        validateMaxLength(name);
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
+    private void validateMaxLength(String name) {
+        if (name.length() > MAX_LENGTH) {
+            throw new TooLongMissionNameException();
+        }
     }
 }
