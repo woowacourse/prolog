@@ -45,8 +45,6 @@ class PostTagRepositoryTest {
     @Test
     void createPostTag() {
         // given
-        LocalDateTime beforeTime = LocalDateTime.now();
-
         Member member = memberRepository.save(웨지);
         Mission mission = missionRepository.save(new Mission("미션"));
         Tag tag = tagRepository.save(new Tag("태그"));
@@ -58,7 +56,6 @@ class PostTagRepositoryTest {
 
         // then
         assertThat(savedPostTag.getId()).isNotNull();
-        assertThat(savedPostTag.getCreatedAt()).isAfterOrEqualTo(beforeTime);
         assertThat(savedPostTag).usingRecursiveComparison()
             .ignoringFields("id", "createdAt", "updatedAt")
             .isEqualTo(postTag);

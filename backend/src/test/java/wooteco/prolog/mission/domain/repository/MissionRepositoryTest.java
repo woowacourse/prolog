@@ -20,7 +20,6 @@ class MissionRepositoryTest {
     @Test
     void createMission() {
         // given
-        LocalDateTime beforeTime = LocalDateTime.now();
         Mission mission = new Mission("[BE] 자동차 미션");
 
         // when
@@ -28,7 +27,6 @@ class MissionRepositoryTest {
 
         // then
         assertThat(savedMission.getId()).isNotNull();
-        assertThat(savedMission.getCreatedAt()).isAfterOrEqualTo(beforeTime);
         assertThat(savedMission).usingRecursiveComparison()
             .ignoringFields("id", "createdAt", "updatedAt")
             .isEqualTo(mission);

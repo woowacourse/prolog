@@ -21,7 +21,6 @@ class TagRepositoryTest {
     @Test
     void createTag() {
         // given
-        LocalDateTime beforeTime = LocalDateTime.now();
         Tag tag = new Tag("나는 말하는 감자");
 
         // when
@@ -29,7 +28,6 @@ class TagRepositoryTest {
 
         // then
         assertThat(savedTag.getId()).isNotNull();
-        assertThat(savedTag.getCreatedAt()).isAfterOrEqualTo(beforeTime);
         assertThat(savedTag).usingRecursiveComparison()
             .ignoringFields("id", "createdAt", "updatedAt")
             .isEqualTo(tag);

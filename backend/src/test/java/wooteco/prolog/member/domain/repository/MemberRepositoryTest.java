@@ -24,14 +24,11 @@ class MemberRepositoryTest {
     @Test
     void createMember() {
         // given
-        LocalDateTime beforeTime = LocalDateTime.now();
-
         // when
         Member savedMember = memberRepository.save(웨지);
 
         // then
         assertThat(savedMember.getId()).isNotNull();
-        assertThat(savedMember.getCreatedAt()).isAfterOrEqualTo(beforeTime);
         assertThat(savedMember).usingRecursiveComparison()
             .ignoringFields("id", "createdAt", "updatedAt")
             .isEqualTo(웨지);
