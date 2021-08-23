@@ -1,48 +1,30 @@
 package wooteco.prolog.member.domain;
 
-import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
-import wooteco.prolog.BaseEntity;
 
+import java.util.Objects;
+
+@NoArgsConstructor
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity
-public class Member extends BaseEntity {
+@EqualsAndHashCode(of = "id")
+public class Member {
 
-    @Column(nullable = false, unique = true)
+    private Long id;
     private String username;
-
-    @Column
     private String nickname;
-
-    @Enumerated(EnumType.STRING)
     private Role role;
-
-    @Column(nullable = false, unique = true)
     private Long githubId;
-
-    @Column(nullable = false)
     private String imageUrl;
 
     public Member(String username, String nickname, Role role, Long githubId, String imageUrl) {
         this(null, username, nickname, role, githubId, imageUrl);
     }
 
-    public Member(Long id,
-        String username,
-        String nickname,
-        Role role,
-        Long githubId,
-        String imageUrl)
-    {
-        super(id);
+    public Member(Long id, String username, String nickname, Role role, Long githubId, String imageUrl) {
+        this.id = id;
         this.username = username;
         this.nickname = ifAbsentReplace(nickname, username);
         this.role = role;
@@ -57,13 +39,10 @@ public class Member extends BaseEntity {
         return nickname;
     }
 
-    public void updateNickname(String nickname) {
+    public void update(String nickname, String imageUrl) {
         if (!ObjectUtils.isEmpty(nickname)) {
             this.nickname = nickname;
         }
-    }
-
-    public void updateImageUrl(String imageUrl) {
         if (!ObjectUtils.isEmpty(imageUrl)) {
             this.imageUrl = imageUrl;
         }

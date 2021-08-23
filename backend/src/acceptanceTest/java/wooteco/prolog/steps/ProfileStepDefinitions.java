@@ -10,7 +10,6 @@ import wooteco.prolog.post.application.dto.PostsResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProfileStepDefinitions extends AcceptanceSteps {
-
     @When("{string}의 멤버 프로필을 조회하면")
     public void 멤버프로필을조회하면(String member) {
         String username = GithubResponses.findByName(member).getLogin();

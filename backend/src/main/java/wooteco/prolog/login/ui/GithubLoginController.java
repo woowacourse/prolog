@@ -10,8 +10,7 @@ import wooteco.prolog.login.application.dto.TokenResponse;
 
 @RestController
 public class GithubLoginController {
-
-    private final GithubLoginService githubLoginService;
+    GithubLoginService githubLoginService;
 
     public GithubLoginController(GithubLoginService githubLoginService) {
         this.githubLoginService = githubLoginService;

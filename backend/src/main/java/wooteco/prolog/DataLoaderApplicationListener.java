@@ -1,14 +1,11 @@
 package wooteco.prolog;
 
-import java.util.Arrays;
-import java.util.List;
-import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
+import wooteco.prolog.login.application.GithubLoginService;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
-import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionRequest;
@@ -18,15 +15,23 @@ import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.tag.application.TagService;
 import wooteco.prolog.tag.dto.TagRequest;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Profile("local")
-@AllArgsConstructor
 @Configuration
 public class DataLoaderApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
-
     private MissionService missionService;
     private TagService tagService;
-    private MemberService memberService;
+    private GithubLoginService githubLoginService;
     private PostService postService;
+
+    public DataLoaderApplicationListener(MissionService missionService, TagService tagService, GithubLoginService githubLoginService, PostService postService) {
+        this.missionService = missionService;
+        this.tagService = tagService;
+        this.githubLoginService = githubLoginService;
+        this.postService = postService;
+    }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -38,16 +43,15 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
 
         // filter init
         List<TagRequest> tagRequests = Arrays.asList(
-            new TagRequest("자바"),
-            new TagRequest("자바스크립트"),
-            new TagRequest("스프링"),
-            new TagRequest("리액트")
+                new TagRequest("자바"),
+                new TagRequest("자바스크립트"),
+                new TagRequest("스프링"),
+                new TagRequest("리액트")
         );
-        tagService.findOrCreate(tagRequests);
+        tagService.create(tagRequests);
 
         // member init
-        Member member = memberService
-                .findOrCreateMember(new GithubProfileResponse("류성현", "gracefulBrown", "46308949", "https://avatars.githubusercontent.com/u/46308949?v=4"));
+        Member member = githubLoginService.findOrCreateMember(new GithubProfileResponse("류성현", "gracefulBrown", "46308949", "https://avatars.githubusercontent.com/u/46308949?v=4"));
 
         // post init
         postService.insertPosts(member, Arrays.asList(

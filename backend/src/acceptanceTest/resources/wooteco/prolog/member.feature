@@ -8,5 +8,5 @@ Feature: 멤버 관련 기능
 
   Scenario: 자신의 정보를 수정하기
     Given "브라운"이 로그인을 하고
-    When 자신의 닉네임을 "brown"으로 수정하면
-    Then "브라운"의 닉네임이 "brown"으로 수정
+    When "브라운"이 자신의 닉네임을 "brown"으로 수정하면
+    Then 유저네임이 "brown"으로 수정
