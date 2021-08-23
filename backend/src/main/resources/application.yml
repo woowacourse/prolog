@@ -20,3 +20,5 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: validate
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
