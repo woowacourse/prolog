@@ -17,8 +17,10 @@ github:
 
 spring:
   jpa:
-    generate-ddl: true
     hibernate:
       ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: true
     database: mysql
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQL5Dialect
