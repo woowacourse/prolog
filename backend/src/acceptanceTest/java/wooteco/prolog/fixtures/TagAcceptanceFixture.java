@@ -1,9 +1,6 @@
 package wooteco.prolog.fixtures;
 
-import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.tag.dto.TagRequest;
-
-import java.util.Arrays;
 
 public enum TagAcceptanceFixture {
     TAG1(1L, "자바"),
@@ -27,5 +24,9 @@ public enum TagAcceptanceFixture {
 
     public Long getTagId() {
         return tagId;
+    }
+
+    public String getTagName() {
+        return tagRequest.getName();
     }
 }

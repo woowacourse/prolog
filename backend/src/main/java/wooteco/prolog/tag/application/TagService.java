@@ -1,17 +1,22 @@
 package wooteco.prolog.tag.application;
 
 import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.member.application.MemberService;
+import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.posttag.application.PostTagService;
 import wooteco.prolog.posttag.domain.PostTag;
 import wooteco.prolog.tag.domain.Tag;
 import wooteco.prolog.tag.domain.Tags;
 import wooteco.prolog.tag.domain.repository.TagRepository;
+import wooteco.prolog.tag.dto.MemberTagResponse;
 import wooteco.prolog.tag.dto.TagRequest;
 import wooteco.prolog.tag.dto.TagResponse;
 
@@ -22,6 +27,7 @@ public class TagService {
 
     private final TagRepository tagRepository;
     private final PostTagService postTagService;
+    private final MemberService memberService;
 
     @Transactional
     public Tags findOrCreate(List<TagRequest> tagRequests) {
@@ -54,5 +60,16 @@ public class TagService {
 
     public List<Tag> findByIds(List<Long> tagIds) {
         return tagRepository.findAllById(tagIds);
+    }
+
+    public List<MemberTagResponse> findByMember(String memberName) {
+        final Member member = memberService.findByUsername(memberName);
+        final List<PostTag> postTags = postTagService.findByMember(member);
+        return postTags.stream()
+                .collect(groupingBy(PostTag::getTag, counting()))
+                .entrySet()
+                .stream()
+                .map(entry -> MemberTagResponse.of(entry.getKey(), Math.toIntExact(entry.getValue())))
+                .collect(toList());
     }
 }

@@ -11,20 +11,26 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import wooteco.prolog.tag.application.TagService;
+import wooteco.prolog.tag.dto.MemberTagResponse;
 
 @RestController
 @RequestMapping("/members")
+@RequiredArgsConstructor
 public class StudyLogOverviewController {
+
+    private final TagService tagService;
 
     @GetMapping("/{username}/tags")
     public ResponseEntity<MemberDataResponses<MemberTagResponse>> findTagsOfMine(
             @PathVariable String username) {
-        return ResponseEntity.ok(MemberDataResponses.of(MemberTagResponse.dummyDataList()));
+        return ResponseEntity.ok(MemberDataResponses.of(tagService.findByMember(username)));
     }
 
     @GetMapping("/{username}/calendar-posts")
@@ -77,23 +83,6 @@ public class StudyLogOverviewController {
                         final String title = "타이틀 " + n;
                         return new MemberPostResponse(id, title, localDateTime, localDateTime);
                     })
-                    .collect(Collectors.toList());
-        }
-    }
-
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Getter
-    public static class MemberTagResponse {
-
-        private Long id;
-        private String name;
-        private int postCount;
-
-        public static List<MemberTagResponse> dummyDataList() {
-            return Stream.iterate(0, n -> n + 1)
-                    .limit(10)
-                    .map(n -> new MemberTagResponse(n.longValue(), "tag name " + n, n))
                     .collect(Collectors.toList());
         }
     }
