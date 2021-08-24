@@ -42,11 +42,12 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<PostsResponse> showAll(
+        @RequestParam(required = false) List<Long> levels,
         @RequestParam(required = false) List<Long> missions,
         @RequestParam(required = false) List<Long> tags,
         @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable
     ) {
-        PostsResponse postsResponse = postService.findPostsWithFilter(missions, tags, pageable);
+        PostsResponse postsResponse = postService.findPostsWithFilter(levels, missions, tags, pageable);
         return ResponseEntity.ok(postsResponse);
     }
 

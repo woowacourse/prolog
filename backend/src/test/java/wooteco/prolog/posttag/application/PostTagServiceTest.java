@@ -14,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestConstructor.AutowireMode;
+import wooteco.prolog.level.application.LevelService;
+import wooteco.prolog.level.application.dto.LevelRequest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
@@ -36,6 +38,8 @@ class PostTagServiceTest {
     @Autowired
     private PostService postService;
     @Autowired
+    private LevelService levelService;
+    @Autowired
     private MissionService missionService;
     @Autowired
     private MemberService memberService;
@@ -44,6 +48,8 @@ class PostTagServiceTest {
 
     @BeforeEach
     void setUp() {
+        LevelRequest level = new LevelRequest("레벨1");
+        levelService.create(level);
         MissionRequest mission = new MissionRequest("미션 이름");
         missionService.create(mission);
         this.member = memberService
@@ -78,7 +84,7 @@ class PostTagServiceTest {
     @SafeVarargs
     private final List<PostResponse> addTagRequestToPost(List<TagRequest>... tagRequests) {
         List<PostRequest> posts = Arrays.stream(tagRequests)
-            .map(it -> new PostRequest("이름", "별명", 1L, it))
+            .map(it -> new PostRequest("이름", "별명", 1L, 1L, it))
             .collect(toList());
 
         return postService.insertPosts(member, posts);
