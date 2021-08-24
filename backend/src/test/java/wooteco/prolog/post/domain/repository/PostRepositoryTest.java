@@ -15,7 +15,6 @@ import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.mission.domain.Mission;
 import wooteco.prolog.mission.domain.repository.MissionRepository;
-import wooteco.prolog.post.application.dto.PostSpecification;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.posttag.domain.PostTag;
 import wooteco.prolog.posttag.domain.repository.PostTagRepository;
@@ -57,8 +56,8 @@ class PostRepositoryTest {
     private final Level level1 = new Level("레벨1");
     private final Level level2 = new Level("레벨2");
 
-    private final Mission mission1 = new Mission("자동차 미션");
-    private final Mission mission2 = new Mission("수동차 미션");
+    private final Mission mission1 = new Mission("자동차 미션", level1);
+    private final Mission mission2 = new Mission("수동차 미션", level2);
 
     private final Tag tag1 = new Tag("소롱의글쓰기");
     private final Tag tag2 = new Tag("스프링");
@@ -69,13 +68,10 @@ class PostRepositoryTest {
             tag1, tag2, tag3, tag4, tag5
     );
 
-    private final Post post1 = new Post(member1, POST1_TITLE, "피케이와 포모의 포스트", level1, mission1,
-            asList(tag1, tag2));
-    private final Post post2 = new Post(member1, POST2_TITLE, "피케이와 포모의 포스트 2", level1, mission1,
-            asList(tag2, tag3));
-    private final Post post3 = new Post(member2, POST3_TITLE, "피케이 포스트", level2, mission2,
-            asList(tag3, tag4, tag5));
-    private final Post post4 = new Post(member2, POST4_TITLE, "포모의 포스트", level2, mission2, asList());
+    private final Post post1 = new Post(member1, POST1_TITLE, "피케이와 포모의 포스트", mission1, asList(tag1, tag2));
+    private final Post post2 = new Post(member1, POST2_TITLE, "피케이와 포모의 포스트 2", mission1, asList(tag2, tag3));
+    private final Post post3 = new Post(member2, POST3_TITLE, "피케이 포스트", mission2, asList(tag3, tag4, tag5));
+    private final Post post4 = new Post(member2, POST4_TITLE, "포모의 포스트", mission2, asList());
 
     @BeforeEach
     void setUp() {
@@ -95,7 +91,7 @@ class PostRepositoryTest {
     void findWithLevel() {
         //given
         List<Long> levelIds = singletonList(level1.getId());
-        Specification<Post> specs = PostSpecification.equalIn("level", levelIds)
+        Specification<Post> specs = PostSpecification.findByLevelIn(levelIds)
                 .and(PostSpecification.distinct(true));
 
         // when
@@ -126,7 +122,7 @@ class PostRepositoryTest {
         // given
         List<PostTag> postTags = postTagRepository.findByTagIn(asList(tag1, tag2));
         List<Long> tagIds = postTags.stream().map(it -> it.getTag().getId()).collect(Collectors.toList());
-        Specification<Post> specs = PostSpecification.equalTagIn(tagIds)
+        Specification<Post> specs = PostSpecification.findByTagIn(tagIds)
                 .and(PostSpecification.distinct(true));
 
         // when
@@ -141,7 +137,7 @@ class PostRepositoryTest {
     void findWithMembers() {
         // given
         List<String> usernames = asList(member1.getUsername(), member2.getUsername());
-        Specification<Post> specs = PostSpecification.equalMemberIn(usernames)
+        Specification<Post> specs = PostSpecification.findByUsernameIn(usernames)
                 .and(PostSpecification.distinct(true));
 
         // when
@@ -159,9 +155,9 @@ class PostRepositoryTest {
         List<Long> missionIds = singletonList(mission1.getId());
         List<PostTag> postTags = postTagRepository.findByTagIn(asList(tag1, tag2));
         List<Long> tagIds = postTags.stream().map(it -> it.getTag().getId()).collect(Collectors.toList());
-        Specification<Post> specs = PostSpecification.equalIn("level", levelIds)
+        Specification<Post> specs = PostSpecification.findByLevelIn(levelIds)
                 .and(PostSpecification.equalIn("mission", missionIds))
-                .and(PostSpecification.equalTagIn(tagIds))
+                .and(PostSpecification.findByTagIn(tagIds))
                 .and(PostSpecification.distinct(true));
         // when
         Page<Post> posts = postRepository.findAll(specs, PageRequest.of(0, 10));

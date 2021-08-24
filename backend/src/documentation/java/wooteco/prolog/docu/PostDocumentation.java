@@ -107,12 +107,12 @@ public class PostDocumentation extends Documentation {
         String content = "수정된 내용";
 
         Long levelId = 레벨_등록함(new LevelRequest("레벨2"));
-        Long missionId = 미션_등록함(new MissionRequest("수정된 미션"));
+        Long missionId = 미션_등록함(new MissionRequest("수정된 미션", levelId));
         List<TagRequest> tags = Arrays.asList(
                 new TagRequest("spa"),
                 new TagRequest("edit")
         );
-        PostRequest editPostRequest = new PostRequest(title, content, levelId, missionId, tags);
+        PostRequest editPostRequest = new PostRequest(title, content, missionId, tags);
 
         // when
         ExtractableResponse<Response> editResponse = given("post/edit")
@@ -142,20 +142,20 @@ public class PostDocumentation extends Documentation {
         String title = "SPA";
         String content = "SPA 방식으로 앱을 구현하였음.\n" + "router 를 구현 하여 이용함.\n";
         Long levelId = 레벨_등록함(new LevelRequest("레벨1"));
-        Long missionId = 미션_등록함(new MissionRequest("레벨1 - 지하철 노선도 미션"));
+        Long missionId = 미션_등록함(new MissionRequest("레벨1 - 지하철 노선도 미션", levelId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("spa"), new TagRequest("router"));
 
-        return new PostRequest(title, content, levelId, missionId, tags);
+        return new PostRequest(title, content, missionId, tags);
     }
 
     private PostRequest createPostRequest2() {
         String title = "JAVA";
         String content = "Spring Data JPA를 학습함.";
         Long levelId = 레벨_등록함(new LevelRequest("레벨3"));
-        Long missionId = 미션_등록함(new MissionRequest("레벨3 - 프로젝트"));
+        Long missionId = 미션_등록함(new MissionRequest("레벨3 - 프로젝트", levelId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("java"), new TagRequest("jpa"));
 
-        return new PostRequest(title, content, levelId, missionId, tags);
+        return new PostRequest(title, content, missionId, tags);
     }
 
     private ExtractableResponse<Response> 포스트_등록함(List<PostRequest> request) {

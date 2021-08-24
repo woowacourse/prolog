@@ -1,4 +1,4 @@
-package wooteco.prolog.post.application.dto;
+package wooteco.prolog.post.domain.repository;
 
 import org.springframework.data.jpa.domain.Specification;
 import wooteco.prolog.post.domain.Post;
@@ -17,7 +17,17 @@ public class PostSpecification {
         };
     }
 
-    public static Specification<Post> equalTagIn(List<Long> values) {
+    public static Specification<Post> findByLevelIn(List<Long> values) {
+        return (root, query, builder) -> {
+            if (values == null || values.isEmpty()) {
+                return builder.and();
+            }
+
+            return root.join("mission", JoinType.LEFT).join("level", JoinType.LEFT).get("id").in(values);
+        };
+    }
+
+    public static Specification<Post> findByTagIn(List<Long> values) {
         return (root, query, builder) -> {
             if (values == null || values.isEmpty()) {
                 return builder.and();
@@ -27,7 +37,7 @@ public class PostSpecification {
         };
     }
 
-    public static Specification<Post> equalMemberIn(List<String> usernames) {
+    public static Specification<Post> findByUsernameIn(List<String> usernames) {
         return (root, query, builder) -> {
             if (usernames == null || usernames.isEmpty()) {
                 return builder.and();

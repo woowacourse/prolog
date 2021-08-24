@@ -36,14 +36,16 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         // level init
-        LevelResponse level1 = levelService.create(new LevelRequest("레벨1"));
-        LevelResponse level2 = levelService.create(new LevelRequest("레벨2"));
+        LevelResponse level1 = levelService.create(new LevelRequest("백엔드Java 레벨1 - 2021"));
+        LevelResponse level2 = levelService.create(new LevelRequest("프론트엔드JS 레벨1 - 2021"));
+        LevelResponse level3 = levelService.create(new LevelRequest("백엔드Java 레벨2 - 2021"));
+        LevelResponse level4 = levelService.create(new LevelRequest("프론트엔드JS 레벨2 - 2021"));
 
         // mission init
-        MissionResponse mission1 = missionService.create(new MissionRequest("3기-프론트엔드-레벨1-자동차경주"));
-        MissionResponse mission2 = missionService.create(new MissionRequest("3기-백엔드-레벨1-로또"));
-        MissionResponse mission3 = missionService.create(new MissionRequest("3기-프론트엔드-레벨2-장바구니"));
-        MissionResponse mission4 = missionService.create(new MissionRequest("3기-백엔드-레벨2-지하철"));
+        MissionResponse mission1 = missionService.create(new MissionRequest("자동차경주", level1.getId()));
+        MissionResponse mission2 = missionService.create(new MissionRequest("로또", level2.getId()));
+        MissionResponse mission3 = missionService.create(new MissionRequest("장바구니", level3.getId()));
+        MissionResponse mission4 = missionService.create(new MissionRequest("지하철", level4.getId()));
 
         // filter init
         List<TagRequest> tagRequests = Arrays.asList(
@@ -60,20 +62,20 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
 
         // post init
         postService.insertPosts(member, Arrays.asList(
-                new PostRequest("ATDD란 무엇인가", "노션 정리 링크\n개인적으로 친구들에게 한 설명이 참 잘 썼다고 생각한다 호호", level1.getId(), mission1.getId(), tagRequests),
-                new PostRequest("프론트엔드 빌드 툴", "snowpack 사용하기 https://hjuu.tistory.com/6", level1.getId(), mission2.getId(), tagRequests),
-                new PostRequest("페이지네이션 데이터 1", "좋은 내용", level1.getId(), mission1.getId(), tagRequests),
-                new PostRequest("페이지네이션 데이터 2", "좋은 내용", level1.getId(), mission2.getId(), tagRequests),
-                new PostRequest("페이지네이션 데이터 3", "좋은 내용", level2.getId(), mission3.getId(), tagRequests),
-                new PostRequest("페이지네이션 데이터 4", "좋은 내용", level2.getId(), mission4.getId(), tagRequests),
-                new PostRequest("페이지네이션 데이터 5", "좋은 내용", level1.getId(), mission1.getId(), tagRequests),
-                new PostRequest("페이지네이션 데이터 6", "좋은 내용", level1.getId(), mission2.getId(), tagRequests),
-                new PostRequest("페이지네이션 데이터 7", "좋은 내용", level2.getId(), mission3.getId(), tagRequests),
-                new PostRequest("페이지네이션 데이터 8", "좋은 내용", level2.getId(), mission4.getId(), tagRequests),
-                new PostRequest("페이지네이션 데이터 9", "좋은 내용", level1.getId(), mission1.getId(), tagRequests),
-                new PostRequest("페이지네이션 데이터 10", "좋은 내용", level1.getId(), mission2.getId(), tagRequests),
-                new PostRequest("페이지네이션 데이터 11", "좋은 내용", level2.getId(), mission3.getId(), tagRequests),
-                new PostRequest("페이지네이션 데이터 12", "좋은 내용", level2.getId(), mission4.getId(), tagRequests)
+                new PostRequest("ATDD란 무엇인가", "노션 정리 링크\n개인적으로 친구들에게 한 설명이 참 잘 썼다고 생각한다 호호", mission1.getId(), tagRequests),
+                new PostRequest("프론트엔드 빌드 툴", "snowpack 사용하기 https://hjuu.tistory.com/6", mission2.getId(), tagRequests),
+                new PostRequest("페이지네이션 데이터 1", "좋은 내용", mission1.getId(), tagRequests),
+                new PostRequest("페이지네이션 데이터 2", "좋은 내용", mission2.getId(), tagRequests),
+                new PostRequest("페이지네이션 데이터 3", "좋은 내용", mission3.getId(), tagRequests),
+                new PostRequest("페이지네이션 데이터 4", "좋은 내용", mission4.getId(), tagRequests),
+                new PostRequest("페이지네이션 데이터 5", "좋은 내용", mission1.getId(), tagRequests),
+                new PostRequest("페이지네이션 데이터 6", "좋은 내용", mission2.getId(), tagRequests),
+                new PostRequest("페이지네이션 데이터 7", "좋은 내용", mission3.getId(), tagRequests),
+                new PostRequest("페이지네이션 데이터 8", "좋은 내용", mission4.getId(), tagRequests),
+                new PostRequest("페이지네이션 데이터 9", "좋은 내용", mission1.getId(), tagRequests),
+                new PostRequest("페이지네이션 데이터 10", "좋은 내용", mission2.getId(), tagRequests),
+                new PostRequest("페이지네이션 데이터 11", "좋은 내용", mission3.getId(), tagRequests),
+                new PostRequest("페이지네이션 데이터 12", "좋은 내용", mission4.getId(), tagRequests)
         ));
     }
 }

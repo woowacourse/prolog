@@ -92,21 +92,21 @@ class PostServiceTest {
         this.level1 = new Level(levelResponse1.getId(), levelResponse1.getName());
         this.level2 = new Level(levelResponse2.getId(), levelResponse2.getName());
 
-        MissionResponse missionResponse1 = missionService.create(new MissionRequest("자동차 미션"));
-        MissionResponse missionResponse2 = missionService.create(new MissionRequest("수동차 미션"));
+        MissionResponse missionResponse1 = missionService.create(new MissionRequest("자동차 미션", level1.getId()));
+        MissionResponse missionResponse2 = missionService.create(new MissionRequest("수동차 미션", level2.getId()));
 
-        this.mission1 = new Mission(missionResponse1.getId(), missionResponse1.getName());
-        this.mission2 = new Mission(missionResponse2.getId(), missionResponse2.getName());
+        this.mission1 = new Mission(missionResponse1.getId(), missionResponse1.getName(), level1);
+        this.mission2 = new Mission(missionResponse2.getId(), missionResponse2.getName(), level1);
 
         this.member1 = memberService
                 .findOrCreateMember(new GithubProfileResponse("이름1", "별명1", "1", "image"));
         this.member2 = memberService
                 .findOrCreateMember(new GithubProfileResponse("이름2", "별명2", "2", "image"));
 
-        this.post1 = new Post(member1, POST1_TITLE, "피케이와 포모의 포스트", level1, mission1, asList(tag1, tag2));
-        this.post2 = new Post(member1, POST2_TITLE, "피케이와 포모의 포스트 2", level1, mission1, asList(tag2, tag3));
-        this.post3 = new Post(member2, POST3_TITLE, "피케이 포스트", level2, mission2, asList(tag3, tag4, tag5));
-        this.post4 = new Post(member2, POST4_TITLE, "포모의 포스트", level2, mission2, asList());
+        this.post1 = new Post(member1, POST1_TITLE, "피케이와 포모의 포스트", mission1, asList(tag1, tag2));
+        this.post2 = new Post(member1, POST2_TITLE, "피케이와 포모의 포스트 2", mission1, asList(tag2, tag3));
+        this.post3 = new Post(member2, POST3_TITLE, "피케이 포스트", mission2, asList(tag3, tag4, tag5));
+        this.post4 = new Post(member2, POST4_TITLE, "포모의 포스트", mission2, asList());
     }
 
     @DisplayName("포스트 여러개 삽입")
@@ -226,7 +226,7 @@ class PostServiceTest {
         //given
         List<PostResponse> postResponses = insertPosts(member1, post1);
         PostResponse targetPost = postResponses.get(0);
-        PostRequest updatePostRequest = new PostRequest("updateTitle", "updateContent", 1L, 2L,
+        PostRequest updatePostRequest = new PostRequest("updateTitle", "updateContent", 2L,
                 toTagRequests(tags));
 
         //when
@@ -279,7 +279,6 @@ class PostServiceTest {
                         new PostRequest(
                                 post.getTitle(),
                                 post.getContent(),
-                                post.getLevel().getId(),
                                 post.getMission().getId(),
                                 toTagRequests(post)
                         )

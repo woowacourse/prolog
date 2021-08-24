@@ -14,7 +14,6 @@ public class PostRequest {
 
     private String title;
     private String content;
-    private Long levelId;
     private Long missionId;
     private List<TagRequest> tags;
 }

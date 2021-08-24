@@ -1,14 +1,12 @@
 package wooteco.prolog.mission.domain;
 
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wooteco.prolog.level.domain.Level;
 import wooteco.prolog.mission.exception.TooLongMissionNameException;
 
 @Getter
@@ -25,14 +23,23 @@ public class Mission {
     @Column(nullable = false, length = MAX_LENGTH)
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "level_id")
+    private Level level;
+
     public Mission(String name) {
-        this(null, name);
+        this(null, name, null);
     }
 
-    public Mission(Long id, String name) {
+    public Mission(String name, Level level) {
+        this(null, name, level);
+    }
+
+    public Mission(Long id, String name, Level level) {
         this.id = id;
         validateMaxLength(name);
         this.name = name;
+        this.level = level;
     }
 
     private void validateMaxLength(String name) {

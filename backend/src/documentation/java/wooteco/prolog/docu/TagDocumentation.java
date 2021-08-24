@@ -29,10 +29,10 @@ public class TagDocumentation extends Documentation {
         String title = "SPA";
         String content = "SPA 방식으로 앱을 구현하였음.\n" + "router 를 구현 하여 이용함.\n";
         Long levelId = 레벨_등록함(new LevelRequest("레벨1"));
-        Long missionId = 미션_등록함(new MissionRequest("레벨1 - 지하철 노선도 미션"));
+        Long missionId = 미션_등록함(new MissionRequest("레벨1 - 지하철 노선도 미션", levelId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("자바"), new TagRequest("파이썬"));
 
-        PostRequest postRequest = new PostRequest(title, content, levelId, missionId, tags);
+        PostRequest postRequest = new PostRequest(title, content, missionId, tags);
         List<PostRequest> params = Arrays.asList(postRequest);
 
         RestAssured.given()

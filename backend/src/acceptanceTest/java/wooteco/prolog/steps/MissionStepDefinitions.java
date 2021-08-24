@@ -34,7 +34,7 @@ public class MissionStepDefinitions extends AcceptanceSteps {
 
     @When("{string} 미션 등록을 하(면/고)")
     public void 미션등록을하면(String mission) {
-        context.invokeHttpPost("/missions", new MissionRequest(mission));
+        context.invokeHttpPost("/missions", new MissionRequest(mission, 1L));
     }
 
     @Then("미션이 등록된다")

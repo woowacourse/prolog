@@ -6,15 +6,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.level.application.LevelService;
-import wooteco.prolog.level.domain.Level;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.domain.Mission;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
-import wooteco.prolog.post.application.dto.PostSpecification;
+import wooteco.prolog.post.domain.repository.PostSpecification;
 import wooteco.prolog.post.application.dto.PostsResponse;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.post.domain.repository.PostRepository;
@@ -35,7 +33,6 @@ public class PostService {
     private final MissionService missionService;
     private final MemberService memberService;
     private final TagService tagService;
-    private LevelService levelService;
 
     public PostsResponse findPostsWithFilter(
             List<Long> levelIds,
@@ -44,10 +41,11 @@ public class PostService {
             List<String> usernames,
             Pageable pageable) {
 
-        Specification<Post> specs = PostSpecification.equalIn("level", levelIds)
+        Specification<Post> specs =
+                PostSpecification.findByLevelIn(levelIds)
                 .and(PostSpecification.equalIn("mission", missionIds))
-                .and(PostSpecification.equalTagIn(tagIds))
-                .and(PostSpecification.equalMemberIn(usernames))
+                .and(PostSpecification.findByTagIn(tagIds))
+                .and(PostSpecification.findByUsernameIn(usernames))
                 .and(PostSpecification.distinct(true));
 
         Page<Post> posts = postRepository.findAll(specs, pageable);
@@ -74,12 +72,10 @@ public class PostService {
     private PostResponse insertPost(Member member, PostRequest postRequest) {
         Tags tags = tagService.findOrCreate(postRequest.getTags());
         Mission mission = missionService.findById(postRequest.getMissionId());
-        Level level = levelService.findById(postRequest.getLevelId());
 
         Post requestedPost = new Post(member,
                 postRequest.getTitle(),
                 postRequest.getContent(),
-                level,
                 mission,
                 tags.getList());
 
@@ -101,10 +97,9 @@ public class PostService {
                 .orElseThrow(PostNotFoundException::new);
         post.validateAuthor(member);
 
-        Level level = levelService.findById(postRequest.getLevelId());
         Mission mission = missionService.findById(postRequest.getMissionId());
         Tags tags = tagService.findOrCreate(postRequest.getTags());
-        post.update(postRequest.getTitle(), postRequest.getContent(), level, mission, tags);
+        post.update(postRequest.getTitle(), postRequest.getContent(), mission, tags);
     }
 
     @Transactional
