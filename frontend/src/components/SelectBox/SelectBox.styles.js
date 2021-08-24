@@ -2,84 +2,77 @@ import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
 
 const Label = styled.label`
-  display: inline-block;
   position: relative;
-  width: 100%;
+  display: inline-block;
+  width: ${({ width }) => width ?? `${width}`};
 
   &::after {
     content: '';
     display: inline-block;
     position: absolute;
-    right: 2.6rem;
-    top: 40%;
+    right: 2rem;
+    top: 45%;
 
-    border-radius: 2px;
     border: solid 0.8rem transparent;
     border-top-color: ${COLOR.BLACK_600};
+    border-radius: 0.125rem;
+    cursor: pointer;
   }
 `;
 
 const Select = styled.select`
-  display: block;
-  padding: 1.2rem 2rem;
+  padding: 1rem 2rem;
   width: 100%;
-  min-height: 3rem;
+
   font-size: 1.6rem;
+  line-height: 1.5;
   font-family: inherit;
 
   background-color: ${COLOR.WHITE};
-  outline: none;
   border: 2px solid ${COLOR.DARK_BLUE_800};
-  border-radius: 1.6rem;
+  border-radius: 1rem;
+  outline: none;
   cursor: pointer;
+
   appearance: none;
 `;
 
 const SelectItems = styled.ul`
   position: absolute;
+  top: 0;
   width: 100%;
-  max-height: 42rem;
+  max-height: ${({ maxHeight }) => maxHeight ?? `${maxHeight}`};
   overflow-y: auto;
-  top: 0%;
-  list-style: none;
-  margin: 0;
-  z-index: 1;
-  color: ${COLOR.DARK_BLUE_800};
 
-  background-color: ${COLOR.DARK_GRAY_200};
-  border-radius: 1.6rem;
+  list-style: none;
+  z-index: 7;
+
+  color: ${COLOR.DARK_BLUE_800};
+  background-color: ${COLOR.LIGHT_GRAY_200};
   border: 2px solid ${COLOR.DARK_BLUE_800};
+  border-radius: 1rem;
 
   & {
     ::-webkit-scrollbar {
-      width: 0;
+      width: 1rem;
     }
 
     ::-webkit-scrollbar-track {
       margin: 1rem 0;
-      border-radius: 10px;
+      border-radius: 1rem;
     }
 
     ::-webkit-scrollbar-thumb {
       background-color: ${COLOR.DARK_BLUE_800};
-      border-radius: 10px;
+      border-radius: 1rem;
     }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background-color: ${COLOR.DARK_BLUE_800};
-    }
-  }
-
-  &:hover::-webkit-scrollbar {
-    width: 1rem;
   }
 `;
 
 const SelectItem = styled.li`
   display: flex;
   align-items: center;
-  padding: 1.2rem 2rem;
-  min-height: 3rem;
+  padding: 1rem 2rem;
   font-size: 1.6rem;
   cursor: pointer;
   background-color: ${COLOR.WHITE};
@@ -89,13 +82,13 @@ const SelectItem = styled.li`
   }
 
   &:first-of-type:hover {
-    border-top-right-radius: 1.6rem;
-    border-top-left-radius: 1.6rem;
+    border-top-right-radius: 1rem;
+    border-top-left-radius: 1rem;
   }
 
   &:last-child:hover {
-    border-bottom-right-radius: 1.6rem;
-    border-bottom-left-radius: 1.6rem;
+    border-bottom-right-radius: 1rem;
+    border-bottom-left-radius: 1rem;
   }
 
   ${({ isSelected }) =>
@@ -103,11 +96,11 @@ const SelectItem = styled.li`
     `background-color: ${COLOR.LIGHT_BLUE_200};
     
     &:first-of-type {
-      border-top-left-radius: 22px;
+      border-top-left-radius: 1rem;
     }
 
     &:last-child {
-      border-bottom-left-radius: 22px;
+      border-bottom-left-radius: 1rem;
     }`}
 `;
 

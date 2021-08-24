@@ -1,27 +1,6 @@
 [[tag]]
 == 태그
 
-=== 태그 작성 성공
-
-==== Request
-
-include::{snippets}/tag/create/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/tag/create/http-response.adoc[]
-
-=== 태그 작성 실패
-
-==== Request
-
-include::{snippets}/tag/create/fail/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/tag/create/fail/http-response.adoc[]
-
-
 === 태그 목록 조회
 
 ==== Request

@@ -3,6 +3,7 @@ package wooteco.prolog.tag.dto;
 import wooteco.prolog.tag.domain.Tag;
 
 public class TagResponse {
+
     private Long id;
     private String name;
 
