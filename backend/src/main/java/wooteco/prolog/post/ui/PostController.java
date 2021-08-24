@@ -46,9 +46,10 @@ public class PostController {
         @RequestParam(required = false) List<Long> levels,
         @RequestParam(required = false) List<Long> missions,
         @RequestParam(required = false) List<Long> tags,
+        @RequestParam(required = false) List<String> usernames,
         @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable
     ) {
-        PostsResponse postsResponse = postService.findPostsWithFilter(levels, missions, tags, pageable);
+        PostsResponse postsResponse = postService.findPostsWithFilter(levels, missions, tags, usernames, pageable);
         return ResponseEntity.ok(postsResponse);
     }
 

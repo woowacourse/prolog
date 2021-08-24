@@ -139,13 +139,13 @@ class PostServiceTest {
     @DisplayName("필터 검색")
     @ParameterizedTest
     @MethodSource
-    void findWithFilter(List<Long> levelIds, List<Long> missionIds, List<Long> tagIds, List<String> expectedPostTitles) {
+    void findWithFilter(List<Long> levelIds, List<Long> missionIds, List<Long> tagIds, List<String> usernames, List<String> expectedPostTitles) {
         //given
         insertPosts(member1, post1, post2);
         insertPosts(member2, post3, post4);
 
         PostsResponse postResponsesWithFilter =
-                postService.findPostsWithFilter(levelIds, missionIds, tagIds, PageRequest.of(0, 10));
+                postService.findPostsWithFilter(levelIds, missionIds, tagIds, usernames, PageRequest.of(0, 10));
 
         List<String> titles = postResponsesWithFilter.getData().stream()
                 .map(PostResponse::getTitle)
@@ -158,16 +158,16 @@ class PostServiceTest {
 
     private static Stream<Arguments> findWithFilter() {
         return Stream.of(
-                Arguments.of(emptyList(), emptyList(), asList(tag1.getId(), tag2.getId(), tag3.getId()), asList(POST1_TITLE, POST2_TITLE, POST3_TITLE)),
-                Arguments.of(emptyList(), emptyList(), singletonList(tag2.getId()), asList(POST1_TITLE, POST2_TITLE)),
-                Arguments.of(emptyList(), emptyList(), singletonList(tag3.getId()), asList(POST2_TITLE, POST3_TITLE)),
-                Arguments.of(emptyList(), singletonList(1L), emptyList(), asList(POST1_TITLE, POST2_TITLE)),
-                Arguments.of(emptyList(), singletonList(2L), emptyList(), asList(POST3_TITLE, POST4_TITLE)),
-                Arguments.of(emptyList(), singletonList(1L), singletonList(tag1.getId()), singletonList(POST1_TITLE)),
-                Arguments.of(singletonList(1L), singletonList(1L), asList(tag1.getId(), tag2.getId(), tag3.getId()), asList(POST1_TITLE, POST2_TITLE)),
-                Arguments.of(emptyList(), singletonList(1L), singletonList(tag2.getId()), asList(POST1_TITLE, POST2_TITLE)),
-                Arguments.of(emptyList(), asList(1L, 2L), singletonList(tag3.getId()), asList(POST2_TITLE, POST3_TITLE)),
-                Arguments.of(emptyList(), emptyList(), emptyList(), asList(POST1_TITLE, POST2_TITLE, POST3_TITLE, POST4_TITLE))
+                Arguments.of(emptyList(), emptyList(), asList(tag1.getId(), tag2.getId(), tag3.getId()), asList(), asList(POST1_TITLE, POST2_TITLE, POST3_TITLE)),
+                Arguments.of(emptyList(), emptyList(), singletonList(tag2.getId()), asList(), asList(POST1_TITLE, POST2_TITLE)),
+                Arguments.of(emptyList(), emptyList(), singletonList(tag3.getId()), asList(), asList(POST2_TITLE, POST3_TITLE)),
+                Arguments.of(emptyList(), singletonList(1L), emptyList(), asList(), asList(POST1_TITLE, POST2_TITLE)),
+                Arguments.of(emptyList(), singletonList(2L), emptyList(), asList(), asList(POST3_TITLE, POST4_TITLE)),
+                Arguments.of(emptyList(), singletonList(1L), singletonList(tag1.getId()), asList(), singletonList(POST1_TITLE)),
+                Arguments.of(singletonList(1L), singletonList(1L), asList(tag1.getId(), tag2.getId(), tag3.getId()), asList(), asList(POST1_TITLE, POST2_TITLE)),
+                Arguments.of(emptyList(), singletonList(1L), singletonList(tag2.getId()), asList(), asList(POST1_TITLE, POST2_TITLE)),
+                Arguments.of(emptyList(), asList(1L, 2L), singletonList(tag3.getId()), asList(), asList(POST2_TITLE, POST3_TITLE)),
+                Arguments.of(emptyList(), emptyList(), emptyList(), asList(), asList(POST1_TITLE, POST2_TITLE, POST3_TITLE, POST4_TITLE))
         );
     }
 

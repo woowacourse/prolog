@@ -136,6 +136,21 @@ class PostRepositoryTest {
         assertThat(posts).containsExactlyInAnyOrder(post1, post2);
     }
 
+    @DisplayName("멤버로 찾기")
+    @Test
+    void findWithMembers() {
+        // given
+        List<String> usernames = asList(member1.getUsername(), member2.getUsername());
+        Specification<Post> specs = PostSpecification.equalMemberIn(usernames)
+                .and(PostSpecification.distinct(true));
+
+        // when
+        Page<Post> posts = postRepository.findAll(specs, PageRequest.of(0, 10));
+
+        //then
+        assertThat(posts).containsExactlyInAnyOrder(post1, post2, post3, post4);
+    }
+
     @DisplayName("레벨, 미션, 태그로 찾기")
     @Test
     void findWithLevelAndMissionAndTag() {

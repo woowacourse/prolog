@@ -7,6 +7,7 @@ import wooteco.prolog.level.application.dto.LevelRequest;
 import wooteco.prolog.level.application.dto.LevelResponse;
 import wooteco.prolog.level.domain.Level;
 import wooteco.prolog.level.domain.repository.LevelRepository;
+import wooteco.prolog.level.exception.DuplicateLevelException;
 import wooteco.prolog.level.exception.LevelNotFoundException;
 import wooteco.prolog.mission.exception.DuplicateMissionException;
 
@@ -31,7 +32,7 @@ public class LevelService {
 
     private void validateName(String name) {
         if (levelRepository.findByName(name).isPresent()) {
-            throw new DuplicateMissionException();
+            throw new DuplicateLevelException();
         }
     }
 

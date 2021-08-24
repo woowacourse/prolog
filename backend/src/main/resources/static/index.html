@@ -514,13 +514,13 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 23 Aug 2021 09:42:41 GMT
+Date: Tue, 24 Aug 2021 04:53:14 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 168
 
 {
-  "accessToken" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzExNzYxLCJleHAiOjE2Mjk3MTUzNjEsInJvbGUiOiJDUkVXIn0.-pmATSK0CxDyRDtlZIj522sVIU0CkkZ6GgT8SO6H2Yo"
+  "accessToken" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzgwNzk0LCJleHAiOjE2Mjk3ODQzOTQsInJvbGUiOiJDUkVXIn0.qfmtFpQHAsEBsRMWieHuc2IXSkkcP9dWn3IvdOqMwQk"
 }</code></pre>
 </div>
 </div>
@@ -533,7 +533,7 @@ Content-Length: 168
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/soulG HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzExNzYwLCJleHAiOjE2Mjk3MTUzNjAsInJvbGUiOiJDUkVXIn0.tu1hbEqJNhD-dFnZ02GJ3fNPRF0DY5qfMiOqyMvlVZc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzgwNzk0LCJleHAiOjE2Mjk3ODQzOTQsInJvbGUiOiJDUkVXIn0.qfmtFpQHAsEBsRMWieHuc2IXSkkcP9dWn3IvdOqMwQk
 Host: localhost:4000</code></pre>
 </div>
 </div>
@@ -548,7 +548,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 23 Aug 2021 09:42:39 GMT
+Date: Tue, 24 Aug 2021 04:53:13 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 153
@@ -571,7 +571,7 @@ Content-Length: 153
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /members/me HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzExNzU4LCJleHAiOjE2Mjk3MTUzNTgsInJvbGUiOiJDUkVXIn0.ISRr_5pTrr2Kwt_1LYKZCCXORXIiy1-suRGbsFYZHmY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzgwNzkxLCJleHAiOjE2Mjk3ODQzOTEsInJvbGUiOiJDUkVXIn0.tSJ8XF2kvRUCZJQ4wlqJgvrvtIVlZSxhheFzFcxDPR8
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
 Content-Length: 104
@@ -591,7 +591,7 @@ Content-Length: 104
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Mon, 23 Aug 2021 09:42:37 GMT
+Date: Tue, 24 Aug 2021 04:53:10 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -610,14 +610,15 @@ Connection: keep-alive</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /posts HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzExNzYzLCJleHAiOjE2Mjk3MTUzNjMsInJvbGUiOiJDUkVXIn0.-npdMwknaTFimKdC7iQTX9tO6NPx-qoV1JEqOG_kCSE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzgwNzk3LCJleHAiOjE2Mjk3ODQzOTcsInJvbGUiOiJDUkVXIn0.LIDrq6LBOve_hVNCC_MHRZ61nckeVi0pzLfZyYqDBc8
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
-Content-Length: 211
+Content-Length: 228
 
 [ {
   "title" : "SPA",
   "content" : "SPA 방식으로 앱을 구현하였음.\nrouter 를 구현 하여 이용함.\n",
+  "levelId" : 1,
   "missionId" : 1,
   "tags" : [ {
     "name" : "spa"
@@ -637,7 +638,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Location: /posts/1
-Date: Mon, 23 Aug 2021 09:42:42 GMT
+Date: Tue, 24 Aug 2021 04:53:16 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -651,7 +652,7 @@ Connection: keep-alive</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzExNzY1LCJleHAiOjE2Mjk3MTUzNjUsInJvbGUiOiJDUkVXIn0.ctuLX8WRzTh9WggBcUE7xPxzw8yjDq-kzosc9T1jcLU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzgwNzk5LCJleHAiOjE2Mjk3ODQzOTksInJvbGUiOiJDUkVXIn0.vwZ0D3J5nIBwmsa3L1Mf778fkUGOt-cFKZFHRdyR3-c
 Accept: application/json
 Host: localhost:4000</code></pre>
 </div>
@@ -667,10 +668,10 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 23 Aug 2021 09:42:45 GMT
+Date: Tue, 24 Aug 2021 04:53:19 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 1264
+Content-Length: 1270
 
 {
   "data" : [ {
@@ -682,8 +683,8 @@ Content-Length: 1264
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2021-08-23T18:42:45.31",
-    "updatedAt" : "2021-08-23T18:42:45.31",
+    "createdAt" : "2021-08-24T13:53:19.449",
+    "updatedAt" : "2021-08-24T13:53:19.449",
     "mission" : {
       "id" : 2,
       "name" : "레벨3 - 프로젝트"
@@ -706,8 +707,8 @@ Content-Length: 1264
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2021-08-23T18:42:45.3",
-    "updatedAt" : "2021-08-23T18:42:45.3",
+    "createdAt" : "2021-08-24T13:53:19.444",
+    "updatedAt" : "2021-08-24T13:53:19.444",
     "mission" : {
       "id" : 1,
       "name" : "레벨1 - 지하철 노선도 미션"
@@ -737,7 +738,7 @@ Content-Length: 1264
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts?missions=1&amp;tags=1&amp;tags=2 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzExNzYxLCJleHAiOjE2Mjk3MTUzNjEsInJvbGUiOiJDUkVXIn0.-pmATSK0CxDyRDtlZIj522sVIU0CkkZ6GgT8SO6H2Yo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzgwNzk1LCJleHAiOjE2Mjk3ODQzOTUsInJvbGUiOiJDUkVXIn0.nzJWuJakzSKki6P8kHTbLu3XdR6EofBqxFETnLlXB7Q
 Accept: application/json
 Host: localhost:4000</code></pre>
 </div>
@@ -753,7 +754,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 23 Aug 2021 09:42:41 GMT
+Date: Tue, 24 Aug 2021 04:53:14 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 704
@@ -768,8 +769,8 @@ Content-Length: 704
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2021-08-23T18:42:41.988",
-    "updatedAt" : "2021-08-23T18:42:41.988",
+    "createdAt" : "2021-08-24T13:53:15.608",
+    "updatedAt" : "2021-08-24T13:53:15.608",
     "mission" : {
       "id" : 1,
       "name" : "레벨1 - 지하철 노선도 미션"
@@ -799,7 +800,7 @@ Content-Length: 704
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzExNzYyLCJleHAiOjE2Mjk3MTUzNjIsInJvbGUiOiJDUkVXIn0.WluRo8UErHvioZh5PcelSgtUq__lFmTFeB7QZ0ygxPE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzgwNzk2LCJleHAiOjE2Mjk3ODQzOTYsInJvbGUiOiJDUkVXIn0.aEg3pe3juwRY4SV7QI6vxlUpZfT61lMy-9iItDd21rM
 Host: localhost:4000</code></pre>
 </div>
 </div>
@@ -814,7 +815,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 23 Aug 2021 09:42:42 GMT
+Date: Tue, 24 Aug 2021 04:53:16 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 581
@@ -828,8 +829,8 @@ Content-Length: 581
     "role" : "CREW",
     "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
   },
-  "createdAt" : "2021-08-23T18:42:42.728",
-  "updatedAt" : "2021-08-23T18:42:42.728",
+  "createdAt" : "2021-08-24T13:53:16.345",
+  "updatedAt" : "2021-08-24T13:53:16.345",
   "mission" : {
     "id" : 1,
     "name" : "레벨1 - 지하철 노선도 미션"
@@ -855,14 +856,15 @@ Content-Length: 581
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /posts/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzExNzY0LCJleHAiOjE2Mjk3MTUzNjQsInJvbGUiOiJDUkVXIn0.zylhRNR7fZwDlDMXdOh5Xv4TotMVlkd1JiHRKikpqx4
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzgwNzk4LCJleHAiOjE2Mjk3ODQzOTgsInJvbGUiOiJDUkVXIn0.XmoZ4IT42mw1nFiA7y0gIMPD5VrIfJ3yzuSKPb4b61c
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
-Content-Length: 155
+Content-Length: 172
 
 {
   "title" : "수정된 제목",
   "content" : "수정된 내용",
+  "levelId" : 2,
   "missionId" : 2,
   "tags" : [ {
     "name" : "spa"
@@ -881,7 +883,7 @@ Content-Length: 155
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Mon, 23 Aug 2021 09:42:43 GMT
+Date: Tue, 24 Aug 2021 04:53:17 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -895,7 +897,7 @@ Connection: keep-alive</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /posts/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzExNzYzLCJleHAiOjE2Mjk3MTUzNjMsInJvbGUiOiJDUkVXIn0.-npdMwknaTFimKdC7iQTX9tO6NPx-qoV1JEqOG_kCSE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5NzgwNzk3LCJleHAiOjE2Mjk3ODQzOTcsInJvbGUiOiJDUkVXIn0.LIDrq6LBOve_hVNCC_MHRZ61nckeVi0pzLfZyYqDBc8
 Accept: application/json
 Host: localhost:4000</code></pre>
 </div>
@@ -909,7 +911,7 @@ Host: localhost:4000</code></pre>
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Mon, 23 Aug 2021 09:42:43 GMT
+Date: Tue, 24 Aug 2021 04:53:17 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -942,7 +944,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 23 Aug 2021 09:42:35 GMT
+Date: Tue, 24 Aug 2021 04:53:08 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 153
@@ -980,7 +982,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 23 Aug 2021 09:42:35 GMT
+Date: Tue, 24 Aug 2021 04:53:09 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 1270
@@ -995,8 +997,8 @@ Content-Length: 1270
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2021-08-23T18:42:36.562",
-    "updatedAt" : "2021-08-23T18:42:36.562",
+    "createdAt" : "2021-08-24T13:53:09.893",
+    "updatedAt" : "2021-08-24T13:53:09.893",
     "mission" : {
       "id" : 2,
       "name" : "레벨3 - 프로젝트"
@@ -1019,8 +1021,8 @@ Content-Length: 1270
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2021-08-23T18:42:36.516",
-    "updatedAt" : "2021-08-23T18:42:36.516",
+    "createdAt" : "2021-08-24T13:53:09.824",
+    "updatedAt" : "2021-08-24T13:53:09.824",
     "mission" : {
       "id" : 1,
       "name" : "레벨1 - 지하철 노선도 미션"
@@ -1075,7 +1077,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 23 Aug 2021 09:42:34 GMT
+Date: Tue, 24 Aug 2021 04:53:08 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 55
@@ -1115,7 +1117,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 23 Aug 2021 09:42:32 GMT
+Date: Tue, 24 Aug 2021 04:53:05 GMT
 Connection: close
 Content-Length: 63
 
@@ -1148,7 +1150,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 23 Aug 2021 09:42:34 GMT
+Date: Tue, 24 Aug 2021 04:53:07 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 93
@@ -1190,7 +1192,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 23 Aug 2021 09:42:37 GMT
+Date: Tue, 24 Aug 2021 04:53:10 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 79
@@ -1233,12 +1235,19 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 23 Aug 2021 09:42:45 GMT
+Date: Tue, 24 Aug 2021 04:53:19 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 167
+Content-Length: 272
 
 {
+  "levels" : [ {
+    "id" : 1,
+    "name" : "레벨1"
+  }, {
+    "id" : 2,
+    "name" : "레벨2"
+  } ],
   "missions" : [ {
     "id" : 1,
     "name" : "지하철 노선도 미션 1"

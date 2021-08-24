@@ -27,6 +27,16 @@ public class PostSpecification {
         };
     }
 
+    public static Specification<Post> equalMemberIn(List<String> usernames) {
+        return (root, query, builder) -> {
+            if (usernames == null || usernames.isEmpty()) {
+                return builder.and();
+            }
+
+            return root.join("member", JoinType.LEFT).get("username").in(usernames);
+        };
+    }
+
     public static Specification<Post> distinct(boolean distinct) {
         return (root, query, builder) -> {
             query.distinct(distinct);

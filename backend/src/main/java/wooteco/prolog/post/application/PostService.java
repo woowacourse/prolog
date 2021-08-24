@@ -41,11 +41,13 @@ public class PostService {
             List<Long> levelIds,
             List<Long> missionIds,
             List<Long> tagIds,
+            List<String> usernames,
             Pageable pageable) {
 
         Specification<Post> specs = PostSpecification.equalIn("level", levelIds)
                 .and(PostSpecification.equalIn("mission", missionIds))
                 .and(PostSpecification.equalTagIn(tagIds))
+                .and(PostSpecification.equalMemberIn(usernames))
                 .and(PostSpecification.distinct(true));
 
         Page<Post> posts = postRepository.findAll(specs, pageable);

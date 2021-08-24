@@ -5,6 +5,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
+import wooteco.prolog.fixtures.LevelAcceptanceFixture;
 import wooteco.prolog.fixtures.MissionAcceptanceFixture;
 import wooteco.prolog.mission.application.dto.MissionRequest;
 import wooteco.prolog.mission.application.dto.MissionResponse;
@@ -14,6 +15,14 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MissionStepDefinitions extends AcceptanceSteps {
+
+    @Given("레벨 여러개를 생성하고")
+    public void 레벨여러개를생성하고() {
+        context.invokeHttpPost("/levels", LevelAcceptanceFixture.level1);
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        context.invokeHttpPost("/levels", LevelAcceptanceFixture.level2);
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
 
     @Given("미션 여러개를 생성하고")
     public void 미션여러개를생성하고() {
