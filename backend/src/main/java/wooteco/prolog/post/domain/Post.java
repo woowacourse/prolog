@@ -35,11 +35,11 @@ public class Post extends BaseEntity {
     private Content content;
 
     @ManyToOne
-    @JoinColumn(name = "mission_id", nullable = false)
+    @JoinColumn(name = "mission_id")
     private Mission mission;
 
     @ManyToOne
-    @JoinColumn(name = "level_id", nullable = false)
+    @JoinColumn(name = "level_id")
     private Level level;
 
     @Embedded
