@@ -1,6 +1,7 @@
 package wooteco.prolog.post.ui;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
