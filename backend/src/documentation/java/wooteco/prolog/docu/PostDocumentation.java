@@ -89,7 +89,7 @@ public class PostDocumentation extends Documentation {
         ExtractableResponse<Response> response = given("post/filter")
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/posts?missions=1&tags=1&tags=2")
+                .when().get("/posts?levels=1&missions=1&tags=1&tags=2&usernames=soulG")
                 .then().log().all().extract();
 
         // given
