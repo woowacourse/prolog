@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import queryString from 'query-string';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
 import { Button, BUTTON_SIZE, FilterList, Pagination } from '../../components';
 import { requestGetFilters, requestGetPosts } from '../../service/requests';
@@ -23,43 +22,27 @@ import {
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
 import useFetch from '../../hooks/useFetch';
+import useFilterWithParams from '../../hooks/useFilterWithParams';
 
-const ProfilePagePosts = (props) => {
-  const paramsPath = props.location.search;
-  const query = queryString.parse(paramsPath);
-
-  const pageParams = {
-    page: query.page ? query.page : 1,
-    size: query.size ? query.size : 10,
-    direction: query.direction ? query.direction : 'desc',
-  };
-
-  const makeFilters = (filters, filterType) => {
-    if (!filters) {
-      return [];
-    }
-    if (filters.length > 1) {
-      return filters.map((id) => ({ filterType: filterType, filterDetailId: Number(id) }));
-    }
-    return [{ filterType: filterType, filterDetailId: Number(filters) }];
-  };
-
-  const levelFilter = makeFilters(query.levels, 'levels');
-  const missionFilter = makeFilters(query.missions, 'missions');
-  const tagFilter = makeFilters(query.tags, 'tags');
-
-  const filterParams = [...levelFilter, ...missionFilter, ...tagFilter];
+const ProfilePagePosts = () => {
+  const {
+    postQueryParams,
+    selectedFilter,
+    setSelectedFilter,
+    selectedFilterDetails,
+    onSetPage,
+    onFilterChange,
+    resetFilter,
+    getFullParams,
+  } = useFilterWithParams();
 
   const history = useHistory();
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const myName = useSelector((state) => state.user.profile.data?.username);
   const { username } = useParams();
 
-  const [hoverdPostId, setHoveredPostId] = useState(0);
+  const [hoveredPostId, setHoveredPostId] = useState(0);
   const [posts, setPosts] = useState([]);
-  const [postQueryParams, setPostQueryParams] = useState(pageParams);
-  const [selectedFilter, setSelectedFilter] = useState('');
-  const [selectedFilterDetails, setSelectedFilterDetails] = useState(filterParams);
 
   const [filters] = useFetch([], requestGetFilters);
 
@@ -75,7 +58,7 @@ const ProfilePagePosts = (props) => {
     history.push(`${PATH.POST}/${id}/edit`);
   };
 
-  const getUserPosts = async () => {
+  const getUserPosts = useCallback(async () => {
     try {
       const response = await requestGetPosts(
         [...selectedFilterDetails, { filterType: 'usernames', filterDetailId: username }],
@@ -90,19 +73,13 @@ const ProfilePagePosts = (props) => {
 
       setPosts(posts);
 
-      const pageParams = queryString.stringify(postQueryParams);
-      const filterParams = selectedFilterDetails
-        .map((filter) => {
-          return filter.filterType + '=' + filter.filterDetailId;
-        })
-        .join('&');
-      const params = pageParams + (filterParams ? '&' + filterParams : '');
+      const params = getFullParams();
 
-      history.push('/' + username + '/posts' + '?' + params);
+      history.push(`${PATH.ROOT}${username}/posts?${params}`);
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [getFullParams, history, postQueryParams, selectedFilterDetails, username]);
 
   const onDeletePost = async (event, id) => {
     event.stopPropagation();
@@ -119,22 +96,9 @@ const ProfilePagePosts = (props) => {
     getUserPosts();
   };
 
-  const onSetPage = (page) => {
-    setPostQueryParams({ ...postQueryParams, page });
-  };
-
-  const onFilterChange = (value) => {
-    setPostQueryParams({ ...postQueryParams, page: 1 });
-    setSelectedFilterDetails(value);
-  };
-
-  const resetFilter = () => {
-    setSelectedFilterDetails([]);
-  };
-
   useEffect(() => {
     getUserPosts();
-  }, [username, selectedFilterDetails, postQueryParams]);
+  }, [getUserPosts]);
 
   return (
     <Container>
@@ -176,7 +140,7 @@ const ProfilePagePosts = (props) => {
                       </Tags>
                     </Description>
                   </Content>
-                  {hoverdPostId === id && myName === username && (
+                  {hoveredPostId === id && myName === username && (
                     <ButtonList>
                       <Button
                         size={BUTTON_SIZE.X_SMALL}
