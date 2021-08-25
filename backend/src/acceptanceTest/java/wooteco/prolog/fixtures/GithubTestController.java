@@ -13,7 +13,7 @@ public class GithubTestController {
 
     @PostMapping("/github/login/oauth/access_token")
     public ResponseEntity<GithubAccessTokenResponse> accessToken(
-        @RequestBody GithubAccessTokenRequest tokenRequest) {
+            @RequestBody GithubAccessTokenRequest tokenRequest) {
         String accessToken = GithubResponses.findByCode(tokenRequest.getCode()).getAccessToken();
         GithubAccessTokenResponse response = new GithubAccessTokenResponse(accessToken, "", "", "");
         return ResponseEntity.ok(response);
@@ -21,11 +21,11 @@ public class GithubTestController {
 
     @GetMapping("/github/user")
     public ResponseEntity<GithubProfileResponse> user(
-        @RequestHeader("Authorization") String authorization) {
+            @RequestHeader("Authorization") String authorization) {
         String accessToken = authorization.split(" ")[1];
         GithubResponses githubResponse = GithubResponses.findByToken(accessToken);
         GithubProfileResponse response = new GithubProfileResponse(githubResponse.getName(),
-            githubResponse.getLogin(), githubResponse.getId(), githubResponse.getAvatarUrl());
+                githubResponse.getLogin(), githubResponse.getId(), githubResponse.getAvatarUrl());
         return ResponseEntity.ok(response);
     }
 }

@@ -24,12 +24,12 @@ public class AuthMemberPrincipalTestArgumentResolver implements AuthMemberPrinci
         String header = webRequest.getHeader("Authorization");
         if (header.contains("Bearer")) {
             return new Member(
-                1L,
-                GithubResponses.소롱.getLogin(),
-                GithubResponses.소롱.getName(),
-                Role.CREW,
-                Long.parseLong(GithubResponses.소롱.getId()),
-                GithubResponses.소롱.getAvatarUrl()
+                    1L,
+                    GithubResponses.소롱.getLogin(),
+                    GithubResponses.소롱.getName(),
+                    Role.CREW,
+                    Long.parseLong(GithubResponses.소롱.getId()),
+                    GithubResponses.소롱.getAvatarUrl()
             );
         }
         return new Member(1L, "githubUserName", "nickname", Role.CREW, 1L, "https://avatars.githubusercontent.com/u/52682603?v=4");

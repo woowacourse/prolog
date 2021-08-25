@@ -6,26 +6,24 @@ import io.cucumber.java.en.When;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.PostAcceptanceFixture;
-import wooteco.prolog.post.application.dto.PostRequest;
-import wooteco.prolog.post.application.dto.PostResponse;
-import wooteco.prolog.post.application.dto.PostsResponse;
+import wooteco.prolog.studylog.application.dto.PostRequest;
+import wooteco.prolog.studylog.application.dto.PostResponse;
+import wooteco.prolog.studylog.application.dto.PostsResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static wooteco.prolog.fixtures.PostAcceptanceFixture.POST1;
-import static wooteco.prolog.fixtures.PostAcceptanceFixture.POST2;
-import static wooteco.prolog.fixtures.PostAcceptanceFixture.POST3;
+import static wooteco.prolog.fixtures.PostAcceptanceFixture.*;
 
 public class PostStepDefinitions extends AcceptanceSteps {
 
     @Given("포스트 여러개를 작성하고")
     public void 포스트여러개를작성하고() {
         List<PostRequest> postRequests = Arrays.asList(
-            POST1.getPostRequest(),
-            POST2.getPostRequest()
+                POST1.getPostRequest(),
+                POST2.getPostRequest()
         );
 
         context.invokeHttpPostWithToken("/posts", postRequests);
@@ -34,7 +32,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
     @When("포스트를 작성하면")
     public void 포스트를작성하면() {
         List<PostRequest> postRequests = Arrays.asList(
-            POST1.getPostRequest()
+                POST1.getPostRequest()
         );
 
         context.invokeHttpPostWithToken("/posts", postRequests);
@@ -62,7 +60,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
         List<PostRequest> postRequests = new ArrayList<>();
 
         List<PostRequest> requests = PostAcceptanceFixture.findByMissionNumber(
-            (long) missionNumber);
+                (long) missionNumber);
 
         if (requests.isEmpty()) {
             throw new RuntimeException("해당 미션의 포스트는 없습니다.");
@@ -80,7 +78,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
         List<PostRequest> postRequests = new ArrayList<>();
 
         List<PostRequest> requests = PostAcceptanceFixture.findByTagNumber(
-            (long) tagNumber);
+                (long) tagNumber);
 
         if (requests.isEmpty()) {
             throw new RuntimeException("해당 미션의 포스트는 없습니다.");

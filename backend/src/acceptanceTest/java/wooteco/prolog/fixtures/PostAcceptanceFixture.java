@@ -1,7 +1,7 @@
 package wooteco.prolog.fixtures;
 
-import wooteco.prolog.post.application.dto.PostRequest;
-import wooteco.prolog.tag.dto.TagRequest;
+import wooteco.prolog.studylog.application.dto.PostRequest;
+import wooteco.prolog.studylog.application.dto.TagRequest;
 
 import java.util.Arrays;
 import java.util.List;
