@@ -105,6 +105,12 @@ const DeleteButtonStyle = css`
   }
 `;
 
+const FilterListWrapper = styled.div`
+  width: 100%;
+  height: inherit;
+  flex: 1;
+`;
+
 export {
   Container,
   HeaderContainer,
@@ -119,4 +125,5 @@ export {
   NoPost,
   EditButtonStyle,
   DeleteButtonStyle,
+  FilterListWrapper,
 };

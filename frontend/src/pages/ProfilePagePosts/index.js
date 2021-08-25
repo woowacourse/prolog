@@ -17,10 +17,10 @@ import {
   PostListContainer,
   Tags,
   Title,
+  FilterListWrapper,
 } from './styles';
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
-import { FilterListWrapper } from '../MainPage/styles';
 import useFetch from '../../hooks/useFetch';
 
 const initialPostQueryParams = {
