@@ -1,22 +1,18 @@
 package wooteco.prolog.mission.application.dto;
 
 import lombok.Getter;
-import wooteco.prolog.mission.domain.Mission;
 
 @Getter
 public class MissionRequest {
 
     private String name;
+    private Long levelId;
 
     public MissionRequest() {
-
     }
 
-    public MissionRequest(String name) {
+    public MissionRequest(String name, Long levelId) {
         this.name = name;
-    }
-
-    public Mission toEntity() {
-        return new Mission(this.name);
+        this.levelId = levelId;
     }
 }

@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
 import wooteco.prolog.GithubResponses;
+import wooteco.prolog.level.application.dto.LevelRequest;
+import wooteco.prolog.level.application.dto.LevelResponse;
 import wooteco.prolog.mission.application.dto.MissionRequest;
 import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
@@ -38,7 +40,8 @@ public class ProfileDocumentation extends Documentation {
     private PostRequest createPostRequest1() {
         String title = "SPA";
         String content = "SPA 방식으로 앱을 구현하였음.\n" + "router 를 구현 하여 이용함.\n";
-        Long missionId = 미션_등록함(new MissionRequest("레벨1 - 지하철 노선도 미션"));
+        Long levelId = 레벨_등록함(new LevelRequest("레벨1"));
+        Long missionId = 미션_등록함(new MissionRequest("레벨1 - 지하철 노선도 미션", levelId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("spa"), new TagRequest("router"));
 
         return new PostRequest(title, content, missionId, tags);
@@ -47,7 +50,8 @@ public class ProfileDocumentation extends Documentation {
     private PostRequest createPostRequest2() {
         String title = "JAVA";
         String content = "Spring Data JPA를 학습함.";
-        Long missionId = 미션_등록함(new MissionRequest("레벨3 - 프로젝트"));
+        Long levelId = 레벨_등록함(new LevelRequest("레벨3"));
+        Long missionId = 미션_등록함(new MissionRequest("레벨3 - 프로젝트", levelId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("java"), new TagRequest("jpa"));
 
         return new PostRequest(title, content, missionId, tags);
@@ -73,6 +77,20 @@ public class ProfileDocumentation extends Documentation {
                 .log().all()
                 .extract()
                 .as(MissionResponse.class)
+                .getId();
+    }
+
+    private Long 레벨_등록함(LevelRequest request) {
+        return RestAssured
+                .given().log().all()
+                .body(request)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .post("/levels")
+                .then()
+                .log().all()
+                .extract()
+                .as(LevelResponse.class)
                 .getId();
     }
 }

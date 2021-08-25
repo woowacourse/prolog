@@ -6,6 +6,23 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+`;
+
+const HeaderContainer = styled.div`
+  height: 4.8rem;
+  display: flex;
+  margin-bottom: 3.7rem;
+  justify-content: space-between;
+
+  & > *:not(:first-child) {
+    margin-left: 2rem;
+  }
+`;
+
+const PostListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   background-color: ${COLOR.WHITE};
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
   border-radius: 1.6rem;
@@ -22,8 +39,9 @@ const PostItem = styled.div`
   &:not(:last-child) {
     border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
 
-  &:hover {
-    background-color: ${COLOR.LIGHT_GRAY_50};
+    &:hover {
+      background-color: ${COLOR.LIGHT_GRAY_50};
+    }
   }
 `;
 
@@ -87,8 +105,16 @@ const DeleteButtonStyle = css`
   }
 `;
 
+const FilterListWrapper = styled.div`
+  width: 100%;
+  height: inherit;
+  flex: 1;
+`;
+
 export {
   Container,
+  HeaderContainer,
+  PostListContainer,
   Content,
   Description,
   Mission,
@@ -99,4 +125,5 @@ export {
   NoPost,
   EditButtonStyle,
   DeleteButtonStyle,
+  FilterListWrapper,
 };

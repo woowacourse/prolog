@@ -1,12 +1,13 @@
 package wooteco.prolog;
 
-import java.util.Arrays;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
+import wooteco.prolog.level.application.LevelService;
+import wooteco.prolog.level.application.dto.LevelRequest;
+import wooteco.prolog.level.application.dto.LevelResponse;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
@@ -18,11 +19,15 @@ import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.tag.application.TagService;
 import wooteco.prolog.tag.dto.TagRequest;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Profile("local")
 @AllArgsConstructor
 @Configuration
 public class DataLoaderApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
 
+    private LevelService levelService;
     private MissionService missionService;
     private TagService tagService;
     private MemberService memberService;
@@ -30,18 +35,24 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        // level init
+        LevelResponse level1 = levelService.create(new LevelRequest("백엔드Java 레벨1 - 2021"));
+        LevelResponse level2 = levelService.create(new LevelRequest("프론트엔드JS 레벨1 - 2021"));
+        LevelResponse level3 = levelService.create(new LevelRequest("백엔드Java 레벨2 - 2021"));
+        LevelResponse level4 = levelService.create(new LevelRequest("프론트엔드JS 레벨2 - 2021"));
+
         // mission init
-        MissionResponse mission1 = missionService.create(new MissionRequest("3기-프론트엔드-레벨1-자동차경주"));
-        MissionResponse mission2 = missionService.create(new MissionRequest("3기-백엔드-레벨1-로또"));
-        MissionResponse mission3 = missionService.create(new MissionRequest("3기-프론트엔드-레벨2-장바구니"));
-        MissionResponse mission4 = missionService.create(new MissionRequest("3기-백엔드-레벨2-지하철"));
+        MissionResponse mission1 = missionService.create(new MissionRequest("자동차경주", level1.getId()));
+        MissionResponse mission2 = missionService.create(new MissionRequest("로또", level2.getId()));
+        MissionResponse mission3 = missionService.create(new MissionRequest("장바구니", level3.getId()));
+        MissionResponse mission4 = missionService.create(new MissionRequest("지하철", level4.getId()));
 
         // filter init
         List<TagRequest> tagRequests = Arrays.asList(
-            new TagRequest("자바"),
-            new TagRequest("자바스크립트"),
-            new TagRequest("스프링"),
-            new TagRequest("리액트")
+                new TagRequest("자바"),
+                new TagRequest("자바스크립트"),
+                new TagRequest("스프링"),
+                new TagRequest("리액트")
         );
         tagService.findOrCreate(tagRequests);
 
