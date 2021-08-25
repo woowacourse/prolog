@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import queryString from 'query-string';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
 import { Button, BUTTON_SIZE, FilterList, Pagination } from '../../components';
 import { requestGetFilters, requestGetPosts } from '../../service/requests';
@@ -23,13 +24,32 @@ import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
 import useFetch from '../../hooks/useFetch';
 
-const initialPostQueryParams = {
-  page: 1,
-  size: 10,
-  direction: 'desc',
-};
+const ProfilePagePosts = (props) => {
+  const paramsPath = props.location.search;
+  const query = queryString.parse(paramsPath);
 
-const ProfilePagePosts = () => {
+  const pageParams = {
+    page: query.page ? query.page : 1,
+    size: query.size ? query.size : 10,
+    direction: query.direction ? query.direction : 'desc',
+  };
+
+  const makeFilters = (filters, filterType) => {
+    if (!filters) {
+      return [];
+    }
+    if (filters.length > 1) {
+      return filters.map((id) => ({ filterType: filterType, filterDetailId: Number(id) }));
+    }
+    return [{ filterType: filterType, filterDetailId: Number(filters) }];
+  };
+
+  const levelFilter = makeFilters(query.levels, 'levels');
+  const missionFilter = makeFilters(query.missions, 'missions');
+  const tagFilter = makeFilters(query.tags, 'tags');
+
+  const filterParams = [...levelFilter, ...missionFilter, ...tagFilter];
+
   const history = useHistory();
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const myName = useSelector((state) => state.user.profile.data?.username);
@@ -37,9 +57,9 @@ const ProfilePagePosts = () => {
 
   const [hoverdPostId, setHoveredPostId] = useState(0);
   const [posts, setPosts] = useState([]);
-  const [postQueryParams, setPostQueryParams] = useState(initialPostQueryParams);
+  const [postQueryParams, setPostQueryParams] = useState(pageParams);
   const [selectedFilter, setSelectedFilter] = useState('');
-  const [selectedFilterDetails, setSelectedFilterDetails] = useState([]);
+  const [selectedFilterDetails, setSelectedFilterDetails] = useState(filterParams);
 
   const [filters] = useFetch([], requestGetFilters);
 
@@ -69,6 +89,16 @@ const ProfilePagePosts = () => {
       const posts = await response.json();
 
       setPosts(posts);
+
+      const pageParams = queryString.stringify(postQueryParams);
+      const filterParams = selectedFilterDetails
+        .map((filter) => {
+          return filter.filterType + '=' + filter.filterDetailId;
+        })
+        .join('&');
+      const params = pageParams + (filterParams ? '&' + filterParams : '');
+
+      history.push('/' + username + '/posts' + '?' + params);
     } catch (error) {
       console.error(error);
     }

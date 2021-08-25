@@ -45,9 +45,9 @@ const App = () => {
             <Route
               exact
               path={`${PATH.PROFILE_POSTS}`}
-              render={() => (
+              render={(props) => (
                 <ProfilePage menu={PROFILE_PAGE_MENU.POSTS}>
-                  <ProfilePagePosts />
+                  <ProfilePagePosts {...props} />
                 </ProfilePage>
               )}
             />
