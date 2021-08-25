@@ -125,7 +125,7 @@ public class TagServiceTest {
 
         //when
         final List<MemberTagResponse> memberTagResponses =
-                tagService.findByMember(MemberFixture.나봄.memberName());
+                tagService.findByMember(MemberFixture.나봄.getMemberName());
 
         //then
         assertThat(memberTagResponses)

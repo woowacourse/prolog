@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.posttag.domain.PostTag;
+import wooteco.prolog.posttag.domain.PostTags;
 import wooteco.prolog.posttag.domain.repository.PostTagRepository;
 import wooteco.prolog.tag.domain.Tag;
 
@@ -24,7 +25,9 @@ public class PostTagService {
         return postTagRepository.findByTagIn(tags);
     }
 
-    public List<PostTag> findByMember(Member member) {
-        return postTagRepository.findByMember(member.getId());
+    public PostTags findByMember(Member member) {
+        final PostTags postTags = new PostTags();
+        postTags.add(postTagRepository.findByMember(member.getId()));
+        return postTags;
     }
 }

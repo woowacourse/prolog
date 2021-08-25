@@ -1,8 +1,6 @@
 package wooteco.prolog.tag.application;
 
 import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
@@ -64,12 +62,6 @@ public class TagService {
 
     public List<MemberTagResponse> findByMember(String memberName) {
         final Member member = memberService.findByUsername(memberName);
-        final List<PostTag> postTags = postTagService.findByMember(member);
-        return postTags.stream()
-                .collect(groupingBy(PostTag::getTag, counting()))
-                .entrySet()
-                .stream()
-                .map(entry -> MemberTagResponse.of(entry.getKey(), Math.toIntExact(entry.getValue())))
-                .collect(toList());
+        return MemberTagResponse.asListFrom(postTagService.findByMember(member));
     }
 }

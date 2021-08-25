@@ -25,7 +25,7 @@ public enum MemberFixture {
         return new Member(name, nickname, role, githubId, imageUrl);
     }
 
-    public String memberName() {
+    public String getMemberName() {
         return this.name;
     }
 }

@@ -6,6 +6,7 @@ import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -29,10 +30,12 @@ import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionRequest;
 import wooteco.prolog.mission.application.dto.MissionResponse;
 import wooteco.prolog.mission.domain.Mission;
+import wooteco.prolog.post.application.dto.CalendarPostResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.application.dto.PostsResponse;
 import wooteco.prolog.post.domain.Post;
+import wooteco.prolog.post.util.PostUtilCRUD;
 import wooteco.prolog.tag.domain.Tag;
 import wooteco.prolog.tag.dto.TagRequest;
 import wooteco.prolog.tag.dto.TagResponse;
@@ -62,6 +65,8 @@ class PostServiceTest {
     private MissionService missionService;
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private PostUtilCRUD postUtilCRUD;
 
     private Member member1;
     private Member member2;
@@ -263,6 +268,22 @@ class PostServiceTest {
             .collect(toList());
 
         assertThat(expectedIds).containsExactlyElementsOf(postIds);
+    }
+
+    @Test
+    @DisplayName("test")
+    public void test() throws Exception{
+        //given
+        insertPosts(member1, post1, post2, post3);
+
+        //when
+        final List<CalendarPostResponse> calendarPosts =
+                postService.findCalendarPosts(member1.getUsername(), LocalDate.now());
+
+        //then
+        assertThat(calendarPosts)
+                .extracting(CalendarPostResponse::getTitle)
+                .containsExactlyInAnyOrder(post1.getTitle(), post2.getTitle(), post3.getTitle());
     }
 
     private List<PostResponse> insertPosts(Member member, List<Post> posts) {

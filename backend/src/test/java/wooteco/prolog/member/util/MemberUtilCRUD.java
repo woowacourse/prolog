@@ -14,7 +14,7 @@ public class MemberUtilCRUD {
 
     @Transactional
     public Member 등록(MemberFixture memberFixture) {
-        return memberRepository.findByUsername(memberFixture.memberName())
+        return memberRepository.findByUsername(memberFixture.getMemberName())
                 .orElseGet(() -> memberRepository.save(memberFixture.asDomain()));
     }
 }

@@ -5,11 +5,14 @@ import static org.assertj.core.api.Assertions.tuple;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.time.MonthDay;
+import java.time.Year;
 import java.util.List;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.GithubResponses;
+import wooteco.prolog.fixtures.PostAcceptanceFixture;
 import wooteco.prolog.fixtures.TagAcceptanceFixture;
-import wooteco.prolog.member.ui.StudyLogOverviewController.MemberPostResponse;
+import wooteco.prolog.post.application.dto.CalendarPostResponse;
 import wooteco.prolog.tag.dto.MemberTagResponse;
 
 public class StudyLogOverviewStepDefinitions extends AcceptanceSteps {
@@ -42,18 +45,26 @@ public class StudyLogOverviewStepDefinitions extends AcceptanceSteps {
     @When("{string}의 {int}년 {int}월 포스트 목록을 조회하면")
     public void 나의포스트목록을조회하면(String name, int year, int month) {
         final String memberName = GithubResponses.findByName(name).getLogin();
-        String path = "members/" + memberName + "/calendar-posts?year="+year+"&month=" + month;
+        String path = String.format("members/%s/calendar-posts?year=%d&month=%d", memberName, year, month);
         context.invokeHttpGet(path);
+    }
+
+    @When("{string}의 이번 달 포스트 목록을 조회하면")
+    public void 이번달포스트목록을조회하면(String name) {
+        나의포스트목록을조회하면(name, Year.now().getValue(), MonthDay.now().getMonth().getValue());
     }
 
     @Then("해당 유저의 포스트 목록이 조회된다")
     public void 나의포스트목록이조회된다() {
-        final List<MemberPostResponse> data = context.response.then().extract()
+        final List<CalendarPostResponse> data = context.response.then().extract()
                 .body()
                 .jsonPath()
-                .getList("data", MemberPostResponse.class);
+                .getList("data", CalendarPostResponse.class);
 
-        //TODO: api 완료 후 Fixture 를 이용해 더 디테일한 검증 테스트 필요
-        assertThat(data).isNotNull();
+        assertThat(data).extracting(CalendarPostResponse::getTitle)
+                .containsExactlyInAnyOrder(
+                        PostAcceptanceFixture.POST1.getPostRequest().getTitle(),
+                        PostAcceptanceFixture.POST2.getPostRequest().getTitle()
+                );
     }
 }
