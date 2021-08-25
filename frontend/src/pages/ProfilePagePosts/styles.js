@@ -6,6 +6,23 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+`;
+
+const HeaderContainer = styled.div`
+  height: 4.8rem;
+  display: flex;
+  margin-bottom: 3.7rem;
+  justify-content: space-between;
+
+  & > *:not(:first-child) {
+    margin-left: 2rem;
+  }
+`;
+
+const PostListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   background-color: ${COLOR.WHITE};
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
   border-radius: 1.6rem;
@@ -89,6 +106,8 @@ const DeleteButtonStyle = css`
 
 export {
   Container,
+  HeaderContainer,
+  PostListContainer,
   Content,
   Description,
   Mission,
