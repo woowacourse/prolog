@@ -1,17 +1,12 @@
 package wooteco.prolog.member.domain;
 
-import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
+
+import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -42,12 +37,11 @@ public class Member {
     }
 
     public Member(Long id,
-        String username,
-        String nickname,
-        Role role,
-        Long githubId,
-        String imageUrl)
-    {
+                  String username,
+                  String nickname,
+                  Role role,
+                  Long githubId,
+                  String imageUrl) {
         this.id = id;
         this.username = username;
         this.nickname = ifAbsentReplace(nickname, username);

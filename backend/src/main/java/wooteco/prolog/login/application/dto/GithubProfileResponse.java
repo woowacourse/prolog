@@ -37,11 +37,11 @@ public class GithubProfileResponse {
 
     public Member toMember() {
         return new Member(
-            getLoginName(),
-            getNickname(),
-            Role.CREW,
-            getGithubId(),
-            getImageUrl()
+                getLoginName(),
+                getNickname(),
+                Role.CREW,
+                getGithubId(),
+                getImageUrl()
         );
     }
 }

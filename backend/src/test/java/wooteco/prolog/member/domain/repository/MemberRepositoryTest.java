@@ -1,9 +1,5 @@
 package wooteco.prolog.member.domain.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +7,15 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @DataJpaTest
 class MemberRepositoryTest {
 
     private static final Member 웨지 = new Member("sihyung92", "웨지", Role.CREW, 2222L,
-        "https://avatars.githubusercontent.com/u/51393021?v=4");
+            "https://avatars.githubusercontent.com/u/51393021?v=4");
 
     @Autowired
     private MemberRepository memberRepository;
@@ -30,8 +30,8 @@ class MemberRepositoryTest {
         // then
         assertThat(savedMember.getId()).isNotNull();
         assertThat(savedMember).usingRecursiveComparison()
-            .ignoringFields("id", "createdAt", "updatedAt")
-            .isEqualTo(웨지);
+                .ignoringFields("id", "createdAt", "updatedAt")
+                .isEqualTo(웨지);
     }
 
     @DisplayName("githubId로 Member 검색 - 성공")
@@ -46,7 +46,7 @@ class MemberRepositoryTest {
         // then
         assertThat(foundMember).isPresent();
         assertThat(foundMember.get()).usingRecursiveComparison()
-            .isEqualTo(member);
+                .isEqualTo(member);
     }
 
     @DisplayName("githubId로 Member 검색 - 실패")
@@ -71,7 +71,7 @@ class MemberRepositoryTest {
         // then
         assertThat(foundMember).isPresent();
         assertThat(foundMember.get()).usingRecursiveComparison()
-            .isEqualTo(member);
+                .isEqualTo(member);
     }
 
     @DisplayName("username으로 Member 검색 - 실패")
