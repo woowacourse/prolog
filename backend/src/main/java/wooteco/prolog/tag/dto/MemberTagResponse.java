@@ -24,7 +24,7 @@ public class MemberTagResponse {
     }
 
     public static List<MemberTagResponse> asListFrom(PostTags postTags) {
-        return postTags.groupingWithcounting()
+        return postTags.groupingWithCounting()
                 .entrySet()
                 .stream()
                 .map(entry -> MemberTagResponse.of(entry.getKey(), Math.toIntExact(entry.getValue())))

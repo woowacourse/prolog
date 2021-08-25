@@ -36,7 +36,7 @@ public class PostTags {
         values.addAll(postTags);
     }
 
-    public Map<Tag, Long> groupingWithcounting() {
+    public Map<Tag, Long> groupingWithCounting() {
         return values.stream()
                 .collect(groupingBy(PostTag::getTag, Collectors.counting()));
     }
