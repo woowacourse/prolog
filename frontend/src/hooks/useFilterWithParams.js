@@ -37,10 +37,9 @@ const useFilterWithParams = () => {
   const getFullParams = useCallback(() => {
     const pageParams = queryString.stringify(postQueryParams);
     const filterParams = selectedFilterDetails
-      .map((filter) => {
-        return `${filter.filterType}=${filter.filterDetailId}`;
-      })
+      .map((filter) => `${filter.filterType}=${filter.filterDetailId}`)
       .join('&');
+
     return `${pageParams}${filterParams ? `&${filterParams}` : ''}`;
   }, [postQueryParams, selectedFilterDetails]);
 
@@ -59,11 +58,7 @@ const useFilterWithParams = () => {
 const makeFilters = (filters, filterType) => {
   if (!filters || !filterType) return [];
 
-  if (filters.length > 1) {
-    return filters.map((id) => ({ filterType, filterDetailId: Number(id) }));
-  }
-
-  return [{ filterType, filterDetailId: Number(filters) }];
+  return [...filters].map((id) => ({ filterType, filterDetailId: Number(id) }));
 };
 
 export default useFilterWithParams;
