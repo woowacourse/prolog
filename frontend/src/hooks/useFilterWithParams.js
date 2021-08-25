@@ -57,13 +57,13 @@ const useFilterWithParams = () => {
 };
 
 const makeFilters = (filters, filterType) => {
-  if (!filters) return [];
+  if (!filters || !filterType) return [];
 
   if (filters.length > 1) {
-    return filters.map((id) => ({ filterType: filterType, filterDetailId: Number(id) }));
+    return filters.map((id) => ({ filterType, filterDetailId: Number(id) }));
   }
 
-  return [{ filterType: filterType, filterDetailId: Number(filters) }];
+  return [{ filterType, filterDetailId: Number(filters) }];
 };
 
 export default useFilterWithParams;
