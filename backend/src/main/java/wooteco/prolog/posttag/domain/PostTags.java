@@ -1,13 +1,17 @@
 package wooteco.prolog.posttag.domain;
 
+import static java.util.stream.Collectors.groupingBy;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import lombok.Getter;
+import wooteco.prolog.tag.domain.Tag;
 
 @Getter
 @Embeddable
@@ -30,5 +34,10 @@ public class PostTags {
     public void update(List<PostTag> postTags) {
         values.clear();
         values.addAll(postTags);
+    }
+
+    public Map<Tag, Long> groupingWithCounting() {
+        return values.stream()
+                .collect(groupingBy(PostTag::getTag, Collectors.counting()));
     }
 }

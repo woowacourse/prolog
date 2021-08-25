@@ -1,8 +1,14 @@
 package wooteco.prolog.post.application;
 
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+import static java.util.stream.Collectors.toList;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +18,7 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.domain.Mission;
+import wooteco.prolog.post.application.dto.CalendarPostResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.application.dto.PostsResponse;
@@ -88,7 +95,7 @@ public class PostService {
 
         return postRequests.stream()
             .map(postRequest -> insertPost(member, postRequest))
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     private PostResponse insertPost(Member member, PostRequest postRequest) {
@@ -131,5 +138,16 @@ public class PostService {
         post.validateAuthor(member);
 
         postRepository.delete(post);
+    }
+
+    public List<CalendarPostResponse> findCalendarPosts(String username, LocalDate localDate) {
+        final Member member = memberService.findByUsername(username);
+        final LocalDateTime start = localDate.with(firstDayOfMonth()).atStartOfDay();
+        final LocalDateTime end = localDate.with(lastDayOfMonth()).atTime(LocalTime.MAX);
+
+        return postRepository.findByMemberBetween(member, start, end)
+                .stream()
+                .map(CalendarPostResponse::of)
+                .collect(toList());
     }
 }

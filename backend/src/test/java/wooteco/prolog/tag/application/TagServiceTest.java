@@ -2,6 +2,7 @@ package wooteco.prolog.tag.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.tuple;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import wooteco.prolog.member.util.MemberFixture;
+import wooteco.prolog.post.util.PostFixture;
+import wooteco.prolog.post.util.PostUtilCRUD;
+import wooteco.prolog.posttag.domain.repository.PostTagRepository;
+import wooteco.prolog.tag.dto.MemberTagResponse;
 import wooteco.prolog.tag.dto.TagRequest;
 import wooteco.prolog.tag.dto.TagResponse;
 import wooteco.prolog.tag.exception.DuplicateTagException;
@@ -33,6 +39,10 @@ public class TagServiceTest {
 
     @Autowired
     private TagService tagService;
+    @Autowired
+    private PostUtilCRUD postUtilCRUD;
+    @Autowired
+    private PostTagRepository postTagRepository;
 
     @DisplayName("태그 생성 메서드 테스트")
     @Test
@@ -99,5 +109,35 @@ public class TagServiceTest {
         return expectedResults.stream()
             .map(TagResponse::getName)
             .collect(Collectors.toList());
+    }
+
+    @Test
+    @DisplayName("멤버가 등록된 태그와 등록된 학습로그 수 확인")
+    public void findTagByMember() throws Exception{
+        //given
+        String tag1 = "자동차";
+        String tag2 = "랜덤";
+        String tag3 = "객체지향";
+        String tag4 = "전략패턴";
+
+        postUtilCRUD.등록(PostFixture.자동차_미션_정리, MemberFixture.나봄, tag1, tag3, tag4);
+        postUtilCRUD.등록(PostFixture.로또_미션_정리, MemberFixture.나봄, tag2, tag3, tag4);
+
+        //when
+        final List<MemberTagResponse> memberTagResponses =
+                tagService.findByMember(MemberFixture.나봄.getMemberName());
+
+        //then
+        assertThat(memberTagResponses)
+                .extracting(
+                        MemberTagResponse::getCount,
+                        memberTagResponse -> memberTagResponse.getTagResponse().getName()
+                )
+                .containsExactlyInAnyOrder(
+                        tuple(1, tag1),
+                        tuple(1, tag2),
+                        tuple(2, tag3),
+                        tuple(2, tag4)
+                );
     }
 }
