@@ -58,7 +58,7 @@ const ProfilePagePosts = () => {
   const getUserPosts = async () => {
     try {
       const response = await requestGetPosts(
-        [...selectedFilterDetails, { usernames: username }],
+        [...selectedFilterDetails, { filterType: 'usernames', filterDetailId: username }],
         postQueryParams
       );
 
