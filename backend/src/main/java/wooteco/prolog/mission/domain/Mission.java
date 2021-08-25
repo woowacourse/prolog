@@ -1,13 +1,13 @@
 package wooteco.prolog.mission.domain;
 
-import java.util.Objects;
-import javax.persistence.*;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.level.domain.Level;
 import wooteco.prolog.mission.exception.TooLongMissionNameException;
+
+import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,10 +26,6 @@ public class Mission {
     @ManyToOne
     @JoinColumn(name = "level_id")
     private Level level;
-
-    public Mission(String name) {
-        this(null, name, null);
-    }
 
     public Mission(String name, Level level) {
         this(null, name, level);

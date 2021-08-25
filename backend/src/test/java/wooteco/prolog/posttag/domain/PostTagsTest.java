@@ -21,7 +21,7 @@ public class PostTagsTest {
 
     private static final Member 웨지 = new Member("sihyung92", "웨지", Role.CREW, 2222L,
         "https://avatars.githubusercontent.com/u/51393021?v=4");
-    private static final Post 웨지가_쓴_글 = new Post(웨지, "제목", "내용", new Mission("[BE] 글쓰기 미션"), Lists.emptyList());
+    private static final Post 웨지가_쓴_글 = new Post(웨지, "제목", "내용", new Mission("[BE] 글쓰기 미션", new Level("레벨1")), Lists.emptyList());
     private static final Tag 워니_태그 = new Tag("워니");
     private static final PostTag 워니_포스트태그 = new PostTag(1L, 웨지가_쓴_글, 워니_태그);
 

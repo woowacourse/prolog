@@ -53,7 +53,7 @@ class PostTagRepositoryTest {
         // given
         Member member = memberRepository.save(웨지);
         Level level = levelRepository.save(new Level("레벨1"));
-        Mission mission = missionRepository.save(new Mission("미션"));
+        Mission mission = missionRepository.save(new Mission("미션", level));
         Tag tag = tagRepository.save(new Tag("태그"));
         Post post = postRepository.save(new Post(member, "제목", "내용", mission, Lists.emptyList()));
 
@@ -74,7 +74,7 @@ class PostTagRepositoryTest {
         // given
         Member member = memberRepository.save(웨지);
         Level level = levelRepository.save(new Level("레벨1"));
-        Mission mission = missionRepository.save(new Mission("미션"));
+        Mission mission = missionRepository.save(new Mission("미션", level));
         Post post1 = postRepository.save(new Post(member, "제목1", "내용1", mission, Lists.emptyList()));
         Post post2 = postRepository.save(new Post(member, "제목2", "내용2", mission, Lists.emptyList()));
 
