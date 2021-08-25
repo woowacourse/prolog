@@ -39,8 +39,9 @@ const PostItem = styled.div`
   &:not(:last-child) {
     border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
 
-  &:hover {
-    background-color: ${COLOR.LIGHT_GRAY_50};
+    &:hover {
+      background-color: ${COLOR.LIGHT_GRAY_50};
+    }
   }
 `;
 
