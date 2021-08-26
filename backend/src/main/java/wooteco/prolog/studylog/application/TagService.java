@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.studylog.application.dto.TagRequest;
-import wooteco.prolog.studylog.application.dto.TagResponse;
-import wooteco.prolog.studylog.domain.PostTag;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.domain.Tags;
 import wooteco.prolog.studylog.domain.repository.TagRepository;
@@ -37,18 +35,10 @@ public class TagService {
         return existTags.addAll(newTags);
     }
 
-    public List<TagResponse> findTagsIncludedInPost() {
-        return postTagService.findAll().stream()
-                .map(PostTag::getTag)
-                .distinct()
-                .map(TagResponse::of)
-                .collect(toList());
-    }
-
-    public List<TagResponse> findAll() {
+    public List<wooteco.prolog.studylog.application.dto.TagResponse> findAll() {
         return tagRepository.findAll()
                 .stream()
-                .map(TagResponse::of)
+                .map(wooteco.prolog.studylog.application.dto.TagResponse::of)
                 .collect(toList());
     }
 

@@ -137,6 +137,11 @@ class PostServiceTest {
         insertPosts(member1, post1, post2);
         insertPosts(member2, post3, post4);
 
+        System.out.println("크아앙 울부지저따");
+        System.out.println("크아앙 울부지저따");
+        System.out.println("크아앙 울부지저따");
+        System.out.println("크아앙 울부지저따");
+        System.out.println("크아앙 울부지저따");
         PostsResponse postResponsesWithFilter =
                 postService.findPostsWithFilter(levelIds, missionIds, tagIds, usernames, PageRequest.of(0, 10));
 
@@ -170,6 +175,7 @@ class PostServiceTest {
         insertPosts(member1, post1, post2);
         insertPosts(member2, post3, post4);
 
+        System.out.println("asd크아앙 울부지져따fetch = FetchType.LAZYfetch = FetchType.LAZYfetch = FetchType.LAZY");
         PostsResponse postsResponseOfMember1 = postService
                 .findPostsOf(member1.getUsername(), Pageable.unpaged());
         PostsResponse postsResponseOfMember2 = postService
@@ -182,7 +188,7 @@ class PostServiceTest {
                 .map(PostResponse::getTitle)
                 .collect(toList());
 
-        //       assertThat(expectedResultOfMember1).containsExactly(post1.getTitle(), post2.getTitle());
+        assertThat(expectedResultOfMember1).containsExactly(post1.getTitle(), post2.getTitle());
         assertThat(expectedResultOfMember2).containsExactly(post3.getTitle(), post4.getTitle());
     }
 
@@ -232,7 +238,7 @@ class PostServiceTest {
                 .collect(toList());
 
         List<String> expectedTagNames = expectedResult.getTags().stream()
-                .map(TagResponse::getName)
+                .map(wooteco.prolog.studylog.application.dto.TagResponse::getName)
                 .collect(toList());
 
         assertThat(expectedResult.getTitle()).isEqualTo(updatePostRequest.getTitle());

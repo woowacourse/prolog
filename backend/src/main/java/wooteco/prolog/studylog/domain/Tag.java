@@ -5,9 +5,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Objects;
+import org.hibernate.annotations.BatchSize;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@BatchSize(size = 1000)
 public class Tag {
 
     @Id
