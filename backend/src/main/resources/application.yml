@@ -2,7 +2,7 @@ security:
   jwt:
     token:
       secret-key: xpzmzhtmvmfhrmvmfhwprxm
-      expire-length: 3600000
+      expire-length: 604800000
 
 server:
   port: 5000
