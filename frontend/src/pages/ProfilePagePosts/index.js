@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
 import { Button, BUTTON_SIZE, FilterList, Pagination } from '../../components';
@@ -22,24 +22,27 @@ import {
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
 import useFetch from '../../hooks/useFetch';
-
-const initialPostQueryParams = {
-  page: 1,
-  size: 10,
-  direction: 'desc',
-};
+import useFilterWithParams from '../../hooks/useFilterWithParams';
 
 const ProfilePagePosts = () => {
+  const {
+    postQueryParams,
+    selectedFilter,
+    setSelectedFilter,
+    selectedFilterDetails,
+    onSetPage,
+    onFilterChange,
+    resetFilter,
+    getFullParams,
+  } = useFilterWithParams();
+
   const history = useHistory();
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const myName = useSelector((state) => state.user.profile.data?.username);
   const { username } = useParams();
 
-  const [hoverdPostId, setHoveredPostId] = useState(0);
+  const [hoveredPostId, setHoveredPostId] = useState(0);
   const [posts, setPosts] = useState([]);
-  const [postQueryParams, setPostQueryParams] = useState(initialPostQueryParams);
-  const [selectedFilter, setSelectedFilter] = useState('');
-  const [selectedFilterDetails, setSelectedFilterDetails] = useState([]);
 
   const [filters] = useFetch([], requestGetFilters);
 
@@ -55,7 +58,7 @@ const ProfilePagePosts = () => {
     history.push(`${PATH.POST}/${id}/edit`);
   };
 
-  const getUserPosts = async () => {
+  const getUserPosts = useCallback(async () => {
     try {
       const response = await requestGetPosts(
         [...selectedFilterDetails, { filterType: 'usernames', filterDetailId: username }],
@@ -69,10 +72,14 @@ const ProfilePagePosts = () => {
       const posts = await response.json();
 
       setPosts(posts);
+
+      const params = getFullParams();
+
+      history.push(`${PATH.ROOT}${username}/posts?${params}`);
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [getFullParams, history, postQueryParams, selectedFilterDetails, username]);
 
   const onDeletePost = async (event, id) => {
     event.stopPropagation();
@@ -89,22 +96,9 @@ const ProfilePagePosts = () => {
     getUserPosts();
   };
 
-  const onSetPage = (page) => {
-    setPostQueryParams({ ...postQueryParams, page });
-  };
-
-  const onFilterChange = (value) => {
-    setPostQueryParams({ ...postQueryParams, page: 1 });
-    setSelectedFilterDetails(value);
-  };
-
-  const resetFilter = () => {
-    setSelectedFilterDetails([]);
-  };
-
   useEffect(() => {
     getUserPosts();
-  }, [username, selectedFilterDetails, postQueryParams]);
+  }, [getUserPosts]);
 
   return (
     <Container>
@@ -146,7 +140,7 @@ const ProfilePagePosts = () => {
                       </Tags>
                     </Description>
                   </Content>
-                  {hoverdPostId === id && myName === username && (
+                  {hoveredPostId === id && myName === username && (
                     <ButtonList>
                       <Button
                         size={BUTTON_SIZE.X_SMALL}
