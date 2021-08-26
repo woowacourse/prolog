@@ -137,11 +137,6 @@ class PostServiceTest {
         insertPosts(member1, post1, post2);
         insertPosts(member2, post3, post4);
 
-        System.out.println("크아앙 울부지저따");
-        System.out.println("크아앙 울부지저따");
-        System.out.println("크아앙 울부지저따");
-        System.out.println("크아앙 울부지저따");
-        System.out.println("크아앙 울부지저따");
         PostsResponse postResponsesWithFilter =
                 postService.findPostsWithFilter(levelIds, missionIds, tagIds, usernames, PageRequest.of(0, 10));
 
@@ -175,7 +170,6 @@ class PostServiceTest {
         insertPosts(member1, post1, post2);
         insertPosts(member2, post3, post4);
 
-        System.out.println("asd크아앙 울부지져따fetch = FetchType.LAZYfetch = FetchType.LAZYfetch = FetchType.LAZY");
         PostsResponse postsResponseOfMember1 = postService
                 .findPostsOf(member1.getUsername(), Pageable.unpaged());
         PostsResponse postsResponseOfMember2 = postService
@@ -238,7 +232,7 @@ class PostServiceTest {
                 .collect(toList());
 
         List<String> expectedTagNames = expectedResult.getTags().stream()
-                .map(wooteco.prolog.studylog.application.dto.TagResponse::getName)
+                .map(TagResponse::getName)
                 .collect(toList());
 
         assertThat(expectedResult.getTitle()).isEqualTo(updatePostRequest.getTitle());

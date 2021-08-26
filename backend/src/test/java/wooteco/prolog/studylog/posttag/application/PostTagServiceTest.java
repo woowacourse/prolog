@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestConstructor.AutowireMode;
+import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
@@ -92,6 +93,7 @@ class PostTagServiceTest {
 
     @DisplayName("태그를 기반으로 포스트 태그를 조회할 수 있는지 확인")
     @Test
+    @Transactional
     public void findByTags() {
         //given
         List<TagRequest> tagRequests1 = createTagRequests("태그1");
