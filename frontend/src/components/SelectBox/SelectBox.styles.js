@@ -1,6 +1,17 @@
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
 
+const fontSizeStyle = {
+  SMALL: {
+    fontSize: '1.3rem',
+    lineHeight: '1.2',
+  },
+  MEDIUM: {
+    fontSize: '1.6rem',
+    lineHeight: '1.5',
+  },
+};
+
 const Label = styled.label`
   position: relative;
   display: inline-block;
@@ -24,12 +35,11 @@ const Select = styled.select`
   padding: 1rem 2rem;
   width: 100%;
 
-  font-size: 1.6rem;
-  line-height: 1.5;
+  ${({ fontSize }) => fontSizeStyle[fontSize] || fontSizeStyle.MEDIUM};
   font-family: inherit;
 
   background-color: ${COLOR.WHITE};
-  border: 2px solid ${COLOR.DARK_BLUE_800};
+  border: 1.7px solid ${COLOR.DARK_BLUE_800};
   border-radius: 1rem;
   outline: none;
   cursor: pointer;
@@ -49,7 +59,7 @@ const SelectItems = styled.ul`
 
   color: ${COLOR.DARK_BLUE_800};
   background-color: ${COLOR.LIGHT_GRAY_200};
-  border: 2px solid ${COLOR.DARK_BLUE_800};
+  border: 1.7px solid ${COLOR.DARK_BLUE_800};
   border-radius: 1rem;
 
   & {
@@ -73,7 +83,8 @@ const SelectItem = styled.li`
   display: flex;
   align-items: center;
   padding: 1rem 2rem;
-  font-size: 1.6rem;
+  ${({ fontSize }) => fontSizeStyle[fontSize] || fontSizeStyle.MEDIUM};
+
   cursor: pointer;
   background-color: ${COLOR.WHITE};
 
