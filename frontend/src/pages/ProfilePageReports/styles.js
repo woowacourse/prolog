@@ -37,9 +37,11 @@ const Container = styled.section`
     `}
 `;
 
-const AddNewReport = styled(NavLink)`
+const AddNewReportLink = styled(NavLink)`
   width: fit-content;
-  padding: 1rem 3rem;
+  padding: 0.8rem 2rem;
+  font-size: 1.3rem;
+  line-height: 1.2;
   margin: 1rem;
   border-radius: 1rem;
   color: ${COLOR.WHITE};
@@ -50,4 +52,4 @@ const AddNewReport = styled(NavLink)`
   }
 `;
 
-export { Container, AddNewReport };
+export { Container, AddNewReportLink };

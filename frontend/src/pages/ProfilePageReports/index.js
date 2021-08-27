@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { SelectBox } from '../../components';
-import { Container, AddNewReport } from './styles';
+import { Container, AddNewReportLink } from './styles';
 
 const ProfilePageReports = () => {
-  const [reports, setReports] = useState([]);
+  const [reports, setReports] = useState([0]);
   const { username } = useParams();
 
   const user = useSelector((state) => state.user.profile);
@@ -19,7 +19,7 @@ const ProfilePageReports = () => {
           {isOwner && (
             <>
               <p>리포트를 작성해주세요.</p>
-              <AddNewReport to={`/${username}/report/write`}> 새 리포트 등록</AddNewReport>
+              <AddNewReportLink to={`/${username}/report/write`}> 새 리포트 등록</AddNewReportLink>
             </>
           )}
         </>
@@ -33,8 +33,11 @@ const ProfilePageReports = () => {
             name="reports"
             width="40%"
             maxHeight="10rem"
+            size="SMALL"
           />
-          {isOwner && <AddNewReport to={`/${username}/report/write`}> 새 리포트 등록</AddNewReport>}
+          {isOwner && (
+            <AddNewReportLink to={`/${username}/report/write`}> 새 리포트 등록</AddNewReportLink>
+          )}
         </>
       )}
     </Container>
