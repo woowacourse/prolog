@@ -1,6 +1,7 @@
 package wooteco.prolog.post.ui;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -42,11 +43,13 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<PostsResponse> showAll(
+        @RequestParam(required = false) List<Long> levels,
         @RequestParam(required = false) List<Long> missions,
         @RequestParam(required = false) List<Long> tags,
+        @RequestParam(required = false) List<String> usernames,
         @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable
     ) {
-        PostsResponse postsResponse = postService.findPostsWithFilter(missions, tags, pageable);
+        PostsResponse postsResponse = postService.findPostsWithFilter(levels, missions, tags, usernames, pageable);
         return ResponseEntity.ok(postsResponse);
     }
 

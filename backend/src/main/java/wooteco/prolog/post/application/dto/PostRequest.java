@@ -1,10 +1,11 @@
 package wooteco.prolog.post.application.dto;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.tag.dto.TagRequest;
+
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor

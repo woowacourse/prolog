@@ -1,10 +1,9 @@
-package wooteco.prolog.mission.domain;
+package wooteco.prolog.level.domain;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.level.domain.Level;
-import wooteco.prolog.mission.exception.TooLongMissionNameException;
+import wooteco.prolog.level.exception.TooLongLevelNameException;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -12,7 +11,7 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Mission {
+public class Level {
 
     public static final int MAX_LENGTH = 45;
 
@@ -23,24 +22,19 @@ public class Mission {
     @Column(nullable = false, length = MAX_LENGTH)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "level_id")
-    private Level level;
-
-    public Mission(String name, Level level) {
-        this(null, name, level);
+    public Level(String name) {
+        this(null, name);
     }
 
-    public Mission(Long id, String name, Level level) {
+    public Level(Long id, String name) {
         this.id = id;
         validateMaxLength(name);
         this.name = name;
-        this.level = level;
     }
 
     private void validateMaxLength(String name) {
         if (name.length() > MAX_LENGTH) {
-            throw new TooLongMissionNameException();
+            throw new TooLongLevelNameException();
         }
     }
 
@@ -53,11 +47,11 @@ public class Mission {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Mission)) {
+        if (!(o instanceof Level)) {
             return false;
         }
-        Mission mission = (Mission) o;
-        return Objects.equals(id, mission.id);
+        Level level = (Level) o;
+        return Objects.equals(id, level.id);
     }
 
     @Override

@@ -1,40 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Card, FilterList, ProfileChip, Pagination } from '../../components';
+import React, { useEffect, useState } from 'react';
+import { Button, Card, FilterList, Pagination, ProfileChip } from '../../components';
 import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
 import useFetch from '../../hooks/useFetch';
-import { requestGetPosts, requestGetFilters } from '../../service/requests';
+import { requestGetFilters, requestGetPosts } from '../../service/requests';
 import { useSelector } from 'react-redux';
 import {
-  HeaderContainer,
-  FilterListWrapper,
-  PostListContainer,
+  CardHoverStyle,
   Content,
   Description,
+  FilterListWrapper,
+  HeaderContainer,
   Mission,
-  Title,
-  Tags,
+  PostListContainer,
   ProfileChipLocationStyle,
-  CardHoverStyle,
+  Tags,
+  Title,
 } from './styles';
 import { ERROR_MESSAGE } from '../../constants/message';
-
-const initialPostQueryParams = {
-  page: 1,
-  size: 10,
-  direction: 'desc',
-};
+import useFilterWithParams from '../../hooks/useFilterWithParams';
 
 const MainPage = () => {
+  const {
+    postQueryParams,
+    selectedFilter,
+    setSelectedFilter,
+    selectedFilterDetails,
+    onSetPage,
+    onFilterChange,
+    resetFilter,
+    getFullParams,
+  } = useFilterWithParams();
+
   const history = useHistory();
   const user = useSelector((state) => state.user.profile);
   const isLoggedIn = !!user.data;
 
   const [posts, setPosts] = useState([]);
-  const [postQueryParams, setPostQueryParams] = useState(initialPostQueryParams);
-  const [selectedFilter, setSelectedFilter] = useState('');
-  const [selectedFilterDetails, setSelectedFilterDetails] = useState([]);
 
   const [filters] = useFetch([], requestGetFilters);
 
@@ -42,23 +45,10 @@ const MainPage = () => {
     history.push(`${PATH.POST}/${id}`);
   };
 
-  const resetFilter = () => {
-    setSelectedFilterDetails([]);
-  };
-
   const goProfilePage = (username) => (event) => {
     event.stopPropagation();
 
     history.push(`/${username}`);
-  };
-
-  const onSetPage = (page) => {
-    setPostQueryParams({ ...postQueryParams, page });
-  };
-
-  const onFilterChange = (value) => {
-    setPostQueryParams({ ...postQueryParams, page: 1 });
-    setSelectedFilterDetails(value);
   };
 
   const goNewPost = () => {
@@ -82,13 +72,17 @@ const MainPage = () => {
         const data = await response.json();
 
         setPosts(data);
+
+        const params = getFullParams();
+
+        history.push(`${PATH.ROOT}?${params}`);
       } catch (error) {
         console.error(error);
       }
     };
 
     getData();
-  }, [selectedFilterDetails, postQueryParams]);
+  }, [selectedFilterDetails, postQueryParams, getFullParams, history]);
 
   return (
     <>
