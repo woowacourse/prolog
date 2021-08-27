@@ -1,11 +1,14 @@
 package wooteco.prolog.steps;
 
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.PostAcceptanceFixture;
+import wooteco.prolog.studyLogDocument.domain.StudyLogDocumentRepository;
 import wooteco.prolog.studylog.application.dto.PostRequest;
 import wooteco.prolog.studylog.application.dto.PostResponse;
 import wooteco.prolog.studylog.application.dto.PostsResponse;
@@ -18,6 +21,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static wooteco.prolog.fixtures.PostAcceptanceFixture.*;
 
 public class PostStepDefinitions extends AcceptanceSteps {
+    @Autowired
+    public StudyLogDocumentRepository studyLogDocumentRepository;
+
+    @Before
+    public void clearElasticsearchRepository() {
+
+    }
 
     @Given("포스트 여러개를 작성하고")
     public void 포스트여러개를작성하고() {
@@ -93,6 +103,8 @@ public class PostStepDefinitions extends AcceptanceSteps {
 
     @Given("서로 다른 태그와 미션을 가진 포스트를 다수 생성하고")
     public void 서로다른태그와미션을가진포스트를생성() {
+        studyLogDocumentRepository.deleteAll();
+
         List<PostRequest> postRequests = new ArrayList<>();
 
         for (int i = 0; i < 7; i++) {
@@ -111,6 +123,12 @@ public class PostStepDefinitions extends AcceptanceSteps {
     @When("{int}번 미션과 {int}번 태그로 조회하면")
     public void 미션태그필터조회를한다(int missionNumber, int tagNumber) {
         String path = String.format("/posts?tags=%d&missions=%d", tagNumber, missionNumber);
+        context.invokeHttpGet(path);
+    }
+
+    @When("{string}(을)(를) 검색하면")
+    public void 을검색하면(String searchKeyword) {
+        String path = String.format("/posts?search=%s", searchKeyword);
         context.invokeHttpGet(path);
     }
 

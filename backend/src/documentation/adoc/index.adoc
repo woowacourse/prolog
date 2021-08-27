@@ -1,4 +1,4 @@
-= Subway Application API Document
+= Prolog API Document
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
