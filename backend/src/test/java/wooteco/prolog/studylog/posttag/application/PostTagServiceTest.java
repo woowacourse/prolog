@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestConstructor.AutowireMode;
+import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
@@ -50,30 +51,27 @@ class PostTagServiceTest {
         MissionResponse mission = missionService.create(new MissionRequest("미션 이름", level.getId()));
 
         this.member = memberService
-                .findOrCreateMember(new GithubProfileResponse("이름", "별명", "1", "image"));
+            .findOrCreateMember(new GithubProfileResponse("이름", "별명", "1", "image"));
     }
 
     @DisplayName("포스트 태그가 등록되면 포스트 태그를 찾아올 수 있는지 확인한다.")
     @Test
     public void findAllTest() {
         //given
-        List<TagRequest> tagRequests1 = createTagRequests("태그1", "태그2");
-        List<TagRequest> tagRequests2 = createTagRequests("태그2", "태그3");
+        List<TagRequest> tagRequests1 = createTagRequests("태그1", "태그2", "태그3", "태그5");
+        List<TagRequest> tagRequests2 = createTagRequests("태그2", "태그3", "태그6");
 
         addTagRequestToPost(tagRequests1, tagRequests2);
 
         //when
-        List<PostTag> postTags = postTagService.findAll();
+        List<TagResponse> tags = postTagService.findTagsIncludedInPost();
 
         //then
-        List<String> tagNames = Stream.concat(tagRequests1.stream(), tagRequests2.stream())
-                .map(TagRequest::getName)
-                .collect(toList());
+        List<String> tagNames = Arrays.asList("태그1", "태그2", "태그3", "태그5", "태그6");
 
-        List<String> expectedTagNames = postTags.stream()
-                .map(PostTag::getTag)
-                .map(Tag::getName)
-                .collect(toList());
+        List<String> expectedTagNames = tags.stream()
+            .map(TagResponse::getName)
+            .collect(toList());
 
         assertThat(expectedTagNames).containsExactlyElementsOf(tagNames);
     }
@@ -81,33 +79,34 @@ class PostTagServiceTest {
     @SafeVarargs
     private final List<PostResponse> addTagRequestToPost(List<TagRequest>... tagRequests) {
         List<PostRequest> posts = Arrays.stream(tagRequests)
-                .map(it -> new PostRequest("이름", "별명", 1L, it))
-                .collect(toList());
+            .map(it -> new PostRequest("이름", "별명", 1L, it))
+            .collect(toList());
 
         return postService.insertPosts(member, posts);
     }
 
     private List<TagRequest> createTagRequests(String... tags) {
         return Arrays.stream(tags)
-                .map(TagRequest::new)
-                .collect(toList());
+            .map(TagRequest::new)
+            .collect(toList());
     }
 
     @DisplayName("태그를 기반으로 포스트 태그를 조회할 수 있는지 확인")
     @Test
+    @Transactional
     public void findByTags() {
         //given
         List<TagRequest> tagRequests1 = createTagRequests("태그1");
         List<TagRequest> tagRequests2 = createTagRequests("태그1", "태그2");
         List<TagRequest> tagRequests3 = createTagRequests("태그1", "태그2", "태그3");
         List<PostResponse> postResponses =
-                addTagRequestToPost(tagRequests1, tagRequests2, tagRequests3);
+            addTagRequestToPost(tagRequests1, tagRequests2, tagRequests3);
 
         //when
         List<Tag> insertedTags = postResponses.stream()
-                .flatMap(postResponse -> postResponse.getTags().stream())
-                .map(tagResponse -> new Tag(tagResponse.getId(), tagResponse.getName()))
-                .collect(toList());
+            .flatMap(postResponse -> postResponse.getTags().stream())
+            .map(tagResponse -> new Tag(tagResponse.getId(), tagResponse.getName()))
+            .collect(toList());
 
         List<PostTag> postTags = postTagService.findByTags(insertedTags);
 
@@ -118,9 +117,9 @@ class PostTagServiceTest {
 
     private long countTag(List<PostTag> postTags, String tag) {
         return postTags.stream()
-                .map(PostTag::getTag)
-                .map(Tag::getName)
-                .filter(name -> name.equals(tag))
-                .count();
+            .map(PostTag::getTag)
+            .map(Tag::getName)
+            .filter(name -> name.equals(tag))
+            .count();
     }
 }
