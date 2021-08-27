@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.BaseEntity;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.studyLogDocument.domain.StudyLogDocument;
 import wooteco.prolog.studylog.exception.AuthorNotValidException;
 
 import javax.persistence.Embedded;
@@ -67,6 +68,10 @@ public class Post extends BaseEntity {
                 .collect(Collectors.toList());
     }
 
+    public StudyLogDocument toStudyLogDocument() {
+        return new StudyLogDocument(this.getId(), this.getTitle(), this.getContent());
+    }
+
     public void addTags(Tags tags) {
         postTags.add(convertToPostTags(tags));
     }
@@ -90,6 +95,4 @@ public class Post extends BaseEntity {
     public String getContent() {
         return content.getContent();
     }
-
-
 }
