@@ -1,6 +1,5 @@
 package wooteco.prolog.login.ui;
 
-import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.MethodParameter;
@@ -15,11 +14,13 @@ import wooteco.prolog.login.excetpion.TokenNotValidException;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 
+import javax.servlet.http.HttpServletRequest;
+
 @AllArgsConstructor
 @Profile("!docu")
 @Component
 public class AuthMemberPrincipalArgumentResolverImpl implements
-    AuthMemberPrincipalArgumentResolver {
+        AuthMemberPrincipalArgumentResolver {
 
     private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -31,9 +32,9 @@ public class AuthMemberPrincipalArgumentResolverImpl implements
 
     @Override
     public Member resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-        NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         String credentials = AuthorizationExtractor
-            .extract(webRequest.getNativeRequest(HttpServletRequest.class));
+                .extract(webRequest.getNativeRequest(HttpServletRequest.class));
         try {
             Long id = Long.valueOf(jwtTokenProvider.extractSubject(credentials));
             return memberService.findById(id);

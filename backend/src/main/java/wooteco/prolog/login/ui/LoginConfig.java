@@ -1,13 +1,14 @@
 package wooteco.prolog.login.ui;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
-import wooteco.prolog.login.ui.autoceptor.AutoInterceptorPatternMaker;
+import wooteco.support.autoceptor.AutoInterceptorPatternMaker;
+
+import java.util.List;
 
 @Configuration
 @AllArgsConstructor
@@ -20,10 +21,10 @@ public class LoginConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         AutoInterceptorPatternMaker mapper =
-            new AutoInterceptorPatternMaker(BASE_PACKAGE, AuthMemberPrincipal.class);
+                new AutoInterceptorPatternMaker(BASE_PACKAGE, AuthMemberPrincipal.class);
 
         registry.addInterceptor(loginInterceptor)
-            .addPathPatterns(mapper.extractPatterns());
+                .addPathPatterns(mapper.extractPatterns());
     }
 
     @Override

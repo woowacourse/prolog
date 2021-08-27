@@ -7,12 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
 import wooteco.prolog.GithubResponses;
-import wooteco.prolog.level.application.dto.LevelRequest;
-import wooteco.prolog.level.application.dto.LevelResponse;
-import wooteco.prolog.mission.application.dto.MissionRequest;
-import wooteco.prolog.mission.application.dto.MissionResponse;
-import wooteco.prolog.post.application.dto.PostRequest;
-import wooteco.prolog.tag.dto.TagRequest;
+import wooteco.prolog.studylog.application.dto.*;
 
 import java.util.Arrays;
 import java.util.List;

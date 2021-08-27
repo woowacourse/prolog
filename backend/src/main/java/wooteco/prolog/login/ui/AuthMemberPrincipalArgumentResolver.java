@@ -12,5 +12,5 @@ public interface AuthMemberPrincipalArgumentResolver extends HandlerMethodArgume
     boolean supportsParameter(MethodParameter parameter);
 
     Member resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-        NativeWebRequest webRequest, WebDataBinderFactory binderFactory);
+                           NativeWebRequest webRequest, WebDataBinderFactory binderFactory);
 }

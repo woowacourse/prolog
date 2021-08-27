@@ -2,8 +2,8 @@ package wooteco.prolog.steps;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.AcceptanceSteps;
+import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 
@@ -32,7 +32,7 @@ public class MemberStepDefinitions extends AcceptanceSteps {
     @When("자신의 닉네임을 {string}(로)(으로) 수정하면")
     public void 자신의닉네임을수정하면(String updatedNickname) {
         MemberUpdateRequest updateRequest = new MemberUpdateRequest(
-            updatedNickname, ""
+                updatedNickname, ""
         );
 
         context.invokeHttpPutWithToken("/members/me", updateRequest);

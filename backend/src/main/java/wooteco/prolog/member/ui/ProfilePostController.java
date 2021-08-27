@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
-import wooteco.prolog.post.application.PostService;
-import wooteco.prolog.post.application.dto.PostsResponse;
+import wooteco.prolog.studylog.application.PostService;
+import wooteco.prolog.studylog.application.dto.PostsResponse;
 
 @RestController
 @AllArgsConstructor
@@ -25,7 +25,7 @@ public class ProfilePostController {
 
     @GetMapping(value = "/{username}/posts", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PostsResponse> findAllPostsOfMine(@PathVariable String username,
-        @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
+                                                            @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
         PostsResponse posts = postService.findPostsOf(username, pageable);
         return ResponseEntity.ok().body(posts);
     }
