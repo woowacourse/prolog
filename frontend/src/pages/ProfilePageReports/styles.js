@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { NavLink } from 'react-router-dom';
 import COLOR from '../../constants/color';
 
 const Container = styled.section`
@@ -21,17 +22,32 @@ const Container = styled.section`
         line-height: 1.5;
       }
 
-      button {
+      /* a {
         width: fit-content;
         padding: 1rem 3rem;
         margin: 1rem;
         border-radius: 1rem;
+        color: ${COLOR.WHITE};
+        background-color: ${COLOR.DARK_BLUE_800};
 
         :hover {
           background-color: ${COLOR.DARK_BLUE_900};
         }
-      }
+      } */
     `}
 `;
 
-export { Container };
+const AddNewReport = styled(NavLink)`
+  width: fit-content;
+  padding: 1rem 3rem;
+  margin: 1rem;
+  border-radius: 1rem;
+  color: ${COLOR.WHITE};
+  background-color: ${COLOR.DARK_BLUE_800};
+
+  :hover {
+    background-color: ${COLOR.DARK_BLUE_900};
+  }
+`;
+
+export { Container, AddNewReport };
