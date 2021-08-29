@@ -23,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.level.application.LevelService;
 import wooteco.prolog.level.application.dto.LevelRequest;
 import wooteco.prolog.level.application.dto.LevelResponse;
@@ -227,6 +228,7 @@ class PostServiceTest {
 
     @DisplayName("포스트를 수정한다")
     @Test
+    @Transactional
     void updatePostTest() {
         //given
         List<PostResponse> postResponses = insertPosts(member1, post1);

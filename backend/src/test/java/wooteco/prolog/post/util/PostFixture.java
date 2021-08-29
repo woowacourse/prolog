@@ -72,7 +72,9 @@ public enum PostFixture {
     }
 
     private MissionResponse createMission(String missionName, String levelName) {
-        final LevelResponse levelResponse = levelService.create(new LevelRequest(levelName));
+        final LevelResponse levelResponse = levelService.findAll().stream()
+                .filter(lr -> lr.getName().equals(levelName))
+                .findAny().orElseGet(() -> levelService.create(new LevelRequest(levelName)));
         return missionService.create(new MissionRequest(missionName, levelResponse.getId()));
     }
 }

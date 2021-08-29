@@ -1,9 +1,9 @@
 package wooteco.prolog.tag.dto;
 
-import static java.util.stream.Collectors.toList;
-
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,10 +24,15 @@ public class MemberTagResponse {
     }
 
     public static List<MemberTagResponse> asListFrom(PostTags postTags) {
-        return postTags.groupingWithCounting()
-                .entrySet()
-                .stream()
-                .map(entry -> MemberTagResponse.of(entry.getKey(), Math.toIntExact(entry.getValue())))
-                .collect(toList());
+        List<MemberTagResponse> memberTagResponses = new ArrayList<>();
+        int allCount = 0;
+        for (Entry<Tag, Long> postTagEntry : postTags.groupingWithCounting().entrySet()) {
+            final int count = Math.toIntExact(postTagEntry.getValue());
+            allCount += count;
+            memberTagResponses.add(MemberTagResponse.of(postTagEntry.getKey(), count));
+        }
+        final TagResponse allTagResponse = new TagResponse(0L, "all");
+        memberTagResponses.add(new MemberTagResponse(allTagResponse, allCount));
+        return memberTagResponses;
     }
 }

@@ -1,5 +1,11 @@
 package wooteco.prolog.posttag.application;
 
+import static java.util.stream.Collectors.toList;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestConstructor.AutowireMode;
+import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.level.application.LevelService;
 import wooteco.prolog.level.application.dto.LevelRequest;
 import wooteco.prolog.level.application.dto.LevelResponse;
@@ -23,13 +30,6 @@ import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.posttag.domain.PostTag;
 import wooteco.prolog.tag.domain.Tag;
 import wooteco.prolog.tag.dto.TagRequest;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -60,6 +60,7 @@ class PostTagServiceTest {
 
     @DisplayName("포스트 태그가 등록되면 포스트 태그를 찾아올 수 있는지 확인한다.")
     @Test
+    @Transactional
     public void findAllTest() {
         //given
         List<TagRequest> tagRequests1 = createTagRequests("태그1", "태그2");
@@ -100,6 +101,7 @@ class PostTagServiceTest {
 
     @DisplayName("태그를 기반으로 포스트 태그를 조회할 수 있는지 확인")
     @Test
+    @Transactional
     public void findByTags() {
         //given
         List<TagRequest> tagRequests1 = createTagRequests("태그1");

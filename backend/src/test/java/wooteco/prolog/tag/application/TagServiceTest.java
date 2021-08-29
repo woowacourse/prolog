@@ -137,7 +137,8 @@ public class TagServiceTest {
                         tuple(1, tag1),
                         tuple(1, tag2),
                         tuple(2, tag3),
-                        tuple(2, tag4)
+                        tuple(2, tag4),
+                        tuple(6, "all")
                 );
     }
 }
