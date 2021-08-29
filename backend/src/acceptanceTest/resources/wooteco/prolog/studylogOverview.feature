@@ -2,7 +2,8 @@
 Feature: 스터디로그 오버뷰 기능
 
   Background: 사전 작업
-    Given 미션 여러개를 생성하고
+    Given 레벨 여러개를 생성하고
+    And 미션 여러개를 생성하고
     And "브라운"이 로그인을 하고
 
   Scenario: 해당 유저의 태그 목록 조회하기
