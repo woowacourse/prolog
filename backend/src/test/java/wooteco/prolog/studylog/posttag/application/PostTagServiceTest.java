@@ -9,6 +9,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestConstructor.AutowireMode;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.ServiceTest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
@@ -27,10 +28,7 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@TestConstructor(autowireMode = AutowireMode.ALL)
-class PostTagServiceTest {
+class PostTagServiceTest extends ServiceTest {
 
     @Autowired
     private PostTagService postTagService;
@@ -56,7 +54,7 @@ class PostTagServiceTest {
 
     @DisplayName("포스트 태그가 등록되면 포스트 태그를 찾아올 수 있는지 확인한다.")
     @Test
-    public void findAllTest() {
+    void findAllTest() {
         //given
         List<TagRequest> tagRequests1 = createTagRequests("태그1", "태그2", "태그3", "태그5");
         List<TagRequest> tagRequests2 = createTagRequests("태그2", "태그3", "태그6");
@@ -94,7 +92,7 @@ class PostTagServiceTest {
     @DisplayName("태그를 기반으로 포스트 태그를 조회할 수 있는지 확인")
     @Test
     @Transactional
-    public void findByTags() {
+    void findByTags() {
         //given
         List<TagRequest> tagRequests1 = createTagRequests("태그1");
         List<TagRequest> tagRequests2 = createTagRequests("태그1", "태그2");
