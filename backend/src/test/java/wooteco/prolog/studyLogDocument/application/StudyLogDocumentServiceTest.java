@@ -9,16 +9,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
+import wooteco.prolog.common.ServiceTest;
 import wooteco.prolog.studyLogDocument.domain.StudyLogDocument;
 
-@ActiveProfiles("test")
-@SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class StudyLogDocumentServiceTest {
+class StudyLogDocumentServiceTest extends ServiceTest {
 
     private static String 검색어 = "테스트";
     private static String 띄어쓰기가_포함된_검색어 = "테스트 하자";

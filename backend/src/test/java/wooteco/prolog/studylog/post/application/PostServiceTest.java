@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import wooteco.prolog.common.ServiceTest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
@@ -44,10 +45,7 @@ import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Post;
 import wooteco.prolog.studylog.domain.Tag;
 
-@ActiveProfiles("test")
-@SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class PostServiceTest {
+class PostServiceTest extends ServiceTest {
 
     private static final String POST1_TITLE = "이것은 네번 제목";
     private static final String POST2_TITLE = "이것은 두번째 제목";
