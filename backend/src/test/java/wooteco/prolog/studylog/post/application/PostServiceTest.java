@@ -212,7 +212,7 @@ class PostServiceTest extends ServiceTest {
             .map(PostResponse::getTitle)
             .collect(toList());
 
-        //       assertThat(expectedResultOfMember1).containsExactly(post1.getTitle(), post2.getTitle());
+        assertThat(expectedResultOfMember1).containsExactly(post1.getTitle(), post2.getTitle());
         assertThat(expectedResultOfMember2).containsExactly(post3.getTitle(), post4.getTitle());
     }
 
