@@ -23,8 +23,14 @@ const Container = styled.section`
   border: 1px solid ${COLOR.LIGHT_GRAY_400};
   border-radius: 2rem;
 
-  ${({ css }) => css}
   ${({ size }) => sizeStyle[size] || sizeStyle.SMALL}
+  ${({ css }) => css}
 `;
 
-export { CARD_SIZE, Container };
+const Title = styled.div`
+  font-size: 2.4rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+`;
+
+export { CARD_SIZE, Container, Title };

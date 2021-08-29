@@ -11,33 +11,25 @@ const Container = styled.div`
     grid-column-start: 1;
     grid-column-end: 3;
   }
-  & > *:nth-of-type(1) {
+  & > *:nth-of-type(2) {
     grid-column-start: 1;
     grid-column-end: 2;
     min-height: 28rem;
   }
-  & > *:nth-of-type(2) {
+  & > *:nth-of-type(3) {
     grid-column-start: 2;
     grid-column-end: 3;
     min-height: 28rem;
   }
 `;
 
-const CalendarWrapper = styled.div`
-  margin-bottom: 2.4rem;
-  background-color: ${COLOR.WHITE};
-  border: 1px solid #e6e6e6;
-  border-radius: 1.6rem;
-  padding: 2.4rem;
-`;
-
 const PostItem = styled.div`
   width: 100%;
-  padding: 2.4rem;
+  padding: 2rem;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
-  /* border-top: 1px solid #e6e6e6; */
+  border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
   display: gird;
   grid-template-columns: 8fr 2fr;
 
@@ -46,16 +38,10 @@ const PostItem = styled.div`
   }
 `;
 
-const PostList = styled.div`
-  width: 100%;
-  background-color: ${COLOR.WHITE};
-  border: 1px solid #e6e6e6;
-  border-radius: 1.6rem;
-  padding: 2.4rem 0;
-
-  & > *:not(:last-child) {
-    border-bottom: 1px solid #e6e6e6;
-  }
+const TagTitle = styled.div`
+  font-size: 2.4rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
 `;
 
 const Content = styled.div`
@@ -68,7 +54,7 @@ const Content = styled.div`
   -webkit-box-orient: vertical;
   height: 4.8rem;
   word-break: break-all;
-  margin: 1.4rem 0;
+  margin: 1rem 0;
 `;
 
 const Description = styled.div`
@@ -79,13 +65,11 @@ const Description = styled.div`
 `;
 
 const Mission = styled.div`
-  font-size: 1.6rem;
-  color: ${COLOR.DARK_GRAY_900};
+  color: ${COLOR.LIGHT_GRAY_900};
+  font-size: 1.2rem;
 `;
 
 const Title = styled.h3`
-  font-size: 2.8rem;
-  /* color: ${({ isHovered }) => (isHovered ? '#709EC0' : '#383838')}; */
   font-weight: bold;
 `;
 
@@ -114,9 +98,6 @@ const NoPost = styled.div`
 const EditButtonStyle = css`
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
   background-color: ${COLOR.WHITE};
-  /* color: #709ec0;
-  width: fit-content;
-  height: fit-content; */
   &:hover {
     background-color: ${COLOR.LIGHT_GRAY_300};
   }
@@ -125,18 +106,36 @@ const EditButtonStyle = css`
 const DeleteButtonStyle = css`
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
   background-color: ${COLOR.RED_300};
-  /* width: fit-content;
-  color: #709ec0;
-  height: fit-content; */
 
   &:hover {
     background-color: ${COLOR.RED_400};
   }
 `;
 
+const FilterListWrapper = styled.div`
+  width: 100%;
+  height: inherit;
+  flex: 1;
+`;
+
+const HeaderContainer = styled.div`
+  height: 4.8rem;
+  display: flex;
+  margin-bottom: 3.7rem;
+  justify-content: space-between;
+
+  & > *:not(:first-child) {
+    margin-left: 2rem;
+  }
+`;
+
+const CardStyles = css`
+  padding: 2rem;
+  border-color: ${COLOR.LIGHT_GRAY_200};
+`;
+
 export {
   Container,
-  CalendarWrapper,
   Content,
   Description,
   Mission,
@@ -147,5 +146,8 @@ export {
   NoPost,
   EditButtonStyle,
   DeleteButtonStyle,
-  PostList,
+  TagTitle,
+  FilterListWrapper,
+  HeaderContainer,
+  CardStyles,
 };
