@@ -1,14 +1,8 @@
 package wooteco.prolog.post.application;
 
-import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
-import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
-import static java.util.stream.Collectors.toList;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +12,6 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.domain.Mission;
-import wooteco.prolog.post.application.dto.CalendarPostResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.application.dto.PostsResponse;
@@ -43,48 +36,28 @@ public class PostService {
     private final MemberService memberService;
     private final TagService tagService;
 
-    public PostsResponse findPostsWithFilter(List<Long> missionIds,
-        List<Long> tagIds,
-        Pageable pageable) {
-        Page<Post> posts = findWithFilter(missionIds, tagIds, pageable);
+    public PostsResponse findPostsWithFilter(
+            List<Long> levelIds,
+            List<Long> missionIds,
+            List<Long> tagIds,
+            List<String> usernames,
+            Pageable pageable) {
+
+        Specification<Post> specs =
+                PostSpecification.findByLevelIn(levelIds)
+                .and(PostSpecification.equalIn("mission", missionIds))
+                .and(PostSpecification.findByTagIn(tagIds))
+                .and(PostSpecification.findByUsernameIn(usernames))
+                .and(PostSpecification.distinct(true));
+
+        Page<Post> posts = postRepository.findAll(specs, pageable);
 
         return PostsResponse.of(posts);
-    }
-
-    private Page<Post> findWithFilter(List<Long> missionIds,
-        List<Long> tagIds,
-        Pageable pageable) {
-        if (isNullOrEmpty(missionIds) && isNullOrEmpty(tagIds)) {
-            return postRepository.findAll(pageable);
-        }
-
-        if (!isNullOrEmpty(missionIds) && !isNullOrEmpty(tagIds)) {
-            return postRepository
-                .findDistinctByMissionInAndPostTagsValuesIn(
-                    missionService.findByIds(missionIds),
-                    findPostTagBy(tagIds),
-                    pageable);
-        }
-
-        if (isNullOrEmpty(missionIds)) {
-            return postRepository.findDistinctByPostTagsValuesIn(findPostTagBy(tagIds), pageable);
-        }
-
-        return postRepository.findByMissionIn(missionService.findByIds(missionIds), pageable);
-    }
-
-    private List<PostTag> findPostTagBy(List<Long> tagIds) {
-        List<Tag> tags = tagService.findByIds(tagIds);
-        return postTagService.findByTags(tags);
     }
 
     public PostsResponse findPostsOf(String username, Pageable pageable) {
         Member member = memberService.findByUsername(username);
         return PostsResponse.of(postRepository.findByMember(member, pageable));
-    }
-
-    private boolean isNullOrEmpty(List<Long> ids) {
-        return Objects.isNull(ids) || ids.isEmpty();
     }
 
     @Transactional
@@ -94,8 +67,8 @@ public class PostService {
         }
 
         return postRequests.stream()
-            .map(postRequest -> insertPost(member, postRequest))
-            .collect(toList());
+                .map(postRequest -> insertPost(member, postRequest))
+                .collect(Collectors.toList());
     }
 
     private PostResponse insertPost(Member member, PostRequest postRequest) {
@@ -103,10 +76,10 @@ public class PostService {
         Mission mission = missionService.findById(postRequest.getMissionId());
 
         Post requestedPost = new Post(member,
-            postRequest.getTitle(),
-            postRequest.getContent(),
-            mission,
-            tags.getList());
+                postRequest.getTitle(),
+                postRequest.getContent(),
+                mission,
+                tags.getList());
 
         Post createdPost = postRepository.save(requestedPost);
 
@@ -115,7 +88,7 @@ public class PostService {
 
     public PostResponse findById(Long id) {
         Post post = postRepository.findById(id)
-            .orElseThrow(PostNotFoundException::new);
+                .orElseThrow(PostNotFoundException::new);
 
         return PostResponse.of(post);
     }
@@ -123,7 +96,7 @@ public class PostService {
     @Transactional
     public void updatePost(Member member, Long postId, PostRequest postRequest) {
         Post post = postRepository.findById(postId)
-            .orElseThrow(PostNotFoundException::new);
+                .orElseThrow(PostNotFoundException::new);
         post.validateAuthor(member);
 
         Mission mission = missionService.findById(postRequest.getMissionId());
@@ -134,7 +107,7 @@ public class PostService {
     @Transactional
     public void deletePost(Member member, Long postId) {
         Post post = postRepository.findById(postId)
-            .orElseThrow(PostNotFoundException::new);
+                .orElseThrow(PostNotFoundException::new);
         post.validateAuthor(member);
 
         postRepository.delete(post);

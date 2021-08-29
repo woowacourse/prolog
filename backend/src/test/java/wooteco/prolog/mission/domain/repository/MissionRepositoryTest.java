@@ -1,26 +1,39 @@
 package wooteco.prolog.mission.domain.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import wooteco.prolog.level.domain.Level;
+import wooteco.prolog.level.domain.repository.LevelRepository;
 import wooteco.prolog.mission.domain.Mission;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 class MissionRepositoryTest {
 
     @Autowired
+    LevelRepository levelRepository;
+
+    @Autowired
     MissionRepository missionRepository;
+
+    private Level level;
+
+    @BeforeEach
+    void setUp() {
+        level = levelRepository.save(new Level("레벨1"));
+    }
 
     @DisplayName("Mission 생성")
     @Test
     void createMission() {
         // given
-        Mission mission = new Mission("[BE] 자동차 미션");
+        Mission mission = new Mission("[BE] 자동차 미션", level);
 
         // when
         Mission savedMission = missionRepository.save(mission);
@@ -28,8 +41,8 @@ class MissionRepositoryTest {
         // then
         assertThat(savedMission.getId()).isNotNull();
         assertThat(savedMission).usingRecursiveComparison()
-            .ignoringFields("id", "createdAt", "updatedAt")
-            .isEqualTo(mission);
+                .ignoringFields("id", "createdAt", "updatedAt")
+                .isEqualTo(mission);
     }
 
     @DisplayName("name으로 Mission 검색 - 성공")
@@ -37,7 +50,7 @@ class MissionRepositoryTest {
     void findByName() {
         //given
         String name = "[BE] 자동차 미션";
-        Mission mission = 미션을_생성한다(name);
+        Mission mission = missionRepository.save(new Mission(name, level));
 
         //when
         Optional<Mission> foundMission = missionRepository.findByName(name);
@@ -45,7 +58,7 @@ class MissionRepositoryTest {
         //then
         assertThat(foundMission).isPresent();
         assertThat(foundMission.get()).usingRecursiveComparison()
-            .isEqualTo(mission);
+                .isEqualTo(mission);
     }
 
     @DisplayName("name으로 Mission 검색 - 실패")
@@ -56,9 +69,5 @@ class MissionRepositoryTest {
 
         //then
         assertThat(foundMission).isNotPresent();
-    }
-
-    private Mission 미션을_생성한다(String name) {
-        return missionRepository.save(new Mission(name));
     }
 }
