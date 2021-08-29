@@ -5,7 +5,6 @@ import static wooteco.prolog.fixtures.PostAcceptanceFixture.POST1;
 import static wooteco.prolog.fixtures.PostAcceptanceFixture.POST2;
 import static wooteco.prolog.fixtures.PostAcceptanceFixture.POST3;
 
-import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

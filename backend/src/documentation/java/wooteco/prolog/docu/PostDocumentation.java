@@ -1,19 +1,25 @@
 package wooteco.prolog.docu;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
-import wooteco.prolog.studylog.application.dto.*;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import wooteco.prolog.studylog.application.dto.LevelRequest;
+import wooteco.prolog.studylog.application.dto.LevelResponse;
+import wooteco.prolog.studylog.application.dto.MissionRequest;
+import wooteco.prolog.studylog.application.dto.MissionResponse;
+import wooteco.prolog.studylog.application.dto.PostRequest;
+import wooteco.prolog.studylog.application.dto.PostResponse;
+import wooteco.prolog.studylog.application.dto.PostsResponse;
+import wooteco.prolog.studylog.application.dto.TagRequest;
 
 public class PostDocumentation extends Documentation {
 
@@ -25,11 +31,11 @@ public class PostDocumentation extends Documentation {
 
         // when
         ExtractableResponse<Response> createResponse = given("post/create")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .body(postRequest)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/posts")
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(postRequest)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().post("/posts")
+            .then().log().all().extract();
 
         // then
         assertThat(createResponse.statusCode()).isEqualTo(HttpStatus.CREATED.value());
@@ -43,9 +49,9 @@ public class PostDocumentation extends Documentation {
         String location = postResponse.header("Location");
 
         given("post/read")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .when().get(location)
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .when().get(location)
+            .then().log().all().extract();
     }
 
     @Test
@@ -56,20 +62,20 @@ public class PostDocumentation extends Documentation {
 
         // when
         ExtractableResponse<Response> response = given("post/list")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/posts")
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when().get("/posts")
+            .then().log().all().extract();
 
         // then
         PostsResponse postsResponse = response.as(PostsResponse.class);
         List<String> postTitles = postsResponse.getData().stream()
-                .map(PostResponse::getTitle)
-                .collect(Collectors.toList());
+            .map(PostResponse::getTitle)
+            .collect(Collectors.toList());
         List<String> expectedTitles = postRequests.stream()
-                .map(PostRequest::getTitle)
-                .sorted()
-                .collect(Collectors.toList());
+            .map(PostRequest::getTitle)
+            .sorted()
+            .collect(Collectors.toList());
         assertThat(postTitles).usingRecursiveComparison().isEqualTo(expectedTitles);
     }
 
@@ -80,10 +86,10 @@ public class PostDocumentation extends Documentation {
 
         // when
         ExtractableResponse<Response> response = given("post/filter")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/posts?search=조앤&levels=1&missions=1&tags=1&tags=2&usernames=soulG")
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when().get("/posts?search=조앤&levels=1&missions=1&tags=1&tags=2&usernames=soulG")
+            .then().log().all().extract();
 
         // given
         PostsResponse postsResponse = response.as(PostsResponse.class);
@@ -102,19 +108,19 @@ public class PostDocumentation extends Documentation {
         Long levelId = 레벨_등록함(new LevelRequest("레벨2"));
         Long missionId = 미션_등록함(new MissionRequest("수정된 미션", levelId));
         List<TagRequest> tags = Arrays.asList(
-                new TagRequest("spa"),
-                new TagRequest("edit")
+            new TagRequest("spa"),
+            new TagRequest("edit")
         );
         PostRequest editPostRequest = new PostRequest(title, content, missionId, tags);
 
         // when
         ExtractableResponse<Response> editResponse = given("post/edit")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .body(editPostRequest)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().put(location)
-                .then().log().all()
-                .extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(editPostRequest)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().put(location)
+            .then().log().all()
+            .extract();
 
         // then
         assertThat(editResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -126,9 +132,9 @@ public class PostDocumentation extends Documentation {
         String location = postResponse.header("Location");
 
         given("post/delete")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().delete(location);
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when().delete(location);
     }
 
     private PostRequest createPostRequest1() {
@@ -153,38 +159,38 @@ public class PostDocumentation extends Documentation {
 
     private ExtractableResponse<Response> 포스트_등록함(List<PostRequest> request) {
         return RestAssured.given().log().all()
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().log().all()
-                .post("/posts")
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().log().all()
+            .post("/posts")
+            .then().log().all().extract();
     }
 
     private Long 레벨_등록함(LevelRequest request) {
         return RestAssured
-                .given().log().all()
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/levels")
-                .then()
-                .log().all()
-                .extract()
-                .as(LevelResponse.class)
-                .getId();
+            .given().log().all()
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/levels")
+            .then()
+            .log().all()
+            .extract()
+            .as(LevelResponse.class)
+            .getId();
     }
 
     private Long 미션_등록함(MissionRequest request) {
         return RestAssured.given()
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/missions")
-                .then()
-                .log().all()
-                .extract()
-                .as(MissionResponse.class)
-                .getId();
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/missions")
+            .then()
+            .log().all()
+            .extract()
+            .as(MissionResponse.class)
+            .getId();
     }
 }

@@ -20,7 +20,8 @@ public class StudyLogDocumentService {
     }
 
     public List<Long> findBySearchKeyword(String searchKeyword, Pageable pageable) {
-        List<StudyLogDocument> studyLogs = studyLogDocumentRepository.findByKeyword(searchKeyword, pageable);
+        List<StudyLogDocument> studyLogs = studyLogDocumentRepository.findByKeyword(searchKeyword,
+            pageable);
         return studyLogs.stream()
             .map(StudyLogDocument::getId)
             .collect(toList());
