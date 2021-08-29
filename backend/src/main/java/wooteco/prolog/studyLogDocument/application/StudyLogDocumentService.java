@@ -29,4 +29,8 @@ public class StudyLogDocumentService {
     public void delete(StudyLogDocument studyLogDocument) {
         studyLogDocumentRepository.delete(studyLogDocument);
     }
+
+    public void deleteAll() {
+        studyLogDocumentRepository.deleteAll();
+    }
 }
