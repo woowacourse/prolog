@@ -74,7 +74,7 @@ public class PostDocumentation extends Documentation {
     }
 
     @Test
-    public void 포스트_목록을_필터링한다() {
+    public void 포스트_목록을_검색_및_필터링한다() {
         // given
         포스트_등록함(Arrays.asList(createPostRequest1(), createPostRequest2()));
 

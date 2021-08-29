@@ -1,9 +1,17 @@
 package wooteco.prolog.steps;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static wooteco.prolog.fixtures.PostAcceptanceFixture.POST1;
+import static wooteco.prolog.fixtures.PostAcceptanceFixture.POST2;
+import static wooteco.prolog.fixtures.PostAcceptanceFixture.POST3;
+
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
@@ -13,27 +21,16 @@ import wooteco.prolog.studylog.application.dto.PostRequest;
 import wooteco.prolog.studylog.application.dto.PostResponse;
 import wooteco.prolog.studylog.application.dto.PostsResponse;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static wooteco.prolog.fixtures.PostAcceptanceFixture.*;
-
 public class PostStepDefinitions extends AcceptanceSteps {
+
     @Autowired
     public StudyLogDocumentRepository studyLogDocumentRepository;
-
-    @Before
-    public void clearElasticsearchRepository() {
-
-    }
 
     @Given("포스트 여러개를 작성하고")
     public void 포스트여러개를작성하고() {
         List<PostRequest> postRequests = Arrays.asList(
-                POST1.getPostRequest(),
-                POST2.getPostRequest()
+            POST1.getPostRequest(),
+            POST2.getPostRequest()
         );
 
         context.invokeHttpPostWithToken("/posts", postRequests);
@@ -42,7 +39,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
     @When("포스트를 작성하면")
     public void 포스트를작성하면() {
         List<PostRequest> postRequests = Arrays.asList(
-                POST1.getPostRequest()
+            POST1.getPostRequest()
         );
 
         context.invokeHttpPostWithToken("/posts", postRequests);
@@ -70,7 +67,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
         List<PostRequest> postRequests = new ArrayList<>();
 
         List<PostRequest> requests = PostAcceptanceFixture.findByMissionNumber(
-                (long) missionNumber);
+            (long) missionNumber);
 
         if (requests.isEmpty()) {
             throw new RuntimeException("해당 미션의 포스트는 없습니다.");
@@ -88,7 +85,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
         List<PostRequest> postRequests = new ArrayList<>();
 
         List<PostRequest> requests = PostAcceptanceFixture.findByTagNumber(
-                (long) tagNumber);
+            (long) tagNumber);
 
         if (requests.isEmpty()) {
             throw new RuntimeException("해당 미션의 포스트는 없습니다.");
@@ -129,6 +126,19 @@ public class PostStepDefinitions extends AcceptanceSteps {
     @When("{string}(을)(를) 검색하면")
     public void 을검색하면(String searchKeyword) {
         String path = String.format("/posts?search=%s", searchKeyword);
+        context.invokeHttpGet(path);
+    }
+
+    @When("{string}을 검색하고 {int}번 태그의 포스트를 조회하면")
+    public void 을검색하고번태그의포스트를조회하면(String searchKeyword, int tagId) {
+        String path = String.format("/posts?search=%s&tags=%d", searchKeyword, tagId);
+        context.invokeHttpGet(path);
+    }
+
+    @When("{string}을 검색하고 {int}번 미션과 {int}번 태그로 조회하면")
+    public void 을검색하고번미션과번태그로조회하면(String searchKeyword, int missionNumber, int tagId) {
+        String path = String.format("/posts?search=%s&missions=%d&tags=%d", searchKeyword,
+            missionNumber, tagId);
         context.invokeHttpGet(path);
     }
 

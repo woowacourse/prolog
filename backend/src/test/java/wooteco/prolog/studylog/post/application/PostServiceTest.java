@@ -25,6 +25,7 @@ import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.studyLogDocument.application.StudyLogDocumentService;
 import wooteco.prolog.studyLogDocument.domain.StudyLogDocumentRepository;
 import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
@@ -71,7 +72,7 @@ class PostServiceTest {
     @Autowired
     private MemberService memberService;
     @Autowired
-    private StudyLogDocumentRepository studyLogDocumentRepository;
+    private StudyLogDocumentService studyLogDocumentService;
 
     private Member member1;
     private Member member2;
@@ -89,7 +90,7 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
-        studyLogDocumentRepository.deleteAll();
+        studyLogDocumentService.deleteAll();
 
         LevelResponse levelResponse1 = levelService.create(new LevelRequest("레벨1"));
         LevelResponse levelResponse2 = levelService.create(new LevelRequest("레벨2"));
@@ -143,7 +144,7 @@ class PostServiceTest {
         assertThat(members).contains(member1.getNickname(), member2.getNickname());
     }
 
-    @DisplayName("필터 검색")
+    @DisplayName("검색 및 필터")
     @ParameterizedTest
     @MethodSource("findWithFilter")
     void findWithFilter(String searchKeyword, List<Long> levelIds, List<Long> missionIds, List<Long> tagIds, List<String> usernames, List<String> expectedPostTitles) {
