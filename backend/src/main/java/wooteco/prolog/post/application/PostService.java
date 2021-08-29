@@ -1,28 +1,34 @@
 package wooteco.prolog.post.application;
 
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+import static java.util.stream.Collectors.toList;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.domain.Mission;
+import wooteco.prolog.post.application.dto.CalendarPostResponse;
 import wooteco.prolog.post.application.dto.PostRequest;
 import wooteco.prolog.post.application.dto.PostResponse;
 import wooteco.prolog.post.application.dto.PostsResponse;
 import wooteco.prolog.post.domain.Post;
 import wooteco.prolog.post.domain.repository.PostRepository;
+import wooteco.prolog.post.domain.repository.PostSpecification;
 import wooteco.prolog.post.exception.PostArgumentException;
 import wooteco.prolog.post.exception.PostNotFoundException;
 import wooteco.prolog.posttag.application.PostTagService;
-import wooteco.prolog.posttag.domain.PostTag;
 import wooteco.prolog.tag.application.TagService;
-import wooteco.prolog.tag.domain.Tag;
 import wooteco.prolog.tag.domain.Tags;
 
 @Service
@@ -68,7 +74,7 @@ public class PostService {
 
         return postRequests.stream()
                 .map(postRequest -> insertPost(member, postRequest))
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     private PostResponse insertPost(Member member, PostRequest postRequest) {
