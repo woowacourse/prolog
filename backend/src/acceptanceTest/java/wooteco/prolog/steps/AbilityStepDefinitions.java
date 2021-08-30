@@ -8,7 +8,7 @@ import io.restassured.mapper.TypeRef;
 import io.restassured.response.Response;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.function.Supplier;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.AbilityFixture;
 import wooteco.prolog.studylog.application.dto.ability.AbilityResponse;
@@ -28,16 +28,12 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
             new TypeRef<List<AbilityResponse>>() {
             });
 
-        Ability ability = extractAbility(abilityName, responses);
-        savedAbilities.add(ability);
+        addExtractedAbilityToSavedAbility(abilityName, responses);
     }
 
     @When("{string}의 자식역량 {string}(을)(를) 추가하(면)(고)")
     public void 자식역량을주가하면(String parentAbility, String childAbility) {
-        Long parentAbilityId = findAbilityIdByName(parentAbility);
-        if(Objects.isNull(parentAbilityId)) {
-            throw new AssertionError();
-        }
+        Long parentAbilityId = findAbilityByName(parentAbility).getId();
 
         String json = AbilityFixture.findByName(childAbility).toJson(parentAbilityId);
 
@@ -46,32 +42,42 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
             new TypeRef<List<AbilityResponse>>() {
             });
 
-        Ability ability = extractAbility(childAbility, responses);
-        savedAbilities.add(ability);
+        addExtractedAbilityToSavedAbility(childAbility, responses);
     }
 
-    private Long findAbilityIdByName(String abilityName) {
+    private Ability findAbilityByName(String abilityName) {
         return savedAbilities.stream()
-            .filter(ability -> ability.getName().equals(abilityName))
+            .filter(parentAbility -> parentAbility.getName().equals(abilityName))
             .findAny()
-            .map(Ability::getId)
-            .orElse(null);
+            .orElseGet(findAbilityByNameFromChildren(abilityName));
     }
 
-    private Ability extractAbility(String abilityName, List<AbilityResponse> abilityResponses) {
+    private Supplier<Ability> findAbilityByNameFromChildren(String abilityName) {
+        return () -> savedAbilities.stream()
+            .flatMap(parentAbility -> parentAbility.getChildren().stream())
+            .filter(childAbility -> childAbility.getName().equals(abilityName))
+            .findAny()
+            .orElseThrow(IllegalArgumentException::new);
+    }
+
+    private void addExtractedAbilityToSavedAbility(String abilityName, List<AbilityResponse> abilityResponses) {
         for (AbilityResponse parent : abilityResponses) {
-            if(parent.getName().equals(abilityName)) {
-                return AbilityFixture.findByName(abilityName).toAbility(parent.getId(), null);
+            if (parent.getName().equals(abilityName)) {
+                Ability ability = AbilityFixture.findByName(abilityName)
+                    .toAbility(parent.getId(), null);
+
+                savedAbilities.add(ability);
             }
 
             for (ChildAbilityDto child : parent.getChildren()) {
-                if(child.getName().equals(abilityName)) {
-                    return AbilityFixture.findByName(abilityName).toAbility(child.getId(), parent.getId());
+                if (child.getName().equals(abilityName)) {
+                    Ability childAbility = AbilityFixture.findByName(abilityName)
+                        .toAbility(child.getId(), findAbilityByName(parent.getName()));
+                    Ability parentAbility = findAbilityByName(parent.getName());
+                    parentAbility.addChildAbility(childAbility);
                 }
             }
         }
-
-        throw new AssertionError();
     }
 
     @Then("역량이 추가된다.")
@@ -79,11 +85,11 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         Response response = context.response;
         List<AbilityResponse> abilityResponses = response.as(
             new TypeRef<List<AbilityResponse>>() {
-        });
+            });
 
         assertThat(response.statusCode()).isEqualTo(200);
         assertThat(abilityResponses)
             .usingRecursiveComparison()
-            .isEqualTo(AbilityResponse.from(savedAbilities));
+            .isEqualTo(AbilityResponse.of(savedAbilities));
     }
 }
