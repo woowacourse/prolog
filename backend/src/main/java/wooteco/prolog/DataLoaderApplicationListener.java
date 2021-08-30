@@ -8,6 +8,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.studyLogDocument.application.StudyLogDocumentService;
 import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
 import wooteco.prolog.studylog.application.PostService;
@@ -27,9 +28,13 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
     private TagService tagService;
     private MemberService memberService;
     private PostService postService;
+    private StudyLogDocumentService studyLogDocumentService;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        // elasticsearch init
+        studyLogDocumentService.deleteAll();
+
         // level init
         LevelResponse level1 = levelService.create(new LevelRequest("백엔드Java 레벨1 - 2021"));
         LevelResponse level2 = levelService.create(new LevelRequest("프론트엔드JS 레벨1 - 2021"));
