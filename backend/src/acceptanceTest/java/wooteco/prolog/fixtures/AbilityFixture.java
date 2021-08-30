@@ -1,6 +1,7 @@
 package wooteco.prolog.fixtures;
 
 import java.util.Arrays;
+import java.util.Objects;
 import wooteco.prolog.studylog.domain.ablity.Ability;
 
 public enum AbilityFixture {
@@ -31,8 +32,11 @@ public enum AbilityFixture {
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 역량입니다."));
     }
 
-    public Ability toAbility(Long id, Long parent) {
-        return new Ability(id, name, description, color, parent);
+    public Ability toAbility(Long id, Ability parent) {
+        if(!Objects.isNull(parent)) {
+            return Ability.child(id, name, description, color, parent);
+        }
+        return Ability.parent(id, name, description, color);
     }
 
     public String toJson(Long parent) {
