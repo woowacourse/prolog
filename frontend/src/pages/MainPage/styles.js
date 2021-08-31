@@ -32,7 +32,7 @@ const Content = styled.div`
 const Description = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: inherit;
 `;
 
 const Mission = styled.div`
@@ -60,9 +60,11 @@ const ProfileChipLocationStyle = css`
   }
 `;
 
-const CardHoverStyle = css`
+const CardStyle = css`
   transition: transform 0.2s ease;
   cursor: pointer;
+  padding: 3rem;
+  height: 20rem;
 
   &:hover {
     transform: scale(1.005);
@@ -79,5 +81,5 @@ export {
   Title,
   Tags,
   ProfileChipLocationStyle,
-  CardHoverStyle,
+  CardStyle,
 };

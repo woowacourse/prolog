@@ -7,7 +7,7 @@ import useFetch from '../../hooks/useFetch';
 import { requestGetFilters, requestGetPosts } from '../../service/requests';
 import { useSelector } from 'react-redux';
 import {
-  CardHoverStyle,
+  CardStyle,
   Content,
   Description,
   FilterListWrapper,
@@ -118,7 +118,7 @@ const MainPage = () => {
             const { id, author, mission, title, tags } = post;
 
             return (
-              <Card key={id} size="SMALL" css={CardHoverStyle} onClick={() => goTargetPost(id)}>
+              <Card key={id} size="SMALL" css={CardStyle} onClick={() => goTargetPost(id)}>
                 <Content>
                   <Description>
                     <Mission>{mission.name}</Mission>

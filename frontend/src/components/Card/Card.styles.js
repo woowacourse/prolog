@@ -19,7 +19,6 @@ const sizeStyle = {
 
 const Container = styled.section`
   background-color: ${COLOR.WHITE};
-  box-shadow: 0px 4px 4px ${COLOR.BLACK}0d;
   border: 1px solid ${COLOR.LIGHT_GRAY_400};
   border-radius: 2rem;
 
