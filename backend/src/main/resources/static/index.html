@@ -447,20 +447,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_멤버_정보_수정">멤버 정보 수정</a></li>
 </ul>
 </li>
-<li><a href="#post">포스트</a>
+<li><a href="#studylog">스터디로그</a>
 <ul class="sectlevel2">
-<li><a href="#_포스트_작성">포스트 작성</a></li>
-<li><a href="#_포스트_목록_조회">포스트 목록 조회</a></li>
-<li><a href="#_포스트_필터_조회">포스트 필터 조회</a></li>
-<li><a href="#_포스트_단건_조회">포스트 단건 조회</a></li>
-<li><a href="#_포스트_수정">포스트 수정</a></li>
-<li><a href="#_포스트_삭제">포스트 삭제</a></li>
+<li><a href="#_스터디로그_작성">스터디로그 작성</a></li>
+<li><a href="#_스터디로그_목록_조회">스터디로그 목록 조회</a></li>
+<li><a href="#_스터디로그_필터_조회">스터디로그 필터 조회</a></li>
+<li><a href="#_스터디로그_단건_조회">스터디로그 단건 조회</a></li>
+<li><a href="#_스터디로그_수정">스터디로그 수정</a></li>
+<li><a href="#_스터디로그_삭제">스터디로그 삭제</a></li>
 </ul>
 </li>
 <li><a href="#profile">프로필</a>
 <ul class="sectlevel2">
 <li><a href="#_프로필_조회">프로필 조회</a></li>
-<li><a href="#_프로필_포스트_조회">프로필 포스트 조회</a></li>
+<li><a href="#_프로필_스터디로그_조회">프로필 스터디로그 조회</a></li>
 </ul>
 </li>
 <li><a href="#mission">미션</a>
@@ -601,15 +601,15 @@ Connection: keep-alive</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="post"><a class="link" href="#post">포스트</a></h2>
+<h2 id="studylog"><a class="link" href="#studylog">스터디로그</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_포스트_작성"><a class="link" href="#_포스트_작성">포스트 작성</a></h3>
+<h3 id="_스터디로그_작성"><a class="link" href="#_스터디로그_작성">스터디로그 작성</a></h3>
 <div class="sect3">
 <h4 id="_request_4"><a class="link" href="#_request_4">Request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /posts HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /studylogs HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5Nzk2OTI0LCJleHAiOjE2Mjk4MDA1MjQsInJvbGUiOiJDUkVXIn0.1qpRvU5uslOddZ2jl4Q1JB3GsPxwF2CXhUy7oDHgJ8s
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
@@ -636,7 +636,7 @@ Content-Length: 211
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Location: /posts/1
+Location: /studylogs/1
 Date: Tue, 24 Aug 2021 09:22:04 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
@@ -645,12 +645,12 @@ Connection: keep-alive</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_포스트_목록_조회"><a class="link" href="#_포스트_목록_조회">포스트 목록 조회</a></h3>
+<h3 id="_스터디로그_목록_조회"><a class="link" href="#_스터디로그_목록_조회">스터디로그 목록 조회</a></h3>
 <div class="sect3">
 <h4 id="_request_5"><a class="link" href="#_request_5">Request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /studylogs HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5Nzk2OTI3LCJleHAiOjE2Mjk4MDA1MjcsInJvbGUiOiJDUkVXIn0.7k8V58i-Hhr0D2AZGrKwEsgUlRCf7jjmuc5y6OiGed8
 Accept: application/json
 Host: localhost:4000</code></pre>
@@ -739,12 +739,12 @@ Content-Length: 1414
 </div>
 </div>
 <div class="sect2">
-<h3 id="_포스트_필터_조회"><a class="link" href="#_포스트_필터_조회">포스트 필터 조회</a></h3>
+<h3 id="_스터디로그_필터_조회"><a class="link" href="#_스터디로그_필터_조회">스터디로그 필터 조회</a></h3>
 <div class="sect3">
 <h4 id="_request_6"><a class="link" href="#_request_6">Request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts?levels=1&amp;missions=1&amp;tags=1&amp;tags=2&amp;usernames=soulG HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /studylogs?levels=1&amp;missions=1&amp;tags=1&amp;tags=2&amp;usernames=soulG HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5Nzk2OTIzLCJleHAiOjE2Mjk4MDA1MjMsInJvbGUiOiJDUkVXIn0.QyZIh8psYD9EOGqBbnEQ89hQ2xQFSs331o8a5CFvW4U
 Accept: application/json
 Host: localhost:4000</code></pre>
@@ -805,12 +805,12 @@ Content-Length: 776
 </div>
 </div>
 <div class="sect2">
-<h3 id="_포스트_단건_조회"><a class="link" href="#_포스트_단건_조회">포스트 단건 조회</a></h3>
+<h3 id="_스터디로그_단건_조회"><a class="link" href="#_스터디로그_단건_조회">스터디로그 단건 조회</a></h3>
 <div class="sect3">
 <h4 id="_request_7"><a class="link" href="#_request_7">Request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts/1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /studylogs/1 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5Nzk2OTI0LCJleHAiOjE2Mjk4MDA1MjQsInJvbGUiOiJDUkVXIn0.1qpRvU5uslOddZ2jl4Q1JB3GsPxwF2CXhUy7oDHgJ8s
 Host: localhost:4000</code></pre>
 </div>
@@ -865,12 +865,12 @@ Content-Length: 645
 </div>
 </div>
 <div class="sect2">
-<h3 id="_포스트_수정"><a class="link" href="#_포스트_수정">포스트 수정</a></h3>
+<h3 id="_스터디로그_수정"><a class="link" href="#_스터디로그_수정">스터디로그 수정</a></h3>
 <div class="sect3">
 <h4 id="_request_8"><a class="link" href="#_request_8">Request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /posts/1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /studylogs/1 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5Nzk2OTI2LCJleHAiOjE2Mjk4MDA1MjYsInJvbGUiOiJDUkVXIn0.mxjNnArwB5hDU-_AWXvlaVQ2tFqm0PfBr8K1BLrBuNU
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
@@ -905,12 +905,12 @@ Connection: keep-alive</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_포스트_삭제"><a class="link" href="#_포스트_삭제">포스트 삭제</a></h3>
+<h3 id="_스터디로그_삭제"><a class="link" href="#_스터디로그_삭제">스터디로그 삭제</a></h3>
 <div class="sect3">
 <h4 id="_request_9"><a class="link" href="#_request_9">Request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /posts/1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /studylogs/1 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjI5Nzk2OTI1LCJleHAiOjE2Mjk4MDA1MjUsInJvbGUiOiJDUkVXIn0.W6jMKNIbhKmxTCe615mNkp9U8apHR-9guyXUOVibRLI
 Accept: application/json
 Host: localhost:4000</code></pre>
@@ -975,12 +975,12 @@ Content-Length: 153
 </div>
 </div>
 <div class="sect2">
-<h3 id="_프로필_포스트_조회"><a class="link" href="#_프로필_포스트_조회">프로필 포스트 조회</a></h3>
+<h3 id="_프로필_스터디로그_조회"><a class="link" href="#_프로필_스터디로그_조회">프로필 스터디로그 조회</a></h3>
 <div class="sect3">
 <h4 id="_request_11"><a class="link" href="#_request_11">Request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/soulG/posts HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/soulG/studylogs HTTP/1.1
 Accept: application/json
 Host: localhost:4000</code></pre>
 </div>
