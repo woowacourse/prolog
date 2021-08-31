@@ -33,7 +33,6 @@ const Calendar = ({ newDate, onClick = () => {}, selectedDay = -1, setSelectedDa
   const today = newDate ? new Date(newDate.year, newDate.month - 1, newDate.day) : new Date();
 
   const [date, setDate] = useState(today);
-  const [currentDay, setCurrentDay] = useState(date.getDate());
   const [currentMonth, setCurrentMonth] = useState(date.getMonth());
   const [currentYear, setCurrentYear] = useState(date.getFullYear());
   const [startDay, setStartDay] = useState(getStartDayOfMonth(currentYear, currentMonth));
@@ -87,9 +86,7 @@ const Calendar = ({ newDate, onClick = () => {}, selectedDay = -1, setSelectedDa
   useEffect(() => {
     const year = date.getFullYear();
     const month = date.getMonth();
-    const day = date.getDate();
 
-    setCurrentDay(day);
     setCurrentMonth(month);
     setCurrentYear(year);
     setStartDay(getStartDayOfMonth(year, month));
@@ -101,7 +98,7 @@ const Calendar = ({ newDate, onClick = () => {}, selectedDay = -1, setSelectedDa
         <button
           type="button"
           onClick={() => {
-            setDate(new Date(currentYear, currentMonth - 1, currentDay));
+            setDate(new Date(currentYear, currentMonth - 1, 1));
             setSelectedDay(-1);
           }}
         >
@@ -114,7 +111,7 @@ const Calendar = ({ newDate, onClick = () => {}, selectedDay = -1, setSelectedDa
         <button
           type="button"
           onClick={() => {
-            setDate(new Date(currentYear, currentMonth + 1, currentDay));
+            setDate(new Date(currentYear, currentMonth + 1, 1));
             setSelectedDay(-1);
           }}
         >

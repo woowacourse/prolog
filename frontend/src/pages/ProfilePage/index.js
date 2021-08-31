@@ -40,7 +40,7 @@ const ProfilePage = ({ children, menu }) => {
   const [hoveredPostId, setHoveredPostId] = useState(0);
   const [postQueryParams, setPostQueryParams] = useState(initialPostQueryParams);
 
-  const { isNotFound, setNotFound, NotFound } = useNotFound();
+  const { isNotFound, NotFound } = useNotFound();
   const [tags] = useFetch([], () => requestGetUserTags(username));
 
   const getUserPosts = useCallback(async () => {
@@ -52,7 +52,6 @@ const ProfilePage = ({ children, menu }) => {
       }
 
       const posts = await response.json();
-      console.log(posts);
       setPosts(posts);
     } catch (error) {
       console.error(error);

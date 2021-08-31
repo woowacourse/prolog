@@ -147,6 +147,7 @@ const TitleList = styled.div`
   border: 1px solid #ccc;
   border-radius: 10px;
   min-width: 15rem;
+  max-width: 20rem;
   padding: 0.5rem;
   z-index: 1;
   background-color: white;
