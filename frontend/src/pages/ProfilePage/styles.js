@@ -99,15 +99,11 @@ const Content = styled.div`
   justify-content: center;
 `;
 
-const Title = styled.div`
-  font-size: 2.8rem;
-  font-weight: 500;
-`;
-
-const Preparing = styled.div`
+const Overview = styled.div`
   display: grid;
   width: 100%;
   grid-template-columns: repeat(2, 1fr);
+  gap: 1.6rem;
 
   & > * {
     grid-column-start: 1;
@@ -130,6 +126,63 @@ const SideBar = styled.div`
   flex-direction: column;
 `;
 
+const TagTitle = styled.div`
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+`;
+
+const CardStyles = css`
+  padding: 2rem;
+  border-color: ${COLOR.LIGHT_GRAY_200};
+`;
+
+const PostItem = styled.div`
+  width: 100%;
+  padding: 1.6rem;
+  cursor: pointer;
+  display: flex;
+  border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
+`;
+
+const Mission = styled.div`
+  color: ${COLOR.LIGHT_GRAY_900};
+  font-size: 1.2rem;
+  color: ${COLOR.RED_400};
+`;
+
+const Title = styled.h3`
+  margin-bottom: 0.6rem;
+`;
+
+const Tags = styled.div`
+  margin-top: auto;
+  line-height: 1.5;
+`;
+
+const NoPost = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Description = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 80%;
+`;
+
+const PostBottomContainer = styled.div`
+  display: flex;
+  font-size: 1.2rem;
+  color: ${COLOR.LIGHT_GRAY_900};
+
+  & > *:not(:first-child) {
+    margin-left: 1rem;
+  }
+`;
+
 export {
   Container,
   Profile,
@@ -141,6 +194,14 @@ export {
   MenuButton,
   Content,
   Title,
-  Preparing,
+  Overview,
   SideBar,
+  TagTitle,
+  CardStyles,
+  PostItem,
+  Mission,
+  Tags,
+  NoPost,
+  Description,
+  PostBottomContainer,
 };

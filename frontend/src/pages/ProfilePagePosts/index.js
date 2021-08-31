@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
-import { Button, BUTTON_SIZE, FilterList, Pagination, Tag, Calendar, Card } from '../../components';
-import { requestGetFilters, requestGetPosts, requestGetUserTags } from '../../service/requests';
+import { Button, BUTTON_SIZE, FilterList, Pagination, Card } from '../../components';
+import { requestGetFilters, requestGetPosts } from '../../service/requests';
 import {
   ButtonList,
   Container,
@@ -11,7 +11,6 @@ import {
   CardStyles,
   Description,
   EditButtonStyle,
-  TagTitle,
   FilterStyles,
   Mission,
   NoPost,
@@ -26,6 +25,18 @@ import useFetch from '../../hooks/useFetch';
 import useFilterWithParams from '../../hooks/useFilterWithParams';
 
 const ProfilePagePosts = () => {
+  const history = useHistory();
+  const accessToken = useSelector((state) => state.user.accessToken.data);
+  const myName = useSelector((state) => state.user.profile.data?.username);
+  const { username } = useParams();
+  const { state } = useLocation();
+
+  const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
+  const [hoveredPostId, setHoveredPostId] = useState(0);
+  const [posts, setPosts] = useState([]);
+
+  const [filters] = useFetch([], requestGetFilters);
+  const { error: postError, deleteData: deletePost } = usePost({});
   const {
     postQueryParams,
     selectedFilter,
@@ -36,23 +47,6 @@ const ProfilePagePosts = () => {
     resetFilter,
     getFullParams,
   } = useFilterWithParams();
-
-  const history = useHistory();
-  const accessToken = useSelector((state) => state.user.accessToken.data);
-  const myName = useSelector((state) => state.user.profile.data?.username);
-  const { username } = useParams();
-  const { state } = useLocation();
-
-  const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
-  const [hoveredPostId, setHoveredPostId] = useState(0);
-  const [posts, setPosts] = useState([]);
-  const [selectedTagId, setSelectedTagId] = useState(0);
-  const [selectedDay, setSelectedDay] = useState(state ? state.date.day : -1);
-  const [filteringOption, setFilteringOption] = useState({});
-  const [filters] = useFetch([], requestGetFilters);
-
-  const { error: postError, deleteData: deletePost } = usePost({});
-  const [tags] = useFetch([], () => requestGetUserTags(username));
 
   const goTargetPost = (id) => {
     history.push(`${PATH.POST}/${id}`);
@@ -67,10 +61,11 @@ const ProfilePagePosts = () => {
   const getUserPosts = useCallback(async () => {
     try {
       // TODO : const response = await requestGetUserPosts(username, postQueryParams, filteringOption);
-      const response = await requestGetPosts(
-        [...selectedFilterDetails, { filterType: 'usernames', filterDetailId: username }],
-        postQueryParams
-      );
+      const filterList = [
+        ...selectedFilterDetails,
+        { filterType: 'usernames', filterDetailId: username },
+      ];
+      const response = await requestGetPosts(filterList, postQueryParams);
 
       if (!response.ok) {
         throw new Error(response.status);
@@ -86,7 +81,7 @@ const ProfilePagePosts = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [getFullParams, history, postQueryParams, selectedFilterDetails, username, filteringOption]);
+  }, [getFullParams, history, postQueryParams, selectedFilterDetails, username]);
 
   const onDeletePost = async (event, id) => {
     event.stopPropagation();
@@ -103,13 +98,6 @@ const ProfilePagePosts = () => {
     getUserPosts();
   };
 
-  const setFilteringOptionWithTagId = (id) => setFilteringOption({ tagId: id });
-
-  const setFilteringOptionWithDate = (year, month, day) =>
-    setFilteringOption({
-      date: `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`,
-    });
-
   useEffect(() => {
     if (!shouldInitialLoad) {
       setShouldInitialLoad(true);
@@ -120,42 +108,8 @@ const ProfilePagePosts = () => {
     getUserPosts();
   }, [username, getUserPosts, shouldInitialLoad]);
 
-  useEffect(() => {
-    if (!state) return;
-
-    setFilteringOptionWithDate(state.date.year, state.date.month, state.date.day);
-  }, [state]);
-
   return (
     <Container>
-      <div>
-        <TagTitle>태그</TagTitle>
-        {tags?.data?.map(({ id, name, count }) => (
-          <Tag
-            key={id}
-            id={id}
-            name={name}
-            postCount={count}
-            selectedTagId={selectedTagId}
-            onClick={() => {
-              setSelectedTagId(id);
-              setSelectedDay(-1);
-              setFilteringOptionWithTagId(id);
-            }}
-          />
-        ))}
-      </div>
-      <Card title="캘린더" css={CardStyles}>
-        <Calendar
-          newDate={state?.date}
-          onClick={(year, month, day) => {
-            setSelectedTagId(null);
-            setFilteringOptionWithDate(year, month, day);
-          }}
-          selectedDay={selectedDay}
-          setSelectedDay={setSelectedDay}
-        />
-      </Card>
       <FilterListWrapper>
         <FilterList
           filters={{ levels: filters['levels'], missions: filters['missions'] }}
@@ -168,7 +122,7 @@ const ProfilePagePosts = () => {
           css={FilterStyles}
         />
       </FilterListWrapper>
-      <Card title="학습로그" css={CardStyles}>
+      <Card css={CardStyles}>
         {posts?.data?.length ? (
           <>
             {posts?.data?.map((post) => {

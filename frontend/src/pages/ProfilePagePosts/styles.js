@@ -3,25 +3,10 @@ import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
 
 const Container = styled.div`
-  display: grid;
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.6rem;
-
-  & > * {
-    grid-column-start: 1;
-    grid-column-end: 3;
-  }
-  & > *:nth-of-type(1) {
-    grid-column-start: 1;
-    grid-column-end: 2;
-    min-height: 28rem;
-  }
-  & > *:nth-of-type(2) {
-    grid-column-start: 2;
-    grid-column-end: 3;
-    min-height: 28rem;
-  }
+  gap: 2rem;
 `;
 
 const PostItem = styled.div`
@@ -37,12 +22,6 @@ const PostItem = styled.div`
   &:hover {
     background-color: ${COLOR.LIGHT_GRAY_50};
   }
-`;
-
-const TagTitle = styled.div`
-  font-size: 2rem;
-  font-weight: 500;
-  margin-bottom: 1rem;
 `;
 
 const Content = styled.div`
@@ -142,7 +121,6 @@ export {
   NoPost,
   EditButtonStyle,
   DeleteButtonStyle,
-  TagTitle,
   FilterListWrapper,
   CardStyles,
   FilterStyles,
