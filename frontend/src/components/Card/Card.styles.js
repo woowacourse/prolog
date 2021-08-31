@@ -28,7 +28,7 @@ const Container = styled.section`
 `;
 
 const Title = styled.div`
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 500;
   margin-bottom: 1rem;
 `;

@@ -2,12 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
 import { Button, BUTTON_SIZE, FilterList, Pagination, Tag, Calendar, Card } from '../../components';
-import {
-  requestGetFilters,
-  requestGetPosts,
-  requestGetUserPosts,
-  requestGetUserTags,
-} from '../../service/requests';
+import { requestGetFilters, requestGetPosts, requestGetUserTags } from '../../service/requests';
 import {
   ButtonList,
   Container,
@@ -17,7 +12,7 @@ import {
   Description,
   EditButtonStyle,
   TagTitle,
-  HeaderContainer,
+  FilterStyles,
   Mission,
   NoPost,
   PostItem,
@@ -133,19 +128,6 @@ const ProfilePagePosts = () => {
 
   return (
     <Container>
-      <HeaderContainer>
-        <FilterListWrapper>
-          <FilterList
-            filters={{ levels: filters['levels'], missions: filters['missions'] }}
-            selectedFilter={selectedFilter}
-            setSelectedFilter={setSelectedFilter}
-            selectedFilterDetails={selectedFilterDetails}
-            setSelectedFilterDetails={onFilterChange}
-            isVisibleResetFilter={!!selectedFilterDetails.length}
-            onResetFilter={resetFilter}
-          />
-        </FilterListWrapper>
-      </HeaderContainer>
       <div>
         <TagTitle>태그</TagTitle>
         {tags?.data?.map(({ id, name, count }) => (
@@ -163,7 +145,7 @@ const ProfilePagePosts = () => {
           />
         ))}
       </div>
-      <Card title="캘린더">
+      <Card title="캘린더" css={CardStyles}>
         <Calendar
           newDate={state?.date}
           onClick={(year, month, day) => {
@@ -174,6 +156,18 @@ const ProfilePagePosts = () => {
           setSelectedDay={setSelectedDay}
         />
       </Card>
+      <FilterListWrapper>
+        <FilterList
+          filters={{ levels: filters['levels'], missions: filters['missions'] }}
+          selectedFilter={selectedFilter}
+          setSelectedFilter={setSelectedFilter}
+          selectedFilterDetails={selectedFilterDetails}
+          setSelectedFilterDetails={onFilterChange}
+          isVisibleResetFilter={!!selectedFilterDetails.length}
+          onResetFilter={resetFilter}
+          css={FilterStyles}
+        />
+      </FilterListWrapper>
       <Card title="학습로그" css={CardStyles}>
         {posts?.data?.length ? (
           <>

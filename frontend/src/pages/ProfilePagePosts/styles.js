@@ -6,17 +6,18 @@ const Container = styled.div`
   display: grid;
   width: 100%;
   grid-template-columns: repeat(2, 1fr);
+  gap: 1.6rem;
 
   & > * {
     grid-column-start: 1;
     grid-column-end: 3;
   }
-  & > *:nth-of-type(2) {
+  & > *:nth-of-type(1) {
     grid-column-start: 1;
     grid-column-end: 2;
     min-height: 28rem;
   }
-  & > *:nth-of-type(3) {
+  & > *:nth-of-type(2) {
     grid-column-start: 2;
     grid-column-end: 3;
     min-height: 28rem;
@@ -39,7 +40,7 @@ const PostItem = styled.div`
 `;
 
 const TagTitle = styled.div`
-  font-size: 2.4rem;
+  font-size: 2rem;
   font-weight: 500;
   margin-bottom: 1rem;
 `;
@@ -86,7 +87,7 @@ const ButtonList = styled.div`
   justify-content: center;
   gap: 1.6rem;
 
-  visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
+  ${({ isVisible }) => (isVisible ? 'visibility: visible' : 'visibility: hidden')};
 `;
 
 const NoPost = styled.div`
@@ -98,6 +99,7 @@ const NoPost = styled.div`
 const EditButtonStyle = css`
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
   background-color: ${COLOR.WHITE};
+
   &:hover {
     background-color: ${COLOR.LIGHT_GRAY_300};
   }
@@ -113,24 +115,18 @@ const DeleteButtonStyle = css`
 `;
 
 const FilterListWrapper = styled.div`
-  width: 100%;
-  height: inherit;
-  flex: 1;
-`;
-
-const HeaderContainer = styled.div`
   height: 4.8rem;
-  display: flex;
-  margin-bottom: 3.7rem;
-  justify-content: space-between;
-
-  & > *:not(:first-child) {
-    margin-left: 2rem;
-  }
+  flex: 1;
+  margin-top: 0.6rem;
 `;
 
 const CardStyles = css`
   padding: 2rem;
+  border-color: ${COLOR.LIGHT_GRAY_200};
+`;
+
+const FilterStyles = css`
+  background-color: ${COLOR.WHITE};
   border-color: ${COLOR.LIGHT_GRAY_200};
 `;
 
@@ -148,6 +144,6 @@ export {
   DeleteButtonStyle,
   TagTitle,
   FilterListWrapper,
-  HeaderContainer,
   CardStyles,
+  FilterStyles,
 };
