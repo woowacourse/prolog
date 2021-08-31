@@ -147,6 +147,7 @@ const ProfilePage = ({ children, menu }) => {
                           <Title isHovered={id === hoveredPostId}>{title}</Title>
                           <PostBottomContainer>
                             <Mission>{mission.name}</Mission>
+                            <div>{new Date(createdAt).toLocaleString('ko-KR')}</div>
                             {!!tags.length && (
                               <Tags>
                                 {tags.map(({ id, name }) => (
@@ -154,8 +155,6 @@ const ProfilePage = ({ children, menu }) => {
                                 ))}
                               </Tags>
                             )}
-
-                            <div>{new Date(createdAt).toLocaleString('ko-KR')}</div>
                           </PostBottomContainer>
                         </Description>
                       </PostItem>

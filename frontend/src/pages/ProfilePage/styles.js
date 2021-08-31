@@ -36,11 +36,6 @@ const Overview = styled.div`
   }
 `;
 
-const SideBar = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
 const TagTitle = styled.div`
   font-size: 2rem;
   font-weight: 500;
@@ -58,21 +53,28 @@ const PostItem = styled.div`
   cursor: pointer;
   display: flex;
   border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
+  word-break: break-all;
 `;
 
 const Mission = styled.div`
-  color: ${COLOR.LIGHT_GRAY_900};
   font-size: 1.2rem;
   color: ${COLOR.RED_400};
 `;
 
 const Title = styled.h3`
   margin-bottom: 0.6rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 const Tags = styled.div`
   margin-top: auto;
   line-height: 1.5;
+  flex: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 const NoPost = styled.div`

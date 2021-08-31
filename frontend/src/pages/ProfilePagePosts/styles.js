@@ -16,8 +16,7 @@ const PostItem = styled.div`
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
-  display: gird;
-  grid-template-columns: 8fr 2fr;
+  word-break: break-all;
 
   &:hover {
     background-color: ${COLOR.LIGHT_GRAY_50};
@@ -51,6 +50,9 @@ const Mission = styled.div`
 
 const Title = styled.h3`
   font-weight: bold;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 const Tags = styled.div`
@@ -58,6 +60,9 @@ const Tags = styled.div`
   color: ${COLOR.LIGHT_GRAY_900};
   margin-top: auto;
   line-height: 1.5;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 const ButtonList = styled.div`
