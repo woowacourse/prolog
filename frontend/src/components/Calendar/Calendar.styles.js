@@ -10,9 +10,6 @@ const countColor = {
 
 const Container = styled.div`
   min-width: 30rem;
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  padding-bottom: 1rem;
 `;
 
 const Header = styled.div`

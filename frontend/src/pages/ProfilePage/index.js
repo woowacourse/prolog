@@ -20,7 +20,7 @@ import {
 import { PROFILE_PAGE_MENU } from '../../constants';
 import { requestGetProfile } from '../../service/requests';
 import useNotFound from '../../hooks/useNotFound';
-import { Calendar } from '../../components';
+import { Calendar, Card } from '../../components';
 
 const ProfilePage = ({ children, menu }) => {
   const history = useHistory();
@@ -127,7 +127,9 @@ const ProfilePage = ({ children, menu }) => {
             <div>
               <img src={waitImage} alt="준비중 이미지" />
             </div>
-            <Calendar onClick={goProfilePagePostsWithDate} />
+            <Card>
+              <Calendar onClick={goProfilePagePostsWithDate} />
+            </Card>
           </Preparing>
         )}
       </Content>
