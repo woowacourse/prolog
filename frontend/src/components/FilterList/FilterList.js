@@ -34,7 +34,7 @@ const FilterList = ({
     }
   };
 
-  const filteredFiltersByLevel = () => {
+  const getFilteredFiltersByLevel = () => {
     // 선택된 levels 목록 조회
     const selectedLevels = selectedFilterDetails
       .filter((selectedFilter) => selectedFilter.filterType === 'levels')
@@ -54,7 +54,7 @@ const FilterList = ({
 
   return (
     <Container onClick={closeDropdown} isDropdownToggled={selectedFilter}>
-      {Object.entries(filteredFiltersByLevel()).map(([key, value]) => (
+      {Object.entries(getFilteredFiltersByLevel()).map(([key, value]) => (
         <div key={key}>
           <button onClick={() => setSelectedFilter(key)}>{key}</button>
           {selectedFilter === key && (
