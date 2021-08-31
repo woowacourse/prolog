@@ -13,6 +13,7 @@ import {
   ProfilePagePosts,
   ProfilePageAccount,
 } from './pages';
+import { useState } from 'react';
 
 const Content = styled.div`
   max-width: 112rem;
@@ -21,8 +22,6 @@ const Content = styled.div`
 `;
 
 const App = () => {
-  // const [selectedMenu, setSelectedMenu] = useState('overview');
-
   return (
     <>
       <GlobalStyles />

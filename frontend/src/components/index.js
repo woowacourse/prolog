@@ -15,3 +15,4 @@ export { default as Pagination } from './Pagination/Pagination';
 export { default as NotFound } from './NotFound/NotFound';
 export { default as Tag } from './Tag/Tag';
 export { default as Calendar } from './Calendar/Calendar';
+export { default as ProfilePageSideBar } from './ProfilePageSideBar/ProfilePageSideBar';

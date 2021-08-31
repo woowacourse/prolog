@@ -1,20 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router';
 import { useHistory, useLocation } from 'react-router-dom';
-import { ReactComponent as PostIcon } from '../../assets/images/post.svg';
-import { ReactComponent as OverviewIcon } from '../../assets/images/overview.svg';
 import {
   Container,
-  Profile,
-  Image,
-  Nickname,
-  MenuList,
-  MenuItem,
-  MenuButton,
-  Role,
   Content,
   Overview,
-  SideBar,
   TagTitle,
   CardStyles,
   PostItem,
@@ -25,10 +15,10 @@ import {
   Description,
   PostBottomContainer,
 } from './styles';
-import { PATH, PROFILE_PAGE_MENU } from '../../constants';
-import { requestGetProfile, requestGetUserPosts, requestGetUserTags } from '../../service/requests';
+import { PATH } from '../../constants';
+import { requestGetUserPosts, requestGetUserTags } from '../../service/requests';
 import useNotFound from '../../hooks/useNotFound';
-import { Calendar, Card, Pagination, Tag } from '../../components';
+import { Calendar, Card, Pagination, ProfilePageSideBar, Tag } from '../../components';
 import useFetch from '../../hooks/useFetch';
 
 const initialPostQueryParams = {
@@ -42,8 +32,6 @@ const ProfilePage = ({ children, menu }) => {
   const { username } = useParams();
   const { state } = useLocation();
 
-  const [user, setUser] = useState({});
-  const [selectedMenu, setSelectedMenu] = useState('');
   const [selectedTagId, setSelectedTagId] = useState(0);
   const [selectedDay, setSelectedDay] = useState(state ? state.date.day : -1);
   const [filteringOption, setFilteringOption] = useState({ tagId: 0 });
@@ -54,46 +42,6 @@ const ProfilePage = ({ children, menu }) => {
 
   const { isNotFound, setNotFound, NotFound } = useNotFound();
   const [tags] = useFetch([], () => requestGetUserTags(username));
-
-  const goProfilePage = (event) => {
-    setSelectedMenu(event.currentTarget.value);
-    history.push(`/${username}`);
-  };
-
-  const goProfilePagePosts = (event) => {
-    setSelectedMenu(event.currentTarget.value);
-    history.push(`/${username}/posts`);
-  };
-
-  const goProfilePageAccount = () => {
-    history.push(`/${username}/account`);
-  };
-
-  const goProfilePagePostsWithDate = (year, month, day) => {
-    history.push(`/${username}/posts`, { date: { year, month, day } });
-    setSelectedMenu(PROFILE_PAGE_MENU.POSTS);
-  };
-
-  const getProfile = async () => {
-    try {
-      const response = await requestGetProfile(username);
-
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-
-      setUser(await response.json());
-      setNotFound(false);
-    } catch (error) {
-      const errorResponse = JSON.parse(error.message);
-
-      console.error(errorResponse);
-
-      if (errorResponse.code === 1004) {
-        setNotFound(true);
-      }
-    }
-  };
 
   const getUserPosts = useCallback(async () => {
     try {
@@ -127,11 +75,6 @@ const ProfilePage = ({ children, menu }) => {
   };
 
   useEffect(() => {
-    getProfile();
-    setSelectedMenu(menu);
-  }, [username]);
-
-  useEffect(() => {
     if (!shouldInitialLoad) {
       setShouldInitialLoad(true);
 
@@ -153,39 +96,7 @@ const ProfilePage = ({ children, menu }) => {
 
   return (
     <Container>
-      <SideBar>
-        <Profile>
-          <Image src={user?.imageUrl} alt="프로필 이미지" />
-          <Role>{user?.role}</Role>
-          <Nickname>{user?.nickname}</Nickname>
-        </Profile>
-        <MenuList>
-          <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.OVERVIEW}>
-            <MenuButton value={PROFILE_PAGE_MENU.OVERVIEW} type="button" onClick={goProfilePage}>
-              {/* <MenuIcon src={overviewIcon} alt="overview icon" /> */}
-              <OverviewIcon width="16" height="16" />
-              관리 홈
-            </MenuButton>
-          </MenuItem>
-          <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.POSTS}>
-            <MenuButton value={PROFILE_PAGE_MENU.POSTS} type="button" onClick={goProfilePagePosts}>
-              <PostIcon width="16" height="16" />
-              학습로그
-            </MenuButton>
-          </MenuItem>
-          <MenuItem isSelectedMenu={selectedMenu === 'asd'}>
-            <MenuButton value={PROFILE_PAGE_MENU.POSTS} type="button" onClick={goProfilePagePosts}>
-              <PostIcon width="16" height="16" />
-              리포트
-            </MenuButton>
-          </MenuItem>
-          {/* <MenuItem>
-            <button type="button" onClick={goProfilePageAccount}>
-              내 정보 수정
-            </button>
-          </MenuItem> */}
-        </MenuList>
-      </SideBar>
+      <ProfilePageSideBar menu={menu} />
       <Content>
         {children ? (
           children
