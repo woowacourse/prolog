@@ -40,6 +40,7 @@ import wooteco.prolog.studylog.application.dto.PostResponse;
 import wooteco.prolog.studylog.application.dto.PostsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.application.dto.TagResponse;
+import wooteco.prolog.studylog.application.dto.search.StudyLogSearchParameters;
 import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Post;
@@ -150,9 +151,16 @@ class PostServiceTest extends ServiceTest {
         insertPosts(member1, post1, post2);
         insertPosts(member2, post3, post4);
 
-        PostsResponse postResponsesWithFilter =
-            postService.findPostsWithFilter(searchKeyword, levelIds, missionIds, tagIds, usernames,
-                PageRequest.of(0, 10));
+        PostsResponse postResponsesWithFilter = postService.findPostsWithFilter(
+            new StudyLogSearchParameters(
+                searchKeyword,
+                levelIds,
+                missionIds,
+                tagIds,
+                usernames,
+                PageRequest.of(0, 10)
+            )
+        );
 
         //then
         List<String> titles = postResponsesWithFilter.getData().stream()
@@ -257,10 +265,16 @@ class PostServiceTest extends ServiceTest {
 
         //then
         PostResponse expectedResult = postService.findById(targetPost.getId());
-        PostResponse expectedSearchedResult = postService.findPostsWithFilter("updateTitle",
-                emptyList(),
-                emptyList(), emptyList(), emptyList(), Pageable.unpaged())
-            .getData().get(0);
+        PostResponse expectedSearchedResult = postService.findPostsWithFilter(
+          new StudyLogSearchParameters(
+              "updateTitle",
+              emptyList(),
+              emptyList(),
+              emptyList(),
+              emptyList(),
+              Pageable.unpaged()
+          )
+        ).getData().get(0);
 
         List<String> updateTagNames = tags.stream()
             .map(Tag::getName)

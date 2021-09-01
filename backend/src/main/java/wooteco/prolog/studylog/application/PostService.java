@@ -16,6 +16,7 @@ import wooteco.prolog.studyLogDocument.application.StudyLogDocumentService;
 import wooteco.prolog.studylog.application.dto.PostRequest;
 import wooteco.prolog.studylog.application.dto.PostResponse;
 import wooteco.prolog.studylog.application.dto.PostsResponse;
+import wooteco.prolog.studylog.application.dto.search.StudyLogSearchParameters;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Post;
 import wooteco.prolog.studylog.domain.Tags;
@@ -35,31 +36,37 @@ public class PostService {
     private final MemberService memberService;
     private final TagService tagService;
 
-    public PostsResponse findPostsWithFilter(
-        String searchKeyword,
-        List<Long> levelIds,
-        List<Long> missionIds,
-        List<Long> tagIds,
-        List<String> usernames,
-        Pageable pageable) {
+    public PostsResponse findPostsWithFilter(StudyLogSearchParameters studyLogSearchParameters) {
+
+        final String searchKeyword = studyLogSearchParameters.getSearch();
+        final Pageable pageable = studyLogSearchParameters.getPageable();
 
         List<Long> studyLogIds = Collections.emptyList();
-
         if (isSearch(searchKeyword)) {
             studyLogIds = studyLogDocumentService.findBySearchKeyword(searchKeyword, pageable);
         }
 
-        Specification<Post> specs =
-            PostSpecification.findByLevelIn(levelIds)
-                .and(PostSpecification.equalIn("id", studyLogIds, isSearch(searchKeyword)))
-                .and(PostSpecification.equalIn("mission", missionIds))
-                .and(PostSpecification.findByTagIn(tagIds))
-                .and(PostSpecification.findByUsernameIn(usernames))
-                .and(PostSpecification.distinct(true));
+        if (studyLogSearchParameters.hasOnlySearch()) {
+            return PostsResponse.of(postRepository.findByIdIn(studyLogIds, pageable));
+        }
 
-        Page<Post> posts = postRepository.findAll(specs, pageable);
+        Page<Post> posts = postRepository.findAll(
+            makeSpecifications(studyLogSearchParameters, studyLogIds),
+            pageable);
 
         return PostsResponse.of(posts);
+    }
+
+    private Specification<Post> makeSpecifications(
+        StudyLogSearchParameters studyLogSearchParameters, List<Long> studyLogIds
+    ) {
+        return PostSpecification.findByLevelIn(studyLogSearchParameters.getLevels())
+            .and(PostSpecification.equalIn("id", studyLogIds,
+                isSearch(studyLogSearchParameters.getSearch())))
+            .and(PostSpecification.equalIn("mission", studyLogSearchParameters.getMissions()))
+            .and(PostSpecification.findByTagIn(studyLogSearchParameters.getTags()))
+            .and(PostSpecification.findByUsernameIn(studyLogSearchParameters.getUsernames()))
+            .and(PostSpecification.distinct(true));
     }
 
     private boolean isSearch(String searchKeyword) {
