@@ -3,12 +3,11 @@ package wooteco.prolog.tag.dto;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.posttag.domain.PostTags;
-import wooteco.prolog.tag.domain.Tag;
+import wooteco.prolog.membertag.domain.MemberTag;
 
 @Getter
 @NoArgsConstructor
@@ -19,20 +18,17 @@ public class MemberTagResponse {
     private TagResponse tagResponse;
     private int count;
 
-    public static MemberTagResponse of(Tag tag, int count) {
-        return new MemberTagResponse(TagResponse.of(tag), count);
+    public static MemberTagResponse of(MemberTag memberTag) {
+        return new MemberTagResponse(TagResponse.of(memberTag.getTag()), memberTag.getCount());
     }
 
-    public static List<MemberTagResponse> asListFrom(PostTags postTags) {
+    public static List<MemberTagResponse> asListFrom(List<MemberTag> memberTags, int postCount) {
         List<MemberTagResponse> memberTagResponses = new ArrayList<>();
-        int allCount = 0;
-        for (Entry<Tag, Long> postTagEntry : postTags.groupingWithCounting().entrySet()) {
-            final int count = Math.toIntExact(postTagEntry.getValue());
-            allCount += count;
-            memberTagResponses.add(MemberTagResponse.of(postTagEntry.getKey(), count));
-        }
-        final TagResponse allTagResponse = new TagResponse(0L, "all");
-        memberTagResponses.add(new MemberTagResponse(allTagResponse, allCount));
+        final TagResponse allTagResponse = new TagResponse(0L, "ALL");
+        memberTagResponses.add(new MemberTagResponse(allTagResponse, postCount));
+        memberTagResponses.addAll(memberTags.stream()
+            .map(MemberTagResponse::of)
+            .collect(Collectors.toList()));
         return memberTagResponses;
     }
 }

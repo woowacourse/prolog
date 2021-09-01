@@ -22,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.level.application.LevelService;
@@ -117,10 +118,15 @@ class PostServiceTest {
 
     @DisplayName("포스트 여러개 삽입")
     @Test
+    @Rollback(value = false)
     void insertPostsTest() {
         //given
+        System.out.println("================== member1 =====================");
         List<PostResponse> postsOfMember1 = insertPosts(member1, post1, post2);
+        System.out.println("================== member1 =====================");
+        System.out.println("================== member2 =====================");
         List<PostResponse> postsOfMember2 = insertPosts(member2, post3, post4);
+        System.out.println("================== member2 =====================");
         //when
         //then
         List<String> titles = Stream.concat(postsOfMember1.stream(), postsOfMember2.stream())

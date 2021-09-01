@@ -8,10 +8,12 @@ import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import wooteco.prolog.membertag.exception.NotExistsMemberTag;
 
 @Getter
 @Embeddable
+@NoArgsConstructor
 public class MemberTags {
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -53,5 +55,10 @@ public class MemberTags {
         return values.stream()
                 .filter(value -> value.isSame(memberTag))
                 .findAny();
+    }
+
+    public void updateTags(List<MemberTag> originalMemberTag, List<MemberTag> newMemberTag) {
+        removeMemberTags(originalMemberTag);
+        addMemberTags(newMemberTag);
     }
 }

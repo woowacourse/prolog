@@ -13,6 +13,12 @@ import wooteco.prolog.tag.domain.Tag;
 @Repository
 public class TagDao {
 
+    protected static RowMapper<Tag> tagRowMapper =
+        (rs, rowNum) -> {
+            long id = rs.getLong(1);
+            String name = rs.getString(2);
+            return new Tag(id, name);
+        };
     private JdbcTemplate jdbcTemplate;
 
     public TagDao(JdbcTemplate jdbcTemplate) {
@@ -23,13 +29,6 @@ public class TagDao {
         String query = "SELECT id, name FROM tag";
         return jdbcTemplate.query(query, tagRowMapper);
     }
-
-    protected static RowMapper<Tag> tagRowMapper =
-        (rs, rowNum) -> {
-            long id = rs.getLong(1);
-            String name = rs.getString(2);
-            return new Tag(id, name);
-        };
 
     public Tag insert(String name) {
         String query = "INSERT INTO tag(name) VALUES (?)";

@@ -1,7 +1,6 @@
 package wooteco.prolog.post.ui;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -36,7 +35,7 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<Void> createPost(@AuthMemberPrincipal Member member,
-        @RequestBody List<PostRequest> postRequests) {
+                                           @RequestBody List<PostRequest> postRequests) {
         List<PostResponse> postResponse = postService.insertPosts(member, postRequests);
         return ResponseEntity.created(URI.create("/posts/" + postResponse.get(0).getId())).build();
     }
@@ -49,7 +48,8 @@ public class PostController {
         @RequestParam(required = false) List<String> usernames,
         @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable
     ) {
-        PostsResponse postsResponse = postService.findPostsWithFilter(levels, missions, tags, usernames, pageable);
+        PostsResponse postsResponse = postService
+            .findPostsWithFilter(levels, missions, tags, usernames, pageable);
         return ResponseEntity.ok(postsResponse);
     }
 
@@ -74,7 +74,7 @@ public class PostController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@AuthMemberPrincipal Member member,
-        @PathVariable Long id) {
+                                           @PathVariable Long id) {
         postService.deletePost(member, id);
         return ResponseEntity.noContent().build();
     }

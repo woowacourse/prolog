@@ -71,23 +71,26 @@ public class PostService {
         if (postRequests.size() == 0) {
             throw new PostArgumentException();
         }
+        final Member byId = memberService.findById(member.getId());
 
         return postRequests.stream()
-                .map(postRequest -> insertPost(member, postRequest))
+                .map(postRequest -> insertPost(byId, postRequest))
                 .collect(toList());
     }
 
     private PostResponse insertPost(Member member, PostRequest postRequest) {
+        final Member foundMember = memberService.findById(member.getId());
         Tags tags = tagService.findOrCreate(postRequest.getTags());
         Mission mission = missionService.findById(postRequest.getMissionId());
 
-        Post requestedPost = new Post(member,
+        Post requestedPost = new Post(foundMember,
                 postRequest.getTitle(),
                 postRequest.getContent(),
                 mission,
                 tags.getList());
 
         Post createdPost = postRepository.save(requestedPost);
+        foundMember.addTags(tags);
 
         return PostResponse.of(createdPost);
     }
@@ -101,22 +104,29 @@ public class PostService {
 
     @Transactional
     public void updatePost(Member member, Long postId, PostRequest postRequest) {
+        final Member foundMember = memberService.findById(member.getId());
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
-        post.validateAuthor(member);
+        post.validateAuthor(foundMember);
+        final Tags originalTags = tagService.findByPostAndMember(post, foundMember);
 
         Mission mission = missionService.findById(postRequest.getMissionId());
-        Tags tags = tagService.findOrCreate(postRequest.getTags());
-        post.update(postRequest.getTitle(), postRequest.getContent(), mission, tags);
+        Tags newTags = tagService.findOrCreate(postRequest.getTags());
+
+        post.update(postRequest.getTitle(), postRequest.getContent(), mission, newTags);
+        foundMember.updateTags(originalTags, newTags);
     }
 
     @Transactional
     public void deletePost(Member member, Long postId) {
+        final Member foundMember = memberService.findById(member.getId());
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
-        post.validateAuthor(member);
+        post.validateAuthor(foundMember);
 
         postRepository.delete(post);
+        final Tags tags = tagService.findByPostAndMember(post, foundMember);
+        foundMember.removeTag(tags);
     }
 
     public List<CalendarPostResponse> findCalendarPosts(String username, LocalDate localDate) {
@@ -128,5 +138,9 @@ public class PostService {
                 .stream()
                 .map(CalendarPostResponse::of)
                 .collect(toList());
+    }
+
+    public int countPostByMember(Member member) {
+        return postRepository.countByMember(member);
     }
 }

@@ -30,13 +30,13 @@ public class MemberTag {
     @JoinColumn(name = "tag_id", nullable = false)
     private Tag tag;
 
-    private Long count;
+    private int count;
 
     public MemberTag(Member member, Tag tag) {
-        this(null, member, tag, 0L);
+        this(null, member, tag, 1);
     }
 
-    public MemberTag(Long id, Member member, Tag tag, Long count) {
+    public MemberTag(Long id, Member member, Tag tag, int count) {
         this.id = id;
         this.member = member;
         this.tag = tag;

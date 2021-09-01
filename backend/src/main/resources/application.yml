@@ -22,5 +22,6 @@ spring:
     properties:
       hibernate:
         show_sql: true
+        default_batch_fetch_size: 1000
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5Dialect

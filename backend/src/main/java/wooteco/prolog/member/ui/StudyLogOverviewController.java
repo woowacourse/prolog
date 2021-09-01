@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import wooteco.prolog.membertag.application.MemberTagService;
 import wooteco.prolog.post.application.PostService;
 import wooteco.prolog.post.application.dto.CalendarPostResponse;
-import wooteco.prolog.tag.application.TagService;
 import wooteco.prolog.tag.dto.MemberTagResponse;
 
 @RestController
@@ -23,13 +23,13 @@ import wooteco.prolog.tag.dto.MemberTagResponse;
 @RequiredArgsConstructor
 public class StudyLogOverviewController {
 
-    private final TagService tagService;
     private final PostService postService;
+    private final MemberTagService memberTagService;
 
     @GetMapping("/{username}/tags")
     public ResponseEntity<MemberDataResponses<MemberTagResponse>> findTagsOfMine(
             @PathVariable String username) {
-        return ResponseEntity.ok(MemberDataResponses.of(tagService.findByMember(username)));
+        return ResponseEntity.ok(MemberDataResponses.of(memberTagService.findByMember(username)));
     }
 
     @GetMapping("/{username}/calendar-posts")

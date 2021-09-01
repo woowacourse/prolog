@@ -13,11 +13,11 @@ public class TagRequest {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public static Tag toEntity(TagRequest tagRequest) {
         return new Tag(tagRequest.getName());
+    }
+
+    public String getName() {
+        return name;
     }
 }
