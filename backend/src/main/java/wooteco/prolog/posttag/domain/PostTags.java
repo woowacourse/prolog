@@ -17,7 +17,7 @@ import wooteco.prolog.tag.domain.Tag;
 @Embeddable
 public class PostTags {
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
     private final List<PostTag> values = new ArrayList<>();
 
     public void add(List<PostTag> postTags) {

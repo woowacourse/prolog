@@ -1,7 +1,10 @@
 package wooteco.prolog.member.domain;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,6 +15,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
+import wooteco.prolog.membertag.domain.MemberTag;
+import wooteco.prolog.membertag.domain.MemberTags;
+import wooteco.prolog.tag.domain.Tag;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -36,6 +42,9 @@ public class Member {
 
     @Column(nullable = false)
     private String imageUrl;
+
+    @Embedded
+    private MemberTags memberTags;
 
     public Member(String username, String nickname, Role role, Long githubId, String imageUrl) {
         this(null, username, nickname, role, githubId, imageUrl);
@@ -73,6 +82,17 @@ public class Member {
         if (!ObjectUtils.isEmpty(imageUrl)) {
             this.imageUrl = imageUrl;
         }
+    }
+
+    public void addTag(Tag tag) {
+        memberTags.add(new MemberTag(this, tag));
+    }
+
+    public void addTags(List<Tag> tags) {
+        final List<MemberTag> newMemberTags = tags.stream()
+                .map(tag -> new MemberTag(this, tag))
+                .collect(Collectors.toList());
+        memberTags.addMemberTags(newMemberTags);
     }
 
     public Long getId() {

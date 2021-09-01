@@ -1,5 +1,6 @@
 package wooteco.prolog.post.domain;
 
+import javax.persistence.FetchType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.BaseEntity;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 @Entity
 public class Post extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
@@ -32,7 +33,7 @@ public class Post extends BaseEntity {
     @Embedded
     private Content content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
     private Mission mission;
 
