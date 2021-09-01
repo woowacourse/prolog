@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+  <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+  <springProfile name="acceptance">
+    <include resource="logback/console-logger.xml"/>
+
+    <logger name="wooteco.prolog" level="DEBUG">
+      <appender-ref ref="console-logger"/>
+    </logger>
+
+    <logger name="org.hibernate.tool.hbm2ddl" level="DEBUG" additivity="false">
+      <appender-ref ref="console-logger"/>
+    </logger>
+
+    <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+      <appender-ref ref="console-logger"/>
+    </logger>
+
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
+      <appender-ref ref="db-logger-console"/>
+    </logger>
+
+    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="TRACE" additivity="false">
+      <appender-ref ref="db-logger-console"/>
+    </logger>
+  </springProfile>
+</configuration>
