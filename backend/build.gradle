@@ -76,6 +76,7 @@ dependencies {
 
     // elastic-search
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    implementation "org.testcontainers:elasticsearch:1.15.3"
 
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
