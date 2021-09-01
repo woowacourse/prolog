@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   jpa:
     generate-ddl: true
     database: h2
@@ -29,7 +31,3 @@ security:
     token:
       secret-key: xpzmzhtmvmfhrmvmfhwprxm
       expire-length: 3600000
-
-elasticsearch:
-  host: 127.0.0.1
-  port: 9200

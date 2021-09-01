@@ -16,18 +16,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
-import wooteco.prolog.common.ServiceTest;
+import wooteco.prolog.common.ElasticServiceTest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studyLogDocument.application.StudyLogDocumentService;
-import wooteco.prolog.studyLogDocument.domain.StudyLogDocumentRepository;
 import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
 import wooteco.prolog.studylog.application.PostService;
@@ -46,7 +42,7 @@ import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Post;
 import wooteco.prolog.studylog.domain.Tag;
 
-class PostServiceTest extends ServiceTest {
+class PostServiceTest extends ElasticServiceTest {
 
     private static final String POST1_TITLE = "이것은 네번 제목";
     private static final String POST2_TITLE = "이것은 두번째 제목";

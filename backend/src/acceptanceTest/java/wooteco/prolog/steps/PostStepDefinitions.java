@@ -99,8 +99,6 @@ public class PostStepDefinitions extends AcceptanceSteps {
 
     @Given("서로 다른 태그와 미션을 가진 포스트를 다수 생성하고")
     public void 서로다른태그와미션을가진포스트를생성() {
-        studyLogDocumentRepository.deleteAll();
-
         List<PostRequest> postRequests = new ArrayList<>();
 
         for (int i = 0; i < 7; i++) {

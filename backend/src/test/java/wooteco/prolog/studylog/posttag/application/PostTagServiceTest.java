@@ -4,12 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.TestConstructor;
-import org.springframework.test.context.TestConstructor.AutowireMode;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.common.ServiceTest;
+import wooteco.prolog.common.ElasticServiceTest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
@@ -23,12 +19,11 @@ import wooteco.prolog.studylog.domain.Tag;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class PostTagServiceTest extends ServiceTest {
+class PostTagServiceTest extends ElasticServiceTest {
 
     @Autowired
     private PostTagService postTagService;

@@ -10,10 +10,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import wooteco.prolog.common.ServiceTest;
+import wooteco.prolog.common.ElasticServiceTest;
 import wooteco.prolog.studyLogDocument.domain.StudyLogDocument;
 
-class StudyLogDocumentServiceTest extends ServiceTest {
+class StudyLogDocumentServiceTest extends ElasticServiceTest {
 
     private static String 검색어 = "테스트";
     private static String 띄어쓰기가_포함된_검색어 = "테스트 하자";
