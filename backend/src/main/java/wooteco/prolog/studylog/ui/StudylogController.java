@@ -18,7 +18,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/studylogs")
+@RequestMapping("/posts")
 public class StudylogController {
 
     private final StudylogService studylogService;
@@ -32,7 +32,7 @@ public class StudylogController {
                                            @RequestBody List<StudylogRequest> studylogRequests) {
         List<StudylogResponse> studylogResponse = studylogService
                 .insertStudylogs(member, studylogRequests);
-        return ResponseEntity.created(URI.create("/studylogs/" + studylogResponse.get(0).getId())).build();
+        return ResponseEntity.created(URI.create("/posts/" + studylogResponse.get(0).getId())).build();
     }
 
     @GetMapping

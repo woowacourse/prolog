@@ -34,7 +34,7 @@ public class StudylogDocumentation extends Documentation {
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
                 .body(studylogRequest)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/studylogs")
+                .when().post("/posts")
                 .then().log().all().extract();
 
         // then
@@ -64,7 +64,7 @@ public class StudylogDocumentation extends Documentation {
         ExtractableResponse<Response> response = given("studylog/list")
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/studylogs")
+                .when().get("/posts")
                 .then().log().all().extract();
 
         // then
@@ -88,7 +88,7 @@ public class StudylogDocumentation extends Documentation {
         ExtractableResponse<Response> response = given("studylog/filter")
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/studylogs?levels=1&missions=1&tags=1&tags=2&usernames=soulG")
+                .when().get("/posts?levels=1&missions=1&tags=1&tags=2&usernames=soulG")
                 .then().log().all().extract();
 
         // given
@@ -163,7 +163,7 @@ public class StudylogDocumentation extends Documentation {
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().log().all()
-                .post("/studylogs")
+                .post("/posts")
                 .then().log().all().extract();
     }
 

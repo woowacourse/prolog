@@ -21,7 +21,7 @@ public class ProfileDocumentation extends Documentation {
 
         given("profile/studylog")
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/members/{username}/studylogs", GithubResponses.소롱.getLogin());
+                .when().get("/members/{username}/posts", GithubResponses.소롱.getLogin());
     }
 
     @Test
@@ -58,7 +58,7 @@ public class ProfileDocumentation extends Documentation {
                 .body(request)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().log().all()
-                .post("/studylogs")
+                .post("/posts")
                 .then().log().all().extract();
     }
 

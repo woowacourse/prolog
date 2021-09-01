@@ -23,7 +23,7 @@ public class ProfileStudylogController {
     private StudylogService studylogService;
     private MemberService memberService;
 
-    @GetMapping(value = "/{username}/studylogs", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{username}/posts", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StudylogsResponse> findAllStudylogsOfMine(@PathVariable String username,
                                                             @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
         StudylogsResponse studylogs = studylogService.findStudylogsOf(username, pageable);

@@ -27,7 +27,7 @@ public class ProfileStepDefinitions extends AcceptanceSteps {
     @When("{string}의 프로필 스터디로그를 조회하면")
     public void 멤버프로필스터디로그를조회하면(String member) {
         String username = GithubResponses.findByName(member).getLogin();
-        context.invokeHttpGet("/members/" + username + "/studylogs");
+        context.invokeHttpGet("/members/" + username + "/posts");
     }
 
     @Then("프로필 스터디로그가 조회된다")

@@ -38,7 +38,7 @@ public class TagDocumentation extends Documentation {
                 .body(params)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .post("/studylogs")
+                .post("/posts")
                 .then()
                 .log().all();
 
