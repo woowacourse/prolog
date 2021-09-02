@@ -2,7 +2,7 @@ package wooteco.prolog.studylog.domain;
 
 
 import lombok.*;
-import wooteco.prolog.studylog.exception.PostContentNullOrEmptyException;
+import wooteco.prolog.studylog.exception.StudylogContentNullOrEmptyException;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -32,7 +32,7 @@ public class Content {
 
     private void validateNullOrEmpty(String content, int trimedContentLength) {
         if (Objects.isNull(content) || trimedContentLength == 0) {
-            throw new PostContentNullOrEmptyException();
+            throw new StudylogContentNullOrEmptyException();
         }
     }
 }

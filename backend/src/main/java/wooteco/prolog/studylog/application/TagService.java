@@ -20,7 +20,7 @@ import static java.util.stream.Collectors.toList;
 public class TagService {
 
     private final TagRepository tagRepository;
-    private final PostTagService postTagService;
+    private final StudylogTagService studylogTagService;
 
     @Transactional
     public Tags findOrCreate(List<TagRequest> tagRequests) {
