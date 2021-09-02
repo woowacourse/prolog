@@ -2,7 +2,7 @@
 <configuration debug="false">
   <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-  <springProfile name="acceptance">
+  <springProfile name="test">
     <include resource="logback/console-logger.xml"/>
 
     <logger name="wooteco.prolog" level="DEBUG">

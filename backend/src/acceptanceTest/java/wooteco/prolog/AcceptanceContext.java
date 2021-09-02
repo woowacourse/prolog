@@ -4,11 +4,9 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-@Profile("acceptance")
 @Component
 @Scope(scopeName = "cucumber-glue")
 public class AcceptanceContext {

@@ -5,11 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
 import wooteco.prolog.studylog.application.TagService;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.application.dto.TagResponse;
 import wooteco.prolog.studylog.exception.DuplicateTagException;
+import wooteco.support.utils.IntegrationTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,9 +19,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@ActiveProfiles("test")
-@SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@IntegrationTest
 public class TagServiceTest {
 
     public static final TagRequest firstRequest = new TagRequest("소롱의글쓰기");

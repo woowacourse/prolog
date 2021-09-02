@@ -31,10 +31,9 @@ import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.application.dto.TagResponse;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
+import wooteco.support.utils.IntegrationTest;
 
-@SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-@TestConstructor(autowireMode = AutowireMode.ALL)
+@IntegrationTest
 class StudylogTagServiceTest {
 
     @Autowired
