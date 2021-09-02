@@ -24,12 +24,6 @@ spring:
       ddl-auto: create-drop
     properties:
       hibernate:
-        format_sql: true
         show_sql: false
+        format_sql: true
         use_sql_comment: false
-
-logging:
-  level:
-    org:
-      hibernate:
-        type: trace

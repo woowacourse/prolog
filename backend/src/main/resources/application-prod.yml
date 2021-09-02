@@ -7,7 +7,9 @@ spring:
       ddl-auto: validate
     properties:
       hibernate:
-        show_sql: true
+        show_sql: false
+        format_sql: true
+        use_sql_comment: false
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5Dialect
 
@@ -24,9 +26,3 @@ github:
   url:
     access-token: access-token
     profile: profile
-
-logging:
-  level:
-    org:
-      hibernate:
-        type: trace

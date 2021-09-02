@@ -10,8 +10,8 @@ spring:
       ddl-auto: create-drop
     properties:
       hibernate:
-        format_sql: true
         show_sql: false
+        format_sql: true
         use_sql_comment: false
 
 security:
@@ -27,9 +27,3 @@ github:
   url:
     access-token: https://github.com/login/oauth/access_token
     profile: https://api.github.com/user
-
-logging:
-  level:
-    org:
-      hibernate:
-        type: trace
