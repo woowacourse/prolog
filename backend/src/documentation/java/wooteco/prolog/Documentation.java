@@ -11,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
 import wooteco.prolog.login.application.dto.TokenRequest;
 import wooteco.prolog.login.application.dto.TokenResponse;
 
@@ -20,7 +19,6 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
 
-@ActiveProfiles("docu")
 @ExtendWith(RestDocumentationExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)

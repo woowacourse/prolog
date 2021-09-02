@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
@@ -24,6 +23,7 @@ import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Post;
 import wooteco.prolog.studylog.domain.Tag;
+import wooteco.support.utils.IntegrationTest;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -35,9 +35,7 @@ import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("test")
-@SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@IntegrationTest
 class PostServiceTest {
 
     private static final String POST1_TITLE = "이것은 제목";

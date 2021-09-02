@@ -6,9 +6,7 @@ import io.restassured.RestAssured;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("acceptance")
 @DirtiesContext
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @CucumberContextConfiguration

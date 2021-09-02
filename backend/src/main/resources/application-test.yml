@@ -27,3 +27,9 @@ spring:
         format_sql: true
         show_sql: false
         use_sql_comment: false
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace

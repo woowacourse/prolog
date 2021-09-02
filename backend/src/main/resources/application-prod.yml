@@ -3,16 +3,13 @@ server:
 
 spring:
   jpa:
-    generate-ddl: true
-    database: h2
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     properties:
       hibernate:
-        format_sql: true
-        show_sql: false
-        use_sql_comment: false
+        show_sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5Dialect
 
 security:
   jwt:
@@ -27,3 +24,9 @@ github:
   url:
     access-token: access-token
     profile: profile
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: trace
