@@ -7,7 +7,7 @@
 :sectlinks:
 
 include::login.adoc[]
-include::post.adoc[]
+include::studylog.adoc[]
 include::profile.adoc[]
 include::mission.adoc[]
 include::tag.adoc[]
