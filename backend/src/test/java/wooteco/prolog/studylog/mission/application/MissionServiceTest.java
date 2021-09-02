@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
-import wooteco.prolog.common.ServiceTest;
 import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
 import wooteco.prolog.studylog.application.dto.LevelRequest;
@@ -18,6 +16,7 @@ import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.exception.DuplicateMissionException;
 import wooteco.prolog.studylog.exception.MissionNotFoundException;
+import wooteco.support.utils.IntegrationTest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +24,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class MissionServiceTest extends ServiceTest {
+@IntegrationTest
+class MissionServiceTest {
 
     @Autowired
     private LevelService levelService;

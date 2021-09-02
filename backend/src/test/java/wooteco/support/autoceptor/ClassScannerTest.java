@@ -17,7 +17,7 @@ class ClassScannerTest {
     @Test
     void getAllClasses() {
         // given
-        final String basePackage = "wooteco.prolog.login.ui.autoceptor.test_classes";
+        final String basePackage = "wooteco.support.autoceptor.test_classes";
         ClassScanner classScanner = new ClassScanner(basePackage);
 
         // when

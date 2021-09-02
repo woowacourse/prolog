@@ -8,7 +8,16 @@ import { Viewer } from '@toast-ui/react-editor';
 import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
 
-import { CardInner, SubHeader, Mission, Title, Tags, IssuedDate, ProfileChipStyle } from './styles';
+import {
+  CardInner,
+  SubHeader,
+  Mission,
+  Title,
+  Tags,
+  IssuedDate,
+  ProfileChipStyle,
+  ViewerWrapper,
+} from './styles';
 import useNotFound from '../../hooks/useNotFound';
 
 const PostPage = () => {
@@ -52,9 +61,9 @@ const PostPage = () => {
             {author?.nickname}
           </ProfileChip>
         </div>
-        <div>
+        <ViewerWrapper>
           <Viewer initialValue={content} />
-        </div>
+        </ViewerWrapper>
         <Tags>
           {tags?.map(({ id, name }) => (
             <span key={id}>{`#${name} `}</span>

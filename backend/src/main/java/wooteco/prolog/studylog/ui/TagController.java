@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.studylog.application.PostTagService;
+import wooteco.prolog.studylog.application.StudylogTagService;
 import wooteco.prolog.studylog.application.dto.TagResponse;
 
 import java.util.List;
@@ -15,11 +15,11 @@ import java.util.List;
 @AllArgsConstructor
 public class TagController {
 
-    private final PostTagService postTagService;
+    private final StudylogTagService studylogTagService;
 
     @GetMapping
     public ResponseEntity<List<TagResponse>> showAll() {
-        List<TagResponse> tags = postTagService.findTagsIncludedInPost();
+        List<TagResponse> tags = studylogTagService.findTagsIncludedInStudylogs();
         return ResponseEntity.ok(tags);
     }
 }

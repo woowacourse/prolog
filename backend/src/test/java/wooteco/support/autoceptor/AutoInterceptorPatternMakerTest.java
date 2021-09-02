@@ -15,7 +15,7 @@ class AutoInterceptorPatternMakerTest {
     void extractPatterns() {
         // given
         AutoInterceptorPatternMaker maker = new AutoInterceptorPatternMaker(
-                "wooteco.prolog.login.ui.autoceptor.test_classes",
+                "wooteco.support.autoceptor.test_classes",
                 AuthMemberPrincipal.class
         );
 

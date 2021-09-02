@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class TagRepositoryTest {
 
     @Autowired
-    TagRepository tagRepository;
+    private TagRepository tagRepository;
 
     @DisplayName("Tag 생성")
     @Test

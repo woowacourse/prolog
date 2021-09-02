@@ -1,8 +1,11 @@
 <configuration>
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%n###### HTTP Request ######%n%fullRequest%n###### HTTP Response ######%n%fullResponse%n%n</pattern>
-        </encoder>
-    </appender>
-    <appender-ref ref="STDOUT" />
+    <springProfile name="prod, dev">
+        <include resource="logback/access-logger.xml"/>
+        <appender-ref ref="access-logger"/>
+    </springProfile>
+
+    <springProfile name="prod, dev, local, test">
+        <include resource="logback/console-access-logger.xml"/>
+        <appender-ref ref="console-access-logger"/>
+    </springProfile>
 </configuration>

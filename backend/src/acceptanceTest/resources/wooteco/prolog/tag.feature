@@ -7,10 +7,10 @@ Feature: 태그 관련 기능
     And "웨지"가 로그인을 하고
 
   Scenario: 태그 작성하기
-    When 포스트를 작성하면
+    When 스터디로그를 작성하면
     Then 태그도 작성된다
 
   Scenario: 태그 목록 조회하기
-    Given 포스트 여러개를 작성하고
+    Given 스터디로그 여러개를 작성하고
     When 태그 목록을 조회하면
     Then 태그 목록을 받는다
