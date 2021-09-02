@@ -24,3 +24,7 @@ spring:
         show_sql: true
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5Dialect
+
+elasticsearch:
+  host: test_host
+  port: test_port
