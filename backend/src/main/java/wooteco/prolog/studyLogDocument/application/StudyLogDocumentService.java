@@ -3,17 +3,21 @@ package wooteco.prolog.studyLogDocument.application;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import wooteco.prolog.studyLogDocument.domain.StudyLogDocument;
 import wooteco.prolog.studyLogDocument.domain.StudyLogDocumentRepository;
+import wooteco.prolog.studylog.domain.Studylog;
+import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 
 @AllArgsConstructor
 @Service
 public class StudyLogDocumentService {
 
     private final StudyLogDocumentRepository studyLogDocumentRepository;
+    private final StudylogRepository studylogRepository;
 
     public void save(StudyLogDocument studyLogDocument) {
         studyLogDocumentRepository.save(studyLogDocument);
@@ -33,5 +37,17 @@ public class StudyLogDocumentService {
 
     public void deleteAll() {
         studyLogDocumentRepository.deleteAll();
+    }
+
+    public void sync() {
+        // sync between es and db
+        studyLogDocumentRepository.deleteAll();
+
+        List<Studylog> studylogs = studylogRepository.findAll();
+        studyLogDocumentRepository.saveAll(
+            studylogs.stream()
+                .map(Studylog::toStudyLogDocument)
+                .collect(Collectors.toList())
+        );
     }
 }

@@ -19,21 +19,24 @@ import org.testcontainers.elasticsearch.ElasticsearchContainer;
 @EnableElasticsearchRepositories
 public class ElasticSearchLocalConfig extends AbstractElasticsearchConfiguration {
 
+    public static final String DOCKER_IMAGE_NAME = "docker.elastic.co/elasticsearch/elasticsearch:7.12.0";
+
     @Bean
     @Override
     public RestHighLevelClient elasticsearchClient() {
-        ElasticsearchContainer container
-                = new ElasticsearchContainer("docker.elastic.co/elasticsearch/elasticsearch:7.12.0");
+        ElasticsearchContainer container = new ElasticsearchContainer(DOCKER_IMAGE_NAME);
         container.start();
 
         BasicCredentialsProvider credentialProvider = new BasicCredentialsProvider();
         credentialProvider.setCredentials(AuthScope.ANY,
-                new UsernamePasswordCredentials("admin", "admin"));
+            new UsernamePasswordCredentials("admin", "admin"));
 
-        RestClientBuilder builder = RestClient.builder(HttpHost.create(container.getHttpHostAddress()))
-                .setHttpClientConfigCallback(
-                        httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialProvider)
-                );
+        RestClientBuilder builder = RestClient
+            .builder(HttpHost.create(container.getHttpHostAddress()))
+            .setHttpClientConfigCallback(
+                httpClientBuilder -> httpClientBuilder
+                    .setDefaultCredentialsProvider(credentialProvider)
+            );
 
         return new RestHighLevelClient(builder);
     }
