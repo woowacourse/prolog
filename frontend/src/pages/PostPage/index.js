@@ -17,15 +17,25 @@ import {
   IssuedDate,
   ProfileChipStyle,
   ViewerWrapper,
+  SubHeaderRightContent,
+  EditButton,
+  RemoveButton,
 } from './styles';
 import useNotFound from '../../hooks/useNotFound';
+import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
+import { useSelector } from 'react-redux';
+import usePost from '../../hooks/usePost';
 
 const PostPage = () => {
   const history = useHistory();
-
   const { id: postId } = useParams();
   const [post, errorStatus] = useFetch({}, () => requestGetPost(postId));
   const { NotFound } = useNotFound();
+
+  const { deleteData: deletePost } = usePost({});
+
+  const accessToken = useSelector((state) => state.user.accessToken.data);
+  const myName = useSelector((state) => state.user.profile.data?.username);
 
   const { id, author, createdAt, mission, title, tags, content } = post;
 
@@ -38,10 +48,26 @@ const PostPage = () => {
     }
   }
 
-  const goProfilePage = (username) => (event) => {
-    event.stopPropagation();
-
+  const goProfilePage = (username) => {
     history.push(`/${username}`);
+  };
+
+  const goEditTargetPost = (id) => {
+    history.push(`${PATH.POST}/${id}/edit`);
+  };
+
+  const onDeletePost = async (id) => {
+    if (!window.confirm(CONFIRM_MESSAGE.DELETE_POST)) return;
+
+    const hasError = await deletePost(id, accessToken);
+
+    if (hasError) {
+      alert(ALERT_MESSAGE.FAIL_TO_DELETE_POST);
+
+      return;
+    }
+
+    history.goBack();
   };
 
   return (
@@ -50,13 +76,25 @@ const PostPage = () => {
         <div>
           <SubHeader>
             <Mission>{mission?.name}</Mission>
-            <IssuedDate>{new Date(createdAt).toLocaleString('ko-KR')}</IssuedDate>
+            <SubHeaderRightContent>
+              <IssuedDate>{new Date(createdAt).toLocaleString('ko-KR')}</IssuedDate>
+              {myName === author?.username && (
+                <>
+                  <EditButton type="button" alt="수정 버튼" onClick={() => goEditTargetPost(id)}>
+                    수정
+                  </EditButton>
+                  <RemoveButton type="button" alt="삭제 버튼" onClick={() => onDeletePost(id)}>
+                    삭제
+                  </RemoveButton>
+                </>
+              )}
+            </SubHeaderRightContent>
           </SubHeader>
           <Title>{title}</Title>
           <ProfileChip
             imageSrc={author?.imageUrl}
             css={ProfileChipStyle}
-            onClick={goProfilePage(author?.username)}
+            onClick={() => goProfilePage(author?.username)}
           >
             {author?.nickname}
           </ProfileChip>

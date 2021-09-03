@@ -21,6 +21,29 @@ const SubHeader = styled.div`
   justify-content: space-between;
 `;
 
+const SubHeaderRightContent = styled.div`
+  display: flex;
+  align-items: center;
+
+  & > button {
+    margin-left: 0.7rem;
+    font-size: 1.5rem;
+    color: ${COLOR.BLACK_OPACITY_600};
+  }
+`;
+
+const EditButton = styled.button`
+  &:hover {
+    color: ${COLOR.BLACK_800};
+  }
+`;
+
+const RemoveButton = styled.button`
+  &:hover {
+    color: ${COLOR.RED_500};
+  }
+`;
+
 const Mission = styled.div`
   font-size: 2rem;
   color: ${COLOR.DARK_GRAY_900};
@@ -59,4 +82,16 @@ const ViewerWrapper = styled.div`
   word-break: break-all;
 `;
 
-export { CardInner, SubHeader, Mission, Title, Tags, IssuedDate, ProfileChipStyle, ViewerWrapper };
+export {
+  CardInner,
+  SubHeader,
+  SubHeaderRightContent,
+  EditButton,
+  RemoveButton,
+  Mission,
+  Title,
+  Tags,
+  IssuedDate,
+  ProfileChipStyle,
+  ViewerWrapper,
+};
