@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studyLogDocument.application.StudyLogDocumentService;
+import wooteco.prolog.studyLogDocument.domain.StudyLogDocument;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
@@ -101,6 +102,10 @@ public class StudylogService {
             tags.getList());
 
         Studylog createdStudylog = studylogRepository.save(requestedStudylog);
+
+        studyLogDocumentService.save(
+            new StudyLogDocument(createdStudylog.getId(), createdStudylog.getTitle(),
+                createdStudylog.getContent()));
 
         return StudylogResponse.of(createdStudylog);
     }

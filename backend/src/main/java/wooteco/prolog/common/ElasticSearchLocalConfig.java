@@ -14,12 +14,12 @@ import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfig
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
 
-@Profile("local")
+@Profile({"local", "test"})
 @Configuration
 @EnableElasticsearchRepositories
 public class ElasticSearchLocalConfig extends AbstractElasticsearchConfiguration {
 
-    public static final String DOCKER_IMAGE_NAME = "docker.elastic.co/elasticsearch/elasticsearch:7.12.0";
+    public static final String DOCKER_IMAGE_NAME = "docker.elastic.co/elasticsearch/elasticsearch:7.14.1";
 
     @Bean
     @Override

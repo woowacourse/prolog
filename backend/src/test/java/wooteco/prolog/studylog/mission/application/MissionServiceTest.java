@@ -1,11 +1,14 @@
 package wooteco.prolog.studylog.mission.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
 import wooteco.prolog.studylog.application.dto.LevelRequest;
@@ -17,12 +20,6 @@ import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.exception.DuplicateMissionException;
 import wooteco.prolog.studylog.exception.MissionNotFoundException;
 import wooteco.support.utils.IntegrationTest;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @IntegrationTest
 class MissionServiceTest {
@@ -69,7 +66,7 @@ class MissionServiceTest {
 
         // when, then
         assertThatThrownBy(() -> missionService.create(request))
-                .isExactlyInstanceOf(DuplicateMissionException.class);
+            .isExactlyInstanceOf(DuplicateMissionException.class);
     }
 
     @DisplayName("ID를 통해서 Mission을 조회한다.")
@@ -84,7 +81,7 @@ class MissionServiceTest {
 
         // then
         assertThat(foundMission).usingRecursiveComparison()
-                .isEqualTo(savedMission);
+            .isEqualTo(savedMission);
     }
 
     @DisplayName("ID를 통해서 Mission 조회 실패시 지정된 예외가 발생한다.")
@@ -92,16 +89,19 @@ class MissionServiceTest {
     void findByIdExceptionTest() {
         // when, then
         assertThatThrownBy(() -> missionService.findById(999L))
-                .isExactlyInstanceOf(MissionNotFoundException.class);
+            .isExactlyInstanceOf(MissionNotFoundException.class);
     }
 
     @DisplayName("ID 리스트를 통해서 Mission 리스트를 조회한다.")
     @Test
     void findByIdsTest() {
         // given
-        MissionResponse mission1 = missionService.create(new MissionRequest("레벨1 - 자동차 경주 미션", level1.getId()));
-        MissionResponse mission2 = missionService.create(new MissionRequest("레벨2 - 로또 미션", level2.getId()));
-        MissionResponse mission3 = missionService.create(new MissionRequest("레벨3 - 블랙잭 미션", level3.getId()));
+        MissionResponse mission1 = missionService
+            .create(new MissionRequest("레벨1 - 자동차 경주 미션", level1.getId()));
+        MissionResponse mission2 = missionService
+            .create(new MissionRequest("레벨2 - 로또 미션", level2.getId()));
+        MissionResponse mission3 = missionService
+            .create(new MissionRequest("레벨3 - 블랙잭 미션", level3.getId()));
 
         List<Long> missionIds = Arrays.asList(mission1.getId(), mission2.getId(), mission3.getId());
 
@@ -129,9 +129,12 @@ class MissionServiceTest {
     @Test
     void findAllTest() {
         // given
-        MissionResponse mission1 = missionService.create(new MissionRequest("레벨1 - 자동차 경주 미션", level1.getId()));
-        MissionResponse mission2 = missionService.create(new MissionRequest("레벨2 - 로또 미션", level2.getId()));
-        MissionResponse mission3 = missionService.create(new MissionRequest("레벨3 - 블랙잭 미션", level3.getId()));
+        MissionResponse mission1 = missionService
+            .create(new MissionRequest("레벨1 - 자동차 경주 미션", level1.getId()));
+        MissionResponse mission2 = missionService
+            .create(new MissionRequest("레벨2 - 로또 미션", level2.getId()));
+        MissionResponse mission3 = missionService
+            .create(new MissionRequest("레벨3 - 블랙잭 미션", level3.getId()));
 
         // when
         List<MissionResponse> responses = missionService.findAll();
