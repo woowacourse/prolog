@@ -1,13 +1,13 @@
 package wooteco.prolog.common;
 
-import com.google.common.base.CaseFormat;
 import java.io.IOException;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.sql.DataSource;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -28,16 +28,24 @@ public class DataInitializer implements InitializingBean {
     @Autowired
     private RestHighLevelClient esClient;
 
+    @Autowired
+    private DataSource dataSource;
+
     private List<String> tableNames;
 
     @Override
     public void afterPropertiesSet() {
-        tableNames = entityManager.getMetamodel().getEntities().stream()
-            .filter(
-                entityType -> Objects.nonNull(entityType.getJavaType().getAnnotation(Entity.class)))
-            .map(entityType -> CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE,
-                entityType.getName()))
-            .collect(Collectors.toList());
+        tableNames = new ArrayList<>();
+        try {
+            DatabaseMetaData metaData = dataSource.getConnection().getMetaData();
+            ResultSet tables = metaData.getTables(null, null, null, new String[]{"TABLE"});
+            while (tables.next()) {
+                String tableName = tables.getString("TABLE_NAME");
+                tableNames.add(tableName);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
     @Transactional
