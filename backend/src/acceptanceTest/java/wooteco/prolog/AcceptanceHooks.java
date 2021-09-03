@@ -3,19 +3,26 @@ package wooteco.prolog;
 import io.cucumber.java.Before;
 import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
-import wooteco.support.utils.AcceptanceTest;
+import wooteco.prolog.common.DataInitializer;
 
 @CucumberContextConfiguration
-@AcceptanceTest
+@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public class AcceptanceHooks {
 
     @LocalServerPort
     private int port;
 
+    @Autowired
+    private DataInitializer dataInitializer;
+
     @Before("@api")
     public void setupForApi() {
         RestAssured.port = port;
+        dataInitializer.execute();
     }
 }
 
