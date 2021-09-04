@@ -4,8 +4,6 @@
 
   <springProfile name="prod">
     <include resource="logback/console-logger.xml"/>
-    <include resource="logback/db-logger.xml"/>
-    <include resource="logback/debug-logger.xml"/>
     <include resource="logback/info-logger.xml"/>
     <include resource="logback/warn-logger.xml"/>
     <include resource="logback/error-logger.xml"/>
@@ -25,7 +23,6 @@
 
   <springProfile name="dev">
     <include resource="logback/console-logger.xml"/>
-    <include resource="logback/db-logger.xml"/>
     <include resource="logback/debug-logger.xml"/>
     <include resource="logback/info-logger.xml"/>
     <include resource="logback/warn-logger.xml"/>
