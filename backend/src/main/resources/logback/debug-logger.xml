@@ -2,14 +2,14 @@
 <included>
   <property name="home" value="logs/debug/"/>
   <appender name="debug-logger-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${home}info.log</file>
+    <file>${home}debug.log</file>
     <filter class="ch.qos.logback.classic.filter.LevelFilter">
       <level>DEBUG</level>
       <onMatch>ACCEPT</onMatch>
       <onMismatch>DENY</onMismatch>
     </filter>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>${home}info-%d{yyyyMMdd}-%i.log</fileNamePattern>
+      <fileNamePattern>${home}debug-%d{yyyyMMdd}-%i.log</fileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
         <maxFileSize>15MB</maxFileSize>
       </timeBasedFileNamingAndTriggeringPolicy>
