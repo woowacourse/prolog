@@ -18,14 +18,10 @@ sourceSets {
     acceptanceTest {
         compileClasspath += sourceSets.main.output + sourceSets.test.output
         runtimeClasspath += sourceSets.main.output + sourceSets.test.output
-        java {
-        }
     }
     documentation {
         compileClasspath += sourceSets.main.output + sourceSets.test.output
         runtimeClasspath += sourceSets.main.output + sourceSets.test.output
-        java {
-        }
     }
 
 }
