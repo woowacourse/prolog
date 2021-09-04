@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <included>
-  <property name="home" value="logs/info/"/>
-  <appender name="info-logger-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${home}info.log</file>
+  <property name="home" value="logs/warn/"/>
+  <appender name="file-warn-logger" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${home}warn.log</file>
     <filter class="ch.qos.logback.classic.filter.LevelFilter">
-      <level>INFO</level>
+      <level>WARN</level>
       <onMatch>ACCEPT</onMatch>
       <onMismatch>DENY</onMismatch>
     </filter>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>${home}info-%d{yyyyMMdd}-%i.log</fileNamePattern>
+      <fileNamePattern>${home}warn-%d{yyyyMMdd}-%i.log</fileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
         <maxFileSize>15MB</maxFileSize>
       </timeBasedFileNamingAndTriggeringPolicy>
-      <maxHistory>7</maxHistory>
+      <maxHistory>30</maxHistory>
     </rollingPolicy>
     <encoder>
       <charset>utf8</charset>

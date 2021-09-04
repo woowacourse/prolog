@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <included>
   <property name="home" value="logs/debug/"/>
-  <appender name="debug-logger-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <appender name="file-debug-logger" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${home}debug.log</file>
     <filter class="ch.qos.logback.classic.filter.LevelFilter">
       <level>DEBUG</level>
