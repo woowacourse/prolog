@@ -1,15 +1,22 @@
 package wooteco.prolog.studylog.domain;
 
+import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.Objects;
-
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(name = "post_tag")
 public class StudylogTag {
 
     @Id
@@ -21,7 +28,7 @@ public class StudylogTag {
     private Tag tag;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "studylog_id", nullable = false)
+    @JoinColumn(name = "post_id", nullable = false)
     private Studylog studylog;
 
     public StudylogTag(Studylog studylog, Tag tag) {

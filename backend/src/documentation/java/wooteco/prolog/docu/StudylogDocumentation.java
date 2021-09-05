@@ -80,16 +80,16 @@ public class StudylogDocumentation extends Documentation {
     }
 
     @Test
-    public void 스터디로그_목록을_필터링한다() {
+    public void 스터디로그_목록을_검색_및_필터링한다() {
         // given
         스터디로그_등록함(Arrays.asList(createStudylogRequest1(), createStudylogRequest2()));
 
         // when
         ExtractableResponse<Response> response = given("studylog/filter")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/posts?levels=1&missions=1&tags=1&tags=2&usernames=soulG")
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when().get("/posts?search=조앤&levels=1&missions=1&tags=1&tags=2&usernames=soulG")
+            .then().log().all().extract();
 
         // given
         StudylogsResponse studylogsResponse = response.as(StudylogsResponse.class);
@@ -138,7 +138,7 @@ public class StudylogDocumentation extends Documentation {
     }
 
     private StudylogRequest createStudylogRequest1() {
-        String title = "SPA";
+        String title = "나는야 조앤";
         String content = "SPA 방식으로 앱을 구현하였음.\n" + "router 를 구현 하여 이용함.\n";
         Long levelId = 레벨_등록함(new LevelRequest("레벨1"));
         Long missionId = 미션_등록함(new MissionRequest("레벨1 - 지하철 노선도 미션", levelId));

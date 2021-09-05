@@ -9,10 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.TestConstructor;
-import org.springframework.test.context.TestConstructor.AutowireMode;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
@@ -103,12 +99,12 @@ class StudylogTagServiceTest {
         List<TagRequest> tagRequests1 = createTagRequests("태그1");
         List<TagRequest> tagRequests2 = createTagRequests("태그1", "태그2");
         List<TagRequest> tagRequests3 = createTagRequests("태그1", "태그2", "태그3");
-        List<StudylogResponse> studylogRespons =
+        List<StudylogResponse> studylogResponses =
             addTagRequestToStudylog(tagRequests1, tagRequests2, tagRequests3);
 
         //when
-        List<Tag> insertedTags = studylogRespons.stream()
-            .flatMap(studylogResponse -> studylogResponse.getTags().stream())
+        List<Tag> insertedTags = studylogResponses.stream()
+            .flatMap(it -> it.getTags().stream())
             .map(tagResponse -> new Tag(tagResponse.getId(), tagResponse.getName()))
             .collect(toList());
 

@@ -21,10 +21,10 @@ import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 public class StudylogStepDefinitions extends AcceptanceSteps {
 
     @Given("스터디로그 여러개를 작성하고")
-    public void 스터디르그여러개를작성하고() {
+    public void 스터디로그여러개를작성하고() {
         List<StudylogRequest> studylogRequests = Arrays.asList(
-                STUDYLOG1.getStudylogRequest(),
-                STUDYLOG2.getStudylogRequest()
+            STUDYLOG1.getStudylogRequest(),
+            STUDYLOG2.getStudylogRequest()
         );
 
         context.invokeHttpPostWithToken("/posts", studylogRequests);
@@ -33,7 +33,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     @When("스터디로그를 작성하면")
     public void 스터디로그를작성하면() {
         List<StudylogRequest> studylogRequests = Arrays.asList(
-                STUDYLOG1.getStudylogRequest()
+            STUDYLOG1.getStudylogRequest()
         );
 
         context.invokeHttpPostWithToken("/posts", studylogRequests);
@@ -61,7 +61,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         List<StudylogRequest> studylogRequests = new ArrayList<>();
 
         List<StudylogRequest> requests = StudylogAcceptanceFixture.findByMissionNumber(
-                (long) missionNumber);
+            (long) missionNumber);
 
         if (requests.isEmpty()) {
             throw new RuntimeException("해당 미션의 스터디로그는 없습니다.");
@@ -79,7 +79,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         List<StudylogRequest> studylogRequests = new ArrayList<>();
 
         List<StudylogRequest> requests = StudylogAcceptanceFixture.findByTagNumber(
-                (long) tagNumber);
+            (long) tagNumber);
 
         if (requests.isEmpty()) {
             throw new RuntimeException("해당 미션의 스터디로그는 없습니다.");
@@ -112,6 +112,25 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     @When("{int}번 미션과 {int}번 태그로 조회하면")
     public void 미션태그필터조회를한다(int missionNumber, int tagNumber) {
         String path = String.format("/posts?tags=%d&missions=%d", tagNumber, missionNumber);
+        context.invokeHttpGet(path);
+    }
+
+    @When("{string}(을)(를) 검색하면")
+    public void 을검색하면(String keyword) {
+        String path = String.format("/posts?keyword=%s", keyword);
+        context.invokeHttpGet(path);
+    }
+
+    @When("{string}을 검색하고 {int}번 태그의 스터디로그를 조회하면")
+    public void 을검색하고번태그의스터디로그를조회하면(String keyword, int tagId) {
+        String path = String.format("/posts?keyword=%s&tags=%d", keyword, tagId);
+        context.invokeHttpGet(path);
+    }
+
+    @When("{string}을 검색하고 {int}번 미션과 {int}번 태그로 조회하면")
+    public void 을검색하고번미션과번태그로조회하면(String keyword, int missionNumber, int tagId) {
+        String path = String.format("/posts?keyword=%s&missions=%d&tags=%d", keyword,
+            missionNumber, tagId);
         context.invokeHttpGet(path);
     }
 

@@ -18,14 +18,10 @@ sourceSets {
     acceptanceTest {
         compileClasspath += sourceSets.main.output + sourceSets.test.output
         runtimeClasspath += sourceSets.main.output + sourceSets.test.output
-        java {
-        }
     }
     documentation {
         compileClasspath += sourceSets.main.output + sourceSets.test.output
         runtimeClasspath += sourceSets.main.output + sourceSets.test.output
-        java {
-        }
     }
 
 }
@@ -73,6 +69,11 @@ dependencies {
 
     // reflections
     implementation 'org.reflections:reflections:0.9.10'
+
+    // elastic-search
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    implementation "org.testcontainers:elasticsearch:1.15.3"
+    testImplementation "org.testcontainers:elasticsearch:1.16.0"
 
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
