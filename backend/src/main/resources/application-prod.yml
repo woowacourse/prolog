@@ -9,6 +9,10 @@ spring:
         use_sql_comment: false
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5Dialect
+  flyway:
+    baselineOnMigrate: true
+    locations: classpath:db/migration/prod
+    enabled: true
 
 security:
   jwt:
