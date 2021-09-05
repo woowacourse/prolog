@@ -1,5 +1,9 @@
 package wooteco.prolog.studylog.application;
 
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,24 +13,18 @@ import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.domain.Tags;
 import wooteco.prolog.studylog.domain.repository.TagRepository;
 
-import java.util.List;
-
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toList;
-
 @Service
 @AllArgsConstructor
 @Transactional(readOnly = true)
 public class TagService {
 
     private final TagRepository tagRepository;
-    private final StudylogTagService studylogTagService;
 
     @Transactional
     public Tags findOrCreate(List<TagRequest> tagRequests) {
         Tags requestTags = tagRequests.stream()
-                .map(TagRequest::getName)
-                .collect(collectingAndThen(toList(), Tags::of));
+            .map(TagRequest::getName)
+            .collect(collectingAndThen(toList(), Tags::of));
 
         Tags existTags = new Tags(tagRepository.findByNameValueIn(requestTags.toNames()));
 
@@ -38,9 +36,9 @@ public class TagService {
 
     public List<TagResponse> findAll() {
         return tagRepository.findAll()
-                .stream()
-                .map(TagResponse::of)
-                .collect(toList());
+            .stream()
+            .map(TagResponse::of)
+            .collect(toList());
     }
 
     public List<Tag> findByIds(List<Long> tagIds) {

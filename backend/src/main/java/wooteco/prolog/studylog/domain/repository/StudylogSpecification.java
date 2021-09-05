@@ -17,6 +17,16 @@ public class StudylogSpecification {
         };
     }
 
+    public static Specification<Studylog> equalIn(String key, List<Long> values, boolean isSearch) {
+        return (root, query, builder) -> {
+            if (!isSearch && (values == null || values.isEmpty())) {
+                return builder.and();
+            }
+
+            return root.get(key).in(values);
+        };
+    }
+
     public static Specification<Studylog> findByLevelIn(List<Long> values) {
         return (root, query, builder) -> {
             if (values == null || values.isEmpty()) {

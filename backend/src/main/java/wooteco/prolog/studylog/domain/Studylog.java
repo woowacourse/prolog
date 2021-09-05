@@ -1,20 +1,22 @@
 package wooteco.prolog.studylog.domain;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import wooteco.prolog.common.BaseEntity;
-import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studylog.exception.AuthorNotValidException;
-
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.util.List;
-import java.util.stream.Collectors;
+import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import wooteco.prolog.common.BaseEntity;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.studyLogDocument.domain.StudyLogDocument;
+import wooteco.prolog.studylog.exception.AuthorNotValidException;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(name = "post")
 public class Studylog extends BaseEntity {
 
     @ManyToOne
@@ -38,7 +40,8 @@ public class Studylog extends BaseEntity {
         this(null, member, title, content, mission, tags);
     }
 
-    public Studylog(Long id, Member member, String title, String content, Mission mission, List<Tag> tags) {
+    public Studylog(Long id, Member member, String title, String content, Mission mission,
+                    List<Tag> tags) {
         super(id);
         this.member = member;
         this.title = new Title(title);
@@ -63,8 +66,12 @@ public class Studylog extends BaseEntity {
 
     private List<StudylogTag> convertToStudylogTags(Tags tags) {
         return tags.getList().stream()
-                .map(tag -> new StudylogTag(this, tag))
-                .collect(Collectors.toList());
+            .map(tag -> new StudylogTag(this, tag))
+            .collect(Collectors.toList());
+    }
+
+    public StudyLogDocument toStudyLogDocument() {
+        return new StudyLogDocument(this.getId(), this.getTitle(), this.getContent());
     }
 
     public void addTags(Tags tags) {
@@ -90,6 +97,4 @@ public class Studylog extends BaseEntity {
     public String getContent() {
         return content.getContent();
     }
-
-
 }

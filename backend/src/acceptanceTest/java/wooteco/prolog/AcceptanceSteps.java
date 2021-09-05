@@ -6,4 +6,5 @@ public class AcceptanceSteps {
 
     @Autowired
     public AcceptanceContext context;
+
 }

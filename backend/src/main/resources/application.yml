@@ -1,29 +1,2 @@
 server:
   port: 5000
-
-spring:
-  jpa:
-    generate-ddl: true
-    database: h2
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        show_sql: false
-        format_sql: true
-        use_sql_comment: false
-
-security:
-  jwt:
-    token:
-      secret-key: secret_key
-      expire-length: 3600000
-
-github:
-  client:
-    id: client_id
-    secret: client_secret
-  url:
-    access-token: access-token
-    profile: profile

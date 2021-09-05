@@ -3,6 +3,7 @@ package wooteco.prolog.studylog.application.dto;
 import wooteco.prolog.studylog.domain.Level;
 
 public class LevelRequest {
+
     private String name;
 
     public LevelRequest() {
