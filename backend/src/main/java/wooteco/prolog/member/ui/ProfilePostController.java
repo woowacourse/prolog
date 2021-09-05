@@ -1,6 +1,10 @@
 package wooteco.prolog.member.ui;
 
-import java.time.LocalDateTime;
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -32,12 +36,12 @@ public class ProfilePostController {
         PostFilterRequest postFilterRequest,
         @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
         final PostsResponse posts = postService.findPostsWithFilter(
-            postFilterRequest.levelIds,
-            postFilterRequest.missionIds,
-            postFilterRequest.tagIds,
+            postFilterRequest.levels,
+            postFilterRequest.missions,
+            postFilterRequest.tags,
             Collections.singletonList(username),
-            postFilterRequest.startDate,
-            postFilterRequest.endDate,
+            postFilterRequest.startDate.with(firstDayOfMonth()).atStartOfDay(),
+            postFilterRequest.endDate.with(lastDayOfMonth()).atTime(LocalTime.MAX),
             pageable
         );
         return ResponseEntity.ok().body(posts);
@@ -51,10 +55,10 @@ public class ProfilePostController {
 
     @Data
     public static class PostFilterRequest {
-        private List<Long> levelIds;
-        private List<Long> missionIds;
-        private List<Long> tagIds;
-        private LocalDateTime startDate;
-        private LocalDateTime endDate;
+        private List<Long> levels;
+        private List<Long> missions;
+        private List<Long> tags;
+        private LocalDate startDate;
+        private LocalDate endDate;
     }
 }
