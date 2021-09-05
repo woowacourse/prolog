@@ -49,7 +49,7 @@ public class PostController {
         @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable
     ) {
         PostsResponse postsResponse = postService
-            .findPostsWithFilter(levels, missions, tags, usernames, pageable);
+            .findPostsWithFilter(levels, missions, tags, usernames, null, null, pageable);
         return ResponseEntity.ok(postsResponse);
     }
 

@@ -1,6 +1,7 @@
 package wooteco.prolog.tag.ui;
 
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ public class TagController {
     private TagService tagService;
 
     @GetMapping
-    public ResponseEntity<List<TagResponse>> showAll() {
+    public ResponseEntity<List<TagResponse>> showAll(HttpServletRequest httpRequest) {
         List<TagResponse> tags = tagService.findAll();
         return ResponseEntity.ok(tags);
     }

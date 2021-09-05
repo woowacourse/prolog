@@ -1,10 +1,10 @@
 package wooteco.prolog.post.domain.repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import javax.persistence.criteria.JoinType;
 import org.springframework.data.jpa.domain.Specification;
 import wooteco.prolog.post.domain.Post;
-
-import javax.persistence.criteria.JoinType;
-import java.util.List;
 
 public class PostSpecification {
     public static Specification<Post> equalIn(String key, List<Long> values) {
@@ -45,6 +45,21 @@ public class PostSpecification {
 
             return root.join("member", JoinType.LEFT).get("username").in(usernames);
         };
+    }
+
+    public static Specification<Post> findBetweenDate(LocalDateTime start, LocalDateTime end) {
+        return ((root, query, builder) -> {
+            if (start == null && end == null) {
+                return builder.and();
+            }
+            if (start == null) {
+                return builder.lessThanOrEqualTo(root.get("createdAt"), end);
+            }
+            if (end == null) {
+                return builder.greaterThanOrEqualTo(root.get("createdAt"), start);
+            }
+            return builder.between(root.get("createdAt"), start, end);
+        });
     }
 
     public static Specification<Post> distinct(boolean distinct) {

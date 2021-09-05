@@ -43,17 +43,29 @@ public class PostService {
     private final TagService tagService;
 
     public PostsResponse findPostsWithFilter(
-            List<Long> levelIds,
-            List<Long> missionIds,
-            List<Long> tagIds,
-            List<String> usernames,
-            Pageable pageable) {
+        List<Long> levelIds,
+        List<Long> missionIds,
+        List<Long> tagIds,
+        List<String> usernames,
+        Pageable pageable) {
+        return findPostsWithFilter(levelIds, missionIds, tagIds, usernames, null, null, pageable);
+    }
+
+    public PostsResponse findPostsWithFilter(
+        List<Long> levelIds,
+        List<Long> missionIds,
+        List<Long> tagIds,
+        List<String> usernames,
+        LocalDateTime startDate,
+        LocalDateTime endDate,
+        Pageable pageable) {
 
         Specification<Post> specs =
-                PostSpecification.findByLevelIn(levelIds)
+            PostSpecification.findByLevelIn(levelIds)
                 .and(PostSpecification.equalIn("mission", missionIds))
                 .and(PostSpecification.findByTagIn(tagIds))
                 .and(PostSpecification.findByUsernameIn(usernames))
+                .and(PostSpecification.findBetweenDate(startDate, endDate))
                 .and(PostSpecification.distinct(true));
 
         Page<Post> posts = postRepository.findAll(specs, pageable);
@@ -74,8 +86,8 @@ public class PostService {
         final Member byId = memberService.findById(member.getId());
 
         return postRequests.stream()
-                .map(postRequest -> insertPost(byId, postRequest))
-                .collect(toList());
+            .map(postRequest -> insertPost(byId, postRequest))
+            .collect(toList());
     }
 
     private PostResponse insertPost(Member member, PostRequest postRequest) {
@@ -84,10 +96,10 @@ public class PostService {
         Mission mission = missionService.findById(postRequest.getMissionId());
 
         Post requestedPost = new Post(foundMember,
-                postRequest.getTitle(),
-                postRequest.getContent(),
-                mission,
-                tags.getList());
+            postRequest.getTitle(),
+            postRequest.getContent(),
+            mission,
+            tags.getList());
 
         Post createdPost = postRepository.save(requestedPost);
         foundMember.addTags(tags);
@@ -97,7 +109,7 @@ public class PostService {
 
     public PostResponse findById(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(PostNotFoundException::new);
+            .orElseThrow(PostNotFoundException::new);
 
         return PostResponse.of(post);
     }
@@ -106,7 +118,7 @@ public class PostService {
     public void updatePost(Member member, Long postId, PostRequest postRequest) {
         final Member foundMember = memberService.findById(member.getId());
         Post post = postRepository.findById(postId)
-                .orElseThrow(PostNotFoundException::new);
+            .orElseThrow(PostNotFoundException::new);
         post.validateAuthor(foundMember);
         final Tags originalTags = tagService.findByPostAndMember(post, foundMember);
 
@@ -121,7 +133,7 @@ public class PostService {
     public void deletePost(Member member, Long postId) {
         final Member foundMember = memberService.findById(member.getId());
         Post post = postRepository.findById(postId)
-                .orElseThrow(PostNotFoundException::new);
+            .orElseThrow(PostNotFoundException::new);
         post.validateAuthor(foundMember);
 
         postRepository.delete(post);
@@ -135,9 +147,9 @@ public class PostService {
         final LocalDateTime end = localDate.with(lastDayOfMonth()).atTime(LocalTime.MAX);
 
         return postRepository.findByMemberBetween(member, start, end)
-                .stream()
-                .map(CalendarPostResponse::of)
-                .collect(toList());
+            .stream()
+            .map(CalendarPostResponse::of)
+            .collect(toList());
     }
 
     public int countPostByMember(Member member) {
