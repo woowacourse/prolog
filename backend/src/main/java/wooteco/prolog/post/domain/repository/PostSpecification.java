@@ -58,12 +58,12 @@ public class PostSpecification {
             }
             if (start == null) {
                 return builder.lessThanOrEqualTo(
-                    root.get("createdAt"), end.with(lastDayOfMonth()).atTime(LocalTime.MAX)
+                    root.get("createdAt"), end.atTime(LocalTime.MAX)
                 );
             }
             if (end == null) {
                 return builder.greaterThanOrEqualTo(
-                    root.get("createdAt"), start.with(firstDayOfMonth()).atStartOfDay()
+                    root.get("createdAt"), start.atStartOfDay()
                 );
             }
             return builder.between(
