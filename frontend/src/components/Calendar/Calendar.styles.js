@@ -152,7 +152,7 @@ const TitleList = styled.div`
   border-radius: 10px;
   min-width: 15rem;
   max-width: 20rem;
-  padding: 0.5rem;
+  padding: 0.4rem 1rem;
   z-index: 1;
   background-color: white;
   text-align: left;
@@ -180,7 +180,6 @@ const TitleList = styled.div`
 const MoreTitle = styled.div`
   font-size: 1.2rem;
   color: ${COLOR.LIGHT_GRAY_800};
-  /* font-weight: 300; */
 `;
 
 export {

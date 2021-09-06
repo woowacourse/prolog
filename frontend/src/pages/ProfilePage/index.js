@@ -34,7 +34,9 @@ const ProfilePage = ({ children, menu }) => {
 
   const [selectedTagId, setSelectedTagId] = useState(0);
   const [selectedDay, setSelectedDay] = useState(state ? state.date.day : -1);
-  const [filteringOption, setFilteringOption] = useState({ tags: 0 });
+  const [filteringOption, setFilteringOption] = useState([
+    { filterType: 'tags', filterDetailId: 0 },
+  ]);
   const [posts, setPosts] = useState([]);
   const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
   const [hoveredPostId, setHoveredPostId] = useState(0);
@@ -45,13 +47,7 @@ const ProfilePage = ({ children, menu }) => {
 
   const getUserPosts = useCallback(async () => {
     try {
-      const filterQuery = [
-        {
-          filterType: Object.keys(filteringOption)[0],
-          filterDetailId: Object.values(filteringOption)[0],
-        },
-      ];
-      const response = await requestGetUserPosts(username, postQueryParams, filterQuery);
+      const response = await requestGetUserPosts(username, postQueryParams, filteringOption);
 
       if (!response.ok) {
         throw new Error(response.status);
@@ -65,12 +61,23 @@ const ProfilePage = ({ children, menu }) => {
     }
   }, [postQueryParams, filteringOption, username]);
 
-  const setFilteringOptionWithTagId = (id) => setFilteringOption({ tags: id });
+  const setFilteringOptionWithTagId = (id) =>
+    setFilteringOption([{ filterType: 'tags', filterDetailId: id }]);
 
-  const setFilteringOptionWithDate = (year, month, day) =>
-    setFilteringOption({
-      date: `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`,
-    });
+  const setFilteringOptionWithDate = (year, month, day) => {
+    const date = `${year}${month < 10 ? '0' + month : month}${day < 10 ? '0' + day : day}`;
+
+    setFilteringOption([
+      {
+        filterType: 'startDate',
+        filterDetailId: date,
+      },
+      {
+        filterType: 'endDate',
+        filterDetailId: date,
+      },
+    ]);
+  };
 
   const goTargetPost = (id) => {
     history.push(`${PATH.POST}/${id}`);

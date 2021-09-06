@@ -68,8 +68,8 @@ public class PostSpecification {
             }
             return builder.between(
                 root.get("createdAt"),
-                start.with(firstDayOfMonth()).atStartOfDay(),
-                end.with(lastDayOfMonth()).atTime(LocalTime.MAX)
+                start.atStartOfDay(),
+                end.atTime(LocalTime.MAX)
             );
         });
     }

@@ -28,6 +28,8 @@ const Overview = styled.div`
     grid-column-start: 1;
     grid-column-end: 2;
     min-height: 28rem;
+    max-height: 37rem;
+    overflow: hidden;
   }
   & > *:nth-of-type(2) {
     grid-column-start: 2;

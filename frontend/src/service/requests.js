@@ -9,7 +9,6 @@ const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
 const requestGetTags = () => fetch(`${BASE_URL}/tags`);
 
 const requestGetPosts = (filterList, postSearchParams) => {
-  // console.log(filterList, postSearchParams);
   const filterQuery = filterList.map(
     ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
   );
@@ -40,8 +39,6 @@ const requestDeletePost = (postId, accessToken) =>
 const requestGetProfile = (username) => fetch(`${BASE_URL}/members/${username}/profile`);
 
 const requestGetUserPosts = (username, postSearchParams, filteringOption) => {
-  // console.log(object)
-  console.log(filteringOption);
   const searchParams = Object.entries(postSearchParams).map(([key, value]) => `${key}=${value}`);
   const filterQuery = filteringOption.length
     ? filteringOption.map(({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`)
