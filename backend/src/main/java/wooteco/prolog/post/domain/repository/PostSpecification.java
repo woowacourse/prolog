@@ -33,7 +33,7 @@ public class PostSpecification {
 
     public static Specification<Post> findByTagIn(List<Long> values) {
         return (root, query, builder) -> {
-            if (values == null || values.isEmpty()) {
+            if (values == null || values.isEmpty() || values.contains(0L)) {
                 return builder.and();
             }
 
