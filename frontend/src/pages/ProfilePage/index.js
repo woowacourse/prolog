@@ -26,7 +26,7 @@ const ProfilePage = ({ children, menu }) => {
   const { username } = useParams();
 
   const [user, setUser] = useState({});
-  const [selectedMenu, setSelectedMenu] = useState('');
+  const [selectedMenu, setSelectedMenu] = useState(menu);
 
   const { isNotFound, setNotFound, NotFound } = useNotFound();
 
@@ -72,7 +72,7 @@ const ProfilePage = ({ children, menu }) => {
 
   useEffect(() => {
     setSelectedMenu(menu);
-  }, []);
+  }, [menu]);
 
   if (isNotFound) {
     return <NotFound />;
