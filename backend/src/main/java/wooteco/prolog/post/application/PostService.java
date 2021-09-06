@@ -56,8 +56,8 @@ public class PostService {
         List<Long> missionIds,
         List<Long> tagIds,
         List<String> usernames,
-        LocalDateTime startDate,
-        LocalDateTime endDate,
+        LocalDate startDate,
+        LocalDate endDate,
         Pageable pageable) {
 
         Specification<Post> specs =

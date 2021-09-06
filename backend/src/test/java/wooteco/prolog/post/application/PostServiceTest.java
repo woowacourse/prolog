@@ -121,12 +121,8 @@ class PostServiceTest {
     @Rollback(value = false)
     void insertPostsTest() {
         //given
-        System.out.println("================== member1 =====================");
         List<PostResponse> postsOfMember1 = insertPosts(member1, post1, post2);
-        System.out.println("================== member1 =====================");
-        System.out.println("================== member2 =====================");
         List<PostResponse> postsOfMember2 = insertPosts(member2, post3, post4);
-        System.out.println("================== member2 =====================");
         //when
         //then
         List<String> titles = Stream.concat(postsOfMember1.stream(), postsOfMember2.stream())

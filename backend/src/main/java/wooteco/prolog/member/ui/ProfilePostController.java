@@ -1,10 +1,6 @@
 package wooteco.prolog.member.ui;
 
-import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
-import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
-
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -40,8 +36,8 @@ public class ProfilePostController {
             postFilterRequest.missions,
             postFilterRequest.tags,
             Collections.singletonList(username),
-            postFilterRequest.startDate.with(firstDayOfMonth()).atStartOfDay(),
-            postFilterRequest.endDate.with(lastDayOfMonth()).atTime(LocalTime.MAX),
+            postFilterRequest.startDate,
+            postFilterRequest.endDate,
             pageable
         );
         return ResponseEntity.ok().body(posts);

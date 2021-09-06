@@ -1,6 +1,10 @@
 package wooteco.prolog.post.domain.repository;
 
-import java.time.LocalDateTime;
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import javax.persistence.criteria.JoinType;
 import org.springframework.data.jpa.domain.Specification;
@@ -47,18 +51,26 @@ public class PostSpecification {
         };
     }
 
-    public static Specification<Post> findBetweenDate(LocalDateTime start, LocalDateTime end) {
+    public static Specification<Post> findBetweenDate(LocalDate start, LocalDate end) {
         return ((root, query, builder) -> {
             if (start == null && end == null) {
                 return builder.and();
             }
             if (start == null) {
-                return builder.lessThanOrEqualTo(root.get("createdAt"), end);
+                return builder.lessThanOrEqualTo(
+                    root.get("createdAt"), end.with(lastDayOfMonth()).atTime(LocalTime.MAX)
+                );
             }
             if (end == null) {
-                return builder.greaterThanOrEqualTo(root.get("createdAt"), start);
+                return builder.greaterThanOrEqualTo(
+                    root.get("createdAt"), start.with(firstDayOfMonth()).atStartOfDay()
+                );
             }
-            return builder.between(root.get("createdAt"), start, end);
+            return builder.between(
+                root.get("createdAt"),
+                start.with(firstDayOfMonth()).atStartOfDay(),
+                end.with(lastDayOfMonth()).atTime(LocalTime.MAX)
+            );
         });
     }
 
