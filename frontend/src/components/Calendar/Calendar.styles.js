@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import COLOR from '../../constants/color';
 
 const countColor = {
   0: 'transparent',
@@ -55,6 +56,8 @@ const WeekWrapper = styled.ul`
 `;
 
 const Week = styled.strong`
+  font-size: 1.4rem;
+
   ${({ isSunday, isSaturday }) => css`
     ${isSunday &&
     css`
@@ -87,6 +90,7 @@ const Day = styled.button`
   user-select: none;
   cursor: pointer;
   font-size: inherit;
+  font-size: 1.4rem;
 
   ${({ isSunday, isSaturday, isHover, isSelected, count }) => css`
     ${isHover &&
@@ -152,6 +156,7 @@ const TitleList = styled.div`
   z-index: 1;
   background-color: white;
   text-align: left;
+  font-size: 1.4rem;
 
   ${({ isRight }) =>
     isRight
@@ -172,6 +177,12 @@ const TitleList = styled.div`
   }
 `;
 
+const MoreTitle = styled.div`
+  font-size: 1.2rem;
+  color: ${COLOR.LIGHT_GRAY_800};
+  /* font-weight: 300; */
+`;
+
 export {
   Container,
   Header,
@@ -184,4 +195,5 @@ export {
   DayWrapper,
   Day,
   TitleList,
+  MoreTitle,
 };

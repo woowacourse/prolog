@@ -11,6 +11,7 @@ import {
   DayWrapper,
   ListItem,
   TitleList,
+  MoreTitle,
 } from './Calendar.styles';
 import { ReactComponent as ArrowIcon } from '../../assets/images/right-arrow-angle.svg';
 import { requestGetCalendar } from '../../service/requests';
@@ -147,7 +148,9 @@ const Calendar = ({ newDate, onClick = () => {}, selectedDay = -1, setSelectedDa
 
                       return <div key={id}>{title}</div>;
                     })}
-                    {targetTitleList.length > 3 && <div>외 {targetTitleList.length - 3}개</div>}
+                    {targetTitleList.length > 3 && (
+                      <MoreTitle>외 {targetTitleList.length - 3}개</MoreTitle>
+                    )}
                   </TitleList>
                 )}
                 {day > 0 && (
