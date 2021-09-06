@@ -61,6 +61,7 @@ const EditPostCard = forwardRef(({ post, tagOptions }, ref) => {
         initialValue={content}
         initialEditType="markdown"
         toolbarItems={['heading', 'bold', 'italic', 'strike']}
+        extendedAutolinks={true}
         ref={(element) => assignRefValue('content', element)}
       />
       <CreatableSelectBox

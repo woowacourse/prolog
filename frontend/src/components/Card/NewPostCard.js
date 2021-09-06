@@ -3,7 +3,7 @@ import { Card, CARD_SIZE, CreatableSelectBox } from '..';
 import { Editor } from '@toast-ui/react-editor';
 import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
-import { TitleInput, TitleCount, EditorWrapper } from './NewPostCard.styles';
+import { EditorWrapper, TitleCount, TitleInput } from './NewPostCard.styles';
 import { ALERT_MESSAGE, PLACEHOLDER, POST_TITLE } from '../../constants';
 
 const NewPostCard = forwardRef(({ postOrder, tagOptions }, ref) => {
@@ -47,6 +47,7 @@ const NewPostCard = forwardRef(({ postOrder, tagOptions }, ref) => {
           height="60vh"
           initialEditType="markdown"
           toolbarItems={['heading', 'bold', 'italic', 'strike']}
+          extendedAutolinks={true}
           ref={(element) => assignRefValue('content', element)}
           hooks={{
             addImageBlobHook: async (blob, callback) => {
