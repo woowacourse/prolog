@@ -2,13 +2,16 @@ import { useParams, useHistory } from 'react-router';
 import useFetch from '../../hooks/useFetch';
 import { requestGetPost } from '../../service/requests';
 
-import { Card, ProfileChip } from '../../components';
+import { Button, BUTTON_SIZE, Card, ProfileChip } from '../../components';
 import { Viewer } from '@toast-ui/react-editor';
 
 import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
 
 import {
+  ButtonList,
+  EditButtonStyle,
+  DeleteButtonStyle,
   CardInner,
   SubHeader,
   Mission,
@@ -18,8 +21,6 @@ import {
   ProfileChipStyle,
   ViewerWrapper,
   SubHeaderRightContent,
-  EditButton,
-  RemoveButton,
 } from './styles';
 import useNotFound from '../../hooks/useNotFound';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
@@ -71,44 +72,58 @@ const PostPage = () => {
   };
 
   return (
-    <Card key={id} size="LARGE">
-      <CardInner>
-        <div>
-          <SubHeader>
-            <Mission>{mission?.name}</Mission>
-            <SubHeaderRightContent>
-              <IssuedDate>{new Date(createdAt).toLocaleString('ko-KR')}</IssuedDate>
-              {myName === author?.username && (
-                <>
-                  <EditButton type="button" alt="수정 버튼" onClick={() => goEditTargetPost(id)}>
-                    수정
-                  </EditButton>
-                  <RemoveButton type="button" alt="삭제 버튼" onClick={() => onDeletePost(id)}>
-                    삭제
-                  </RemoveButton>
-                </>
-              )}
-            </SubHeaderRightContent>
-          </SubHeader>
-          <Title>{title}</Title>
-          <ProfileChip
-            imageSrc={author?.imageUrl}
-            css={ProfileChipStyle}
-            onClick={() => goProfilePage(author?.username)}
+    <>
+      {myName === author?.username && (
+        <ButtonList>
+          <Button
+            size={BUTTON_SIZE.X_SMALL}
+            type="button"
+            css={EditButtonStyle}
+            alt="수정 버튼"
+            onClick={() => goEditTargetPost(id)}
           >
-            {author?.nickname}
-          </ProfileChip>
-        </div>
-        <ViewerWrapper>
-          <Viewer initialValue={content} />
-        </ViewerWrapper>
-        <Tags>
-          {tags?.map(({ id, name }) => (
-            <span key={id}>{`#${name} `}</span>
-          ))}
-        </Tags>
-      </CardInner>
-    </Card>
+            수정
+          </Button>
+          <Button
+            size={BUTTON_SIZE.X_SMALL}
+            type="button"
+            css={DeleteButtonStyle}
+            alt="삭제 버튼"
+            onClick={() => onDeletePost(id)}
+          >
+            삭제
+          </Button>
+        </ButtonList>
+      )}
+      <Card key={id} size="LARGE">
+        <CardInner>
+          <div>
+            <SubHeader>
+              <Mission>{mission?.name}</Mission>
+              <SubHeaderRightContent>
+                <IssuedDate>{new Date(createdAt).toLocaleString('ko-KR')}</IssuedDate>
+              </SubHeaderRightContent>
+            </SubHeader>
+            <Title>{title}</Title>
+            <ProfileChip
+              imageSrc={author?.imageUrl}
+              css={ProfileChipStyle}
+              onClick={() => goProfilePage(author?.username)}
+            >
+              {author?.nickname}
+            </ProfileChip>
+          </div>
+          <ViewerWrapper>
+            <Viewer initialValue={content} />
+          </ViewerWrapper>
+          <Tags>
+            {tags?.map(({ id, name }) => (
+              <span key={id}>{`#${name} `}</span>
+            ))}
+          </Tags>
+        </CardInner>
+      </Card>
+    </>
   );
 };
 

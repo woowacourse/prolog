@@ -2,6 +2,31 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
 
+const ButtonList = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+`;
+
+const EditButtonStyle = css`
+  border: 1px solid ${COLOR.LIGHT_GRAY_200};
+  background-color: ${COLOR.WHITE};
+  margin-right: 1rem;
+
+  &:hover {
+    background-color: ${COLOR.LIGHT_GRAY_300};
+  }
+`;
+
+const DeleteButtonStyle = css`
+  border: 1px solid ${COLOR.LIGHT_GRAY_200};
+  background-color: ${COLOR.RED_300};
+
+  &:hover {
+    background-color: ${COLOR.RED_400};
+  }
+`;
+
 const CardInner = styled.div`
   display: flex;
   flex-direction: column;
@@ -29,18 +54,6 @@ const SubHeaderRightContent = styled.div`
     margin-left: 0.7rem;
     font-size: 1.5rem;
     color: ${COLOR.BLACK_OPACITY_600};
-  }
-`;
-
-const EditButton = styled.button`
-  &:hover {
-    color: ${COLOR.BLACK_800};
-  }
-`;
-
-const RemoveButton = styled.button`
-  &:hover {
-    color: ${COLOR.RED_500};
   }
 `;
 
@@ -83,11 +96,12 @@ const ViewerWrapper = styled.div`
 `;
 
 export {
+  ButtonList,
+  EditButtonStyle,
+  DeleteButtonStyle,
   CardInner,
   SubHeader,
   SubHeaderRightContent,
-  EditButton,
-  RemoveButton,
   Mission,
   Title,
   Tags,
