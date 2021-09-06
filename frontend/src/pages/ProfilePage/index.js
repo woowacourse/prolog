@@ -34,7 +34,7 @@ const ProfilePage = ({ children, menu }) => {
 
   const [selectedTagId, setSelectedTagId] = useState(0);
   const [selectedDay, setSelectedDay] = useState(state ? state.date.day : -1);
-  const [filteringOption, setFilteringOption] = useState({ tagId: 0 });
+  const [filteringOption, setFilteringOption] = useState({ tags: 0 });
   const [posts, setPosts] = useState([]);
   const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
   const [hoveredPostId, setHoveredPostId] = useState(0);
@@ -45,20 +45,27 @@ const ProfilePage = ({ children, menu }) => {
 
   const getUserPosts = useCallback(async () => {
     try {
-      const response = await requestGetUserPosts(username, postQueryParams, filteringOption);
+      const filterQuery = [
+        {
+          filterType: Object.keys(filteringOption)[0],
+          filterDetailId: Object.values(filteringOption)[0],
+        },
+      ];
+      const response = await requestGetUserPosts(username, postQueryParams, filterQuery);
 
       if (!response.ok) {
         throw new Error(response.status);
       }
 
       const posts = await response.json();
+
       setPosts(posts);
     } catch (error) {
       console.error(error);
     }
   }, [postQueryParams, filteringOption, username]);
 
-  const setFilteringOptionWithTagId = (id) => setFilteringOption({ tagId: id });
+  const setFilteringOptionWithTagId = (id) => setFilteringOption({ tags: id });
 
   const setFilteringOptionWithDate = (year, month, day) =>
     setFilteringOption({

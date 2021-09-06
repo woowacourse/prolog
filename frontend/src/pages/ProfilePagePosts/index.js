@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
 import { Button, BUTTON_SIZE, FilterList, Pagination, Card } from '../../components';
-import { requestGetFilters, requestGetPosts } from '../../service/requests';
+import { requestGetFilters, requestGetPosts, requestGetUserPosts } from '../../service/requests';
 import {
   ButtonList,
   Container,
@@ -61,11 +61,7 @@ const ProfilePagePosts = () => {
   const getUserPosts = useCallback(async () => {
     try {
       // TODO : const response = await requestGetUserPosts(username, postQueryParams, filteringOption);
-      const filterList = [
-        ...selectedFilterDetails,
-        { filterType: 'usernames', filterDetailId: username },
-      ];
-      const response = await requestGetPosts(filterList, postQueryParams);
+      const response = await requestGetUserPosts(username, postQueryParams, selectedFilterDetails);
 
       if (!response.ok) {
         throw new Error(response.status);
