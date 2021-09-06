@@ -6,6 +6,7 @@ import { Editor } from '@toast-ui/react-editor';
 
 import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
+import { POST_TITLE } from '../../constants';
 
 const TitleInput = styled.input`
   width: 100%;
@@ -45,6 +46,9 @@ const EditPostCard = forwardRef(({ post, tagOptions }, ref) => {
     <Card size={CARD_SIZE.LARGE}>
       <TitleInput
         placeholder="제목을 입력해주세요"
+        required
+        minLength={POST_TITLE.MIN_LENGTH}
+        maxLength={POST_TITLE.MAX_LENGTH}
         autoFocus
         ref={(element) => assignRefValue('title', element)}
         defaultValue={title}

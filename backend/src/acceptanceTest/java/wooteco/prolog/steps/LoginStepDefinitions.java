@@ -3,8 +3,8 @@ package wooteco.prolog.steps;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.AcceptanceSteps;
+import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.login.application.dto.TokenResponse;
 
 import java.util.HashMap;
@@ -12,6 +12,7 @@ import java.util.HashMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoginStepDefinitions extends AcceptanceSteps {
+
     @Given("{string}(이)(가) 로그인을 하고")
     public void 멤버가로그인을하고(String member) {
         HashMap<String, Object> data = new HashMap<>();

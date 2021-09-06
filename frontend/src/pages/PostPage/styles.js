@@ -55,4 +55,8 @@ const ProfileChipStyle = css`
   }
 `;
 
-export { CardInner, SubHeader, Mission, Title, Tags, IssuedDate, ProfileChipStyle };
+const ViewerWrapper = styled.div`
+  word-break: break-all;
+`;
+
+export { CardInner, SubHeader, Mission, Title, Tags, IssuedDate, ProfileChipStyle, ViewerWrapper };

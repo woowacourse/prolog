@@ -1,5 +1,6 @@
 package wooteco.prolog.member.ui;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,13 +11,11 @@ import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.domain.Member;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/members")
 public class MemberController {
-    private MemberService memberService;
 
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
-    }
+    private MemberService memberService;
 
     @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MemberResponse> findMemberInfoOfMine(@AuthMemberPrincipal Member member) {
@@ -29,7 +28,7 @@ public class MemberController {
     }
 
     @PutMapping("/me")
-    public ResponseEntity<Void> updatePost(
+    public ResponseEntity<Void> updateStudylog(
             @AuthMemberPrincipal Member member,
             @RequestBody MemberUpdateRequest updateRequest
     ) {

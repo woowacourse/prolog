@@ -1,7 +1,29 @@
 server:
   port: 4000
 
+security:
+  jwt:
+    token:
+      secret-key: secret_key
+      expire-length: 3600000
+
+spring:
+  jpa:
+    generate-ddl: true
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
+        use_sql_comment: false
+
 github:
+  client:
+    id: test_id
+    secret: test_secret
   url:
     access-token: http://localhost:4000/github/login/oauth/access_token
     profile: http://localhost:4000/github/user

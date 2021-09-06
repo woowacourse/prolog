@@ -75,6 +75,10 @@ const NewPostPage = () => {
           options={missions?.map((mission) => mission.name)}
           selectedOption={selectedMission}
           setSelectedOption={setSelectedMission}
+          title="우아한테크코스 미션 목록입니다."
+          name="mission_subjects"
+          width="100%"
+          maxHeight="25rem"
         />
       </SelectBoxWrapper>
       <ul>

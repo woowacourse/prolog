@@ -17,7 +17,7 @@ const EditPostPage = () => {
   const { error: postError, editData: editPost } = usePost({});
   const [post] = useFetch({}, () => requestGetPost(postId));
 
-  const [selectedMission, setSelectedMission] = useState();
+  const [selectedMission, setSelectedMission] = useState('');
   const cardRefs = useRef([]);
 
   const [missions] = useFetch([], requestGetMissions);
@@ -66,6 +66,10 @@ const EditPostPage = () => {
           options={missions?.map((mission) => mission.name)}
           selectedOption={selectedMission}
           setSelectedOption={setSelectedMission}
+          title="우아한테크코스 미션 목록입니다."
+          name="mission_subjects"
+          width="100%"
+          maxHeight="25rem"
         />
       </SelectBoxWrapper>
       <Post key={id}>

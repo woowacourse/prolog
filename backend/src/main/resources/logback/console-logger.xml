@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+  <appender name="console-logger" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <charset>utf8</charset>
+      <Pattern>
+        %cyan(%d{yyyy-MM-dd HH:mm:ss}:%-4relative) %highlight(%-5level) %yellow([%C.%M]:%boldWhite(%L)]) %n    > %msg%n
+      </Pattern>
+    </encoder>
+  </appender>
+
+  <appender name="db-logger-console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <charset>utf8</charset>
+      <Pattern>
+        %green(    > %msg%n)
+      </Pattern>
+    </encoder>
+  </appender>
+</included>

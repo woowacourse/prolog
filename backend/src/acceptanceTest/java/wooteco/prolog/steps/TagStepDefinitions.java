@@ -4,7 +4,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
-import wooteco.prolog.tag.dto.TagResponse;
+import wooteco.prolog.studylog.application.dto.TagResponse;
 
 import java.util.List;
 

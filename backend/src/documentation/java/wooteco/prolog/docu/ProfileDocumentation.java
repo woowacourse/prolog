@@ -7,10 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
 import wooteco.prolog.GithubResponses;
-import wooteco.prolog.mission.application.dto.MissionRequest;
-import wooteco.prolog.mission.application.dto.MissionResponse;
-import wooteco.prolog.post.application.dto.PostRequest;
-import wooteco.prolog.tag.dto.TagRequest;
+import wooteco.prolog.studylog.application.dto.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,11 +15,11 @@ import java.util.List;
 public class ProfileDocumentation extends Documentation {
 
     @Test
-    public void 포스트_목록을_작성자별로_조회한다() {
-        포스트_등록함(Arrays.asList(createPostRequest1()));
-        포스트_등록함(Arrays.asList(createPostRequest2()));
+    public void 스터디로그_목록을_작성자별로_조회한다() {
+        스터디로그_등록함(Arrays.asList(createStudylogRequest1()));
+        스터디로그_등록함(Arrays.asList(createStudylogRequest2()));
 
-        given("profile/post")
+        given("profile/studylog")
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when().get("/members/{username}/posts", GithubResponses.소롱.getLogin());
     }
@@ -35,25 +32,27 @@ public class ProfileDocumentation extends Documentation {
                 .extract();
     }
 
-    private PostRequest createPostRequest1() {
+    private StudylogRequest createStudylogRequest1() {
         String title = "SPA";
         String content = "SPA 방식으로 앱을 구현하였음.\n" + "router 를 구현 하여 이용함.\n";
-        Long missionId = 미션_등록함(new MissionRequest("레벨1 - 지하철 노선도 미션"));
+        Long levelId = 레벨_등록함(new LevelRequest("레벨1"));
+        Long missionId = 미션_등록함(new MissionRequest("레벨1 - 지하철 노선도 미션", levelId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("spa"), new TagRequest("router"));
 
-        return new PostRequest(title, content, missionId, tags);
+        return new StudylogRequest(title, content, missionId, tags);
     }
 
-    private PostRequest createPostRequest2() {
+    private StudylogRequest createStudylogRequest2() {
         String title = "JAVA";
         String content = "Spring Data JPA를 학습함.";
-        Long missionId = 미션_등록함(new MissionRequest("레벨3 - 프로젝트"));
+        Long levelId = 레벨_등록함(new LevelRequest("레벨3"));
+        Long missionId = 미션_등록함(new MissionRequest("레벨3 - 프로젝트", levelId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("java"), new TagRequest("jpa"));
 
-        return new PostRequest(title, content, missionId, tags);
+        return new StudylogRequest(title, content, missionId, tags);
     }
 
-    private ExtractableResponse<Response> 포스트_등록함(List<PostRequest> request) {
+    private ExtractableResponse<Response> 스터디로그_등록함(List<StudylogRequest> request) {
         return RestAssured.given().log().all()
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
                 .body(request)
@@ -73,6 +72,20 @@ public class ProfileDocumentation extends Documentation {
                 .log().all()
                 .extract()
                 .as(MissionResponse.class)
+                .getId();
+    }
+
+    private Long 레벨_등록함(LevelRequest request) {
+        return RestAssured
+                .given().log().all()
+                .body(request)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .post("/levels")
+                .then()
+                .log().all()
+                .extract()
+                .as(LevelResponse.class)
                 .getId();
     }
 }

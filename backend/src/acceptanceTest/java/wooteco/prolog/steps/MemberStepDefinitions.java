@@ -2,14 +2,15 @@ package wooteco.prolog.steps;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.AcceptanceSteps;
+import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MemberStepDefinitions extends AcceptanceSteps {
+
     @When("{string}의 멤버 정보를 조회하면")
     public void 멤버정보를조회하면(String member) {
         String username = GithubResponses.findByName(member).getLogin();
@@ -28,22 +29,21 @@ public class MemberStepDefinitions extends AcceptanceSteps {
         assertThat(member.getImageUrl()).isNotNull();
     }
 
-    @When("{string}(이)(이가) 자신의 닉네임을 {string}(로)(으로) 수정하면")
-    public void 자신의닉네임을수정하면(String member, String updatedNickname) {
-        String originUsername = GithubResponses.findByName(member).getLogin();
-
+    @When("자신의 닉네임을 {string}(로)(으로) 수정하면")
+    public void 자신의닉네임을수정하면(String updatedNickname) {
         MemberUpdateRequest updateRequest = new MemberUpdateRequest(
                 updatedNickname, ""
         );
 
-        context.invokeHttpPutWithToken("/members/" + originUsername, updateRequest);
+        context.invokeHttpPutWithToken("/members/me", updateRequest);
     }
 
-    @Then("유저네임이 {string}(로)(으로) 수정")
-    public void 유저네임이으로수정(String username) {
+    @Then("{string}의 닉네임이 {string}(로)(으로) 수정")
+    public void 닉네임이으로수정(String member, String nickname) {
+        String username = GithubResponses.findByName(member).getLogin();
         context.invokeHttpGetWithToken("/members/" + username);
-        MemberResponse member = context.response.as(MemberResponse.class);
+        String updatedNickname = context.response.as(MemberResponse.class).getNickname();
 
-        assertThat(member.getUsername()).isEqualTo(username);
+        assertThat(updatedNickname).isEqualTo(nickname);
     }
 }

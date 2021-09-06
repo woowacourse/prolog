@@ -1,6 +1,9 @@
 @api
 Feature: 로그인 기능
 
+  Background: 사전 작업
+    Given 레벨 여러개를 생성하고
+
   Scenario: 미션 등록하기
     Given "브라운"이 로그인을 하고
     When "이런저런" 미션 등록을 하면
