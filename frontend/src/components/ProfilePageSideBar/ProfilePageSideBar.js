@@ -78,7 +78,7 @@ const ProfilePageSideBar = ({ menu }) => {
           <MenuButton value={PROFILE_PAGE_MENU.OVERVIEW} type="button" onClick={goProfilePage}>
             {/* <MenuIcon src={overviewIcon} alt="overview icon" /> */}
             <OverviewIcon width="16" height="16" />
-            관리 홈
+            오버뷰
           </MenuButton>
         </MenuItem>
         <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.POSTS}>
