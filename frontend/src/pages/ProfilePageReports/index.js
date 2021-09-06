@@ -5,7 +5,7 @@ import { SelectBox } from '../../components';
 import { Container, AddNewReportLink } from './styles';
 
 const ProfilePageReports = () => {
-  const [reports, setReports] = useState([0]);
+  const [reports, setReports] = useState([]);
   const { username } = useParams();
 
   const user = useSelector((state) => state.user.profile);
