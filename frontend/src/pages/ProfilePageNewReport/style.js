@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
 
@@ -40,32 +41,28 @@ const InfoSection = styled.section`
   }
 `;
 
-const Title = styled.input`
-  height: 4.5rem;
+const inputStyle = css`
   width: 100%;
-  padding: 0 1rem;
   margin-bottom: 1rem;
 
   border: 1px solid ${COLOR.BLACK_OPACITY_400};
   border-radius: 0.5rem;
 
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   line-height: 1.5;
   color: ${COLOR.BLACK_600};
 `;
 
+const Title = styled.input`
+  height: 4.5rem;
+  padding: 0 1rem;
+  ${inputStyle}
+`;
+
 const Desc = styled.textarea`
   height: 10rem;
-  width: 100%;
   padding: 1rem 1rem 0;
-  margin-bottom: 1rem;
-
-  border: 1px solid ${COLOR.BLACK_OPACITY_400};
-  border-radius: 0.5rem;
-
-  font-size: 1.6rem;
-  line-height: 1.5;
-  color: ${COLOR.BLACK_600};
+  ${inputStyle}
 
   resize: none;
 `;
