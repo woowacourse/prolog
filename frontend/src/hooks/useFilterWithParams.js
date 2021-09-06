@@ -42,7 +42,6 @@ const useFilterWithParams = () => {
 
     setSelectedFilterDetails(newFilters);
   };
-
   const getFullParams = useCallback(() => {
     const pageParams = queryString.stringify(postQueryParams);
     const filterParams = selectedFilterDetails
