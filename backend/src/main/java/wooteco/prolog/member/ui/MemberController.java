@@ -3,11 +3,7 @@ package wooteco.prolog.member.ui;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
@@ -32,9 +28,9 @@ public class MemberController {
     }
 
     @PutMapping("/me")
-    public ResponseEntity<Void> updatePost(
-        @AuthMemberPrincipal Member member,
-        @RequestBody MemberUpdateRequest updateRequest
+    public ResponseEntity<Void> updateStudylog(
+            @AuthMemberPrincipal Member member,
+            @RequestBody MemberUpdateRequest updateRequest
     ) {
         memberService.updateMember(member, updateRequest);
         return ResponseEntity.ok().build();

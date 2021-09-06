@@ -1,25 +1,23 @@
 package wooteco.prolog.docu;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import wooteco.prolog.Documentation;
-import wooteco.prolog.level.application.dto.LevelRequest;
-import wooteco.prolog.level.application.dto.LevelResponse;
-import wooteco.prolog.mission.application.dto.MissionRequest;
-import wooteco.prolog.mission.application.dto.MissionResponse;
-import wooteco.prolog.post.application.dto.PostRequest;
-import wooteco.prolog.tag.dto.TagRequest;
-import wooteco.prolog.tag.dto.TagResponse;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+import wooteco.prolog.Documentation;
+import wooteco.prolog.studylog.application.dto.LevelRequest;
+import wooteco.prolog.studylog.application.dto.LevelResponse;
+import wooteco.prolog.studylog.application.dto.MissionRequest;
+import wooteco.prolog.studylog.application.dto.MissionResponse;
+import wooteco.prolog.studylog.application.dto.StudylogRequest;
+import wooteco.prolog.studylog.application.dto.TagRequest;
+import wooteco.prolog.studylog.application.dto.TagResponse;
 
 public class TagDocumentation extends Documentation {
 
@@ -32,8 +30,8 @@ public class TagDocumentation extends Documentation {
         Long missionId = 미션_등록함(new MissionRequest("레벨1 - 지하철 노선도 미션", levelId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("자바"), new TagRequest("파이썬"));
 
-        PostRequest postRequest = new PostRequest(title, content, missionId, tags);
-        List<PostRequest> params = Arrays.asList(postRequest);
+        StudylogRequest studylogRequest = new StudylogRequest(title, content, missionId, tags);
+        List<StudylogRequest> params = Arrays.asList(studylogRequest);
 
         RestAssured.given()
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())

@@ -1,4 +1,4 @@
-= Subway Application API Document
+= Prolog API Document
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -7,7 +7,7 @@
 :sectlinks:
 
 include::login.adoc[]
-include::post.adoc[]
+include::studylog.adoc[]
 include::profile.adoc[]
 include::mission.adoc[]
 include::tag.adoc[]

@@ -7,7 +7,7 @@ import wooteco.prolog.login.application.dto.GithubAccessTokenRequest;
 import wooteco.prolog.login.application.dto.GithubAccessTokenResponse;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 
-@Profile({"test", "docu"})
+@Profile("test")
 @RestController
 public class GithubTestController {
     @PostMapping("/github/login/oauth/access_token")

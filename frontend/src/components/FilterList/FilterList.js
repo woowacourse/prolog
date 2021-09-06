@@ -34,9 +34,27 @@ const FilterList = ({
     }
   };
 
+  const getFilteredFiltersByLevel = () => {
+    // 선택된 levels 목록 조회
+    const selectedLevels = selectedFilterDetails
+      .filter((selectedFilter) => selectedFilter.filterType === 'levels')
+      .map((selectedFilter) => selectedFilter.filterDetailId);
+
+    // 선택된 레벨의 미션이 제외된 미션 목록
+    const filteredMissions = selectedLevels.length
+      ? filters.missions &&
+        filters.missions.filter((mission) => selectedLevels.includes(mission.level.id))
+      : filters.missions;
+
+    const filteredFilters = { ...filters };
+    filteredFilters.missions = filteredMissions;
+
+    return filteredFilters;
+  };
+
   return (
     <Container onClick={closeDropdown} isDropdownToggled={selectedFilter}>
-      {Object.entries(filters).map(([key, value]) => (
+      {Object.entries(getFilteredFiltersByLevel()).map(([key, value]) => (
         <div key={key}>
           <button onClick={() => setSelectedFilter(key)}>{key}</button>
           {selectedFilter === key && (

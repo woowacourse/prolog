@@ -1,14 +1,11 @@
 package wooteco.prolog.login.application;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import java.util.Date;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import wooteco.prolog.member.domain.Member;
+
+import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
@@ -23,12 +20,12 @@ public class JwtTokenProvider {
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()
-            .setSubject(member.getId().toString())
-            .setIssuedAt(now)
-            .setExpiration(validity)
-            .claim("role", member.getRole())
-            .signWith(SignatureAlgorithm.HS256, secretKey)
-            .compact();
+                .setSubject(member.getId().toString())
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .claim("role", member.getRole())
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
     }
 
     public boolean validateToken(String token) {

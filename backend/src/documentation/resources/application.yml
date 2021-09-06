@@ -1,16 +1,3 @@
-server:
-  port: 4000
-
-github:
-  client:
-    id: f91b56445e08d44adb76
-    secret: f02769f780ed3d40f9db9283f5b7cc79ecf9074e
-  url:
-    access-token: http://localhost:4000/github/login/oauth/access_token
-    profile: http://localhost:4000/github/user
-
-security:
-  jwt:
-    token:
-      secret-key: xpzmzhtmvmfhrmvmfhwprxm
-      expire-length: 3600000
+spring:
+  profiles:
+    active: test
