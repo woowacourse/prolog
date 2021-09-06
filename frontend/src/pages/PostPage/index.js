@@ -1,4 +1,4 @@
-import { useParams, useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import useFetch from '../../hooks/useFetch';
 import { requestGetPost } from '../../service/requests';
 
@@ -10,12 +10,12 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 
 import {
   CardInner,
-  SubHeader,
-  Mission,
-  Title,
-  Tags,
   IssuedDate,
+  Mission,
   ProfileChipStyle,
+  SubHeader,
+  Tags,
+  Title,
   ViewerWrapper,
 } from './styles';
 import useNotFound from '../../hooks/useNotFound';
@@ -62,7 +62,7 @@ const PostPage = () => {
           </ProfileChip>
         </div>
         <ViewerWrapper>
-          <Viewer initialValue={content} />
+          <Viewer initialValue={content} extendedAutolinks={true} />
         </ViewerWrapper>
         <Tags>
           {tags?.map(({ id, name }) => (
