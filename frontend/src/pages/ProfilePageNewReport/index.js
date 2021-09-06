@@ -5,6 +5,9 @@ import Button from '../../components/Button/Button';
 
 import { Desc, Form, InfoSection, Title } from './style';
 
+// TODO 1. 페이지 나갈 떄, 확인하는 기능 넣기
+// TODO 2. 등록할 때 title이 없다면, 날짜 + 우테코 닉네임으로 해서 보내기
+
 const ProfilePageNewReport = () => {
   const { username } = useParams();
   const history = useHistory();
@@ -19,7 +22,7 @@ const ProfilePageNewReport = () => {
         history.push(`/${username}/reports`);
       }
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, username, user.data, history]);
 
   const [isMainReport, setIsMainReport] = useState(false);
   const [title, setTitle] = useState('');
@@ -36,21 +39,27 @@ const ProfilePageNewReport = () => {
   return (
     <Form onSubmit={onSubmitReport}>
       <div>
-        <input type="checkbox" onChange={onRegisterMainReport} checked={isMainReport} />
-        <label>대표 리포트로 지정하기</label>
+        <input
+          type="checkbox"
+          onChange={onRegisterMainReport}
+          checked={isMainReport}
+          id="main_report_checkbox"
+        />
+        <label htmlFor="main_report_checkbox">대표 리포트로 지정하기</label>
       </div>
 
       <InfoSection>
-        <label>✏️ Title</label>
+        <label htmlFor="report_title">✏️ Title</label>
         <Title
-          placeholder="리포트 이름을 작성해주세요"
-          required
+          id="report_title"
+          placeholder={`${new Date().toLocaleDateString()} ${user.data?.nickname}의 리포트`}
           value={title}
           onChange={onWriteTitle}
         />
 
-        <label>✏️ Description</label>
+        <label htmlFor="report_desc">✏️ Description</label>
         <Desc
+          id="report_desc"
           placeholder="리포트에 대해서 간단히 소개해주세요."
           value={desc}
           onChange={onWriteDesc}
