@@ -58,10 +58,6 @@ const FilterList = ({
           <button onClick={() => setSelectedFilter(key)}>{key}</button>
           {selectedFilter === key && (
             <DropdownMenu>
-              {/* 검색 UI
-              <li>
-                <input type="search" placeholder="filter project" />
-              </li> */}
               {value.map(({ id, name }) => (
                 <li key={id} onClick={() => toggleFilterDetails(key, id, name)}>
                   <FilterDetail>

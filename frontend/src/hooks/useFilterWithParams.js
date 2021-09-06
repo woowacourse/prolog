@@ -15,6 +15,7 @@ const useFilterWithParams = () => {
     ...missionFilter,
     ...tagFilter,
   ]);
+
   const [postQueryParams, setPostQueryParams] = useState({
     page: query.page ?? 1,
     size: query.size ?? 10,
