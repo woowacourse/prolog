@@ -5,15 +5,13 @@ import org.springframework.data.domain.Pageable;
 
 public interface CustomStudyLogDocumentRepository<T> {
 
-    <S extends T> S save(StudyLogDocument studyLogDocument);
+    <S extends T> S save(S studyLogDocument);
 
     List<T> findByKeyword(String searchKeyword, Pageable pageable);
 
-    void delete(StudyLogDocument studyLogDocument);
+    void delete(T studyLogDocument);
 
     void deleteAll();
 
-    <S extends StudyLogDocument> Iterable<S> saveAll(List<StudyLogDocument> collect);
-
-    Iterable<StudyLogDocument> findAll();
+    <S extends T> Iterable<S> saveAll(Iterable<S> collect);
 }

@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import wooteco.prolog.studyLogDocument.domain.CustomStudyLogDocumentRepository;
 import wooteco.prolog.studyLogDocument.domain.StudyLogDocument;
-import wooteco.prolog.studyLogDocument.domain.StudyLogDocumentRepository;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 
@@ -19,7 +18,6 @@ import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 public class DocumentLoaderApplicationListener implements
     ApplicationListener<ContextRefreshedEvent> {
 
-//    private StudyLogDocumentRepository studyLogDocumentRepository;
     private CustomStudyLogDocumentRepository<StudyLogDocument> studyLogDocumentRepository;
     private StudylogRepository studylogRepository;
 
