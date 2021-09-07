@@ -2,6 +2,31 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
 
+const ButtonList = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+`;
+
+const EditButtonStyle = css`
+  border: 1px solid ${COLOR.LIGHT_GRAY_200};
+  background-color: ${COLOR.WHITE};
+  margin-right: 1rem;
+
+  &:hover {
+    background-color: ${COLOR.LIGHT_GRAY_300};
+  }
+`;
+
+const DeleteButtonStyle = css`
+  border: 1px solid ${COLOR.LIGHT_GRAY_200};
+  background-color: ${COLOR.RED_300};
+
+  &:hover {
+    background-color: ${COLOR.RED_400};
+  }
+`;
+
 const CardInner = styled.div`
   display: flex;
   flex-direction: column;
@@ -19,6 +44,17 @@ const CardInner = styled.div`
 const SubHeader = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const SubHeaderRightContent = styled.div`
+  display: flex;
+  align-items: center;
+
+  & > button {
+    margin-left: 0.7rem;
+    font-size: 1.5rem;
+    color: ${COLOR.BLACK_OPACITY_600};
+  }
 `;
 
 const Mission = styled.div`
@@ -59,4 +95,17 @@ const ViewerWrapper = styled.div`
   word-break: break-all;
 `;
 
-export { CardInner, SubHeader, Mission, Title, Tags, IssuedDate, ProfileChipStyle, ViewerWrapper };
+export {
+  ButtonList,
+  EditButtonStyle,
+  DeleteButtonStyle,
+  CardInner,
+  SubHeader,
+  SubHeaderRightContent,
+  Mission,
+  Title,
+  Tags,
+  IssuedDate,
+  ProfileChipStyle,
+  ViewerWrapper,
+};
