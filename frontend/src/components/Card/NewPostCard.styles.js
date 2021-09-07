@@ -26,7 +26,7 @@ const TitleCount = styled.div`
 `;
 
 const EditorWrapper = styled.div`
-  *.tui-editor-defaultUI {
+  *.toastui-editor-defaultUI {
     border: none;
   }
 
