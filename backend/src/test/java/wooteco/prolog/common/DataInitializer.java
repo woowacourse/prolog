@@ -1,6 +1,5 @@
 package wooteco.prolog.common;
 
-import java.io.IOException;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -8,15 +7,12 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.reindex.DeleteByQueryRequest;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.support.fake.FakeDocumentRepository;
 
 @Component
 @Profile("test")
@@ -26,7 +22,7 @@ public class DataInitializer implements InitializingBean {
     private EntityManager entityManager;
 
     @Autowired
-    private RestHighLevelClient esClient;
+    private List<FakeDocumentRepository> fakeDocumentRepositories;
 
     @Autowired
     private DataSource dataSource;
@@ -51,7 +47,7 @@ public class DataInitializer implements InitializingBean {
     @Transactional
     public void execute() {
         truncateAllTables();
-//        deleteAllDocuments();
+        deleteAllDocuments();
     }
 
     private void truncateAllTables() {
@@ -63,19 +59,13 @@ public class DataInitializer implements InitializingBean {
         entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate();
     }
 
-    private void deleteAllDocuments() {
-        try {
-            DeleteByQueryRequest deleteRequest = new DeleteByQueryRequest("*");
-            deleteRequest.setQuery(QueryBuilders.matchAllQuery());
-            esClient.deleteByQuery(deleteRequest, RequestOptions.DEFAULT);
-        } catch (IOException e) {
-            throw new RuntimeException();
-        }
-    }
-
     private void executeQueryWithTable(String tableName) {
         entityManager.createNativeQuery("TRUNCATE TABLE " + tableName).executeUpdate();
         entityManager.createNativeQuery("ALTER TABLE " + tableName + " ALTER COLUMN "
                                             + "ID RESTART WITH 1").executeUpdate();
+    }
+
+    private void deleteAllDocuments() {
+        fakeDocumentRepositories.forEach(it -> it.deleteAll());
     }
 }

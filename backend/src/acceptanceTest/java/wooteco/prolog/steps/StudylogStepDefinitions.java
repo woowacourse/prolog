@@ -11,19 +11,14 @@ import io.cucumber.java.en.When;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.StudylogAcceptanceFixture;
-import wooteco.prolog.studyLogDocument.application.StudyLogDocumentService;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 
 public class StudylogStepDefinitions extends AcceptanceSteps {
-
-    @Autowired
-    private StudyLogDocumentService studyLogDocumentService;
 
     @Given("스터디로그 여러개를 작성하고")
     public void 스터디로그여러개를작성하고() {
@@ -99,7 +94,6 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
     @Given("서로 다른 태그와 미션을 가진 스터디로그를 다수 생성하고")
     public void 서로다른태그와미션을가진스터디로그를생성() {
-        studyLogDocumentService.deleteAll();
         List<StudylogRequest> studylogRequests = new ArrayList<>();
 
         for (int i = 0; i < 7; i++) {

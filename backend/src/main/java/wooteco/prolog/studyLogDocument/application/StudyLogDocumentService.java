@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import wooteco.prolog.studyLogDocument.domain.CustomStudyLogDocumentRepository;
 import wooteco.prolog.studyLogDocument.domain.StudyLogDocument;
+import wooteco.prolog.studyLogDocument.domain.StudyLogDocumentRepository;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 
@@ -16,7 +16,7 @@ import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 @Service
 public class StudyLogDocumentService {
 
-    private final CustomStudyLogDocumentRepository<StudyLogDocument> studyLogDocumentRepository;
+    private final StudyLogDocumentRepository studyLogDocumentRepository;
     private final StudylogRepository studylogRepository;
 
     public void save(StudyLogDocument studyLogDocument) {
