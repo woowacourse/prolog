@@ -1,24 +1,26 @@
-import { useParams, useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import useFetch from '../../hooks/useFetch';
 import { requestGetPost } from '../../service/requests';
 
 import { Button, BUTTON_SIZE, Card, ProfileChip } from '../../components';
 import { Viewer } from '@toast-ui/react-editor';
 
-import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
+import 'prismjs/themes/prism.css';
+import Prism from 'prismjs';
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
 
 import {
   ButtonList,
   EditButtonStyle,
   DeleteButtonStyle,
   CardInner,
-  SubHeader,
-  Mission,
-  Title,
-  Tags,
   IssuedDate,
+  Mission,
   ProfileChipStyle,
+  SubHeader,
+  Tags,
+  Title,
   ViewerWrapper,
   SubHeaderRightContent,
 } from './styles';
@@ -114,7 +116,11 @@ const PostPage = () => {
             </ProfileChip>
           </div>
           <ViewerWrapper>
-            <Viewer initialValue={content} />
+            <Viewer 
+              initialValue={content} 
+              extendedAutolinks={true}
+              plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+            />
           </ViewerWrapper>
           <Tags>
             {tags?.map(({ id, name }) => (
