@@ -1,11 +1,11 @@
 package wooteco.prolog.studylog.studylog.domain;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.studylog.domain.Content;
 import wooteco.prolog.studylog.exception.StudylogContentNullOrEmptyException;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ContentTest {
 
@@ -18,10 +18,10 @@ class ContentTest {
         //when
         //then
         assertThatThrownBy(() -> new Content(empty))
-                .isInstanceOf(StudylogContentNullOrEmptyException.class);
+            .isInstanceOf(StudylogContentNullOrEmptyException.class);
         assertThatThrownBy(() -> new Content(justBlank))
-                .isInstanceOf(StudylogContentNullOrEmptyException.class);
+            .isInstanceOf(StudylogContentNullOrEmptyException.class);
         assertThatThrownBy(() -> new Content(null))
-                .isInstanceOf(StudylogContentNullOrEmptyException.class);
+            .isInstanceOf(StudylogContentNullOrEmptyException.class);
     }
 }

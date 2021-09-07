@@ -26,4 +26,8 @@ public class StudyLogDocument {
         this.title = title;
         this.content = content;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

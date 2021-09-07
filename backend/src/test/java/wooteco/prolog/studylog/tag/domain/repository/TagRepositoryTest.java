@@ -1,16 +1,15 @@
 package wooteco.prolog.studylog.tag.domain.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.domain.repository.TagRepository;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 class TagRepositoryTest {
@@ -30,8 +29,8 @@ class TagRepositoryTest {
         // then
         assertThat(savedTag.getId()).isNotNull();
         assertThat(savedTag).usingRecursiveComparison()
-                .ignoringFields("id", "createdAt", "updatedAt")
-                .isEqualTo(tag);
+            .ignoringFields("id", "createdAt", "updatedAt")
+            .isEqualTo(tag);
     }
 
     @DisplayName("name 리스트로 Tag 리스트 검색 - 성공")
@@ -53,7 +52,7 @@ class TagRepositoryTest {
 
         // then
         assertThat(tags).usingFieldByFieldElementComparator()
-                .containsExactlyInAnyOrder(tag1, tag2, tag3);
+            .containsExactlyInAnyOrder(tag1, tag2, tag3);
     }
 
     @DisplayName("name 리스트로 Tag 리스트 검색 - 검색 결과 없음")

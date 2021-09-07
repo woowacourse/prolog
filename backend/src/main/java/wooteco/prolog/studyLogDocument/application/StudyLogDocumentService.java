@@ -5,7 +5,6 @@ import static java.util.stream.Collectors.toList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import wooteco.prolog.studyLogDocument.domain.StudyLogDocument;
@@ -51,5 +50,9 @@ public class StudyLogDocumentService {
                 .map(Studylog::toStudyLogDocument)
                 .collect(Collectors.toList())
         );
+    }
+
+    public List<StudyLogDocument> findAll() {
+        return (List<StudyLogDocument>) studyLogDocumentRepository.findAll();
     }
 }

@@ -51,7 +51,7 @@ public class DataInitializer implements InitializingBean {
     @Transactional
     public void execute() {
         truncateAllTables();
-        deleteAllDocuments();
+//        deleteAllDocuments();
     }
 
     private void truncateAllTables() {

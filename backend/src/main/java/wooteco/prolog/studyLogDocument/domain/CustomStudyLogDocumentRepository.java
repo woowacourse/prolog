@@ -14,4 +14,6 @@ public interface CustomStudyLogDocumentRepository<T> {
     void deleteAll();
 
     <S extends StudyLogDocument> Iterable<S> saveAll(List<StudyLogDocument> collect);
+
+    Iterable<StudyLogDocument> findAll();
 }
