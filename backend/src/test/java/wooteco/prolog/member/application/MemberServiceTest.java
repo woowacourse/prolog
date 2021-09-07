@@ -29,9 +29,9 @@ class MemberServiceTest {
     void findOrCreateMemberTest() {
         // given
         GithubProfileResponse brownResponse = new GithubProfileResponse("브라운", "gracefulBrown", "1",
-            "imageUrl1");
+                                                                        "imageUrl1");
         GithubProfileResponse jasonResponse = new GithubProfileResponse("제이슨", "pjs", "2",
-            "imageUrl2");
+                                                                        "imageUrl2");
 
         Member를_생성한다(brownResponse.toMember());
 

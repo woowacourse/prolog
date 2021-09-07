@@ -1,13 +1,12 @@
 package wooteco.prolog.studylog.domain;
 
-import lombok.Getter;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Embeddable;
-import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.CascadeType;
+import javax.persistence.Embeddable;
+import javax.persistence.OneToMany;
+import lombok.Getter;
 import org.hibernate.annotations.BatchSize;
 
 @Getter
@@ -32,9 +31,9 @@ public class StudylogTags {
 
     private List<StudylogTag> duplicateFilter(List<StudylogTag> studylogTags) {
         return studylogTags.stream()
-                .filter(studylogTag -> values.stream().map(StudylogTag::getTag)
-                        .noneMatch(newTag -> newTag.isSameName(studylogTag.getTag())))
-                .collect(Collectors.toList());
+            .filter(studylogTag -> values.stream().map(StudylogTag::getTag)
+                .noneMatch(newTag -> newTag.isSameName(studylogTag.getTag())))
+            .collect(Collectors.toList());
     }
 
     public void update(List<StudylogTag> studylogTags) {

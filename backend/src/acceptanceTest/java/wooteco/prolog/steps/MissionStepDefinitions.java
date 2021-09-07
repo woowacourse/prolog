@@ -1,18 +1,17 @@
 package wooteco.prolog.steps;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.LevelAcceptanceFixture;
 import wooteco.prolog.fixtures.MissionAcceptanceFixture;
 import wooteco.prolog.studylog.application.dto.MissionRequest;
 import wooteco.prolog.studylog.application.dto.MissionResponse;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class MissionStepDefinitions extends AcceptanceSteps {
 
@@ -57,7 +56,7 @@ public class MissionStepDefinitions extends AcceptanceSteps {
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
 
         List<MissionResponse> missions = context.response.jsonPath()
-                .getList(".", MissionResponse.class);
+            .getList(".", MissionResponse.class);
         assertThat(missions).isNotEmpty();
     }
 }

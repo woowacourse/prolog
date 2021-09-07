@@ -29,7 +29,7 @@ public class ElasticSearchLocalConfig extends AbstractElasticsearchConfiguration
 
         BasicCredentialsProvider credentialProvider = new BasicCredentialsProvider();
         credentialProvider.setCredentials(AuthScope.ANY,
-            new UsernamePasswordCredentials("admin", "admin"));
+                                          new UsernamePasswordCredentials("admin", "admin"));
 
         RestClientBuilder builder = RestClient
             .builder(HttpHost.create(container.getHttpHostAddress()))

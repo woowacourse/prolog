@@ -1,15 +1,14 @@
 package wooteco.prolog.login.ui;
 
+import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import wooteco.prolog.login.application.AuthorizationExtractor;
 import wooteco.prolog.login.application.GithubLoginService;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Objects;
 
 @Component
 @AllArgsConstructor
@@ -38,9 +37,9 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     private boolean isPreflighted(HttpServletRequest request) {
         return isOptionsMethod(request)
-                && hasOrigin(request)
-                && hasRequestHeaders(request)
-                && hasRequestMethods(request);
+            && hasOrigin(request)
+            && hasRequestHeaders(request)
+            && hasRequestMethods(request);
     }
 
     public boolean isOptionsMethod(HttpServletRequest request) {
