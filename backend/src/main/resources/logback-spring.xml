@@ -3,18 +3,15 @@
   <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
   <springProfile name="prod">
-    <include resource="logback/console-logger.xml"/>
     <include resource="logback/file-info-logger.xml"/>
     <include resource="logback/file-warn-logger.xml"/>
     <include resource="logback/file-error-logger.xml"/>
 
     <logger name="wooteco.prolog" level="ERROR">
-      <appender-ref ref="console-logger"/>
       <appender-ref ref="file-error-logger"/>
     </logger>
 
     <logger name="org.springframework" level="INFO">
-      <appender-ref ref="console-logger"/>
       <appender-ref ref="file-info-logger"/>
       <appender-ref ref="file-warn-logger"/>
       <appender-ref ref="file-error-logger"/>
@@ -22,14 +19,12 @@
   </springProfile>
 
   <springProfile name="dev">
-    <include resource="logback/console-logger.xml"/>
     <include resource="logback/file-debug-logger.xml"/>
     <include resource="logback/file-info-logger.xml"/>
     <include resource="logback/file-warn-logger.xml"/>
     <include resource="logback/file-error-logger.xml"/>
 
     <logger name="wooteco.prolog" level="DEBUG">
-      <appender-ref ref="console-logger"/>
       <appender-ref ref="file-debug-logger"/>
       <appender-ref ref="file-info-logger"/>
       <appender-ref ref="file-warn-logger"/>
@@ -37,7 +32,6 @@
     </logger>
 
     <logger name="org.springframework" level="INFO">
-      <appender-ref ref="console-logger"/>
       <appender-ref ref="file-info-logger"/>
       <appender-ref ref="file-warn-logger"/>
       <appender-ref ref="file-error-logger"/>

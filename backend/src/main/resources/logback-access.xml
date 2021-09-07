@@ -4,7 +4,7 @@
         <appender-ref ref="file-access-logger"/>
     </springProfile>
 
-    <springProfile name="prod, dev, local, test">
+    <springProfile name="local, test">
         <include resource="logback/console-access-logger.xml"/>
         <appender-ref ref="console-access-logger"/>
     </springProfile>
