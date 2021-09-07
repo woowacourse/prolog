@@ -31,11 +31,11 @@ public class StudylogDocumentation extends Documentation {
 
         // when
         ExtractableResponse<Response> createResponse = given("studylog/create")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .body(studylogRequest)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/posts")
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(studylogRequest)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().post("/posts")
+            .then().log().all().extract();
 
         // then
         assertThat(createResponse.statusCode()).isEqualTo(HttpStatus.CREATED.value());
@@ -45,37 +45,39 @@ public class StudylogDocumentation extends Documentation {
     @Test
     public void 스터디로그_단건을_조회한다() {
         // given
-        ExtractableResponse<Response> studylogResponse = 스터디로그_등록함(Arrays.asList(createStudylogRequest1()));
+        ExtractableResponse<Response> studylogResponse = 스터디로그_등록함(
+            Arrays.asList(createStudylogRequest1()));
         String location = studylogResponse.header("Location");
 
         given("studylog/read")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .when().get(location)
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .when().get(location)
+            .then().log().all().extract();
     }
 
     @Test
     public void 스터디로그_목록을_조회한다() {
         // given
-        List<StudylogRequest> studylogRequests = Arrays.asList(createStudylogRequest1(), createStudylogRequest2());
+        List<StudylogRequest> studylogRequests = Arrays.asList(createStudylogRequest1(),
+            createStudylogRequest2());
         스터디로그_등록함(studylogRequests);
 
         // when
         ExtractableResponse<Response> response = given("studylog/list")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/posts")
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when().get("/posts")
+            .then().log().all().extract();
 
         // then
         StudylogsResponse studylogsResponse = response.as(StudylogsResponse.class);
         List<String> studylogsTitles = studylogsResponse.getData().stream()
-                .map(StudylogResponse::getTitle)
-                .collect(Collectors.toList());
+            .map(StudylogResponse::getTitle)
+            .collect(Collectors.toList());
         List<String> expectedTitles = studylogRequests.stream()
-                .map(StudylogRequest::getTitle)
-                .sorted()
-                .collect(Collectors.toList());
+            .map(StudylogRequest::getTitle)
+            .sorted()
+            .collect(Collectors.toList());
         assertThat(studylogsTitles).usingRecursiveComparison().isEqualTo(expectedTitles);
     }
 
@@ -99,7 +101,8 @@ public class StudylogDocumentation extends Documentation {
     @Test
     public void 스터디로그를_수정한다() {
         // given
-        ExtractableResponse<Response> studylogResponses = 스터디로그_등록함(Arrays.asList(createStudylogRequest1()));
+        ExtractableResponse<Response> studylogResponses = 스터디로그_등록함(
+            Arrays.asList(createStudylogRequest1()));
         String location = studylogResponses.header("Location");
 
         String title = "수정된 제목";
@@ -108,19 +111,19 @@ public class StudylogDocumentation extends Documentation {
         Long levelId = 레벨_등록함(new LevelRequest("레벨2"));
         Long missionId = 미션_등록함(new MissionRequest("수정된 미션", levelId));
         List<TagRequest> tags = Arrays.asList(
-                new TagRequest("spa"),
-                new TagRequest("edit")
+            new TagRequest("spa"),
+            new TagRequest("edit")
         );
         StudylogRequest editStudylogRequest = new StudylogRequest(title, content, missionId, tags);
 
         // when
         ExtractableResponse<Response> editResponse = given("studylog/edit")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .body(editStudylogRequest)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().put(location)
-                .then().log().all()
-                .extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(editStudylogRequest)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().put(location)
+            .then().log().all()
+            .extract();
 
         // then
         assertThat(editResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -128,13 +131,14 @@ public class StudylogDocumentation extends Documentation {
 
     @Test
     public void 스터디로그를_삭제한다() {
-        ExtractableResponse<Response> studylogResponse = 스터디로그_등록함(Arrays.asList(createStudylogRequest1()));
+        ExtractableResponse<Response> studylogResponse = 스터디로그_등록함(
+            Arrays.asList(createStudylogRequest1()));
         String location = studylogResponse.header("Location");
 
         given("studylog/delete")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().delete(location);
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when().delete(location);
     }
 
     private StudylogRequest createStudylogRequest1() {
@@ -159,38 +163,38 @@ public class StudylogDocumentation extends Documentation {
 
     private ExtractableResponse<Response> 스터디로그_등록함(List<StudylogRequest> request) {
         return RestAssured.given().log().all()
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().log().all()
-                .post("/posts")
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().log().all()
+            .post("/posts")
+            .then().log().all().extract();
     }
 
     private Long 레벨_등록함(LevelRequest request) {
         return RestAssured
-                .given().log().all()
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/levels")
-                .then()
-                .log().all()
-                .extract()
-                .as(LevelResponse.class)
-                .getId();
+            .given().log().all()
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/levels")
+            .then()
+            .log().all()
+            .extract()
+            .as(LevelResponse.class)
+            .getId();
     }
 
     private Long 미션_등록함(MissionRequest request) {
         return RestAssured.given()
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/missions")
-                .then()
-                .log().all()
-                .extract()
-                .as(MissionResponse.class)
-                .getId();
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/missions")
+            .then()
+            .log().all()
+            .extract()
+            .as(MissionResponse.class)
+            .getId();
     }
 }

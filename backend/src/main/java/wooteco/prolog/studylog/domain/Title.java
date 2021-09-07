@@ -1,12 +1,15 @@
 package wooteco.prolog.studylog.domain;
 
-import lombok.*;
-import wooteco.prolog.login.excetpion.StudylogTitleNullOrEmptyException;
-import wooteco.prolog.studylog.exception.TooLongTitleException;
-
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import java.util.Objects;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import wooteco.prolog.login.excetpion.StudylogTitleNullOrEmptyException;
+import wooteco.prolog.studylog.exception.TooLongTitleException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

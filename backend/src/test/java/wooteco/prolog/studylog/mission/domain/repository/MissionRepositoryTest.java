@@ -1,5 +1,8 @@
 package wooteco.prolog.studylog.mission.domain.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,10 +12,6 @@ import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.repository.LevelRepository;
 import wooteco.prolog.studylog.domain.repository.MissionRepository;
-
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 class MissionRepositoryTest {
@@ -42,8 +41,8 @@ class MissionRepositoryTest {
         // then
         assertThat(savedMission.getId()).isNotNull();
         assertThat(savedMission).usingRecursiveComparison()
-                .ignoringFields("id", "createdAt", "updatedAt")
-                .isEqualTo(mission);
+            .ignoringFields("id", "createdAt", "updatedAt")
+            .isEqualTo(mission);
     }
 
     @DisplayName("name으로 Mission 검색 - 성공")
@@ -59,7 +58,7 @@ class MissionRepositoryTest {
         //then
         assertThat(foundMission).isPresent();
         assertThat(foundMission.get()).usingRecursiveComparison()
-                .isEqualTo(mission);
+            .isEqualTo(mission);
     }
 
     @DisplayName("name으로 Mission 검색 - 실패")

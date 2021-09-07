@@ -1,10 +1,9 @@
 package wooteco.support.autoceptor.scanner;
 
-import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
-
 import java.util.HashSet;
 import java.util.Set;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 
 public class ClassScanner {
 
@@ -16,8 +15,8 @@ public class ClassScanner {
 
     public Set<Class<?>> getAllClasses() {
         Reflections reflections = new Reflections(
-                basePackage,
-                new SubTypesScanner(false)
+            basePackage,
+            new SubTypesScanner(false)
         );
 
         return new HashSet<>(reflections.getSubTypesOf(Object.class));

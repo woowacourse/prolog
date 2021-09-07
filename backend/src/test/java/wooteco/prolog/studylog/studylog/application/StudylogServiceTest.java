@@ -80,6 +80,47 @@ class StudylogServiceTest {
     private Studylog studylog3;
     private Studylog studylog4;
 
+    private static Stream<Arguments> findWithFilter() {
+        return Stream.of(
+//            Arguments.of(null, emptyList(), emptyList(),
+//                asList(tag1.getId(), tag2.getId(), tag3.getId()), asList(),
+//                asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE, STUDYLOG3_TITLE)),
+//            Arguments.of(null, emptyList(), emptyList(), singletonList(tag2.getId()), asList(),
+//                asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE)),
+//            Arguments.of("", emptyList(), emptyList(), singletonList(tag3.getId()), asList(),
+//                asList(STUDYLOG2_TITLE, STUDYLOG3_TITLE)),
+//            Arguments.of("", emptyList(), singletonList(1L), emptyList(), asList(),
+//                asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE)),
+//            Arguments.of("", emptyList(), singletonList(2L), emptyList(), asList(),
+//                asList(STUDYLOG3_TITLE, STUDYLOG4_TITLE)),
+//            Arguments.of("", emptyList(), singletonList(1L), singletonList(tag1.getId()), asList(),
+//                singletonList(STUDYLOG1_TITLE)),
+//            Arguments.of("", singletonList(1L), singletonList(1L),
+//                asList(tag1.getId(), tag2.getId(), tag3.getId()), asList(),
+//                asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE)),
+//            Arguments.of("", emptyList(), singletonList(1L), singletonList(tag2.getId()), asList(),
+//                asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE)),
+//            Arguments.of("", emptyList(), asList(1L, 2L), singletonList(tag3.getId()), asList(),
+//                asList(STUDYLOG2_TITLE, STUDYLOG3_TITLE)),
+//            Arguments.of("", emptyList(), emptyList(), emptyList(), asList(),
+//                asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE, STUDYLOG3_TITLE, STUDYLOG4_TITLE)),
+            Arguments.of("이것은 제목", emptyList(), emptyList(), emptyList(), asList(),
+                asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE, STUDYLOG3_TITLE, STUDYLOG4_TITLE)),
+            Arguments.of("궁둥이", emptyList(), emptyList(), emptyList(), emptyList(), emptyList())
+        );
+    }
+
+    private static Stream<Arguments> findStudylogsOfPagingTest() {
+        return Stream.of(
+            Arguments.of(PageRequest.of(0, 10), 10),
+            Arguments.of(PageRequest.of(0, 20), 20),
+            Arguments.of(PageRequest.of(0, 60), 50),
+            Arguments.of(PageRequest.of(3, 15), 5),
+            Arguments.of(PageRequest.of(1, 50), 0),
+            Arguments.of(PageRequest.of(4, 11), 6)
+        );
+    }
+
     @BeforeEach
     void setUp() {
         LevelResponse levelResponse1 = levelService.create(new LevelRequest("레벨1"));
@@ -171,36 +212,6 @@ class StudylogServiceTest {
         );
     }
 
-    private static Stream<Arguments> findWithFilter() {
-        return Stream.of(
-//            Arguments.of(null, emptyList(), emptyList(),
-//                asList(tag1.getId(), tag2.getId(), tag3.getId()), asList(),
-//                asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE, STUDYLOG3_TITLE)),
-//            Arguments.of(null, emptyList(), emptyList(), singletonList(tag2.getId()), asList(),
-//                asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE)),
-//            Arguments.of("", emptyList(), emptyList(), singletonList(tag3.getId()), asList(),
-//                asList(STUDYLOG2_TITLE, STUDYLOG3_TITLE)),
-//            Arguments.of("", emptyList(), singletonList(1L), emptyList(), asList(),
-//                asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE)),
-//            Arguments.of("", emptyList(), singletonList(2L), emptyList(), asList(),
-//                asList(STUDYLOG3_TITLE, STUDYLOG4_TITLE)),
-//            Arguments.of("", emptyList(), singletonList(1L), singletonList(tag1.getId()), asList(),
-//                singletonList(STUDYLOG1_TITLE)),
-//            Arguments.of("", singletonList(1L), singletonList(1L),
-//                asList(tag1.getId(), tag2.getId(), tag3.getId()), asList(),
-//                asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE)),
-//            Arguments.of("", emptyList(), singletonList(1L), singletonList(tag2.getId()), asList(),
-//                asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE)),
-//            Arguments.of("", emptyList(), asList(1L, 2L), singletonList(tag3.getId()), asList(),
-//                asList(STUDYLOG2_TITLE, STUDYLOG3_TITLE)),
-//            Arguments.of("", emptyList(), emptyList(), emptyList(), asList(),
-//                asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE, STUDYLOG3_TITLE, STUDYLOG4_TITLE)),
-            Arguments.of("이것은 제목", emptyList(), emptyList(), emptyList(), asList(),
-                asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE, STUDYLOG3_TITLE, STUDYLOG4_TITLE)),
-            Arguments.of("궁둥이", emptyList(), emptyList(), emptyList(), emptyList(), emptyList())
-        );
-    }
-
     @DisplayName("유저 이름으로 스터디로그를 조회한다.")
     @Test
     void findStudylogsOfTest() {
@@ -239,17 +250,6 @@ class StudylogServiceTest {
             .findStudylogsOf(member1.getUsername(), pageRequest);
 
         assertThat(studylogsResponseOfMember1.getData().size()).isEqualTo(expectedSize);
-    }
-
-    private static Stream<Arguments> findStudylogsOfPagingTest() {
-        return Stream.of(
-            Arguments.of(PageRequest.of(0, 10), 10),
-            Arguments.of(PageRequest.of(0, 20), 20),
-            Arguments.of(PageRequest.of(0, 60), 50),
-            Arguments.of(PageRequest.of(3, 15), 5),
-            Arguments.of(PageRequest.of(1, 50), 0),
-            Arguments.of(PageRequest.of(4, 11), 6)
-        );
     }
 
     @DisplayName("스터디로그를 수정한다")

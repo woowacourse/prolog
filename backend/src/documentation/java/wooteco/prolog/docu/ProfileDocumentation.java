@@ -3,14 +3,18 @@ package wooteco.prolog.docu;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
 import wooteco.prolog.GithubResponses;
-import wooteco.prolog.studylog.application.dto.*;
-
-import java.util.Arrays;
-import java.util.List;
+import wooteco.prolog.studylog.application.dto.LevelRequest;
+import wooteco.prolog.studylog.application.dto.LevelResponse;
+import wooteco.prolog.studylog.application.dto.MissionRequest;
+import wooteco.prolog.studylog.application.dto.MissionResponse;
+import wooteco.prolog.studylog.application.dto.StudylogRequest;
+import wooteco.prolog.studylog.application.dto.TagRequest;
 
 public class ProfileDocumentation extends Documentation {
 
@@ -20,16 +24,16 @@ public class ProfileDocumentation extends Documentation {
         스터디로그_등록함(Arrays.asList(createStudylogRequest2()));
 
         given("profile/studylog")
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/members/{username}/posts", GithubResponses.소롱.getLogin());
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when().get("/members/{username}/posts", GithubResponses.소롱.getLogin());
     }
 
     @Test
     void 사용자_프로필을_조회한다() {
         given("profile/profile")
-                .when().get("/members/{username}/profile", GithubResponses.소롱.getLogin())
-                .then().log().all()
-                .extract();
+            .when().get("/members/{username}/profile", GithubResponses.소롱.getLogin())
+            .then().log().all()
+            .extract();
     }
 
     private StudylogRequest createStudylogRequest1() {
@@ -54,38 +58,38 @@ public class ProfileDocumentation extends Documentation {
 
     private ExtractableResponse<Response> 스터디로그_등록함(List<StudylogRequest> request) {
         return RestAssured.given().log().all()
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().log().all()
-                .post("/posts")
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().log().all()
+            .post("/posts")
+            .then().log().all().extract();
     }
 
     private Long 미션_등록함(MissionRequest request) {
         return RestAssured.given()
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/missions")
-                .then()
-                .log().all()
-                .extract()
-                .as(MissionResponse.class)
-                .getId();
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/missions")
+            .then()
+            .log().all()
+            .extract()
+            .as(MissionResponse.class)
+            .getId();
     }
 
     private Long 레벨_등록함(LevelRequest request) {
         return RestAssured
-                .given().log().all()
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/levels")
-                .then()
-                .log().all()
-                .extract()
-                .as(LevelResponse.class)
-                .getId();
+            .given().log().all()
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/levels")
+            .then()
+            .log().all()
+            .extract()
+            .as(LevelResponse.class)
+            .getId();
     }
 }

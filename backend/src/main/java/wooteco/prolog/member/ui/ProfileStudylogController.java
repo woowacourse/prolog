@@ -25,7 +25,7 @@ public class ProfileStudylogController {
 
     @GetMapping(value = "/{username}/posts", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StudylogsResponse> findAllStudylogsOfMine(@PathVariable String username,
-                                                            @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
+                                                                    @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
         StudylogsResponse studylogs = studylogService.findStudylogsOf(username, pageable);
         return ResponseEntity.ok().body(studylogs);
     }

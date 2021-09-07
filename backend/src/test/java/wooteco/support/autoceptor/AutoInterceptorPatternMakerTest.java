@@ -1,12 +1,11 @@
 package wooteco.support.autoceptor;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class AutoInterceptorPatternMakerTest {
 
@@ -15,8 +14,8 @@ class AutoInterceptorPatternMakerTest {
     void extractPatterns() {
         // given
         AutoInterceptorPatternMaker maker = new AutoInterceptorPatternMaker(
-                "wooteco.support.autoceptor.test_classes",
-                AuthMemberPrincipal.class
+            "wooteco.support.autoceptor.test_classes",
+            AuthMemberPrincipal.class
         );
 
         // when
@@ -24,8 +23,8 @@ class AutoInterceptorPatternMakerTest {
 
         //then
         assertThat(patterns).containsOnly(
-                "/api2/test",
-                "/api2/test/*"
+            "/api2/test",
+            "/api2/test/*"
         );
     }
 }
