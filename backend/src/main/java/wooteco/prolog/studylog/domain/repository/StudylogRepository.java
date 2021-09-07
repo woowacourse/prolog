@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.domain.Studylog;
 
-public interface StudylogRepository extends JpaRepository<Studylog, Long>, JpaSpecificationExecutor<Studylog> {
+public interface StudylogRepository extends JpaRepository<Studylog, Long>,
+    JpaSpecificationExecutor<Studylog> {
 
     Page<Studylog> findByMember(Member member, Pageable pageable);
 

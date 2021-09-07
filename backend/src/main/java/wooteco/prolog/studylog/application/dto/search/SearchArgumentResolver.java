@@ -63,7 +63,7 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
 
     private Pageable makePageableDefault(Map<String, String> queryParams) {
         return PageRequest.of(
-            Integer.parseInt(queryParams.getOrDefault("page", "0")),
+            Integer.parseInt(queryParams.getOrDefault("page", "1")) - 1,
             Integer.parseInt(queryParams.getOrDefault("size", "20")),
             Direction.DESC,
             "id");
