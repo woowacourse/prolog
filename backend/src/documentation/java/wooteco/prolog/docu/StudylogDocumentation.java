@@ -59,7 +59,7 @@ public class StudylogDocumentation extends Documentation {
     public void 스터디로그_목록을_조회한다() {
         // given
         List<StudylogRequest> studylogRequests = Arrays.asList(createStudylogRequest1(),
-            createStudylogRequest2());
+                                                               createStudylogRequest2());
         스터디로그_등록함(studylogRequests);
 
         // when

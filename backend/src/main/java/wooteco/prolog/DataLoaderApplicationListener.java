@@ -66,14 +66,14 @@ public class DataLoaderApplicationListener implements
         // member init
         Member member = memberService
             .findOrCreateMember(new GithubProfileResponse("류성현", "gracefulBrown", "46308949",
-                "https://avatars.githubusercontent.com/u/46308949?v=4"));
+                                                          "https://avatars.githubusercontent.com/u/46308949?v=4"));
 
         // post init
         studylogService.insertStudylogs(member, Arrays.asList(
             new StudylogRequest("ATDD란 무엇인가", "노션 정리 링크\n개인적으로 친구들에게 한 설명이 참 잘 썼다고 생각한다 호호",
-                mission1.getId(), tagRequests),
+                                mission1.getId(), tagRequests),
             new StudylogRequest("프론트엔드 빌드 툴", "snowpack 사용하기 https://hjuu.tistory.com/6",
-                mission2.getId(), tagRequests),
+                                mission2.getId(), tagRequests),
             new StudylogRequest("페이지네이션 데이터 1", "좋은 내용", mission1.getId(), tagRequests),
             new StudylogRequest("페이지네이션 데이터 2", "좋은 내용", mission2.getId(), tagRequests),
             new StudylogRequest("페이지네이션 데이터 3", "좋은 내용", mission3.getId(), tagRequests),

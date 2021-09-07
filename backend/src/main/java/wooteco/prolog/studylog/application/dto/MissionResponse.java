@@ -16,6 +16,6 @@ public class MissionResponse {
 
     public static MissionResponse of(Mission mission) {
         return new MissionResponse(mission.getId(), mission.getName(),
-            LevelResponse.of(mission.getLevel()));
+                                   LevelResponse.of(mission.getLevel()));
     }
 }

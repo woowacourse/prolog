@@ -105,7 +105,8 @@ class StudylogServiceTest {
 //            Arguments.of("", emptyList(), emptyList(), emptyList(), asList(),
 //                asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE, STUDYLOG3_TITLE, STUDYLOG4_TITLE)),
             Arguments.of("이것은 제목", emptyList(), emptyList(), emptyList(), asList(),
-                asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE, STUDYLOG3_TITLE, STUDYLOG4_TITLE)),
+                         asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE, STUDYLOG3_TITLE,
+                                STUDYLOG4_TITLE)),
             Arguments.of("궁둥이", emptyList(), emptyList(), emptyList(), emptyList(), emptyList())
         );
     }
@@ -143,11 +144,14 @@ class StudylogServiceTest {
             .findOrCreateMember(new GithubProfileResponse("이름2", "별명2", "2", "image"));
 
         this.studylog1 = new Studylog(member1,
-            STUDYLOG1_TITLE, "피케이와 포모의 스터디로그", mission1, asList(tag1, tag2));
+                                      STUDYLOG1_TITLE, "피케이와 포모의 스터디로그", mission1,
+                                      asList(tag1, tag2));
         this.studylog2 = new Studylog(member1,
-            STUDYLOG2_TITLE, "피케이와 포모의 스터디로그 2", mission1, asList(tag2, tag3));
+                                      STUDYLOG2_TITLE, "피케이와 포모의 스터디로그 2", mission1,
+                                      asList(tag2, tag3));
         this.studylog3 = new Studylog(member2,
-            STUDYLOG3_TITLE, "피케이 스터디로그", mission2, asList(tag3, tag4, tag5));
+                                      STUDYLOG3_TITLE, "피케이 스터디로그", mission2,
+                                      asList(tag3, tag4, tag5));
         this.studylog4 = new Studylog(member2, STUDYLOG4_TITLE, "포모의 스터디로그", mission2, asList());
     }
 
@@ -259,8 +263,8 @@ class StudylogServiceTest {
         List<StudylogResponse> studylogRespons = insertStudylogs(member1, studylog1);
         StudylogResponse targetStudylog = studylogRespons.get(0);
         StudylogRequest updateStudylogRequest = new StudylogRequest("updateTitle", "updateContent",
-            2L,
-            toTagRequests(tags));
+                                                                    2L,
+                                                                    toTagRequests(tags));
 
         //when
         studylogService.updateStudylog(member1, targetStudylog.getId(), updateStudylogRequest);
@@ -287,8 +291,8 @@ class StudylogServiceTest {
     void deleteStudylogTest() {
         //given
         List<StudylogResponse> studylogRespons = insertStudylogs(member1, studylog1, studylog2,
-            studylog3,
-            studylog4);
+                                                                 studylog3,
+                                                                 studylog4);
 
         //when
         List<Long> studylogIds = studylogRespons.stream()
@@ -312,12 +316,12 @@ class StudylogServiceTest {
     private List<StudylogResponse> insertStudylogs(Member member, List<Studylog> studylogs) {
         List<StudylogRequest> studylogRequests = studylogs.stream()
             .map(studylog ->
-                new StudylogRequest(
-                    studylog.getTitle(),
-                    studylog.getContent(),
-                    studylog.getMission().getId(),
-                    toTagRequests(studylog)
-                )
+                     new StudylogRequest(
+                         studylog.getTitle(),
+                         studylog.getContent(),
+                         studylog.getMission().getId(),
+                         toTagRequests(studylog)
+                     )
             )
             .collect(toList());
 

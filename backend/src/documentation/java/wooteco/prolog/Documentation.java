@@ -54,7 +54,7 @@ public class Documentation {
         return RestAssured
             .given(spec).log().all()
             .filter(document(identifier,
-                preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint())));
+                             preprocessRequest(prettyPrint()),
+                             preprocessResponse(prettyPrint())));
     }
 }

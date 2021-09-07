@@ -27,7 +27,9 @@ public class GithubTestController {
         String accessToken = authorization.split(" ")[1];
         GithubResponses githubResponse = GithubResponses.findByToken(accessToken);
         GithubProfileResponse response = new GithubProfileResponse(githubResponse.getName(),
-            githubResponse.getLogin(), githubResponse.getId(), githubResponse.getAvatarUrl());
+                                                                   githubResponse.getLogin(),
+                                                                   githubResponse.getId(),
+                                                                   githubResponse.getAvatarUrl());
         return ResponseEntity.ok(response);
     }
 }
