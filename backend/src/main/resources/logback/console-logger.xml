@@ -9,7 +9,7 @@
     </encoder>
   </appender>
 
-  <appender name="db-logger-console" class="ch.qos.logback.core.ConsoleAppender">
+  <appender name="console-db-logger" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <charset>utf8</charset>
       <Pattern>

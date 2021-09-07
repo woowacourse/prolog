@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <included>
-  <property name="home" value="logs/error/"/>
-  <appender name="error-logger-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${home}error.log</file>
+  <property name="home" value="logs/info/"/>
+  <appender name="file-info-logger" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${home}info.log</file>
     <filter class="ch.qos.logback.classic.filter.LevelFilter">
-      <level>ERROR</level>
+      <level>INFO</level>
       <onMatch>ACCEPT</onMatch>
       <onMismatch>DENY</onMismatch>
     </filter>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>${home}error-%d{yyyyMMdd}-%i.log</fileNamePattern>
+      <fileNamePattern>${home}info-%d{yyyyMMdd}-%i.log</fileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
         <maxFileSize>15MB</maxFileSize>
       </timeBasedFileNamingAndTriggeringPolicy>
