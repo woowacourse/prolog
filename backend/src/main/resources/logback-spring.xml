@@ -3,47 +3,38 @@
   <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
   <springProfile name="prod">
-    <include resource="logback/console-logger.xml"/>
-    <include resource="logback/db-logger.xml"/>
-    <include resource="logback/debug-logger.xml"/>
-    <include resource="logback/info-logger.xml"/>
-    <include resource="logback/warn-logger.xml"/>
-    <include resource="logback/error-logger.xml"/>
+    <include resource="logback/file-info-logger.xml"/>
+    <include resource="logback/file-warn-logger.xml"/>
+    <include resource="logback/file-error-logger.xml"/>
 
     <logger name="wooteco.prolog" level="ERROR">
-      <appender-ref ref="console-logger"/>
-      <appender-ref ref="error-logger-file"/>
+      <appender-ref ref="file-error-logger"/>
     </logger>
 
     <logger name="org.springframework" level="INFO">
-      <appender-ref ref="console-logger"/>
-      <appender-ref ref="info-logger-file"/>
-      <appender-ref ref="warn-logger-file"/>
-      <appender-ref ref="error-logger-file"/>
+      <appender-ref ref="file-info-logger"/>
+      <appender-ref ref="file-warn-logger"/>
+      <appender-ref ref="file-error-logger"/>
     </logger>
   </springProfile>
 
   <springProfile name="dev">
-    <include resource="logback/console-logger.xml"/>
-    <include resource="logback/db-logger.xml"/>
-    <include resource="logback/debug-logger.xml"/>
-    <include resource="logback/info-logger.xml"/>
-    <include resource="logback/warn-logger.xml"/>
-    <include resource="logback/error-logger.xml"/>
+    <include resource="logback/file-debug-logger.xml"/>
+    <include resource="logback/file-info-logger.xml"/>
+    <include resource="logback/file-warn-logger.xml"/>
+    <include resource="logback/file-error-logger.xml"/>
 
     <logger name="wooteco.prolog" level="DEBUG">
-      <appender-ref ref="console-logger"/>
-      <appender-ref ref="debug-logger-file"/>
-      <appender-ref ref="info-logger-file"/>
-      <appender-ref ref="warn-logger-file"/>
-      <appender-ref ref="error-logger-file"/>
+      <appender-ref ref="file-debug-logger"/>
+      <appender-ref ref="file-info-logger"/>
+      <appender-ref ref="file-warn-logger"/>
+      <appender-ref ref="file-error-logger"/>
     </logger>
 
     <logger name="org.springframework" level="INFO">
-      <appender-ref ref="console-logger"/>
-      <appender-ref ref="info-logger-file"/>
-      <appender-ref ref="warn-logger-file"/>
-      <appender-ref ref="error-logger-file"/>
+      <appender-ref ref="file-info-logger"/>
+      <appender-ref ref="file-warn-logger"/>
+      <appender-ref ref="file-error-logger"/>
     </logger>
   </springProfile>
 
@@ -59,11 +50,11 @@
     </logger>
 
     <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
-      <appender-ref ref="db-logger-console"/>
+      <appender-ref ref="console-db-logger"/>
     </logger>
 
     <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="TRACE" additivity="false">
-      <appender-ref ref="db-logger-console"/>
+      <appender-ref ref="console-db-logger"/>
     </logger>
   </springProfile>
 </configuration>
