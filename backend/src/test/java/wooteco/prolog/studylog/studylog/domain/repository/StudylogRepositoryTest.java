@@ -36,7 +36,28 @@ class StudylogRepositoryTest {
     private static final String STUDYLOG2_TITLE = "이것은 두번째 제목";
     private static final String STUDYLOG3_TITLE = "이것은 3 제목";
     private static final String STUDYLOG4_TITLE = "이것은 네번 제목";
-
+    private final Member member1 = new Member("이름1", "별명1", Role.CREW, 1L, "image");
+    private final Member member2 = new Member("이름2", "별명2", Role.CREW, 2L, "image");
+    private final Level level1 = new Level("레벨1");
+    private final Level level2 = new Level("레벨2");
+    private final Mission mission1 = new Mission("자동차 미션", level1);
+    private final Mission mission2 = new Mission("수동차 미션", level2);
+    private final Studylog studylog4 = new Studylog(member2, STUDYLOG4_TITLE, "포모의 스터디로그", mission2,
+                                                    asList());
+    private final Tag tag1 = new Tag("소롱의글쓰기");
+    private final Tag tag2 = new Tag("스프링");
+    private final Studylog studylog1 = new Studylog(member1, STUDYLOG1_TITLE, "피케이와 포모의 스터디로그",
+                                                    mission1, asList(tag1, tag2));
+    private final Tag tag3 = new Tag("감자튀기기");
+    private final Studylog studylog2 = new Studylog(member1, STUDYLOG2_TITLE, "피케이와 포모의 스터디로그 2",
+                                                    mission1, asList(tag2, tag3));
+    private final Tag tag4 = new Tag("집필왕웨지");
+    private final Tag tag5 = new Tag("피케이");
+    private final Studylog studylog3 = new Studylog(member2, STUDYLOG3_TITLE, "피케이 스터디로그", mission2,
+                                                    asList(tag3, tag4, tag5));
+    private final List<Tag> tags = asList(
+        tag1, tag2, tag3, tag4, tag5
+    );
     @Autowired
     private StudylogRepository studylogRepository;
     @Autowired
@@ -49,34 +70,6 @@ class StudylogRepositoryTest {
     private TagRepository tagRepository;
     @Autowired
     private StudylogTagRepository studylogTagRepository;
-
-    private final Member member1 = new Member("이름1", "별명1", Role.CREW, 1L, "image");
-
-    private final Member member2 = new Member("이름2", "별명2", Role.CREW, 2L, "image");
-
-    private final Level level1 = new Level("레벨1");
-    private final Level level2 = new Level("레벨2");
-
-    private final Mission mission1 = new Mission("자동차 미션", level1);
-    private final Mission mission2 = new Mission("수동차 미션", level2);
-
-    private final Tag tag1 = new Tag("소롱의글쓰기");
-    private final Tag tag2 = new Tag("스프링");
-    private final Tag tag3 = new Tag("감자튀기기");
-    private final Tag tag4 = new Tag("집필왕웨지");
-    private final Tag tag5 = new Tag("피케이");
-    private final List<Tag> tags = asList(
-        tag1, tag2, tag3, tag4, tag5
-    );
-
-    private final Studylog studylog1 = new Studylog(member1, STUDYLOG1_TITLE, "피케이와 포모의 스터디로그",
-        mission1, asList(tag1, tag2));
-    private final Studylog studylog2 = new Studylog(member1, STUDYLOG2_TITLE, "피케이와 포모의 스터디로그 2",
-        mission1, asList(tag2, tag3));
-    private final Studylog studylog3 = new Studylog(member2, STUDYLOG3_TITLE, "피케이 스터디로그", mission2,
-        asList(tag3, tag4, tag5));
-    private final Studylog studylog4 = new Studylog(member2, STUDYLOG4_TITLE, "포모의 스터디로그", mission2,
-        asList());
 
     @BeforeEach
     void setUp() {

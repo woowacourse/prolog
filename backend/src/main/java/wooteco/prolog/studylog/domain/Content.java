@@ -1,12 +1,15 @@
 package wooteco.prolog.studylog.domain;
 
 
-import lombok.*;
-import wooteco.prolog.studylog.exception.StudylogContentNullOrEmptyException;
-
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import java.util.Objects;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import wooteco.prolog.studylog.exception.StudylogContentNullOrEmptyException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

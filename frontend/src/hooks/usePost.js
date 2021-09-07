@@ -61,6 +61,8 @@ const usePost = (defaultValue) => {
 
       console.error(errorResponse);
       setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
+
+      return ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT;
     }
   };
 
@@ -78,6 +80,8 @@ const usePost = (defaultValue) => {
 
       console.error(errorResponse);
       setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
+
+      return ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT;
     }
   };
 

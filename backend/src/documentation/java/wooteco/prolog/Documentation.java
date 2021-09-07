@@ -26,15 +26,12 @@ import wooteco.prolog.login.application.dto.TokenResponse;
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public class Documentation {
 
+    public TokenResponse 로그인_사용자;
+    protected RequestSpecification spec;
     @LocalServerPort
     private int port;
-
     @Autowired
     private DataInitializer dataInitializer;
-
-    protected RequestSpecification spec;
-
-    public TokenResponse 로그인_사용자;
 
     @BeforeEach
     public void setUp(RestDocumentationContextProvider restDocumentation) {
@@ -57,7 +54,7 @@ public class Documentation {
         return RestAssured
             .given(spec).log().all()
             .filter(document(identifier,
-                preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint())));
+                             preprocessRequest(prettyPrint()),
+                             preprocessResponse(prettyPrint())));
     }
 }

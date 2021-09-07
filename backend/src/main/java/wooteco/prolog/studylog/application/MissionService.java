@@ -1,5 +1,8 @@
 package wooteco.prolog.studylog.application;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,10 +13,6 @@ import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.exception.DuplicateMissionException;
 import wooteco.prolog.studylog.exception.MissionNotFoundException;
-
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @AllArgsConstructor
@@ -28,7 +27,8 @@ public class MissionService {
         validateName(missionRequest.getName());
 
         Level level = levelService.findById(missionRequest.getLevelId());
-        return MissionResponse.of(missionRepository.save(new Mission(missionRequest.getName(), level)));
+        return MissionResponse.of(
+            missionRepository.save(new Mission(missionRequest.getName(), level)));
     }
 
     private void validateName(String name) {
@@ -39,14 +39,14 @@ public class MissionService {
 
     public List<MissionResponse> findAll() {
         return missionRepository.findAll()
-                .stream()
-                .map(MissionResponse::of)
-                .collect(toList());
+            .stream()
+            .map(MissionResponse::of)
+            .collect(toList());
     }
 
     public Mission findById(Long id) {
         return missionRepository.findById(id)
-                .orElseThrow(MissionNotFoundException::new);
+            .orElseThrow(MissionNotFoundException::new);
     }
 
     public List<Mission> findByIds(List<Long> missionIds) {
