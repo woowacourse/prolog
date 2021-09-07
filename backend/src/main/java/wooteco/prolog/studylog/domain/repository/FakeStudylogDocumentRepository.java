@@ -1,4 +1,4 @@
-package wooteco.prolog.studyLogDocument.domain;
+package wooteco.prolog.studylog.domain.repository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,25 +14,26 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Repository;
+import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.support.fake.FakeDocumentRepository;
 
 @Profile({"local", "test"})
 @Repository
-public class FakeStudyLogDocumentRepository implements StudyLogDocumentRepository,
+public class FakeStudylogDocumentRepository implements StudylogDocumentRepository,
     FakeDocumentRepository {
 
-    private static final List<StudyLogDocument> studyLogs = new ArrayList<>();
+    private static final List<StudylogDocument> studyLogs = new ArrayList<>();
 
     @Override
-    public <S extends StudyLogDocument> S save(S studyLogDocument) {
-        studyLogs.add(studyLogDocument);
-        return studyLogDocument;
+    public <S extends StudylogDocument> S save(S studylogDocument) {
+        studyLogs.add(studylogDocument);
+        return studylogDocument;
     }
 
     @Override
-    public List<StudyLogDocument> findByKeyword(String searchKeyword, Pageable pageable) {
+    public List<StudylogDocument> findByKeyword(String searchKeyword, Pageable pageable) {
         List<String> searchKeywords = preprocess(searchKeyword);
-        HashSet<StudyLogDocument> results = new HashSet<>();
+        HashSet<StudylogDocument> results = new HashSet<>();
         for (String search : searchKeywords) {
             studyLogs.stream().filter(
                 studyLogDocument ->
@@ -52,12 +53,12 @@ public class FakeStudyLogDocumentRepository implements StudyLogDocumentRepositor
     }
 
     @Override
-    public void delete(StudyLogDocument studyLogDocument) {
-        studyLogs.remove(studyLogDocument);
+    public void delete(StudylogDocument studylogDocument) {
+        studyLogs.remove(studylogDocument);
     }
 
     @Override
-    public void deleteAll(Iterable<? extends StudyLogDocument> entities) {
+    public void deleteAll(Iterable<? extends StudylogDocument> entities) {
         List<Long> idsForRemoving = StreamSupport.stream(entities.spliterator(), false)
             .map(it -> it.getId())
             .collect(Collectors.toList());
@@ -71,17 +72,17 @@ public class FakeStudyLogDocumentRepository implements StudyLogDocumentRepositor
     }
 
     @Override
-    public <S extends StudyLogDocument> Iterable<S> saveAll(Iterable<S> studyLogDocuments) {
-        List<StudyLogDocument> studyLogDocumentsWithId = new ArrayList<>();
-        for (StudyLogDocument studyLogDocument : studyLogDocuments) {
+    public <S extends StudylogDocument> Iterable<S> saveAll(Iterable<S> studylogDocuments) {
+        List<StudylogDocument> studylogDocumentsWithId = new ArrayList<>();
+        for (StudylogDocument studyLogDocument : studylogDocuments) {
             studyLogs.add(studyLogDocument);
             studyLogs.add(studyLogDocument);
         }
-        return (Iterable<S>) studyLogDocumentsWithId;
+        return (Iterable<S>) studylogDocumentsWithId;
     }
 
     @Override
-    public Optional<StudyLogDocument> findById(Long aLong) {
+    public Optional<StudylogDocument> findById(Long aLong) {
         return Optional.empty();
     }
 
@@ -91,12 +92,12 @@ public class FakeStudyLogDocumentRepository implements StudyLogDocumentRepositor
     }
 
     @Override
-    public Iterable<StudyLogDocument> findAll() {
+    public Iterable<StudylogDocument> findAll() {
         return null;
     }
 
     @Override
-    public Iterable<StudyLogDocument> findAllById(Iterable<Long> longs) {
+    public Iterable<StudylogDocument> findAllById(Iterable<Long> longs) {
         return null;
     }
 
@@ -111,27 +112,27 @@ public class FakeStudyLogDocumentRepository implements StudyLogDocumentRepositor
     }
 
     @Override
-    public <S extends StudyLogDocument> S indexWithoutRefresh(S entity) {
+    public <S extends StudylogDocument> S indexWithoutRefresh(S entity) {
         return null;
     }
 
     @Override
-    public Iterable<StudyLogDocument> search(QueryBuilder query) {
+    public Iterable<StudylogDocument> search(QueryBuilder query) {
         return null;
     }
 
     @Override
-    public Page<StudyLogDocument> search(QueryBuilder query, Pageable pageable) {
+    public Page<StudylogDocument> search(QueryBuilder query, Pageable pageable) {
         return null;
     }
 
     @Override
-    public Page<StudyLogDocument> search(Query searchQuery) {
+    public Page<StudylogDocument> search(Query searchQuery) {
         return null;
     }
 
     @Override
-    public Page<StudyLogDocument> searchSimilar(StudyLogDocument entity, String[] fields,
+    public Page<StudylogDocument> searchSimilar(StudylogDocument entity, String[] fields,
                                                 Pageable pageable) {
         return null;
     }
@@ -142,12 +143,12 @@ public class FakeStudyLogDocumentRepository implements StudyLogDocumentRepositor
     }
 
     @Override
-    public Iterable<StudyLogDocument> findAll(Sort sort) {
+    public Iterable<StudylogDocument> findAll(Sort sort) {
         return null;
     }
 
     @Override
-    public Page<StudyLogDocument> findAll(Pageable pageable) {
+    public Page<StudylogDocument> findAll(Pageable pageable) {
         return null;
     }
 }

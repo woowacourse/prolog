@@ -1,7 +1,7 @@
 package wooteco.prolog.studyLogDocument.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static wooteco.prolog.studyLogDocument.fixture.StudyLogDocumentTestFixture.studyLogDocuments;
+import static wooteco.prolog.studyLogDocument.fixture.StudyLogDocumentTestFixture.studylogDocuments;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,22 +10,23 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import wooteco.prolog.studyLogDocument.domain.StudyLogDocument;
+import wooteco.prolog.studylog.domain.StudylogDocument;
+import wooteco.prolog.studylog.application.StudylogDocumentService;
 import wooteco.support.utils.IntegrationTest;
 
 @IntegrationTest
-class StudyLogDocumentServiceTest {
+class StudylogDocumentServiceTest {
 
     private static String 검색어 = "테스트";
     private static String 띄어쓰기가_포함된_검색어 = "테스트 하자";
 
     @Autowired
-    private StudyLogDocumentService studyLogDocumentService;
+    private StudylogDocumentService studyLogDocumentService;
 
     @BeforeEach
     void setUp() {
         studyLogDocumentService.deleteAll();
-        saveAll(studyLogDocuments);
+        saveAll(studylogDocuments);
     }
 
     @DisplayName("StudyDocument를 저장하고 조회한다")
@@ -41,8 +42,8 @@ class StudyLogDocumentServiceTest {
             );
     }
 
-    private void saveAll(List<StudyLogDocument> studyLogDocuments) {
-        for (StudyLogDocument studyLogDocument : studyLogDocuments) {
+    private void saveAll(List<StudylogDocument> studylogDocuments) {
+        for (StudylogDocument studyLogDocument : studylogDocuments) {
             studyLogDocumentService.save(studyLogDocument);
         }
     }

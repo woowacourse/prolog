@@ -1,4 +1,4 @@
-package wooteco.prolog.studyLogDocument.application;
+package wooteco.prolog.studylog.application;
 
 import static java.util.stream.Collectors.toList;
 
@@ -7,31 +7,31 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import wooteco.prolog.studyLogDocument.domain.StudyLogDocument;
-import wooteco.prolog.studyLogDocument.domain.StudyLogDocumentRepository;
+import wooteco.prolog.studylog.domain.StudylogDocument;
+import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 
 @AllArgsConstructor
 @Service
-public class StudyLogDocumentService {
+public class StudylogDocumentService {
 
-    private final StudyLogDocumentRepository studyLogDocumentRepository;
+    private final StudylogDocumentRepository studyLogDocumentRepository;
     private final StudylogRepository studylogRepository;
 
-    public void save(StudyLogDocument studyLogDocument) {
+    public void save(StudylogDocument studyLogDocument) {
         studyLogDocumentRepository.save(studyLogDocument);
     }
 
     public List<Long> findBySearchKeyword(String searchKeyword, Pageable pageable) {
-        List<StudyLogDocument> studyLogs = studyLogDocumentRepository.findByKeyword(searchKeyword,
+        List<StudylogDocument> studyLogs = studyLogDocumentRepository.findByKeyword(searchKeyword,
                                                                                     pageable);
         return studyLogs.stream()
-            .map(StudyLogDocument::getId)
+            .map(StudylogDocument::getId)
             .collect(toList());
     }
 
-    public void delete(StudyLogDocument studyLogDocument) {
+    public void delete(StudylogDocument studyLogDocument) {
         studyLogDocumentRepository.delete(studyLogDocument);
     }
 

@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studyLogDocument.application.StudyLogDocumentService;
-import wooteco.prolog.studyLogDocument.domain.StudyLogDocument;
+import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
@@ -32,7 +31,7 @@ import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 public class StudylogService {
 
     private final StudylogRepository studylogRepository;
-    private final StudyLogDocumentService studyLogDocumentService;
+    private final StudylogDocumentService studyLogDocumentService;
     private final MissionService missionService;
     private final MemberService memberService;
     private final TagService tagService;
@@ -104,7 +103,7 @@ public class StudylogService {
         Studylog createdStudylog = studylogRepository.save(requestedStudylog);
 
         studyLogDocumentService.save(
-            new StudyLogDocument(createdStudylog.getId(), createdStudylog.getTitle(),
+            new StudylogDocument(createdStudylog.getId(), createdStudylog.getTitle(),
                                  createdStudylog.getContent()));
 
         return StudylogResponse.of(createdStudylog);
