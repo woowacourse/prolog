@@ -25,13 +25,12 @@ class StudyLogDocumentServiceTest {
     @BeforeEach
     void setUp() {
         studyLogDocumentService.deleteAll();
+        saveAll(studyLogDocuments);
     }
 
     @DisplayName("StudyDocument를 저장하고 조회한다")
     @Test
     void saveAndFindTest() {
-        saveAll(studyLogDocuments);
-
         // 4L -> keyword가 타이틀에 일부만 포함됨
         // 9L -> keyword가 내용에 일부만 포함됨
         // 10L -> keyword가 일부라도 포함되지 않은 타이틀 및 내용
@@ -51,8 +50,6 @@ class StudyLogDocumentServiceTest {
     @DisplayName("검색어에 띄어쓰기가 포함되어있으면 띄어쓰기 기준으로 단어를 나누어 검색한다.")
     @Test
     void saveAndFindTest2() {
-        saveAll(studyLogDocuments);
-
         // 4L -> keyword가 타이틀에 일부만 포함됨
         // 9L -> keyword가 내용에 일부만 포함됨
         assertThat(
