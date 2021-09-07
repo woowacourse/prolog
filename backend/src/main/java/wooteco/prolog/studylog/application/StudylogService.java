@@ -63,7 +63,7 @@ public class StudylogService {
     ) {
         return StudylogSpecification.findByLevelIn(studyLogsSearchRequest.getLevels())
             .and(StudylogSpecification.equalIn("id", studyLogIds,
-                isSearch(studyLogsSearchRequest.getKeyword())))
+                                               isSearch(studyLogsSearchRequest.getKeyword())))
             .and(StudylogSpecification.equalIn("mission", studyLogsSearchRequest.getMissions()))
             .and(StudylogSpecification.findByTagIn(studyLogsSearchRequest.getTags()))
             .and(StudylogSpecification.findByUsernameIn(studyLogsSearchRequest.getUsernames()))
@@ -96,16 +96,16 @@ public class StudylogService {
         Mission mission = missionService.findById(studylogRequest.getMissionId());
 
         Studylog requestedStudylog = new Studylog(member,
-            studylogRequest.getTitle(),
-            studylogRequest.getContent(),
-            mission,
-            tags.getList());
+                                                  studylogRequest.getTitle(),
+                                                  studylogRequest.getContent(),
+                                                  mission,
+                                                  tags.getList());
 
         Studylog createdStudylog = studylogRepository.save(requestedStudylog);
 
         studyLogDocumentService.save(
             new StudyLogDocument(createdStudylog.getId(), createdStudylog.getTitle(),
-                createdStudylog.getContent()));
+                                 createdStudylog.getContent()));
 
         return StudylogResponse.of(createdStudylog);
     }

@@ -1,14 +1,13 @@
 package wooteco.prolog.studylog.domain;
 
+import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.studylog.exception.TagNameNullOrEmptyException;
 import wooteco.prolog.studylog.exception.TooLongTagNameException;
-
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import java.util.Objects;
 
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

@@ -1,5 +1,12 @@
 package wooteco.support.autoceptor;
 
+import static java.util.stream.Collectors.toList;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,28 +17,20 @@ import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.support.autoceptor.scanner.MappingAnnotation;
 import wooteco.support.autoceptor.scanner.MethodScanner;
 
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.Assertions.assertThat;
-
 class MappingAnnotationTest {
 
     @DisplayName("스프링 Mapping annotation 에서 Uri를 파싱한다.")
     @Test
     void extractUriFrom() {
         List<Method> methods = new MethodScanner(AuthMemberPrincipal.class)
-                .extractMethodAnnotatedOnParameter(UriTest.class);
+            .extractMethodAnnotatedOnParameter(UriTest.class);
         List<String> uris = methods.stream()
-                .map(MappingAnnotation::extractUriFrom)
-                .flatMap(Collection::stream)
-                .collect(toList());
+            .map(MappingAnnotation::extractUriFrom)
+            .flatMap(Collection::stream)
+            .collect(toList());
 
         assertThat(uris).containsOnly(
-                "/get", "/post", "/delete", "/put"
+            "/get", "/post", "/delete", "/put"
         );
     }
 

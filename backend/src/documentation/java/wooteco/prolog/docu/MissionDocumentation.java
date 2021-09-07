@@ -1,8 +1,12 @@
 package wooteco.prolog.docu;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -13,12 +17,8 @@ import wooteco.prolog.studylog.application.dto.LevelResponse;
 import wooteco.prolog.studylog.application.dto.MissionRequest;
 import wooteco.prolog.studylog.application.dto.MissionResponse;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class MissionDocumentation extends Documentation {
+
     private Long levelId;
 
     @BeforeEach
@@ -36,18 +36,18 @@ public class MissionDocumentation extends Documentation {
 
         // when
         ExtractableResponse<Response> response = given("mission/list")
-                .when()
-                .get("/missions")
-                .then()
-                .log().all()
-                .extract();
+            .when()
+            .get("/missions")
+            .then()
+            .log().all()
+            .extract();
 
         // then
         List<MissionResponse> categories = response.jsonPath().getList(".", MissionResponse.class);
         assertThat(categories).usingRecursiveComparison().isEqualTo(
-                Arrays.asList(
-                        mission1.as(MissionResponse.class),
-                        mission2.as(MissionResponse.class)));
+            Arrays.asList(
+                mission1.as(MissionResponse.class),
+                mission2.as(MissionResponse.class)));
     }
 
     @Test
@@ -57,13 +57,13 @@ public class MissionDocumentation extends Documentation {
 
         // when
         ExtractableResponse<Response> response = given("mission/create/success")
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/missions")
-                .then()
-                .log().all()
-                .extract();
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/missions")
+            .then()
+            .log().all()
+            .extract();
 
         // then
         MissionResponse missionResponse = response.as(MissionResponse.class);
@@ -78,13 +78,13 @@ public class MissionDocumentation extends Documentation {
 
         // when
         ExtractableResponse<Response> response = given("mission/create/fail")
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/missions")
-                .then()
-                .log().all()
-                .extract();
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/missions")
+            .then()
+            .log().all()
+            .extract();
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -93,26 +93,26 @@ public class MissionDocumentation extends Documentation {
 
     private ExtractableResponse<Response> 미션_등록함(MissionRequest request) {
         return RestAssured.given()
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/missions")
-                .then()
-                .log().all()
-                .extract();
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/missions")
+            .then()
+            .log().all()
+            .extract();
     }
 
     private Long 레벨_등록함(LevelRequest request) {
         return RestAssured
-                .given().log().all()
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/levels")
-                .then()
-                .log().all()
-                .extract()
-                .as(LevelResponse.class)
-                .getId();
+            .given().log().all()
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/levels")
+            .then()
+            .log().all()
+            .extract()
+            .as(LevelResponse.class)
+            .getId();
     }
 }

@@ -130,7 +130,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     @When("{string}을 검색하고 {int}번 미션과 {int}번 태그로 조회하면")
     public void 을검색하고번미션과번태그로조회하면(String keyword, int missionNumber, int tagId) {
         String path = String.format("/posts?keyword=%s&missions=%d&tags=%d", keyword,
-            missionNumber, tagId);
+                                    missionNumber, tagId);
         context.invokeHttpGet(path);
     }
 
