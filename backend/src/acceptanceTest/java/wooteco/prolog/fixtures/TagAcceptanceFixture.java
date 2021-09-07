@@ -12,6 +12,7 @@ public enum TagAcceptanceFixture {
 
     private Long tagId;
     private TagRequest tagRequest;
+
     TagAcceptanceFixture(Long id, String name) {
         this.tagId = id;
         this.tagRequest = new TagRequest(name);

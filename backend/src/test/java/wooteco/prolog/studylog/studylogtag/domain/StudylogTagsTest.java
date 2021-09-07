@@ -24,8 +24,8 @@ public class StudylogTagsTest {
         "https://avatars.githubusercontent.com/u/51393021?v=4");
     private static final Studylog 웨지가_쓴_글 = new Studylog(웨지, "제목", "내용",
         new Mission("[BE] 글쓰기 미션", new Level("레벨1")), Lists.emptyList());
-    private static final StudylogTag 워니_스터디로그태그 = new StudylogTag(1L, 웨지가_쓴_글, 워니_태그);
     private static final Tag 워니_태그 = new Tag("워니");
+    private static final StudylogTag 워니_스터디로그태그 = new StudylogTag(1L, 웨지가_쓴_글, 워니_태그);
     private StudylogTags studylogTags;
 
     @BeforeEach

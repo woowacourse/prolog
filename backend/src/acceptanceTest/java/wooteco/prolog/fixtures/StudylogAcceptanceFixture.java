@@ -52,6 +52,7 @@ public enum StudylogAcceptanceFixture {
 
     private final StudylogRequest studylogRequest;
     private final List<TagAcceptanceFixture> tags;
+
     StudylogAcceptanceFixture(
         String title,
         String content,
