@@ -1,4 +1,4 @@
-package wooteco.prolog.studyLogDocument.fixture;
+package wooteco.prolog.studylog.studylog.fixture;
 
 import java.util.ArrayList;
 import java.util.Arrays;

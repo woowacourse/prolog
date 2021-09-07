@@ -102,10 +102,7 @@ public class StudylogService {
 
         Studylog createdStudylog = studylogRepository.save(requestedStudylog);
 
-        studyLogDocumentService.save(
-            new StudylogDocument(createdStudylog.getId(), createdStudylog.getTitle(),
-                                 createdStudylog.getContent()));
-
+        studyLogDocumentService.save(createdStudylog.toStudyLogDocument());
         return StudylogResponse.of(createdStudylog);
     }
 
@@ -125,6 +122,8 @@ public class StudylogService {
         Mission mission = missionService.findById(studylogRequest.getMissionId());
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
         studylog.update(studylogRequest.getTitle(), studylogRequest.getContent(), mission, tags);
+
+        studyLogDocumentService.update(studylog.toStudyLogDocument());
     }
 
     @Transactional
@@ -133,6 +132,7 @@ public class StudylogService {
             .orElseThrow(StudylogNotFoundException::new);
         studylog.validateAuthor(member);
 
+        studyLogDocumentService.delete(studylog.toStudyLogDocument());
         studylogRepository.delete(studylog);
     }
 }

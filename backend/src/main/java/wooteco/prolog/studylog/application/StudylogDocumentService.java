@@ -50,4 +50,8 @@ public class StudylogDocumentService {
                 .collect(Collectors.toList())
         );
     }
+
+    public void update(StudylogDocument studylogDocument) {
+        studyLogDocumentRepository.save(studylogDocument);
+    }
 }

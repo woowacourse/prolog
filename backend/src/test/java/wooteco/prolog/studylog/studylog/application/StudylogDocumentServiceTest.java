@@ -1,7 +1,7 @@
-package wooteco.prolog.studyLogDocument.application;
+package wooteco.prolog.studylog.studylog.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static wooteco.prolog.studyLogDocument.fixture.StudyLogDocumentTestFixture.studylogDocuments;
+import static wooteco.prolog.studylog.studylog.fixture.StudyLogDocumentTestFixture.studylogDocuments;
 
 import java.util.Arrays;
 import java.util.List;
@@ -58,5 +58,26 @@ class StudylogDocumentServiceTest {
             .containsExactlyInAnyOrderElementsOf(
                 Arrays.asList(1L, 2L, 3L, 5L, 6L, 7L, 8L, 10L, 11L)
             );
+    }
+
+    // TODO
+    @DisplayName("studylog를 수정한다. - 새로운 것을 삽입함으로써 대체한다.")
+    @Test
+    void update() {
+        // given
+
+        // when
+
+        // then
+    }
+
+    @DisplayName("studylog를 삭제한다.")
+    @Test
+    void delete() {
+        // given
+
+        // when
+
+        // then
     }
 }
