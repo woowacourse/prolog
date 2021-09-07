@@ -5,8 +5,10 @@ import { requestGetPost } from '../../service/requests';
 import { Card, ProfileChip } from '../../components';
 import { Viewer } from '@toast-ui/react-editor';
 
-import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
+import 'prismjs/themes/prism.css';
+import Prism from 'prismjs';
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
 
 import {
   CardInner,
@@ -62,7 +64,11 @@ const PostPage = () => {
           </ProfileChip>
         </div>
         <ViewerWrapper>
-          <Viewer initialValue={content} extendedAutolinks={true} />
+          <Viewer
+            initialValue={content}
+            extendedAutolinks={true}
+            plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+          />
         </ViewerWrapper>
         <Tags>
           {tags?.map(({ id, name }) => (
