@@ -7,10 +7,11 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
-import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 
 @AllArgsConstructor
 @Service
@@ -29,6 +30,11 @@ public class StudylogDocumentService {
         return studyLogs.stream()
             .map(StudylogDocument::getId)
             .collect(toList());
+    }
+
+    public StudylogDocument findById(Long id) {
+        return studyLogDocumentRepository.findById(id)
+            .orElseThrow(StudylogDocumentNotFoundException::new);
     }
 
     public void delete(StudylogDocument studyLogDocument) {

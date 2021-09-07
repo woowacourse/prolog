@@ -1,6 +1,8 @@
 package wooteco.prolog.studylog.studylog.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static wooteco.prolog.studylog.studylog.fixture.StudyLogDocumentTestFixture.studylogDocuments;
 
 import java.util.Arrays;
@@ -10,8 +12,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.application.StudylogDocumentService;
+import wooteco.prolog.studylog.domain.StudylogDocument;
+import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 import wooteco.support.utils.IntegrationTest;
 
 @IntegrationTest
@@ -60,24 +63,39 @@ class StudylogDocumentServiceTest {
             );
     }
 
-    // TODO
     @DisplayName("studylog를 수정한다. - 새로운 것을 삽입함으로써 대체한다.")
     @Test
     void update() {
         // given
+        StudylogDocument studylogDocument = new StudylogDocument(1L, "title", "content");
+        studyLogDocumentService.save(studylogDocument);
 
         // when
+        StudylogDocument updateStudylogDocument = new StudylogDocument(1L, "updatedTitle",
+                                                                       "updatedContent");
+        studyLogDocumentService.update(updateStudylogDocument);
 
         // then
+        StudylogDocument findStudylogDocument = studyLogDocumentService.findById(1L);
+        assertAll(
+            () -> assertThat(findStudylogDocument.getId()).isEqualTo(1L),
+            () -> assertThat(findStudylogDocument.getTitle()).isEqualTo(updateStudylogDocument.getTitle()),
+            () -> assertThat(findStudylogDocument.getContent()).isEqualTo(updateStudylogDocument.getContent())
+        );
     }
 
     @DisplayName("studylog를 삭제한다.")
     @Test
     void delete() {
         // given
+        StudylogDocument studylogDocument = new StudylogDocument(1L, "title", "content");
+        studyLogDocumentService.save(studylogDocument);
 
         // when
+        studyLogDocumentService.delete(studylogDocument);
 
         // then
+        assertThatThrownBy(() -> studyLogDocumentService.findById(1L))
+            .isInstanceOf(StudylogDocumentNotFoundException.class);
     }
 }

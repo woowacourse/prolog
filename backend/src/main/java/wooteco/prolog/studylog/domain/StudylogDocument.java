@@ -1,5 +1,6 @@
 package wooteco.prolog.studylog.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -8,6 +9,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor
 @Document(indexName = "study-log-document")
 public class StudylogDocument {

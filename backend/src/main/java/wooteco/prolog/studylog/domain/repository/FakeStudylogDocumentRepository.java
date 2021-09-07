@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -22,11 +23,13 @@ import wooteco.support.fake.FakeDocumentRepository;
 public class FakeStudylogDocumentRepository implements StudylogDocumentRepository,
     FakeDocumentRepository {
 
-    private static final List<StudylogDocument> studyLogs = new ArrayList<>();
+    private static final List<StudylogDocument> studylogDocuments = new ArrayList<>();
 
     @Override
     public <S extends StudylogDocument> S save(S studylogDocument) {
-        studyLogs.add(studylogDocument);
+        Optional<StudylogDocument> document = findById(studylogDocument.getId());
+        document.ifPresent(studylogDocuments::remove);
+        studylogDocuments.add(studylogDocument);
         return studylogDocument;
     }
 
@@ -35,10 +38,10 @@ public class FakeStudylogDocumentRepository implements StudylogDocumentRepositor
         List<String> searchKeywords = preprocess(searchKeyword);
         HashSet<StudylogDocument> results = new HashSet<>();
         for (String search : searchKeywords) {
-            studyLogs.stream().filter(
-                studyLogDocument ->
-                    studyLogDocument.getTitle().contains(search)
-                        || studyLogDocument.getContent().contains(search))
+            studylogDocuments.stream().filter(
+                    studyLogDocument ->
+                        studyLogDocument.getTitle().contains(search)
+                            || studyLogDocument.getContent().contains(search))
                 .forEach(results::add);
         }
         return new ArrayList<>(results);
@@ -54,7 +57,7 @@ public class FakeStudylogDocumentRepository implements StudylogDocumentRepositor
 
     @Override
     public void delete(StudylogDocument studylogDocument) {
-        studyLogs.remove(studylogDocument);
+        studylogDocuments.remove(studylogDocument);
     }
 
     @Override
@@ -63,26 +66,31 @@ public class FakeStudylogDocumentRepository implements StudylogDocumentRepositor
             .map(it -> it.getId())
             .collect(Collectors.toList());
 
-        studyLogs.removeIf(it -> idsForRemoving.contains(it));
+        studylogDocuments.removeIf(it -> idsForRemoving.contains(it));
     }
 
     @Override
     public void deleteAll() {
-        studyLogs.clear();
+        studylogDocuments.clear();
     }
 
     @Override
-    public <S extends StudylogDocument> Iterable<S> saveAll(Iterable<S> studylogDocuments) {
+    public <S extends StudylogDocument> Iterable<S> saveAll(Iterable<S> inputStudyLogDocuments) {
         List<StudylogDocument> studylogDocumentsWithId = new ArrayList<>();
-        for (StudylogDocument studyLogDocument : studylogDocuments) {
-            studyLogs.add(studyLogDocument);
-            studyLogs.add(studyLogDocument);
+        for (StudylogDocument studyLogDocument : inputStudyLogDocuments) {
+            studylogDocuments.add(studyLogDocument);
+            studylogDocuments.add(studyLogDocument);
         }
         return (Iterable<S>) studylogDocumentsWithId;
     }
 
     @Override
-    public Optional<StudylogDocument> findById(Long aLong) {
+    public Optional<StudylogDocument> findById(Long id) {
+        for (StudylogDocument studylogDocument : studylogDocuments) {
+            if (Objects.equals(studylogDocument.getId(), id)) {
+                return Optional.of(studylogDocument);
+            }
+        }
         return Optional.empty();
     }
 
