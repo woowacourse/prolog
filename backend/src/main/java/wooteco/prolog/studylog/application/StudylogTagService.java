@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.dto.TagResponse;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.StudylogTags;

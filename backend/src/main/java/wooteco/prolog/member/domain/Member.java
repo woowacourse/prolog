@@ -1,7 +1,10 @@
 package wooteco.prolog.member.domain;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,6 +15,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
+import wooteco.prolog.studylog.domain.Tag;
+import wooteco.prolog.studylog.domain.Tags;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

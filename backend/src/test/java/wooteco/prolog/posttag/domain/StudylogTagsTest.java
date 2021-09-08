@@ -5,15 +5,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import wooteco.prolog.level.domain.Level;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
-import wooteco.prolog.mission.domain.Mission;
+import wooteco.prolog.studylog.domain.Level;
+import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.StudylogTags;

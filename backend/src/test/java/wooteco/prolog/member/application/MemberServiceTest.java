@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
@@ -46,6 +47,7 @@ class MemberServiceTest {
 
     @DisplayName("ID를 통해서 Member를 조회한다.")
     @Test
+    @Transactional
     void findByIdTest() {
         // given
         Member savedMember = Member를_생성한다(
@@ -69,6 +71,7 @@ class MemberServiceTest {
 
     @DisplayName("Username을 통해서 Member를 조회한다.")
     @Test
+    @Transactional
     void findByUsernameTest() {
         // given
         Member savedMember = Member를_생성한다(

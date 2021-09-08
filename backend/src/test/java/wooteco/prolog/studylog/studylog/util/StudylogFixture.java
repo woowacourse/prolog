@@ -1,4 +1,4 @@
-package wooteco.prolog.post.util;
+package wooteco.prolog.studylog.studylog.util;
 
 import static java.util.EnumSet.allOf;
 
@@ -8,19 +8,19 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import wooteco.prolog.level.application.LevelService;
-import wooteco.prolog.level.application.dto.LevelRequest;
-import wooteco.prolog.level.application.dto.LevelResponse;
-import wooteco.prolog.mission.application.MissionService;
-import wooteco.prolog.mission.application.dto.MissionRequest;
-import wooteco.prolog.mission.application.dto.MissionResponse;
+import wooteco.prolog.studylog.application.LevelService;
+import wooteco.prolog.studylog.application.MissionService;
+import wooteco.prolog.studylog.application.dto.LevelRequest;
+import wooteco.prolog.studylog.application.dto.LevelResponse;
+import wooteco.prolog.studylog.application.dto.MissionRequest;
+import wooteco.prolog.studylog.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
-import wooteco.prolog.studylog.domain.Tags;
 import wooteco.prolog.studylog.application.dto.TagRequest;
+import wooteco.prolog.studylog.domain.Tags;
 
 public enum StudylogFixture {
-
-    자동차_미션_정리("자동차 미션 정리", "부릉 부릉 자동차가 나가신다 부릉부릉", "자동차 미션", "임파시블레벨", Tags.of(Arrays.asList("자동차", "전략 패턴", "부릉"))),
+    자동차_미션_정리("자동차 미션 정리", "부릉 부릉 자동차가 나가신다 부릉부릉", "자동차 미션", "임파시블레벨", Tags.of(
+        Arrays.asList("자동차", "전략 패턴", "부릉"))),
     로또_미션_정리("로또 미션 정리", "따르르릉 로또", "로또 미션", "임파시블레벨",Tags.of(Arrays.asList("로또", "TDD", "랜덤")));
 
     @Component
@@ -33,7 +33,7 @@ public enum StudylogFixture {
         @PostConstruct
         void init() {
             allOf(StudylogFixture.class)
-                    .forEach(container -> container.injectMissionService(missionService, levelService));
+                .forEach(container -> container.injectMissionService(missionService, levelService));
         }
     }
 
@@ -65,16 +65,16 @@ public enum StudylogFixture {
 
     public StudylogRequest asRequest() {
         final List<TagRequest> tagRequests = tags.getList().stream()
-                .map(tag -> new TagRequest(tag.getName()))
-                .collect(Collectors.toList());
+            .map(tag -> new TagRequest(tag.getName()))
+            .collect(Collectors.toList());
 
         return asRequestWithTags(tagRequests);
     }
 
     private MissionResponse createMission(String missionName, String levelName) {
         final LevelResponse levelResponse = levelService.findAll().stream()
-                .filter(lr -> lr.getName().equals(levelName))
-                .findAny().orElseGet(() -> levelService.create(new LevelRequest(levelName)));
+            .filter(lr -> lr.getName().equals(levelName))
+            .findAny().orElseGet(() -> levelService.create(new LevelRequest(levelName)));
         return missionService.create(new MissionRequest(missionName, levelResponse.getId()));
     }
 }

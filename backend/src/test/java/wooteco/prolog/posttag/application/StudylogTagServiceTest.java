@@ -15,22 +15,22 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestConstructor.AutowireMode;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.level.application.LevelService;
-import wooteco.prolog.level.application.dto.LevelRequest;
-import wooteco.prolog.level.application.dto.LevelResponse;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.mission.application.MissionService;
-import wooteco.prolog.mission.application.dto.MissionRequest;
-import wooteco.prolog.mission.application.dto.MissionResponse;
+import wooteco.prolog.studylog.application.LevelService;
+import wooteco.prolog.studylog.application.MissionService;
 import wooteco.prolog.studylog.application.StudylogService;
+import wooteco.prolog.studylog.application.StudylogTagService;
+import wooteco.prolog.studylog.application.dto.LevelRequest;
+import wooteco.prolog.studylog.application.dto.LevelResponse;
+import wooteco.prolog.studylog.application.dto.MissionRequest;
+import wooteco.prolog.studylog.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
-import wooteco.prolog.studylog.application.StudylogTagService;
+import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
-import wooteco.prolog.studylog.application.dto.TagRequest;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -91,7 +91,7 @@ class StudylogTagServiceTest {
                 .map(it -> new StudylogRequest("이름", "별명", 1L, it))
                 .collect(toList());
 
-        return studylogService.insertPosts(member, posts);
+        return studylogService.insertStudylogs(member, posts);
     }
 
     private List<TagRequest> createTagRequests(String... tags) {

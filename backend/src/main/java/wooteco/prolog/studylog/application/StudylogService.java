@@ -1,9 +1,15 @@
 package wooteco.prolog.studylog.application;
 
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+import static java.util.stream.Collectors.toList;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +20,7 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studyLogDocument.application.StudyLogDocumentService;
 import wooteco.prolog.studyLogDocument.domain.StudyLogDocument;
+import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
@@ -119,7 +126,7 @@ public class StudylogService {
 
         return studylogRequests.stream()
             .map(studylogRequest -> insertStudylog(member, studylogRequest))
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     private StudylogResponse insertStudylog(Member member, StudylogRequest studylogRequest) {

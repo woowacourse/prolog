@@ -1,4 +1,4 @@
-package wooteco.prolog.post.domain.repository;
+package wooteco.prolog.studylog.studylog.domain.repository;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -14,19 +14,20 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
-import wooteco.prolog.level.domain.Level;
-import wooteco.prolog.level.domain.repository.LevelRepository;
+import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.mission.domain.Mission;
-import wooteco.prolog.mission.domain.repository.MissionRepository;
+import wooteco.prolog.studylog.domain.Level;
+import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
+import wooteco.prolog.studylog.domain.Tag;
+import wooteco.prolog.studylog.domain.repository.LevelRepository;
+import wooteco.prolog.studylog.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
 import wooteco.prolog.studylog.domain.repository.StudylogTagRepository;
-import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.domain.repository.TagRepository;
 
 @DataJpaTest
@@ -168,6 +169,7 @@ class StudylogRepositoryTest {
 
     @DisplayName("멤버로 포스트를 찾아오는지 테스트")
     @Test
+    @Transactional
     void findByMemberTest() {
         //given
         //when

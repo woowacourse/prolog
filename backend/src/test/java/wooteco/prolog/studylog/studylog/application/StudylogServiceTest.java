@@ -1,4 +1,4 @@
-package wooteco.prolog.post.application;
+package wooteco.prolog.studylog.studylog.application;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -25,28 +25,28 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.level.application.LevelService;
-import wooteco.prolog.level.application.dto.LevelRequest;
-import wooteco.prolog.level.application.dto.LevelResponse;
-import wooteco.prolog.level.domain.Level;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.mission.application.MissionService;
-import wooteco.prolog.mission.application.dto.MissionRequest;
-import wooteco.prolog.mission.application.dto.MissionResponse;
-import wooteco.prolog.mission.domain.Mission;
+import wooteco.prolog.studylog.application.LevelService;
+import wooteco.prolog.studylog.application.MissionService;
+import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
+import wooteco.prolog.studylog.application.dto.LevelRequest;
+import wooteco.prolog.studylog.application.dto.LevelResponse;
+import wooteco.prolog.studylog.application.dto.MissionRequest;
+import wooteco.prolog.studylog.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
-import wooteco.prolog.studylog.application.StudylogService;
-import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.post.util.StudylogUtilCRUD;
-import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.application.dto.TagResponse;
+import wooteco.prolog.studylog.domain.Level;
+import wooteco.prolog.studylog.domain.Mission;
+import wooteco.prolog.studylog.domain.Studylog;
+import wooteco.prolog.studylog.domain.Tag;
+import wooteco.prolog.studylog.studylog.util.StudylogUtilCRUD;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -188,9 +188,9 @@ class StudylogServiceTest {
         insertPosts(member2, studylog3, studylog4);
 
         StudylogsResponse studylogsResponseOfMember1 = studylogService
-                .findPostsOf(member1.getUsername(), Pageable.unpaged());
+                .findStudylogsOf(member1.getUsername(), Pageable.unpaged());
         StudylogsResponse studylogsResponseOfMember2 = studylogService
-                .findPostsOf(member2.getUsername(), Pageable.unpaged());
+                .findStudylogsOf(member2.getUsername(), Pageable.unpaged());
 
         List<String> expectedResultOfMember1 = studylogsResponseOfMember1.getData().stream()
                 .map(StudylogResponse::getTitle)
@@ -206,6 +206,7 @@ class StudylogServiceTest {
     @DisplayName("유저 이름으로 포스트를 조회한다 - 페이징")
     @ParameterizedTest
     @MethodSource("findPostsOfPagingTest")
+    @Transactional
     void findPostsOfPagingTest(PageRequest pageRequest, int expectedSize) {
         List<Studylog> largeStudylogs = IntStream.range(0, 50)
                 .mapToObj(it -> studylog1)
@@ -214,7 +215,7 @@ class StudylogServiceTest {
         insertPosts(member1, largeStudylogs);
 
         StudylogsResponse studylogsResponseOfMember1 = studylogService
-                .findPostsOf(member1.getUsername(), pageRequest);
+                .findStudylogsOf(member1.getUsername(), pageRequest);
 
         assertThat(studylogsResponseOfMember1.getData().size()).isEqualTo(expectedSize);
     }
@@ -241,7 +242,7 @@ class StudylogServiceTest {
                 toTagRequests(tags));
 
         //when
-        studylogService.updatePost(member1, targetPost.getId(), updateStudylogRequest);
+        studylogService.updateStudylog(member1, targetPost.getId(), updateStudylogRequest);
 
         //then
         StudylogResponse expectedResult = studylogService.findById(targetPost.getId());
@@ -261,6 +262,7 @@ class StudylogServiceTest {
 
     @DisplayName("포스트를 삭제한다")
     @Test
+    @Transactional
     void deletePostTest() {
         //given
         List<StudylogResponse> studylogRespons = insertPosts(member1, studylog1, studylog2, studylog3,
@@ -272,11 +274,11 @@ class StudylogServiceTest {
                 .collect(toList());
 
         Long removedId = postIds.remove(0);
-        studylogService.deletePost(member1, removedId);
+        studylogService.deleteStudylog(member1, removedId);
 
         //then
         StudylogsResponse studylogsResponse = studylogService
-                .findPostsOf(member1.getUsername(), Pageable.unpaged());
+                .findStudylogsOf(member1.getUsername(), Pageable.unpaged());
 
         List<Long> expectedIds = studylogsResponse.getData().stream()
                 .map(StudylogResponse::getId)
@@ -287,6 +289,7 @@ class StudylogServiceTest {
 
     @Test
     @DisplayName("캘린더 포스트 조회 기능")
+    @Transactional
     public void calendarPostTest() throws Exception{
         //given
         insertPosts(member1, studylog1, studylog2, studylog3);
@@ -313,7 +316,7 @@ class StudylogServiceTest {
                 )
                 .collect(toList());
 
-        return studylogService.insertPosts(member, studylogRequests);
+        return studylogService.insertStudylogs(member, studylogRequests);
     }
 
     private List<StudylogResponse> insertPosts(Member member, Studylog... studylogs) {

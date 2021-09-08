@@ -9,18 +9,18 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import wooteco.prolog.level.domain.Level;
-import wooteco.prolog.level.domain.repository.LevelRepository;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.mission.domain.Mission;
-import wooteco.prolog.mission.domain.repository.MissionRepository;
-import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.studylog.domain.StudylogTag;
+import wooteco.prolog.studylog.domain.Level;
+import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.repository.StudylogTagRepository;
+import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
+import wooteco.prolog.studylog.domain.repository.LevelRepository;
+import wooteco.prolog.studylog.domain.repository.MissionRepository;
+import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.prolog.studylog.domain.repository.StudylogTagRepository;
 import wooteco.prolog.studylog.domain.repository.TagRepository;
 
 @DataJpaTest

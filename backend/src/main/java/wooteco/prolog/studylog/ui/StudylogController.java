@@ -21,7 +21,8 @@ import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
-import wooteco.prolog.studylog.exception.PostNotFoundException;
+import wooteco.prolog.studylog.exception.StudylogNotFoundException;
+import wooteco.prolog.studylog.infrastructure.NumberUtils;
 
 @RestController
 @RequestMapping("/posts")
@@ -36,7 +37,7 @@ public class StudylogController {
     @PostMapping
     public ResponseEntity<Void> createPost(@AuthMemberPrincipal Member member,
                                            @RequestBody List<StudylogRequest> studylogRequests) {
-        List<StudylogResponse> studylogResponse = studylogService.insertPosts(member, studylogRequests);
+        List<StudylogResponse> studylogResponse = studylogService.insertStudylogs(member, studylogRequests);
         return ResponseEntity.created(URI.create("/posts/" + studylogResponse.get(0).getId())).build();
     }
 
@@ -56,7 +57,7 @@ public class StudylogController {
     @GetMapping("/{id}")
     public ResponseEntity<StudylogResponse> showPost(@PathVariable String id) {
         if (!NumberUtils.isNumeric(id)) {
-            throw new PostNotFoundException();
+            throw new StudylogNotFoundException();
         }
         StudylogResponse studylogResponse = studylogService.findById(Long.parseLong(id));
         return ResponseEntity.ok(studylogResponse);
@@ -68,14 +69,14 @@ public class StudylogController {
         @PathVariable Long id,
         @RequestBody StudylogRequest studylogRequest
     ) {
-        studylogService.updatePost(member, id, studylogRequest);
+        studylogService.updateStudylog(member, id, studylogRequest);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@AuthMemberPrincipal Member member,
                                            @PathVariable Long id) {
-        studylogService.deletePost(member, id);
+        studylogService.deleteStudylog(member, id);
         return ResponseEntity.noContent().build();
     }
 }

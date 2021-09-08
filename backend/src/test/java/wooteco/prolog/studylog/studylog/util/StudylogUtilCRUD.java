@@ -1,4 +1,4 @@
-package wooteco.prolog.post.util;
+package wooteco.prolog.studylog.studylog.util;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,7 +21,7 @@ public class StudylogUtilCRUD {
     private MemberUtilCRUD memberUtilCRUD;
 
     public void 등록(StudylogFixture studylogFixture, MemberFixture member) {
-        studylogService.insertPosts(memberUtilCRUD.등록(member), Collections.singletonList(
+        studylogService.insertStudylogs(memberUtilCRUD.등록(member), Collections.singletonList(
             studylogFixture.asRequest()));
     }
 
@@ -30,7 +30,7 @@ public class StudylogUtilCRUD {
                 .map(TagRequest::new)
                 .collect(Collectors.toList());
 
-        studylogService.insertPosts(memberUtilCRUD.등록(memberFixture), Collections.singletonList(new StudylogRequest(title, content, missionId, tagRequests)));
+        studylogService.insertStudylogs(memberUtilCRUD.등록(memberFixture), Collections.singletonList(new StudylogRequest(title, content, missionId, tagRequests)));
     }
 
     public void 등록(StudylogFixture studylogFixture, MemberFixture memberFixture, String ... tagNames) {
@@ -38,7 +38,7 @@ public class StudylogUtilCRUD {
                 .map(TagRequest::new)
                 .collect(Collectors.toList());
 
-        studylogService.insertPosts(memberUtilCRUD.등록(memberFixture), Collections.singletonList(
+        studylogService.insertStudylogs(memberUtilCRUD.등록(memberFixture), Collections.singletonList(
             studylogFixture.asRequestWithTags(tagRequests)));
     }
 }

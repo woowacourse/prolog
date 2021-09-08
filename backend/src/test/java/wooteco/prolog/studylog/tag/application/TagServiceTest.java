@@ -1,4 +1,4 @@
-package wooteco.prolog.tag.application;
+package wooteco.prolog.studylog.tag.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import wooteco.prolog.studylog.application.TagService;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.application.dto.TagResponse;
+import wooteco.prolog.studylog.domain.repository.StudylogTagRepository;
 import wooteco.prolog.studylog.exception.DuplicateTagException;
+import wooteco.prolog.studylog.studylog.util.StudylogUtilCRUD;
 import wooteco.support.utils.IntegrationTest;
 
 @IntegrationTest

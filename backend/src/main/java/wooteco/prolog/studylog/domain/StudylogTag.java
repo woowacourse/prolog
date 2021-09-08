@@ -29,13 +29,13 @@ public class StudylogTag {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
-    private Studylog studylog;
+    private wooteco.prolog.studylog.domain.Studylog studylog;
 
-    public StudylogTag(Studylog studylog, Tag tag) {
+    public StudylogTag(wooteco.prolog.studylog.domain.Studylog studylog, Tag tag) {
         this(null, studylog, tag);
     }
 
-    public StudylogTag(Long id, Studylog studylog, Tag tag) {
+    public StudylogTag(Long id, wooteco.prolog.studylog.domain.Studylog studylog, Tag tag) {
         this.id = id;
         this.studylog = studylog;
         this.tag = tag;
