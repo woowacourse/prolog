@@ -17,6 +17,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.MemberService;
+import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studyLogDocument.application.StudyLogDocumentService;
 import wooteco.prolog.studyLogDocument.domain.StudyLogDocument;
@@ -39,6 +40,7 @@ import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 public class StudylogService {
 
     private final StudylogRepository studylogRepository;
+    private final MemberTagService memberTagService;
     private final StudyLogDocumentService studyLogDocumentService;
     private final MissionService missionService;
     private final MemberService memberService;
@@ -145,7 +147,7 @@ public class StudylogService {
                 tags.getList());
 
         Studylog createdStudylog = studylogRepository.save(requestedStudylog);
-        foundMember.addTags(tags);
+        memberTagService.registerMemberTag(tags, foundMember);
 
         studyLogDocumentService.save(
                 new StudyLogDocument(createdStudylog.getId(), createdStudylog.getTitle(),
@@ -173,7 +175,7 @@ public class StudylogService {
         Mission mission = missionService.findById(studylogRequest.getMissionId());
         Tags newTags = tagService.findOrCreate(studylogRequest.getTags());
         studylog.update(studylogRequest.getTitle(), studylogRequest.getContent(), mission, newTags);
-        foundMember.updateTags(originalTags, newTags);
+        memberTagService.updateMemberTag(originalTags, newTags, foundMember);
     }
 
     @Transactional
@@ -183,9 +185,9 @@ public class StudylogService {
                 .orElseThrow(StudylogNotFoundException::new);
         studylog.validateAuthor(foundMember);
 
-        studylogRepository.delete(studylog);
         final Tags tags = tagService.findByPostAndMember(studylog, foundMember);
-        foundMember.removeTag(tags);
+        studylogRepository.delete(studylog);
+        memberTagService.removeMemberTag(tags, member);
     }
 
     public List<CalendarStudylogResponse> findCalendarPosts(String username, LocalDate localDate) {
@@ -197,9 +199,5 @@ public class StudylogService {
                 .stream()
                 .map(CalendarStudylogResponse::of)
                 .collect(toList());
-    }
-
-    public int countPostByMember(Member member) {
-        return studylogRepository.countByMember(member);
     }
 }

@@ -5,8 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studylog.application.StudylogService;
+import wooteco.prolog.member.domain.MemberTag;
+import wooteco.prolog.member.domain.repository.MemberTagRepository;
 import wooteco.prolog.studylog.application.dto.MemberTagResponse;
+import wooteco.prolog.studylog.domain.Tags;
+import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -14,11 +17,28 @@ import wooteco.prolog.studylog.application.dto.MemberTagResponse;
 public class MemberTagService {
 
     private final MemberService memberService;
-    private final StudylogService studylogService;
+    private final MemberTagRepository memberTagRepository;
+    private final StudylogRepository studylogRepository;
 
     public List<MemberTagResponse> findByMember(String memberName) {
         final Member member = memberService.findByUsername(memberName);
-        final int postCount = studylogService.countPostByMember(member);
+        final int postCount = studylogRepository.countByMember(member);
         return MemberTagResponse.asListFrom(member.getMemberTagsWithSort(), postCount);
+    }
+
+    public void registerMemberTag(Tags tags, Member member) {
+        final List<MemberTag> memberTags = tags.toMemberTags(member);
+        memberTagRepository.register(memberTags);
+    }
+
+    public void updateMemberTag(Tags originalTags, Tags newTags, Member member) {
+        final List<MemberTag> originalMemberTags = originalTags.toMemberTags(member);
+        final List<MemberTag> newMemberTags = newTags.toMemberTags(member);
+        memberTagRepository.update(originalMemberTags, newMemberTags);
+    }
+
+    public void removeMemberTag(Tags tags, Member member) {
+        final List<MemberTag> memberTags = tags.toMemberTags(member);
+        memberTagRepository.unregister(memberTags);
     }
 }

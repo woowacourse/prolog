@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import wooteco.prolog.studylog.domain.Tag;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(name = "member_tag")
 public class MemberTag {
 
     @Id
@@ -56,5 +58,13 @@ public class MemberTag {
 
     public boolean isSame(MemberTag memberTag) {
         return member.equals(memberTag.getMember()) && tag.isSameName(memberTag.tag);
+    }
+
+    public Long getMemberId() {
+        return member.getId();
+    }
+
+    public Long getTagId() {
+        return tag.getId();
     }
 }
