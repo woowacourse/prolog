@@ -10,10 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.util.MemberFixture;
 import wooteco.prolog.post.util.PostFixture;
 import wooteco.prolog.post.util.PostUtilCRUD;
-import wooteco.prolog.tag.dto.MemberTagResponse;
+import wooteco.prolog.studylog.application.dto.MemberTagResponse;
 
 @ActiveProfiles("test")
 @SpringBootTest

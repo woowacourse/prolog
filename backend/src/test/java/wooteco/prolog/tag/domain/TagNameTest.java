@@ -5,7 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import wooteco.prolog.tag.exception.TagNameNullOrEmptyException;
+import wooteco.prolog.studylog.domain.TagName;
+import wooteco.prolog.studylog.exception.TagNameNullOrEmptyException;
 
 class TagNameTest {
 

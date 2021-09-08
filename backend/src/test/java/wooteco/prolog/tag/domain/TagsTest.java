@@ -7,7 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import wooteco.prolog.tag.exception.DuplicateTagException;
+import wooteco.prolog.studylog.domain.Tag;
+import wooteco.prolog.studylog.domain.Tags;
+import wooteco.prolog.studylog.exception.DuplicateTagException;
 
 class TagsTest {
 

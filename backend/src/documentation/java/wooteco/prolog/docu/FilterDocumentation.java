@@ -9,7 +9,7 @@ import wooteco.prolog.Documentation;
 import wooteco.prolog.level.application.dto.LevelRequest;
 import wooteco.prolog.level.application.dto.LevelResponse;
 import wooteco.prolog.mission.application.dto.MissionRequest;
-import wooteco.prolog.tag.dto.TagRequest;
+import wooteco.prolog.studylog.application.dto.TagRequest;
 
 import java.util.Arrays;
 import java.util.List;

@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.membertag.application.MemberTagService;
-import wooteco.prolog.post.application.PostService;
-import wooteco.prolog.post.application.dto.CalendarPostResponse;
-import wooteco.prolog.tag.dto.MemberTagResponse;
+import wooteco.prolog.member.application.MemberTagService;
+import wooteco.prolog.studylog.application.StudylogService;
+import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
+import wooteco.prolog.studylog.application.dto.MemberTagResponse;
 
 @RestController
 @RequestMapping("/members")
 @RequiredArgsConstructor
 public class StudyLogOverviewController {
 
-    private final PostService postService;
+    private final StudylogService studylogService;
     private final MemberTagService memberTagService;
 
     @GetMapping("/{username}/tags")
@@ -33,11 +33,11 @@ public class StudyLogOverviewController {
     }
 
     @GetMapping("/{username}/calendar-posts")
-    public ResponseEntity<MemberDataResponses<CalendarPostResponse>> findPostsOfMine(
+    public ResponseEntity<MemberDataResponses<CalendarStudylogResponse>> findPostsOfMine(
             CalendarPostRequest calendarPostRequest, @PathVariable String username) {
         return ResponseEntity.ok(
                 MemberDataResponses.of(
-                        postService.findCalendarPosts(username, calendarPostRequest.localDate())
+                        studylogService.findCalendarPosts(username, calendarPostRequest.localDate())
                 )
         );
     }

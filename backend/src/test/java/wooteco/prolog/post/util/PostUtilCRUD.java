@@ -8,20 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import wooteco.prolog.member.util.MemberFixture;
 import wooteco.prolog.member.util.MemberUtilCRUD;
-import wooteco.prolog.post.application.PostService;
-import wooteco.prolog.post.application.dto.PostRequest;
-import wooteco.prolog.tag.dto.TagRequest;
+import wooteco.prolog.studylog.application.StudylogService;
+import wooteco.prolog.studylog.application.dto.StudylogRequest;
+import wooteco.prolog.studylog.application.dto.TagRequest;
 
 @Component
 public class PostUtilCRUD {
 
     @Autowired
-    private PostService postService;
+    private StudylogService studylogService;
     @Autowired
     private MemberUtilCRUD memberUtilCRUD;
 
     public void 등록(PostFixture postFixture, MemberFixture member) {
-        postService.insertPosts(memberUtilCRUD.등록(member), Collections.singletonList(postFixture.asRequest()));
+        studylogService.insertPosts(memberUtilCRUD.등록(member), Collections.singletonList(postFixture.asRequest()));
     }
 
     public void 등록(MemberFixture memberFixture, String title, String content, Long missionId, String ... tagNames) {
@@ -29,7 +29,7 @@ public class PostUtilCRUD {
                 .map(TagRequest::new)
                 .collect(Collectors.toList());
 
-        postService.insertPosts(memberUtilCRUD.등록(memberFixture), Collections.singletonList(new PostRequest(title, content, missionId, tagRequests)));
+        studylogService.insertPosts(memberUtilCRUD.등록(memberFixture), Collections.singletonList(new StudylogRequest(title, content, missionId, tagRequests)));
     }
 
     public void 등록(PostFixture postFixture, MemberFixture memberFixture, String ... tagNames) {
@@ -37,6 +37,6 @@ public class PostUtilCRUD {
                 .map(TagRequest::new)
                 .collect(Collectors.toList());
 
-        postService.insertPosts(memberUtilCRUD.등록(memberFixture), Collections.singletonList(postFixture.asRequestWithTags(tagRequests)));
+        studylogService.insertPosts(memberUtilCRUD.등록(memberFixture), Collections.singletonList(postFixture.asRequestWithTags(tagRequests)));
     }
 }

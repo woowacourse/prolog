@@ -15,8 +15,8 @@ include::{snippets}/profile/profile/http-response.adoc[]
 
 ==== Request
 
-include::{snippets}/profile/post/http-request.adoc[]
+include::{snippets}/profile/studylog/http-request.adoc[]
 
 ==== Response
 
-include::{snippets}/profile/post/http-response.adoc[]
+include::{snippets}/profile/studylog/http-response.adoc[]

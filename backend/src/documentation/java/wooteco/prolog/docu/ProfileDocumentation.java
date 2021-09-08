@@ -11,8 +11,8 @@ import wooteco.prolog.level.application.dto.LevelRequest;
 import wooteco.prolog.level.application.dto.LevelResponse;
 import wooteco.prolog.mission.application.dto.MissionRequest;
 import wooteco.prolog.mission.application.dto.MissionResponse;
-import wooteco.prolog.post.application.dto.PostRequest;
-import wooteco.prolog.tag.dto.TagRequest;
+import wooteco.prolog.studylog.application.dto.StudylogRequest;
+import wooteco.prolog.studylog.application.dto.TagRequest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,27 +37,27 @@ public class ProfileDocumentation extends Documentation {
                 .extract();
     }
 
-    private PostRequest createPostRequest1() {
+    private StudylogRequest createPostRequest1() {
         String title = "SPA";
         String content = "SPA 방식으로 앱을 구현하였음.\n" + "router 를 구현 하여 이용함.\n";
         Long levelId = 레벨_등록함(new LevelRequest("레벨1"));
         Long missionId = 미션_등록함(new MissionRequest("레벨1 - 지하철 노선도 미션", levelId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("spa"), new TagRequest("router"));
 
-        return new PostRequest(title, content, missionId, tags);
+        return new StudylogRequest(title, content, missionId, tags);
     }
 
-    private PostRequest createPostRequest2() {
+    private StudylogRequest createPostRequest2() {
         String title = "JAVA";
         String content = "Spring Data JPA를 학습함.";
         Long levelId = 레벨_등록함(new LevelRequest("레벨3"));
         Long missionId = 미션_등록함(new MissionRequest("레벨3 - 프로젝트", levelId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("java"), new TagRequest("jpa"));
 
-        return new PostRequest(title, content, missionId, tags);
+        return new StudylogRequest(title, content, missionId, tags);
     }
 
-    private ExtractableResponse<Response> 포스트_등록함(List<PostRequest> request) {
+    private ExtractableResponse<Response> 포스트_등록함(List<StudylogRequest> request) {
         return RestAssured.given().log().all()
                 .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
                 .body(request)

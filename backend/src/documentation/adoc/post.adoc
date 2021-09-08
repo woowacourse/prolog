@@ -1,62 +1,62 @@
-[[post]]
+[[studylog]]
 == 포스트
 
 === 포스트 작성
 
 ==== Request
 
-include::{snippets}/post/create/http-request.adoc[]
+include::{snippets}/studylog/create/http-request.adoc[]
 
 ==== Response
 
-include::{snippets}/post/create/http-response.adoc[]
+include::{snippets}/studylog/create/http-response.adoc[]
 
 === 포스트 목록 조회
 
 ==== Request
 
-include::{snippets}/post/list/http-request.adoc[]
+include::{snippets}/studylog/list/http-request.adoc[]
 
 ==== Response
 
-include::{snippets}/post/list/http-response.adoc[]
+include::{snippets}/studylog/list/http-response.adoc[]
 
 === 포스트 필터 조회
 
 ==== Request
 
-include::{snippets}/post/filter/http-request.adoc[]
+include::{snippets}/studylog/filter/http-request.adoc[]
 
 ==== Response
 
-include::{snippets}/post/filter/http-response.adoc[]
+include::{snippets}/studylog/filter/http-response.adoc[]
 
 === 포스트 단건 조회
 
 ==== Request
 
-include::{snippets}/post/read/http-request.adoc[]
+include::{snippets}/studylog/read/http-request.adoc[]
 
 ==== Response
 
-include::{snippets}/post/read/http-response.adoc[]
+include::{snippets}/studylog/read/http-response.adoc[]
 
 === 포스트 수정
 
 ==== Request
 
-include::{snippets}/post/edit/http-request.adoc[]
+include::{snippets}/studylog/edit/http-request.adoc[]
 
 ==== Response
 
-include::{snippets}/post/edit/http-response.adoc[]
+include::{snippets}/studylog/edit/http-response.adoc[]
 
 === 포스트 삭제
 
 ==== Request
 
-include::{snippets}/post/delete/http-request.adoc[]
+include::{snippets}/studylog/delete/http-request.adoc[]
 
 ==== Response
 
-include::{snippets}/post/delete/http-response.adoc[]
+include::{snippets}/studylog/delete/http-response.adoc[]

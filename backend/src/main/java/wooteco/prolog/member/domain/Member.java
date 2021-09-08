@@ -15,10 +15,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
-import wooteco.prolog.membertag.domain.MemberTag;
-import wooteco.prolog.membertag.domain.MemberTags;
-import wooteco.prolog.tag.domain.Tag;
-import wooteco.prolog.tag.domain.Tags;
+import wooteco.prolog.studylog.domain.Tag;
+import wooteco.prolog.studylog.domain.Tags;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

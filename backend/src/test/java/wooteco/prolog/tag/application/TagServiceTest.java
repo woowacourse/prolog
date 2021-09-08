@@ -14,10 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import wooteco.prolog.post.util.PostUtilCRUD;
-import wooteco.prolog.posttag.domain.repository.PostTagRepository;
-import wooteco.prolog.tag.dto.TagRequest;
-import wooteco.prolog.tag.dto.TagResponse;
-import wooteco.prolog.tag.exception.DuplicateTagException;
+import wooteco.prolog.studylog.application.TagService;
+import wooteco.prolog.studylog.domain.repository.StudylogTagRepository;
+import wooteco.prolog.studylog.application.dto.TagRequest;
+import wooteco.prolog.studylog.application.dto.TagResponse;
+import wooteco.prolog.studylog.exception.DuplicateTagException;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -38,7 +39,7 @@ public class TagServiceTest {
     @Autowired
     private PostUtilCRUD postUtilCRUD;
     @Autowired
-    private PostTagRepository postTagRepository;
+    private StudylogTagRepository studylogTagRepository;
 
     @DisplayName("태그 생성 메서드 테스트")
     @Test

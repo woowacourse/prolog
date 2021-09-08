@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.level.application.dto.LevelResponse;
 import wooteco.prolog.mission.application.dto.MissionResponse;
-import wooteco.prolog.tag.dto.TagResponse;
+import wooteco.prolog.studylog.application.dto.TagResponse;
 
 import java.util.List;
 

@@ -15,8 +15,8 @@ include::{snippets}/members/tags/http-response.adoc[]
 
 ==== Request
 
-include::{snippets}/members/calendar-posts/http-request.adoc[]
+include::{snippets}/members/calendar-studylogs/http-request.adoc[]
 
 ==== Response
 
-include::{snippets}/members/calendar-posts/http-response.adoc[]
+include::{snippets}/members/calendar-studylogs/http-response.adoc[]

@@ -6,9 +6,9 @@ import io.cucumber.java.en.When;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.PostAcceptanceFixture;
-import wooteco.prolog.post.application.dto.PostRequest;
-import wooteco.prolog.post.application.dto.PostResponse;
-import wooteco.prolog.post.application.dto.PostsResponse;
+import wooteco.prolog.studylog.application.dto.StudylogRequest;
+import wooteco.prolog.studylog.application.dto.StudylogResponse;
+import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,21 +23,21 @@ public class PostStepDefinitions extends AcceptanceSteps {
 
     @Given("포스트 여러개를 작성하고")
     public void 포스트여러개를작성하고() {
-        List<PostRequest> postRequests = Arrays.asList(
+        List<StudylogRequest> studylogRequests = Arrays.asList(
             POST1.getPostRequest(),
             POST2.getPostRequest()
         );
 
-        context.invokeHttpPostWithToken("/posts", postRequests);
+        context.invokeHttpPostWithToken("/posts", studylogRequests);
     }
 
     @When("포스트를 작성하면")
     public void 포스트를작성하면() {
-        List<PostRequest> postRequests = Arrays.asList(
+        List<StudylogRequest> studylogRequests = Arrays.asList(
             POST1.getPostRequest()
         );
 
-        context.invokeHttpPostWithToken("/posts", postRequests);
+        context.invokeHttpPostWithToken("/posts", studylogRequests);
     }
 
     @Then("포스트가 작성된다")
@@ -48,20 +48,20 @@ public class PostStepDefinitions extends AcceptanceSteps {
 
     @Given("{long}개의 포스트를 작성하고")
     public void 다수의포스트를작성하면(Long totalSize) {
-        List<PostRequest> postRequests = new ArrayList<>();
+        List<StudylogRequest> studylogRequests = new ArrayList<>();
 
         for (int i = 0; i < totalSize; i++) {
-            postRequests.add(POST1.getPostRequest());
+            studylogRequests.add(POST1.getPostRequest());
         }
 
-        context.invokeHttpPostWithToken("/posts", postRequests);
+        context.invokeHttpPostWithToken("/posts", studylogRequests);
     }
 
     @Given("{int}번 미션의 포스트를 {long}개 작성하고")
     public void 특정미션포스트를다수작성하면(int missionNumber, Long totalSize) {
-        List<PostRequest> postRequests = new ArrayList<>();
+        List<StudylogRequest> studylogRequests = new ArrayList<>();
 
-        List<PostRequest> requests = PostAcceptanceFixture.findByMissionNumber(
+        List<StudylogRequest> requests = PostAcceptanceFixture.findByMissionNumber(
             (long) missionNumber);
 
         if (requests.isEmpty()) {
@@ -69,17 +69,17 @@ public class PostStepDefinitions extends AcceptanceSteps {
         }
 
         for (int i = 0; i < totalSize; i++) {
-            postRequests.add(requests.get(0));
+            studylogRequests.add(requests.get(0));
         }
 
-        context.invokeHttpPostWithToken("/posts", postRequests);
+        context.invokeHttpPostWithToken("/posts", studylogRequests);
     }
 
     @Given("{int}번 태그의 포스트를 {long}개 작성하고")
     public void 특정태그포스트를다수작성하면(int tagNumber, Long totalSize) {
-        List<PostRequest> postRequests = new ArrayList<>();
+        List<StudylogRequest> studylogRequests = new ArrayList<>();
 
-        List<PostRequest> requests = PostAcceptanceFixture.findByTagNumber(
+        List<StudylogRequest> requests = PostAcceptanceFixture.findByTagNumber(
             (long) tagNumber);
 
         if (requests.isEmpty()) {
@@ -87,27 +87,27 @@ public class PostStepDefinitions extends AcceptanceSteps {
         }
 
         for (int i = 0; i < totalSize; i++) {
-            postRequests.add(requests.get(0));
+            studylogRequests.add(requests.get(0));
         }
 
-        context.invokeHttpPostWithToken("/posts", postRequests);
+        context.invokeHttpPostWithToken("/posts", studylogRequests);
     }
 
     @Given("서로 다른 태그와 미션을 가진 포스트를 다수 생성하고")
     public void 서로다른태그와미션을가진포스트를생성() {
-        List<PostRequest> postRequests = new ArrayList<>();
+        List<StudylogRequest> studylogRequests = new ArrayList<>();
 
         for (int i = 0; i < 7; i++) {
-            postRequests.add(POST1.getPostRequest());
+            studylogRequests.add(POST1.getPostRequest());
         }
         for (int i = 0; i < 5; i++) {
-            postRequests.add(POST2.getPostRequest());
+            studylogRequests.add(POST2.getPostRequest());
         }
         for (int i = 0; i < 6; i++) {
-            postRequests.add(POST3.getPostRequest());
+            studylogRequests.add(POST3.getPostRequest());
         }
 
-        context.invokeHttpPostWithToken("/posts", postRequests);
+        context.invokeHttpPostWithToken("/posts", studylogRequests);
     }
 
     @When("{int}번 미션과 {int}번 태그로 조회하면")
@@ -136,7 +136,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
 
     @Then("{int}개의 포스트 목록을 받는다")
     public void 다수의포스트목록을받는다(int pageSize) {
-        PostsResponse posts = context.response.as(PostsResponse.class);
+        StudylogsResponse posts = context.response.as(StudylogsResponse.class);
 
         assertThat(posts.getData().size()).isEqualTo(pageSize);
     }
@@ -148,7 +148,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
 
     @Then("포스트 목록을 받는다")
     public void 포스트목록을받는다() {
-        PostsResponse posts = context.response.as(PostsResponse.class);
+        StudylogsResponse posts = context.response.as(StudylogsResponse.class);
 
         assertThat(posts.getData().size()).isEqualTo(2);
     }
@@ -165,7 +165,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
 
         String path = "/posts/" + postId;
         context.invokeHttpGet(path);
-        PostResponse post = context.response.as(PostResponse.class);
+        StudylogResponse post = context.response.as(StudylogResponse.class);
 
         assertThat(post).isNotNull();
     }
@@ -182,7 +182,7 @@ public class PostStepDefinitions extends AcceptanceSteps {
 
         String path = "/posts/" + postId;
         context.invokeHttpGet(path);
-        PostResponse post = context.response.as(PostResponse.class);
+        StudylogResponse post = context.response.as(StudylogResponse.class);
 
         assertThat(post.getContent()).isEqualTo(POST3.getPostRequest().getContent());
     }

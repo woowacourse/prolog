@@ -12,8 +12,8 @@ import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.fixtures.PostAcceptanceFixture;
 import wooteco.prolog.fixtures.TagAcceptanceFixture;
-import wooteco.prolog.post.application.dto.CalendarPostResponse;
-import wooteco.prolog.tag.dto.MemberTagResponse;
+import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
+import wooteco.prolog.studylog.application.dto.MemberTagResponse;
 
 public class StudyLogOverviewStepDefinitions extends AcceptanceSteps {
 
@@ -57,12 +57,12 @@ public class StudyLogOverviewStepDefinitions extends AcceptanceSteps {
 
     @Then("해당 유저의 포스트 목록이 조회된다")
     public void 나의포스트목록이조회된다() {
-        final List<CalendarPostResponse> data = context.response.then().extract()
+        final List<CalendarStudylogResponse> data = context.response.then().extract()
                 .body()
                 .jsonPath()
-                .getList("data", CalendarPostResponse.class);
+                .getList("data", CalendarStudylogResponse.class);
 
-        assertThat(data).extracting(CalendarPostResponse::getTitle)
+        assertThat(data).extracting(CalendarStudylogResponse::getTitle)
                 .containsExactlyInAnyOrder(
                         PostAcceptanceFixture.POST1.getPostRequest().getTitle(),
                         PostAcceptanceFixture.POST2.getPostRequest().getTitle()

@@ -2,14 +2,14 @@ package wooteco.prolog.tag.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import wooteco.prolog.tag.domain.Tag;
+import wooteco.prolog.studylog.domain.Tag;
+import wooteco.prolog.studylog.domain.repository.TagRepository;
 
 @DataJpaTest
 class TagRepositoryTest {

@@ -14,9 +14,9 @@ import wooteco.prolog.level.application.dto.LevelResponse;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionRequest;
 import wooteco.prolog.mission.application.dto.MissionResponse;
-import wooteco.prolog.post.application.dto.PostRequest;
-import wooteco.prolog.tag.domain.Tags;
-import wooteco.prolog.tag.dto.TagRequest;
+import wooteco.prolog.studylog.application.dto.StudylogRequest;
+import wooteco.prolog.studylog.domain.Tags;
+import wooteco.prolog.studylog.application.dto.TagRequest;
 
 public enum PostFixture {
 
@@ -58,12 +58,12 @@ public enum PostFixture {
         this.levelService = levelService;
     }
 
-    public PostRequest asRequestWithTags(List<TagRequest> tagRequests) {
+    public StudylogRequest asRequestWithTags(List<TagRequest> tagRequests) {
         final MissionResponse missionResponse = createMission(missionName, levelName);
-        return new PostRequest(title, content, missionResponse.getId(), tagRequests);
+        return new StudylogRequest(title, content, missionResponse.getId(), tagRequests);
     }
 
-    public PostRequest asRequest() {
+    public StudylogRequest asRequest() {
         final List<TagRequest> tagRequests = tags.getList().stream()
                 .map(tag -> new TagRequest(tag.getName()))
                 .collect(Collectors.toList());

@@ -4,7 +4,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import wooteco.prolog.post.exception.PostContentNullOrEmptyException;
+import wooteco.prolog.studylog.exception.PostContentNullOrEmptyException;
+import wooteco.prolog.studylog.domain.Content;
 
 class ContentTest {
 

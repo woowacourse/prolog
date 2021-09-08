@@ -10,8 +10,8 @@ import wooteco.prolog.level.application.LevelService;
 import wooteco.prolog.level.application.dto.LevelResponse;
 import wooteco.prolog.mission.application.MissionService;
 import wooteco.prolog.mission.application.dto.MissionResponse;
-import wooteco.prolog.tag.application.TagService;
-import wooteco.prolog.tag.dto.TagResponse;
+import wooteco.prolog.studylog.application.TagService;
+import wooteco.prolog.studylog.application.dto.TagResponse;
 
 import java.util.List;
 

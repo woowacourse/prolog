@@ -5,7 +5,7 @@ import io.cucumber.java.en.When;
 import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.member.application.dto.MemberResponse;
-import wooteco.prolog.post.application.dto.PostsResponse;
+import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,7 +32,7 @@ public class ProfileStepDefinitions extends AcceptanceSteps {
 
     @Then("프로필 포스트가 조회된다")
     public void 프로필포스트가조회된다() {
-        PostsResponse posts = context.response.as(PostsResponse.class);
+        StudylogsResponse posts = context.response.as(StudylogsResponse.class);
 
         assertThat(posts.getData()).isNotEmpty();
     }

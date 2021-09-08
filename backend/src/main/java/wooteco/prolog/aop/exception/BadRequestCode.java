@@ -14,17 +14,17 @@ import wooteco.prolog.mission.domain.Mission;
 import wooteco.prolog.mission.exception.DuplicateMissionException;
 import wooteco.prolog.mission.exception.MissionNotFoundException;
 import wooteco.prolog.mission.exception.TooLongMissionNameException;
-import wooteco.prolog.post.domain.Title;
-import wooteco.prolog.post.exception.AuthorNotValidException;
-import wooteco.prolog.post.exception.NotValidSortNameException;
-import wooteco.prolog.post.exception.PostArgumentException;
-import wooteco.prolog.post.exception.PostContentNullOrEmptyException;
-import wooteco.prolog.post.exception.PostNotFoundException;
-import wooteco.prolog.post.exception.TooLongTitleException;
-import wooteco.prolog.tag.domain.TagName;
-import wooteco.prolog.tag.exception.DuplicateTagException;
-import wooteco.prolog.tag.exception.TagNameNullOrEmptyException;
-import wooteco.prolog.tag.exception.TooLongTagNameException;
+import wooteco.prolog.studylog.domain.Title;
+import wooteco.prolog.studylog.exception.AuthorNotValidException;
+import wooteco.prolog.studylog.exception.NotValidSortNameException;
+import wooteco.prolog.studylog.exception.PostArgumentException;
+import wooteco.prolog.studylog.exception.PostContentNullOrEmptyException;
+import wooteco.prolog.studylog.exception.PostNotFoundException;
+import wooteco.prolog.studylog.exception.TooLongTitleException;
+import wooteco.prolog.studylog.domain.TagName;
+import wooteco.prolog.studylog.exception.DuplicateTagException;
+import wooteco.prolog.studylog.exception.TagNameNullOrEmptyException;
+import wooteco.prolog.studylog.exception.TooLongTagNameException;
 
 @AllArgsConstructor
 @Getter
