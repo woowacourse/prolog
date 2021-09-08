@@ -27,6 +27,7 @@ public class ProfileStudylogController {
     private StudylogService studylogService;
     private MemberService memberService;
 
+    @Deprecated
     @GetMapping(value = "/{username}/posts", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StudylogsResponse> findAllPostsOfMine(@PathVariable String username,
                                                                 PostFilterRequest postFilterRequest,
