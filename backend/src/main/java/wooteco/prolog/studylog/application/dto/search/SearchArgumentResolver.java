@@ -1,5 +1,7 @@
 package wooteco.prolog.studylog.application.dto.search;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -39,8 +41,17 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
             convertToLongList(queryParams.getOrDefault("missions", null)),
             convertToLongList(queryParams.getOrDefault("tags", null)),
             convertToStringList(queryParams.getOrDefault("usernames", null)),
+            convertToLocalDate(queryParams.getOrDefault("startDate", null)),
+            convertToLocalDate(queryParams.getOrDefault("endDate", null)),
             makePageableDefault(queryParams)
         );
+    }
+
+    private LocalDate convertToLocalDate(String date) {
+        if (Objects.isNull(date)) {
+            return null;
+        }
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd"));
     }
 
     private List<Long> convertToLongList(String values) {
