@@ -18,7 +18,7 @@ import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.SearchParams;
-import wooteco.prolog.studylog.application.dto.search.StudyLogsSearchRequest;
+import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 import wooteco.prolog.studylog.infrastructure.NumberUtils;
 
@@ -43,7 +43,7 @@ public class StudylogController {
 
     @GetMapping
     public ResponseEntity<StudylogsResponse> showAll(
-        @SearchParams StudyLogsSearchRequest studyLogsSearchRequest) {
+        @SearchParams StudylogsSearchRequest studyLogsSearchRequest) {
         StudylogsResponse studylogsResponse = studylogService
             .findStudylogsWithFilter(studyLogsSearchRequest);
         return ResponseEntity.ok(studylogsResponse);

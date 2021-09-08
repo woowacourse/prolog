@@ -10,11 +10,11 @@ import wooteco.prolog.studylog.application.StudylogDocumentService;
 @AllArgsConstructor
 public class StudylogDocumentController {
 
-    private StudylogDocumentService studyLogDocumentService;
+    private StudylogDocumentService studylogDocumentService;
 
     @GetMapping("/sync")
     public ResponseEntity<Void> sync() {
-        studyLogDocumentService.sync();
+        studylogDocumentService.sync();
         return ResponseEntity.ok().build();
     }
 

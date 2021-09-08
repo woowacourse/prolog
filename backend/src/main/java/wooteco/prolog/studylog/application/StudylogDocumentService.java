@@ -17,47 +17,47 @@ import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 @Service
 public class StudylogDocumentService {
 
-    private final StudylogDocumentRepository studyLogDocumentRepository;
+    private final StudylogDocumentRepository studylogDocumentRepository;
     private final StudylogRepository studylogRepository;
 
-    public void save(StudylogDocument studyLogDocument) {
-        studyLogDocumentRepository.save(studyLogDocument);
+    public void save(StudylogDocument studylogDocument) {
+        studylogDocumentRepository.save(studylogDocument);
     }
 
     public List<Long> findBySearchKeyword(String searchKeyword, Pageable pageable) {
-        List<StudylogDocument> studyLogs = studyLogDocumentRepository.findByKeyword(searchKeyword,
+        List<StudylogDocument> studylogs = studylogDocumentRepository.findByKeyword(searchKeyword,
                                                                                     pageable);
-        return studyLogs.stream()
+        return studylogs.stream()
             .map(StudylogDocument::getId)
             .collect(toList());
     }
 
     public StudylogDocument findById(Long id) {
-        return studyLogDocumentRepository.findById(id)
+        return studylogDocumentRepository.findById(id)
             .orElseThrow(StudylogDocumentNotFoundException::new);
     }
 
-    public void delete(StudylogDocument studyLogDocument) {
-        studyLogDocumentRepository.delete(studyLogDocument);
+    public void delete(StudylogDocument studylogDocument) {
+        studylogDocumentRepository.delete(studylogDocument);
     }
 
     public void deleteAll() {
-        studyLogDocumentRepository.deleteAll();
+        studylogDocumentRepository.deleteAll();
     }
 
     public void sync() {
         // sync between es and db
-        studyLogDocumentRepository.deleteAll();
+        studylogDocumentRepository.deleteAll();
 
         List<Studylog> studylogs = studylogRepository.findAll();
-        studyLogDocumentRepository.saveAll(
+        studylogDocumentRepository.saveAll(
             studylogs.stream()
-                .map(Studylog::toStudyLogDocument)
+                .map(Studylog::toStudylogDocument)
                 .collect(Collectors.toList())
         );
     }
 
     public void update(StudylogDocument studylogDocument) {
-        studyLogDocumentRepository.save(studylogDocument);
+        studylogDocumentRepository.save(studylogDocument);
     }
 }

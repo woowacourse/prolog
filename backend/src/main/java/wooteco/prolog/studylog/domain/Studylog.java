@@ -69,7 +69,7 @@ public class Studylog extends BaseEntity {
             .collect(Collectors.toList());
     }
 
-    public StudylogDocument toStudyLogDocument() {
+    public StudylogDocument toStudylogDocument() {
         return new StudylogDocument(this.getId(), this.getTitle(), this.getContent());
     }
 

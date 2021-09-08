@@ -5,7 +5,6 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -38,7 +37,7 @@ import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.application.dto.TagResponse;
-import wooteco.prolog.studylog.application.dto.search.StudyLogsSearchRequest;
+import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
@@ -225,7 +224,7 @@ class StudylogServiceTest {
 
         // document 초기화 어떻게...
         StudylogsResponse studylogsResponse = studylogService.findStudylogsWithFilter(
-            new StudyLogsSearchRequest(
+            new StudylogsSearchRequest(
                 keyword,
                 levelIds,
                 missionIds,
