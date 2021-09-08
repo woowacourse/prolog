@@ -24,7 +24,7 @@ import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
-import wooteco.prolog.studylog.application.dto.search.StudyLogsSearchRequest;
+import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.Tags;
@@ -76,35 +76,35 @@ public class StudylogService {
     }
 
     public StudylogsResponse findStudylogsWithFilter(
-        StudyLogsSearchRequest studyLogsSearchRequest) {
+        StudylogsSearchRequest studylogsSearchRequest) {
 
-        final String keyword = studyLogsSearchRequest.getKeyword();
-        final Pageable pageable = studyLogsSearchRequest.getPageable();
+        final String keyword = studylogsSearchRequest.getKeyword();
+        final Pageable pageable = studylogsSearchRequest.getPageable();
 
         List<Long> studyLogIds = Collections.emptyList();
         if (isSearch(keyword)) {
             studyLogIds = studyLogDocumentService.findBySearchKeyword(keyword, pageable);
         }
 
-        if (studyLogsSearchRequest.hasOnlySearch()) {
+        if (studylogsSearchRequest.hasOnlySearch()) {
             return StudylogsResponse.of(studylogRepository.findByIdIn(studyLogIds, pageable));
         }
 
         Page<Studylog> studylogs = studylogRepository
-            .findAll(makeSpecifications(studyLogsSearchRequest, studyLogIds), pageable);
+            .findAll(makeSpecifications(studylogsSearchRequest, studyLogIds), pageable);
 
         return StudylogsResponse.of(studylogs);
     }
 
     private Specification<Studylog> makeSpecifications(
-        StudyLogsSearchRequest studyLogsSearchRequest, List<Long> studyLogIds
+        StudylogsSearchRequest studylogsSearchRequest, List<Long> studyLogIds
     ) {
-        return StudylogSpecification.findByLevelIn(studyLogsSearchRequest.getLevels())
+        return StudylogSpecification.findByLevelIn(studylogsSearchRequest.getLevels())
             .and(StudylogSpecification.equalIn("id", studyLogIds,
-                                               isSearch(studyLogsSearchRequest.getKeyword())))
-            .and(StudylogSpecification.equalIn("mission", studyLogsSearchRequest.getMissions()))
-            .and(StudylogSpecification.findByTagIn(studyLogsSearchRequest.getTags()))
-            .and(StudylogSpecification.findByUsernameIn(studyLogsSearchRequest.getUsernames()))
+                                               isSearch(studylogsSearchRequest.getKeyword())))
+            .and(StudylogSpecification.equalIn("mission", studylogsSearchRequest.getMissions()))
+            .and(StudylogSpecification.findByTagIn(studylogsSearchRequest.getTags()))
+            .and(StudylogSpecification.findByUsernameIn(studylogsSearchRequest.getUsernames()))
             .and(StudylogSpecification.distinct(true));
     }
 
