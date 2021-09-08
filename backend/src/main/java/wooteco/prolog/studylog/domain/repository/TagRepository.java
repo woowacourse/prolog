@@ -11,6 +11,6 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     List<Tag> findByNameValueIn(List<String> name);
 
-    @Query("select t from Tag t where t.id in (select pt.tag.id from StudylogTag pt where pt.post = :post and pt.post.member = :member)")
+    @Query("select t from Tag t where t.id in (select pt.tag.id from StudylogTag pt where pt.studylog = :studylog and pt.studylog.member = :member)")
     List<Tag> findByPostAndMember(Studylog studylog, Member member);
 }

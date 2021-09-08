@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.BaseEntity;
@@ -16,6 +17,7 @@ import wooteco.prolog.studylog.exception.AuthorNotValidException;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Table(name = "post")
 public class Studylog extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

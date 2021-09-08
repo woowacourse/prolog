@@ -17,7 +17,6 @@ import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.mission.domain.Mission;
 import wooteco.prolog.mission.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.posttag.domain.PostTag;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.StudylogTagRepository;

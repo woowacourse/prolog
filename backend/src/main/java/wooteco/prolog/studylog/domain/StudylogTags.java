@@ -16,7 +16,7 @@ import lombok.Getter;
 @Embeddable
 public class StudylogTags {
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "studylog", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
     private final List<StudylogTag> values = new ArrayList<>();
 
     public void add(List<StudylogTag> studylogTags) {
