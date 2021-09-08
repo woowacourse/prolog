@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+  <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+  <springProfile name="prod">
+    <include resource="logback/file-info-logger.xml"/>
+    <include resource="logback/file-warn-logger.xml"/>
+    <include resource="logback/file-error-logger.xml"/>
+
+    <logger name="wooteco.prolog" level="ERROR">
+      <appender-ref ref="file-error-logger"/>
+    </logger>
+
+    <logger name="org.springframework" level="INFO">
+      <appender-ref ref="file-info-logger"/>
+      <appender-ref ref="file-warn-logger"/>
+      <appender-ref ref="file-error-logger"/>
+    </logger>
+  </springProfile>
+
+  <springProfile name="dev">
+    <include resource="logback/file-debug-logger.xml"/>
+    <include resource="logback/file-info-logger.xml"/>
+    <include resource="logback/file-warn-logger.xml"/>
+    <include resource="logback/file-error-logger.xml"/>
+
+    <logger name="wooteco.prolog" level="DEBUG">
+      <appender-ref ref="file-debug-logger"/>
+      <appender-ref ref="file-info-logger"/>
+      <appender-ref ref="file-warn-logger"/>
+      <appender-ref ref="file-error-logger"/>
+    </logger>
+
+    <logger name="org.springframework" level="INFO">
+      <appender-ref ref="file-info-logger"/>
+      <appender-ref ref="file-warn-logger"/>
+      <appender-ref ref="file-error-logger"/>
+    </logger>
+  </springProfile>
+
+  <springProfile name="local, test">
+    <include resource="logback/console-logger.xml"/>
+
+    <logger name="wooteco.prolog" level="DEBUG">
+      <appender-ref ref="console-logger"/>
+    </logger>
+
+    <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+      <appender-ref ref="console-logger"/>
+    </logger>
+
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
+      <appender-ref ref="console-db-logger"/>
+    </logger>
+
+    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="TRACE" additivity="false">
+      <appender-ref ref="console-db-logger"/>
+    </logger>
+  </springProfile>
+</configuration>

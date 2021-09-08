@@ -1,13 +1,15 @@
 package wooteco.prolog.fixtures;
 
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.application.dto.GithubAccessTokenRequest;
 import wooteco.prolog.login.application.dto.GithubAccessTokenResponse;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 
-@Profile("acceptance")
 @RestController
 public class GithubTestController {
 
@@ -25,7 +27,9 @@ public class GithubTestController {
         String accessToken = authorization.split(" ")[1];
         GithubResponses githubResponse = GithubResponses.findByToken(accessToken);
         GithubProfileResponse response = new GithubProfileResponse(githubResponse.getName(),
-            githubResponse.getLogin(), githubResponse.getId(), githubResponse.getAvatarUrl());
+                                                                   githubResponse.getLogin(),
+                                                                   githubResponse.getId(),
+                                                                   githubResponse.getAvatarUrl());
         return ResponseEntity.ok(response);
     }
 }

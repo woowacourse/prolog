@@ -60,7 +60,6 @@ const ProfilePagePosts = () => {
 
   const getUserPosts = useCallback(async () => {
     try {
-      // TODO : const response = await requestGetUserPosts(username, postQueryParams, filteringOption);
       const response = await requestGetUserPosts(username, postQueryParams, selectedFilterDetails);
 
       if (!response.ok) {
@@ -102,6 +101,7 @@ const ProfilePagePosts = () => {
     }
 
     getUserPosts();
+  // }, [username, selectedFilterDetails, postQueryParams]);
   }, [username, getUserPosts, shouldInitialLoad]);
 
   return (

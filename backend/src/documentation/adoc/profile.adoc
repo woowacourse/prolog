@@ -11,7 +11,7 @@ include::{snippets}/profile/profile/http-request.adoc[]
 
 include::{snippets}/profile/profile/http-response.adoc[]
 
-=== 프로필 포스트 조회
+=== 프로필 스터디로그 조회
 
 ==== Request
 

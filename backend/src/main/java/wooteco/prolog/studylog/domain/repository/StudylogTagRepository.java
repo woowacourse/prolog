@@ -10,6 +10,9 @@ public interface StudylogTagRepository extends JpaRepository<StudylogTag, Long> 
 
     List<StudylogTag> findByTagIn(List<Tag> tags);
 
+    @Query("select pt.tag from StudylogTag pt inner join pt.tag group by pt.tag")
+    List<Tag> findTagsIncludedInStudylogs();
+
     @Query("select pt from StudylogTag pt join fetch pt.tag where pt.studylog.member.id = :memberId")
     List<StudylogTag> findByMember(Long memberId);
 }

@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import wooteco.prolog.login.excetpion.PostTitleNullOrEmptyException;
+import wooteco.prolog.login.excetpion.StudylogTitleNullOrEmptyException;
 import wooteco.prolog.studylog.exception.TooLongTitleException;
 
 @Getter
@@ -37,19 +37,19 @@ public class Title {
 
     private void validateNull(String title) {
         if (Objects.isNull(title)) {
-            throw new PostTitleNullOrEmptyException();
+            throw new StudylogTitleNullOrEmptyException();
         }
     }
 
     private void validateEmpty(String title) {
         if (title.isEmpty()) {
-            throw new PostTitleNullOrEmptyException();
+            throw new StudylogTitleNullOrEmptyException();
         }
     }
 
     private void validateOnlyBlank(String title) {
         if (title.trim().isEmpty()) {
-            throw new PostTitleNullOrEmptyException();
+            throw new StudylogTitleNullOrEmptyException();
         }
     }
 

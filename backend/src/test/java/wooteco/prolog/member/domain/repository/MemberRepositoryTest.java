@@ -2,7 +2,6 @@ package wooteco.prolog.member.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,7 @@ import wooteco.prolog.member.domain.Role;
 class MemberRepositoryTest {
 
     private static final Member 웨지 = new Member("sihyung92", "웨지", Role.CREW, 2222L,
-        "https://avatars.githubusercontent.com/u/51393021?v=4");
+                                                "https://avatars.githubusercontent.com/u/51393021?v=4");
 
     @Autowired
     private MemberRepository memberRepository;

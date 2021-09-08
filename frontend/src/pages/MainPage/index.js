@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Card, FilterList, Pagination, ProfileChip } from '../../components';
+import React, { useState, useEffect } from 'react';
+import { Button, Card, FilterList, ProfileChip, Pagination } from '../../components';
 import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
 import useFetch from '../../hooks/useFetch';
-import { requestGetFilters, requestGetPosts } from '../../service/requests';
+import { requestGetPosts, requestGetFilters } from '../../service/requests';
 import { useSelector } from 'react-redux';
 import {
   CardStyle,

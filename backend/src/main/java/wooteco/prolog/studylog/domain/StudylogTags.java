@@ -1,21 +1,29 @@
 package wooteco.prolog.studylog.domain;
 
-import static java.util.stream.Collectors.groupingBy;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import lombok.Getter;
+import org.hibernate.annotations.BatchSize;
 
 @Getter
 @Embeddable
 public class StudylogTags {
 
+    @OneToMany(mappedBy = "studylog", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @BatchSize(size = 1000)
+    private final List<StudylogTag> values;
+
+    public StudylogTags() {
+        this(new ArrayList<>());
+    }
+
+    public StudylogTags(List<StudylogTag> values) {
+        this.values = values;
+    }
     @OneToMany(mappedBy = "studylog", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
     private final List<StudylogTag> values = new ArrayList<>();
 
@@ -25,8 +33,8 @@ public class StudylogTags {
 
     private List<StudylogTag> duplicateFilter(List<StudylogTag> studylogTags) {
         return studylogTags.stream()
-            .filter(postTag -> values.stream().map(StudylogTag::getTag)
-                .noneMatch(newTag -> newTag.isSameName(postTag.getTag())))
+            .filter(studylogTag -> values.stream().map(StudylogTag::getTag)
+                .noneMatch(newTag -> newTag.isSameName(studylogTag.getTag())))
             .collect(Collectors.toList());
     }
 

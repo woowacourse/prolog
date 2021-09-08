@@ -3,11 +3,11 @@ import COLOR from '../../constants/color';
 
 const TitleInput = styled.input`
   width: 100%;
-  height: 3rem;
+  height: 5.4rem;
   padding: 0;
   margin: 1rem 0;
 
-  font-size: 3.4rem;
+  font-size: 4.4rem;
   font-weight: 700;
 
   border: none;
@@ -26,7 +26,7 @@ const TitleCount = styled.div`
 `;
 
 const EditorWrapper = styled.div`
-  *.tui-editor-defaultUI {
+  *.toastui-editor-defaultUI {
     border: none;
   }
 

@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import wooteco.prolog.studylog.exception.PostContentNullOrEmptyException;
+import wooteco.prolog.studylog.exception.StudylogContentNullOrEmptyException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,7 +35,7 @@ public class Content {
 
     private void validateNullOrEmpty(String content, int trimedContentLength) {
         if (Objects.isNull(content) || trimedContentLength == 0) {
-            throw new PostContentNullOrEmptyException();
+            throw new StudylogContentNullOrEmptyException();
         }
     }
 }

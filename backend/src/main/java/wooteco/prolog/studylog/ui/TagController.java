@@ -1,13 +1,12 @@
 package wooteco.prolog.studylog.ui;
 
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.studylog.application.TagService;
+import wooteco.prolog.studylog.application.StudylogTagService;
 import wooteco.prolog.studylog.application.dto.TagResponse;
 
 @RestController
@@ -15,11 +14,11 @@ import wooteco.prolog.studylog.application.dto.TagResponse;
 @AllArgsConstructor
 public class TagController {
 
-    private TagService tagService;
+    private final StudylogTagService studylogTagService;
 
     @GetMapping
-    public ResponseEntity<List<TagResponse>> showAll(HttpServletRequest httpRequest) {
-        List<TagResponse> tags = tagService.findAll();
+    public ResponseEntity<List<TagResponse>> showAll() {
+        List<TagResponse> tags = studylogTagService.findTagsIncludedInStudylogs();
         return ResponseEntity.ok(tags);
     }
 }

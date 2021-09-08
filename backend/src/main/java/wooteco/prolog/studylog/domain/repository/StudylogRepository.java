@@ -6,11 +6,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.domain.Studylog;
 
-public interface StudylogRepository extends JpaRepository<Studylog, Long>, JpaSpecificationExecutor<Studylog> {
+public interface StudylogRepository extends JpaRepository<Studylog, Long>,
+    JpaSpecificationExecutor<Studylog> {
+
+    Page<Studylog> findByMember(Member member, Pageable pageable);
+
+    Page<Studylog> findByIdIn(List<Long> ids, Pageable pageable);
 
     @Query(value = "select distinct p from Studylog p left join fetch p.studylogTags.values pt left join fetch pt.tag where p.member = :member",
         countQuery = "select count(p) from Studylog p where p.member = :member")

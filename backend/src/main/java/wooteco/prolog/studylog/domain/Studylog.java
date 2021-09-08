@@ -4,15 +4,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.BaseEntity;
+import wooteco.prolog.common.BaseEntity;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.mission.domain.Mission;
+import wooteco.prolog.studyLogDocument.domain.StudyLogDocument;
 import wooteco.prolog.studylog.exception.AuthorNotValidException;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -62,17 +61,21 @@ public class Studylog extends BaseEntity {
         this.title = new Title(title);
         this.content = new Content(content);
         this.mission = mission;
-        this.studylogTags.update(convertToPostTags(tags));
+        this.studylogTags.update(convertToStudylogTags(tags));
     }
 
-    private List<StudylogTag> convertToPostTags(Tags tags) {
+    private List<StudylogTag> convertToStudylogTags(Tags tags) {
         return tags.getList().stream()
             .map(tag -> new StudylogTag(this, tag))
             .collect(Collectors.toList());
     }
 
+    public StudyLogDocument toStudyLogDocument() {
+        return new StudyLogDocument(this.getId(), this.getTitle(), this.getContent());
+    }
+
     public void addTags(Tags tags) {
-        studylogTags.add(convertToPostTags(tags));
+        studylogTags.add(convertToStudylogTags(tags));
     }
 
     public Member getMember() {

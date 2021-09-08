@@ -3,16 +3,15 @@ package wooteco.prolog.docu;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
-import wooteco.prolog.level.application.dto.LevelRequest;
-import wooteco.prolog.level.application.dto.LevelResponse;
-import wooteco.prolog.mission.application.dto.MissionRequest;
+import wooteco.prolog.studylog.application.dto.LevelRequest;
+import wooteco.prolog.studylog.application.dto.LevelResponse;
+import wooteco.prolog.studylog.application.dto.MissionRequest;
 import wooteco.prolog.studylog.application.dto.TagRequest;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class FilterDocumentation extends Documentation {
 
@@ -29,53 +28,53 @@ public class FilterDocumentation extends Documentation {
         미션_등록함(request2);
 
         List<TagRequest> tagRequests = Arrays.asList(
-                new TagRequest("자바"),
-                new TagRequest("파이썬"),
-                new TagRequest("자바스크립트")
+            new TagRequest("자바"),
+            new TagRequest("파이썬"),
+            new TagRequest("자바스크립트")
         );
         태그_등록함(tagRequests);
 
         given("filter/list")
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/filters")
-                .then().log().all().extract();
+            .accept(MediaType.APPLICATION_JSON_VALUE)
+            .when().get("/filters")
+            .then().log().all().extract();
     }
 
     private Long 레벨_등록함(LevelRequest request) {
         return RestAssured
-                .given().log().all()
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/levels")
-                .then()
-                .log().all()
-                .extract()
-                .as(LevelResponse.class)
-                .getId();
+            .given().log().all()
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/levels")
+            .then()
+            .log().all()
+            .extract()
+            .as(LevelResponse.class)
+            .getId();
     }
 
     private ExtractableResponse<Response> 미션_등록함(MissionRequest request) {
         return RestAssured
-                .given().log().all()
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/missions")
-                .then()
-                .log().all()
-                .extract();
+            .given().log().all()
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/missions")
+            .then()
+            .log().all()
+            .extract();
     }
 
     private ExtractableResponse<Response> 태그_등록함(List<TagRequest> request) {
         return RestAssured
-                .given().log().all()
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/tags")
-                .then()
-                .log().all()
-                .extract();
+            .given().log().all()
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/tags")
+            .then()
+            .log().all()
+            .extract();
     }
 }

@@ -1,13 +1,9 @@
 package wooteco.prolog.studylog.application;
 
-import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
-import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
-import static java.util.stream.Collectors.toList;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,18 +12,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.mission.application.MissionService;
-import wooteco.prolog.mission.domain.Mission;
-import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
+import wooteco.prolog.studyLogDocument.application.StudyLogDocumentService;
+import wooteco.prolog.studyLogDocument.domain.StudyLogDocument;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
-import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
-import wooteco.prolog.studylog.exception.PostArgumentException;
-import wooteco.prolog.studylog.exception.PostNotFoundException;
+import wooteco.prolog.studylog.application.dto.search.StudyLogsSearchRequest;
+import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.Tags;
+import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
+import wooteco.prolog.studylog.exception.StudylogArgumentException;
+import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 
 @Service
 @AllArgsConstructor
@@ -35,8 +32,8 @@ import wooteco.prolog.studylog.domain.Tags;
 public class StudylogService {
 
     private final StudylogRepository studylogRepository;
+    private final StudyLogDocumentService studyLogDocumentService;
     private final MissionService missionService;
-    private final StudylogTagService studylogTagService;
     private final MemberService memberService;
     private final TagService tagService;
 
@@ -71,67 +68,108 @@ public class StudylogService {
         return StudylogsResponse.of(posts);
     }
 
-    public StudylogsResponse findPostsOf(String username, Pageable pageable) {
+    public StudylogsResponse findStudylogsWithFilter(
+        StudyLogsSearchRequest studyLogsSearchRequest) {
+
+        final String keyword = studyLogsSearchRequest.getKeyword();
+        final Pageable pageable = studyLogsSearchRequest.getPageable();
+
+        List<Long> studyLogIds = Collections.emptyList();
+        if (isSearch(keyword)) {
+            studyLogIds = studyLogDocumentService.findBySearchKeyword(keyword, pageable);
+        }
+
+        if (studyLogsSearchRequest.hasOnlySearch()) {
+            return StudylogsResponse.of(studylogRepository.findByIdIn(studyLogIds, pageable));
+        }
+
+        Page<Studylog> studylogs = studylogRepository
+            .findAll(makeSpecifications(studyLogsSearchRequest, studyLogIds), pageable);
+
+        return StudylogsResponse.of(studylogs);
+    }
+
+    private Specification<Studylog> makeSpecifications(
+        StudyLogsSearchRequest studyLogsSearchRequest, List<Long> studyLogIds
+    ) {
+        return StudylogSpecification.findByLevelIn(studyLogsSearchRequest.getLevels())
+            .and(StudylogSpecification.equalIn("id", studyLogIds,
+                                               isSearch(studyLogsSearchRequest.getKeyword())))
+            .and(StudylogSpecification.equalIn("mission", studyLogsSearchRequest.getMissions()))
+            .and(StudylogSpecification.findByTagIn(studyLogsSearchRequest.getTags()))
+            .and(StudylogSpecification.findByUsernameIn(studyLogsSearchRequest.getUsernames()))
+            .and(StudylogSpecification.distinct(true));
+    }
+
+    private boolean isSearch(String searchKeyword) {
+        return Objects.nonNull(searchKeyword) && !searchKeyword.isEmpty();
+    }
+
+    public StudylogsResponse findStudylogsOf(String username, Pageable pageable) {
         Member member = memberService.findByUsername(username);
         return StudylogsResponse.of(studylogRepository.findByMember(member, pageable));
     }
 
     @Transactional
-    public List<StudylogResponse> insertPosts(Member member, List<StudylogRequest> studylogRequests) {
+    public List<StudylogResponse> insertStudylogs(Member member,
+                                                  List<StudylogRequest> studylogRequests) {
         if (studylogRequests.size() == 0) {
-            throw new PostArgumentException();
+            throw new StudylogArgumentException();
         }
-        final Member byId = memberService.findById(member.getId());
 
         return studylogRequests.stream()
-            .map(postRequest -> insertPost(byId, postRequest))
-            .collect(toList());
+            .map(studylogRequest -> insertStudylog(member, studylogRequest))
+            .collect(Collectors.toList());
     }
 
-    private StudylogResponse insertPost(Member member, StudylogRequest studylogRequest) {
+    private StudylogResponse insertStudylog(Member member, StudylogRequest studylogRequest) {
         final Member foundMember = memberService.findById(member.getId());
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
         Mission mission = missionService.findById(studylogRequest.getMissionId());
 
         Studylog requestedStudylog = new Studylog(foundMember,
-            studylogRequest.getTitle(),
-            studylogRequest.getContent(),
-            mission,
-            tags.getList());
+                                                  studylogRequest.getTitle(),
+                                                  studylogRequest.getContent(),
+                                                  mission,
+                                                  tags.getList());
 
         Studylog createdStudylog = studylogRepository.save(requestedStudylog);
         foundMember.addTags(tags);
+
+        studyLogDocumentService.save(
+            new StudyLogDocument(createdStudylog.getId(), createdStudylog.getTitle(),
+                                 createdStudylog.getContent()));
 
         return StudylogResponse.of(createdStudylog);
     }
 
     public StudylogResponse findById(Long id) {
         Studylog studylog = studylogRepository.findById(id)
-            .orElseThrow(PostNotFoundException::new);
+            .orElseThrow(StudylogNotFoundException::new);
 
         return StudylogResponse.of(studylog);
     }
 
     @Transactional
-    public void updatePost(Member member, Long postId, StudylogRequest studylogRequest) {
+    public void updateStudylog(Member member, Long studylogId, StudylogRequest studylogRequest) {
         final Member foundMember = memberService.findById(member.getId());
-        Studylog studylog = studylogRepository.findById(postId)
-            .orElseThrow(PostNotFoundException::new);
-        studylog.validateAuthor(foundMember);
+
+        Studylog studylog = studylogRepository.findById(studylogId)
+            .orElseThrow(StudylogNotFoundException::new);
+        studylog.validateAuthor(member);
         final Tags originalTags = tagService.findByPostAndMember(studylog, foundMember);
 
         Mission mission = missionService.findById(studylogRequest.getMissionId());
         Tags newTags = tagService.findOrCreate(studylogRequest.getTags());
-
         studylog.update(studylogRequest.getTitle(), studylogRequest.getContent(), mission, newTags);
         foundMember.updateTags(originalTags, newTags);
     }
 
     @Transactional
-    public void deletePost(Member member, Long postId) {
+    public void deleteStudylog(Member member, Long studylogId) {
         final Member foundMember = memberService.findById(member.getId());
-        Studylog studylog = studylogRepository.findById(postId)
-            .orElseThrow(PostNotFoundException::new);
+        Studylog studylog = studylogRepository.findById(studylogId)
+            .orElseThrow(StudylogNotFoundException::new);
         studylog.validateAuthor(foundMember);
 
         studylogRepository.delete(studylog);
