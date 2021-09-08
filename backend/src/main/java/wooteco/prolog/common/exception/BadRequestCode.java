@@ -20,6 +20,7 @@ import wooteco.prolog.studylog.exception.MissionNotFoundException;
 import wooteco.prolog.studylog.exception.NotValidSortNameException;
 import wooteco.prolog.studylog.exception.StudylogArgumentException;
 import wooteco.prolog.studylog.exception.StudylogContentNullOrEmptyException;
+import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 import wooteco.prolog.studylog.exception.TagNameNullOrEmptyException;
 import wooteco.prolog.studylog.exception.TooLongMissionNameException;
@@ -49,6 +50,8 @@ public enum BadRequestCode {
     STUDYLOG_TITLE_TOO_LONG(2005, String.format("스터디로그 제목이 %d자 초과입니다.", Title.MAX_LENGTH),
                             TooLongTitleException.class),
     ONLY_AUTHOR_CAN_EDIT(2006, "작성자만 수정할 수 있습니다.", AuthorNotValidException.class),
+    STUDYLOG_DOCUMENT_NOT_FOUND(2007, "검색용 스터디로그가 존재하지 않습니다.",
+                                StudylogDocumentNotFoundException.class),
 
     MISSION_NOT_FOUND(3000, "존재하지 않는 미션입니다.", MissionNotFoundException.class),
     DUPLICATE_MISSION(3001, "미션이 중복됩니다.", DuplicateMissionException.class),
