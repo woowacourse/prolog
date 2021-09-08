@@ -42,7 +42,7 @@ public class StudylogSpecification {
 
     public static Specification<Studylog> findByTagIn(List<Long> values) {
         return (root, query, builder) -> {
-            if (values == null || values.isEmpty()) {
+            if (values == null || values.isEmpty() || values.contains(0L)) {
                 return builder.and();
             }
 
