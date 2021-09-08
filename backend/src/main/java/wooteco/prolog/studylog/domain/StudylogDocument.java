@@ -11,7 +11,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor
-@Document(indexName = "study-log-document")
+@Document(indexName = "studylog-document")
 public class StudylogDocument {
 
     @Id
