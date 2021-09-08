@@ -24,7 +24,7 @@ import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
-import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
+import wooteco.prolog.studylog.application.dto.search.StudyLogsSearchRequest;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.Tags;
@@ -76,7 +76,7 @@ public class StudylogService {
     }
 
     public StudylogsResponse findStudylogsWithFilter(
-        StudylogsSearchRequest studylogsSearchRequest) {
+        StudyLogsSearchRequest studylogsSearchRequest) {
 
         final String keyword = studylogsSearchRequest.getKeyword();
         final Pageable pageable = studylogsSearchRequest.getPageable();
@@ -97,7 +97,7 @@ public class StudylogService {
     }
 
     private Specification<Studylog> makeSpecifications(
-        StudylogsSearchRequest studylogsSearchRequest, List<Long> studyLogIds
+        StudyLogsSearchRequest studylogsSearchRequest, List<Long> studyLogIds
     ) {
         return StudylogSpecification.findByLevelIn(studylogsSearchRequest.getLevels())
             .and(StudylogSpecification.equalIn("id", studyLogIds,
