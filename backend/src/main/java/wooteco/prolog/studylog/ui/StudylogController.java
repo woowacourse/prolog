@@ -21,6 +21,7 @@ import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
+import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 import wooteco.prolog.studylog.infrastructure.NumberUtils;
 
@@ -42,15 +43,8 @@ public class StudylogController {
     }
 
     @GetMapping
-    public ResponseEntity<StudylogsResponse> showAll(
-        @RequestParam(required = false) List<Long> levels,
-        @RequestParam(required = false) List<Long> missions,
-        @RequestParam(required = false) List<Long> tags,
-        @RequestParam(required = false) List<String> usernames,
-        @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable
-    ) {
-        StudylogsResponse studylogsResponse = studylogService
-            .findPostsWithFilter(levels, missions, tags, usernames, null, null, pageable);
+    public ResponseEntity<StudylogsResponse> showAll(StudylogsSearchRequest searchRequest) {
+        StudylogsResponse studylogsResponse = studylogService.findStudylogsWithFilter(searchRequest);
         return ResponseEntity.ok(studylogsResponse);
     }
 
