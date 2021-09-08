@@ -12,8 +12,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.util.MemberFixture;
-import wooteco.prolog.post.util.PostFixture;
-import wooteco.prolog.post.util.PostUtilCRUD;
+import wooteco.prolog.post.util.StudylogFixture;
+import wooteco.prolog.post.util.StudylogUtilCRUD;
 import wooteco.prolog.studylog.application.dto.MemberTagResponse;
 
 @ActiveProfiles("test")
@@ -22,7 +22,7 @@ import wooteco.prolog.studylog.application.dto.MemberTagResponse;
 public class MemberTagServiceTest {
 
     @Autowired
-    private PostUtilCRUD postUtilCRUD;
+    private StudylogUtilCRUD studylogUtilCRUD;
     @Autowired
     private MemberTagService memberTagService;
 
@@ -35,8 +35,8 @@ public class MemberTagServiceTest {
         String tag3 = "객체지향";
         String tag4 = "전략패턴";
 
-        postUtilCRUD.등록(PostFixture.자동차_미션_정리, MemberFixture.나봄, tag1, tag3, tag4);
-        postUtilCRUD.등록(PostFixture.로또_미션_정리, MemberFixture.나봄, tag2, tag3, tag4);
+        studylogUtilCRUD.등록(StudylogFixture.자동차_미션_정리, MemberFixture.나봄, tag1, tag3, tag4);
+        studylogUtilCRUD.등록(StudylogFixture.로또_미션_정리, MemberFixture.나봄, tag2, tag3, tag4);
 
         //when
         final List<MemberTagResponse> memberTagResponses =

@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import wooteco.prolog.post.util.PostUtilCRUD;
+import wooteco.prolog.post.util.StudylogUtilCRUD;
 import wooteco.prolog.studylog.application.TagService;
 import wooteco.prolog.studylog.domain.repository.StudylogTagRepository;
 import wooteco.prolog.studylog.application.dto.TagRequest;
@@ -37,7 +37,7 @@ public class TagServiceTest {
     @Autowired
     private TagService tagService;
     @Autowired
-    private PostUtilCRUD postUtilCRUD;
+    private StudylogUtilCRUD studylogUtilCRUD;
     @Autowired
     private StudylogTagRepository studylogTagRepository;
 

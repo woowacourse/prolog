@@ -18,7 +18,7 @@ import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.domain.Tags;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 
-public enum PostFixture {
+public enum StudylogFixture {
 
     자동차_미션_정리("자동차 미션 정리", "부릉 부릉 자동차가 나가신다 부릉부릉", "자동차 미션", "임파시블레벨", Tags.of(Arrays.asList("자동차", "전략 패턴", "부릉"))),
     로또_미션_정리("로또 미션 정리", "따르르릉 로또", "로또 미션", "임파시블레벨",Tags.of(Arrays.asList("로또", "TDD", "랜덤")));
@@ -32,7 +32,7 @@ public enum PostFixture {
 
         @PostConstruct
         void init() {
-            allOf(PostFixture.class)
+            allOf(StudylogFixture.class)
                     .forEach(container -> container.injectMissionService(missionService, levelService));
         }
     }
@@ -45,7 +45,7 @@ public enum PostFixture {
     private MissionService missionService;
     private LevelService levelService;
 
-    PostFixture(String title, String content, String missionName, String levelName, Tags tags) {
+    StudylogFixture(String title, String content, String missionName, String levelName, Tags tags) {
         this.title = title;
         this.content = content;
         this.missionName = missionName;

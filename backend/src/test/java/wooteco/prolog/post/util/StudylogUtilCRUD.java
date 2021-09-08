@@ -13,15 +13,16 @@ import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 
 @Component
-public class PostUtilCRUD {
+public class StudylogUtilCRUD {
 
     @Autowired
     private StudylogService studylogService;
     @Autowired
     private MemberUtilCRUD memberUtilCRUD;
 
-    public void 등록(PostFixture postFixture, MemberFixture member) {
-        studylogService.insertPosts(memberUtilCRUD.등록(member), Collections.singletonList(postFixture.asRequest()));
+    public void 등록(StudylogFixture studylogFixture, MemberFixture member) {
+        studylogService.insertPosts(memberUtilCRUD.등록(member), Collections.singletonList(
+            studylogFixture.asRequest()));
     }
 
     public void 등록(MemberFixture memberFixture, String title, String content, Long missionId, String ... tagNames) {
@@ -32,11 +33,12 @@ public class PostUtilCRUD {
         studylogService.insertPosts(memberUtilCRUD.등록(memberFixture), Collections.singletonList(new StudylogRequest(title, content, missionId, tagRequests)));
     }
 
-    public void 등록(PostFixture postFixture, MemberFixture memberFixture, String ... tagNames) {
+    public void 등록(StudylogFixture studylogFixture, MemberFixture memberFixture, String ... tagNames) {
         final List<TagRequest> tagRequests = Arrays.stream(tagNames)
                 .map(TagRequest::new)
                 .collect(Collectors.toList());
 
-        studylogService.insertPosts(memberUtilCRUD.등록(memberFixture), Collections.singletonList(postFixture.asRequestWithTags(tagRequests)));
+        studylogService.insertPosts(memberUtilCRUD.등록(memberFixture), Collections.singletonList(
+            studylogFixture.asRequestWithTags(tagRequests)));
     }
 }

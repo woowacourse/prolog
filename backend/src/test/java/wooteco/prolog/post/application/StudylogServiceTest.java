@@ -43,7 +43,7 @@ import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.post.util.PostUtilCRUD;
+import wooteco.prolog.post.util.StudylogUtilCRUD;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.application.dto.TagResponse;
@@ -76,7 +76,7 @@ class StudylogServiceTest {
     @Autowired
     private MemberService memberService;
     @Autowired
-    private PostUtilCRUD postUtilCRUD;
+    private StudylogUtilCRUD studylogUtilCRUD;
 
     private Member member1;
     private Member member2;
