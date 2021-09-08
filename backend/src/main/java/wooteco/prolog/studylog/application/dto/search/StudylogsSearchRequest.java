@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 @AllArgsConstructor
 @Getter
-public class StudyLogsSearchRequest {
+public class StudylogsSearchRequest {
 
     private final String keyword;
     private final List<Long> levels;
