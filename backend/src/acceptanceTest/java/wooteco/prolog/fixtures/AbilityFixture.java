@@ -33,10 +33,12 @@ public enum AbilityFixture {
     }
 
     public Ability toAbility(Long id, Ability parent) {
-        if(!Objects.isNull(parent)) {
-            return Ability.child(id, name, description, color, parent);
-        }
-        return Ability.parent(id, name, description, color);
+        // TODO: 수정
+//        if(!Objects.isNull(parent)) {
+//            return Ability.child(id, name, description, color, parent);
+//        }
+//        return Ability.parent(id, name, description, color);
+        return null;
     }
 
     public String toJson(Long parent) {

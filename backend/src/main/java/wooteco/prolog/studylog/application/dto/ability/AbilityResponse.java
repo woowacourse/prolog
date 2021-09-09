@@ -1,15 +1,11 @@
 package wooteco.prolog.studylog.application.dto.ability;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import wooteco.prolog.studylog.domain.ablity.Ability;
-import wooteco.prolog.studylog.domain.ablity.AbilityRelationship;
 
 @AllArgsConstructor
 @Getter
