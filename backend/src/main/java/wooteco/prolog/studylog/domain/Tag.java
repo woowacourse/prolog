@@ -1,10 +1,13 @@
 package wooteco.prolog.studylog.domain;
 
+import java.util.Objects;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.util.Objects;
 import org.hibernate.annotations.BatchSize;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

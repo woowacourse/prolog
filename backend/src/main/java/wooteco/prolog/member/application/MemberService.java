@@ -20,17 +20,17 @@ public class MemberService {
     @Transactional
     public Member findOrCreateMember(GithubProfileResponse githubProfile) {
         return memberRepository.findByGithubId(githubProfile.getGithubId())
-                .orElseGet(() -> memberRepository.save(githubProfile.toMember()));
+            .orElseGet(() -> memberRepository.save(githubProfile.toMember()));
     }
 
     public Member findById(Long id) {
         return memberRepository.findById(id)
-                .orElseThrow(MemberNotFoundException::new);
+            .orElseThrow(MemberNotFoundException::new);
     }
 
     public Member findByUsername(String username) {
         return memberRepository.findByUsername(username)
-                .orElseThrow(MemberNotFoundException::new);
+            .orElseThrow(MemberNotFoundException::new);
     }
 
     public MemberResponse findMemberResponseByUsername(String username) {

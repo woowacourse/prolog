@@ -30,6 +30,7 @@ const NavBar = () => {
 
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const user = useSelector((state) => state.user.profile);
+
   const isLoggedIn = !!user.data;
   const userError = user.error;
 
@@ -103,6 +104,12 @@ const NavBar = () => {
     localStorage.removeItem('accessToken');
   }
 
+  const onSelectMenu = (event) => {
+    if (event.target.tagName === 'A') {
+      setDropdownToggled(false);
+    }
+  };
+
   return (
     <Container isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>
       <Wrapper>
@@ -111,7 +118,6 @@ const NavBar = () => {
           <span>{process.env.REACT_APP_MODE === 'PROD' ? 'BETA' : process.env.REACT_APP_MODE}</span>
         </Logo>
         <Menu role="menu">
-          <SearchBar onSubmit={onSearch} value={searchKeywords} onChange={onSearchKeywordsChange} />
           {isLoggedIn ? (
             <>
               <Button
@@ -130,17 +136,21 @@ const NavBar = () => {
               />
               {isDropdownToggled && (
                 <DropdownMenu css={DropdownStyle}>
-                  <ul>
-                    <li>
-                      <Link
-                        onClick={() => {
-                          setDropdownToggled(false);
-                          history.push(`/${user?.data.username}`);
-                        }}
-                      >
-                        <button type="button">내 프로필</button>
-                      </Link>
-                    </li>
+                  <ul onClick={onSelectMenu}>
+                    {[
+                      {
+                        menu: '내 프로필',
+                        path: `/${user?.data.username}`,
+                      },
+                      {
+                        menu: '내 학습로그',
+                        path: `/${user?.data.username}/posts`,
+                      },
+                    ].map(({ menu, path }) => (
+                      <li key={menu}>
+                        <Link to={path}>{menu}</Link>
+                      </li>
+                    ))}
                     <li>
                       <button type="button" onClick={logout}>
                         로그아웃

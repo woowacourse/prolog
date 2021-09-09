@@ -11,7 +11,9 @@
   "dependencies": {
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
-    "@toast-ui/react-editor": "^2.5.3",
+    "@toast-ui/editor-plugin-code-syntax-highlight": "^3.0.0",
+    "@toast-ui/editor-plugin-color-syntax": "^3.0.1",
+    "@toast-ui/react-editor": "^3.0.3",
     "cross-env": "^7.0.3",
     "local-storage": "^2.0.0",
     "prettier": "^2.2.1",

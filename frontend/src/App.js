@@ -29,9 +29,7 @@ const App = () => {
         <Content>
           <Switch>
             <Route exact path={PATH.ROOT} component={MainPage} />
-            <Route exact path={PATH.LOGIN_CALLBACK}>
-              <LoginCallbackPage />
-            </Route>
+            <Route exact path={PATH.LOGIN_CALLBACK} component={LoginCallbackPage} />
             <Route exact path={PATH.NEW_POST} component={NewPostPage} />
             <Route exact path={`${PATH.POST}/:id`} component={PostPage} />
             <Route exact path={`${PATH.POST}/:id/edit`} component={EditPostPage} />

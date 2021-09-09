@@ -1,15 +1,14 @@
 package wooteco.support.autoceptor;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.support.autoceptor.scanner.ControllerScanner;
 import wooteco.support.autoceptor.test_classes.ControllerClass;
 import wooteco.support.autoceptor.test_classes.NormalClass;
 import wooteco.support.autoceptor.test_classes.RestControllerClass;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class ControllerScannerTest {
 
@@ -18,9 +17,9 @@ class ControllerScannerTest {
     void extractControllers() {
         // given
         ControllerScanner controllerScanner = new ControllerScanner(
-                ControllerClass.class,
-                RestControllerClass.class,
-                NormalClass.class
+            ControllerClass.class,
+            RestControllerClass.class,
+            NormalClass.class
         );
 
         // when
@@ -28,8 +27,8 @@ class ControllerScannerTest {
 
         // then
         assertThat(classes).containsOnly(
-                ControllerClass.class,
-                RestControllerClass.class
+            ControllerClass.class,
+            RestControllerClass.class
         );
     }
 }

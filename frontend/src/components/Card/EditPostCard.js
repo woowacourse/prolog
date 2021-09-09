@@ -4,8 +4,11 @@ import styled from '@emotion/styled';
 import { Card, CARD_SIZE, CreatableSelectBox } from '..';
 import { Editor } from '@toast-ui/react-editor';
 
-import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
+import 'prismjs/themes/prism.css';
+import Prism from 'prismjs';
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
+
 import { POST_TITLE } from '../../constants';
 
 const TitleInput = styled.input`
@@ -33,7 +36,11 @@ const EditPostCard = forwardRef(({ post, tagOptions }, ref) => {
     label: '#' + tag.name,
   }));
 
-  const assignRefValue = (key, value) => (ref.current = { ...ref.current, [key]: value });
+  const assignRefValue = (key, value) =>
+    (ref.current = {
+      ...ref.current,
+      [key]: value,
+    });
 
   const selectTag = (newValue, actionMeta) => {
     if (actionMeta.action === 'create-option') {
@@ -60,8 +67,10 @@ const EditPostCard = forwardRef(({ post, tagOptions }, ref) => {
         height="50vh"
         initialValue={content}
         initialEditType="markdown"
-        toolbarItems={['heading', 'bold', 'italic', 'strike']}
+        toolbarItems={[['heading', 'bold', 'italic', 'strike']]}
         ref={(element) => assignRefValue('content', element)}
+        extendedAutolinks={true}
+        plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
       />
       <CreatableSelectBox
         defaultValue={prevTags}

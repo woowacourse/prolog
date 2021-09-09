@@ -1,12 +1,12 @@
 package wooteco.prolog.studylog.domain.repository;
 
+import java.util.List;
+import javax.persistence.criteria.JoinType;
 import org.springframework.data.jpa.domain.Specification;
 import wooteco.prolog.studylog.domain.Studylog;
 
-import javax.persistence.criteria.JoinType;
-import java.util.List;
-
 public class StudylogSpecification {
+
     public static Specification<Studylog> equalIn(String key, List<Long> values) {
         return (root, query, builder) -> {
             if (values == null || values.isEmpty()) {
@@ -33,7 +33,8 @@ public class StudylogSpecification {
                 return builder.and();
             }
 
-            return root.join("mission", JoinType.LEFT).join("level", JoinType.LEFT).get("id").in(values);
+            return root.join("mission", JoinType.LEFT).join("level", JoinType.LEFT).get("id")
+                .in(values);
         };
     }
 
@@ -43,7 +44,8 @@ public class StudylogSpecification {
                 return builder.and();
             }
 
-            return root.join("studylogTags", JoinType.LEFT).join("values", JoinType.LEFT).get("tag").in(values);
+            return root.join("studylogTags", JoinType.LEFT).join("values", JoinType.LEFT).get("tag")
+                .in(values);
         };
     }
 

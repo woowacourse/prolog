@@ -14,7 +14,7 @@ public class ExceptionController {
     public ResponseEntity<ExceptionDto> loginExceptionHandler(BadRequestException e) {
         log.warn(e.getMessage());
         return ResponseEntity.badRequest()
-                .body(new ExceptionDto(e.getCode(), e.getMessage()));
+            .body(new ExceptionDto(e.getCode(), e.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)

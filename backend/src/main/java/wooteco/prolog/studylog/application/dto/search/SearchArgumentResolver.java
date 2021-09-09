@@ -33,7 +33,7 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest nativeRequest = webRequest.getNativeRequest(HttpServletRequest.class);
         Map<String, String> queryParams = extractQueryParamsToMap(nativeRequest);
 
-        return new StudyLogsSearchRequest(
+        return new StudylogsSearchRequest(
             queryParams.getOrDefault("keyword", null),
             convertToLongList(queryParams.getOrDefault("levels", null)),
             convertToLongList(queryParams.getOrDefault("missions", null)),

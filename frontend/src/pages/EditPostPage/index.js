@@ -14,7 +14,7 @@ const EditPostPage = () => {
   const accessToken = useSelector((state) => state.user.accessToken.data);
 
   const { id: postId } = useParams();
-  const { error: postError, editData: editPost } = usePost({});
+  const { editData: editPost } = usePost({});
   const [post] = useFetch({}, () => requestGetPost(postId));
 
   const [selectedMission, setSelectedMission] = useState('');
@@ -38,14 +38,15 @@ const EditPostPage = () => {
         tags?.map((tag) => ({ name: tag.value })) || post.tags.map((tag) => ({ name: tag.name })),
     };
 
-    await editPost(postId, data, accessToken);
+    const hasError = await editPost(postId, data, accessToken);
 
-    if (postError) {
+    if (hasError) {
       alert('글을 수정할 수 없습니다. 다시 시도해주세요');
+
       return;
     }
 
-    history.push('/');
+    history.goBack();
   };
 
   useEffect(() => {
