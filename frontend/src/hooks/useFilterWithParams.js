@@ -15,6 +15,7 @@ const useFilterWithParams = () => {
     ...missionFilter,
     ...tagFilter,
   ]);
+
   const [postQueryParams, setPostQueryParams] = useState({
     page: query.page ?? 1,
     size: query.size ?? 10,
@@ -34,6 +35,14 @@ const useFilterWithParams = () => {
     setSelectedFilterDetails([]);
   };
 
+  const onUnsetFilter = ({ filterType, filterDetailId }) => {
+    const newFilters = selectedFilterDetails.filter(
+      (filter) => !(filter.filterType === filterType && filter.filterDetailId === filterDetailId)
+    );
+
+    setSelectedFilterDetails(newFilters);
+  };
+
   const getFullParams = useCallback(() => {
     const pageParams = queryString.stringify(postQueryParams);
     const filterParams = selectedFilterDetails
@@ -48,7 +57,9 @@ const useFilterWithParams = () => {
     selectedFilter,
     setSelectedFilter,
     selectedFilterDetails,
+    setSelectedFilterDetails,
     onSetPage,
+    onUnsetFilter,
     onFilterChange,
     resetFilter,
     getFullParams,
@@ -57,6 +68,10 @@ const useFilterWithParams = () => {
 
 const makeFilters = (filters, filterType) => {
   if (!filters || !filterType) return [];
+
+  if (typeof filters === 'string') {
+    return [{ filterType, filterDetailId: Number(filters) }];
+  }
 
   return [...filters].map((id) => ({ filterType, filterDetailId: Number(id) }));
 };
