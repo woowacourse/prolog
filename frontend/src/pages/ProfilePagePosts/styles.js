@@ -110,12 +110,6 @@ const FilterListWrapper = styled.div`
   margin-top: 0.6rem;
 `;
 
-const FilterListWrapper = styled.div`
-  height: 4.8rem;
-  flex: 1;
-  margin-top: 0.6rem;
-`;
-
 const CardStyles = css`
   padding: 2rem;
   border-color: ${COLOR.LIGHT_GRAY_200};
@@ -128,8 +122,6 @@ const FilterStyles = css`
 
 export {
   Container,
-  HeaderContainer,
-  PostListContainer,
   Content,
   Description,
   Mission,

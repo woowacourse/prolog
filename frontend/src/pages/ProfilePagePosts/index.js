@@ -12,11 +12,9 @@ import {
   Description,
   EditButtonStyle,
   FilterStyles,
-  HeaderContainer,
   Mission,
   NoPost,
   PostItem,
-  PostListContainer,
   Tags,
   Title,
   FilterListWrapper,
@@ -106,6 +104,12 @@ const ProfilePagePosts = () => {
   }, [getFullParams, postQueryParams, selectedFilterDetails, username]);
 
   useEffect(() => {
+    if (!shouldInitialLoad) {
+      setShouldInitialLoad(true);
+
+      return;
+    }
+
     getData();
   }, [history.location.search]);
 
@@ -124,21 +128,20 @@ const ProfilePagePosts = () => {
     setSelectedFilterDetails(selectedFilterDetailsWithName);
   }, [filters]);
 
-  useEffect(() => {
-    if (!shouldInitialLoad) {
-      setShouldInitialLoad(true);
-
-      return;
-    }
-
-    getUserPosts();
-  }, [username, getUserPosts, shouldInitialLoad]);
+  // useEffect(() => {
+  //   if (!shouldInitialLoad) {
+  //     setShouldInitialLoad(true);
+  //
+  //     return;
+  //   }
+  //
+  //   getUserPosts();
+  // }, [username, getUserPosts, shouldInitialLoad]);
 
   return (
     <Container>
-      <HeaderContainer>
-        <FilterListWrapper>
-          <FilterList
+      <FilterListWrapper>
+        <FilterList
             filters={filters}
             selectedFilter={selectedFilter}
             setSelectedFilter={setSelectedFilter}
@@ -147,18 +150,17 @@ const ProfilePagePosts = () => {
             isVisibleResetFilter={!!selectedFilterDetails.length}
             onResetFilter={resetFilter}
             css={FilterStyles}
-          />
-        </FilterListWrapper>
-        <SelectedFilterList>
-          <ul>
-            {selectedFilterDetails.map(({ filterType, filterDetailId, name }) => (
+        />
+      </FilterListWrapper>
+      <SelectedFilterList>
+        <ul>
+          {selectedFilterDetails.map(({ filterType, filterDetailId, name }) => (
               <li key={filterType + filterDetailId + name}>
                 <Chip onDelete={() => onUnsetFilter({ filterType, filterDetailId })}>{name}</Chip>
               </li>
-            ))}
-          </ul>
-        </SelectedFilterList>
-      </HeaderContainer>
+          ))}
+        </ul>
+      </SelectedFilterList>
       <Card css={CardStyles}>
         {posts?.data?.length ? (
           <>
