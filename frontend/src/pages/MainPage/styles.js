@@ -16,9 +16,10 @@ const FilterListWrapper = styled.div`
 
 const SelectedFilterList = styled.div`
   width: 100%;
-  height: 3rem;
-  overflow: scroll;
+  min-height: 3rem;
+  overflow: auto;
   margin-top: 1rem;
+  padding-bottom: 1rem;
 
   ul {
     width: max-content;
@@ -29,10 +30,12 @@ const SelectedFilterList = styled.div`
 const PostListContainer = styled.div`
   display: grid;
   grid-row-gap: 2rem;
+  word-break: break-all;
 `;
 
 const Content = styled.div`
   display: flex;
+  justify-content: space-between;
   height: 100%;
 `;
 
@@ -60,7 +63,8 @@ const Tags = styled.div`
 `;
 
 const ProfileChipLocationStyle = css`
-  margin-left: auto;
+  flex-shrink: 0;
+  margin-left: 1rem;
 
   &:hover {
     background-color: ${COLOR.LIGHT_BLUE_100};
