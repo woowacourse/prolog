@@ -37,9 +37,6 @@ public class DataLoaderApplicationListener implements
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        // elasticsearch init
-        studyLogDocumentService.deleteAll();
-
         // level init
         LevelResponse level1 = levelService.create(new LevelRequest("백엔드Java 레벨1 - 2021"));
         LevelResponse level2 = levelService.create(new LevelRequest("프론트엔드JS 레벨1 - 2021"));
@@ -87,5 +84,7 @@ public class DataLoaderApplicationListener implements
             new StudylogRequest("페이지네이션 데이터 11", "좋은 내용", mission3.getId(), tagRequests),
             new StudylogRequest("페이지네이션 데이터 12", "좋은 내용", mission4.getId(), tagRequests)
         ));
+
+        studyLogDocumentService.sync();
     }
 }
