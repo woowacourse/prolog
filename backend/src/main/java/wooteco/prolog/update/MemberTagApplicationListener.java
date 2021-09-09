@@ -29,12 +29,12 @@ public class MemberTagApplicationListener implements ApplicationListener<Context
         final Optional<UpdatedContents> memberTagUpdated = updatedContentsRepository
             .findByContent(UpdateContent.MEMBER_TAG_UPDATE);
 
-        if(!memberTagUpdated.isPresent() || memberTagUpdated.get().updated()) {
+        if (memberTagUpdated.isPresent() && memberTagUpdated.get().updated()) {
             return;
         }
 
         updateMemberTags();
-        memberTagUpdated.get().update();
+        updatedContentsRepository.save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
     }
 
     private void updateMemberTags() {
