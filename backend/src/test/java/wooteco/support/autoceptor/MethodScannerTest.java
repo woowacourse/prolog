@@ -1,20 +1,19 @@
 package wooteco.support.autoceptor;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import wooteco.prolog.login.domain.AuthMemberPrincipal;
-import wooteco.support.autoceptor.scanner.MethodScanner;
-import wooteco.support.autoceptor.test_classes.ControllerClass;
-import wooteco.support.autoceptor.test_classes.RestControllerClass;
+import static java.util.stream.Collectors.toList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import wooteco.prolog.login.domain.AuthMemberPrincipal;
+import wooteco.support.autoceptor.scanner.MethodScanner;
+import wooteco.support.autoceptor.test_classes.ControllerClass;
+import wooteco.support.autoceptor.test_classes.RestControllerClass;
 
 class MethodScannerTest {
 
@@ -23,7 +22,7 @@ class MethodScannerTest {
     void extractMethodAnnotatedOnParameter() {
         // given
         List<Class<? extends Annotation>> targetAnnotations =
-                Collections.singletonList(AuthMemberPrincipal.class);
+            Collections.singletonList(AuthMemberPrincipal.class);
         List<Class<?>> classes = Arrays.asList(ControllerClass.class, RestControllerClass.class);
 
         MethodScanner methodScanner = new MethodScanner(targetAnnotations);
@@ -33,8 +32,8 @@ class MethodScannerTest {
 
         // then
         List<String> methodName = methods.stream()
-                .map(Method::getName)
-                .collect(toList());
+            .map(Method::getName)
+            .collect(toList());
 
         assertThat(methodName).containsOnly("annotationExists", "pattern");
 

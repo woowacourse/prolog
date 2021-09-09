@@ -1,10 +1,13 @@
 import React, { forwardRef, useEffect, useState } from 'react';
 import { Card, CARD_SIZE, CreatableSelectBox } from '..';
 import { Editor } from '@toast-ui/react-editor';
-import 'codemirror/lib/codemirror.css';
-import '@toast-ui/editor/dist/toastui-editor.css';
-import { TitleInput, TitleCount, EditorWrapper } from './NewPostCard.styles';
+import { EditorWrapper, TitleCount, TitleInput } from './NewPostCard.styles';
 import { ALERT_MESSAGE, PLACEHOLDER, POST_TITLE } from '../../constants';
+
+import '@toast-ui/editor/dist/toastui-editor.css';
+import 'prismjs/themes/prism.css';
+import Prism from 'prismjs';
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
 
 const NewPostCard = forwardRef(({ postOrder, tagOptions }, ref) => {
   const [title, setTitle] = useState('');
@@ -46,7 +49,9 @@ const NewPostCard = forwardRef(({ postOrder, tagOptions }, ref) => {
           previewStyle="vertical"
           height="60vh"
           initialEditType="markdown"
-          toolbarItems={['heading', 'bold', 'italic', 'strike']}
+          toolbarItems={[['heading', 'bold', 'italic', 'strike']]}
+          extendedAutolinks={true}
+          plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
           ref={(element) => assignRefValue('content', element)}
           hooks={{
             addImageBlobHook: async (blob, callback) => {

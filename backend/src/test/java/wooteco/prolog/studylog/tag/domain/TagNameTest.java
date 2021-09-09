@@ -1,12 +1,12 @@
 package wooteco.prolog.studylog.tag.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.studylog.domain.TagName;
 import wooteco.prolog.studylog.exception.TagNameNullOrEmptyException;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class TagNameTest {
 
@@ -19,11 +19,11 @@ class TagNameTest {
         //when
         //then
         assertThatThrownBy(() -> new TagName(empty))
-                .isExactlyInstanceOf(TagNameNullOrEmptyException.class);
+            .isExactlyInstanceOf(TagNameNullOrEmptyException.class);
         assertThatThrownBy(() -> new TagName(justBlank))
-                .isExactlyInstanceOf(TagNameNullOrEmptyException.class);
+            .isExactlyInstanceOf(TagNameNullOrEmptyException.class);
         assertThatThrownBy(() -> new TagName(null))
-                .isExactlyInstanceOf(TagNameNullOrEmptyException.class);
+            .isExactlyInstanceOf(TagNameNullOrEmptyException.class);
     }
 
     @DisplayName("생성")

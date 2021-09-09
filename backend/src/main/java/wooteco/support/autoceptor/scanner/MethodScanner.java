@@ -1,12 +1,12 @@
 package wooteco.support.autoceptor.scanner;
 
+import static java.util.stream.Collectors.toList;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 public class MethodScanner {
 
@@ -26,15 +26,15 @@ public class MethodScanner {
 
     public List<Method> extractMethodAnnotatedOnParameter(List<Class<?>> controllers) {
         return controllers.stream()
-                .flatMap(controller -> Arrays.stream(controller.getMethods()))
-                .filter(this::isAnyMatchedWithTargetAnnotation)
-                .collect(toList());
+            .flatMap(controller -> Arrays.stream(controller.getMethods()))
+            .filter(this::isAnyMatchedWithTargetAnnotation)
+            .collect(toList());
     }
 
     private boolean isAnyMatchedWithTargetAnnotation(Method method) {
         return Arrays.stream(method.getParameterAnnotations())
-                .flatMap(Arrays::stream)
-                .map(Annotation::annotationType)
-                .anyMatch(targetAnnotations::contains);
+            .flatMap(Arrays::stream)
+            .map(Annotation::annotationType)
+            .anyMatch(targetAnnotations::contains);
     }
 }

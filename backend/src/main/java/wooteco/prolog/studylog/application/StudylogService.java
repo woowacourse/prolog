@@ -12,12 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studyLogDocument.application.StudyLogDocumentService;
-import wooteco.prolog.studyLogDocument.domain.StudyLogDocument;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
-import wooteco.prolog.studylog.application.dto.search.StudyLogsSearchRequest;
+import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.Tags;
@@ -32,41 +30,41 @@ import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 public class StudylogService {
 
     private final StudylogRepository studylogRepository;
-    private final StudyLogDocumentService studyLogDocumentService;
+    private final StudylogDocumentService studylogDocumentService;
     private final MissionService missionService;
     private final MemberService memberService;
     private final TagService tagService;
 
     public StudylogsResponse findStudylogsWithFilter(
-        StudyLogsSearchRequest studyLogsSearchRequest) {
+        StudylogsSearchRequest studylogsSearchRequest) {
 
-        final String keyword = studyLogsSearchRequest.getKeyword();
-        final Pageable pageable = studyLogsSearchRequest.getPageable();
+        final String keyword = studylogsSearchRequest.getKeyword();
+        final Pageable pageable = studylogsSearchRequest.getPageable();
 
-        List<Long> studyLogIds = Collections.emptyList();
+        List<Long> studylogIds = Collections.emptyList();
         if (isSearch(keyword)) {
-            studyLogIds = studyLogDocumentService.findBySearchKeyword(keyword, pageable);
+            studylogIds = studylogDocumentService.findBySearchKeyword(keyword, pageable);
         }
 
-        if (studyLogsSearchRequest.hasOnlySearch()) {
-            return StudylogsResponse.of(studylogRepository.findByIdIn(studyLogIds, pageable));
+        if (studylogsSearchRequest.hasOnlySearch()) {
+            return StudylogsResponse.of(studylogRepository.findByIdIn(studylogIds, pageable));
         }
 
         Page<Studylog> studylogs = studylogRepository
-            .findAll(makeSpecifications(studyLogsSearchRequest, studyLogIds), pageable);
+            .findAll(makeSpecifications(studylogsSearchRequest, studylogIds), pageable);
 
         return StudylogsResponse.of(studylogs);
     }
 
     private Specification<Studylog> makeSpecifications(
-        StudyLogsSearchRequest studyLogsSearchRequest, List<Long> studyLogIds
+        StudylogsSearchRequest studylogsSearchRequest, List<Long> studylogIds
     ) {
-        return StudylogSpecification.findByLevelIn(studyLogsSearchRequest.getLevels())
-            .and(StudylogSpecification.equalIn("id", studyLogIds,
-                isSearch(studyLogsSearchRequest.getKeyword())))
-            .and(StudylogSpecification.equalIn("mission", studyLogsSearchRequest.getMissions()))
-            .and(StudylogSpecification.findByTagIn(studyLogsSearchRequest.getTags()))
-            .and(StudylogSpecification.findByUsernameIn(studyLogsSearchRequest.getUsernames()))
+        return StudylogSpecification.findByLevelIn(studylogsSearchRequest.getLevels())
+            .and(StudylogSpecification.equalIn("id", studylogIds,
+                                               isSearch(studylogsSearchRequest.getKeyword())))
+            .and(StudylogSpecification.equalIn("mission", studylogsSearchRequest.getMissions()))
+            .and(StudylogSpecification.findByTagIn(studylogsSearchRequest.getTags()))
+            .and(StudylogSpecification.findByUsernameIn(studylogsSearchRequest.getUsernames()))
             .and(StudylogSpecification.distinct(true));
     }
 
@@ -96,17 +94,14 @@ public class StudylogService {
         Mission mission = missionService.findById(studylogRequest.getMissionId());
 
         Studylog requestedStudylog = new Studylog(member,
-            studylogRequest.getTitle(),
-            studylogRequest.getContent(),
-            mission,
-            tags.getList());
+                                                  studylogRequest.getTitle(),
+                                                  studylogRequest.getContent(),
+                                                  mission,
+                                                  tags.getList());
 
         Studylog createdStudylog = studylogRepository.save(requestedStudylog);
 
-        studyLogDocumentService.save(
-            new StudyLogDocument(createdStudylog.getId(), createdStudylog.getTitle(),
-                createdStudylog.getContent()));
-
+        studylogDocumentService.save(createdStudylog.toStudylogDocument());
         return StudylogResponse.of(createdStudylog);
     }
 
@@ -126,6 +121,8 @@ public class StudylogService {
         Mission mission = missionService.findById(studylogRequest.getMissionId());
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
         studylog.update(studylogRequest.getTitle(), studylogRequest.getContent(), mission, tags);
+
+        studylogDocumentService.update(studylog.toStudylogDocument());
     }
 
     @Transactional
@@ -134,6 +131,7 @@ public class StudylogService {
             .orElseThrow(StudylogNotFoundException::new);
         studylog.validateAuthor(member);
 
+        studylogDocumentService.delete(studylog.toStudylogDocument());
         studylogRepository.delete(studylog);
     }
 }
