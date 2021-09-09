@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.MemberTag;
+import wooteco.prolog.member.domain.MemberTags;
 import wooteco.prolog.member.domain.repository.MemberTagRepository;
 import wooteco.prolog.studylog.application.StudylogTagService;
 import wooteco.prolog.studylog.domain.StudylogTag;
@@ -42,7 +43,7 @@ public class MemberTagApplicationListener implements ApplicationListener<Context
         for (StudylogTag studylogTag : studylogTags) {
             final Tag tag = studylogTag.getTag();
             final Member member = studylogTag.getStudylog().getMember();
-            memberTagRepository.register(Collections.singletonList(new MemberTag(member, tag)));
+            memberTagRepository.register(new MemberTags(Collections.singletonList(new MemberTag(member, tag))));
         }
     }
 }

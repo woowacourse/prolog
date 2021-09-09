@@ -1,5 +1,6 @@
 package wooteco.prolog.member.domain;
 
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -66,5 +67,23 @@ public class MemberTag {
 
     public Long getTagId() {
         return tag.getId();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        MemberTag memberTag = (MemberTag) o;
+        return Objects.equals(getMemberId(), memberTag.getMemberId()) &&
+            Objects.equals(getTagId(), memberTag.getTagId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTagId(), getMemberId());
     }
 }

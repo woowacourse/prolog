@@ -7,17 +7,26 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wooteco.prolog.member.exception.DuplicateMemberTagException;
 import wooteco.prolog.member.exception.NotExistsMemberTag;
 
 @Getter
 @Embeddable
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberTags {
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private final List<MemberTag> values = new ArrayList<>();
+    private List<MemberTag> values = new ArrayList<>();
+
+    public MemberTags(List<MemberTag> values) {
+        final int originalSize = values.size();
+        final long count = values.stream().distinct().count();
+        if(originalSize != count) throw new DuplicateMemberTagException();
+        this.values = values;
+    }
 
     public void addMemberTags(List<MemberTag> memberTags) {
         for (MemberTag memberTag : memberTags) {
@@ -60,5 +69,9 @@ public class MemberTags {
     public void updateTags(List<MemberTag> originalMemberTag, List<MemberTag> newMemberTag) {
         removeMemberTags(originalMemberTag);
         addMemberTags(newMemberTag);
+    }
+
+    public boolean isEmpty() {
+        return values.isEmpty();
     }
 }

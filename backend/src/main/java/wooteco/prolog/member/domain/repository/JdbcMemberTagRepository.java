@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import wooteco.prolog.member.domain.MemberTag;
+import wooteco.prolog.member.domain.MemberTags;
 
 @Component
 @RequiredArgsConstructor
@@ -19,13 +20,13 @@ public class JdbcMemberTagRepository implements MemberTagRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public void register(List<MemberTag> memberTags) {
+    public void register(MemberTags memberTags) {
         if (memberTags == null || memberTags.isEmpty()) {
             return;
         }
 
-        addCount(memberTags);
-        insertMemberTags(memberTags);
+        addCount(memberTags.getValues());
+        insertMemberTags(memberTags.getValues());
     }
 
     private void addCount(List<MemberTag> memberTags) {
@@ -57,13 +58,13 @@ public class JdbcMemberTagRepository implements MemberTagRepository {
     }
 
     @Override
-    public void unregister(List<MemberTag> memberTags) {
+    public void unregister(MemberTags memberTags) {
         if (memberTags == null || memberTags.isEmpty()) {
             return;
         }
 
-        removeMemberTags(memberTags);
-        removeCount(memberTags);
+        removeMemberTags(memberTags.getValues());
+        removeCount(memberTags.getValues());
     }
 
     private void removeMemberTags(List<MemberTag> memberTags) {
@@ -94,7 +95,7 @@ public class JdbcMemberTagRepository implements MemberTagRepository {
 
 
     @Override
-    public void update(List<MemberTag> originalMemberTags, List<MemberTag> newMemberTags) {
+    public void update(MemberTags originalMemberTags, MemberTags newMemberTags) {
         unregister(originalMemberTags);
         register(newMemberTags);
     }
