@@ -21,8 +21,6 @@ const Content = styled.div`
 `;
 
 const App = () => {
-  // const [selectedMenu, setSelectedMenu] = useState('overview');
-
   return (
     <>
       <GlobalStyles />
