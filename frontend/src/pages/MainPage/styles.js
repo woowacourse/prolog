@@ -19,6 +19,7 @@ const SelectedFilterList = styled.div`
   height: 3rem;
   overflow: scroll;
   margin-top: 1rem;
+  padding: 0.3rem 1rem;
 
   ul {
     width: max-content;

@@ -1,23 +1,24 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
-import { Button, BUTTON_SIZE, FilterList, Pagination, Card } from '../../components';
+import { Button, BUTTON_SIZE, Card, FilterList, Pagination } from '../../components';
 import { requestGetFilters, requestGetPosts } from '../../service/requests';
 import {
   ButtonList,
+  CardStyles,
   Container,
   Content,
   DeleteButtonStyle,
-  CardStyles,
   Description,
   EditButtonStyle,
+  FilterListWrapper,
   FilterStyles,
+  HeaderContainer,
   Mission,
   NoPost,
   PostItem,
   Tags,
   Title,
-  FilterListWrapper,
 } from './styles';
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
@@ -128,20 +129,11 @@ const ProfilePagePosts = () => {
     setSelectedFilterDetails(selectedFilterDetailsWithName);
   }, [filters]);
 
-  // useEffect(() => {
-  //   if (!shouldInitialLoad) {
-  //     setShouldInitialLoad(true);
-  //
-  //     return;
-  //   }
-  //
-  //   getUserPosts();
-  // }, [username, getUserPosts, shouldInitialLoad]);
-
   return (
     <Container>
-      <FilterListWrapper>
-        <FilterList
+      <HeaderContainer>
+        <FilterListWrapper>
+          <FilterList
             filters={filters}
             selectedFilter={selectedFilter}
             setSelectedFilter={setSelectedFilter}
@@ -150,17 +142,20 @@ const ProfilePagePosts = () => {
             isVisibleResetFilter={!!selectedFilterDetails.length}
             onResetFilter={resetFilter}
             css={FilterStyles}
-        />
-      </FilterListWrapper>
-      <SelectedFilterList>
-        <ul>
-          {selectedFilterDetails.map(({ filterType, filterDetailId, name }) => (
+          />
+        </FilterListWrapper>
+        <SelectedFilterList>
+          <ul>
+            {selectedFilterDetails.map(({ filterType, filterDetailId, name }) => (
               <li key={filterType + filterDetailId + name}>
-                <Chip onDelete={() => onUnsetFilter({ filterType, filterDetailId })}>{name}</Chip>
+                <Chip onDelete={() => onUnsetFilter({ filterType, filterDetailId })}>
+                  {filterType}: {name}
+                </Chip>
               </li>
-          ))}
-        </ul>
-      </SelectedFilterList>
+            ))}
+          </ul>
+        </SelectedFilterList>
+      </HeaderContainer>
       <Card css={CardStyles}>
         {posts?.data?.length ? (
           <>
