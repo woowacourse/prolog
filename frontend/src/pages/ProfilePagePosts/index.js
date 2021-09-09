@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
 import { Button, BUTTON_SIZE, FilterList, Pagination, Card } from '../../components';
-import { requestGetFilters, requestGetPosts, requestGetUserPosts } from '../../service/requests';
+import { requestGetFilters, requestGetPosts } from '../../service/requests';
 import {
   ButtonList,
   Container,
@@ -60,7 +60,11 @@ const ProfilePagePosts = () => {
 
   const getUserPosts = useCallback(async () => {
     try {
-      const response = await requestGetUserPosts(username, postQueryParams, selectedFilterDetails);
+      const filterQuery = [
+        ...selectedFilterDetails,
+        { filterType: 'usernames', filterDetailId: username },
+      ];
+      const response = await requestGetPosts(filterQuery, postQueryParams);
       if (!response.ok) {
         throw new Error(response.status);
       }
@@ -100,7 +104,6 @@ const ProfilePagePosts = () => {
     }
 
     getUserPosts();
-  // }, [username, selectedFilterDetails, postQueryParams]);
   }, [username, getUserPosts, shouldInitialLoad]);
 
   return (
@@ -156,8 +159,8 @@ const ProfilePagePosts = () => {
                       type="button"
                       css={DeleteButtonStyle}
                       alt="삭제 버튼"
-                      onClick={(e) => {
-                        onDeletePost(e, id);
+                      onClick={(event) => {
+                        onDeletePost(event, id);
                       }}
                     >
                       삭제

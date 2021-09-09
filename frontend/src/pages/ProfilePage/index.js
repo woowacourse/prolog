@@ -16,7 +16,7 @@ import {
   PostBottomContainer,
 } from './styles';
 import { PATH } from '../../constants';
-import { requestGetUserPosts, requestGetUserTags } from '../../service/requests';
+import { requestGetPosts, requestGetUserTags } from '../../service/requests';
 import useNotFound from '../../hooks/useNotFound';
 import { Calendar, Card, Pagination, ProfilePageSideBar, Tag } from '../../components';
 import useFetch from '../../hooks/useFetch';
@@ -47,7 +47,11 @@ const ProfilePage = ({ children, menu }) => {
 
   const getUserPosts = useCallback(async () => {
     try {
-      const response = await requestGetUserPosts(username, postQueryParams, filteringOption);
+      const filterQuery = [
+        ...filteringOption,
+        { filterType: 'usernames', filterDetailId: username },
+      ];
+      const response = await requestGetPosts(filterQuery, postQueryParams);
 
       if (!response.ok) {
         throw new Error(response.status);
