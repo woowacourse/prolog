@@ -8,13 +8,8 @@ const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
 
 const requestGetTags = () => fetch(`${BASE_URL}/tags`);
 
-const requestGetPosts = (filterList, postSearchParams) => {
-  const filterQuery = filterList.map(
-    ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
-  );
-  const searchParams = Object.entries(postSearchParams).map(([key, value]) => `${key}=${value}`);
-
-  return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`);
+const requestGetPosts = (query) => {
+  return fetch(`${BASE_URL}/posts?${query.toString()}`);
 };
 
 const requestEditPost = (postId, data, accessToken) =>
@@ -36,16 +31,24 @@ const requestDeletePost = (postId, accessToken) =>
     },
   });
 
-const requestGetProfile = (username) =>
-  fetch(`${BASE_URL}/members/${username}/profile`, {
+const requestGetProfile = (username) => fetch(`${BASE_URL}/members/${username}/profile`);
+
+const requestGetUserPosts = (username, postSearchParams, filteringOption) => {
+  const searchParams = Object.entries(postSearchParams).map(([key, value]) => `${key}=${value}`);
+  const filterQuery = filteringOption.length
+    ? filteringOption.map(({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`)
+    : '';
+  return fetch(
+    `${BASE_URL}/members/${username}/posts?${[...filterQuery, ...searchParams].join('&')}`
+  );
+};
+
+const requestGetUserTags = (username) => fetch(`${BASE_URL}/members/${username}/tags`);
+
+const requestGetCalendar = (year, month, username) =>
+  fetch(`${BASE_URL}/members/${username}/calendar-posts?year=${year}&month=${month}`, {
     method: 'GET',
   });
-
-const requestGetUserPosts = (username, postSearchParams) => {
-  const searchParams = Object.entries(postSearchParams).map(([key, value]) => `${key}=${value}`);
-
-  return fetch(`${BASE_URL}/members/${username}/posts?${searchParams.join('&')}`);
-};
 
 export {
   requestGetPosts,
@@ -57,4 +60,6 @@ export {
   requestGetUserPosts,
   requestDeletePost,
   requestGetProfile,
+  requestGetUserTags,
+  requestGetCalendar,
 };

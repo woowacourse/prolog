@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -20,6 +21,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
@@ -28,6 +30,7 @@ import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
 import wooteco.prolog.studylog.application.StudylogDocumentService;
 import wooteco.prolog.studylog.application.StudylogService;
+import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.studylog.application.dto.LevelRequest;
 import wooteco.prolog.studylog.application.dto.LevelResponse;
 import wooteco.prolog.studylog.application.dto.MissionRequest;
@@ -230,6 +233,8 @@ class StudylogServiceTest {
                 missionIds,
                 tagIds,
                 usernames,
+                null,
+                null,
                 PageRequest.of(0, 10)
             )
         );
@@ -362,6 +367,23 @@ class StudylogServiceTest {
             .collect(toList());
 
         assertThat(expectedIds).containsExactlyElementsOf(studylogIds);
+    }
+
+    @Test
+    @DisplayName("캘린더 포스트 조회 기능")
+    @Transactional
+    public void calendarPostTest() throws Exception{
+        //given
+        insertStudylogs(member1, studylog1, studylog2, studylog3);
+
+        //when
+        final List<CalendarStudylogResponse> calendarPosts =
+                studylogService.findCalendarPosts(member1.getUsername(), LocalDate.now());
+
+        //then
+        assertThat(calendarPosts)
+                .extracting(CalendarStudylogResponse::getTitle)
+                .containsExactlyInAnyOrder(studylog1.getTitle(), studylog2.getTitle(), studylog3.getTitle());
     }
 
     @DisplayName("스터디로그를 삭제한다. - 삭제 시 studylogDocument도 삭제된다.")

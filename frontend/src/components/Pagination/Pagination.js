@@ -39,6 +39,7 @@ const Pagination = ({ postsInfo, onSetPage }) => {
       {paginationArray.map((index) => {
         return (
           <PageButton
+            key={index}
             size={BUTTON_SIZE.XX_SMALL}
             css={PageButtonStyle}
             selected={basePage + index === postsInfo.currPage}

@@ -6,7 +6,6 @@ import javax.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.studylog.exception.TagNameNullOrEmptyException;
 import wooteco.prolog.studylog.exception.TooLongTagNameException;
 
 @EqualsAndHashCode
@@ -39,19 +38,19 @@ public class TagName {
 
     private void validateNull(String name) {
         if (Objects.isNull(name)) {
-            throw new TagNameNullOrEmptyException();
+            throw new wooteco.prolog.studylog.exception.TagNameNullOrEmptyException();
         }
     }
 
     private void validateEmpty(String name) {
         if (name.isEmpty()) {
-            throw new TagNameNullOrEmptyException();
+            throw new wooteco.prolog.studylog.exception.TagNameNullOrEmptyException();
         }
     }
 
     private void validateOnlyBlank(String name) {
         if (name.trim().isEmpty()) {
-            throw new TagNameNullOrEmptyException();
+            throw new wooteco.prolog.studylog.exception.TagNameNullOrEmptyException();
         }
     }
 

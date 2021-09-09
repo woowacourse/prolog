@@ -21,6 +21,9 @@ import wooteco.prolog.studylog.application.dto.MissionRequest;
 import wooteco.prolog.studylog.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.TagRequest;
+import wooteco.prolog.update.UpdateContent;
+import wooteco.prolog.update.UpdatedContents;
+import wooteco.prolog.update.UpdatedContentsRepository;
 
 @Profile({"local"})
 @AllArgsConstructor
@@ -34,12 +37,10 @@ public class DataLoaderApplicationListener implements
     private MemberService memberService;
     private StudylogService studylogService;
     private StudylogDocumentService studyLogDocumentService;
+    private UpdatedContentsRepository updatedContentsRepository;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        // elasticsearch init
-        studyLogDocumentService.deleteAll();
-
         // level init
         LevelResponse level1 = levelService.create(new LevelRequest("백엔드Java 레벨1 - 2021"));
         LevelResponse level2 = levelService.create(new LevelRequest("프론트엔드JS 레벨1 - 2021"));
@@ -87,5 +88,9 @@ public class DataLoaderApplicationListener implements
             new StudylogRequest("페이지네이션 데이터 11", "좋은 내용", mission3.getId(), tagRequests),
             new StudylogRequest("페이지네이션 데이터 12", "좋은 내용", mission4.getId(), tagRequests)
         ));
+
+        updatedContentsRepository.save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
+
+        studyLogDocumentService.sync();
     }
 }

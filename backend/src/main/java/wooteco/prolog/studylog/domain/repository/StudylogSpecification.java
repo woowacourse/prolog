@@ -1,5 +1,7 @@
 package wooteco.prolog.studylog.domain.repository;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import javax.persistence.criteria.JoinType;
 import org.springframework.data.jpa.domain.Specification;
@@ -40,7 +42,7 @@ public class StudylogSpecification {
 
     public static Specification<Studylog> findByTagIn(List<Long> values) {
         return (root, query, builder) -> {
-            if (values == null || values.isEmpty()) {
+            if (values == null || values.isEmpty() || values.contains(0L)) {
                 return builder.and();
             }
 
@@ -64,5 +66,28 @@ public class StudylogSpecification {
             query.distinct(distinct);
             return null;
         };
+    }
+
+    public static Specification<Studylog> findBetweenDate(LocalDate start, LocalDate end) {
+        return ((root, query, builder) -> {
+            if (start == null && end == null) {
+                return builder.and();
+            }
+            if (start == null) {
+                return builder.lessThanOrEqualTo(
+                    root.get("createdAt"), end.atTime(LocalTime.MAX)
+                );
+            }
+            if (end == null) {
+                return builder.greaterThanOrEqualTo(
+                    root.get("createdAt"), start.atStartOfDay()
+                );
+            }
+            return builder.between(
+                root.get("createdAt"),
+                start.atStartOfDay(),
+                end.atTime(LocalTime.MAX)
+            );
+        });
     }
 }

@@ -1,20 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
-import { Button, BUTTON_SIZE, FilterList, Pagination } from '../../components';
+import { Button, BUTTON_SIZE, FilterList, Pagination, Card } from '../../components';
 import { requestGetFilters, requestGetPosts } from '../../service/requests';
 import {
   ButtonList,
   Container,
   Content,
   DeleteButtonStyle,
+  CardStyles,
   Description,
   EditButtonStyle,
-  HeaderContainer,
+  FilterStyles,
   Mission,
   NoPost,
   PostItem,
-  PostListContainer,
   Tags,
   Title,
   FilterListWrapper,
@@ -23,6 +23,8 @@ import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
 import useFetch from '../../hooks/useFetch';
 import useFilterWithParams from '../../hooks/useFilterWithParams';
+import { SelectedFilterList } from '../MainPage/styles';
+import Chip from '../../components/Chip/Chip';
 
 const ProfilePagePosts = () => {
   const {
@@ -30,7 +32,9 @@ const ProfilePagePosts = () => {
     selectedFilter,
     setSelectedFilter,
     selectedFilterDetails,
+    setSelectedFilterDetails,
     onSetPage,
+    onUnsetFilter,
     onFilterChange,
     resetFilter,
     getFullParams,
@@ -40,7 +44,9 @@ const ProfilePagePosts = () => {
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const myName = useSelector((state) => state.user.profile.data?.username);
   const { username } = useParams();
+  const { state } = useLocation();
 
+  const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
   const [hoveredPostId, setHoveredPostId] = useState(0);
   const [posts, setPosts] = useState([]);
 
@@ -58,28 +64,18 @@ const ProfilePagePosts = () => {
     history.push(`${PATH.POST}/${id}/edit`);
   };
 
-  const getUserPosts = useCallback(async () => {
+  const getData = async () => {
+    const query = new URLSearchParams(history.location.search);
+
     try {
-      const response = await requestGetPosts(
-        [...selectedFilterDetails, { filterType: 'usernames', filterDetailId: username }],
-        postQueryParams
-      );
+      const response = await requestGetPosts(query);
+      const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-
-      const posts = await response.json();
-
-      setPosts(posts);
-
-      const params = getFullParams();
-
-      history.push(`${PATH.ROOT}${username}/posts?${params}`);
+      setPosts(data);
     } catch (error) {
       console.error(error);
     }
-  }, [getFullParams, history, postQueryParams, selectedFilterDetails, username]);
+  };
 
   const onDeletePost = async (event, id) => {
     event.stopPropagation();
@@ -93,18 +89,59 @@ const ProfilePagePosts = () => {
       return;
     }
 
-    getUserPosts();
+    await getData();
   };
 
   useEffect(() => {
-    getUserPosts();
-  }, [getUserPosts]);
+    const params = getFullParams();
+    const search = new URLSearchParams(history.location.search).get('keyword');
+
+    history.push(
+      `${PATH.ROOT}${username}/posts?${search ? 'keyword=' + search : ''}&${params ?? ''}&${
+        username ? 'usernames=' + username : ''
+      }`
+    );
+  }, [getFullParams, postQueryParams, selectedFilterDetails, username]);
+
+  useEffect(() => {
+    if (!shouldInitialLoad) {
+      setShouldInitialLoad(true);
+
+      return;
+    }
+
+    getData();
+  }, [history.location.search]);
+
+  useEffect(() => {
+    if (filters.length === 0) {
+      return;
+    }
+
+    const selectedFilterDetailsWithName = selectedFilterDetails.map(
+      ({ filterType, filterDetailId }) => {
+        const name = filters[filterType].find(({ id }) => id === filterDetailId)?.name;
+        return { filterType, filterDetailId, name };
+      }
+    );
+
+    setSelectedFilterDetails(selectedFilterDetailsWithName);
+  }, [filters]);
+
+  // useEffect(() => {
+  //   if (!shouldInitialLoad) {
+  //     setShouldInitialLoad(true);
+  //
+  //     return;
+  //   }
+  //
+  //   getUserPosts();
+  // }, [username, getUserPosts, shouldInitialLoad]);
 
   return (
     <Container>
-      <HeaderContainer>
-        <FilterListWrapper>
-          <FilterList
+      <FilterListWrapper>
+        <FilterList
             filters={filters}
             selectedFilter={selectedFilter}
             setSelectedFilter={setSelectedFilter}
@@ -112,14 +149,23 @@ const ProfilePagePosts = () => {
             setSelectedFilterDetails={onFilterChange}
             isVisibleResetFilter={!!selectedFilterDetails.length}
             onResetFilter={resetFilter}
-          />
-        </FilterListWrapper>
-      </HeaderContainer>
-      <PostListContainer>
+            css={FilterStyles}
+        />
+      </FilterListWrapper>
+      <SelectedFilterList>
+        <ul>
+          {selectedFilterDetails.map(({ filterType, filterDetailId, name }) => (
+              <li key={filterType + filterDetailId + name}>
+                <Chip onDelete={() => onUnsetFilter({ filterType, filterDetailId })}>{name}</Chip>
+              </li>
+          ))}
+        </ul>
+      </SelectedFilterList>
+      <Card css={CardStyles}>
         {posts?.data?.length ? (
           <>
             {posts?.data?.map((post) => {
-              const { id, mission, title, tags } = post;
+              const { id, mission, title, tags, content } = post;
 
               return (
                 <PostItem
@@ -129,41 +175,38 @@ const ProfilePagePosts = () => {
                   onMouseEnter={() => setHoveredPostId(id)}
                   onMouseLeave={() => setHoveredPostId(0)}
                 >
-                  <Content>
-                    <Description>
-                      <Mission>{mission.name}</Mission>
-                      <Title>{title}</Title>
-                      <Tags>
-                        {tags.map(({ id, name }) => (
-                          <span key={id}>{`#${name} `}</span>
-                        ))}
-                      </Tags>
-                    </Description>
-                  </Content>
-                  {hoveredPostId === id && myName === username && (
-                    <ButtonList>
-                      <Button
-                        size={BUTTON_SIZE.X_SMALL}
-                        type="button"
-                        css={EditButtonStyle}
-                        alt="수정 버튼"
-                        onClick={goEditTargetPost(id)}
-                      >
-                        수정
-                      </Button>
-                      <Button
-                        size={BUTTON_SIZE.X_SMALL}
-                        type="button"
-                        css={DeleteButtonStyle}
-                        alt="삭제 버튼"
-                        onClick={(e) => {
-                          onDeletePost(e, id);
-                        }}
-                      >
-                        삭제
-                      </Button>
-                    </ButtonList>
-                  )}
+                  <Description>
+                    <Mission>{mission.name}</Mission>
+                    <Title isHovered={id === hoveredPostId}>{title}</Title>
+                    <Content>{content}</Content>
+                    <Tags>
+                      {tags.map(({ id, name }) => (
+                        <span key={id}>{`#${name} `}</span>
+                      ))}
+                    </Tags>
+                  </Description>
+                  <ButtonList isVisible={hoveredPostId === id && myName === username}>
+                    <Button
+                      size={BUTTON_SIZE.X_SMALL}
+                      type="button"
+                      css={EditButtonStyle}
+                      alt="수정 버튼"
+                      onClick={goEditTargetPost(id)}
+                    >
+                      수정
+                    </Button>
+                    <Button
+                      size={BUTTON_SIZE.X_SMALL}
+                      type="button"
+                      css={DeleteButtonStyle}
+                      alt="삭제 버튼"
+                      onClick={(event) => {
+                        onDeletePost(event, id);
+                      }}
+                    >
+                      삭제
+                    </Button>
+                  </ButtonList>
                 </PostItem>
               );
             })}
@@ -172,7 +215,7 @@ const ProfilePagePosts = () => {
         ) : (
           <NoPost>작성한 글이 없습니다 🥲</NoPost>
         )}
-      </PostListContainer>
+      </Card>
     </Container>
   );
 };

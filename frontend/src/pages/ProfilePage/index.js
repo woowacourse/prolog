@@ -1,78 +1,111 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router';
-import { useHistory } from 'react-router-dom';
-import { ReactComponent as PostIcon } from '../../assets/images/post.svg';
-import { ReactComponent as OverviewIcon } from '../../assets/images/overview.svg';
-import waitImage from '../../assets/images/wait.png';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   Container,
-  Profile,
-  Image,
-  Nickname,
-  MenuList,
-  MenuItem,
-  MenuButton,
-  Role,
   Content,
-  Preparing,
-  SideBar,
+  Overview,
+  TagTitle,
+  CardStyles,
+  PostItem,
+  Mission,
+  Tags,
+  NoPost,
+  Title,
+  Description,
+  PostBottomContainer,
 } from './styles';
-import { PROFILE_PAGE_MENU } from '../../constants';
-import { requestGetProfile } from '../../service/requests';
+import { PATH } from '../../constants';
+import { requestGetPosts, requestGetUserTags } from '../../service/requests';
 import useNotFound from '../../hooks/useNotFound';
+import { Calendar, Card, Pagination, ProfilePageSideBar, Tag } from '../../components';
+import useFetch from '../../hooks/useFetch';
+
+const initialPostQueryParams = {
+  page: 1,
+  size: 5,
+  direction: 'desc',
+};
 
 const ProfilePage = ({ children, menu }) => {
   const history = useHistory();
   const { username } = useParams();
+  const { state } = useLocation();
 
-  const [user, setUser] = useState({});
-  const [selectedMenu, setSelectedMenu] = useState(menu);
+  const [selectedTagId, setSelectedTagId] = useState(0);
+  const [selectedDay, setSelectedDay] = useState(state ? state.date.day : -1);
+  const [filteringOption, setFilteringOption] = useState([
+    { filterType: 'tags', filterDetailId: 0 },
+  ]);
+  const [posts, setPosts] = useState([]);
+  const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
+  const [hoveredPostId, setHoveredPostId] = useState(0);
+  const [postQueryParams, setPostQueryParams] = useState(initialPostQueryParams);
 
-  const { isNotFound, setNotFound, NotFound } = useNotFound();
+  const { isNotFound, NotFound } = useNotFound();
+  const [tags] = useFetch([], () => requestGetUserTags(username));
 
-  const goProfilePage = (event) => {
-    setSelectedMenu(event.currentTarget.value);
-    history.push(`/${username}`);
-  };
-
-  const goProfilePagePosts = (event) => {
-    setSelectedMenu(event.currentTarget.value);
-    history.push(`/${username}/posts`);
-  };
-
-  const goProfilePageAccount = () => {
-    history.push(`/${username}/account`);
-  };
-
-  const getProfile = async () => {
+  const getUserPosts = useCallback(async () => {
     try {
-      const response = await requestGetProfile(username);
+      const filterQuery = [
+        ...filteringOption,
+        { filterType: 'usernames', filterDetailId: username },
+      ];
+      const response = await requestGetPosts(filterQuery, postQueryParams);
 
       if (!response.ok) {
-        throw new Error(await response.text());
+        throw new Error(response.status);
       }
 
-      setUser(await response.json());
-      setNotFound(false);
+      const posts = await response.json();
+
+      setPosts(posts);
     } catch (error) {
-      const errorResponse = JSON.parse(error.message);
-
-      console.error(errorResponse);
-
-      if (errorResponse.code === 1004) {
-        setNotFound(true);
-      }
+      console.error(error);
     }
+  }, [postQueryParams, filteringOption, username]);
+
+  const setFilteringOptionWithTagId = (id) =>
+    setFilteringOption([{ filterType: 'tags', filterDetailId: id }]);
+
+  const setFilteringOptionWithDate = (year, month, day) => {
+    const date = `${year}${month < 10 ? '0' + month : month}${day < 10 ? '0' + day : day}`;
+
+    setFilteringOption([
+      {
+        filterType: 'startDate',
+        filterDetailId: date,
+      },
+      {
+        filterType: 'endDate',
+        filterDetailId: date,
+      },
+    ]);
+  };
+
+  const goTargetPost = (id) => {
+    history.push(`${PATH.POST}/${id}`);
+  };
+
+  const onSetPage = (page) => {
+    setPostQueryParams({ ...postQueryParams, page });
   };
 
   useEffect(() => {
-    getProfile();
-    setSelectedMenu(menu);
-  }, [username]);
+    if (!shouldInitialLoad) {
+      setShouldInitialLoad(true);
+
+      return;
+    }
+
+    getUserPosts();
+  }, [username, getUserPosts, shouldInitialLoad]);
 
   useEffect(() => {
-    setSelectedMenu(menu);
-  }, [menu]);
+    if (!state) return;
+
+    setFilteringOptionWithDate(state.date.year, state.date.month, state.date.day);
+  }, [state]);
 
   if (isNotFound) {
     return <NotFound />;
@@ -80,47 +113,78 @@ const ProfilePage = ({ children, menu }) => {
 
   return (
     <Container>
-      <SideBar>
-        <Profile>
-          <Image src={user?.imageUrl} alt="프로필 이미지" />
-          <Role>{user?.role}</Role>
-          <Nickname>{user?.nickname}</Nickname>
-        </Profile>
-        <MenuList>
-          <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.OVERVIEW}>
-            <MenuButton value={PROFILE_PAGE_MENU.OVERVIEW} type="button" onClick={goProfilePage}>
-              {/* <MenuIcon src={overviewIcon} alt="overview icon" /> */}
-              <OverviewIcon width="16" height="16" />
-              관리 홈
-            </MenuButton>
-          </MenuItem>
-          <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.POSTS}>
-            <MenuButton value={PROFILE_PAGE_MENU.POSTS} type="button" onClick={goProfilePagePosts}>
-              <PostIcon width="16" height="16" />
-              학습로그
-            </MenuButton>
-          </MenuItem>
-          <MenuItem isSelectedMenu={selectedMenu === 'asd'}>
-            <MenuButton value={PROFILE_PAGE_MENU.POSTS} type="button" onClick={goProfilePagePosts}>
-              <PostIcon width="16" height="16" />
-              리포트
-            </MenuButton>
-          </MenuItem>
-          {/* <MenuItem>
-            <button type="button" onClick={goProfilePageAccount}>
-              내 정보 수정
-            </button>
-          </MenuItem> */}
-        </MenuList>
-      </SideBar>
+      <ProfilePageSideBar menu={menu} />
       <Content>
         {children ? (
           children
         ) : (
-          <Preparing>
-            <img src={waitImage} alt="준비중 이미지" />
-            <div>준비 중이애오. 조금만 기다려 주새오.</div>
-          </Preparing>
+          <Overview>
+            <div>
+              <TagTitle>태그</TagTitle>
+              {tags?.data?.map(({ id, name, count }) => (
+                <Tag
+                  key={id}
+                  id={id}
+                  name={name}
+                  postCount={count}
+                  selectedTagId={selectedTagId}
+                  onClick={() => {
+                    setSelectedTagId(id);
+                    setSelectedDay(-1);
+                    setFilteringOptionWithTagId(id);
+                  }}
+                />
+              ))}
+            </div>
+            <Card title="캘린더" css={CardStyles}>
+              <Calendar
+                newDate={state?.date}
+                onClick={(year, month, day) => {
+                  setSelectedTagId(null);
+                  setFilteringOptionWithDate(year, month, day);
+                }}
+                selectedDay={selectedDay}
+                setSelectedDay={setSelectedDay}
+              />
+            </Card>
+            <Card title="학습로그" css={CardStyles}>
+              {posts?.data?.length ? (
+                <>
+                  {posts?.data?.map((post) => {
+                    const { id, mission, title, tags, createdAt } = post;
+
+                    return (
+                      <PostItem
+                        key={id}
+                        size="SMALL"
+                        onClick={() => goTargetPost(id)}
+                        onMouseEnter={() => setHoveredPostId(id)}
+                        onMouseLeave={() => setHoveredPostId(0)}
+                      >
+                        <Description>
+                          <Title isHovered={id === hoveredPostId}>{title}</Title>
+                          <PostBottomContainer>
+                            <Mission>{mission.name}</Mission>
+                            <div>{new Date(createdAt).toLocaleString('ko-KR')}</div>
+                            {!!tags.length && (
+                              <Tags>
+                                {tags.map(({ id, name }) => (
+                                  <span key={id}>{`#${name} `}</span>
+                                ))}
+                              </Tags>
+                            )}
+                          </PostBottomContainer>
+                        </Description>
+                      </PostItem>
+                    );
+                  })}
+                  <Pagination postsInfo={posts} onSetPage={onSetPage} />
+                </>
+              ) : (
+                <NoPost>작성한 글이 없습니다 🥲</NoPost>
+              )}
+            </Card>
+          </Overview>
         )}
       </Content>
     </Container>
