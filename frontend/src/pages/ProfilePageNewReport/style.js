@@ -12,12 +12,6 @@ const Form = styled.form`
     display: flex;
     align-items: center;
 
-    > input {
-      width: 2rem;
-      height: 2rem;
-      margin-right: 0.5rem;
-    }
-
     > label {
       font-size: 1.4rem;
     }
@@ -26,45 +20,25 @@ const Form = styled.form`
   > button {
     border-radius: 0.8rem;
   }
-`;
 
-const InfoSection = styled.section`
-  width: 100%;
-  padding: 0 0 1rem;
-
-  border-radius: 0.5rem;
-
-  > label {
-    display: inline-block;
-    margin-left: 0.6rem;
-    margin-bottom: 0.2rem;
+  > section {
+    width: 100%;
+    margin-bottom: 2.5rem;
   }
 `;
 
-const inputStyle = css`
+const Checkbox = styled.input`
+  width: 2rem;
+  height: 2rem;
+`;
+
+const FormButtonWrapper = styled.div`
   width: 100%;
-  margin-bottom: 1rem;
 
-  border: 1px solid ${COLOR.BLACK_OPACITY_400};
-  border-radius: 0.5rem;
-
-  font-size: 1.4rem;
-  line-height: 1.5;
-  color: ${COLOR.BLACK_600};
+  > button {
+    width: 100%;
+    margin: 0 0.5rem;
+  }
 `;
 
-const Title = styled.input`
-  height: 4.5rem;
-  padding: 0 1rem;
-  ${inputStyle}
-`;
-
-const Desc = styled.textarea`
-  height: 10rem;
-  padding: 1rem 1rem 0;
-  ${inputStyle}
-
-  resize: none;
-`;
-
-export { Form, InfoSection, Title, Desc };
+export { Form, Checkbox, FormButtonWrapper };

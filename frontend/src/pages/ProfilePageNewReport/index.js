@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import Button from '../../components/Button/Button';
+import { Button } from '../../components';
+import COLOR from '../../constants/color';
+import ReportInfoInput from './ReportInfoInput';
+import ReportStudyLogTable from './ReportStudyLogTable';
 
-import { Desc, Form, InfoSection, Title } from './style';
+import { Checkbox, Form, FormButtonWrapper } from './style';
 
 // TODO 1. 페이지 나갈 떄, 확인하는 기능 넣기
 // TODO 2. 등록할 때 title이 없다면, 날짜 + 우테코 닉네임으로 해서 보내기
+// TODO 3. 학습로그 한 개 이상 선택하도록 하기
 
 const ProfilePageNewReport = () => {
   const { username } = useParams();
@@ -38,8 +42,9 @@ const ProfilePageNewReport = () => {
 
   return (
     <Form onSubmit={onSubmitReport}>
+      {/* <h1>새 리포트 작성하기</h1> */}
       <div>
-        <input
+        <Checkbox
           type="checkbox"
           onChange={onRegisterMainReport}
           checked={isMainReport}
@@ -48,27 +53,35 @@ const ProfilePageNewReport = () => {
         <label htmlFor="main_report_checkbox">대표 리포트로 지정하기</label>
       </div>
 
-      <InfoSection>
-        <label htmlFor="report_title">✏️ Title</label>
-        <Title
-          id="report_title"
-          placeholder={`${new Date().toLocaleDateString()} ${user.data?.nickname}의 리포트`}
-          value={title}
-          onChange={onWriteTitle}
-        />
+      <ReportInfoInput
+        nickname={user.data?.nickname}
+        title={title}
+        onWriteTitle={onWriteTitle}
+        desc={desc}
+        onWriteDesc={onWriteDesc}
+      />
 
-        <label htmlFor="report_desc">✏️ Description</label>
-        <Desc
-          id="report_desc"
-          placeholder="리포트에 대해서 간단히 소개해주세요."
-          value={desc}
-          onChange={onWriteDesc}
-        />
-      </InfoSection>
+      {/* 역량기능 */}
+      <section
+        style={{
+          height: '25rem',
+          border: '1px solid black',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        준비중인 기능입니다.
+      </section>
 
-      {/* <section>역량영역</section> */}
-      {/* <section>학습로그</section> */}
-      <Button size="X_SMALL">등록</Button>
+      <ReportStudyLogTable />
+
+      <FormButtonWrapper>
+        <Button size="X_SMALL" css={{ backgroundColor: `${COLOR.LIGHT_GRAY_400}` }} type="button">
+          취소
+        </Button>
+        <Button size="X_SMALL">리포트 등록</Button>
+      </FormButtonWrapper>
     </Form>
   );
 };

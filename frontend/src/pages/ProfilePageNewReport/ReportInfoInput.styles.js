@@ -4,12 +4,11 @@ import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
 
 const Section = styled.section`
-  margin-top: 0rem;
-
   > label {
     display: inline-block;
     margin-left: 0.6rem;
     margin-bottom: 0.2rem;
+
     color: ${COLOR.BLACK_900};
     font-size: 1.8rem;
   }
