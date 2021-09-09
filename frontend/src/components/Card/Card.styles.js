@@ -19,12 +19,17 @@ const sizeStyle = {
 
 const Container = styled.section`
   background-color: ${COLOR.WHITE};
-  box-shadow: 0px 4px 4px ${COLOR.BLACK}0d;
   border: 1px solid ${COLOR.LIGHT_GRAY_400};
   border-radius: 2rem;
 
-  ${({ css }) => css}
   ${({ size }) => sizeStyle[size] || sizeStyle.SMALL}
+  ${({ css }) => css}
 `;
 
-export { CARD_SIZE, Container };
+const Title = styled.div`
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+`;
+
+export { CARD_SIZE, Container, Title };

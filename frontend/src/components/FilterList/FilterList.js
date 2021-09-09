@@ -10,6 +10,7 @@ const FilterList = ({
   setSelectedFilterDetails,
   isVisibleResetFilter,
   onResetFilter,
+  css,
 }) => {
   const closeDropdown = (event) => {
     if (event.target === event.currentTarget) {
@@ -52,7 +53,7 @@ const FilterList = ({
   };
 
   return (
-    <Container onClick={closeDropdown} isDropdownToggled={selectedFilter}>
+    <Container onClick={closeDropdown} isDropdownToggled={selectedFilter} css={css}>
       {Object.entries(getFilteredFiltersByLevel()).map(([key, value]) => (
         <div key={key}>
           <button onClick={() => setSelectedFilter(key)}>{key}</button>

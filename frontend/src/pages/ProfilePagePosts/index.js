@@ -1,20 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
-import { Button, BUTTON_SIZE, FilterList, Pagination } from '../../components';
+import { Button, BUTTON_SIZE, FilterList, Pagination, Card } from '../../components';
 import { requestGetFilters, requestGetPosts } from '../../service/requests';
 import {
   ButtonList,
   Container,
   Content,
   DeleteButtonStyle,
+  CardStyles,
   Description,
   EditButtonStyle,
-  HeaderContainer,
+  FilterStyles,
   Mission,
   NoPost,
   PostItem,
-  PostListContainer,
   Tags,
   Title,
   FilterListWrapper,
@@ -44,7 +44,9 @@ const ProfilePagePosts = () => {
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const myName = useSelector((state) => state.user.profile.data?.username);
   const { username } = useParams();
+  const { state } = useLocation();
 
+  const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
   const [hoveredPostId, setHoveredPostId] = useState(0);
   const [posts, setPosts] = useState([]);
 
@@ -102,6 +104,12 @@ const ProfilePagePosts = () => {
   }, [getFullParams, postQueryParams, selectedFilterDetails, username]);
 
   useEffect(() => {
+    if (!shouldInitialLoad) {
+      setShouldInitialLoad(true);
+
+      return;
+    }
+
     getData();
   }, [history.location.search]);
 
@@ -120,11 +128,20 @@ const ProfilePagePosts = () => {
     setSelectedFilterDetails(selectedFilterDetailsWithName);
   }, [filters]);
 
+  // useEffect(() => {
+  //   if (!shouldInitialLoad) {
+  //     setShouldInitialLoad(true);
+  //
+  //     return;
+  //   }
+  //
+  //   getUserPosts();
+  // }, [username, getUserPosts, shouldInitialLoad]);
+
   return (
     <Container>
-      <HeaderContainer>
-        <FilterListWrapper>
-          <FilterList
+      <FilterListWrapper>
+        <FilterList
             filters={filters}
             selectedFilter={selectedFilter}
             setSelectedFilter={setSelectedFilter}
@@ -132,23 +149,23 @@ const ProfilePagePosts = () => {
             setSelectedFilterDetails={onFilterChange}
             isVisibleResetFilter={!!selectedFilterDetails.length}
             onResetFilter={resetFilter}
-          />
-        </FilterListWrapper>
-        <SelectedFilterList>
-          <ul>
-            {selectedFilterDetails.map(({ filterType, filterDetailId, name }) => (
+            css={FilterStyles}
+        />
+      </FilterListWrapper>
+      <SelectedFilterList>
+        <ul>
+          {selectedFilterDetails.map(({ filterType, filterDetailId, name }) => (
               <li key={filterType + filterDetailId + name}>
                 <Chip onDelete={() => onUnsetFilter({ filterType, filterDetailId })}>{name}</Chip>
               </li>
-            ))}
-          </ul>
-        </SelectedFilterList>
-      </HeaderContainer>
-      <PostListContainer>
+          ))}
+        </ul>
+      </SelectedFilterList>
+      <Card css={CardStyles}>
         {posts?.data?.length ? (
           <>
             {posts?.data?.map((post) => {
-              const { id, mission, title, tags } = post;
+              const { id, mission, title, tags, content } = post;
 
               return (
                 <PostItem
@@ -158,41 +175,38 @@ const ProfilePagePosts = () => {
                   onMouseEnter={() => setHoveredPostId(id)}
                   onMouseLeave={() => setHoveredPostId(0)}
                 >
-                  <Content>
-                    <Description>
-                      <Mission>{mission.name}</Mission>
-                      <Title>{title}</Title>
-                      <Tags>
-                        {tags.map(({ id, name }) => (
-                          <span key={id}>{`#${name} `}</span>
-                        ))}
-                      </Tags>
-                    </Description>
-                  </Content>
-                  {hoveredPostId === id && myName === username && (
-                    <ButtonList>
-                      <Button
-                        size={BUTTON_SIZE.X_SMALL}
-                        type="button"
-                        css={EditButtonStyle}
-                        alt="수정 버튼"
-                        onClick={goEditTargetPost(id)}
-                      >
-                        수정
-                      </Button>
-                      <Button
-                        size={BUTTON_SIZE.X_SMALL}
-                        type="button"
-                        css={DeleteButtonStyle}
-                        alt="삭제 버튼"
-                        onClick={(e) => {
-                          onDeletePost(e, id);
-                        }}
-                      >
-                        삭제
-                      </Button>
-                    </ButtonList>
-                  )}
+                  <Description>
+                    <Mission>{mission.name}</Mission>
+                    <Title isHovered={id === hoveredPostId}>{title}</Title>
+                    <Content>{content}</Content>
+                    <Tags>
+                      {tags.map(({ id, name }) => (
+                        <span key={id}>{`#${name} `}</span>
+                      ))}
+                    </Tags>
+                  </Description>
+                  <ButtonList isVisible={hoveredPostId === id && myName === username}>
+                    <Button
+                      size={BUTTON_SIZE.X_SMALL}
+                      type="button"
+                      css={EditButtonStyle}
+                      alt="수정 버튼"
+                      onClick={goEditTargetPost(id)}
+                    >
+                      수정
+                    </Button>
+                    <Button
+                      size={BUTTON_SIZE.X_SMALL}
+                      type="button"
+                      css={DeleteButtonStyle}
+                      alt="삭제 버튼"
+                      onClick={(event) => {
+                        onDeletePost(event, id);
+                      }}
+                    >
+                      삭제
+                    </Button>
+                  </ButtonList>
                 </PostItem>
               );
             })}
@@ -201,7 +215,7 @@ const ProfilePagePosts = () => {
         ) : (
           <NoPost>작성한 글이 없습니다 🥲</NoPost>
         )}
-      </PostListContainer>
+      </Card>
     </Container>
   );
 };

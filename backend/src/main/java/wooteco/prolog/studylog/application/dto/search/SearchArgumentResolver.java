@@ -1,13 +1,12 @@
 package wooteco.prolog.studylog.application.dto.search;
 
-import java.util.Enumeration;
-import java.util.HashMap;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,52 +29,68 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory)
         throws Exception {
-        HttpServletRequest nativeRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-        Map<String, String> queryParams = extractQueryParamsToMap(nativeRequest);
 
         return new StudylogsSearchRequest(
-            queryParams.getOrDefault("keyword", null),
-            convertToLongList(queryParams.getOrDefault("levels", null)),
-            convertToLongList(queryParams.getOrDefault("missions", null)),
-            convertToLongList(queryParams.getOrDefault("tags", null)),
-            convertToStringList(queryParams.getOrDefault("usernames", null)),
-            makePageableDefault(queryParams)
+            convertToString(webRequest, "keyword"),
+            convertToLongList(webRequest, "levels"),
+            convertToLongList(webRequest, "missions"),
+            convertToLongList(webRequest, "tags"),
+            convertToStringList(webRequest, "usernames"),
+            convertToLocalDate(webRequest, "startDate"),
+            convertToLocalDate(webRequest, "endDate"),
+            makePageableDefault(webRequest)
         );
     }
 
-    private List<Long> convertToLongList(String values) {
-        if (Objects.isNull(values)) {
+    private LocalDate convertToLocalDate(NativeWebRequest webRequest, String key) {
+        String date = webRequest.getParameter(key);
+
+        if (Objects.isNull(date)) {
             return null;
         }
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd"));
+    }
 
-        return Stream.of(values.split(","))
-            .map(Long::parseLong)
+    private String convertToString(NativeWebRequest webRequest, String key) {
+        return webRequest.getParameter(key);
+    }
+
+
+    private Integer convertToInt(NativeWebRequest webRequest, String key, int defaultValue) {
+        String value = webRequest.getParameter(key);
+        if (value == null) {
+            return defaultValue;
+        }
+        return Integer.parseInt(value);
+    }
+
+    private List<Long> convertToLongList(NativeWebRequest webRequest, String key) {
+        String[] parameterValues = webRequest.getParameterValues(key);
+        if (parameterValues == null || parameterValues.length == 0) {
+            return Collections.emptyList();
+        }
+        return Arrays.stream(parameterValues)
+            .map(it -> Long.parseLong(it))
             .collect(Collectors.toList());
     }
 
-    private List<String> convertToStringList(String values) {
-        if (Objects.isNull(values)) {
-            return null;
+    private List<String> convertToStringList(NativeWebRequest webRequest, String key) {
+        String[] parameterValues = webRequest.getParameterValues(key);
+        if (parameterValues == null || parameterValues.length == 0) {
+            return Collections.emptyList();
         }
-        return Stream.of(values.split(","))
+
+        return Arrays.stream(webRequest.getParameterValues(key))
             .collect(Collectors.toList());
     }
 
-    private Pageable makePageableDefault(Map<String, String> queryParams) {
+    private Pageable makePageableDefault(NativeWebRequest webRequest) {
+        int page = convertToInt(webRequest, "page", 1) - 1;
+        int size = convertToInt(webRequest, "size", 20);
         return PageRequest.of(
-            Integer.parseInt(queryParams.getOrDefault("page", "1")) - 1,
-            Integer.parseInt(queryParams.getOrDefault("size", "20")),
+            page,
+            size,
             Direction.DESC,
             "id");
-    }
-
-    private Map<String, String> extractQueryParamsToMap(HttpServletRequest nativeRequest) {
-        Map<String, String> queryParameters = new HashMap<>();
-        Enumeration<String> parameterNames = nativeRequest.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            String key = parameterNames.nextElement();
-            queryParameters.put(key, nativeRequest.getParameter(key));
-        }
-        return queryParameters;
     }
 }

@@ -25,4 +25,8 @@ public enum TagAcceptanceFixture {
     public Long getTagId() {
         return tagId;
     }
+
+    public String getTagName() {
+        return tagRequest.getName();
+    }
 }

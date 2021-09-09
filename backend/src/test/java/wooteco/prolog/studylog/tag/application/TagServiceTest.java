@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import wooteco.prolog.studylog.application.TagService;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.application.dto.TagResponse;
+import wooteco.prolog.studylog.domain.repository.StudylogTagRepository;
 import wooteco.prolog.studylog.exception.DuplicateTagException;
+import wooteco.prolog.studylog.studylog.util.StudylogUtilCRUD;
 import wooteco.support.utils.IntegrationTest;
 
 @IntegrationTest
@@ -30,6 +32,10 @@ public class TagServiceTest {
 
     @Autowired
     private TagService tagService;
+    @Autowired
+    private StudylogUtilCRUD studylogUtilCRUD;
+    @Autowired
+    private StudylogTagRepository studylogTagRepository;
 
     @DisplayName("태그 생성 메서드 테스트")
     @Test
