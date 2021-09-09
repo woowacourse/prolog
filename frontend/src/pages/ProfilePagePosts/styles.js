@@ -6,17 +6,15 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 814px;
 `;
 
 const HeaderContainer = styled.div`
-  height: 4.8rem;
   display: flex;
-  margin-bottom: 3.7rem;
+  flex-direction: column;
   justify-content: space-between;
 
-  & > *:not(:first-child) {
-    margin-left: 2rem;
-  }
+  margin-bottom: 1.5rem;
 `;
 
 const PostListContainer = styled.div`
@@ -106,9 +104,11 @@ const DeleteButtonStyle = css`
 `;
 
 const FilterListWrapper = styled.div`
-  width: 100%;
-  height: inherit;
-  flex: 1;
+  height: 4.8rem;
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
 `;
 
 export {

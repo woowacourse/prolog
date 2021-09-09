@@ -23,6 +23,8 @@ import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
 import useFetch from '../../hooks/useFetch';
 import useFilterWithParams from '../../hooks/useFilterWithParams';
+import { SelectedFilterList } from '../MainPage/styles';
+import Chip from '../../components/Chip/Chip';
 
 const ProfilePagePosts = () => {
   const {
@@ -30,7 +32,9 @@ const ProfilePagePosts = () => {
     selectedFilter,
     setSelectedFilter,
     selectedFilterDetails,
+    setSelectedFilterDetails,
     onSetPage,
+    onUnsetFilter,
     onFilterChange,
     resetFilter,
     getFullParams,
@@ -58,28 +62,18 @@ const ProfilePagePosts = () => {
     history.push(`${PATH.POST}/${id}/edit`);
   };
 
-  const getUserPosts = useCallback(async () => {
+  const getData = async () => {
+    const query = new URLSearchParams(history.location.search);
+
     try {
-      const response = await requestGetPosts(
-        [...selectedFilterDetails, { filterType: 'usernames', filterDetailId: username }],
-        postQueryParams
-      );
+      const response = await requestGetPosts(query);
+      const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-
-      const posts = await response.json();
-
-      setPosts(posts);
-
-      const params = getFullParams();
-
-      history.push(`${PATH.ROOT}${username}/posts?${params}`);
+      setPosts(data);
     } catch (error) {
       console.error(error);
     }
-  }, [getFullParams, history, postQueryParams, selectedFilterDetails, username]);
+  };
 
   const onDeletePost = async (event, id) => {
     event.stopPropagation();
@@ -93,12 +87,38 @@ const ProfilePagePosts = () => {
       return;
     }
 
-    getUserPosts();
+    await getData();
   };
 
   useEffect(() => {
-    getUserPosts();
-  }, [getUserPosts]);
+    const params = getFullParams();
+    const search = new URLSearchParams(history.location.search).get('keyword');
+
+    history.push(
+      `${PATH.ROOT}${username}/posts?${search ? 'keyword=' + search : ''}&${params ?? ''}&${
+        username ? 'usernames=' + username : ''
+      }`
+    );
+  }, [getFullParams, postQueryParams, selectedFilterDetails, username]);
+
+  useEffect(() => {
+    getData();
+  }, [history.location.search]);
+
+  useEffect(() => {
+    if (filters.length === 0) {
+      return;
+    }
+
+    const selectedFilterDetailsWithName = selectedFilterDetails.map(
+      ({ filterType, filterDetailId }) => {
+        const name = filters[filterType].find(({ id }) => id === filterDetailId)?.name;
+        return { filterType, filterDetailId, name };
+      }
+    );
+
+    setSelectedFilterDetails(selectedFilterDetailsWithName);
+  }, [filters]);
 
   return (
     <Container>
@@ -114,6 +134,15 @@ const ProfilePagePosts = () => {
             onResetFilter={resetFilter}
           />
         </FilterListWrapper>
+        <SelectedFilterList>
+          <ul>
+            {selectedFilterDetails.map(({ filterType, filterDetailId, name }) => (
+              <li key={filterType + filterDetailId + name}>
+                <Chip onDelete={() => onUnsetFilter({ filterType, filterDetailId })}>{name}</Chip>
+              </li>
+            ))}
+          </ul>
+        </SelectedFilterList>
       </HeaderContainer>
       <PostListContainer>
         {posts?.data?.length ? (
