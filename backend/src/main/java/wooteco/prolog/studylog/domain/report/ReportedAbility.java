@@ -1,14 +1,11 @@
-package wooteco.prolog.studylog.domain.ablity;
+package wooteco.prolog.studylog.domain.report;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import wooteco.prolog.studylog.domain.Studylog;
+import wooteco.prolog.studylog.domain.ablity.Ability;
 
 public class ReportedAbility {
-
-    @ManyToOne
-    @JoinColumn(name = "report_id")
-    private Report report;
 
     @ManyToOne
     private Studylog studylog;

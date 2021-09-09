@@ -1,4 +1,4 @@
-package wooteco.prolog.studylog.domain.ablity;
+package wooteco.prolog.studylog.domain.report;
 
 import java.util.List;
 import javax.persistence.GeneratedValue;
@@ -14,6 +14,10 @@ public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String title;
+
+    private String description;
 
     @OneToMany(mappedBy = "report")
     List<ReportedAbility> reportedAbilities;
