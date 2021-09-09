@@ -1,6 +1,4 @@
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import COLOR from '../../constants/color';
 
 const Form = styled.form`
   width: 100%;
