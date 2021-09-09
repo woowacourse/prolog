@@ -16,9 +16,10 @@ const FilterListWrapper = styled.div`
 
 const SelectedFilterList = styled.div`
   width: 100%;
-  height: 3rem;
-  overflow: scroll;
+  min-height: 3rem;
+  overflow: auto;
   margin-top: 1rem;
+  padding-bottom: 1rem;
 
   ul {
     width: max-content;
