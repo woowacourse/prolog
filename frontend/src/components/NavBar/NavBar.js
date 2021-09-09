@@ -94,8 +94,13 @@ const NavBar = () => {
     event.preventDefault();
 
     const query = new URLSearchParams(history.location.search);
-    query.set('keyword', searchKeywords);
     query.set('page', 1);
+
+    if (searchKeywords) {
+      query.set('keyword', searchKeywords);
+    } else {
+      query.delete('keyword');
+    }
 
     history.push(`${PATH.ROOT}?${query.toString()}`);
   };
