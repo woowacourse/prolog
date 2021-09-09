@@ -89,8 +89,14 @@ const NavBar = () => {
     setSearchKeywords(event.target.value);
   };
 
-  const onSearch = (event) => {
+  const onSearch = async (event) => {
     event.preventDefault();
+
+    const query = new URLSearchParams(history.location.search);
+    query.set('keyword', searchKeywords);
+    query.set('page', 1);
+
+    history.push(`${PATH.ROOT}?${query.toString()}`);
   };
 
   if (userError) {

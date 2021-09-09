@@ -30,6 +30,7 @@ const MainPage = () => {
     selectedFilter,
     setSelectedFilter,
     selectedFilterDetails,
+    setSelectedFilterDetails,
     onSetPage,
     onUnsetFilter,
     onFilterChange,
@@ -68,25 +69,43 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    if (selectedFilterDetails === []) return;
+    const params = getFullParams();
+    const search = new URLSearchParams(history.location.search).get('keyword');
 
+    history.push(`${PATH.ROOT}?${search ? 'keyword=' + search : ''}&${params ?? ''}`);
+  }, [selectedFilterDetails, postQueryParams, getFullParams]);
+
+  useEffect(() => {
     const getData = async () => {
+      const query = new URLSearchParams(history.location.search);
+
       try {
-        const response = await requestGetPosts(selectedFilterDetails, postQueryParams);
+        const response = await requestGetPosts(query);
         const data = await response.json();
 
         setPosts(data);
-
-        const params = getFullParams();
-
-        history.push(`${PATH.ROOT}?${params}`);
       } catch (error) {
         console.error(error);
       }
     };
 
     getData();
-  }, [selectedFilterDetails, postQueryParams, getFullParams, history]);
+  }, [history.location.search]);
+
+  useEffect(() => {
+    if (filters.length === 0) {
+      return;
+    }
+
+    const selectedFilterDetailsWithName = selectedFilterDetails.map(
+      ({ filterType, filterDetailId }) => {
+        const name = filters[filterType].find(({ id }) => id === filterDetailId)?.name;
+        return { filterType, filterDetailId, name };
+      }
+    );
+
+    setSelectedFilterDetails(selectedFilterDetailsWithName);
+  }, [filters]);
 
   return (
     <>
