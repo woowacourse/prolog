@@ -1,6 +1,9 @@
 package wooteco.prolog.member.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,10 +11,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
+import wooteco.prolog.studylog.domain.ablity.Ability;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,6 +42,9 @@ public class Member {
     @Column(nullable = false)
     private String imageUrl;
 
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    private List<Ability> abilities;
+
     public Member(String username, String nickname, Role role, Long githubId, String imageUrl) {
         this(null, username, nickname, role, githubId, imageUrl);
     }
@@ -53,6 +61,7 @@ public class Member {
         this.role = role;
         this.githubId = githubId;
         this.imageUrl = imageUrl;
+        this.abilities = new ArrayList<>();
     }
 
     private String ifAbsentReplace(String nickname, String username) {
@@ -72,6 +81,10 @@ public class Member {
         if (!ObjectUtils.isEmpty(imageUrl)) {
             this.imageUrl = imageUrl;
         }
+    }
+
+    public void addAbility(Ability ability) {
+        abilities.add(ability);
     }
 
     public Long getId() {

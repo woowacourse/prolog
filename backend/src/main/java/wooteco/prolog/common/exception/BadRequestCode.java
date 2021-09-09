@@ -13,6 +13,7 @@ import wooteco.prolog.member.exception.MemberNotFoundException;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.TagName;
 import wooteco.prolog.studylog.domain.Title;
+import wooteco.prolog.studylog.exception.AbilityNotFoundException;
 import wooteco.prolog.studylog.exception.AuthorNotValidException;
 import wooteco.prolog.studylog.exception.DuplicateMissionException;
 import wooteco.prolog.studylog.exception.DuplicateTagException;
@@ -60,7 +61,10 @@ public enum BadRequestCode {
     TOO_LONG_TAG_NAME(3004, String.format("태그 이름이 %d자 초과입니다.", TagName.MAX_LENGTH),
                       TooLongTagNameException.class),
     TOO_LONG_MISSION_NAME(3005, String.format("미션 이름이 %d자 초과입니다.", Mission.MAX_LENGTH),
-                          TooLongMissionNameException.class);
+                          TooLongMissionNameException.class),
+
+    // TODO: code 수정
+    ABILITY_NOT_FOUND(9000, "역량이 존재하지 않습니다.", AbilityNotFoundException.class);
 
     private int code;
     private String message;
