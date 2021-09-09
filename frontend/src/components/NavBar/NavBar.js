@@ -118,6 +118,7 @@ const NavBar = () => {
           <span>{process.env.REACT_APP_MODE === 'PROD' ? 'BETA' : process.env.REACT_APP_MODE}</span>
         </Logo>
         <Menu role="menu">
+          <SearchBar onSubmit={onSearch} value={searchKeywords} onChange={onSearchKeywordsChange} />
           {isLoggedIn ? (
             <>
               <Button
