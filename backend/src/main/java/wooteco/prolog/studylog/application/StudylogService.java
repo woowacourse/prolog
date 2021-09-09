@@ -44,14 +44,6 @@ public class StudylogService {
     private final MemberService memberService;
     private final TagService tagService;
 
-    public StudylogsResponse findPostsWithFilter(
-            List<Long> levelIds,
-            List<Long> missionIds,
-            List<Long> tagIds,
-            List<String> usernames,
-            Pageable pageable) {
-        return findPostsWithFilter(levelIds, missionIds, tagIds, usernames, null, null, pageable);
-    }
 
     public StudylogsResponse findPostsWithFilter(
             List<Long> levelIds,

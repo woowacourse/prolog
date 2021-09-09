@@ -33,10 +33,4 @@ public class StudylogTagService {
     public List<StudylogTag> findByTags(List<Tag> tags) {
         return studylogTagRepository.findByTagIn(tags);
     }
-
-    public StudylogTags findByMember(Member member) {
-        final StudylogTags studylogTags = new StudylogTags();
-        studylogTags.add(studylogTagRepository.findByMember(member.getId()));
-        return studylogTags;
-    }
 }
