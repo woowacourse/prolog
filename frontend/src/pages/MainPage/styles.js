@@ -3,20 +3,27 @@ import { css } from '@emotion/react';
 import COLOR from '../../constants/color';
 
 const HeaderContainer = styled.div`
-  height: 4.8rem;
   display: flex;
-  margin-bottom: 3.7rem;
-  justify-content: space-between;
-
-  & > *:not(:first-child) {
-    margin-left: 2rem;
-  }
+  flex-direction: column;
+  margin-bottom: 1.5rem;
 `;
 
 const FilterListWrapper = styled.div`
+  height: 4.8rem;
+  flex-grow: 1;
+  margin-right: 1rem;
+`;
+
+const SelectedFilterList = styled.div`
   width: 100%;
-  height: inherit;
-  flex: 1;
+  height: 3rem;
+  overflow: scroll;
+  margin-top: 1rem;
+
+  ul {
+    width: max-content;
+    display: flex;
+  }
 `;
 
 const PostListContainer = styled.div`
@@ -74,6 +81,7 @@ const CardStyle = css`
 export {
   HeaderContainer,
   FilterListWrapper,
+  SelectedFilterList,
   PostListContainer,
   Content,
   Description,

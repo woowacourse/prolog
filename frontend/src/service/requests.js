@@ -8,13 +8,8 @@ const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
 
 const requestGetTags = () => fetch(`${BASE_URL}/tags`);
 
-const requestGetPosts = (filterList, postSearchParams) => {
-  const filterQuery = filterList.map(
-    ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
-  );
-  const searchParams = Object.entries(postSearchParams).map(([key, value]) => `${key}=${value}`);
-
-  return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`);
+const requestGetPosts = (query) => {
+  return fetch(`${BASE_URL}/posts?${query.toString()}`);
 };
 
 const requestEditPost = (postId, data, accessToken) =>

@@ -1,7 +1,6 @@
-import React from 'react';
 import { DropdownMenu } from '..';
 import checkIcon from '../../assets/images/check.png';
-import { CheckIcon, Container, FilterDetail, ResetFilter } from './FilterList.styles';
+import { Container, FilterDetail, ResetFilter, CheckIcon } from './FilterList.styles';
 
 const FilterList = ({
   selectedFilter,
@@ -24,8 +23,8 @@ const FilterList = ({
       (filterItem) => filterItem.filterType === key && filterItem.filterDetailId === id
     );
 
-  const toggleFilterDetails = (filterType, filterDetailId) => {
-    const targetFilterItem = { filterType, filterDetailId };
+  const toggleFilterDetails = (filterType, filterDetailId, name) => {
+    const targetFilterItem = { filterType, filterDetailId, name };
     const isExistFilterItem = findFilterItem(filterType, filterDetailId);
 
     if (isExistFilterItem) {
@@ -60,12 +59,8 @@ const FilterList = ({
           <button onClick={() => setSelectedFilter(key)}>{key}</button>
           {selectedFilter === key && (
             <DropdownMenu>
-              {/* 검색 UI
-              <li>
-                <input type="search" placeholder="filter project" />
-              </li> */}
               {value.map(({ id, name }) => (
-                <li key={id} onClick={() => toggleFilterDetails(key, id)}>
+                <li key={id} onClick={() => toggleFilterDetails(key, id, name)}>
                   <FilterDetail>
                     <span>{name}</span>
                     <CheckIcon

@@ -7,6 +7,7 @@ const Container = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 2rem;
+  max-width: 814px;
 `;
 
 const PostItem = styled.div`
@@ -100,6 +101,17 @@ const DeleteButtonStyle = css`
 
 const FilterListWrapper = styled.div`
   height: 4.8rem;
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+  
+  flex: 1;
+  margin-top: 0.6rem;
+`;
+
+const FilterListWrapper = styled.div`
+  height: 4.8rem;
   flex: 1;
   margin-top: 0.6rem;
 `;
@@ -116,6 +128,8 @@ const FilterStyles = css`
 
 export {
   Container,
+  HeaderContainer,
+  PostListContainer,
   Content,
   Description,
   Mission,

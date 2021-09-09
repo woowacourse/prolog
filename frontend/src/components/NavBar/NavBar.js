@@ -22,6 +22,7 @@ import {
   profileButtonStyle,
 } from './NavBar.styles';
 import { ERROR_MESSAGE } from '../../constants/message';
+import SearchBar from '../SearchBar/SearchBar';
 
 const NavBar = () => {
   const history = useHistory();
@@ -35,6 +36,8 @@ const NavBar = () => {
 
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const [userImage, setUserImage] = useState(NoProfileImage);
+
+  const [searchKeywords, setSearchKeywords] = useState('');
 
   useEffect(() => {
     if (accessToken) {
@@ -83,6 +86,25 @@ const NavBar = () => {
     window.location.reload();
   };
 
+  const onSearchKeywordsChange = (event) => {
+    setSearchKeywords(event.target.value);
+  };
+
+  const onSearch = async (event) => {
+    event.preventDefault();
+
+    const query = new URLSearchParams(history.location.search);
+    query.set('page', 1);
+
+    if (searchKeywords) {
+      query.set('keyword', searchKeywords);
+    } else {
+      query.delete('keyword');
+    }
+
+    history.push(`${PATH.ROOT}?${query.toString()}`);
+  };
+
   if (userError) {
     localStorage.removeItem('accessToken');
   }
@@ -101,6 +123,7 @@ const NavBar = () => {
           <span>{process.env.REACT_APP_MODE === 'PROD' ? 'BETA' : process.env.REACT_APP_MODE}</span>
         </Logo>
         <Menu role="menu">
+          <SearchBar onSubmit={onSearch} value={searchKeywords} onChange={onSearchKeywordsChange} />
           {isLoggedIn ? (
             <>
               <Button

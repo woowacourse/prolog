@@ -12,9 +12,11 @@ import {
   Description,
   EditButtonStyle,
   FilterStyles,
+  HeaderContainer,
   Mission,
   NoPost,
   PostItem,
+  PostListContainer,
   Tags,
   Title,
   FilterListWrapper,
@@ -23,8 +25,23 @@ import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
 import useFetch from '../../hooks/useFetch';
 import useFilterWithParams from '../../hooks/useFilterWithParams';
+import { SelectedFilterList } from '../MainPage/styles';
+import Chip from '../../components/Chip/Chip';
 
 const ProfilePagePosts = () => {
+  const {
+    postQueryParams,
+    selectedFilter,
+    setSelectedFilter,
+    selectedFilterDetails,
+    setSelectedFilterDetails,
+    onSetPage,
+    onUnsetFilter,
+    onFilterChange,
+    resetFilter,
+    getFullParams,
+  } = useFilterWithParams();
+
   const history = useHistory();
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const myName = useSelector((state) => state.user.profile.data?.username);
@@ -36,17 +53,8 @@ const ProfilePagePosts = () => {
   const [posts, setPosts] = useState([]);
 
   const [filters] = useFetch([], requestGetFilters);
+
   const { error: postError, deleteData: deletePost } = usePost({});
-  const {
-    postQueryParams,
-    selectedFilter,
-    setSelectedFilter,
-    selectedFilterDetails,
-    onSetPage,
-    onFilterChange,
-    resetFilter,
-    getFullParams,
-  } = useFilterWithParams();
 
   const goTargetPost = (id) => {
     history.push(`${PATH.POST}/${id}`);
@@ -58,28 +66,18 @@ const ProfilePagePosts = () => {
     history.push(`${PATH.POST}/${id}/edit`);
   };
 
-  const getUserPosts = useCallback(async () => {
+  const getData = async () => {
+    const query = new URLSearchParams(history.location.search);
+
     try {
-      const filterQuery = [
-        ...selectedFilterDetails,
-        { filterType: 'usernames', filterDetailId: username },
-      ];
-      const response = await requestGetPosts(filterQuery, postQueryParams);
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
+      const response = await requestGetPosts(query);
+      const data = await response.json();
 
-      const posts = await response.json();
-
-      setPosts(posts);
-
-      const params = getFullParams();
-
-      history.push(`${PATH.ROOT}${username}/posts?${params}`);
+      setPosts(data);
     } catch (error) {
       console.error(error);
     }
-  }, [getFullParams, history, postQueryParams, selectedFilterDetails, username]);
+  };
 
   const onDeletePost = async (event, id) => {
     event.stopPropagation();
@@ -93,8 +91,38 @@ const ProfilePagePosts = () => {
       return;
     }
 
-    getUserPosts();
+    await getData();
   };
+
+  useEffect(() => {
+    const params = getFullParams();
+    const search = new URLSearchParams(history.location.search).get('keyword');
+
+    history.push(
+      `${PATH.ROOT}${username}/posts?${search ? 'keyword=' + search : ''}&${params ?? ''}&${
+        username ? 'usernames=' + username : ''
+      }`
+    );
+  }, [getFullParams, postQueryParams, selectedFilterDetails, username]);
+
+  useEffect(() => {
+    getData();
+  }, [history.location.search]);
+
+  useEffect(() => {
+    if (filters.length === 0) {
+      return;
+    }
+
+    const selectedFilterDetailsWithName = selectedFilterDetails.map(
+      ({ filterType, filterDetailId }) => {
+        const name = filters[filterType].find(({ id }) => id === filterDetailId)?.name;
+        return { filterType, filterDetailId, name };
+      }
+    );
+
+    setSelectedFilterDetails(selectedFilterDetailsWithName);
+  }, [filters]);
 
   useEffect(() => {
     if (!shouldInitialLoad) {
@@ -108,18 +136,29 @@ const ProfilePagePosts = () => {
 
   return (
     <Container>
-      <FilterListWrapper>
-        <FilterList
-          filters={{ levels: filters['levels'], missions: filters['missions'] }}
-          selectedFilter={selectedFilter}
-          setSelectedFilter={setSelectedFilter}
-          selectedFilterDetails={selectedFilterDetails}
-          setSelectedFilterDetails={onFilterChange}
-          isVisibleResetFilter={!!selectedFilterDetails.length}
-          onResetFilter={resetFilter}
-          css={FilterStyles}
-        />
-      </FilterListWrapper>
+      <HeaderContainer>
+        <FilterListWrapper>
+          <FilterList
+            filters={filters}
+            selectedFilter={selectedFilter}
+            setSelectedFilter={setSelectedFilter}
+            selectedFilterDetails={selectedFilterDetails}
+            setSelectedFilterDetails={onFilterChange}
+            isVisibleResetFilter={!!selectedFilterDetails.length}
+            onResetFilter={resetFilter}
+            css={FilterStyles}
+          />
+        </FilterListWrapper>
+        <SelectedFilterList>
+          <ul>
+            {selectedFilterDetails.map(({ filterType, filterDetailId, name }) => (
+              <li key={filterType + filterDetailId + name}>
+                <Chip onDelete={() => onUnsetFilter({ filterType, filterDetailId })}>{name}</Chip>
+              </li>
+            ))}
+          </ul>
+        </SelectedFilterList>
+      </HeaderContainer>
       <Card css={CardStyles}>
         {posts?.data?.length ? (
           <>
