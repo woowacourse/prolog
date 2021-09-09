@@ -16,7 +16,7 @@ import wooteco.prolog.member.exception.NotExistsMemberTag;
 @NoArgsConstructor
 public class MemberTags {
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private final List<MemberTag> values = new ArrayList<>();
 
     public void addMemberTags(List<MemberTag> memberTags) {
