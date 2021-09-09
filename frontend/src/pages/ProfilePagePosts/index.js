@@ -60,8 +60,11 @@ const ProfilePagePosts = () => {
 
   const getUserPosts = useCallback(async () => {
     try {
-      const response = await requestGetUserPosts(username, postQueryParams, selectedFilterDetails);
-
+      const filterQuery = [
+        ...selectedFilterDetails,
+        { filterType: 'usernames', filterDetailId: username },
+      ];
+      const response = await requestGetPosts(filterQuery, postQueryParams);
       if (!response.ok) {
         throw new Error(response.status);
       }
