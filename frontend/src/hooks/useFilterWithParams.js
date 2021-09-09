@@ -69,6 +69,10 @@ const useFilterWithParams = () => {
 const makeFilters = (filters, filterType) => {
   if (!filters || !filterType) return [];
 
+  if (typeof filters === 'string') {
+    return [{ filterType, filterDetailId: Number(filters) }];
+  }
+
   return [...filters].map((id) => ({ filterType, filterDetailId: Number(id) }));
 };
 
