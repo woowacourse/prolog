@@ -33,10 +33,12 @@ public class StudylogController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createPost(@AuthMemberPrincipal Member member,
-                                           @RequestBody List<StudylogRequest> studylogRequests) {
-        List<StudylogResponse> studylogResponse = studylogService.insertStudylogs(member, studylogRequests);
-        return ResponseEntity.created(URI.create("/posts/" + studylogResponse.get(0).getId())).build();
+    public ResponseEntity<Void> createStudylog(@AuthMemberPrincipal Member member,
+                                               @RequestBody List<StudylogRequest> studylogRequests) {
+        List<StudylogResponse> studylogResponse = studylogService
+            .insertStudylogs(member, studylogRequests);
+        return ResponseEntity.created(URI.create("/posts/" + studylogResponse.get(0).getId()))
+            .build();
     }
 
     @GetMapping
@@ -46,7 +48,7 @@ public class StudylogController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudylogResponse> showPost(@PathVariable String id) {
+    public ResponseEntity<StudylogResponse> showStudylog(@PathVariable String id) {
         if (!NumberUtils.isNumeric(id)) {
             throw new StudylogNotFoundException();
         }
@@ -55,7 +57,7 @@ public class StudylogController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updatePost(
+    public ResponseEntity<Void> updateStudylog(
         @AuthMemberPrincipal Member member,
         @PathVariable Long id,
         @RequestBody StudylogRequest studylogRequest
@@ -65,8 +67,8 @@ public class StudylogController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@AuthMemberPrincipal Member member,
-                                           @PathVariable Long id) {
+    public ResponseEntity<Void> deleteStudylog(@AuthMemberPrincipal Member member,
+                                               @PathVariable Long id) {
         studylogService.deleteStudylog(member, id);
         return ResponseEntity.noContent().build();
     }

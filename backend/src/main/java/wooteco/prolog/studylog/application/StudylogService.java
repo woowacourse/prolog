@@ -1,15 +1,9 @@
 package wooteco.prolog.studylog.application;
 
-import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
-import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
-import static java.util.stream.Collectors.toList;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +35,7 @@ public class StudylogService {
 
     private final StudylogRepository studylogRepository;
     private final MemberTagService memberTagService;
-    private final StudyLogDocumentService studyLogDocumentService;
+    private final StudylogDocumentService studylogDocumentService;
     private final MissionService missionService;
     private final MemberService memberService;
     private final TagService tagService;
@@ -83,26 +77,26 @@ public class StudylogService {
         final String keyword = studylogsSearchRequest.getKeyword();
         final Pageable pageable = studylogsSearchRequest.getPageable();
 
-        List<Long> studyLogIds = Collections.emptyList();
+        List<Long> studylogIds = Collections.emptyList();
         if (isSearch(keyword)) {
-            studyLogIds = studyLogDocumentService.findBySearchKeyword(keyword, pageable);
+            studylogIds = studylogDocumentService.findBySearchKeyword(keyword, pageable);
         }
 
         if (studylogsSearchRequest.hasOnlySearch()) {
-            return StudylogsResponse.of(studylogRepository.findByIdIn(studyLogIds, pageable));
+            return StudylogsResponse.of(studylogRepository.findByIdIn(studylogIds, pageable));
         }
 
         Page<Studylog> studylogs = studylogRepository
-                .findAll(makeSpecifications(studylogsSearchRequest, studyLogIds), pageable);
+                .findAll(makeSpecifications(studylogsSearchRequest, studylogIds), pageable);
 
         return StudylogsResponse.of(studylogs);
     }
 
     private Specification<Studylog> makeSpecifications(
-            StudylogsSearchRequest studylogsSearchRequest, List<Long> studyLogIds
+            StudylogsSearchRequest studylogsSearchRequest, List<Long> studylogIds
     ) {
         return StudylogSpecification.findByLevelIn(studylogsSearchRequest.getLevels())
-                .and(StudylogSpecification.equalIn("id", studyLogIds,
+                .and(StudylogSpecification.equalIn("id", studylogIds,
                         isSearch(studylogsSearchRequest.getKeyword())))
                 .and(StudylogSpecification.equalIn("mission", studylogsSearchRequest.getMissions()))
                 .and(StudylogSpecification.findByTagIn(studylogsSearchRequest.getTags()))
@@ -149,10 +143,7 @@ public class StudylogService {
         Studylog createdStudylog = studylogRepository.save(requestedStudylog);
         memberTagService.registerMemberTag(tags, foundMember);
 
-        studyLogDocumentService.save(
-                new StudyLogDocument(createdStudylog.getId(), createdStudylog.getTitle(),
-                        createdStudylog.getContent()));
-
+        studylogDocumentService.save(createdStudylog.toStudylogDocument());
         return StudylogResponse.of(createdStudylog);
     }
 
@@ -176,6 +167,8 @@ public class StudylogService {
         Tags newTags = tagService.findOrCreate(studylogRequest.getTags());
         studylog.update(studylogRequest.getTitle(), studylogRequest.getContent(), mission, newTags);
         memberTagService.updateMemberTag(originalTags, newTags, foundMember);
+
+        studylogDocumentService.update(studylog.toStudylogDocument());
     }
 
     @Transactional
@@ -186,6 +179,7 @@ public class StudylogService {
         studylog.validateAuthor(foundMember);
 
         final Tags tags = tagService.findByPostAndMember(studylog, foundMember);
+        studylogDocumentService.delete(studylog.toStudylogDocument());
         studylogRepository.delete(studylog);
         memberTagService.removeMemberTag(tags, member);
     }
