@@ -23,9 +23,37 @@ public class StudylogDocument {
     @Field(type = FieldType.Text)
     private String content;
 
+    @Field(type = FieldType.Text)
+    private String tagName;
+
+    @Field(type = FieldType.Text)
+    private String missionName;
+
+    @Field(type = FieldType.Text)
+    private String levelName;
+
+    @Field(type = FieldType.Text)
+    private String userName;
+
     public StudylogDocument(Long id, String title, String content) {
         this.id = id;
         this.title = title;
         this.content = content;
+    }
+
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
+
+    public void setMissionName(String missionName) {
+        this.missionName = missionName;
+    }
+
+    public void setLevelName(String levelName) {
+        this.levelName = levelName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

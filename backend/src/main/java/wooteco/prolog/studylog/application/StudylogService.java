@@ -97,7 +97,6 @@ public class StudylogService {
                 .and(StudylogSpecification.equalIn("mission", studylogsSearchRequest.getMissions()))
                 .and(StudylogSpecification.findByTagIn(studylogsSearchRequest.getTags()))
                 .and(StudylogSpecification.findByUsernameIn(studylogsSearchRequest.getUsernames()))
-                .and(StudylogSpecification.findByUsernameIn(studylogsSearchRequest.getUsernames()))
                 .and(StudylogSpecification.findBetweenDate(
                         studylogsSearchRequest.getStartDate(),
                         studylogsSearchRequest.getEndDate()))
