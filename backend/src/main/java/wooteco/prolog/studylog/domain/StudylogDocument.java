@@ -1,5 +1,6 @@
 package wooteco.prolog.studylog.domain;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -14,8 +15,8 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(indexName = "search-document")
-public class SearchDocument {
+@Document(indexName = "studylog-document")
+public class StudylogDocument {
 
     @Id
     private Long id;
@@ -36,6 +37,8 @@ public class SearchDocument {
     private Long levelId;
 
     @Field(type = FieldType.Text)
-    private String userName;
+    private String username;
 
+    @Field(type = FieldType.Date)
+    private LocalDateTime dateTime;
 }

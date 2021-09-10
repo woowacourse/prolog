@@ -8,59 +8,59 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import wooteco.prolog.studylog.domain.SearchDocument;
+import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.repository.SearchDocumentRepository;
+import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 
 @AllArgsConstructor
 @Service
-public class SearchDocumentService {
+public class StudylogDocumentService {
 
-    private final SearchDocumentRepository searchDocumentRepository;
+    private final StudylogDocumentRepository studylogDocumentRepository;
     private final StudylogRepository studylogRepository;
 
-    public void save(SearchDocument searchDocument) {
-        searchDocumentRepository.save(searchDocument);
+    public void save(StudylogDocument studylogDocument) {
+        studylogDocumentRepository.save(studylogDocument);
     }
 
     public List<Long> findBySearchKeyword(String searchKeyword,
                                           Pageable pageable) {
-        Page<SearchDocument> studylogs = searchDocumentRepository.findByKeyword(searchKeyword,
-                                                                                pageable);
+        Page<StudylogDocument> studylogs = studylogDocumentRepository.findByKeyword(searchKeyword,
+                                                                                    pageable);
         return studylogs.stream()
-            .map(SearchDocument::getId)
+            .map(StudylogDocument::getId)
             .collect(toList());
     }
 
-    public SearchDocument findById(Long id) {
-        return searchDocumentRepository.findById(id)
+    public StudylogDocument findById(Long id) {
+        return studylogDocumentRepository.findById(id)
             .orElseThrow(StudylogDocumentNotFoundException::new);
     }
 
-    public void delete(SearchDocument searchDocument) {
-        searchDocumentRepository.delete(searchDocument);
+    public void delete(StudylogDocument studylogDocument) {
+        studylogDocumentRepository.delete(studylogDocument);
     }
 
     public void deleteAll() {
-        searchDocumentRepository.deleteAll();
+        studylogDocumentRepository.deleteAll();
     }
 
     public void sync() {
         // sync between es and db
-        searchDocumentRepository.deleteAll();
+        studylogDocumentRepository.deleteAll();
 
         List<Studylog> studylogs = studylogRepository.findAll();
-        searchDocumentRepository.saveAll(
+        studylogDocumentRepository.saveAll(
             studylogs.stream()
                 .map(Studylog::toStudylogDocument)
                 .collect(Collectors.toList())
         );
     }
 
-    public void update(SearchDocument searchDocument) {
-        searchDocumentRepository.save(searchDocument);
+    public void update(StudylogDocument studylogDocument) {
+        studylogDocumentRepository.save(studylogDocument);
     }
 
     public List<Long> findByKeyword(
@@ -72,7 +72,7 @@ public class SearchDocumentService {
         Pageable pageable
     ) {
 
-        Page<SearchDocument> searchDocuments = searchDocumentRepository
+        Page<StudylogDocument> searchDocuments = studylogDocumentRepository
             .findByMultipleConditions(
                 keyword,
                 tags,
@@ -83,7 +83,7 @@ public class SearchDocumentService {
             );
 
         return searchDocuments.stream()
-            .map(SearchDocument::getId)
+            .map(StudylogDocument::getId)
             .collect(toList());
     }
 }

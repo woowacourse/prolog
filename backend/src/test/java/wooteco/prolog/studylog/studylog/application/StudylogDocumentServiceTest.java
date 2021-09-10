@@ -3,7 +3,7 @@ package wooteco.prolog.studylog.studylog.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static wooteco.prolog.studylog.studylog.fixture.StudyLogDocumentTestFixture.searchDocuments;
+import static wooteco.prolog.studylog.studylog.fixture.StudyLogDocumentTestFixture.studylogDocuments;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,24 +12,24 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import wooteco.prolog.studylog.application.SearchDocumentService;
-import wooteco.prolog.studylog.domain.SearchDocument;
+import wooteco.prolog.studylog.application.StudylogDocumentService;
+import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 import wooteco.support.utils.IntegrationTest;
 
 @IntegrationTest
-class SearchDocumentServiceTest {
+class StudylogDocumentServiceTest {
 
     private static String 검색어 = "테스트";
     private static String 띄어쓰기가_포함된_검색어 = "테스트 하자";
 
     @Autowired
-    private SearchDocumentService studyLogDocumentService;
+    private StudylogDocumentService studyLogDocumentService;
 
     @BeforeEach
     void setUp() {
         studyLogDocumentService.deleteAll();
-        saveAll(searchDocuments);
+        saveAll(studylogDocuments);
     }
 
     @DisplayName("StudyDocument를 저장하고 조회한다")
@@ -45,8 +45,8 @@ class SearchDocumentServiceTest {
             );
     }
 
-    private void saveAll(List<SearchDocument> searchDocuments) {
-        for (SearchDocument studyLogDocument : searchDocuments) {
+    private void saveAll(List<StudylogDocument> studylogDocuments) {
+        for (StudylogDocument studyLogDocument : studylogDocuments) {
             studyLogDocumentService.save(studyLogDocument);
         }
     }
@@ -67,20 +67,20 @@ class SearchDocumentServiceTest {
     @Test
     void update() {
         // given
-        SearchDocument searchDocument = new SearchDocument(1L, "title", "content");
-        studyLogDocumentService.save(searchDocument);
+        StudylogDocument studylogDocument = new StudylogDocument(1L, "title", "content");
+        studyLogDocumentService.save(studylogDocument);
 
         // when
-        SearchDocument updateSearchDocument = new SearchDocument(1L, "updatedTitle",
-                                                                 "updatedContent");
-        studyLogDocumentService.update(updateSearchDocument);
+        StudylogDocument updateStudylogDocument = new StudylogDocument(1L, "updatedTitle",
+                                                                       "updatedContent");
+        studyLogDocumentService.update(updateStudylogDocument);
 
         // then
-        SearchDocument findSearchDocument = studyLogDocumentService.findById(1L);
+        StudylogDocument findStudylogDocument = studyLogDocumentService.findById(1L);
         assertAll(
-            () -> assertThat(findSearchDocument.getId()).isEqualTo(1L),
-            () -> assertThat(findSearchDocument.getTitle()).isEqualTo(updateSearchDocument.getTitle()),
-            () -> assertThat(findSearchDocument.getContent()).isEqualTo(updateSearchDocument.getContent())
+            () -> assertThat(findStudylogDocument.getId()).isEqualTo(1L),
+            () -> assertThat(findStudylogDocument.getTitle()).isEqualTo(updateStudylogDocument.getTitle()),
+            () -> assertThat(findStudylogDocument.getContent()).isEqualTo(updateStudylogDocument.getContent())
         );
     }
 
@@ -88,11 +88,11 @@ class SearchDocumentServiceTest {
     @Test
     void delete() {
         // given
-        SearchDocument searchDocument = new SearchDocument(1L, "title", "content");
-        studyLogDocumentService.save(searchDocument);
+        StudylogDocument studylogDocument = new StudylogDocument(1L, "title", "content");
+        studyLogDocumentService.save(studylogDocument);
 
         // when
-        studyLogDocumentService.delete(searchDocument);
+        studyLogDocumentService.delete(studylogDocument);
 
         // then
         assertThatThrownBy(() -> studyLogDocumentService.findById(1L))

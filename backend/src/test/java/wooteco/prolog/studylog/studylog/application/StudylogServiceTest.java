@@ -28,7 +28,7 @@ import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
-import wooteco.prolog.studylog.application.SearchDocumentService;
+import wooteco.prolog.studylog.application.StudylogDocumentService;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.studylog.application.dto.LevelRequest;
@@ -44,7 +44,7 @@ import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.SearchDocument;
+import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 import wooteco.support.utils.IntegrationTest;
@@ -75,7 +75,7 @@ class StudylogServiceTest {
     @Autowired
     private MemberService memberService;
     @Autowired
-    private SearchDocumentService searchDocumentService;
+    private StudylogDocumentService studylogDocumentService;
 
     private Member member1;
     private Member member2;
@@ -177,12 +177,12 @@ class StudylogServiceTest {
         Long id = studylogResponses.get(0).getId();
 
         // when
-        SearchDocument searchDocument = searchDocumentService.findById(id);
+        StudylogDocument studylogDocument = studylogDocumentService.findById(id);
         // then
         assertAll(
-            () -> assertThat(searchDocument.getId()).isEqualTo(id),
-            () -> assertThat(searchDocument.getTitle()).isEqualTo(studylog1.getTitle()),
-            () -> assertThat(searchDocument.getContent()).isEqualTo(studylog1.getContent())
+            () -> assertThat(studylogDocument.getId()).isEqualTo(id),
+            () -> assertThat(studylogDocument.getTitle()).isEqualTo(studylog1.getTitle()),
+            () -> assertThat(studylogDocument.getContent()).isEqualTo(studylog1.getContent())
         );
     }
 
@@ -332,13 +332,13 @@ class StudylogServiceTest {
         studylogService.updateStudylog(member1, id, updateStudylogRequest);
 
         // when
-        SearchDocument searchDocument = searchDocumentService.findById(id);
+        StudylogDocument studylogDocument = studylogDocumentService.findById(id);
 
         // then
         assertAll(
-            () -> assertThat(searchDocument.getId()).isEqualTo(id),
-            () -> assertThat(searchDocument.getTitle()).isEqualTo(updateStudylogRequest.getTitle()),
-            () -> assertThat(searchDocument.getContent()).isEqualTo(updateStudylogRequest.getContent())
+            () -> assertThat(studylogDocument.getId()).isEqualTo(id),
+            () -> assertThat(studylogDocument.getTitle()).isEqualTo(updateStudylogRequest.getTitle()),
+            () -> assertThat(studylogDocument.getContent()).isEqualTo(updateStudylogRequest.getContent())
         );
     }
 
@@ -396,7 +396,7 @@ class StudylogServiceTest {
         studylogService.deleteStudylog(member1, id);
 
         // when - then
-        assertThatThrownBy(() -> searchDocumentService.findById(id))
+        assertThatThrownBy(() -> studylogDocumentService.findById(id))
             .isInstanceOf(StudylogDocumentNotFoundException.class);
     }
 
