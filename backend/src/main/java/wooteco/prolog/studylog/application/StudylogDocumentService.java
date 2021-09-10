@@ -63,6 +63,7 @@ public class StudylogDocumentService {
         studylogDocumentRepository.save(studylogDocument);
     }
 
+    // TODO 변경될 find 메서드
     public List<Long> findByKeyword(
         String keyword,
         List<Long> tags,

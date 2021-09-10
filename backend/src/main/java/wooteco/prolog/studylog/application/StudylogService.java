@@ -67,6 +67,7 @@ public class StudylogService {
         return StudylogsResponse.of(posts);
     }
 
+    // TODO 변경될 find 메서드
     public StudylogsResponse findStudylogsWithFilterTest(
         StudylogsSearchRequest studylogsSearchRequest
     ) {

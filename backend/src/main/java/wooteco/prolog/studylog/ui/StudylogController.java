@@ -43,6 +43,7 @@ public class StudylogController {
 
     @GetMapping
     public ResponseEntity<StudylogsResponse> showAll(@SearchParams StudylogsSearchRequest searchRequest) {
+        // TODO
         StudylogsResponse studylogsResponse = studylogService.findStudylogsWithFilter(searchRequest);
         return ResponseEntity.ok(studylogsResponse);
     }
