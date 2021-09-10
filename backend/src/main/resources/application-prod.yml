@@ -8,7 +8,7 @@ spring:
         format_sql: true
         use_sql_comment: false
     database: mysql
-    database-platform: org.hibernate.dialect.MySQL5Dialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
   flyway:
     baselineOnMigrate: true
     locations: classpath:db/migration/prod

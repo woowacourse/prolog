@@ -1,5 +1,6 @@
 ALTER TABLE post rename studylog;
 ALTER TABLE post_tag rename studylog_tag;
+ALTER TABLE studylog_tag CHANGE post_id studylog_id bigint;
 
 CREATE TABLE updated_contents
 (
