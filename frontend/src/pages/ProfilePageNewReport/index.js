@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { Button } from '../../components';
 import COLOR from '../../constants/color';
+import Modal from './Modal/Modal';
 import ReportInfoInput from './ReportInfoInput';
 import ReportStudyLogTable from './ReportStudyLogTable';
 
@@ -31,6 +32,7 @@ const ProfilePageNewReport = () => {
   const [isMainReport, setIsMainReport] = useState(false);
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
+  const [isModalOpened, setIsModalOpened] = useState(false);
 
   const onSubmitReport = (event) => {
     event.preventDefault();
@@ -39,50 +41,55 @@ const ProfilePageNewReport = () => {
   const onRegisterMainReport = () => setIsMainReport(!isMainReport);
   const onWriteTitle = ({ target: { value } }) => setTitle(value);
   const onWriteDesc = ({ target: { value } }) => setDesc(value);
+  const onModalOpen = () => setIsModalOpened(true);
+  const onModalClose = () => setIsModalOpened(false);
 
   return (
-    <Form onSubmit={onSubmitReport}>
-      {/* <h1>새 리포트 작성하기</h1> */}
-      <div>
-        <Checkbox
-          type="checkbox"
-          onChange={onRegisterMainReport}
-          checked={isMainReport}
-          id="main_report_checkbox"
+    <>
+      <Form onSubmit={onSubmitReport}>
+        {/* <h1>새 리포트 작성하기</h1> */}
+        <div>
+          <Checkbox
+            type="checkbox"
+            onChange={onRegisterMainReport}
+            checked={isMainReport}
+            id="main_report_checkbox"
+          />
+          <label htmlFor="main_report_checkbox">대표 리포트로 지정하기</label>
+        </div>
+
+        <ReportInfoInput
+          nickname={user.data?.nickname}
+          title={title}
+          onWriteTitle={onWriteTitle}
+          desc={desc}
+          onWriteDesc={onWriteDesc}
         />
-        <label htmlFor="main_report_checkbox">대표 리포트로 지정하기</label>
-      </div>
 
-      <ReportInfoInput
-        nickname={user.data?.nickname}
-        title={title}
-        onWriteTitle={onWriteTitle}
-        desc={desc}
-        onWriteDesc={onWriteDesc}
-      />
+        {/* 역량기능 */}
+        <section
+          style={{
+            height: '25rem',
+            border: '1px solid black',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          준비중인 기능입니다.
+        </section>
 
-      {/* 역량기능 */}
-      <section
-        style={{
-          height: '25rem',
-          border: '1px solid black',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        준비중인 기능입니다.
-      </section>
+        <ReportStudyLogTable onModalOpen={onModalOpen} />
 
-      <ReportStudyLogTable />
-
-      <FormButtonWrapper>
-        <Button size="X_SMALL" css={{ backgroundColor: `${COLOR.LIGHT_GRAY_400}` }} type="button">
-          취소
-        </Button>
-        <Button size="X_SMALL">리포트 등록</Button>
-      </FormButtonWrapper>
-    </Form>
+        <FormButtonWrapper>
+          <Button size="X_SMALL" css={{ backgroundColor: `${COLOR.LIGHT_GRAY_400}` }} type="button">
+            취소
+          </Button>
+          <Button size="X_SMALL">리포트 등록</Button>
+        </FormButtonWrapper>
+      </Form>
+      {isModalOpened && <Modal onModalClose={onModalClose} />}
+    </>
   );
 };
 

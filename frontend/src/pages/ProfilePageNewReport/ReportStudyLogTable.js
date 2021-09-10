@@ -5,7 +5,7 @@ import COLOR from '../../constants/color';
 import { Section, Table, TableButtonWrapper, Tbody, Thead } from './ReportStudyLogTable.styles';
 import { Checkbox } from './style';
 
-const ReportStudyLogTable = () => {
+const ReportStudyLogTable = ({ onModalOpen }) => {
   return (
     <Section>
       <h2>📚 학습로그 목록</h2>
@@ -14,7 +14,12 @@ const ReportStudyLogTable = () => {
         <Button size="XX_SMALL" css={{ backgroundColor: `${COLOR.RED_200}` }} type="button">
           삭제
         </Button>
-        <Button size="XX_SMALL" css={{ backgroundColor: `${COLOR.LIGHT_BLUE_300}` }} type="button">
+        <Button
+          size="XX_SMALL"
+          css={{ backgroundColor: `${COLOR.LIGHT_BLUE_300}` }}
+          type="button"
+          onClick={onModalOpen}
+        >
           학습로그 불러오기
         </Button>
       </TableButtonWrapper>

@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
-import { SelectBox } from '../../components';
-import { COLOR } from '../../constants';
-import { Checkbox } from '../../pages/ProfilePageNewReport/style';
-import Button from '../Button/Button';
+import { Button } from '../../../components';
+import { COLOR } from '../../../constants';
+import { Checkbox } from '../style';
 import {
   ModalInner,
   Container,
@@ -12,18 +11,33 @@ import {
   StudyLogListContainer,
 } from './Modal.styles';
 
-const Modal = () => {
+const Modal = ({ onModalClose }) => {
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    const closeStudyLogList = (event) => {
+      if (!modalRef.current?.contains(event.target)) {
+        onModalClose();
+      }
+    };
+    document.addEventListener('click', closeStudyLogList);
+
+    return () => document.removeEventListener('click', closeStudyLogList);
+  }, [onModalClose]);
+
   return (
     <Container>
-      <ModalInner>
+      <ModalInner ref={modalRef}>
         <TitleContainer>
           <h2>역량별 학습로그 등록하기</h2>
-          <button type="button">닫기</button>
+          <button type="button" onClick={onModalClose}>
+            닫기
+          </button>
         </TitleContainer>
 
         <SelectBoxContainer>
           <h3>레벨</h3>
-          <SelectBox />
+          {/* <SelectBox /> */}
         </SelectBoxContainer>
 
         <StudyLogListContainer>

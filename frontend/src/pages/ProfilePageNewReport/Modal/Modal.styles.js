@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { COLOR } from '../../constants';
+import { COLOR } from '../../../constants';
 
 const Container = styled.div`
   position: absolute;
