@@ -11,6 +11,7 @@ import java.util.stream.StreamSupport;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.query.Query;
@@ -34,7 +35,7 @@ public class FakeStudylogDocumentRepository implements StudylogDocumentRepositor
     }
 
     @Override
-    public List<StudylogDocument> findByKeyword(String searchKeyword, Pageable pageable) {
+    public Page<StudylogDocument> findByKeyword(String searchKeyword, Pageable pageable) {
         List<String> searchKeywords = preprocess(searchKeyword);
         HashSet<StudylogDocument> results = new HashSet<>();
         for (String search : searchKeywords) {
@@ -44,7 +45,7 @@ public class FakeStudylogDocumentRepository implements StudylogDocumentRepositor
                             || studyLogDocument.getContent().contains(search))
                 .forEach(results::add);
         }
-        return new ArrayList<>(results);
+        return new PageImpl<>(new ArrayList<>(results), pageable, 20);
     }
 
     private List<String> preprocess(String searchKeyword) {

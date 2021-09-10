@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import wooteco.prolog.studylog.domain.Studylog;
@@ -24,8 +25,9 @@ public class StudylogDocumentService {
         studylogDocumentRepository.save(studylogDocument);
     }
 
-    public List<Long> findBySearchKeyword(String searchKeyword, Pageable pageable) {
-        List<StudylogDocument> studylogs = studylogDocumentRepository.findByKeyword(searchKeyword,
+    public List<Long> findBySearchKeyword(String searchKeyword,
+                                          Pageable pageable) {
+        Page<StudylogDocument> studylogs = studylogDocumentRepository.findByKeyword(searchKeyword,
                                                                                     pageable);
         return studylogs.stream()
             .map(StudylogDocument::getId)
