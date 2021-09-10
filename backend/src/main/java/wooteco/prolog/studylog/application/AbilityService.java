@@ -1,10 +1,13 @@
 package wooteco.prolog.studylog.application;
 
+import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.dto.ability.AbilityCreateRequest;
+import wooteco.prolog.studylog.application.dto.ability.AbilityResponse;
+import wooteco.prolog.studylog.application.dto.ability.AbilityUpdateRequest;
 import wooteco.prolog.studylog.domain.ablity.Ability;
 import wooteco.prolog.studylog.domain.repository.AbilityRepository;
 import wooteco.prolog.studylog.exception.AbilityNotFoundException;
@@ -43,5 +46,12 @@ public class AbilityService {
     private Ability findAbilityById(Long parentId) {
         return abilityRepository.findById(parentId)
             .orElseThrow(AbilityNotFoundException::new);
+    }
+
+    @Transactional
+    public List<AbilityResponse> updateAbility(Member member, AbilityUpdateRequest abilityUpdateRequest) {
+        member.updateAbility(abilityUpdateRequest.toEntity());
+
+        return AbilityResponse.of(member.getAbilities());
     }
 }

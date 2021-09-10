@@ -63,4 +63,21 @@ class AbilityTest {
         // then
         verify(member).addAbility(parent);
     }
+
+    @DisplayName("역량 정보를 수정한다.")
+    @Test
+    void updateAbility() {
+        // given
+        Long abilityId = 1L;
+        Ability ability = Ability.parent(abilityId, "역량", "너잘의 3인칭 역량", "파란색", member);
+        Ability updateTarget = Ability.updateTarget(abilityId, "새로운 역량", "그것은 피카를 사랑하는 힘", "핑크색");
+
+        // when
+        ability.update(updateTarget);
+
+        // then
+        assertThat(ability).usingRecursiveComparison()
+            .ignoringFields("parent", "children", "member")
+            .isEqualTo(updateTarget);
+    }
 }

@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
 import wooteco.prolog.studylog.domain.ablity.Ability;
+import wooteco.prolog.studylog.exception.AbilityNotFoundException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -85,6 +86,15 @@ public class Member {
 
     public void addAbility(Ability ability) {
         abilities.add(ability);
+    }
+
+    public void updateAbility(Ability updateAbility) {
+        Ability legacyAbility = abilities.stream()
+            .filter(ability -> ability.equals(updateAbility))
+            .findAny()
+            .orElseThrow(AbilityNotFoundException::new);
+
+        legacyAbility.update(updateAbility);
     }
 
     public Long getId() {

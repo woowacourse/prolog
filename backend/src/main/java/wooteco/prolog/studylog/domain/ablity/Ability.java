@@ -61,6 +61,17 @@ public class Ability {
         return child;
     }
 
+    public static Ability updateTarget(Long id, String name, String description, String color) {
+        return new Ability(id, name, description, color);
+    }
+
+    private Ability(Long id, String name, String description, String color) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.color = color;
+    }
+
     private Ability(Long id, String name, String description, String color, Ability parent, Member member) {
         this.id = id;
         this.name = name;
@@ -75,6 +86,12 @@ public class Ability {
     public void addChildAbility(Ability ability) {
         AbilityRelationship abilityRelationship = new AbilityRelationship(this, ability);
         this.children.add(abilityRelationship);
+    }
+
+    public void update(Ability updateAbility) {
+        this.name = updateAbility.name;
+        this.description = updateAbility.description;
+        this.color = updateAbility.color;
     }
 
     public boolean isParent() {
@@ -105,5 +122,22 @@ public class Ability {
         return children.stream()
             .map(AbilityRelationship::getTarget)
             .collect(toList());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Ability)) {
+            return false;
+        }
+        Ability ability = (Ability) o;
+        return Objects.equals(id, ability.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
