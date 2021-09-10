@@ -16,7 +16,6 @@ import wooteco.prolog.studylog.exception.AuthorNotValidException;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "post")
 public class Studylog extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -6,8 +6,15 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 2rem;
   max-width: 814px;
+`;
+
+const HeaderContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  margin-bottom: 1.5rem;
 `;
 
 const PostItem = styled.div`
@@ -105,7 +112,7 @@ const FilterListWrapper = styled.div`
 
   display: flex;
   flex-direction: column;
-  
+
   flex: 1;
   margin-top: 0.6rem;
 `;
@@ -135,4 +142,5 @@ export {
   FilterListWrapper,
   CardStyles,
   FilterStyles,
+  HeaderContainer,
 };
