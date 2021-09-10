@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "post_tag")
 public class StudylogTag {
 
     @Id
@@ -28,14 +26,14 @@ public class StudylogTag {
     private Tag tag;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
-    private wooteco.prolog.studylog.domain.Studylog studylog;
+    @JoinColumn(name = "studylog_id", nullable = false)
+    private Studylog studylog;
 
-    public StudylogTag(wooteco.prolog.studylog.domain.Studylog studylog, Tag tag) {
+    public StudylogTag(Studylog studylog, Tag tag) {
         this(null, studylog, tag);
     }
 
-    public StudylogTag(Long id, wooteco.prolog.studylog.domain.Studylog studylog, Tag tag) {
+    public StudylogTag(Long id, Studylog studylog, Tag tag) {
         this.id = id;
         this.studylog = studylog;
         this.tag = tag;
