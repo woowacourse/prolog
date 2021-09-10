@@ -26,8 +26,12 @@ const Form = styled.form`
 `;
 
 const Checkbox = styled.input`
-  width: 2rem;
-  height: 2rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-right: 0.5rem;
+
+  //safari 브라우저 input 사이즈 적용이 안되서 추가
+  -webkit-transform: scale(1.2, 1.2);
 `;
 
 const FormButtonWrapper = styled.div`
@@ -36,6 +40,8 @@ const FormButtonWrapper = styled.div`
   > button {
     width: 100%;
     margin: 0 0.5rem;
+
+    font-size: 1.4rem;
   }
 `;
 
