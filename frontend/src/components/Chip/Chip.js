@@ -1,11 +1,11 @@
 import CancelIcon from '../@shared/Icons/CancelIcon';
-import { Container } from './Chip.styles';
+import { ChipText, Container } from './Chip.styles';
 import COLOR from '../../constants/color';
 
 const Chip = ({ color, backgroundColor, onDelete, children }) => {
   return (
-    <Container color={color} backgroundColor={backgroundColor}>
-      <span>{children}</span>
+      <Container color={color} backgroundColor={backgroundColor}>
+        <ChipText>{children}</ChipText>
       {onDelete && (
         <button type="button" onClick={onDelete}>
           <CancelIcon width="10px" height="10px" strokeWidth="2px" stroke={COLOR.BLACK_900} />

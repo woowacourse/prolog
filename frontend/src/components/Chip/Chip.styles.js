@@ -34,4 +34,10 @@ const Container = styled.div`
   }
 `;
 
-export { Container };
+const ChipText = styled.span`
+  font-size: 1.4rem;
+  text-align: center;
+  color: ${COLOR.DARK_GRAY_800};
+`;
+
+export { Container, ChipText };

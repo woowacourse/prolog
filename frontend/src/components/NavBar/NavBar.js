@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import LogoImage from '../../assets/images/logo.svg';
 import { PATH } from '../../constants';
@@ -25,6 +25,8 @@ import { ERROR_MESSAGE } from '../../constants/message';
 import SearchBar from '../SearchBar/SearchBar';
 
 const NavBar = () => {
+  const location = useLocation();
+
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -114,6 +116,12 @@ const NavBar = () => {
       setDropdownToggled(false);
     }
   };
+
+  useEffect(() => {
+    const query = new URLSearchParams(history.location.search);
+
+    setSearchKeywords(query.get('keyword') ?? '');
+  }, [location.search]);
 
   return (
     <Container isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>

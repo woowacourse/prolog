@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Card, FilterList, ProfileChip, Pagination } from '../../components';
+import React, { useEffect, useState } from 'react';
+import { Button, Card, FilterList, Pagination, ProfileChip } from '../../components';
 import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
 import useFetch from '../../hooks/useFetch';
-import { requestGetPosts, requestGetFilters } from '../../service/requests';
+import { requestGetFilters, requestGetPosts } from '../../service/requests';
 import { useSelector } from 'react-redux';
 import {
   CardStyle,
@@ -39,6 +39,8 @@ const MainPage = () => {
   } = useFilterWithParams();
 
   const history = useHistory();
+  const search = new URLSearchParams(history.location.search).get('keyword');
+
   const user = useSelector((state) => state.user.profile);
   const isLoggedIn = !!user.data;
 
@@ -68,9 +70,15 @@ const MainPage = () => {
     history.push(PATH.NEW_POST);
   };
 
+  const onDeleteSearchKeyword = () => {
+    const params = new URLSearchParams(history.location.search);
+    params.delete('keyword');
+
+    history.push(`${PATH.ROOT}?${params.toString()}`);
+  };
+
   useEffect(() => {
     const params = getFullParams();
-    const search = new URLSearchParams(history.location.search).get('keyword');
 
     history.push(`${PATH.ROOT}?${search ? 'keyword=' + search : ''}&${params ?? ''}`);
   }, [selectedFilterDetails, postQueryParams, getFullParams]);
@@ -137,9 +145,16 @@ const MainPage = () => {
 
         <SelectedFilterList>
           <ul>
+            {!!search && (
+              <li>
+                <Chip onDelete={onDeleteSearchKeyword}>{`검색어 : ${search}`}</Chip>
+              </li>
+            )}
             {selectedFilterDetails.map(({ filterType, filterDetailId, name }) => (
               <li key={filterType + filterDetailId + name}>
-                <Chip onDelete={() => onUnsetFilter({ filterType, filterDetailId })}>{name}</Chip>
+                <Chip
+                  onDelete={() => onUnsetFilter({ filterType, filterDetailId })}
+                >{`${filterType}: ${name}`}</Chip>
               </li>
             ))}
           </ul>
