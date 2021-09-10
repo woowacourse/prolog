@@ -4,17 +4,17 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.studylog.application.StudylogDocumentService;
+import wooteco.prolog.studylog.application.SearchDocumentService;
 
 @RestController
 @AllArgsConstructor
 public class StudylogDocumentController {
 
-    private StudylogDocumentService studylogDocumentService;
+    private SearchDocumentService searchDocumentService;
 
     @GetMapping("/sync")
     public ResponseEntity<Void> sync() {
-        studylogDocumentService.sync();
+        searchDocumentService.sync();
         return ResponseEntity.ok().build();
     }
 

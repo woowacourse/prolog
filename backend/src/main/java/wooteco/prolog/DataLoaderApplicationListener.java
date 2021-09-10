@@ -10,7 +10,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studylog.application.StudylogDocumentService;
+import wooteco.prolog.studylog.application.SearchDocumentService;
 import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
 import wooteco.prolog.studylog.application.StudylogService;
@@ -36,7 +36,7 @@ public class DataLoaderApplicationListener implements
     private TagService tagService;
     private MemberService memberService;
     private StudylogService studylogService;
-    private StudylogDocumentService studyLogDocumentService;
+    private SearchDocumentService studyLogDocumentService;
     private UpdatedContentsRepository updatedContentsRepository;
 
     @Override

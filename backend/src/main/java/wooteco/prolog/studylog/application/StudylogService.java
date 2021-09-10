@@ -2,6 +2,7 @@ package wooteco.prolog.studylog.application;
 
 import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+import static java.util.stream.Collectors.summarizingDouble;
 import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDate;
@@ -39,7 +40,7 @@ public class StudylogService {
 
     private final StudylogRepository studylogRepository;
     private final MemberTagService memberTagService;
-    private final StudylogDocumentService studylogDocumentService;
+    private final SearchDocumentService searchDocumentService;
     private final MissionService missionService;
     private final MemberService memberService;
     private final TagService tagService;
@@ -67,6 +68,24 @@ public class StudylogService {
         return StudylogsResponse.of(posts);
     }
 
+    public StudylogsResponse findStudylogsWithFilterTest(
+        StudylogsSearchRequest studylogsSearchRequest
+    ) {
+        final Pageable pageable = studylogsSearchRequest.getPageable();
+
+        final List<Long> studylogIds = searchDocumentService.findByKeyword(
+            studylogsSearchRequest.getKeyword(),
+            studylogsSearchRequest.getTags(),
+            studylogsSearchRequest.getMissions(),
+            studylogsSearchRequest.getLevels(),
+            studylogsSearchRequest.getUsernames(),
+            pageable
+        );
+
+        final Page<Studylog> studylogs = studylogRepository.findByIdIn(studylogIds, pageable);
+        return StudylogsResponse.of(studylogs);
+    }
+
     public StudylogsResponse findStudylogsWithFilter(
             StudylogsSearchRequest studylogsSearchRequest) {
 
@@ -75,7 +94,7 @@ public class StudylogService {
 
         List<Long> studylogIds = Collections.emptyList();
         if (isSearch(keyword)) {
-            studylogIds = studylogDocumentService.findBySearchKeyword(keyword, pageable);
+            studylogIds = searchDocumentService.findBySearchKeyword(keyword, pageable);
         }
 
         if (studylogsSearchRequest.hasOnlySearch()) {
@@ -138,7 +157,7 @@ public class StudylogService {
         Studylog createdStudylog = studylogRepository.save(requestedStudylog);
         memberTagService.registerMemberTag(tags, foundMember);
 
-        studylogDocumentService.save(createdStudylog.toStudylogDocument());
+        searchDocumentService.save(createdStudylog.toStudylogDocument());
         return StudylogResponse.of(createdStudylog);
     }
 
@@ -163,7 +182,7 @@ public class StudylogService {
         studylog.update(studylogRequest.getTitle(), studylogRequest.getContent(), mission, newTags);
         memberTagService.updateMemberTag(originalTags, newTags, foundMember);
 
-        studylogDocumentService.update(studylog.toStudylogDocument());
+        searchDocumentService.update(studylog.toStudylogDocument());
     }
 
     @Transactional
@@ -174,7 +193,7 @@ public class StudylogService {
         studylog.validateAuthor(foundMember);
 
         final Tags tags = tagService.findByPostAndMember(studylog, foundMember);
-        studylogDocumentService.delete(studylog.toStudylogDocument());
+        searchDocumentService.delete(studylog.toStudylogDocument());
         studylogRepository.delete(studylog);
         memberTagService.removeMemberTag(tags, member);
     }

@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.BaseEntity;
@@ -69,8 +68,13 @@ public class Studylog extends BaseEntity {
             .collect(Collectors.toList());
     }
 
-    public StudylogDocument toStudylogDocument() {
-        return new StudylogDocument(this.getId(), this.getTitle(), this.getContent());
+    public SearchDocument toStudylogDocument() {
+        return new SearchDocument(
+            this.getId(), this.getTitle(),
+            this.getContent(), this.studylogTags.getTagIds(),
+            this.mission.getId(), this.mission.getLevel().getId(),
+            this.member.getUsername()
+        );
     }
 
     public void addTags(Tags tags) {
