@@ -4,7 +4,7 @@ import java.util.Objects;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studylog.application.dto.ability.AbilityRequest;
+import wooteco.prolog.studylog.application.dto.ability.AbilityCreateRequest;
 import wooteco.prolog.studylog.domain.ablity.Ability;
 import wooteco.prolog.studylog.domain.repository.AbilityRepository;
 import wooteco.prolog.studylog.exception.AbilityNotFoundException;
@@ -20,17 +20,17 @@ public class AbilityService {
     }
 
     @Transactional
-    public void createAbility(Member member, AbilityRequest abilityRequest) {
-        Ability ability = extractAbility(member, abilityRequest);
+    public void createAbility(Member member, AbilityCreateRequest abilityCreateRequest) {
+        Ability ability = extractAbility(member, abilityCreateRequest);
 
         abilityRepository.save(ability);
     }
 
-    private Ability extractAbility(Member member, AbilityRequest abilityRequest) {
-        String name = abilityRequest.getName();
-        String description = abilityRequest.getDescription();
-        String color = abilityRequest.getColor();
-        Long parentId = abilityRequest.getParentId();
+    private Ability extractAbility(Member member, AbilityCreateRequest abilityCreateRequest) {
+        String name = abilityCreateRequest.getName();
+        String description = abilityCreateRequest.getDescription();
+        String color = abilityCreateRequest.getColor();
+        Long parentId = abilityCreateRequest.getParentId();
 
         if (Objects.isNull(parentId)) {
             return Ability.parent(name, description, color, member);

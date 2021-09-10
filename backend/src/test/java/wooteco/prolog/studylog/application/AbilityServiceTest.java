@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.studylog.application.dto.ability.AbilityRequest;
+import wooteco.prolog.studylog.application.dto.ability.AbilityCreateRequest;
 import wooteco.prolog.studylog.exception.AbilityNotFoundException;
 import wooteco.support.utils.IntegrationTest;
 
@@ -33,10 +33,10 @@ class AbilityServiceTest {
     @Test
     void createAbilityException() {
         // given
-        AbilityRequest abilityRequest = new AbilityRequest("zi존브라운123", "이견 있습니까?", "이견을 피로 물들이는 붉은 색", Long.MAX_VALUE);
+        AbilityCreateRequest abilityCreateRequest = new AbilityCreateRequest("zi존브라운123", "이견 있습니까?", "이견을 피로 물들이는 붉은 색", Long.MAX_VALUE);
 
         // when, then
-        assertThatThrownBy(() -> abilityService.createAbility(member, abilityRequest))
+        assertThatThrownBy(() -> abilityService.createAbility(member, abilityCreateRequest))
             .isExactlyInstanceOf(AbilityNotFoundException.class);
     }
 }

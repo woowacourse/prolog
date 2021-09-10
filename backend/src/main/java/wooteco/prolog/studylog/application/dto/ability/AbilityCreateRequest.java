@@ -1,16 +1,16 @@
 package wooteco.prolog.studylog.application.dto.ability;
 
-public class AbilityRequest {
+public class AbilityCreateRequest {
 
     private String name;
     private String description;
     private String color;
     private Long parent;
 
-    public AbilityRequest() {
+    public AbilityCreateRequest() {
     }
 
-    public AbilityRequest(String name, String description, String color, Long parent) {
+    public AbilityCreateRequest(String name, String description, String color, Long parent) {
         this.name = name;
         this.description = description;
         this.color = color;
