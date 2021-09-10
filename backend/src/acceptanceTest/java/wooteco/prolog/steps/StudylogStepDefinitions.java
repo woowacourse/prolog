@@ -56,6 +56,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         context.invokeHttpPostWithToken("/posts", studylogRequests);
     }
 
+    // TODO 검색용 인수 테스트
     @Given("{int}번 미션의 스터디로그를 {long}개 작성하고")
     public void 특정미션스터디로그를다수작성하면(int missionNumber, Long totalSize) {
         List<StudylogRequest> studylogRequests = new ArrayList<>();

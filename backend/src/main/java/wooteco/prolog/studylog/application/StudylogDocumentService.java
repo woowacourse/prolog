@@ -72,7 +72,7 @@ public class StudylogDocumentService {
         Pageable pageable
     ) {
 
-        Page<StudylogDocument> searchDocuments = studylogDocumentRepository
+        Page<StudylogDocument> studylogDocuments = studylogDocumentRepository
             .findByMultipleConditions(
                 keyword,
                 tags,
@@ -82,7 +82,7 @@ public class StudylogDocumentService {
                 pageable
             );
 
-        return searchDocuments.stream()
+        return studylogDocuments.stream()
             .map(StudylogDocument::getId)
             .collect(toList());
     }

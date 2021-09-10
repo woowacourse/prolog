@@ -3,6 +3,7 @@ package wooteco.prolog.studylog.domain;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
 @Document(indexName = "studylog-document")
 public class StudylogDocument {
