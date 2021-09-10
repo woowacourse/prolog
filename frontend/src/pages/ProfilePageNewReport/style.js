@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import { COLOR } from '../../constants';
+
 const Form = styled.form`
   width: 100%;
   display: flex;
@@ -26,12 +28,8 @@ const Form = styled.form`
 `;
 
 const Checkbox = styled.input`
-  width: 1.8rem;
-  height: 1.8rem;
-  margin-right: 0.5rem;
-
-  //safari 브라우저 input 사이즈 적용이 안되서 추가
-  -webkit-transform: scale(1.2, 1.2);
+  margin-right: 1rem;
+  -webkit-transform: scale(1.4);
 `;
 
 const FormButtonWrapper = styled.div`
