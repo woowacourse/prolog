@@ -149,7 +149,7 @@ const ProfilePagePosts = () => {
             {selectedFilterDetails.map(({ filterType, filterDetailId, name }) => (
               <li key={filterType + filterDetailId + name}>
                 <Chip onDelete={() => onUnsetFilter({ filterType, filterDetailId })}>
-                  {filterType}: {name}
+                  {`${filterType}: ${name}`}
                 </Chip>
               </li>
             ))}
