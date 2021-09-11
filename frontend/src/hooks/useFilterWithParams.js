@@ -17,9 +17,7 @@ const useFilterWithParams = () => {
   ]);
 
   const [postQueryParams, setPostQueryParams] = useState({
-    page: query.page ?? 1,
-    size: query.size ?? 10,
-    direction: query.direction ?? 'desc',
+    page: query.page ? query.page : 1,
   });
 
   const onSetPage = (page) => {
@@ -40,14 +38,22 @@ const useFilterWithParams = () => {
       (filter) => !(filter.filterType === filterType && filter.filterDetailId === filterDetailId)
     );
 
+    setPostQueryParams({ ...postQueryParams, page: 1 });
     setSelectedFilterDetails(newFilters);
   };
 
   const getFullParams = useCallback(() => {
+    if (postQueryParams.page == 1) {
+      delete postQueryParams.page
+    }
+
     const pageParams = queryString.stringify(postQueryParams);
-    const filterParams = selectedFilterDetails
-      .map((filter) => `${filter.filterType}=${filter.filterDetailId}`)
-      .join('&');
+    const filterParams =
+      selectedFilterDetails.length > 0
+        ? selectedFilterDetails
+            .map((filter) => `${filter.filterType}=${filter.filterDetailId}`)
+            .join('&')
+        : '';
 
     return `${pageParams}${filterParams ? `&${filterParams}` : ''}`;
   }, [postQueryParams, selectedFilterDetails]);
