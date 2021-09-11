@@ -4,6 +4,8 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,5 +39,12 @@ public class AbilityController {
     public ResponseEntity<List<AbilityResponse>> updateAbility(@AuthMemberPrincipal Member member,
                                                                @RequestBody AbilityUpdateRequest abilityUpdateRequest) {
         return ResponseEntity.ok(abilityService.updateAbility(member, abilityUpdateRequest));
+    }
+
+    @DeleteMapping("/{abilityId}")
+    public ResponseEntity<Void> deleteAbility(@AuthMemberPrincipal Member member, @PathVariable Long abilityId) {
+        abilityService.deleteAbility(member, abilityId);
+
+        return ResponseEntity.ok().build();
     }
 }

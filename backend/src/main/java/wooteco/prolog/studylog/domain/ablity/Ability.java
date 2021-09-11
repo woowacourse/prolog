@@ -98,6 +98,10 @@ public class Ability {
         return Objects.isNull(parent);
     }
 
+    public boolean hasChildren() {
+        return !children.isEmpty();
+    }
+
     public Long getId() {
         return id;
     }

@@ -3,7 +3,6 @@ package wooteco.prolog.member.domain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -17,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
 import wooteco.prolog.studylog.domain.ablity.Ability;
+import wooteco.prolog.studylog.exception.AbilityHasChildrenException;
 import wooteco.prolog.studylog.exception.AbilityNotFoundException;
 
 @Getter
@@ -95,6 +95,18 @@ public class Member {
             .orElseThrow(AbilityNotFoundException::new);
 
         targetAbility.update(ability);
+    }
+
+    public void deleteAbility(Ability ability) {
+        if (!abilities.contains(ability)) {
+            throw new AbilityNotFoundException();
+        }
+
+        if (ability.hasChildren()) {
+            throw new AbilityHasChildrenException();
+        }
+
+        abilities.remove(ability);
     }
 
     public Long getId() {

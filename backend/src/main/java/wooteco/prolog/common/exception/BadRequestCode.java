@@ -13,6 +13,7 @@ import wooteco.prolog.member.exception.MemberNotFoundException;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.TagName;
 import wooteco.prolog.studylog.domain.Title;
+import wooteco.prolog.studylog.exception.AbilityHasChildrenException;
 import wooteco.prolog.studylog.exception.AbilityNotFoundException;
 import wooteco.prolog.studylog.exception.AuthorNotValidException;
 import wooteco.prolog.studylog.exception.DuplicateMissionException;
@@ -64,7 +65,8 @@ public enum BadRequestCode {
                           TooLongMissionNameException.class),
 
     // TODO: code 수정
-    ABILITY_NOT_FOUND(9000, "역량이 존재하지 않습니다.", AbilityNotFoundException.class);
+    ABILITY_NOT_FOUND(9000, "역량이 존재하지 않습니다.", AbilityNotFoundException.class),
+    ABILITY_HAS_CHILDREN(9001, "해당 역량의 하위 역량이 존재합니다.",AbilityHasChildrenException.class);
 
     private int code;
     private String message;

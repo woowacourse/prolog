@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -79,5 +80,31 @@ class AbilityTest {
         assertThat(ability).usingRecursiveComparison()
             .ignoringFields("parent", "children", "member")
             .isEqualTo(updateTarget);
+    }
+    
+    @DisplayName("자식 역량을 가지고 있는지 물었을 때")
+    @Nested
+    class HasChildren {
+        
+        @DisplayName("자식 역량을 가지고 있는 경우 True를 반환한다.")
+        @Test
+        void hasChildrenTrue() {
+            // given
+            Ability parentAbility = Ability.parent(1L, "역량", "너잘의 3인칭 역량", "파란색", member);
+            Ability childAbility = Ability.child(2L, "역량", "너잘의 3인칭 역량", "파란색", parentAbility, member);
+            
+            // when, then
+            assertThat(parentAbility.hasChildren()).isTrue();
+        }
+
+        @DisplayName("자식 역량이 없는 경우 False를 반환한다.")
+        @Test
+        void hasChildrenFalse() {
+            // given
+            Ability parentAbility = Ability.parent(1L, "역량", "너잘의 3인칭 역량", "파란색", member);
+
+            // when, then
+            assertThat(parentAbility.hasChildren()).isFalse();
+        }
     }
 }

@@ -54,4 +54,11 @@ public class AbilityService {
 
         return AbilityResponse.of(member.getAbilities());
     }
+
+    @Transactional
+    public void deleteAbility(Member member, Long abilityId) {
+        Ability ability = findAbilityById(abilityId);
+
+        member.deleteAbility(ability);
+    }
 }
