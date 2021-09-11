@@ -80,8 +80,16 @@ const MainPage = () => {
   useEffect(() => {
     const params = getFullParams();
 
-    history.push(`${PATH.ROOT}?${search ? 'keyword=' + search : ''}&${params ?? ''}`);
-  }, [selectedFilterDetails, postQueryParams, getFullParams]);
+    if (!search && !params) {
+      history.push(`${PATH.ROOT}`);
+    } else if (params && !search) {
+      history.push(`${PATH.ROOT}?${params ? params : ''}`);
+    } else if (search && !params) {
+      history.push(`${PATH.ROOT}?${search ? 'keyword=' + search : ''}`);
+    } else {
+      history.push(`${PATH.ROOT}?${search ? 'keyword=' + search : ''}&${params ?? ''}`);
+    }
+  }, [getFullParams, postQueryParams, selectedFilterDetails]);
 
   useEffect(() => {
     const getData = async () => {

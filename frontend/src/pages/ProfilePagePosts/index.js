@@ -96,9 +96,11 @@ const ProfilePagePosts = () => {
   useEffect(() => {
     const params = getFullParams();
 
-    history.replace(
-      `${PATH.ROOT}${username}/posts${params ? '?'+params : ''}`
-    );
+    if (!params) {
+      return;
+    }
+
+    history.push(`${PATH.ROOT}${username}/posts${params ? '?' + params : ''}`);
   }, [getFullParams, postQueryParams, selectedFilterDetails, username]);
 
   useEffect(() => {
