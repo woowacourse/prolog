@@ -66,6 +66,11 @@ const StudyLogListContainer = styled.section`
   width: 100%;
   padding: 2rem;
 
+  > p {
+    margin-top: 3rem;
+    text-align: center;
+  }
+
   ul {
     width: 100%;
     max-height: 46rem;

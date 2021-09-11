@@ -13,10 +13,35 @@ import {
 } from './StudyLogModal.styles';
 
 const StudyLogModal = ({ onModalClose, username }) => {
-  const [selectedLevel, setSelectedLevel] = useState('');
   const [filters] = useFetch([], requestGetFilters);
-
   const levels = filters.levels;
+
+  const [selectedLevelName, setSelectedLevelName] = useState('');
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const getPosts = async () => {
+      try {
+        const selectedLevelId = levels.find((level) => level.name === selectedLevelName)?.id;
+        const response = await requestGetPosts(`levels=${selectedLevelId}&usernames=${username}`);
+
+        if (!response.ok) {
+          throw new Error(response.status);
+        }
+
+        const posts = await response.json();
+
+        setPosts(posts.data);
+        console.log(posts.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (levels) {
+      getPosts();
+    }
+  }, [selectedLevelName]);
 
   return (
     <Modal onModalClose={onModalClose} width="50%" height="80%">
@@ -32,26 +57,32 @@ const StudyLogModal = ({ onModalClose, username }) => {
           <h3>레벨</h3>
           <SelectBox
             options={levels?.map((level) => level.name)}
-            selectedOption={selectedLevel}
-            setSelectedOption={setSelectedLevel}
+            selectedOption={selectedLevelName}
+            setSelectedOption={setSelectedLevelName}
             title="우아한테크코스 과정 레벨 목록입니다."
             name="level"
           />
         </SelectBoxContainer>
 
         <StudyLogListContainer>
-          <span>총 0개</span>
-          <ul>
-            <li>
-              <label>
-                <Checkbox type="checkbox" />
-                <div>
-                  <p></p>
-                  <h4></h4>
-                </div>
-              </label>
-            </li>
-          </ul>
+          <span>총 {posts.length}개</span>
+          {posts.length === 0 ? (
+            <p>해당 레벨의 학습로그가 없습니다.</p>
+          ) : (
+            <ul>
+              {posts.map((post) => (
+                <li>
+                  <label>
+                    <Checkbox type="checkbox" />
+                    <div>
+                      <p>{post.mission.level.name}</p>
+                      <h4>{post.title}</h4>
+                    </div>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          )}
         </StudyLogListContainer>
 
         <Button size="X_SMALL" css={{ backgroundColor: `${COLOR.LIGHT_BLUE_500}` }}>
