@@ -88,13 +88,13 @@ public class Member {
         abilities.add(ability);
     }
 
-    public void updateAbility(Ability updateAbility) {
-        Ability legacyAbility = abilities.stream()
-            .filter(ability -> ability.equals(updateAbility))
+    public void updateAbility(Ability ability) {
+        Ability targetAbility = abilities.stream()
+            .filter(target -> target.equals(ability))
             .findAny()
             .orElseThrow(AbilityNotFoundException::new);
 
-        legacyAbility.update(updateAbility);
+        targetAbility.update(ability);
     }
 
     public Long getId() {
