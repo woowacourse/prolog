@@ -9,7 +9,20 @@ const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
 const requestGetTags = () => fetch(`${BASE_URL}/tags`);
 
 const requestGetPosts = (query) => {
-  return fetch(`${BASE_URL}/posts?${query.toString()}`);
+  if (query.type === 'searchParams') {
+    return fetch(`${BASE_URL}/posts?${query.data.toString()}`);
+  } else if (query.type === 'filter') {
+    const searchParams = Object.entries(query?.data?.postQueryParams).map(
+      ([key, value]) => `${key}=${value}`
+    );
+    const filterQuery = query.data.filterQuery.length
+      ? query.data.filterQuery.map(
+          ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
+        )
+      : '';
+    console.log(searchParams, filterQuery);
+    return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`);
+  }
 };
 
 const requestEditPost = (postId, data, accessToken) =>

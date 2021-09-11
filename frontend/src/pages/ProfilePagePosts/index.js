@@ -69,7 +69,7 @@ const ProfilePagePosts = () => {
     const query = new URLSearchParams(history.location.search);
 
     try {
-      const response = await requestGetPosts(query);
+      const response = await requestGetPosts({ type: 'searchParams', data: query });
       const data = await response.json();
 
       setPosts(data);

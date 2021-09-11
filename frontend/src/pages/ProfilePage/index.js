@@ -14,6 +14,7 @@ import {
   Title,
   Description,
   PostBottomContainer,
+  TagContainer,
 } from './styles';
 import { PATH } from '../../constants';
 import { requestGetPosts, requestGetUserTags } from '../../service/requests';
@@ -51,7 +52,10 @@ const ProfilePage = ({ children, menu }) => {
         ...filteringOption,
         { filterType: 'usernames', filterDetailId: username },
       ];
-      const response = await requestGetPosts(filterQuery, postQueryParams);
+      const response = await requestGetPosts({
+        type: 'filter',
+        data: { filterQuery, postQueryParams },
+      });
 
       if (!response.ok) {
         throw new Error(response.status);
@@ -121,20 +125,22 @@ const ProfilePage = ({ children, menu }) => {
           <Overview>
             <div>
               <TagTitle>태그</TagTitle>
-              {tags?.data?.map(({ id, name, count }) => (
-                <Tag
-                  key={id}
-                  id={id}
-                  name={name}
-                  postCount={count}
-                  selectedTagId={selectedTagId}
-                  onClick={() => {
-                    setSelectedTagId(id);
-                    setSelectedDay(-1);
-                    setFilteringOptionWithTagId(id);
-                  }}
-                />
-              ))}
+              <TagContainer>
+                {tags?.data?.map(({ id, name, count }) => (
+                  <Tag
+                    key={id}
+                    id={id}
+                    name={name}
+                    postCount={count}
+                    selectedTagId={selectedTagId}
+                    onClick={() => {
+                      setSelectedTagId(id);
+                      setSelectedDay(-1);
+                      setFilteringOptionWithTagId(id);
+                    }}
+                  />
+                ))}
+              </TagContainer>
             </div>
             <Card title="캘린더" css={CardStyles}>
               <Calendar
