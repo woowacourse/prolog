@@ -2,16 +2,17 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { Button } from '../../components';
-import COLOR from '../../constants/color';
-import Modal from './Modal/Modal';
+import { COLOR } from '../../constants';
+import StudyLogModal from './StudyLogModal';
 import ReportInfoInput from './ReportInfoInput';
 import ReportStudyLogTable from './ReportStudyLogTable';
 
 import { Checkbox, Form, FormButtonWrapper } from './style';
 
 // TODO 1. 페이지 나갈 떄, 확인하는 기능 넣기
-// TODO 2. 등록할 때 title이 없다면, 날짜 + 우테코 닉네임으로 해서 보내기
 // TODO 3. 학습로그 한 개 이상 선택하도록 하기
+// TODO 4. 로그인이 안된 사용자는 접근이 불가하도록 처리하기
+// TODO 5. 로그인이 풀렸을 경우에 어떻게 처리할 것인지 알아보기 -> 글 쓰던게 날아갈 수 있음.
 
 const ProfilePageNewReport = () => {
   const { username } = useParams();
@@ -88,7 +89,7 @@ const ProfilePageNewReport = () => {
           <Button size="X_SMALL">리포트 등록</Button>
         </FormButtonWrapper>
       </Form>
-      {isModalOpened && <Modal onModalClose={onModalClose} />}
+      {isModalOpened && <StudyLogModal onModalClose={onModalClose} username={username} />}
     </>
   );
 };

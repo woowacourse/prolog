@@ -1,24 +1,7 @@
 import styled from '@emotion/styled';
-import { COLOR } from '../../../constants';
+import { COLOR } from '../../constants';
 
 const Container = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-`;
-
-const ModalInner = styled.article`
-  position: absolute;
-  width: 50%;
-  right: 0;
-  bottom: 0;
-  height: 80%;
-
-  border: 1px solid ${COLOR.LIGHT_GRAY_400};
-  background-color: ${COLOR.WHITE};
-  border-radius: 0.5rem;
-  box-shadow: 0px 2px 4px 0px ${COLOR.BLACK_OPACITY_300};
-
   > button {
     position: absolute;
     bottom: 2rem;
@@ -133,4 +116,4 @@ const StudyLogListContainer = styled.section`
   }
 `;
 
-export { Container, ModalInner, TitleContainer, SelectBoxContainer, StudyLogListContainer };
+export { Container, TitleContainer, SelectBoxContainer, StudyLogListContainer };
