@@ -41,11 +41,10 @@ public class StudylogService {
 
     private final StudylogRepository studylogRepository;
     private final MemberTagService memberTagService;
-    private final StudylogDocumentService studylogDocumentService;
+    private final DocumentService studylogDocumentService;
     private final MissionService missionService;
     private final MemberService memberService;
     private final TagService tagService;
-
 
     public StudylogsResponse findPostsWithFilter(
         List<Long> levelIds,

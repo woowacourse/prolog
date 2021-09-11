@@ -1,13 +1,8 @@
 package wooteco.prolog.studylog.application;
 
-import static java.util.stream.Collectors.toList;
-
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHitSupport;
@@ -16,67 +11,27 @@ import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
-import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.StudylogDocumentQueryBuilder;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 
-@AllArgsConstructor
+@Profile({"dev","prod"})
 @Service
-@Slf4j
-public class StudylogDocumentService {
+public class StudylogDocumentService extends AbstractStudylogDocumentService {
 
-    private final StudylogDocumentRepository studylogDocumentRepository;
-    private final StudylogRepository studylogRepository;
     private final ElasticsearchRestTemplate elasticsearchRestTemplate;
 
-    public void save(StudylogDocument studylogDocument) {
-        studylogDocumentRepository.save(studylogDocument);
+    public StudylogDocumentService(
+        StudylogDocumentRepository studylogDocumentRepository,
+        StudylogRepository studylogRepository,
+        ElasticsearchRestTemplate elasticsearchRestTemplate)
+    {
+        super(studylogDocumentRepository, studylogRepository);
+        this.elasticsearchRestTemplate = elasticsearchRestTemplate;
     }
 
-    public List<Long> findBySearchKeyword(String searchKeyword,
-                                          Pageable pageable) {
-        Page<StudylogDocument> studylogs = studylogDocumentRepository.findByKeyword(searchKeyword,
-                                                                                    pageable);
-        return studylogs.stream()
-            .map(StudylogDocument::getId)
-            .collect(toList());
-    }
-
-    public StudylogDocument findById(Long id) {
-        return studylogDocumentRepository.findById(id)
-            .orElseThrow(StudylogDocumentNotFoundException::new);
-    }
-
-    public void delete(StudylogDocument studylogDocument) {
-        studylogDocumentRepository.delete(studylogDocument);
-    }
-
-    public void deleteAll() {
-        studylogDocumentRepository.deleteAll();
-    }
-
-    public void sync() {
-        // sync between es and db
-        studylogDocumentRepository.deleteAll();
-
-        List<Studylog> studylogs = studylogRepository.findAll();
-        studylogDocumentRepository.saveAll(
-            studylogs.stream()
-                .map(Studylog::toStudylogDocument)
-                .collect(Collectors.toList())
-        );
-
-        log.info("{}개의 데이터를 동기화하였습니다.", studylogs.size());
-    }
-
-    public void update(StudylogDocument studylogDocument) {
-        studylogDocumentRepository.save(studylogDocument);
-    }
-
-    // TODO
+    @Override
     public SearchPage<StudylogDocument> findBySearchKeyword(
         String keyword,
         List<Long> tags,

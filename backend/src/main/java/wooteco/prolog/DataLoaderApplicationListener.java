@@ -11,7 +11,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studylog.application.StudylogDocumentService;
+import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
 import wooteco.prolog.studylog.application.StudylogService;
@@ -37,7 +37,7 @@ public class DataLoaderApplicationListener implements
     private TagService tagService;
     private MemberService memberService;
     private StudylogService studylogService;
-    private StudylogDocumentService studyLogDocumentService;
+    private DocumentService studyLogDocumentService;
     private UpdatedContentsRepository updatedContentsRepository;
 
     @Override
@@ -82,18 +82,17 @@ public class DataLoaderApplicationListener implements
         // member init
         Member member1 = memberService
             .findOrCreateMember(new GithubProfileResponse("류성현", "gracefulBrown", "46308949",
-                "https://avatars.githubusercontent.com/u/46308949?v=4"));
+                                                          "https://avatars.githubusercontent.com/u/46308949?v=4"));
         Member member2 = memberService
             .findOrCreateMember(new GithubProfileResponse("서민정", "seovalue", "123456",
                                                           "https://avatars.githubusercontent.com/u/48412963?v=4"));
 
-
         // post init
         studylogService.insertStudylogs(member1, Arrays.asList(
             new StudylogRequest("ATDD란 무엇인가", "노션 정리 링크\n개인적으로 친구들에게 한 설명이 참 잘 썼다고 생각한다 호호",
-                mission1.getId(), tagRequests1),
+                                mission1.getId(), tagRequests1),
             new StudylogRequest("프론트엔드 빌드 툴", "snowpack 사용하기 https://hjuu.tistory.com/6",
-                mission2.getId(), tagRequests1),
+                                mission2.getId(), tagRequests1),
             new StudylogRequest("페이지네이션 데이터 1", "좋은 내용", mission1.getId(), tagRequests1),
             new StudylogRequest("페이지네이션 데이터 2", "좋은 내용", mission2.getId(), tagRequests2),
             new StudylogRequest("페이지네이션 데이터 3", "좋은 내용", mission3.getId(), tagRequests3),
