@@ -13,7 +13,7 @@ const Container = styled.div`
     border-radius: 1rem;
 
     :hover {
-      background-color: ${COLOR.LIGHT_BLUE_900};
+      background-color: ${COLOR.DARK_BLUE_300};
       color: ${COLOR.WHITE};
     }
   }
@@ -36,7 +36,7 @@ const TitleContainer = styled.div`
 
   button {
     font-size: 1.4rem;
-    color: ${COLOR.BLACK_600};
+    color: ${COLOR.BLACK_300};
 
     :hover {
       text-decoration: underline;
@@ -81,32 +81,6 @@ const StudyLogListContainer = styled.section`
     ::-webkit-scrollbar {
       display: none;
     }
-
-    label {
-      width: 100%;
-      padding: 1rem;
-      margin: 1.5rem auto 2rem;
-      height: 8rem;
-      border: 1px solid ${COLOR.LIGHT_GRAY_800};
-      border-radius: 1rem;
-
-      display: flex;
-      align-items: center;
-
-      div {
-        margin: 0 1rem;
-
-        p {
-          font-size: 1.3rem;
-          color: ${COLOR.LIGHT_GRAY_900};
-        }
-
-        h4 {
-          font-size: 1.6rem;
-          font-weight: 500;
-        }
-      }
-    }
   }
 
   span {
@@ -114,6 +88,7 @@ const StudyLogListContainer = styled.section`
     text-align: left;
 
     padding: 0.2rem 1rem;
+    margin-bottom: 0.5rem;
 
     font-size: 1.6rem;
     font-weight: 400;
@@ -121,4 +96,44 @@ const StudyLogListContainer = styled.section`
   }
 `;
 
-export { Container, TitleContainer, SelectBoxContainer, StudyLogListContainer };
+const StudyLog = styled.li`
+  label {
+    width: 100%;
+    padding: 1rem;
+    margin: 1.5rem auto 2rem;
+    height: 11rem;
+
+    border-radius: 1rem;
+    border: ${({ isChecked }) =>
+      isChecked ? `1px solid ${COLOR.LIGHT_BLUE_200}` : `1px solid ${COLOR.LIGHT_GRAY_800}`};
+    ${({ isChecked }) => isChecked && `background-color: ${COLOR.LIGHT_BLUE_100}`};
+
+    display: flex;
+    align-items: center;
+
+    div {
+      margin: 0 1rem;
+
+      p {
+        font-size: 1.3rem;
+        color: ${({ isChecked }) =>
+          isChecked ? `${COLOR.DARK_GRAY_700}` : `${COLOR.DARK_GRAY_400}`};
+      }
+
+      h4 {
+        font-size: 1.6rem;
+        font-weight: 500;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-all; // 영문 자르기용
+        word-wrap: break-word;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+    }
+  }
+`;
+
+export { Container, TitleContainer, SelectBoxContainer, StudyLogListContainer, StudyLog };

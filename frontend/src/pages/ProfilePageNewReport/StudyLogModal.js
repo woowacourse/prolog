@@ -10,6 +10,7 @@ import {
   TitleContainer,
   SelectBoxContainer,
   StudyLogListContainer,
+  StudyLog,
 } from './StudyLogModal.styles';
 
 const StudyLogModal = ({ onModalClose, username }) => {
@@ -19,20 +20,25 @@ const StudyLogModal = ({ onModalClose, username }) => {
   const [selectedLevelName, setSelectedLevelName] = useState('');
   const [posts, setPosts] = useState([]);
 
+  // TODO : 부모 컴포넌트로 옮기기
+  const [selectedPost, setSelectedPost] = useState([]);
+
   useEffect(() => {
     const getPosts = async () => {
       try {
         const selectedLevelId = levels.find((level) => level.name === selectedLevelName)?.id;
-        const response = await requestGetPosts(`levels=${selectedLevelId}&usernames=${username}`);
 
-        if (!response.ok) {
-          throw new Error(response.status);
+        if (selectedLevelId) {
+          const response = await requestGetPosts(`levels=${selectedLevelId}&usernames=${username}`);
+
+          if (!response.ok) {
+            throw new Error(response.status);
+          }
+
+          const posts = await response.json();
+
+          setPosts(posts.data);
         }
-
-        const posts = await response.json();
-
-        setPosts(posts.data);
-        console.log(posts.data);
       } catch (error) {
         console.error(error);
       }
@@ -41,10 +47,21 @@ const StudyLogModal = ({ onModalClose, username }) => {
     if (levels) {
       getPosts();
     }
-  }, [selectedLevelName]);
+  }, [selectedLevelName, levels, username]);
+
+  const onToggleStudyLog = (id) => {
+    console.log(selectedPost);
+
+    if (selectedPost.includes(id)) {
+      const index = selectedPost.indexOf(id);
+      setSelectedPost([...selectedPost.slice(0, index), ...selectedPost.slice(index + 1)]);
+    } else {
+      setSelectedPost((prevSelectedPost) => [...prevSelectedPost, id]);
+    }
+  };
 
   return (
-    <Modal onModalClose={onModalClose} width="50%" height="80%">
+    <Modal width="50%" height="80%">
       <Container>
         <TitleContainer>
           <h2 id="dialog1Title">역량별 학습로그 등록하기</h2>
@@ -65,21 +82,23 @@ const StudyLogModal = ({ onModalClose, username }) => {
         </SelectBoxContainer>
 
         <StudyLogListContainer>
-          <span>총 {posts.length}개</span>
+          <span>
+            ✅ {selectedPost.length}개 선택 (총 {posts.length}개)
+          </span>
           {posts.length === 0 ? (
             <p>해당 레벨의 학습로그가 없습니다.</p>
           ) : (
             <ul>
               {posts.map((post) => (
-                <li>
+                <StudyLog key={post.id} isChecked={selectedPost.includes(post.id)}>
                   <label>
-                    <Checkbox type="checkbox" />
+                    <Checkbox type="checkbox" onClick={() => onToggleStudyLog(post.id)} />
                     <div>
                       <p>{post.mission.level.name}</p>
                       <h4>{post.title}</h4>
                     </div>
                   </label>
-                </li>
+                </StudyLog>
               ))}
             </ul>
           )}
