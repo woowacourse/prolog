@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -20,7 +20,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @Document(indexName = "studylog-document")
 public class StudylogDocument {
 
-    @Id
+    @Field(type = FieldType.Long)
     private Long id;
 
     @Field(type = FieldType.Text)
@@ -41,6 +41,6 @@ public class StudylogDocument {
     @Field(type = FieldType.Text)
     private String username;
 
-    @Field(type = FieldType.Date)
+    @Field(type = FieldType.Date, format = DateFormat.basic_date)
     private LocalDateTime dateTime;
 }

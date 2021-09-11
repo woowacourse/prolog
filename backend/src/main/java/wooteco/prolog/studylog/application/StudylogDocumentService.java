@@ -2,24 +2,35 @@ package wooteco.prolog.studylog.application;
 
 import static java.util.stream.Collectors.toList;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.SearchHitSupport;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.SearchPage;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
-import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.Studylog;
+import wooteco.prolog.studylog.domain.StudylogDocument;
+import wooteco.prolog.studylog.domain.StudylogDocumentQueryBuilder;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 
 @AllArgsConstructor
 @Service
+@Slf4j
 public class StudylogDocumentService {
 
     private final StudylogDocumentRepository studylogDocumentRepository;
     private final StudylogRepository studylogRepository;
+    private final ElasticsearchRestTemplate elasticsearchRestTemplate;
 
     public void save(StudylogDocument studylogDocument) {
         studylogDocumentRepository.save(studylogDocument);
@@ -57,34 +68,35 @@ public class StudylogDocumentService {
                 .map(Studylog::toStudylogDocument)
                 .collect(Collectors.toList())
         );
+
+        log.info("{}개의 데이터를 동기화하였습니다.", studylogs.size());
     }
 
     public void update(StudylogDocument studylogDocument) {
         studylogDocumentRepository.save(studylogDocument);
     }
 
-    // TODO 변경될 find 메서드
-    public List<Long> findByKeyword(
+    // TODO
+    public List<Long> findBySearchKeyword(
         String keyword,
         List<Long> tags,
         List<Long> missions,
         List<Long> levels,
         List<String> usernames,
+        LocalDate start,
+        LocalDate end,
         Pageable pageable
     ) {
 
-        Page<StudylogDocument> studylogDocuments = studylogDocumentRepository
-            .findByMultipleConditions(
-                keyword,
-                tags,
-                missions,
-                levels,
-                usernames,
-                pageable
-            );
+        final Query query = StudylogDocumentQueryBuilder.makeQuery(keyword, tags, missions, levels,
+                                                                   usernames, start, end, pageable);
+        final SearchHits<StudylogDocument> searchHits
+            = elasticsearchRestTemplate.search(query, StudylogDocument.class, IndexCoordinates.of("studylog-document"));
+        final SearchPage<StudylogDocument> searchPages = SearchHitSupport.searchPageFor(searchHits,
+                                                                                        query.getPageable());
 
-        return studylogDocuments.stream()
-            .map(StudylogDocument::getId)
+        return searchPages.stream()
+            .map(searchPage -> searchPage.getContent().getId())
             .collect(toList());
     }
 }

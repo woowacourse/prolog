@@ -48,15 +48,6 @@ public class FakeStudylogDocumentRepository implements StudylogDocumentRepositor
         return new PageImpl<>(new ArrayList<>(results), pageable, 20);
     }
 
-    // TODO
-    @Override
-    public Page<StudylogDocument> findByMultipleConditions(String keyword, List<Long> tags,
-                                                           List<Long> missions, List<Long> levels,
-                                                           List<String> usernames,
-                                                           Pageable pageable) {
-        return null;
-    }
-
     private List<String> preprocess(String searchKeyword) {
         String[] split = searchKeyword.split(" ");
         List<String> results = new ArrayList<>();
