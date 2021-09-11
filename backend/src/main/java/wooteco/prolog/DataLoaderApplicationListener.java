@@ -42,6 +42,7 @@ public class DataLoaderApplicationListener implements
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        studyLogDocumentService.deleteAll();
 
         // level init
         LevelResponse level1 = levelService.create(new LevelRequest("백엔드Java 레벨1 - 2021"));
