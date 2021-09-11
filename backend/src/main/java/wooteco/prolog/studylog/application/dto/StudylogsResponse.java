@@ -8,7 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.elasticsearch.core.SearchPage;
 import wooteco.prolog.studylog.domain.Studylog;
+import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
 
@@ -30,6 +32,20 @@ public class StudylogsResponse {
                 responsePage.getTotalElements(),
                 responsePage.getTotalPages(),
                 responsePage.getNumber() + ONE_INDEXED_PARAMETER);
+    }
+
+    public static StudylogsResponse of(List<Studylog> studylogs, SearchPage<StudylogDocument> responsePage) {
+        final List<StudylogResponse> studylogResponses = convertToStudylogResponse(studylogs);
+        return new StudylogsResponse(studylogResponses,
+                                     responsePage.getTotalElements(),
+                                     responsePage.getTotalPages(),
+                                     responsePage.getNumber() + ONE_INDEXED_PARAMETER);
+    }
+
+    private static List<StudylogResponse> convertToStudylogResponse(List<Studylog> studylogs) {
+        return studylogs.stream()
+            .map(StudylogResponse::of)
+            .collect(toList());
     }
 
     private static StudylogResponse toResponse(Studylog studylog) {

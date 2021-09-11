@@ -77,7 +77,7 @@ public class StudylogDocumentService {
     }
 
     // TODO
-    public List<Long> findBySearchKeyword(
+    public SearchPage<StudylogDocument> findBySearchKeyword(
         String keyword,
         List<Long> tags,
         List<Long> missions,
@@ -92,11 +92,7 @@ public class StudylogDocumentService {
                                                                    usernames, start, end, pageable);
         final SearchHits<StudylogDocument> searchHits
             = elasticsearchRestTemplate.search(query, StudylogDocument.class, IndexCoordinates.of("studylog-document"));
-        final SearchPage<StudylogDocument> searchPages = SearchHitSupport.searchPageFor(searchHits,
-                                                                                        query.getPageable());
-
-        return searchPages.stream()
-            .map(searchPage -> searchPage.getContent().getId())
-            .collect(toList());
+        return SearchHitSupport.searchPageFor(searchHits,
+                                              query.getPageable());
     }
 }
