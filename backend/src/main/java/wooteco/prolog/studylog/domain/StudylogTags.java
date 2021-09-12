@@ -32,9 +32,11 @@ public class StudylogTags {
         values.addAll(duplicateFilter(studylogTags));
     }
 
-    private List<wooteco.prolog.studylog.domain.StudylogTag> duplicateFilter(List<wooteco.prolog.studylog.domain.StudylogTag> studylogTags) {
+    private List<wooteco.prolog.studylog.domain.StudylogTag> duplicateFilter(
+        List<wooteco.prolog.studylog.domain.StudylogTag> studylogTags) {
         return studylogTags.stream()
-            .filter(studylogTag -> values.stream().map(wooteco.prolog.studylog.domain.StudylogTag::getTag)
+            .filter(studylogTag -> values.stream()
+                .map(wooteco.prolog.studylog.domain.StudylogTag::getTag)
                 .noneMatch(newTag -> newTag.isSameName(studylogTag.getTag())))
             .collect(Collectors.toList());
     }
@@ -46,6 +48,13 @@ public class StudylogTags {
 
     public Map<Tag, Long> groupingWithCounting() {
         return values.stream()
-                .collect(groupingBy(wooteco.prolog.studylog.domain.StudylogTag::getTag, Collectors.counting()));
+            .collect(groupingBy(wooteco.prolog.studylog.domain.StudylogTag::getTag,
+                                Collectors.counting()));
+    }
+
+    public List<Long> getTagIds() {
+        return values.stream()
+            .map(value -> value.getTag().getId())
+            .collect(Collectors.toList());
     }
 }

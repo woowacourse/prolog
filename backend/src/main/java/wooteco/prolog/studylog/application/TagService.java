@@ -24,7 +24,6 @@ public class TagService {
 
     private final TagRepository tagRepository;
     private final StudylogTagService studylogTagService;
-    private final MemberService memberService;
 
     @Transactional
     public Tags findOrCreate(List<TagRequest> tagRequests) {
