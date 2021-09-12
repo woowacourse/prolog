@@ -19,7 +19,7 @@ import wooteco.prolog.studylog.domain.StudylogDocumentQueryBuilder;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 
-@Profile({"dev","prod"})
+@Profile({"dev", "prod"})
 @Service
 public class StudylogDocumentService extends AbstractStudylogDocumentService {
 
@@ -28,8 +28,7 @@ public class StudylogDocumentService extends AbstractStudylogDocumentService {
     public StudylogDocumentService(
         StudylogDocumentRepository studylogDocumentRepository,
         StudylogRepository studylogRepository,
-        ElasticsearchRestTemplate elasticsearchRestTemplate)
-    {
+        ElasticsearchRestTemplate elasticsearchRestTemplate) {
         super(studylogDocumentRepository, studylogRepository);
         this.elasticsearchRestTemplate = elasticsearchRestTemplate;
     }
@@ -46,11 +45,16 @@ public class StudylogDocumentService extends AbstractStudylogDocumentService {
         Pageable pageable
     ) {
 
-        final Query query = StudylogDocumentQueryBuilder.makeQuery(keyword, tags, missions, levels,
+        final Query query = StudylogDocumentQueryBuilder.makeQuery(preprocess(keyword), tags, missions, levels,
                                                                    usernames, start, end, pageable);
+
+        // Query 결과를 ES에서 조회한다.
         final SearchHits<StudylogDocument> searchHits
             = elasticsearchRestTemplate.search(query, StudylogDocument.class, IndexCoordinates.of("studylog-document"));
-        final SearchPage<StudylogDocument> searchPages = SearchHitSupport.searchPageFor(searchHits, query.getPageable());
+
+        // 조회된 SearchHits를 페이징할 수 있는 SearchPage로 변경한다.
+        final SearchPage<StudylogDocument> searchPages
+            = SearchHitSupport.searchPageFor(searchHits, query.getPageable());
 
         final List<Long> studylogIds = searchPages.stream()
             .map(searchPage -> searchPage.getContent().getId())

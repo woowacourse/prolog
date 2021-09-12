@@ -7,9 +7,7 @@ import static java.util.stream.Collectors.toList;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -67,8 +65,7 @@ public class StudylogService {
         return StudylogsResponse.of(posts);
     }
 
-    // TODO 변경될 find 메서드
-    public StudylogsResponse searchStudylogsWithFilter(
+    public StudylogsResponse findStudylogsWithFilter(
         StudylogsSearchRequest studylogsSearchRequest
     ) {
         final Pageable pageable = studylogsSearchRequest.getPageable();

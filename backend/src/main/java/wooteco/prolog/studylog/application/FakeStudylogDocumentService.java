@@ -63,11 +63,4 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
             .and(StudylogSpecification.findBetweenDate(start, end))
             .and(StudylogSpecification.distinct(true)));
     }
-
-    private List<String> preprocess(String searchKeyword) {
-        String[] split = searchKeyword.split(" ");
-        List<String> results = new ArrayList<>();
-        Collections.addAll(results, split);
-        return results;
-    }
 }

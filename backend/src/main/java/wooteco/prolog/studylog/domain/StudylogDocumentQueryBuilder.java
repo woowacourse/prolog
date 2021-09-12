@@ -3,15 +3,21 @@ package wooteco.prolog.studylog.domain;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.Query;
 
 public class StudylogDocumentQueryBuilder {
 
-    public static Query makeQuery(String keyword,
+    private static final String WILD_CARD = "*";
+    private static final String OR = " OR ";
+    private static final String EMPTY = " ";
+
+    public static Query makeQuery(List<String> keywords,
                                   List<Long> tags,
                                   List<Long> missions,
                                   List<Long> levels,
@@ -22,72 +28,53 @@ public class StudylogDocumentQueryBuilder {
     ) {
 
         NativeSearchQueryBuilder query = new NativeSearchQueryBuilder();
-        if (Objects.nonNull(keyword) && !keyword.isEmpty()) {
-            makeTitleAndContentQuery(query, keyword);
-        }
-
-        if (Objects.nonNull(usernames) && !usernames.isEmpty()) {
-            makeUserNameQuery(query, usernames);
-        }
-
-        if (Objects.nonNull(start)) {
-            makeGTEQuery(query, start);
-        }
-
-        if (Objects.nonNull(end)) {
-            makeLTEQuery(query, end);
-        }
-
-        if (Objects.nonNull(tags) && !tags.isEmpty()) {
-            makeTermsQuery(query, "tagIds", tags);
-        }
-
-        if (Objects.nonNull(missions) && !missions.isEmpty()) {
-            makeTermsQuery(query, "missionId", missions);
-        }
-
-        if (Objects.nonNull(levels) && !levels.isEmpty()) {
-            makeTermsQuery(query, "levelId", levels);
-        }
+        makeBoolQuery(query,
+                      makeKeywordsQueryString(keywords),
+                      makeDefaultQueryString(usernames),
+                      makeDefaultQueryString(convertToListString(levels)),
+                      makeDefaultQueryString(convertToListString(missions)));
+        makeFilterQuery(query, tags);
 
         return query.withPageable(pageable)
             .build();
     }
 
-    private static void makeTitleAndContentQuery(
+    private static List<String> convertToListString(List<Long> values) {
+        return values.stream()
+            .map(String::valueOf)
+            .collect(Collectors.toList());
+    }
+
+    private static void makeBoolQuery(
         NativeSearchQueryBuilder query,
-        String keyword) {
+        String keyword,
+        String username,
+        String levels,
+        String missions) {
         query.withQuery(QueryBuilders.boolQuery()
-                            .must(QueryBuilders.queryStringQuery("*" + keyword + "*")
-                                      .field("title")
-                                      .field("content"))
+                            .must(multiField(keyword))
+                            .must(defaultField(username, "username"))
+                            .must(defaultField(levels, "levelId"))
+                            .must(defaultField(missions, "missionId"))
         );
     }
 
-    private static void makeUserNameQuery(NativeSearchQueryBuilder query, List<String> usernames) {
-        query.withQuery(QueryBuilders.boolQuery()
-                            .must(QueryBuilders
-                                      .queryStringQuery(makeUserNameQueryString(usernames))
-                                      .defaultField("username")));
+    private static QueryStringQueryBuilder multiField(String keyword) {
+        return QueryBuilders.queryStringQuery(keyword)
+            .field("title")
+            .field("content");
     }
 
-    private static void makeGTEQuery(NativeSearchQueryBuilder query, LocalDate start) {
-        query.withQuery(QueryBuilders.boolQuery()
-                            .filter(QueryBuilders.rangeQuery("dateTime").gte(start)));
+    private static QueryStringQueryBuilder defaultField(String query, String field) {
+        return QueryBuilders
+            .queryStringQuery(query)
+            .defaultField(field);
     }
 
-    private static void makeLTEQuery(NativeSearchQueryBuilder query, LocalDate end) {
-        query.withQuery(QueryBuilders.boolQuery()
-                            .filter(QueryBuilders.rangeQuery("dateTime").lte(end)));
-    }
-
-    private static void makeTermsQuery(NativeSearchQueryBuilder query, String field,
-                                       List<Long> list) {
-        query.withFilter(QueryBuilders.termsQuery(field, list));
-    }
-
-    private static String makeUserNameQueryString(List<String> usernames) {
-        final String OR = " OR ";
+    private static String makeDefaultQueryString(List<String> usernames) {
+        if (Objects.isNull(usernames) || usernames.isEmpty()) {
+            return WILD_CARD;
+        }
         StringBuilder sb = new StringBuilder();
         IntStream.range(0, usernames.size()).forEach(i -> {
             sb.append(usernames.get(i));
@@ -97,4 +84,43 @@ public class StudylogDocumentQueryBuilder {
         });
         return sb.toString();
     }
+
+    private static String makeKeywordsQueryString(List<String> keywords) {
+        if (Objects.isNull(keywords) || keywords.isEmpty()) {
+            return WILD_CARD;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < keywords.size(); i++) {
+            final String value = keywords.get(i);
+
+            if (value.contains(EMPTY)) {
+                sb.append("\"*").append(value).append("*\"");
+            } else {
+                sb.append(WILD_CARD).append(value).append(WILD_CARD);
+            }
+
+            if (i != keywords.size() - 1) {
+                sb.append(OR);
+            }
+        }
+        return sb.toString();
+    }
+
+    private static void makeFilterQuery(NativeSearchQueryBuilder query, List<Long> tags) {
+        if (Objects.isNull(tags) || tags.isEmpty()) {
+            return;
+        }
+        query.withFilter(QueryBuilders.termsQuery("tagIds", tags));
+    }
+
+    // TODO 날짜 범위 쿼리
+//    private static void makeGTEQuery(NativeSearchQueryBuilder query, LocalDate start) {
+//        query.withQuery(QueryBuilders.boolQuery()
+//                            .filter(QueryBuilders.rangeQuery("dateTime").gte(start)));
+//    }
+//
+//    private static void makeLTEQuery(NativeSearchQueryBuilder query, LocalDate end) {
+//        query.withQuery(QueryBuilders.boolQuery()
+//                            .filter(QueryBuilders.rangeQuery("dateTime").lte(end)));
+//    }
 }

@@ -49,7 +49,6 @@ import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 import wooteco.support.utils.IntegrationTest;
 
-// TODO
 @IntegrationTest
 class StudylogServiceTest {
 
@@ -227,7 +226,7 @@ class StudylogServiceTest {
         insertStudylogs(member2, studylog3, studylog4);
 
         // document 초기화 어떻게...
-        StudylogsResponse studylogsResponse = studylogService.searchStudylogsWithFilter(
+        StudylogsResponse studylogsResponse = studylogService.findStudylogsWithFilter(
             new StudylogsSearchRequest(
                 keyword,
                 levelIds,

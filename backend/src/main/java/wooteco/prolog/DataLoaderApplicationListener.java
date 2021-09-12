@@ -59,25 +59,29 @@ public class DataLoaderApplicationListener implements
         MissionResponse mission4 = missionService.create(new MissionRequest("지하철", level4.getId()));
 
         // filter init
-        List<TagRequest> tagRequests1 = Arrays.asList(
+        List<TagRequest> tagRequests_1234 = Arrays.asList(
             new TagRequest("자바"),
             new TagRequest("자바스크립트"),
             new TagRequest("스프링"),
             new TagRequest("리액트")
         );
-        List<TagRequest> tagRequests2 = Collections.emptyList();
-        List<TagRequest> tagRequests3 = Arrays.asList(
+        List<TagRequest> tagRequests_empty = Collections.emptyList();
+        List<TagRequest> tagRequests_12 = Arrays.asList(
             new TagRequest("자바"),
             new TagRequest("자바스크립트")
         );
-        List<TagRequest> tagRequests4 = Arrays.asList(
+        List<TagRequest> tagRequests_34 = Arrays.asList(
             new TagRequest("스프링"),
             new TagRequest("리액트")
         );
-        List<TagRequest> tagRequests5 = Collections.singletonList(
+        List<TagRequest> tagRequests_3 = Collections.singletonList(
             new TagRequest("스프링")
         );
-        tagService.findOrCreate(tagRequests1);
+        tagService.findOrCreate(tagRequests_1234);
+        tagService.findOrCreate(tagRequests_empty);
+        tagService.findOrCreate(tagRequests_12);
+        tagService.findOrCreate(tagRequests_34);
+        tagService.findOrCreate(tagRequests_3);
 
         // member init
         Member member1 = memberService
@@ -90,24 +94,24 @@ public class DataLoaderApplicationListener implements
         // post init
         studylogService.insertStudylogs(member1, Arrays.asList(
             new StudylogRequest("ATDD란 무엇인가", "노션 정리 링크\n개인적으로 친구들에게 한 설명이 참 잘 썼다고 생각한다 호호",
-                                mission1.getId(), tagRequests1),
+                                mission1.getId(), tagRequests_1234),
             new StudylogRequest("프론트엔드 빌드 툴", "snowpack 사용하기 https://hjuu.tistory.com/6",
-                                mission2.getId(), tagRequests1),
-            new StudylogRequest("페이지네이션 데이터 1", "좋은 내용", mission1.getId(), tagRequests1),
-            new StudylogRequest("페이지네이션 데이터 2", "좋은 내용", mission2.getId(), tagRequests2),
-            new StudylogRequest("페이지네이션 데이터 3", "좋은 내용", mission3.getId(), tagRequests3),
-            new StudylogRequest("페이지네이션 데이터 4", "좋은 내용", mission4.getId(), tagRequests4),
-            new StudylogRequest("페이지네이션 데이터 5", "좋은 내용", mission1.getId(), tagRequests5),
-            new StudylogRequest("페이지네이션 데이터 6", "좋은 내용", mission2.getId(), tagRequests1)
+                                mission2.getId(), tagRequests_1234),
+            new StudylogRequest("페이지네이션 데이터 1", "좋은 내용", mission1.getId(), tagRequests_1234),
+            new StudylogRequest("페이지네이션 데이터 2", "좋은 내용", mission2.getId(), tagRequests_empty),
+            new StudylogRequest("페이지네이션 데이터 3", "좋은 내용", mission3.getId(), tagRequests_12),
+            new StudylogRequest("페이지네이션 데이터 4", "좋은 내용", mission4.getId(), tagRequests_34),
+            new StudylogRequest("페이지네이션 데이터 5", "좋은 내용", mission1.getId(), tagRequests_3),
+            new StudylogRequest("페이지네이션 데이터 6", "좋은 내용", mission2.getId(), tagRequests_1234)
         ));
 
         studylogService.insertStudylogs(member2, Arrays.asList(
-            new StudylogRequest("페이지네이션 데이터 7", "좋은 내용", mission3.getId(), tagRequests2),
-            new StudylogRequest("페이지네이션 데이터 8", "좋은 내용", mission4.getId(), tagRequests3),
-            new StudylogRequest("페이지네이션 데이터 9", "좋은 내용", mission1.getId(), tagRequests4),
-            new StudylogRequest("페이지네이션 데이터 10", "좋은 내용", mission2.getId(), tagRequests5),
-            new StudylogRequest("페이지네이션 데이터 11", "좋은 내용", mission3.getId(), tagRequests1),
-            new StudylogRequest("페이지네이션 데이터 12", "좋은 내용", mission4.getId(), tagRequests2)
+            new StudylogRequest("페이지네이션 데이터 7", "좋은 내용", mission3.getId(), tagRequests_empty),
+            new StudylogRequest("페이지네이션 데이터 8", "좋은 내용", mission4.getId(), tagRequests_12),
+            new StudylogRequest("페이지네이션 데이터 9", "좋은 내용", mission1.getId(), tagRequests_34),
+            new StudylogRequest("페이지네이션 데이터 10", "좋은 내용", mission2.getId(), tagRequests_3),
+            new StudylogRequest("페이지네이션 데이터 11", "좋은 내용", mission3.getId(), tagRequests_1234),
+            new StudylogRequest("페이지네이션 데이터 12", "좋은 내용", mission4.getId(), tagRequests_empty)
         ));
 
         updatedContentsRepository.save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));

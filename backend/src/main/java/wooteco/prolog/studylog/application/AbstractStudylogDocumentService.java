@@ -1,11 +1,9 @@
 package wooteco.prolog.studylog.application;
 
-import static java.util.stream.Collectors.toList;
-
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
@@ -13,6 +11,8 @@ import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 
 public abstract class AbstractStudylogDocumentService implements DocumentService {
+
+    private static final String EMPTY = " ";
 
     protected final StudylogDocumentRepository studylogDocumentRepository;
     protected final StudylogRepository studylogRepository;
@@ -60,5 +60,16 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
     @Override
     public void update(StudylogDocument studylogDocument) {
         studylogDocumentRepository.save(studylogDocument);
+    }
+
+    protected List<String> preprocess(String searchKeyword) {
+        String[] split = searchKeyword.split(EMPTY);
+        List<String> results = new ArrayList<>();
+        Collections.addAll(results, split);
+        if (split.length == 1) {
+            return results;
+        }
+        results.add(searchKeyword); // 기존 검색어도 리스트에 포함한다.
+        return results;
     }
 }
