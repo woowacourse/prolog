@@ -1,5 +1,7 @@
 package wooteco.prolog.studylog.application;
 
+import static java.util.stream.Collectors.toList;
+
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.context.annotation.Profile;
@@ -11,6 +13,7 @@ import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
+import wooteco.prolog.studylog.application.dto.StudylogDocumentPagingDto;
 import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.StudylogDocumentQueryBuilder;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
@@ -32,7 +35,7 @@ public class StudylogDocumentService extends AbstractStudylogDocumentService {
     }
 
     @Override
-    public SearchPage<StudylogDocument> findBySearchKeyword(
+    public StudylogDocumentPagingDto findBySearchKeyword(
         String keyword,
         List<Long> tags,
         List<Long> missions,
@@ -47,7 +50,15 @@ public class StudylogDocumentService extends AbstractStudylogDocumentService {
                                                                    usernames, start, end, pageable);
         final SearchHits<StudylogDocument> searchHits
             = elasticsearchRestTemplate.search(query, StudylogDocument.class, IndexCoordinates.of("studylog-document"));
-        return SearchHitSupport.searchPageFor(searchHits,
-                                              query.getPageable());
+        final SearchPage<StudylogDocument> searchPages = SearchHitSupport.searchPageFor(searchHits, query.getPageable());
+
+        final List<Long> studylogIds = searchPages.stream()
+            .map(searchPage -> searchPage.getContent().getId())
+            .collect(toList());
+
+        return StudylogDocumentPagingDto.of(studylogIds,
+                                            searchPages.getTotalElements(),
+                                            searchPages.getTotalPages(),
+                                            searchPages.getNumber());
     }
 }

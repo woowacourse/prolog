@@ -34,12 +34,15 @@ public class StudylogsResponse {
                 responsePage.getNumber() + ONE_INDEXED_PARAMETER);
     }
 
-    public static StudylogsResponse of(List<Studylog> studylogs, SearchPage<StudylogDocument> responsePage) {
+    public static StudylogsResponse of(List<Studylog> studylogs,
+                                       long totalSize,
+                                       int totalPage,
+                                       int currPage) {
         final List<StudylogResponse> studylogResponses = convertToStudylogResponse(studylogs);
         return new StudylogsResponse(studylogResponses,
-                                     responsePage.getTotalElements(),
-                                     responsePage.getTotalPages(),
-                                     responsePage.getNumber() + ONE_INDEXED_PARAMETER);
+                                     totalSize,
+                                     totalPage,
+                                     currPage + ONE_INDEXED_PARAMETER);
     }
 
     private static List<StudylogResponse> convertToStudylogResponse(List<Studylog> studylogs) {

@@ -3,11 +3,9 @@ package wooteco.prolog.studylog.application;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.SearchPage;
-import org.springframework.stereotype.Service;
+import wooteco.prolog.studylog.application.dto.StudylogDocumentPagingDto;
 import wooteco.prolog.studylog.domain.StudylogDocument;
 
-@Service
 public interface DocumentService {
 
     void save(StudylogDocument toStudylogDocument);
@@ -24,7 +22,7 @@ public interface DocumentService {
 
     void update(StudylogDocument studylogDocument);
 
-    SearchPage<StudylogDocument> findBySearchKeyword(
+    StudylogDocumentPagingDto findBySearchKeyword(
         String keyword,
         List<Long> tags,
         List<Long> missions,

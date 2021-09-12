@@ -13,7 +13,6 @@ import java.util.Objects;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,13 +20,13 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
+import wooteco.prolog.studylog.application.dto.StudylogDocumentPagingDto;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.Tags;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
@@ -74,7 +73,7 @@ public class StudylogService {
     ) {
         final Pageable pageable = studylogsSearchRequest.getPageable();
 
-        final SearchPage<StudylogDocument> searchDocuments = studylogDocumentService.findBySearchKeyword(
+        final StudylogDocumentPagingDto studylogDocumentPagingDto = studylogDocumentService.findBySearchKeyword(
             studylogsSearchRequest.getKeyword(),
             studylogsSearchRequest.getTags(),
             studylogsSearchRequest.getMissions(),
@@ -85,12 +84,12 @@ public class StudylogService {
             pageable
         );
 
-        final List<Long> studylogIds = searchDocuments.stream()
-            .map(searchPage -> searchPage.getContent().getId())
-            .collect(toList());
-
-        final List<Studylog> studylogs = studylogRepository.findAllById(studylogIds);
-        return StudylogsResponse.of(studylogs, searchDocuments);
+        final List<Studylog> studylogs = studylogRepository.findAllById(studylogDocumentPagingDto.getStudylogIds());
+        return StudylogsResponse.of(studylogs,
+                                    studylogDocumentPagingDto.getTotalSize(),
+                                    studylogDocumentPagingDto.getTotalPage(),
+                                    studylogDocumentPagingDto.getCurrPage()
+        );
     }
 
     @Deprecated

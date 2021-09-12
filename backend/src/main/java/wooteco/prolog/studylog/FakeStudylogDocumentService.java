@@ -4,10 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.stereotype.Service;
 import wooteco.prolog.studylog.application.AbstractStudylogDocumentService;
-import wooteco.prolog.studylog.domain.StudylogDocument;
+import wooteco.prolog.studylog.application.dto.StudylogDocumentPagingDto;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 
@@ -22,11 +21,12 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
     }
 
     @Override
-    public SearchPage<StudylogDocument> findBySearchKeyword(String keyword, List<Long> tags, List<Long> missions,
-                                                            List<Long> levels, List<String> usernames, LocalDate start,
-                                                            LocalDate end, Pageable pageable) {
+    public StudylogDocumentPagingDto findBySearchKeyword(String keyword, List<Long> tags, List<Long> missions,
+                                                         List<Long> levels, List<String> usernames, LocalDate start,
+                                                         LocalDate end, Pageable pageable) {
 
         // TODO
+        System.out.println(">>>> FakeStudylogDocumentService#findBySearchKeyword");
         return null;
     }
 }
