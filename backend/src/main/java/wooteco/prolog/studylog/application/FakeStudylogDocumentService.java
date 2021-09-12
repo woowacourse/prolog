@@ -1,11 +1,10 @@
-package wooteco.prolog.studylog;
+package wooteco.prolog.studylog.application;
 
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import wooteco.prolog.studylog.application.AbstractStudylogDocumentService;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentPagingDto;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
