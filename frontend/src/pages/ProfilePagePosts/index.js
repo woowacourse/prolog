@@ -66,7 +66,7 @@ const ProfilePagePosts = () => {
   };
 
   const getData = async () => {
-    const query = new URLSearchParams(history.location.search);
+    const query = new URLSearchParams(history.location.search) + `&usernames=${username}`;
 
     try {
       const response = await requestGetPosts({ type: 'searchParams', data: query });
@@ -95,13 +95,12 @@ const ProfilePagePosts = () => {
 
   useEffect(() => {
     const params = getFullParams();
-    const search = new URLSearchParams(history.location.search).get('keyword');
 
-    history.push(
-      `${PATH.ROOT}${username}/posts?${search ? 'keyword=' + search : ''}&${params ?? ''}&${
-        username ? 'usernames=' + username : ''
-      }`
-    );
+    if (!params) {
+      return;
+    }
+
+    history.push(`${PATH.ROOT}${username}/posts${params ? '?' + params : ''}`);
   }, [getFullParams, postQueryParams, selectedFilterDetails, username]);
 
   useEffect(() => {
