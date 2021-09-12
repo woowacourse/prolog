@@ -227,7 +227,7 @@ class StudylogServiceTest {
         insertStudylogs(member2, studylog3, studylog4);
 
         // document 초기화 어떻게...
-        StudylogsResponse studylogsResponse = studylogService.findStudylogsWithFilter(
+        StudylogsResponse studylogsResponse = studylogService.searchStudylogsWithFilter(
             new StudylogsSearchRequest(
                 keyword,
                 levelIds,

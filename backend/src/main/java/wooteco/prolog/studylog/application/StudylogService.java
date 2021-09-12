@@ -92,47 +92,6 @@ public class StudylogService {
         );
     }
 
-    @Deprecated
-    public StudylogsResponse findStudylogsWithFilter(
-        StudylogsSearchRequest studylogsSearchRequest) {
-
-        final String keyword = studylogsSearchRequest.getKeyword();
-        final Pageable pageable = studylogsSearchRequest.getPageable();
-
-        List<Long> studylogIds = Collections.emptyList();
-        if (isSearch(keyword)) {
-            studylogIds = studylogDocumentService.findBySearchKeyword(keyword, pageable);
-        }
-
-        if (studylogsSearchRequest.hasOnlySearch()) {
-            return StudylogsResponse.of(studylogRepository.findByIdIn(studylogIds, pageable));
-        }
-
-        Page<Studylog> studylogs = studylogRepository
-            .findAll(makeSpecifications(studylogsSearchRequest, studylogIds), pageable);
-
-        return StudylogsResponse.of(studylogs);
-    }
-
-    private Specification<Studylog> makeSpecifications(
-        StudylogsSearchRequest studylogsSearchRequest, List<Long> studylogIds
-    ) {
-        return StudylogSpecification.findByLevelIn(studylogsSearchRequest.getLevels())
-            .and(StudylogSpecification.equalIn("id", studylogIds,
-                                               isSearch(studylogsSearchRequest.getKeyword())))
-            .and(StudylogSpecification.equalIn("mission", studylogsSearchRequest.getMissions()))
-            .and(StudylogSpecification.findByTagIn(studylogsSearchRequest.getTags()))
-            .and(StudylogSpecification.findByUsernameIn(studylogsSearchRequest.getUsernames()))
-            .and(StudylogSpecification.findBetweenDate(
-                studylogsSearchRequest.getStartDate(),
-                studylogsSearchRequest.getEndDate()))
-            .and(StudylogSpecification.distinct(true));
-    }
-
-    private boolean isSearch(String searchKeyword) {
-        return Objects.nonNull(searchKeyword) && !searchKeyword.isEmpty();
-    }
-
     public StudylogsResponse findStudylogsOf(String username, Pageable pageable) {
         Member member = memberService.findByUsername(username);
         return StudylogsResponse.of(studylogRepository.findByMember(member, pageable));

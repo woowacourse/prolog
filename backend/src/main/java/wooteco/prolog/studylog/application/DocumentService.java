@@ -10,8 +10,6 @@ public interface DocumentService {
 
     void save(StudylogDocument toStudylogDocument);
 
-    List<Long> findBySearchKeyword(String searchKeyword, Pageable pageable);
-
     StudylogDocument findById(Long id);
 
     void delete(StudylogDocument studylogDocument);

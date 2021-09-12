@@ -35,28 +35,6 @@ public class FakeStudylogDocumentRepository implements StudylogDocumentRepositor
     }
 
     @Override
-    public Page<StudylogDocument> findByKeyword(String searchKeyword, Pageable pageable) {
-        List<String> searchKeywords = preprocess(searchKeyword);
-        HashSet<StudylogDocument> results = new HashSet<>();
-        for (String search : searchKeywords) {
-            STUDYLOG_DOCUMENTS.stream().filter(
-                    studyLogDocument ->
-                        studyLogDocument.getTitle().contains(search)
-                            || studyLogDocument.getContent().contains(search))
-                .forEach(results::add);
-        }
-        return new PageImpl<>(new ArrayList<>(results), pageable, 20);
-    }
-
-    private List<String> preprocess(String searchKeyword) {
-        String[] split = searchKeyword.split(" ");
-        List<String> results = new ArrayList<>();
-        Collections.addAll(results, split);
-        results.add(searchKeyword);
-        return results;
-    }
-
-    @Override
     public void delete(StudylogDocument studylogDocument) {
         STUDYLOG_DOCUMENTS.remove(studylogDocument);
     }

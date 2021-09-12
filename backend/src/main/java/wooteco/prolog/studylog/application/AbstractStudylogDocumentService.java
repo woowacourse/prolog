@@ -28,17 +28,6 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
         studylogDocumentRepository.save(studylogDocument);
     }
 
-    @Deprecated
-    @Override
-    public List<Long> findBySearchKeyword(String searchKeyword,
-                                          Pageable pageable) {
-        Page<StudylogDocument> studylogs = studylogDocumentRepository.findByKeyword(searchKeyword,
-                                                                                    pageable);
-        return studylogs.stream()
-            .map(StudylogDocument::getId)
-            .collect(toList());
-    }
-
     @Override
     public StudylogDocument findById(Long id) {
         return studylogDocumentRepository.findById(id)

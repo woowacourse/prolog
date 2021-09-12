@@ -2,12 +2,30 @@ package wooteco.prolog.studylog.domain.repository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import wooteco.prolog.studylog.domain.Studylog;
 
 public class StudylogSpecification {
+
+    public static Specification<Studylog> likeKeyword(String key, List<String> keywords) {
+        List<Predicate> predicates = new ArrayList<>();
+        return (root, query, builder) -> {
+            if (Objects.isNull(keywords) || keywords.isEmpty()) {
+                return builder.and();
+            }
+
+            for (String keyword: keywords) {
+                predicates.add(builder.like(root.get(key).get(key), "%" + keyword + "%"));
+            }
+
+            return builder.or(predicates.toArray(new Predicate[0]));
+        };
+    }
 
     public static Specification<Studylog> equalIn(String key, List<Long> values) {
         return (root, query, builder) -> {
