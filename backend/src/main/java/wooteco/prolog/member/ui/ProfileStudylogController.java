@@ -32,7 +32,7 @@ public class ProfileStudylogController {
     public ResponseEntity<StudylogsResponse> findAllPostsOfMine(@PathVariable String username,
                                                                 PostFilterRequest postFilterRequest,
                                                                 @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
-        final StudylogsResponse posts = studylogService.findPostsWithFilter(
+        final StudylogsResponse posts = studylogService.findPostsWithoutKeyword(
             postFilterRequest.levels,
             postFilterRequest.missions,
             postFilterRequest.tags,

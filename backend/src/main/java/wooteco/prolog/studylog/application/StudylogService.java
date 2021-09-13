@@ -18,7 +18,7 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
-import wooteco.prolog.studylog.application.dto.StudylogDocumentPagingDto;
+import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
@@ -43,7 +43,34 @@ public class StudylogService {
     private final MemberService memberService;
     private final TagService tagService;
 
-    public StudylogsResponse findPostsWithFilter(
+    public StudylogsResponse findStudylogs(StudylogsSearchRequest request) {
+        if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
+            return findPostsWithoutKeyword(request.getLevels(), request.getMissions(),
+                request.getTags(),
+                request.getUsernames(), request.getStartDate(), request.getEndDate(),
+                request.getPageable());
+        }
+
+        final StudylogDocumentResponse response = studylogDocumentService.findBySearchKeyword(
+            request.getKeyword(),
+            request.getTags(),
+            request.getMissions(),
+            request.getLevels(),
+            request.getUsernames(),
+            request.getStartDate(),
+            request.getEndDate(),
+            request.getPageable()
+        );
+
+        final List<Studylog> studylogs = studylogRepository.findAllById(response.getStudylogIds());
+        return StudylogsResponse.of(studylogs,
+            response.getTotalSize(),
+            response.getTotalPage(),
+            response.getCurrPage()
+        );
+    }
+
+    public StudylogsResponse findPostsWithoutKeyword(
         List<Long> levelIds,
         List<Long> missionIds,
         List<Long> tagIds,
@@ -63,30 +90,6 @@ public class StudylogService {
         Page<Studylog> posts = studylogRepository.findAll(specs, pageable);
 
         return StudylogsResponse.of(posts);
-    }
-
-    public StudylogsResponse findStudylogsWithFilter(
-        StudylogsSearchRequest studylogsSearchRequest
-    ) {
-        final Pageable pageable = studylogsSearchRequest.getPageable();
-
-        final StudylogDocumentPagingDto studylogDocumentPagingDto = studylogDocumentService.findBySearchKeyword(
-            studylogsSearchRequest.getKeyword(),
-            studylogsSearchRequest.getTags(),
-            studylogsSearchRequest.getMissions(),
-            studylogsSearchRequest.getLevels(),
-            studylogsSearchRequest.getUsernames(),
-            studylogsSearchRequest.getStartDate(),
-            studylogsSearchRequest.getEndDate(),
-            pageable
-        );
-
-        final List<Studylog> studylogs = studylogRepository.findAllById(studylogDocumentPagingDto.getStudylogIds());
-        return StudylogsResponse.of(studylogs,
-                                    studylogDocumentPagingDto.getTotalSize(),
-                                    studylogDocumentPagingDto.getTotalPage(),
-                                    studylogDocumentPagingDto.getCurrPage()
-        );
     }
 
     public StudylogsResponse findStudylogsOf(String username, Pageable pageable) {
@@ -112,10 +115,10 @@ public class StudylogService {
         Mission mission = missionService.findById(studylogRequest.getMissionId());
 
         Studylog requestedStudylog = new Studylog(foundMember,
-                                                  studylogRequest.getTitle(),
-                                                  studylogRequest.getContent(),
-                                                  mission,
-                                                  tags.getList());
+            studylogRequest.getTitle(),
+            studylogRequest.getContent(),
+            mission,
+            tags.getList());
 
         Studylog createdStudylog = studylogRepository.save(requestedStudylog);
         memberTagService.registerMemberTag(tags, foundMember);

@@ -2,7 +2,6 @@ package wooteco.prolog.studylog.application;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -12,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import wooteco.prolog.common.BaseEntity;
-import wooteco.prolog.studylog.application.dto.StudylogDocumentPagingDto;
+import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
@@ -29,9 +28,9 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
     }
 
     @Override
-    public StudylogDocumentPagingDto findBySearchKeyword(String keyword, List<Long> tags, List<Long> missions,
-                                                         List<Long> levels, List<String> usernames,
-                                                         LocalDate start, LocalDate end, Pageable pageable) {
+    public StudylogDocumentResponse findBySearchKeyword(String keyword, List<Long> tags, List<Long> missions,
+                                                        List<Long> levels, List<String> usernames,
+                                                        LocalDate start, LocalDate end, Pageable pageable) {
         final Page<Studylog> studylogs = studylogRepository.findAll(
             makeSpecifications(keyword, tags, missions, levels, usernames, start, end), pageable);
 
@@ -39,7 +38,7 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
             .map(BaseEntity::getId)
             .collect(Collectors.toList());
 
-        return StudylogDocumentPagingDto.of(studylogIds,
+        return StudylogDocumentResponse.of(studylogIds,
                                             studylogs.getTotalElements(),
                                             studylogs.getTotalPages(),
                                             studylogs.getNumber());
