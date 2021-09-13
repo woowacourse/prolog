@@ -18,7 +18,6 @@ const useFilterWithParams = () => {
 
   const [postQueryParams, setPostQueryParams] = useState({
     page: query.page ? query.page : 1,
-
   });
 
   const onSetPage = (page) => {

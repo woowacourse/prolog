@@ -76,7 +76,7 @@ const ProfilePagePosts = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [getFullParams, history, postQueryParams, selectedFilterDetails, username]);
+  };
 
   const onDeletePost = async (event, id) => {
     event.stopPropagation();
