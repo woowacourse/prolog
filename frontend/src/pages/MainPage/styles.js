@@ -3,36 +3,46 @@ import { css } from '@emotion/react';
 import COLOR from '../../constants/color';
 
 const HeaderContainer = styled.div`
-  height: 4.8rem;
   display: flex;
-  margin-bottom: 3.7rem;
-  justify-content: space-between;
-
-  & > *:not(:first-child) {
-    margin-left: 2rem;
-  }
+  flex-direction: column;
+  margin-bottom: 1.5rem;
 `;
 
 const FilterListWrapper = styled.div`
+  height: 4.8rem;
+  flex-grow: 1;
+  margin-right: 1rem;
+`;
+
+const SelectedFilterList = styled.div`
   width: 100%;
-  height: inherit;
-  flex: 1;
+  min-height: 3rem;
+  overflow: auto;
+  margin-top: 1rem;
+  padding-bottom: 1rem;
+
+  ul {
+    width: max-content;
+    display: flex;
+  }
 `;
 
 const PostListContainer = styled.div`
   display: grid;
   grid-row-gap: 2rem;
+  word-break: break-all;
 `;
 
 const Content = styled.div`
   display: flex;
+  justify-content: space-between;
   height: 100%;
 `;
 
 const Description = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: inherit;
 `;
 
 const Mission = styled.div`
@@ -53,16 +63,19 @@ const Tags = styled.div`
 `;
 
 const ProfileChipLocationStyle = css`
-  margin-left: auto;
+  flex-shrink: 0;
+  margin-left: 1rem;
 
   &:hover {
     background-color: ${COLOR.LIGHT_BLUE_100};
   }
 `;
 
-const CardHoverStyle = css`
+const CardStyle = css`
   transition: transform 0.2s ease;
   cursor: pointer;
+  padding: 3rem;
+  height: 20rem;
 
   &:hover {
     transform: scale(1.005);
@@ -72,6 +85,7 @@ const CardHoverStyle = css`
 export {
   HeaderContainer,
   FilterListWrapper,
+  SelectedFilterList,
   PostListContainer,
   Content,
   Description,
@@ -79,5 +93,5 @@ export {
   Title,
   Tags,
   ProfileChipLocationStyle,
-  CardHoverStyle,
+  CardStyle,
 };

@@ -1,7 +1,7 @@
 package wooteco.prolog.fixtures;
 
-import wooteco.prolog.post.application.dto.PostRequest;
-import wooteco.prolog.tag.dto.TagRequest;
+import wooteco.prolog.studylog.application.dto.StudylogRequest;
+import wooteco.prolog.studylog.application.dto.TagRequest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -55,24 +55,24 @@ public enum PostAcceptanceFixture {
         List<TagRequest> tagRequests = Arrays.stream(tags)
                 .map(TagAcceptanceFixture::getTagRequest)
                 .collect(toList());
-        this.postRequest = new PostRequest(title, content, missionId, tagRequests);
+        this.studylogRequest = new StudylogRequest(title, content, missionId, tagRequests);
     }
 
-    private final PostRequest postRequest;
+    private final StudylogRequest studylogRequest;
     private final List<TagAcceptanceFixture> tags;
 
-    public PostRequest getPostRequest() {
-        return postRequest;
+    public StudylogRequest getPostRequest() {
+        return studylogRequest;
     }
 
-    public static List<PostRequest> findByMissionNumber(Long missionId) {
+    public static List<StudylogRequest> findByMissionNumber(Long missionId) {
         return Arrays.stream(PostAcceptanceFixture.values())
                 .map(PostAcceptanceFixture::getPostRequest)
                 .filter(it -> it.getMissionId().equals(missionId))
                 .collect(toList());
     }
 
-    public static List<PostRequest> findByTagNumber(Long tagId) {
+    public static List<StudylogRequest> findByTagNumber(Long tagId) {
         return Arrays.stream(PostAcceptanceFixture.values())
                 .filter(it -> it.tags.stream().anyMatch(tag -> tag.getTagId().equals(tagId)))
                 .map(PostAcceptanceFixture::getPostRequest)

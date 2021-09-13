@@ -13,6 +13,7 @@ import {
   ProfilePagePosts,
   ProfilePageAccount,
 } from './pages';
+import { useState } from 'react';
 
 const Content = styled.div`
   max-width: 112rem;
@@ -21,8 +22,6 @@ const Content = styled.div`
 `;
 
 const App = () => {
-  // const [selectedMenu, setSelectedMenu] = useState('overview');
-
   return (
     <>
       <GlobalStyles />
@@ -31,9 +30,7 @@ const App = () => {
         <Content>
           <Switch>
             <Route exact path={PATH.ROOT} component={MainPage} />
-            <Route exact path={PATH.LOGIN_CALLBACK}>
-              <LoginCallbackPage />
-            </Route>
+            <Route exact path={PATH.LOGIN_CALLBACK} component={LoginCallbackPage} />
             <Route exact path={PATH.NEW_POST} component={NewPostPage} />
             <Route exact path={`${PATH.POST}/:id`} component={PostPage} />
             <Route exact path={`${PATH.POST}/:id/edit`} component={EditPostPage} />

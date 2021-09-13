@@ -32,7 +32,7 @@ public class MemberController {
     }
 
     @PutMapping("/me")
-    public ResponseEntity<Void> updatePost(
+    public ResponseEntity<Void> updateStudylog(
         @AuthMemberPrincipal Member member,
         @RequestBody MemberUpdateRequest updateRequest
     ) {

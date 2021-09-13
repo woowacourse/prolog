@@ -6,9 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
@@ -16,10 +14,9 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.member.exception.MemberNotFoundException;
+import wooteco.support.utils.IntegrationTest;
 
-@ActiveProfiles("test")
-@SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@IntegrationTest
 class MemberServiceTest {
 
     @Autowired
@@ -33,9 +30,9 @@ class MemberServiceTest {
     void findOrCreateMemberTest() {
         // given
         GithubProfileResponse brownResponse = new GithubProfileResponse("브라운", "gracefulBrown", "1",
-            "imageUrl1");
+                                                                        "imageUrl1");
         GithubProfileResponse jasonResponse = new GithubProfileResponse("제이슨", "pjs", "2",
-            "imageUrl2");
+                                                                        "imageUrl2");
 
         Member를_생성한다(brownResponse.toMember());
 
@@ -50,6 +47,7 @@ class MemberServiceTest {
 
     @DisplayName("ID를 통해서 Member를 조회한다.")
     @Test
+    @Transactional
     void findByIdTest() {
         // given
         Member savedMember = Member를_생성한다(
@@ -73,6 +71,7 @@ class MemberServiceTest {
 
     @DisplayName("Username을 통해서 Member를 조회한다.")
     @Test
+    @Transactional
     void findByUsernameTest() {
         // given
         Member savedMember = Member를_생성한다(

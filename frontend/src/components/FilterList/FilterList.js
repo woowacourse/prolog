@@ -1,7 +1,6 @@
-import React from 'react';
 import { DropdownMenu } from '..';
 import checkIcon from '../../assets/images/check.png';
-import { CheckIcon, Container, FilterDetail, ResetFilter } from './FilterList.styles';
+import { Container, FilterDetail, ResetFilter, CheckIcon } from './FilterList.styles';
 
 const FilterList = ({
   selectedFilter,
@@ -11,6 +10,7 @@ const FilterList = ({
   setSelectedFilterDetails,
   isVisibleResetFilter,
   onResetFilter,
+  css,
 }) => {
   const closeDropdown = (event) => {
     if (event.target === event.currentTarget) {
@@ -23,8 +23,8 @@ const FilterList = ({
       (filterItem) => filterItem.filterType === key && filterItem.filterDetailId === id
     );
 
-  const toggleFilterDetails = (filterType, filterDetailId) => {
-    const targetFilterItem = { filterType, filterDetailId };
+  const toggleFilterDetails = (filterType, filterDetailId, name) => {
+    const targetFilterItem = { filterType, filterDetailId, name };
     const isExistFilterItem = findFilterItem(filterType, filterDetailId);
 
     if (isExistFilterItem) {
@@ -34,19 +34,33 @@ const FilterList = ({
     }
   };
 
+  const getFilteredFiltersByLevel = () => {
+    // 선택된 levels 목록 조회
+    const selectedLevels = selectedFilterDetails
+      .filter((selectedFilter) => selectedFilter.filterType === 'levels')
+      .map((selectedFilter) => selectedFilter.filterDetailId);
+
+    // 선택된 레벨의 미션이 제외된 미션 목록
+    const filteredMissions = selectedLevels.length
+      ? filters.missions &&
+        filters.missions.filter((mission) => selectedLevels.includes(mission.level.id))
+      : filters.missions;
+
+    const filteredFilters = { ...filters };
+    filteredFilters.missions = filteredMissions;
+
+    return filteredFilters;
+  };
+
   return (
-    <Container onClick={closeDropdown} isDropdownToggled={selectedFilter}>
-      {Object.entries(filters).map(([key, value]) => (
+    <Container onClick={closeDropdown} isDropdownToggled={selectedFilter} css={css}>
+      {Object.entries(getFilteredFiltersByLevel()).map(([key, value]) => (
         <div key={key}>
           <button onClick={() => setSelectedFilter(key)}>{key}</button>
           {selectedFilter === key && (
             <DropdownMenu>
-              {/* 검색 UI
-              <li>
-                <input type="search" placeholder="filter project" />
-              </li> */}
               {value.map(({ id, name }) => (
-                <li key={id} onClick={() => toggleFilterDetails(key, id)}>
+                <li key={id} onClick={() => toggleFilterDetails(key, id, name)}>
                   <FilterDetail>
                     <span>{name}</span>
                     <CheckIcon

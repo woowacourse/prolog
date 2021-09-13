@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import LogoImage from '../../assets/images/logo.svg';
 import { PATH } from '../../constants';
@@ -22,18 +22,24 @@ import {
   profileButtonStyle,
 } from './NavBar.styles';
 import { ERROR_MESSAGE } from '../../constants/message';
+import SearchBar from '../SearchBar/SearchBar';
 
 const NavBar = () => {
+  const location = useLocation();
+
   const history = useHistory();
   const dispatch = useDispatch();
 
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const user = useSelector((state) => state.user.profile);
+
   const isLoggedIn = !!user.data;
   const userError = user.error;
 
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const [userImage, setUserImage] = useState(NoProfileImage);
+
+  const [searchKeywords, setSearchKeywords] = useState('');
 
   useEffect(() => {
     if (accessToken) {
@@ -82,9 +88,40 @@ const NavBar = () => {
     window.location.reload();
   };
 
+  const onSearchKeywordsChange = (event) => {
+    setSearchKeywords(event.target.value);
+  };
+
+  const onSearch = async (event) => {
+    event.preventDefault();
+
+    const query = new URLSearchParams(history.location.search);
+    query.set('page', 1);
+
+    if (searchKeywords) {
+      query.set('keyword', searchKeywords);
+    } else {
+      query.delete('keyword');
+    }
+
+    history.push(`${PATH.ROOT}?${query.toString()}`);
+  };
+
   if (userError) {
     localStorage.removeItem('accessToken');
   }
+
+  const onSelectMenu = (event) => {
+    if (event.target.tagName === 'A') {
+      setDropdownToggled(false);
+    }
+  };
+
+  useEffect(() => {
+    const query = new URLSearchParams(history.location.search);
+
+    setSearchKeywords(query.get('keyword') ?? '');
+  }, [location.search]);
 
   return (
     <Container isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>
@@ -94,7 +131,7 @@ const NavBar = () => {
           <span>{process.env.REACT_APP_MODE === 'PROD' ? 'BETA' : process.env.REACT_APP_MODE}</span>
         </Logo>
         <Menu role="menu">
-          {/* <Button size="SMALL" icon={SearchIcon} type="button" css={searchButtonStyle} /> */}
+          <SearchBar onSubmit={onSearch} value={searchKeywords} onChange={onSearchKeywordsChange} />
           {isLoggedIn ? (
             <>
               <Button
@@ -113,17 +150,21 @@ const NavBar = () => {
               />
               {isDropdownToggled && (
                 <DropdownMenu css={DropdownStyle}>
-                  <ul>
-                    <li>
-                      <Link
-                        onClick={() => {
-                          setDropdownToggled(false);
-                          history.push(`/${user?.data.username}`);
-                        }}
-                      >
-                        <button type="button">내 프로필</button>
-                      </Link>
-                    </li>
+                  <ul onClick={onSelectMenu}>
+                    {[
+                      {
+                        menu: '내 프로필',
+                        path: `/${user?.data.username}`,
+                      },
+                      {
+                        menu: '내 학습로그',
+                        path: `/${user?.data.username}/posts`,
+                      },
+                    ].map(({ menu, path }) => (
+                      <li key={menu}>
+                        <Link to={path}>{menu}</Link>
+                      </li>
+                    ))}
                     <li>
                       <button type="button" onClick={logout}>
                         로그아웃

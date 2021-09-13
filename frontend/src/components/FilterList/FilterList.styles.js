@@ -29,6 +29,7 @@ const Container = styled.div`
   align-items: center;
 
   ${({ isDropdownToggled }) => isDropdownToggled && DropdownToggledStyle}
+  ${({ css }) => css && css}
 
   & > div:not(:last-child) {
     margin-right: 3.2rem;

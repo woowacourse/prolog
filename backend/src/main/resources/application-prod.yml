@@ -1,0 +1,29 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
+        use_sql_comment: false
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+  flyway:
+    baselineOnMigrate: true
+    locations: classpath:db/migration/prod
+    enabled: true
+
+security:
+  jwt:
+    token:
+      secret-key: secret_key
+      expire-length: 3600000
+
+github:
+  client:
+    id: client_id
+    secret: client_secret
+  url:
+    access-token: https://github.com/login/oauth/access_token
+    profile: https://api.github.com/user
