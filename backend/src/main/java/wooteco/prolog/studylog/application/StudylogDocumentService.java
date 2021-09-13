@@ -13,7 +13,7 @@ import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
-import wooteco.prolog.studylog.application.dto.StudylogDocumentPagingDto;
+import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.StudylogDocumentQueryBuilder;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
@@ -34,7 +34,7 @@ public class StudylogDocumentService extends AbstractStudylogDocumentService {
     }
 
     @Override
-    public StudylogDocumentPagingDto findBySearchKeyword(
+    public StudylogDocumentResponse findBySearchKeyword(
         String keyword,
         List<Long> tags,
         List<Long> missions,
@@ -60,7 +60,7 @@ public class StudylogDocumentService extends AbstractStudylogDocumentService {
             .map(searchPage -> searchPage.getContent().getId())
             .collect(toList());
 
-        return StudylogDocumentPagingDto.of(studylogIds,
+        return StudylogDocumentResponse.of(studylogIds,
                                             searchPages.getTotalElements(),
                                             searchPages.getTotalPages(),
                                             searchPages.getNumber());

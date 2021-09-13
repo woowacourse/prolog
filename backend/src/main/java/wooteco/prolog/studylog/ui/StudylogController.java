@@ -43,7 +43,7 @@ public class StudylogController {
 
     @GetMapping
     public ResponseEntity<StudylogsResponse> showAll(@SearchParams StudylogsSearchRequest searchRequest) {
-        StudylogsResponse studylogsResponse = studylogService.findStudylogsWithFilter(searchRequest);
+        StudylogsResponse studylogsResponse = studylogService.findStudylogs(searchRequest);
         return ResponseEntity.ok(studylogsResponse);
     }
 
