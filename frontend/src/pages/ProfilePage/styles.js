@@ -29,7 +29,6 @@ const Overview = styled.div`
     grid-column-end: 2;
     min-height: 28rem;
     max-height: 37rem;
-    overflow: hidden;
   }
   & > *:nth-of-type(2) {
     grid-column-start: 2;
@@ -42,6 +41,11 @@ const TagTitle = styled.div`
   font-size: 2rem;
   font-weight: 500;
   margin-bottom: 1rem;
+`;
+
+const TagContainer = styled.div`
+  overflow-y: scroll;
+  height: 31rem;
 `;
 
 const CardStyles = css`
@@ -115,4 +119,5 @@ export {
   Title,
   Description,
   PostBottomContainer,
+  TagContainer,
 };

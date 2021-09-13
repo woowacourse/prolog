@@ -28,7 +28,7 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory)
-        throws Exception {
+        {
 
         return new StudylogsSearchRequest(
             convertToString(webRequest, "keyword"),
@@ -86,7 +86,7 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
 
     private Pageable makePageableDefault(NativeWebRequest webRequest) {
         int page = convertToInt(webRequest, "page", 1) - 1;
-        int size = convertToInt(webRequest, "size", 20);
+        int size = convertToInt(webRequest, "size", 10);
         return PageRequest.of(
             page,
             size,

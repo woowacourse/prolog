@@ -80,15 +80,23 @@ const MainPage = () => {
   useEffect(() => {
     const params = getFullParams();
 
-    history.push(`${PATH.ROOT}?${search ? 'keyword=' + search : ''}&${params ?? ''}`);
-  }, [selectedFilterDetails, postQueryParams, getFullParams]);
+    if (!search && !params) {
+      history.push(`${PATH.ROOT}`);
+    } else if (params && !search) {
+      history.push(`${PATH.ROOT}?${params ? params : ''}`);
+    } else if (search && !params) {
+      history.push(`${PATH.ROOT}?${search ? 'keyword=' + search : ''}`);
+    } else {
+      history.push(`${PATH.ROOT}?${search ? 'keyword=' + search : ''}&${params ?? ''}`);
+    }
+  }, [getFullParams, postQueryParams, selectedFilterDetails]);
 
   useEffect(() => {
     const getData = async () => {
       const query = new URLSearchParams(history.location.search);
 
       try {
-        const response = await requestGetPosts(query);
+        const response = await requestGetPosts({ type: 'searchParams', data: query });
         const data = await response.json();
 
         setPosts(data);

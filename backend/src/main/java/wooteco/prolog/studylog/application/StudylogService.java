@@ -7,9 +7,7 @@ import static java.util.stream.Collectors.toList;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +18,7 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
+import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
@@ -39,73 +38,58 @@ public class StudylogService {
 
     private final StudylogRepository studylogRepository;
     private final MemberTagService memberTagService;
-    private final StudylogDocumentService studylogDocumentService;
+    private final DocumentService studylogDocumentService;
     private final MissionService missionService;
     private final MemberService memberService;
     private final TagService tagService;
 
+    public StudylogsResponse findStudylogs(StudylogsSearchRequest request) {
+        if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
+            return findPostsWithoutKeyword(request.getLevels(), request.getMissions(),
+                request.getTags(),
+                request.getUsernames(), request.getStartDate(), request.getEndDate(),
+                request.getPageable());
+        }
 
-    public StudylogsResponse findPostsWithFilter(
-            List<Long> levelIds,
-            List<Long> missionIds,
-            List<Long> tagIds,
-            List<String> usernames,
-            LocalDate startDate,
-            LocalDate endDate,
-            Pageable pageable) {
+        final StudylogDocumentResponse response = studylogDocumentService.findBySearchKeyword(
+            request.getKeyword(),
+            request.getTags(),
+            request.getMissions(),
+            request.getLevels(),
+            request.getUsernames(),
+            request.getStartDate(),
+            request.getEndDate(),
+            request.getPageable()
+        );
+
+        final List<Studylog> studylogs = studylogRepository.findAllById(response.getStudylogIds());
+        return StudylogsResponse.of(studylogs,
+            response.getTotalSize(),
+            response.getTotalPage(),
+            response.getCurrPage()
+        );
+    }
+
+    public StudylogsResponse findPostsWithoutKeyword(
+        List<Long> levelIds,
+        List<Long> missionIds,
+        List<Long> tagIds,
+        List<String> usernames,
+        LocalDate startDate,
+        LocalDate endDate,
+        Pageable pageable) {
 
         Specification<Studylog> specs =
-                StudylogSpecification.findByLevelIn(levelIds)
-                        .and(StudylogSpecification.equalIn("mission", missionIds))
-                        .and(StudylogSpecification.findByTagIn(tagIds))
-                        .and(StudylogSpecification.findByUsernameIn(usernames))
-                        .and(StudylogSpecification.findBetweenDate(startDate, endDate))
-                        .and(StudylogSpecification.distinct(true));
+            StudylogSpecification.findByLevelIn(levelIds)
+                .and(StudylogSpecification.equalIn("mission", missionIds))
+                .and(StudylogSpecification.findByTagIn(tagIds))
+                .and(StudylogSpecification.findByUsernameIn(usernames))
+                .and(StudylogSpecification.findBetweenDate(startDate, endDate))
+                .and(StudylogSpecification.distinct(true));
 
         Page<Studylog> posts = studylogRepository.findAll(specs, pageable);
 
         return StudylogsResponse.of(posts);
-    }
-
-    public StudylogsResponse findStudylogsWithFilter(
-            StudylogsSearchRequest studylogsSearchRequest) {
-
-        final String keyword = studylogsSearchRequest.getKeyword();
-        final Pageable pageable = studylogsSearchRequest.getPageable();
-
-        List<Long> studylogIds = Collections.emptyList();
-        if (isSearch(keyword)) {
-            studylogIds = studylogDocumentService.findBySearchKeyword(keyword, pageable);
-        }
-
-        if (studylogsSearchRequest.hasOnlySearch()) {
-            return StudylogsResponse.of(studylogRepository.findByIdIn(studylogIds, pageable));
-        }
-
-        Page<Studylog> studylogs = studylogRepository
-                .findAll(makeSpecifications(studylogsSearchRequest, studylogIds), pageable);
-
-        return StudylogsResponse.of(studylogs);
-    }
-
-    private Specification<Studylog> makeSpecifications(
-            StudylogsSearchRequest studylogsSearchRequest, List<Long> studylogIds
-    ) {
-        return StudylogSpecification.findByLevelIn(studylogsSearchRequest.getLevels())
-                .and(StudylogSpecification.equalIn("id", studylogIds,
-                        isSearch(studylogsSearchRequest.getKeyword())))
-                .and(StudylogSpecification.equalIn("mission", studylogsSearchRequest.getMissions()))
-                .and(StudylogSpecification.findByTagIn(studylogsSearchRequest.getTags()))
-                .and(StudylogSpecification.findByUsernameIn(studylogsSearchRequest.getUsernames()))
-                .and(StudylogSpecification.findByUsernameIn(studylogsSearchRequest.getUsernames()))
-                .and(StudylogSpecification.findBetweenDate(
-                        studylogsSearchRequest.getStartDate(),
-                        studylogsSearchRequest.getEndDate()))
-                .and(StudylogSpecification.distinct(true));
-    }
-
-    private boolean isSearch(String searchKeyword) {
-        return Objects.nonNull(searchKeyword) && !searchKeyword.isEmpty();
     }
 
     public StudylogsResponse findStudylogsOf(String username, Pageable pageable) {
@@ -115,14 +99,14 @@ public class StudylogService {
 
     @Transactional
     public List<StudylogResponse> insertStudylogs(Member member,
-            List<StudylogRequest> studylogRequests) {
+                                                  List<StudylogRequest> studylogRequests) {
         if (studylogRequests.size() == 0) {
             throw new StudylogArgumentException();
         }
 
         return studylogRequests.stream()
-                .map(studylogRequest -> insertStudylog(member, studylogRequest))
-                .collect(toList());
+            .map(studylogRequest -> insertStudylog(member, studylogRequest))
+            .collect(toList());
     }
 
     private StudylogResponse insertStudylog(Member member, StudylogRequest studylogRequest) {
@@ -131,10 +115,10 @@ public class StudylogService {
         Mission mission = missionService.findById(studylogRequest.getMissionId());
 
         Studylog requestedStudylog = new Studylog(foundMember,
-                studylogRequest.getTitle(),
-                studylogRequest.getContent(),
-                mission,
-                tags.getList());
+            studylogRequest.getTitle(),
+            studylogRequest.getContent(),
+            mission,
+            tags.getList());
 
         Studylog createdStudylog = studylogRepository.save(requestedStudylog);
         memberTagService.registerMemberTag(tags, foundMember);
@@ -145,7 +129,7 @@ public class StudylogService {
 
     public StudylogResponse findById(Long id) {
         Studylog studylog = studylogRepository.findById(id)
-                .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(StudylogNotFoundException::new);
 
         return StudylogResponse.of(studylog);
     }
@@ -155,7 +139,7 @@ public class StudylogService {
         final Member foundMember = memberService.findById(member.getId());
 
         Studylog studylog = studylogRepository.findById(studylogId)
-                .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(StudylogNotFoundException::new);
         studylog.validateAuthor(member);
         final Tags originalTags = tagService.findByPostAndMember(studylog, foundMember);
 
@@ -171,7 +155,7 @@ public class StudylogService {
     public void deleteStudylog(Member member, Long studylogId) {
         final Member foundMember = memberService.findById(member.getId());
         Studylog studylog = studylogRepository.findById(studylogId)
-                .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(StudylogNotFoundException::new);
         studylog.validateAuthor(foundMember);
 
         final Tags tags = tagService.findByPostAndMember(studylog, foundMember);
@@ -186,8 +170,8 @@ public class StudylogService {
         final LocalDateTime end = localDate.with(lastDayOfMonth()).atTime(LocalTime.MAX);
 
         return studylogRepository.findByMemberBetween(member, start, end)
-                .stream()
-                .map(CalendarStudylogResponse::of)
-                .collect(toList());
+            .stream()
+            .map(CalendarStudylogResponse::of)
+            .collect(toList());
     }
 }
