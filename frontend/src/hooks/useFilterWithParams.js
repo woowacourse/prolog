@@ -43,8 +43,8 @@ const useFilterWithParams = () => {
   };
 
   const getFullParams = useCallback(() => {
-    if (postQueryParams.page == 1) {
-      delete postQueryParams.page
+    if (postQueryParams.page === 1) {
+      delete postQueryParams.page;
     }
 
     const pageParams = queryString.stringify(postQueryParams);
