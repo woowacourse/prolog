@@ -1,16 +1,24 @@
 package wooteco.prolog.studylog.domain.report;
 
 import java.util.List;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studylog.domain.Studylog;
+import wooteco.prolog.studylog.domain.report.abilitygraph.Graph;
+import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylog;
+import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylogs;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Report {
 
     @Id
@@ -21,38 +29,51 @@ public class Report {
 
     private String description;
 
-    @OneToMany(mappedBy = "report")
-    List<ReportedAbility> reportedAbilities;
+    @Embedded
+    private Graph graph;
 
-    @ManyToOne
+    private ReportedStudylogs studylogs;
+
+    private Boolean isRepresent;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
-
-    @ManyToOne
-    private Studylog studylog;
-
-    protected Report() {
-
-    }
 
     public Report(String title,
                   String description,
-                  List<ReportedAbility> reportedAbilities,
-                  Member member,
-                  Studylog studylog) {
-        this(null, title, description, reportedAbilities, member, studylog);
+                  Graph graph,
+                  ReportedStudylogs studylogs,
+                  Boolean isRepresent,
+                  Member member
+    ) {
+     this(null, title, description, graph, studylogs, isRepresent, member);
     }
 
-    public Report(Long id,
-                  String title,
-                  String description,
-                  List<ReportedAbility> reportedAbilities,
-                  Member member,
-                  Studylog studylog) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.reportedAbilities = reportedAbilities;
-        this.member = member;
-        this.studylog = studylog;
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Graph getGraph() {
+        return graph;
+    }
+
+    public List<ReportedStudylog> getStudylogs() {
+        return studylogs.getStudylogs();
+    }
+
+    public Boolean getRepresent() {
+        return isRepresent;
+    }
+
+    public Member getMember() {
+        return member;
     }
 }
