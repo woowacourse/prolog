@@ -100,6 +100,10 @@ const MainPage = () => {
         const data = await response.json();
 
         setPosts(data);
+
+        const params = getFullParams();
+
+        history.push(`${PATH.ROOT}?${params}`);
       } catch (error) {
         console.error(error);
       }
@@ -122,6 +126,7 @@ const MainPage = () => {
 
     setSelectedFilterDetails(selectedFilterDetailsWithName);
   }, [filters]);
+
 
   return (
     <>
