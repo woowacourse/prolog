@@ -69,7 +69,7 @@ public class Report {
         return studylogs.getStudylogs();
     }
 
-    public Boolean getRepresent() {
+    public Boolean isRepresent() {
         return isRepresent;
     }
 

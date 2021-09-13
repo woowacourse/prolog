@@ -1,5 +1,7 @@
 package wooteco.prolog.studylog.application.dto.report.abilityGraph;
 
+import wooteco.prolog.studylog.domain.report.abilitygraph.datastructure.GraphAbility;
+
 public class AbilityResponse {
 
     private Long id;
@@ -15,6 +17,15 @@ public class AbilityResponse {
         this.name = name;
         this.weight = weight;
         this.percentage = percentage;
+    }
+
+    public static AbilityResponse from(GraphAbility graphAbility) {
+        return new AbilityResponse(
+            graphAbility.getId(),
+            graphAbility.getName(),
+            graphAbility.getWeight(),
+            graphAbility.getPercentage()
+        );
     }
 
     public Long getId() {
