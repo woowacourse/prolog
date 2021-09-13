@@ -27,7 +27,7 @@ public class FilterController {
     public ResponseEntity<FilterResponse> showAll() {
         List<LevelResponse> levelResponses = levelService.findAll();
         List<MissionResponse> missionResponses = missionService.findAll();
-        List<TagResponse> tagResponses = tagService.findAll();
+        List<TagResponse> tagResponses = tagService.findTagsIncludedInPost();
         return ResponseEntity.ok()
             .body(new FilterResponse(levelResponses, missionResponses, tagResponses));
     }
