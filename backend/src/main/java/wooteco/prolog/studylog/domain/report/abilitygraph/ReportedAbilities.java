@@ -7,7 +7,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import wooteco.prolog.studylog.domain.report.Report;
 import wooteco.prolog.studylog.domain.report.abilitygraph.datastructure.GraphAbility;
+import wooteco.prolog.studylog.domain.report.common.UpdateUtil;
 
 @Embeddable
 public class ReportedAbilities {
@@ -24,6 +26,16 @@ public class ReportedAbilities {
 
     public ReportedAbilities(List<ReportedAbility> abilities) {
         this.abilities = abilities;
+    }
+
+    public void appendTo(Report report) {
+        this.abilities.forEach(ability -> ability.appendTo(report));
+    }
+
+    public void update(ReportedAbilities reportedAbilities, Report report) {
+        reportedAbilities.abilities.forEach(ability -> ability.appendTo(report));
+
+        UpdateUtil.execute(this.abilities, abilities);
     }
 
     public List<GraphAbility> graphAbilities() {

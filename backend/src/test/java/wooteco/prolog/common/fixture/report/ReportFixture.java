@@ -1,17 +1,9 @@
 package wooteco.prolog.common.fixture.report;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.Role;
-import wooteco.prolog.studylog.domain.Level;
-import wooteco.prolog.studylog.domain.Mission;
-import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.Tag;
-import wooteco.prolog.studylog.domain.ablity.Ability;
 import wooteco.prolog.studylog.domain.report.Report;
-import wooteco.prolog.studylog.domain.report.ReportedAbility;
+import wooteco.prolog.studylog.domain.report.abilitygraph.Graph;
+import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylogs;
 
 public class ReportFixture {
 
@@ -23,9 +15,10 @@ public class ReportFixture {
         private Long id;
         private String title;
         private String description;
-        private List<ReportedAbility> reportedAbilities = new ArrayList<>();
+        private Graph graph;
+        private ReportedStudylogs studylogs;
+        private Boolean isRepresent;
         private Member member;
-        private Studylog  studylog;
 
         public Builder id(Long id) {
             this.id = id;
@@ -42,8 +35,8 @@ public class ReportFixture {
             return this;
         }
 
-        public Builder reportedAbilities(ReportedAbility reportedAbilities) {
-            this.reportedAbilities.add(reportedAbilities);
+        public Builder graph(Graph graph) {
+            this.graph = graph;
             return this;
         }
 
@@ -52,8 +45,13 @@ public class ReportFixture {
             return this;
         }
 
-        public Builder studylog(Studylog studylog) {
-            this.studylog = studylog;
+        public Builder studylogs(ReportedStudylogs reportedStudylogs) {
+            this.studylogs = reportedStudylogs;
+            return this;
+        }
+
+        public Builder isPresent(boolean isPresent) {
+            this.isRepresent = isPresent;
             return this;
         }
 
@@ -62,51 +60,11 @@ public class ReportFixture {
                 this.id,
                 this.title,
                 this.description,
-                this.reportedAbilities,
-                this.member,
-                this.studylog
+                this.graph,
+                this.studylogs,
+                isRepresent,
+                this.member
             );
         }
     }
-    public static Report get() {
-        return new Report(
-            "testReport",
-            "description",
-            Arrays.asList(
-                new ReportedAbility(
-                    createStudylog(),
-                    createAbility()
-                )
-            ),
-            createMember(),
-            createStudylog()
-        );
-    }
-
-    private static Studylog createStudylog() {
-        return new Studylog(
-            createMember(),
-            "studylog title",
-            "studylog content",
-            createMission(),
-            Arrays.asList(
-                new Tag("test tag1"),
-                new Tag("test tag1")
-            )
-        );
-    }
-
-    private static Member createMember() {
-        return new Member("bperhaps", "손너잘", Role.CREW, 2222L,
-            "https://avatars.githubusercontent.com/u/51393021?v=4");
-    }
-
-    private static Mission createMission() {
-        return new Mission("test mission", new Level("test Level"));
-    }
-
-    private static Ability createAbility() {
-        return Ability.parent("test ability", "test ability description", "test color");
-    }
-
 }

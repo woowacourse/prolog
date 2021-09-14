@@ -1,15 +1,17 @@
 package wooteco.prolog.studylog.domain.report;
 
 import java.util.List;
-import javax.persistence.Embedded;
+import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.domain.report.abilitygraph.Graph;
@@ -18,7 +20,6 @@ import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylogs;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Report {
 
     @Id
@@ -29,7 +30,8 @@ public class Report {
 
     private String description;
 
-    @Embedded
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JoinColumn(name = "graph_id", nullable = false)
     private Graph graph;
 
     private ReportedStudylogs studylogs;
@@ -37,6 +39,7 @@ public class Report {
     private Boolean isRepresent;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     public Report(String title,
@@ -47,6 +50,46 @@ public class Report {
                   Member member
     ) {
      this(null, title, description, graph, studylogs, isRepresent, member);
+    }
+
+    public Report(Long id,
+                  String title,
+                  String description,
+                  Graph graph,
+                  ReportedStudylogs studylogs,
+                  Boolean isRepresent,
+                  Member member
+    ) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.graph = graph;
+        this.studylogs = studylogs;
+        this.isRepresent = isRepresent;
+        this.member = member;
+
+        graph.appendTo(this);
+        studylogs.appendTo(this);
+    }
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateDescription(String description) {
+        this.description = description;
+    }
+
+    public void updateGraph(Graph graph) {
+        this.graph.update(graph, this);
+    }
+
+    public void updateStudylogs(ReportedStudylogs studylogs) {
+        this.studylogs.update(studylogs, this);
+    }
+
+    public void updateIsRepresent(Boolean isRepresent) {
+        this.isRepresent = isRepresent;
     }
 
     public Long getId() {
@@ -66,7 +109,7 @@ public class Report {
     }
 
     public List<ReportedStudylog> getStudylogs() {
-        return studylogs.getStudylogs();
+        return studylogs.getValues();
     }
 
     public Boolean isRepresent() {
@@ -75,5 +118,22 @@ public class Report {
 
     public Member getMember() {
         return member;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Report)) {
+            return false;
+        }
+        Report report = (Report) o;
+        return Objects.equals(getId(), report.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

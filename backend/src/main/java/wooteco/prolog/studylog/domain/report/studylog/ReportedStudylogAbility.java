@@ -1,5 +1,6 @@
 package wooteco.prolog.studylog.domain.report.studylog;
 
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,32 +10,43 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import wooteco.prolog.studylog.domain.ablity.Ability;
+import wooteco.prolog.studylog.domain.report.common.Updatable;
 
 @Entity
 @AllArgsConstructor
-public class ReportedStudylogAbility {
+public class ReportedStudylogAbility implements Updatable<ReportedStudylogAbility> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ability_id")
+    @JoinColumn(name = "ability_id", nullable = false)
     private Ability ability;
 
     private Boolean isPresent;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reportedStudylog_id")
+    @JoinColumn(name = "reportedStudylog_id", nullable = false)
     private ReportedStudylog reportedStudylog;
 
     protected ReportedStudylogAbility() {
     }
 
     public ReportedStudylogAbility(Ability ability,
+                                   Boolean isPresent
+    ) {
+        this(null, ability, isPresent, null);
+    }
+
+    public ReportedStudylogAbility(Ability ability,
                                    Boolean isPresent,
                                    ReportedStudylog reportedStudylog) {
         this(null, ability, isPresent, reportedStudylog);
+    }
+
+    public void appendTo(ReportedStudylog reportedStudylog) {
+        this.reportedStudylog = reportedStudylog;
     }
 
     public Long getId() {
@@ -51,5 +63,29 @@ public class ReportedStudylogAbility {
 
     public Boolean isPresent() {
         return isPresent;
+    }
+
+    @Override
+    public void update(ReportedStudylogAbility reportedStudylogAbility) {
+        this.ability = reportedStudylogAbility.ability;
+        this.isPresent = reportedStudylogAbility.isPresent;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ReportedStudylogAbility)) {
+            return false;
+        }
+
+        ReportedStudylogAbility that = (ReportedStudylogAbility) o;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
