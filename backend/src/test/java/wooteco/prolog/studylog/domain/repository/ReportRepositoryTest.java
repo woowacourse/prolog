@@ -19,7 +19,7 @@ import wooteco.prolog.common.fixture.report.ReportFixture;
 import wooteco.prolog.common.fixture.studylog.StudylogFixture;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.studylog.application.dto.report.ReportResponse;
+import wooteco.prolog.studylog.application.dto.report.response.ReportResponse;
 import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
@@ -90,9 +90,9 @@ class ReportRepositoryTest {
         Ability ability2 = abilityRepository.save(AbilityFixture.parentAbility2());
         Ability ability3 = abilityRepository.save(AbilityFixture.parentAbility3());
         ReportedAbilities reportedAbilities = new ReportedAbilities(Arrays.asList(
-            new ReportedAbility(ability1, 1L),
-            new ReportedAbility(ability2, 2L),
-            new ReportedAbility(ability3, 3L)
+            new ReportedAbility(ability1, 1L, true),
+            new ReportedAbility(ability2, 2L, true),
+            new ReportedAbility(ability3, 3L, true)
         ));
 
         Level level1 = levelRepository.save(LevelFixture.level1());
@@ -104,15 +104,15 @@ class ReportRepositoryTest {
             new ReportedStudylog(
                 studylog,
                 Arrays.asList(
-                    new ReportedStudylogAbility(ability4, true),
-                    new ReportedStudylogAbility(ability5, true)
+                    new ReportedStudylogAbility(ability4),
+                    new ReportedStudylogAbility(ability5)
                 )
             ),
             new ReportedStudylog(
                 studylog,
                 Arrays.asList(
-                    new ReportedStudylogAbility(ability4, true),
-                    new ReportedStudylogAbility(ability5, true)
+                    new ReportedStudylogAbility(ability4),
+                    new ReportedStudylogAbility(ability5)
                 )
             )
         ));

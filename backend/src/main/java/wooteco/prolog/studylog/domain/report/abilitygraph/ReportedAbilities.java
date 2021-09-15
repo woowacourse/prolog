@@ -46,7 +46,8 @@ public class ReportedAbilities {
                 ability.getId(),
                 ability.getName(),
                 ability.getWeight(),
-                calculatePercentage(allWeight, ability)
+                calculatePercentage(allWeight, ability),
+                ability.isPresent()
             )).collect(toList());
     }
 

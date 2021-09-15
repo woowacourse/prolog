@@ -24,8 +24,6 @@ public class ReportedStudylogAbility implements Updatable<ReportedStudylogAbilit
     @JoinColumn(name = "ability_id", nullable = false)
     private Ability ability;
 
-    private Boolean isPresent;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reportedStudylog_id", nullable = false)
     private ReportedStudylog reportedStudylog;
@@ -33,16 +31,13 @@ public class ReportedStudylogAbility implements Updatable<ReportedStudylogAbilit
     protected ReportedStudylogAbility() {
     }
 
-    public ReportedStudylogAbility(Ability ability,
-                                   Boolean isPresent
-    ) {
-        this(null, ability, isPresent, null);
+    public ReportedStudylogAbility(Ability ability) {
+        this(null, ability, null);
     }
 
     public ReportedStudylogAbility(Ability ability,
-                                   Boolean isPresent,
                                    ReportedStudylog reportedStudylog) {
-        this(null, ability, isPresent, reportedStudylog);
+        this(null, ability, reportedStudylog);
     }
 
     public void appendTo(ReportedStudylog reportedStudylog) {
@@ -61,14 +56,9 @@ public class ReportedStudylogAbility implements Updatable<ReportedStudylogAbilit
         return ability.getColor();
     }
 
-    public Boolean isPresent() {
-        return isPresent;
-    }
-
     @Override
     public void update(ReportedStudylogAbility reportedStudylogAbility) {
         this.ability = reportedStudylogAbility.ability;
-        this.isPresent = reportedStudylogAbility.isPresent;
     }
 
     @Override
@@ -79,7 +69,6 @@ public class ReportedStudylogAbility implements Updatable<ReportedStudylogAbilit
         if (!(o instanceof ReportedStudylogAbility)) {
             return false;
         }
-
         ReportedStudylogAbility that = (ReportedStudylogAbility) o;
         return Objects.equals(getId(), that.getId());
     }

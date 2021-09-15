@@ -1,4 +1,4 @@
-package wooteco.prolog.studylog.application.dto.report.studylogs;
+package wooteco.prolog.studylog.application.dto.report.response.studylogs;
 
 import static java.util.stream.Collectors.toList;
 

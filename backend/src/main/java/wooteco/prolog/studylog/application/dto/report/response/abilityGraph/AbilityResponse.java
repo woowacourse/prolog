@@ -1,4 +1,4 @@
-package wooteco.prolog.studylog.application.dto.report.abilityGraph;
+package wooteco.prolog.studylog.application.dto.report.response.abilityGraph;
 
 import wooteco.prolog.studylog.domain.report.abilitygraph.datastructure.GraphAbility;
 
@@ -8,15 +8,17 @@ public class AbilityResponse {
     private String name;
     private Long weight;
     private Double percentage;
+    private Boolean isPresent;
 
     private AbilityResponse() {
     }
 
-    public AbilityResponse(Long id, String name, Long weight, Double percentage) {
+    public AbilityResponse(Long id, String name, Long weight, Double percentage, Boolean isPresent) {
         this.id = id;
         this.name = name;
         this.weight = weight;
         this.percentage = percentage;
+        this.isPresent = isPresent;
     }
 
     public static AbilityResponse from(GraphAbility graphAbility) {
@@ -24,7 +26,8 @@ public class AbilityResponse {
             graphAbility.getId(),
             graphAbility.getName(),
             graphAbility.getWeight(),
-            graphAbility.getPercentage()
+            graphAbility.getPercentage(),
+            graphAbility.isPresent()
         );
     }
 

@@ -6,12 +6,14 @@ public class GraphAbility {
     private String name;
     private Long weight;
     private Double percentage;
+    private Boolean isPresent;
 
-    public GraphAbility(Long id, String name, Long weight, Double percentage) {
+    public GraphAbility(Long id, String name, Long weight, Double percentage, Boolean isPresent) {
         this.id = id;
         this.name = name;
         this.weight = weight;
         this.percentage = percentage;
+        this.isPresent = isPresent;
     }
 
     public Long getId() {
@@ -28,5 +30,9 @@ public class GraphAbility {
 
     public Double getPercentage() {
         return percentage;
+    }
+
+    public Boolean isPresent() {
+        return isPresent;
     }
 }

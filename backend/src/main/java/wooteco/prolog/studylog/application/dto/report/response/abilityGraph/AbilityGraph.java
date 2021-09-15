@@ -1,4 +1,4 @@
-package wooteco.prolog.studylog.application.dto.report.abilityGraph;
+package wooteco.prolog.studylog.application.dto.report.response.abilityGraph;
 
 import static java.util.stream.Collectors.toList;
 

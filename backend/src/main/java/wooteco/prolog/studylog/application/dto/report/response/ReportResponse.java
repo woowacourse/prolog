@@ -1,10 +1,10 @@
-package wooteco.prolog.studylog.application.dto.report;
+package wooteco.prolog.studylog.application.dto.report.response;
 
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
-import wooteco.prolog.studylog.application.dto.report.abilityGraph.AbilityGraph;
-import wooteco.prolog.studylog.application.dto.report.studylogs.StudylogResponse;
+import wooteco.prolog.studylog.application.dto.report.response.abilityGraph.AbilityGraph;
+import wooteco.prolog.studylog.application.dto.report.response.studylogs.StudylogResponse;
 import wooteco.prolog.studylog.domain.report.Report;
 
 public class ReportResponse {

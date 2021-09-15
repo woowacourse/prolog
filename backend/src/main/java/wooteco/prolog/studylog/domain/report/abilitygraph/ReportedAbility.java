@@ -29,6 +29,8 @@ public class ReportedAbility implements Updatable<ReportedAbility> {
     @Column(nullable = false)
     private Long weight;
 
+    private Boolean isPresent;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "report_id", nullable = false)
     private Report report;
@@ -36,12 +38,12 @@ public class ReportedAbility implements Updatable<ReportedAbility> {
     protected ReportedAbility() {
     }
 
-    public ReportedAbility(Ability ability, Long weight) {
-        this(null, ability, weight, null);
+    public ReportedAbility(Ability ability, Long weight, Boolean isPresent) {
+        this(null, ability, weight, isPresent, null);
     }
 
-    public ReportedAbility(Ability ability, Long weight, Report report) {
-        this(null, ability, weight, report);
+    public ReportedAbility(Ability ability, Long weight, Boolean isPresent, Report report) {
+        this(null, ability, weight, isPresent, report);
     }
 
     public void appendTo(Report report) {
@@ -62,6 +64,10 @@ public class ReportedAbility implements Updatable<ReportedAbility> {
 
     public Boolean isParent() {
         return ability.isParent();
+    }
+
+    public Boolean isPresent() {
+        return isPresent;
     }
 
     @Override
