@@ -1,4 +1,4 @@
-package wooteco.prolog.member.ui;
+package wooteco.prolog.studylog.ui;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -36,7 +36,7 @@ public class StudyLogOverviewController {
     public ResponseEntity<MemberDataResponses<CalendarStudylogResponse>> findPostsOfMine(
             CalendarPostRequest calendarPostRequest, @PathVariable String username) {
         return ResponseEntity.ok(
-                MemberDataResponses.of(
+            MemberDataResponses.of(
                         studylogService.findCalendarPosts(username, calendarPostRequest.localDate())
                 )
         );
