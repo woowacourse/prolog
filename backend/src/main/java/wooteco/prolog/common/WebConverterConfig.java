@@ -18,10 +18,20 @@ public class WebConverterConfig implements WebMvcConfigurer {
     }
 
     private Converter<String, Month> monthConverter() {
-        return source -> Month.of(Integer.parseInt(source));
+        return new Converter<String, Month>() {
+            @Override
+            public Month convert(String source) {
+                return Month.of(Integer.parseInt(source));
+            }
+        };
     }
 
     private Converter<String, LocalDate> localDateConverter() {
-        return source -> LocalDate.parse(source, DateTimeFormatter.ofPattern("yyyyMMdd"));
+        return new Converter<String, LocalDate>() {
+            @Override
+            public LocalDate convert(String source) {
+                return LocalDate.parse(source, DateTimeFormatter.ofPattern("yyyyMMdd"));
+            }
+        };
     }
 }
