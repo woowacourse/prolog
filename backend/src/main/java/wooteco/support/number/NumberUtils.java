@@ -1,4 +1,4 @@
-package wooteco.prolog.studylog.infrastructure;
+package wooteco.support.number;
 
 public class NumberUtils {
 

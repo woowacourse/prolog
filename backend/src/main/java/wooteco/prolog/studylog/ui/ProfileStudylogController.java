@@ -1,4 +1,4 @@
-package wooteco.prolog.member.ui;
+package wooteco.prolog.studylog.ui;
 
 import java.time.LocalDate;
 import java.util.Collections;
