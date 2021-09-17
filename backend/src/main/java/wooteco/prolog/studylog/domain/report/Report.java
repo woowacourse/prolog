@@ -72,24 +72,12 @@ public class Report {
         studylogs.appendTo(this);
     }
 
-    public void updateTitle(String title) {
-        this.title = title;
-    }
-
-    public void updateDescription(String description) {
-        this.description = description;
-    }
-
-    public void updateGraph(Graph graph) {
-        this.graph.update(graph, this);
-    }
-
-    public void updateStudylogs(ReportedStudylogs studylogs) {
-        this.studylogs.update(studylogs, this);
-    }
-
-    public void updateIsRepresent(Boolean isRepresent) {
-        this.isRepresent = isRepresent;
+    public void update(Report report) {
+        this.title = report.title;
+        this.description = report.description;
+        this.graph.update(report.graph, this);
+        this.studylogs.update(report.studylogs, null);
+        this.isRepresent = report.isRepresent;
     }
 
     public Long getId() {
