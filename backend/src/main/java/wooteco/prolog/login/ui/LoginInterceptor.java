@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import wooteco.prolog.login.application.AuthorizationExtractor;
+import wooteco.prolog.security.AuthorizationExtractor;
 import wooteco.prolog.login.application.JwtTokenProvider;
 import wooteco.prolog.login.excetpion.TokenNotValidException;
 

@@ -1,4 +1,4 @@
-package wooteco.prolog.login.application;
+package wooteco.prolog.security;
 
 import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
