@@ -14,9 +14,10 @@ import wooteco.prolog.login.application.dto.GithubAccessTokenResponse;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.excetpion.GithubApiFailException;
 import wooteco.prolog.login.excetpion.GithubConnectionException;
+import wooteco.prolog.security.OAuth2AccessTokenResponse;
 
 @Component
-public class GithubClient {
+public class OAuth2AccessTokenResponseClient {
 
     @Value("${github.client.id}")
     private String clientId;
@@ -27,7 +28,7 @@ public class GithubClient {
     @Value("${github.url.profile}")
     private String profileUrl;
 
-    public String getAccessTokenFromGithub(String code) {
+    public OAuth2AccessTokenResponse getTokenResponse(String code) {
         GithubAccessTokenRequest githubAccessTokenRequest = new GithubAccessTokenRequest(
             code,
             clientId,
@@ -48,7 +49,7 @@ public class GithubClient {
         if (accessToken == null) {
             throw new GithubApiFailException();
         }
-        return accessToken;
+        return new OAuth2AccessTokenResponse(accessToken, "");
     }
 
     public GithubProfileResponse getGithubProfileFromGithub(String accessToken) {

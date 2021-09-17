@@ -8,7 +8,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import wooteco.prolog.login.application.AuthorizationExtractor;
-import wooteco.prolog.login.application.GithubLoginService;
+import wooteco.prolog.login.application.JwtTokenProvider;
+import wooteco.prolog.login.excetpion.TokenNotValidException;
 
 @Component
 @AllArgsConstructor
@@ -18,7 +19,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     private static final String ACCESS_REQUEST_METHOD = "Access-Control-Request-Method";
     private static final String ACCESS_REQUEST_HEADERS = "Access-Control-Request-Headers";
 
-    private final GithubLoginService githubLoginService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
@@ -31,7 +32,9 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        githubLoginService.validateToken(AuthorizationExtractor.extract(request));
+        if (!jwtTokenProvider.validateToken(AuthorizationExtractor.extract(request))) {
+            throw new TokenNotValidException();
+        }
         return true;
     }
 

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class TokenRequest {
+public class OAuth2AuthorizationGrantRequest {
 
     private String code;
 }

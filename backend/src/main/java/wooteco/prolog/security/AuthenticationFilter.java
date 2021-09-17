@@ -7,27 +7,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.web.filter.OncePerRequestFilter;
-import wooteco.prolog.login.application.dto.TokenRequest;
+import wooteco.prolog.login.application.dto.OAuth2AuthorizationGrantRequest;
 
 @AllArgsConstructor
 public class AuthenticationFilter extends OncePerRequestFilter {
 
+    private final AuthenticationProvider authenticationProvider;
     private final AuthenticationSuccessHandler successHandler;
     private final AuthenticationFailureHandler failureHandler;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
-                                    FilterChain filterChain) throws IOException {
+                                    FilterChain filterChain) {
         try {
             if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
                 return;
             }
 
-            TokenRequest tokenRequest = new ObjectMapper()
-                .readValue(request.getReader(), TokenRequest.class);
+            OAuth2AuthorizationGrantRequest oAuth2AuthorizationGrantRequest
+                = new ObjectMapper()
+                .readValue(request.getReader(), OAuth2AuthorizationGrantRequest.class);
 
-            successHandler.onAuthenticationSuccess(request, response, () -> tokenRequest);
+            OAuth2AccessTokenResponse githubAccessToken = authenticationProvider
+                .authenticate(oAuth2AuthorizationGrantRequest);
+
+            successHandler.onAuthenticationSuccess(request, response, githubAccessToken);
 
         } catch (AuthenticationException e) {
             failureHandler.onAuthenticationFailure(request, response, e);

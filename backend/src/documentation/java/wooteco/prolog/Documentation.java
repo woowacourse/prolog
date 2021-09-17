@@ -19,7 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import wooteco.prolog.common.DataInitializer;
-import wooteco.prolog.login.application.dto.TokenRequest;
+import wooteco.prolog.login.application.dto.OAuth2AuthorizationGrantRequest;
 import wooteco.prolog.login.application.dto.TokenResponse;
 
 @ExtendWith(RestDocumentationExtension.class)
@@ -39,7 +39,7 @@ public class Documentation {
         dataInitializer.execute();
 
         로그인_사용자 = RestAssured.given().log().all()
-            .body(new TokenRequest(GithubResponses.소롱.getCode()))
+            .body(new OAuth2AuthorizationGrantRequest(GithubResponses.소롱.getCode()))
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().post("/login/token")
             .then().log().all()
