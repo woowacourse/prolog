@@ -12,6 +12,9 @@ import wooteco.prolog.studylog.domain.Studylog;
 
 public class StudylogSpecification {
 
+    private StudylogSpecification() {
+    }
+
     public static Specification<Studylog> likeKeyword(String key, List<String> keywords) {
         List<Predicate> predicates = new ArrayList<>();
         return (root, query, builder) -> {
@@ -19,8 +22,8 @@ public class StudylogSpecification {
                 return builder.and();
             }
 
-            for (String keyword: keywords) {
-                predicates.add(builder.like(root.get(key).get(key), "%" + keyword + "%"));
+            for (String keyword : keywords) {
+                predicates.add(builder.like(builder.lower(root.get(key).get(key)), "%" + keyword + "%"));
             }
 
             return builder.or(predicates.toArray(new Predicate[0]));
