@@ -19,6 +19,7 @@ import wooteco.prolog.studylog.exception.DuplicateMissionException;
 import wooteco.prolog.studylog.exception.DuplicateTagException;
 import wooteco.prolog.studylog.exception.MissionNotFoundException;
 import wooteco.prolog.studylog.exception.NotValidSortNameException;
+import wooteco.prolog.studylog.exception.SearchArgumentParseException;
 import wooteco.prolog.studylog.exception.StudylogArgumentException;
 import wooteco.prolog.studylog.exception.StudylogContentNullOrEmptyException;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
@@ -63,6 +64,7 @@ public enum BadRequestCode {
     TOO_LONG_MISSION_NAME(3005, String.format("미션 이름이 %d자 초과입니다.", Mission.MAX_LENGTH),
                           TooLongMissionNameException.class),
     DUPLICATE_MEMBER_TAG(3006, "중복되는 멤버 태그 입니다.", DuplicateMemberTagException.class),
+    SEARCH_PARAMETER_NOT_VALID(3007, "검색 파라미터가 올바르지 않습니다.", SearchArgumentParseException.class),
     ;
 
     private int code;

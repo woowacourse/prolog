@@ -16,6 +16,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import wooteco.prolog.studylog.exception.SearchArgumentParseException;
 
 @Component
 public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
@@ -27,19 +28,22 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory)
-        {
+                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 
-        return new StudylogsSearchRequest(
-            convertToString(webRequest, "keyword"),
-            convertToLongList(webRequest, "levels"),
-            convertToLongList(webRequest, "missions"),
-            convertToLongList(webRequest, "tags"),
-            convertToStringList(webRequest, "usernames"),
-            convertToLocalDate(webRequest, "startDate"),
-            convertToLocalDate(webRequest, "endDate"),
-            makePageableDefault(webRequest)
-        );
+        try {
+            return new StudylogsSearchRequest(
+                webRequest.getParameter("keyword"),
+                convertToLongList(webRequest, "levels"),
+                convertToLongList(webRequest, "missions"),
+                convertToLongList(webRequest, "tags"),
+                convertToStringList(webRequest, "usernames"),
+                convertToLocalDate(webRequest, "startDate"),
+                convertToLocalDate(webRequest, "endDate"),
+                makePageableDefault(webRequest)
+            );
+        } catch (Exception e) {
+            throw new SearchArgumentParseException();
+        }
     }
 
     private LocalDate convertToLocalDate(NativeWebRequest webRequest, String key) {
@@ -48,13 +52,9 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
         if (Objects.isNull(date)) {
             return null;
         }
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd"));
-    }
 
-    private String convertToString(NativeWebRequest webRequest, String key) {
-        return webRequest.getParameter(key);
+        return LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE);
     }
-
 
     private Integer convertToInt(NativeWebRequest webRequest, String key, int defaultValue) {
         String value = webRequest.getParameter(key);
@@ -70,7 +70,7 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
             return Collections.emptyList();
         }
         return Arrays.stream(parameterValues)
-            .map(it -> Long.parseLong(it))
+            .map(Long::parseLong)
             .collect(Collectors.toList());
     }
 
@@ -80,7 +80,7 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
             return Collections.emptyList();
         }
 
-        return Arrays.stream(webRequest.getParameterValues(key))
+        return Arrays.stream(Objects.requireNonNull(webRequest.getParameterValues(key)))
             .collect(Collectors.toList());
     }
 
