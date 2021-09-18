@@ -21,7 +21,7 @@ import wooteco.prolog.security.OAuth2UserService;
 
 @Configuration
 @AllArgsConstructor
-public class SecurityConfiguration implements WebMvcConfigurer {
+public class SecurityConfig implements WebMvcConfigurer {
 
     private final OAuth2AccessTokenResponseClient tokenResponseClient;
     private final JwtTokenProvider jwtTokenProvider;

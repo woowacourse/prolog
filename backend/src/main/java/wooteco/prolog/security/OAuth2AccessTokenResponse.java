@@ -5,13 +5,9 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class OAuth2AccessTokenResponse implements Authentication {
+public class OAuth2AccessTokenResponse {
 
     private String accessToken;
     private String refreshToken;
 
-    @Override
-    public Object getPrincipal() {
-        return accessToken;
-    }
 }

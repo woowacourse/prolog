@@ -1,5 +1,12 @@
 package wooteco.prolog.security;
 
-public interface Authentication {
-    Object getPrincipal();
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
+public class Authentication {
+
+    private OAuth2User principal;
+
 }

@@ -2,14 +2,12 @@ package wooteco.prolog.security;
 
 import java.util.Map;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
-public class OAuth2User implements OAuth2AuthenticatedPrincipal {
+@Getter
+public class OAuth2User {
 
     private final Map<String, Object> attributes;
 
-    @Override
-    public Map<String, Object> getAttributes() {
-        return attributes;
-    }
 }

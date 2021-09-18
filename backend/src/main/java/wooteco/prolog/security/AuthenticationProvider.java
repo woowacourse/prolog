@@ -17,6 +17,6 @@ public class AuthenticationProvider {
         OAuth2User oauth2User = oAuth2UserService
             .loadUser(new OAuth2UserRequest(githubAccessToken.getAccessToken()));
 
-        return new OAuth2LoginAuthenticationToken(oauth2User);
+        return new Authentication(oauth2User);
     }
 }
