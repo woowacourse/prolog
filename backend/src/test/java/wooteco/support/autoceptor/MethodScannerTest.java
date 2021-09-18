@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import wooteco.support.security.authentication.jwt.AuthMemberPrincipal;
+import wooteco.support.security.authentication.jwt.AuthenticationPrincipal;
 import wooteco.support.autoceptor.scanner.MethodScanner;
 import wooteco.support.autoceptor.test_classes.ControllerClass;
 import wooteco.support.autoceptor.test_classes.RestControllerClass;
@@ -22,7 +22,7 @@ class MethodScannerTest {
     void extractMethodAnnotatedOnParameter() {
         // given
         List<Class<? extends Annotation>> targetAnnotations =
-            Collections.singletonList(AuthMemberPrincipal.class);
+            Collections.singletonList(AuthenticationPrincipal.class);
         List<Class<?>> classes = Arrays.asList(ControllerClass.class, RestControllerClass.class);
 
         MethodScanner methodScanner = new MethodScanner(targetAnnotations);

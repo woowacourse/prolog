@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.support.security.authentication.jwt.AuthMemberPrincipal;
+import wooteco.prolog.member.domain.LoginMember;
+import wooteco.support.security.authentication.jwt.AuthenticationPrincipal;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
@@ -22,18 +23,18 @@ public class MemberController {
     private MemberService memberService;
 
     @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MemberResponse> findMemberInfoOfMine(@AuthMemberPrincipal Member member) {
+    public ResponseEntity<MemberResponse> findMemberInfoOfMine(@AuthenticationPrincipal LoginMember member) {
         return ResponseEntity.ok().body(MemberResponse.of(member));
     }
 
     @GetMapping(value = "/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MemberResponse> findMemberInfo(@AuthMemberPrincipal Member member) {
+    public ResponseEntity<MemberResponse> findMemberInfo(@AuthenticationPrincipal LoginMember member) {
         return ResponseEntity.ok().body(MemberResponse.of(member));
     }
 
     @PutMapping("/me")
     public ResponseEntity<Void> updateStudylog(
-        @AuthMemberPrincipal Member member,
+        @AuthenticationPrincipal LoginMember member,
         @RequestBody MemberUpdateRequest updateRequest
     ) {
         memberService.updateMember(member, updateRequest);

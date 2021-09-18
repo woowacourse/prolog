@@ -6,7 +6,7 @@ import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import wooteco.support.security.authentication.jwt.AuthMemberPrincipal;
+import wooteco.support.security.authentication.jwt.AuthenticationPrincipal;
 import wooteco.support.autoceptor.scanner.ControllerScanner;
 import wooteco.support.autoceptor.scanner.MethodScanner;
 import wooteco.support.autoceptor.scanner.URIScanner;
@@ -18,7 +18,7 @@ class URIScannerTest {
     @Test
     void extractUriAndMethods() {
         List<Class<? extends Annotation>> targetAnnotations =
-            Collections.singletonList(AuthMemberPrincipal.class);
+            Collections.singletonList(AuthenticationPrincipal.class);
         ControllerScanner controllerScanner =
             new ControllerScanner(ControllerClass.class, RestControllerClass.class);
         MethodScanner methodScanner = new MethodScanner(targetAnnotations);

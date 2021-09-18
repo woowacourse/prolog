@@ -13,7 +13,7 @@ public class AuthenticationProvider {
     private final OAuth2AccessTokenResponseClient tokenResponseClient;
     private final OAuth2UserService oAuth2UserService;
 
-    public Authentication authenticate(OAuth2AuthorizationGrantRequest grantRequest) {
+    public OAuth2Authentication authenticate(OAuth2AuthorizationGrantRequest grantRequest) {
         OAuth2AccessTokenResponse githubAccessToken = tokenResponseClient
             .getTokenResponse(grantRequest);
 
@@ -25,6 +25,6 @@ public class AuthenticationProvider {
 
         OAuth2User oauth2User = oAuth2UserService.loadUser(oAuth2UserRequest);
 
-        return new Authentication(oauth2User, grantRequest.getClientRegistration());
+        return new OAuth2Authentication(oauth2User, grantRequest.getClientRegistration());
     }
 }

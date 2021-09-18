@@ -7,6 +7,7 @@ import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.domain.GithubOAuth2User;
+import wooteco.prolog.member.domain.LoginMember;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.member.exception.MemberNotFoundException;
@@ -46,7 +47,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateMember(Member member, MemberUpdateRequest updateRequest) {
+    public void updateMember(LoginMember member, MemberUpdateRequest updateRequest) {
         Member persistMember = findByUsername(member.getUsername());
         persistMember.updateImageUrl(updateRequest.getImageUrl());
         persistMember.updateNickname(updateRequest.getNickname());

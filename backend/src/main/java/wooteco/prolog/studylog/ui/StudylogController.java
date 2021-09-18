@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.support.security.authentication.jwt.AuthMemberPrincipal;
-import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.LoginMember;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
@@ -21,6 +20,7 @@ import wooteco.prolog.studylog.application.dto.search.SearchParams;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 import wooteco.support.number.NumberUtils;
+import wooteco.support.security.authentication.jwt.AuthenticationPrincipal;
 
 @RestController
 @RequestMapping("/posts")
@@ -33,7 +33,7 @@ public class StudylogController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createStudylog(@AuthMemberPrincipal Member member,
+    public ResponseEntity<Void> createStudylog(@AuthenticationPrincipal LoginMember member,
                                                @RequestBody List<StudylogRequest> studylogRequests) {
         List<StudylogResponse> studylogResponse = studylogService
             .insertStudylogs(member, studylogRequests);
@@ -42,7 +42,8 @@ public class StudylogController {
     }
 
     @GetMapping
-    public ResponseEntity<StudylogsResponse> showAll(@SearchParams StudylogsSearchRequest searchRequest) {
+    public ResponseEntity<StudylogsResponse> showAll(
+        @SearchParams StudylogsSearchRequest searchRequest) {
         StudylogsResponse studylogsResponse = studylogService.findStudylogs(searchRequest);
         return ResponseEntity.ok(studylogsResponse);
     }
@@ -58,7 +59,7 @@ public class StudylogController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateStudylog(
-        @AuthMemberPrincipal Member member,
+        @AuthenticationPrincipal LoginMember member,
         @PathVariable Long id,
         @RequestBody StudylogRequest studylogRequest
     ) {
@@ -67,7 +68,7 @@ public class StudylogController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStudylog(@AuthMemberPrincipal Member member,
+    public ResponseEntity<Void> deleteStudylog(@AuthenticationPrincipal LoginMember member,
                                                @PathVariable Long id) {
         studylogService.deleteStudylog(member, id);
         return ResponseEntity.noContent().build();

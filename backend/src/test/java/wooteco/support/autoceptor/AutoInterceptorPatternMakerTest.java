@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import wooteco.support.security.authentication.jwt.AuthMemberPrincipal;
+import wooteco.support.security.authentication.jwt.AuthenticationPrincipal;
 
 class AutoInterceptorPatternMakerTest {
 
@@ -15,7 +15,7 @@ class AutoInterceptorPatternMakerTest {
         // given
         AutoInterceptorPatternMaker maker = new AutoInterceptorPatternMaker(
             "wooteco.support.autoceptor.test_classes",
-            AuthMemberPrincipal.class
+            AuthenticationPrincipal.class
         );
 
         // when

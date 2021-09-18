@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import wooteco.support.security.authentication.jwt.AuthMemberPrincipal;
+import wooteco.support.security.authentication.jwt.AuthenticationPrincipal;
 import wooteco.support.autoceptor.scanner.MappingAnnotation;
 import wooteco.support.autoceptor.scanner.MethodScanner;
 
@@ -22,7 +22,7 @@ class MappingAnnotationTest {
     @DisplayName("스프링 Mapping annotation 에서 Uri를 파싱한다.")
     @Test
     void extractUriFrom() {
-        List<Method> methods = new MethodScanner(AuthMemberPrincipal.class)
+        List<Method> methods = new MethodScanner(AuthenticationPrincipal.class)
             .extractMethodAnnotatedOnParameter(UriTest.class);
         List<String> uris = methods.stream()
             .map(MappingAnnotation::extractUriFrom)
@@ -37,22 +37,22 @@ class MappingAnnotationTest {
     private static class UriTest {
 
         @GetMapping("/get")
-        public void get(@AuthMemberPrincipal Member member) {
+        public void get(@AuthenticationPrincipal LoginMember member) {
 
         }
 
         @PostMapping("/post")
-        public void post(@AuthMemberPrincipal Member member) {
+        public void post(@AuthenticationPrincipal LoginMember member) {
 
         }
 
         @DeleteMapping("/delete")
-        public void delete(@AuthMemberPrincipal Member member) {
+        public void delete(@AuthenticationPrincipal LoginMember member) {
 
         }
 
         @PutMapping("/put")
-        public void put(@AuthMemberPrincipal Member member) {
+        public void put(@AuthenticationPrincipal LoginMember member) {
 
         }
     }

@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.filter.OncePerRequestFilter;
 import wooteco.support.security.client.ClientRegistration;
 import wooteco.support.security.client.ClientRegistrationRepository;
+import wooteco.support.security.context.SecurityContext;
+import wooteco.support.security.context.SecurityContextHolder;
 import wooteco.support.security.exception.AuthenticationException;
 import wooteco.support.security.oauth2user.OAuth2AuthorizationGrantRequest;
 
@@ -25,10 +27,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) {
         try {
-            if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-                return;
-            }
-
             ClientRegistration clientRegistration =
                 clientRegistrationRepository.findByRegistrationId("github");
             OAuth2AuthorizationExchange exchange= new ObjectMapper()
@@ -37,10 +35,10 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             OAuth2AuthorizationGrantRequest oAuth2AuthorizationGrantRequest
                 = new OAuth2AuthorizationGrantRequest(clientRegistration, exchange);
 
-            Authentication authentication = authenticationProvider
+            OAuth2Authentication authentication = authenticationProvider
                 .authenticate(oAuth2AuthorizationGrantRequest);
 
-            successHandler.onAuthenticationSuccess(request, response, authentication);
+            successfulAuthentication(request, response, filterChain, authentication);
 
         } catch (AuthenticationException e) {
             failureHandler.onAuthenticationFailure(request, response, e);
@@ -48,6 +46,14 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             failureHandler
                 .onAuthenticationFailure(request, response, new AuthenticationException());
         }
-
+    }
+    private void successfulAuthentication(HttpServletRequest request,
+                                          HttpServletResponse response,
+                                          FilterChain chain,
+                                          OAuth2Authentication authentication) throws IOException {
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authentication);
+        SecurityContextHolder.setContext(context);
+        successHandler.onAuthenticationSuccess(request, response, authentication);
     }
 }

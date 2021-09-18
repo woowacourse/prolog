@@ -13,27 +13,29 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import wooteco.prolog.common.config.CorsFilter;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.application.dto.TokenResponse;
-import wooteco.support.security.authentication.jwt.AuthMemberPrincipal;
 import wooteco.prolog.login.excetpion.GithubConnectionException;
-import wooteco.support.security.authentication.jwt.AuthMemberPrincipalArgumentResolver;
-import wooteco.support.security.authentication.jwt.JwtTokenFilter;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.GithubOAuth2User;
+import wooteco.prolog.member.domain.LoginMember;
 import wooteco.prolog.member.domain.Member;
-import wooteco.support.autoceptor.AutoInterceptorPatternMaker;
 import wooteco.support.security.authentication.AuthenticationFailureHandler;
 import wooteco.support.security.authentication.AuthenticationFilter;
 import wooteco.support.security.authentication.AuthenticationProvider;
 import wooteco.support.security.authentication.AuthenticationSuccessHandler;
 import wooteco.support.security.authentication.OAuth2AccessTokenResponseClient;
+import wooteco.support.security.authentication.jwt.AuthenticationPrincipalArgumentResolver;
+import wooteco.support.security.authentication.jwt.JwtTokenFilter;
 import wooteco.support.security.authentication.jwt.JwtTokenProvider;
 import wooteco.support.security.client.ClientRegistrationRepository;
 import wooteco.support.security.oauth2user.OAuth2UserService;
+import wooteco.support.security.userdetails.UserDetailsService;
 
 @Configuration
 @AllArgsConstructor
@@ -44,12 +46,17 @@ public class SecurityConfig implements WebMvcConfigurer {
     private final MemberService memberService;
 
     @Bean
-    public FilterRegistrationBean<CorsFilter> corsFilter() {
-        FilterRegistrationBean<CorsFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setOrder(1);
-        registrationBean.setFilter(new CorsFilter());
-        registrationBean.addUrlPatterns("/*");
-        return registrationBean;
+    public FilterRegistrationBean corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOriginPattern("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
+        bean.setOrder(1);
+        return bean;
     }
 
     @Bean
@@ -63,18 +70,12 @@ public class SecurityConfig implements WebMvcConfigurer {
         return registrationBean;
     }
 
-
-    private final static String BASE_PACKAGE = "wooteco.prolog";
-
     @Bean
     public FilterRegistrationBean<JwtTokenFilter> jwtTokenFilterFilter() {
-        AutoInterceptorPatternMaker mapper =
-            new AutoInterceptorPatternMaker(BASE_PACKAGE, AuthMemberPrincipal.class);
-
         FilterRegistrationBean<JwtTokenFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setOrder(3);
-        registrationBean.setFilter(new JwtTokenFilter(jwtTokenProvider));
-        registrationBean.addUrlPatterns(mapper.extractPatterns().toArray(new String[0]));
+        registrationBean.setFilter(new JwtTokenFilter(userDetailsService(), jwtTokenProvider));
+        registrationBean.addUrlPatterns("/*");
         return registrationBean;
     }
 
@@ -83,8 +84,8 @@ public class SecurityConfig implements WebMvcConfigurer {
         resolvers.add(authMemberPrincipalArgumentResolver());
     }
 
-    private AuthMemberPrincipalArgumentResolver authMemberPrincipalArgumentResolver() {
-        return new AuthMemberPrincipalArgumentResolver(memberService, jwtTokenProvider);
+    private AuthenticationPrincipalArgumentResolver authMemberPrincipalArgumentResolver() {
+        return new AuthenticationPrincipalArgumentResolver();
     }
 
     private AuthenticationProvider authenticationProvider() {
@@ -135,5 +136,12 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     private OAuth2AccessTokenResponseClient tokenResponseClient() {
         return new OAuth2AccessTokenResponseClient();
+    }
+
+    private UserDetailsService userDetailsService() {
+        return username -> {
+            Member member = memberService.findById(Long.parseLong(username));
+            return LoginMember.of(member);
+        };
     }
 }

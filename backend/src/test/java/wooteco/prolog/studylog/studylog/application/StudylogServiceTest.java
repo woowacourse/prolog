@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
+import wooteco.prolog.member.domain.LoginMember;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.LevelService;
@@ -300,7 +301,7 @@ class StudylogServiceTest {
                                                                     toTagRequests(tags));
 
         //when
-        studylogService.updateStudylog(member1, targetStudylog.getId(), updateStudylogRequest);
+        studylogService.updateStudylog(LoginMember.of(member1), targetStudylog.getId(), updateStudylogRequest);
 
         //then
         StudylogResponse expectedResult = studylogService.findById(targetStudylog.getId());
@@ -329,7 +330,7 @@ class StudylogServiceTest {
                                                                     2L,
                                                                     toTagRequests(tags));
 
-        studylogService.updateStudylog(member1, id, updateStudylogRequest);
+        studylogService.updateStudylog(LoginMember.of(member1), id, updateStudylogRequest);
 
         // when
         StudylogDocument studylogDocument = studylogDocumentService.findById(id);
@@ -356,7 +357,7 @@ class StudylogServiceTest {
             .collect(toList());
 
         Long removedId = studylogIds.remove(0);
-        studylogService.deleteStudylog(member1, removedId);
+        studylogService.deleteStudylog(LoginMember.of(member1), removedId);
 
         //then
         StudylogsResponse studylogsResponse = studylogService
@@ -393,7 +394,7 @@ class StudylogServiceTest {
         List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1);
         Long id = studylogResponses.get(0).getId();
 
-        studylogService.deleteStudylog(member1, id);
+        studylogService.deleteStudylog(LoginMember.of(member1), id);
 
         // when - then
         assertThatThrownBy(() -> studylogDocumentService.findById(id))

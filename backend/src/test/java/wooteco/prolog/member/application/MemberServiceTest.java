@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
+import wooteco.prolog.member.domain.LoginMember;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
@@ -132,7 +133,7 @@ class MemberServiceTest {
         MemberUpdateRequest updateRequest = new MemberUpdateRequest(새로운_닉네임, 새로운_이미지);
 
         // when
-        memberService.updateMember(savedMember, updateRequest);
+        memberService.updateMember(LoginMember.of(savedMember), updateRequest);
 
         // then
         Member foundMember = memberService.findById(savedMember.getId());
@@ -154,7 +155,7 @@ class MemberServiceTest {
         MemberUpdateRequest updateRequest = new MemberUpdateRequest(새로운_닉네임, 새로운_이미지);
 
         // when, then
-        assertThatThrownBy(() -> memberService.updateMember(member, updateRequest))
+        assertThatThrownBy(() -> memberService.updateMember(LoginMember.of(member), updateRequest))
             .isExactlyInstanceOf(MemberNotFoundException.class);
     }
 
