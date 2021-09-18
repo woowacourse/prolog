@@ -1,4 +1,4 @@
-package wooteco.prolog.login.domain;
+package wooteco.support.security.authentication.jwt;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

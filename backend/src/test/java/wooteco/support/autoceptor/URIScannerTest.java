@@ -6,7 +6,7 @@ import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import wooteco.prolog.login.domain.AuthMemberPrincipal;
+import wooteco.support.security.authentication.jwt.AuthMemberPrincipal;
 import wooteco.support.autoceptor.scanner.ControllerScanner;
 import wooteco.support.autoceptor.scanner.MethodScanner;
 import wooteco.support.autoceptor.scanner.URIScanner;

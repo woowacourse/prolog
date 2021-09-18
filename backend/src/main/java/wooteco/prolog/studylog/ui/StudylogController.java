@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.login.domain.AuthMemberPrincipal;
+import wooteco.support.security.authentication.jwt.AuthMemberPrincipal;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
