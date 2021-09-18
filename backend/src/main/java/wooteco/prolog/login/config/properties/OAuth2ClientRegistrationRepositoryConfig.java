@@ -1,18 +1,18 @@
-package wooteco.prolog.login.config;
+package wooteco.prolog.login.config.properties;
 
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import wooteco.prolog.login.config.OAuth2ClientProperties.Provider;
+import wooteco.prolog.login.config.properties.OAuth2ClientProperties.Provider;
 import wooteco.support.security.client.ClientRegistration;
 import wooteco.support.security.client.ClientRegistrationRepository;
 import wooteco.support.security.client.ProviderDetails;
 
 @Configuration
 @EnableConfigurationProperties(OAuth2ClientProperties.class)
-public class ClientRegistrationRepositoryConfig {
+public class OAuth2ClientRegistrationRepositoryConfig {
 
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository(

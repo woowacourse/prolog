@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.servlet.Filter;
 import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.web.servlet.DelegatingFilterProxyRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpEntity;
@@ -18,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.application.dto.TokenResponse;
@@ -36,7 +34,6 @@ import wooteco.support.security.client.ClientRegistrationRepository;
 import wooteco.support.security.filter.FilterChainProxy;
 import wooteco.support.security.filter.SecurityFilterChain;
 import wooteco.support.security.filter.SecurityFilterChainAdaptor;
-import wooteco.support.security.jwt.AuthenticationPrincipalArgumentResolver;
 import wooteco.support.security.jwt.JwtTokenFilter;
 import wooteco.support.security.jwt.JwtTokenProvider;
 import wooteco.support.security.oauth2user.OAuth2UserService;
@@ -51,14 +48,6 @@ public class SecurityConfig implements WebMvcConfigurer {
     private final MemberService memberService;
 
     public static final String DEFAULT_FILTER_NAME = "springSecurityFilterChain";
-
-    @Bean
-    public DelegatingFilterProxyRegistrationBean securityFilterChainRegistration() {
-        DelegatingFilterProxyRegistrationBean registration = new DelegatingFilterProxyRegistrationBean(
-            DEFAULT_FILTER_NAME);
-        registration.setOrder(-100);
-        return registration;
-    }
 
     @Bean(name = DEFAULT_FILTER_NAME)
     public Filter springSecurityFilterChain() {
@@ -90,15 +79,6 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     private Filter jwtTokenFilterFilter() {
         return new JwtTokenFilter(userDetailsService(), jwtTokenProvider);
-    }
-
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(authMemberPrincipalArgumentResolver());
-    }
-
-    private AuthenticationPrincipalArgumentResolver authMemberPrincipalArgumentResolver() {
-        return new AuthenticationPrincipalArgumentResolver();
     }
 
     private AuthenticationProvider authenticationProvider() {

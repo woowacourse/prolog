@@ -1,4 +1,4 @@
-package wooteco.prolog.login.config;
+package wooteco.prolog.login.config.properties;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;

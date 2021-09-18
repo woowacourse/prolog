@@ -1,4 +1,4 @@
-package wooteco.prolog.login.config;
+package wooteco.prolog.login.config.properties;
 
 import java.util.HashMap;
 import java.util.Map;

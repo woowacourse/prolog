@@ -1,4 +1,4 @@
-package wooteco.prolog.login.config;
+package wooteco.prolog.login.config.properties;
 
 import lombok.Getter;
 import lombok.Setter;

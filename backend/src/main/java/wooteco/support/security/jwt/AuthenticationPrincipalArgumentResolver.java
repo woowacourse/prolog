@@ -24,7 +24,8 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
                                   WebDataBinderFactory binderFactory) {
 
         if (SecurityContextHolder.getContext() == null ||
-            SecurityContextHolder.getContext().getAuthentication() == null) {
+            SecurityContextHolder.getContext().getAuthentication() == null ||
+            SecurityContextHolder.getContext().getAuthentication().getPrincipal() == null) {
             throw new AuthenticationException("로그인이 필요합니다.");
         }
 
