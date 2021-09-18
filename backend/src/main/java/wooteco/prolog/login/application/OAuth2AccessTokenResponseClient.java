@@ -1,5 +1,7 @@
 package wooteco.prolog.login.application;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +16,8 @@ import wooteco.prolog.login.application.dto.GithubAccessTokenResponse;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.excetpion.GithubApiFailException;
 import wooteco.prolog.login.excetpion.GithubConnectionException;
+import wooteco.prolog.member.domain.GithubOAuth2User;
+import wooteco.prolog.security.Authentication;
 import wooteco.prolog.security.OAuth2AccessTokenResponse;
 
 @Component
@@ -63,6 +67,24 @@ public class OAuth2AccessTokenResponseClient {
             return restTemplate
                 .exchange(profileUrl, HttpMethod.GET, httpEntity, GithubProfileResponse.class)
                 .getBody();
+        } catch (HttpClientErrorException e) {
+            throw new GithubConnectionException();
+        }
+    }
+
+    public Authentication getGithubProfileFromGithub2(String accessToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "token " + accessToken);
+
+        HttpEntity httpEntity = new HttpEntity<>(headers);
+        RestTemplate restTemplate = new RestTemplate();
+
+        try {
+            GithubProfileResponse response = restTemplate
+                .exchange(profileUrl, HttpMethod.GET, httpEntity, GithubProfileResponse.class)
+                .getBody();
+
+            return new GithubOAuth2User(new ObjectMapper().convertValue(response, Map.class));
         } catch (HttpClientErrorException e) {
             throw new GithubConnectionException();
         }

@@ -29,10 +29,10 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 = new ObjectMapper()
                 .readValue(request.getReader(), OAuth2AuthorizationGrantRequest.class);
 
-            OAuth2AccessTokenResponse githubAccessToken = authenticationProvider
+            Authentication authentication = authenticationProvider
                 .authenticate(oAuth2AuthorizationGrantRequest);
 
-            successHandler.onAuthenticationSuccess(request, response, githubAccessToken);
+            successHandler.onAuthenticationSuccess(request, response, authentication);
 
         } catch (AuthenticationException e) {
             failureHandler.onAuthenticationFailure(request, response, e);

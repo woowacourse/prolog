@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
+import wooteco.prolog.member.domain.GithubOAuth2User;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.member.exception.MemberNotFoundException;
@@ -19,6 +20,12 @@ public class MemberService {
 
     @Transactional
     public Member findOrCreateMember(GithubProfileResponse githubProfile) {
+        return memberRepository.findByGithubId(githubProfile.getGithubId())
+            .orElseGet(() -> memberRepository.save(githubProfile.toMember()));
+    }
+
+    @Transactional
+    public Member findOrCreateMember(GithubOAuth2User githubProfile) {
         return memberRepository.findByGithubId(githubProfile.getGithubId())
             .orElseGet(() -> memberRepository.save(githubProfile.toMember()));
     }

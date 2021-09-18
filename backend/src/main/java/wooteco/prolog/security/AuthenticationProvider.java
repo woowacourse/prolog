@@ -9,10 +9,11 @@ public class AuthenticationProvider {
 
     private final OAuth2AccessTokenResponseClient tokenResponseClient;
 
-    public OAuth2AccessTokenResponse authenticate(OAuth2AuthorizationGrantRequest grantRequest) {
+    public Authentication authenticate(OAuth2AuthorizationGrantRequest grantRequest) {
         OAuth2AccessTokenResponse githubAccessToken =
             tokenResponseClient.getTokenResponse(grantRequest.getCode());
 
-        return githubAccessToken;
+        return tokenResponseClient
+            .getGithubProfileFromGithub2((String) githubAccessToken.getPrincipal());
     }
 }

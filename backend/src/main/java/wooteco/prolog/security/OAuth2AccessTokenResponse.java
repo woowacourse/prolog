@@ -2,7 +2,6 @@ package wooteco.prolog.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import wooteco.prolog.security.Authentication;
 
 @AllArgsConstructor
 @Getter
