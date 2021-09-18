@@ -1,20 +1,20 @@
 package wooteco.prolog.login.ui;
 
+import java.io.IOException;
 import java.util.Objects;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerInterceptor;
-import wooteco.support.security.authentication.AuthorizationExtractor;
+import org.springframework.web.filter.OncePerRequestFilter;
 import wooteco.prolog.login.application.JwtTokenProvider;
 import wooteco.prolog.login.excetpion.TokenNotValidException;
+import wooteco.support.security.authentication.AuthorizationExtractor;
 
-@Component
 @AllArgsConstructor
-public class LoginInterceptor implements HandlerInterceptor {
-
+public class JwtTokenFilter extends OncePerRequestFilter {
     private static final String ORIGIN = "Origin";
     private static final String ACCESS_REQUEST_METHOD = "Access-Control-Request-Method";
     private static final String ACCESS_REQUEST_HEADERS = "Access-Control-Request-Headers";
@@ -22,20 +22,23 @@ public class LoginInterceptor implements HandlerInterceptor {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-                             Object handler) {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         if (isPreflighted(request)) {
-            return true;
+            filterChain.doFilter(request, response);
+            return;
         }
 
         if (HttpMethod.GET.matches(request.getMethod())) {
-            return true;
+            filterChain.doFilter(request, response);
+            return;
         }
 
         if (!jwtTokenProvider.validateToken(AuthorizationExtractor.extract(request))) {
             throw new TokenNotValidException();
         }
-        return true;
+
+        filterChain.doFilter(request, response);
     }
 
     private boolean isPreflighted(HttpServletRequest request) {

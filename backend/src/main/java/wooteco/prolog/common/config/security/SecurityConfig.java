@@ -1,6 +1,7 @@
 package wooteco.prolog.common.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -12,15 +13,20 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import wooteco.prolog.common.config.CorsFilter;
 import wooteco.prolog.login.application.JwtTokenProvider;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.application.dto.TokenResponse;
+import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.excetpion.GithubConnectionException;
+import wooteco.prolog.login.ui.AuthMemberPrincipalArgumentResolver;
+import wooteco.prolog.login.ui.JwtTokenFilter;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.GithubOAuth2User;
 import wooteco.prolog.member.domain.Member;
+import wooteco.support.autoceptor.AutoInterceptorPatternMaker;
 import wooteco.support.security.authentication.AuthenticationFailureHandler;
 import wooteco.support.security.authentication.AuthenticationFilter;
 import wooteco.support.security.authentication.AuthenticationProvider;
@@ -55,6 +61,30 @@ public class SecurityConfig implements WebMvcConfigurer {
                 successHandler(), failureHandler()));
         registrationBean.addUrlPatterns("/login/token");
         return registrationBean;
+    }
+
+
+    private final static String BASE_PACKAGE = "wooteco.prolog";
+
+    @Bean
+    public FilterRegistrationBean<JwtTokenFilter> jwtTokenFilterFilter() {
+        AutoInterceptorPatternMaker mapper =
+            new AutoInterceptorPatternMaker(BASE_PACKAGE, AuthMemberPrincipal.class);
+
+        FilterRegistrationBean<JwtTokenFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setOrder(3);
+        registrationBean.setFilter(new JwtTokenFilter(jwtTokenProvider));
+        registrationBean.addUrlPatterns(mapper.extractPatterns().toArray(new String[0]));
+        return registrationBean;
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(authMemberPrincipalArgumentResolver());
+    }
+
+    private AuthMemberPrincipalArgumentResolver authMemberPrincipalArgumentResolver() {
+        return new AuthMemberPrincipalArgumentResolver(memberService, jwtTokenProvider);
     }
 
     private AuthenticationProvider authenticationProvider() {

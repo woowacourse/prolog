@@ -16,7 +16,6 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 
 @AllArgsConstructor
-@Component
 public class AuthMemberPrincipalArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final MemberService memberService;
