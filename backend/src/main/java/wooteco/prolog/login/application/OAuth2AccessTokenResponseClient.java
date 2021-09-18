@@ -17,8 +17,9 @@ import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.excetpion.GithubApiFailException;
 import wooteco.prolog.login.excetpion.GithubConnectionException;
 import wooteco.prolog.member.domain.GithubOAuth2User;
-import wooteco.prolog.security.Authentication;
 import wooteco.prolog.security.OAuth2AccessTokenResponse;
+import wooteco.prolog.security.OAuth2User;
+import wooteco.prolog.security.OAuth2UserRequest;
 
 @Component
 public class OAuth2AccessTokenResponseClient {
@@ -46,35 +47,20 @@ public class OAuth2AccessTokenResponseClient {
             githubAccessTokenRequest, headers);
         RestTemplate restTemplate = new RestTemplate();
 
-        String accessToken = restTemplate
+        GithubAccessTokenResponse tokenResponse = restTemplate
             .exchange(tokenUrl, HttpMethod.POST, httpEntity, GithubAccessTokenResponse.class)
-            .getBody()
-            .getAccessToken();
-        if (accessToken == null) {
+            .getBody();
+
+        if (tokenResponse.getAccessToken() == null) {
             throw new GithubApiFailException();
         }
-        return new OAuth2AccessTokenResponse(accessToken, "");
+
+        return new OAuth2AccessTokenResponse(tokenResponse.getAccessToken(), "");
     }
 
-    public GithubProfileResponse getGithubProfileFromGithub(String accessToken) {
+    public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "token " + accessToken);
-
-        HttpEntity httpEntity = new HttpEntity<>(headers);
-        RestTemplate restTemplate = new RestTemplate();
-
-        try {
-            return restTemplate
-                .exchange(profileUrl, HttpMethod.GET, httpEntity, GithubProfileResponse.class)
-                .getBody();
-        } catch (HttpClientErrorException e) {
-            throw new GithubConnectionException();
-        }
-    }
-
-    public Authentication getGithubProfileFromGithub2(String accessToken) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "token " + accessToken);
+        headers.add("Authorization", "token " + oAuth2UserRequest.getAccessToken());
 
         HttpEntity httpEntity = new HttpEntity<>(headers);
         RestTemplate restTemplate = new RestTemplate();
@@ -83,8 +69,8 @@ public class OAuth2AccessTokenResponseClient {
             GithubProfileResponse response = restTemplate
                 .exchange(profileUrl, HttpMethod.GET, httpEntity, GithubProfileResponse.class)
                 .getBody();
-
             return new GithubOAuth2User(new ObjectMapper().convertValue(response, Map.class));
+
         } catch (HttpClientErrorException e) {
             throw new GithubConnectionException();
         }

@@ -1,28 +1,28 @@
 package wooteco.prolog.member.domain;
 
 import java.util.Map;
-import lombok.AllArgsConstructor;
-import wooteco.prolog.security.Authentication;
+import wooteco.prolog.security.OAuth2User;
 
-@AllArgsConstructor
-public class GithubOAuth2User implements Authentication {
+public class GithubOAuth2User extends OAuth2User {
 
-    private Map<String, Object> userInfo;
+    public GithubOAuth2User(Map<String, Object> attributes) {
+        super(attributes);
+    }
 
     public String getLoginName() {
-        return userInfo.get("name").toString();
+        return getAttributes().get("name").toString();
     }
 
     public String getNickname() {
-        return userInfo.get("login").toString();
+        return getAttributes().get("login").toString();
     }
 
     public Long getGithubId() {
-        return Long.parseLong(userInfo.get("id").toString());
+        return Long.parseLong(getAttributes().get("id").toString());
     }
 
     public String getImageUrl() {
-        return userInfo.get("avatar_url").toString();
+        return getAttributes().get("avatar_url").toString();
     }
 
     public Member toMember() {
@@ -33,10 +33,5 @@ public class GithubOAuth2User implements Authentication {
             getGithubId(),
             getImageUrl()
         );
-    }
-
-    @Override
-    public Object getPrincipal() {
-        return userInfo;
     }
 }

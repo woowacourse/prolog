@@ -8,12 +8,15 @@ import wooteco.prolog.login.application.dto.OAuth2AuthorizationGrantRequest;
 public class AuthenticationProvider {
 
     private final OAuth2AccessTokenResponseClient tokenResponseClient;
+    private final OAuth2UserService oAuth2UserService;
 
     public Authentication authenticate(OAuth2AuthorizationGrantRequest grantRequest) {
-        OAuth2AccessTokenResponse githubAccessToken =
-            tokenResponseClient.getTokenResponse(grantRequest.getCode());
+        OAuth2AccessTokenResponse githubAccessToken = tokenResponseClient
+            .getTokenResponse(grantRequest.getCode());
 
-        return tokenResponseClient
-            .getGithubProfileFromGithub2((String) githubAccessToken.getPrincipal());
+        OAuth2User oauth2User = oAuth2UserService
+            .loadUser(new OAuth2UserRequest(githubAccessToken.getAccessToken()));
+
+        return new OAuth2LoginAuthenticationToken(oauth2User);
     }
 }

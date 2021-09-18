@@ -17,6 +17,7 @@ import wooteco.prolog.security.AuthenticationFailureHandler;
 import wooteco.prolog.security.AuthenticationFilter;
 import wooteco.prolog.security.AuthenticationProvider;
 import wooteco.prolog.security.AuthenticationSuccessHandler;
+import wooteco.prolog.security.OAuth2UserService;
 
 @Configuration
 @AllArgsConstructor
@@ -46,13 +47,17 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     }
 
     private AuthenticationProvider authenticationProvider() {
-        return new AuthenticationProvider(tokenResponseClient);
+        return new AuthenticationProvider(tokenResponseClient, oAuth2UserService());
+    }
+
+    private OAuth2UserService oAuth2UserService() {
+        return oAuth2UserRequest -> tokenResponseClient.loadUser(oAuth2UserRequest);
     }
 
     private AuthenticationSuccessHandler successHandler() {
         return (request, response, authentication) -> {
 
-            GithubOAuth2User oAuth2User = (GithubOAuth2User) authentication;
+            GithubOAuth2User oAuth2User = (GithubOAuth2User) authentication.getPrincipal();
             Member member = memberService.findOrCreateMember(oAuth2User);
             String accessToken = jwtTokenProvider.createToken(member);
 
