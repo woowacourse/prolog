@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.filter.OncePerRequestFilter;
-import wooteco.prolog.login.application.JwtTokenProvider;
 import wooteco.prolog.login.excetpion.TokenNotValidException;
 import wooteco.support.security.authentication.AuthorizationExtractor;
+import wooteco.support.security.authentication.jwt.JwtTokenProvider;
 
 @AllArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {

@@ -16,7 +16,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import wooteco.prolog.common.config.CorsFilter;
-import wooteco.prolog.login.application.JwtTokenProvider;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.application.dto.TokenResponse;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
@@ -32,6 +31,7 @@ import wooteco.support.security.authentication.AuthenticationFilter;
 import wooteco.support.security.authentication.AuthenticationProvider;
 import wooteco.support.security.authentication.AuthenticationSuccessHandler;
 import wooteco.support.security.authentication.OAuth2AccessTokenResponseClient;
+import wooteco.support.security.authentication.jwt.JwtTokenProvider;
 import wooteco.support.security.client.ClientRegistrationRepository;
 import wooteco.support.security.oauth2user.OAuth2UserService;
 
