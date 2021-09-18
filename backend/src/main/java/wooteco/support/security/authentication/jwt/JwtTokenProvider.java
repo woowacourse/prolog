@@ -7,7 +7,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 import lombok.AllArgsConstructor;
-import wooteco.prolog.member.domain.Member;
 
 @AllArgsConstructor
 public class JwtTokenProvider {
@@ -15,15 +14,15 @@ public class JwtTokenProvider {
     private String secretKey;
     private long expireLength;
 
-    public String createToken(Member member) {
+    public String createToken(Long id, String role) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + expireLength);
 
         return Jwts.builder()
-            .setSubject(member.getId().toString())
+            .setSubject(id.toString())
             .setIssuedAt(now)
             .setExpiration(validity)
-            .claim("role", member.getRole())
+            .claim("role", role)
             .signWith(SignatureAlgorithm.HS256, secretKey)
             .compact();
     }

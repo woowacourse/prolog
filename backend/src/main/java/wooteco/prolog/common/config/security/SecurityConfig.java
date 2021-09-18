@@ -119,7 +119,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 
             GithubOAuth2User oAuth2User = (GithubOAuth2User) authentication.getPrincipal();
             Member member = memberService.findOrCreateMember(oAuth2User);
-            String accessToken = jwtTokenProvider.createToken(member);
+            String accessToken = jwtTokenProvider.createToken(member.getId(), member.getRole().name());
 
             response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);
