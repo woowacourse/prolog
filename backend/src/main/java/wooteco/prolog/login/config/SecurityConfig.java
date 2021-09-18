@@ -1,11 +1,13 @@
 package wooteco.prolog.login.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.Filter;
 import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.DelegatingFilterProxyRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpEntity;
@@ -26,14 +28,17 @@ import wooteco.prolog.member.domain.GithubOAuth2User;
 import wooteco.prolog.member.domain.LoginMember;
 import wooteco.prolog.member.domain.Member;
 import wooteco.support.security.authentication.AuthenticationFailureHandler;
-import wooteco.support.security.authentication.AuthenticationFilter;
 import wooteco.support.security.authentication.AuthenticationProvider;
 import wooteco.support.security.authentication.AuthenticationSuccessHandler;
 import wooteco.support.security.authentication.OAuth2AccessTokenResponseClient;
+import wooteco.support.security.authentication.OAuth2AuthenticationFilter;
+import wooteco.support.security.client.ClientRegistrationRepository;
+import wooteco.support.security.filter.FilterChainProxy;
+import wooteco.support.security.filter.SecurityFilterChain;
+import wooteco.support.security.filter.SecurityFilterChainAdaptor;
 import wooteco.support.security.jwt.AuthenticationPrincipalArgumentResolver;
 import wooteco.support.security.jwt.JwtTokenFilter;
 import wooteco.support.security.jwt.JwtTokenProvider;
-import wooteco.support.security.client.ClientRegistrationRepository;
 import wooteco.support.security.oauth2user.OAuth2UserService;
 import wooteco.support.security.userdetails.UserDetailsService;
 
@@ -45,8 +50,27 @@ public class SecurityConfig implements WebMvcConfigurer {
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberService memberService;
 
+    public static final String DEFAULT_FILTER_NAME = "springSecurityFilterChain";
+
     @Bean
-    public FilterRegistrationBean corsFilter() {
+    public DelegatingFilterProxyRegistrationBean securityFilterChainRegistration() {
+        DelegatingFilterProxyRegistrationBean registration = new DelegatingFilterProxyRegistrationBean(
+            DEFAULT_FILTER_NAME);
+        registration.setOrder(-100);
+        return registration;
+    }
+
+    @Bean(name = DEFAULT_FILTER_NAME)
+    public Filter springSecurityFilterChain() {
+        List<SecurityFilterChain> securityFilterChains = new ArrayList<>();
+        securityFilterChains.add(SecurityFilterChainAdaptor.of("/*", corsFilter()));
+        securityFilterChains
+            .add(SecurityFilterChainAdaptor.of("/login/token", authenticationFilter()));
+        securityFilterChains.add(SecurityFilterChainAdaptor.of("/*", jwtTokenFilterFilter()));
+        return new FilterChainProxy(securityFilterChains);
+    }
+
+    private Filter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
@@ -54,29 +78,18 @@ public class SecurityConfig implements WebMvcConfigurer {
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
-        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-        bean.setOrder(1);
-        return bean;
+
+        return new CorsFilter(source);
     }
 
-    @Bean
-    public FilterRegistrationBean<AuthenticationFilter> authenticationFilter() {
-        FilterRegistrationBean<AuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setOrder(2);
-        registrationBean.setFilter(
-            new AuthenticationFilter(clientRegistrationRepository, authenticationProvider(),
-                successHandler(), failureHandler()));
-        registrationBean.addUrlPatterns("/login/token");
-        return registrationBean;
+    private Filter authenticationFilter() {
+        return new OAuth2AuthenticationFilter(
+            clientRegistrationRepository, authenticationProvider(),
+            successHandler(), failureHandler());
     }
 
-    @Bean
-    public FilterRegistrationBean<JwtTokenFilter> jwtTokenFilterFilter() {
-        FilterRegistrationBean<JwtTokenFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setOrder(3);
-        registrationBean.setFilter(new JwtTokenFilter(userDetailsService(), jwtTokenProvider));
-        registrationBean.addUrlPatterns("/*");
-        return registrationBean;
+    private Filter jwtTokenFilterFilter() {
+        return new JwtTokenFilter(userDetailsService(), jwtTokenProvider);
     }
 
     @Override
@@ -119,7 +132,8 @@ public class SecurityConfig implements WebMvcConfigurer {
 
             GithubOAuth2User oAuth2User = (GithubOAuth2User) authentication.getPrincipal();
             Member member = memberService.findOrCreateMember(oAuth2User);
-            String accessToken = jwtTokenProvider.createToken(member.getId(), member.getRole().name());
+            String accessToken = jwtTokenProvider
+                .createToken(member.getId(), member.getRole().name());
 
             response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);

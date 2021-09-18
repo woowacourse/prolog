@@ -6,7 +6,7 @@ public class SecurityContextHolder {
 
     private static final ThreadLocal<SecurityContext> contextHolder = new ThreadLocal();
 
-    public void clearContext() {
+    public static void clearContext() {
         contextHolder.remove();
     }
 
