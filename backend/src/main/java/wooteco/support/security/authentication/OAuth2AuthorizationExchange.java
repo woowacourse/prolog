@@ -1,13 +1,13 @@
-package wooteco.prolog.login.application.dto;
+package wooteco.support.security.authentication;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
-public class OAuth2AuthorizationGrantRequest {
+public class OAuth2AuthorizationExchange {
 
     private String code;
 }

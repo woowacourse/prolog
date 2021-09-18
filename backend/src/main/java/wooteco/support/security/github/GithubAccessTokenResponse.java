@@ -1,4 +1,4 @@
-package wooteco.prolog.login.application.dto;
+package wooteco.support.security.github;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

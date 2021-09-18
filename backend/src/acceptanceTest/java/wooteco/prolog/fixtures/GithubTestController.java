@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.login.application.dto.GithubAccessTokenRequest;
-import wooteco.prolog.login.application.dto.GithubAccessTokenResponse;
+import wooteco.support.security.github.GithubAccessTokenRequest;
+import wooteco.support.security.github.GithubAccessTokenResponse;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 
 @RestController

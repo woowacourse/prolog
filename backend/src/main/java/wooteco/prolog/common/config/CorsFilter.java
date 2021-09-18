@@ -1,4 +1,4 @@
-package wooteco.prolog.common;
+package wooteco.prolog.common.config;
 
 import java.io.IOException;
 import javax.servlet.FilterChain;

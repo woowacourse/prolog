@@ -6,6 +6,16 @@ security:
     token:
       secret-key: secret_key
       expire-length: 3600000
+  oauth2:
+    client:
+      provider:
+        github:
+          token-uri: http://localhost:4000/github/login/oauth/access_token
+          user-info-uri: http://localhost:4000/github/user
+      registration:
+        github:
+          client-id: client_id
+          client-secret: client_secret
 
 spring:
   jpa:

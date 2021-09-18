@@ -1,4 +1,4 @@
-package wooteco.prolog.security;
+package wooteco.support.security.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -7,11 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.web.filter.OncePerRequestFilter;
-import wooteco.prolog.login.application.dto.OAuth2AuthorizationGrantRequest;
+import wooteco.support.security.client.ClientRegistration;
+import wooteco.support.security.client.ClientRegistrationRepository;
+import wooteco.support.security.exception.AuthenticationException;
+import wooteco.support.security.oauth2user.OAuth2AuthorizationGrantRequest;
 
 @AllArgsConstructor
 public class AuthenticationFilter extends OncePerRequestFilter {
 
+    private final ClientRegistrationRepository clientRegistrationRepository;
     private final AuthenticationProvider authenticationProvider;
     private final AuthenticationSuccessHandler successHandler;
     private final AuthenticationFailureHandler failureHandler;
@@ -25,9 +29,13 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
+            ClientRegistration clientRegistration =
+                clientRegistrationRepository.findByRegistrationId("github");
+            OAuth2AuthorizationExchange exchange= new ObjectMapper()
+                .readValue(request.getReader(), OAuth2AuthorizationExchange.class);
+
             OAuth2AuthorizationGrantRequest oAuth2AuthorizationGrantRequest
-                = new ObjectMapper()
-                .readValue(request.getReader(), OAuth2AuthorizationGrantRequest.class);
+                = new OAuth2AuthorizationGrantRequest(clientRegistration, exchange);
 
             Authentication authentication = authenticationProvider
                 .authenticate(oAuth2AuthorizationGrantRequest);

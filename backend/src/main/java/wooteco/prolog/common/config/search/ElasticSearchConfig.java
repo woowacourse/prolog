@@ -1,4 +1,4 @@
-package wooteco.prolog.common;
+package wooteco.prolog.common.config.search;
 
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Value;

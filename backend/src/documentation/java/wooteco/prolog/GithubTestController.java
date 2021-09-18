@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.login.application.dto.GithubAccessTokenRequest;
-import wooteco.prolog.login.application.dto.GithubAccessTokenResponse;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
+import wooteco.support.security.github.GithubAccessTokenRequest;
+import wooteco.support.security.github.GithubAccessTokenResponse;
 
 @Profile("test")
 @RestController
@@ -29,9 +29,9 @@ public class GithubTestController {
         String accessToken = authorization.split(" ")[1];
         GithubResponses githubResponse = GithubResponses.findByToken(accessToken);
         GithubProfileResponse response = new GithubProfileResponse(githubResponse.getName(),
-                                                                   githubResponse.getLogin(),
-                                                                   githubResponse.getId(),
-                                                                   githubResponse.getAvatarUrl());
+            githubResponse.getLogin(),
+            githubResponse.getId(),
+            githubResponse.getAvatarUrl());
         return ResponseEntity.ok(response);
     }
 }

@@ -1,7 +1,7 @@
 package wooteco.prolog.member.domain;
 
 import java.util.Map;
-import wooteco.prolog.security.OAuth2User;
+import wooteco.support.security.oauth2user.OAuth2User;
 
 public class GithubOAuth2User extends OAuth2User {
 

@@ -1,17 +1,19 @@
 package wooteco.prolog.docu;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
 import wooteco.prolog.GithubResponses;
-import wooteco.prolog.login.application.dto.OAuth2AuthorizationGrantRequest;
 import wooteco.prolog.login.application.dto.TokenResponse;
 
 public class LoginDocumentation extends Documentation {
 
     @Test
     void 토큰을_생성한다() {
-        OAuth2AuthorizationGrantRequest params = new OAuth2AuthorizationGrantRequest(GithubResponses.소롱.getCode());
+        Map<String, String> params = new HashMap<>();
+        params.put("code", GithubResponses.소롱.getCode());
 
         given("login/token")
             .contentType(MediaType.APPLICATION_JSON_VALUE)

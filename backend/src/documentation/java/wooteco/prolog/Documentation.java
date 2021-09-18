@@ -9,6 +9,8 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,6 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import wooteco.prolog.common.DataInitializer;
-import wooteco.prolog.login.application.dto.OAuth2AuthorizationGrantRequest;
 import wooteco.prolog.login.application.dto.TokenResponse;
 
 @ExtendWith(RestDocumentationExtension.class)
@@ -38,8 +39,11 @@ public class Documentation {
         RestAssured.port = port;
         dataInitializer.execute();
 
+        Map<String, String> params = new HashMap<>();
+        params.put("code", GithubResponses.소롱.getCode());
+
         로그인_사용자 = RestAssured.given().log().all()
-            .body(new OAuth2AuthorizationGrantRequest(GithubResponses.소롱.getCode()))
+            .body(params)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().post("/login/token")
             .then().log().all()
@@ -54,7 +58,7 @@ public class Documentation {
         return RestAssured
             .given(spec).log().all()
             .filter(document(identifier,
-                             preprocessRequest(prettyPrint()),
-                             preprocessResponse(prettyPrint())));
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint())));
     }
 }

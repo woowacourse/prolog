@@ -1,4 +1,4 @@
-package wooteco.prolog.security;
+package wooteco.support.security.oauth2user;
 
 public interface OAuth2UserService {
 

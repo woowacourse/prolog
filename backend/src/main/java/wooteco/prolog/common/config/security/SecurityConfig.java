@@ -1,29 +1,39 @@
-package wooteco.prolog.common;
+package wooteco.prolog.common.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import wooteco.prolog.common.config.CorsFilter;
 import wooteco.prolog.login.application.JwtTokenProvider;
-import wooteco.prolog.login.application.OAuth2AccessTokenResponseClient;
+import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.application.dto.TokenResponse;
+import wooteco.prolog.login.excetpion.GithubConnectionException;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.GithubOAuth2User;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.security.AuthenticationFailureHandler;
-import wooteco.prolog.security.AuthenticationFilter;
-import wooteco.prolog.security.AuthenticationProvider;
-import wooteco.prolog.security.AuthenticationSuccessHandler;
-import wooteco.prolog.security.OAuth2UserService;
+import wooteco.support.security.authentication.AuthenticationFailureHandler;
+import wooteco.support.security.authentication.AuthenticationFilter;
+import wooteco.support.security.authentication.AuthenticationProvider;
+import wooteco.support.security.authentication.AuthenticationSuccessHandler;
+import wooteco.support.security.authentication.OAuth2AccessTokenResponseClient;
+import wooteco.support.security.client.ClientRegistrationRepository;
+import wooteco.support.security.oauth2user.OAuth2UserService;
 
 @Configuration
 @AllArgsConstructor
 public class SecurityConfig implements WebMvcConfigurer {
 
-    private final OAuth2AccessTokenResponseClient tokenResponseClient;
+    private final ClientRegistrationRepository clientRegistrationRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberService memberService;
 
@@ -41,17 +51,36 @@ public class SecurityConfig implements WebMvcConfigurer {
         FilterRegistrationBean<AuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setOrder(2);
         registrationBean.setFilter(
-            new AuthenticationFilter(authenticationProvider(), successHandler(), failureHandler()));
+            new AuthenticationFilter(clientRegistrationRepository, authenticationProvider(),
+                successHandler(), failureHandler()));
         registrationBean.addUrlPatterns("/login/token");
         return registrationBean;
     }
 
     private AuthenticationProvider authenticationProvider() {
-        return new AuthenticationProvider(tokenResponseClient, oAuth2UserService());
+        return new AuthenticationProvider(tokenResponseClient(), oAuth2UserService());
     }
 
     private OAuth2UserService oAuth2UserService() {
-        return oAuth2UserRequest -> tokenResponseClient.loadUser(oAuth2UserRequest);
+        return oAuth2UserRequest -> {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Authorization", "token " + oAuth2UserRequest.getAccessToken());
+
+            HttpEntity httpEntity = new HttpEntity<>(headers);
+            RestTemplate restTemplate = new RestTemplate();
+
+            try {
+                String profileUrl =
+                    oAuth2UserRequest.getClientRegistration().getProviderDetails().getUserInfoUri();
+                GithubProfileResponse response = restTemplate
+                    .exchange(profileUrl, HttpMethod.GET, httpEntity, GithubProfileResponse.class)
+                    .getBody();
+                return new GithubOAuth2User(new ObjectMapper().convertValue(response, Map.class));
+
+            } catch (HttpClientErrorException e) {
+                throw new GithubConnectionException();
+            }
+        };
     }
 
     private AuthenticationSuccessHandler successHandler() {
@@ -72,5 +101,9 @@ public class SecurityConfig implements WebMvcConfigurer {
         return (request, response, exception) -> {
             throw exception;
         };
+    }
+
+    private OAuth2AccessTokenResponseClient tokenResponseClient() {
+        return new OAuth2AccessTokenResponseClient();
     }
 }

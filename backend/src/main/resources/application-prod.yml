@@ -19,6 +19,16 @@ security:
     token:
       secret-key: secret_key
       expire-length: 3600000
+  oauth2:
+    client:
+      provider:
+        github:
+          token-uri: https://github.com/login/oauth/access_token
+          user-info-uri: https://api.github.com/user
+      registration:
+        github:
+          client-id: client_id
+          client-secret: client_secret
 
 github:
   client:

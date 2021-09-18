@@ -1,4 +1,4 @@
-package wooteco.prolog.login.application.dto;
+package wooteco.support.security.github;
 
 public class GithubAccessTokenRequest {
 

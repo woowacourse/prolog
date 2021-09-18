@@ -1,4 +1,4 @@
-package wooteco.prolog.security;
+package wooteco.support.security.authentication;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
