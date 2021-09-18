@@ -14,11 +14,6 @@ public class LoginMember implements UserDetails {
     private Role role;
     private String imageUrl;
 
-    @Override
-    public String getUsername() {
-        return Long.toString(id);
-    }
-
     public static LoginMember of(Member member) {
         return new LoginMember(
             member.getId(),

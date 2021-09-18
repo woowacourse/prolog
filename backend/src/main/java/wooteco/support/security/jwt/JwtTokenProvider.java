@@ -14,12 +14,12 @@ public class JwtTokenProvider {
     private String secretKey;
     private long expireLength;
 
-    public String createToken(Long id, String role) {
+    public String createToken(String username, String role) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + expireLength);
 
         return Jwts.builder()
-            .setSubject(id.toString())
+            .setSubject(username)
             .setIssuedAt(now)
             .setExpiration(validity)
             .claim("role", role)

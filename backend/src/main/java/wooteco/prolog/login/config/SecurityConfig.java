@@ -31,6 +31,7 @@ import wooteco.support.security.authentication.AuthenticationSuccessHandler;
 import wooteco.support.security.authentication.OAuth2AccessTokenResponseClient;
 import wooteco.support.security.authentication.OAuth2AuthenticationFilter;
 import wooteco.support.security.client.ClientRegistrationRepository;
+import wooteco.support.security.context.SecurityContextPersistenceFilter;
 import wooteco.support.security.filter.FilterChainProxy;
 import wooteco.support.security.filter.SecurityFilterChain;
 import wooteco.support.security.filter.SecurityFilterChainAdaptor;
@@ -52,6 +53,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Bean(name = DEFAULT_FILTER_NAME)
     public Filter springSecurityFilterChain() {
         List<SecurityFilterChain> securityFilterChains = new ArrayList<>();
+        securityFilterChains.add(SecurityFilterChainAdaptor.of("/*", securityContextPersistenceFilter()));
         securityFilterChains.add(SecurityFilterChainAdaptor.of("/*", corsFilter()));
         securityFilterChains
             .add(SecurityFilterChainAdaptor.of("/login/token", authenticationFilter()));
@@ -79,6 +81,10 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     private Filter jwtTokenFilterFilter() {
         return new JwtTokenFilter(userDetailsService(), jwtTokenProvider);
+    }
+
+    private Filter securityContextPersistenceFilter() {
+        return new SecurityContextPersistenceFilter();
     }
 
     private AuthenticationProvider authenticationProvider() {
@@ -113,7 +119,7 @@ public class SecurityConfig implements WebMvcConfigurer {
             GithubOAuth2User oAuth2User = (GithubOAuth2User) authentication.getPrincipal();
             Member member = memberService.findOrCreateMember(oAuth2User);
             String accessToken = jwtTokenProvider
-                .createToken(member.getId(), member.getRole().name());
+                .createToken(member.getUsername(), member.getRole().name());
 
             response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);
@@ -134,7 +140,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     private UserDetailsService userDetailsService() {
         return username -> {
-            Member member = memberService.findById(Long.parseLong(username));
+            Member member = memberService.findByUsername(username);
             return LoginMember.of(member);
         };
     }
