@@ -10,11 +10,11 @@ public class GithubOAuth2User extends OAuth2User {
     }
 
     public String getLoginName() {
-        return getAttributes().get("name").toString();
+        return getAttributes().get("login").toString();
     }
 
     public String getNickname() {
-        return getAttributes().get("login").toString();
+        return getAttributes().get("name").toString();
     }
 
     public Long getGithubId() {

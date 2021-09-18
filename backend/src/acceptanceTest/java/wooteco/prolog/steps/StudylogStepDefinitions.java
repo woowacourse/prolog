@@ -96,7 +96,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     public void 서로다른태그와미션을가진스터디로그를생성() {
         List<StudylogRequest> studylogRequests = new ArrayList<>();
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 2; i++) {
             studylogRequests.add(STUDYLOG1.getStudylogRequest());
         }
         for (int i = 0; i < 5; i++) {

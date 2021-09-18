@@ -39,7 +39,7 @@ public class StudyLogOverviewStepDefinitions extends AcceptanceSteps {
                         tuple(TagAcceptanceFixture.TAG2.getTagName(), 1),
                         tuple(TagAcceptanceFixture.TAG3.getTagName(), 1),
                         tuple(TagAcceptanceFixture.TAG4.getTagName(), 1),
-                        tuple("all", 4)
+                        tuple("ALL", 2)
                 );
     }
 
