@@ -20,7 +20,7 @@ import wooteco.prolog.studylog.application.dto.search.SearchParams;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 import wooteco.support.number.NumberUtils;
-import wooteco.support.security.authentication.jwt.AuthenticationPrincipal;
+import wooteco.support.security.jwt.AuthenticationPrincipal;
 
 @RestController
 @RequestMapping("/posts")

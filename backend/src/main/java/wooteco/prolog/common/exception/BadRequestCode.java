@@ -6,7 +6,7 @@ import lombok.Getter;
 import wooteco.prolog.login.excetpion.GithubApiFailException;
 import wooteco.prolog.login.excetpion.GithubConnectionException;
 import wooteco.prolog.login.excetpion.RoleNameNotFoundException;
-import wooteco.prolog.login.excetpion.StudylogTitleNullOrEmptyException;
+import wooteco.prolog.studylog.exception.StudylogTitleNullOrEmptyException;
 import wooteco.prolog.login.excetpion.TokenNotValidException;
 import wooteco.prolog.member.exception.DuplicateMemberTagException;
 import wooteco.prolog.member.exception.MemberNotAllowedException;

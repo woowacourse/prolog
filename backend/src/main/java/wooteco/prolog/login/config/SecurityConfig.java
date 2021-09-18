@@ -1,4 +1,4 @@
-package wooteco.prolog.common.config.security;
+package wooteco.prolog.login.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
@@ -30,9 +30,9 @@ import wooteco.support.security.authentication.AuthenticationFilter;
 import wooteco.support.security.authentication.AuthenticationProvider;
 import wooteco.support.security.authentication.AuthenticationSuccessHandler;
 import wooteco.support.security.authentication.OAuth2AccessTokenResponseClient;
-import wooteco.support.security.authentication.jwt.AuthenticationPrincipalArgumentResolver;
-import wooteco.support.security.authentication.jwt.JwtTokenFilter;
-import wooteco.support.security.authentication.jwt.JwtTokenProvider;
+import wooteco.support.security.jwt.AuthenticationPrincipalArgumentResolver;
+import wooteco.support.security.jwt.JwtTokenFilter;
+import wooteco.support.security.jwt.JwtTokenProvider;
 import wooteco.support.security.client.ClientRegistrationRepository;
 import wooteco.support.security.oauth2user.OAuth2UserService;
 import wooteco.support.security.userdetails.UserDetailsService;

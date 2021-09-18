@@ -1,4 +1,4 @@
-package wooteco.support.security.authentication.jwt;
+package wooteco.support.security.jwt;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

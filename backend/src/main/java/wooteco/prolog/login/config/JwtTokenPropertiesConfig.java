@@ -1,9 +1,9 @@
-package wooteco.prolog.common.config.security;
+package wooteco.prolog.login.config;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import wooteco.support.security.authentication.jwt.JwtTokenProvider;
+import wooteco.support.security.jwt.JwtTokenProvider;
 
 @Configuration
 @EnableConfigurationProperties(JwtTokenProperties.class)

@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import wooteco.prolog.login.excetpion.StudylogTitleNullOrEmptyException;
+import wooteco.prolog.studylog.exception.StudylogTitleNullOrEmptyException;
 import wooteco.prolog.studylog.domain.Title;
 
 class TitleTest {

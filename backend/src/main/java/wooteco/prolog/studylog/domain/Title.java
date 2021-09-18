@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import wooteco.prolog.login.excetpion.StudylogTitleNullOrEmptyException;
+import wooteco.prolog.studylog.exception.StudylogTitleNullOrEmptyException;
 import wooteco.prolog.studylog.exception.TooLongTitleException;
 
 @Getter

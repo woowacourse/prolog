@@ -9,11 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.member.domain.LoginMember;
-import wooteco.support.security.authentication.jwt.AuthenticationPrincipal;
+import wooteco.support.security.jwt.AuthenticationPrincipal;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
-import wooteco.prolog.member.domain.Member;
 
 @RestController
 @AllArgsConstructor

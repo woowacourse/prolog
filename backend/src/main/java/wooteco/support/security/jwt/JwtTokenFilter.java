@@ -1,4 +1,4 @@
-package wooteco.support.security.authentication.jwt;
+package wooteco.support.security.jwt;
 
 import java.io.IOException;
 import javax.servlet.FilterChain;

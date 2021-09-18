@@ -1,4 +1,4 @@
-package wooteco.prolog.common.config.search;
+package wooteco.prolog.common.config;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

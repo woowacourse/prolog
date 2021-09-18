@@ -1,4 +1,4 @@
-package wooteco.support.security.authentication.jwt;
+package wooteco.support.security.jwt;
 
 import lombok.AllArgsConstructor;
 import org.springframework.core.MethodParameter;
