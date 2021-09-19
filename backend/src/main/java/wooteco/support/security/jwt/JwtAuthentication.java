@@ -6,7 +6,12 @@ import wooteco.support.security.authentication.Authentication;
 
 @AllArgsConstructor
 @Getter
-public class AuthenticationToken implements Authentication {
+public class JwtAuthentication implements Authentication {
 
-    private Object principal;
+    private String username;
+
+    @Override
+    public Object getPrincipal() {
+        return username;
+    }
 }

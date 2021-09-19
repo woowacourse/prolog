@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import wooteco.support.security.jwt.AuthenticationPrincipal;
+import wooteco.prolog.member.domain.LoginMember;
 import wooteco.support.autoceptor.scanner.MappingAnnotation;
 import wooteco.support.autoceptor.scanner.MethodScanner;
+import wooteco.support.security.jwt.AuthenticationPrincipal;
 
 class MappingAnnotationTest {
 

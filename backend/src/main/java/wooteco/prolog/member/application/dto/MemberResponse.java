@@ -3,7 +3,6 @@ package wooteco.prolog.member.application.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.member.domain.LoginMember;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 
@@ -20,10 +19,6 @@ public class MemberResponse {
 
     public static MemberResponse of(Member member) {
         return new MemberResponse(member.getId(), member.getUsername(), member.getNickname(),
-                                  member.getRole(), member.getImageUrl());
-    }
-    public static MemberResponse of(LoginMember member) {
-        return new MemberResponse(member.getId(), member.getUsername(), member.getNickname(),
-                                  member.getRole(), member.getImageUrl());
+            member.getRole(), member.getImageUrl());
     }
 }

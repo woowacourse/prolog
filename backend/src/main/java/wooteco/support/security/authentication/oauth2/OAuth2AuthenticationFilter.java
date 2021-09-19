@@ -12,7 +12,6 @@ import wooteco.support.security.authentication.AuthenticationSuccessHandler;
 import wooteco.support.security.client.ClientRegistration;
 import wooteco.support.security.client.ClientRegistrationRepository;
 import wooteco.support.security.exception.AuthenticationException;
-import wooteco.support.security.oauth2user.OAuth2AuthorizationRequest;
 
 public class OAuth2AuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -38,10 +37,10 @@ public class OAuth2AuthenticationFilter extends AbstractAuthenticationProcessing
         OAuth2AuthorizationExchange exchange = new ObjectMapper()
             .readValue(request.getReader(), OAuth2AuthorizationExchange.class);
 
-        OAuth2AuthorizationRequest oAuth2AuthorizationRequest
-            = new OAuth2AuthorizationRequest(clientRegistration, exchange);
+        OAuth2AuthenticationToken oAuth2AuthenticationToken
+            = new OAuth2AuthenticationToken(clientRegistration, exchange);
 
-        return authenticationManager.authenticate(oAuth2AuthorizationRequest);
+        return authenticationManager.authenticate(oAuth2AuthenticationToken);
     }
 
     @Override

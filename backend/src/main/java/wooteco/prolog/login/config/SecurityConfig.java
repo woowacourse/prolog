@@ -23,7 +23,6 @@ import wooteco.prolog.login.application.dto.TokenResponse;
 import wooteco.prolog.login.excetpion.GithubConnectionException;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.GithubOAuth2User;
-import wooteco.prolog.member.domain.LoginMember;
 import wooteco.prolog.member.domain.Member;
 import wooteco.support.security.authentication.AuthenticationFailureHandler;
 import wooteco.support.security.authentication.AuthenticationManager;
@@ -38,10 +37,10 @@ import wooteco.support.security.context.SecurityContextPersistenceFilter;
 import wooteco.support.security.filter.FilterChainProxy;
 import wooteco.support.security.filter.SecurityFilterChain;
 import wooteco.support.security.filter.SecurityFilterChainAdaptor;
-import wooteco.support.security.jwt.JwtTokenFilter;
+import wooteco.support.security.jwt.JwtAuthenticationFilter;
+import wooteco.support.security.jwt.JwtAuthenticationProvider;
 import wooteco.support.security.jwt.JwtTokenProvider;
 import wooteco.support.security.oauth2user.OAuth2UserService;
-import wooteco.support.security.userdetails.UserDetailsService;
 
 @Configuration
 @AllArgsConstructor
@@ -83,11 +82,15 @@ public class SecurityConfig implements WebMvcConfigurer {
     }
 
     private Filter jwtTokenFilter() {
-        return new JwtTokenFilter(userDetailsService(), jwtTokenProvider);
+        return new JwtAuthenticationFilter(jwtAuthenticationProvider());
     }
 
     private Filter securityContextPersistenceFilter() {
         return new SecurityContextPersistenceFilter();
+    }
+
+    private JwtAuthenticationProvider jwtAuthenticationProvider() {
+        return new JwtAuthenticationProvider(jwtTokenProvider);
     }
 
 
@@ -138,13 +141,6 @@ public class SecurityConfig implements WebMvcConfigurer {
         return new OAuth2AccessTokenResponseClient();
     }
 
-    private UserDetailsService userDetailsService() {
-        return username -> {
-            Member member = memberService.findByUsername(username);
-            return LoginMember.of(member);
-        };
-    }
-
     private AuthenticationManager authenticationManager() {
         List<AuthenticationProvider> providers = new ArrayList<>();
         providers.add(authenticationProvider());
@@ -154,4 +150,5 @@ public class SecurityConfig implements WebMvcConfigurer {
     private OAuth2AuthenticationProvider authenticationProvider() {
         return new OAuth2AuthenticationProvider(tokenResponseClient(), oAuth2UserService());
     }
+
 }

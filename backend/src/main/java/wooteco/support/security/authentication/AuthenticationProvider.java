@@ -2,7 +2,7 @@ package wooteco.support.security.authentication;
 
 public interface AuthenticationProvider {
 
-    Authentication authenticate(AuthenticationRequest authentication);
+    Authentication authenticate(AuthenticationToken authenticationToken);
 
     boolean supports(Class<?> authentication);
 }

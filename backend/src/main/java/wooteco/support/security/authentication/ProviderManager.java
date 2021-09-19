@@ -10,12 +10,12 @@ public class ProviderManager implements AuthenticationManager {
     private List<AuthenticationProvider> providers;
 
     @Override
-    public Authentication authenticate(AuthenticationRequest authenticationRequest) {
+    public Authentication authenticate(AuthenticationToken authenticationToken) {
         for (AuthenticationProvider provider : providers) {
-            if (!provider.supports(authenticationRequest.getClass())) {
+            if (!provider.supports(authenticationToken.getClass())) {
                 continue;
             }
-            return provider.authenticate(authenticationRequest);
+            return provider.authenticate(authenticationToken);
         }
         throw new AuthenticationException();
     }

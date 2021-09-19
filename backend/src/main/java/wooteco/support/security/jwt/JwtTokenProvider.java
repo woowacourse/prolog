@@ -6,6 +6,9 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -37,7 +40,10 @@ public class JwtTokenProvider {
         }
     }
 
-    public String extractSubject(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    public Map<String, Object> extractSubject(String token, List<String> keys) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().entrySet()
+            .stream()
+            .filter(it -> keys.contains(it.getKey()))
+            .collect(Collectors.toMap(it -> it.getKey(), it -> it.getValue()));
     }
 }

@@ -1,4 +1,4 @@
-package wooteco.support.security.jwt;
+package wooteco.prolog.member.domain;
 
 import lombok.AllArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -10,11 +10,11 @@ import wooteco.support.security.authentication.Authentication;
 import wooteco.support.security.context.SecurityContextHolder;
 
 @AllArgsConstructor
-public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArgumentResolver {
+public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(AuthenticationPrincipal.class);
+        return parameter.getParameterType() == LoginMember.class;
     }
 
     @Override
@@ -28,6 +28,6 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
             return null;
         }
 
-        return authentication.getPrincipal();
+        return new LoginMember(authentication.getPrincipal() + "");
     }
 }

@@ -1,26 +1,20 @@
 package wooteco.prolog.member.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import wooteco.support.security.userdetails.UserDetails;
+import wooteco.support.security.jwt.JwtAuthentication;
 
-@AllArgsConstructor
-@Getter
-public class LoginMember implements UserDetails {
+public class LoginMember extends JwtAuthentication {
 
-    private Long id;
-    private String username;
-    private String nickname;
-    private Role role;
-    private String imageUrl;
+    public LoginMember(String username) {
+        super(username);
+    }
+
+    public LoginMember(JwtAuthentication authentication) {
+        super(authentication.getUsername());
+    }
 
     public static LoginMember of(Member member) {
         return new LoginMember(
-            member.getId(),
-            member.getUsername(),
-            member.getNickname(),
-            member.getRole(),
-            member.getImageUrl()
+            member.getUsername()
         );
     }
 }

@@ -123,7 +123,7 @@ public class StudylogService {
     }
 
     private StudylogResponse insertStudylog(LoginMember member, StudylogRequest studylogRequest) {
-        final Member foundMember = memberService.findById(member.getId());
+        final Member foundMember = memberService.findByUsername(member.getUsername());
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
         Mission mission = missionService.findById(studylogRequest.getMissionId());
 
@@ -150,7 +150,7 @@ public class StudylogService {
     @Transactional
     public void updateStudylog(LoginMember member, Long studylogId,
                                StudylogRequest studylogRequest) {
-        final Member foundMember = memberService.findById(member.getId());
+        final Member foundMember = memberService.findByUsername(member.getUsername());
 
         Studylog studylog = studylogRepository.findById(studylogId)
             .orElseThrow(StudylogNotFoundException::new);
@@ -167,7 +167,7 @@ public class StudylogService {
 
     @Transactional
     public void deleteStudylog(LoginMember member, Long studylogId) {
-        final Member foundMember = memberService.findById(member.getId());
+        final Member foundMember = memberService.findByUsername(member.getUsername());
         Studylog studylog = studylogRepository.findById(studylogId)
             .orElseThrow(StudylogNotFoundException::new);
         studylog.validateAuthor(foundMember);

@@ -1,6 +1,5 @@
 package wooteco.prolog.login.config;
 
-import java.util.EnumSet;
 import javax.servlet.DispatcherType;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.web.servlet.DelegatingFilterProxyRegistrationBean;
@@ -19,7 +18,9 @@ public class SecurityFilterConfiguration {
             = new DelegatingFilterProxyRegistrationBean(DEFAULT_FILTER_NAME);
         registration.setOrder(-100);
         registration.setDispatcherTypes(
-            EnumSet.of(DispatcherType.ASYNC, DispatcherType.ERROR, DispatcherType.REQUEST));
+            DispatcherType.ASYNC,
+            DispatcherType.ERROR,
+            DispatcherType.REQUEST);
         return registration;
     }
 

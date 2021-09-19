@@ -10,12 +10,11 @@ import wooteco.support.security.exception.AuthenticationException;
 import wooteco.support.security.github.GithubAccessTokenRequest;
 import wooteco.support.security.github.GithubAccessTokenResponse;
 import wooteco.support.security.oauth2user.OAuth2AccessTokenResponse;
-import wooteco.support.security.oauth2user.OAuth2AuthorizationRequest;
 
 public class OAuth2AccessTokenResponseClient {
 
     public OAuth2AccessTokenResponse getTokenResponse(
-        OAuth2AuthorizationRequest grantRequest) {
+        OAuth2AuthenticationToken grantRequest) {
         GithubAccessTokenRequest githubAccessTokenRequest = new GithubAccessTokenRequest(
             grantRequest.getExchange().getCode(),
             grantRequest.getClientRegistration().getClientId(),
