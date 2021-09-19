@@ -1,4 +1,4 @@
-package wooteco.support.security.authentication;
+package wooteco.support.security.authentication.oauth2;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -10,12 +10,12 @@ import wooteco.support.security.exception.AuthenticationException;
 import wooteco.support.security.github.GithubAccessTokenRequest;
 import wooteco.support.security.github.GithubAccessTokenResponse;
 import wooteco.support.security.oauth2user.OAuth2AccessTokenResponse;
-import wooteco.support.security.oauth2user.OAuth2AuthorizationGrantRequest;
+import wooteco.support.security.oauth2user.OAuth2AuthorizationRequest;
 
 public class OAuth2AccessTokenResponseClient {
 
     public OAuth2AccessTokenResponse getTokenResponse(
-        OAuth2AuthorizationGrantRequest grantRequest) {
+        OAuth2AuthorizationRequest grantRequest) {
         GithubAccessTokenRequest githubAccessTokenRequest = new GithubAccessTokenRequest(
             grantRequest.getExchange().getCode(),
             grantRequest.getClientRegistration().getClientId(),

@@ -26,10 +26,13 @@ import wooteco.prolog.member.domain.GithubOAuth2User;
 import wooteco.prolog.member.domain.LoginMember;
 import wooteco.prolog.member.domain.Member;
 import wooteco.support.security.authentication.AuthenticationFailureHandler;
+import wooteco.support.security.authentication.AuthenticationManager;
 import wooteco.support.security.authentication.AuthenticationProvider;
 import wooteco.support.security.authentication.AuthenticationSuccessHandler;
-import wooteco.support.security.authentication.OAuth2AccessTokenResponseClient;
-import wooteco.support.security.authentication.OAuth2AuthenticationFilter;
+import wooteco.support.security.authentication.ProviderManager;
+import wooteco.support.security.authentication.oauth2.OAuth2AccessTokenResponseClient;
+import wooteco.support.security.authentication.oauth2.OAuth2AuthenticationFilter;
+import wooteco.support.security.authentication.oauth2.OAuth2AuthenticationProvider;
 import wooteco.support.security.client.ClientRegistrationRepository;
 import wooteco.support.security.context.SecurityContextPersistenceFilter;
 import wooteco.support.security.filter.FilterChainProxy;
@@ -53,11 +56,12 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Bean(name = DEFAULT_FILTER_NAME)
     public Filter springSecurityFilterChain() {
         List<SecurityFilterChain> securityFilterChains = new ArrayList<>();
-        securityFilterChains.add(SecurityFilterChainAdaptor.of("/*", securityContextPersistenceFilter()));
+        securityFilterChains
+            .add(SecurityFilterChainAdaptor.of("/*", securityContextPersistenceFilter()));
         securityFilterChains.add(SecurityFilterChainAdaptor.of("/*", corsFilter()));
         securityFilterChains
             .add(SecurityFilterChainAdaptor.of("/login/token", authenticationFilter()));
-        securityFilterChains.add(SecurityFilterChainAdaptor.of("/*", jwtTokenFilterFilter()));
+        securityFilterChains.add(SecurityFilterChainAdaptor.of("/*", jwtTokenFilter()));
         return new FilterChainProxy(securityFilterChains);
     }
 
@@ -74,12 +78,11 @@ public class SecurityConfig implements WebMvcConfigurer {
     }
 
     private Filter authenticationFilter() {
-        return new OAuth2AuthenticationFilter(
-            clientRegistrationRepository, authenticationProvider(),
-            successHandler(), failureHandler());
+        return new OAuth2AuthenticationFilter(clientRegistrationRepository,
+            authenticationManager(), successHandler(), failureHandler());
     }
 
-    private Filter jwtTokenFilterFilter() {
+    private Filter jwtTokenFilter() {
         return new JwtTokenFilter(userDetailsService(), jwtTokenProvider);
     }
 
@@ -87,9 +90,6 @@ public class SecurityConfig implements WebMvcConfigurer {
         return new SecurityContextPersistenceFilter();
     }
 
-    private AuthenticationProvider authenticationProvider() {
-        return new AuthenticationProvider(tokenResponseClient(), oAuth2UserService());
-    }
 
     private OAuth2UserService oAuth2UserService() {
         return oAuth2UserRequest -> {
@@ -143,5 +143,15 @@ public class SecurityConfig implements WebMvcConfigurer {
             Member member = memberService.findByUsername(username);
             return LoginMember.of(member);
         };
+    }
+
+    private AuthenticationManager authenticationManager() {
+        List<AuthenticationProvider> providers = new ArrayList<>();
+        providers.add(authenticationProvider());
+        return new ProviderManager(providers);
+    }
+
+    private OAuth2AuthenticationProvider authenticationProvider() {
+        return new OAuth2AuthenticationProvider(tokenResponseClient(), oAuth2UserService());
     }
 }

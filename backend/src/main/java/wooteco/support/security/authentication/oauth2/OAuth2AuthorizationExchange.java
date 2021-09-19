@@ -1,4 +1,4 @@
-package wooteco.support.security.authentication;
+package wooteco.support.security.authentication.oauth2;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
