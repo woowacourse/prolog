@@ -60,9 +60,13 @@ public class ReportedStudylogAbility implements Updatable<ReportedStudylogAbilit
         return ability.isParent();
     }
 
+    public Ability getAbility() {
+        return ability;
+    }
+
     @Override
     public void update(ReportedStudylogAbility reportedStudylogAbility) {
-        this.ability = reportedStudylogAbility.ability;
+        this.ability = reportedStudylogAbility.getAbility();
     }
 
     @Override
@@ -74,7 +78,7 @@ public class ReportedStudylogAbility implements Updatable<ReportedStudylogAbilit
             return false;
         }
         ReportedStudylogAbility that = (ReportedStudylogAbility) o;
-        return Objects.equals(this.ability, that.ability);
+        return Objects.equals(getAbility(), that.getAbility());
     }
 
     @Override

@@ -85,10 +85,14 @@ public class ReportedStudylog implements Updatable<ReportedStudylog> {
         return abilities;
     }
 
+    public Studylog getStudylog() {
+        return studylog;
+    }
+
     @Override
     public void update(ReportedStudylog reportedStudylog) {
-        reportedStudylog.abilities.forEach(abilitiy -> abilitiy.appendTo(this));
-        UpdateUtil.execute(this.abilities, reportedStudylog.abilities);
+        reportedStudylog.getAbilities().forEach(abilitiy -> abilitiy.appendTo(this));
+        UpdateUtil.execute(getAbilities(), reportedStudylog.getAbilities());
     }
 
     @Override
@@ -101,7 +105,7 @@ public class ReportedStudylog implements Updatable<ReportedStudylog> {
         }
 
         ReportedStudylog that = (ReportedStudylog) o;
-        return Objects.equals(this.studylog, that.studylog);
+        return Objects.equals(getStudylog(), that.getStudylog());
     }
 
     @Override

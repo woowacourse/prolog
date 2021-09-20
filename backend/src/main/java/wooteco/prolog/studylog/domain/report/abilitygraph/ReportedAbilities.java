@@ -32,10 +32,14 @@ public class ReportedAbilities {
         this.abilities.forEach(ability -> ability.appendTo(report));
     }
 
-    public void update(ReportedAbilities reportedAbilities, Report report) {
-        reportedAbilities.abilities.forEach(ability -> ability.appendTo(report));
+    public List<ReportedAbility> getAbilities() {
+        return abilities;
+    }
 
-        UpdateUtil.execute(this.abilities, abilities);
+    public void update(ReportedAbilities reportedAbilities, Report report) {
+        reportedAbilities.getAbilities().forEach(ability -> ability.appendTo(report));
+
+        UpdateUtil.execute(getAbilities(), reportedAbilities.getAbilities());
     }
 
     public List<GraphAbility> graphAbilities() {

@@ -74,10 +74,14 @@ public class ReportedAbility implements Updatable<ReportedAbility> {
         return isPresent;
     }
 
+    public Ability getAbility() {
+        return ability;
+    }
+
     @Override
     public void update(ReportedAbility ability) {
-        this.ability = ability.ability;
-        this.weight = ability.weight;
+        this.ability = ability.getAbility();
+        this.weight = ability.getWeight();
     }
 
     @Override
@@ -90,7 +94,7 @@ public class ReportedAbility implements Updatable<ReportedAbility> {
         }
         ReportedAbility that = (ReportedAbility) o;
 
-        return Objects.equals(this.ability, that.ability);
+        return Objects.equals(getAbility(), that.getAbility());
     }
 
     @Override

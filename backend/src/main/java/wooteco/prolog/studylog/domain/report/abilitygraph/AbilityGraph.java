@@ -29,8 +29,12 @@ public class AbilityGraph {
         this(null, reportedAbilities);
     }
 
+    public ReportedAbilities getReportedAbilities() {
+        return reportedAbilities;
+    }
+
     public void update(AbilityGraph abilityGraph, Report report) {
-        reportedAbilities.update(abilityGraph.reportedAbilities, report);
+        reportedAbilities.update(abilityGraph.getReportedAbilities(), report);
     }
 
     public void appendTo(Report report) {
