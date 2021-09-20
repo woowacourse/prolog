@@ -32,6 +32,7 @@ import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
 import scrapIcon from '../../assets/images/scrap.svg';
 import unScrapIcon from '../../assets/images/scrap_filled.svg';
+import useSnackBar from '../../hooks/useSnackBar';
 
 const PostPage = () => {
   const history = useHistory();
@@ -40,6 +41,7 @@ const PostPage = () => {
   const { NotFound } = useNotFound();
 
   const { deleteData: deletePost } = usePost({});
+  const { openSnackBar } = useSnackBar();
 
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const myName = useSelector((state) => state.user.profile.data?.username);
@@ -79,7 +81,9 @@ const PostPage = () => {
     history.goBack();
   };
 
-  const toggleScrap = () => {};
+  const toggleScrap = () => {
+    openSnackBar('스크랩을 완료했습니다');
+  };
 
   return (
     <>

@@ -13,7 +13,7 @@ import {
   ProfilePagePosts,
   ProfilePageAccount,
 } from './pages';
-import { useState } from 'react';
+import useSnackBar from './hooks/useSnackBar';
 
 const Content = styled.div`
   max-width: 112rem;
@@ -22,6 +22,8 @@ const Content = styled.div`
 `;
 
 const App = () => {
+  const { isSnackBarOpen, SnackBar } = useSnackBar();
+
   return (
     <>
       <GlobalStyles />
@@ -61,6 +63,7 @@ const App = () => {
           </Switch>
         </Content>
       </Router>
+      {isSnackBarOpen && <SnackBar />}
     </>
   );
 };
