@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
-import { Button, BUTTON_SIZE, Card, FilterList, Pagination } from '../../components';
-import { requestGetFilters, requestGetPosts } from '../../service/requests';
+import { Button, BUTTON_SIZE, Card, Pagination } from '../../components';
+import { requestGetPosts } from '../../service/requests';
 import {
   ButtonList,
   CardStyles,
@@ -11,9 +11,6 @@ import {
   DeleteButtonStyle,
   Description,
   EditButtonStyle,
-  FilterListWrapper,
-  FilterStyles,
-  HeaderContainer,
   Mission,
   NoPost,
   PostItem,
@@ -23,25 +20,14 @@ import {
 } from './styles';
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
-import useFetch from '../../hooks/useFetch';
-import useFilterWithParams from '../../hooks/useFilterWithParams';
-import { SelectedFilterList } from '../MainPage/styles';
-import Chip from '../../components/Chip/Chip';
 
-const ProfilePagePosts = () => {
-  const {
-    postQueryParams,
-    selectedFilter,
-    setSelectedFilter,
-    selectedFilterDetails,
-    setSelectedFilterDetails,
-    onSetPage,
-    onUnsetFilter,
-    onFilterChange,
-    resetFilter,
-    getFullParams,
-  } = useFilterWithParams();
+const initialPostQueryParams = {
+  page: 1,
+  size: 10,
+  direction: 'desc',
+};
 
+const ProfilePageScraps = () => {
   const history = useHistory();
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const myName = useSelector((state) => state.user.profile.data?.username);
@@ -51,8 +37,7 @@ const ProfilePagePosts = () => {
   const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
   const [hoveredPostId, setHoveredPostId] = useState(0);
   const [posts, setPosts] = useState([]);
-
-  const [filters] = useFetch([], requestGetFilters);
+  const [postQueryParams, setPostQueryParams] = useState(initialPostQueryParams);
 
   const { error: postError, deleteData: deletePost } = usePost({});
 
@@ -94,11 +79,9 @@ const ProfilePagePosts = () => {
     await getData();
   };
 
-  useEffect(() => {
-    const params = getFullParams();
-
-    history.push(`${PATH.ROOT}${username}/posts${params ? '?' + params : ''}`);
-  }, [postQueryParams, selectedFilterDetails, username]);
+  const onSetPage = (page) => {
+    setPostQueryParams({ ...postQueryParams, page });
+  };
 
   useEffect(() => {
     if (!shouldInitialLoad) {
@@ -110,49 +93,9 @@ const ProfilePagePosts = () => {
     getData();
   }, [history.location.search]);
 
-  useEffect(() => {
-    if (filters.length === 0) {
-      return;
-    }
-
-    const selectedFilterDetailsWithName = selectedFilterDetails.map(
-      ({ filterType, filterDetailId }) => {
-        const name = filters[filterType].find(({ id }) => id === filterDetailId)?.name;
-        return { filterType, filterDetailId, name };
-      }
-    );
-
-    setSelectedFilterDetails(selectedFilterDetailsWithName);
-  }, [filters]);
-
   return (
     <Container>
-      <Heading>학습로그</Heading>
-      <HeaderContainer>
-        <FilterListWrapper>
-          <FilterList
-            filters={filters}
-            selectedFilter={selectedFilter}
-            setSelectedFilter={setSelectedFilter}
-            selectedFilterDetails={selectedFilterDetails}
-            setSelectedFilterDetails={onFilterChange}
-            isVisibleResetFilter={!!selectedFilterDetails.length}
-            onResetFilter={resetFilter}
-            css={FilterStyles}
-          />
-        </FilterListWrapper>
-        <SelectedFilterList>
-          <ul>
-            {selectedFilterDetails.map(({ filterType, filterDetailId, name }) => (
-              <li key={filterType + filterDetailId + name}>
-                <Chip onDelete={() => onUnsetFilter({ filterType, filterDetailId })}>
-                  {`${filterType}: ${name}`}
-                </Chip>
-              </li>
-            ))}
-          </ul>
-        </SelectedFilterList>
-      </HeaderContainer>
+      <Heading>스크랩로그</Heading>
       <Card css={CardStyles}>
         {posts?.data?.length ? (
           <>
@@ -205,11 +148,11 @@ const ProfilePagePosts = () => {
             <Pagination postsInfo={posts} onSetPage={onSetPage} />
           </>
         ) : (
-          <NoPost>작성한 글이 없습니다 🥲</NoPost>
+          <NoPost>스크랩한 글이 없습니다 🥲</NoPost>
         )}
       </Card>
     </Container>
   );
 };
 
-export default ProfilePagePosts;
+export default ProfilePageScraps;

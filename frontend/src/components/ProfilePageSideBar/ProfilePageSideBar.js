@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import { ReactComponent as PostIcon } from '../../assets/images/post.svg';
 import { ReactComponent as OverviewIcon } from '../../assets/images/overview.svg';
+import { ReactComponent as ScrapIcon } from '../../assets/images/scrap.svg';
 import {
   Profile,
   Image,
@@ -16,10 +17,12 @@ import {
 import { PROFILE_PAGE_MENU } from '../../constants';
 import { requestGetProfile } from '../../service/requests';
 import useNotFound from '../../hooks/useNotFound';
+import { useSelector } from 'react-redux';
 
 const ProfilePageSideBar = ({ menu }) => {
   const history = useHistory();
   const { username } = useParams();
+  const me = useSelector((state) => state.user.profile);
 
   const [user, setUser] = useState({});
   const [selectedMenu, setSelectedMenu] = useState('');
@@ -34,6 +37,11 @@ const ProfilePageSideBar = ({ menu }) => {
   const goProfilePagePosts = (event) => {
     setSelectedMenu(event.currentTarget.value);
     history.push(`/${username}/posts`);
+  };
+
+  const goProfilePageScraps = (event) => {
+    setSelectedMenu(event.currentTarget.value);
+    history.push(`/${username}/scraps`);
   };
 
   const goProfilePageAccount = () => {
@@ -87,6 +95,18 @@ const ProfilePageSideBar = ({ menu }) => {
             학습로그
           </MenuButton>
         </MenuItem>
+        {me.data && (
+          <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.SCRAPS}>
+            <MenuButton
+              value={PROFILE_PAGE_MENU.SCRAPS}
+              type="button"
+              onClick={goProfilePageScraps}
+            >
+              <ScrapIcon width="16" height="16" />
+              스크랩로그
+            </MenuButton>
+          </MenuItem>
+        )}
         <MenuItem isSelectedMenu={selectedMenu === 'asd'}>
           <MenuButton value={PROFILE_PAGE_MENU.POSTS} type="button" onClick={goProfilePagePosts}>
             <PostIcon width="16" height="16" />
