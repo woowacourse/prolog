@@ -47,8 +47,8 @@ const containerSizeStyle = {
 
 const imageSizeStyle = {
   X_SMALL: {
-    width: '2.5rem',
-    height: '2.5rem',
+    width: '2rem',
+    height: '2rem',
   },
   SMALL: {
     width: '2.5rem',

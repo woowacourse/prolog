@@ -21,14 +21,17 @@ import {
   SubHeader,
   Tags,
   Title,
-  ViewerWrapper,
   SubHeaderRightContent,
   Content,
+  ScrapButtonStyle,
+  BottomContainer,
 } from './styles';
 import useNotFound from '../../hooks/useNotFound';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
+import scrapIcon from '../../assets/images/scrap.svg';
+import unScrapIcon from '../../assets/images/scrap_filled.svg';
 
 const PostPage = () => {
   const history = useHistory();
@@ -76,8 +79,9 @@ const PostPage = () => {
     history.goBack();
   };
 
-  return (
+  const toggleScrap = () => {};
 
+  return (
     <>
       {myName === author?.username && (
         <ButtonList>
@@ -126,11 +130,34 @@ const PostPage = () => {
               plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
             />
           </Content>
-          <Tags>
-            {tags?.map(({ id, name }) => (
-              <span key={id}>{`#${name} `}</span>
-            ))}
-          </Tags>
+          <BottomContainer>
+            <Tags>
+              {tags?.map(({ id, name }) => (
+                <span key={id}>{`#${name} `}</span>
+              ))}
+            </Tags>
+            <div>
+              {true ? (
+                <Button
+                  type="button"
+                  size="X_SMALL"
+                  icon={scrapIcon}
+                  alt="스크랩 아이콘"
+                  css={ScrapButtonStyle}
+                  onClick={toggleScrap}
+                />
+              ) : (
+                <Button
+                  type="button"
+                  size="X_SMALL"
+                  icon={unScrapIcon}
+                  alt="스크랩 아이콘"
+                  css={ScrapButtonStyle}
+                  onClick={toggleScrap}
+                />
+              )}
+            </div>
+          </BottomContainer>
         </CardInner>
       </Card>
     </>
