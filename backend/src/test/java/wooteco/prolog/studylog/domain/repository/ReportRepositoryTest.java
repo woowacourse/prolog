@@ -25,7 +25,7 @@ import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.ablity.Ability;
 import wooteco.prolog.studylog.domain.report.Report;
-import wooteco.prolog.studylog.domain.report.abilitygraph.Graph;
+import wooteco.prolog.studylog.domain.report.abilitygraph.AbilityGraph;
 import wooteco.prolog.studylog.domain.report.abilitygraph.ReportedAbilities;
 import wooteco.prolog.studylog.domain.report.abilitygraph.ReportedAbility;
 import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylog;
@@ -121,7 +121,7 @@ class ReportRepositoryTest {
             .member(member)
             .title("test report")
             .description("test report")
-            .graph(new Graph(reportedAbilities))
+            .graph(new AbilityGraph(reportedAbilities))
             .member(member)
             .studylogs(reportedStudylogs)
             .build();

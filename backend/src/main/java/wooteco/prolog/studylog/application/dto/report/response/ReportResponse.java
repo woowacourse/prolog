@@ -3,7 +3,7 @@ package wooteco.prolog.studylog.application.dto.report.response;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
-import wooteco.prolog.studylog.application.dto.report.response.abilityGraph.AbilityGraph;
+import wooteco.prolog.studylog.application.dto.report.response.abilityGraph.GraphResponse;
 import wooteco.prolog.studylog.application.dto.report.response.studylogs.StudylogResponse;
 import wooteco.prolog.studylog.domain.report.Report;
 
@@ -12,7 +12,7 @@ public class ReportResponse {
     private Long id;
     private String title;
     private String description;
-    private AbilityGraph abilityGraph;
+    private GraphResponse graphResponse;
     private List<StudylogResponse> studylogs;
     private Boolean isRepresent;
 
@@ -22,19 +22,19 @@ public class ReportResponse {
     public ReportResponse(Long id,
                           String title,
                           String description,
-                          AbilityGraph abilityGraph,
+                          GraphResponse graphResponse,
                           List<StudylogResponse> studylogs,
                           Boolean isRepresent) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.abilityGraph = abilityGraph;
+        this.graphResponse = graphResponse;
         this.studylogs = studylogs;
         this.isRepresent = isRepresent;
     }
 
     public static ReportResponse from(Report report) {
-        AbilityGraph abilityGraph = AbilityGraph.from(report.getGraph());
+        GraphResponse graphResponse = GraphResponse.from(report.getAbilityGraph());
         List<StudylogResponse> studylogs = report.getStudylogs().stream()
             .map(StudylogResponse::from)
             .collect(toList());
@@ -43,7 +43,7 @@ public class ReportResponse {
             report.getId(),
             report.getTitle(),
             report.getDescription(),
-            abilityGraph,
+            graphResponse,
             studylogs,
             report.isRepresent()
         );
@@ -61,8 +61,8 @@ public class ReportResponse {
         return description;
     }
 
-    public AbilityGraph getAbilityGraph() {
-        return abilityGraph;
+    public GraphResponse getAbilityGraph() {
+        return graphResponse;
     }
 
     public List<StudylogResponse> getStudylogs() {

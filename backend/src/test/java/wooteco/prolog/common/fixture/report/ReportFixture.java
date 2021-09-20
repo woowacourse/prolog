@@ -2,7 +2,7 @@ package wooteco.prolog.common.fixture.report;
 
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.domain.report.Report;
-import wooteco.prolog.studylog.domain.report.abilitygraph.Graph;
+import wooteco.prolog.studylog.domain.report.abilitygraph.AbilityGraph;
 import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylogs;
 
 public class ReportFixture {
@@ -15,7 +15,7 @@ public class ReportFixture {
         private Long id;
         private String title;
         private String description;
-        private Graph graph;
+        private AbilityGraph abilityGraph;
         private ReportedStudylogs studylogs;
         private Boolean isRepresent;
         private Member member;
@@ -35,8 +35,8 @@ public class ReportFixture {
             return this;
         }
 
-        public Builder graph(Graph graph) {
-            this.graph = graph;
+        public Builder graph(AbilityGraph abilityGraph) {
+            this.abilityGraph = abilityGraph;
             return this;
         }
 
@@ -60,7 +60,7 @@ public class ReportFixture {
                 this.id,
                 this.title,
                 this.description,
-                this.graph,
+                this.abilityGraph,
                 this.studylogs,
                 isRepresent,
                 this.member

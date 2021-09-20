@@ -92,6 +92,19 @@ public class ReportedStudylog implements Updatable<ReportedStudylog> {
     }
 
     @Override
+    public boolean isSemanticallyEquals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ReportedStudylog)) {
+            return false;
+        }
+
+        ReportedStudylog that = (ReportedStudylog) o;
+        return Objects.equals(this.studylog, that.studylog);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

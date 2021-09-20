@@ -12,7 +12,7 @@ public class StudylogResponse {
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
     private String title;
-    private List<AbilityResponse> abilities;
+    private List<StudylogAbilityResponse> abilities;
 
     private StudylogResponse() {
     }
@@ -21,7 +21,7 @@ public class StudylogResponse {
                             LocalDateTime createAt,
                             LocalDateTime updateAt,
                             String title,
-                            List<AbilityResponse> abilities) {
+                            List<StudylogAbilityResponse> abilities) {
         this.id = id;
         this.createAt = createAt;
         this.updateAt = updateAt;
@@ -30,8 +30,8 @@ public class StudylogResponse {
     }
 
     public static StudylogResponse from(ReportedStudylog reportedStudylog) {
-        List<AbilityResponse> abilities = reportedStudylog.getAbilities().stream()
-            .map(AbilityResponse::from)
+        List<StudylogAbilityResponse> abilities = reportedStudylog.getAbilities().stream()
+            .map(StudylogAbilityResponse::from)
             .collect(toList());
 
         return new StudylogResponse(
@@ -43,9 +43,9 @@ public class StudylogResponse {
         );
     }
 
-    private static List<AbilityResponse> extractAbiliites(ReportedStudylog reportedStudylog) {
+    private static List<StudylogAbilityResponse> extractAbiliites(ReportedStudylog reportedStudylog) {
         return reportedStudylog.getAbilities().stream()
-            .map(AbilityResponse::from)
+            .map(StudylogAbilityResponse::from)
             .collect(toList());
     }
 
@@ -65,7 +65,7 @@ public class StudylogResponse {
         return title;
     }
 
-    public List<AbilityResponse> getAbilities() {
+    public List<StudylogAbilityResponse> getAbilities() {
         return abilities;
     }
 }

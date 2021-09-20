@@ -54,6 +54,10 @@ public class ReportedAbility implements Updatable<ReportedAbility> {
         return id;
     }
 
+    public Long getAbilityId() {
+        return ability.getId();
+    }
+
     public String getName() {
         return ability.getName();
     }
@@ -74,6 +78,19 @@ public class ReportedAbility implements Updatable<ReportedAbility> {
     public void update(ReportedAbility ability) {
         this.ability = ability.ability;
         this.weight = ability.weight;
+    }
+
+    @Override
+    public boolean isSemanticallyEquals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ReportedAbility)) {
+            return false;
+        }
+        ReportedAbility that = (ReportedAbility) o;
+
+        return Objects.equals(this.ability, that.ability);
     }
 
     @Override

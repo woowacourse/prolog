@@ -56,9 +56,25 @@ public class ReportedStudylogAbility implements Updatable<ReportedStudylogAbilit
         return ability.getColor();
     }
 
+    public Boolean isParent() {
+        return ability.isParent();
+    }
+
     @Override
     public void update(ReportedStudylogAbility reportedStudylogAbility) {
         this.ability = reportedStudylogAbility.ability;
+    }
+
+    @Override
+    public boolean isSemanticallyEquals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ReportedStudylogAbility)) {
+            return false;
+        }
+        ReportedStudylogAbility that = (ReportedStudylogAbility) o;
+        return Objects.equals(this.ability, that.ability);
     }
 
     @Override

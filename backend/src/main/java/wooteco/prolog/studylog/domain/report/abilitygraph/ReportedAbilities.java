@@ -43,7 +43,7 @@ public class ReportedAbilities {
 
         return abilities.stream()
             .map(ability -> new GraphAbility(
-                ability.getId(),
+                ability.getAbilityId(),
                 ability.getName(),
                 ability.getWeight(),
                 calculatePercentage(allWeight, ability),

@@ -2,28 +2,28 @@ package wooteco.prolog.studylog.application.dto.report.response.studylogs;
 
 import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylogAbility;
 
-public class AbilityResponse {
+public class StudylogAbilityResponse {
     private Long id;
     private String name;
     private String color;
-    private Boolean isPresent;
+    private Boolean isParent;
 
-    private AbilityResponse() {
+    private StudylogAbilityResponse() {
     }
 
-    public AbilityResponse(Long id, String name, String color, Boolean isPresent) {
+    public StudylogAbilityResponse(Long id, String name, String color, Boolean isParent) {
         this.id = id;
         this.name = name;
         this.color = color;
-        this.isPresent = isPresent;
+        this.isParent = isParent;
     }
 
-    public static AbilityResponse from(ReportedStudylogAbility ability) {
-        return new AbilityResponse(
+    public static StudylogAbilityResponse from(ReportedStudylogAbility ability) {
+        return new StudylogAbilityResponse(
             ability.getId(),
             ability.getName(),
             ability.getColor(),
-            ability.isPresent()
+            ability.isParent()
         );
     }
 
@@ -39,7 +39,7 @@ public class AbilityResponse {
         return color;
     }
 
-    public Boolean getPresent() {
-        return isPresent;
+    public Boolean getParent() {
+        return isParent;
     }
 }

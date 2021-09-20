@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studylog.domain.report.abilitygraph.Graph;
+import wooteco.prolog.studylog.domain.report.abilitygraph.AbilityGraph;
 import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylog;
 import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylogs;
 
@@ -32,7 +32,7 @@ public class Report {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
     @JoinColumn(name = "graph_id", nullable = false)
-    private Graph graph;
+    private AbilityGraph abilityGraph;
 
     private ReportedStudylogs studylogs;
 
@@ -44,18 +44,18 @@ public class Report {
 
     public Report(String title,
                   String description,
-                  Graph graph,
+                  AbilityGraph abilityGraph,
                   ReportedStudylogs studylogs,
                   Boolean isRepresent,
                   Member member
     ) {
-     this(null, title, description, graph, studylogs, isRepresent, member);
+     this(null, title, description, abilityGraph, studylogs, isRepresent, member);
     }
 
     public Report(Long id,
                   String title,
                   String description,
-                  Graph graph,
+                  AbilityGraph abilityGraph,
                   ReportedStudylogs studylogs,
                   Boolean isRepresent,
                   Member member
@@ -63,19 +63,19 @@ public class Report {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.graph = graph;
+        this.abilityGraph = abilityGraph;
         this.studylogs = studylogs;
         this.isRepresent = isRepresent;
         this.member = member;
 
-        graph.appendTo(this);
+        abilityGraph.appendTo(this);
         studylogs.appendTo(this);
     }
 
     public void update(Report report) {
         this.title = report.title;
         this.description = report.description;
-        this.graph.update(report.graph, this);
+        this.abilityGraph.update(report.abilityGraph, this);
         this.studylogs.update(report.studylogs, null);
         this.isRepresent = report.isRepresent;
     }
@@ -92,8 +92,8 @@ public class Report {
         return description;
     }
 
-    public Graph getGraph() {
-        return graph;
+    public AbilityGraph getAbilityGraph() {
+        return abilityGraph;
     }
 
     public List<ReportedStudylog> getStudylogs() {

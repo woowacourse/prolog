@@ -13,7 +13,7 @@ import wooteco.prolog.studylog.domain.report.abilitygraph.datastructure.GraphAbi
 
 @Entity
 @AllArgsConstructor
-public class Graph {
+public class AbilityGraph {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,15 +22,15 @@ public class Graph {
     @Embedded
     private ReportedAbilities reportedAbilities;
 
-    protected Graph() {
+    protected AbilityGraph() {
     }
 
-    public Graph(ReportedAbilities reportedAbilities) {
+    public AbilityGraph(ReportedAbilities reportedAbilities) {
         this(null, reportedAbilities);
     }
 
-    public void update(Graph graph, Report report) {
-        reportedAbilities.update(graph.reportedAbilities, report);
+    public void update(AbilityGraph abilityGraph, Report report) {
+        reportedAbilities.update(abilityGraph.reportedAbilities, report);
     }
 
     public void appendTo(Report report) {
@@ -46,11 +46,11 @@ public class Graph {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Graph)) {
+        if (!(o instanceof AbilityGraph)) {
             return false;
         }
-        Graph graph = (Graph) o;
-        return Objects.equals(id, graph.id);
+        AbilityGraph abilityGraph = (AbilityGraph) o;
+        return Objects.equals(id, abilityGraph.id);
     }
 
     @Override

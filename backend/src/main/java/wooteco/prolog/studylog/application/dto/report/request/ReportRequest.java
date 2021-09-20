@@ -1,13 +1,13 @@
 package wooteco.prolog.studylog.application.dto.report.request;
 
 import java.util.List;
-import wooteco.prolog.studylog.application.dto.report.request.abilitigraph.AbilityGraph;
+import wooteco.prolog.studylog.application.dto.report.request.abilitigraph.GraphRequest;
 import wooteco.prolog.studylog.application.dto.report.request.studylog.StudylogRequest;
 
 public class ReportRequest {
     private String title;
     private String description;
-    private AbilityGraph abilityGraph;
+    private GraphRequest graphRequest;
     private List<StudylogRequest>studylogs;
     private Boolean isRepresent;
 
@@ -16,12 +16,12 @@ public class ReportRequest {
 
     public ReportRequest(String title,
                          String description,
-                         AbilityGraph abilityGraph,
+                         GraphRequest graphRequest,
                          List<StudylogRequest> studylogs,
                          Boolean isRepresent) {
         this.title = title;
         this.description = description;
-        this.abilityGraph = abilityGraph;
+        this.graphRequest = graphRequest;
         this.studylogs = studylogs;
         this.isRepresent = isRepresent;
     }
@@ -34,8 +34,8 @@ public class ReportRequest {
         return description;
     }
 
-    public AbilityGraph getAbilityGraph() {
-        return abilityGraph;
+    public GraphRequest getAbilityGraph() {
+        return graphRequest;
     }
 
     public List<StudylogRequest> getStudylogs() {

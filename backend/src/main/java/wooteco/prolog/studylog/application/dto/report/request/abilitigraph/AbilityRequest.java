@@ -1,6 +1,7 @@
 package wooteco.prolog.studylog.application.dto.report.request.abilitigraph;
 
 public class AbilityRequest {
+
     private Long id;
     private Long weight;
     private Boolean isPresent;
