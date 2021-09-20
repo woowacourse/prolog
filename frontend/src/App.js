@@ -11,7 +11,7 @@ import {
   EditPostPage,
   ProfilePage,
   ProfilePagePosts,
-  ProfilePageAccount,
+  ProfilePageScraps,
 } from './pages';
 import useSnackBar from './hooks/useSnackBar';
 
@@ -43,7 +43,7 @@ const App = () => {
             />
             <Route
               exact
-              path={`${PATH.PROFILE_POSTS}`}
+              path={PATH.PROFILE_POSTS}
               render={() => (
                 <ProfilePage menu={PROFILE_PAGE_MENU.POSTS}>
                   <ProfilePagePosts />
@@ -52,10 +52,10 @@ const App = () => {
             />
             <Route
               exact
-              path={`${PATH.PROFILE_ACCOUNT}`}
+              path={PATH.PROFILE_SCRAPS}
               render={() => (
-                <ProfilePage>
-                  <ProfilePageAccount />
+                <ProfilePage menu={PROFILE_PAGE_MENU.SCRAPS}>
+                  <ProfilePageScraps />
                 </ProfilePage>
               )}
             />
