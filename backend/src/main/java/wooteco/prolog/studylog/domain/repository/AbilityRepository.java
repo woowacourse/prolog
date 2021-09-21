@@ -1,7 +1,12 @@
 package wooteco.prolog.studylog.domain.repository;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import wooteco.prolog.studylog.domain.ablity.Ability;
 
 public interface AbilityRepository extends JpaRepository<Ability, Long> {
+
+    @Query("select count(a) from Ability a where a.id in :abilityIds and a.parent is null")
+    Long countParentAbilitiesOf(List<Long> abilityIds);
 }
