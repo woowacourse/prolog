@@ -27,8 +27,8 @@ import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 import wooteco.prolog.studylog.exception.TagNameNullOrEmptyException;
 import wooteco.prolog.studylog.exception.TooLongMissionNameException;
-import wooteco.prolog.studylog.exception.TooLongTitleException;
 import wooteco.prolog.studylog.exception.TooLongTagNameException;
+import wooteco.prolog.studylog.exception.TooLongTitleException;
 
 @AllArgsConstructor
 @Getter
