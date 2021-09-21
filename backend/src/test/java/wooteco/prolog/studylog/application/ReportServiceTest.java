@@ -12,6 +12,9 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
+import org.springframework.test.annotation.DirtiesContext.MethodMode;
 import wooteco.prolog.common.fixture.ability.AbilityFixture;
 import wooteco.prolog.common.fixture.level.LevelFixture;
 import wooteco.prolog.common.fixture.member.MemberFixture;
@@ -31,6 +34,7 @@ import wooteco.prolog.studylog.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 
 @SpringBootTest
+@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 class ReportServiceTest {
 
     @Autowired
@@ -66,22 +70,40 @@ class ReportServiceTest {
         Member member = createMember();
         setAbilities();
         setStudylogs(member);
-        ReportRequest reportRequest = createRequest();
+        ReportRequest reportRequest = createRequest("jsons/report_post_request.json");
         ReportResponse reportResponse = reportService.createReport(reportRequest, member);
 
         assertThat(reportResponse)
             .usingRecursiveComparison()
             .ignoringFieldsMatchingRegexes(".*id", ".*updateAt", ".*createAt")
-            .isEqualTo(expected());
+            .isEqualTo(expected("jsons/report_post_response.json"));
     }
 
-    private ReportRequest createRequest() throws IOException {
-        String json = getJson("jsons/report_post_request.json");
+    @Test
+    void updateReport() throws IOException {
+        Member member = createMember();
+        setAbilities();
+        setStudylogs(member);
+        ReportRequest request = createRequest("jsons/report_post_request.json");
+        reportService.createReport(request, member);
+
+        ReportRequest updateRequest = createRequest("jsons/report_put_request.json");
+        ReportResponse reportResponse = reportService.updateReport(updateRequest, member);
+
+        assertThat(reportResponse)
+            .usingRecursiveComparison()
+            .ignoringFieldsMatchingRegexes(".*id", ".*updateAt", ".*createAt")
+            .isEqualTo(expected("jsons/report_put_response.json"));
+
+    }
+
+    private ReportRequest createRequest(String source) throws IOException {
+        String json = getJson(source);
         return objectMapper.readValue(json, ReportRequest.class);
     }
 
-    private ReportResponse expected() throws IOException {
-        String json = getJson("jsons/report_post_response.json");
+    private ReportResponse expected(String source) throws IOException {
+        String json = getJson(source);
 
         return objectMapper.readValue(json, ReportResponse.class);
     }

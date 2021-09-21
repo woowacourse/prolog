@@ -33,6 +33,17 @@ public class ReportService {
         return reportAssembler.of(savedReport);
     }
 
+    @Transactional
+    public ReportResponse updateReport(ReportRequest reportRequest, Member member) {
+        Report report = reportAssembler.of(reportRequest, member);
+        Report savedReport = reportRepository.findById(report.getId())
+            .orElseThrow(IllegalArgumentException::new);
+
+        savedReport.update(report);
+
+        return reportAssembler.of(savedReport);
+    }
+
     public List<ReportResponse> findReportsByMember(Member member, Pageable pageable) {
         List<Report> reports = reportRepository.findReportsByMember(member, pageable);
 

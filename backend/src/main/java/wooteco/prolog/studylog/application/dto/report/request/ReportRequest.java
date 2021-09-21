@@ -5,6 +5,8 @@ import wooteco.prolog.studylog.application.dto.report.request.abilitigraph.Graph
 import wooteco.prolog.studylog.application.dto.report.request.studylog.StudylogRequest;
 
 public class ReportRequest {
+
+    private Long id;
     private String title;
     private String description;
     private GraphRequest abilityGraph;
@@ -14,16 +16,22 @@ public class ReportRequest {
     private ReportRequest() {
     }
 
-    public ReportRequest(String title,
+    public ReportRequest(Long id,
+                         String title,
                          String description,
                          GraphRequest abilityGraph,
                          List<StudylogRequest> studylogs,
                          Boolean represent) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.abilityGraph = abilityGraph;
         this.studylogs = studylogs;
         this.represent = represent;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {

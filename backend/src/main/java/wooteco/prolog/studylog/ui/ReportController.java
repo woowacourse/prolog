@@ -1,7 +1,9 @@
 package wooteco.prolog.studylog.ui;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
@@ -20,11 +22,21 @@ public class ReportController {
     }
 
     @PostMapping("/reports")
-    public ResponseEntity<ReportResponse> createResponse(
+    public ResponseEntity<ReportResponse> createReport(
         @AuthMemberPrincipal Member member,
         @RequestBody ReportRequest reportRequest
     ) {
         ReportResponse reportResponse = reportService.createReport(reportRequest, member);
+
+        return ResponseEntity.ok(reportResponse);
+    }
+
+    @PutMapping("/reports")
+    public ResponseEntity<ReportResponse> updateReport(
+        @AuthMemberPrincipal Member member,
+        @RequestBody ReportRequest reportRequest
+    ) {
+        ReportResponse reportResponse = reportService.updateReport(reportRequest, member);
 
         return ResponseEntity.ok(reportResponse);
     }

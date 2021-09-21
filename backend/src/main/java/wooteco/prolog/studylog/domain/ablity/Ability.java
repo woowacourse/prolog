@@ -95,4 +95,21 @@ public class Ability {
             .map(AbilityRelationship::getTarget)
             .collect(toList());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Ability)) {
+            return false;
+        }
+        Ability ability = (Ability) o;
+        return Objects.equals(getId(), ability.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }

@@ -43,7 +43,7 @@ public class ReportAssembler {
             .collect(toList());
 
         return new Report(
-            null,
+            reportRequest.getId(),
             reportRequest.getTitle(),
             reportRequest.getDescription(),
             of(reportRequest.getAbilityGraph()),

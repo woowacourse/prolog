@@ -109,6 +109,11 @@ public class ReportedStudylog implements Updatable<ReportedStudylog> {
     }
 
     @Override
+    public int semanticallyHashcode() {
+        return studylog.hashCode();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

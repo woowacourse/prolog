@@ -1,7 +1,5 @@
 package wooteco.prolog.studylog.domain.report.common;
 
-import java.util.Objects;
-
 public class UpdatableProxy<T extends Updatable<T>> {
 
     private final T target;
@@ -33,6 +31,6 @@ public class UpdatableProxy<T extends Updatable<T>> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(target);
+        return target.semanticallyHashcode();
     }
 }

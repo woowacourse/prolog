@@ -82,6 +82,11 @@ public class ReportedStudylogAbility implements Updatable<ReportedStudylogAbilit
     }
 
     @Override
+    public int semanticallyHashcode() {
+        return ability.hashCode();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

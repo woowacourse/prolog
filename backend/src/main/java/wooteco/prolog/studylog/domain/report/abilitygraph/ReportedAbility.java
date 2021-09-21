@@ -98,6 +98,11 @@ public class ReportedAbility implements Updatable<ReportedAbility> {
     }
 
     @Override
+    public int semanticallyHashcode() {
+        return this.ability.hashCode();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
