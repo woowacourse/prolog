@@ -26,8 +26,6 @@ import wooteco.prolog.studylog.domain.report.abilitygraph.datastructure.GraphAbi
 import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylog;
 import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylogAbility;
 import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylogs;
-import wooteco.prolog.studylog.domain.repository.AbilityRepository;
-import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 
 @Component
 public class ReportAssembler {
@@ -60,17 +58,14 @@ public class ReportAssembler {
             .map(this::of)
             .collect(toList());
 
-        return new AbilityGraph(
-            graphRequest.getId(),
-            new ReportedAbilities(reportedAbilities)
-        );
+        return new AbilityGraph(new ReportedAbilities(reportedAbilities));
     }
 
     private ReportedAbility of(AbilityRequest abilityRequest) {
         return new ReportedAbility(
             findAbilityById(abilityRequest.getId()),
             abilityRequest.getWeight(),
-            abilityRequest.isPresent()
+            abilityRequest.isRepresent()
         );
     }
 
@@ -94,7 +89,8 @@ public class ReportAssembler {
         return entityManager.getReference(Ability.class, id);
     }
 
-    private ReportResponse of(Report report) {
+    public
+    ReportResponse of(Report report) {
         List<StudylogResponse> studylogResponses = report.getStudylogs().stream()
             .map(this::of)
             .collect(toList());

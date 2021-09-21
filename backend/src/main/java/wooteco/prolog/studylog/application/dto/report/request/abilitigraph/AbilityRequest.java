@@ -4,15 +4,15 @@ public class AbilityRequest {
 
     private Long id;
     private Long weight;
-    private Boolean isPresent;
+    private Boolean represent;
 
     private AbilityRequest() {
     }
 
-    public AbilityRequest(Long id, Long weight, Boolean isPresent) {
+    public AbilityRequest(Long id, Long weight, Boolean represent) {
         this.id = id;
         this.weight = weight;
-        this.isPresent = isPresent;
+        this.represent = represent;
     }
 
     public Long getId() {
@@ -23,7 +23,7 @@ public class AbilityRequest {
         return weight;
     }
 
-    public Boolean isPresent() {
-        return isPresent;
+    public Boolean isRepresent() {
+        return represent;
     }
 }

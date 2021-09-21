@@ -4,20 +4,13 @@ import java.util.List;
 
 public class GraphRequest {
 
-    private Long id;
     private List<AbilityRequest> abilities;
 
     private GraphRequest() {
     }
 
-    public GraphRequest(Long id,
-                        List<AbilityRequest> abilities) {
-        this.id = id;
+    public GraphRequest(List<AbilityRequest> abilities) {
         this.abilities = abilities;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public List<AbilityRequest> getAbilities() {

@@ -7,23 +7,23 @@ import wooteco.prolog.studylog.application.dto.report.request.studylog.StudylogR
 public class ReportRequest {
     private String title;
     private String description;
-    private GraphRequest graphRequest;
+    private GraphRequest abilityGraph;
     private List<StudylogRequest>studylogs;
-    private Boolean isRepresent;
+    private Boolean represent;
 
     private ReportRequest() {
     }
 
     public ReportRequest(String title,
                          String description,
-                         GraphRequest graphRequest,
+                         GraphRequest abilityGraph,
                          List<StudylogRequest> studylogs,
-                         Boolean isRepresent) {
+                         Boolean represent) {
         this.title = title;
         this.description = description;
-        this.graphRequest = graphRequest;
+        this.abilityGraph = abilityGraph;
         this.studylogs = studylogs;
-        this.isRepresent = isRepresent;
+        this.represent = represent;
     }
 
     public String getTitle() {
@@ -35,7 +35,7 @@ public class ReportRequest {
     }
 
     public GraphRequest getAbilityGraph() {
-        return graphRequest;
+        return abilityGraph;
     }
 
     public List<StudylogRequest> getStudylogs() {
@@ -43,6 +43,6 @@ public class ReportRequest {
     }
 
     public Boolean isRepresent() {
-        return isRepresent;
+        return represent;
     }
 }

@@ -6,16 +6,16 @@ public class StudylogAbilityResponse {
     private Long id;
     private String name;
     private String color;
-    private Boolean isParent;
+    private Boolean parent;
 
     private StudylogAbilityResponse() {
     }
 
-    public StudylogAbilityResponse(Long id, String name, String color, Boolean isParent) {
+    public StudylogAbilityResponse(Long id, String name, String color, Boolean parent) {
         this.id = id;
         this.name = name;
         this.color = color;
-        this.isParent = isParent;
+        this.parent = parent;
     }
 
     public static StudylogAbilityResponse from(ReportedStudylogAbility ability) {
@@ -39,7 +39,7 @@ public class StudylogAbilityResponse {
         return color;
     }
 
-    public Boolean getParent() {
-        return isParent;
+    public Boolean isParent() {
+        return parent;
     }
 }

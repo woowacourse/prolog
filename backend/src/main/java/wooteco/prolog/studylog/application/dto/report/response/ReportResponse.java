@@ -12,9 +12,9 @@ public class ReportResponse {
     private Long id;
     private String title;
     private String description;
-    private GraphResponse graphResponse;
+    private GraphResponse abilityGraph;
     private List<StudylogResponse> studylogs;
-    private Boolean isRepresent;
+    private Boolean represent;
 
     private ReportResponse() {
     }
@@ -22,15 +22,15 @@ public class ReportResponse {
     public ReportResponse(Long id,
                           String title,
                           String description,
-                          GraphResponse graphResponse,
+                          GraphResponse abilityGraph,
                           List<StudylogResponse> studylogs,
-                          Boolean isRepresent) {
+                          Boolean represent) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.graphResponse = graphResponse;
+        this.abilityGraph = abilityGraph;
         this.studylogs = studylogs;
-        this.isRepresent = isRepresent;
+        this.represent = represent;
     }
 
     public static ReportResponse from(Report report) {
@@ -62,14 +62,14 @@ public class ReportResponse {
     }
 
     public GraphResponse getAbilityGraph() {
-        return graphResponse;
+        return abilityGraph;
     }
 
     public List<StudylogResponse> getStudylogs() {
         return studylogs;
     }
 
-    public Boolean getRepresent() {
-        return isRepresent;
+    public Boolean isRepresent() {
+        return represent;
     }
 }
