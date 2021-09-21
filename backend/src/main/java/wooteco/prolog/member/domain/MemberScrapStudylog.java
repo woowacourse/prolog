@@ -16,7 +16,7 @@ import wooteco.prolog.studylog.domain.Studylog;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class MemberScrap {
+public class MemberScrapStudylog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,11 +30,11 @@ public class MemberScrap {
     @JoinColumn(name = "studylog_id", nullable = false)
     private Studylog scrapStudylog;
 
-    public MemberScrap(Member member, Studylog scrapStudylog) {
+    public MemberScrapStudylog(Member member, Studylog scrapStudylog) {
         this(null, member, scrapStudylog);
     }
 
-    public MemberScrap(Long id, Member member, Studylog scrapStudylog) {
+    public MemberScrapStudylog(Long id, Member member, Studylog scrapStudylog) {
         this.id = id;
         this.member = member;
         this.scrapStudylog = scrapStudylog;
@@ -45,12 +45,12 @@ public class MemberScrap {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof MemberScrap)) {
+        if (!(o instanceof MemberScrapStudylog)) {
             return false;
         }
-        MemberScrap memberScrap = (MemberScrap) o;
-        return Objects.equals(member.getId(), memberScrap.member.getId()) &&
-            Objects.equals(scrapStudylog.getId(), memberScrap.getScrapStudylog().getId());
+        MemberScrapStudylog memberScrapStudylog = (MemberScrapStudylog) o;
+        return Objects.equals(member.getId(), memberScrapStudylog.member.getId()) &&
+            Objects.equals(scrapStudylog.getId(), memberScrapStudylog.getScrapStudylog().getId());
     }
 
     @Override

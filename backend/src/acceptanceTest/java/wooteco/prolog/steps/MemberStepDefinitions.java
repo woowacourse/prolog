@@ -53,4 +53,9 @@ public class MemberStepDefinitions extends AcceptanceSteps {
         assertThat(context.response.statusCode()).isEqualTo(200);
     }
 
+    @When("{long}번 studylog를 스크랩 취소하면")
+    public void studylog를스크랩취소하먼(long studylogId){
+        context.invokeHttpDeleteWithToken("/post/" + studylogId + "/scrap");
+        assertThat(context.response.statusCode()).isEqualTo(200);
+    }
 }

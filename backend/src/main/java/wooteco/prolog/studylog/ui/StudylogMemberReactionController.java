@@ -2,6 +2,7 @@ package wooteco.prolog.studylog.ui;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,14 @@ public class StudylogMemberReactionController {
     @PostMapping("/{id}/scrap")
     public ResponseEntity<Void> registerScrap(@AuthMemberPrincipal Member member,
                                               @PathVariable Long id) {
-        memberScrapService.insertScrap(member, id);
+        memberScrapService.registerScrap(member, id);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}/scrap")
+    public ResponseEntity<Void> unregisterScrap(@AuthMemberPrincipal Member member,
+                                              @PathVariable Long id) {
+        memberScrapService.unregisterScrap(member, id);
         return ResponseEntity.ok().build();
     }
 }
