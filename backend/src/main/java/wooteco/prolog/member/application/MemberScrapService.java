@@ -1,6 +1,8 @@
 package wooteco.prolog.member.application;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.dto.MemberScrapResponse;
@@ -9,6 +11,7 @@ import wooteco.prolog.member.domain.MemberScrapStudylog;
 import wooteco.prolog.member.domain.repository.MemberScrapStudylogRepository;
 import wooteco.prolog.member.exception.MemberScrapAlreadyRegisteredException;
 import wooteco.prolog.member.exception.MemberScrapNotExistException;
+import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
@@ -43,5 +46,11 @@ public class MemberScrapService {
             .orElseThrow(MemberScrapNotExistException::new);
 
         memberScrapStudylogRepository.delete(memberScrapStudylog);
+    }
+
+    public StudylogsResponse showScrap(Member member, Pageable pageable) {
+        Page<MemberScrapStudylog> membersScrap = memberScrapStudylogRepository
+            .findByMemberId(member.getId(), pageable);
+        return StudylogsResponse.of(membersScrap.map(MemberScrapStudylog::getScrapStudylog));
     }
 }

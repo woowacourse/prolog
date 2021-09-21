@@ -1,6 +1,8 @@
 package wooteco.prolog.member.domain.repository;
 
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import wooteco.prolog.member.domain.MemberScrapStudylog;
@@ -11,4 +13,6 @@ public interface MemberScrapStudylogRepository extends JpaRepository<MemberScrap
     int countByMemberIdAndScrapStudylogId(Long memberId, Long studylogId);
 
     Optional<MemberScrapStudylog> findByMemberIdAndScrapStudylogId(Long memberId, Long studylogId);
+
+    Page<MemberScrapStudylog> findByMemberId(Long id, Pageable pageable);
 }
