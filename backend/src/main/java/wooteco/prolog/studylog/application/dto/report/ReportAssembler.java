@@ -12,6 +12,7 @@ import wooteco.prolog.studylog.application.dto.report.request.abilitigraph.Abili
 import wooteco.prolog.studylog.application.dto.report.request.abilitigraph.GraphRequest;
 import wooteco.prolog.studylog.application.dto.report.request.studylog.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.report.response.ReportResponse;
+import wooteco.prolog.studylog.application.dto.report.response.SimpleReportResponse;
 import wooteco.prolog.studylog.application.dto.report.response.abilityGraph.GraphAbilityResponse;
 import wooteco.prolog.studylog.application.dto.report.response.abilityGraph.GraphResponse;
 import wooteco.prolog.studylog.application.dto.report.response.studylogs.StudylogAbilityResponse;
@@ -89,8 +90,7 @@ public class ReportAssembler {
         return entityManager.getReference(Ability.class, id);
     }
 
-    public
-    ReportResponse of(Report report) {
+    public ReportResponse of(Report report) {
         List<StudylogResponse> studylogResponses = report.getStudylogs().stream()
             .map(this::of)
             .collect(toList());
@@ -126,7 +126,9 @@ public class ReportAssembler {
             reportedStudylogAbility.getColor(),
             reportedStudylogAbility.isParent()
         );
-    };
+    }
+
+    ;
 
     private GraphResponse of(AbilityGraph abilityGraph) {
         List<GraphAbilityResponse> graphAbilityRespons = abilityGraph.getAbilities().stream()
@@ -146,4 +148,11 @@ public class ReportAssembler {
         );
     }
 
+    public SimpleReportResponse simpleOf(Report report) {
+        return new SimpleReportResponse(
+            report.getId(),
+            report.getTitle(),
+            report.isRepresent()
+        );
+    }
 }

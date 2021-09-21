@@ -1,7 +1,11 @@
 package wooteco.prolog.studylog.ui;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +23,24 @@ public class ReportController {
 
     public ReportController(ReportService reportService) {
         this.reportService = reportService;
+    }
+
+    @GetMapping("/{username}/}reports")
+    public ResponseEntity<Object> findReportsById(
+        @PathVariable String username,
+        String type,
+        @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable
+    ) {
+        Object response = reportService.findReportsByUsername(username, type, pageable);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/reports/{reportId}")
+    public ResponseEntity<ReportResponse> findReportById(
+        @PathVariable Long reportId
+    ) {
+        ReportResponse reportResponse = reportService.findReportById(reportId);
+        return ResponseEntity.ok(reportResponse);
     }
 
     @PostMapping("/reports")

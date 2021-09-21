@@ -33,22 +33,6 @@ public class ReportResponse {
         this.represent = represent;
     }
 
-    public static ReportResponse from(Report report) {
-        GraphResponse graphResponse = GraphResponse.from(report.getAbilityGraph());
-        List<StudylogResponse> studylogs = report.getStudylogs().stream()
-            .map(StudylogResponse::from)
-            .collect(toList());
-
-        return new ReportResponse(
-            report.getId(),
-            report.getTitle(),
-            report.getDescription(),
-            graphResponse,
-            studylogs,
-            report.isRepresent()
-        );
-    }
-
     public Long getId() {
         return id;
     }

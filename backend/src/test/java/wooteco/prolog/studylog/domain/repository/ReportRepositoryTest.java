@@ -19,6 +19,7 @@ import wooteco.prolog.common.fixture.report.ReportFixture;
 import wooteco.prolog.common.fixture.studylog.StudylogFixture;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
+import wooteco.prolog.studylog.application.dto.report.ReportAssembler;
 import wooteco.prolog.studylog.application.dto.report.response.ReportResponse;
 import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
@@ -56,6 +57,9 @@ class ReportRepositoryTest {
     @Autowired
     private AbilityRepository abilityRepository;
 
+    @Autowired
+    private ReportAssembler reportAssembler;
+
     @Test
     void findReportByMember() throws JsonProcessingException {
         Member member = memberRepository.save(MemberFixture.crewMember1());
@@ -68,12 +72,12 @@ class ReportRepositoryTest {
         List<Report> reports = reportRepository.findReportsByMember(member, pageable);
         Report report1 = reports.get(0);
 
-        assertThat(ReportResponse.from(report1))
+        assertThat(reportAssembler.of(report1))
             .usingRecursiveComparison()
             .ignoringFieldsMatchingRegexes(".*id", ".*createAt", ".*updateAt")
-            .isEqualTo(ReportResponse.from(createReport(member)));
+            .isEqualTo(reportAssembler.of(createReport(member)));
 
-        System.out.println(new ObjectMapper().writeValueAsString(ReportResponse.from(report)));
+        System.out.println(new ObjectMapper().writeValueAsString(reportAssembler.of(report)));
     }
 
     private Studylog createStudyLog(Member member, Mission mission) {
