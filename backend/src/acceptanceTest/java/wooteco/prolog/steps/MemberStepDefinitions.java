@@ -46,4 +46,11 @@ public class MemberStepDefinitions extends AcceptanceSteps {
 
         assertThat(updatedNickname).isEqualTo(nickname);
     }
+
+    @When("{long}번 studylog를 스크랩하면")
+    public void studylog를스크랩하먼(long studylogId){
+        context.invokeHttpPostWithToken("/post/" + studylogId + "/scrap", null);
+        assertThat(context.response.statusCode()).isEqualTo(200);
+    }
+
 }
