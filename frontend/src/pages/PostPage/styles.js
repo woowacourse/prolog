@@ -91,7 +91,7 @@ const ProfileChipStyle = css`
   }
 `;
 
-const ViewerWrapper = styled.div`
+const Content = styled.div`
   word-break: break-all;
 
   .toastui-editor-contents h1,
@@ -143,5 +143,5 @@ export {
   Tags,
   IssuedDate,
   ProfileChipStyle,
-  ViewerWrapper,
+  Content,
 };

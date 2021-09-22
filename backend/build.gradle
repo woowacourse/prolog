@@ -75,6 +75,9 @@ dependencies {
     implementation "org.testcontainers:elasticsearch:1.15.3"
     testImplementation "org.testcontainers:elasticsearch:1.16.0"
 
+    //flyway
+    implementation 'org.flywaydb:flyway-core:6.4.2'
+
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
 }

@@ -2,6 +2,9 @@ package wooteco.prolog.studylog.ui;
 
 import java.net.URI;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.member.domain.Member;
@@ -20,7 +24,7 @@ import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.SearchParams;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
-import wooteco.prolog.studylog.infrastructure.NumberUtils;
+import wooteco.support.number.NumberUtils;
 
 @RestController
 @RequestMapping("/posts")
@@ -42,10 +46,8 @@ public class StudylogController {
     }
 
     @GetMapping
-    public ResponseEntity<StudylogsResponse> showAll(
-        @SearchParams StudylogsSearchRequest studyLogsSearchRequest) {
-        StudylogsResponse studylogsResponse = studylogService
-            .findStudylogsWithFilter(studyLogsSearchRequest);
+    public ResponseEntity<StudylogsResponse> showAll(@SearchParams StudylogsSearchRequest searchRequest) {
+        StudylogsResponse studylogsResponse = studylogService.findStudylogs(searchRequest);
         return ResponseEntity.ok(studylogsResponse);
     }
 

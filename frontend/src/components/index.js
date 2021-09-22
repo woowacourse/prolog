@@ -13,3 +13,7 @@ export { default as FilterList } from './FilterList/FilterList';
 export { default as CreatableSelectBox } from './CreatableSelectBox/CreatableSelectBox';
 export { default as Pagination } from './Pagination/Pagination';
 export { default as NotFound } from './NotFound/NotFound';
+export { default as Tag } from './Tag/Tag';
+export { default as Calendar } from './Calendar/Calendar';
+export { default as ProfilePageSideBar } from './ProfilePageSideBar/ProfilePageSideBar';
+export { default as Modal } from './Modal/Modal';

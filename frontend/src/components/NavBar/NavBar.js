@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { Link } from 'react-router-dom';
 import LogoImage from '../../assets/images/logo.svg';
 import { PATH } from '../../constants';
@@ -22,8 +22,11 @@ import {
   profileButtonStyle,
 } from './NavBar.styles';
 import { ERROR_MESSAGE } from '../../constants/message';
+import SearchBar from '../SearchBar/SearchBar';
 
 const NavBar = () => {
+  const location = useLocation();
+
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -35,6 +38,8 @@ const NavBar = () => {
 
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const [userImage, setUserImage] = useState(NoProfileImage);
+
+  const [searchKeywords, setSearchKeywords] = useState('');
 
   useEffect(() => {
     if (accessToken) {
@@ -83,6 +88,25 @@ const NavBar = () => {
     window.location.reload();
   };
 
+  const onSearchKeywordsChange = (event) => {
+    setSearchKeywords(event.target.value);
+  };
+
+  const onSearch = async (event) => {
+    event.preventDefault();
+
+    const query = new URLSearchParams(history.location.search);
+    query.set('page', 1);
+
+    if (searchKeywords) {
+      query.set('keyword', searchKeywords);
+    } else {
+      query.delete('keyword');
+    }
+
+    history.push(`${PATH.ROOT}?${query.toString()}`);
+  };
+
   if (userError) {
     localStorage.removeItem('accessToken');
   }
@@ -93,6 +117,12 @@ const NavBar = () => {
     }
   };
 
+  useEffect(() => {
+    const query = new URLSearchParams(history.location.search);
+
+    setSearchKeywords(query.get('keyword') ?? '');
+  }, [location.search]);
+
   return (
     <Container isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>
       <Wrapper>
@@ -101,6 +131,7 @@ const NavBar = () => {
           <span>{process.env.REACT_APP_MODE === 'PROD' ? 'BETA' : process.env.REACT_APP_MODE}</span>
         </Logo>
         <Menu role="menu">
+          <SearchBar onSubmit={onSearch} value={searchKeywords} onChange={onSearchKeywordsChange} />
           {isLoggedIn ? (
             <>
               <Button

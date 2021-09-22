@@ -3,7 +3,9 @@ package wooteco.prolog.member.domain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -18,6 +20,8 @@ import org.springframework.util.ObjectUtils;
 import wooteco.prolog.studylog.domain.ablity.Ability;
 import wooteco.prolog.studylog.exception.AbilityHasChildrenException;
 import wooteco.prolog.studylog.exception.AbilityNotFoundException;
+import wooteco.prolog.studylog.domain.Tag;
+import wooteco.prolog.studylog.domain.Tags;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -43,6 +47,9 @@ public class Member {
     @Column(nullable = false)
     private String imageUrl;
 
+    @Embedded
+    private MemberTags memberTags;
+
     @OneToMany(mappedBy = "member", orphanRemoval = true)
     private List<Ability> abilities;
 
@@ -56,12 +63,23 @@ public class Member {
                   Role role,
                   Long githubId,
                   String imageUrl) {
+        this(id, username, nickname, role, githubId, imageUrl, new MemberTags());
+    }
+
+    public Member(Long id,
+                  String username,
+                  String nickname,
+                  Role role,
+                  Long githubId,
+                  String imageUrl,
+                  MemberTags memberTags) {
         this.id = id;
         this.username = username;
         this.nickname = ifAbsentReplace(nickname, username);
         this.role = role;
         this.githubId = githubId;
         this.imageUrl = imageUrl;
+        this.memberTags = memberTags;
         this.abilities = new ArrayList<>();
     }
 
@@ -84,6 +102,14 @@ public class Member {
         }
     }
 
+    public void addTag(Tag tag) {
+        memberTags.add(new MemberTag(this, tag));
+    }
+
+    public void addTags(Tags tags) {
+        memberTags.addMemberTags(toMemberTag(tags));
+    }
+
     public void addAbility(Ability ability) {
         abilities.add(ability);
     }
@@ -94,6 +120,27 @@ public class Member {
 
     public Long getId() {
         return id;
+    }
+
+    public void updateTags(Tags originalTags, Tags newTags) {
+        memberTags.updateTags(toMemberTag(originalTags), toMemberTag(newTags));
+    }
+
+    public void removeTag(Tags tags) {
+        memberTags.removeMemberTags(toMemberTag(tags));
+    }
+
+    private List<MemberTag> toMemberTag(Tags tags) {
+        return tags.getList().stream()
+            .map(tag -> new MemberTag(this, tag))
+            .collect(Collectors.toList());
+    }
+
+    public List<MemberTag> getMemberTagsWithSort() {
+        return memberTags.getValues()
+            .stream()
+            .sorted((o1, o2) -> o2.getCount() - o1.getCount())
+            .collect(Collectors.toList());
     }
 
     @Override

@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.BaseEntity;
@@ -15,10 +15,9 @@ import wooteco.prolog.studylog.exception.AuthorNotValidException;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "post")
 public class Studylog extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
@@ -28,7 +27,7 @@ public class Studylog extends BaseEntity {
     @Embedded
     private Content content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
     private Mission mission;
 
@@ -70,7 +69,12 @@ public class Studylog extends BaseEntity {
     }
 
     public StudylogDocument toStudylogDocument() {
-        return new StudylogDocument(this.getId(), this.getTitle(), this.getContent());
+        return new StudylogDocument(
+            this.getId(), this.getTitle(),
+            this.getContent(), this.studylogTags.getTagIds(),
+            this.mission.getId(), this.mission.getLevel().getId(),
+            this.member.getUsername(), this.getUpdatedAt()
+        );
     }
 
     public void addTags(Tags tags) {

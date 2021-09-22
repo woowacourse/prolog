@@ -11,6 +11,7 @@ import java.util.stream.StreamSupport;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.query.Query;
@@ -23,41 +24,19 @@ import wooteco.support.fake.FakeDocumentRepository;
 public class FakeStudylogDocumentRepository implements StudylogDocumentRepository,
     FakeDocumentRepository {
 
-    private static final List<StudylogDocument> studylogDocuments = new ArrayList<>();
+    private static final List<StudylogDocument> STUDYLOG_DOCUMENTS = new ArrayList<>();
 
     @Override
     public <S extends StudylogDocument> S save(S studylogDocument) {
         Optional<StudylogDocument> document = findById(studylogDocument.getId());
-        document.ifPresent(studylogDocuments::remove);
-        studylogDocuments.add(studylogDocument);
+        document.ifPresent(STUDYLOG_DOCUMENTS::remove);
+        STUDYLOG_DOCUMENTS.add(studylogDocument);
         return studylogDocument;
     }
 
     @Override
-    public List<StudylogDocument> findByKeyword(String searchKeyword, Pageable pageable) {
-        List<String> searchKeywords = preprocess(searchKeyword);
-        HashSet<StudylogDocument> results = new HashSet<>();
-        for (String search : searchKeywords) {
-            studylogDocuments.stream().filter(
-                    studyLogDocument ->
-                        studyLogDocument.getTitle().contains(search)
-                            || studyLogDocument.getContent().contains(search))
-                .forEach(results::add);
-        }
-        return new ArrayList<>(results);
-    }
-
-    private List<String> preprocess(String searchKeyword) {
-        String[] split = searchKeyword.split(" ");
-        List<String> results = new ArrayList<>();
-        Collections.addAll(results, split);
-        results.add(searchKeyword);
-        return results;
-    }
-
-    @Override
     public void delete(StudylogDocument studylogDocument) {
-        studylogDocuments.remove(studylogDocument);
+        STUDYLOG_DOCUMENTS.remove(studylogDocument);
     }
 
     @Override
@@ -66,27 +45,27 @@ public class FakeStudylogDocumentRepository implements StudylogDocumentRepositor
             .map(it -> it.getId())
             .collect(Collectors.toList());
 
-        studylogDocuments.removeIf(it -> idsForRemoving.contains(it));
+        STUDYLOG_DOCUMENTS.removeIf(it -> idsForRemoving.contains(it));
     }
 
     @Override
     public void deleteAll() {
-        studylogDocuments.clear();
+        STUDYLOG_DOCUMENTS.clear();
     }
 
     @Override
     public <S extends StudylogDocument> Iterable<S> saveAll(Iterable<S> inputStudyLogDocuments) {
         List<StudylogDocument> studylogDocumentsWithId = new ArrayList<>();
         for (StudylogDocument studyLogDocument : inputStudyLogDocuments) {
-            studylogDocuments.add(studyLogDocument);
-            studylogDocuments.add(studyLogDocument);
+            STUDYLOG_DOCUMENTS.add(studyLogDocument);
+            STUDYLOG_DOCUMENTS.add(studyLogDocument);
         }
         return (Iterable<S>) studylogDocumentsWithId;
     }
 
     @Override
     public Optional<StudylogDocument> findById(Long id) {
-        for (StudylogDocument studylogDocument : studylogDocuments) {
+        for (StudylogDocument studylogDocument : STUDYLOG_DOCUMENTS) {
             if (Objects.equals(studylogDocument.getId(), id)) {
                 return Optional.of(studylogDocument);
             }

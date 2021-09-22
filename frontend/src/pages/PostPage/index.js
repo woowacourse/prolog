@@ -23,6 +23,7 @@ import {
   Title,
   ViewerWrapper,
   SubHeaderRightContent,
+  Content,
 } from './styles';
 import useNotFound from '../../hooks/useNotFound';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
@@ -51,7 +52,9 @@ const PostPage = () => {
     }
   }
 
-  const goProfilePage = (username) => {
+  const goProfilePage = (username) => (event) => {
+    event.stopPropagation();
+
     history.push(`/${username}`);
   };
 
@@ -74,6 +77,7 @@ const PostPage = () => {
   };
 
   return (
+
     <>
       {myName === author?.username && (
         <ButtonList>
@@ -110,18 +114,18 @@ const PostPage = () => {
             <ProfileChip
               imageSrc={author?.imageUrl}
               css={ProfileChipStyle}
-              onClick={() => goProfilePage(author?.username)}
+              onClick={goProfilePage(author?.username)}
             >
               {author?.nickname}
             </ProfileChip>
           </div>
-          <ViewerWrapper>
-            <Viewer 
-              initialValue={content} 
+          <Content>
+            <Viewer
+              initialValue={content}
               extendedAutolinks={true}
               plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
             />
-          </ViewerWrapper>
+          </Content>
           <Tags>
             {tags?.map(({ id, name }) => (
               <span key={id}>{`#${name} `}</span>

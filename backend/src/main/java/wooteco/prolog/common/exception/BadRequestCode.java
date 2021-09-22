@@ -8,6 +8,7 @@ import wooteco.prolog.login.excetpion.GithubConnectionException;
 import wooteco.prolog.login.excetpion.RoleNameNotFoundException;
 import wooteco.prolog.login.excetpion.StudylogTitleNullOrEmptyException;
 import wooteco.prolog.login.excetpion.TokenNotValidException;
+import wooteco.prolog.member.exception.DuplicateMemberTagException;
 import wooteco.prolog.member.exception.MemberNotAllowedException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
 import wooteco.prolog.studylog.domain.Mission;
@@ -26,8 +27,8 @@ import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 import wooteco.prolog.studylog.exception.TagNameNullOrEmptyException;
 import wooteco.prolog.studylog.exception.TooLongMissionNameException;
-import wooteco.prolog.studylog.exception.TooLongTagNameException;
 import wooteco.prolog.studylog.exception.TooLongTitleException;
+import wooteco.prolog.studylog.exception.TooLongTagNameException;
 
 @AllArgsConstructor
 @Getter
@@ -63,6 +64,7 @@ public enum BadRequestCode {
                       TooLongTagNameException.class),
     TOO_LONG_MISSION_NAME(3005, String.format("미션 이름이 %d자 초과입니다.", Mission.MAX_LENGTH),
                           TooLongMissionNameException.class),
+    DUPLICATE_MEMBER_TAG(3006, "중복되는 멤버 태그 입니다.", DuplicateMemberTagException.class),
 
     ABILITY_NOT_FOUND(4000, "역량이 존재하지 않습니다.", AbilityNotFoundException.class),
     ABILITY_HAS_CHILDREN(4001, "해당 역량의 하위 역량이 존재합니다.",AbilityHasChildrenException.class);

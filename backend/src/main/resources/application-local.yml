@@ -10,6 +10,8 @@ spring:
         show_sql: false
         format_sql: true
         use_sql_comment: false
+  flyway:
+      enabled: false
 
 security:
   jwt:

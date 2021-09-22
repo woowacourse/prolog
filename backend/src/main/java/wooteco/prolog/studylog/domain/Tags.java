@@ -6,6 +6,8 @@ import static java.util.stream.Collectors.toList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.MemberTag;
 import wooteco.prolog.studylog.exception.DuplicateTagException;
 
 public class Tags {
@@ -55,5 +57,9 @@ public class Tags {
 
     public List<Tag> getList() {
         return this.tags;
+    }
+
+    public List<MemberTag> toMemberTags(Member member) {
+        return tags.stream().map(tag -> new MemberTag(member, tag)).collect(toList());
     }
 }
