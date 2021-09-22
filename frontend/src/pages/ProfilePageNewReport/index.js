@@ -21,6 +21,7 @@ const ProfilePageNewReport = () => {
   const user = useSelector((state) => state.user.profile);
   const nickname = user.data?.nickname ?? username;
   const isLoggedIn = !!user.data;
+  const accessToken = localStorage.get(API.ACCESS_TOKEN);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -29,12 +30,12 @@ const ProfilePageNewReport = () => {
         history.push(`/${username}/reports`);
       }
     } else {
-      if (!localStorage.get(API.ACCESS_TOKEN)) {
+      if (!accessToken) {
         alert('로그인한 사용자만 이용할 수 있습니다.');
         history.push(`/${username}/reports`);
       }
     }
-  }, [isLoggedIn, username, user.data, history]);
+  }, [isLoggedIn, username, user.data, history, accessToken]);
 
   const [isMainReport, setIsMainReport] = useState(false);
   const [title, setTitle] = useState('');
@@ -100,7 +101,11 @@ const ProfilePageNewReport = () => {
           준비중인 기능입니다.
         </section>
 
-        <ReportStudyLogTable onModalOpen={onModalOpen} />
+        <ReportStudyLogTable
+          onModalOpen={onModalOpen}
+          studyLogs={studyLogs}
+          setStudyLogs={setStudyLogs}
+        />
 
         <FormButtonWrapper>
           <Button size="X_SMALL" css={{ backgroundColor: `${COLOR.LIGHT_GRAY_400}` }} type="button">
