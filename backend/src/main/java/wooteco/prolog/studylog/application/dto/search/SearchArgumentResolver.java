@@ -73,6 +73,7 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
         }
 
         return Arrays.stream(parameter.split(","))
+            .map(String::trim)
             .map(Long::valueOf)
             .collect(toList());
     }
