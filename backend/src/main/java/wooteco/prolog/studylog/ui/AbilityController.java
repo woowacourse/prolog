@@ -33,10 +33,15 @@ public class AbilityController {
     public ResponseEntity<Void> createAbility(@AuthMemberPrincipal Member member, @RequestBody AbilityCreateRequest abilityCreateRequest) {
         abilityService.createAbility(member, abilityCreateRequest);
 
-        return ResponseEntity.status(CREATED).build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
+    public ResponseEntity<List<AbilityResponse>> abilities(@AuthMemberPrincipal Member member) {
+        return ResponseEntity.ok(abilityService.abilities(member));
+    }
+
+    @GetMapping("parent-only")
     public ResponseEntity<List<AbilityResponse>> parentAbilities(@AuthMemberPrincipal Member member) {
         return ResponseEntity.ok(abilityService.parentAbilities(member));
     }

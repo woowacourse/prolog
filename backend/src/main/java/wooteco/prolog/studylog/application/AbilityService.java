@@ -43,6 +43,12 @@ public class AbilityService {
         return Ability.child(name, description, color, parent, member);
     }
 
+    public List<AbilityResponse> abilities(Member member) {
+        List<Ability> abilities = abilityRepository.findByMember(member);
+
+        return AbilityResponse.of(abilities);
+    }
+
     public List<AbilityResponse> parentAbilities(Member member) {
         List<Ability> parentAbilities = abilityRepository.findByMemberAndParentIsNull(member);
 

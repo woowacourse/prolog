@@ -11,4 +11,6 @@ public interface AbilityRepository extends JpaRepository<Ability, Long> {
     Optional<Ability> findByIdAndMember(Long id, Member member);
 
     List<Ability> findByMemberAndParentIsNull(Member member);
+
+    List<Ability> findByMember(Member member);
 }
