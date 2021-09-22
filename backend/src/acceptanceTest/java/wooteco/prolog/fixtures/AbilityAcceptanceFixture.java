@@ -2,9 +2,11 @@ package wooteco.prolog.fixtures;
 
 import java.util.Arrays;
 import java.util.Objects;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.studylog.application.dto.ability.AbilityCreateRequest;
 import wooteco.prolog.studylog.domain.ablity.Ability;
 
-public enum AbilityFixture {
+public enum AbilityAcceptanceFixture {
     PROGRAMMING("프로그래밍", "프로그래밍 관련입니다.", "red"),
     LANGUAGE("언어", null, "red"),
     FRAMEWORK( "프레임워크", null, "red"),
@@ -19,44 +21,20 @@ public enum AbilityFixture {
     private final String description;
     private final String color;
 
-    AbilityFixture(String name, String description, String color) {
+    AbilityAcceptanceFixture(String name, String description, String color) {
         this.name = name;
         this.description = description;
         this.color = color;
     }
 
-    public static AbilityFixture findByName(String abilityName) {
+    public static AbilityAcceptanceFixture findByName(String abilityName) {
         return Arrays.stream(values())
             .filter(value -> value.name.equals(abilityName))
             .findAny()
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 역량입니다."));
     }
 
-    public Ability toAbility(Long id, Ability parent) {
-        // TODO: 수정
-//        if(!Objects.isNull(parent)) {
-//            return Ability.child(id, name, description, color, parent);
-//        }
-//        return Ability.parent(id, name, description, color);
-        return null;
-    }
-
-    public String toJson(Long parent) {
-        String format = String.join(System.lineSeparator(), Arrays.asList(
-            "{",
-            "  name: %s",
-            "  description: %s",
-            "  color: %s",
-            "  parent: %d",
-            "}"
-            )
-        );
-
-        return String.format(format,
-            name,
-            description,
-            color,
-            parent
-        );
+    public AbilityCreateRequest toCreateRequestWithParentId(Long parentId) {
+        return new AbilityCreateRequest(name, description, color, parentId);
     }
 }

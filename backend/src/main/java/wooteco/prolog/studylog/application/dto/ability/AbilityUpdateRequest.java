@@ -1,7 +1,13 @@
 package wooteco.prolog.studylog.application.dto.ability;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import wooteco.prolog.studylog.domain.ablity.Ability;
 
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AbilityUpdateRequest {
 
     private Long id;
@@ -9,21 +15,7 @@ public class AbilityUpdateRequest {
     private String description;
     private String color;
 
-    public AbilityUpdateRequest() {
-    }
-
-    public AbilityUpdateRequest(Long id, String name, String description, String color) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.color = color;
-    }
-
     public Ability toEntity() {
         return new Ability(id, name, description, color);
-    }
-
-    public Long getId() {
-        return id;
     }
 }

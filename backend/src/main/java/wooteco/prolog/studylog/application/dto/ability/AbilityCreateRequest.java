@@ -29,7 +29,7 @@ public class AbilityCreateRequest {
         return color;
     }
 
-    public Long getParentId() {
+    public Long getParent() {
         return parent;
     }
 }

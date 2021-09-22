@@ -33,7 +33,7 @@ public class AbilityService {
         String name = request.getName();
         String description = request.getDescription();
         String color = request.getColor();
-        Long parentId = request.getParentId();
+        Long parentId = request.getParent();
 
         if (Objects.isNull(parentId)) {
             return Ability.parent(name, description, color, member);
