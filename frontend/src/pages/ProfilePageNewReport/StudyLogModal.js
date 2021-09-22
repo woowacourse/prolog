@@ -31,7 +31,9 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
   };
 
   const onToggleStudyLog = (id) => {
-    setSelectedStudyLogs(onToggleCheckbox(selectedStudyLogs, id));
+    const targetStudyLog = posts.find((post) => post.id === id);
+
+    setSelectedStudyLogs(onToggleCheckbox(selectedStudyLogs, targetStudyLog));
   };
 
   return (
@@ -65,21 +67,25 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
                 {posts.length}개)
               </span>
 
-              {posts.map(({ id, mission, title }) => (
-                <StudyLog key={id} isChecked={selectedStudyLogs.includes(id)}>
-                  <label>
-                    <Checkbox
-                      type="checkbox"
-                      checked={selectedStudyLogs.includes(id)}
-                      onChange={() => onToggleStudyLog(id)}
-                    />
-                    <div>
-                      <p>{mission.level.name}</p>
-                      <h4>{title}</h4>
-                    </div>
-                  </label>
-                </StudyLog>
-              ))}
+              {posts.map(({ id, mission, title }) => {
+                const checkTarget = selectedStudyLogs.map((studyLog) => studyLog.id).includes(id);
+
+                return (
+                  <StudyLog key={id} isChecked={checkTarget}>
+                    <label>
+                      <Checkbox
+                        type="checkbox"
+                        checked={checkTarget}
+                        onChange={() => onToggleStudyLog(id)}
+                      />
+                      <div>
+                        <p>{mission.level.name}</p>
+                        <h4>{title}</h4>
+                      </div>
+                    </label>
+                  </StudyLog>
+                );
+              })}
             </ul>
           )}
         </StudyLogListContainer>

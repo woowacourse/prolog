@@ -1,10 +1,12 @@
-const onToggleCheckbox = (checkboxList, id) => {
-  if (checkboxList.includes(id)) {
-    const index = checkboxList.indexOf(id);
+const onToggleCheckbox = (checkboxList, item) => {
+  const checkboxIds = checkboxList.map((checkItem) => checkItem.id);
+
+  if (checkboxIds.includes(item.id)) {
+    const index = checkboxIds.indexOf(item.id);
 
     return [...checkboxList.slice(0, index), ...checkboxList.slice(index + 1)];
   } else {
-    return [...checkboxList, id];
+    return [...checkboxList, item];
   }
 };
 
