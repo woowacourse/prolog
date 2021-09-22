@@ -1,7 +1,10 @@
 import React from 'react';
 import { Desc, Section, Title } from './ReportInfoInput.styles';
 
-const ReportInfoInput = ({ nickname = '', title, onWriteTitle, desc, onWriteDesc }) => {
+const ReportInfoInput = ({ nickname, title, setTitle, desc, setDescription }) => {
+  const onWriteTitle = ({ target: { value } }) => setTitle(value);
+  const onWriteDesc = ({ target: { value } }) => setDescription(value);
+
   return (
     <Section>
       <label htmlFor="report_title">✏️ Title</label>

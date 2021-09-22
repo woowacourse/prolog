@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
 
-const Container = styled.div`
+const Form = styled.form`
   > button {
     position: absolute;
     bottom: 2rem;
@@ -136,4 +136,4 @@ const StudyLog = styled.li`
   }
 `;
 
-export { Container, TitleContainer, SelectBoxContainer, StudyLogListContainer, StudyLog };
+export { Form, TitleContainer, SelectBoxContainer, StudyLogListContainer, StudyLog };
