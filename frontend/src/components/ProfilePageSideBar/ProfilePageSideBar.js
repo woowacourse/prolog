@@ -24,7 +24,7 @@ const ProfilePageSideBar = ({ menu }) => {
   const [user, setUser] = useState({});
   const [selectedMenu, setSelectedMenu] = useState('');
 
-  const { isNotFound, setNotFound, NotFound } = useNotFound();
+  const { setNotFound } = useNotFound();
 
   const goProfilePage = (event) => {
     setSelectedMenu(event.currentTarget.value);
@@ -36,9 +36,14 @@ const ProfilePageSideBar = ({ menu }) => {
     history.push(`/${username}/posts`);
   };
 
-  const goProfilePageAccount = () => {
-    history.push(`/${username}/account`);
+  const goProfilePageReport = (event) => {
+    setSelectedMenu(event.currentTarget.value);
+    history.push(`/${username}/reports`);
   };
+
+  // const goProfilePageAccount = () => {
+  //   history.push(`/${username}/account`);
+  // };
 
   const getProfile = async () => {
     try {
@@ -64,6 +69,7 @@ const ProfilePageSideBar = ({ menu }) => {
   useEffect(() => {
     getProfile();
     setSelectedMenu(menu);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username]);
 
   return (
@@ -87,8 +93,8 @@ const ProfilePageSideBar = ({ menu }) => {
             학습로그
           </MenuButton>
         </MenuItem>
-        <MenuItem isSelectedMenu={selectedMenu === 'asd'}>
-          <MenuButton value={PROFILE_PAGE_MENU.POSTS} type="button" onClick={goProfilePagePosts}>
+        <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.REPORTS}>
+          <MenuButton value={PROFILE_PAGE_MENU.REPORTS} type="button" onClick={goProfilePageReport}>
             <PostIcon width="16" height="16" />
             리포트
           </MenuButton>

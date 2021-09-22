@@ -12,6 +12,7 @@ import {
   ProfilePage,
   ProfilePagePosts,
   ProfilePageAccount,
+  ProfilePageReports,
 } from './pages';
 import { useState } from 'react';
 
@@ -45,6 +46,15 @@ const App = () => {
               render={() => (
                 <ProfilePage menu={PROFILE_PAGE_MENU.POSTS}>
                   <ProfilePagePosts />
+                </ProfilePage>
+              )}
+            />
+            <Route
+              exact
+              path={`${PATH.PROFILE_REPORTS}`}
+              render={() => (
+                <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
+                  <ProfilePageReports />
                 </ProfilePage>
               )}
             />
