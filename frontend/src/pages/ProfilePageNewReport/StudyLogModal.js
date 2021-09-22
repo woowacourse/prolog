@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import useFetch from '../../hooks/useFetch';
-import { requestGetFilters, requestGetPosts } from '../../service/requests';
+import { requestGetFilters, requestGetMissions, requestGetPosts } from '../../service/requests';
 import { Button, Modal, SelectBox } from '../../components';
 import { COLOR } from '../../constants';
 import { Checkbox } from './style';
@@ -29,7 +29,12 @@ const StudyLogModal = ({ onModalClose, username }) => {
         const selectedLevelId = levels.find((level) => level.name === selectedLevelName)?.id;
 
         if (selectedLevelId) {
-          const response = await requestGetPosts(`levels=${selectedLevelId}&usernames=${username}`);
+          const query = {
+            type: 'searchParams',
+            data: `levels=${selectedLevelId}&usernames=${username}`,
+          };
+
+          const response = await requestGetPosts(query);
 
           if (!response.ok) {
             throw new Error(response.status);
