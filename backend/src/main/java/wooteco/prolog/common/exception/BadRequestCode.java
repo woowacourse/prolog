@@ -64,9 +64,8 @@ public enum BadRequestCode {
     TOO_LONG_MISSION_NAME(3005, String.format("미션 이름이 %d자 초과입니다.", Mission.MAX_LENGTH),
                           TooLongMissionNameException.class),
 
-    // TODO: code 수정
-    ABILITY_NOT_FOUND(9000, "역량이 존재하지 않습니다.", AbilityNotFoundException.class),
-    ABILITY_HAS_CHILDREN(9001, "해당 역량의 하위 역량이 존재합니다.",AbilityHasChildrenException.class);
+    ABILITY_NOT_FOUND(4000, "역량이 존재하지 않습니다.", AbilityNotFoundException.class),
+    ABILITY_HAS_CHILDREN(4001, "해당 역량의 하위 역량이 존재합니다.",AbilityHasChildrenException.class);
 
     private int code;
     private String message;
