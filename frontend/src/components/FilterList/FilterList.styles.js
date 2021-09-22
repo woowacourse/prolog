@@ -101,4 +101,36 @@ const CheckIcon = styled.img`
   ${({ checked }) => !checked && 'visibility: hidden;'}
 `;
 
-export { Container, FilterDetail, ResetFilter, CheckIcon };
+const DropdownStyle = css`
+  padding-top: 0;
+`;
+
+const SearchBarWrapper = styled.div`
+  position: sticky;
+  top: 0;
+  padding-top: 1rem;
+  background-color: white;
+`;
+
+const SearchBarStyle = css`
+  width: 100%;
+  height: 100%;
+  min-width: 28rem;
+  background-color: white;
+  margin-right: 1rem;
+  padding: 0.5rem 0;
+
+  & > input {
+    margin-right: 0;
+  }
+`;
+
+export {
+  Container,
+  FilterDetail,
+  ResetFilter,
+  CheckIcon,
+  DropdownStyle,
+  SearchBarWrapper,
+  SearchBarStyle,
+};
