@@ -91,7 +91,7 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
         </StudyLogListContainer>
 
         <Button size="X_SMALL" css={{ backgroundColor: `${COLOR.LIGHT_BLUE_500}` }}>
-          등록
+          등록 ({selectedStudyLogs.length}개 선택)
         </Button>
       </Form>
     </Modal>
