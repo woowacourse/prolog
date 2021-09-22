@@ -3,6 +3,7 @@ package wooteco.prolog.studylog.domain.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,16 +26,13 @@ class AbilityRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @BeforeEach
-    void setUp() {
-        Member member = memberRepository.save(new Member("Hyeon9mak", "현구막", Role.CREW, 1L, "imageUrl"));
-        abilityRepository.save(Ability.parent("손너잘", "손너잘은 3인칭을 쓴다.", "112233", member));
-    }
-
     @DisplayName("findById에 null을 이용하면 예외가 발생한다.")
     @Test
     void findByIdNullException() {
         // given
+        Member member = memberRepository.save(new Member("Hyeon9mak", "현구막", Role.CREW, 1L, "imageUrl"));
+        abilityRepository.save(Ability.parent("손너잘", "손너잘은 3인칭을 쓴다.", "112233", member));
+
         Long id = null;
 
         // when, then
@@ -87,5 +85,20 @@ class AbilityRepositoryTest {
             // then
             assertThat(foundAbility).isNotPresent();
         }
+    }
+
+    @DisplayName("Member가 가진 부모역량만을 조회한다")
+    @Test
+    void findByMemberAndParentIsNull() {
+        // given
+        Member member = memberRepository.save(new Member("bperhaps", "손너잘", Role.CREW, 1L, "imageUrl"));
+        Ability parentAbility = abilityRepository.save(Ability.parent("메타버스", "폴리곤 덩어리들", "123456", member));
+        Ability childAbility = abilityRepository.save(Ability.child("마자용", "마자아아아~용", "하늘색", parentAbility, member));
+
+        // when
+        List<Ability> parentAbilities = abilityRepository.findByMemberAndParentIsNull(member);
+
+        // then
+        assertThat(parentAbilities).containsExactly(parentAbility);
     }
 }

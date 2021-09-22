@@ -43,6 +43,12 @@ public class AbilityService {
         return Ability.child(name, description, color, parent, member);
     }
 
+    public List<AbilityResponse> parentAbilities(Member member) {
+        List<Ability> parentAbilities = abilityRepository.findByMemberAndParentIsNull(member);
+
+        return AbilityResponse.of(parentAbilities);
+    }
+
     @Transactional
     public List<AbilityResponse> updateAbility(Member member, AbilityUpdateRequest request) {
         Ability legacyAbility = findAbilityByIdAndMember(request.getId(), member);
