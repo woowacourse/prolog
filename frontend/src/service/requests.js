@@ -11,7 +11,9 @@ const requestGetTags = () => fetch(`${BASE_URL}/tags`);
 const requestGetPosts = (query) => {
   if (query.type === 'searchParams') {
     return fetch(`${BASE_URL}/posts?${query.data.toString()}`);
-  } else if (query.type === 'filter') {
+  }
+
+  if (query.type === 'filter') {
     const searchParams = Object.entries(query?.data?.postQueryParams).map(
       ([key, value]) => `${key}=${value}`
     );
@@ -20,7 +22,7 @@ const requestGetPosts = (query) => {
           ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
         )
       : '';
-    console.log(searchParams, filterQuery);
+
     return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`);
   }
 };
