@@ -17,3 +17,4 @@ export { default as Tag } from './Tag/Tag';
 export { default as Calendar } from './Calendar/Calendar';
 export { default as ProfilePageSideBar } from './ProfilePageSideBar/ProfilePageSideBar';
 export { default as Modal } from './Modal/Modal';
+export { default as Chip } from './Chip/Chip';
