@@ -144,16 +144,6 @@ public class StudylogService {
         return StudylogResponse.of(studylog);
     }
 
-    public List<StudylogResponse> findByIds(String requestedIds, Pageable pageable) {
-        List<Long> ids = Arrays.stream(requestedIds.split(ID_DELIMITER))
-            .map(Long::valueOf)
-            .collect(toList());
-
-        return studylogRepository.findByIdIn(ids, pageable).stream()
-            .map(StudylogResponse::of)
-            .collect(toList());
-    }
-
     @Transactional
     public void updateStudylog(Member member, Long studylogId, StudylogRequest studylogRequest) {
         final Member foundMember = memberService.findById(member.getId());
