@@ -88,24 +88,7 @@ public class Member {
         abilities.add(ability);
     }
 
-    public void updateAbility(Ability ability) {
-        Ability targetAbility = abilities.stream()
-            .filter(target -> target.equals(ability))
-            .findAny()
-            .orElseThrow(AbilityNotFoundException::new);
-
-        targetAbility.update(ability);
-    }
-
     public void deleteAbility(Ability ability) {
-        if (!abilities.contains(ability)) {
-            throw new AbilityNotFoundException();
-        }
-
-        if (ability.hasChildren()) {
-            throw new AbilityHasChildrenException();
-        }
-
         abilities.remove(ability);
     }
 

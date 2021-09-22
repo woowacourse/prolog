@@ -1,5 +1,6 @@
 package wooteco.prolog.studylog.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,8 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.studylog.application.dto.ability.AbilityCreateRequest;
+import wooteco.prolog.studylog.domain.ablity.Ability;
+import wooteco.prolog.studylog.domain.repository.AbilityRepository;
 import wooteco.prolog.studylog.exception.AbilityNotFoundException;
 import wooteco.support.utils.IntegrationTest;
 
@@ -18,6 +21,9 @@ class AbilityServiceTest {
 
     @Autowired
     private AbilityService abilityService;
+
+    @Autowired
+    private AbilityRepository abilityRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -38,5 +44,19 @@ class AbilityServiceTest {
         // when, then
         assertThatThrownBy(() -> abilityService.createAbility(member, abilityCreateRequest))
             .isExactlyInstanceOf(AbilityNotFoundException.class);
+    }
+
+    @DisplayName("역량을 삭제하면 Member와 관계도 끊어진다.")
+    @Test
+    void deleteAbility() {
+        // given
+        Ability ability = abilityRepository.save(Ability.parent("zi존브라운123", "이견 있습니까?", "이견을 피로 물들이는 붉은 색", member));
+
+        // when
+        assertThat(member.getAbilities()).containsExactly(ability);
+        abilityService.deleteAbility(member, ability.getId());
+
+        // then
+        assertThat(member.getAbilities()).isEmpty();
     }
 }

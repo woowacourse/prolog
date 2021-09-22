@@ -19,8 +19,11 @@ public class AbilityUpdateRequest {
         this.color = color;
     }
 
-
     public Ability toEntity() {
-        return Ability.updateTarget(id, name, description, color);
+        return new Ability(id, name, description, color);
+    }
+
+    public Long getId() {
+        return id;
     }
 }

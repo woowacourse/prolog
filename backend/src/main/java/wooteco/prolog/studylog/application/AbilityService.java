@@ -23,17 +23,17 @@ public class AbilityService {
     }
 
     @Transactional
-    public void createAbility(Member member, AbilityCreateRequest abilityCreateRequest) {
-        Ability ability = extractAbility(member, abilityCreateRequest);
+    public void createAbility(Member member, AbilityCreateRequest request) {
+        Ability ability = extractAbility(member, request);
 
         abilityRepository.save(ability);
     }
 
-    private Ability extractAbility(Member member, AbilityCreateRequest abilityCreateRequest) {
-        String name = abilityCreateRequest.getName();
-        String description = abilityCreateRequest.getDescription();
-        String color = abilityCreateRequest.getColor();
-        Long parentId = abilityCreateRequest.getParentId();
+    private Ability extractAbility(Member member, AbilityCreateRequest request) {
+        String name = request.getName();
+        String description = request.getDescription();
+        String color = request.getColor();
+        Long parentId = request.getParentId();
 
         if (Objects.isNull(parentId)) {
             return Ability.parent(name, description, color, member);
@@ -43,22 +43,32 @@ public class AbilityService {
         return Ability.child(name, description, color, parent, member);
     }
 
-    private Ability findAbilityById(Long parentId) {
-        return abilityRepository.findById(parentId)
-            .orElseThrow(AbilityNotFoundException::new);
-    }
-
     @Transactional
-    public List<AbilityResponse> updateAbility(Member member, AbilityUpdateRequest abilityUpdateRequest) {
-        member.updateAbility(abilityUpdateRequest.toEntity());
+    public List<AbilityResponse> updateAbility(Member member, AbilityUpdateRequest request) {
+        Ability legacyAbility = findAbilityByIdAndMember(request.getId(), member);
+        Ability updateAbility = request.toEntity();
+
+        legacyAbility.update(updateAbility);
 
         return AbilityResponse.of(member.getAbilities());
     }
 
     @Transactional
     public void deleteAbility(Member member, Long abilityId) {
-        Ability ability = findAbilityById(abilityId);
+        Ability ability = findAbilityByIdAndMember(abilityId, member);
+        ability.validateDeletable();
 
         member.deleteAbility(ability);
+        abilityRepository.delete(ability);
+    }
+
+    private Ability findAbilityById(Long parentId) {
+        return abilityRepository.findById(parentId)
+            .orElseThrow(AbilityNotFoundException::new);
+    }
+
+    private Ability findAbilityByIdAndMember(Long abilityId, Member member) {
+        return abilityRepository.findByIdAndMember(abilityId, member)
+            .orElseThrow(AbilityNotFoundException::new);
     }
 }

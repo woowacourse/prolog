@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.studylog.exception.AbilityHasChildrenException;
 
 @Entity
 public class Ability {
@@ -42,6 +43,24 @@ public class Ability {
     protected Ability() {
     }
 
+    public Ability(Long id, String name, String description, String color) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.color = color;
+    }
+
+    private Ability(Long id, String name, String description, String color, Ability parent, Member member) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.color = color;
+        this.parent = parent;
+        this.children = new ArrayList<>();
+        this.member = member;
+        this.member.addAbility(this);
+    }
+
     public static Ability parent(String name, String description, String color, Member member) {
         return parent(null, name, description, color, member);
     }
@@ -61,28 +80,6 @@ public class Ability {
         return child;
     }
 
-    public static Ability updateTarget(Long id, String name, String description, String color) {
-        return new Ability(id, name, description, color);
-    }
-
-    private Ability(Long id, String name, String description, String color) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.color = color;
-    }
-
-    private Ability(Long id, String name, String description, String color, Ability parent, Member member) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.color = color;
-        this.parent = parent;
-        this.children = new ArrayList<>();
-        this.member = member;
-        this.member.addAbility(this);
-    }
-
     public void addChildAbility(Ability ability) {
         AbilityRelationship abilityRelationship = new AbilityRelationship(this, ability);
         this.children.add(abilityRelationship);
@@ -98,8 +95,10 @@ public class Ability {
         return Objects.isNull(parent);
     }
 
-    public boolean hasChildren() {
-        return !children.isEmpty();
+    public void validateDeletable() {
+        if (!children.isEmpty()) {
+            throw new AbilityHasChildrenException();
+        }
     }
 
     public Long getId() {
