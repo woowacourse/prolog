@@ -8,7 +8,6 @@ import lombok.Getter;
 import wooteco.prolog.studylog.domain.ablity.Ability;
 
 @AllArgsConstructor
-@Getter
 public class ChildAbilityDto {
     private Long id;
     private String name;
@@ -16,19 +15,39 @@ public class ChildAbilityDto {
     private String color;
     private boolean isParent;
 
-    public static List<ChildAbilityDto> of(List<Ability> abilities) {
-        return abilities.stream()
+    public static List<ChildAbilityDto> of(List<Ability> childAbilities) {
+        return childAbilities.stream()
             .map(ChildAbilityDto::from)
             .collect(toList());
     }
 
-    public static ChildAbilityDto from(Ability ability) {
+    public static ChildAbilityDto from(Ability childAbility) {
         return new ChildAbilityDto(
-            ability.getId(),
-            ability.getName(),
-            ability.getDescription(),
-            ability.getColor(),
-            ability.isParent()
+            childAbility.getId(),
+            childAbility.getName(),
+            childAbility.getDescription(),
+            childAbility.getColor(),
+            childAbility.isParent()
         );
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public boolean getIsParent() {
+        return isParent;
     }
 }

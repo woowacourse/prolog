@@ -80,8 +80,8 @@ public class Ability {
         return child;
     }
 
-    public void addChildAbility(Ability ability) {
-        AbilityRelationship abilityRelationship = new AbilityRelationship(this, ability);
+    public void addChildAbility(Ability childAbility) {
+        AbilityRelationship abilityRelationship = new AbilityRelationship(childAbility, this);
         this.children.add(abilityRelationship);
     }
 
@@ -123,7 +123,7 @@ public class Ability {
 
     public List<Ability> getChildren() {
         return children.stream()
-            .map(AbilityRelationship::getTarget)
+            .map(AbilityRelationship::getSource)
             .collect(toList());
     }
 
