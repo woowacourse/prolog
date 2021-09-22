@@ -1,7 +1,5 @@
 package wooteco.prolog.studylog.ui;
 
-import static org.springframework.http.HttpStatus.CREATED;
-
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
