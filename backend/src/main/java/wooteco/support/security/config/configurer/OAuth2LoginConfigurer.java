@@ -8,12 +8,12 @@ import wooteco.support.security.authentication.AuthenticationManager;
 import wooteco.support.security.authentication.AuthenticationProvider;
 import wooteco.support.security.authentication.AuthenticationSuccessHandler;
 import wooteco.support.security.authentication.ProviderManager;
-import wooteco.support.security.authentication.oauth2.OAuth2AccessTokenResponseClient;
-import wooteco.support.security.authentication.oauth2.OAuth2AuthenticationProvider;
-import wooteco.support.security.authentication.oauth2.OAuth2LoginAuthenticationFilter;
-import wooteco.support.security.client.ClientRegistrationRepository;
+import wooteco.support.security.oauth2.OAuth2AccessTokenResponseClient;
+import wooteco.support.security.oauth2.OAuth2AuthenticationProvider;
+import wooteco.support.security.oauth2.OAuth2LoginAuthenticationFilter;
+import wooteco.support.security.oauth2.ClientRegistrationRepository;
 import wooteco.support.security.config.HttpSecurity;
-import wooteco.support.security.oauth2user.OAuth2UserService;
+import wooteco.support.security.oauth2.OAuth2UserService;
 
 public class OAuth2LoginConfigurer extends AbstractSecurityConfigurer {
 

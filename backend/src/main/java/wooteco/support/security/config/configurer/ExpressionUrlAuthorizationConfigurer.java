@@ -8,16 +8,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import org.springframework.http.HttpMethod;
-import wooteco.support.security.authorization.AccessDecisionManager;
-import wooteco.support.security.authorization.AccessDecisionVoter;
-import wooteco.support.security.authorization.ConfigAttribute;
-import wooteco.support.security.authorization.FilterSecurityInterceptor;
-import wooteco.support.security.authorization.SecurityConfig;
-import wooteco.support.security.authorization.SecurityMetadataSource;
-import wooteco.support.security.authorization.UrlMapping;
-import wooteco.support.security.authorization.requestmatcher.AnyRequestMatcher;
-import wooteco.support.security.authorization.requestmatcher.MvcRequestMatcher;
-import wooteco.support.security.authorization.requestmatcher.RequestMatcher;
+import wooteco.support.security.access.AccessDecisionManager;
+import wooteco.support.security.access.AccessDecisionVoter;
+import wooteco.support.security.access.ConfigAttribute;
+import wooteco.support.security.access.FilterSecurityInterceptor;
+import wooteco.support.security.access.SecurityConfig;
+import wooteco.support.security.access.SecurityMetadataSource;
+import wooteco.support.security.access.UrlMapping;
+import wooteco.support.security.access.matcher.AnyRequestMatcher;
+import wooteco.support.security.access.matcher.MvcRequestMatcher;
+import wooteco.support.security.access.matcher.RequestMatcher;
 import wooteco.support.security.config.HttpSecurity;
 
 @Getter

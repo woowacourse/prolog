@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
-import wooteco.prolog.login.application.dto.GithubProfileResponse;
+import wooteco.support.security.oauth2.github.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.LoginMember;
 import wooteco.prolog.member.domain.Member;

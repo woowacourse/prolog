@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import wooteco.support.security.jwt.AuthenticationPrincipal;
+import wooteco.support.security.core.AuthenticationPrincipal;
 import wooteco.support.autoceptor.scanner.MethodScanner;
 import wooteco.support.autoceptor.test_classes.ControllerClass;
 import wooteco.support.autoceptor.test_classes.RestControllerClass;

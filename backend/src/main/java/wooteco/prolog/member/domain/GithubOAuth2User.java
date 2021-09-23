@@ -1,7 +1,7 @@
 package wooteco.prolog.member.domain;
 
 import java.util.Map;
-import wooteco.support.security.oauth2user.OAuth2User;
+import wooteco.support.security.oauth2.OAuth2User;
 
 public class GithubOAuth2User extends OAuth2User {
 
@@ -23,15 +23,5 @@ public class GithubOAuth2User extends OAuth2User {
 
     public String getImageUrl() {
         return getAttributes().get("avatar_url").toString();
-    }
-
-    public Member toMember() {
-        return new Member(
-            getLoginName(),
-            getNickname(),
-            Role.CREW,
-            getGithubId(),
-            getImageUrl()
-        );
     }
 }

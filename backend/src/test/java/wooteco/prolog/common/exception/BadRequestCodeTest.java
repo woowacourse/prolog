@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import wooteco.prolog.login.excetpion.GithubApiFailException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
 
 class BadRequestCodeTest {

@@ -5,10 +5,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import wooteco.support.security.auto.ArgumentResolverConfig;
-import wooteco.support.security.auto.SecurityFilterConfiguration;
-import wooteco.support.security.auto.properties.JwtTokenPropertiesConfig;
-import wooteco.support.security.auto.properties.OAuth2ClientRegistrationRepositoryConfig;
+import wooteco.support.security.config.auto.ArgumentResolverConfig;
+import wooteco.support.security.config.auto.SecurityFilterConfiguration;
+import wooteco.support.security.config.auto.JwtTokenPropertiesConfig;
+import wooteco.support.security.config.auto.OAuth2ClientRegistrationRepositoryConfig;
 
 @Retention(value = java.lang.annotation.RetentionPolicy.RUNTIME)
 @Target(value = {java.lang.annotation.ElementType.TYPE})

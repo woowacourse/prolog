@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import wooteco.prolog.member.domain.LoginMember;
 import wooteco.support.autoceptor.scanner.MappingAnnotation;
 import wooteco.support.autoceptor.scanner.MethodScanner;
-import wooteco.support.security.jwt.AuthenticationPrincipal;
+import wooteco.support.security.core.AuthenticationPrincipal;
 
 class MappingAnnotationTest {
 

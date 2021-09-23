@@ -13,7 +13,7 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.domain.LoginMember;
-import wooteco.support.security.jwt.AuthenticationPrincipal;
+import wooteco.support.security.core.AuthenticationPrincipal;
 
 @RestController
 @AllArgsConstructor

@@ -3,14 +3,15 @@ package wooteco.prolog.member.application;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.domain.GithubOAuth2User;
 import wooteco.prolog.member.domain.LoginMember;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.member.exception.MemberNotFoundException;
+import wooteco.support.security.oauth2.github.GithubProfileResponse;
 
 @Service
 @AllArgsConstructor
@@ -22,13 +23,13 @@ public class MemberService {
     @Transactional
     public Member findOrCreateMember(GithubProfileResponse githubProfile) {
         return memberRepository.findByGithubId(githubProfile.getGithubId())
-            .orElseGet(() -> memberRepository.save(githubProfile.toMember()));
+            .orElseGet(() -> memberRepository.save(toMember(githubProfile)));
     }
 
     @Transactional
     public Member findOrCreateMember(GithubOAuth2User githubProfile) {
         return memberRepository.findByGithubId(githubProfile.getGithubId())
-            .orElseGet(() -> memberRepository.save(githubProfile.toMember()));
+            .orElseGet(() -> memberRepository.save(toMember(githubProfile)));
     }
 
     public Member findById(Long id) {
@@ -51,5 +52,25 @@ public class MemberService {
         Member persistMember = findByUsername(member.getUsername());
         persistMember.updateImageUrl(updateRequest.getImageUrl());
         persistMember.updateNickname(updateRequest.getNickname());
+    }
+
+    public Member toMember(GithubProfileResponse profileResponse) {
+        return new Member(
+            profileResponse.getLoginName(),
+            profileResponse.getNickname(),
+            Role.CREW.name(),
+            profileResponse.getGithubId(),
+            profileResponse.getImageUrl()
+        );
+    }
+
+    public Member toMember(GithubOAuth2User profileResponse) {
+        return new Member(
+            profileResponse.getLoginName(),
+            profileResponse.getNickname(),
+            Role.CREW.name(),
+            profileResponse.getGithubId(),
+            profileResponse.getImageUrl()
+        );
     }
 }

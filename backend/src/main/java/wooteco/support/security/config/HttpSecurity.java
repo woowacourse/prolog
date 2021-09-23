@@ -10,9 +10,6 @@ import wooteco.support.security.config.configurer.ExpressionUrlAuthorizationConf
 import wooteco.support.security.config.configurer.OAuth2LoginConfigurer;
 import wooteco.support.security.config.configurer.SecurityConfigurer;
 import wooteco.support.security.config.configurer.SecurityContextConfigurer;
-import wooteco.support.security.filter.DefaultSecurityFilterChain;
-import wooteco.support.security.filter.FilterChainProxy;
-import wooteco.support.security.filter.FilterComparator;
 
 @Getter
 public class HttpSecurity {

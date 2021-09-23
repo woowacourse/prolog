@@ -7,7 +7,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.domain.LoginMember;
@@ -15,6 +14,7 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.member.exception.MemberNotFoundException;
+import wooteco.support.security.oauth2.github.GithubProfileResponse;
 import wooteco.support.utils.IntegrationTest;
 
 @IntegrationTest
@@ -31,11 +31,19 @@ class MemberServiceTest {
     void findOrCreateMemberTest() {
         // given
         GithubProfileResponse brownResponse = new GithubProfileResponse("브라운", "gracefulBrown", "1",
-                                                                        "imageUrl1");
+            "imageUrl1");
         GithubProfileResponse jasonResponse = new GithubProfileResponse("제이슨", "pjs", "2",
-                                                                        "imageUrl2");
+            "imageUrl2");
 
-        Member를_생성한다(brownResponse.toMember());
+        Member member = new Member(
+            brownResponse.getLoginName(),
+            brownResponse.getNickname(),
+            "CREW",
+            brownResponse.getGithubId(),
+            brownResponse.getImageUrl()
+        );
+
+        Member를_생성한다(member);
 
         // when
         Member brown = memberService.findOrCreateMember(brownResponse);

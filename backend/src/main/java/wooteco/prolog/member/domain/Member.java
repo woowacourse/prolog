@@ -45,8 +45,8 @@ public class Member {
     @Embedded
     private MemberTags memberTags;
 
-    public Member(String username, String nickname, Role role, Long githubId, String imageUrl) {
-        this(null, username, nickname, role, githubId, imageUrl);
+    public Member(String username, String nickname, String role, Long githubId, String imageUrl) {
+        this(null, username, nickname, Role.valueOf(role), githubId, imageUrl);
     }
 
     public Member(Long id,
