@@ -13,15 +13,16 @@ import wooteco.support.security.client.ClientRegistration;
 import wooteco.support.security.client.ClientRegistrationRepository;
 import wooteco.support.security.exception.AuthenticationException;
 
-public class OAuth2AuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class OAuth2LoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     private final ClientRegistrationRepository clientRegistrationRepository;
     private final AuthenticationManager authenticationManager;
 
-    public OAuth2AuthenticationFilter(ClientRegistrationRepository clientRegistrationRepository,
-                                      AuthenticationManager authenticationManager,
-                                      AuthenticationSuccessHandler successHandler,
-                                      AuthenticationFailureHandler failureHandler) {
+    public OAuth2LoginAuthenticationFilter(
+        ClientRegistrationRepository clientRegistrationRepository,
+        AuthenticationManager authenticationManager,
+        AuthenticationSuccessHandler successHandler,
+        AuthenticationFailureHandler failureHandler) {
         super(successHandler, failureHandler);
         this.clientRegistrationRepository = clientRegistrationRepository;
         this.authenticationManager = authenticationManager;
@@ -46,6 +47,6 @@ public class OAuth2AuthenticationFilter extends AbstractAuthenticationProcessing
     @Override
     protected boolean requiresAuthentication(HttpServletRequest request,
                                              HttpServletResponse response) {
-        return true;
+        return request.getRequestURI().equalsIgnoreCase("/login/token");
     }
 }
