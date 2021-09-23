@@ -70,7 +70,7 @@ const ProfilePageNewReport = () => {
   return (
     <>
       <Form onSubmit={onSubmitReport}>
-        {/* <h1>새 리포트 작성하기</h1> */}
+        <h2>새 리포트 작성하기</h2>
         <div>
           <Checkbox
             type="checkbox"
