@@ -1,4 +1,4 @@
-package wooteco.prolog.login.config;
+package wooteco.support.security.auto;
 
 import javax.servlet.DispatcherType;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

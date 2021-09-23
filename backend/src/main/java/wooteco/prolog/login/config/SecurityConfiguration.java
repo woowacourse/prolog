@@ -74,10 +74,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
-//
-//    private SecurityFilterChain getAuthenticationFilter() {
-//        return SecurityFilterChainAdaptor.of("/login/token", authenticationFilter());
-//    }
 
     private Filter authenticationFilter() {
         return new OAuth2LoginAuthenticationFilter(clientRegistrationRepository,
