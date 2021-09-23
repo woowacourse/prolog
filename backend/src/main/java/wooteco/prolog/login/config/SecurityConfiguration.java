@@ -1,8 +1,6 @@
 package wooteco.prolog.login.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import javax.servlet.Filter;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.application.dto.TokenResponse;
 import wooteco.prolog.login.excetpion.GithubConnectionException;
@@ -23,12 +20,7 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.GithubOAuth2User;
 import wooteco.prolog.member.domain.Member;
 import wooteco.support.security.authentication.AuthenticationFailureHandler;
-import wooteco.support.security.authentication.AuthenticationManager;
-import wooteco.support.security.authentication.AuthenticationProvider;
 import wooteco.support.security.authentication.AuthenticationSuccessHandler;
-import wooteco.support.security.authentication.ProviderManager;
-import wooteco.support.security.authentication.oauth2.OAuth2AccessTokenResponseClient;
-import wooteco.support.security.authentication.oauth2.OAuth2AuthenticationProvider;
 import wooteco.support.security.authentication.oauth2.OAuth2LoginAuthenticationFilter;
 import wooteco.support.security.client.ClientRegistrationRepository;
 import wooteco.support.security.config.EnableWebSecurity;
@@ -51,7 +43,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) {
         http.cors(configurationSource())
             .and()
-            .addFilterAfter(authenticationFilter(), CorsFilter.class)
+            .oauth2Login(clientRegistrationRepository,
+                successHandler(),
+                failureHandler(),
+                oAuth2UserService()
+            )
             .and()
             .addFilterAfter(jwtTokenFilter(), OAuth2LoginAuthenticationFilter.class);
     }
@@ -75,11 +71,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return source;
     }
 
-    private Filter authenticationFilter() {
-        return new OAuth2LoginAuthenticationFilter(clientRegistrationRepository,
-            authenticationManager(), successHandler(), failureHandler());
-    }
-
     private AuthenticationSuccessHandler successHandler() {
         return (request, response, authentication) -> {
 
@@ -99,20 +90,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return (request, response, exception) -> {
             throw exception;
         };
-    }
-
-    private AuthenticationManager authenticationManager() {
-        List<AuthenticationProvider> providers = new ArrayList<>();
-        providers.add(authenticationProvider());
-        return new ProviderManager(providers);
-    }
-
-    private OAuth2AuthenticationProvider authenticationProvider() {
-        return new OAuth2AuthenticationProvider(tokenResponseClient(), oAuth2UserService());
-    }
-
-    private OAuth2AccessTokenResponseClient tokenResponseClient() {
-        return new OAuth2AccessTokenResponseClient();
     }
 
     private OAuth2UserService oAuth2UserService() {

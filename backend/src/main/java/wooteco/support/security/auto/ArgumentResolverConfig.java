@@ -1,4 +1,4 @@
-package wooteco.prolog.login.config;
+package wooteco.support.security.auto;
 
 import java.util.List;
 import org.springframework.context.annotation.Configuration;
