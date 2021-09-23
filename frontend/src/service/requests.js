@@ -20,7 +20,7 @@ const requestGetPosts = (query) => {
           ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
         )
       : '';
-    console.log(searchParams, filterQuery);
+
     return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`);
   }
 };
