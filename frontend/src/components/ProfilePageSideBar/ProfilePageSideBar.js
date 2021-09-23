@@ -104,7 +104,11 @@ const ProfilePageSideBar = ({ menu }) => {
         <Image src={user?.imageUrl} alt="프로필 이미지" /> <Role>{user?.role}</Role>
         <NicknameWrapper>
           {isProfileEditing ? (
-            <NicknameInput value={nickname} onChange={({ target }) => setNickname(target.value)} />
+            <NicknameInput
+              autoFocus
+              value={nickname}
+              onChange={({ target }) => setNickname(target.value)}
+            />
           ) : (
             <Nickname>{user?.nickname}</Nickname>
           )}

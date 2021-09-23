@@ -97,7 +97,7 @@ const NicknameInput = styled.input`
   margin: 0.5rem 1.2rem;
   margin-right: 0;
   padding: 0.2rem 0.5rem;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   outline: none;
   border-radius: 0.5rem;
   border: 1px solid ${COLOR.LIGHT_GRAY_900};
