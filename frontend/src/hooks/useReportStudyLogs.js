@@ -6,34 +6,34 @@ const useReportStudyLogs = (studyLogs) => {
   const [currentStudyLogs, setCurrentStudyLogs] = useState(studyLogs);
 
   useEffect(() => {
-    const newStudyLogs = filterList(studyLogs, currentStudyLogs);
+    const getPosts = async (newStudyLogs) => {
+      try {
+        const query = {
+          type: 'searchParams',
+          data: `ids=${newStudyLogs.map((studyLog) => studyLog.id).join(',')}`,
+        };
+        const response = await requestGetPosts(query);
 
-    const getPosts = async () => {
-      if (newStudyLogs) {
-        try {
-          const query = {
-            type: 'searchParams',
-            data: `ids=${newStudyLogs.map((studyLog) => studyLog.id).join(',')}`,
-          };
-          const response = await requestGetPosts(query);
-
-          if (!response.ok) {
-            throw new Error(response.status);
-          }
-
-          const posts = await response.json();
-
-          setCurrentStudyLogs([...currentStudyLogs, ...posts.data]);
-        } catch (error) {
-          console.error(error);
+        if (!response.ok) {
+          throw new Error(response.status);
         }
+
+        const posts = await response.json();
+
+        setCurrentStudyLogs([...currentStudyLogs, ...posts.data]);
+      } catch (error) {
+        console.error(error);
       }
     };
 
-    if (studyLogs?.length) {
-      getPosts();
+    if (studyLogs.length === 0) {
+      setCurrentStudyLogs([]);
     } else {
-      return setCurrentStudyLogs([]);
+      const newStudyLogs = filterList(studyLogs, currentStudyLogs);
+
+      if (newStudyLogs) {
+        getPosts(newStudyLogs);
+      }
     }
   }, [studyLogs]);
 
