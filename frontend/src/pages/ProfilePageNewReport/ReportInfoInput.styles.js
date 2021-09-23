@@ -3,14 +3,25 @@ import styled from '@emotion/styled';
 
 import COLOR from '../../constants/color';
 
-const Section = styled.section`
-  > label {
-    display: inline-block;
-    margin-left: 0.6rem;
-    margin-bottom: 0.2rem;
+const Label = styled.label`
+  position: relative;
+  width: 100%;
 
-    color: ${COLOR.BLACK_900};
-    font-size: 1.8rem;
+  display: block;
+  margin-left: 0.6rem;
+  margin-bottom: 0.2rem;
+
+  color: ${COLOR.BLACK_900};
+  font-size: 1.8rem;
+
+  > span {
+    position: absolute;
+    right: 0;
+    top: 5%;
+    margin-right: 1rem;
+
+    font-size: 1.2rem;
+    color: ${COLOR.DARK_GRAY_700};
   }
 `;
 
@@ -40,4 +51,4 @@ const Desc = styled.textarea`
   resize: none;
 `;
 
-export { Section, Title, Desc };
+export { Label, Title, Desc };
