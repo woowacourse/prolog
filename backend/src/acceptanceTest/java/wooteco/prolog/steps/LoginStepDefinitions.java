@@ -8,7 +8,7 @@ import io.cucumber.java.en.When;
 import java.util.HashMap;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.GithubResponses;
-import wooteco.prolog.login.application.dto.TokenResponse;
+import wooteco.support.security.jwt.TokenResponse;
 
 public class LoginStepDefinitions extends AcceptanceSteps {
 

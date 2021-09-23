@@ -15,12 +15,16 @@ import wooteco.support.security.client.ClientRegistrationRepository;
 import wooteco.support.security.config.HttpSecurity;
 import wooteco.support.security.oauth2user.OAuth2UserService;
 
-public class OAuth2LoginConfigurer implements SecurityConfigurer {
+public class OAuth2LoginConfigurer extends AbstractSecurityConfigurer {
 
     private ClientRegistrationRepository clientRegistrationRepository;
     private AuthenticationSuccessHandler successHandler;
     private AuthenticationFailureHandler failureHandler;
     private OAuth2UserService oAuth2UserService;
+
+    public OAuth2LoginConfigurer(HttpSecurity httpSecurity) {
+        super(httpSecurity);
+    }
 
     public OAuth2LoginConfigurer clientRegistrationRepository(
         ClientRegistrationRepository clientRegistrationRepository) {

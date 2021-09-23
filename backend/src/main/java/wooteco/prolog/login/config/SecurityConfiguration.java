@@ -14,7 +14,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
-import wooteco.prolog.login.application.dto.TokenResponse;
 import wooteco.prolog.login.excetpion.GithubConnectionException;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.GithubOAuth2User;
@@ -29,6 +28,7 @@ import wooteco.support.security.config.WebSecurityConfigurerAdapter;
 import wooteco.support.security.jwt.JwtAuthenticationFilter;
 import wooteco.support.security.jwt.JwtAuthenticationProvider;
 import wooteco.support.security.jwt.JwtTokenProvider;
+import wooteco.support.security.jwt.TokenResponse;
 import wooteco.support.security.oauth2user.OAuth2UserService;
 
 @EnableWebSecurity
@@ -41,15 +41,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) {
-        http.cors(configurationSource())
-            .and()
-            .oauth2Login(clientRegistrationRepository,
-                successHandler(),
-                failureHandler(),
-                oAuth2UserService()
-            )
-            .and()
+        // @formatter:off
+        http
+            .cors()
+                .configurationSource(configurationSource())
+                .and()
+            .oauth2Login()
+                .clientRegistrationRepository(clientRegistrationRepository)
+                .successHandler(successHandler())
+                .failureHandler(failureHandler())
+                .oAuth2UserService(oAuth2UserService())
+                .and()
             .addFilterAfter(jwtTokenFilter(), OAuth2LoginAuthenticationFilter.class);
+        // @formatter:on
     }
 
     private Filter jwtTokenFilter() {

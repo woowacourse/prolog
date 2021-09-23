@@ -1,4 +1,4 @@
-package wooteco.prolog.login.application.dto;
+package wooteco.support.security.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

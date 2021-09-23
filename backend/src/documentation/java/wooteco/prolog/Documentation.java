@@ -21,7 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import wooteco.prolog.common.DataInitializer;
-import wooteco.prolog.login.application.dto.TokenResponse;
+import wooteco.support.security.jwt.TokenResponse;
 
 @ExtendWith(RestDocumentationExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)

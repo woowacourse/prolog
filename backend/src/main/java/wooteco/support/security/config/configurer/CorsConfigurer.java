@@ -4,9 +4,13 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import wooteco.support.security.config.HttpSecurity;
 
-public class CorsConfigurer implements SecurityConfigurer {
+public class CorsConfigurer extends AbstractSecurityConfigurer {
 
     private CorsConfigurationSource configurationSource;
+
+    public CorsConfigurer(HttpSecurity httpSecurity) {
+        super(httpSecurity);
+    }
 
     public CorsConfigurer configurationSource(CorsConfigurationSource configurationSource) {
         this.configurationSource = configurationSource;
