@@ -7,7 +7,7 @@ const Section = styled.section`
     position: relative;
   }
 
-  > h2 {
+  > h3 {
     display: inline;
     margin-left: 0.6rem;
     margin-bottom: 0.3rem;

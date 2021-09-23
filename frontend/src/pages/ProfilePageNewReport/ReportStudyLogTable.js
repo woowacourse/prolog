@@ -45,7 +45,7 @@ const ReportStudyLogTable = ({ onModalOpen, studyLogs, setStudyLogs }) => {
 
   return (
     <Section>
-      <h2>📚 학습로그 목록</h2>
+      <h3>📚 학습로그 목록</h3>
       <span>
         {deleteTargets?.length ?? 0}개 선택 (총 {currentStudyLogs?.length ?? 0}개)
       </span>
