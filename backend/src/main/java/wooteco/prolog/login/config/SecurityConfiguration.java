@@ -1,10 +1,12 @@
 package wooteco.prolog.login.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.Filter;
 import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,6 +20,7 @@ import wooteco.prolog.login.excetpion.GithubConnectionException;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.GithubOAuth2User;
 import wooteco.prolog.member.domain.Member;
+import wooteco.support.autoceptor.AutoInterceptorPatternMaker;
 import wooteco.support.security.authentication.AuthenticationFailureHandler;
 import wooteco.support.security.authentication.AuthenticationSuccessHandler;
 import wooteco.support.security.authentication.oauth2.OAuth2LoginAuthenticationFilter;
@@ -25,6 +28,7 @@ import wooteco.support.security.client.ClientRegistrationRepository;
 import wooteco.support.security.config.EnableWebSecurity;
 import wooteco.support.security.config.HttpSecurity;
 import wooteco.support.security.config.WebSecurityConfigurerAdapter;
+import wooteco.support.security.jwt.AuthenticationPrincipal;
 import wooteco.support.security.jwt.JwtAuthenticationFilter;
 import wooteco.support.security.jwt.JwtAuthenticationProvider;
 import wooteco.support.security.jwt.JwtTokenProvider;
@@ -35,6 +39,8 @@ import wooteco.support.security.oauth2user.OAuth2UserService;
 @AllArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    public static final String BASE_PACKAGE = "wooteco.prolog";
+
     private final ClientRegistrationRepository clientRegistrationRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberService memberService;
@@ -43,6 +49,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) {
         // @formatter:off
         http
+            .authorizeRequests()
+//                .mvcMatchers("/admin/**").hasRole("")
+                .mvcMatchers(authenticatedPatterns()).authenticated()
+                .anyRequest().permitAll()
+                .and()
             .cors()
                 .configurationSource(configurationSource())
                 .and()
@@ -54,6 +65,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
             .addFilterAfter(jwtTokenFilter(), OAuth2LoginAuthenticationFilter.class);
         // @formatter:on
+    }
+
+    @NotNull
+    private String[] authenticatedPatterns() {
+        AutoInterceptorPatternMaker autoInterceptorPatternMaker =
+            new AutoInterceptorPatternMaker(BASE_PACKAGE, AuthenticationPrincipal.class);
+        List<String> patterns = autoInterceptorPatternMaker.extractPatterns();
+        return patterns.toArray(new String[0]);
     }
 
     private Filter jwtTokenFilter() {

@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import wooteco.support.security.authentication.Authentication;
 import wooteco.support.security.authentication.AuthenticationProvider;
 import wooteco.support.security.authentication.AuthenticationToken;
-import wooteco.support.security.exception.AuthenticationException;
 
 @AllArgsConstructor
 public class JwtAuthenticationProvider implements AuthenticationProvider {
@@ -19,7 +18,8 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         String accessToken = jwtAuthenticationToken.getAccessToken();
 
         if (!jwtTokenProvider.validateToken(accessToken)) {
-            throw new AuthenticationException("로그인 토큰이 유효하지 않습니다.");
+//            throw new AuthenticationException("로그인 토큰이 유효하지 않습니다.");
+            return null;
         }
 
         Map<String, Object> claimMap = jwtTokenProvider

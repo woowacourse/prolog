@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.Filter;
 import org.springframework.web.filter.CorsFilter;
+import wooteco.support.security.authorization.FilterSecurityInterceptor;
 import wooteco.support.security.context.SecurityContextPersistenceFilter;
 
 public class FilterComparator implements Comparator<Filter> {
@@ -20,6 +21,7 @@ public class FilterComparator implements Comparator<Filter> {
         filterToOrder.put(
             "wooteco.support.security.authentication.oauth2.OAuth2LoginAuthenticationFilter",
             order.next());
+        put(FilterSecurityInterceptor.class, order.next());
     }
 
     @Override

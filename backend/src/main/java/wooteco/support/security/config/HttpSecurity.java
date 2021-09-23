@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.Filter;
 import lombok.Getter;
 import wooteco.support.security.config.configurer.CorsConfigurer;
+import wooteco.support.security.config.configurer.ExpressionUrlAuthorizationConfigurer;
 import wooteco.support.security.config.configurer.OAuth2LoginConfigurer;
 import wooteco.support.security.config.configurer.SecurityConfigurer;
 import wooteco.support.security.config.configurer.SecurityContextConfigurer;
@@ -40,6 +41,13 @@ public class HttpSecurity {
         OAuth2LoginConfigurer configurer = new OAuth2LoginConfigurer(this);
         apply(configurer);
         return configurer;
+    }
+
+    public ExpressionUrlAuthorizationConfigurer.ExpressionInterceptUrlRegistry authorizeRequests() {
+        ExpressionUrlAuthorizationConfigurer configurer = new ExpressionUrlAuthorizationConfigurer(
+            this);
+        apply(configurer);
+        return configurer.getRegistry();
     }
 
     public void apply(SecurityConfigurer configurer) {
