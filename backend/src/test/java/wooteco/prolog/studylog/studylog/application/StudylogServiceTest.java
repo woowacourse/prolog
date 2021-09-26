@@ -9,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -233,8 +234,8 @@ class StudylogServiceTest {
                 missionIds,
                 tagIds,
                 usernames,
-                null,
-                null,
+                LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
+                LocalDate.parse("20211231", DateTimeFormatter.BASIC_ISO_DATE),
                 PageRequest.of(0, 10)
             )
         );
@@ -372,7 +373,7 @@ class StudylogServiceTest {
     @Test
     @DisplayName("캘린더 포스트 조회 기능")
     @Transactional
-    public void calendarPostTest() throws Exception {
+    void calendarPostTest() throws Exception {
         //given
         insertStudylogs(member1, studylog1, studylog2, studylog3);
 
