@@ -14,6 +14,7 @@ import {
   SelectBoxContainer,
   StudyLogListContainer,
   StudyLog,
+  DeleteGuide,
 } from './StudyLogModal.styles';
 
 const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
@@ -34,6 +35,10 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
     const targetStudyLog = posts.find((post) => post.id === id);
 
     setSelectedStudyLogs(onToggleCheckbox(selectedStudyLogs, targetStudyLog));
+  };
+
+  const checkTarget = (id) => {
+    return selectedStudyLogs.map((studyLog) => studyLog.id).includes(id);
   };
 
   return (
@@ -62,21 +67,22 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
             <p>해당 레벨의 학습로그가 없습니다.</p>
           ) : (
             <ul>
-              <span>
-                ✅ {posts.filter((post) => selectedStudyLogs.includes(post.id)).length}개 선택 (총{' '}
-                {posts.length}개)
-              </span>
+              <span>📚 해당 레벨의 학습로그는 총 {posts.length}개입니다.</span>
+              <DeleteGuide>
+                이미 선택된 학습로그는 리포트 수정 페이지에서 삭제 가능합니다.
+              </DeleteGuide>
 
               {posts.map(({ id, mission, title }) => {
-                const checkTarget = selectedStudyLogs.map((studyLog) => studyLog.id).includes(id);
+                const checked = checkTarget(id);
 
                 return (
-                  <StudyLog key={id} isChecked={checkTarget}>
+                  <StudyLog key={id} isChecked={checked}>
                     <label>
                       <Checkbox
                         type="checkbox"
-                        checked={checkTarget}
+                        checked={checked}
                         onChange={() => onToggleStudyLog(id)}
+                        disabled={studyLogs.map((studyLog) => studyLog.id).includes(id)}
                       />
                       <div>
                         <p>{mission.level.name}</p>
@@ -90,8 +96,12 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
           )}
         </StudyLogListContainer>
 
-        <Button size="X_SMALL" css={{ backgroundColor: `${COLOR.LIGHT_BLUE_500}` }}>
-          등록 ({selectedStudyLogs.length}개 선택)
+        <Button
+          size="X_SMALL"
+          css={{ backgroundColor: `${COLOR.LIGHT_BLUE_500}` }}
+          disabled={selectedStudyLogs.length === studyLogs.length}
+        >
+          등록 ({selectedStudyLogs.length - studyLogs.length}개 선택)
         </Button>
       </Form>
     </Modal>

@@ -9,12 +9,19 @@ const Form = styled.form`
     transform: translateX(-50%);
     width: 90%;
 
+    background-color: ${COLOR.DARK_BLUE_300};
+    color: ${COLOR.WHITE};
     font-size: 1.4rem;
     border-radius: 1rem;
 
     :hover {
       background-color: ${COLOR.DARK_BLUE_300};
       color: ${COLOR.WHITE};
+    }
+
+    :disabled {
+      background-color: ${COLOR.LIGHT_BLUE_300};
+      color: ${COLOR.DARK_GRAY_800};
     }
   }
 `;
@@ -90,9 +97,18 @@ const StudyLogListContainer = styled.section`
     padding: 0.2rem 1rem;
     margin-bottom: 0.5rem;
 
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 400;
     color: ${COLOR.BLACK_700};
+  }
+`;
+
+const DeleteGuide = styled.span`
+  &&& {
+    padding: 0.5rem;
+    font-size: 1.3rem;
+    margin-top: -0.5rem;
+    color: ${COLOR.LIGHT_BLUE_900};
   }
 `;
 
@@ -136,4 +152,4 @@ const StudyLog = styled.li`
   }
 `;
 
-export { Form, TitleContainer, SelectBoxContainer, StudyLogListContainer, StudyLog };
+export { Form, DeleteGuide, TitleContainer, SelectBoxContainer, StudyLogListContainer, StudyLog };
