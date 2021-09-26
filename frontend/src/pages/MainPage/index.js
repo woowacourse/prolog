@@ -123,6 +123,12 @@ const MainPage = () => {
     setSelectedFilterDetails(selectedFilterDetailsWithName);
   }, [filters]);
 
+  useEffect(() => {
+    if (history.location.search !== '') return;
+
+    resetFilter();
+  }, [history.location.search]);
+
   return (
     <>
       <HeaderContainer>
