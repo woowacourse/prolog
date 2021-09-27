@@ -16,6 +16,7 @@ public class StudylogsSearchRequest {
     private final List<Long> missions;
     private final List<Long> tags;
     private final List<String> usernames;
+    private final List<Long> members;
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final Pageable pageable;

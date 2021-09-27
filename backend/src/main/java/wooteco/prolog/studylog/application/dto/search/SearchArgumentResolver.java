@@ -36,6 +36,7 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
             convertToLongList(webRequest, "missions"),
             convertToLongList(webRequest, "tags"),
             convertToStringList(webRequest, "usernames"),
+            convertToLongList(webRequest, "members"),
             convertToLocalDate(webRequest, "startDate"),
             convertToLocalDate(webRequest, "endDate"),
             makePageableDefault(webRequest)

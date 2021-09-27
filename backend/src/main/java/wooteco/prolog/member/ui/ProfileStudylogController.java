@@ -1,6 +1,7 @@
 package wooteco.prolog.member.ui;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,7 @@ public class ProfileStudylogController {
             postFilterRequest.missions,
             postFilterRequest.tags,
             Collections.singletonList(username),
+            new ArrayList<>(),
             postFilterRequest.startDate,
             postFilterRequest.endDate,
             pageable
