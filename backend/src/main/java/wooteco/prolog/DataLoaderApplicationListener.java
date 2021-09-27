@@ -168,8 +168,8 @@ public class DataLoaderApplicationListener implements
         ),
         TYCHE(new GithubProfileResponse(
             "조은현",
-            "seovalue",
-            "123456",
+            "티케",
+            "devhyun637",
             "https://avatars.githubusercontent.com/u/48412963?v=4")
         );
 
