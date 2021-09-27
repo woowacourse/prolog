@@ -152,4 +152,20 @@ const StudyLog = styled.li`
   }
 `;
 
-export { Form, DeleteGuide, TitleContainer, SelectBoxContainer, StudyLogListContainer, StudyLog };
+const ReadMoreButton = styled.button`
+  width: 100%;
+  height: 2.5rem;
+  border: 1px solid ${COLOR.LIGHT_GRAY_100};
+  background-color: ${COLOR.LIGHT_GRAY_100};
+  text-align: center;
+`;
+
+export {
+  Form,
+  DeleteGuide,
+  TitleContainer,
+  SelectBoxContainer,
+  StudyLogListContainer,
+  StudyLog,
+  ReadMoreButton,
+};
