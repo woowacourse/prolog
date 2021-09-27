@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckIcon, FilterDetail } from './FilterList.styles';
+import { CheckIcon, FilterDetail, MemberImage, MemberWrapper, Nickname } from './FilterList.styles';
 import checkIcon from '../../assets/images/check.png';
 
 const sorting = [true, false];
@@ -24,18 +24,18 @@ const SelectedFilterList = ({
 
             return regExpKeyword.test(name);
           })
-          .map(({ id, name, username, nickname, imageSrc }) => {
+          .map(({ id, name, username, nickname, imageUrl }) => {
             if (Boolean(findFilterItem(type, id)) === !isChecked) return null;
 
             return (
               <li key={id} onClick={() => toggleFilterDetails(type, id, name)}>
                 <FilterDetail>
                   {type === 'members' ? (
-                    <>
-                      <img src={imageSrc} alt="프로필 사진" />
-                      <span>{nickname}</span>
+                    <MemberWrapper>
+                      <MemberImage src={imageUrl} alt="프로필 사진" />
                       <span>{username}</span>
-                    </>
+                      <Nickname>{nickname}</Nickname>
+                    </MemberWrapper>
                   ) : (
                     <span>{name}</span>
                   )}

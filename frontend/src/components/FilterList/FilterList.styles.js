@@ -125,6 +125,24 @@ const SearchBarStyle = css`
   }
 `;
 
+const MemberWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const MemberImage = styled.img`
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  margin-right: 0.7rem;
+`;
+
+const Nickname = styled.span`
+  margin-left: 0.7rem;
+  color: ${COLOR.DARK_GRAY_500};
+  font-weight: 400;
+`;
+
 export {
   Container,
   FilterDetail,
@@ -133,4 +151,7 @@ export {
   DropdownStyle,
   SearchBarWrapper,
   SearchBarStyle,
+  MemberWrapper,
+  MemberImage,
+  Nickname,
 };
