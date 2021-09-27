@@ -1,0 +1,26 @@
+{
+  "id": 1,
+  "title": "simple report2",
+  "description": "report for test2",
+  "abilityGraph": {
+    "abilities": [
+      {
+        "id": 1,
+        "weight": 2,
+        "represent":true
+      },
+      {
+        "id": 3,
+        "weight": 1,
+        "represent":true
+      }
+    ]
+  },
+  "studylogs": [
+    {
+      "id":1,
+      "abilities": [1]
+    }
+  ],
+  "represent":false
+}

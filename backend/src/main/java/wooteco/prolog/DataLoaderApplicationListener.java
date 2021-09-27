@@ -1,8 +1,10 @@
 package wooteco.prolog;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
@@ -45,76 +47,171 @@ public class DataLoaderApplicationListener implements
         studyLogDocumentService.deleteAll();
 
         // level init
-        LevelResponse level1 = levelService.create(new LevelRequest("백엔드Java 레벨1 - 2021"));
-        LevelResponse level2 = levelService.create(new LevelRequest("프론트엔드JS 레벨1 - 2021"));
-        LevelResponse level3 = levelService.create(new LevelRequest("백엔드Java 레벨2 - 2021"));
-        LevelResponse level4 = levelService.create(new LevelRequest("프론트엔드JS 레벨2 - 2021"));
+        Levels.init(levelService);
 
         // mission init
-        MissionResponse mission1 = missionService.create(
-            new MissionRequest("자동차경주", level1.getId()));
-        MissionResponse mission2 = missionService.create(new MissionRequest("로또", level2.getId()));
-        MissionResponse mission3 = missionService.create(
-            new MissionRequest("장바구니", level3.getId()));
-        MissionResponse mission4 = missionService.create(new MissionRequest("지하철", level4.getId()));
+        Missions.init(missionService);
 
         // filter init
-        List<TagRequest> tagRequests_1234 = Arrays.asList(
+        TagRequests.init(tagService);
+
+        // member init
+        Members.init(memberService);
+
+        // post init
+        studylogService.insertStudylogs(Members.BROWN.value, StudylogGenerator.generate(20));
+        studylogService.insertStudylogs(Members.JOANNE.value, StudylogGenerator.generate(20));
+        studylogService.insertStudylogs(Members.TYCHE.value, StudylogGenerator.generate(100));
+
+        updatedContentsRepository
+            .save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
+
+    }
+
+    private enum Levels {
+        LEVEL1(new LevelRequest("백엔드Java 레벨1 - 2021")),
+        LEVEL2(new LevelRequest("프론트엔드JS 레벨1 - 2021")),
+        LEVEL3(new LevelRequest("백엔드Java 레벨2 - 2021")),
+        LEVEL4(new LevelRequest("프론트엔드JS 레벨2 - 2021"));
+
+        private final LevelRequest request;
+        private LevelResponse response;
+
+        Levels(LevelRequest levelRequest) {
+            this.request = levelRequest;
+        }
+
+        public static void init(LevelService levelService) {
+            for (Levels level : values()) {
+                level.response = levelService.create(level.request);
+            }
+        }
+
+        public Long getId() {
+            return response.getId();
+        }
+    }
+
+    private enum Missions {
+        MISSION1(new MissionRequest("자동차경주", Levels.LEVEL1.getId())),
+        MISSION2(new MissionRequest("로또", Levels.LEVEL2.getId())),
+        MISSION3(new MissionRequest("장바구니", Levels.LEVEL3.getId())),
+        MISSION4(new MissionRequest("지하철", Levels.LEVEL4.getId()));
+
+        private final MissionRequest request;
+        private MissionResponse response;
+
+        Missions(MissionRequest request) {
+            this.request = request;
+        }
+
+        public static void init(MissionService missionService) {
+            for (Missions mission : values()) {
+                mission.response = missionService.create(mission.request);
+            }
+        }
+
+        public Long getId() {
+            return response.getId();
+        }
+
+    }
+
+    private enum TagRequests {
+        TAG_REQUESTS_1234(Arrays.asList(
             new TagRequest("자바"),
             new TagRequest("자바스크립트"),
             new TagRequest("스프링"),
             new TagRequest("리액트")
-        );
-        List<TagRequest> tagRequests_empty = Collections.emptyList();
-        List<TagRequest> tagRequests_12 = Arrays.asList(
+        )),
+        TAG_REQUESTS_EMPTY(Collections.emptyList()),
+        TAG_REQUESTS_12(Arrays.asList(
             new TagRequest("자바"),
             new TagRequest("자바스크립트")
-        );
-        List<TagRequest> tagRequests_34 = Arrays.asList(
-            new TagRequest("스프링"),
-            new TagRequest("리액트")
-        );
-        List<TagRequest> tagRequests_3 = Collections.singletonList(
+        )),
+        TAG_REQUESTS_3(Collections.singletonList(
             new TagRequest("스프링")
+        ));
+
+        private static final Random random = new Random();
+
+        private final List<TagRequest> value;
+
+        TagRequests(List<TagRequest> tagRequests) {
+            this.value = tagRequests;
+        }
+
+        public static void init(TagService tagService) {
+            Arrays.asList(values())
+                .forEach(tagRequests -> tagService.findOrCreate(tagRequests.value));
+        }
+
+        public static List<TagRequest> random() {
+            int i = random.nextInt(values().length);
+            return values()[i].value;
+        }
+    }
+
+    private enum Members {
+        BROWN(
+            new GithubProfileResponse(
+                "류성현",
+                "gracefulBrown",
+                "46308949",
+                "https://avatars.githubusercontent.com/u/46308949?v=4")
+        ),
+        JOANNE(new GithubProfileResponse(
+            "서민정",
+            "seovalue",
+            "123456",
+            "https://avatars.githubusercontent.com/u/48412963?v=4")
+        ),
+        TYCHE(new GithubProfileResponse(
+            "조은현",
+            "seovalue",
+            "123456",
+            "https://avatars.githubusercontent.com/u/48412963?v=4")
         );
-        tagService.findOrCreate(tagRequests_1234);
-        tagService.findOrCreate(tagRequests_empty);
-        tagService.findOrCreate(tagRequests_12);
-        tagService.findOrCreate(tagRequests_34);
-        tagService.findOrCreate(tagRequests_3);
 
-        // member init
-        Member member1 = memberService
-            .findOrCreateMember(new GithubProfileResponse("류성현", "gracefulBrown", "46308949",
-                                                          "https://avatars.githubusercontent.com/u/46308949?v=4"));
-        Member member2 = memberService
-            .findOrCreateMember(new GithubProfileResponse("서민정", "seovalue", "123456",
-                                                          "https://avatars.githubusercontent.com/u/48412963?v=4"));
+        private final GithubProfileResponse githubProfileResponse;
+        private Member value;
 
-        // post init
-        studylogService.insertStudylogs(member1, Arrays.asList(
-            new StudylogRequest("ATDD란 무엇인가", "노션 정리 링크\n개인적으로 친구들에게 한 설명이 참 잘 썼다고 생각한다 호호",
-                                mission1.getId(), tagRequests_1234),
-            new StudylogRequest("프론트엔드 빌드 툴", "snowpack 사용하기 https://hjuu.tistory.com/6",
-                                mission2.getId(), tagRequests_1234),
-            new StudylogRequest("페이지네이션 데이터 1", "좋은 내용", mission1.getId(), tagRequests_1234),
-            new StudylogRequest("페이지네이션 데이터 2", "좋은 내용", mission2.getId(), tagRequests_empty),
-            new StudylogRequest("페이지네이션 데이터 3", "좋은 내용", mission3.getId(), tagRequests_12),
-            new StudylogRequest("페이지네이션 데이터 4", "좋은 내용", mission4.getId(), tagRequests_34),
-            new StudylogRequest("페이지네이션 데이터 5", "좋은 내용", mission1.getId(), tagRequests_3),
-            new StudylogRequest("페이지네이션 데이터 6", "좋은 내용", mission2.getId(), tagRequests_1234)
-        ));
+        Members(GithubProfileResponse githubProfileResponse) {
+            this.githubProfileResponse = githubProfileResponse;
+        }
 
-        studylogService.insertStudylogs(member2, Arrays.asList(
-            new StudylogRequest("페이지네이션 데이터 7", "좋은 내용", mission3.getId(), tagRequests_empty),
-            new StudylogRequest("페이지네이션 데이터 8", "좋은 내용", mission4.getId(), tagRequests_12),
-            new StudylogRequest("페이지네이션 데이터 9", "좋은 내용", mission1.getId(), tagRequests_34),
-            new StudylogRequest("페이지네이션 데이터 10", "좋은 내용", mission2.getId(), tagRequests_3),
-            new StudylogRequest("페이지네이션 데이터 11", "좋은 내용", mission3.getId(), tagRequests_1234),
-            new StudylogRequest("페이지네이션 데이터 12", "좋은 내용", mission4.getId(), tagRequests_empty)
-        ));
+        public static void init(MemberService memberService) {
+            for (Members member : values()) {
+                member.value = memberService
+                    .findOrCreateMember(member.githubProfileResponse);
+            }
+        }
+    }
 
-        updatedContentsRepository.save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
+    private static class StudylogGenerator {
 
+        private static int cnt = 0;
+
+        private StudylogGenerator() {
+        }
+
+        public static List<StudylogRequest> generate(int size) {
+            List<StudylogRequest> result = new ArrayList<>();
+
+            for (int i = 0; i < size; i++) {
+                result.add(create());
+            }
+
+            return result;
+        }
+
+        private static StudylogRequest create() {
+            return new StudylogRequest(
+                "페이지네이션 데이터 " + cnt,
+                "좋은 내용",
+                Missions.values()[cnt++ % Missions.values().length].getId(),
+                TagRequests.random()
+            );
+        }
     }
 }
