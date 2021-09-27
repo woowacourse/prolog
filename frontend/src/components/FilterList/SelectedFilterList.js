@@ -28,7 +28,10 @@ const SelectedFilterList = ({
             if (Boolean(findFilterItem(type, id)) === !isChecked) return null;
 
             return (
-              <li key={id} onClick={() => toggleFilterDetails(type, id, name)}>
+              <li
+                key={id}
+                onClick={() => toggleFilterDetails(type, id, type === 'members' ? username : name)}
+              >
                 <FilterDetail>
                   {type === 'members' ? (
                     <MemberWrapper>
