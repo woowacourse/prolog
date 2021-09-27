@@ -1,18 +1,12 @@
 package wooteco.prolog.studylog.application.dto.ability;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
-import java.util.Map;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import wooteco.prolog.studylog.domain.ablity.Ability;
-import wooteco.prolog.studylog.domain.ablity.AbilityRelationship;
 
 @AllArgsConstructor
-@Getter
 public class AbilityResponse {
     private Long id;
     private String name;
@@ -36,5 +30,29 @@ public class AbilityResponse {
             ability.isParent(),
             ChildAbilityDto.of(ability.getChildren())
         );
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public boolean getIsParent() {
+        return isParent;
+    }
+
+    public List<ChildAbilityDto> getChildren() {
+        return children;
     }
 }

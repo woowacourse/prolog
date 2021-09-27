@@ -235,6 +235,7 @@ class StudylogServiceTest {
                 usernames,
                 null,
                 null,
+                null,
                 PageRequest.of(0, 10)
             )
         );

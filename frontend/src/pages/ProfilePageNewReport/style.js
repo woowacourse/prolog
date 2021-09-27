@@ -1,16 +1,20 @@
 import styled from '@emotion/styled';
 
-import { COLOR } from '../../constants';
-
 const Form = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
 
+  > h2 {
+    display: inline-block;
+    margin: 0 auto 1rem;
+  }
+
   > div {
     display: flex;
     align-items: center;
+    margin-bottom: 1rem;
 
     > label {
       font-size: 1.4rem;

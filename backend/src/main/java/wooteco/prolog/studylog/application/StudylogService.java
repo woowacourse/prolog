@@ -7,7 +7,9 @@ import static java.util.stream.Collectors.toList;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +38,7 @@ import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 @Transactional(readOnly = true)
 public class StudylogService {
 
+    public static final String ID_DELIMITER = ",";
     private final StudylogRepository studylogRepository;
     private final MemberTagService memberTagService;
     private final DocumentService studylogDocumentService;
@@ -44,6 +47,13 @@ public class StudylogService {
     private final TagService tagService;
 
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request) {
+        if(Objects.nonNull(request.getIds())) {
+            Page<Studylog> studylogs = studylogRepository
+                .findByIdIn(request.getIds(), request.getPageable());
+
+            return StudylogsResponse.of(studylogs);
+        }
+
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
             return findPostsWithoutKeyword(request.getLevels(), request.getMissions(),
                 request.getTags(),

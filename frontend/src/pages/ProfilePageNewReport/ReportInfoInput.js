@@ -1,25 +1,36 @@
 import React from 'react';
-import { Desc, Section, Title } from './ReportInfoInput.styles';
+import { Desc, Label, Title } from './ReportInfoInput.styles';
 
-const ReportInfoInput = ({ nickname = '', title, onWriteTitle, desc, onWriteDesc }) => {
+const ReportInfoInput = ({ nickname, title, setTitle, desc, setDescription }) => {
+  const onWriteTitle = ({ target: { value } }) => setTitle(value);
+  const onWriteDesc = ({ target: { value } }) => setDescription(value);
+
   return (
-    <Section>
-      <label htmlFor="report_title">✏️ Title</label>
-      <Title
-        id="report_title"
-        placeholder={`${new Date().toLocaleDateString()} ${nickname}의 리포트`}
-        value={title}
-        onChange={onWriteTitle}
-      />
+    <section>
+      <Label htmlFor="report_title">
+        ✏️ Title
+        <span>{title.length}/50</span>
+        <Title
+          id="report_title"
+          placeholder={`${new Date().toLocaleDateString()} ${nickname}의 리포트`}
+          value={title}
+          onChange={onWriteTitle}
+          maxLength={50}
+        />
+      </Label>
 
-      <label htmlFor="report_desc">✏️ Description</label>
-      <Desc
-        id="report_desc"
-        placeholder="리포트에 대해서 간단히 소개해주세요."
-        value={desc}
-        onChange={onWriteDesc}
-      />
-    </Section>
+      <Label htmlFor="report_desc">
+        ✏️ Description
+        <span>{desc.length}/150</span>
+        <Desc
+          id="report_desc"
+          placeholder="리포트에 대해서 간단히 소개해주세요."
+          value={desc}
+          onChange={onWriteDesc}
+          maxLength={150}
+        />
+      </Label>
+    </section>
   );
 };
 

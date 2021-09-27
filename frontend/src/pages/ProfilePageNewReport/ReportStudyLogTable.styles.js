@@ -7,7 +7,7 @@ const Section = styled.section`
     position: relative;
   }
 
-  > h2 {
+  > h3 {
     display: inline;
     margin-left: 0.6rem;
     margin-bottom: 0.3rem;
@@ -31,10 +31,6 @@ const Section = styled.section`
     margin-right: 0.5rem;
 
     font-size: 1.4rem;
-
-    :hover {
-      font-weight: 700;
-    }
   }
 `;
 
@@ -120,6 +116,12 @@ const Tbody = styled.tbody`
       text-overflow: ellipsis;
       white-space: nowrap;
       padding-right: 0.6rem;
+
+      a {
+        :hover {
+          text-decoration: underline;
+        }
+      }
     }
 
     td:nth-of-type(3) {
@@ -145,11 +147,18 @@ const Tbody = styled.tbody`
       button {
         width: 10%;
         margin-top: 0.1rem;
-        color: ${COLOR.DARK_GRAY_500};
+        color: ${COLOR.DARK_GRAY_900};
         font-size: 2rem;
       }
     }
   }
 `;
 
-export { Section, TableButtonWrapper, Table, Thead, Tbody };
+const EmptyTableGuide = styled.span`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export { Section, TableButtonWrapper, Table, Thead, Tbody, EmptyTableGuide };
