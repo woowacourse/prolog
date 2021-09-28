@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 
 import useFetch from '../../hooks/useFetch';
 import useUserStudyLog from '../../hooks/useUserStudyLogs';
-import { onToggleCheckbox } from '../../utils/toggleCheckbox';
 import { requestGetFilters } from '../../service/requests';
+import { onToggleCheckbox } from '../../utils/toggleCheckbox';
 
-import { Button, Modal, SelectBox } from '../../components';
 import { COLOR } from '../../constants';
+import { Button, Modal, SelectBox } from '../../components';
 import { Checkbox } from './style';
 import {
   Form,
@@ -22,13 +22,20 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
   const [filters] = useFetch([], requestGetFilters);
   const { levels } = filters;
 
-  const { selectedLevelName, setSelectedLevelName, postData, setPage } = useUserStudyLog({
-    levels,
+  const [selectedLevelName, setSelectedLevelName] = useState('');
+  const [selectedStudyLogs, setSelectedStudyLogs] = useState(studyLogs);
+
+  const { studyLogData, setPage } = useUserStudyLog({
+    levelId: levels?.find((level) => level.name === selectedLevelName)?.id,
     username,
   });
-  const { totalSize, totalPage, currPage, data: posts } = postData;
+  const { totalSize, totalPage, currPage, data: currLevelStudyLogs } = studyLogData;
 
-  const [selectedStudyLogs, setSelectedStudyLogs] = useState(studyLogs);
+  const checkTarget = (id) => {
+    return selectedStudyLogs.map((studyLog) => studyLog.id).includes(id);
+  };
+  const selectedStudyLogLength = selectedStudyLogs.length;
+  const studyLogLength = studyLogs.length;
 
   const onSelectStudyLogs = (event) => {
     event.preventDefault();
@@ -38,13 +45,9 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
   };
 
   const onToggleStudyLog = (id) => {
-    const targetStudyLog = posts.find((post) => post.id === id);
+    const targetStudyLog = currLevelStudyLogs.find((post) => post.id === id);
 
     setSelectedStudyLogs(onToggleCheckbox(selectedStudyLogs, targetStudyLog));
-  };
-
-  const checkTarget = (id) => {
-    return selectedStudyLogs.map((studyLog) => studyLog.id).includes(id);
   };
 
   const onGetMoreStudyLog = () => {
@@ -84,27 +87,23 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
                 이미 등록된 학습로그는 리포트 수정 페이지에서 삭제 가능합니다.
               </DeleteGuide>
               <ul>
-                {posts?.map(({ id, mission, title }) => {
-                  const checked = checkTarget(id);
-
-                  return (
-                    <StudyLog key={id} isChecked={checked}>
-                      <label>
-                        <Checkbox
-                          type="checkbox"
-                          checked={checked}
-                          onChange={() => onToggleStudyLog(id)}
-                          disabled={studyLogs.map((studyLog) => studyLog.id).includes(id)}
-                        />
-                        <div>
-                          <p>{mission.level.name}</p>
-                          <h4>{title}</h4>
-                        </div>
-                      </label>
-                    </StudyLog>
-                  );
-                })}
-                {posts?.length < totalSize && (
+                {currLevelStudyLogs?.map(({ id, mission, title }) => (
+                  <StudyLog key={id} isChecked={checkTarget(id)}>
+                    <label>
+                      <Checkbox
+                        type="checkbox"
+                        checked={checkTarget(id)}
+                        onChange={() => onToggleStudyLog(id)}
+                        disabled={studyLogs.map((studyLog) => studyLog.id).includes(id)}
+                      />
+                      <div>
+                        <p>{mission.level.name}</p>
+                        <h4>{title}</h4>
+                      </div>
+                    </label>
+                  </StudyLog>
+                ))}
+                {currLevelStudyLogs?.length < totalSize && (
                   <ReadMoreButton type="button" onClick={onGetMoreStudyLog}>
                     더보기
                   </ReadMoreButton>
@@ -117,9 +116,9 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
         <Button
           size="X_SMALL"
           css={{ backgroundColor: `${COLOR.LIGHT_BLUE_500}` }}
-          disabled={selectedStudyLogs.length === studyLogs.length}
+          disabled={selectedStudyLogLength === studyLogLength}
         >
-          등록 ({selectedStudyLogs.length - studyLogs.length}개 선택)
+          등록 ({selectedStudyLogLength - studyLogLength}개 선택)
         </Button>
       </Form>
     </Modal>

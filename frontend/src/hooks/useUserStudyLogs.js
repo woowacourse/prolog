@@ -9,51 +9,46 @@ const defaultValue = {
   levelId: 0,
 };
 
-const useUserStudyLog = ({ levels, username }) => {
-  const [selectedLevelName, setSelectedLevelName] = useState('');
-  const [postData, setPostData] = useState(defaultValue);
+const useUserStudyLog = ({ levelId: currLevelId, username }) => {
+  const [studyLogData, setStudyLogData] = useState(defaultValue);
   const [page, setPage] = useState(1);
 
   const getPosts = async (page = 1) => {
     try {
-      const selectedLevelId = levels.find((level) => level.name === selectedLevelName)?.id;
-
-      if (selectedLevelId) {
-        if (selectedLevelId !== postData.levelId) {
-          page = 1;
-        }
-
-        const query = {
-          type: 'searchParams',
-          data: `levels=${selectedLevelId}&usernames=${username}&page=${page}`,
-        };
-
-        const response = await requestGetPosts(query);
-
-        if (!response.ok) {
-          throw new Error(response.status);
-        }
-
-        const responseData = await response.json();
-
-        if (postData.data && postData.levelId === selectedLevelId) {
-          responseData.data = [...postData.data, ...responseData.data];
-        }
-
-        setPostData({ ...responseData, levelId: selectedLevelId });
+      if (currLevelId !== studyLogData.levelId) {
+        setPage((page) => (page = 1));
       }
+
+      const query = {
+        type: 'searchParams',
+        data: `levels=${currLevelId}&usernames=${username}&page=${page}`,
+      };
+
+      const response = await requestGetPosts(query);
+
+      if (!response.ok) {
+        throw new Error(response.status);
+      }
+
+      const responseData = await response.json();
+
+      if (studyLogData.data && studyLogData.levelId === currLevelId) {
+        responseData.data = [...studyLogData.data, ...responseData.data];
+      }
+
+      setStudyLogData({ ...responseData, levelId: currLevelId });
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    if (levels) {
+    if (currLevelId) {
       getPosts(page);
     }
-  }, [levels, selectedLevelName, page]);
+  }, [currLevelId, page]);
 
-  return { selectedLevelName, setSelectedLevelName, postData, setPage };
+  return { studyLogData, setPage };
 };
 
 export default useUserStudyLog;
