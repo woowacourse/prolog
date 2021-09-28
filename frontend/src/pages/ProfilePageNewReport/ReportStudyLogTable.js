@@ -105,13 +105,13 @@ const ReportStudyLogTable = ({ onModalOpen, studyLogs, setStudyLogs }) => {
                   <ul>
                     <li></li>
                   </ul>
-                  <Button
+                  {/* <Button
                     size="XX_SMALL"
                     type="button"
                     css={{ backgroundColor: `${COLOR.LIGHT_BLUE_300}` }}
                   >
                     +
-                  </Button>
+                  </Button> */}
                 </td>
               </tr>
             ))
