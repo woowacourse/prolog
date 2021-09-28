@@ -57,7 +57,7 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
   };
 
   return (
-    <Modal width="50%" height="80%">
+    <Modal width="50%" height="80rem">
       <Form onSubmit={onSelectStudyLogs}>
         <TitleContainer>
           <h2 id="dialog1Title">역량별 학습로그 등록하기</h2>
@@ -82,10 +82,10 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
             <span>📚 해당 레벨의 학습로그는 총 0개입니다.</span>
           ) : (
             <>
-              <span>📚 해당 레벨의 학습로그는 총 {totalSize ?? 0}개입니다.</span>
-              <DeleteGuide>
-                이미 등록된 학습로그는 리포트 수정 페이지에서 삭제 가능합니다.
-              </DeleteGuide>
+              <span>
+                <strong>{selectedLevelName}</strong>의 학습로그 총 {totalSize ?? 0}개
+              </span>
+              <DeleteGuide>이미 등록된 학습로그는 학습로그 목록에서 삭제 가능합니다.</DeleteGuide>
               <ul>
                 {currLevelStudyLogs?.map(({ id, mission, title }) => (
                   <StudyLog key={id} isChecked={checkTarget(id)}>

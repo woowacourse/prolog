@@ -80,7 +80,7 @@ const StudyLogListContainer = styled.section`
 
   ul {
     width: 100%;
-    max-height: 46rem;
+    max-height: 47rem;
     margin-bottom: 2rem;
 
     overflow: auto;
@@ -105,7 +105,7 @@ const StudyLogListContainer = styled.section`
 
 const DeleteGuide = styled.span`
   &&& {
-    padding: 0.5rem;
+    padding: 0 1rem;
     font-size: 1.3rem;
     margin-top: -0.5rem;
     color: ${COLOR.LIGHT_BLUE_900};
