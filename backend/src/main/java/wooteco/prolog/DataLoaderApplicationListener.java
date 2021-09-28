@@ -170,7 +170,7 @@ public class DataLoaderApplicationListener implements
             "조은현",
             "티케",
             "devhyun637",
-            "https://avatars.githubusercontent.com/u/48412963?v=4")
+            "https://avatars.githubusercontent.com/u/59258239?v=4")
         );
 
         private final GithubProfileResponse githubProfileResponse;

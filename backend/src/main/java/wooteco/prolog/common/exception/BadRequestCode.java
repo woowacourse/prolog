@@ -14,12 +14,13 @@ import wooteco.prolog.member.exception.MemberNotFoundException;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.TagName;
 import wooteco.prolog.studylog.domain.Title;
+import wooteco.prolog.studylog.exception.AbilityHasChildrenException;
+import wooteco.prolog.studylog.exception.AbilityNotFoundException;
 import wooteco.prolog.studylog.exception.AuthorNotValidException;
 import wooteco.prolog.studylog.exception.DuplicateMissionException;
 import wooteco.prolog.studylog.exception.DuplicateTagException;
 import wooteco.prolog.studylog.exception.MissionNotFoundException;
 import wooteco.prolog.studylog.exception.NotValidSortNameException;
-import wooteco.prolog.studylog.exception.SearchArgumentParseException;
 import wooteco.prolog.studylog.exception.StudylogArgumentException;
 import wooteco.prolog.studylog.exception.StudylogContentNullOrEmptyException;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
@@ -64,8 +65,9 @@ public enum BadRequestCode {
     TOO_LONG_MISSION_NAME(3005, String.format("미션 이름이 %d자 초과입니다.", Mission.MAX_LENGTH),
                           TooLongMissionNameException.class),
     DUPLICATE_MEMBER_TAG(3006, "중복되는 멤버 태그 입니다.", DuplicateMemberTagException.class),
-    SEARCH_PARAMETER_NOT_VALID(3007, "검색 파라미터가 올바르지 않습니다.", SearchArgumentParseException.class),
-    ;
+
+    ABILITY_NOT_FOUND(4000, "역량이 존재하지 않습니다.", AbilityNotFoundException.class),
+    ABILITY_HAS_CHILDREN(4001, "해당 역량의 하위 역량이 존재합니다.",AbilityHasChildrenException.class);
 
     private int code;
     private String message;

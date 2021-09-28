@@ -11,7 +11,9 @@ const requestGetTags = () => fetch(`${BASE_URL}/tags`);
 const requestGetPosts = (query) => {
   if (query.type === 'searchParams') {
     return fetch(`${BASE_URL}/posts?${query.data.toString()}`);
-  } else if (query.type === 'filter') {
+  }
+
+  if (query.type === 'filter') {
     const searchParams = Object.entries(query?.data?.postQueryParams).map(
       ([key, value]) => `${key}=${value}`
     );
@@ -46,16 +48,6 @@ const requestDeletePost = (postId, accessToken) =>
 
 const requestGetProfile = (username) => fetch(`${BASE_URL}/members/${username}/profile`);
 
-const requestEditProfile = (data, accessToken) =>
-  fetch(`${BASE_URL}/members/me`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(data),
-  });
-
 const requestGetUserPosts = (username, postSearchParams, filteringOption) => {
   const searchParams = Object.entries(postSearchParams).map(([key, value]) => `${key}=${value}`);
   const filterQuery = filteringOption.length
@@ -83,7 +75,6 @@ export {
   requestGetUserPosts,
   requestDeletePost,
   requestGetProfile,
-  requestEditProfile,
   requestGetUserTags,
   requestGetCalendar,
 };

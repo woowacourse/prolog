@@ -32,7 +32,7 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
                                                         List<Long> levels, List<String> usernames,
                                                         LocalDate start, LocalDate end, Pageable pageable) {
         final Page<Studylog> studylogs = studylogRepository.findAll(
-            makeSpecifications(keyword.toLowerCase(), tags, missions, levels, usernames, start, end), pageable);
+            makeSpecifications(keyword, tags, missions, levels, usernames, start, end), pageable);
 
         final List<Long> studylogIds = studylogs.stream()
             .map(BaseEntity::getId)

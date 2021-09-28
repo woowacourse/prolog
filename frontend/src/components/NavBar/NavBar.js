@@ -57,6 +57,7 @@ const NavBar = () => {
 
   const goMainWithReload = () => {
     history.push(PATH.ROOT);
+    window.location.reload();
   };
 
   const goNewPost = async () => {
