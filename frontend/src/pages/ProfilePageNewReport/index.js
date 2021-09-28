@@ -10,10 +10,6 @@ import ReportInfoInput from './ReportInfoInput';
 import ReportStudyLogTable from './ReportStudyLogTable';
 import { Checkbox, Form, FormButtonWrapper } from './style';
 
-// TODO 1. 페이지 나갈 떄, 확인하는 기능 넣기
-// TODO 5. 로그인이 풀렸을 경우에 어떻게 처리할 것인지 알아보기 -> 글 쓰던게 날아갈 수 있음.
-// TODO 6. 학습로그 역량 추가 시 검색이 되게 구현하기
-
 const ProfilePageNewReport = () => {
   const { username } = useParams();
   const history = useHistory();
