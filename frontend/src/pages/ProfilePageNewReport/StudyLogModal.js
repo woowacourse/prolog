@@ -4,6 +4,7 @@ import useFetch from '../../hooks/useFetch';
 import useUserStudyLog from '../../hooks/useUserStudyLogs';
 import { requestGetFilters } from '../../service/requests';
 import { onToggleCheckbox } from '../../utils/toggleCheckbox';
+import { filterIds } from '../../utils/filteringList';
 
 import { COLOR } from '../../constants';
 import { Button, Modal, SelectBox } from '../../components';
@@ -32,7 +33,7 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
   const { totalSize, totalPage, currPage, data: currLevelStudyLogs } = studyLogData;
 
   const checkTarget = (id) => {
-    return selectedStudyLogs.map((studyLog) => studyLog.id).includes(id);
+    return filterIds(selectedStudyLogs).includes(id);
   };
   const selectedStudyLogLength = selectedStudyLogs.length;
   const studyLogLength = studyLogs.length;
