@@ -26,12 +26,6 @@ public class StudylogsResponse {
     private int totalPage;
     private int currPage;
 
-    public static StudylogsResponse of(List<Studylog> studylogs, Pageable pageable) {
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), studylogs.size());
-        return of(new PageImpl<>(studylogs.subList(start, end), pageable, end));
-    }
-
     public static StudylogsResponse of(Page<Studylog> page) {
         Page<StudylogResponse> responsePage = page.map(StudylogsResponse::toResponse);
         return new StudylogsResponse(responsePage.getContent(),

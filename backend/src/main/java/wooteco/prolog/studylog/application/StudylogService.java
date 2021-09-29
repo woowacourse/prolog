@@ -57,17 +57,9 @@ public class StudylogService {
 
             final Pageable page = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
 
-            Map<Long, Studylog> idAndStudlylog = studylogRepository
-                .findByIdIn(request.getIds(), page)
-                .stream()
-                .collect(toMap(BaseEntity::getId, Function.identity()));
+            final Page<Studylog> studylogs = studylogRepository.findByIdIn(request.getIds(), page);
 
-            List<Studylog> studylogs = request.getIds().stream()
-                .map(idAndStudlylog::get)
-                .distinct()
-                .collect(toList());
-
-            return StudylogsResponse.of(studylogs, request.getPageable());
+            return StudylogsResponse.of(studylogs);
         }
 
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
