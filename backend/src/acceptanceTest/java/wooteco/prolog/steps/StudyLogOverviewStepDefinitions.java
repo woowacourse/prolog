@@ -35,11 +35,11 @@ public class StudyLogOverviewStepDefinitions extends AcceptanceSteps {
                         memberTagResponse -> memberTagResponse.getTagResponse().getName(),
                         MemberTagResponse::getCount)
                 .containsExactlyInAnyOrder(
-                        tuple(TagAcceptanceFixture.TAG1.getTagName(), 1),
-                        tuple(TagAcceptanceFixture.TAG2.getTagName(), 1),
-                        tuple(TagAcceptanceFixture.TAG3.getTagName(), 1),
-                        tuple(TagAcceptanceFixture.TAG4.getTagName(), 1),
-                        tuple("all", 4)
+                        tuple(TagAcceptanceFixture.TAG1.getTagName(), 2),
+                        tuple(TagAcceptanceFixture.TAG2.getTagName(), 2),
+                        tuple(TagAcceptanceFixture.TAG3.getTagName(), 2),
+                        tuple(TagAcceptanceFixture.TAG4.getTagName(), 2),
+                        tuple("ALL", 4)
                 );
     }
 
