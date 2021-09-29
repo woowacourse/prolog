@@ -115,7 +115,6 @@ const SearchBarWrapper = styled.div`
 const SearchBarStyle = css`
   width: 100%;
   height: 100%;
-  min-width: 28rem;
   background-color: white;
   margin-right: 1rem;
   padding: 0.5rem 0;
