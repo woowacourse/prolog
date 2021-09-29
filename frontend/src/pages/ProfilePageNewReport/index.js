@@ -43,19 +43,21 @@ const ProfilePageNewReport = () => {
   const onSubmitReport = (event) => {
     event.preventDefault();
 
-    if (!studyLogs.length) {
-      alert('최소 한 개 이상의 학습로그를 등록해주세요');
-    }
+    alert('현재 준비중인 기능입니다.');
 
-    const data = {
-      title: title !== '' ? title : `${new Date().toLocaleDateString()} ${nickname}의 리포트`,
-      description,
-      // abilityGraph: {
-      //   abilities: [],
-      // },
-      posts: studyLogs,
-      isRepresent: isMainReport,
-    };
+    // if (!studyLogs.length) {
+    //   alert('최소 한 개 이상의 학습로그를 등록해주세요');
+    // }
+
+    // const data = {
+    //   title: title !== '' ? title : `${new Date().toLocaleDateString()} ${nickname}의 리포트`,
+    //   description,
+    //   // abilityGraph: {
+    //   //   abilities: [],
+    //   // },
+    //   posts: studyLogs,
+    //   isRepresent: isMainReport,
+    // };
   };
 
   const onRegisterMainReport = () => setIsMainReport((currentState) => !currentState);
@@ -85,6 +87,7 @@ const ProfilePageNewReport = () => {
           setDescription={setDescription}
         />
 
+        {/* 역량기능 부분 */}
         <section
           style={{
             height: '25rem',
