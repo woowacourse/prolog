@@ -95,7 +95,7 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
                         type="checkbox"
                         checked={checkTarget(id)}
                         onChange={() => onToggleStudyLog(id)}
-                        disabled={studyLogs.map((studyLog) => studyLog.id).includes(id)}
+                        disabled={filterIds(studyLogs).includes(id)}
                       />
                       <div>
                         <p>{mission.level.name}</p>
