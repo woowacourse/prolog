@@ -59,6 +59,7 @@ public class StudylogService {
 
             List<Studylog> studylogs = request.getIds().stream()
                 .map(idAndStudlylog::get)
+                .distinct()
                 .collect(toList());
 
             return StudylogsResponse.of(studylogs);
