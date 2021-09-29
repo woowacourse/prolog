@@ -62,8 +62,12 @@ const Logo = styled.div`
 const Menu = styled.div`
   display: flex;
 
-  & > *:not(:first-child) {
+  & > * {
     margin-left: 1.6rem;
+  }
+
+  & > form {
+    margin-left: 0;
   }
 `;
 

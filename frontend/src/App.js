@@ -13,7 +13,6 @@ import {
   ProfilePagePosts,
   ProfilePageAccount,
 } from './pages';
-import { useState } from 'react';
 
 const Content = styled.div`
   max-width: 112rem;

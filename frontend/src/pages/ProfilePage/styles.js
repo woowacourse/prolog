@@ -101,7 +101,7 @@ const PostBottomContainer = styled.div`
   font-size: 1.2rem;
   color: ${COLOR.LIGHT_GRAY_900};
 
-  & > *:not(:first-child) {
+  & > *:not(:first-of-type) {
     margin-left: 1rem;
   }
 `;

@@ -76,6 +76,7 @@ SelectBox.propTypes = {
 
 SelectBox.defaultProps = {
   options: ['주제가 등록되지 않았습니다.'],
+  selectedOption: '',
   width: '100%',
   maxHeight: '20rem',
 };
