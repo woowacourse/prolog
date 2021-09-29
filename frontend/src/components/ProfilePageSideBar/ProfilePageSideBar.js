@@ -26,6 +26,7 @@ const ProfilePageSideBar = ({ menu }) => {
   const history = useHistory();
   const { username } = useParams();
   const accessToken = useSelector((state) => state.user.accessToken.data);
+  const myName = useSelector((state) => state.user.profile.data?.username);
 
   const [user, setUser] = useState({});
   const [selectedMenu, setSelectedMenu] = useState('');
@@ -112,17 +113,19 @@ const ProfilePageSideBar = ({ menu }) => {
           ) : (
             <Nickname>{user?.nickname}</Nickname>
           )}
-          <Button
-            size={BUTTON_SIZE.X_SMALL}
-            type="button"
-            css={EditButtonStyle}
-            alt={isProfileEditing ? '수정 완료 버튼' : '수정 버튼'}
-            onClick={() => {
-              isProfileEditing ? editProfile() : setIsProfileEditing(true);
-            }}
-          >
-            {isProfileEditing ? '완료' : '수정'}
-          </Button>
+          {myName === username && (
+            <Button
+              size={BUTTON_SIZE.X_SMALL}
+              type="button"
+              css={EditButtonStyle}
+              alt={isProfileEditing ? '수정 완료 버튼' : '수정 버튼'}
+              onClick={() => {
+                isProfileEditing ? editProfile() : setIsProfileEditing(true);
+              }}
+            >
+              {isProfileEditing ? '완료' : '수정'}
+            </Button>
+          )}
         </NicknameWrapper>
       </Profile>
       <MenuList>
