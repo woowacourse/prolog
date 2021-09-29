@@ -46,6 +46,7 @@ const useUserStudyLog = ({ levelId: currLevelId, username }) => {
     if (currLevelId) {
       getPosts(page);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currLevelId, page]);
 
   return { studyLogData, setPage };
