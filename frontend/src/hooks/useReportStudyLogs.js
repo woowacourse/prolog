@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { requestGetPosts } from '../service/requests';
-import { filterIds, filterOnlyNewList } from '../utils/filteringList';
+import { filterIds } from '../utils/filteringList';
 
 const defaultValue = {
   currPage: 1,
@@ -39,13 +39,10 @@ const useReportStudyLogs = (studyLogs) => {
     if (studyLogs.length === 0) {
       setReportStudyLogData(defaultValue);
     } else {
-      const newStudyLogs = filterOnlyNewList(studyLogs, reportStudyLogData.data ?? []);
-      const newStudyLogIds = filterIds(newStudyLogs);
-
       // 모달을 열어 학습로그를 새로 추가한 경우
       if (studyLogIds.length > reportStudyLogData.totalSize) {
         setPage(1);
-        getPosts([...newStudyLogIds, ...studyLogIds]);
+        getPosts(studyLogIds, 1);
       } else {
         // 기존의 학습로그 목록에서 삭제만 한 경우
         getPosts(studyLogIds, page);
