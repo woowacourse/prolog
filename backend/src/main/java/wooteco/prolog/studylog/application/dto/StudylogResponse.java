@@ -44,6 +44,10 @@ public class StudylogResponse {
     }
 
     public static StudylogResponse of(Studylog studylog) {
+        return of(studylog, false);
+    }
+
+    public static StudylogResponse of(Studylog studylog, boolean scrap) {
         List<StudylogTag> studylogTags = studylog.getStudylogTags();
         List<TagResponse> tagResponses = toTagResponses(studylogTags);
 
@@ -56,7 +60,7 @@ public class StudylogResponse {
             studylog.getTitle(),
             studylog.getContent(),
             tagResponses,
-            false
+            scrap
         );
     }
 
@@ -67,4 +71,7 @@ public class StudylogResponse {
             .collect(toList());
     }
 
+    public void setScrap(boolean isScrap){
+        this.scrap = isScrap;
+    }
 }

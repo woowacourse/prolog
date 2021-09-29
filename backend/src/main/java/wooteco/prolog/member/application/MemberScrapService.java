@@ -10,7 +10,6 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.MemberScrapStudylog;
 import wooteco.prolog.member.domain.repository.MemberScrapStudylogRepository;
 import wooteco.prolog.member.exception.MemberScrapAlreadyRegisteredException;
-import wooteco.prolog.member.exception.MemberScrapNotExistException;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
@@ -36,16 +35,14 @@ public class MemberScrapService {
 
         MemberScrapStudylog memberScrapStudylog = new MemberScrapStudylog(member, studylog);
         memberScrapStudylogRepository.save(memberScrapStudylog);
+
+        member.addScrapStudylog(memberScrapStudylog);
         return MemberScrapResponse.of(memberScrapStudylog);
     }
 
     @Transactional
     public void unregisterScrap(Member member, Long studyLogId) {
-        MemberScrapStudylog memberScrapStudylog = memberScrapStudylogRepository
-            .findByMemberIdAndScrapStudylogId(member.getId(), studyLogId)
-            .orElseThrow(MemberScrapNotExistException::new);
-
-        memberScrapStudylogRepository.delete(memberScrapStudylog);
+        member.removeScrapStudylog(member, studyLogId);
     }
 
     public StudylogsResponse showScrap(Member member, Pageable pageable) {
@@ -53,4 +50,5 @@ public class MemberScrapService {
             .findByMemberId(member.getId(), pageable);
         return StudylogsResponse.of(membersScrap.map(MemberScrapStudylog::getScrapStudylog));
     }
+
 }

@@ -43,6 +43,16 @@ public class StudylogService {
     private final MemberService memberService;
     private final TagService tagService;
 
+    public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Member member) {
+        StudylogsResponse studylogs = findStudylogs(request);
+
+        List<Long> scrapedStudylogIds = member.getScrapedStudylogIds();
+        List<StudylogResponse> data = studylogs.getData();
+
+        data.forEach(studylogResponse -> checkingMemberScrapedStudylog(scrapedStudylogIds, studylogResponse));
+        return studylogs;
+    }
+
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request) {
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
             return findPostsWithoutKeyword(request.getLevels(), request.getMissions(),
@@ -173,5 +183,13 @@ public class StudylogService {
             .stream()
             .map(CalendarStudylogResponse::of)
             .collect(toList());
+    }
+
+    private void checkingMemberScrapedStudylog(List<Long> scrapedStudylogIds, StudylogResponse studylogResponse) {
+        for (Long scrapedStudylogId : scrapedStudylogIds) {
+            if (studylogResponse.getId().equals(scrapedStudylogId)) {
+                studylogResponse.setScrap(true);
+            }
+        }
     }
 }

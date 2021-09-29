@@ -15,6 +15,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
+import wooteco.prolog.member.exception.MemberScrapNotValidUserException;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.domain.Tags;
 
@@ -45,6 +46,9 @@ public class Member {
     @Embedded
     private MemberTags memberTags;
 
+    @Embedded
+    private MemberScrapStudylogs memberScrapStudylogs;
+
     public Member(String username, String nickname, Role role, Long githubId, String imageUrl) {
         this(null, username, nickname, role, githubId, imageUrl);
     }
@@ -55,7 +59,7 @@ public class Member {
                   Role role,
                   Long githubId,
                   String imageUrl) {
-        this(id, username, nickname, role, githubId, imageUrl, new MemberTags());
+        this(id, username, nickname, role, githubId, imageUrl, new MemberTags(), new MemberScrapStudylogs());
     }
 
     public Member(Long id,
@@ -64,7 +68,9 @@ public class Member {
                   Role role,
                   Long githubId,
                   String imageUrl,
-                  MemberTags memberTags) {
+                  MemberTags memberTags,
+                  MemberScrapStudylogs memberScrapStudylogs
+                  ) {
         this.id = id;
         this.username = username;
         this.nickname = ifAbsentReplace(nickname, username);
@@ -72,6 +78,7 @@ public class Member {
         this.githubId = githubId;
         this.imageUrl = imageUrl;
         this.memberTags = memberTags;
+        this.memberScrapStudylogs = memberScrapStudylogs;
     }
 
     private String ifAbsentReplace(String nickname, String username) {
@@ -91,6 +98,10 @@ public class Member {
         if (!ObjectUtils.isEmpty(imageUrl)) {
             this.imageUrl = imageUrl;
         }
+    }
+
+    public static Member Anonymous() {
+        return new Member(-1L, "anonymous", "anonymous", Role.UNVALIDATED, -1L, "anonymous");
     }
 
     public void addTag(Tag tag) {
@@ -124,6 +135,21 @@ public class Member {
             .stream()
             .sorted((o1, o2) -> o2.getCount() - o1.getCount())
             .collect(Collectors.toList());
+    }
+
+    public void addScrapStudylog(MemberScrapStudylog memberScrapStudylog){
+        if (!this.equals(memberScrapStudylog.getMember())) {
+            throw new MemberScrapNotValidUserException();
+        }
+        memberScrapStudylogs.add(memberScrapStudylog);
+    }
+
+    public void removeScrapStudylog(Member member, Long studylogId){
+        memberScrapStudylogs.remove(member, studylogId);
+    }
+
+    public List<Long> getScrapedStudylogIds(){
+        return this.memberScrapStudylogs.getScrapedStudylogIds();
     }
 
     @Override
