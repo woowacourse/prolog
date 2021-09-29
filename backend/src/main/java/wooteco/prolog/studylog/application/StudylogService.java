@@ -15,6 +15,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -52,8 +53,12 @@ public class StudylogService {
 
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request) {
         if(Objects.nonNull(request.getIds())) {
+            final Pageable pageable = request.getPageable();
+
+            final Pageable page = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+
             Map<Long, Studylog> idAndStudlylog = studylogRepository
-                .findByIdIn(request.getIds(), request.getPageable())
+                .findByIdIn(request.getIds(), page)
                 .stream()
                 .collect(toMap(BaseEntity::getId, Function.identity()));
 
@@ -62,7 +67,7 @@ public class StudylogService {
                 .distinct()
                 .collect(toList());
 
-            return StudylogsResponse.of(studylogs);
+            return StudylogsResponse.of(studylogs, request.getPageable());
         }
 
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {

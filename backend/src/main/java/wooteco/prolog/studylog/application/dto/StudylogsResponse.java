@@ -9,9 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.elasticsearch.core.SearchPage;
+import org.springframework.data.domain.Pageable;
 import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
 
@@ -27,8 +26,10 @@ public class StudylogsResponse {
     private int totalPage;
     private int currPage;
 
-    public static StudylogsResponse of(List<Studylog> studylogs) {
-        return of(new PageImpl<>(studylogs));
+    public static StudylogsResponse of(List<Studylog> studylogs, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), studylogs.size());
+        return of(new PageImpl<>(studylogs.subList(start, end), pageable, end));
     }
 
     public static StudylogsResponse of(Page<Studylog> page) {
