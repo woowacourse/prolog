@@ -75,11 +75,6 @@ const Table = styled.table`
 
 const Thead = styled.thead`
   > tr {
-    border: 0.2rem solid ${COLOR.LIGHT_GRAY_500};
-    border-radius: 0.5rem;
-
-    background-color: ${COLOR.LIGHT_GRAY_100};
-
     th:nth-of-type(1) {
       width: 10%;
       text-align: center;
@@ -97,8 +92,7 @@ const Thead = styled.thead`
 
 const Tbody = styled.tbody`
   display: block;
-  height: 22rem;
-  overflow: scroll;
+  min-height: 15rem;
 
   tr {
     width: 96%;
@@ -155,10 +149,12 @@ const Tbody = styled.tbody`
 `;
 
 const EmptyTableGuide = styled.span`
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+
+  position: absolute;
+  bottom: 30%;
 `;
 
 export { Section, TableButtonWrapper, Table, Thead, Tbody, EmptyTableGuide };
