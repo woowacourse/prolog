@@ -75,7 +75,7 @@ public class Report {
     public void update(Report report) {
         this.title = report.title;
         this.description = report.description;
-        this.abilityGraph.update(report.abilityGraph, this);
+        this.abilityGraph.update(report.abilityGraph);
         this.studylogs.update(report.studylogs, null);
         this.isRepresent = report.isRepresent;
     }

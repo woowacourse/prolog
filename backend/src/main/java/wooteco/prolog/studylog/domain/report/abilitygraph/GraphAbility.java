@@ -11,12 +11,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import wooteco.prolog.studylog.domain.ablity.Ability;
-import wooteco.prolog.studylog.domain.report.Report;
 import wooteco.prolog.studylog.domain.report.common.Updatable;
 
 @Entity
 @AllArgsConstructor
-public class ReportedAbility implements Updatable<ReportedAbility> {
+public class GraphAbility implements Updatable<GraphAbility> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,22 +31,22 @@ public class ReportedAbility implements Updatable<ReportedAbility> {
     private Boolean isPresent;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "report_id", nullable = false)
-    private Report report;
+    @JoinColumn(name = "ability_graph_id", nullable = false)
+    private AbilityGraph abilityGraph;
 
-    protected ReportedAbility() {
+    protected GraphAbility() {
     }
 
-    public ReportedAbility(Ability ability, Long weight, Boolean isPresent) {
+    public GraphAbility(Ability ability, Long weight, Boolean isPresent) {
         this(null, ability, weight, isPresent, null);
     }
 
-    public ReportedAbility(Ability ability, Long weight, Boolean isPresent, Report report) {
-        this(null, ability, weight, isPresent, report);
+    public GraphAbility(Ability ability, Long weight, Boolean isPresent, AbilityGraph abilityGraph) {
+        this(null, ability, weight, isPresent, abilityGraph);
     }
 
-    public void appendTo(Report report) {
-        this.report = report;
+    public void appendTo(AbilityGraph abilityGraph) {
+        this.abilityGraph = abilityGraph;
     }
 
     public Long getId() {
@@ -79,7 +78,7 @@ public class ReportedAbility implements Updatable<ReportedAbility> {
     }
 
     @Override
-    public void update(ReportedAbility ability) {
+    public void update(GraphAbility ability) {
         this.ability = ability.getAbility();
         this.weight = ability.getWeight();
     }
@@ -89,10 +88,10 @@ public class ReportedAbility implements Updatable<ReportedAbility> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ReportedAbility)) {
+        if (!(o instanceof GraphAbility)) {
             return false;
         }
-        ReportedAbility that = (ReportedAbility) o;
+        GraphAbility that = (GraphAbility) o;
 
         return Objects.equals(getAbility(), that.getAbility());
     }
@@ -107,10 +106,10 @@ public class ReportedAbility implements Updatable<ReportedAbility> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ReportedAbility)) {
+        if (!(o instanceof GraphAbility)) {
             return false;
         }
-        ReportedAbility that = (ReportedAbility) o;
+        GraphAbility that = (GraphAbility) o;
         return Objects.equals(getId(), that.getId());
     }
 

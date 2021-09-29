@@ -20,15 +20,14 @@ import wooteco.prolog.common.fixture.studylog.StudylogFixture;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.studylog.application.dto.report.ReportAssembler;
-import wooteco.prolog.studylog.application.dto.report.response.ReportResponse;
 import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.ablity.Ability;
 import wooteco.prolog.studylog.domain.report.Report;
 import wooteco.prolog.studylog.domain.report.abilitygraph.AbilityGraph;
-import wooteco.prolog.studylog.domain.report.abilitygraph.ReportedAbilities;
-import wooteco.prolog.studylog.domain.report.abilitygraph.ReportedAbility;
+import wooteco.prolog.studylog.domain.report.abilitygraph.GraphAbilities;
+import wooteco.prolog.studylog.domain.report.abilitygraph.GraphAbility;
 import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylog;
 import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylogAbility;
 import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylogs;
@@ -90,19 +89,19 @@ class ReportRepositoryTest {
     }
 
     private Report createReport(Member member) {
-        Ability ability1 = abilityRepository.save(AbilityFixture.parentAbility1());
-        Ability ability2 = abilityRepository.save(AbilityFixture.parentAbility2());
-        Ability ability3 = abilityRepository.save(AbilityFixture.parentAbility3());
-        ReportedAbilities reportedAbilities = new ReportedAbilities(Arrays.asList(
-            new ReportedAbility(ability1, 1L, true),
-            new ReportedAbility(ability2, 2L, true),
-            new ReportedAbility(ability3, 3L, true)
+        Ability ability1 = abilityRepository.save(AbilityFixture.parentAbility1(member));
+        Ability ability2 = abilityRepository.save(AbilityFixture.parentAbility2(member));
+        Ability ability3 = abilityRepository.save(AbilityFixture.parentAbility3(member));
+        GraphAbilities graphAbilities = new GraphAbilities(Arrays.asList(
+            new GraphAbility(ability1, 1L, true),
+            new GraphAbility(ability2, 2L, true),
+            new GraphAbility(ability3, 3L, true)
         ));
 
         Level level1 = levelRepository.save(LevelFixture.level1());
         Mission mission = missionRepository.save(MissionFixture.mission1(level1));
-        Ability ability4 = abilityRepository.save(AbilityFixture.childAbility1());
-        Ability ability5 = abilityRepository.save(AbilityFixture.childAbility2());
+        Ability ability4 = abilityRepository.save(AbilityFixture.childAbility1(member));
+        Ability ability5 = abilityRepository.save(AbilityFixture.childAbility2(member));
         Studylog studylog = studylogRepository.save(createStudyLog(member, mission));
         ReportedStudylogs reportedStudylogs = new ReportedStudylogs(Arrays.asList(
             new ReportedStudylog(
@@ -125,7 +124,7 @@ class ReportRepositoryTest {
             .member(member)
             .title("test report")
             .description("test report")
-            .graph(new AbilityGraph(reportedAbilities))
+            .graph(new AbilityGraph(graphAbilities))
             .member(member)
             .studylogs(reportedStudylogs)
             .build();

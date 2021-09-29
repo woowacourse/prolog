@@ -5,48 +5,50 @@ import static java.util.stream.Collectors.toList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import wooteco.prolog.studylog.domain.report.Report;
-import wooteco.prolog.studylog.domain.report.abilitygraph.datastructure.GraphAbility;
+import wooteco.prolog.studylog.domain.report.abilitygraph.datastructure.GraphAbilityDto;
 import wooteco.prolog.studylog.domain.report.common.UpdateUtil;
 
 @Embeddable
-public class ReportedAbilities {
+public class GraphAbilities {
 
     @OneToMany(
+        mappedBy = "abilityGraph",
         fetch = FetchType.LAZY,
         cascade = CascadeType.PERSIST,
         orphanRemoval = true
     )
-    private List<ReportedAbility> abilities;
+    private List<GraphAbility> abilities;
 
-    protected ReportedAbilities() {
+    protected GraphAbilities() {
     }
 
-    public ReportedAbilities(List<ReportedAbility> abilities) {
+    public GraphAbilities(List<GraphAbility> abilities) {
         this.abilities = abilities;
     }
 
-    public void appendTo(Report report) {
-        this.abilities.forEach(ability -> ability.appendTo(report));
+    public void appendTo(AbilityGraph abilityGraph) {
+        this.abilities.forEach(ability -> ability.appendTo(abilityGraph));
     }
 
-    public List<ReportedAbility> getAbilities() {
+    public List<GraphAbility> getAbilities() {
         return abilities;
     }
 
-    public void update(ReportedAbilities reportedAbilities, Report report) {
-        reportedAbilities.getAbilities().forEach(ability -> ability.appendTo(report));
+    public void update(GraphAbilities graphAbilities, AbilityGraph abilityGraph) {
+        graphAbilities.getAbilities().forEach(ability -> ability.appendTo(abilityGraph));
 
-        UpdateUtil.execute(getAbilities(), reportedAbilities.getAbilities());
+        UpdateUtil.execute(getAbilities(), graphAbilities.getAbilities());
     }
 
-    public List<GraphAbility> graphAbilities() {
+    public List<GraphAbilityDto> graphAbilities() {
         Long allWeight = allWeight();
 
         return abilities.stream()
-            .map(ability -> new GraphAbility(
+            .map(ability -> new GraphAbilityDto(
                 ability.getAbilityId(),
                 ability.getName(),
                 ability.getWeight(),
@@ -55,14 +57,14 @@ public class ReportedAbilities {
             )).collect(toList());
     }
 
-    private Double calculatePercentage(Long allWeight, ReportedAbility ability) {
+    private Double calculatePercentage(Long allWeight, GraphAbility ability) {
         double percentage = ability.getWeight() / (double) allWeight;
         return  Math.round(percentage * 100) / 100.0;
     }
 
     private Long allWeight() {
         return abilities.stream()
-            .mapToLong(ReportedAbility::getWeight)
+            .mapToLong(GraphAbility::getWeight)
             .sum();
     }
 }

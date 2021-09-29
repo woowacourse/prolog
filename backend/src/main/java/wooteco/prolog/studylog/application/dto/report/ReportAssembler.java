@@ -21,9 +21,9 @@ import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.ablity.Ability;
 import wooteco.prolog.studylog.domain.report.Report;
 import wooteco.prolog.studylog.domain.report.abilitygraph.AbilityGraph;
-import wooteco.prolog.studylog.domain.report.abilitygraph.ReportedAbilities;
-import wooteco.prolog.studylog.domain.report.abilitygraph.ReportedAbility;
-import wooteco.prolog.studylog.domain.report.abilitygraph.datastructure.GraphAbility;
+import wooteco.prolog.studylog.domain.report.abilitygraph.GraphAbilities;
+import wooteco.prolog.studylog.domain.report.abilitygraph.GraphAbility;
+import wooteco.prolog.studylog.domain.report.abilitygraph.datastructure.GraphAbilityDto;
 import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylog;
 import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylogAbility;
 import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylogs;
@@ -55,15 +55,15 @@ public class ReportAssembler {
     }
 
     private AbilityGraph of(GraphRequest graphRequest) {
-        List<ReportedAbility> reportedAbilities = graphRequest.getAbilities().stream()
+        List<GraphAbility> reportedAbilities = graphRequest.getAbilities().stream()
             .map(this::of)
             .collect(toList());
 
-        return new AbilityGraph(new ReportedAbilities(reportedAbilities));
+        return new AbilityGraph(new GraphAbilities(reportedAbilities));
     }
 
-    private ReportedAbility of(AbilityRequest abilityRequest) {
-        return new ReportedAbility(
+    private GraphAbility of(AbilityRequest abilityRequest) {
+        return new GraphAbility(
             findAbilityById(abilityRequest.getId()),
             abilityRequest.getWeight(),
             abilityRequest.isRepresent()
@@ -138,13 +138,13 @@ public class ReportAssembler {
         return new GraphResponse(graphAbilityRespons);
     }
 
-    private GraphAbilityResponse of(GraphAbility graphAbility) {
+    private GraphAbilityResponse of(GraphAbilityDto graphAbilityDto) {
         return new GraphAbilityResponse(
-            graphAbility.getId(),
-            graphAbility.getName(),
-            graphAbility.getWeight(),
-            graphAbility.getPercentage(),
-            graphAbility.isPresent()
+            graphAbilityDto.getId(),
+            graphAbilityDto.getName(),
+            graphAbilityDto.getWeight(),
+            graphAbilityDto.getPercentage(),
+            graphAbilityDto.isPresent()
         );
     }
 

@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.elasticsearch.core.SearchPage;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogDocument;
@@ -25,6 +26,10 @@ public class StudylogsResponse {
     private Long totalSize;
     private int totalPage;
     private int currPage;
+
+    public static StudylogsResponse of(List<Studylog> studylogs) {
+        return of(new PageImpl<>(studylogs));
+    }
 
     public static StudylogsResponse of(Page<Studylog> page) {
         Page<StudylogResponse> responsePage = page.map(StudylogsResponse::toResponse);

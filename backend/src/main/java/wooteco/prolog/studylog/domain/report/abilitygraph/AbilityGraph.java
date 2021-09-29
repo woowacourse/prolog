@@ -7,9 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import wooteco.prolog.studylog.domain.report.Report;
-import wooteco.prolog.studylog.domain.report.abilitygraph.datastructure.GraphAbility;
+import wooteco.prolog.studylog.domain.report.abilitygraph.datastructure.GraphAbilityDto;
+import wooteco.prolog.studylog.domain.repository.ReportRepository;
 
 @Entity
 @AllArgsConstructor
@@ -20,29 +23,37 @@ public class AbilityGraph {
     private Long id;
 
     @Embedded
-    private ReportedAbilities reportedAbilities;
+    private GraphAbilities graphAbilities;
+
+    @ManyToOne
+    @JoinColumn(name = "report_id")
+    private Report report;
 
     protected AbilityGraph() {
     }
 
-    public AbilityGraph(ReportedAbilities reportedAbilities) {
-        this(null, reportedAbilities);
+    public AbilityGraph(GraphAbilities graphAbilities) {
+        this(null, graphAbilities, null);
     }
 
-    public ReportedAbilities getReportedAbilities() {
-        return reportedAbilities;
+    public AbilityGraph(GraphAbilities graphAbilities, Report report) {
+        this(null, graphAbilities, report);
     }
 
-    public void update(AbilityGraph abilityGraph, Report report) {
-        reportedAbilities.update(abilityGraph.getReportedAbilities(), report);
+    public GraphAbilities getGraphAbilities() {
+        return graphAbilities;
+    }
+
+    public void update(AbilityGraph abilityGraph) {
+        graphAbilities.update(abilityGraph.getGraphAbilities(), this);
     }
 
     public void appendTo(Report report) {
-        reportedAbilities.appendTo(report);
+        this.report = report;
     }
 
-    public List<GraphAbility> getAbilities() {
-        return reportedAbilities.graphAbilities();
+    public List<GraphAbilityDto> getAbilities() {
+        return graphAbilities.graphAbilities();
     }
 
     @Override

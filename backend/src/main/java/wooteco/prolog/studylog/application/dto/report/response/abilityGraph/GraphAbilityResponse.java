@@ -1,6 +1,6 @@
 package wooteco.prolog.studylog.application.dto.report.response.abilityGraph;
 
-import wooteco.prolog.studylog.domain.report.abilitygraph.datastructure.GraphAbility;
+import wooteco.prolog.studylog.domain.report.abilitygraph.datastructure.GraphAbilityDto;
 
 public class GraphAbilityResponse {
 
@@ -21,13 +21,13 @@ public class GraphAbilityResponse {
         this.present = present;
     }
 
-    public static GraphAbilityResponse from(GraphAbility graphAbility) {
+    public static GraphAbilityResponse from(GraphAbilityDto graphAbilityDto) {
         return new GraphAbilityResponse(
-            graphAbility.getId(),
-            graphAbility.getName(),
-            graphAbility.getWeight(),
-            graphAbility.getPercentage(),
-            graphAbility.isPresent()
+            graphAbilityDto.getId(),
+            graphAbilityDto.getName(),
+            graphAbilityDto.getWeight(),
+            graphAbilityDto.getPercentage(),
+            graphAbilityDto.isPresent()
         );
     }
 

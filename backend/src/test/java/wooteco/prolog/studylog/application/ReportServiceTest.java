@@ -68,7 +68,7 @@ class ReportServiceTest {
     @Test
     void createReport() throws IOException {
         Member member = createMember();
-        setAbilities();
+        setAbilities(member);
         setStudylogs(member);
         ReportRequest reportRequest = createRequest("jsons/report_post_request.json");
         ReportResponse reportResponse = reportService.createReport(reportRequest, member);
@@ -82,7 +82,7 @@ class ReportServiceTest {
     @Test
     void updateReport() throws IOException {
         Member member = createMember();
-        setAbilities();
+        setAbilities(member);
         setStudylogs(member);
         ReportRequest request = createRequest("jsons/report_post_request.json");
         reportService.createReport(request, member);
@@ -128,10 +128,10 @@ class ReportServiceTest {
             .build();
     }
 
-    private void setAbilities() {
-        abilityRepository.save(AbilityFixture.parentAbility1());
-        abilityRepository.save(AbilityFixture.parentAbility2());
-        abilityRepository.save(AbilityFixture.parentAbility3());
+    private void setAbilities(Member member) {
+        abilityRepository.save(AbilityFixture.parentAbility1(member));
+        abilityRepository.save(AbilityFixture.parentAbility2(member));
+        abilityRepository.save(AbilityFixture.parentAbility3(member));
     }
 
     private void setStudylogs(Member member) {

@@ -3,19 +3,23 @@ package wooteco.prolog.studylog.application;
 import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.BaseEntity;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
@@ -48,8 +52,14 @@ public class StudylogService {
 
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request) {
         if(Objects.nonNull(request.getIds())) {
-            Page<Studylog> studylogs = studylogRepository
-                .findByIdIn(request.getIds(), request.getPageable());
+            Map<Long, Studylog> idAndStudlylog = studylogRepository
+                .findByIdIn(request.getIds(), request.getPageable())
+                .stream()
+                .collect(toMap(BaseEntity::getId, Function.identity()));
+
+            List<Studylog> studylogs = request.getIds().stream()
+                .map(idAndStudlylog::get)
+                .collect(toList());
 
             return StudylogsResponse.of(studylogs);
         }

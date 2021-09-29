@@ -1,6 +1,6 @@
 package wooteco.prolog.studylog.domain.report.abilitygraph.datastructure;
 
-public class GraphAbility {
+public class GraphAbilityDto {
 
     private Long id;
     private String name;
@@ -8,7 +8,7 @@ public class GraphAbility {
     private Double percentage;
     private Boolean isPresent;
 
-    public GraphAbility(Long id, String name, Long weight, Double percentage, Boolean isPresent) {
+    public GraphAbilityDto(Long id, String name, Long weight, Double percentage, Boolean isPresent) {
         this.id = id;
         this.name = name;
         this.weight = weight;
