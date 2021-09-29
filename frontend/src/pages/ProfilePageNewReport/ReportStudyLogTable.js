@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 import { onToggleCheckbox } from '../../utils/toggleCheckbox';
-import { filterList } from '../../utils/filterList';
+import { filterOnlyNewList } from '../../utils/filteringList';
 import useReportStudyLogs from '../../hooks/useReportStudyLogs';
 
-import { Button } from '../../components';
+import { Button, Pagination } from '../../components';
 import COLOR from '../../constants/color';
 import { Checkbox } from './style';
 import {
@@ -17,17 +17,17 @@ import {
 } from './ReportStudyLogTable.styles';
 
 const ReportStudyLogTable = ({ onModalOpen, studyLogs, setStudyLogs }) => {
-  const [currentStudyLogs, setCurrentStudyLogs] = useReportStudyLogs(studyLogs);
-
+  const { reportStudyLogData, setPage } = useReportStudyLogs(studyLogs);
+  const { currPage, totalPage, totalSize, data: currReportStudyLogs } = reportStudyLogData;
   const [deleteTargets, setDeleteTargets] = useState([]);
 
-  const allChecked = deleteTargets?.length === currentStudyLogs?.length;
+  const allChecked = deleteTargets?.length === currReportStudyLogs?.length;
 
   const onToggleAllStudyLog = () => {
     if (allChecked) {
       setDeleteTargets([]);
     } else {
-      setDeleteTargets(currentStudyLogs);
+      setDeleteTargets(currReportStudyLogs);
     }
   };
 
@@ -38,16 +38,25 @@ const ReportStudyLogTable = ({ onModalOpen, studyLogs, setStudyLogs }) => {
   };
 
   const onDeleteStudyLogInReport = () => {
-    setStudyLogs(filterList(currentStudyLogs, deleteTargets));
-    setCurrentStudyLogs((currentList) => filterList(currentList, deleteTargets));
+    if (allChecked) {
+      const moveTargetPage = currPage === totalPage ? currPage - 1 : currPage;
+      setPage(moveTargetPage);
+    }
+
+    setStudyLogs((currStudyLogs) => filterOnlyNewList(currStudyLogs, deleteTargets));
     setDeleteTargets([]);
+  };
+
+  const onMoveToPage = (number) => {
+    setDeleteTargets([]);
+    setPage(number);
   };
 
   return (
     <Section>
       <h3>📚 학습로그 목록</h3>
       <span>
-        {deleteTargets?.length ?? 0}개 선택 (총 {currentStudyLogs?.length ?? 0}개)
+        {deleteTargets?.length ?? 0}개 선택 (총 {totalSize ?? 0}개)
       </span>
       <TableButtonWrapper>
         <Button
@@ -76,8 +85,8 @@ const ReportStudyLogTable = ({ onModalOpen, studyLogs, setStudyLogs }) => {
               <Checkbox
                 type="checkbox"
                 onChange={onToggleAllStudyLog}
-                checked={currentStudyLogs?.length && allChecked}
-                disabled={!currentStudyLogs?.length}
+                checked={currReportStudyLogs?.length && allChecked}
+                disabled={!currReportStudyLogs?.length}
               />
             </th>
             <th scope="col">제목</th>
@@ -86,40 +95,42 @@ const ReportStudyLogTable = ({ onModalOpen, studyLogs, setStudyLogs }) => {
         </Thead>
 
         <Tbody>
-          {currentStudyLogs.length !== 0 ? (
-            currentStudyLogs.map(({ id, title }) => (
-              <tr key={id}>
-                <td>
-                  <Checkbox
-                    type="checkbox"
-                    checked={deleteTargets.map((studyLog) => studyLog.id).includes(id)}
-                    onChange={() => onToggleStudyLog(id)}
-                  />
-                </td>
-                <td>
-                  <a href={`/posts/${id}`} target="_blank" rel="noopener noreferrer">
-                    {title}
-                  </a>
-                </td>
-                <td>
-                  <ul>
-                    <li></li>
-                  </ul>
-                  {/* <Button
+          {currReportStudyLogs?.map(({ id, title }) => (
+            <tr key={id}>
+              <td>
+                <Checkbox
+                  type="checkbox"
+                  value={title | ''}
+                  checked={deleteTargets.map((studyLog) => studyLog.id).includes(id)}
+                  onChange={() => onToggleStudyLog(id)}
+                />
+              </td>
+              <td>
+                <a href={`/posts/${id}`} target="_blank" rel="noopener noreferrer">
+                  {title}
+                </a>
+              </td>
+              <td>
+                <ul>
+                  <li></li>
+                </ul>
+                {/* <Button
                     size="XX_SMALL"
                     type="button"
                     css={{ backgroundColor: `${COLOR.LIGHT_BLUE_300}` }}
                   >
                     +
                   </Button> */}
-                </td>
-              </tr>
-            ))
-          ) : (
-            <EmptyTableGuide>'학습로그 불러오기'를 통해 학습로그를 추가해주세요.</EmptyTableGuide>
-          )}
+              </td>
+            </tr>
+          ))}
         </Tbody>
       </Table>
+      <Pagination postsInfo={reportStudyLogData} onSetPage={onMoveToPage} />
+
+      {currReportStudyLogs.length === 0 && (
+        <EmptyTableGuide>'학습로그 불러오기'를 통해 학습로그를 추가해주세요.</EmptyTableGuide>
+      )}
     </Section>
   );
 };
