@@ -70,7 +70,7 @@ public class StudylogService {
                 .map(idAndStudylog::get)
                 .collect(toList());
 
-            return StudylogsResponse.of(new PageImpl<>(studylogs));
+            return StudylogsResponse.of(new PageImpl<>(studylogs, pageable, request.getIds().size()));
         }
 
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
