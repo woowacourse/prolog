@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import useFetch from '../../hooks/useFetch';
 import useUserStudyLog from '../../hooks/useUserStudyLogs';
@@ -30,6 +30,23 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
     levelId: levels?.find((level) => level.name === selectedLevelName)?.id,
     username,
   });
+
+  const listRef = useRef(null);
+
+  useEffect(() => {
+    window.scrollTo({ top: 300, behavior: 'smooth' });
+  }, []);
+
+  useEffect(() => {
+    if (listRef.current) {
+      listRef.current.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'auto',
+      });
+    }
+  }, [selectedLevelName]);
+
   const { totalSize, totalPage, currPage, data: currLevelStudyLogs } = studyLogData;
 
   const checkTarget = (id) => {
@@ -61,7 +78,7 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
     <Modal width="50%" height="80rem">
       <Form onSubmit={onSelectStudyLogs}>
         <TitleContainer>
-          <h2 id="dialog1Title">역량별 학습로그 등록하기</h2>
+          <h2>역량별 학습로그 등록하기</h2>
           <button type="button" onClick={onModalClose}>
             닫기
           </button>
@@ -87,7 +104,7 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
                 <strong>{selectedLevelName}</strong>의 학습로그 총 {totalSize ?? 0}개
               </span>
               <DeleteGuide>이미 등록된 학습로그는 학습로그 목록에서 삭제 가능합니다.</DeleteGuide>
-              <ul>
+              <ul ref={listRef}>
                 {currLevelStudyLogs?.map(({ id, mission, title }) => (
                   <StudyLog key={id} isChecked={checkTarget(id)}>
                     <label>
