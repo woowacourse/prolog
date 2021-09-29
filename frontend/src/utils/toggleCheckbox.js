@@ -6,7 +6,7 @@ const onToggleCheckbox = (checkboxList, item) => {
 
     return [...checkboxList.slice(0, index), ...checkboxList.slice(index + 1)];
   } else {
-    return [...checkboxList, item];
+    return [item, ...checkboxList];
   }
 };
 
