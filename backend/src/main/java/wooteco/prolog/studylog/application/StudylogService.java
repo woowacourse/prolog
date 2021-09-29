@@ -15,6 +15,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -55,11 +56,21 @@ public class StudylogService {
         if(Objects.nonNull(request.getIds())) {
             final Pageable pageable = request.getPageable();
 
-            final Pageable page = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+            List<Long> ids = request.getIds();
 
-            final Page<Studylog> studylogs = studylogRepository.findByIdIn(request.getIds(), page);
+            int start = (int)pageable.getOffset();
+            int end = Math.min((start + pageable.getPageSize()), ids.size());
 
-            return StudylogsResponse.of(studylogs);
+            final Map<Long, Studylog> idAndStudylog = studylogRepository
+                .findByIdIn(ids.subList(start, end))
+                .stream()
+                .collect(toMap(BaseEntity::getId, Function.identity()));
+
+            final List<Studylog> studylogs = ids.subList(start, end).stream()
+                .map(idAndStudylog::get)
+                .collect(toList());
+
+            return StudylogsResponse.of(new PageImpl<>(studylogs));
         }
 
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
