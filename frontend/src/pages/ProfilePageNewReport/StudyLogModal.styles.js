@@ -157,6 +157,7 @@ const ReadMoreButton = styled.button`
   height: 2.5rem;
   border: 1px solid ${COLOR.LIGHT_GRAY_100};
   background-color: ${COLOR.LIGHT_GRAY_100};
+  font-size: 1.4rem;
   text-align: center;
 `;
 
