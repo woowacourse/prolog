@@ -29,14 +29,14 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-
         try {
             return new StudylogsSearchRequest(
-                webRequest.getParameter("keyword"),
+                convertToString(webRequest, "keyword"),
                 convertToLongList(webRequest, "levels"),
                 convertToLongList(webRequest, "missions"),
                 convertToLongList(webRequest, "tags"),
                 convertToStringList(webRequest, "usernames"),
+                convertToLongList(webRequest, "members"),
                 convertToLocalDate(webRequest, "startDate"),
                 convertToLocalDate(webRequest, "endDate"),
                 makePageableDefault(webRequest)
@@ -52,9 +52,13 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
         if (Objects.isNull(date)) {
             return null;
         }
-
         return LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE);
     }
+
+    private String convertToString(NativeWebRequest webRequest, String key) {
+        return webRequest.getParameter(key);
+    }
+
 
     private Integer convertToInt(NativeWebRequest webRequest, String key, int defaultValue) {
         String value = webRequest.getParameter(key);

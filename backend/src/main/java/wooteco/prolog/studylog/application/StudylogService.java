@@ -7,6 +7,7 @@ import static java.util.stream.Collectors.toList;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -47,7 +48,8 @@ public class StudylogService {
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
             return findPostsWithoutKeyword(request.getLevels(), request.getMissions(),
                 request.getTags(),
-                request.getUsernames(), request.getStartDate(), request.getEndDate(),
+                request.getUsernames(), request.getMembers(), request.getStartDate(),
+                request.getEndDate(),
                 request.getPageable());
         }
 
@@ -78,12 +80,34 @@ public class StudylogService {
         LocalDate startDate,
         LocalDate endDate,
         Pageable pageable) {
+        return findPostsWithoutKeyword(
+            levelIds,
+            missionIds,
+            tagIds,
+            usernames,
+            new ArrayList<>(),
+            startDate,
+            endDate,
+            pageable
+        );
+    }
+
+    public StudylogsResponse findPostsWithoutKeyword(
+        List<Long> levelIds,
+        List<Long> missionIds,
+        List<Long> tagIds,
+        List<String> usernames,
+        List<Long> members,
+        LocalDate startDate,
+        LocalDate endDate,
+        Pageable pageable) {
 
         Specification<Studylog> specs =
             StudylogSpecification.findByLevelIn(levelIds)
                 .and(StudylogSpecification.equalIn("mission", missionIds))
                 .and(StudylogSpecification.findByTagIn(tagIds))
                 .and(StudylogSpecification.findByUsernameIn(usernames))
+                .and(StudylogSpecification.findByMemberIn(members))
                 .and(StudylogSpecification.findBetweenDate(startDate, endDate))
                 .and(StudylogSpecification.distinct(true));
 

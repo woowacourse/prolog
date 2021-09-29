@@ -1,5 +1,7 @@
 package wooteco.prolog.member.application;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,5 +45,11 @@ public class MemberService {
         Member persistMember = findByUsername(member.getUsername());
         persistMember.updateImageUrl(updateRequest.getImageUrl());
         persistMember.updateNickname(updateRequest.getNickname());
+    }
+
+    public List<MemberResponse> findAll() {
+        final List<Member> members = memberRepository.findAll();
+        return members.stream().map(MemberResponse::of)
+            .collect(Collectors.toList());
     }
 }
