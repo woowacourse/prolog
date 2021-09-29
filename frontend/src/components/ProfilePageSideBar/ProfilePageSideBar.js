@@ -71,8 +71,8 @@ const ProfilePageSideBar = ({ menu }) => {
   const editProfile = async () => {
     if (nickname === user.nickname) return setIsProfileEditing(false);
 
-    if (nickname.length > 20) {
-      alert('닉네임은 20글자 이하로 입력해주세요.');
+    if (nickname.length > 4) {
+      alert('닉네임은 4글자 이하로 입력해주세요.');
 
       return;
     }
