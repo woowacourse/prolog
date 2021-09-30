@@ -57,16 +57,6 @@ class AbilityTest {
             Arguments.of(Ability.child(2L, "Language", "discription", "red", parent, member), false)
         );
     }
-    
-    @DisplayName("역량 생성시 자동으로 Member와 연결된다.")
-    @Test
-    void memberAddAbility() {
-        // when
-        Ability parent = Ability.parent(1L, "Language", "discription", "red", member);
-        
-        // then
-        verify(member).addAbility(parent);
-    }
 
     @DisplayName("역량 정보를 수정한다.")
     @Test

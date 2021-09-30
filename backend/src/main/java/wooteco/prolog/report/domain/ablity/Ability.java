@@ -58,7 +58,6 @@ public class Ability {
         this.parent = parent;
         this.children = new ArrayList<>();
         this.member = member;
-        this.member.addAbility(this);
     }
 
     public static Ability parent(String name, String description, String color, Member member) {

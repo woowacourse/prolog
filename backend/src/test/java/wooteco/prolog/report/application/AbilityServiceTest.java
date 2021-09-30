@@ -1,5 +1,7 @@
 package wooteco.prolog.report.application;
 
+import java.util.Arrays;
+import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -69,7 +71,7 @@ class AbilityServiceTest {
         );
 
         // when
-        List<AbilityResponse> responses = abilityService.parentAbilities(member);
+        List<AbilityResponse> responses = abilityService.findParentAbilitiesByMember(member);
 
         // then
         assertThat(responses).hasSize(1);
@@ -77,18 +79,20 @@ class AbilityServiceTest {
             .isEqualTo(expectResponse);
     }
 
-    @DisplayName("부모 역량 삭제에 성공하면 Member와 관계도 끊어진다.")
+    @DisplayName("부모 역량 삭제에 성공하면 조회되지 않는다.")
     @Test
     void deleteParentAbility() {
         // given
         Ability ability = abilityRepository.save(Ability.parent("zi존브라운123", "이견 있습니까?", "이견을 피로 물들이는 붉은 색", member));
 
         // when
-        assertThat(member.getAbilities()).containsExactly(ability);
+        assertThat(abilityService.findAbilitiesByMember(member)).usingRecursiveComparison()
+            .isEqualTo(AbilityResponse.of(Collections.singletonList(ability)));
+
         abilityService.deleteAbility(member, ability.getId());
 
         // then
-        assertThat(member.getAbilities()).isEmpty();
+        assertThat(abilityService.findAbilitiesByMember(member)).isEmpty();
     }
 
     @DisplayName("부모 역량 삭제 시도시 자식역량이 존재하면 예외가 발생한다.")
@@ -102,15 +106,12 @@ class AbilityServiceTest {
         AbilityCreateRequest childCreateRequest = new AbilityCreateRequest("손너잘", "내안으어두미", "크아아아악!!", parentAbility.getId());
         abilityService.createAbility(member, childCreateRequest);
 
-        // when
-        assertThat(member.getAbilities()).hasSize(2);
-
-        // then
+        // when, then
         assertThatThrownBy(() -> abilityService.deleteAbility(member, parentAbility.getId()))
             .isExactlyInstanceOf(AbilityHasChildrenException.class);
     }
 
-    @DisplayName("자식 역량 삭제에 성공하면 부모 역량, Member와 관계도 끊어진다.")
+    @DisplayName("자식 역량 삭제에 성공하면 부모 역량과 관계가 끊어진다.")
     @Test
     void deleteChildAbility() {
         // given
@@ -119,14 +120,27 @@ class AbilityServiceTest {
 
         // when
         assertThat(parentAbility.getChildren()).containsExactly(childAbility);
-        assertThat(member.getAbilities()).containsExactly(parentAbility, childAbility);
 
         abilityService.deleteAbility(member, childAbility.getId());
-        List<AbilityResponse> abilityResponses = abilityService.abilities(member);
+        List<AbilityResponse> abilityResponses = abilityService.findAbilitiesByMember(member);
         List<Long> abilityIds = abilityResponses.stream().map(AbilityResponse::getId).collect(Collectors.toList());
 
         // then
-        assertThat(member.getAbilities()).containsExactly(parentAbility);
         assertThat(abilityIds).containsExactly(parentAbility.getId());
+    }
+
+    @DisplayName("memberId를 통해 해당 멤버의 역량목록을 조회한다.")
+    @Test
+    void findMemberAbilitiesByMemberId() {
+        // given
+        Ability ability1 = abilityRepository.save(Ability.parent("나는ZI존브라운이다.", "이견있나?", "피의 붉은 색", member));
+        Ability ability2 = abilityRepository.save(Ability.parent("나는ZI존브라운이다.2", "이견있나?2", "피의 붉은 색2", member));
+
+        // when
+        List<AbilityResponse> abilityResponses = abilityService.findAbilitiesByMemberId(member.getId());
+
+        // then
+        assertThat(abilityResponses).usingRecursiveComparison()
+            .isEqualTo(AbilityResponse.of(Arrays.asList(ability1, ability2)));
     }
 }

@@ -39,14 +39,4 @@ class MemberTest {
         assertThat(member.getNickname()).isEqualTo(loginName);
         assertThat(member3.getNickname()).isEqualTo(existName);
     }
-
-    @DisplayName("역량 생성시 자동으로 역량 목록에 추가된다.")
-    @Test
-    void addAbility() {
-        // when
-        Ability ability = Ability.parent(1L, "역량", "너잘의 3인칭 역량", "파란색", member);
-
-        // then
-        assertThat(member.getAbilities()).containsExactly(ability);
-    }
 }
