@@ -10,8 +10,8 @@ import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG6;
 
 import java.util.Arrays;
 import java.util.List;
-import wooteco.prolog.studylog.application.dto.StudylogRequest;
-import wooteco.prolog.studylog.application.dto.TagRequest;
+import wooteco.prolog.report.application.dto.StudylogRequest;
+import wooteco.prolog.report.application.dto.TagRequest;
 
 public enum StudylogAcceptanceFixture {
     STUDYLOG1(

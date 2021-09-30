@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.studylog.application.StudylogTagService;
-import wooteco.prolog.studylog.application.dto.TagResponse;
+import wooteco.prolog.report.application.StudylogTagService;
+import wooteco.prolog.report.application.dto.TagResponse;
 
 @RestController
 @RequestMapping("/tags")

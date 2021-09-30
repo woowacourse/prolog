@@ -8,10 +8,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
-import wooteco.prolog.studylog.application.dto.LevelRequest;
-import wooteco.prolog.studylog.application.dto.LevelResponse;
-import wooteco.prolog.studylog.application.dto.MissionRequest;
-import wooteco.prolog.studylog.application.dto.TagRequest;
+import wooteco.prolog.report.application.dto.LevelRequest;
+import wooteco.prolog.report.application.dto.LevelResponse;
+import wooteco.prolog.report.application.dto.MissionRequest;
+import wooteco.prolog.report.application.dto.TagRequest;
 
 public class FilterDocumentation extends Documentation {
 

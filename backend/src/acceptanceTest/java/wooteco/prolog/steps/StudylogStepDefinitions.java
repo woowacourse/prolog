@@ -14,9 +14,9 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.StudylogAcceptanceFixture;
-import wooteco.prolog.studylog.application.dto.StudylogRequest;
-import wooteco.prolog.studylog.application.dto.StudylogResponse;
-import wooteco.prolog.studylog.application.dto.StudylogsResponse;
+import wooteco.prolog.report.application.dto.StudylogRequest;
+import wooteco.prolog.report.application.dto.StudylogResponse;
+import wooteco.prolog.report.application.dto.StudylogsResponse;
 
 public class StudylogStepDefinitions extends AcceptanceSteps {
 

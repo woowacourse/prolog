@@ -1,6 +1,6 @@
 package wooteco.prolog.fixtures;
 
-import wooteco.prolog.studylog.application.dto.MissionRequest;
+import wooteco.prolog.report.application.dto.MissionRequest;
 
 public class MissionAcceptanceFixture {
 

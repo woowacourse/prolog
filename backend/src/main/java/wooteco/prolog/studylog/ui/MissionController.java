@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.studylog.application.MissionService;
-import wooteco.prolog.studylog.application.dto.MissionRequest;
-import wooteco.prolog.studylog.application.dto.MissionResponse;
+import wooteco.prolog.report.application.MissionService;
+import wooteco.prolog.report.application.dto.MissionRequest;
+import wooteco.prolog.report.application.dto.MissionResponse;
 
 @RestController
 @RequestMapping("/missions")

@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
-import wooteco.prolog.studylog.application.StudylogService;
-import wooteco.prolog.studylog.application.dto.StudylogsResponse;
+import wooteco.prolog.report.application.StudylogService;
+import wooteco.prolog.report.application.dto.StudylogsResponse;
 
 @RestController
 @AllArgsConstructor

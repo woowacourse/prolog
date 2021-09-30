@@ -7,7 +7,7 @@ import io.cucumber.java.en.When;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
-import wooteco.prolog.studylog.application.dto.TagResponse;
+import wooteco.prolog.report.application.dto.TagResponse;
 
 public class TagStepDefinitions extends AcceptanceSteps {
 

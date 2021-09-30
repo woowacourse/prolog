@@ -8,14 +8,14 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import wooteco.prolog.studylog.application.LevelService;
-import wooteco.prolog.studylog.application.MissionService;
-import wooteco.prolog.studylog.application.dto.LevelRequest;
-import wooteco.prolog.studylog.application.dto.LevelResponse;
-import wooteco.prolog.studylog.application.dto.MissionRequest;
-import wooteco.prolog.studylog.application.dto.MissionResponse;
-import wooteco.prolog.studylog.application.dto.StudylogRequest;
-import wooteco.prolog.studylog.application.dto.TagRequest;
+import wooteco.prolog.report.application.LevelService;
+import wooteco.prolog.report.application.MissionService;
+import wooteco.prolog.report.application.dto.LevelRequest;
+import wooteco.prolog.report.application.dto.LevelResponse;
+import wooteco.prolog.report.application.dto.MissionRequest;
+import wooteco.prolog.report.application.dto.MissionResponse;
+import wooteco.prolog.report.application.dto.StudylogRequest;
+import wooteco.prolog.report.application.dto.TagRequest;
 import wooteco.prolog.studylog.domain.Tags;
 
 public enum StudylogFixture {

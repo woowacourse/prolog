@@ -10,8 +10,8 @@ import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.LevelAcceptanceFixture;
 import wooteco.prolog.fixtures.MissionAcceptanceFixture;
-import wooteco.prolog.studylog.application.dto.MissionRequest;
-import wooteco.prolog.studylog.application.dto.MissionResponse;
+import wooteco.prolog.report.application.dto.MissionRequest;
+import wooteco.prolog.report.application.dto.MissionResponse;
 
 public class MissionStepDefinitions extends AcceptanceSteps {
 

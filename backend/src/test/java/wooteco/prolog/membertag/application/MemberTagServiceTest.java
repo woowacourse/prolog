@@ -12,7 +12,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.util.MemberFixture;
-import wooteco.prolog.studylog.application.dto.MemberTagResponse;
+import wooteco.prolog.report.application.dto.MemberTagResponse;
 import wooteco.prolog.studylog.studylog.util.StudylogFixture;
 import wooteco.prolog.studylog.studylog.util.StudylogUtilCRUD;
 

@@ -12,7 +12,7 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.MemberTag;
 import wooteco.prolog.member.domain.MemberTags;
 import wooteco.prolog.member.domain.repository.MemberTagRepository;
-import wooteco.prolog.studylog.application.StudylogTagService;
+import wooteco.prolog.report.application.StudylogTagService;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
 

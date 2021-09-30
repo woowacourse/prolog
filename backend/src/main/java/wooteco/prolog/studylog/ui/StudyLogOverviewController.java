@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.member.application.MemberTagService;
-import wooteco.prolog.studylog.application.StudylogService;
-import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
-import wooteco.prolog.studylog.application.dto.MemberTagResponse;
+import wooteco.prolog.report.application.StudylogService;
+import wooteco.prolog.report.application.dto.CalendarStudylogResponse;
+import wooteco.prolog.report.application.dto.MemberTagResponse;
 
 @RestController
 @RequestMapping("/members")

@@ -3,7 +3,7 @@ package wooteco.prolog.fixtures;
 import java.util.Arrays;
 import java.util.Objects;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studylog.domain.ablity.Ability;
+import wooteco.prolog.report.domain.ablity.Ability;
 
 public enum AbilityFixture {
     PROGRAMMING("프로그래밍", "프로그래밍 관련입니다.", "red"),

@@ -23,12 +23,12 @@ import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
-import wooteco.prolog.studylog.domain.repository.LevelRepository;
-import wooteco.prolog.studylog.domain.repository.MissionRepository;
-import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
-import wooteco.prolog.studylog.domain.repository.StudylogTagRepository;
-import wooteco.prolog.studylog.domain.repository.TagRepository;
+import wooteco.prolog.report.domain.repository.LevelRepository;
+import wooteco.prolog.report.domain.repository.MissionRepository;
+import wooteco.prolog.report.domain.repository.StudylogRepository;
+import wooteco.prolog.report.domain.repository.StudylogSpecification;
+import wooteco.prolog.report.domain.repository.StudylogTagRepository;
+import wooteco.prolog.report.domain.repository.TagRepository;
 
 @DataJpaTest
 class StudylogRepositoryTest {

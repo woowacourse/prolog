@@ -8,7 +8,7 @@ import org.springframework.data.web.config.PageableHandlerMethodArgumentResolver
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import wooteco.prolog.studylog.application.dto.search.SearchArgumentResolver;
+import wooteco.prolog.report.application.dto.search.SearchArgumentResolver;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {

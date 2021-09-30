@@ -12,8 +12,8 @@ import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.fixtures.PostAcceptanceFixture;
 import wooteco.prolog.fixtures.TagAcceptanceFixture;
-import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
-import wooteco.prolog.studylog.application.dto.MemberTagResponse;
+import wooteco.prolog.report.application.dto.CalendarStudylogResponse;
+import wooteco.prolog.report.application.dto.MemberTagResponse;
 
 public class StudyLogOverviewStepDefinitions extends AcceptanceSteps {
 

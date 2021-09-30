@@ -6,13 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.studylog.application.LevelService;
-import wooteco.prolog.studylog.application.MissionService;
-import wooteco.prolog.studylog.application.TagService;
-import wooteco.prolog.studylog.application.dto.FilterResponse;
-import wooteco.prolog.studylog.application.dto.LevelResponse;
-import wooteco.prolog.studylog.application.dto.MissionResponse;
-import wooteco.prolog.studylog.application.dto.TagResponse;
+import wooteco.prolog.report.application.LevelService;
+import wooteco.prolog.report.application.MissionService;
+import wooteco.prolog.report.application.TagService;
+import wooteco.prolog.report.application.dto.FilterResponse;
+import wooteco.prolog.report.application.dto.LevelResponse;
+import wooteco.prolog.report.application.dto.MissionResponse;
+import wooteco.prolog.report.application.dto.TagResponse;
 
 @RestController
 @RequestMapping("/filters")

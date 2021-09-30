@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import wooteco.prolog.member.util.MemberFixture;
 import wooteco.prolog.member.util.MemberUtilCRUD;
-import wooteco.prolog.studylog.application.StudylogService;
-import wooteco.prolog.studylog.application.dto.StudylogRequest;
-import wooteco.prolog.studylog.application.dto.TagRequest;
+import wooteco.prolog.report.application.StudylogService;
+import wooteco.prolog.report.application.dto.StudylogRequest;
+import wooteco.prolog.report.application.dto.TagRequest;
 
 @Component
 public class StudylogUtilCRUD {

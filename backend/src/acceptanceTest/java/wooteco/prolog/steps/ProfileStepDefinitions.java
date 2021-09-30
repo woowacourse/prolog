@@ -7,7 +7,7 @@ import io.cucumber.java.en.When;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.member.application.dto.MemberResponse;
-import wooteco.prolog.studylog.application.dto.StudylogsResponse;
+import wooteco.prolog.report.application.dto.StudylogsResponse;
 
 public class ProfileStepDefinitions extends AcceptanceSteps {
 

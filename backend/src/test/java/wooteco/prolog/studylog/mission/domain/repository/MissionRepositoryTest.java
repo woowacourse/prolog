@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
-import wooteco.prolog.studylog.domain.repository.LevelRepository;
-import wooteco.prolog.studylog.domain.repository.MissionRepository;
+import wooteco.prolog.report.domain.repository.LevelRepository;
+import wooteco.prolog.report.domain.repository.MissionRepository;
 
 @DataJpaTest
 class MissionRepositoryTest {

@@ -8,9 +8,9 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.MemberTag;
 import wooteco.prolog.member.domain.MemberTags;
 import wooteco.prolog.member.domain.repository.MemberTagRepository;
-import wooteco.prolog.studylog.application.dto.MemberTagResponse;
+import wooteco.prolog.report.application.dto.MemberTagResponse;
 import wooteco.prolog.studylog.domain.Tags;
-import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.prolog.report.domain.repository.StudylogRepository;
 
 @Service
 @RequiredArgsConstructor

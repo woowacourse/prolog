@@ -1,9 +1,9 @@
 package wooteco.prolog.common.fixture.report;
 
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studylog.domain.report.Report;
-import wooteco.prolog.studylog.domain.report.abilitygraph.AbilityGraph;
-import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylogs;
+import wooteco.prolog.report.domain.Report;
+import wooteco.prolog.report.domain.abilitygraph.AbilityGraph;
+import wooteco.prolog.report.domain.studylog.ReportedStudylogs;
 
 public class ReportFixture {
 
