@@ -20,6 +20,8 @@ public class LoginStepDefinitions extends AcceptanceSteps {
         context.invokeHttpPost("/login/token", data);
         TokenResponse tokenResponse = context.response.as(TokenResponse.class);
         context.accessToken = tokenResponse.getAccessToken();
+
+        context.storage.put("username", GithubResponses.findByName(member).getLogin());
     }
 
     @When("{string}(이)(가) 로그인을 하면")
