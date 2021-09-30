@@ -165,22 +165,6 @@ class MemberServiceTest {
             .isExactlyInstanceOf(MemberNotFoundException.class);
     }
 
-    @DisplayName("memberId를 통해 해당 멤버의 역량목록을 조회한다.")
-    @Test
-    void findMemberAbilitiesByMemberId() {
-        // given
-        Member member = Member를_생성한다();
-        abilityRepository.save(Ability.parent("나는ZI존브라운이다.", "이견있나?", "피의 붉은 색", member));
-        List<Ability> abilities = member.getAbilities();
-
-        // when
-        List<AbilityResponse> abilityResponses = memberService.findMemberAbilities(member.getId());
-
-        // then
-        assertThat(abilityResponses).usingRecursiveComparison()
-            .isEqualTo(AbilityResponse.of(abilities));
-    }
-
     private Member Member를_생성한다() {
         return Member를_생성한다(new Member("gracefulBrown", "zi존브라운", Role.CREW, 1L, "imageUrl"));
     }

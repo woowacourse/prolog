@@ -43,16 +43,22 @@ public class AbilityService {
         return Ability.child(name, description, color, parent, member);
     }
 
-    public List<AbilityResponse> abilities(Member member) {
+    public List<AbilityResponse> findAbilitiesByMember(Member member) {
         List<Ability> abilities = abilityRepository.findByMember(member);
 
         return AbilityResponse.of(abilities);
     }
 
-    public List<AbilityResponse> parentAbilities(Member member) {
+    public List<AbilityResponse> findParentAbilitiesByMember(Member member) {
         List<Ability> parentAbilities = abilityRepository.findByMemberAndParentIsNull(member);
 
         return AbilityResponse.of(parentAbilities);
+    }
+
+    public List<AbilityResponse> findAbilitiesByMemberId(Long memberId) {
+        List<Ability> abilities = abilityRepository.findByMemberId(memberId);
+
+        return AbilityResponse.of(abilities);
     }
 
     @Transactional
@@ -62,7 +68,7 @@ public class AbilityService {
 
         legacyAbility.update(updateAbility);
 
-        return AbilityResponse.of(member.getAbilities());
+        return findAbilitiesByMember(member);
     }
 
     @Transactional
@@ -71,7 +77,6 @@ public class AbilityService {
         ability.validateDeletable();
 
         ability.deleteRelationshipWithParent();
-        member.removeAbility(ability);
         abilityRepository.delete(ability);
     }
 
