@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
 import wooteco.prolog.member.exception.MemberScrapNotValidUserException;
+import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.domain.Tags;
 
@@ -59,7 +60,8 @@ public class Member {
                   Role role,
                   Long githubId,
                   String imageUrl) {
-        this(id, username, nickname, role, githubId, imageUrl, new MemberTags(), new MemberScrapStudylogs());
+        this(id, username, nickname, role, githubId, imageUrl, new MemberTags(),
+            new MemberScrapStudylogs());
     }
 
     public Member(Long id,
@@ -70,7 +72,7 @@ public class Member {
                   String imageUrl,
                   MemberTags memberTags,
                   MemberScrapStudylogs memberScrapStudylogs
-                  ) {
+    ) {
         this.id = id;
         this.username = username;
         this.nickname = ifAbsentReplace(nickname, username);
@@ -137,18 +139,24 @@ public class Member {
             .collect(Collectors.toList());
     }
 
-    public void addScrapStudylog(MemberScrapStudylog memberScrapStudylog){
+    public void addScrapStudylog(MemberScrapStudylog memberScrapStudylog) {
         if (!this.equals(memberScrapStudylog.getMember())) {
             throw new MemberScrapNotValidUserException();
         }
         memberScrapStudylogs.add(memberScrapStudylog);
     }
 
-    public void removeScrapStudylog(Member member, Long studylogId){
+    public void removeScrapStudylog(Member member, Long studylogId) {
         memberScrapStudylogs.remove(member, studylogId);
     }
 
-    public List<Long> getScrapedStudylogIds(){
+    public boolean isScrap(Long studylogId) {
+        List<Long> scrapedStudylogIds = this.getMemberScrapStudylogs().getScrapedStudylogIds();
+        return scrapedStudylogIds.stream()
+            .anyMatch(studylogId::equals);
+    }
+
+    public List<Long> getScrapedStudylogIds() {
         return this.memberScrapStudylogs.getScrapedStudylogIds();
     }
 

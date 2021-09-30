@@ -45,11 +45,9 @@ public class StudylogService {
 
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Member member) {
         StudylogsResponse studylogs = findStudylogs(request);
-
-        List<Long> scrapedStudylogIds = member.getScrapedStudylogIds();
         List<StudylogResponse> data = studylogs.getData();
 
-        data.forEach(studylogResponse -> checkingMemberScrapedStudylog(scrapedStudylogIds, studylogResponse));
+        data.forEach(studylogResponse -> checkingMemberScrapedStudylog(member, studylogResponse));
         return studylogs;
     }
 
@@ -98,7 +96,6 @@ public class StudylogService {
                 .and(StudylogSpecification.distinct(true));
 
         Page<Studylog> posts = studylogRepository.findAll(specs, pageable);
-
         return StudylogsResponse.of(posts);
     }
 
@@ -185,11 +182,9 @@ public class StudylogService {
             .collect(toList());
     }
 
-    private void checkingMemberScrapedStudylog(List<Long> scrapedStudylogIds, StudylogResponse studylogResponse) {
-        for (Long scrapedStudylogId : scrapedStudylogIds) {
-            if (studylogResponse.getId().equals(scrapedStudylogId)) {
-                studylogResponse.setScrap(true);
-            }
+    private void checkingMemberScrapedStudylog(Member member, StudylogResponse studylogResponse) {
+        if (member.isScrap(studylogResponse.getId())) {
+            studylogResponse.setScrap(true);
         }
     }
 }
