@@ -70,7 +70,8 @@ public class AbilityService {
         Ability ability = findAbilityByIdAndMember(abilityId, member);
         ability.validateDeletable();
 
-        member.deleteAbility(ability);
+        ability.deleteRelationshipWithParent();
+        member.removeAbility(ability);
         abilityRepository.delete(ability);
     }
 

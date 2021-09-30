@@ -114,7 +114,7 @@ public class Member {
         abilities.add(ability);
     }
 
-    public void deleteAbility(Ability ability) {
+    public void removeAbility(Ability ability) {
         abilities.remove(ability);
     }
 

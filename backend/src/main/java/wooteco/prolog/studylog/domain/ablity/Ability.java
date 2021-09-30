@@ -95,10 +95,24 @@ public class Ability {
         return Objects.isNull(parent);
     }
 
+    public boolean hasParent() {
+        return !Objects.isNull(parent);
+    }
+
     public void validateDeletable() {
         if (!children.isEmpty()) {
             throw new AbilityHasChildrenException();
         }
+    }
+
+    public void deleteRelationshipWithParent() {
+        if (this.hasParent()) {
+            parent.removeChild(this);
+        }
+    }
+
+    private void removeChild(Ability ability) {
+        children.removeIf(abilityRelationship -> abilityRelationship.isSameWithSource(ability));
     }
 
     public Long getId() {

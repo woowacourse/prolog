@@ -32,6 +32,10 @@ public class AbilityRelationship {
         this.target = target;
     }
 
+    public boolean isSameWithSource(Ability ability) {
+        return source.equals(ability);
+    }
+
     public Long getId() {
         return id;
     }

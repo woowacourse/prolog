@@ -6,9 +6,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
 import org.springframework.beans.factory.annotation.Autowired;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
@@ -18,6 +21,7 @@ import wooteco.prolog.studylog.application.dto.ability.AbilityResponse;
 import wooteco.prolog.studylog.application.dto.ability.ChildAbilityDto;
 import wooteco.prolog.studylog.domain.ablity.Ability;
 import wooteco.prolog.studylog.domain.repository.AbilityRepository;
+import wooteco.prolog.studylog.exception.AbilityHasChildrenException;
 import wooteco.prolog.studylog.exception.AbilityNotFoundException;
 import wooteco.support.utils.IntegrationTest;
 
@@ -76,9 +80,9 @@ class AbilityServiceTest {
             .isEqualTo(expectResponse);
     }
 
-    @DisplayName("역량을 삭제하면 Member와 관계도 끊어진다.")
+    @DisplayName("부모 역량 삭제에 성공하면 Member와 관계도 끊어진다.")
     @Test
-    void deleteAbility() {
+    void deleteParentAbility() {
         // given
         Ability ability = abilityRepository.save(Ability.parent("zi존브라운123", "이견 있습니까?", "이견을 피로 물들이는 붉은 색", member));
 
@@ -88,5 +92,44 @@ class AbilityServiceTest {
 
         // then
         assertThat(member.getAbilities()).isEmpty();
+    }
+
+    @DisplayName("부모 역량 삭제 시도시 자식역량이 존재하면 예외가 발생한다.")
+    @Test
+    void deleteParentAbilityException() {
+        // given
+        AbilityCreateRequest parentCreateRequest = new AbilityCreateRequest("zi존브라운123", "이견 있습니까?", "이견을 피로 물들이는 붉은 색", null);
+        abilityService.createAbility(member, parentCreateRequest);
+        Ability parentAbility = abilityRepository.findByMemberAndParentIsNull(member).iterator().next();
+
+        AbilityCreateRequest childCreateRequest = new AbilityCreateRequest("손너잘", "내안으어두미", "크아아아악!!", parentAbility.getId());
+        abilityService.createAbility(member, childCreateRequest);
+
+        // when
+        assertThat(member.getAbilities()).hasSize(2);
+
+        // then
+        assertThatThrownBy(() -> abilityService.deleteAbility(member, parentAbility.getId()))
+            .isExactlyInstanceOf(AbilityHasChildrenException.class);
+    }
+
+    @DisplayName("자식 역량 삭제에 성공하면 부모 역량, Member와 관계도 끊어진다.")
+    @Test
+    void deleteChildAbility() {
+        // given
+        Ability parentAbility = abilityRepository.save(Ability.parent("zi존브라운123", "이견 있습니까?", "이견을 피로 물들이는 붉은 색", member));
+        Ability childAbility = abilityRepository.save(Ability.child("손너잘", "내안으어두미", "크아아아악!!", parentAbility, member));
+
+        // when
+        assertThat(parentAbility.getChildren()).containsExactly(childAbility);
+        assertThat(member.getAbilities()).containsExactly(parentAbility, childAbility);
+
+        abilityService.deleteAbility(member, childAbility.getId());
+        List<AbilityResponse> abilityResponses = abilityService.abilities(member);
+        List<Long> abilityIds = abilityResponses.stream().map(AbilityResponse::getId).collect(Collectors.toList());
+
+        // then
+        assertThat(member.getAbilities()).containsExactly(parentAbility);
+        assertThat(abilityIds).containsExactly(parentAbility.getId());
     }
 }
