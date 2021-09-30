@@ -20,13 +20,4 @@ public class LoginDocumentation extends Documentation {
             .then().log().all()
             .extract().as(TokenResponse.class);
     }
-
-    @Test
-    void 사용자_정보를_조회한다() {
-        given("members/read")
-            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-            .when().get("/members/{username}", GithubResponses.소롱.getLogin())
-            .then().log().all()
-            .extract();
-    }
 }

@@ -36,7 +36,7 @@ public class MemberController {
     }
 
     @PutMapping("/{username}")
-    public ResponseEntity<Void> updateStudylog(
+    public ResponseEntity<Void> updateMember(
         @AuthMemberPrincipal LoginMember member,
         @PathVariable String username,
         @RequestBody MemberUpdateRequest updateRequest
@@ -48,7 +48,7 @@ public class MemberController {
     @Deprecated
     @PutMapping("/me")
     @MemberOnly
-    public ResponseEntity<Void> updateStudylog_deprecated(
+    public ResponseEntity<Void> updateMember_deprecated(
         @AuthMemberPrincipal LoginMember member,
         @RequestBody MemberUpdateRequest updateRequest
     ) {

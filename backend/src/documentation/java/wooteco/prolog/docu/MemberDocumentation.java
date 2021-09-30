@@ -18,7 +18,7 @@ public class MemberDocumentation extends Documentation {
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .body(memberUpdateRequest)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .when().put("/members/" + GithubResponses.소롱.getLogin())
+            .when().put("/members/{username}", GithubResponses.소롱.getLogin())
             .then().log().all()
             .extract();
     }
