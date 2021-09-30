@@ -17,6 +17,7 @@ import wooteco.prolog.report.application.dto.report.response.abilityGraph.GraphA
 import wooteco.prolog.report.application.dto.report.response.abilityGraph.GraphResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogAbilityResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogResponse;
+import wooteco.prolog.report.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.report.domain.ablity.Ability;
 import wooteco.prolog.report.domain.report.Report;
@@ -33,9 +34,11 @@ public class ReportAssembler {
 
     @PersistenceContext
     private EntityManager entityManager;
+    private final StudylogRepository studylogRepository;
 
-    public ReportAssembler(EntityManager entityManager) {
+    public ReportAssembler(EntityManager entityManager, StudylogRepository studylogRepository) {
         this.entityManager = entityManager;
+        this.studylogRepository = studylogRepository;
     }
 
     public Report of(ReportRequest reportRequest, Member member) {
@@ -77,13 +80,9 @@ public class ReportAssembler {
             .collect(toList());
 
         return new ReportedStudylog(
-            findStudylogById(studylogRequest.getId()),
+            studylogRequest.getId(),
             abilities
         );
-    }
-
-    private Studylog findStudylogById(Long id) {
-        return entityManager.getReference(Studylog.class, id);
     }
 
     private Ability findAbilityById(Long id) {
@@ -110,11 +109,14 @@ public class ReportAssembler {
             .map(this::of)
             .collect(toList());
 
+        Studylog studylog = studylogRepository.findById(reportedStudylog.getStudylogId())
+                .orElseThrow(IllegalArgumentException::new);
+
         return new StudylogResponse(
-            reportedStudylog.getId(),
-            reportedStudylog.getCreatedAt(),
-            reportedStudylog.getUpdatedAt(),
-            reportedStudylog.getTitle(),
+            studylog.getId(),
+            studylog.getCreatedAt(),
+            studylog.getUpdatedAt(),
+            studylog.getTitle(),
             abilityResponses
         );
     }
