@@ -129,6 +129,8 @@ public class Ability {
 
     public void validateColorWithParent(List<Ability> abilities, Ability parentAbility) {
         abilities.remove(parentAbility);
+        abilities.removeAll(parentAbility.getChildren());
+
         validateSameColor(parentAbility);
         validateDuplicateColor(abilities);
     }
