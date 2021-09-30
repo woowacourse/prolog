@@ -1,5 +1,6 @@
 package wooteco.prolog.login.ui;
 
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -30,13 +31,36 @@ public class AuthMemberPrincipalArgumentResolver implements HandlerMethodArgumen
     @Override
     public Member resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        String credentials = AuthorizationExtractor
-            .extract(webRequest.getNativeRequest(HttpServletRequest.class));
+        AuthMemberPrincipal authMemberPrincipal = parameter
+            .getParameterAnnotation(AuthMemberPrincipal.class);
+
+        return extractTokenWhenValid(webRequest, authMemberPrincipal.required());
+    }
+
+    private Member extractTokenWhenValid(NativeWebRequest webRequest, boolean isRequired) {
         try {
+            String credentials = getCredentialsIfPresent(webRequest);
             Long id = Long.valueOf(jwtTokenProvider.extractSubject(credentials));
             return memberService.findById(id);
         } catch (NumberFormatException e) {
+            // subject is not ID type(long)
+            return whenNotValidMember(isRequired);
+        }
+    }
+
+    private String getCredentialsIfPresent(NativeWebRequest webRequest) {
+        String credentials = AuthorizationExtractor
+            .extract(webRequest.getNativeRequest(HttpServletRequest.class));
+        if (Objects.isNull(credentials)) {
+            throw new NumberFormatException();
+        }
+        return credentials;
+    }
+
+    private Member whenNotValidMember(boolean isRequired) {
+        if (isRequired) {
             throw new TokenNotValidException();
         }
+        return Member.Anonymous();
     }
 }
