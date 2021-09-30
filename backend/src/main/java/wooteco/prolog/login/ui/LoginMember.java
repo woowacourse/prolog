@@ -71,5 +71,10 @@ public class LoginMember {
         public Object getReturnValue() {
             return returnValue;
         }
+
+        @SuppressWarnings("unchecked")
+        public <T> T getReturnValue(Class<T> returnType) {
+            return (T) returnValue;
+        }
     }
 }
