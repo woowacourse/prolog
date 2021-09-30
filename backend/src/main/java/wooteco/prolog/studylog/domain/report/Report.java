@@ -108,6 +108,10 @@ public class Report {
         return member;
     }
 
+    public void toUnRepresent() {
+        this.isRepresent = false;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

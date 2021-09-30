@@ -3,6 +3,8 @@ package wooteco.prolog.studylog.application;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
+import java.util.Objects;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,15 +47,23 @@ public class ReportService {
 
     @Transactional
     public ReportResponse updateReport(ReportRequest reportRequest, Member member) {
-        Report report = reportAssembler.of(reportRequest, member);
-        Report savedReport = reportRepository.findById(report.getId())
+        Report updateSourceReport = reportAssembler.of(reportRequest, member);
+        Report savedReport = reportRepository.findById(updateSourceReport.getId())
             .orElseThrow(IllegalArgumentException::new);
 
+        verifyIsAllowedUser(member, savedReport);
         verifyGraphAbilitiesAreParent(reportRequest);
+        checkIsRepresent(member, updateSourceReport);
 
-        savedReport.update(report);
+        savedReport.update(updateSourceReport);
 
         return reportAssembler.of(savedReport);
+    }
+
+    private void verifyIsAllowedUser(Member member, Report savedReport) {
+        if(!Objects.equals(savedReport.getMember(), member)) {
+            throw new IllegalArgumentException();
+        }
     }
 
     private void verifyGraphAbilitiesAreParent(ReportRequest reportRequest) {
@@ -66,6 +76,13 @@ public class ReportService {
 
         if(count != abilityIds.size()) {
             throw new IllegalArgumentException();
+        }
+    }
+
+    private void checkIsRepresent(Member member, Report updateSourceReport) {
+        if(updateSourceReport.isRepresent()) {
+            reportRepository.findRepresentReportOf(member.getUsername())
+                    .ifPresent(Report::toUnRepresent);
         }
     }
 
