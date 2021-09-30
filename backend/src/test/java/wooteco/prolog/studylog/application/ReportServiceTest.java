@@ -94,7 +94,6 @@ class ReportServiceTest {
             .usingRecursiveComparison()
             .ignoringFieldsMatchingRegexes(".*id", ".*updateAt", ".*createAt")
             .isEqualTo(expected("jsons/report_put_response.json"));
-
     }
 
     private ReportRequest createRequest(String source) throws IOException {
