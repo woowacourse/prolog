@@ -24,9 +24,7 @@ public class ReportedStudylog implements Updatable<ReportedStudylog> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="studylog_id", nullable = false)
-    private Studylog studylog;
+    private Long studylogId;
 
     @OneToMany(
         mappedBy = "reportedStudylog",
@@ -43,18 +41,18 @@ public class ReportedStudylog implements Updatable<ReportedStudylog> {
     protected ReportedStudylog() {
     }
 
-    public ReportedStudylog(Studylog studylog,
+    public ReportedStudylog(Long studylogId,
                             List<ReportedStudylogAbility> abilities
     ) {
-        this(null, studylog, abilities, null);
+        this(null, studylogId, abilities, null);
     }
 
     public ReportedStudylog(Long id,
-                            Studylog studylog,
+                            Long studylogId,
                             List<ReportedStudylogAbility> abilities,
                             Report report) {
         this.id = id;
-        this.studylog = studylog;
+        this.studylogId = studylogId;
         this.abilities = abilities;
         this.report = report;
 
@@ -69,24 +67,12 @@ public class ReportedStudylog implements Updatable<ReportedStudylog> {
         this.report = report;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return studylog.getCreatedAt();
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return studylog.getUpdatedAt();
-    }
-
-    public String getTitle() {
-        return studylog.getTitle();
-    }
-
     public List<ReportedStudylogAbility> getAbilities() {
         return abilities;
     }
 
-    public Studylog getStudylog() {
-        return studylog;
+    public Long getStudylogId() {
+        return studylogId;
     }
 
     @Override
@@ -105,12 +91,12 @@ public class ReportedStudylog implements Updatable<ReportedStudylog> {
         }
 
         ReportedStudylog that = (ReportedStudylog) o;
-        return Objects.equals(getStudylog(), that.getStudylog());
+        return Objects.equals(getStudylogId(), that.getStudylogId());
     }
 
     @Override
     public int semanticallyHashcode() {
-        return studylog.hashCode();
+        return Objects.hashCode(getStudylogId());
     }
 
     @Override
