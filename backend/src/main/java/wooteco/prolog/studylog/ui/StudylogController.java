@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import wooteco.prolog.login.aop.OnlyMember;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
+import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
@@ -33,10 +35,11 @@ public class StudylogController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createStudylog(@AuthMemberPrincipal Member member,
+    @OnlyMember
+    public ResponseEntity<Void> createStudylog(@AuthMemberPrincipal LoginMember member,
                                                @RequestBody List<StudylogRequest> studylogRequests) {
         List<StudylogResponse> studylogResponse = studylogService
-            .insertStudylogs(member, studylogRequests);
+            .insertStudylogs(member.getId(), studylogRequests);
         return ResponseEntity.created(URI.create("/posts/" + studylogResponse.get(0).getId()))
             .build();
     }
@@ -57,19 +60,21 @@ public class StudylogController {
     }
 
     @PutMapping("/{id}")
+    @OnlyMember
     public ResponseEntity<Void> updateStudylog(
-        @AuthMemberPrincipal Member member,
+        @AuthMemberPrincipal LoginMember member,
         @PathVariable Long id,
         @RequestBody StudylogRequest studylogRequest
     ) {
-        studylogService.updateStudylog(member, id, studylogRequest);
+        studylogService.updateStudylog(member.getId(), id, studylogRequest);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStudylog(@AuthMemberPrincipal Member member,
+    @OnlyMember
+    public ResponseEntity<Void> deleteStudylog(@AuthMemberPrincipal LoginMember member,
                                                @PathVariable Long id) {
-        studylogService.deleteStudylog(member, id);
+        studylogService.deleteStudylog(member.getId(), id);
         return ResponseEntity.noContent().build();
     }
 }

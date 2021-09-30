@@ -16,6 +16,8 @@ import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestConstructor.AutowireMode;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
+import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.LevelService;
@@ -91,7 +93,7 @@ class StudylogTagServiceTest {
                 .map(it -> new StudylogRequest("이름", "별명", 1L, it))
                 .collect(toList());
 
-        return studylogService.insertStudylogs(member, posts);
+        return studylogService.insertStudylogs(member.getId(), posts);
     }
 
     private List<TagRequest> createTagRequests(String... tags) {
