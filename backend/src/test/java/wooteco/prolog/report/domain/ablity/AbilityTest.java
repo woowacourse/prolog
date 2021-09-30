@@ -18,6 +18,9 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.exception.AbilityHasChildrenException;
+import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
+import wooteco.prolog.studylog.exception.AbilityNameDuplicateException;
+import wooteco.prolog.studylog.exception.AbilityParentColorDuplicateException;
 
 class AbilityTest {
 
@@ -99,5 +102,46 @@ class AbilityTest {
             // when, then
             assertThatThrownBy(parentAbility::validateDeletable).isExactlyInstanceOf(AbilityHasChildrenException.class);
         }
+    }
+
+    @DisplayName("역량끼리 이름이 같은 경우 예외가 발생한다.")
+    @Test
+    void nameDuplicateException() {
+        // given
+        String name = "역량";
+
+        Ability ability1 = Ability.parent(1L, "역량", "너잘의 3인칭 역량", "파란색", member);
+        Ability ability2 = Ability.parent(2L, "역량", "아따따뚜겐", "초록색", member);
+
+        // when, then
+        assertThatThrownBy(() -> ability1.validateDuplicateName(Collections.singletonList(ability2)))
+            .isExactlyInstanceOf(AbilityNameDuplicateException.class);
+    }
+
+    @DisplayName("서로 다른 역량끼리 색상이 같은 경우 예외가 발생한다.")
+    @Test
+    void colorDuplicateException() {
+        // given
+        String color = "색상";
+
+        Ability ability1 = Ability.parent(1L, "역량1", "너잘의 3인칭 역량", color, member);
+        Ability ability2 = Ability.parent(2L, "역량2", "아따따뚜겐", color, member);
+
+        // when, then
+        assertThatThrownBy(() -> ability1.validateDuplicateColor(Collections.singletonList(ability2)))
+            .isExactlyInstanceOf(AbilityParentColorDuplicateException.class);
+    }
+
+    @DisplayName("부모 자식 역량끼리 색상이 다른 경우 예외가 발생한다.")
+    @Test
+    void colorDifferentBetweenParentAndChildException() {
+        // given
+        Ability parentAbility = Ability.parent(1L, "역량1", "너잘의 3인칭 역량", "색상1", member);
+        Ability anotherParentAbility = Ability.parent(2L, "역량2", "아따따뚜겐", "색상2", member);
+        Ability childAbility = Ability.child(3L, "역량1의 자식역량", "너잘의 3인칭 역량", "색상3", parentAbility, member);
+
+        // when, then
+        assertThatThrownBy(() -> childAbility.validateColorWithParent(Collections.singletonList(anotherParentAbility), parentAbility))
+            .isExactlyInstanceOf(AbilityParentChildColorDifferentException.class);
     }
 }
