@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.login.aop.OnlyMember;
+import wooteco.prolog.login.aop.MemberOnly;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
-import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
@@ -35,7 +34,7 @@ public class StudylogController {
     }
 
     @PostMapping
-    @OnlyMember
+    @MemberOnly
     public ResponseEntity<Void> createStudylog(@AuthMemberPrincipal LoginMember member,
                                                @RequestBody List<StudylogRequest> studylogRequests) {
         List<StudylogResponse> studylogResponse = studylogService
@@ -60,7 +59,7 @@ public class StudylogController {
     }
 
     @PutMapping("/{id}")
-    @OnlyMember
+    @MemberOnly
     public ResponseEntity<Void> updateStudylog(
         @AuthMemberPrincipal LoginMember member,
         @PathVariable Long id,
@@ -71,7 +70,7 @@ public class StudylogController {
     }
 
     @DeleteMapping("/{id}")
-    @OnlyMember
+    @MemberOnly
     public ResponseEntity<Void> deleteStudylog(@AuthMemberPrincipal LoginMember member,
                                                @PathVariable Long id) {
         studylogService.deleteStudylog(member.getId(), id);

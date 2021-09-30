@@ -12,14 +12,14 @@ import wooteco.prolog.member.exception.MemberNotAllowedException;
 @Component
 public class LoginMemberVerifier {
 
-    @Before("@annotation(OnlyMember)")
-    public void checkTime(JoinPoint joinPoint) {
+    @Before("@annotation(wooteco.prolog.login.aop.MemberOnly)")
+    public void checkLoginMember(JoinPoint joinPoint) {
         final LoginMember loginMember = (LoginMember) Arrays.stream(joinPoint.getArgs())
             .filter(argument -> argument instanceof LoginMember)
             .findAny()
             .orElseThrow(() -> new IllegalStateException("LoginMember 가 존재하지 않습니다."));
-        if (loginMember.isAnonymous()) {
-            throw new MemberNotAllowedException();
-        }
+
+        loginMember.act()
+            .throwIfAnonymous(MemberNotAllowedException::new);
     }
 }
