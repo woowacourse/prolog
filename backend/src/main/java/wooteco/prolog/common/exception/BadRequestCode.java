@@ -11,9 +11,9 @@ import wooteco.prolog.login.excetpion.TokenNotValidException;
 import wooteco.prolog.member.exception.DuplicateMemberTagException;
 import wooteco.prolog.member.exception.MemberNotAllowedException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
-import wooteco.prolog.member.exception.MemberScrapAlreadyRegisteredException;
-import wooteco.prolog.member.exception.MemberScrapNotExistException;
-import wooteco.prolog.member.exception.MemberScrapNotValidUserException;
+import wooteco.prolog.studylog.exception.StudylogScrapAlreadyRegisteredException;
+import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
+import wooteco.prolog.studylog.exception.StudylogScrapNotValidUserException;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.TagName;
 import wooteco.prolog.studylog.domain.Title;
@@ -66,9 +66,9 @@ public enum BadRequestCode {
     TOO_LONG_MISSION_NAME(3005, String.format("미션 이름이 %d자 초과입니다.", Mission.MAX_LENGTH),
                           TooLongMissionNameException.class),
     DUPLICATE_MEMBER_TAG(3006, "중복되는 멤버 태그 입니다.", DuplicateMemberTagException.class),
-    SCRAP_ALREADY_REGISTERED(3007, "이미 스크랩한 스터디로그입니다.", MemberScrapAlreadyRegisteredException.class),
-    SCRAP_NOT_EXIST(3008, "스크랩이 존재하지 않습니다.", MemberScrapNotExistException.class),
-    SCRAP_NOT_VALID_USER(3009, "본인의 스크랩만 추가할 수 있습니다.", MemberScrapNotValidUserException.class)
+    SCRAP_ALREADY_REGISTERED(3007, "이미 스크랩한 스터디로그입니다.", StudylogScrapAlreadyRegisteredException.class),
+    SCRAP_NOT_EXIST(3008, "스크랩이 존재하지 않습니다.", StudylogScrapNotExistException.class),
+    SCRAP_NOT_VALID_USER(3009, "본인의 스크랩만 추가할 수 있습니다.", StudylogScrapNotValidUserException.class)
     ;
 
     private int code;

@@ -16,9 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberScrapResponse;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.exception.MemberScrapNotExistException;
+import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
 import wooteco.prolog.member.util.MemberFixture;
 import wooteco.prolog.member.util.MemberUtilCRUD;
+import wooteco.prolog.studylog.application.StudylogScrapService;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.domain.Studylog;
@@ -29,7 +30,7 @@ import wooteco.support.utils.IntegrationTest;
 
 @IntegrationTest
 @Transactional
-public class MemberScrapStudylogServiceTest {
+public class StudylogScrapServiceTest {
 
     private static final int FIRST_DATA = 0;
 
@@ -40,7 +41,7 @@ public class MemberScrapStudylogServiceTest {
     @Autowired
     private StudylogRepository studylogRepository;
     @Autowired
-    private MemberScrapService memberScrapService;
+    private StudylogScrapService studylogScrapService;
 
     private Member member;
     private Studylog studylog;
@@ -56,7 +57,7 @@ public class MemberScrapStudylogServiceTest {
     @Test
     void registerScrapTest() {
         //given
-        MemberScrapResponse memberScrapResponse = memberScrapService
+        MemberScrapResponse memberScrapResponse = studylogScrapService
             .registerScrap(member, studylog.getId());
         //when
         MemberResponse memberResponse = memberScrapResponse.getMemberResponse();
@@ -73,10 +74,10 @@ public class MemberScrapStudylogServiceTest {
         //given
         for (int id = 1; id <= totalSize; id++) {
             studylogUtilCRUD.등록(MemberFixture.웨지, "title" + (id + 1), "content", 1L);
-            memberScrapService.registerScrap(member, (long) id);
+            studylogScrapService.registerScrap(member, (long) id);
         }
         //when
-        StudylogsResponse studylogsResponse = memberScrapService
+        StudylogsResponse studylogsResponse = studylogScrapService
             .showScrap(member, PageRequest.of(page, size, Direction.DESC, "id"));
         //then
         StudylogResponse firstData = studylogsResponse.getData().get(FIRST_DATA);
@@ -88,13 +89,13 @@ public class MemberScrapStudylogServiceTest {
     @Test
     void unregisterScrapTest() {
         //given
-        MemberScrapResponse memberScrapResponse = memberScrapService
+        MemberScrapResponse memberScrapResponse = studylogScrapService
             .registerScrap(member, studylog.getId());
         //when
         Long studylogId = memberScrapResponse.getStudylogResponse().getId();
-        memberScrapService.unregisterScrap(member, studylogId);
+        studylogScrapService.unregisterScrap(member, studylogId);
         //then
-        StudylogsResponse studylogsResponse = memberScrapService
+        StudylogsResponse studylogsResponse = studylogScrapService
             .showScrap(member, Pageable.unpaged());
 
         assertThat(studylogsResponse.getTotalSize()).isEqualTo(0);
@@ -106,7 +107,7 @@ public class MemberScrapStudylogServiceTest {
         //given
         //when
         //then
-        assertThatThrownBy(() -> memberScrapService.unregisterScrap(member, studylog.getId()))
-            .isInstanceOf(MemberScrapNotExistException.class);
+        assertThatThrownBy(() -> studylogScrapService.unregisterScrap(member, studylog.getId()))
+            .isInstanceOf(StudylogScrapNotExistException.class);
     }
 }

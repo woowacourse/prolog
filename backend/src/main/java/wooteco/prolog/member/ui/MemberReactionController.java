@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
-import wooteco.prolog.member.application.MemberScrapService;
+import wooteco.prolog.studylog.application.StudylogScrapService;
 import wooteco.prolog.member.application.dto.MemberScrapRequest;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
@@ -23,14 +23,14 @@ import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 @RequestMapping("/members")
 public class MemberReactionController {
 
-    private final MemberScrapService memberScrapService;
+    private final StudylogScrapService studylogScrapService;
 
     @GetMapping(value = "/{username}/scrap")
     public ResponseEntity<StudylogsResponse> showScrap(
         @AuthMemberPrincipal Member member,
         @PageableDefault(direction = DESC) Pageable pageable
     ) {
-        StudylogsResponse studylogsResponse = memberScrapService.showScrap(member, pageable);
+        StudylogsResponse studylogsResponse = studylogScrapService.showScrap(member, pageable);
         return ResponseEntity.ok(studylogsResponse);
     }
 
@@ -39,7 +39,7 @@ public class MemberReactionController {
         @AuthMemberPrincipal Member member,
         @RequestBody MemberScrapRequest studylogIdRequest
     ) {
-        memberScrapService.registerScrap(member, studylogIdRequest.getStudylogId());
+        studylogScrapService.registerScrap(member, studylogIdRequest.getStudylogId());
         return ResponseEntity.ok().build();
     }
 
@@ -48,7 +48,7 @@ public class MemberReactionController {
         @AuthMemberPrincipal Member member,
         @RequestBody MemberScrapRequest studylogIdRequest
     ) {
-        memberScrapService.unregisterScrap(member, studylogIdRequest.getStudylogId());
+        studylogScrapService.unregisterScrap(member, studylogIdRequest.getStudylogId());
         return ResponseEntity.ok().build();
     }
 }

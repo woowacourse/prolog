@@ -1,5 +1,7 @@
 package wooteco.prolog.member.domain;
 
+import static wooteco.prolog.member.domain.Role.UNVALIDATED;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -15,8 +17,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
-import wooteco.prolog.member.exception.MemberScrapNotValidUserException;
-import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.domain.Tags;
 
@@ -47,9 +47,6 @@ public class Member {
     @Embedded
     private MemberTags memberTags;
 
-    @Embedded
-    private MemberScrapStudylogs memberScrapStudylogs;
-
     public Member(String username, String nickname, Role role, Long githubId, String imageUrl) {
         this(null, username, nickname, role, githubId, imageUrl);
     }
@@ -60,8 +57,7 @@ public class Member {
                   Role role,
                   Long githubId,
                   String imageUrl) {
-        this(id, username, nickname, role, githubId, imageUrl, new MemberTags(),
-            new MemberScrapStudylogs());
+        this(id, username, nickname, role, githubId, imageUrl, new MemberTags());
     }
 
     public Member(Long id,
@@ -70,9 +66,7 @@ public class Member {
                   Role role,
                   Long githubId,
                   String imageUrl,
-                  MemberTags memberTags,
-                  MemberScrapStudylogs memberScrapStudylogs
-    ) {
+                  MemberTags memberTags) {
         this.id = id;
         this.username = username;
         this.nickname = ifAbsentReplace(nickname, username);
@@ -80,7 +74,6 @@ public class Member {
         this.githubId = githubId;
         this.imageUrl = imageUrl;
         this.memberTags = memberTags;
-        this.memberScrapStudylogs = memberScrapStudylogs;
     }
 
     private String ifAbsentReplace(String nickname, String username) {
@@ -103,7 +96,7 @@ public class Member {
     }
 
     public static Member Anonymous() {
-        return new Member(-1L, "anonymous", "anonymous", Role.UNVALIDATED, -1L, "anonymous");
+        return new Member(-1L, "anonymous", "anonymous", UNVALIDATED, -1L, "anonymous");
     }
 
     public void addTag(Tag tag) {
@@ -139,25 +132,8 @@ public class Member {
             .collect(Collectors.toList());
     }
 
-    public void addScrapStudylog(MemberScrapStudylog memberScrapStudylog) {
-        if (!this.equals(memberScrapStudylog.getMember())) {
-            throw new MemberScrapNotValidUserException();
-        }
-        memberScrapStudylogs.add(memberScrapStudylog);
-    }
-
-    public void removeScrapStudylog(Member member, Long studylogId) {
-        memberScrapStudylogs.remove(member, studylogId);
-    }
-
-    public boolean isScrap(Long studylogId) {
-        List<Long> scrapedStudylogIds = this.getMemberScrapStudylogs().getScrapedStudylogIds();
-        return scrapedStudylogIds.stream()
-            .anyMatch(studylogId::equals);
-    }
-
-    public List<Long> getScrapedStudylogIds() {
-        return this.memberScrapStudylogs.getScrapedStudylogIds();
+    public boolean isAnonymous() {
+        return this.role == UNVALIDATED;
     }
 
     @Override

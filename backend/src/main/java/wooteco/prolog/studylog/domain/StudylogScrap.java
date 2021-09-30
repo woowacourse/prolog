@@ -1,6 +1,7 @@
-package wooteco.prolog.member.domain;
+package wooteco.prolog.studylog.domain;
 
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,33 +12,33 @@ import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.studylog.domain.Studylog;
+import wooteco.prolog.member.domain.Member;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class MemberScrapStudylog {
+public class StudylogScrap {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "studylog_id", nullable = false)
-    private Studylog scrapStudylog;
+    private Studylog studylog;
 
-    public MemberScrapStudylog(Member member, Studylog scrapStudylog) {
-        this(null, member, scrapStudylog);
+    public StudylogScrap(Member member, Studylog studylog) {
+        this(null, member, studylog);
     }
 
-    public MemberScrapStudylog(Long id, Member member, Studylog scrapStudylog) {
+    public StudylogScrap(Long id, Member member, Studylog studylog) {
         this.id = id;
         this.member = member;
-        this.scrapStudylog = scrapStudylog;
+        this.studylog = studylog;
     }
 
     @Override
@@ -45,16 +46,16 @@ public class MemberScrapStudylog {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof MemberScrapStudylog)) {
+        if (!(o instanceof StudylogScrap)) {
             return false;
         }
-        MemberScrapStudylog memberScrapStudylog = (MemberScrapStudylog) o;
-        return Objects.equals(member.getId(), memberScrapStudylog.member.getId()) &&
-            Objects.equals(scrapStudylog.getId(), memberScrapStudylog.getScrapStudylog().getId());
+        StudylogScrap studylogScrap = (StudylogScrap) o;
+        return Objects.equals(member.getId(), studylogScrap.member.getId()) &&
+            Objects.equals(studylog.getId(), studylogScrap.getStudylog().getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(member.getId(), scrapStudylog.getId());
+        return Objects.hash(member.getId(), studylog.getId());
     }
 }

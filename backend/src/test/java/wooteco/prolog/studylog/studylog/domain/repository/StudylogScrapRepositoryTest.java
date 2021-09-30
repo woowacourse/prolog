@@ -1,4 +1,4 @@
-package wooteco.prolog.member.domain.repository;
+package wooteco.prolog.studylog.studylog.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -8,8 +8,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.MemberScrapStudylog;
+import wooteco.prolog.member.domain.repository.MemberRepository;
+import wooteco.prolog.studylog.domain.StudylogScrap;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
@@ -17,14 +19,16 @@ import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.LevelRepository;
 import wooteco.prolog.studylog.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 
 @DataJpaTest
-public class MemberScrapStudylogRepositoryTest {
+public class StudylogScrapRepositoryTest {
 
     private static final Member 웨지 = new Member("sihyung92", "웨지", Role.CREW, 2222L,
         "https://avatars.githubusercontent.com/u/51393021?v=4");
 
     private Studylog studylog;
+    private Member member;
 
     @Autowired
     private StudylogRepository studylogRepository;
@@ -39,11 +43,11 @@ public class MemberScrapStudylogRepositoryTest {
     private MissionRepository missionRepository;
 
     @Autowired
-    private MemberScrapStudylogRepository memberScrapStudylogRepository;
+    private StudylogScrapRepository studylogScrapRepository;
 
     @BeforeEach
     void setUp() {
-        Member member = memberRepository.save(웨지);
+        member = memberRepository.save(웨지);
         Level level = levelRepository.save(new Level("레벨1"));
         Mission mission = missionRepository.save(new Mission("미션", level));
         studylog = studylogRepository
@@ -54,15 +58,15 @@ public class MemberScrapStudylogRepositoryTest {
     @Test
     void countMemberScrapTest() {
         //given
-        MemberScrapStudylog memberScrapStudylog = new MemberScrapStudylog(웨지, studylog);
+        StudylogScrap studylogScrap = new StudylogScrap(member, studylog);
         //when
-        int countBefore = memberScrapStudylogRepository
-            .countByMemberIdAndScrapStudylogId(웨지.getId(), studylog.getId());
+        int countBefore = studylogScrapRepository
+            .countByMemberIdAndScrapStudylogId(member.getId(), studylog.getId());
 
-        memberScrapStudylogRepository.save(memberScrapStudylog);
+        studylogScrapRepository.save(studylogScrap);
 
-        int countAfter = memberScrapStudylogRepository
-            .countByMemberIdAndScrapStudylogId(웨지.getId(), studylog.getId());
+        int countAfter = studylogScrapRepository
+            .countByMemberIdAndScrapStudylogId(member.getId(), studylog.getId());
         //then
         assertThat(countBefore).isEqualTo(0);
         assertThat(countAfter).isEqualTo(1);
@@ -72,13 +76,13 @@ public class MemberScrapStudylogRepositoryTest {
     @Test
     void findByMemberIdAndStudylogIdTest() {
         //given
-        MemberScrapStudylog expectedMemberScrapStudylog = new MemberScrapStudylog(웨지, studylog);
+        StudylogScrap expectedStudylogScrap = new StudylogScrap(member, studylog);
         //when
-        memberScrapStudylogRepository.save(expectedMemberScrapStudylog);
-        MemberScrapStudylog memberScrapStudylog = memberScrapStudylogRepository
-            .findByMemberIdAndScrapStudylogId(웨지.getId(), studylog.getId()).get();
+        studylogScrapRepository.save(expectedStudylogScrap);
+        StudylogScrap studylogScrap = studylogScrapRepository
+            .findByMemberIdAndStudylogId(member.getId(), studylog.getId()).get();
 
         //then
-        assertThat(expectedMemberScrapStudylog).isEqualTo(memberScrapStudylog);
+        assertThat(expectedStudylogScrap).isEqualTo(studylogScrap);
     }
 }
