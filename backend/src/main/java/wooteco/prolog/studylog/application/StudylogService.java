@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
@@ -122,19 +123,19 @@ public class StudylogService {
     }
 
     @Transactional
-    public List<StudylogResponse> insertStudylogs(Member member,
+    public List<StudylogResponse> insertStudylogs(Long memberId,
                                                   List<StudylogRequest> studylogRequests) {
         if (studylogRequests.size() == 0) {
             throw new StudylogArgumentException();
         }
 
         return studylogRequests.stream()
-            .map(studylogRequest -> insertStudylog(member, studylogRequest))
+            .map(studylogRequest -> insertStudylog(memberId, studylogRequest))
             .collect(toList());
     }
 
-    private StudylogResponse insertStudylog(Member member, StudylogRequest studylogRequest) {
-        final Member foundMember = memberService.findById(member.getId());
+    private StudylogResponse insertStudylog(Long memberId, StudylogRequest studylogRequest) {
+        final Member foundMember = memberService.findById(memberId);
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
         Mission mission = missionService.findById(studylogRequest.getMissionId());
 
@@ -159,12 +160,12 @@ public class StudylogService {
     }
 
     @Transactional
-    public void updateStudylog(Member member, Long studylogId, StudylogRequest studylogRequest) {
-        final Member foundMember = memberService.findById(member.getId());
+    public void updateStudylog(Long memberId, Long studylogId, StudylogRequest studylogRequest) {
+        final Member foundMember = memberService.findById(memberId);
 
         Studylog studylog = studylogRepository.findById(studylogId)
             .orElseThrow(StudylogNotFoundException::new);
-        studylog.validateAuthor(member);
+        studylog.validateAuthor(foundMember);
         final Tags originalTags = tagService.findByPostAndMember(studylog, foundMember);
 
         Mission mission = missionService.findById(studylogRequest.getMissionId());
@@ -176,8 +177,8 @@ public class StudylogService {
     }
 
     @Transactional
-    public void deleteStudylog(Member member, Long studylogId) {
-        final Member foundMember = memberService.findById(member.getId());
+    public void deleteStudylog(Long memberId, Long studylogId) {
+        final Member foundMember = memberService.findById(memberId);
         Studylog studylog = studylogRepository.findById(studylogId)
             .orElseThrow(StudylogNotFoundException::new);
         studylog.validateAuthor(foundMember);
@@ -185,7 +186,7 @@ public class StudylogService {
         final Tags tags = tagService.findByPostAndMember(studylog, foundMember);
         studylogDocumentService.delete(studylog.toStudylogDocument());
         studylogRepository.delete(studylog);
-        memberTagService.removeMemberTag(tags, member);
+        memberTagService.removeMemberTag(tags, foundMember);
     }
 
     public List<CalendarStudylogResponse> findCalendarPosts(String username, LocalDate localDate) {

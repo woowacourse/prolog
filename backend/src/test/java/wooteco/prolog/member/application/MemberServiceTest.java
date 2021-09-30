@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
+import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.domain.Member;
@@ -132,7 +134,7 @@ class MemberServiceTest {
         MemberUpdateRequest updateRequest = new MemberUpdateRequest(새로운_닉네임, 새로운_이미지);
 
         // when
-        memberService.updateMember(savedMember, updateRequest);
+        memberService.updateMember(savedMember.getId(), updateRequest);
 
         // then
         Member foundMember = memberService.findById(savedMember.getId());
@@ -150,11 +152,11 @@ class MemberServiceTest {
         String 새로운_닉네임 = "브라운2세";
         String 새로운_이미지 = "superPowerImageUrl";
 
-        Member member = new Member("gracefulBrown", 기존_닉네임, Role.CREW, 1L, 기존_이미지);
+        Member member = new Member(Long.MIN_VALUE, "gracefulBrown", 기존_닉네임, Role.CREW, 1L, 기존_이미지);
         MemberUpdateRequest updateRequest = new MemberUpdateRequest(새로운_닉네임, 새로운_이미지);
 
         // when, then
-        assertThatThrownBy(() -> memberService.updateMember(member, updateRequest))
+        assertThatThrownBy(() -> memberService.updateMember(member.getId(), updateRequest))
             .isExactlyInstanceOf(MemberNotFoundException.class);
     }
 
