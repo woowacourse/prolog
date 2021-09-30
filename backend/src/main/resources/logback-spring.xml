@@ -14,7 +14,7 @@
     </logger>
 
     <logger name="wooteco.prolog" level="WARN">
-      <appender-ref ref="async-slack-logger"/>
+      <appender-ref ref="prod-async-slack-logger"/>
     </logger>
 
     <logger name="org.springframework" level="INFO">
@@ -29,6 +29,12 @@
     <include resource="logback/file-info-logger.xml"/>
     <include resource="logback/file-warn-logger.xml"/>
     <include resource="logback/file-error-logger.xml"/>
+    <!-- 500 error slack alarm -->
+    <include resource="logback/slack-logger.xml"/>
+
+    <logger name="wooteco.prolog" level="WARN">
+      <appender-ref ref="dev-async-slack-logger"/>
+    </logger>
 
     <logger name="wooteco.prolog" level="DEBUG">
       <appender-ref ref="file-debug-logger"/>
