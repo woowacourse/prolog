@@ -13,6 +13,10 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.report.application.AbilityService;
+import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
+import wooteco.prolog.report.application.dto.ability.AbilityResponse;
+import wooteco.prolog.report.exception.AbilityNotFoundException;
 import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
@@ -40,6 +44,7 @@ public class DataLoaderApplicationListener implements
     private MemberService memberService;
     private StudylogService studylogService;
     private DocumentService studyLogDocumentService;
+    private AbilityService abilityService;
     private UpdatedContentsRepository updatedContentsRepository;
 
     @Override
@@ -63,9 +68,111 @@ public class DataLoaderApplicationListener implements
         studylogService.insertStudylogs(Members.JOANNE.value, StudylogGenerator.generate(20));
         studylogService.insertStudylogs(Members.TYCHE.value, StudylogGenerator.generate(100));
 
+        // ability init
+        Abilities.initBackend(Members.BROWN.value, abilityService);
+        Abilities.initBackend(Members.JOANNE.value, abilityService);
+        Abilities.initFrontend(Members.TYCHE.value, abilityService);
+
         updatedContentsRepository
             .save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
+    }
 
+    private static class Abilities {
+
+        public static void initBackend(Member member, AbilityService abilityService) {
+            // init parent
+            AbilityCreateRequest programmingRequest = new AbilityCreateRequest("Programming", "Programming 입니다.", "#ff9100", null);
+            AbilityCreateRequest designRequest = new AbilityCreateRequest("Design", "Design 입니다.", "#00cccc", null);
+            AbilityCreateRequest infrastructureRequest = new AbilityCreateRequest("Infrastructure", "Infrastructure 입니다.", "#ccccff", null);
+            AbilityCreateRequest softwareDevelopmentProcessAndMaintenanceRequest = new AbilityCreateRequest("Software Development Process & Maintenance", "Software Development Process & Maintenance 입니다.", "#ffcce5", null);
+            AbilityCreateRequest csRequest = new AbilityCreateRequest("CS", "CS 입니다.", "#9100ff", null);
+            abilityService.createAbility(member, programmingRequest);
+            abilityService.createAbility(member, designRequest);
+            abilityService.createAbility(member, infrastructureRequest);
+            abilityService.createAbility(member, softwareDevelopmentProcessAndMaintenanceRequest);
+            abilityService.createAbility(member, csRequest);
+
+            List<AbilityResponse> abilityResponses = abilityService.findParentAbilitiesByMember(member);
+
+            // init children
+            AbilityResponse programmingResponse = findParentAbilityResponse(abilityResponses, programmingRequest);
+            abilityService.createAbility(member, new AbilityCreateRequest("Language", "Language 입니다.", programmingResponse.getColor(), programmingResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("Framework", "Framework 입니다.", programmingResponse.getColor(), programmingResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("Testing", "Testing 입니다.", programmingResponse.getColor(), programmingResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("Web Programming", "Web Programming 입니다.", programmingResponse.getColor(), programmingResponse.getId()));
+
+            AbilityResponse designResponse = findParentAbilityResponse(abilityResponses, designRequest);
+            abilityService.createAbility(member, new AbilityCreateRequest("Development Driven", "Development Driven 입니다.", designResponse.getColor(), designResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("Programming Principle", "Programming Principle 입니다.", designResponse.getColor(), designResponse.getId()));
+
+            AbilityResponse infrastructureResponse = findParentAbilityResponse(abilityResponses, infrastructureRequest);
+            abilityService.createAbility(member, new AbilityCreateRequest("Web Architecture Components", "Web Architecture Components 입니다.", infrastructureResponse.getColor(), infrastructureResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("Service & Tools", "Service & Tools 입니다.", infrastructureResponse.getColor(), infrastructureResponse.getId()));
+
+            AbilityResponse softwareDevelopmentProcessAndMaintenanceResponse = findParentAbilityResponse(abilityResponses, softwareDevelopmentProcessAndMaintenanceRequest);
+            abilityService.createAbility(member, new AbilityCreateRequest("Development Process", "Development Process 입니다.", softwareDevelopmentProcessAndMaintenanceResponse.getColor(), softwareDevelopmentProcessAndMaintenanceResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("Maintenance", "Maintenance 입니다.", softwareDevelopmentProcessAndMaintenanceResponse.getColor(), softwareDevelopmentProcessAndMaintenanceResponse.getId()));
+
+            AbilityResponse csResponse = findParentAbilityResponse(abilityResponses, csRequest);
+            abilityService.createAbility(member, new AbilityCreateRequest("Database", "Database 입니다.", csResponse.getColor(), csResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("네트워크", "네트워크 입니다.", csResponse.getColor(), csResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("OS", "OS 입니다.", csResponse.getColor(), csResponse.getId()));
+        }
+
+        public static void initFrontend(Member member, AbilityService abilityService) {
+            // init parent
+            AbilityCreateRequest javaScriptAndHtmlRequest = new AbilityCreateRequest("JavaScript & HTML", "JavaScript & HTML 입니다.", "#ff009a", null);
+            AbilityCreateRequest csRequest = new AbilityCreateRequest("CS", "CS 입니다.", "#9100ff", null);
+            AbilityCreateRequest graphicsRequest = new AbilityCreateRequest("Graphics", "Graphics 입니다.", "#2f8aff", null);
+            AbilityCreateRequest architectureRequest = new AbilityCreateRequest("Architecture", "Architecture 입니다.", "#e5ffcc", null);
+            AbilityCreateRequest uiuxRequest = new AbilityCreateRequest("UI/UX", "UI/UX 입니다.", "#2fff6e", null);
+            abilityService.createAbility(member, javaScriptAndHtmlRequest);
+            abilityService.createAbility(member, csRequest);
+            abilityService.createAbility(member, graphicsRequest);
+            abilityService.createAbility(member, uiuxRequest);
+            abilityService.createAbility(member, architectureRequest);
+
+            List<AbilityResponse> abilityResponses = abilityService.findParentAbilitiesByMember(member);
+
+            AbilityResponse javaScriptAndHtmlResponse = findParentAbilityResponse(abilityResponses, javaScriptAndHtmlRequest);
+            abilityService.createAbility(member, new AbilityCreateRequest("기초 언어 시스템", "기초 언어 시스템 입니다.", javaScriptAndHtmlResponse.getColor(), javaScriptAndHtmlResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("고급 언어 시스템", "고급 언어 시스템 입니다.", javaScriptAndHtmlResponse.getColor(), javaScriptAndHtmlResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("브라우저", "브라우저 입니다.", javaScriptAndHtmlResponse.getColor(), javaScriptAndHtmlResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("비동기&데이터 처리", "비동기&데이터 처리 입니다.", javaScriptAndHtmlResponse.getColor(), javaScriptAndHtmlResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("성능", "성능 입니다.", javaScriptAndHtmlResponse.getColor(), javaScriptAndHtmlResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("HTML", "HTML 입니다.", javaScriptAndHtmlResponse.getColor(), javaScriptAndHtmlResponse.getId()));
+
+            AbilityResponse csResponse = findParentAbilityResponse(abilityResponses, csRequest);
+            abilityService.createAbility(member, new AbilityCreateRequest("네트워크", "네트워크 입니다.", csResponse.getColor(), csResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("알고리즘", "알고리즘 입니다.", csResponse.getColor(), csResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("자료구조", "자료구조 입니다.", csResponse.getColor(), csResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("OS", "OS 입니다.", csResponse.getColor(), csResponse.getId()));
+
+            AbilityResponse graphicsResponse = findParentAbilityResponse(abilityResponses, graphicsRequest);
+            abilityService.createAbility(member, new AbilityCreateRequest("CSS 스타일링: 레이아웃과 포지셔닝", "CSS 스타일링: 레이아웃과 포지셔닝 입니다.", graphicsResponse.getColor(), graphicsResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("트랜지션, 애니메이션", "트랜지션, 애니메이션 입니다.", graphicsResponse.getColor(), graphicsResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("2D 그래픽스", "2D 그래픽스 입니다.", graphicsResponse.getColor(), graphicsResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("3D 그래픽스", "3D 그래픽스 입니다.", graphicsResponse.getColor(), graphicsResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("Vector 그래픽스", "Vector 그래픽스 입니다.", graphicsResponse.getColor(), graphicsResponse.getId()));
+
+            AbilityResponse uiuxResponse = findParentAbilityResponse(abilityResponses, uiuxRequest);
+            abilityService.createAbility(member, new AbilityCreateRequest("인터랙션 디자인 이론", "인터랙션 디자인 이론 입니다.", uiuxResponse.getColor(), uiuxResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("UI/UX 설계", "UI/UX 설계 입니다.", uiuxResponse.getColor(), uiuxResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("UX 일반 이론", "UX 일반 이론 입니다.", uiuxResponse.getColor(), uiuxResponse.getId()));
+
+            AbilityResponse architectureResponse = findParentAbilityResponse(abilityResponses, architectureRequest);
+            abilityService.createAbility(member, new AbilityCreateRequest("웹애플리케이션 구현 시 고려해야 하는 설계", "웹애플리케이션 구현 시 고려해야 하는 설계 입니다.", architectureResponse.getColor(), architectureResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("프로젝트 개발 환경 설계", "프로젝트 개발 환경 설계 입니다.", architectureResponse.getColor(), architectureResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("테스트와 프로젝트 배포", "테스트와 프로젝트 배포 입니다.", architectureResponse.getColor(), architectureResponse.getId()));
+            abilityService.createAbility(member, new AbilityCreateRequest("프로그래밍 테크닉, 개발 프랙티스, 개발 방법론", "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론 입니다.", architectureResponse.getColor(), architectureResponse.getId()));
+        }
+
+        private static AbilityResponse findParentAbilityResponse(List<AbilityResponse> abilityResponses, AbilityCreateRequest request) {
+            return abilityResponses.stream()
+                .filter(response -> request.getName().equals(response.getName()))
+                .findAny()
+                .orElseThrow(AbilityNotFoundException::new);
+        }
     }
 
     private enum Levels {
