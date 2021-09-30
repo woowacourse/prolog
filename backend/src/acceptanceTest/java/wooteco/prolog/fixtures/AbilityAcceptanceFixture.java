@@ -7,6 +7,8 @@ public enum AbilityAcceptanceFixture {
     PROGRAMMING("프로그래밍", "프로그래밍 관련입니다.", "red"),
     LANGUAGE("언어", null, "red"),
     FRAMEWORK( "프레임워크", null, "red"),
+    CREATIVITY("프로그래밍과 색상이 같은 창의력", "창의력입니다.", "red"),
+    THINK_POWER("프로그래밍과 색상이 다른 사고력", "사고력입니다.", "black"),
     DESIGN("디자인", "디자인 관련입니다.", "blue"),
     TDD("TDD", null, "blue"),
     ATDD("ATDD", null, "blue"),

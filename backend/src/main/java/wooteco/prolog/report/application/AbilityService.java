@@ -30,35 +30,57 @@ public class AbilityService {
     }
 
     private Ability extractAbility(Member member, AbilityCreateRequest request) {
+        List<Ability> abilities = findByMemberId(member.getId());
+
         String name = request.getName();
         String description = request.getDescription();
         String color = request.getColor();
         Long parentId = request.getParent();
 
         if (Objects.isNull(parentId)) {
-            return Ability.parent(name, description, color, member);
+            return extractParentAbility(member, abilities, name, description, color);
         }
 
-        Ability parent = findAbilityById(parentId);
-        return Ability.child(name, description, color, parent, member);
+        return extractChildAbility(member, abilities, name, description, color, parentId);
+    }
+
+    private Ability extractChildAbility(Member member, List<Ability> abilities, String name, String description,
+                                        String color, Long parentId) {
+        Ability parentAbility = findAbilityById(parentId);
+        Ability childAbility = Ability.child(name, description, color, parentAbility, member);
+
+        childAbility.validateDuplicateName(abilities);
+        childAbility.validateColorWithParent(abilities, parentAbility);
+
+        return childAbility;
+    }
+
+    private Ability extractParentAbility(Member member, List<Ability> abilities, String name, String description,
+                                         String color) {
+        Ability parentAbility = Ability.parent(name, description, color, member);
+
+        parentAbility.validateDuplicateName(abilities);
+        parentAbility.validateDuplicateColor(abilities);
+
+        return parentAbility;
     }
 
     public List<AbilityResponse> findAbilitiesByMember(Member member) {
-        List<Ability> abilities = abilityRepository.findByMember(member);
+        return AbilityResponse.of(findByMemberId(member.getId()));
+    }
 
-        return AbilityResponse.of(abilities);
+    public List<AbilityResponse> findAbilitiesByMemberId(Long memberId) {
+        return AbilityResponse.of(findByMemberId(memberId));
+    }
+
+    private List<Ability> findByMemberId(Long memberId) {
+        return abilityRepository.findByMemberId(memberId);
     }
 
     public List<AbilityResponse> findParentAbilitiesByMember(Member member) {
         List<Ability> parentAbilities = abilityRepository.findByMemberAndParentIsNull(member);
 
         return AbilityResponse.of(parentAbilities);
-    }
-
-    public List<AbilityResponse> findAbilitiesByMemberId(Long memberId) {
-        List<Ability> abilities = abilityRepository.findByMemberId(memberId);
-
-        return AbilityResponse.of(abilities);
     }
 
     @Transactional

@@ -13,8 +13,6 @@ public interface AbilityRepository extends JpaRepository<Ability, Long> {
 
     List<Ability> findByMemberAndParentIsNull(Member member);
 
-    List<Ability> findByMember(Member member);
-
     List<Ability> findByMemberId(Long memberId);
 
     @Query("select count(a) from Ability a where a.id in :abilityIds and a.parent is null")

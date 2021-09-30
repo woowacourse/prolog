@@ -20,6 +20,9 @@ import wooteco.prolog.report.domain.ablity.Ability;
 import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
 import wooteco.prolog.report.exception.AbilityHasChildrenException;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
+import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
+import wooteco.prolog.studylog.exception.AbilityNameDuplicateException;
+import wooteco.prolog.studylog.exception.AbilityParentColorDuplicateException;
 import wooteco.support.utils.IntegrationTest;
 
 @IntegrationTest
@@ -52,12 +55,57 @@ class AbilityServiceTest {
             .isExactlyInstanceOf(AbilityNotFoundException.class);
     }
 
+    @DisplayName("역량을 생성할 때 기존에 존재하는 역량과 이름이 같은 경우 예외가 발생한다.")
+    @Test
+    void createAbilityNameDuplicateException() {
+        // given
+        String name = "zi존브라운123";
+        AbilityCreateRequest request1 = new AbilityCreateRequest(name, "이견 있습니까?", "이견을 피로 물들이는 붉은 색", null);
+
+        abilityService.createAbility(member, request1);
+
+        // when, then
+        AbilityCreateRequest request2 = new AbilityCreateRequest(name, "없어용", "침묵의 검은 색", null);
+        assertThatThrownBy(() -> abilityService.createAbility(member, request2))
+            .isExactlyInstanceOf(AbilityNameDuplicateException.class);
+    }
+
+    @DisplayName("부모 역량을 생성할 때 기존에 존재하는 다른 역량들과 색상이 같은 경우 예외가 발생한다.")
+    @Test
+    void createParentAbilityColorDuplicateException() {
+        // given
+        String color = "이견을 피로 물들이는 붉은 색";
+        AbilityCreateRequest request1 = new AbilityCreateRequest("zi존브라운123", "이견 있습니까?", color, null);
+
+        abilityService.createAbility(member, request1);
+
+        // when, then
+        AbilityCreateRequest request2 = new AbilityCreateRequest("그냥막구현해", "없어용", color, null);
+        assertThatThrownBy(() -> abilityService.createAbility(member, request2))
+            .isExactlyInstanceOf(AbilityParentColorDuplicateException.class);
+    }
+
+    @DisplayName("자식 역량을 생성할 때 부모 역량과 색상이 다른 경우 예외가 발생한다.")
+    @Test
+    void createChildAbilityColorDifferentException() {
+        // given
+        AbilityCreateRequest parentAbilityRequest = new AbilityCreateRequest("zi존브라운123", "이견 있습니까?", "이견을 피로 물들이는 붉은 색", null);
+
+        abilityService.createAbility(member, parentAbilityRequest);
+        Long parentId = abilityService.findAbilitiesByMember(member).iterator().next().getId();
+
+        // when, then
+        AbilityCreateRequest childAbilityRequest = new AbilityCreateRequest("그냥막구현해", "없어용", "검은 색 이에용", parentId);
+        assertThatThrownBy(() -> abilityService.createAbility(member, childAbilityRequest))
+            .isExactlyInstanceOf(AbilityParentChildColorDifferentException.class);
+    }
+
     @DisplayName("부모 역량만을 조회한다. (자식 정보가 포함되지 않는다.)")
     @Test
     void parentAbilities() {
         // given
         Ability parentAbility = abilityRepository.save(Ability.parent("메타버스", "폴리곤 덩어리들", "123456", member));
-        Ability childAbility = abilityRepository.save(Ability.child("마자용", "마자아아아~용", "하늘색", parentAbility, member));
+        Ability childAbility = abilityRepository.save(Ability.child("마자용", "마자아아아~용", "123456", parentAbility, member));
 
         AbilityResponse expectResponse = new AbilityResponse(
             parentAbility.getId(),
@@ -101,7 +149,7 @@ class AbilityServiceTest {
         abilityService.createAbility(member, parentCreateRequest);
         Ability parentAbility = abilityRepository.findByMemberAndParentIsNull(member).iterator().next();
 
-        AbilityCreateRequest childCreateRequest = new AbilityCreateRequest("손너잘", "내안으어두미", "크아아아악!!", parentAbility.getId());
+        AbilityCreateRequest childCreateRequest = new AbilityCreateRequest("손너잘", "내안으어두미", "이견을 피로 물들이는 붉은 색", parentAbility.getId());
         abilityService.createAbility(member, childCreateRequest);
 
         // when, then
@@ -114,7 +162,7 @@ class AbilityServiceTest {
     void deleteChildAbility() {
         // given
         Ability parentAbility = abilityRepository.save(Ability.parent("zi존브라운123", "이견 있습니까?", "이견을 피로 물들이는 붉은 색", member));
-        Ability childAbility = abilityRepository.save(Ability.child("손너잘", "내안으어두미", "크아아아악!!", parentAbility, member));
+        Ability childAbility = abilityRepository.save(Ability.child("손너잘", "내안으어두미", "이견을 피로 물들이는 붉은 색", parentAbility, member));
 
         // when
         assertThat(parentAbility.getChildren()).containsExactly(childAbility);
@@ -132,7 +180,7 @@ class AbilityServiceTest {
     void findMemberAbilitiesByMemberId() {
         // given
         Ability ability1 = abilityRepository.save(Ability.parent("나는ZI존브라운이다.", "이견있나?", "피의 붉은 색", member));
-        Ability ability2 = abilityRepository.save(Ability.parent("나는ZI존브라운이다.2", "이견있나?2", "피의 붉은 색2", member));
+        Ability ability2 = abilityRepository.save(Ability.parent("나는킹갓브라운이다.", "이견은 없겠지?", "무지개 색", member));
 
         // when
         List<AbilityResponse> abilityResponses = abilityService.findAbilitiesByMemberId(member.getId());

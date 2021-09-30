@@ -16,6 +16,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.exception.AbilityHasChildrenException;
+import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
+import wooteco.prolog.studylog.exception.AbilityNameDuplicateException;
+import wooteco.prolog.studylog.exception.AbilityParentColorDuplicateException;
 
 @Entity
 public class Ability {
@@ -112,6 +115,42 @@ public class Ability {
 
     private void removeChild(Ability ability) {
         children.removeIf(abilityRelationship -> abilityRelationship.isSameWithSource(ability));
+    }
+
+    public void validateDuplicateName(List<Ability> abilities) {
+        if (abilities.stream().anyMatch(this::isSameName)) {
+            throw new AbilityNameDuplicateException();
+        }
+    }
+
+    private boolean isSameName(Ability ability) {
+        return name.equals(ability.name);
+    }
+
+    public void validateColorWithParent(List<Ability> abilities, Ability parentAbility) {
+        abilities.remove(parentAbility);
+        validateSameColor(parentAbility);
+        validateDuplicateColor(abilities);
+    }
+
+    private void validateSameColor(Ability parentAbility) {
+        if (isDifferentColor(parentAbility)) {
+            throw new AbilityParentChildColorDifferentException();
+        }
+    }
+
+    public void validateDuplicateColor(List<Ability> abilities) {
+        if (abilities.stream().anyMatch(this::isSameColor)) {
+            throw new AbilityParentColorDuplicateException();
+        }
+    }
+
+    private boolean isDifferentColor(Ability ability) {
+        return !isSameColor(ability);
+    }
+
+    private boolean isSameColor(Ability ability) {
+        return color.equals(ability.color);
     }
 
     public Long getId() {

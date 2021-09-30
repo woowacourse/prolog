@@ -124,4 +124,31 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         assertThat(exceptionDto.getCode()).isEqualTo(BadRequestCode.ABILITY_HAS_CHILDREN.getCode());
         assertThat(exceptionDto.getMessage()).isEqualTo(BadRequestCode.ABILITY_HAS_CHILDREN.getMessage());
     }
+
+    @Then("역량 이름 중복 관련 예외가 발생한다.")
+    public void 역량이름중복관련예외가발생한다() {
+        ExceptionDto exceptionDto = context.response.as(ExceptionDto.class);
+
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(exceptionDto.getCode()).isEqualTo(BadRequestCode.ABILITY_NAME_DUPLICATE.getCode());
+        assertThat(exceptionDto.getMessage()).isEqualTo(BadRequestCode.ABILITY_NAME_DUPLICATE.getMessage());
+    }
+
+    @Then("부모역량 색상 중복 관련 예외가 발생한다.")
+    public void 부모역량색상중복관련예외가발생한다() {
+        ExceptionDto exceptionDto = context.response.as(ExceptionDto.class);
+
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(exceptionDto.getCode()).isEqualTo(BadRequestCode.ABILITY_PARENT_COLOR_DUPLICATE.getCode());
+        assertThat(exceptionDto.getMessage()).isEqualTo(BadRequestCode.ABILITY_PARENT_COLOR_DUPLICATE.getMessage());
+    }
+
+    @Then("부모역량과 자식역량의 색상 불일치 예외가 발생한다.")
+    public void 부모역량과자식역량의색상불일치예외가발생한다() {
+        ExceptionDto exceptionDto = context.response.as(ExceptionDto.class);
+
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(exceptionDto.getCode()).isEqualTo(BadRequestCode.ABILITY_PARENT_CHILD_COLOR_DIFFERENT.getCode());
+        assertThat(exceptionDto.getMessage()).isEqualTo(BadRequestCode.ABILITY_PARENT_CHILD_COLOR_DIFFERENT.getMessage());
+    }
 }
