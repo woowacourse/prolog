@@ -1,4 +1,4 @@
-package wooteco.prolog.studylog.application;
+package wooteco.prolog.report.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
