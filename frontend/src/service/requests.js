@@ -49,7 +49,7 @@ const requestDeletePost = (postId, accessToken) =>
 const requestGetProfile = (username) => fetch(`${BASE_URL}/members/${username}/profile`);
 
 const requestEditProfile = (data, accessToken) =>
-  fetch(`${BASE_URL}/members/me`, {
+  fetch(`${BASE_URL}/members/${data.username}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
