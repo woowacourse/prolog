@@ -1,9 +1,12 @@
 package wooteco.prolog.member.application;
 
+import java.util.stream.Collectors;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
+import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.domain.Member;
@@ -39,9 +42,14 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateMember(Member member, MemberUpdateRequest updateRequest) {
-        Member persistMember = findByUsername(member.getUsername());
+    public void updateMember(Long memberId, MemberUpdateRequest updateRequest) {
+        Member persistMember = findById(memberId);
         persistMember.updateImageUrl(updateRequest.getImageUrl());
         persistMember.updateNickname(updateRequest.getNickname());
+    }
+    public List<MemberResponse> findAll() {
+        final List<Member> members = memberRepository.findAll();
+        return members.stream().map(MemberResponse::of)
+            .collect(Collectors.toList());
     }
 }

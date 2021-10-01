@@ -25,11 +25,22 @@ public class ReportController {
         this.reportService = reportService;
     }
 
-    @GetMapping("/{username}/}reports")
+    @GetMapping("/reports")
     public ResponseEntity<Object> findReportsById(
-        @PathVariable String username,
+        String member,
         String type,
         @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable
+    ) {
+        Object response = reportService.findReportsByUsername(member, type, pageable);
+        return ResponseEntity.ok(response);
+    }
+
+    @Deprecated
+    @GetMapping("/{username}/reports")
+    public ResponseEntity<Object> findReportsById_deprecated(
+            @PathVariable String username,
+            String type,
+            @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable
     ) {
         Object response = reportService.findReportsByUsername(username, type, pageable);
         return ResponseEntity.ok(response);

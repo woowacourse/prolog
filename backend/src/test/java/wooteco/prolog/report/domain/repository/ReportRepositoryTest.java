@@ -106,14 +106,14 @@ class ReportRepositoryTest {
         Studylog studylog = studylogRepository.save(createStudyLog(member, mission));
         ReportedStudylogs reportedStudylogs = new ReportedStudylogs(Arrays.asList(
             new ReportedStudylog(
-                studylog,
+                studylog.getId(),
                 Arrays.asList(
                     new ReportedStudylogAbility(ability4),
                     new ReportedStudylogAbility(ability5)
                 )
             ),
             new ReportedStudylog(
-                studylog,
+                studylog.getId(),
                 Arrays.asList(
                     new ReportedStudylogAbility(ability4),
                     new ReportedStudylogAbility(ability5)

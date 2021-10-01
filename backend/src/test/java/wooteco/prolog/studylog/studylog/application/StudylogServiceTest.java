@@ -9,6 +9,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDate;
+<<<<<<< HEAD
+=======
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+>>>>>>> 865db151960ee58df685dc973a02785125394235
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -23,6 +28,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
+import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
@@ -233,9 +240,15 @@ class StudylogServiceTest {
                 missionIds,
                 tagIds,
                 usernames,
+<<<<<<< HEAD
                 null,
                 null,
                 null,
+=======
+                new ArrayList<>(),
+                LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
+                LocalDate.parse("20211231", DateTimeFormatter.BASIC_ISO_DATE),
+>>>>>>> 865db151960ee58df685dc973a02785125394235
                 PageRequest.of(0, 10)
             )
         );
@@ -301,7 +314,7 @@ class StudylogServiceTest {
                                                                     toTagRequests(tags));
 
         //when
-        studylogService.updateStudylog(member1, targetStudylog.getId(), updateStudylogRequest);
+        studylogService.updateStudylog(member1.getId(), targetStudylog.getId(), updateStudylogRequest);
 
         //then
         StudylogResponse expectedResult = studylogService.findById(targetStudylog.getId());
@@ -330,7 +343,7 @@ class StudylogServiceTest {
                                                                     2L,
                                                                     toTagRequests(tags));
 
-        studylogService.updateStudylog(member1, id, updateStudylogRequest);
+        studylogService.updateStudylog(member1.getId(), id, updateStudylogRequest);
 
         // when
         StudylogDocument studylogDocument = studylogDocumentService.findById(id);
@@ -357,7 +370,7 @@ class StudylogServiceTest {
             .collect(toList());
 
         Long removedId = studylogIds.remove(0);
-        studylogService.deleteStudylog(member1, removedId);
+        studylogService.deleteStudylog(member1.getId(), removedId);
 
         //then
         StudylogsResponse studylogsResponse = studylogService
@@ -394,7 +407,7 @@ class StudylogServiceTest {
         List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1);
         Long id = studylogResponses.get(0).getId();
 
-        studylogService.deleteStudylog(member1, id);
+        studylogService.deleteStudylog(member1.getId(), id);
 
         // when - then
         assertThatThrownBy(() -> studylogDocumentService.findById(id))
@@ -413,7 +426,7 @@ class StudylogServiceTest {
             )
             .collect(toList());
 
-        return studylogService.insertStudylogs(member, studylogRequests);
+        return studylogService.insertStudylogs(member.getId(), studylogRequests);
     }
 
     private List<StudylogResponse> insertStudylogs(Member member, Studylog... studylogs) {
@@ -430,5 +443,9 @@ class StudylogServiceTest {
         return tags.stream()
             .map(tag -> new TagRequest(tag.getName()))
             .collect(toList());
+    }
+
+    private LoginMember toLoginMember(Member member) {
+        return new LoginMember(member.getId(), Authority.MEMBER);
     }
 }

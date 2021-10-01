@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+  <appender name="prod-slack-logger" class="com.github.maricn.logback.SlackAppender">
+    <webhookUri>${SLACK_LOGGER_WEBHOOK_URI}</webhookUri>
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>[PROD] %d{yyyy-MM-dd HH:mm:ss}:%-4relative [%thread] %-5level %C.%M:%L - %msg%n</pattern>
+    </layout>
+    <colorCoding>true</colorCoding>
+  </appender>
+
+  <appender name="prod-async-slack-logger" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="prod-slack-logger" />
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>WARN</level>
+    </filter>
+  </appender>
+
+  <appender name="dev-slack-logger" class="com.github.maricn.logback.SlackAppender">
+    <webhookUri>${SLACK_LOGGER_WEBHOOK_URI}</webhookUri>
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>[DEV] %d{yyyy-MM-dd HH:mm:ss}:%-4relative [%thread] %-5level %C.%M:%L - %msg%n</pattern>
+    </layout>
+    <colorCoding>true</colorCoding>
+  </appender>
+
+  <appender name="dev-async-slack-logger" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="dev-slack-logger" />
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>WARN</level>
+    </filter>
+  </appender>
+</included>
+

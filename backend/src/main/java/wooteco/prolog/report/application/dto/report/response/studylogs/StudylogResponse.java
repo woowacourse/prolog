@@ -1,10 +1,7 @@
 package wooteco.prolog.report.application.dto.report.response.studylogs;
 
-import static java.util.stream.Collectors.toList;
-
 import java.time.LocalDateTime;
 import java.util.List;
-import wooteco.prolog.report.domain.studylog.ReportedStudylog;
 
 public class StudylogResponse {
 
@@ -27,26 +24,6 @@ public class StudylogResponse {
         this.updateAt = updateAt;
         this.title = title;
         this.abilities = abilities;
-    }
-
-    public static StudylogResponse from(ReportedStudylog reportedStudylog) {
-        List<StudylogAbilityResponse> abilities = reportedStudylog.getAbilities().stream()
-            .map(StudylogAbilityResponse::from)
-            .collect(toList());
-
-        return new StudylogResponse(
-            reportedStudylog.getId(),
-            reportedStudylog.getCreatedAt(),
-            reportedStudylog.getUpdatedAt(),
-            reportedStudylog.getTitle(),
-            abilities
-        );
-    }
-
-    private static List<StudylogAbilityResponse> extractAbiliites(ReportedStudylog reportedStudylog) {
-        return reportedStudylog.getAbilities().stream()
-            .map(StudylogAbilityResponse::from)
-            .collect(toList());
     }
 
     public Long getId() {

@@ -27,6 +27,7 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     @Override
+<<<<<<< HEAD:backend/src/main/java/wooteco/prolog/report/application/dto/search/SearchArgumentResolver.java
     public Object resolveArgument(MethodParameter parameter,
                                   ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest,
@@ -42,6 +43,25 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
             convertToIdList(webRequest, "ids"),
             makePageableDefault(webRequest)
         );
+=======
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+        try {
+            return new StudylogsSearchRequest(
+                convertToString(webRequest, "keyword"),
+                convertToLongList(webRequest, "levels"),
+                convertToLongList(webRequest, "missions"),
+                convertToLongList(webRequest, "tags"),
+                convertToStringList(webRequest, "usernames"),
+                convertToLongList(webRequest, "members"),
+                convertToLocalDate(webRequest, "startDate"),
+                convertToLocalDate(webRequest, "endDate"),
+                makePageableDefault(webRequest)
+            );
+        } catch (Exception e) {
+            throw new SearchArgumentParseException();
+        }
+>>>>>>> 865db151960ee58df685dc973a02785125394235:backend/src/main/java/wooteco/prolog/studylog/application/dto/search/SearchArgumentResolver.java
     }
 
     private LocalDate convertToLocalDate(NativeWebRequest webRequest, String key) {
@@ -50,6 +70,7 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
         if (Objects.isNull(date)) {
             return null;
         }
+<<<<<<< HEAD:backend/src/main/java/wooteco/prolog/report/application/dto/search/SearchArgumentResolver.java
         return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd"));
     }
 
@@ -57,6 +78,15 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
         return webRequest.getParameter(key);
     }
 
+=======
+        return LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE);
+    }
+
+    private String convertToString(NativeWebRequest webRequest, String key) {
+        return webRequest.getParameter(key);
+    }
+
+>>>>>>> 865db151960ee58df685dc973a02785125394235:backend/src/main/java/wooteco/prolog/studylog/application/dto/search/SearchArgumentResolver.java
 
     private Integer convertToInt(NativeWebRequest webRequest, String key, int defaultValue) {
         String value = webRequest.getParameter(key);

@@ -14,7 +14,6 @@ import wooteco.prolog.report.domain.Report;
 import wooteco.prolog.report.domain.abilitygraph.datastructure.GraphAbilityDto;
 
 @Entity
-@AllArgsConstructor
 public class AbilityGraph {
 
     @Id
@@ -37,6 +36,14 @@ public class AbilityGraph {
 
     public AbilityGraph(GraphAbilities graphAbilities, Report report) {
         this(null, graphAbilities, report);
+    }
+
+    public AbilityGraph(Long id, GraphAbilities graphAbilities, Report report) {
+        this.id = id;
+        this.graphAbilities = graphAbilities;
+        this.report = report;
+
+        graphAbilities.appendTo(this);
     }
 
     public GraphAbilities getGraphAbilities() {
