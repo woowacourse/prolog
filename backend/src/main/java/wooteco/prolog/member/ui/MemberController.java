@@ -23,6 +23,7 @@ public class MemberController {
 
     private MemberService memberService;
 
+    @Deprecated
     @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
     @MemberOnly
     public ResponseEntity<MemberResponse> findMemberInfoOfMine(@AuthMemberPrincipal LoginMember member) {
@@ -34,13 +35,24 @@ public class MemberController {
         return ResponseEntity.ok().body(MemberResponse.of(memberService.findByUsername(username)));
     }
 
+    @PutMapping("/{username}")
+    public ResponseEntity<Void> updateMember(
+        @AuthMemberPrincipal LoginMember member,
+        @PathVariable String username,
+        @RequestBody MemberUpdateRequest updateRequest
+    ) {
+        memberService.updateMember(member, username, updateRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @Deprecated
     @PutMapping("/me")
     @MemberOnly
-    public ResponseEntity<Void> updateStudylog(
+    public ResponseEntity<Void> updateMember_deprecated(
         @AuthMemberPrincipal LoginMember member,
         @RequestBody MemberUpdateRequest updateRequest
     ) {
-        memberService.updateMember(member.getId(), updateRequest);
+        memberService.updateMember_deprecated(member.getId(), updateRequest);
         return ResponseEntity.ok().build();
     }
 }
