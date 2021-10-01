@@ -7,6 +7,7 @@ const GlobalStyles = () => (
       @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
       * {
+        font-family: 'Noto Sans KR', sans-serif;
         box-sizing: border-box;
       }
 
@@ -47,10 +48,6 @@ const GlobalStyles = () => (
         }
       }
 
-      input {
-        font-family: inherit;
-      }
-
       button {
         padding: 0;
         outline: none;
@@ -68,7 +65,8 @@ const GlobalStyles = () => (
       h3,
       h4,
       h5,
-      h6 {
+      h6,
+      p {
         margin: 0;
       }
     `}

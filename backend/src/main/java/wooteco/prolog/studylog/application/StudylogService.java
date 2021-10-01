@@ -3,19 +3,24 @@ package wooteco.prolog.studylog.application;
 import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.common.BaseEntity;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
@@ -46,6 +51,26 @@ public class StudylogService {
     private final TagService tagService;
 
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request) {
+        if(Objects.nonNull(request.getIds())) {
+            final Pageable pageable = request.getPageable();
+
+            List<Long> ids = request.getIds();
+
+            int start = (int)pageable.getOffset();
+            int end = Math.min((start + pageable.getPageSize()), ids.size());
+
+            final Map<Long, Studylog> idAndStudylog = studylogRepository
+                .findByIdIn(ids.subList(start, end))
+                .stream()
+                .collect(toMap(BaseEntity::getId, Function.identity()));
+
+            final List<Studylog> studylogs = ids.subList(start, end).stream()
+                .map(idAndStudylog::get)
+                .collect(toList());
+
+            return StudylogsResponse.of(new PageImpl<>(studylogs, pageable, request.getIds().size()));
+        }
+
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
             return findPostsWithoutKeyword(request.getLevels(), request.getMissions(),
                 request.getTags(),

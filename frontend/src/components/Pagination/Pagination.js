@@ -33,6 +33,7 @@ const Pagination = ({ postsInfo, onSetPage }) => {
         css={PageSkipButtonStyle}
         onClick={movePrevSection}
         disabled={!isEnableMovePrevSection}
+        type="button"
       >
         {'<'}
       </Button>
@@ -44,6 +45,7 @@ const Pagination = ({ postsInfo, onSetPage }) => {
             css={PageButtonStyle}
             selected={basePage + index === postsInfo.currPage}
             onClick={movePage(basePage + index)}
+            type="button"
           >
             {basePage + index}
           </PageButton>
@@ -54,6 +56,7 @@ const Pagination = ({ postsInfo, onSetPage }) => {
         css={PageSkipButtonStyle}
         onClick={moveNextSection}
         disabled={!isEnableMoveNextSection}
+        type="button"
       >
         {'>'}
       </Button>

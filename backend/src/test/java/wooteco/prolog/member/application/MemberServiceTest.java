@@ -3,6 +3,7 @@ package wooteco.prolog.member.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.member.exception.MemberNotFoundException;
+import wooteco.prolog.report.application.dto.ability.AbilityResponse;
+import wooteco.prolog.report.domain.ablity.Ability;
+import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
 import wooteco.support.utils.IntegrationTest;
 
 @IntegrationTest
@@ -26,6 +30,9 @@ class MemberServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private AbilityRepository abilityRepository;
 
     @DisplayName("Member 조회 성공시 정보를 가져오고, 실패시 Member를 생성한다.")
     @Test
@@ -167,8 +174,11 @@ class MemberServiceTest {
         )).isExactlyInstanceOf(MemberNotFoundException.class);
     }
 
+    private Member Member를_생성한다() {
+        return Member를_생성한다(new Member("gracefulBrown", "zi존브라운", Role.CREW, 1L, "imageUrl"));
+    }
+
     private Member Member를_생성한다(Member member) {
         return memberRepository.save(member);
     }
-
 }

@@ -12,6 +12,8 @@ import {
   ProfilePage,
   ProfilePagePosts,
   ProfilePageAccount,
+  ProfilePageReports,
+  ProfilePageNewReport,
 } from './pages';
 
 const Content = styled.div`
@@ -44,6 +46,24 @@ const App = () => {
               render={() => (
                 <ProfilePage menu={PROFILE_PAGE_MENU.POSTS}>
                   <ProfilePagePosts />
+                </ProfilePage>
+              )}
+            />
+            <Route
+              exact
+              path={`${PATH.PROFILE_REPORTS}`}
+              render={() => (
+                <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
+                  <ProfilePageReports />
+                </ProfilePage>
+              )}
+            />
+            <Route
+              exact
+              path={`${PATH.PROFILE_NEW_REPORT}`}
+              render={() => (
+                <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
+                  <ProfilePageNewReport />
                 </ProfilePage>
               )}
             />

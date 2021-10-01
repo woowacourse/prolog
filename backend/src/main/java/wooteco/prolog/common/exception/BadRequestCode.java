@@ -11,15 +11,19 @@ import wooteco.prolog.login.excetpion.TokenNotValidException;
 import wooteco.prolog.member.exception.DuplicateMemberTagException;
 import wooteco.prolog.member.exception.MemberNotAllowedException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
+import wooteco.prolog.report.exception.AbilityHasChildrenException;
+import wooteco.prolog.report.exception.AbilityNotFoundException;
+import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.TagName;
 import wooteco.prolog.studylog.domain.Title;
+import wooteco.prolog.studylog.exception.AbilityParentColorDuplicateException;
+import wooteco.prolog.studylog.exception.AbilityNameDuplicateException;
 import wooteco.prolog.studylog.exception.AuthorNotValidException;
 import wooteco.prolog.studylog.exception.DuplicateMissionException;
 import wooteco.prolog.studylog.exception.DuplicateTagException;
 import wooteco.prolog.studylog.exception.MissionNotFoundException;
 import wooteco.prolog.studylog.exception.NotValidSortNameException;
-import wooteco.prolog.studylog.exception.SearchArgumentParseException;
 import wooteco.prolog.studylog.exception.StudylogArgumentException;
 import wooteco.prolog.studylog.exception.StudylogContentNullOrEmptyException;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
@@ -64,8 +68,14 @@ public enum BadRequestCode {
     TOO_LONG_MISSION_NAME(3005, String.format("미션 이름이 %d자 초과입니다.", Mission.MAX_LENGTH),
                           TooLongMissionNameException.class),
     DUPLICATE_MEMBER_TAG(3006, "중복되는 멤버 태그 입니다.", DuplicateMemberTagException.class),
-    SEARCH_PARAMETER_NOT_VALID(3007, "검색 파라미터가 올바르지 않습니다.", SearchArgumentParseException.class),
-    ;
+
+    ABILITY_NOT_FOUND(4000, "역량이 존재하지 않습니다.", AbilityNotFoundException.class),
+    ABILITY_HAS_CHILDREN(4001, "해당 역량의 하위 역량이 존재합니다.", AbilityHasChildrenException.class),
+    ABILITY_NAME_DUPLICATE(4002, "중복된 이름의 역량이 존재합니다.", AbilityNameDuplicateException.class),
+    ABILITY_PARENT_COLOR_DUPLICATE(4003, "중복된 색상의 부모역량이 존재합니다.",
+                                   AbilityParentColorDuplicateException.class),
+    ABILITY_PARENT_CHILD_COLOR_DIFFERENT(4004, "상위 역량과 하위 역량의 색상이 일치하지 않습니다.",
+                                         AbilityParentChildColorDifferentException.class);
 
     private int code;
     private String message;
