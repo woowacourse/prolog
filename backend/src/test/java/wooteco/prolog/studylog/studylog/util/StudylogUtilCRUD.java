@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.login.ui.LoginMember.Authority;
+import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.util.MemberFixture;
 import wooteco.prolog.member.util.MemberUtilCRUD;
 import wooteco.prolog.studylog.application.StudylogService;
@@ -21,7 +24,8 @@ public class StudylogUtilCRUD {
     private MemberUtilCRUD memberUtilCRUD;
 
     public void 등록(StudylogFixture studylogFixture, MemberFixture member) {
-        studylogService.insertStudylogs(memberUtilCRUD.등록(member), Collections.singletonList(
+        final Member insertMember = memberUtilCRUD.등록(member);
+        studylogService.insertStudylogs(insertMember.getId(), Collections.singletonList(
             studylogFixture.asRequest()));
     }
 
@@ -30,7 +34,7 @@ public class StudylogUtilCRUD {
                 .map(TagRequest::new)
                 .collect(Collectors.toList());
 
-        studylogService.insertStudylogs(memberUtilCRUD.등록(memberFixture), Collections.singletonList(new StudylogRequest(title, content, missionId, tagRequests)));
+        studylogService.insertStudylogs(memberUtilCRUD.등록(memberFixture).getId(), Collections.singletonList(new StudylogRequest(title, content, missionId, tagRequests)));
     }
 
     public void 등록(StudylogFixture studylogFixture, MemberFixture memberFixture, String ... tagNames) {
@@ -38,7 +42,7 @@ public class StudylogUtilCRUD {
                 .map(TagRequest::new)
                 .collect(Collectors.toList());
 
-        studylogService.insertStudylogs(memberUtilCRUD.등록(memberFixture), Collections.singletonList(
+        studylogService.insertStudylogs(memberUtilCRUD.등록(memberFixture).getId(), Collections.singletonList(
             studylogFixture.asRequestWithTags(tagRequests)));
     }
 }

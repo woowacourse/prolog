@@ -15,7 +15,6 @@ import {
   ProfilePageReports,
   ProfilePageNewReport,
 } from './pages';
-import { useState } from 'react';
 
 const Content = styled.div`
   max-width: 112rem;
