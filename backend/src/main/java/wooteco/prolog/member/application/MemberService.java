@@ -1,5 +1,7 @@
 package wooteco.prolog.member.application;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -11,6 +13,7 @@ import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
+import wooteco.prolog.member.exception.MemberNotAllowedException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
 
 @Service
@@ -41,12 +44,32 @@ public class MemberService {
         return MemberResponse.of(member);
     }
 
+    @Deprecated
     @Transactional
-    public void updateMember(Long memberId, MemberUpdateRequest updateRequest) {
+    public void updateMember_deprecated(Long memberId, MemberUpdateRequest updateRequest) {
         Member persistMember = findById(memberId);
         persistMember.updateImageUrl(updateRequest.getImageUrl());
         persistMember.updateNickname(updateRequest.getNickname());
     }
+
+    @Transactional
+    public void updateMember(LoginMember loginMember,
+                             String username,
+                             MemberUpdateRequest updateRequest) {
+        loginMember.act().throwIfAnonymous(MemberNotAllowedException::new);
+        Member persistMember = loginMember.act().ifMember(memberId -> {
+            Member member = findById(memberId);
+            if (!Objects.equals(member.getUsername(), username)) {
+                throw new MemberNotAllowedException();
+            }
+            return member;
+        }).getReturnValue(Member.class);
+
+
+        persistMember.updateImageUrl(updateRequest.getImageUrl());
+        persistMember.updateNickname(updateRequest.getNickname());
+    }
+
     public List<MemberResponse> findAll() {
         final List<Member> members = memberRepository.findAll();
         return members.stream().map(MemberResponse::of)
