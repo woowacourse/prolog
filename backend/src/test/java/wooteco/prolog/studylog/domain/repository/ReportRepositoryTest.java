@@ -19,18 +19,20 @@ import wooteco.prolog.common.fixture.report.ReportFixture;
 import wooteco.prolog.common.fixture.studylog.StudylogFixture;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.studylog.application.dto.report.ReportAssembler;
+import wooteco.prolog.report.application.dto.report.ReportAssembler;
+import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
+import wooteco.prolog.report.domain.report.repository.ReportRepository;
 import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.ablity.Ability;
-import wooteco.prolog.studylog.domain.report.Report;
-import wooteco.prolog.studylog.domain.report.abilitygraph.AbilityGraph;
-import wooteco.prolog.studylog.domain.report.abilitygraph.GraphAbilities;
-import wooteco.prolog.studylog.domain.report.abilitygraph.GraphAbility;
-import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylog;
-import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylogAbility;
-import wooteco.prolog.studylog.domain.report.studylog.ReportedStudylogs;
+import wooteco.prolog.report.domain.ablity.Ability;
+import wooteco.prolog.report.domain.report.Report;
+import wooteco.prolog.report.domain.report.abilitygraph.AbilityGraph;
+import wooteco.prolog.report.domain.report.abilitygraph.GraphAbilities;
+import wooteco.prolog.report.domain.report.abilitygraph.GraphAbility;
+import wooteco.prolog.report.domain.report.studylog.ReportedStudylog;
+import wooteco.prolog.report.domain.report.studylog.ReportedStudylogAbility;
+import wooteco.prolog.report.domain.report.studylog.ReportedStudylogs;
 
 @DataJpaTest
 class ReportRepositoryTest {

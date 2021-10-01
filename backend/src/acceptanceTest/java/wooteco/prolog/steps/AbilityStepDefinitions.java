@@ -12,10 +12,10 @@ import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.ExceptionDto;
 import wooteco.prolog.fixtures.AbilityAcceptanceFixture;
-import wooteco.prolog.studylog.application.dto.ability.AbilityCreateRequest;
-import wooteco.prolog.studylog.application.dto.ability.AbilityResponse;
-import wooteco.prolog.studylog.application.dto.ability.AbilityUpdateRequest;
-import wooteco.prolog.studylog.exception.AbilityNotFoundException;
+import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
+import wooteco.prolog.report.application.dto.ability.AbilityResponse;
+import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
+import wooteco.prolog.report.exception.AbilityNotFoundException;
 
 public class AbilityStepDefinitions extends AcceptanceSteps {
 

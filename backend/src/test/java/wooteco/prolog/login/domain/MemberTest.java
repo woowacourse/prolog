@@ -4,16 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
-import wooteco.prolog.studylog.domain.ablity.Ability;
-import wooteco.prolog.studylog.exception.AbilityHasChildrenException;
-import wooteco.prolog.studylog.exception.AbilityNotFoundException;
+import wooteco.prolog.report.domain.ablity.Ability;
 
 class MemberTest {
 

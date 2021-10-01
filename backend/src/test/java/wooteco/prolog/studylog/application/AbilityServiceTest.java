@@ -4,25 +4,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Nested;
 import org.springframework.beans.factory.annotation.Autowired;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.studylog.application.dto.ability.AbilityCreateRequest;
-import wooteco.prolog.studylog.application.dto.ability.AbilityResponse;
-import wooteco.prolog.studylog.application.dto.ability.ChildAbilityDto;
-import wooteco.prolog.studylog.domain.ablity.Ability;
-import wooteco.prolog.studylog.domain.repository.AbilityRepository;
-import wooteco.prolog.studylog.exception.AbilityHasChildrenException;
-import wooteco.prolog.studylog.exception.AbilityNotFoundException;
+import wooteco.prolog.report.application.AbilityService;
+import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
+import wooteco.prolog.report.application.dto.ability.AbilityResponse;
+import wooteco.prolog.report.domain.ablity.Ability;
+import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
+import wooteco.prolog.report.exception.AbilityHasChildrenException;
+import wooteco.prolog.report.exception.AbilityNotFoundException;
 import wooteco.support.utils.IntegrationTest;
 
 @IntegrationTest

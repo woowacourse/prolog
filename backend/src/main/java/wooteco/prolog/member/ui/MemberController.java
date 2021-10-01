@@ -15,7 +15,7 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studylog.application.dto.ability.AbilityResponse;
+import wooteco.prolog.report.application.dto.ability.AbilityResponse;
 
 @RestController
 @AllArgsConstructor

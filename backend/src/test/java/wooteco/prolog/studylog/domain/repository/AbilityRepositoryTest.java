@@ -15,7 +15,8 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.studylog.domain.ablity.Ability;
+import wooteco.prolog.report.domain.ablity.Ability;
+import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
 
 @DataJpaTest
 class AbilityRepositoryTest {

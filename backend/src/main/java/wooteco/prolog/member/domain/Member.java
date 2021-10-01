@@ -17,9 +17,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
-import wooteco.prolog.studylog.domain.ablity.Ability;
-import wooteco.prolog.studylog.exception.AbilityHasChildrenException;
-import wooteco.prolog.studylog.exception.AbilityNotFoundException;
+import wooteco.prolog.report.domain.ablity.Ability;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.domain.Tags;
 

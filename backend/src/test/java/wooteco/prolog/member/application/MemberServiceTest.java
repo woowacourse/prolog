@@ -15,9 +15,9 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.member.exception.MemberNotFoundException;
-import wooteco.prolog.studylog.application.dto.ability.AbilityResponse;
-import wooteco.prolog.studylog.domain.ablity.Ability;
-import wooteco.prolog.studylog.domain.repository.AbilityRepository;
+import wooteco.prolog.report.application.dto.ability.AbilityResponse;
+import wooteco.prolog.report.domain.ablity.Ability;
+import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
 import wooteco.support.utils.IntegrationTest;
 
 @IntegrationTest

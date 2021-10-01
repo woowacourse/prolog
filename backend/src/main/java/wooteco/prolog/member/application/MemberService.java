@@ -10,7 +10,7 @@ import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.member.exception.MemberNotFoundException;
-import wooteco.prolog.studylog.application.dto.ability.AbilityResponse;
+import wooteco.prolog.report.application.dto.ability.AbilityResponse;
 
 @Service
 @AllArgsConstructor
