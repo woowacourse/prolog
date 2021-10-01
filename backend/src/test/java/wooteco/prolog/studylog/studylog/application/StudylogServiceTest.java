@@ -240,6 +240,7 @@ class StudylogServiceTest {
                 new ArrayList<>(),
                 LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
                 LocalDate.parse("20211231", DateTimeFormatter.BASIC_ISO_DATE),
+                new ArrayList<>(),
                 PageRequest.of(0, 10)
             )
         );

@@ -64,9 +64,9 @@ public class DataLoaderApplicationListener implements
         Members.init(memberService);
 
         // post init
-        studylogService.insertStudylogs(Members.BROWN.value, StudylogGenerator.generate(20));
-        studylogService.insertStudylogs(Members.JOANNE.value, StudylogGenerator.generate(20));
-        studylogService.insertStudylogs(Members.TYCHE.value, StudylogGenerator.generate(100));
+        studylogService.insertStudylogs(Members.BROWN.value.getId(), StudylogGenerator.generate(20));
+        studylogService.insertStudylogs(Members.JOANNE.value.getId() , StudylogGenerator.generate(20));
+        studylogService.insertStudylogs(Members.TYCHE.value.getId(), StudylogGenerator.generate(100));
 
         // ability init
         Abilities.initBackend(Members.BROWN.value, abilityService);
