@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
+import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.application.DocumentService;
@@ -176,6 +178,7 @@ public class DataLoaderApplicationListener implements
         private final GithubProfileResponse githubProfileResponse;
         private Member value;
 
+<<<<<<< HEAD
         Members(GithubProfileResponse githubProfileResponse) {
             this.githubProfileResponse = githubProfileResponse;
         }
@@ -213,5 +216,31 @@ public class DataLoaderApplicationListener implements
                 TagRequests.random()
             );
         }
+=======
+        // post init
+        studylogService.insertStudylogs(member1.getId(), Arrays.asList(
+            new StudylogRequest("ATDD란 무엇인가", "노션 정리 링크\n개인적으로 친구들에게 한 설명이 참 잘 썼다고 생각한다 호호",
+                                mission1.getId(), tagRequests_1234),
+            new StudylogRequest("프론트엔드 빌드 툴", "snowpack 사용하기 https://hjuu.tistory.com/6",
+                                mission2.getId(), tagRequests_1234),
+            new StudylogRequest("페이지네이션 데이터 1", "좋은 내용", mission1.getId(), tagRequests_1234),
+            new StudylogRequest("페이지네이션 데이터 2", "좋은 내용", mission2.getId(), tagRequests_empty),
+            new StudylogRequest("페이지네이션 데이터 3", "좋은 내용", mission3.getId(), tagRequests_12),
+            new StudylogRequest("페이지네이션 데이터 4", "좋은 내용", mission4.getId(), tagRequests_34),
+            new StudylogRequest("페이지네이션 데이터 5", "좋은 내용", mission1.getId(), tagRequests_3),
+            new StudylogRequest("페이지네이션 데이터 6", "좋은 내용", mission2.getId(), tagRequests_1234)
+        ));
+
+        studylogService.insertStudylogs(member2.getId(), Arrays.asList(
+            new StudylogRequest("페이지네이션 데이터 7", "좋은 내용", mission3.getId(), tagRequests_empty),
+            new StudylogRequest("페이지네이션 데이터 8", "좋은 내용", mission4.getId(), tagRequests_12),
+            new StudylogRequest("페이지네이션 데이터 9", "좋은 내용", mission1.getId(), tagRequests_34),
+            new StudylogRequest("페이지네이션 데이터 10", "좋은 내용", mission2.getId(), tagRequests_3),
+            new StudylogRequest("페이지네이션 데이터 11", "좋은 내용", mission3.getId(), tagRequests_1234),
+            new StudylogRequest("페이지네이션 데이터 12", "좋은 내용", mission4.getId(), tagRequests_empty)
+        ));
+
+        updatedContentsRepository.save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
+>>>>>>> 865db151960ee58df685dc973a02785125394235
     }
 }

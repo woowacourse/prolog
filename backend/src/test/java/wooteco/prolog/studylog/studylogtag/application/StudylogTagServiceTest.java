@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
+import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.application.LevelService;
@@ -82,7 +84,7 @@ class StudylogTagServiceTest {
             .map(it -> new StudylogRequest("이름", "별명", 1L, it))
             .collect(toList());
 
-        return studylogService.insertStudylogs(member, studylogs);
+        return studylogService.insertStudylogs(member.getId(), studylogs);
     }
 
     private List<TagRequest> createTagRequests(String... tags) {

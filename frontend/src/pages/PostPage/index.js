@@ -21,7 +21,6 @@ import {
   SubHeader,
   Tags,
   Title,
-  ViewerWrapper,
   SubHeaderRightContent,
   Content,
 } from './styles';
@@ -77,7 +76,6 @@ const PostPage = () => {
   };
 
   return (
-
     <>
       {myName === author?.username && (
         <ButtonList>

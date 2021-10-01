@@ -8,12 +8,14 @@ const useFilterWithParams = () => {
   const levelFilter = makeFilters(query.levels, 'levels');
   const missionFilter = makeFilters(query.missions, 'missions');
   const tagFilter = makeFilters(query.tags, 'tags');
+  const memberFilter = makeFilters(query.members, 'members');
 
   const [selectedFilter, setSelectedFilter] = useState('');
   const [selectedFilterDetails, setSelectedFilterDetails] = useState([
     ...levelFilter,
     ...missionFilter,
     ...tagFilter,
+    ...memberFilter,
   ]);
 
   const [postQueryParams, setPostQueryParams] = useState({

@@ -108,4 +108,14 @@ public class StudylogSpecification {
             );
         });
     }
+
+    public static Specification<Studylog> findByMemberIn(List<Long> members) {
+        return (root, query, builder) -> {
+            if (members == null || members.isEmpty()) {
+                return builder.and();
+            }
+
+            return root.join("member", JoinType.LEFT).get("id").in(members);
+        };
+    }
 }
