@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.studylog.domain.StudylogScrap;
+import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
@@ -37,11 +39,29 @@ import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 public class StudylogService {
 
     private final StudylogRepository studylogRepository;
+    private final StudylogScrapRepository studylogScrapRepository;
     private final MemberTagService memberTagService;
     private final DocumentService studylogDocumentService;
     private final MissionService missionService;
     private final MemberService memberService;
     private final TagService tagService;
+
+    public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Member member) {
+        StudylogsResponse studylogs = findStudylogs(request);
+        if (member.isAnonymous()) {
+            return studylogs;
+        }
+
+        List<StudylogResponse> data = studylogs.getData();
+
+        List<StudylogScrap> memberScraps = studylogScrapRepository.findByMemberId(member.getId());
+        List<Long> scrapIds = memberScraps.stream()
+            .map(StudylogScrap::getId)
+            .collect(toList());
+
+        updateScrap(data, scrapIds);
+        return studylogs;
+    }
 
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request) {
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
@@ -88,7 +108,6 @@ public class StudylogService {
                 .and(StudylogSpecification.distinct(true));
 
         Page<Studylog> posts = studylogRepository.findAll(specs, pageable);
-
         return StudylogsResponse.of(posts);
     }
 
@@ -173,5 +192,13 @@ public class StudylogService {
             .stream()
             .map(CalendarStudylogResponse::of)
             .collect(toList());
+    }
+
+    private void updateScrap(List<StudylogResponse> studylogs, List<Long> scrapIds) {
+        studylogs.forEach(studylogResponse -> {
+            if (scrapIds.stream().anyMatch(id -> id.equals(studylogResponse.getId()))) {
+                studylogResponse.setScrap(true);
+            }
+        });
     }
 }

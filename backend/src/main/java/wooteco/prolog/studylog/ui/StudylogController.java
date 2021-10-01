@@ -42,8 +42,10 @@ public class StudylogController {
     }
 
     @GetMapping
-    public ResponseEntity<StudylogsResponse> showAll(@SearchParams StudylogsSearchRequest searchRequest) {
-        StudylogsResponse studylogsResponse = studylogService.findStudylogs(searchRequest);
+    public ResponseEntity<StudylogsResponse> showAll(
+        @AuthMemberPrincipal(required = false) Member member,
+        @SearchParams StudylogsSearchRequest searchRequest) {
+        StudylogsResponse studylogsResponse = studylogService.findStudylogs(searchRequest, member);
         return ResponseEntity.ok(studylogsResponse);
     }
 

@@ -1,5 +1,7 @@
 package wooteco.prolog.member.domain;
 
+import static wooteco.prolog.member.domain.Role.UNVALIDATED;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -93,6 +95,10 @@ public class Member {
         }
     }
 
+    public static Member Anonymous() {
+        return new Member(-1L, "anonymous", "anonymous", UNVALIDATED, -1L, "anonymous");
+    }
+
     public void addTag(Tag tag) {
         memberTags.add(new MemberTag(this, tag));
     }
@@ -124,6 +130,10 @@ public class Member {
             .stream()
             .sorted((o1, o2) -> o2.getCount() - o1.getCount())
             .collect(Collectors.toList());
+    }
+
+    public boolean isAnonymous() {
+        return this.role == UNVALIDATED;
     }
 
     @Override

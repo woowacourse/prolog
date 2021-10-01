@@ -41,4 +41,9 @@ public class StudylogUtilCRUD {
         studylogService.insertStudylogs(memberUtilCRUD.등록(memberFixture), Collections.singletonList(
             studylogFixture.asRequestWithTags(tagRequests)));
     }
+
+    public void 다중등록(StudylogFixture studylogFixture, MemberFixture member) {
+        studylogService.insertStudylogs(memberUtilCRUD.등록(member), Collections.singletonList(
+            studylogFixture.asRequest()));
+    }
 }
