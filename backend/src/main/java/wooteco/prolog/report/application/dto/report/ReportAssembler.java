@@ -17,7 +17,6 @@ import wooteco.prolog.report.application.dto.report.response.abilityGraph.GraphA
 import wooteco.prolog.report.application.dto.report.response.abilityGraph.GraphResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogAbilityResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogResponse;
-import wooteco.prolog.report.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.report.domain.ablity.Ability;
 import wooteco.prolog.report.domain.report.Report;
@@ -28,6 +27,7 @@ import wooteco.prolog.report.domain.report.abilitygraph.datastructure.GraphAbili
 import wooteco.prolog.report.domain.report.studylog.ReportedStudylog;
 import wooteco.prolog.report.domain.report.studylog.ReportedStudylogAbility;
 import wooteco.prolog.report.domain.report.studylog.ReportedStudylogs;
+import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 
 @Component
 public class ReportAssembler {
