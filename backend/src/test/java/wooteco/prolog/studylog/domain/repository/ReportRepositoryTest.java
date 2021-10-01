@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import wooteco.prolog.common.fixture.ability.AbilityFixture;
 import wooteco.prolog.common.fixture.level.LevelFixture;
@@ -35,6 +36,7 @@ import wooteco.prolog.report.domain.report.studylog.ReportedStudylogAbility;
 import wooteco.prolog.report.domain.report.studylog.ReportedStudylogs;
 
 @DataJpaTest
+@Import(ReportAssembler.class)
 class ReportRepositoryTest {
 
     @Autowired
