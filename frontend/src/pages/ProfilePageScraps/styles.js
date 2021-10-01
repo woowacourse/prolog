@@ -71,22 +71,13 @@ const ButtonList = styled.div`
   justify-content: center;
   gap: 1.6rem;
 
-  ${({ isVisible }) => (isVisible ? 'visibility: visible' : 'visibility: hidden')};
+  visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
 `;
 
 const NoPost = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const EditButtonStyle = css`
-  border: 1px solid ${COLOR.LIGHT_GRAY_200};
-  background-color: ${COLOR.WHITE};
-
-  &:hover {
-    background-color: ${COLOR.LIGHT_GRAY_300};
-  }
 `;
 
 const DeleteButtonStyle = css`
@@ -118,7 +109,6 @@ export {
   PostItem,
   ButtonList,
   NoPost,
-  EditButtonStyle,
   DeleteButtonStyle,
   Heading,
   CardStyles,

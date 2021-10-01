@@ -103,7 +103,7 @@ const ProfilePageSideBar = ({ menu }) => {
               onClick={goProfilePageScraps}
             >
               <ScrapIcon width="16" height="16" />
-              스크랩로그
+              스크랩
             </MenuButton>
           </MenuItem>
         )}

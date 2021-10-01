@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
 import { Button, BUTTON_SIZE, Card, Pagination } from '../../components';
-import { requestGetPosts } from '../../service/requests';
+import { requestGetMyScrap } from '../../service/requests';
 import {
   ButtonList,
   CardStyles,
@@ -10,7 +10,6 @@ import {
   Content,
   DeleteButtonStyle,
   Description,
-  EditButtonStyle,
   Mission,
   NoPost,
   PostItem,
@@ -30,7 +29,6 @@ const initialPostQueryParams = {
 const ProfilePageScraps = () => {
   const history = useHistory();
   const accessToken = useSelector((state) => state.user.accessToken.data);
-  const myName = useSelector((state) => state.user.profile.data?.username);
   const { username } = useParams();
   const { state } = useLocation();
 
@@ -51,18 +49,16 @@ const ProfilePageScraps = () => {
     history.push(`${PATH.POST}/${id}/edit`);
   };
 
-  const getData = async () => {
-    const query = new URLSearchParams(history.location.search) + `&usernames=${username}`;
-
+  const getMyScrap = useCallback(async () => {
     try {
-      const response = await requestGetPosts({ type: 'searchParams', data: query });
+      const response = await requestGetMyScrap(username, accessToken, postQueryParams);
       const data = await response.json();
 
       setPosts(data);
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [postQueryParams, username]);
 
   const onDeletePost = async (event, id) => {
     event.stopPropagation();
@@ -76,7 +72,7 @@ const ProfilePageScraps = () => {
       return;
     }
 
-    await getData();
+    await getMyScrap();
   };
 
   const onSetPage = (page) => {
@@ -90,12 +86,12 @@ const ProfilePageScraps = () => {
       return;
     }
 
-    getData();
-  }, [history.location.search]);
+    getMyScrap();
+  }, [history.location.search, getMyScrap]);
 
   return (
     <Container>
-      <Heading>스크랩로그</Heading>
+      <Heading>스크랩</Heading>
       <Card css={CardStyles}>
         {posts?.data?.length ? (
           <>
@@ -120,16 +116,7 @@ const ProfilePageScraps = () => {
                       ))}
                     </Tags>
                   </Description>
-                  <ButtonList isVisible={hoveredPostId === id && myName === username}>
-                    <Button
-                      size={BUTTON_SIZE.X_SMALL}
-                      type="button"
-                      css={EditButtonStyle}
-                      alt="수정 버튼"
-                      onClick={goEditTargetPost(id)}
-                    >
-                      수정
-                    </Button>
+                  <ButtonList isVisible={hoveredPostId === id}>
                     <Button
                       size={BUTTON_SIZE.X_SMALL}
                       type="button"
@@ -139,7 +126,7 @@ const ProfilePageScraps = () => {
                         onDeletePost(event, id);
                       }}
                     >
-                      삭제
+                      스크랩 취소
                     </Button>
                   </ButtonList>
                 </PostItem>
