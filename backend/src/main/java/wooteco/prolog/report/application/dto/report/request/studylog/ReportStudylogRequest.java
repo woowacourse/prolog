@@ -2,14 +2,14 @@ package wooteco.prolog.report.application.dto.report.request.studylog;
 
 import java.util.List;
 
-public class StudylogRequest {
+public class ReportStudylogRequest {
     private Long id;
     private List<Long> abilities;
 
-    private StudylogRequest() {
+    private ReportStudylogRequest() {
     }
 
-    public StudylogRequest(Long id, List<Long> abilities) {
+    public ReportStudylogRequest(Long id, List<Long> abilities) {
         this.id = id;
         this.abilities = abilities;
     }
