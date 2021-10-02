@@ -53,7 +53,7 @@ class AbilityServiceTest {
         AbilityCreateRequest abilityCreateRequest = new AbilityCreateRequest("zi존브라운123", "이견 있습니까?", "이견을 피로 물들이는 붉은 색", Long.MAX_VALUE);
 
         // when, then
-        assertThatThrownBy(() -> abilityService.createAbility(member, abilityCreateRequest))
+        assertThatThrownBy(() -> abilityService.createAbility(member.getId(), abilityCreateRequest))
             .isExactlyInstanceOf(AbilityNotFoundException.class);
     }
 
@@ -64,11 +64,11 @@ class AbilityServiceTest {
         String name = "zi존브라운123";
         AbilityCreateRequest request1 = new AbilityCreateRequest(name, "이견 있습니까?", "이견을 피로 물들이는 붉은 색", null);
 
-        abilityService.createAbility(member, request1);
+        abilityService.createAbility(member.getId(), request1);
 
         // when, then
         AbilityCreateRequest request2 = new AbilityCreateRequest(name, "없어용", "침묵의 검은 색", null);
-        assertThatThrownBy(() -> abilityService.createAbility(member, request2))
+        assertThatThrownBy(() -> abilityService.createAbility(member.getId(), request2))
             .isExactlyInstanceOf(AbilityNameDuplicateException.class);
     }
 
@@ -79,11 +79,11 @@ class AbilityServiceTest {
         String color = "이견을 피로 물들이는 붉은 색";
         AbilityCreateRequest request1 = new AbilityCreateRequest("zi존브라운123", "이견 있습니까?", color, null);
 
-        abilityService.createAbility(member, request1);
+        abilityService.createAbility(member.getId(), request1);
 
         // when, then
         AbilityCreateRequest request2 = new AbilityCreateRequest("그냥막구현해", "없어용", color, null);
-        assertThatThrownBy(() -> abilityService.createAbility(member, request2))
+        assertThatThrownBy(() -> abilityService.createAbility(member.getId(), request2))
             .isExactlyInstanceOf(AbilityParentColorDuplicateException.class);
     }
 
@@ -93,12 +93,12 @@ class AbilityServiceTest {
         // given
         AbilityCreateRequest parentAbilityRequest = new AbilityCreateRequest("zi존브라운123", "이견 있습니까?", "이견을 피로 물들이는 붉은 색", null);
 
-        abilityService.createAbility(member, parentAbilityRequest);
-        Long parentId = abilityService.findAbilitiesByMember(member).iterator().next().getId();
+        abilityService.createAbility(member.getId(), parentAbilityRequest);
+        Long parentId = abilityService.findAbilitiesByMemberId(member.getId()).iterator().next().getId();
 
         // when, then
         AbilityCreateRequest childAbilityRequest = new AbilityCreateRequest("그냥막구현해", "없어용", "검은 색 이에용", parentId);
-        assertThatThrownBy(() -> abilityService.createAbility(member, childAbilityRequest))
+        assertThatThrownBy(() -> abilityService.createAbility(member.getId(), childAbilityRequest))
             .isExactlyInstanceOf(AbilityParentChildColorDifferentException.class);
     }
 
@@ -119,7 +119,7 @@ class AbilityServiceTest {
         );
 
         // when
-        List<AbilityResponse> responses = abilityService.findParentAbilitiesByMember(member);
+        List<AbilityResponse> responses = abilityService.findParentAbilitiesByMemberId(member.getId());
 
         // then
         assertThat(responses).hasSize(1);
@@ -134,13 +134,13 @@ class AbilityServiceTest {
         Ability ability = abilityRepository.save(Ability.parent("zi존브라운123", "이견 있습니까?", "이견을 피로 물들이는 붉은 색", member));
 
         // when
-        assertThat(abilityService.findAbilitiesByMember(member)).usingRecursiveComparison()
+        assertThat(abilityService.findAbilitiesByMemberId(member.getId())).usingRecursiveComparison()
             .isEqualTo(AbilityResponse.of(Collections.singletonList(ability)));
 
-        abilityService.deleteAbility(member, ability.getId());
+        abilityService.deleteAbility(member.getId(), ability.getId());
 
         // then
-        assertThat(abilityService.findAbilitiesByMember(member)).isEmpty();
+        assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isEmpty();
     }
 
     @DisplayName("부모 역량 삭제 시도시 자식역량이 존재하면 예외가 발생한다.")
@@ -148,14 +148,14 @@ class AbilityServiceTest {
     void deleteParentAbilityException() {
         // given
         AbilityCreateRequest parentCreateRequest = new AbilityCreateRequest("zi존브라운123", "이견 있습니까?", "이견을 피로 물들이는 붉은 색", null);
-        abilityService.createAbility(member, parentCreateRequest);
-        Ability parentAbility = abilityRepository.findByMemberAndParentIsNull(member).iterator().next();
+        abilityService.createAbility(member.getId(), parentCreateRequest);
+        Ability parentAbility = abilityRepository.findByMemberIdAndParentIsNull(member.getId()).iterator().next();
 
         AbilityCreateRequest childCreateRequest = new AbilityCreateRequest("손너잘", "내안으어두미", "이견을 피로 물들이는 붉은 색", parentAbility.getId());
-        abilityService.createAbility(member, childCreateRequest);
+        abilityService.createAbility(member.getId(), childCreateRequest);
 
         // when, then
-        assertThatThrownBy(() -> abilityService.deleteAbility(member, parentAbility.getId()))
+        assertThatThrownBy(() -> abilityService.deleteAbility(member.getId(), parentAbility.getId()))
             .isExactlyInstanceOf(AbilityHasChildrenException.class);
     }
 
@@ -169,8 +169,8 @@ class AbilityServiceTest {
         // when
         assertThat(parentAbility.getChildren()).containsExactly(childAbility);
 
-        abilityService.deleteAbility(member, childAbility.getId());
-        List<AbilityResponse> abilityResponses = abilityService.findAbilitiesByMember(member);
+        abilityService.deleteAbility(member.getId(), childAbility.getId());
+        List<AbilityResponse> abilityResponses = abilityService.findAbilitiesByMemberId(member.getId());
         List<Long> abilityIds = abilityResponses.stream().map(AbilityResponse::getId).collect(Collectors.toList());
 
         // then

@@ -47,11 +47,4 @@ public class MemberStepDefinitions extends AcceptanceSteps {
 
         assertThat(updatedNickname).isEqualTo(nickname);
     }
-
-    @When("{string}의 역량 목록을 조회하면")
-    public void 의역량목록을조회하면(String member) {
-        context.invokeHttpGetWithToken(String.format("/members/%s", member));
-        Long memberId = context.response.as(MemberResponse.class).getId();
-        context.invokeHttpGetWithToken(String.format("/members/%d/abilities", memberId));
-    }
 }
