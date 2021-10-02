@@ -1,6 +1,5 @@
 package wooteco.prolog;
 
-import static java.util.stream.Collectors.summarizingDouble;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
@@ -15,6 +14,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.domain.PageRequest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
+import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.application.AbilityService;
@@ -25,7 +26,6 @@ import wooteco.prolog.report.application.dto.report.request.ReportRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.AbilityRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRequest;
 import wooteco.prolog.report.application.dto.report.request.studylog.ReportStudylogRequest;
-import wooteco.prolog.report.domain.report.Report;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.LevelService;
@@ -88,13 +88,16 @@ public class DataLoaderApplicationListener implements
         Abilities.initFrontend(Members.TYCHE.value, abilityService);
 
         ReportGenerator.generate(3, Members.TYCHE.value, abilityService, studylogService)
-            .forEach(reportRequest -> reportService.createReport(reportRequest, Members.TYCHE.value));
+            .forEach(reportRequest -> reportService.createReport(
+                reportRequest,
+                new LoginMember(Members.TYCHE.value.getId(), Authority.MEMBER)
+            ));
 
         updatedContentsRepository
             .save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
     }
 
-    private static class ReportGenerator {
+    public static class ReportGenerator {
 
         private static int cnt = 1;
 
@@ -442,7 +445,7 @@ public class DataLoaderApplicationListener implements
         }
     }
 
-    private enum Members {
+    public enum Members {
         BROWN(
             new GithubProfileResponse(
                 "류성현",
@@ -457,8 +460,8 @@ public class DataLoaderApplicationListener implements
             "https://avatars.githubusercontent.com/u/48412963?v=4")
         ),
         TYCHE(new GithubProfileResponse(
-            "조은현",
             "티케",
+            "devhyun637",
             "59258239",
             "https://avatars.githubusercontent.com/u/59258239?v=4")
         );
@@ -468,6 +471,10 @@ public class DataLoaderApplicationListener implements
 
         Members(GithubProfileResponse githubProfileResponse) {
             this.githubProfileResponse = githubProfileResponse;
+        }
+
+        public Member getValue() {
+            return value;
         }
 
         public static void init(MemberService memberService) {

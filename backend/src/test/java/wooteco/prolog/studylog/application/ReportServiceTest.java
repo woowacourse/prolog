@@ -19,6 +19,8 @@ import wooteco.prolog.common.fixture.level.LevelFixture;
 import wooteco.prolog.common.fixture.member.MemberFixture;
 import wooteco.prolog.common.fixture.misstion.MissionFixture;
 import wooteco.prolog.common.fixture.studylog.StudylogFixture;
+import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.report.application.ReportService;
@@ -71,7 +73,10 @@ class ReportServiceTest {
         setAbilities(member);
         setStudylogs(member);
         ReportRequest reportRequest = createRequest("jsons/report_post_request.json");
-        ReportResponse reportResponse = reportService.createReport(reportRequest, member);
+        ReportResponse reportResponse = reportService.createReport(
+            reportRequest,
+            new LoginMember(member.getId(), Authority.MEMBER)
+        );
 
         assertThat(reportResponse)
             .usingRecursiveComparison()
@@ -85,10 +90,14 @@ class ReportServiceTest {
         setAbilities(member);
         setStudylogs(member);
         ReportRequest request = createRequest("jsons/report_post_request.json");
-        reportService.createReport(request, member);
+        reportService.createReport(request, new LoginMember(member.getId(), Authority.MEMBER));
 
         ReportRequest updateRequest = createRequest("jsons/report_put_request.json");
-        ReportResponse reportResponse = reportService.updateReport(updateRequest, member);
+        ReportResponse reportResponse = reportService.updateReport(
+            1L,
+                updateRequest,
+                new LoginMember(member.getId(), Authority.MEMBER)
+        );
 
         assertThat(reportResponse)
             .usingRecursiveComparison()

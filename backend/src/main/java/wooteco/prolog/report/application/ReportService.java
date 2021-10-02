@@ -5,10 +5,13 @@ import static java.util.stream.Collectors.toList;
 import java.util.List;
 import java.util.Objects;
 
+import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.report.application.dto.report.ReportAssembler;
 import wooteco.prolog.report.application.dto.report.request.ReportRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.AbilityRequest;
@@ -25,39 +28,53 @@ public class ReportService {
     private final ReportAssembler reportAssembler;
     private final ReportRepository reportRepository;
     private final AbilityRepository abilityRepository;
+    private final MemberRepository memberRepository;
     private final List<ReportsRequestType> reportsRequestTypes;
 
     public ReportService(ReportAssembler reportAssembler,
                          ReportRepository reportRepository,
                          AbilityRepository abilityRepository,
-                         List<ReportsRequestType> reportsRequestTypes) {
+                         List<ReportsRequestType> reportsRequestTypes,
+                         MemberRepository memberRepository) {
         this.reportAssembler = reportAssembler;
         this.reportRepository = reportRepository;
         this.abilityRepository = abilityRepository;
         this.reportsRequestTypes = reportsRequestTypes;
+        this.memberRepository = memberRepository;
     }
 
     @Transactional
-    public ReportResponse createReport(ReportRequest reportRequest, Member member) {
+    public ReportResponse createReport(ReportRequest reportRequest, LoginMember loginMember) {
+        Member member = findMemberById(loginMember.getId());
+
         Report report = reportAssembler.of(reportRequest, member);
+        checkIsRepresent(member, report);
+
         Report savedReport = reportRepository.save(report);
 
         return reportAssembler.of(savedReport);
     }
 
     @Transactional
-    public ReportResponse updateReport(ReportRequest reportRequest, Member member) {
-        Report updateSourceReport = reportAssembler.of(reportRequest, member);
-        Report savedReport = reportRepository.findById(updateSourceReport.getId())
-            .orElseThrow(IllegalArgumentException::new);
+    public ReportResponse updateReport(Long reportId, ReportRequest reportRequest, LoginMember loginMember) {
+        try {
+            Member member = findMemberById(loginMember.getId());
 
-        verifyIsAllowedUser(member, savedReport);
-        verifyGraphAbilitiesAreParent(reportRequest);
-        checkIsRepresent(member, updateSourceReport);
+            Report updateSourceReport = reportAssembler.of(reportRequest, member);
+            Report savedReport = reportRepository.findById(reportId)
+                .orElseThrow(IllegalArgumentException::new);
 
-        savedReport.update(updateSourceReport);
+            verifyIsAllowedUser(member, savedReport);
+            verifyGraphAbilitiesAreParent(reportRequest);
+            checkIsRepresent(member, updateSourceReport);
 
-        return reportAssembler.of(savedReport);
+            savedReport.update(updateSourceReport);
+
+            return reportAssembler.of(savedReport);
+        } catch (Exception e) {
+            System.out.println(e);
+            throw new IllegalArgumentException();
+        }
     }
 
     private void verifyIsAllowedUser(Member member, Report savedReport) {
@@ -100,5 +117,20 @@ public class ReportService {
             .orElseThrow(IllegalArgumentException::new);
 
         return reportAssembler.of(report);
+    }
+
+    private Member findMemberById(Long id) {
+        return memberRepository.findById(id)
+            .orElseThrow(IllegalArgumentException::new);
+    }
+
+    public void deleteReport(Long reportId, LoginMember loginMember) {
+        Member member = findMemberById(loginMember.getId());
+        Report report = reportRepository.findById(reportId)
+            .orElseThrow(IllegalArgumentException::new);
+
+        verifyIsAllowedUser(member, report);
+
+        reportRepository.deleteById(reportId);
     }
 }
