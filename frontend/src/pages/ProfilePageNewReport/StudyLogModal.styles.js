@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+
 import { COLOR } from '../../constants';
 
 const Form = styled.form`
@@ -115,7 +116,7 @@ const DeleteGuide = styled.span`
 const StudyLog = styled.li`
   label {
     width: 100%;
-    padding: 1rem;
+    padding: 0 1rem;
     margin: 1.5rem auto 2rem;
     height: 11rem;
 
@@ -130,15 +131,21 @@ const StudyLog = styled.li`
     div {
       margin: 0 1rem;
 
-      p {
+      > p {
+        padding: 0;
+        margin: 1rem 0;
+
         font-size: 1.3rem;
+        line-height: 1.5;
         color: ${({ isChecked }) =>
           isChecked ? `${COLOR.DARK_GRAY_700}` : `${COLOR.DARK_GRAY_400}`};
       }
 
-      h4 {
+      > h4 {
         font-size: 1.6rem;
         font-weight: 500;
+        line-height: 1.25;
+        margin: 1rem 0;
 
         overflow: hidden;
         text-overflow: ellipsis;

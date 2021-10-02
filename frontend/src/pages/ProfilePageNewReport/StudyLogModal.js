@@ -5,7 +5,6 @@ import useUserStudyLog from '../../hooks/useUserStudyLogs';
 import { requestGetFilters } from '../../service/requests';
 import { onToggleCheckbox } from '../../utils/toggleCheckbox';
 import { filterIds } from '../../utils/filteringList';
-
 import { COLOR } from '../../constants';
 import { Button, Modal, SelectBox } from '../../components';
 import { Checkbox } from './style';
