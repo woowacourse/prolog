@@ -8,12 +8,10 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import java.util.List;
 import org.apache.http.HttpHeaders;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -54,7 +52,7 @@ class ReportDocumentation extends Documentation {
     private ReportService reportService;
     private ApplicationContext applicationContext;
 
-    private static boolean flag;
+    private static boolean flag = false;
 
     @Autowired
     public ReportDocumentation(LevelService levelService,
@@ -87,20 +85,17 @@ class ReportDocumentation extends Documentation {
         this.spec = new RequestSpecBuilder()
             .addFilter(documentationConfiguration(restDocumentation))
             .build();
-    }
 
-    @AfterEach
-    void tearDown() {
         if(!flag) {
             DataLoaderApplicationListener dataLoaderApplicationListener = new DataLoaderApplicationListener(
                 levelService,
                 missionService,
                 tagService,
                 memberService,
-                studylogService
-                , studyLogDocumentService,
-                abilityService
-                , updatedContentsRepository,
+                studylogService,
+                studyLogDocumentService,
+                abilityService,
+                updatedContentsRepository,
                 reportService
             );
             dataLoaderApplicationListener.onApplicationEvent(new ContextRefreshedEvent(applicationContext));
@@ -153,7 +148,7 @@ class ReportDocumentation extends Documentation {
 
     @Test
     void 레포트를조회한다() {
-        given("reports/read")
+        given("reports/read/once")
             .contentType(ContentType.JSON)
             .when()
             .get("/reports/{reportId}", 1)
@@ -231,7 +226,7 @@ class ReportDocumentation extends Documentation {
     @Test
     void 리포트를삭제한다() {
         String accessToken = 로그인(GithubResponses.티케);
-        given("reports/create")
+        given("reports/delete")
             .contentType(ContentType.JSON)
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
             .when()
