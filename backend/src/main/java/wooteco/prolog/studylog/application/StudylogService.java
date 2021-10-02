@@ -2,6 +2,7 @@ package wooteco.prolog.studylog.application;
 
 import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDate;
@@ -53,13 +54,7 @@ public class StudylogService {
         }
 
         List<StudylogResponse> data = studylogs.getData();
-
-        List<StudylogScrap> memberScraps = studylogScrapRepository.findByMemberId(member.getId());
-        List<Long> scrapIds = memberScraps.stream()
-            .map(StudylogScrap::getId)
-            .collect(toList());
-
-        updateScrap(data, scrapIds);
+        updateScrap(data, findScrapIds(member));
         return studylogs;
     }
 
@@ -146,6 +141,17 @@ public class StudylogService {
         return StudylogResponse.of(createdStudylog);
     }
 
+    public StudylogResponse findById(Long id, Member member) {
+        StudylogResponse studylog = findById(id);
+
+        if (member.isAnonymous()) {
+            return studylog;
+        }
+
+        updateScrap(singletonList(studylog), findScrapIds(member));
+        return studylog;
+    }
+
     public StudylogResponse findById(Long id) {
         Studylog studylog = studylogRepository.findById(id)
             .orElseThrow(StudylogNotFoundException::new);
@@ -191,6 +197,14 @@ public class StudylogService {
         return studylogRepository.findByMemberBetween(member, start, end)
             .stream()
             .map(CalendarStudylogResponse::of)
+            .collect(toList());
+    }
+
+    private List<Long> findScrapIds(Member member) {
+        List<StudylogScrap> memberScraps = studylogScrapRepository.findByMemberId(member.getId());
+        return memberScraps.stream()
+            .map(StudylogScrap::getStudylog)
+            .map(Studylog::getId)
             .collect(toList());
     }
 
