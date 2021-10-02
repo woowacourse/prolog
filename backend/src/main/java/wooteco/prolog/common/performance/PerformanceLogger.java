@@ -37,9 +37,14 @@ public class PerformanceLogger {
             public void afterCommit() {
                 getLoggingForm().setTransactionEndTime(System.currentTimeMillis());
                 getLoggingForm().printLog();
-                getLoggingForm().resetQueryCount();
+            }
+
+            @Override
+            public void afterCompletion(int status) {
+                logForm.remove();
             }
         });
+
     }
 
     @Around("execution(* javax.sql.DataSource.getConnection())")
