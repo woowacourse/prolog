@@ -30,11 +30,11 @@ public class ReportController {
 
     @GetMapping("/reports")
     public ResponseEntity<Object> findReportsById(
-        String member,
+        String username,
         String type,
         @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable
     ) {
-        Object response = reportService.findReportsByUsername(member, type, pageable);
+        Object response = reportService.findReportsByUsername(username, type, pageable);
         return ResponseEntity.ok(response);
     }
 

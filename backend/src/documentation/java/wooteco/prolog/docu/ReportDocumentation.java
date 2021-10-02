@@ -41,16 +41,16 @@ import wooteco.prolog.update.UpdatedContentsRepository;
 
 class ReportDocumentation extends Documentation {
 
-    private LevelService levelService;
-    private MissionService missionService;
-    private TagService tagService;
-    private MemberService memberService;
-    private StudylogService studylogService;
-    private DocumentService studyLogDocumentService;
-    private AbilityService abilityService;
-    private UpdatedContentsRepository updatedContentsRepository;
-    private ReportService reportService;
-    private ApplicationContext applicationContext;
+    private final LevelService levelService;
+    private final MissionService missionService;
+    private final TagService tagService;
+    private final MemberService memberService;
+    private final StudylogService studylogService;
+    private final DocumentService studyLogDocumentService;
+    private final AbilityService abilityService;
+    private final UpdatedContentsRepository updatedContentsRepository;
+    private final ReportService reportService;
+    private final ApplicationContext applicationContext;
 
     private static boolean flag = false;
 
