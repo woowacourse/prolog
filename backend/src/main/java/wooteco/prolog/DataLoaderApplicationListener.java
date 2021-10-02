@@ -1,6 +1,5 @@
 package wooteco.prolog;
 
-import static java.util.stream.Collectors.summarizingDouble;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
@@ -27,7 +26,6 @@ import wooteco.prolog.report.application.dto.report.request.ReportRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.AbilityRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRequest;
 import wooteco.prolog.report.application.dto.report.request.studylog.ReportStudylogRequest;
-import wooteco.prolog.report.domain.report.Report;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.LevelService;
@@ -44,7 +42,7 @@ import wooteco.prolog.update.UpdateContent;
 import wooteco.prolog.update.UpdatedContents;
 import wooteco.prolog.update.UpdatedContentsRepository;
 
-@Profile({"local", "dummy"})
+@Profile({"local"})
 @AllArgsConstructor
 @Configuration
 public class DataLoaderApplicationListener implements

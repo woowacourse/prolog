@@ -8,16 +8,24 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import java.util.List;
 import org.apache.http.HttpHeaders;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.test.context.ActiveProfiles;
+import wooteco.prolog.DataLoaderApplicationListener;
 import wooteco.prolog.Documentation;
 import wooteco.prolog.GithubResponses;
 import wooteco.prolog.login.application.dto.TokenRequest;
 import wooteco.prolog.login.application.dto.TokenResponse;
+import wooteco.prolog.member.application.MemberService;
+import wooteco.prolog.report.application.AbilityService;
+import wooteco.prolog.report.application.ReportService;
 import wooteco.prolog.report.application.dto.report.request.ReportRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.AbilityRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRequest;
@@ -26,9 +34,50 @@ import wooteco.prolog.report.application.dto.report.response.ReportResponse;
 import wooteco.prolog.report.application.dto.report.response.abilityGraph.GraphResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogAbilityResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogResponse;
+import wooteco.prolog.studylog.application.DocumentService;
+import wooteco.prolog.studylog.application.LevelService;
+import wooteco.prolog.studylog.application.MissionService;
+import wooteco.prolog.studylog.application.StudylogService;
+import wooteco.prolog.studylog.application.TagService;
+import wooteco.prolog.update.UpdatedContentsRepository;
 
-@ActiveProfiles({"dummy", "test"})
 class ReportDocumentation extends Documentation {
+
+    private LevelService levelService;
+    private MissionService missionService;
+    private TagService tagService;
+    private MemberService memberService;
+    private StudylogService studylogService;
+    private DocumentService studyLogDocumentService;
+    private AbilityService abilityService;
+    private UpdatedContentsRepository updatedContentsRepository;
+    private ReportService reportService;
+    private ApplicationContext applicationContext;
+
+    private static boolean flag;
+
+    @Autowired
+    public ReportDocumentation(LevelService levelService,
+                               MissionService missionService,
+                               TagService tagService,
+                               MemberService memberService,
+                               StudylogService studylogService,
+                               DocumentService studyLogDocumentService,
+                               AbilityService abilityService,
+                               UpdatedContentsRepository updatedContentsRepository,
+                               ReportService reportService,
+                               ApplicationContext applicationContext) {
+        this.levelService = levelService;
+        this.missionService = missionService;
+        this.tagService = tagService;
+        this.memberService = memberService;
+        this.studylogService = studylogService;
+        this.studyLogDocumentService = studyLogDocumentService;
+        this.abilityService = abilityService;
+        this.updatedContentsRepository = updatedContentsRepository;
+        this.reportService = reportService;
+        this.applicationContext = applicationContext;
+    }
 
     @Override
     @BeforeEach
@@ -38,6 +87,25 @@ class ReportDocumentation extends Documentation {
         this.spec = new RequestSpecBuilder()
             .addFilter(documentationConfiguration(restDocumentation))
             .build();
+    }
+
+    @AfterEach
+    void tearDown() {
+        if(!flag) {
+            DataLoaderApplicationListener dataLoaderApplicationListener = new DataLoaderApplicationListener(
+                levelService,
+                missionService,
+                tagService,
+                memberService,
+                studylogService
+                , studyLogDocumentService,
+                abilityService
+                , updatedContentsRepository,
+                reportService
+            );
+            dataLoaderApplicationListener.onApplicationEvent(new ContextRefreshedEvent(applicationContext));
+            flag = true;
+        }
     }
 
     private String 로그인(GithubResponses githubResponse) {
