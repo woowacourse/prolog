@@ -29,7 +29,7 @@ public class Documentation {
     public TokenResponse 로그인_사용자;
     protected RequestSpecification spec;
     @LocalServerPort
-    private int port;
+    protected int port;
     @Autowired
     private DataInitializer dataInitializer;
 

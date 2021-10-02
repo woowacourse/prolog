@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.domain.PageRequest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
+import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.application.AbilityService;
@@ -42,7 +44,7 @@ import wooteco.prolog.update.UpdateContent;
 import wooteco.prolog.update.UpdatedContents;
 import wooteco.prolog.update.UpdatedContentsRepository;
 
-@Profile({"local"})
+@Profile({"local", "dummy"})
 @AllArgsConstructor
 @Configuration
 public class DataLoaderApplicationListener implements
@@ -88,13 +90,16 @@ public class DataLoaderApplicationListener implements
         Abilities.initFrontend(Members.TYCHE.value, abilityService);
 
         ReportGenerator.generate(3, Members.TYCHE.value, abilityService, studylogService)
-            .forEach(reportRequest -> reportService.createReport(reportRequest, Members.TYCHE.value));
+            .forEach(reportRequest -> reportService.createReport(
+                reportRequest,
+                new LoginMember(Members.TYCHE.value.getId(), Authority.MEMBER)
+            ));
 
         updatedContentsRepository
             .save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
     }
 
-    private static class ReportGenerator {
+    public static class ReportGenerator {
 
         private static int cnt = 1;
 
@@ -442,7 +447,7 @@ public class DataLoaderApplicationListener implements
         }
     }
 
-    private enum Members {
+    public enum Members {
         BROWN(
             new GithubProfileResponse(
                 "류성현",
@@ -468,6 +473,10 @@ public class DataLoaderApplicationListener implements
 
         Members(GithubProfileResponse githubProfileResponse) {
             this.githubProfileResponse = githubProfileResponse;
+        }
+
+        public Member getValue() {
+            return value;
         }
 
         public static void init(MemberService memberService) {

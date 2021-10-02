@@ -123,7 +123,7 @@ public class ReportAssembler {
 
     private StudylogAbilityResponse of(ReportedStudylogAbility reportedStudylogAbility) {
         return new StudylogAbilityResponse(
-            reportedStudylogAbility.getId(),
+            reportedStudylogAbility.getAbility().getId(),
             reportedStudylogAbility.getName(),
             reportedStudylogAbility.getColor(),
             reportedStudylogAbility.isParent()
