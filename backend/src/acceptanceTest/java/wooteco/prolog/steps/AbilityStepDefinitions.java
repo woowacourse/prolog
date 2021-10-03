@@ -66,16 +66,6 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
-    private Long getAbilityIdByName(String abilityName) {
-        context.invokeHttpGetWithToken("/abilities");
-        List<AbilityResponse> responses = context.response.jsonPath().getList(".", AbilityResponse.class);
-
-        return responses.stream().filter(response -> abilityName.equals(response.getName()))
-            .map(AbilityResponse::getId)
-            .findAny()
-            .orElseThrow(AbilityNotFoundException::new);
-    }
-
     @When("부모 역량 목록을 조회하면")
     public void 부모역량목록을조회하면() {
         context.invokeHttpGetWithToken("/abilities/parent-only");
@@ -87,12 +77,22 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         assertThat(responses.stream().allMatch(AbilityResponse::getIsParent)).isTrue();
     }
 
+    @And("{string} 역량을 이름 {string}, 설명 {string}, 색상 {string} 으로 수정하고")
     @When("{string} 역량을 이름 {string}, 설명 {string}, 색상 {string} 으로 수정하면")
     public void 역량을이름설명색상으로수정하고(String abilityName, String name, String description, String color) {
         Long abilityId = getAbilityIdByName(abilityName);
 
         AbilityUpdateRequest request = new AbilityUpdateRequest(abilityId, name, description, color);
         context.invokeHttpPutWithToken("/abilities/" + abilityId, request);
+    }
+
+    @Then("{string}의 자식역량 {string}도 {string}으로 바뀐다.")
+    public void 의자식역량도으로바뀐다(String parentName, String childName, String color) {
+        AbilityResponse parentResponse = parseResponseById(getAbilityIdByName(parentName));
+        AbilityResponse childResponse = parseResponseById(getAbilityIdByName(childName));
+
+        assertThat(parentResponse.getColor()).isEqualTo(color);
+        assertThat(childResponse.getColor()).isEqualTo(color);
     }
 
     @Then("이름 {string}, 설명 {string}, 색상 {string} 역량이 포함된 역량 목록을 받는다.")
@@ -161,5 +161,31 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(exceptionDto.getCode()).isEqualTo(BadRequestCode.ABILITY_PARENT_CHILD_COLOR_DIFFERENT.getCode());
         assertThat(exceptionDto.getMessage()).isEqualTo(BadRequestCode.ABILITY_PARENT_CHILD_COLOR_DIFFERENT.getMessage());
+    }
+
+    @Then("자식역량 {string}의 색상은 {string}으로 바뀌지 않는다.")
+    public void 자식역량의색상은으로바뀌지않는다(String childName, String color) {
+        AbilityResponse response = parseResponseById(getAbilityIdByName(childName));
+
+        assertThat(response.getColor()).isNotEqualTo(color);
+    }
+
+    private Long getAbilityIdByName(String abilityName) {
+        context.invokeHttpGetWithToken("/abilities");
+        List<AbilityResponse> responses = context.response.jsonPath().getList(".", AbilityResponse.class);
+
+        return responses.stream().filter(response -> abilityName.equals(response.getName()))
+            .map(AbilityResponse::getId)
+            .findAny()
+            .orElseThrow(AbilityNotFoundException::new);
+    }
+
+    private AbilityResponse parseResponseById(Long id) {
+        List<AbilityResponse> responses = context.response.jsonPath().getList(".", AbilityResponse.class);
+
+        return responses.stream()
+            .filter(response -> response.getId().equals(id))
+            .findAny()
+            .orElseThrow(AbilityNotFoundException::new);
     }
 }
