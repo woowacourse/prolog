@@ -10,7 +10,6 @@ import ReportInfoInput from './ReportInfoInput';
 import ReportStudyLogTable from './ReportStudyLogTable';
 import { Checkbox, Form, FormButtonWrapper } from './style';
 import { requestPostReport } from '../../service/requests';
-import { filterIds } from '../../utils/filteringList';
 
 const ProfilePageNewReport = () => {
   const { username } = useParams();
