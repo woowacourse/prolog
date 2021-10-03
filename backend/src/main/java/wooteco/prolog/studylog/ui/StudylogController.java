@@ -50,11 +50,14 @@ public class StudylogController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudylogResponse> showStudylog(@PathVariable String id) {
+    public ResponseEntity<StudylogResponse> showStudylog(
+        @PathVariable String id,
+        @AuthMemberPrincipal(required = false) Member member
+        ) {
         if (!NumberUtils.isNumeric(id)) {
             throw new StudylogNotFoundException();
         }
-        StudylogResponse studylogResponse = studylogService.findById(Long.parseLong(id));
+        StudylogResponse studylogResponse = studylogService.findById(Long.parseLong(id), member);
         return ResponseEntity.ok(studylogResponse);
     }
 
