@@ -73,10 +73,6 @@ public class AbilityService {
         return AbilityResponse.of(findByMemberId(memberId));
     }
 
-    private List<Ability> findByMemberId(Long memberId) {
-        return abilityRepository.findByMemberId(memberId);
-    }
-
     public List<AbilityResponse> findParentAbilitiesByMemberId(Long memberId) {
         List<Ability> parentAbilities = abilityRepository.findByMemberIdAndParentIsNull(memberId);
 
@@ -86,11 +82,20 @@ public class AbilityService {
     @Transactional
     public List<AbilityResponse> updateAbility(Long memberId, AbilityUpdateRequest request) {
         Ability legacyAbility = findAbilityByIdAndMemberId(request.getId(), memberId);
+
         Ability updateAbility = request.toEntity();
+        List<Ability> abilities = findByMemberId(memberId);
+        abilities.remove(legacyAbility);
+        updateAbility.validateDuplicateName(abilities);
+        updateAbility.validateDuplicateColor(abilities);
 
         legacyAbility.update(updateAbility);
 
         return findAbilitiesByMemberId(memberId);
+    }
+
+    private List<Ability> findByMemberId(Long memberId) {
+        return abilityRepository.findByMemberId(memberId);
     }
 
     @Transactional

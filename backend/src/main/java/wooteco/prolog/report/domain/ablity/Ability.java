@@ -90,7 +90,18 @@ public class Ability {
     public void update(Ability updateAbility) {
         this.name = updateAbility.name;
         this.description = updateAbility.description;
+
+        if (this.isParent()) {
+            updateColor(updateAbility);
+        }
+    }
+
+    private void updateColor(Ability updateAbility) {
         this.color = updateAbility.color;
+
+        for (Ability childAbility : getChildren()) {
+            childAbility.color = updateAbility.getColor();
+        }
     }
 
     public boolean isParent() {

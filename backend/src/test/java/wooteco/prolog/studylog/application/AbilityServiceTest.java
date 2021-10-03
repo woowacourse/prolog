@@ -18,6 +18,8 @@ import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.report.application.AbilityService;
 import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
 import wooteco.prolog.report.application.dto.ability.AbilityResponse;
+import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
+import wooteco.prolog.report.application.dto.ability.ChildAbilityDto;
 import wooteco.prolog.report.domain.ablity.Ability;
 import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
 import wooteco.prolog.report.exception.AbilityHasChildrenException;
@@ -125,6 +127,111 @@ class AbilityServiceTest {
         assertThat(responses).hasSize(1);
         assertThat(responses.get(0)).usingRecursiveComparison()
             .isEqualTo(expectResponse);
+    }
+
+    @DisplayName("역량 정보를 수정할 때 다른 역량과 이름이 중복되는 경우 예외가 발생한다.")
+    @Test
+    void updateAbilityDuplicateNameException() {
+        // given
+        AbilityCreateRequest createRequest1 = new AbilityCreateRequest("프로그래밍1", "프로그래밍1 역량입니다.", "#111111", null);
+        AbilityCreateRequest createRequest2 = new AbilityCreateRequest("프로그래밍2", "프로그래밍2 역량입니다.", "#222222", null);
+        abilityService.createAbility(member.getId(), createRequest1);
+        abilityService.createAbility(member.getId(), createRequest2);
+
+        List<AbilityResponse> abilityResponses = abilityService.findParentAbilitiesByMemberId(member.getId());
+        AbilityResponse createdAbilityResponse1 = abilityResponses.get(0);
+        AbilityResponse createdAbilityResponse2 = abilityResponses.get(1);
+
+        AbilityUpdateRequest request = new AbilityUpdateRequest(createdAbilityResponse1.getId(), createdAbilityResponse2.getName(), "완전히 새로운건데요?!", "#222222");
+
+        // when, then
+        assertThatThrownBy(() -> abilityService.updateAbility(createdAbilityResponse1.getId(), request))
+            .isExactlyInstanceOf(AbilityNameDuplicateException.class);
+    }
+
+    @DisplayName("역량 정보를 수정할 때 다른 역량과 색상이 중복되는 경우 예외가 발생한다.")
+    @Test
+    void updateAbilityDuplicateColorException() {
+        // given
+        AbilityCreateRequest createRequest1 = new AbilityCreateRequest("프로그래밍1", "프로그래밍1 역량입니다.", "#111111", null);
+        AbilityCreateRequest createRequest2 = new AbilityCreateRequest("프로그래밍2", "프로그래밍2 역량입니다.", "#222222", null);
+        abilityService.createAbility(member.getId(), createRequest1);
+        abilityService.createAbility(member.getId(), createRequest2);
+
+        List<AbilityResponse> abilityResponses = abilityService.findParentAbilitiesByMemberId(member.getId());
+        AbilityResponse createdAbilityResponse1 = abilityResponses.get(0);
+        AbilityResponse createdAbilityResponse2 = abilityResponses.get(1);
+
+        AbilityUpdateRequest request = new AbilityUpdateRequest(createdAbilityResponse1.getId(), "완전히 새로운 이름", "완전히 새로운건데요?!", createdAbilityResponse2.getColor());
+
+        // when, then
+        assertThatThrownBy(() -> abilityService.updateAbility(createdAbilityResponse1.getId(), request))
+            .isExactlyInstanceOf(AbilityParentColorDuplicateException.class);
+    }
+
+    @DisplayName("역량 정보를 수정할 때 부모 역량의 경우 자식 역량의 색상이 모두 변경된다.")
+    @Test
+    void updateAbilityParentChangeChildrenColors() {
+        // given
+        AbilityCreateRequest createParentRequest = new AbilityCreateRequest("부모 프로그래밍", "프로그래밍 역량입니다.", "#111111", null);
+        abilityService.createAbility(member.getId(), createParentRequest);
+
+        AbilityResponse createdParentResponse = abilityService.findParentAbilitiesByMemberId(member.getId()).get(0);
+
+        AbilityCreateRequest createChildRequest = new AbilityCreateRequest("자식 프로그래밍", "부모 프로그래밍의 자식입니다.", createdParentResponse.getColor(), createdParentResponse.getId());
+        abilityService.createAbility(member.getId(), createChildRequest);
+
+        String newColor = "#ffffff";
+        AbilityUpdateRequest request = new AbilityUpdateRequest(createdParentResponse.getId(), "완전히 새로운 이름", "완전히 새로운건데요?!", newColor);
+
+        // when
+        List<AbilityResponse> abilityResponses = abilityService.updateAbility(member.getId(), request);
+
+        // then
+        AbilityResponse updatedParentResponse = abilityResponses.stream()
+            .filter(response -> response.getId().equals(createdParentResponse.getId()))
+            .findAny()
+            .orElseThrow(AbilityNotFoundException::new);
+
+        ChildAbilityDto updatedChildResponse = updatedParentResponse.getChildren().get(0);
+
+        assertThat(updatedParentResponse.getColor()).isEqualTo(newColor);
+        assertThat(updatedChildResponse.getColor()).isEqualTo(newColor);
+    }
+
+    @DisplayName("역량 정보를 수정할 때 자식 역량의 경우 색상이 변경되지 않는다.")
+    @Test
+    void updateAbilityChildCanNotChangeColor() {
+        // given
+        String legacyColor = "#111111";
+        AbilityCreateRequest createParentRequest1 = new AbilityCreateRequest("부모 프로그래밍", "프로그래밍 역량입니다.", legacyColor, null);
+        abilityService.createAbility(member.getId(), createParentRequest1);
+
+        AbilityResponse createdParentResponse = abilityService.findParentAbilitiesByMemberId(member.getId()).get(0);
+
+        AbilityCreateRequest createChildRequest1 = new AbilityCreateRequest("자식 프로그래밍", "부모 프로그래밍의 자식입니다.", createdParentResponse.getColor(), createdParentResponse.getId());
+        abilityService.createAbility(member.getId(), createChildRequest1);
+        ChildAbilityDto childAbilityDto = abilityService.findParentAbilitiesByMemberId(member.getId()).get(0).getChildren().get(0);
+
+        String newColor = "#ffffff";
+        String newName = "완전히 새로운 이름";
+        String newDescription = "완전히 새로운건데요?!";
+        AbilityUpdateRequest request = new AbilityUpdateRequest(childAbilityDto.getId(), newName, newDescription, newColor);
+
+        // when
+        List<AbilityResponse> abilityResponses = abilityService.updateAbility(member.getId(), request);
+
+        // then
+        ChildAbilityDto childAbilityResponse = abilityResponses.stream()
+            .filter(response -> response.getId().equals(createdParentResponse.getId()))
+            .map(AbilityResponse::getChildren)
+            .map(list -> list.get(0))
+            .findAny()
+            .orElseThrow(AbilityNotFoundException::new);
+
+        assertThat(childAbilityResponse.getName()).isEqualTo(newName);
+        assertThat(childAbilityResponse.getDescription()).isEqualTo(newDescription);
+        assertThat(childAbilityResponse.getColor()).isEqualTo(legacyColor);
     }
 
     @DisplayName("부모 역량 삭제에 성공하면 조회되지 않는다.")
