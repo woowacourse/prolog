@@ -91,6 +91,46 @@ include::{snippets}/abilities/update/http-request.adoc[]
 
 include::{snippets}/abilities/update/http-response.adoc[]
 
+=== 상위 역량 수정 - 하위 역량 색상도 함께 수정
+
+==== Request
+
+include::{snippets}/abilities/update-with-children-color/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/abilities/update-with-children-color/http-response.adoc[]
+
+=== 하위 역량 수정 - 색상 수정 무시
+
+==== Request
+
+include::{snippets}/abilities/update-ignore-child-color/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/abilities/update-ignore-child-color/http-response.adoc[]
+
+=== 역량 수정 - 역량 이름 중복 예외 발생
+
+==== Request
+
+include::{snippets}/abilities/update-duplicate-name-exception/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/abilities/update-duplicate-name-exception/http-response.adoc[]
+
+=== 역량 수정 - 역량 색상 중복 예외 발생
+
+==== Request
+
+include::{snippets}/abilities/update-duplicate-color-exception/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/abilities/update-duplicate-color-exception/http-response.adoc[]
+
 === 역량 제거
 
 ==== Request
@@ -100,3 +140,13 @@ include::{snippets}/abilities/delete/http-request.adoc[]
 ==== Response
 
 include::{snippets}/abilities/delete/http-response.adoc[]
+
+=== 역량 제거 - 하위 역량 존재시 예외 발생
+
+==== Request
+
+include::{snippets}/abilities/delete-has-children-exception/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/abilities/delete-has-children-exception/http-response.adoc[]

@@ -21,6 +21,7 @@ import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
 import wooteco.prolog.report.application.dto.ability.AbilityResponse;
 import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
+import wooteco.prolog.report.application.dto.ability.ChildAbilityDto;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 
 public class AbilityDocumentation extends Documentation {
@@ -264,6 +265,145 @@ public class AbilityDocumentation extends Documentation {
     }
 
     @Test
+    void 상위_역량_수정시_하위_역량의_색이_모두_변경된다() {
+    // given
+        AbilityResponse 생성된_상위_역량 = 상위_역량을_생성하고_response를_반환한다(accessToken, new AbilityCreateRequest("역량 이름", "역량 설명", "#000000", null));
+        역량을_생성한다(accessToken, new AbilityCreateRequest("하위 역량 이름", "하위 역량 설명", 생성된_상위_역량.getColor(), 생성된_상위_역량.getId()));
+
+        String 새로운_이름 = "새로운 이름";
+        String 새로운_설명 = "새로운 설명";
+        String 새로운_색상 = "#ffffff";
+        AbilityUpdateRequest request = new AbilityUpdateRequest(생성된_상위_역량.getId(), 새로운_이름, 새로운_설명, 새로운_색상);
+
+        // when
+        ExtractableResponse<Response> response = given("abilities/update-with-children-color")
+            .header(AUTHORIZATION, "Bearer " + accessToken)
+            .contentType(ContentType.JSON)
+            .body(request)
+            .when()
+            .put("/abilities/" + 생성된_상위_역량.getId())
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        AbilityResponse updatedAbilityResponse = response.jsonPath()
+            .getList(".", AbilityResponse.class)
+            .stream()
+            .filter(ability -> ability.getId().equals(생성된_상위_역량.getId()))
+            .findAny()
+            .orElseThrow(AbilityNotFoundException::new);
+
+        ChildAbilityDto childAbilityResponse = updatedAbilityResponse.getChildren().get(0);
+
+        assertThat(response.statusCode()).isEqualTo(OK.value());
+        assertThat(updatedAbilityResponse.getId()).isEqualTo(생성된_상위_역량.getId());
+        assertThat(updatedAbilityResponse.getName()).isEqualTo(새로운_이름);
+        assertThat(updatedAbilityResponse.getDescription()).isEqualTo(새로운_설명);
+        assertThat(updatedAbilityResponse.getColor()).isEqualTo(새로운_색상);
+        assertThat(childAbilityResponse.getColor()).isEqualTo(새로운_색상);
+    }
+
+    @Test
+    void 하위_역량_수정시_색상_변경이_무시된다() {
+        // given
+        AbilityResponse 생성된_상위_역량 = 상위_역량을_생성하고_response를_반환한다(accessToken, new AbilityCreateRequest("역량 이름", "역량 설명", "#000000", null));
+        역량을_생성한다(accessToken, new AbilityCreateRequest("하위 역량 이름", "하위 역량 설명", 생성된_상위_역량.getColor(), 생성된_상위_역량.getId()));
+
+        Long 생성된_하위_역량_ID = 역량_목록을_조회한다(accessToken).jsonPath().getList(".", AbilityResponse.class)
+            .stream()
+            .filter(response -> response.getName().equals("하위 역량 이름"))
+            .findAny()
+            .orElseThrow(AbilityNotFoundException::new)
+            .getId();
+
+        String 새로운_이름 = "새로운 이름";
+        String 새로운_설명 = "새로운 설명";
+        String 새로운_색상 = "#ffffff";
+        AbilityUpdateRequest request = new AbilityUpdateRequest(생성된_하위_역량_ID, 새로운_이름, 새로운_설명, 새로운_색상);
+
+        // when
+        ExtractableResponse<Response> response = given("abilities/update-ignore-child-color")
+            .header(AUTHORIZATION, "Bearer " + accessToken)
+            .contentType(ContentType.JSON)
+            .body(request)
+            .when()
+            .put("/abilities/" + 생성된_하위_역량_ID)
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        AbilityResponse updatedAbilityResponse = response.jsonPath()
+            .getList(".", AbilityResponse.class)
+            .stream()
+            .filter(ability -> ability.getId().equals(생성된_하위_역량_ID))
+            .findAny()
+            .orElseThrow(AbilityNotFoundException::new);
+
+        assertThat(response.statusCode()).isEqualTo(OK.value());
+        assertThat(updatedAbilityResponse.getId()).isEqualTo(생성된_하위_역량_ID);
+        assertThat(updatedAbilityResponse.getName()).isEqualTo(새로운_이름);
+        assertThat(updatedAbilityResponse.getDescription()).isEqualTo(새로운_설명);
+        assertThat(updatedAbilityResponse.getColor()).isEqualTo(생성된_상위_역량.getColor());
+        assertThat(updatedAbilityResponse.getColor()).isNotEqualTo(새로운_색상);
+    }
+
+    @Test
+    void 역량_수정시_이름이_중복되면_예외가_발생한다() {
+        // given
+        AbilityCreateRequest 역량_생성_request = new AbilityCreateRequest("역량 이름", "역량 설명", "#000000", null);
+        AbilityCreateRequest 또_다른_역량_생성_request = new AbilityCreateRequest("또 다른 역량 이름", "또 다른 역량 설명", "#111111", null);
+        Long 생성된_역량_ID = 상위_역량을_생성하고_response를_반환한다(accessToken, 역량_생성_request).getId();
+        AbilityResponse 생성된_또_다른_역량 = 상위_역량을_생성하고_response를_반환한다(accessToken, 또_다른_역량_생성_request);
+
+        AbilityUpdateRequest request = new AbilityUpdateRequest(생성된_역량_ID, 생성된_또_다른_역량.getName(), "완전히 새로워!", "#999999");
+
+        // when
+        ExtractableResponse<Response> response = given("abilities/update-duplicate-name-exception")
+            .header(AUTHORIZATION, "Bearer " + accessToken)
+            .contentType(ContentType.JSON)
+            .body(request)
+            .when()
+            .put("/abilities/" + 생성된_역량_ID)
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(BAD_REQUEST.value());
+        assertThat((int) response.jsonPath().get("code")).isEqualTo(4002);
+        assertThat((String) response.jsonPath().get("message")).isEqualTo("중복된 이름의 역량이 존재합니다.");
+    }
+
+    @Test
+    void 역량_수정시_색상이_중복되면_예외가_발생한다() {
+        // given
+        AbilityCreateRequest 역량_생성_request = new AbilityCreateRequest("역량 이름", "역량 설명", "#000000", null);
+        AbilityCreateRequest 또_다른_역량_생성_request = new AbilityCreateRequest("또 다른 역량 이름", "또 다른 역량 설명", "#111111", null);
+        Long 생성된_역량_ID = 상위_역량을_생성하고_response를_반환한다(accessToken, 역량_생성_request).getId();
+        AbilityResponse 생성된_또_다른_역량 = 상위_역량을_생성하고_response를_반환한다(accessToken, 또_다른_역량_생성_request);
+
+        AbilityUpdateRequest request = new AbilityUpdateRequest(생성된_역량_ID, "완전히 색다른 이름!", "완전히 새로워!", 생성된_또_다른_역량.getColor());
+
+        // when
+        ExtractableResponse<Response> response = given("abilities/update-duplicate-color-exception")
+            .header(AUTHORIZATION, "Bearer " + accessToken)
+            .contentType(ContentType.JSON)
+            .body(request)
+            .when()
+            .put("/abilities/" + 생성된_역량_ID)
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(BAD_REQUEST.value());
+        assertThat((int) response.jsonPath().get("code")).isEqualTo(4003);
+        assertThat((String) response.jsonPath().get("message")).isEqualTo("중복된 색상의 부모역량이 존재합니다.");
+    }
+
+    @Test
     void 역량을_제거한다() {
         // given
         AbilityCreateRequest 역량_생성_request = new AbilityCreateRequest("역량 이름", "역량 설명", "#000000", null);
@@ -280,6 +420,28 @@ public class AbilityDocumentation extends Documentation {
 
         // then
         assertThat(response.statusCode()).isEqualTo(OK.value());
+    }
+
+    @Test
+    void 상위_역량을_제거할_때_하위_역량이_존재하는_경우_예외가_발생한다() {
+        // given
+        AbilityCreateRequest 상위_역량_생성_request = new AbilityCreateRequest("상위 역량 이름", "상위 역량 설명", "#001122", null);
+        AbilityResponse 상위_역량_response = 상위_역량을_생성하고_response를_반환한다(accessToken, 상위_역량_생성_request);
+        역량을_생성한다(accessToken, new AbilityCreateRequest("하위 역량 이름", "하위 역량 설명", "#001122", 상위_역량_response.getId()));
+
+        // when
+        ExtractableResponse<Response> response = given("abilities/delete-has-children-exception")
+            .header(AUTHORIZATION, "Bearer " + accessToken)
+            .when()
+            .delete("/abilities/" + 상위_역량_response.getId())
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(BAD_REQUEST.value());
+        assertThat((int) response.jsonPath().get("code")).isEqualTo(4001);
+        assertThat((String) response.jsonPath().get("message")).isEqualTo("해당 역량의 하위 역량이 존재합니다.");
     }
 
     private String 로그인한다(GithubResponses githubResponse) {
