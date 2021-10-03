@@ -1,11 +1,8 @@
 package wooteco.prolog.common.performance;
 
 import java.lang.reflect.Proxy;
-import java.sql.Connection;
 import javax.servlet.http.HttpServletRequest;
-import javax.sql.DataSource;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -33,14 +30,11 @@ public class PerformanceLogger {
             getLoggingForm().setTargetApi("dataLoader");
         }
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
-            @Override
-            public void afterCommit() {
-                getLoggingForm().setTransactionEndTime(System.currentTimeMillis());
-                getLoggingForm().printLog();
-            }
 
             @Override
             public void afterCompletion(int status) {
+                getLoggingForm().setTransactionEndTime(System.currentTimeMillis());
+                getLoggingForm().printLog();
                 logForm.remove();
             }
         });

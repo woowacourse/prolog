@@ -17,7 +17,11 @@ public class ProxyPreparedStatementHandler implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if(method.getName().equals("executeQuery")) {
+            final long startTime = System.currentTimeMillis();
+            final Object returnValue = method.invoke(preparedStatement, args);
+            loggingForm.addQueryTime(System.currentTimeMillis() - startTime);
             loggingForm.queryCountUp();
+            return returnValue;
         }
         return method.invoke(preparedStatement, args);
     }
