@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.dto.MemberScrapResponse;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.repository.MemberRepository;
+import wooteco.prolog.member.exception.MemberNotFoundException;
 import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
 import wooteco.prolog.studylog.domain.StudylogScrap;
 import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
@@ -22,17 +24,21 @@ import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 public class StudylogScrapService {
 
     private final StudylogScrapRepository studylogScrapRepository;
+    private final MemberRepository memberRepository;
     private final StudylogRepository studylogRepository;
 
     @Transactional
-    public MemberScrapResponse registerScrap(Member member, Long studyLogId) {
+    public MemberScrapResponse registerScrap(Long memberId, Long studyLogId) {
         if (studylogScrapRepository
-            .countByMemberIdAndScrapStudylogId(member.getId(), studyLogId) > 0) {
+            .countByMemberIdAndScrapStudylogId(memberId, studyLogId) > 0) {
             throw new StudylogScrapAlreadyRegisteredException();
         }
 
         Studylog studylog = studylogRepository.findById(studyLogId)
             .orElseThrow(StudylogNotFoundException::new);
+
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(MemberNotFoundException::new);
 
         StudylogScrap studylogScrap = new StudylogScrap(member, studylog);
         studylogScrapRepository.save(studylogScrap);
@@ -41,17 +47,17 @@ public class StudylogScrapService {
     }
 
     @Transactional
-    public void unregisterScrap(Member member, Long studyLogId) {
+    public void unregisterScrap(Long memberId, Long studyLogId) {
         StudylogScrap scrap = studylogScrapRepository
-            .findByMemberIdAndStudylogId(member.getId(), studyLogId).orElseThrow(
+            .findByMemberIdAndStudylogId(memberId, studyLogId).orElseThrow(
                 StudylogScrapNotExistException::new);
 
         studylogScrapRepository.delete(scrap);
     }
 
-    public StudylogsResponse showScrap(Member member, Pageable pageable) {
+    public StudylogsResponse showScrap(Long memberId, Pageable pageable) {
         Page<StudylogScrap> membersScrap = studylogScrapRepository
-            .findByMemberId(member.getId(), pageable);
+            .findByMemberId(memberId, pageable);
         return StudylogsResponse.of(membersScrap.map(StudylogScrap::getStudylog));
     }
 

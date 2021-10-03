@@ -12,7 +12,9 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import wooteco.prolog.login.application.AuthorizationExtractor;
 import wooteco.prolog.login.application.JwtTokenProvider;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
+import wooteco.prolog.login.excetpion.TokenNotValidException;
 import wooteco.prolog.login.ui.LoginMember.Authority;
+import wooteco.prolog.member.domain.Member;
 
 @AllArgsConstructor
 @Component
@@ -28,48 +30,17 @@ public class AuthMemberPrincipalArgumentResolver implements HandlerMethodArgumen
     @Override
     public LoginMember resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-<<<<<<
-        AuthMemberPrincipal authMemberPrincipal = parameter
-            .getParameterAnnotation(AuthMemberPrincipal.class);
+        boolean isRequired = parameter
+            .getParameterAnnotation(AuthMemberPrincipal.class).required();
 
-        return extractTokenWhenValid(webRequest, authMemberPrincipal.required());
-    }
-
-    private Member extractTokenWhenValid(NativeWebRequest webRequest, boolean isRequired) {
-        try {
-            String credentials = getCredentialsIfPresent(webRequest);
-            Long id = Long.valueOf(jwtTokenProvider.extractSubject(credentials));
-            return memberService.findById(id);
-        } catch (NumberFormatException e) {
-            // subject is not ID type(long)
-            return whenNotValidMember(isRequired);
-        }
-    }
-
-    private String getCredentialsIfPresent(NativeWebRequest webRequest) {
-        String credentials = AuthorizationExtractor
-            .extract(webRequest.getNativeRequest(HttpServletRequest.class));
-        if (Objects.isNull(credentials)) {
-            throw new NumberFormatException();
-        }
-        return credentials;
-    }
-
-    private Member whenNotValidMember(boolean isRequired) {
-        if (isRequired) {
-            throw new TokenNotValidException();
-        }
-        return Member.Anonymous();
-======
         String credentials = AuthorizationExtractor
             .extract(webRequest.getNativeRequest(HttpServletRequest.class));
 
-        if (credentials == null || credentials.isEmpty()) {
+        if (credentials == null || credentials.isEmpty() || !isRequired) {
             return new LoginMember(Authority.ANONYMOUS);
         }
 
         Long id = Long.parseLong(jwtTokenProvider.extractSubject(credentials));
         return new LoginMember(id, Authority.MEMBER);
->>>>>>> a29ed915c40f18451972297d23f47c193b176ff8
     }
 }

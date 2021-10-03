@@ -72,11 +72,12 @@ public class MemberStepDefinitions extends AcceptanceSteps {
     }
 
     @Then("{string}의 닉네임이 스크랩한 스터디로그를 볼 수 없다")
-    public void 스크랩한studylog를볼수없다(String member){
+    public void 스크랩한studylog를볼수없다(String member) {
         String username = GithubResponses.findByName(member).getLogin();
         context.invokeHttpGetWithToken("/members/" + username + "/scrap");
         assertThat(context.response.as(StudylogsResponse.class).getTotalSize()).isZero();
-        
+    }
+
     @When("{string}의 역량 목록을 조회하면")
     public void 의역량목록을조회하면(String member) {
         context.invokeHttpGetWithToken(String.format("/members/%s", member));

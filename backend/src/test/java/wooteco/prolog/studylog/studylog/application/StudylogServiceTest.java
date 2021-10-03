@@ -270,8 +270,8 @@ class StudylogServiceTest {
         StudylogResponse studylog3Response = studylogResponses.get(0);
         StudylogResponse studylog4Response = studylogResponses.get(1);
 
-        studylogScrapService.registerScrap(member1, studylog3Response.getId());
-        studylogScrapService.registerScrap(member1, studylog4Response.getId());
+        studylogScrapService.registerScrap(member1.getId(), studylog3Response.getId());
+        studylogScrapService.registerScrap(member1.getId(), studylog4Response.getId());
 
         StudylogsResponse studylogsResponse = studylogService.findStudylogs(
             new StudylogsSearchRequest(
@@ -280,10 +280,12 @@ class StudylogServiceTest {
                 missionIds,
                 tagIds,
                 usernames,
-                null,
+                new ArrayList<>(),
+                LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
+                LocalDate.parse("20211231", DateTimeFormatter.BASIC_ISO_DATE),
                 null,
                 PageRequest.of(0, 10)
-            ), member1
+            ), member1.getId(), member1.isAnonymous()
         );
 
         //then

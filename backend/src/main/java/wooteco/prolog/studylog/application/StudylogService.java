@@ -54,14 +54,14 @@ public class StudylogService {
     private final MemberService memberService;
     private final TagService tagService;
 
-    public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Member member) {
+    public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Long memberId, boolean isAnonymousMember) {
         StudylogsResponse studylogs = findStudylogs(request);
-        if (member.isAnonymous()) {
+        if (isAnonymousMember) {
             return studylogs;
         }
 
         List<StudylogResponse> data = studylogs.getData();
-        updateScrap(data, findScrapIds(member));
+        updateScrap(data, findScrapIds(memberId));
         return studylogs;
     }
 
@@ -191,14 +191,14 @@ public class StudylogService {
         return StudylogResponse.of(createdStudylog);
     }
 
-    public StudylogResponse findById(Long id, Member member) {
+    public StudylogResponse findById(Long id, Long memberId, boolean isAnonymousMember) {
         StudylogResponse studylog = findById(id);
 
-        if (member.isAnonymous()) {
+        if (isAnonymousMember) {
             return studylog;
         }
 
-        updateScrap(singletonList(studylog), findScrapIds(member));
+        updateScrap(singletonList(studylog), findScrapIds(memberId));
         return studylog;
     }
 
@@ -250,8 +250,8 @@ public class StudylogService {
             .collect(toList());
     }
 
-    private List<Long> findScrapIds(Member member) {
-        List<StudylogScrap> memberScraps = studylogScrapRepository.findByMemberId(member.getId());
+    private List<Long> findScrapIds(Long memberId) {
+        List<StudylogScrap> memberScraps = studylogScrapRepository.findByMemberId(memberId);
         return memberScraps.stream()
             .map(StudylogScrap::getStudylog)
             .map(Studylog::getId)

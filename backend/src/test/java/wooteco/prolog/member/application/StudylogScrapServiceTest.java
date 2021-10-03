@@ -58,7 +58,7 @@ public class StudylogScrapServiceTest {
     void registerScrapTest() {
         //given
         MemberScrapResponse memberScrapResponse = studylogScrapService
-            .registerScrap(member, studylog.getId());
+            .registerScrap(member.getId(), studylog.getId());
         //when
         MemberResponse memberResponse = memberScrapResponse.getMemberResponse();
         StudylogResponse studylogResponse = memberScrapResponse.getStudylogResponse();
@@ -74,11 +74,11 @@ public class StudylogScrapServiceTest {
         //given
         for (int id = 1; id <= totalSize; id++) {
             studylogUtilCRUD.등록(MemberFixture.웨지, "title" + (id + 1), "content", 1L);
-            studylogScrapService.registerScrap(member, (long) id);
+            studylogScrapService.registerScrap(member.getId(), (long) id);
         }
         //when
         StudylogsResponse studylogsResponse = studylogScrapService
-            .showScrap(member, PageRequest.of(page, size, Direction.DESC, "id"));
+            .showScrap(member.getId(), PageRequest.of(page, size, Direction.DESC, "id"));
         //then
         StudylogResponse firstData = studylogsResponse.getData().get(FIRST_DATA);
         assertThat(firstData.getTitle()).isEqualTo(expectedTitle);
@@ -90,13 +90,13 @@ public class StudylogScrapServiceTest {
     void unregisterScrapTest() {
         //given
         MemberScrapResponse memberScrapResponse = studylogScrapService
-            .registerScrap(member, studylog.getId());
+            .registerScrap(member.getId(), studylog.getId());
         //when
         Long studylogId = memberScrapResponse.getStudylogResponse().getId();
-        studylogScrapService.unregisterScrap(member, studylogId);
+        studylogScrapService.unregisterScrap(member.getId(), studylogId);
         //then
         StudylogsResponse studylogsResponse = studylogScrapService
-            .showScrap(member, Pageable.unpaged());
+            .showScrap(member.getId(), Pageable.unpaged());
 
         assertThat(studylogsResponse.getTotalSize()).isEqualTo(0);
     }
@@ -107,7 +107,7 @@ public class StudylogScrapServiceTest {
         //given
         //when
         //then
-        assertThatThrownBy(() -> studylogScrapService.unregisterScrap(member, studylog.getId()))
+        assertThatThrownBy(() -> studylogScrapService.unregisterScrap(member.getId(), studylog.getId()))
             .isInstanceOf(StudylogScrapNotExistException.class);
     }
 }
