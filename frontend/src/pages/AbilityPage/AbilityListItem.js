@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Chip from '../../components/Chip/Chip';
 import { COLOR } from '../../constants';
 import AddAbilityForm from './AddAbilityForm';
@@ -38,6 +38,12 @@ const AbilityListItem = ({
     setItemStatus((prevState) => ({ ...prevState, isEditing: status }));
   };
 
+  useEffect(() => {
+    if (!subAbilities.length) {
+      setItemStatus((prevState) => ({ ...prevState, isOpened: false }));
+    }
+  }, [subAbilities.length]);
+
   return (
     <>
       {!itemStatus.isEditing && (
@@ -47,9 +53,7 @@ const AbilityListItem = ({
             isOpened={itemStatus.isOpened}
             onClick={toggleIsOpened}
             disabled={!subAbilities.length}
-          >
-            {`>`}
-          </ArrowButton>
+          ></ArrowButton>
           <Chip backgroundColor={color}>{name}</Chip>
           <p>{description}</p>
           <ManageButtonList>
