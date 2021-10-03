@@ -5,7 +5,8 @@ import wooteco.prolog.member.domain.Role;
 
 public enum MemberFixture {
 
-    나봄("bomin", "나봄", Role.CREW, 100L, "abcd");
+    나봄("bomin", "나봄", Role.CREW, 100L, "abcd"),
+    웨지("wedge", "웨지", Role.CREW, 101L, "sihyung92");
 
     private final String name;
     private final String nickname;

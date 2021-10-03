@@ -5,7 +5,7 @@ const Container = styled.div`
   width: fit-content;
   background-color: ${({ backgroundColor }) => backgroundColor ?? COLOR.LIGHT_GRAY_200};
   color: ${({ color }) => color ?? COLOR.BLACK_900};
-  padding: 0.2rem 0.8rem;
+  padding: 0.4rem 0.8rem 0.4rem 1.2rem;
   border-radius: 5rem;
   margin-right: 1rem;
 

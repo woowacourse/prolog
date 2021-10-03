@@ -16,6 +16,7 @@ const Profile = styled.div`
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
   padding-bottom: 1.8rem;
   height: fit-content;
+  width: fit-content;
 `;
 
 const Image = styled.img`

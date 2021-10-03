@@ -48,17 +48,23 @@ public class StudylogController {
     }
 
     @GetMapping
-    public ResponseEntity<StudylogsResponse> showAll(@SearchParams StudylogsSearchRequest searchRequest) {
-        StudylogsResponse studylogsResponse = studylogService.findStudylogs(searchRequest);
+    public ResponseEntity<StudylogsResponse> showAll(
+        @AuthMemberPrincipal LoginMember member,
+        @SearchParams StudylogsSearchRequest searchRequest) {
+        StudylogsResponse studylogsResponse = studylogService.findStudylogs(searchRequest, member.getId(), member.isAnonymous());
         return ResponseEntity.ok(studylogsResponse);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudylogResponse> showStudylog(@PathVariable String id) {
+    public ResponseEntity<StudylogResponse> showStudylog(
+        @PathVariable String id,
+        @AuthMemberPrincipal LoginMember member
+        ) {
         if (!NumberUtils.isNumeric(id)) {
             throw new StudylogNotFoundException();
         }
-        StudylogResponse studylogResponse = studylogService.findById(Long.parseLong(id));
+        StudylogResponse studylogResponse = studylogService.findById(Long.parseLong(id), member.getId(),
+            member.isAnonymous());
         return ResponseEntity.ok(studylogResponse);
     }
 

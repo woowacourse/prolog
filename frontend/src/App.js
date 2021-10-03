@@ -11,11 +11,11 @@ import {
   EditPostPage,
   ProfilePage,
   ProfilePagePosts,
-  ProfilePageAccount,
   ProfilePageReports,
   ProfilePageNewReport,
+  ProfilePageScraps,
 } from './pages';
-
+import useSnackBar from './hooks/useSnackBar';
 const Content = styled.div`
   max-width: 112rem;
   margin: 6rem auto;
@@ -23,6 +23,8 @@ const Content = styled.div`
 `;
 
 const App = () => {
+  const { isSnackBarOpen, SnackBar } = useSnackBar();
+
   return (
     <>
       <GlobalStyles />
@@ -42,7 +44,7 @@ const App = () => {
             />
             <Route
               exact
-              path={`${PATH.PROFILE_POSTS}`}
+              path={PATH.PROFILE_POSTS}
               render={() => (
                 <ProfilePage menu={PROFILE_PAGE_MENU.POSTS}>
                   <ProfilePagePosts />
@@ -69,10 +71,10 @@ const App = () => {
             />
             <Route
               exact
-              path={`${PATH.PROFILE_ACCOUNT}`}
+              path={PATH.PROFILE_SCRAPS}
               render={() => (
-                <ProfilePage>
-                  <ProfilePageAccount />
+                <ProfilePage menu={PROFILE_PAGE_MENU.SCRAPS}>
+                  <ProfilePageScraps />
                 </ProfilePage>
               )}
             />
@@ -80,6 +82,7 @@ const App = () => {
           </Switch>
         </Content>
       </Router>
+      {isSnackBarOpen && <SnackBar />}
     </>
   );
 };

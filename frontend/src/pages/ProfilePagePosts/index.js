@@ -19,6 +19,7 @@ import {
   PostItem,
   Tags,
   Title,
+  Heading,
 } from './styles';
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
@@ -126,6 +127,7 @@ const ProfilePagePosts = () => {
 
   return (
     <Container>
+      <Heading>학습로그</Heading>
       <HeaderContainer>
         <FilterListWrapper>
           <FilterList

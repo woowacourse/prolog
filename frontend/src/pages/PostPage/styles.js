@@ -30,7 +30,8 @@ const DeleteButtonStyle = css`
 const CardInner = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  min-height: 38rem;
+  height: fit-content;
 
   & > *:not(:last-child) {
     margin-bottom: 2rem;
@@ -73,7 +74,8 @@ const Title = styled.div`
 const Tags = styled.div`
   font-size: 1.4rem;
   color: ${COLOR.LIGHT_GRAY_900};
-  margin-top: auto;
+  display: flex;
+  align-items: center;
 `;
 
 const IssuedDate = styled.div`
@@ -130,6 +132,17 @@ const Content = styled.div`
     color: #222;
   }
 `;
+const ScrapButtonStyle = css`
+  background-color: transparent;
+  padding: 0;
+  width: fit-content;
+`;
+
+const BottomContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+`;
 
 export {
   ButtonList,
@@ -144,4 +157,6 @@ export {
   IssuedDate,
   ProfileChipStyle,
   Content,
+  ScrapButtonStyle,
+  BottomContainer,
 };
