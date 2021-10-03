@@ -5,6 +5,7 @@ import COLOR from '../../constants/color';
 
 const Container = styled.section`
   width: 100%;
+  margin-bottom: 2rem;
 
   ${({ reportsLength }) =>
     !reportsLength &&
