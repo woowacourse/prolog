@@ -98,6 +98,15 @@ const requestPostReport = (data, accessToken) =>
     body: JSON.stringify(data),
   });
 
+const requestDeleteReport = (reportId, accessToken) =>
+  fetch(`${BASE_URL}/reports/${reportId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
 export {
   requestGetPosts,
   requestGetPost,
@@ -114,4 +123,5 @@ export {
   requestGetReportList,
   requestGetReport,
   requestPostReport,
+  requestDeleteReport,
 };
