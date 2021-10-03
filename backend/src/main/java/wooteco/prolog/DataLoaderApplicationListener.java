@@ -67,11 +67,13 @@ public class DataLoaderApplicationListener implements
         studylogService.insertStudylogs(Members.BROWN.value.getId(), StudylogGenerator.generate(20));
         studylogService.insertStudylogs(Members.JOANNE.value.getId() , StudylogGenerator.generate(20));
         studylogService.insertStudylogs(Members.TYCHE.value.getId(), StudylogGenerator.generate(100));
+        studylogService.insertStudylogs(Members.SUNNY.value.getId(), StudylogGenerator.generate(20));
 
         // ability init
         Abilities.initBackend(Members.BROWN.value.getId(), abilityService);
         Abilities.initBackend(Members.JOANNE.value.getId(), abilityService);
         Abilities.initFrontend(Members.TYCHE.value.getId(), abilityService);
+        Abilities.initFrontend(Members.SUNNY.value.getId(), abilityService);
 
         updatedContentsRepository
             .save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
@@ -278,7 +280,13 @@ public class DataLoaderApplicationListener implements
             "티케",
             "59258239",
             "https://avatars.githubusercontent.com/u/59258239?v=4")
-        );
+        ),
+        SUNNY(new GithubProfileResponse(
+                "박선희",
+                "서니",
+                "67677561",
+                "https://avatars.githubusercontent.com/u/67677561?v=4"
+        ));
 
         private final GithubProfileResponse githubProfileResponse;
         private Member value;
