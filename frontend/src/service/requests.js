@@ -48,6 +48,16 @@ const requestDeletePost = (postId, accessToken) =>
 
 const requestGetProfile = (username) => fetch(`${BASE_URL}/members/${username}/profile`);
 
+const requestEditProfile = (data, accessToken) =>
+  fetch(`${BASE_URL}/members/${data.username}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
 const requestGetUserPosts = (username, postSearchParams, filteringOption) => {
   const searchParams = Object.entries(postSearchParams).map(([key, value]) => `${key}=${value}`);
   const filterQuery = filteringOption.length
