@@ -99,7 +99,7 @@ const ProfilePageReports = () => {
   return (
     <Container reportsLength={reports.length}>
       {reports.length === 0 ? (
-        <Container>
+        <>
           <p>등록된 리포트가 없습니다.</p>
           {isOwner && (
             <>
@@ -107,7 +107,7 @@ const ProfilePageReports = () => {
               <AddNewReportLink to={`/${username}/report/write`}> 새 리포트 등록</AddNewReportLink>
             </>
           )}
-        </Container>
+        </>
       ) : (
         <>
           <ReportHeader>
