@@ -1,6 +1,18 @@
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-const requestGetPost = (postId) => fetch(`${BASE_URL}/posts/${postId}`);
+const requestGetPost = (accessToken, postId) => {
+  if (accessToken) {
+    return fetch(`${BASE_URL}/posts/${postId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  } else {
+    return fetch(`${BASE_URL}/posts/${postId}`);
+  }
+};
 
 const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
 

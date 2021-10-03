@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
-import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
+import { CONFIRM_MESSAGE, PATH } from '../../constants';
 import { Button, BUTTON_SIZE, Card, Pagination } from '../../components';
-import { requestGetMyScrap } from '../../service/requests';
+import { requestDeleteScrap, requestGetMyScrap } from '../../service/requests';
 import {
   ButtonList,
   CardStyles,
@@ -18,7 +18,6 @@ import {
   Heading,
 } from './styles';
 import { useSelector } from 'react-redux';
-import usePost from '../../hooks/usePost';
 
 const initialPostQueryParams = {
   page: 1,
@@ -37,16 +36,8 @@ const ProfilePageScraps = () => {
   const [posts, setPosts] = useState([]);
   const [postQueryParams, setPostQueryParams] = useState(initialPostQueryParams);
 
-  const { error: postError, deleteData: deletePost } = usePost({});
-
   const goTargetPost = (id) => {
     history.push(`${PATH.POST}/${id}`);
-  };
-
-  const goEditTargetPost = (id) => (event) => {
-    event.stopPropagation();
-
-    history.push(`${PATH.POST}/${id}/edit`);
   };
 
   const getMyScrap = useCallback(async () => {
@@ -60,23 +51,28 @@ const ProfilePageScraps = () => {
     }
   }, [postQueryParams, username]);
 
-  const onDeletePost = async (event, id) => {
-    event.stopPropagation();
-
-    if (!window.confirm(CONFIRM_MESSAGE.DELETE_POST)) return;
-
-    await deletePost(id, accessToken);
-
-    if (postError) {
-      alert(ALERT_MESSAGE.FAIL_TO_DELETE_POST);
-      return;
-    }
-
-    await getMyScrap();
-  };
-
   const onSetPage = (page) => {
     setPostQueryParams({ ...postQueryParams, page });
+  };
+
+  const onDeleteScrap = async (event, studylogId) => {
+    event.stopPropagation();
+
+    if (!window.confirm(CONFIRM_MESSAGE.DELETE_SCRAP)) return;
+
+    try {
+      const response = await requestDeleteScrap(username, accessToken, {
+        studylogId,
+      });
+
+      if (!response.ok) {
+        throw new Error(response.status);
+      }
+
+      getMyScrap();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -123,7 +119,7 @@ const ProfilePageScraps = () => {
                       css={DeleteButtonStyle}
                       alt="삭제 버튼"
                       onClick={(event) => {
-                        onDeletePost(event, id);
+                        onDeleteScrap(event, id);
                       }}
                     >
                       스크랩 취소

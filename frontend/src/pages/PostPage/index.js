@@ -1,6 +1,6 @@
+import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
-import useFetch from '../../hooks/useFetch';
-import { requestGetPost } from '../../service/requests';
+import { requestGetPost, requestPostScrap, requestDeleteScrap } from '../../service/requests';
 
 import { Button, BUTTON_SIZE, Card, ProfileChip } from '../../components';
 import { Viewer } from '@toast-ui/react-editor';
@@ -27,7 +27,7 @@ import {
   BottomContainer,
 } from './styles';
 import useNotFound from '../../hooks/useNotFound';
-import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
+import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH, SNACKBAR_MESSAGE } from '../../constants';
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
 import scrapIcon from '../../assets/images/scrap.svg';
@@ -37,25 +37,24 @@ import useSnackBar from '../../hooks/useSnackBar';
 const PostPage = () => {
   const history = useHistory();
   const { id: postId } = useParams();
-  const [post, errorStatus] = useFetch({}, () => requestGetPost(postId));
-  const { NotFound } = useNotFound();
 
+  const [post, setPost] = useState({});
+
+  const { NotFound } = useNotFound();
   const { deleteData: deletePost } = usePost({});
   const { openSnackBar } = useSnackBar();
 
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const myName = useSelector((state) => state.user.profile.data?.username);
 
-  const { id, author, createdAt, mission, title, tags, content } = post;
-
-  if (errorStatus) {
-    switch (errorStatus) {
-      case 2004:
-        return <NotFound />;
-      default:
-        return;
-    }
-  }
+  // if (errorStatus) {
+  //   switch (errorStatus) {
+  //     case 2004:
+  //       return <NotFound />;
+  //     default:
+  //       return;
+  //   }
+  // }
 
   const goProfilePage = (username) => (event) => {
     event.stopPropagation();
@@ -81,20 +80,72 @@ const PostPage = () => {
     history.goBack();
   };
 
-  const toggleScrap = () => {
-    openSnackBar('스크랩을 완료했습니다');
+  const postScrap = async () => {
+    if (!myName) {
+      alert(ALERT_MESSAGE.NEED_TO_LOGIN);
+      return;
+    }
+
+    try {
+      const response = await requestPostScrap(myName, accessToken, {
+        studylogId: postId,
+      });
+
+      if (!response.ok) {
+        throw new Error(response.status);
+      }
+
+      getPostDetail();
+      openSnackBar(SNACKBAR_MESSAGE.SUCCESS_TO_SCRAP);
+    } catch (error) {
+      console.error(error);
+    }
   };
+
+  const deleteScrap = async () => {
+    if (!window.confirm(CONFIRM_MESSAGE.DELETE_SCRAP)) return;
+
+    try {
+      const response = await requestDeleteScrap(myName, accessToken, {
+        studylogId: postId,
+      });
+
+      if (!response.ok) {
+        throw new Error(response.status);
+      }
+
+      getPostDetail();
+      openSnackBar(SNACKBAR_MESSAGE.FAIL_TO_SCRAP);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getPostDetail = useCallback(async () => {
+    try {
+      const response = await requestGetPost(accessToken, postId);
+      const data = await response.json();
+
+      setPost(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [accessToken, postId]);
+
+  useEffect(() => {
+    getPostDetail();
+  }, [getPostDetail]);
 
   return (
     <>
-      {myName === author?.username && (
+      {myName === post?.author?.username && (
         <ButtonList>
           <Button
             size={BUTTON_SIZE.X_SMALL}
             type="button"
             css={EditButtonStyle}
             alt="수정 버튼"
-            onClick={() => goEditTargetPost(id)}
+            onClick={() => goEditTargetPost(post?.id)}
           >
             수정
           </Button>
@@ -103,61 +154,61 @@ const PostPage = () => {
             type="button"
             css={DeleteButtonStyle}
             alt="삭제 버튼"
-            onClick={() => onDeletePost(id)}
+            onClick={() => onDeletePost(post?.id)}
           >
             삭제
           </Button>
         </ButtonList>
       )}
-      <Card key={id} size="LARGE">
+      <Card key={post?.id} size="LARGE">
         <CardInner>
           <div>
             <SubHeader>
-              <Mission>{mission?.name}</Mission>
+              <Mission>{post?.mission?.name}</Mission>
               <SubHeaderRightContent>
-                <IssuedDate>{new Date(createdAt).toLocaleString('ko-KR')}</IssuedDate>
+                <IssuedDate>{new Date(post?.createdAt).toLocaleString('ko-KR')}</IssuedDate>
               </SubHeaderRightContent>
             </SubHeader>
-            <Title>{title}</Title>
+            <Title>{post?.title}</Title>
             <ProfileChip
-              imageSrc={author?.imageUrl}
+              imageSrc={post?.author?.imageUrl}
               css={ProfileChipStyle}
-              onClick={goProfilePage(author?.username)}
+              onClick={goProfilePage(post?.author?.username)}
             >
-              {author?.nickname}
+              {post?.author?.nickname}
             </ProfileChip>
           </div>
           <Content>
             <Viewer
-              initialValue={content}
+              initialValue={post?.content}
               extendedAutolinks={true}
               plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
             />
           </Content>
           <BottomContainer>
             <Tags>
-              {tags?.map(({ id, name }) => (
+              {post?.tags?.map(({ id, name }) => (
                 <span key={id}>{`#${name} `}</span>
               ))}
             </Tags>
             <div>
-              {true ? (
-                <Button
-                  type="button"
-                  size="X_SMALL"
-                  icon={scrapIcon}
-                  alt="스크랩 아이콘"
-                  css={ScrapButtonStyle}
-                  onClick={toggleScrap}
-                />
-              ) : (
+              {post?.scrap ? (
                 <Button
                   type="button"
                   size="X_SMALL"
                   icon={unScrapIcon}
                   alt="스크랩 아이콘"
                   css={ScrapButtonStyle}
-                  onClick={toggleScrap}
+                  onClick={deleteScrap}
+                />
+              ) : (
+                <Button
+                  type="button"
+                  size="X_SMALL"
+                  icon={scrapIcon}
+                  alt="스크랩 아이콘"
+                  css={ScrapButtonStyle}
+                  onClick={postScrap}
                 />
               )}
             </div>
