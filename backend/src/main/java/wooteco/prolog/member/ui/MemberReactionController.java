@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import wooteco.prolog.login.aop.MemberOnly;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.studylog.application.StudylogScrapService;
 import wooteco.prolog.member.application.dto.MemberScrapRequest;
-import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 
 @RestController
@@ -27,6 +27,7 @@ public class MemberReactionController {
     private final StudylogScrapService studylogScrapService;
 
     @GetMapping(value = "/{username}/scrap")
+    @MemberOnly
     public ResponseEntity<StudylogsResponse> showScrap(
         @AuthMemberPrincipal LoginMember member,
         @PageableDefault(direction = DESC) Pageable pageable
@@ -36,6 +37,7 @@ public class MemberReactionController {
     }
 
     @PostMapping(value = "/{username}/scrap")
+    @MemberOnly
     public ResponseEntity<Void> registerScrap(
         @AuthMemberPrincipal LoginMember member,
         @RequestBody MemberScrapRequest studylogIdRequest
@@ -45,6 +47,7 @@ public class MemberReactionController {
     }
 
     @DeleteMapping(value = "/{username}/scrap")
+    @MemberOnly
     public ResponseEntity<Void> unregisterScrap(
         @AuthMemberPrincipal LoginMember member,
         @RequestBody MemberScrapRequest studylogIdRequest

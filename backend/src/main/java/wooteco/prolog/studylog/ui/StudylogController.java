@@ -49,7 +49,7 @@ public class StudylogController {
 
     @GetMapping
     public ResponseEntity<StudylogsResponse> showAll(
-        @AuthMemberPrincipal(required = false) LoginMember member,
+        @AuthMemberPrincipal LoginMember member,
         @SearchParams StudylogsSearchRequest searchRequest) {
         StudylogsResponse studylogsResponse = studylogService.findStudylogs(searchRequest, member.getId(), member.isAnonymous());
         return ResponseEntity.ok(studylogsResponse);
@@ -58,7 +58,7 @@ public class StudylogController {
     @GetMapping("/{id}")
     public ResponseEntity<StudylogResponse> showStudylog(
         @PathVariable String id,
-        @AuthMemberPrincipal(required = false) LoginMember member
+        @AuthMemberPrincipal LoginMember member
         ) {
         if (!NumberUtils.isNumeric(id)) {
             throw new StudylogNotFoundException();

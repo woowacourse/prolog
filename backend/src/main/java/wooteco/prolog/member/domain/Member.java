@@ -95,10 +95,6 @@ public class Member {
         }
     }
 
-    public static Member Anonymous() {
-        return new Member(-1L, "anonymous", "anonymous", UNVALIDATED, -1L, "anonymous");
-    }
-
     public void addTag(Tag tag) {
         memberTags.add(new MemberTag(this, tag));
     }

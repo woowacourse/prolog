@@ -30,17 +30,19 @@ public class AuthMemberPrincipalArgumentResolver implements HandlerMethodArgumen
     @Override
     public LoginMember resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        boolean isRequired = parameter
-            .getParameterAnnotation(AuthMemberPrincipal.class).required();
-
         String credentials = AuthorizationExtractor
             .extract(webRequest.getNativeRequest(HttpServletRequest.class));
 
-        if (credentials == null || credentials.isEmpty() || !isRequired) {
+        if (credentials == null || credentials.isEmpty()) {
             return new LoginMember(Authority.ANONYMOUS);
         }
 
-        Long id = Long.parseLong(jwtTokenProvider.extractSubject(credentials));
-        return new LoginMember(id, Authority.MEMBER);
+        try {
+            Long id = Long.parseLong(jwtTokenProvider.extractSubject(credentials));
+            return new LoginMember(id, Authority.MEMBER);
+        } catch (NumberFormatException e) {
+            throw new TokenNotValidException();
+        }
+
     }
 }
