@@ -8,6 +8,7 @@ const PATH = {
   LOGIN_CALLBACK: '/login/callback',
   POST: '/posts',
   NEW_POST: '/post/write',
+  ABILITY: '/:username/ability',
 };
 
 export default PATH;

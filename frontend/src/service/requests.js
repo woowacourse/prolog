@@ -75,6 +75,42 @@ const requestGetCalendar = (year, month, username) =>
     method: 'GET',
   });
 
+const requestGetAbilities = (username, accessToken) =>
+  fetch(`${BASE_URL}/members/${username}/abilities`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+const requestAddAbility = (accessToken, data) =>
+  fetch(`${BASE_URL}/abilities`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+const requestDeleteAbility = (accessToken, abilityId) =>
+  fetch(`${BASE_URL}/abilities/${abilityId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+const requestEditAbility = (accessToken, data) =>
+  fetch(`${BASE_URL}/abilities/${data.id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
 export {
   requestGetPosts,
   requestGetPost,
@@ -88,4 +124,8 @@ export {
   requestEditProfile,
   requestGetUserTags,
   requestGetCalendar,
+  requestGetAbilities,
+  requestAddAbility,
+  requestDeleteAbility,
+  requestEditAbility,
 };

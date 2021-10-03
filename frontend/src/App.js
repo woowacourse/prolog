@@ -15,6 +15,7 @@ import {
   ProfilePageReports,
   ProfilePageNewReport,
 } from './pages';
+import AbilityPage from './pages/AbilityPage';
 
 const Content = styled.div`
   max-width: 112rem;
@@ -73,6 +74,15 @@ const App = () => {
               render={() => (
                 <ProfilePage>
                   <ProfilePageAccount />
+                </ProfilePage>
+              )}
+            />
+            <Route
+              exact
+              path={`${PATH.ABILITY}`}
+              render={() => (
+                <ProfilePage>
+                  <AbilityPage />
                 </ProfilePage>
               )}
             />

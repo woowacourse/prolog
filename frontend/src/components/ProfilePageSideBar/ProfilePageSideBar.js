@@ -22,6 +22,37 @@ import useNotFound from '../../hooks/useNotFound';
 import { Button, BUTTON_SIZE } from '..';
 import { useSelector } from 'react-redux';
 
+const getMenuList = ({ username, isOwner }) => {
+  const defaultMenu = [
+    {
+      key: PROFILE_PAGE_MENU.OVERVIEW,
+      title: '오버뷰',
+      path: `/${username}`,
+      Icon: OverviewIcon,
+    },
+    {
+      key: PROFILE_PAGE_MENU.POSTS,
+      title: '학습로그',
+      path: `/${username}/posts`,
+      Icon: PostIcon,
+    },
+    {
+      key: PROFILE_PAGE_MENU.REPORTS,
+      title: '리포트',
+      path: `/${username}/reports`,
+      Icon: PostIcon,
+    },
+  ];
+  const abilityMenu = {
+    key: PROFILE_PAGE_MENU.ABILITY,
+    title: '역량',
+    path: `/${username}/ability`,
+    Icon: PostIcon,
+  };
+
+  return isOwner ? [...defaultMenu, abilityMenu] : defaultMenu;
+};
+
 const ProfilePageSideBar = ({ menu }) => {
   const history = useHistory();
   const { username } = useParams();
@@ -36,20 +67,8 @@ const ProfilePageSideBar = ({ menu }) => {
 
   const { setNotFound } = useNotFound();
 
-  const goProfilePage = (event) => {
-    setSelectedMenu(event.currentTarget.value);
-    history.push(`/${username}`);
-  };
-
-  const goProfilePagePosts = (event) => {
-    setSelectedMenu(event.currentTarget.value);
-    history.push(`/${username}/posts`);
-  };
-
-  const goProfilePageReport = (event) => {
-    setSelectedMenu(event.currentTarget.value);
-    history.push(`/${username}/reports`);
-  };
+  const loginUser = useSelector((state) => state.user.profile);
+  const isOwner = !!loginUser.data && username === loginUser.data.username;
 
   const getProfile = async () => {
     try {
@@ -138,25 +157,20 @@ const ProfilePageSideBar = ({ menu }) => {
         </NicknameWrapper>
       </Profile>
       <MenuList>
-        <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.OVERVIEW}>
-          <MenuButton value={PROFILE_PAGE_MENU.OVERVIEW} type="button" onClick={goProfilePage}>
-            {/* <MenuIcon src={overviewIcon} alt="overview icon" /> */}
-            <OverviewIcon width="16" height="16" />
-            오버뷰
-          </MenuButton>
-        </MenuItem>
-        <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.POSTS}>
-          <MenuButton value={PROFILE_PAGE_MENU.POSTS} type="button" onClick={goProfilePagePosts}>
-            <PostIcon width="16" height="16" />
-            학습로그
-          </MenuButton>
-        </MenuItem>
-        <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.REPORTS}>
-          <MenuButton value={PROFILE_PAGE_MENU.REPORTS} type="button" onClick={goProfilePageReport}>
-            <PostIcon width="16" height="16" />
-            리포트
-          </MenuButton>
-        </MenuItem>
+        {getMenuList({ username, isOwner }).map((menuItem) => (
+          <MenuItem key={menuItem.key} isSelectedMenu={selectedMenu === menuItem.key}>
+            <MenuButton
+              type="button"
+              onClick={() => {
+                setSelectedMenu(menuItem.key);
+                history.push(menuItem.path);
+              }}
+            >
+              <menuItem.Icon width="16" height="16" />
+              {menuItem.title}
+            </MenuButton>
+          </MenuItem>
+        ))}
       </MenuList>
     </Container>
   );
