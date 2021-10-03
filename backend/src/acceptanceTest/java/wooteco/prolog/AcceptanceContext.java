@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import wooteco.prolog.member.application.dto.MemberScrapRequest;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Component
 @Scope(scopeName = "cucumber-glue")
 public class AcceptanceContext {
@@ -15,6 +18,7 @@ public class AcceptanceContext {
     public RequestSpecification request;
     public Response response;
     public String accessToken;
+    public Map<String, Object> storage;
 
     public AcceptanceContext() {
         reset();
@@ -24,6 +28,7 @@ public class AcceptanceContext {
         request = null;
         response = null;
         accessToken = "";
+        storage = new HashMap<>();
     }
 
     public void invokeHttpGet(String path, Object... pathParams) {

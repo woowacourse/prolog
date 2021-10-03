@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import wooteco.prolog.member.application.MemberService;
+import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
 import wooteco.prolog.studylog.application.TagService;
@@ -22,13 +24,15 @@ public class FilterController {
     private final LevelService levelService;
     private final MissionService missionService;
     private final TagService tagService;
+    private final MemberService memberService;
 
     @GetMapping
     public ResponseEntity<FilterResponse> showAll() {
         List<LevelResponse> levelResponses = levelService.findAll();
         List<MissionResponse> missionResponses = missionService.findAll();
         List<TagResponse> tagResponses = tagService.findTagsIncludedInPost();
+        List<MemberResponse> memberResponses = memberService.findAll();
         return ResponseEntity.ok()
-            .body(new FilterResponse(levelResponses, missionResponses, tagResponses));
+            .body(new FilterResponse(levelResponses, missionResponses, tagResponses, memberResponses));
     }
 }

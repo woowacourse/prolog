@@ -18,6 +18,7 @@ ProfileChip.propTypes = {
 
 ProfileChip.defaultProps = {
   imageSrc: NoProfileImage,
+  children: '',
 };
 
 export default ProfileChip;

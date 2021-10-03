@@ -14,9 +14,14 @@ import wooteco.prolog.member.exception.MemberNotFoundException;
 import wooteco.prolog.studylog.exception.StudylogScrapAlreadyRegisteredException;
 import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
 import wooteco.prolog.studylog.exception.StudylogScrapNotValidUserException;
+import wooteco.prolog.report.exception.AbilityHasChildrenException;
+import wooteco.prolog.report.exception.AbilityNotFoundException;
+import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.TagName;
 import wooteco.prolog.studylog.domain.Title;
+import wooteco.prolog.studylog.exception.AbilityParentColorDuplicateException;
+import wooteco.prolog.studylog.exception.AbilityNameDuplicateException;
 import wooteco.prolog.studylog.exception.AuthorNotValidException;
 import wooteco.prolog.studylog.exception.DuplicateMissionException;
 import wooteco.prolog.studylog.exception.DuplicateTagException;
@@ -68,8 +73,15 @@ public enum BadRequestCode {
     DUPLICATE_MEMBER_TAG(3006, "중복되는 멤버 태그 입니다.", DuplicateMemberTagException.class),
     SCRAP_ALREADY_REGISTERED(3007, "이미 스크랩한 스터디로그입니다.", StudylogScrapAlreadyRegisteredException.class),
     SCRAP_NOT_EXIST(3008, "스크랩이 존재하지 않습니다.", StudylogScrapNotExistException.class),
-    SCRAP_NOT_VALID_USER(3009, "본인의 스크랩만 추가할 수 있습니다.", StudylogScrapNotValidUserException.class)
-    ;
+    SCRAP_NOT_VALID_USER(3009, "본인의 스크랩만 추가할 수 있습니다.", StudylogScrapNotValidUserException.class),
+    
+    ABILITY_NOT_FOUND(4000, "역량이 존재하지 않습니다.", AbilityNotFoundException.class),
+    ABILITY_HAS_CHILDREN(4001, "해당 역량의 하위 역량이 존재합니다.", AbilityHasChildrenException.class),
+    ABILITY_NAME_DUPLICATE(4002, "중복된 이름의 역량이 존재합니다.", AbilityNameDuplicateException.class),
+    ABILITY_PARENT_COLOR_DUPLICATE(4003, "중복된 색상의 부모역량이 존재합니다.",
+                                   AbilityParentColorDuplicateException.class),
+    ABILITY_PARENT_CHILD_COLOR_DIFFERENT(4004, "상위 역량과 하위 역량의 색상이 일치하지 않습니다.",
+                                         AbilityParentChildColorDifferentException.class);
 
     private int code;
     private String message;

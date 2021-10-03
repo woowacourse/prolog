@@ -11,10 +11,11 @@ import {
   EditPostPage,
   ProfilePage,
   ProfilePagePosts,
+  ProfilePageReports,
+  ProfilePageNewReport,
   ProfilePageScraps,
 } from './pages';
 import useSnackBar from './hooks/useSnackBar';
-
 const Content = styled.div`
   max-width: 112rem;
   margin: 6rem auto;
@@ -47,6 +48,24 @@ const App = () => {
               render={() => (
                 <ProfilePage menu={PROFILE_PAGE_MENU.POSTS}>
                   <ProfilePagePosts />
+                </ProfilePage>
+              )}
+            />
+            <Route
+              exact
+              path={`${PATH.PROFILE_REPORTS}`}
+              render={() => (
+                <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
+                  <ProfilePageReports />
+                </ProfilePage>
+              )}
+            />
+            <Route
+              exact
+              path={`${PATH.PROFILE_NEW_REPORT}`}
+              render={() => (
+                <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
+                  <ProfilePageNewReport />
                 </ProfilePage>
               )}
             />

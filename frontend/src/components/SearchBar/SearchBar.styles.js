@@ -33,6 +33,8 @@ const Container = styled.div`
     width: 3.6rem;
     background-color: transparent;
   }
+
+  ${({ css }) => css}
 `;
 
 export { Container };

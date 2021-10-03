@@ -47,6 +47,10 @@ const GlobalStyles = () => (
         }
       }
 
+      input {
+        font-family: inherit;
+      }
+
       button {
         padding: 0;
         outline: none;

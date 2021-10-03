@@ -1,6 +1,14 @@
+import { useState } from 'react';
 import { DropdownMenu } from '..';
-import checkIcon from '../../assets/images/check.png';
-import { Container, FilterDetail, ResetFilter, CheckIcon } from './FilterList.styles';
+import SearchBar from '../SearchBar/SearchBar';
+import {
+  Container,
+  ResetFilter,
+  SearchBarStyle,
+  SearchBarWrapper,
+  DropdownStyle,
+} from './FilterList.styles';
+import SelectedFilterList from './SelectedFilterList';
 
 const FilterList = ({
   selectedFilter,
@@ -12,6 +20,8 @@ const FilterList = ({
   onResetFilter,
   css,
 }) => {
+  const [searchKeyword, setSearchKeyword] = useState('');
+
   const closeDropdown = (event) => {
     if (event.target === event.currentTarget) {
       setSelectedFilter('');
@@ -54,23 +64,32 @@ const FilterList = ({
 
   return (
     <Container onClick={closeDropdown} isDropdownToggled={selectedFilter} css={css}>
-      {Object.entries(getFilteredFiltersByLevel()).map(([key, value]) => (
+      {Object.entries(getFilteredFiltersByLevel()).map(([key, values]) => (
         <div key={key}>
-          <button onClick={() => setSelectedFilter(key)}>{key}</button>
+          <button
+            onClick={() => {
+              setSelectedFilter(key);
+              setSearchKeyword('');
+            }}
+          >
+            {key}
+          </button>
           {selectedFilter === key && (
-            <DropdownMenu>
-              {value.map(({ id, name }) => (
-                <li key={id} onClick={() => toggleFilterDetails(key, id, name)}>
-                  <FilterDetail>
-                    <span>{name}</span>
-                    <CheckIcon
-                      src={checkIcon}
-                      alt="선택된 필터 표시"
-                      checked={findFilterItem(key, id)}
-                    />
-                  </FilterDetail>
-                </li>
-              ))}
+            <DropdownMenu css={DropdownStyle}>
+              <SearchBarWrapper>
+                <SearchBar
+                  css={SearchBarStyle}
+                  onChange={({ target }) => setSearchKeyword(target.value)}
+                  value={searchKeyword}
+                />
+              </SearchBarWrapper>
+              <SelectedFilterList
+                searchKeyword={searchKeyword}
+                filterList={values}
+                type={key}
+                findFilterItem={findFilterItem}
+                toggleFilterDetails={toggleFilterDetails}
+              />
             </DropdownMenu>
           )}
         </div>

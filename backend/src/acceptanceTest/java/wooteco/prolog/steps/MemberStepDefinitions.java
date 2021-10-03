@@ -21,7 +21,8 @@ public class MemberStepDefinitions extends AcceptanceSteps {
 
     @When("자신의 멤버 정보를 조회하면")
     public void 자신의멤버정보를조회하면() {
-        context.invokeHttpGetWithToken("/members/me");
+        String username = (String) context.storage.get("username");
+        context.invokeHttpGetWithToken("/members/" + username);
     }
 
     @Then("멤버 정보가 조회된다")
@@ -36,8 +37,8 @@ public class MemberStepDefinitions extends AcceptanceSteps {
         MemberUpdateRequest updateRequest = new MemberUpdateRequest(
             updatedNickname, ""
         );
-
-        context.invokeHttpPutWithToken("/members/me", updateRequest);
+        String username = (String) context.storage.get("username");
+        context.invokeHttpPutWithToken("/members/" + username, updateRequest);
     }
 
     @Then("{string}의 닉네임이 {string}(로)(으로) 수정")
@@ -75,5 +76,11 @@ public class MemberStepDefinitions extends AcceptanceSteps {
         String username = GithubResponses.findByName(member).getLogin();
         context.invokeHttpGetWithToken("/members/" + username + "/scrap");
         assertThat(context.response.as(StudylogsResponse.class).getTotalSize()).isZero();
+        
+    @When("{string}의 역량 목록을 조회하면")
+    public void 의역량목록을조회하면(String member) {
+        context.invokeHttpGetWithToken(String.format("/members/%s", member));
+        Long memberId = context.response.as(MemberResponse.class).getId();
+        context.invokeHttpGetWithToken(String.format("/members/%d/abilities", memberId));
     }
 }
