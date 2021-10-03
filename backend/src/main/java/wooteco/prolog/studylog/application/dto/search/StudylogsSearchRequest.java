@@ -2,10 +2,10 @@ package wooteco.prolog.studylog.application.dto.search;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.domain.Pageable;
+import wooteco.prolog.studylog.domain.repository.StudylogSearchCondition;
 
 @AllArgsConstructor
 @Getter
@@ -21,9 +21,15 @@ public class StudylogsSearchRequest {
     private final LocalDate endDate;
     private final Pageable pageable;
 
-    public boolean hasOnlySearch() {
-        return Objects.nonNull(keyword) && Objects.isNull(levels) &&
-            Objects.isNull(missions) && Objects.isNull(tags) &&
-            Objects.isNull(usernames);
+    public StudylogSearchCondition asSearchConditionWithoutKeyword() {
+        return StudylogSearchCondition.builder()
+            .levels(levels)
+            .missions(missions)
+            .tags(tags)
+            .usernames(usernames)
+            .members(members)
+            .endDate(endDate)
+            .startDate(startDate)
+            .build();
     }
 }

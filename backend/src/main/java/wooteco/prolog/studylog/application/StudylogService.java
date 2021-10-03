@@ -7,15 +7,12 @@ import static java.util.stream.Collectors.toList;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
@@ -29,7 +26,7 @@ import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.Tags;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
+import wooteco.prolog.studylog.domain.repository.StudylogSearchCondition;
 import wooteco.prolog.studylog.exception.StudylogArgumentException;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 
@@ -47,11 +44,7 @@ public class StudylogService {
 
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request) {
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
-            return findPostsWithoutKeyword(request.getLevels(), request.getMissions(),
-                request.getTags(),
-                request.getUsernames(), request.getMembers(), request.getStartDate(),
-                request.getEndDate(),
-                request.getPageable());
+            return findPostsWithoutKeyword(request);
         }
 
         final StudylogDocumentResponse response = studylogDocumentService.findBySearchKeyword(
@@ -73,24 +66,8 @@ public class StudylogService {
         );
     }
 
-    public StudylogsResponse findPostsWithoutKeyword(
-        List<Long> levelIds,
-        List<Long> missionIds,
-        List<Long> tagIds,
-        List<String> usernames,
-        LocalDate startDate,
-        LocalDate endDate,
-        Pageable pageable) {
-        return findPostsWithoutKeyword(
-            levelIds,
-            missionIds,
-            tagIds,
-            usernames,
-            new ArrayList<>(),
-            startDate,
-            endDate,
-            pageable
-        );
+    private StudylogsResponse findPostsWithoutKeyword(StudylogsSearchRequest request) {
+        return StudylogsResponse.of(studylogRepository.search(request.asSearchConditionWithoutKeyword(), request.getPageable()));
     }
 
     public StudylogsResponse findPostsWithoutKeyword(
@@ -103,16 +80,17 @@ public class StudylogService {
         LocalDate endDate,
         Pageable pageable) {
 
-        Specification<Studylog> specs =
-            StudylogSpecification.findByLevelIn(levelIds)
-                .and(StudylogSpecification.equalIn("mission", missionIds))
-                .and(StudylogSpecification.findByTagIn(tagIds))
-                .and(StudylogSpecification.findByUsernameIn(usernames))
-                .and(StudylogSpecification.findByMemberIn(members))
-                .and(StudylogSpecification.findBetweenDate(startDate, endDate))
-                .and(StudylogSpecification.distinct(true));
+        StudylogSearchCondition studylogSearchCondition = StudylogSearchCondition.builder()
+            .levels(levelIds)
+            .missions(missionIds)
+            .tags(tagIds)
+            .usernames(usernames)
+            .members(members)
+            .startDate(startDate)
+            .endDate(endDate)
+            .build();
 
-        Page<Studylog> posts = studylogRepository.findAll(specs, pageable);
+        Page<Studylog> posts = studylogRepository.search(studylogSearchCondition, pageable);
 
         return StudylogsResponse.of(posts);
     }

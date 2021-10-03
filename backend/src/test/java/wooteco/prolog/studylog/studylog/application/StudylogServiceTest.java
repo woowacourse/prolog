@@ -109,7 +109,7 @@ class StudylogServiceTest {
             Arguments.of("", emptyList(), singletonList(2L), emptyList(), asList(),
                          asList(STUDYLOG3_TITLE, STUDYLOG4_TITLE)),
             Arguments.of("", emptyList(), singletonList(1L), singletonList(tag1.getId()),
-                         emptyList(),
+                         asList("별명1"),
                          singletonList(STUDYLOG1_TITLE)),
             Arguments.of("", singletonList(1L), singletonList(1L),
                          asList(tag1.getId(), tag2.getId(), tag3.getId()), emptyList(),
@@ -122,10 +122,10 @@ class StudylogServiceTest {
             Arguments.of("", emptyList(), emptyList(), emptyList(), emptyList(),
                          asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE, STUDYLOG3_TITLE,
                                 STUDYLOG4_TITLE)),
-            Arguments.of("이것은 제목", emptyList(), emptyList(), emptyList(), emptyList(),
+            Arguments.of("이것은", emptyList(), emptyList(), emptyList(), emptyList(),
                          asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE, STUDYLOG3_TITLE,
                                 STUDYLOG4_TITLE)),
-            Arguments.of("궁둥이", emptyList(), emptyList(), emptyList(), emptyList(), emptyList())
+            Arguments.of("없는단어", emptyList(), emptyList(), emptyList(), emptyList(), emptyList())
         );
     }
 

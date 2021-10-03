@@ -8,14 +8,13 @@ import java.util.stream.Collectors;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import wooteco.prolog.common.BaseEntity;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
+import wooteco.prolog.studylog.domain.repository.StudylogSearchCondition;
 
 @Profile({"local", "test"})
 @Service
@@ -31,8 +30,8 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
     public StudylogDocumentResponse findBySearchKeyword(String keyword, List<Long> tags, List<Long> missions,
                                                         List<Long> levels, List<String> usernames,
                                                         LocalDate start, LocalDate end, Pageable pageable) {
-        final Page<Studylog> studylogs = studylogRepository.findAll(
-            makeSpecifications(keyword.toLowerCase(), tags, missions, levels, usernames, start, end), pageable);
+        final Page<Studylog> studylogs = studylogRepository.search(
+            makeSearchCondition(keyword.toLowerCase(), tags, missions, levels, usernames, start, end), pageable);
 
         final List<Long> studylogIds = studylogs.stream()
             .map(BaseEntity::getId)
@@ -44,7 +43,7 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
                                             studylogs.getNumber());
     }
 
-    private Specification<Studylog> makeSpecifications(String keyword, List<Long> tags, List<Long> missions,
+    private StudylogSearchCondition makeSearchCondition(String keyword, List<Long> tags, List<Long> missions,
                                                        List<Long> levels, List<String> usernames,
                                                        LocalDate start, LocalDate end
     ) {
@@ -53,13 +52,14 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
             keywords = preprocess(keyword);
         }
 
-        return StudylogSpecification.likeKeyword("title", keywords)
-            .or(StudylogSpecification.likeKeyword("content", keywords))
-            .and(StudylogSpecification.findByLevelIn(levels)
-            .and(StudylogSpecification.equalIn("mission", missions))
-            .and(StudylogSpecification.findByTagIn(tags))
-            .and(StudylogSpecification.findByUsernameIn(usernames))
-            .and(StudylogSpecification.findBetweenDate(start, end))
-            .and(StudylogSpecification.distinct(true)));
+        return StudylogSearchCondition.builder()
+            .keywords(keywords)
+            .levels(levels)
+            .missions(missions)
+            .tags(tags)
+            .usernames(usernames)
+            .startDate(start)
+            .endDate(end)
+            .build();
     }
 }

@@ -11,7 +11,7 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.domain.Studylog;
 
 public interface StudylogRepository extends JpaRepository<Studylog, Long>,
-    JpaSpecificationExecutor<Studylog> {
+    JpaSpecificationExecutor<Studylog>, StudylogRepositoryCustom {
 
     Page<Studylog> findByIdIn(List<Long> ids, Pageable pageable);
 
