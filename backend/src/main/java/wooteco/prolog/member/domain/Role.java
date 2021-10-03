@@ -6,5 +6,4 @@ public enum Role {
     CREW,
     COACH,
     ADMIN;
-
 }

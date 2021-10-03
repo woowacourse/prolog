@@ -1,9 +1,7 @@
 package wooteco.prolog.studylog.studylog.fixture;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import wooteco.prolog.studylog.domain.StudylogDocument;
 
 public class StudyLogDocumentTestFixture {
 

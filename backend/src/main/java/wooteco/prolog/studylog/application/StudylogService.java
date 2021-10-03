@@ -2,20 +2,29 @@ package wooteco.prolog.studylog.application;
 
 import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.BaseEntity;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.studylog.domain.StudylogScrap;
+import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
@@ -36,13 +45,45 @@ import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 public class StudylogService {
 
     private final StudylogRepository studylogRepository;
+    private final StudylogScrapRepository studylogScrapRepository;
     private final MemberTagService memberTagService;
     private final DocumentService studylogDocumentService;
     private final MissionService missionService;
     private final MemberService memberService;
     private final TagService tagService;
 
+    public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Long memberId, boolean isAnonymousMember) {
+        StudylogsResponse studylogs = findStudylogs(request);
+        if (isAnonymousMember) {
+            return studylogs;
+        }
+
+        List<StudylogResponse> data = studylogs.getData();
+        updateScrap(data, findScrapIds(memberId));
+        return studylogs;
+    }
+
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request) {
+        if(Objects.nonNull(request.getIds())) {
+            final Pageable pageable = request.getPageable();
+
+            List<Long> ids = request.getIds();
+
+            int start = (int)pageable.getOffset();
+            int end = Math.min((start + pageable.getPageSize()), ids.size());
+
+            final Map<Long, Studylog> idAndStudylog = studylogRepository
+                .findByIdIn(ids.subList(start, end))
+                .stream()
+                .collect(toMap(BaseEntity::getId, Function.identity()));
+
+            final List<Studylog> studylogs = ids.subList(start, end).stream()
+                .map(idAndStudylog::get)
+                .collect(toList());
+
+            return StudylogsResponse.of(new PageImpl<>(studylogs, pageable, request.getIds().size()));
+        }
+
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
             return findPostsWithoutKeyword(request);
         }
@@ -91,7 +132,6 @@ public class StudylogService {
             .build();
 
         Page<Studylog> posts = studylogRepository.search(studylogSearchCondition, pageable);
-
         return StudylogsResponse.of(posts);
     }
 
@@ -128,6 +168,17 @@ public class StudylogService {
 
         studylogDocumentService.save(createdStudylog.toStudylogDocument());
         return StudylogResponse.of(createdStudylog);
+    }
+
+    public StudylogResponse findById(Long id, Long memberId, boolean isAnonymousMember) {
+        StudylogResponse studylog = findById(id);
+
+        if (isAnonymousMember) {
+            return studylog;
+        }
+
+        updateScrap(singletonList(studylog), findScrapIds(memberId));
+        return studylog;
     }
 
     public StudylogResponse findById(Long id) {
@@ -176,5 +227,21 @@ public class StudylogService {
             .stream()
             .map(CalendarStudylogResponse::of)
             .collect(toList());
+    }
+
+    private List<Long> findScrapIds(Long memberId) {
+        List<StudylogScrap> memberScraps = studylogScrapRepository.findByMemberId(memberId);
+        return memberScraps.stream()
+            .map(StudylogScrap::getStudylog)
+            .map(Studylog::getId)
+            .collect(toList());
+    }
+
+    private void updateScrap(List<StudylogResponse> studylogs, List<Long> scrapIds) {
+        studylogs.forEach(studylogResponse -> {
+            if (scrapIds.stream().anyMatch(id -> id.equals(studylogResponse.getId()))) {
+                studylogResponse.setScrap(true);
+            }
+        });
     }
 }

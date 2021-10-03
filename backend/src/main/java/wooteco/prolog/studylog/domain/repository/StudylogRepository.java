@@ -13,7 +13,7 @@ import wooteco.prolog.studylog.domain.Studylog;
 public interface StudylogRepository extends JpaRepository<Studylog, Long>,
     JpaSpecificationExecutor<Studylog>, StudylogRepositoryCustom {
 
-    Page<Studylog> findByIdIn(List<Long> ids, Pageable pageable);
+    List<Studylog> findByIdIn(List<Long> ids);
 
     @Query(value = "select distinct p from Studylog p left join fetch p.studylogTags.values pt left join fetch pt.tag where p.member = :member",
         countQuery = "select count(p) from Studylog p where p.member = :member")

@@ -21,10 +21,11 @@ import wooteco.prolog.studylog.domain.Tags;
 public enum StudylogFixture {
     자동차_미션_정리("자동차 미션 정리", "부릉 부릉 자동차가 나가신다 부릉부릉", "자동차 미션", "임파시블레벨", Tags.of(
         Arrays.asList("자동차", "전략 패턴", "부릉"))),
-    로또_미션_정리("로또 미션 정리", "따르르릉 로또", "로또 미션", "임파시블레벨",Tags.of(Arrays.asList("로또", "TDD", "랜덤")));
+    로또_미션_정리("로또 미션 정리", "따르르릉 로또", "로또 미션", "임파시블레벨", Tags.of(Arrays.asList("로또", "TDD", "랜덤")));
 
     @Component
     public static class InjectHelper {
+
         @Autowired
         private MissionService missionService;
         @Autowired

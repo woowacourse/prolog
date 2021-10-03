@@ -19,6 +19,7 @@ public class StudylogsSearchRequest {
     private final List<Long> members;
     private final LocalDate startDate;
     private final LocalDate endDate;
+    private final List<Long> ids;
     private final Pageable pageable;
 
     public StudylogSearchCondition asSearchConditionWithoutKeyword() {

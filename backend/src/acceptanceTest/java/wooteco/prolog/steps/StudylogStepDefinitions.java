@@ -109,14 +109,8 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         context.invokeHttpPostWithToken("/posts", studylogRequests);
     }
 
-    @When("{int}번 미션과 {int}번 태그로 {long}개를 조회하면")
-    public void 미션태그필터를사이즈와함께조회한다(int missionNumber, int tagNumber, Long pageSize) {
-        String path = String.format("/posts?tags=%d&missions=%d&size=%d", tagNumber, missionNumber, pageSize);
-        context.invokeHttpGet(path);
-    }
-
     @When("{int}번 미션과 {int}번 태그로 조회하면")
-    public void 미션태그를조회한다(int missionNumber, int tagNumber) {
+    public void 미션태그필터조회를한다(int missionNumber, int tagNumber) {
         String path = String.format("/posts?tags=%d&missions=%d", tagNumber, missionNumber);
         context.invokeHttpGet(path);
     }
@@ -146,9 +140,9 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         context.invokeHttpGet(path);
     }
 
-    @When("총 {long}개, {int}번 태그의 스터디로그를 조회하면")
-    public void 특정태그의스터디로그를조회하면(Long pageSize, int tagNumber) {
-        String path = String.format("/posts?tags=%d&size=%d", tagNumber, pageSize);
+    @When("{int}번 태그의 스터디로그를 조회하면")
+    public void 특정태그의스터디로그를조회하면(int tagNumber) {
+        String path = String.format("/posts?tags=%d", tagNumber);
         context.invokeHttpGet(path);
     }
 
@@ -181,6 +175,22 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     public void 스터디로그를조회하면(Long studylogId) {
         String path = "/posts/" + studylogId;
         context.invokeHttpGet(path);
+    }
+
+    @When("id {string} 스터디로그를 조회하면")
+    public void 여러개의스터디로그를조회하면(String studylogIds) {
+        List<String> ids = Arrays.asList(studylogIds.split(","));
+        String path = "/posts?ids=" + String.join(",", ids);
+        context.invokeHttpGet(path);
+    }
+
+    @Then("id {string} 스터디로그가 조회된다")
+    public void 여러개의스터디로그가조회된다(String studylogIds) {
+        List<String> ids = Arrays.asList(studylogIds.split(","));
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+
+        StudylogsResponse studylogsResponse = context.response.as(StudylogsResponse.class);
+        assertThat(studylogsResponse.getData()).hasSize(ids.size());
     }
 
     @Then("{long}번째 스터디로그가 조회된다")

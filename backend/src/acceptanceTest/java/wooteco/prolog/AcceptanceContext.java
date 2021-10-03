@@ -6,6 +6,10 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import wooteco.prolog.member.application.dto.MemberScrapRequest;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @Scope(scopeName = "cucumber-glue")
@@ -14,6 +18,7 @@ public class AcceptanceContext {
     public RequestSpecification request;
     public Response response;
     public String accessToken;
+    public Map<String, Object> storage;
 
     public AcceptanceContext() {
         reset();
@@ -23,6 +28,7 @@ public class AcceptanceContext {
         request = null;
         response = null;
         accessToken = "";
+        storage = new HashMap<>();
     }
 
     public void invokeHttpGet(String path, Object... pathParams) {
@@ -67,6 +73,15 @@ public class AcceptanceContext {
     public void invokeHttpDeleteWithToken(String path) {
         request = RestAssured
             .given().log().all()
+            .auth().oauth2(accessToken);
+        response = request.delete(path);
+        response.then().log().all();
+    }
+
+    public void invokeHttpDeleteWithToken(String path, Object data) {
+        request = RestAssured
+            .given().log().all()
+            .body(data).contentType(ContentType.JSON)
             .auth().oauth2(accessToken);
         response = request.delete(path);
         response.then().log().all();

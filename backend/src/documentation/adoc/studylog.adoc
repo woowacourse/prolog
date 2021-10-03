@@ -21,7 +21,7 @@ include::{snippets}/studylog/list/http-request.adoc[]
 
 include::{snippets}/studylog/list/http-response.adoc[]
 
-=== 스터디로그 검색
+=== 스터디로그 필터 조회
 
 ==== Request
 

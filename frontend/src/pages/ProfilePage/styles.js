@@ -12,6 +12,8 @@ const Content = styled.div`
   margin-left: 2.4rem;
   display: flex;
   justify-content: center;
+
+  position: relative;
 `;
 
 const Overview = styled.div`
@@ -44,7 +46,7 @@ const TagTitle = styled.div`
 `;
 
 const TagContainer = styled.div`
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 31rem;
 `;
 

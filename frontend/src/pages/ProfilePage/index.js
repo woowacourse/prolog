@@ -52,7 +52,6 @@ const ProfilePage = ({ children, menu }) => {
         ...filteringOption,
         { filterType: 'usernames', filterDetailId: username },
       ];
-
       const response = await requestGetPosts({
         type: 'filter',
         data: { filterQuery, postQueryParams },
@@ -137,7 +136,6 @@ const ProfilePage = ({ children, menu }) => {
                     onClick={() => {
                       setSelectedTagId(id);
                       setSelectedDay(-1);
-                      onSetPage(1);
                       setFilteringOptionWithTagId(id);
                     }}
                   />
@@ -149,7 +147,6 @@ const ProfilePage = ({ children, menu }) => {
                 newDate={state?.date}
                 onClick={(year, month, day) => {
                   setSelectedTagId(null);
-                  onSetPage(1);
                   setFilteringOptionWithDate(year, month, day);
                 }}
                 selectedDay={selectedDay}

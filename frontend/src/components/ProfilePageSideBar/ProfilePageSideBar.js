@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import { ReactComponent as PostIcon } from '../../assets/images/post.svg';
 import { ReactComponent as OverviewIcon } from '../../assets/images/overview.svg';
+import { ReactComponent as ScrapIcon } from '../../assets/images/scrap.svg';
 import {
   Profile,
   Image,
@@ -25,6 +26,7 @@ import { useSelector } from 'react-redux';
 const ProfilePageSideBar = ({ menu }) => {
   const history = useHistory();
   const { username } = useParams();
+  const me = useSelector((state) => state.user.profile);
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const myName = useSelector((state) => state.user.profile.data?.username);
 
@@ -46,6 +48,19 @@ const ProfilePageSideBar = ({ menu }) => {
     history.push(`/${username}/posts`);
   };
 
+  const goProfilePageScraps = (event) => {
+    setSelectedMenu(event.currentTarget.value);
+    history.push(`/${username}/scraps`);
+  };
+
+  const goProfilePageAccount = () => {
+    history.push(`/${username}/account`);
+  };
+  const goProfilePageReport = (event) => {
+    setSelectedMenu(event.currentTarget.value);
+    history.push(`/${username}/reports`);
+  };
+
   const getProfile = async () => {
     try {
       const response = await requestGetProfile(username);
@@ -55,6 +70,7 @@ const ProfilePageSideBar = ({ menu }) => {
       }
 
       const user = await response.json();
+      console.log(user);
       setUser(user);
       setNickname(user.nickname);
       setNotFound(false);
@@ -79,7 +95,10 @@ const ProfilePageSideBar = ({ menu }) => {
     }
 
     try {
-      const response = await requestEditProfile({ nickname, imageUrl: user.imageUrl }, accessToken);
+      const response = await requestEditProfile(
+        { username, nickname, imageUrl: user.imageUrl },
+        accessToken
+      );
 
       if (!response.ok) {
         throw new Error(await response.text());
@@ -142,17 +161,24 @@ const ProfilePageSideBar = ({ menu }) => {
             학습로그
           </MenuButton>
         </MenuItem>
-        <MenuItem isSelectedMenu={selectedMenu === 'asd'}>
-          <MenuButton value={PROFILE_PAGE_MENU.POSTS} type="button" onClick={goProfilePagePosts}>
+        {me.data && (
+          <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.SCRAPS}>
+            <MenuButton
+              value={PROFILE_PAGE_MENU.SCRAPS}
+              type="button"
+              onClick={goProfilePageScraps}
+            >
+              <ScrapIcon width="16" height="16" />
+              스크랩
+            </MenuButton>
+          </MenuItem>
+        )}
+        <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.REPORTS}>
+          <MenuButton value={PROFILE_PAGE_MENU.REPORTS} type="button" onClick={goProfilePageReport}>
             <PostIcon width="16" height="16" />
             리포트
           </MenuButton>
         </MenuItem>
-        {/* <MenuItem>
-            <button type="button" onClick={goProfilePageAccount}>
-              내 정보 수정
-            </button>
-          </MenuItem> */}
       </MenuList>
     </Container>
   );
