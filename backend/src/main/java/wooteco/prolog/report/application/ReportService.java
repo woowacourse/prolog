@@ -124,6 +124,7 @@ public class ReportService {
             .orElseThrow(IllegalArgumentException::new);
     }
 
+    @Transactional
     public void deleteReport(Long reportId, LoginMember loginMember) {
         Member member = findMemberById(loginMember.getId());
         Report report = reportRepository.findById(reportId)
