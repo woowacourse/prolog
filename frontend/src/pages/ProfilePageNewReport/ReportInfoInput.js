@@ -9,13 +9,13 @@ const ReportInfoInput = ({ nickname, title, setTitle, desc, setDescription }) =>
     <section>
       <Label htmlFor="report_title">
         ✏️ Title
-        <span>{title.length}/50</span>
+        <span>{title.length}/30</span>
         <Title
           id="report_title"
           placeholder={`${new Date().toLocaleDateString()} ${nickname}의 리포트`}
           value={title}
           onChange={onWriteTitle}
-          maxLength={50}
+          maxLength={30}
         />
       </Label>
 
