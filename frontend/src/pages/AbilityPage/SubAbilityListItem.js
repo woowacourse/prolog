@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Chip } from '../../components';
+import SubCategoryIcon from '../../components/@shared/Icons/SubCategoryIcon';
 import { COLOR } from '../../constants';
 import EditSubAbilityForm from './EditSubAbilityForm';
 import { Button, ManageButtonList } from './styles';
@@ -9,7 +10,7 @@ const SubAbilityListItem = ({ id, name, description, color, onEdit, onDelete }) 
 
   return isEditing ? (
     <li key={id} style={{ gridTemplateColumns: '0.2fr 4fr' }}>
-      <span>{`ㄴ`}</span>
+      <SubCategoryIcon />
       <EditSubAbilityForm
         id={id}
         name={name}
@@ -21,7 +22,7 @@ const SubAbilityListItem = ({ id, name, description, color, onEdit, onDelete }) 
     </li>
   ) : (
     <li key={id}>
-      <span>{`ㄴ`}</span>
+      <SubCategoryIcon />
       <Chip backgroundColor={color}>{name}</Chip>
       <p>{description}</p>
       <ManageButtonList>

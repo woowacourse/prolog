@@ -24,7 +24,7 @@ const Container = styled.div`
   }
 
   button:disabled {
-    opacity: 0.6;
+    opacity: 0.3;
   }
 
   button:not(:disabled):hover {
@@ -75,12 +75,13 @@ const openList = keyframes`
 `;
 
 const SubAbilityList = styled.ul`
-  padding-left: 1rem;
   border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
 
   overflow: hidden;
 
   li {
+    padding-left: 3rem;
+
     span {
       text-align: center;
     }
@@ -104,6 +105,10 @@ const ManageButtonList = styled.div`
 `;
 
 const ArrowButton = styled.button`
+  width: 32px;
+  height: 32px;
+  position: relative;
+
   cursor: pointer;
 
   ${({ isOpened }) =>
@@ -117,6 +122,21 @@ const ArrowButton = styled.button`
     `
     visibility: hidden;
   `}
+
+  :after {
+    content: '';
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    transform: translateX(-50%) translateY(-50%);
+
+    border-top: 6px solid transparent;
+    border-left: 6px solid black;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+  }
 `;
 
 const Button = styled.button`
@@ -136,11 +156,14 @@ const Button = styled.button`
 `;
 
 const FormContainer = styled.div`
-  padding: 1rem 0 2rem 1.5rem;
+  padding: 1rem 0 2rem;
+  ${({ isParent }) => !isParent && 'padding-bottom: 1rem;'}
 
   > div {
     width: 100%;
-    padding: 1rem 0;
+    padding: 1rem 0 0 1rem;
+
+    display: flex;
   }
 
   h3 {
@@ -154,6 +177,10 @@ const ListForm = styled.form`
   grid-template-columns: ${({ isParent }) => (isParent ? `1fr 2fr 1fr 0.8fr` : `1fr 3fr 0.8fr`)};
   justify-content: center;
   align-items: end;
+
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  ${({ isParent }) => (isParent ? 'padding-left: 1rem;' : 'padding-left: 4rem;')}
 
   label {
     width: 100%;

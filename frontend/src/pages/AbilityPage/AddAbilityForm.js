@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import SubCategoryIcon from '../../components/@shared/Icons/SubCategoryIcon';
 import Chip from '../../components/Chip/Chip';
 import { COLOR } from '../../constants';
 import { ManageButtonList, Button, FormContainer, ListForm, ColorPicker } from './styles';
@@ -26,6 +27,7 @@ const AddAbilityForm = ({
   return (
     <FormContainer>
       <div>
+        {!isParent && <SubCategoryIcon width={32} />}
         <Chip backgroundColor={formData.color} minWidth="3rem" fontSize="1.4rem">
           {formData.name || '라벨 미리보기'}
         </Chip>

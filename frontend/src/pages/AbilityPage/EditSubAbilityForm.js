@@ -14,7 +14,7 @@ const EditSubAbilityForm = ({ id, name, color, description, onClose, onEdit }) =
   };
 
   return (
-    <FormContainer>
+    <FormContainer isParent={false}>
       <ListForm
         isParent={false}
         onSubmit={async (event) => {
@@ -31,18 +31,25 @@ const EditSubAbilityForm = ({ id, name, color, description, onClose, onEdit }) =
           onClose();
         }}
       >
-        <input
-          type="text"
-          placeholder="이름"
-          value={formData.name}
-          onChange={onFormDataChange('name')}
-        />
+        <Chip backgroundColor={color}>
+          <input
+            type="text"
+            placeholder="이름"
+            value={formData.name}
+            onChange={onFormDataChange('name')}
+            style={{
+              backgroundColor: '#ffffffcc',
+              border: 'none',
+            }}
+          />
+        </Chip>
 
         <input
           type="text"
           placeholder="설명"
           value={formData.description}
           onChange={onFormDataChange('description')}
+          style={{ width: 'calc(100% - 1.4rem)' }}
         />
 
         <ManageButtonList>

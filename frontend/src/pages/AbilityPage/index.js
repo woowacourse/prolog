@@ -76,16 +76,16 @@ const AbilityPage = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (user.data?.id) {
-  //     getData();
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (user.data?.id) {
+      getData();
+    }
+  }, [user]);
 
-  // if (!isMine) {
-  //   alert('잘못된 접근입니다.');
-  //   history.push(`/${username}`);
-  // }
+  if (user.data && !isMine) {
+    alert('잘못된 접근입니다.');
+    history.push(`/${username}`);
+  }
 
   return (
     <Container>
@@ -124,7 +124,7 @@ const AbilityPage = () => {
           }}
         >
           <div>
-            역량<span>{`(총 ${abilityList?.length}개)`}</span>
+            역량<span>{`(총 ${abilities?.length}개)`}</span>
           </div>
         </li>
         {!abilityList?.length && (
@@ -137,7 +137,7 @@ const AbilityPage = () => {
             역량이 없습니다. 역량을 추가해주세요.
           </li>
         )}
-        {abilityList
+        {abilities
           ?.filter(({ isParent }) => isParent)
           .map(({ id, name, description, color, isParent, children }) => (
             <AbilityListItem
