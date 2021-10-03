@@ -82,14 +82,10 @@ public class AbilityService {
     @Transactional
     public List<AbilityResponse> updateAbility(Long memberId, AbilityUpdateRequest request) {
         Ability legacyAbility = findAbilityByIdAndMemberId(request.getId(), memberId);
-
         Ability updateAbility = request.toEntity();
         List<Ability> abilities = findByMemberId(memberId);
-        abilities.remove(legacyAbility);
-        updateAbility.validateDuplicateName(abilities);
-        updateAbility.validateDuplicateColor(abilities);
 
-        legacyAbility.update(updateAbility);
+        legacyAbility.updateWithValidation(updateAbility, abilities);
 
         return findAbilitiesByMemberId(memberId);
     }

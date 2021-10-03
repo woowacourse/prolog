@@ -87,7 +87,16 @@ public class Ability {
         this.children.add(abilityRelationship);
     }
 
-    public void update(Ability updateAbility) {
+    public void updateWithValidation(Ability updateAbility, List<Ability> abilities) {
+        abilities.remove(this);
+        abilities.removeAll(this.getChildren());
+        updateAbility.validateDuplicateName(abilities);
+        updateAbility.validateDuplicateColor(abilities);
+
+        update(updateAbility);
+    }
+
+    private void update(Ability updateAbility) {
         this.name = updateAbility.name;
         this.description = updateAbility.description;
 

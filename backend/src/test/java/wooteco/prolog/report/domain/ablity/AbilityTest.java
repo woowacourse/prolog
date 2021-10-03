@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,7 +70,7 @@ class AbilityTest {
         Ability updateTarget = new Ability(abilityId, "새로운 역량", "그것은 피카를 사랑하는 힘", "핑크색");
 
         // when
-        ability.update(updateTarget);
+        ability.updateWithValidation(updateTarget, new ArrayList<>());
 
         // then
         assertThat(ability).usingRecursiveComparison()
