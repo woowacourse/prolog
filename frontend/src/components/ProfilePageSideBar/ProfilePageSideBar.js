@@ -60,7 +60,6 @@ const ProfilePageSideBar = ({ menu }) => {
       }
 
       const user = await response.json();
-      console.log(user);
       setUser(user);
       setNickname(user.nickname);
       setNotFound(false);
