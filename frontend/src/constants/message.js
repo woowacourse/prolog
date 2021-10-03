@@ -1,10 +1,12 @@
 const CONFIRM_MESSAGE = {
   DELETE_POST: '글을 삭제하시겠습니까?',
+  DELETE_SCRAP: '스크랩을 취소하시겠습니까?',
 };
 
 const ALERT_MESSAGE = {
   FAIL_TO_DELETE_POST: '글을 삭제할 수 없습니다.',
   FAIL_TO_UPLOAD_IMAGE: '이미지 업로드를 할 수 없습니다.',
+  NEED_TO_LOGIN: '로그인 후 이용 가능합니다',
 };
 
 const ERROR_MESSAGE = {
@@ -29,4 +31,16 @@ const PLACEHOLDER = {
   TAG: '#태그선택',
 };
 
-export { CONFIRM_MESSAGE, ALERT_MESSAGE, ERROR_MESSAGE, SUCCESS_MESSAGE, PLACEHOLDER };
+const SNACKBAR_MESSAGE = {
+  SUCCESS_TO_SCRAP: '스크랩을 완료했습니다.',
+  FAIL_TO_SCRAP: '스크랩을 취소했습니다.',
+};
+
+export {
+  CONFIRM_MESSAGE,
+  ALERT_MESSAGE,
+  ERROR_MESSAGE,
+  SUCCESS_MESSAGE,
+  PLACEHOLDER,
+  SNACKBAR_MESSAGE,
+};

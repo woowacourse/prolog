@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import { ReactComponent as PostIcon } from '../../assets/images/post.svg';
 import { ReactComponent as OverviewIcon } from '../../assets/images/overview.svg';
+import { ReactComponent as ScrapIcon } from '../../assets/images/scrap.svg';
 import {
   Profile,
   Image,
@@ -43,19 +44,28 @@ const getMenuList = ({ username, isOwner }) => {
       Icon: PostIcon,
     },
   ];
-  const abilityMenu = {
-    key: PROFILE_PAGE_MENU.ABILITY,
-    title: '역량',
-    path: `/${username}/ability`,
-    Icon: PostIcon,
-  };
+  const privateMenu = [
+    {
+      key: PROFILE_PAGE_MENU.SCRAPS,
+      title: '스크랩',
+      path: `/${username}/scraps`,
+      Icon: ScrapIcon,
+    },
+    {
+      key: PROFILE_PAGE_MENU.ABILITY,
+      title: '역량',
+      path: `/${username}/ability`,
+      Icon: PostIcon,
+    },
+  ];
 
-  return isOwner ? [...defaultMenu, abilityMenu] : defaultMenu;
+  return isOwner ? [...defaultMenu, ...privateMenu] : defaultMenu;
 };
 
 const ProfilePageSideBar = ({ menu }) => {
   const history = useHistory();
   const { username } = useParams();
+  const me = useSelector((state) => state.user.profile);
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const myName = useSelector((state) => state.user.profile.data?.username);
 

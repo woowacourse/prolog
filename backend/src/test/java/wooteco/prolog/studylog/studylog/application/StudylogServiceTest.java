@@ -33,6 +33,7 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
+import wooteco.prolog.studylog.application.StudylogScrapService;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.studylog.application.dto.LevelRequest;
@@ -72,6 +73,8 @@ class StudylogServiceTest {
 
     @Autowired
     private StudylogService studylogService;
+    @Autowired
+    private StudylogScrapService studylogScrapService;
     @Autowired
     private LevelService levelService;
     @Autowired
@@ -253,6 +256,48 @@ class StudylogServiceTest {
         assertThat(titles).containsExactlyInAnyOrderElementsOf(
             expectedStudylogTitles
         );
+    }
+
+    @DisplayName("스크랩한 경우 scrap이 true로 응답된다.")
+    @ParameterizedTest
+    @MethodSource("findWithFilter")
+    void findStudylogsWithScrapData(String keyword, List<Long> levelIds, List<Long> missionIds,
+                                    List<Long> tagIds, List<String> usernames,
+                                    List<String> expectedStudylogTitles) {
+        //given
+        insertStudylogs(member1, studylog1, studylog2);
+        List<StudylogResponse> studylogResponses = insertStudylogs(member2, studylog3, studylog4);
+        StudylogResponse studylog3Response = studylogResponses.get(0);
+        StudylogResponse studylog4Response = studylogResponses.get(1);
+
+        studylogScrapService.registerScrap(member1.getId(), studylog3Response.getId());
+        studylogScrapService.registerScrap(member1.getId(), studylog4Response.getId());
+
+        StudylogsResponse studylogsResponse = studylogService.findStudylogs(
+            new StudylogsSearchRequest(
+                keyword,
+                levelIds,
+                missionIds,
+                tagIds,
+                usernames,
+                new ArrayList<>(),
+                LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
+                LocalDate.parse("20211231", DateTimeFormatter.BASIC_ISO_DATE),
+                null,
+                PageRequest.of(0, 10)
+            ), member1.getId(), member1.isAnonymous()
+        );
+
+        //then
+        List<Boolean> scraps = studylogsResponse.getData().stream()
+            .filter(studylogResponse ->
+                studylogResponse.getId().equals(studylog3Response.getId()) ||
+                studylogResponse.getId().equals(studylog4Response.getId())
+            )
+            .map(StudylogResponse::isScrap)
+            .collect(toList());
+
+        assertThat(scraps).doesNotContain(false);
     }
 
     @DisplayName("유저 이름으로 스터디로그를 조회한다.")
