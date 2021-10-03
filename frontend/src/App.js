@@ -17,6 +17,7 @@ import {
 } from './pages';
 import AbilityPage from './pages/AbilityPage';
 import useSnackBar from './hooks/useSnackBar';
+import AbilityPage from './pages/AbilityPage';
 
 const Content = styled.div`
   max-width: 112rem;
