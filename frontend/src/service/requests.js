@@ -73,6 +73,29 @@ const requestGetUserTags = (username) => fetch(`${BASE_URL}/members/${username}/
 const requestGetCalendar = (year, month, username) =>
   fetch(`${BASE_URL}/members/${username}/calendar-posts?year=${year}&month=${month}`, {
     method: 'GET',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+  });
+
+const requestGetReportList = (username) =>
+  fetch(`${BASE_URL}/${username}/reports?type=simple`, {
+    method: 'GET',
+  });
+
+const requestGetReport = (reportId) =>
+  fetch(`${BASE_URL}/reports/${reportId}`, {
+    method: 'GET',
+  });
+
+const requestPostReport = (data, accessToken) =>
+  fetch(`${BASE_URL}/reports`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
   });
 
 export {
@@ -88,4 +111,7 @@ export {
   requestEditProfile,
   requestGetUserTags,
   requestGetCalendar,
+  requestGetReportList,
+  requestGetReport,
+  requestPostReport,
 };
