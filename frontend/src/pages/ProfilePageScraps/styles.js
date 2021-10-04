@@ -9,14 +9,6 @@ const Container = styled.div`
   max-width: 814px;
 `;
 
-const HeaderContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  margin-bottom: 1.5rem;
-`;
-
 const PostItem = styled.div`
   width: 100%;
   padding: 2rem;
@@ -79,22 +71,13 @@ const ButtonList = styled.div`
   justify-content: center;
   gap: 1.6rem;
 
-  ${({ isVisible }) => (isVisible ? 'visibility: visible' : 'visibility: hidden')};
+  visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
 `;
 
 const NoPost = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const EditButtonStyle = css`
-  border: 1px solid ${COLOR.LIGHT_GRAY_200};
-  background-color: ${COLOR.WHITE};
-
-  &:hover {
-    background-color: ${COLOR.LIGHT_GRAY_300};
-  }
 `;
 
 const DeleteButtonStyle = css`
@@ -106,24 +89,8 @@ const DeleteButtonStyle = css`
   }
 `;
 
-const FilterListWrapper = styled.div`
-  height: 4.8rem;
-  flex-grow: 1;
-
-  display: flex;
-  flex-direction: column;
-
-  flex: 1;
-  margin-top: 0.6rem;
-`;
-
 const CardStyles = css`
   padding: 2rem;
-  border-color: ${COLOR.LIGHT_GRAY_200};
-`;
-
-const FilterStyles = css`
-  background-color: ${COLOR.WHITE};
   border-color: ${COLOR.LIGHT_GRAY_200};
 `;
 
@@ -142,11 +109,7 @@ export {
   PostItem,
   ButtonList,
   NoPost,
-  EditButtonStyle,
   DeleteButtonStyle,
-  FilterListWrapper,
-  CardStyles,
-  FilterStyles,
-  HeaderContainer,
   Heading,
+  CardStyles,
 };

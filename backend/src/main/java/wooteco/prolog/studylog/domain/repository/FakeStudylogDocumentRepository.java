@@ -1,8 +1,6 @@
 package wooteco.prolog.studylog.domain.repository;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -11,7 +9,6 @@ import java.util.stream.StreamSupport;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.query.Query;

@@ -46,7 +46,7 @@ const TagTitle = styled.div`
 `;
 
 const TagContainer = styled.div`
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 31rem;
 `;
 

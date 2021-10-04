@@ -7,7 +7,9 @@ import io.cucumber.java.en.When;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.member.application.dto.MemberResponse;
+import wooteco.prolog.member.application.dto.MemberScrapRequest;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
+import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 
 public class MemberStepDefinitions extends AcceptanceSteps {
 
@@ -46,5 +48,33 @@ public class MemberStepDefinitions extends AcceptanceSteps {
         String updatedNickname = context.response.as(MemberResponse.class).getNickname();
 
         assertThat(updatedNickname).isEqualTo(nickname);
+    }
+
+    @When("{string}의 닉네임이 {int}번 스터디로그를 스크랩하면")
+    public void studylog를스크랩하먼(String member, int studylogId){
+        String username = GithubResponses.findByName(member).getLogin();
+        context.invokeHttpPostWithToken("/members/" + username + "/scrap", new MemberScrapRequest((long)studylogId));
+        assertThat(context.response.statusCode()).isEqualTo(200);
+    }
+
+    @When("{string}의 닉네임이 {int}번 스터디로그를 스크랩 취소하면")
+    public void studylog를스크랩취소하먼(String member, int studylogId){
+        String username = GithubResponses.findByName(member).getLogin();
+        context.invokeHttpDeleteWithToken("/members/" + username + "/scrap", new MemberScrapRequest((long)studylogId));
+        assertThat(context.response.statusCode()).isEqualTo(200);
+    }
+
+    @Then("{string}의 닉네임이 스크랩한 스터디로그를 볼 수 있다")
+    public void 스크랩한studylog를볼수있다(String member){
+        String username = GithubResponses.findByName(member).getLogin();
+        context.invokeHttpGetWithToken("/members/" + username + "/scrap");
+        assertThat(context.response.as(StudylogsResponse.class).getTotalSize()).isNotZero();
+    }
+
+    @Then("{string}의 닉네임이 스크랩한 스터디로그를 볼 수 없다")
+    public void 스크랩한studylog를볼수없다(String member) {
+        String username = GithubResponses.findByName(member).getLogin();
+        context.invokeHttpGetWithToken("/members/" + username + "/scrap");
+        assertThat(context.response.as(StudylogsResponse.class).getTotalSize()).isZero();
     }
 }
