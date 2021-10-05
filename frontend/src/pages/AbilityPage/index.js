@@ -125,6 +125,7 @@ const AbilityPage = () => {
           ?.filter(({ isParent }) => isParent)
           .map(({ id, name, description, color, isParent, children }) => (
             <AbilityListItem
+              key={id}
               id={id}
               name={name}
               description={description}

@@ -122,6 +122,11 @@ const ProfilePageSideBar = ({ menu }) => {
     }
   };
 
+  const onSelectMenu = ({ key, path }) => () => {
+    setSelectedMenu(key);
+    history.push(path);
+  };
+
   useEffect(() => {
     getProfile();
     setSelectedMenu(menu);
@@ -161,10 +166,7 @@ const ProfilePageSideBar = ({ menu }) => {
           <MenuItem key={menuItem.key} isSelectedMenu={selectedMenu === menuItem.key}>
             <MenuButton
               type="button"
-              onClick={() => {
-                setSelectedMenu(menuItem.key);
-                history.push(menuItem.path);
-              }}
+              onClick={onSelectMenu({ key: menuItem.key, path: menuItem.path })}
             >
               <menuItem.Icon width="16" height="16" />
               {menuItem.title}

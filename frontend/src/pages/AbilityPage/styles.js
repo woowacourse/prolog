@@ -230,10 +230,12 @@ const ColorPicker = styled.div`
 `;
 
 const ListHeader = styled.li`
-  grid-template-columns: 1fr;
-  background-color: ${COLOR.LIGHT_GRAY_200};
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
+  && {
+    grid-template-columns: 1fr;
+    background-color: ${COLOR.LIGHT_GRAY_200};
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+  }
 `;
 
 const EditingListItem = styled.li`

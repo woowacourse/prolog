@@ -27,11 +27,36 @@ const AbilityListItem = ({
     setItemStatus((prevState) => ({ ...prevState, isOpened: !prevState.isOpened }));
   };
 
+  const openSubList = () => {
+    setItemStatus((prevState) => ({ ...prevState, isOpened: true }));
+  };
+
+  const closeSubList = () => {
+    setItemStatus((prevState) => ({ ...prevState, isOpened: false }));
+  };
+
+  const closeAddForm = () => {
+    setItemStatus((prevState) => ({
+      ...prevState,
+      isAddFormOpened: false,
+    }));
+  };
+
   const setIsAddFormOpened = (status) => () => {
     setItemStatus((prevState) => ({
       ...prevState,
       isAddFormOpened: status,
     }));
+  };
+
+  const onSubmit = async ({ name, color, description, parent }) => {
+    try {
+      await onAdd({ name, color, description, parent });
+
+      openSubList();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const setEditStatus = (status) => () => {
@@ -102,8 +127,8 @@ const AbilityListItem = ({
           <AddAbilityForm
             color={color}
             setIsFormOpened={setIsAddFormOpened}
-            onSubmit={onAdd}
-            onClose={() => setItemStatus((prevState) => ({ ...prevState, isAddFormOpened: false }))}
+            onSubmit={onSubmit}
+            onClose={closeAddForm}
             parentId={id}
           />
         </EditingListItem>
