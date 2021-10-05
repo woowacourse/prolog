@@ -119,6 +119,16 @@ const requestDeleteReport = (reportId, accessToken) =>
     },
   });
 
+const requestEditReport = (data, reportId, accessToken) =>
+  fetch(`${BASE_URL}/reports/${reportId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
 const requestPostScrap = (username, accessToken, data) =>
   fetch(`${BASE_URL}/members/${username}/scrap`, {
     method: 'POST',
@@ -168,6 +178,7 @@ export {
   requestGetReport,
   requestPostReport,
   requestDeleteReport,
+  requestEditReport,
   requestPostScrap,
   requestDeleteScrap,
   requestGetMyScrap,

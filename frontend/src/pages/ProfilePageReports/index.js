@@ -26,9 +26,9 @@ const ProfilePageReports = () => {
 
   const accessToken = localStorage.get(API.ACCESS_TOKEN);
 
-  const getReport = async (username, reportId) => {
+  const getReport = async (reportId) => {
     try {
-      const response = await requestGetReport(username, reportId);
+      const response = await requestGetReport(reportId);
 
       if (!response.ok) {
         throw new Error(await response.text());
@@ -118,7 +118,7 @@ const ProfilePageReports = () => {
               setSelectedOption={setReportName}
               title="리포트 목록입니다."
               name="reports"
-              width="40%"
+              width="50%"
               maxHeight="10rem"
               size="SMALL"
             />
@@ -130,7 +130,7 @@ const ProfilePageReports = () => {
           <ReportBody>
             {isOwner && (
               <ButtonWrapper>
-                <NavLink to={`/${username}/report/write`}>수정</NavLink>
+                <NavLink to={`/${username}/reports/${report?.id}/edit`}>수정</NavLink>
                 <Button onClick={onDeleteReport} size="X_SMALL">
                   삭제
                 </Button>
