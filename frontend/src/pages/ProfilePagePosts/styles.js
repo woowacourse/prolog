@@ -127,6 +127,11 @@ const FilterStyles = css`
   border-color: ${COLOR.LIGHT_GRAY_200};
 `;
 
+const Heading = styled.h1`
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+`;
+
 export {
   Container,
   Content,
@@ -143,4 +148,5 @@ export {
   CardStyles,
   FilterStyles,
   HeaderContainer,
+  Heading,
 };

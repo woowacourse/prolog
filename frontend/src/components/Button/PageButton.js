@@ -10,7 +10,7 @@ const selectedStyle = css`
 
 const PageButton = ({ children, ...props }) => {
   return (
-    <Button {...props} css={props.selected && selectedStyle}>
+    <Button {...props} css={props.selected ? selectedStyle : null}>
       {children}
     </Button>
   );

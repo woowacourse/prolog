@@ -101,4 +101,56 @@ const CheckIcon = styled.img`
   ${({ checked }) => !checked && 'visibility: hidden;'}
 `;
 
-export { Container, FilterDetail, ResetFilter, CheckIcon };
+const DropdownStyle = css`
+  padding-top: 0;
+`;
+
+const SearchBarWrapper = styled.div`
+  position: sticky;
+  top: 0;
+  padding-top: 1rem;
+  background-color: white;
+`;
+
+const SearchBarStyle = css`
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  margin-right: 1rem;
+  padding: 0.5rem 0;
+
+  & > input {
+    margin-right: 0;
+  }
+`;
+
+const MemberWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const MemberImage = styled.img`
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  margin-right: 0.7rem;
+`;
+
+const Nickname = styled.span`
+  margin-left: 0.7rem;
+  color: ${COLOR.DARK_GRAY_500};
+  font-weight: 400;
+`;
+
+export {
+  Container,
+  FilterDetail,
+  ResetFilter,
+  CheckIcon,
+  DropdownStyle,
+  SearchBarWrapper,
+  SearchBarStyle,
+  MemberWrapper,
+  MemberImage,
+  Nickname,
+};

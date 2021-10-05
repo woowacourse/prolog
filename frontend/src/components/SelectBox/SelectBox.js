@@ -13,10 +13,12 @@ const SelectBox = ({
   maxHeight,
   title,
   name,
+  size,
 }) => {
   const $label = useRef(null);
   const $selectorContainer = useRef(null);
 
+  const currentOptions = ['선택해주세요', ...options];
   const [isSelectBoxOpened, setIsSelectBoxOpened] = useCustomSelectBox({ targetRef: $label });
   useScrollToSelected({
     container: $selectorContainer,
@@ -40,8 +42,8 @@ const SelectBox = ({
 
   return (
     <Label aria-label={title} ref={$label} onMouseDown={onOpenCustomSelectBox} width={width}>
-      <Select name={name} onChange={onSelectItem} value={selectedOption}>
-        {options.map((option) => (
+      <Select name={name} onChange={onSelectItem} value={selectedOption} fontSize={size}>
+        {currentOptions.map((option) => (
           <option key={option} value={option}>
             {option}
           </option>
@@ -54,6 +56,7 @@ const SelectBox = ({
               key={option}
               onMouseDown={(event) => onSelectItem(event, option)}
               isSelected={option === selectedOption}
+              fontSize={size}
             >
               {option}
             </SelectItem>
@@ -76,6 +79,7 @@ SelectBox.propTypes = {
 
 SelectBox.defaultProps = {
   options: ['주제가 등록되지 않았습니다.'],
+  selectedOption: '',
   width: '100%',
   maxHeight: '20rem',
 };

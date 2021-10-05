@@ -16,7 +16,7 @@ const NewPostPage = () => {
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const { error } = useSelector((state) => state.post.posts);
 
-  const [postIds, setPostIds] = useState([nanoid()]);
+  const [postIds] = useState([nanoid()]);
   const [selectedMission, setSelectedMission] = useState('');
 
   const [missions] = useFetch([], requestGetMissions);

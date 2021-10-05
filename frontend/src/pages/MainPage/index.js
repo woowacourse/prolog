@@ -115,7 +115,9 @@ const MainPage = () => {
 
     const selectedFilterDetailsWithName = selectedFilterDetails.map(
       ({ filterType, filterDetailId }) => {
-        const name = filters[filterType].find(({ id }) => id === filterDetailId)?.name;
+        const name = filters[filterType].find(({ id }) => id === filterDetailId)?.[
+          filterType === 'members' ? 'username' : 'name'
+        ];
         return { filterType, filterDetailId, name };
       }
     );

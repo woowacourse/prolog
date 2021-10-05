@@ -1,6 +1,18 @@
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-const requestGetPost = (postId) => fetch(`${BASE_URL}/posts/${postId}`);
+const requestGetPost = (accessToken, postId) => {
+  if (accessToken) {
+    return fetch(`${BASE_URL}/posts/${postId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  } else {
+    return fetch(`${BASE_URL}/posts/${postId}`);
+  }
+};
 
 const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
 
@@ -11,7 +23,9 @@ const requestGetTags = () => fetch(`${BASE_URL}/tags`);
 const requestGetPosts = (query) => {
   if (query.type === 'searchParams') {
     return fetch(`${BASE_URL}/posts?${query.data.toString()}`);
-  } else if (query.type === 'filter') {
+  }
+
+  if (query.type === 'filter') {
     const searchParams = Object.entries(query?.data?.postQueryParams).map(
       ([key, value]) => `${key}=${value}`
     );
@@ -20,7 +34,7 @@ const requestGetPosts = (query) => {
           ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
         )
       : '';
-    console.log(searchParams, filterQuery);
+
     return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`);
   }
 };
@@ -46,6 +60,16 @@ const requestDeletePost = (postId, accessToken) =>
 
 const requestGetProfile = (username) => fetch(`${BASE_URL}/members/${username}/profile`);
 
+const requestEditProfile = (data, accessToken) =>
+  fetch(`${BASE_URL}/members/${data.username}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
 const requestGetUserPosts = (username, postSearchParams, filteringOption) => {
   const searchParams = Object.entries(postSearchParams).map(([key, value]) => `${key}=${value}`);
   const filterQuery = filteringOption.length
@@ -63,6 +87,38 @@ const requestGetCalendar = (year, month, username) =>
     method: 'GET',
   });
 
+const requestPostScrap = (username, accessToken, data) =>
+  fetch(`${BASE_URL}/members/${username}/scrap`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+const requestDeleteScrap = (username, accessToken, data) =>
+  fetch(`${BASE_URL}/members/${username}/scrap`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+const requestGetMyScrap = (username, accessToken, postQueryParams) => {
+  const searchParams = Object.entries(postQueryParams).map(([key, value]) => `${key}=${value}`);
+
+  return fetch(`${BASE_URL}/members/${username}/scrap?${[...searchParams].join('&')}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+};
+
 export {
   requestGetPosts,
   requestGetPost,
@@ -73,6 +129,10 @@ export {
   requestGetUserPosts,
   requestDeletePost,
   requestGetProfile,
+  requestEditProfile,
   requestGetUserTags,
   requestGetCalendar,
+  requestPostScrap,
+  requestDeleteScrap,
+  requestGetMyScrap,
 };

@@ -183,6 +183,22 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         context.invokeHttpGet(path);
     }
 
+    @When("id {string} 스터디로그를 조회하면")
+    public void 여러개의스터디로그를조회하면(String studylogIds) {
+        List<String> ids = Arrays.asList(studylogIds.split(","));
+        String path = "/posts?ids=" + String.join(",", ids);
+        context.invokeHttpGet(path);
+    }
+
+    @Then("id {string} 스터디로그가 조회된다")
+    public void 여러개의스터디로그가조회된다(String studylogIds) {
+        List<String> ids = Arrays.asList(studylogIds.split(","));
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+
+        StudylogsResponse studylogsResponse = context.response.as(StudylogsResponse.class);
+        assertThat(studylogsResponse.getData()).hasSize(ids.size());
+    }
+
     @Then("{long}번째 스터디로그가 조회된다")
     public void 스터디로그가조회된다(Long studylogId) {
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());

@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -24,12 +25,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
+import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
+import wooteco.prolog.studylog.application.StudylogScrapService;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.studylog.application.dto.LevelRequest;
@@ -69,6 +73,8 @@ class StudylogServiceTest {
 
     @Autowired
     private StudylogService studylogService;
+    @Autowired
+    private StudylogScrapService studylogScrapService;
     @Autowired
     private LevelService levelService;
     @Autowired
@@ -234,8 +240,10 @@ class StudylogServiceTest {
                 missionIds,
                 tagIds,
                 usernames,
+                new ArrayList<>(),
                 LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
                 LocalDate.parse("20211231", DateTimeFormatter.BASIC_ISO_DATE),
+                null,
                 PageRequest.of(0, 10)
             )
         );
@@ -248,6 +256,48 @@ class StudylogServiceTest {
         assertThat(titles).containsExactlyInAnyOrderElementsOf(
             expectedStudylogTitles
         );
+    }
+
+    @DisplayName("스크랩한 경우 scrap이 true로 응답된다.")
+    @ParameterizedTest
+    @MethodSource("findWithFilter")
+    void findStudylogsWithScrapData(String keyword, List<Long> levelIds, List<Long> missionIds,
+                                    List<Long> tagIds, List<String> usernames,
+                                    List<String> expectedStudylogTitles) {
+        //given
+        insertStudylogs(member1, studylog1, studylog2);
+        List<StudylogResponse> studylogResponses = insertStudylogs(member2, studylog3, studylog4);
+        StudylogResponse studylog3Response = studylogResponses.get(0);
+        StudylogResponse studylog4Response = studylogResponses.get(1);
+
+        studylogScrapService.registerScrap(member1.getId(), studylog3Response.getId());
+        studylogScrapService.registerScrap(member1.getId(), studylog4Response.getId());
+
+        StudylogsResponse studylogsResponse = studylogService.findStudylogs(
+            new StudylogsSearchRequest(
+                keyword,
+                levelIds,
+                missionIds,
+                tagIds,
+                usernames,
+                new ArrayList<>(),
+                LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
+                LocalDate.parse("20211231", DateTimeFormatter.BASIC_ISO_DATE),
+                null,
+                PageRequest.of(0, 10)
+            ), member1.getId(), member1.isAnonymous()
+        );
+
+        //then
+        List<Boolean> scraps = studylogsResponse.getData().stream()
+            .filter(studylogResponse ->
+                studylogResponse.getId().equals(studylog3Response.getId()) ||
+                studylogResponse.getId().equals(studylog4Response.getId())
+            )
+            .map(StudylogResponse::isScrap)
+            .collect(toList());
+
+        assertThat(scraps).doesNotContain(false);
     }
 
     @DisplayName("유저 이름으로 스터디로그를 조회한다.")
@@ -301,7 +351,7 @@ class StudylogServiceTest {
                                                                     toTagRequests(tags));
 
         //when
-        studylogService.updateStudylog(member1, targetStudylog.getId(), updateStudylogRequest);
+        studylogService.updateStudylog(member1.getId(), targetStudylog.getId(), updateStudylogRequest);
 
         //then
         StudylogResponse expectedResult = studylogService.findById(targetStudylog.getId());
@@ -330,7 +380,7 @@ class StudylogServiceTest {
                                                                     2L,
                                                                     toTagRequests(tags));
 
-        studylogService.updateStudylog(member1, id, updateStudylogRequest);
+        studylogService.updateStudylog(member1.getId(), id, updateStudylogRequest);
 
         // when
         StudylogDocument studylogDocument = studylogDocumentService.findById(id);
@@ -357,7 +407,7 @@ class StudylogServiceTest {
             .collect(toList());
 
         Long removedId = studylogIds.remove(0);
-        studylogService.deleteStudylog(member1, removedId);
+        studylogService.deleteStudylog(member1.getId(), removedId);
 
         //then
         StudylogsResponse studylogsResponse = studylogService
@@ -394,7 +444,7 @@ class StudylogServiceTest {
         List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1);
         Long id = studylogResponses.get(0).getId();
 
-        studylogService.deleteStudylog(member1, id);
+        studylogService.deleteStudylog(member1.getId(), id);
 
         // when - then
         assertThatThrownBy(() -> studylogDocumentService.findById(id))
@@ -413,7 +463,7 @@ class StudylogServiceTest {
             )
             .collect(toList());
 
-        return studylogService.insertStudylogs(member, studylogRequests);
+        return studylogService.insertStudylogs(member.getId(), studylogRequests);
     }
 
     private List<StudylogResponse> insertStudylogs(Member member, Studylog... studylogs) {
@@ -430,5 +480,9 @@ class StudylogServiceTest {
         return tags.stream()
             .map(tag -> new TagRequest(tag.getName()))
             .collect(toList());
+    }
+
+    private LoginMember toLoginMember(Member member) {
+        return new LoginMember(member.getId(), Authority.MEMBER);
     }
 }

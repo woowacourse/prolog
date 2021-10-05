@@ -1,5 +1,6 @@
 package wooteco.prolog.login.ui;
 
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -12,14 +13,13 @@ import wooteco.prolog.login.application.AuthorizationExtractor;
 import wooteco.prolog.login.application.JwtTokenProvider;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.excetpion.TokenNotValidException;
-import wooteco.prolog.member.application.MemberService;
+import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.domain.Member;
 
 @AllArgsConstructor
 @Component
 public class AuthMemberPrincipalArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
@@ -28,15 +28,21 @@ public class AuthMemberPrincipalArgumentResolver implements HandlerMethodArgumen
     }
 
     @Override
-    public Member resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
+    public LoginMember resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         String credentials = AuthorizationExtractor
             .extract(webRequest.getNativeRequest(HttpServletRequest.class));
+
+        if (credentials == null || credentials.isEmpty()) {
+            return new LoginMember(Authority.ANONYMOUS);
+        }
+
         try {
-            Long id = Long.valueOf(jwtTokenProvider.extractSubject(credentials));
-            return memberService.findById(id);
+            Long id = Long.parseLong(jwtTokenProvider.extractSubject(credentials));
+            return new LoginMember(id, Authority.MEMBER);
         } catch (NumberFormatException e) {
             throw new TokenNotValidException();
         }
+
     }
 }
