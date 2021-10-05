@@ -14,10 +14,6 @@ import { Button, SelectBox } from '../../components';
 import Report from './Report';
 import { Container, AddNewReportLink, ButtonWrapper, ReportHeader, ReportBody } from './styles';
 
-// TODO: 대표리포트라는 것을 표현하기
-// TODO: 메뉴를 통해 들어왔을 때는 대표 리포트를 가장 먼저 보여주기
-// TODO: 페에지 로딩 때 화면 넣기
-
 const ProfilePageReports = () => {
   const [reports, setReports] = useState([0]);
   const [reportName, setReportName] = useState('');
@@ -56,7 +52,9 @@ const ProfilePageReports = () => {
       const reportList = await response.json();
       setReports(reportList);
 
-      setReportName(reportList[0].title);
+      if (reportList.length !== 0) {
+        setReportName(reportList[0].title);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -67,6 +65,8 @@ const ProfilePageReports = () => {
   }, [username]);
 
   useEffect(() => {
+    if (reports.length === 0) return;
+
     const searchTargetReportId = reports?.find((report) => report.title === reportName)?.id;
 
     if (searchTargetReportId) {
@@ -79,6 +79,8 @@ const ProfilePageReports = () => {
   }, []);
 
   const onDeleteReport = async () => {
+    if (!window.confirm('리포트를 삭제하시겠습니까?')) return;
+
     const reportId = reports?.find((report) => report.title === reportName)?.id;
 
     try {
@@ -88,7 +90,6 @@ const ProfilePageReports = () => {
         throw new Error(await response.text());
       }
 
-      alert('리포트를 삭제하였습니다.');
       getReports(username);
     } catch (error) {
       console.error(error);
@@ -115,7 +116,7 @@ const ProfilePageReports = () => {
               options={reports?.map((report) => report.title)}
               selectedOption={reportName}
               setSelectedOption={setReportName}
-              title="리포트 목록입니다,."
+              title="리포트 목록입니다."
               name="reports"
               width="40%"
               maxHeight="10rem"
@@ -127,12 +128,14 @@ const ProfilePageReports = () => {
           </ReportHeader>
 
           <ReportBody>
-            <ButtonWrapper>
-              <NavLink to={`/${username}/report/write`}>수정</NavLink>
-              <Button onClick={onDeleteReport} size="X_SMALL">
-                삭제
-              </Button>
-            </ButtonWrapper>
+            {isOwner && (
+              <ButtonWrapper>
+                <NavLink to={`/${username}/report/write`}>수정</NavLink>
+                <Button onClick={onDeleteReport} size="X_SMALL">
+                  삭제
+                </Button>
+              </ButtonWrapper>
+            )}
             <Report report={report} />
           </ReportBody>
         </>
