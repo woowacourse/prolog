@@ -22,7 +22,7 @@ const Report = ({ report = {} }) => {
         준비중인 기능입니다.
       </section>
 
-      <ReportStudyLogTable studyLogs={report?.studylogs ?? []} mode="read" />
+      <ReportStudyLogTable studyLogs={report?.studylogs ?? []} />
     </Wrapper>
   );
 };
