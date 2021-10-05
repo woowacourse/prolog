@@ -92,6 +92,7 @@ const ProfilePageNewReport = () => {
             onChange={onRegisterMainReport}
             checked={isMainReport}
             id="main_report_checkbox"
+            disabled
           />
           <label htmlFor="main_report_checkbox">대표 리포트로 지정하기</label>
         </div>
