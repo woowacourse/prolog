@@ -88,7 +88,7 @@ const ProfilePageEditReport = () => {
       description,
       abilityGraph: { abilities: [] },
       studylogs: studyLogs.map((item) => ({ id: item.id, abilities: [] })),
-      represent: isMainReport,
+      represent: false,
     };
 
     postNewReport(data);
@@ -110,7 +110,7 @@ const ProfilePageEditReport = () => {
     <>
       <Form onSubmit={onSubmitReport}>
         <h2>리포트 수정하기</h2>
-        <div>
+        {/* <div>
           <Checkbox
             type="checkbox"
             onChange={onRegisterMainReport}
@@ -119,7 +119,7 @@ const ProfilePageEditReport = () => {
             disabled
           />
           <label htmlFor="main_report_checkbox">대표 리포트로 지정하기</label>
-        </div>
+        </div> */}
 
         <ReportInfoInput
           nickname={nickname}

@@ -51,6 +51,7 @@ const ProfilePageNewReport = () => {
 
       history.push(`/${username}/reports`);
     } catch (error) {
+      // TODO : 중복된 이름인 경우의 오류는 alert 보내기
       console.error(error);
     }
   };
@@ -64,7 +65,7 @@ const ProfilePageNewReport = () => {
       description,
       abilityGraph: { abilities: [] },
       studylogs: studyLogs.map((item) => ({ id: item.id, abilities: [] })),
-      represent: isMainReport,
+      represent: false,
     };
 
     postNewReport(data);
@@ -86,7 +87,7 @@ const ProfilePageNewReport = () => {
     <>
       <Form onSubmit={onSubmitReport}>
         <h2>새 리포트 작성하기</h2>
-        <div>
+        {/* <div>
           <Checkbox
             type="checkbox"
             onChange={onRegisterMainReport}
@@ -95,7 +96,7 @@ const ProfilePageNewReport = () => {
             disabled
           />
           <label htmlFor="main_report_checkbox">대표 리포트로 지정하기</label>
-        </div>
+        </div> */}
 
         <ReportInfoInput
           nickname={nickname}
