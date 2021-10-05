@@ -76,7 +76,7 @@ public class Report {
         this.title = report.title;
         this.description = report.description;
         this.abilityGraph.update(report.abilityGraph);
-        this.studylogs.update(report.studylogs, null);
+        this.studylogs.update(report.studylogs, this);
         this.isRepresent = report.isRepresent;
     }
 
