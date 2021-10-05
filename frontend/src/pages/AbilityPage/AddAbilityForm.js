@@ -24,6 +24,23 @@ const AddAbilityForm = ({
     setFormData({ ...formData, [key]: event.target.value });
   };
 
+  const onFormSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      await onSubmit({
+        name: formData.name,
+        color: formData.color,
+        description: formData.description,
+        parent: parentId,
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      onClose();
+    }
+  };
+
   return (
     <FormContainer>
       <div>
@@ -32,21 +49,7 @@ const AddAbilityForm = ({
           {formData.name || '라벨 미리보기'}
         </Chip>
       </div>
-      <ListForm
-        isParent={isParent}
-        onSubmit={async (event) => {
-          event.preventDefault();
-
-          await onSubmit({
-            name: formData.name,
-            color: formData.color,
-            description: formData.description,
-            parent: parentId,
-          });
-
-          onClose();
-        }}
-      >
+      <ListForm isParent={isParent} onSubmit={onFormSubmit}>
         <label>
           이름
           <input

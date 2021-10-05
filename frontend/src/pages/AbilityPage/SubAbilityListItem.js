@@ -3,13 +3,13 @@ import { Chip } from '../../components';
 import SubCategoryIcon from '../../components/@shared/Icons/SubCategoryIcon';
 import { COLOR } from '../../constants';
 import EditSubAbilityForm from './EditSubAbilityForm';
-import { Button, ManageButtonList } from './styles';
+import { Button, ManageButtonList, EditingListItem } from './styles';
 
 const SubAbilityListItem = ({ id, name, description, color, onEdit, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   return isEditing ? (
-    <li key={id} style={{ gridTemplateColumns: '0.2fr 4fr' }}>
+    <EditingListItem key={id}>
       <SubCategoryIcon />
       <EditSubAbilityForm
         id={id}
@@ -19,7 +19,7 @@ const SubAbilityListItem = ({ id, name, description, color, onEdit, onDelete }) 
         onEdit={onEdit}
         onClose={() => setIsEditing(false)}
       />
-    </li>
+    </EditingListItem>
   ) : (
     <li key={id}>
       <SubCategoryIcon />

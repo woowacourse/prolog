@@ -229,6 +229,38 @@ const ColorPicker = styled.div`
   }
 `;
 
+const ListHeader = styled.li`
+  grid-template-columns: 1fr;
+  background-color: ${COLOR.LIGHT_GRAY_200};
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+`;
+
+const EditingListItem = styled.li`
+  && {
+    ${({ isParent }) =>
+      isParent ? 'grid-template-columns: 1fr' : 'grid-template-columns: 0.2fr 4fr'};
+  }
+
+  form {
+    padding-left: 0;
+  }
+`;
+
+const NoContent = styled.li`
+  grid-template-columns: 1fr;
+  text-align: center;
+`;
+
+const SubAbilityNameInput = styled.input`
+  background-color: ${COLOR.WHITE}cc;
+  border: none;
+`;
+
+const SubAbilityDescriptionInput = styled.input`
+  width: calc(100% - 1.4rem);
+`;
+
 export {
   Container,
   AbilityList,
@@ -239,4 +271,9 @@ export {
   FormContainer,
   ListForm,
   ColorPicker,
+  EditingListItem,
+  ListHeader,
+  NoContent,
+  SubAbilityNameInput,
+  SubAbilityDescriptionInput,
 };

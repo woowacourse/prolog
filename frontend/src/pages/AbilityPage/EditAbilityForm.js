@@ -14,6 +14,23 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
     setFormData({ ...formData, [key]: event.target.value });
   };
 
+  const onSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      await onEdit({
+        id,
+        name: formData.name,
+        description: formData.description,
+        color: formData.color,
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      onClose();
+    }
+  };
+
   return (
     <FormContainer>
       <div>
@@ -21,22 +38,7 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
           {formData.name}
         </Chip>
       </div>
-      <ListForm
-        isParent={isParent}
-        onSubmit={async (event) => {
-          event.preventDefault();
-
-          console.log(id);
-          await onEdit({
-            id,
-            name: formData.name,
-            description: formData.description,
-            color: formData.color,
-          });
-
-          onClose();
-        }}
-      >
+      <ListForm isParent={isParent} onSubmit={onSubmit}>
         <label>
           이름
           <input

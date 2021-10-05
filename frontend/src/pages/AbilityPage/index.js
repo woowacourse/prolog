@@ -12,7 +12,7 @@ import AbilityListItem from './AbilityListItem';
 import AddAbilityForm from './AddAbilityForm';
 import { abilityList } from './mockData';
 
-import { Container, AbilityList, Button } from './styles';
+import { Container, AbilityList, Button, EditingListItem, ListHeader, NoContent } from './styles';
 
 const AbilityPage = () => {
   const history = useHistory();
@@ -101,7 +101,7 @@ const AbilityPage = () => {
       </div>
       {addFormStatus.isOpened && (
         <AbilityList>
-          <li style={{ gridTemplateColumns: '1fr' }}>
+          <EditingListItem isParent={true}>
             <AddAbilityForm
               name={addFormStatus.name}
               color={addFormStatus.color}
@@ -111,32 +111,16 @@ const AbilityPage = () => {
               onClose={setAddFormIsOpened(false)}
               onSubmit={addAbility}
             />
-          </li>
+          </EditingListItem>
         </AbilityList>
       )}
       <AbilityList>
-        <li
-          style={{
-            gridTemplateColumns: '1fr',
-            backgroundColor: COLOR.LIGHT_GRAY_200,
-            borderTopLeftRadius: '1rem',
-            borderTopRightRadius: '1rem',
-          }}
-        >
+        <ListHeader>
           <div>
             역량<span>{`(총 ${abilities?.length}개)`}</span>
           </div>
-        </li>
-        {!abilityList?.length && (
-          <li
-            style={{
-              gridTemplateColumns: '1fr',
-              textAlign: 'center',
-            }}
-          >
-            역량이 없습니다. 역량을 추가해주세요.
-          </li>
-        )}
+        </ListHeader>
+        {!abilityList?.length && <NoContent>역량이 없습니다. 역량을 추가해주세요.</NoContent>}
         {abilities
           ?.filter(({ isParent }) => isParent)
           .map(({ id, name, description, color, isParent, children }) => (

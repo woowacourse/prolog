@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import { Chip } from '../../components';
 import { COLOR } from '../../constants';
-import { Button, FormContainer, ListForm, ManageButtonList } from './styles';
+import {
+  Button,
+  FormContainer,
+  ListForm,
+  ManageButtonList,
+  SubAbilityDescriptionInput,
+  SubAbilityNameInput,
+} from './styles';
 
 const EditSubAbilityForm = ({ id, name, color, description, onClose, onEdit }) => {
   const [formData, setFormData] = useState({
@@ -13,43 +20,40 @@ const EditSubAbilityForm = ({ id, name, color, description, onClose, onEdit }) =
     setFormData({ ...formData, [key]: event.target.value });
   };
 
+  const onSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      await onEdit({
+        id,
+        name: formData.name,
+        description: formData.description,
+        color: color,
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      onClose();
+    }
+  };
+
   return (
     <FormContainer isParent={false}>
-      <ListForm
-        isParent={false}
-        onSubmit={async (event) => {
-          event.preventDefault();
-
-          console.log(id);
-          await onEdit({
-            id,
-            name: formData.name,
-            description: formData.description,
-            color: color,
-          });
-
-          onClose();
-        }}
-      >
+      <ListForm isParent={false} onSubmit={onSubmit}>
         <Chip backgroundColor={color}>
-          <input
+          <SubAbilityNameInput
             type="text"
             placeholder="이름"
             value={formData.name}
             onChange={onFormDataChange('name')}
-            style={{
-              backgroundColor: '#ffffffcc',
-              border: 'none',
-            }}
           />
         </Chip>
 
-        <input
+        <SubAbilityDescriptionInput
           type="text"
           placeholder="설명"
           value={formData.description}
           onChange={onFormDataChange('description')}
-          style={{ width: 'calc(100% - 1.4rem)' }}
         />
 
         <ManageButtonList>

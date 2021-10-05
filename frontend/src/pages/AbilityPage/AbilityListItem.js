@@ -3,7 +3,7 @@ import Chip from '../../components/Chip/Chip';
 import { COLOR } from '../../constants';
 import AddAbilityForm from './AddAbilityForm';
 import EditAbilityForm from './EditAbilityForm';
-import { SubAbilityList, ManageButtonList, ArrowButton, Button } from './styles';
+import { SubAbilityList, ManageButtonList, ArrowButton, Button, EditingListItem } from './styles';
 import SubAbilityListItem from './SubAbilityListItem';
 
 const AbilityListItem = ({
@@ -85,7 +85,7 @@ const AbilityListItem = ({
         </li>
       )}
       {itemStatus.isEditing && (
-        <li style={{ gridTemplateColumns: '1fr' }}>
+        <EditingListItem isParent={true}>
           <EditAbilityForm
             id={id}
             name={name}
@@ -95,10 +95,10 @@ const AbilityListItem = ({
             onClose={setEditStatus(false)}
             onEdit={onEdit}
           />
-        </li>
+        </EditingListItem>
       )}
       {itemStatus.isAddFormOpened && (
-        <li style={{ gridTemplateColumns: '1fr' }}>
+        <EditingListItem isParent={true}>
           <AddAbilityForm
             color={color}
             setIsFormOpened={setIsAddFormOpened}
@@ -106,7 +106,7 @@ const AbilityListItem = ({
             onClose={() => setItemStatus((prevState) => ({ ...prevState, isAddFormOpened: false }))}
             parentId={id}
           />
-        </li>
+        </EditingListItem>
       )}
       {!!subAbilities.length && (
         <SubAbilityList isOpened={itemStatus.isOpened}>
