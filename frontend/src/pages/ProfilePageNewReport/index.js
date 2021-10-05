@@ -55,10 +55,6 @@ const ProfilePageNewReport = () => {
     }
   };
 
-  const makeResponsePostData = (array) => {
-    return array.map((item) => ({ id: item.id, abilities: [] }));
-  };
-
   const onSubmitReport = (event) => {
     event.preventDefault();
 

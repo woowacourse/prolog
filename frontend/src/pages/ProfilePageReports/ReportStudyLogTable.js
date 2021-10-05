@@ -3,10 +3,6 @@ import React from 'react';
 import { Section, Table, Tbody, Thead, EmptyTableGuide } from './ReportStudyLogTable.styles';
 
 const ReportStudyLogTable = ({ studyLogs }) => {
-  const onMoveToPage = (number) => {
-    //
-  };
-
   return (
     <Section>
       <h3>📚 학습로그 목록</h3>
