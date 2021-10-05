@@ -22,9 +22,4 @@ public class StudylogsSearchRequest {
     private final List<Long> ids;
     private final Pageable pageable;
 
-    public boolean hasOnlySearch() {
-        return Objects.nonNull(keyword) && Objects.isNull(levels) &&
-            Objects.isNull(missions) && Objects.isNull(tags) &&
-            Objects.isNull(usernames);
-    }
 }

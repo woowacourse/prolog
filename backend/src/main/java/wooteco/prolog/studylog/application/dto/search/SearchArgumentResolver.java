@@ -1,12 +1,13 @@
 package wooteco.prolog.studylog.application.dto.search;
 
+import static java.util.stream.Collectors.toList;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,16 +30,17 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-
         try {
             return new StudylogsSearchRequest(
-                webRequest.getParameter("keyword"),
+                convertToString(webRequest, "keyword"),
                 convertToLongList(webRequest, "levels"),
                 convertToLongList(webRequest, "missions"),
                 convertToLongList(webRequest, "tags"),
                 convertToStringList(webRequest, "usernames"),
+                convertToLongList(webRequest, "members"),
                 convertToLocalDate(webRequest, "startDate"),
                 convertToLocalDate(webRequest, "endDate"),
+                convertToIdList(webRequest, "ids"),
                 makePageableDefault(webRequest)
             );
         } catch (Exception e) {
@@ -52,9 +54,13 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
         if (Objects.isNull(date)) {
             return null;
         }
-
         return LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE);
     }
+
+    private String convertToString(NativeWebRequest webRequest, String key) {
+        return webRequest.getParameter(key);
+    }
+
 
     private Integer convertToInt(NativeWebRequest webRequest, String key, int defaultValue) {
         String value = webRequest.getParameter(key);
@@ -64,6 +70,18 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
         return Integer.parseInt(value);
     }
 
+    private List<Long> convertToIdList(NativeWebRequest webRequest, String key) {
+        String parameter = webRequest.getParameter(key);
+        if(Objects.isNull(parameter)) {
+            return null;
+        }
+
+        return Arrays.stream(parameter.split(","))
+            .map(String::trim)
+            .map(Long::valueOf)
+            .collect(toList());
+    }
+
     private List<Long> convertToLongList(NativeWebRequest webRequest, String key) {
         String[] parameterValues = webRequest.getParameterValues(key);
         if (parameterValues == null || parameterValues.length == 0) {
@@ -71,7 +89,7 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
         }
         return Arrays.stream(parameterValues)
             .map(Long::parseLong)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     private List<String> convertToStringList(NativeWebRequest webRequest, String key) {
@@ -81,7 +99,7 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
         }
 
         return Arrays.stream(Objects.requireNonNull(webRequest.getParameterValues(key)))
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     private Pageable makePageableDefault(NativeWebRequest webRequest) {
