@@ -88,12 +88,22 @@ public class Ability {
     }
 
     public void updateWithValidation(Ability updateAbility, List<Ability> abilities) {
-        abilities.remove(this);
-        abilities.removeAll(this.getChildren());
+        removeUnnecessaryValidationAbilities(abilities);
+
         updateAbility.validateDuplicateName(abilities);
         updateAbility.validateDuplicateColor(abilities);
 
         update(updateAbility);
+    }
+
+    private void removeUnnecessaryValidationAbilities(List<Ability> abilities) {
+        if (this.isParent()) {
+            abilities.removeAll(this.getChildren());
+            abilities.remove(this);
+        } else {
+            abilities.remove(parent.getParent());
+            abilities.remove(parent);
+        }
     }
 
     private void update(Ability updateAbility) {
