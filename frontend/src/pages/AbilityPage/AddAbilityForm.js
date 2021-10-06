@@ -45,7 +45,14 @@ const AddAbilityForm = ({
     <FormContainer>
       <div>
         {!isParent && <SubCategoryIcon width={32} />}
-        <Chip backgroundColor={formData.color} minWidth="3rem" fontSize="1.4rem">
+        <Chip
+          title={name}
+          textAlign="left"
+          backgroundColor={formData.color}
+          minWidth="3rem"
+          fontSize="1.4rem"
+          maxLength={60}
+        >
           {formData.name || '라벨 미리보기'}
         </Chip>
       </div>
@@ -56,7 +63,7 @@ const AddAbilityForm = ({
             type="text"
             placeholder="이름"
             value={formData.name}
-            maxLength={15}
+            maxLength={60}
             onChange={onFormDataChange('name')}
           />
         </label>

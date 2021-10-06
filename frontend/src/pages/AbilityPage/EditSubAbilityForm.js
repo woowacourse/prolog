@@ -40,12 +40,13 @@ const EditSubAbilityForm = ({ id, name, color, description, onClose, onEdit }) =
   return (
     <FormContainer isParent={false}>
       <ListForm isParent={false} onSubmit={onSubmit}>
-        <Chip backgroundColor={color}>
+        <Chip title={name} backgroundColor={color} textAlign="left">
           <SubAbilityNameInput
             type="text"
             placeholder="이름"
             value={formData.name}
             onChange={onFormDataChange('name')}
+            maxLength={60}
           />
         </Chip>
 

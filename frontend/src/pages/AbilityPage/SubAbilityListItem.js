@@ -23,7 +23,9 @@ const SubAbilityListItem = ({ id, name, description, color, onEdit, onDelete }) 
   ) : (
     <li key={id}>
       <SubCategoryIcon />
-      <Chip backgroundColor={color}>{name}</Chip>
+      <Chip title={name} backgroundColor={color} textAlign="left" maxWidth="140px">
+        {name}
+      </Chip>
       <p>{description}</p>
       <ManageButtonList>
         <Button
