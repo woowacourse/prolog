@@ -28,7 +28,7 @@ const SelectBox = ({
   });
 
   useEffect(() => {
-    if (options.length > 0) {
+    if (options.length > 0 && selectedOption === '') {
       setSelectedOption(options[0]?.name);
     }
   }, [options]);

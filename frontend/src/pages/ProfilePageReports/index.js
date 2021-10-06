@@ -61,22 +61,22 @@ const ProfilePageReports = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     getReports(username);
   }, [username]);
 
   useEffect(() => {
-    if (reports.length === 0) return;
+    if (!reports || reports.length === 0) return;
 
-    const searchTargetReportId = reports?.find((report) => report.title === reportName)?.id;
+    const searchTargetReportId = reports.find((report) => report.title === reportName)?.id;
 
     if (searchTargetReportId) {
       getReport(searchTargetReportId);
     }
   }, [reportName]);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const onDeleteReport = async () => {
     if (!window.confirm('리포트를 삭제하시겠습니까?')) return;
