@@ -94,8 +94,9 @@ class ReportServiceTest {
         setStudylogs(member);
         ReportRequest reportRequest = createRequest("jsons/report_post_request.json");
 
-        reportService.createReport(reportRequest, member);
-        assertThatThrownBy( () -> reportService.createReport(reportRequest, member))
+        LoginMember loginMember = new LoginMember(member.getId(), Authority.MEMBER);
+        reportService.createReport(reportRequest, loginMember);
+        assertThatThrownBy( () -> reportService.createReport(reportRequest, loginMember))
             .isInstanceOf(DuplicateReportTitleException.class);
     }
 
