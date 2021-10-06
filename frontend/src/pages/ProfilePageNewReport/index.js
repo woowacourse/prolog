@@ -51,8 +51,12 @@ const ProfilePageNewReport = () => {
 
       history.push(`/${username}/reports`);
     } catch (error) {
-      // TODO : 중복된 이름인 경우의 오류는 alert 보내기
-      console.error(error);
+      const errorCode = JSON.parse(error.message).code;
+      if (errorCode === 4005) {
+        alert('중복된 리포트 이름은 사용할 수 없습니다.');
+      } else {
+        console.error(error);
+      }
     }
   };
 
