@@ -1,5 +1,6 @@
 package wooteco.prolog.common;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import wooteco.prolog.studylog.application.dto.search.SearchArgumentResolver;
+import wooteco.support.performance.PerformanceLogger;
+import wooteco.support.performance.RequestApiExtractor;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -29,5 +32,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public PageableHandlerMethodArgumentResolverCustomizer customize() {
         return page -> page.setOneIndexedParameters(true);
+    }
+
+    @Bean
+    public PerformanceLogger performanceLogger(ObjectMapper objectMapper) {
+        return new PerformanceLogger(objectMapper, new RequestApiExtractor());
     }
 }

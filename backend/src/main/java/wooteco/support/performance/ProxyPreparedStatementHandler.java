@@ -1,4 +1,4 @@
-package wooteco.prolog.common.performance;
+package wooteco.support.performance;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
