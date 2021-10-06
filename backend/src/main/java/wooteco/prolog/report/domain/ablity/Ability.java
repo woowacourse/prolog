@@ -101,7 +101,7 @@ public class Ability {
             abilities.removeAll(this.getChildren());
             abilities.remove(this);
         } else {
-            abilities.remove(parent.getParent());
+            abilities.removeAll(parent.getChildren());
             abilities.remove(parent);
         }
     }

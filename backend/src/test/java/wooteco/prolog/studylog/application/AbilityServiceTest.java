@@ -48,6 +48,41 @@ class AbilityServiceTest {
         member = memberRepository.save(new Member("brown", "브라운", Role.CREW, 1L, "imageUrl"));
     }
 
+    @DisplayName("자식역량 정보 수정이 정상적으로 수행되는지 확인한다.")
+    @Test
+    void childAbilityUpdateSuccess() {
+        // given
+        AbilityCreateRequest parentRequest1 = new AbilityCreateRequest("부모1", "부모설명1", "1", null);
+        AbilityCreateRequest parentRequest2 = new AbilityCreateRequest("부모2", "부모설명2", "2", null);
+        AbilityCreateRequest parentRequest3 = new AbilityCreateRequest("부모3", "부모설명3", "3", null);
+        abilityService.createAbility(member.getId(), parentRequest1);
+        abilityService.createAbility(member.getId(), parentRequest2);
+        abilityService.createAbility(member.getId(), parentRequest3);
+
+        AbilityCreateRequest childRequest1 = new AbilityCreateRequest("자식1", "자식설명1", "1", 1L);
+        AbilityCreateRequest childRequest1_2 = new AbilityCreateRequest("자식1_2", "자식설명1_2", "1", 1L);
+        AbilityCreateRequest childRequest2 = new AbilityCreateRequest("자식2", "자식설명2", "2", 2L);
+        AbilityCreateRequest childRequest3 = new AbilityCreateRequest("자식3", "자식설명3", "3", 3L);
+        abilityService.createAbility(member.getId(), childRequest1);
+        abilityService.createAbility(member.getId(), childRequest1_2);
+        abilityService.createAbility(member.getId(), childRequest2);
+        abilityService.createAbility(member.getId(), childRequest3);
+
+        // when
+        AbilityUpdateRequest request = new AbilityUpdateRequest(4L, "자식1_1", "자식설명1", "1");
+        AbilityResponse expectedResponse = new AbilityResponse(request.getId(), request.getName(), request.getDescription(), request.getColor(), false, new ArrayList<>());
+
+        List<AbilityResponse> abilityResponses = abilityService.updateAbility(member.getId(), request);
+        AbilityResponse updatedResponse = abilityResponses.stream()
+            .filter(response -> response.getId().equals(request.getId()))
+            .findAny()
+            .orElseThrow(AbilityNotFoundException::new);
+
+        // then
+        assertThat(updatedResponse).usingRecursiveComparison()
+            .isEqualTo(expectedResponse);
+    }
+
     @DisplayName("역량을 생성 할 때 부모역량 ID와 일치하는 역량이 없으면 예외가 발생한다.")
     @Test
     void createAbilityException() {
