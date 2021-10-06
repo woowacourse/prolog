@@ -87,8 +87,16 @@ const requestGetCalendar = (year, month, username) =>
     method: 'GET',
   });
 
-const requestPostScrap = (username, accessToken, data) =>
-  fetch(`${BASE_URL}/members/${username}/scrap`, {
+const requestGetAbilities = (username, accessToken) =>
+  fetch(`${BASE_URL}/members/${username}/abilities`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+const requestAddAbility = (accessToken, data) =>
+  fetch(`${BASE_URL}/abilities`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
@@ -97,27 +105,23 @@ const requestPostScrap = (username, accessToken, data) =>
     body: JSON.stringify(data),
   });
 
-const requestDeleteScrap = (username, accessToken, data) =>
-  fetch(`${BASE_URL}/members/${username}/scrap`, {
+const requestDeleteAbility = (accessToken, abilityId) =>
+  fetch(`${BASE_URL}/abilities/${abilityId}`, {
     method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+const requestEditAbility = (accessToken, data) =>
+  fetch(`${BASE_URL}/abilities/${data.id}`, {
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify(data),
   });
-
-const requestGetMyScrap = (username, accessToken, postQueryParams) => {
-  const searchParams = Object.entries(postQueryParams).map(([key, value]) => `${key}=${value}`);
-
-  return fetch(`${BASE_URL}/members/${username}/scrap?${[...searchParams].join('&')}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-};
 
 export {
   requestGetPosts,
@@ -131,7 +135,8 @@ export {
   requestGetProfile,
   requestGetUserTags,
   requestGetCalendar,
-  requestPostScrap,
-  requestDeleteScrap,
-  requestGetMyScrap,
+  requestGetAbilities,
+  requestAddAbility,
+  requestDeleteAbility,
+  requestEditAbility,
 };
