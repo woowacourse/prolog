@@ -1,6 +1,8 @@
 package wooteco.prolog.studylog.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -34,6 +36,7 @@ import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
 import wooteco.prolog.studylog.domain.repository.LevelRepository;
 import wooteco.prolog.studylog.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.prolog.studylog.exception.DuplicateReportTitleException;
 
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -82,6 +85,18 @@ class ReportServiceTest {
             .usingRecursiveComparison()
             .ignoringFieldsMatchingRegexes(".*id", ".*updateAt", ".*createAt")
             .isEqualTo(expected("jsons/report_post_response.json"));
+    }
+
+    @Test
+    void createReport_duplicate_title() throws IOException {
+        Member member = createMember();
+        setAbilities(member);
+        setStudylogs(member);
+        ReportRequest reportRequest = createRequest("jsons/report_post_request.json");
+
+        reportService.createReport(reportRequest, member);
+        assertThatThrownBy( () -> reportService.createReport(reportRequest, member))
+            .isInstanceOf(DuplicateReportTitleException.class);
     }
 
     @Test

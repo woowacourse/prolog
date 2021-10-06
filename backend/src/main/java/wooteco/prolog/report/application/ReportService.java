@@ -20,6 +20,7 @@ import wooteco.prolog.report.application.report.ReportsRequestType;
 import wooteco.prolog.report.domain.report.Report;
 import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
 import wooteco.prolog.report.domain.report.repository.ReportRepository;
+import wooteco.prolog.studylog.exception.DuplicateReportTitleException;
 
 @Service
 @Transactional(readOnly = true)
@@ -46,8 +47,8 @@ public class ReportService {
     @Transactional
     public ReportResponse createReport(ReportRequest reportRequest, LoginMember loginMember) {
         Member member = findMemberById(loginMember.getId());
-
         Report report = reportAssembler.of(reportRequest, member);
+        verifyDuplicateTitle(report);
         checkIsRepresent(member, report);
 
         Report savedReport = reportRepository.save(report);
@@ -59,8 +60,8 @@ public class ReportService {
     public ReportResponse updateReport(Long reportId, ReportRequest reportRequest, LoginMember loginMember) {
         try {
             Member member = findMemberById(loginMember.getId());
-
             Report updateSourceReport = reportAssembler.of(reportRequest, member);
+            verifyDuplicateTitle(updateSourceReport);
             Report savedReport = reportRepository.findById(reportId)
                 .orElseThrow(IllegalArgumentException::new);
 
@@ -72,13 +73,23 @@ public class ReportService {
 
             return reportAssembler.of(savedReport);
         } catch (Exception e) {
-            System.out.println(e);
             throw new IllegalArgumentException();
         }
     }
 
+    private void verifyDuplicateTitle(Report target) {
+        reportRepository.findReportByTitleAndMemberUsername(
+            target.getTitle(),
+            target.getMember().getUsername()
+        )
+            .filter(report -> !report.getId().equals(target.getId()))
+            .ifPresent( r -> {
+                throw new DuplicateReportTitleException();
+            });
+    }
+
     private void verifyIsAllowedUser(Member member, Report savedReport) {
-        if(!Objects.equals(savedReport.getMember(), member)) {
+        if (!Objects.equals(savedReport.getMember(), member)) {
             throw new IllegalArgumentException();
         }
     }
@@ -91,15 +102,15 @@ public class ReportService {
 
         Long count = abilityRepository.countParentAbilitiesOf(abilityIds);
 
-        if(count != abilityIds.size()) {
+        if (count != abilityIds.size()) {
             throw new IllegalArgumentException();
         }
     }
 
     private void checkIsRepresent(Member member, Report updateSourceReport) {
-        if(updateSourceReport.isRepresent()) {
+        if (updateSourceReport.isRepresent()) {
             reportRepository.findRepresentReportOf(member.getUsername())
-                    .ifPresent(Report::toUnRepresent);
+                .ifPresent(Report::toUnRepresent);
         }
     }
 
