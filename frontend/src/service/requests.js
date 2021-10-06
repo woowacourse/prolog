@@ -105,6 +105,38 @@ const requestAddAbility = (accessToken, data) =>
     body: JSON.stringify(data),
   });
 
+const requestPostScrap = (username, accessToken, data) =>
+  fetch(`${BASE_URL}/members/${username}/scrap`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+const requestDeleteScrap = (username, accessToken, data) =>
+  fetch(`${BASE_URL}/members/${username}/scrap`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+const requestGetMyScrap = (username, accessToken, postQueryParams) => {
+  const searchParams = Object.entries(postQueryParams).map(([key, value]) => `${key}=${value}`);
+
+  return fetch(`${BASE_URL}/members/${username}/scrap?${[...searchParams].join('&')}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+};
+
 const requestDeleteAbility = (accessToken, abilityId) =>
   fetch(`${BASE_URL}/abilities/${abilityId}`, {
     method: 'DELETE',
@@ -139,4 +171,7 @@ export {
   requestAddAbility,
   requestDeleteAbility,
   requestEditAbility,
+  requestPostScrap,
+  requestDeleteScrap,
+  requestGetMyScrap,
 };

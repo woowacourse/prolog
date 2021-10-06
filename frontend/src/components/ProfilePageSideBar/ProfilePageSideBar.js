@@ -44,14 +44,22 @@ const getMenuList = ({ username, isOwner }) => {
       Icon: PostIcon,
     },
   ];
-  const abilityMenu = {
-    key: PROFILE_PAGE_MENU.ABILITY,
-    title: '역량',
-    path: `/${username}/ability`,
-    Icon: PostIcon,
-  };
+  const privateMenu = [
+    {
+      key: PROFILE_PAGE_MENU.SCRAPS,
+      title: '스크랩',
+      path: `/${username}/scraps`,
+      Icon: ScrapIcon,
+    },
+    {
+      key: PROFILE_PAGE_MENU.ABILITY,
+      title: '역량',
+      path: `/${username}/ability`,
+      Icon: PostIcon,
+    },
+  ];
 
-  return isOwner ? [...defaultMenu, abilityMenu] : defaultMenu;
+  return isOwner ? [...defaultMenu, ...privateMenu] : defaultMenu;
 };
 
 const ProfilePageSideBar = ({ menu }) => {
@@ -69,33 +77,8 @@ const ProfilePageSideBar = ({ menu }) => {
 
   const { setNotFound } = useNotFound();
 
-<<<<<<< HEAD
-  const goProfilePage = (event) => {
-    setSelectedMenu(event.currentTarget.value);
-    history.push(`/${username}`);
-  };
-
-  const goProfilePagePosts = (event) => {
-    setSelectedMenu(event.currentTarget.value);
-    history.push(`/${username}/posts`);
-  };
-
-  const goProfilePageScraps = (event) => {
-    setSelectedMenu(event.currentTarget.value);
-    history.push(`/${username}/scraps`);
-  };
-
-  const goProfilePageAccount = () => {
-    history.push(`/${username}/account`);
-  };
-  const goProfilePageReport = (event) => {
-    setSelectedMenu(event.currentTarget.value);
-    history.push(`/${username}/reports`);
-  };
-=======
   const loginUser = useSelector((state) => state.user.profile);
   const isOwner = !!loginUser.data && username === loginUser.data.username;
->>>>>>> 1b8d6027386586747af9ef9fe158e461b98d8ec3
 
   const getProfile = async () => {
     try {
@@ -190,39 +173,6 @@ const ProfilePageSideBar = ({ menu }) => {
         </NicknameWrapper>
       </Profile>
       <MenuList>
-<<<<<<< HEAD
-        <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.OVERVIEW}>
-          <MenuButton value={PROFILE_PAGE_MENU.OVERVIEW} type="button" onClick={goProfilePage}>
-            {/* <MenuIcon src={overviewIcon} alt="overview icon" /> */}
-            <OverviewIcon width="16" height="16" />
-            오버뷰
-          </MenuButton>
-        </MenuItem>
-        <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.POSTS}>
-          <MenuButton value={PROFILE_PAGE_MENU.POSTS} type="button" onClick={goProfilePagePosts}>
-            <PostIcon width="16" height="16" />
-            학습로그
-          </MenuButton>
-        </MenuItem>
-        {me.data && (
-          <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.SCRAPS}>
-            <MenuButton
-              value={PROFILE_PAGE_MENU.SCRAPS}
-              type="button"
-              onClick={goProfilePageScraps}
-            >
-              <ScrapIcon width="16" height="16" />
-              스크랩
-            </MenuButton>
-          </MenuItem>
-        )}
-        <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.REPORTS}>
-          <MenuButton value={PROFILE_PAGE_MENU.REPORTS} type="button" onClick={goProfilePageReport}>
-            <PostIcon width="16" height="16" />
-            리포트
-          </MenuButton>
-        </MenuItem>
-=======
         {getMenuList({ username, isOwner }).map((menuItem) => (
           <MenuItem key={menuItem.key} isSelectedMenu={selectedMenu === menuItem.key}>
             <MenuButton
@@ -234,7 +184,6 @@ const ProfilePageSideBar = ({ menu }) => {
             </MenuButton>
           </MenuItem>
         ))}
->>>>>>> 1b8d6027386586747af9ef9fe158e461b98d8ec3
       </MenuList>
     </Container>
   );

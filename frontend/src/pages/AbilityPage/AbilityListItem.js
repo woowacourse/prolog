@@ -79,7 +79,9 @@ const AbilityListItem = ({
             onClick={toggleIsOpened}
             disabled={!subAbilities.length}
           ></ArrowButton>
-          <Chip backgroundColor={color}>{name}</Chip>
+          <Chip title={name} textAlign="left" maxWidth="140px" backgroundColor={color}>
+            {name}
+          </Chip>
           <p>{description}</p>
           <ManageButtonList>
             <Button

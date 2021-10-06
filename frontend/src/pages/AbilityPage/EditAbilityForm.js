@@ -25,7 +25,7 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
         color: formData.color,
       });
     } catch (error) {
-      console.error(error);
+      alert(error.message);
     } finally {
       onClose();
     }
@@ -34,7 +34,13 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
   return (
     <FormContainer>
       <div>
-        <Chip backgroundColor={formData.color} minWidth="3rem" fontSize="1.4rem">
+        <Chip
+          title={name}
+          textAlign="left"
+          backgroundColor={formData.color}
+          minWidth="3rem"
+          fontSize="1.4rem"
+        >
           {formData.name}
         </Chip>
       </div>
@@ -46,6 +52,7 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
             placeholder="이름"
             value={formData.name}
             onChange={onFormDataChange('name')}
+            maxLength={60}
           />
         </label>
         <label>
