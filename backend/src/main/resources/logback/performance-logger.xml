@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <included>
-  <property name="home" value="logs/performance/"/>
+  <property name="home" value="/var/log/performance/"/>
   <appender name="performance-logger" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${home}performance.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
