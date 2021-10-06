@@ -5,7 +5,9 @@ const useScrollToSelected = ({ container, dependency, options, selectedOption })
     const target = container.current;
     if (!target) return;
 
-    const scrollY = (target.scrollHeight / options.length) * options.indexOf(selectedOption);
+    const scrollY =
+      (target.scrollHeight / options.length) *
+      options.indexOf(options.find((option) => option.name === selectedOption));
     target.scroll({ top: scrollY, behavior: 'smooth' });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

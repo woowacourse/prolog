@@ -72,7 +72,7 @@ const NewPostPage = () => {
     <form onSubmit={onFinishWriting}>
       <SelectBoxWrapper>
         <SelectBox
-          options={missions?.map((mission) => mission.name)}
+          options={missions}
           selectedOption={selectedMission}
           setSelectedOption={setSelectedMission}
           title="우아한테크코스 미션 목록입니다."

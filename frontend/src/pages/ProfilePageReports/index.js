@@ -15,7 +15,7 @@ import Report from './Report';
 import { Container, AddNewReportLink, ButtonWrapper, ReportHeader, ReportBody } from './styles';
 
 const ProfilePageReports = () => {
-  const [reports, setReports] = useState([0]);
+  const [reports, setReports] = useState([]);
   const [reportName, setReportName] = useState('');
   const [report, setReport] = useState(null);
 
@@ -97,6 +97,10 @@ const ProfilePageReports = () => {
     }
   };
 
+  const makeSelectOptions = (options) => {
+    return options.map((option) => ({ id: option.id, name: option.title }));
+  };
+
   return (
     <Container reportsLength={reports.length}>
       {reports.length === 0 ? (
@@ -113,7 +117,7 @@ const ProfilePageReports = () => {
         <>
           <ReportHeader>
             <SelectBox
-              options={reports?.map((report) => report.title)}
+              options={makeSelectOptions(reports)}
               selectedOption={reportName}
               setSelectedOption={setReportName}
               title="리포트 목록입니다."
