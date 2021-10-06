@@ -5,7 +5,6 @@ import useUserStudyLog from '../../hooks/useUserStudyLogs';
 import { requestGetFilters } from '../../service/requests';
 import { onToggleCheckbox } from '../../utils/toggleCheckbox';
 import { filterIds } from '../../utils/filteringList';
-
 import { COLOR } from '../../constants';
 import { Button, Modal, SelectBox } from '../../components';
 import { Checkbox } from './style';
@@ -87,7 +86,7 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
         <SelectBoxContainer>
           <h3>레벨</h3>
           <SelectBox
-            options={levels?.map((level) => level.name)}
+            options={levels}
             selectedOption={selectedLevelName}
             setSelectedOption={setSelectedLevelName}
             title="우아한테크코스 과정 레벨 목록입니다."

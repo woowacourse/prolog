@@ -13,6 +13,8 @@ public enum GithubResponses {
     엘라("4", "access_token_4", "엘라", "HyuuunjuKim", "444444",
        "https://avatars.githubusercontent.com/u/43339385?v=4"),
     브라운("5", "access_token_5", "브라운", "gracefulBrown", "555555",
+        "https://avatars.githubusercontent.com/u/46308949?v=4"),
+    티케("6", "access_token_6", "티케", "devhyun637", "59258239",
         "https://avatars.githubusercontent.com/u/46308949?v=4");
 
     private String code;

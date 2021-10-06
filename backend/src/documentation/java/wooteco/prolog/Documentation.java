@@ -15,9 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.test.context.ActiveProfiles;
 import wooteco.prolog.common.DataInitializer;
 import wooteco.prolog.login.application.dto.TokenRequest;
 import wooteco.prolog.login.application.dto.TokenResponse;
@@ -29,7 +31,7 @@ public class Documentation {
     public TokenResponse 로그인_사용자;
     protected RequestSpecification spec;
     @LocalServerPort
-    private int port;
+    protected int port;
     @Autowired
     private DataInitializer dataInitializer;
 

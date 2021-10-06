@@ -3,16 +3,17 @@ import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import localStorage from 'local-storage';
 
+import { requestEditReport, requestGetReport } from '../../service/requests';
 import { API, COLOR } from '../../constants';
-import { Button } from '../../components';
-import StudyLogModal from './StudyLogModal';
-import ReportInfoInput from './ReportInfoInput';
-import ReportStudyLogTable from './ReportStudyLogTable';
-import { Checkbox, Form, FormButtonWrapper } from './style';
-import { requestPostReport } from '../../service/requests';
 
-const ProfilePageNewReport = () => {
-  const { username } = useParams();
+import { Button } from '../../components';
+import StudyLogModal from '../ProfilePageNewReport/StudyLogModal';
+import ReportInfoInput from '../ProfilePageNewReport/ReportInfoInput';
+import ReportStudyLogTable from '../ProfilePageNewReport/ReportStudyLogTable';
+import { Checkbox, Form, FormButtonWrapper } from '../ProfilePageNewReport/style';
+
+const ProfilePageEditReport = () => {
+  const { username, id: reportId } = useParams();
   const history = useHistory();
 
   const user = useSelector((state) => state.user.profile);
@@ -20,10 +21,16 @@ const ProfilePageNewReport = () => {
   const isLoggedIn = !!user.data;
   const accessToken = localStorage.get(API.ACCESS_TOKEN);
 
+  const [isMainReport, setIsMainReport] = useState(false);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [studyLogs, setStudyLogs] = useState([]);
+  const [isModalOpened, setIsModalOpened] = useState(false);
+
   useEffect(() => {
     if (isLoggedIn) {
       if (username !== user.data.username) {
-        alert('본인의 리포트만 작성할 수 있습니다.');
+        alert('본인의 리포트만 수정할 수 있습니다.');
         history.push(`/${username}/reports`);
       }
     } else {
@@ -34,16 +41,33 @@ const ProfilePageNewReport = () => {
     }
   }, [isLoggedIn, username, user.data, history, accessToken]);
 
-  const [isMainReport, setIsMainReport] = useState(false);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [studyLogs, setStudyLogs] = useState([]);
+  const getReport = async (reportId) => {
+    try {
+      const response = await requestGetReport(reportId);
 
-  const [isModalOpened, setIsModalOpened] = useState(false);
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+
+      const report = await response.json();
+
+      setIsMainReport(report.represent);
+      setTitle(report.title);
+      setDescription(report.description);
+      setStudyLogs(report.studylogs);
+    } catch (error) {
+      console.error(error);
+      history.push(`/${username}/reports`);
+    }
+  };
+
+  useEffect(() => {
+    getReport(reportId);
+  }, []);
 
   const postNewReport = async (data) => {
     try {
-      const response = await requestPostReport(data, accessToken);
+      const response = await requestEditReport(data, reportId, accessToken);
 
       if (!response.ok) {
         throw new Error(await response.text());
@@ -51,12 +75,7 @@ const ProfilePageNewReport = () => {
 
       history.push(`/${username}/reports`);
     } catch (error) {
-      const errorCode = JSON.parse(error.message).code;
-      if (errorCode === 4005) {
-        alert('중복된 리포트 이름은 사용할 수 없습니다.');
-      } else {
-        console.error(error);
-      }
+      console.error(error);
     }
   };
 
@@ -64,7 +83,7 @@ const ProfilePageNewReport = () => {
     event.preventDefault();
 
     const data = {
-      id: null,
+      id: reportId,
       title: title !== '' ? title : `${new Date().toLocaleDateString()} ${nickname}의 리포트`,
       description,
       abilityGraph: { abilities: [] },
@@ -76,7 +95,7 @@ const ProfilePageNewReport = () => {
   };
 
   const onCancelWriteReport = () => {
-    if (window.confirm('리포트 작성을 취소하시겠습니까?')) {
+    if (window.confirm('리포트 수정을 취소하시겠습니까?')) {
       history.push(`/${username}/reports`);
     }
   };
@@ -90,7 +109,7 @@ const ProfilePageNewReport = () => {
   return (
     <>
       <Form onSubmit={onSubmitReport}>
-        <h2>새 리포트 작성하기</h2>
+        <h2>리포트 수정하기</h2>
         {/* <div>
           <Checkbox
             type="checkbox"
@@ -137,7 +156,7 @@ const ProfilePageNewReport = () => {
           >
             취소
           </Button>
-          <Button size="X_SMALL">리포트 등록</Button>
+          <Button size="X_SMALL">리포트 수정</Button>
         </FormButtonWrapper>
       </Form>
 
@@ -153,4 +172,4 @@ const ProfilePageNewReport = () => {
   );
 };
 
-export default ProfilePageNewReport;
+export default ProfilePageEditReport;

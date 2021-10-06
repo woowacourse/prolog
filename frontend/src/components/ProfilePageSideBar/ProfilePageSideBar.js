@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { ReactComponent as PostIcon } from '../../assets/images/post.svg';
 import { ReactComponent as OverviewIcon } from '../../assets/images/overview.svg';
 import { ReactComponent as ScrapIcon } from '../../assets/images/scrap.svg';
+import { ReactComponent as ReportIcon } from '../../assets/images/reportIcon.svg';
 import {
   Profile,
   Image,
@@ -70,7 +71,6 @@ const ProfilePageSideBar = ({ menu }) => {
       }
 
       const user = await response.json();
-      console.log(user);
       setUser(user);
       setNickname(user.nickname);
       setNotFound(false);
@@ -150,7 +150,6 @@ const ProfilePageSideBar = ({ menu }) => {
       <MenuList>
         <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.OVERVIEW}>
           <MenuButton value={PROFILE_PAGE_MENU.OVERVIEW} type="button" onClick={goProfilePage}>
-            {/* <MenuIcon src={overviewIcon} alt="overview icon" /> */}
             <OverviewIcon width="16" height="16" />
             오버뷰
           </MenuButton>
@@ -175,7 +174,7 @@ const ProfilePageSideBar = ({ menu }) => {
         )}
         <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.REPORTS}>
           <MenuButton value={PROFILE_PAGE_MENU.REPORTS} type="button" onClick={goProfilePageReport}>
-            <PostIcon width="16" height="16" />
+            <ReportIcon width="16" height="16" />
             리포트
           </MenuButton>
         </MenuItem>

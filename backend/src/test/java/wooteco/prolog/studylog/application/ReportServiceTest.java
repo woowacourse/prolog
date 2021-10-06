@@ -1,6 +1,8 @@
 package wooteco.prolog.studylog.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -19,6 +21,8 @@ import wooteco.prolog.common.fixture.level.LevelFixture;
 import wooteco.prolog.common.fixture.member.MemberFixture;
 import wooteco.prolog.common.fixture.misstion.MissionFixture;
 import wooteco.prolog.common.fixture.studylog.StudylogFixture;
+import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.report.application.ReportService;
@@ -32,6 +36,7 @@ import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
 import wooteco.prolog.studylog.domain.repository.LevelRepository;
 import wooteco.prolog.studylog.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.prolog.studylog.exception.DuplicateReportTitleException;
 
 @SpringBootTest
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -71,7 +76,10 @@ class ReportServiceTest {
         setAbilities(member);
         setStudylogs(member);
         ReportRequest reportRequest = createRequest("jsons/report_post_request.json");
-        ReportResponse reportResponse = reportService.createReport(reportRequest, member);
+        ReportResponse reportResponse = reportService.createReport(
+            reportRequest,
+            new LoginMember(member.getId(), Authority.MEMBER)
+        );
 
         assertThat(reportResponse)
             .usingRecursiveComparison()
@@ -80,15 +88,31 @@ class ReportServiceTest {
     }
 
     @Test
+    void createReport_duplicate_title() throws IOException {
+        Member member = createMember();
+        setAbilities(member);
+        setStudylogs(member);
+        ReportRequest reportRequest = createRequest("jsons/report_post_request.json");
+
+        reportService.createReport(reportRequest, member);
+        assertThatThrownBy( () -> reportService.createReport(reportRequest, member))
+            .isInstanceOf(DuplicateReportTitleException.class);
+    }
+
+    @Test
     void updateReport() throws IOException {
         Member member = createMember();
         setAbilities(member);
         setStudylogs(member);
         ReportRequest request = createRequest("jsons/report_post_request.json");
-        reportService.createReport(request, member);
+        reportService.createReport(request, new LoginMember(member.getId(), Authority.MEMBER));
 
         ReportRequest updateRequest = createRequest("jsons/report_put_request.json");
-        ReportResponse reportResponse = reportService.updateReport(updateRequest, member);
+        ReportResponse reportResponse = reportService.updateReport(
+            1L,
+                updateRequest,
+                new LoginMember(member.getId(), Authority.MEMBER)
+        );
 
         assertThat(reportResponse)
             .usingRecursiveComparison()

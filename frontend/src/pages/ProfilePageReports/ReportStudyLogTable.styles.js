@@ -23,22 +23,6 @@ const Section = styled.section`
     font-size: 1.4rem;
     margin-left: 1rem;
   }
-
-  > div > button {
-    display: inline;
-    width: fit-content;
-    line-height: 1;
-    padding: 0.5rem 1rem;
-    margin-right: 0.5rem;
-
-    font-size: 1.4rem;
-  }
-`;
-
-const TableButtonWrapper = styled.div`
-  position: absolute;
-  right: 0;
-  top: -0.5rem;
 `;
 
 const Table = styled.table`
@@ -77,12 +61,12 @@ const Table = styled.table`
 const Thead = styled.thead`
   > tr {
     th:nth-of-type(1) {
-      width: 10%;
+      width: 15%;
       text-align: center;
     }
 
     th:nth-of-type(2) {
-      width: 90%;
+      width: 85%;
     }
   }
 `;
@@ -97,12 +81,16 @@ const Tbody = styled.tbody`
     margin: 0 auto;
 
     td:nth-of-type(1) {
-      width: 8%;
+      width: 12%;
       text-align: center;
+
+      > span {
+        color: ${COLOR.BLACK_600};
+      }
     }
 
     td:nth-of-type(2) {
-      width: 92%;
+      width: 88%;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -126,4 +114,4 @@ const EmptyTableGuide = styled.span`
   bottom: 30%;
 `;
 
-export { Section, TableButtonWrapper, Table, Thead, Tbody, EmptyTableGuide };
+export { Section, Table, Thead, Tbody, EmptyTableGuide };

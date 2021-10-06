@@ -2,7 +2,7 @@ package wooteco.prolog.report.application.dto.report.request;
 
 import java.util.List;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRequest;
-import wooteco.prolog.report.application.dto.report.request.studylog.StudylogRequest;
+import wooteco.prolog.report.application.dto.report.request.studylog.ReportStudylogRequest;
 
 public class ReportRequest {
 
@@ -10,7 +10,7 @@ public class ReportRequest {
     private String title;
     private String description;
     private GraphRequest abilityGraph;
-    private List<StudylogRequest>studylogs;
+    private List<ReportStudylogRequest>studylogs;
     private Boolean represent;
 
     private ReportRequest() {
@@ -20,7 +20,7 @@ public class ReportRequest {
                          String title,
                          String description,
                          GraphRequest abilityGraph,
-                         List<StudylogRequest> studylogs,
+                         List<ReportStudylogRequest> studylogs,
                          Boolean represent) {
         this.id = id;
         this.title = title;
@@ -46,7 +46,7 @@ public class ReportRequest {
         return abilityGraph;
     }
 
-    public List<StudylogRequest> getStudylogs() {
+    public List<ReportStudylogRequest> getStudylogs() {
         return studylogs;
     }
 

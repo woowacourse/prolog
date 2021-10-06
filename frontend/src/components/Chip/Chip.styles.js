@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
 
-const Container = styled.div`
+const Container = styled.span`
   width: fit-content;
   background-color: ${({ backgroundColor }) => backgroundColor ?? COLOR.LIGHT_GRAY_200};
-  color: ${({ color }) => color ?? COLOR.BLACK_900};
+  color: ${({ color }) => color ?? COLOR.BLACK_800};
   padding: 0.4rem 0.8rem 0.4rem 1.2rem;
   border-radius: 5rem;
   margin-right: 1rem;
@@ -37,7 +37,7 @@ const Container = styled.div`
 const ChipText = styled.span`
   font-size: 1.4rem;
   text-align: center;
-  color: ${COLOR.DARK_GRAY_800};
+  color: inherit;
 `;
 
 export { Container, ChipText };
