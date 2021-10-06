@@ -12,12 +12,21 @@ const useStudyLogsPagination = (studyLogs) => {
 
   useEffect(() => {
     setReportStudyLogData({
+      currPage: 1,
+      totalPage: Math.ceil(studyLogs.length / 10),
+      totalSize: studyLogs.length,
+      data: studyLogs.slice(0, 10),
+    });
+  }, [studyLogs]);
+
+  useEffect(() => {
+    setReportStudyLogData({
       currPage: page,
       totalPage: Math.ceil(studyLogs.length / 10),
       totalSize: studyLogs.length,
       data: studyLogs.slice((page - 1) * 10, page * 10),
     });
-  }, [studyLogs, page]);
+  }, [page]);
 
   return { setPage, reportStudyLogData };
 };

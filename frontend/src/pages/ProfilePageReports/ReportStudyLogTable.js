@@ -8,7 +8,9 @@ const ReportStudyLogTable = ({ studyLogs }) => {
   const { setPage, reportStudyLogData } = useStudyLogsPagination(studyLogs);
   const { currPage, totalSize, data: currReportStudyLogs } = reportStudyLogData;
 
-  const onMoveToPage = (number) => setPage(number);
+  const onMoveToPage = (number) => {
+    setPage(number);
+  };
 
   return (
     <Section>
