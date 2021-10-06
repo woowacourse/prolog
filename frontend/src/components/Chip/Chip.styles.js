@@ -1,17 +1,25 @@
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
+import { getTextColor } from '../../utils/textColorPicker';
 
 const Container = styled.div`
-  width: fit-content;
+  width: ${({ width }) => (width ? width : 'fit-content')};
+  max-width: ${({ maxWidth }) => maxWidth};
   background-color: ${({ backgroundColor }) => backgroundColor ?? COLOR.LIGHT_GRAY_200};
-  color: ${({ color }) => color ?? COLOR.BLACK_900};
-  padding: 0.4rem 0.8rem 0.4rem 1.2rem;
+  color: ${({ backgroundColor }) => getTextColor(backgroundColor) ?? COLOR.BLACK_900};
+  padding: 0.2rem 0.8rem;
   border-radius: 5rem;
   margin-right: 1rem;
 
   display: flex;
   justify-content: center;
   align-items: center;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  cursor: default;
 
   button {
     width: 1.6rem;
@@ -36,8 +44,12 @@ const Container = styled.div`
 
 const ChipText = styled.span`
   font-size: 1.4rem;
-  text-align: center;
-  color: ${COLOR.DARK_GRAY_800};
+  text-align: ${({ textAlign }) => (textAlign ? textAlign : 'center')};
+  color: inherit;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 export { Container, ChipText };

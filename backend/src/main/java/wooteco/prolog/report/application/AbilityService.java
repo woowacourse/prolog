@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
 import wooteco.prolog.report.application.dto.ability.AbilityResponse;
@@ -17,13 +18,16 @@ import wooteco.prolog.report.exception.AbilityNotFoundException;
 public class AbilityService {
 
     private final AbilityRepository abilityRepository;
+    private final MemberService memberService;
 
-    public AbilityService(AbilityRepository abilityRepository) {
+    public AbilityService(AbilityRepository abilityRepository, MemberService memberService) {
         this.abilityRepository = abilityRepository;
+        this.memberService = memberService;
     }
 
     @Transactional
-    public void createAbility(Member member, AbilityCreateRequest request) {
+    public void createAbility(Long memberId, AbilityCreateRequest request) {
+        Member member = memberService.findById(memberId);
         Ability ability = extractAbility(member, request);
 
         abilityRepository.save(ability);
@@ -65,37 +69,34 @@ public class AbilityService {
         return parentAbility;
     }
 
-    public List<AbilityResponse> findAbilitiesByMember(Member member) {
-        return AbilityResponse.of(findByMemberId(member.getId()));
-    }
-
     public List<AbilityResponse> findAbilitiesByMemberId(Long memberId) {
         return AbilityResponse.of(findByMemberId(memberId));
+    }
+
+    public List<AbilityResponse> findParentAbilitiesByMemberId(Long memberId) {
+        List<Ability> parentAbilities = abilityRepository.findByMemberIdAndParentIsNull(memberId);
+
+        return AbilityResponse.of(parentAbilities);
+    }
+
+    @Transactional
+    public List<AbilityResponse> updateAbility(Long memberId, AbilityUpdateRequest request) {
+        Ability legacyAbility = findAbilityByIdAndMemberId(request.getId(), memberId);
+        Ability updateAbility = request.toEntity();
+        List<Ability> abilities = findByMemberId(memberId);
+
+        legacyAbility.updateWithValidation(updateAbility, abilities);
+
+        return findAbilitiesByMemberId(memberId);
     }
 
     private List<Ability> findByMemberId(Long memberId) {
         return abilityRepository.findByMemberId(memberId);
     }
 
-    public List<AbilityResponse> findParentAbilitiesByMember(Member member) {
-        List<Ability> parentAbilities = abilityRepository.findByMemberAndParentIsNull(member);
-
-        return AbilityResponse.of(parentAbilities);
-    }
-
     @Transactional
-    public List<AbilityResponse> updateAbility(Member member, AbilityUpdateRequest request) {
-        Ability legacyAbility = findAbilityByIdAndMember(request.getId(), member);
-        Ability updateAbility = request.toEntity();
-
-        legacyAbility.update(updateAbility);
-
-        return findAbilitiesByMember(member);
-    }
-
-    @Transactional
-    public void deleteAbility(Member member, Long abilityId) {
-        Ability ability = findAbilityByIdAndMember(abilityId, member);
+    public void deleteAbility(Long memberId, Long abilityId) {
+        Ability ability = findAbilityByIdAndMemberId(abilityId, memberId);
         ability.validateDeletable();
 
         ability.deleteRelationshipWithParent();
@@ -107,8 +108,8 @@ public class AbilityService {
             .orElseThrow(AbilityNotFoundException::new);
     }
 
-    private Ability findAbilityByIdAndMember(Long abilityId, Member member) {
-        return abilityRepository.findByIdAndMember(abilityId, member)
+    private Ability findAbilityByIdAndMemberId(Long abilityId, Long memberId) {
+        return abilityRepository.findByIdAndMemberId(abilityId, memberId)
             .orElseThrow(AbilityNotFoundException::new);
     }
 }

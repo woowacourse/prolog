@@ -15,7 +15,9 @@ import {
   ProfilePageNewReport,
   ProfilePageScraps,
 } from './pages';
+import AbilityPage from './pages/AbilityPage';
 import useSnackBar from './hooks/useSnackBar';
+
 const Content = styled.div`
   max-width: 112rem;
   margin: 6rem auto;
@@ -75,6 +77,15 @@ const App = () => {
               render={() => (
                 <ProfilePage menu={PROFILE_PAGE_MENU.SCRAPS}>
                   <ProfilePageScraps />
+                </ProfilePage>
+              )}
+            />
+            <Route
+              exact
+              path={`${PATH.ABILITY}`}
+              render={() => (
+                <ProfilePage>
+                  <AbilityPage />
                 </ProfilePage>
               )}
             />

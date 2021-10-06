@@ -87,10 +87,40 @@ public class Ability {
         this.children.add(abilityRelationship);
     }
 
-    public void update(Ability updateAbility) {
+    public void updateWithValidation(Ability updateAbility, List<Ability> abilities) {
+        removeUnnecessaryValidationAbilities(abilities);
+
+        updateAbility.validateDuplicateName(abilities);
+        updateAbility.validateDuplicateColor(abilities);
+
+        update(updateAbility);
+    }
+
+    private void removeUnnecessaryValidationAbilities(List<Ability> abilities) {
+        if (this.isParent()) {
+            abilities.removeAll(this.getChildren());
+            abilities.remove(this);
+        } else {
+            abilities.removeAll(parent.getChildren());
+            abilities.remove(parent);
+        }
+    }
+
+    private void update(Ability updateAbility) {
         this.name = updateAbility.name;
         this.description = updateAbility.description;
+
+        if (this.isParent()) {
+            updateColor(updateAbility);
+        }
+    }
+
+    private void updateColor(Ability updateAbility) {
         this.color = updateAbility.color;
+
+        for (Ability childAbility : getChildren()) {
+            childAbility.color = updateAbility.getColor();
+        }
     }
 
     public boolean isParent() {
