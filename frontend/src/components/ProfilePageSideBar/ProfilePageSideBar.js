@@ -140,7 +140,6 @@ const ProfilePageSideBar = ({ menu }) => {
   useEffect(() => {
     getProfile();
     setSelectedMenu(menu);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username]);
 
   return (

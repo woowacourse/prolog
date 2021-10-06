@@ -165,6 +165,7 @@ export {
   requestGetUserPosts,
   requestDeletePost,
   requestGetProfile,
+  requestEditProfile,
   requestGetUserTags,
   requestGetCalendar,
   requestGetAbilities,
