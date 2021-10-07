@@ -6,6 +6,7 @@
     <include resource="logback/file-info-logger.xml"/>
     <include resource="logback/file-warn-logger.xml"/>
     <include resource="logback/file-error-logger.xml"/>
+    <include resource="logback/performance-logger.xml"/>
     <!-- 500 error slack alarm -->
     <include resource="logback/slack-logger.xml"/>
 
@@ -22,11 +23,16 @@
       <appender-ref ref="file-warn-logger"/>
       <appender-ref ref="file-error-logger"/>
     </logger>
+
+    <logger name="PERFORMANCE">
+      <appender-ref ref="performance-logger"/>
+    </logger>
   </springProfile>
 
   <springProfile name="dev">
     <include resource="logback/file-debug-logger.xml"/>
     <include resource="logback/file-info-logger.xml"/>
+    <include resource="logback/performance-logger.xml"/>
     <include resource="logback/file-warn-logger.xml"/>
     <include resource="logback/file-error-logger.xml"/>
     <!-- 500 error slack alarm -->
@@ -47,6 +53,10 @@
       <appender-ref ref="file-info-logger"/>
       <appender-ref ref="file-warn-logger"/>
       <appender-ref ref="file-error-logger"/>
+    </logger>
+
+    <logger name="PERFORMANCE">
+      <appender-ref ref="performance-logger"/>
     </logger>
   </springProfile>
 

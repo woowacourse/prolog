@@ -1,5 +1,7 @@
 package wooteco.prolog;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,12 +12,20 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.data.domain.PageRequest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
+import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.application.AbilityService;
+import wooteco.prolog.report.application.ReportService;
 import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
 import wooteco.prolog.report.application.dto.ability.AbilityResponse;
+import wooteco.prolog.report.application.dto.report.request.ReportRequest;
+import wooteco.prolog.report.application.dto.report.request.abilitigraph.AbilityRequest;
+import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRequest;
+import wooteco.prolog.report.application.dto.report.request.studylog.ReportStudylogRequest;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.LevelService;
@@ -46,6 +56,7 @@ public class DataLoaderApplicationListener implements
     private DocumentService studyLogDocumentService;
     private AbilityService abilityService;
     private UpdatedContentsRepository updatedContentsRepository;
+    private ReportService reportService;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -75,8 +86,85 @@ public class DataLoaderApplicationListener implements
         Abilities.initFrontend(Members.TYCHE.value.getId(), abilityService);
         Abilities.initFrontend(Members.SUNNY.value.getId(), abilityService);
 
+        ReportGenerator.generate(3, Members.TYCHE.value, abilityService, studylogService)
+            .forEach(reportRequest -> reportService.createReport(
+                reportRequest,
+                new LoginMember(Members.TYCHE.value.getId(), Authority.MEMBER)
+            ));
+
         updatedContentsRepository
             .save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
+    }
+
+    public static class ReportGenerator {
+
+        private static int cnt = 1;
+
+        public static List<ReportRequest> generate(int size, Member member,
+                                             AbilityService abilityService,
+                                             StudylogService studylogService) {
+            ArrayList<ReportRequest> result = new ArrayList<>();
+
+            for (int i = 0; i < size; i++) {
+                result.add(create(member, abilityService, studylogService));
+            }
+
+            return result;
+
+        }
+
+        private static ReportRequest create(Member member,
+                                            AbilityService abilityService,
+                                            StudylogService studylogService) {
+            return new ReportRequest(
+                null,
+                "타이틀 입니다 " + cnt,
+                "설명 입니다 " + cnt++,
+                createGraphRequest(member, abilityService),
+                createReportStudylogRequest(member, studylogService, abilityService),
+                true
+            );
+        }
+
+        private static List<ReportStudylogRequest> createReportStudylogRequest(Member member,
+                                                                               StudylogService studylogService,
+                                                                               AbilityService abilityService) {
+            List<ReportStudylogRequest> studylogs = studylogService
+                .findStudylogsOf(member.getUsername(), PageRequest.of(0, 20))
+                .getData().stream()
+                .map(studylogResponse -> new ReportStudylogRequest(
+                    studylogResponse.getId(),
+                    getRandomAbilitiesOf(member, abilityService)
+                )).collect(toList());
+
+            Collections.shuffle(studylogs);
+            return studylogs.subList(0, new Random().nextInt(studylogs.size()));
+        }
+
+        private static GraphRequest createGraphRequest(Member member,
+                                                       AbilityService abilityService) {
+            return new GraphRequest(getParentAbilitiesOf(member, abilityService));
+        }
+
+        private static List<Long> getRandomAbilitiesOf(Member member,
+                                                       AbilityService abilityService) {
+            List<AbilityResponse> abilitiesByMember = abilityService.findAbilitiesByMember(member);
+            Collections.shuffle(abilitiesByMember);
+            return abilitiesByMember.subList(0, new Random().nextInt(abilitiesByMember.size()))
+                .stream()
+                .map(AbilityResponse::getId)
+                .collect(toList());
+        }
+
+        private static List<AbilityRequest> getParentAbilitiesOf(Member member,
+                                                                 AbilityService abilityService) {
+            return abilityService.findParentAbilitiesByMember(member).stream()
+                .map(abilityResponse -> new AbilityRequest(
+                    abilityResponse.getId(),
+                    1L,
+                    true))
+                .collect(toList());
+        }
     }
 
     private static class Abilities {
@@ -169,7 +257,8 @@ public class DataLoaderApplicationListener implements
             abilityService.createAbility(memberId, new AbilityCreateRequest("프로그래밍 테크닉, 개발 프랙티스, 개발 방법론", "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론 입니다.", architectureResponse.getColor(), architectureResponse.getId()));
         }
 
-        private static AbilityResponse findParentAbilityResponse(List<AbilityResponse> abilityResponses, AbilityCreateRequest request) {
+        private static AbilityResponse findParentAbilityResponse(
+            List<AbilityResponse> abilityResponses, AbilityCreateRequest request) {
             return abilityResponses.stream()
                 .filter(response -> request.getName().equals(response.getName()))
                 .findAny()
@@ -261,7 +350,7 @@ public class DataLoaderApplicationListener implements
         }
     }
 
-    private enum Members {
+    public enum Members {
         BROWN(
             new GithubProfileResponse(
                 "류성현",
@@ -276,8 +365,8 @@ public class DataLoaderApplicationListener implements
             "https://avatars.githubusercontent.com/u/48412963?v=4")
         ),
         TYCHE(new GithubProfileResponse(
-            "조은현",
             "티케",
+            "devhyun637",
             "59258239",
             "https://avatars.githubusercontent.com/u/59258239?v=4")
         ),
@@ -293,6 +382,10 @@ public class DataLoaderApplicationListener implements
 
         Members(GithubProfileResponse githubProfileResponse) {
             this.githubProfileResponse = githubProfileResponse;
+        }
+
+        public Member getValue() {
+            return value;
         }
 
         public static void init(MemberService memberService) {

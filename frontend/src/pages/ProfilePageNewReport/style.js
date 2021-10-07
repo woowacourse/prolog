@@ -38,6 +38,7 @@ const Checkbox = styled.input`
 
 const FormButtonWrapper = styled.div`
   width: 100%;
+  margin-top: 2rem;
 
   > button {
     width: 100%;

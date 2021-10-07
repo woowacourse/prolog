@@ -9,6 +9,7 @@ import StudyLogModal from './StudyLogModal';
 import ReportInfoInput from './ReportInfoInput';
 import ReportStudyLogTable from './ReportStudyLogTable';
 import { Checkbox, Form, FormButtonWrapper } from './style';
+import { requestPostReport } from '../../service/requests';
 
 const ProfilePageNewReport = () => {
   const { username } = useParams();
@@ -40,44 +41,66 @@ const ProfilePageNewReport = () => {
 
   const [isModalOpened, setIsModalOpened] = useState(false);
 
+  const postNewReport = async (data) => {
+    try {
+      const response = await requestPostReport(data, accessToken);
+
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+
+      history.push(`/${username}/reports`);
+    } catch (error) {
+      const errorCode = JSON.parse(error.message).code;
+      if (errorCode === 4005) {
+        alert('중복된 리포트 이름은 사용할 수 없습니다.');
+      } else {
+        console.error(error);
+      }
+    }
+  };
+
   const onSubmitReport = (event) => {
     event.preventDefault();
 
-    alert('현재 준비중인 기능입니다.');
+    const data = {
+      id: null,
+      title: title !== '' ? title : `${new Date().toLocaleDateString()} ${nickname}의 리포트`,
+      description,
+      abilityGraph: { abilities: [] },
+      studylogs: studyLogs.map((item) => ({ id: item.id, abilities: [] })),
+      represent: false,
+    };
 
-    // if (!studyLogs.length) {
-    //   alert('최소 한 개 이상의 학습로그를 등록해주세요');
-    // }
+    postNewReport(data);
+  };
 
-    // const data = {
-    //   title: title !== '' ? title : `${new Date().toLocaleDateString()} ${nickname}의 리포트`,
-    //   description,
-    //   // abilityGraph: {
-    //   //   abilities: [],
-    //   // },
-    //   posts: studyLogs,
-    //   isRepresent: isMainReport,
-    // };
+  const onCancelWriteReport = () => {
+    if (window.confirm('리포트 작성을 취소하시겠습니까?')) {
+      history.push(`/${username}/reports`);
+    }
   };
 
   const onRegisterMainReport = () => setIsMainReport((currentState) => !currentState);
 
   const onModalOpen = () => setIsModalOpened(true);
+
   const onModalClose = () => setIsModalOpened(false);
 
   return (
     <>
       <Form onSubmit={onSubmitReport}>
         <h2>새 리포트 작성하기</h2>
-        <div>
+        {/* <div>
           <Checkbox
             type="checkbox"
             onChange={onRegisterMainReport}
             checked={isMainReport}
             id="main_report_checkbox"
+            disabled
           />
           <label htmlFor="main_report_checkbox">대표 리포트로 지정하기</label>
-        </div>
+        </div> */}
 
         <ReportInfoInput
           nickname={nickname}
@@ -87,7 +110,6 @@ const ProfilePageNewReport = () => {
           setDescription={setDescription}
         />
 
-        {/* 역량기능 부분 */}
         <section
           style={{
             height: '25rem',
@@ -107,7 +129,12 @@ const ProfilePageNewReport = () => {
         />
 
         <FormButtonWrapper>
-          <Button size="X_SMALL" css={{ backgroundColor: `${COLOR.LIGHT_GRAY_400}` }} type="button">
+          <Button
+            size="X_SMALL"
+            css={{ backgroundColor: `${COLOR.LIGHT_GRAY_400}` }}
+            type="button"
+            onClick={onCancelWriteReport}
+          >
             취소
           </Button>
           <Button size="X_SMALL">리포트 등록</Button>

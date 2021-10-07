@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { ReactComponent as PostIcon } from '../../assets/images/post.svg';
 import { ReactComponent as OverviewIcon } from '../../assets/images/overview.svg';
 import { ReactComponent as ScrapIcon } from '../../assets/images/scrap.svg';
+import { ReactComponent as ReportIcon } from '../../assets/images/reportIcon.svg';
 import {
   Profile,
   Image,

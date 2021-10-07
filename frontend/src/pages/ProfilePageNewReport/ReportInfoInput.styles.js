@@ -8,7 +8,7 @@ const Label = styled.label`
   width: 100%;
 
   display: block;
-  margin-left: 0.6rem;
+  margin-left: 0.2rem;
   margin-bottom: 0.2rem;
 
   color: ${COLOR.BLACK_900};
@@ -28,7 +28,7 @@ const Label = styled.label`
 const inputStyle = css`
   width: 100%;
 
-  border: 0.1rem solid ${COLOR.LIGHT_GRAY_500};
+  border: 0.2rem solid ${COLOR.LIGHT_GRAY_500};
   border-radius: 0.6rem;
 
   font-size: 1.4rem;

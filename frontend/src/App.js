@@ -1,8 +1,9 @@
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import { NavBar } from './components';
 import styled from '@emotion/styled';
+
+import useSnackBar from './hooks/useSnackBar';
 import { PROFILE_PAGE_MENU, PATH } from './constants';
-import GlobalStyles from './GlobalStyles';
+import { NavBar } from './components';
 import {
   MainPage,
   NewPostPage,
@@ -13,6 +14,7 @@ import {
   ProfilePagePosts,
   ProfilePageReports,
   ProfilePageNewReport,
+  ProfilePageEditReport,
   ProfilePageScraps,
 } from './pages';
 import AbilityPage from './pages/AbilityPage';
@@ -23,6 +25,8 @@ const Content = styled.div`
   margin: 6rem auto;
   padding: 0 4rem;
 `;
+
+import GlobalStyles from './GlobalStyles';
 
 const App = () => {
   const { isSnackBarOpen, SnackBar } = useSnackBar();
@@ -73,6 +77,15 @@ const App = () => {
             />
             <Route
               exact
+              path={`${PATH.PROFILE_REPORTS}/:id/edit`}
+              render={() => (
+                <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
+                  <ProfilePageEditReport />
+                </ProfilePage>
+              )}
+            />
+            <Route
+              exact
               path={PATH.PROFILE_SCRAPS}
               render={() => (
                 <ProfilePage menu={PROFILE_PAGE_MENU.SCRAPS}>
@@ -97,5 +110,11 @@ const App = () => {
     </>
   );
 };
+
+const Content = styled.div`
+  max-width: 112rem;
+  margin: 6rem auto;
+  padding: 0 4rem;
+`;
 
 export default App;

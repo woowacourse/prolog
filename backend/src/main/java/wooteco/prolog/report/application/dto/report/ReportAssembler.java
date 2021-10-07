@@ -10,7 +10,7 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.application.dto.report.request.ReportRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.AbilityRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRequest;
-import wooteco.prolog.report.application.dto.report.request.studylog.StudylogRequest;
+import wooteco.prolog.report.application.dto.report.request.studylog.ReportStudylogRequest;
 import wooteco.prolog.report.application.dto.report.response.ReportResponse;
 import wooteco.prolog.report.application.dto.report.response.SimpleReportResponse;
 import wooteco.prolog.report.application.dto.report.response.abilityGraph.GraphAbilityResponse;
@@ -73,14 +73,14 @@ public class ReportAssembler {
         );
     }
 
-    private ReportedStudylog of(StudylogRequest studylogRequest) {
-        List<ReportedStudylogAbility> abilities = studylogRequest.getAbilities().stream()
+    private ReportedStudylog of(ReportStudylogRequest reportStudylogRequest) {
+        List<ReportedStudylogAbility> abilities = reportStudylogRequest.getAbilities().stream()
             .map(this::findAbilityById)
             .map(ReportedStudylogAbility::new)
             .collect(toList());
 
         return new ReportedStudylog(
-            studylogRequest.getId(),
+            reportStudylogRequest.getId(),
             abilities
         );
     }
@@ -123,7 +123,7 @@ public class ReportAssembler {
 
     private StudylogAbilityResponse of(ReportedStudylogAbility reportedStudylogAbility) {
         return new StudylogAbilityResponse(
-            reportedStudylogAbility.getId(),
+            reportedStudylogAbility.getAbility().getId(),
             reportedStudylogAbility.getName(),
             reportedStudylogAbility.getColor(),
             reportedStudylogAbility.isParent()

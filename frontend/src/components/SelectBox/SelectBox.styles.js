@@ -47,7 +47,7 @@ const Select = styled.select`
   appearance: none;
 `;
 
-const SelectItems = styled.ul`
+const SelectItemList = styled.ul`
   position: absolute;
   top: 0;
   width: 100%;
@@ -115,4 +115,4 @@ const SelectItem = styled.li`
     }`}
 `;
 
-export { Label, Select, SelectItems, SelectItem };
+export { Label, Select, SelectItemList, SelectItem };

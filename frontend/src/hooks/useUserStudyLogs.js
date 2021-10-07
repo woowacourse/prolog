@@ -16,7 +16,7 @@ const useUserStudyLog = ({ levelId: currLevelId, username }) => {
   const getPosts = async (page = 1) => {
     try {
       if (currLevelId !== studyLogData.levelId) {
-        setPage((page) => (page = 1));
+        setPage(1);
       }
 
       const query = {

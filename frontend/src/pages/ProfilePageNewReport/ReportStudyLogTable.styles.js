@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
+
 import COLOR from '../../constants/color';
 
 const Section = styled.section`
   && {
-    margin-top: 3rem;
+    margin-top: 5rem;
     position: relative;
   }
 
@@ -81,11 +82,7 @@ const Thead = styled.thead`
     }
 
     th:nth-of-type(2) {
-      width: 30%;
-    }
-
-    th:nth-of-type(3) {
-      width: 60%;
+      width: 90%;
     }
   }
 `;
@@ -95,17 +92,17 @@ const Tbody = styled.tbody`
   min-height: 15rem;
 
   tr {
-    width: 96%;
+    width: 98%;
     border-bottom: 0.1rem solid ${COLOR.LIGHT_GRAY_300};
     margin: 0 auto;
 
     td:nth-of-type(1) {
-      width: 6%;
+      width: 8%;
       text-align: center;
     }
 
     td:nth-of-type(2) {
-      width: 47%;
+      width: 92%;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -115,34 +112,6 @@ const Tbody = styled.tbody`
         :hover {
           text-decoration: underline;
         }
-      }
-    }
-
-    td:nth-of-type(3) {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      ul {
-        width: 90%;
-        margin-right: 1.5rem;
-        overflow: auto;
-
-        li {
-          display: inline;
-          margin-right: 1.5rem;
-        }
-
-        ::-webkit-scrollbar {
-          display: none;
-        }
-      }
-
-      button {
-        width: 10%;
-        margin-top: 0.1rem;
-        color: ${COLOR.DARK_GRAY_900};
-        font-size: 2rem;
       }
     }
   }

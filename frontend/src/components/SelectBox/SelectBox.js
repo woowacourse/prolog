@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import useCustomSelectBox from '../../hooks/useCustomSelectBox';
 import useScrollToSelected from '../../hooks/useScrollToSelected';
-import { Label, Select, SelectItems, SelectItem } from './SelectBox.styles';
+import { Label, Select, SelectItemList, SelectItem } from './SelectBox.styles';
 
 const SelectBox = ({
   options,
@@ -18,14 +18,20 @@ const SelectBox = ({
   const $label = useRef(null);
   const $selectorContainer = useRef(null);
 
-  const currentOptions = ['선택해주세요', ...options];
   const [isSelectBoxOpened, setIsSelectBoxOpened] = useCustomSelectBox({ targetRef: $label });
+
   useScrollToSelected({
     container: $selectorContainer,
     dependency: isSelectBoxOpened,
     options,
     selectedOption,
   });
+
+  useEffect(() => {
+    if (options.length > 0 && selectedOption === '') {
+      setSelectedOption(options[0]?.name);
+    }
+  }, [options]);
 
   const onSelectItem = (event, option) => {
     event.stopPropagation();
@@ -43,25 +49,26 @@ const SelectBox = ({
   return (
     <Label aria-label={title} ref={$label} onMouseDown={onOpenCustomSelectBox} width={width}>
       <Select name={name} onChange={onSelectItem} value={selectedOption} fontSize={size}>
-        {currentOptions.map((option) => (
-          <option key={option} value={option}>
-            {option}
+        {options.map((option) => (
+          <option key={option.id} value={option.name}>
+            {option.name}
           </option>
         ))}
       </Select>
+
       {isSelectBoxOpened && (
-        <SelectItems ref={$selectorContainer} maxHeight={maxHeight}>
+        <SelectItemList ref={$selectorContainer} maxHeight={maxHeight}>
           {options.map((option) => (
             <SelectItem
-              key={option}
-              onMouseDown={(event) => onSelectItem(event, option)}
-              isSelected={option === selectedOption}
+              key={option.id}
+              onMouseDown={(event) => onSelectItem(event, option.name)}
+              isSelected={option.name === selectedOption}
               fontSize={size}
             >
-              {option}
+              {option.name}
             </SelectItem>
           ))}
-        </SelectItems>
+        </SelectItemList>
       )}
     </Label>
   );
@@ -78,7 +85,7 @@ SelectBox.propTypes = {
 };
 
 SelectBox.defaultProps = {
-  options: ['주제가 등록되지 않았습니다.'],
+  options: [],
   selectedOption: '',
   width: '100%',
   maxHeight: '20rem',

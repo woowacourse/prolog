@@ -4,8 +4,8 @@
   "icons": [
     {
       "src": "favicon.png",
-      "sizes": "48x48",
-    },
+      "sizes": "48x48"
+    }
   ],
   "start_url": ".",
   "display": "standalone",

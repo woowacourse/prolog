@@ -451,7 +451,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_스터디로그_작성">스터디로그 작성</a></li>
 <li><a href="#_스터디로그_목록_조회">스터디로그 목록 조회</a></li>
-<li><a href="#_스터디로그_필터_조회">스터디로그 필터 조회</a></li>
+<li><a href="#_스터디로그_검색">스터디로그 검색</a></li>
 <li><a href="#_스터디로그_단건_조회">스터디로그 단건 조회</a></li>
 <li><a href="#_스터디로그_수정">스터디로그 수정</a></li>
 <li><a href="#_스터디로그_삭제">스터디로그 삭제</a></li>
@@ -506,6 +506,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 </ul>
+</li>
+<li><a href="#Report">리포트</a>
+<ul class="sectlevel2">
+<li><a href="#_리포트_생성">리포트 생성</a></li>
+<li><a href="#_멤버의_리포트_조회_단순_데이터_조회">멤버의 리포트 조회 - 단순 데이터 조회</a></li>
+<li><a href="#_멤버의_리포트_조회_전체_데이터_조회">멤버의 리포트 조회 - 전체 데이터 조회</a></li>
+<li><a href="#_리포트_단건_조회">리포트 단건 조회</a></li>
+<li><a href="#_리포트_수정">리포트 수정</a></li>
+<li><a href="#_리포트_삭제">리포트 삭제</a></li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 <div id="content">
@@ -539,13 +551,13 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 03 Oct 2021 13:13:57 GMT
+Date: Wed, 06 Oct 2021 08:07:19 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 168
 
 {
-  "accessToken" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjMzMjY2ODM3LCJleHAiOjE2MzMyNzA0MzcsInJvbGUiOiJDUkVXIn0.gmYCTChwQXoG-5zny_pR1RQSmXUGZ0dlJlriDTqy7A0"
+  "accessToken" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjMzNTA3NjQwLCJleHAiOjE2MzM1MTEyNDAsInJvbGUiOiJDUkVXIn0.lnUHcVwj2_YBPeHYHg4aTQyzI9Beqa607Fuu3oJQScI"
 }</code></pre>
 </div>
 </div>
@@ -558,7 +570,7 @@ Content-Length: 168
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/soulG HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjMzMjY2ODM3LCJleHAiOjE2MzMyNzA0MzcsInJvbGUiOiJDUkVXIn0.gmYCTChwQXoG-5zny_pR1RQSmXUGZ0dlJlriDTqy7A0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjMzNTA3NjQwLCJleHAiOjE2MzM1MTEyNDAsInJvbGUiOiJDUkVXIn0.lnUHcVwj2_YBPeHYHg4aTQyzI9Beqa607Fuu3oJQScI
 Host: localhost:4000</code></pre>
 </div>
 </div>
@@ -573,7 +585,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 03 Oct 2021 13:13:57 GMT
+Date: Wed, 06 Oct 2021 08:07:19 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 153
@@ -596,6 +608,8 @@ Content-Length: 153
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /members/soulG HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjMzNTA3NjQwLCJleHAiOjE2MzM1MTEyNDAsInJvbGUiOiJDUkVXIn0.lnUHcVwj2_YBPeHYHg4aTQyzI9Beqa607Fuu3oJQScI
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /members/soulG HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjMzMjY2ODM3LCJleHAiOjE2MzMyNzA0MzcsInJvbGUiOiJDUkVXIn0.gmYCTChwQXoG-5zny_pR1RQSmXUGZ0dlJlriDTqy7A0
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
@@ -616,7 +630,7 @@ Content-Length: 104
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 03 Oct 2021 13:13:56 GMT
+Date: Wed, 06 Oct 2021 08:07:19 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -634,12 +648,40 @@ Connection: keep-alive</code></pre>
 <h4 id="_request_4"><a class="link" href="#_request_4">Request</a></h4>
 <div class="paragraph">
 <p>Unresolved directive in studylog.adoc - include::../../../build/generated-snippets/studylog/create/http-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /posts HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjMzNTA3NjM2LCJleHAiOjE2MzM1MTEyMzYsInJvbGUiOiJDUkVXIn0.Ao42iSq7vZOr7GegVrZw6_KlyeS4hcJPyeKFpD6ONhk
+Content-Type: application/json; charset=UTF-8
+Host: localhost:4000
+Content-Length: 224
+
+[ {
+  "title" : "나는야 Joanne",
+  "content" : "SPA 방식으로 앱을 구현하였음.\nrouter 를 구현 하여 이용함.\n",
+  "missionId" : 1,
+  "tags" : [ {
+    "name" : "spa"
+  }, {
+    "name" : "router"
+  } ]
+} ]</code></pre>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_response_4"><a class="link" href="#_response_4">Response</a></h4>
 <div class="paragraph">
 <p>Unresolved directive in studylog.adoc - include::../../../build/generated-snippets/studylog/create/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Location: /posts/1
+Date: Wed, 06 Oct 2021 08:07:15 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive</code></pre>
 </div>
 </div>
 </div>
@@ -649,27 +691,164 @@ Connection: keep-alive</code></pre>
 <h4 id="_request_5"><a class="link" href="#_request_5">Request</a></h4>
 <div class="paragraph">
 <p>Unresolved directive in studylog.adoc - include::../../../build/generated-snippets/studylog/list/http-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjMzNTA3NjM2LCJleHAiOjE2MzM1MTEyMzYsInJvbGUiOiJDUkVXIn0.Ao42iSq7vZOr7GegVrZw6_KlyeS4hcJPyeKFpD6ONhk
+Accept: application/json
+Host: localhost:4000</code></pre>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_response_5"><a class="link" href="#_response_5">Response</a></h4>
 <div class="paragraph">
 <p>Unresolved directive in studylog.adoc - include::../../../build/generated-snippets/studylog/list/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 06 Oct 2021 08:07:15 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 1481
+
+{
+  "data" : [ {
+    "id" : 2,
+    "author" : {
+      "id" : 1,
+      "username" : "soulG",
+      "nickname" : "소롱",
+      "role" : "CREW",
+      "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
+    },
+    "createdAt" : "2021-10-06T17:07:16.190734",
+    "updatedAt" : "2021-10-06T17:07:16.190734",
+    "mission" : {
+      "id" : 2,
+      "name" : "레벨3 - 프로젝트",
+      "level" : {
+        "id" : 2,
+        "name" : "레벨3"
+      }
+    },
+    "title" : "JAVA",
+    "content" : "Spring Data JPA를 학습함.",
+    "tags" : [ {
+      "id" : 3,
+      "name" : "java"
+    }, {
+      "id" : 4,
+      "name" : "jpa"
+    } ],
+    "scrap" : false
+  }, {
+    "id" : 1,
+    "author" : {
+      "id" : 1,
+      "username" : "soulG",
+      "nickname" : "소롱",
+      "role" : "CREW",
+      "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
+    },
+    "createdAt" : "2021-10-06T17:07:16.182999",
+    "updatedAt" : "2021-10-06T17:07:16.182999",
+    "mission" : {
+      "id" : 1,
+      "name" : "레벨1 - 지하철 노선도 미션",
+      "level" : {
+        "id" : 1,
+        "name" : "레벨1"
+      }
+    },
+    "title" : "나는야 Joanne",
+    "content" : "SPA 방식으로 앱을 구현하였음.\nrouter 를 구현 하여 이용함.\n",
+    "tags" : [ {
+      "id" : 1,
+      "name" : "spa"
+    }, {
+      "id" : 2,
+      "name" : "router"
+    } ],
+    "scrap" : false
+  } ],
+  "totalSize" : 2,
+  "totalPage" : 1,
+  "currPage" : 1
+}</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_스터디로그_필터_조회"><a class="link" href="#_스터디로그_필터_조회">스터디로그 필터 조회</a></h3>
+<h3 id="_스터디로그_검색"><a class="link" href="#_스터디로그_검색">스터디로그 검색</a></h3>
 <div class="sect3">
 <h4 id="_request_6"><a class="link" href="#_request_6">Request</a></h4>
 <div class="paragraph">
 <p>Unresolved directive in studylog.adoc - include::../../../build/generated-snippets/studylog/filter/http-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts?keyword=joanne&amp;levels=1&amp;missions=1&amp;tags=1&amp;tags=2&amp;usernames=soulG&amp;startDate=20210901&amp;endDate=20211231 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjMzNTA3NjM1LCJleHAiOjE2MzM1MTEyMzUsInJvbGUiOiJDUkVXIn0.f5Oog8FsqznzSTrJ0fAS_G02WcrPkHpdNFE5qje-jYE
+Accept: application/json
+Host: localhost:4000</code></pre>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_response_6"><a class="link" href="#_response_6">Response</a></h4>
 <div class="paragraph">
 <p>Unresolved directive in studylog.adoc - include::../../../build/generated-snippets/studylog/filter/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 06 Oct 2021 08:07:15 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 816
+
+{
+  "data" : [ {
+    "id" : 1,
+    "author" : {
+      "id" : 1,
+      "username" : "soulG",
+      "nickname" : "소롱",
+      "role" : "CREW",
+      "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
+    },
+    "createdAt" : "2021-10-06T17:07:15.917848",
+    "updatedAt" : "2021-10-06T17:07:15.917848",
+    "mission" : {
+      "id" : 1,
+      "name" : "레벨1 - 지하철 노선도 미션",
+      "level" : {
+        "id" : 1,
+        "name" : "레벨1"
+      }
+    },
+    "title" : "나는야 Joanne",
+    "content" : "SPA 방식으로 앱을 구현하였음.\nrouter 를 구현 하여 이용함.\n",
+    "tags" : [ {
+      "id" : 1,
+      "name" : "spa"
+    }, {
+      "id" : 2,
+      "name" : "router"
+    } ],
+    "scrap" : false
+  } ],
+  "totalSize" : 1,
+  "totalPage" : 1,
+  "currPage" : 1
+}</code></pre>
 </div>
 </div>
 </div>
@@ -679,12 +858,60 @@ Connection: keep-alive</code></pre>
 <h4 id="_request_7"><a class="link" href="#_request_7">Request</a></h4>
 <div class="paragraph">
 <p>Unresolved directive in studylog.adoc - include::../../../build/generated-snippets/studylog/read/http-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /posts/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjMzNTA3NjM1LCJleHAiOjE2MzM1MTEyMzUsInJvbGUiOiJDUkVXIn0.f5Oog8FsqznzSTrJ0fAS_G02WcrPkHpdNFE5qje-jYE
+Host: localhost:4000</code></pre>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_response_7"><a class="link" href="#_response_7">Response</a></h4>
 <div class="paragraph">
 <p>Unresolved directive in studylog.adoc - include::../../../build/generated-snippets/studylog/read/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 06 Oct 2021 08:07:15 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 683
+
+{
+  "id" : 1,
+  "author" : {
+    "id" : 1,
+    "username" : "soulG",
+    "nickname" : "소롱",
+    "role" : "CREW",
+    "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
+  },
+  "createdAt" : "2021-10-06T17:07:15.644652",
+  "updatedAt" : "2021-10-06T17:07:15.644652",
+  "mission" : {
+    "id" : 1,
+    "name" : "레벨1 - 지하철 노선도 미션",
+    "level" : {
+      "id" : 1,
+      "name" : "레벨1"
+    }
+  },
+  "title" : "나는야 Joanne",
+  "content" : "SPA 방식으로 앱을 구현하였음.\nrouter 를 구현 하여 이용함.\n",
+  "tags" : [ {
+    "id" : 1,
+    "name" : "spa"
+  }, {
+    "id" : 2,
+    "name" : "router"
+  } ],
+  "scrap" : false
+}</code></pre>
 </div>
 </div>
 </div>
@@ -694,12 +921,39 @@ Connection: keep-alive</code></pre>
 <h4 id="_request_8"><a class="link" href="#_request_8">Request</a></h4>
 <div class="paragraph">
 <p>Unresolved directive in studylog.adoc - include::../../../build/generated-snippets/studylog/edit/http-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /posts/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjMzNTA3NjM2LCJleHAiOjE2MzM1MTEyMzYsInJvbGUiOiJDUkVXIn0.Ao42iSq7vZOr7GegVrZw6_KlyeS4hcJPyeKFpD6ONhk
+Content-Type: application/json; charset=UTF-8
+Host: localhost:4000
+Content-Length: 155
+
+{
+  "title" : "수정된 제목",
+  "content" : "수정된 내용",
+  "missionId" : 2,
+  "tags" : [ {
+    "name" : "spa"
+  }, {
+    "name" : "edit"
+  } ]
+}</code></pre>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_response_8"><a class="link" href="#_response_8">Response</a></h4>
 <div class="paragraph">
 <p>Unresolved directive in studylog.adoc - include::../../../build/generated-snippets/studylog/edit/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Date: Wed, 06 Oct 2021 08:07:16 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive</code></pre>
 </div>
 </div>
 </div>
@@ -709,12 +963,27 @@ Connection: keep-alive</code></pre>
 <h4 id="_request_9"><a class="link" href="#_request_9">Request</a></h4>
 <div class="paragraph">
 <p>Unresolved directive in studylog.adoc - include::../../../build/generated-snippets/studylog/delete/http-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /posts/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjMzNTA3NjM2LCJleHAiOjE2MzM1MTEyMzYsInJvbGUiOiJDUkVXIn0.Ao42iSq7vZOr7GegVrZw6_KlyeS4hcJPyeKFpD6ONhk
+Accept: application/json
+Host: localhost:4000</code></pre>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_response_9"><a class="link" href="#_response_9">Response</a></h4>
 <div class="paragraph">
 <p>Unresolved directive in studylog.adoc - include::../../../build/generated-snippets/studylog/delete/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Date: Wed, 06 Oct 2021 08:07:16 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive</code></pre>
 </div>
 </div>
 </div>
@@ -744,7 +1013,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 03 Oct 2021 13:13:56 GMT
+Date: Wed, 06 Oct 2021 08:07:17 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 153
@@ -782,10 +1051,10 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 03 Oct 2021 13:13:56 GMT
+Date: Wed, 06 Oct 2021 08:07:16 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 1426
+Content-Length: 1468
 
 {
   "data" : [ {
@@ -797,8 +1066,8 @@ Content-Length: 1426
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2021-10-03T22:13:56.542037",
-    "updatedAt" : "2021-10-03T22:13:56.542037",
+    "createdAt" : "2021-10-06T17:07:17.330551",
+    "updatedAt" : "2021-10-06T17:07:17.330551",
     "mission" : {
       "id" : 2,
       "name" : "레벨3 - 프로젝트",
@@ -815,7 +1084,8 @@ Content-Length: 1426
     }, {
       "id" : 4,
       "name" : "jpa"
-    } ]
+    } ],
+    "scrap" : false
   }, {
     "id" : 1,
     "author" : {
@@ -825,8 +1095,8 @@ Content-Length: 1426
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2021-10-03T22:13:56.202426",
-    "updatedAt" : "2021-10-03T22:13:56.202426",
+    "createdAt" : "2021-10-06T17:07:17.294474",
+    "updatedAt" : "2021-10-06T17:07:17.294474",
     "mission" : {
       "id" : 1,
       "name" : "레벨1 - 지하철 노선도 미션",
@@ -843,7 +1113,8 @@ Content-Length: 1426
     }, {
       "id" : 2,
       "name" : "router"
-    } ]
+    } ],
+    "scrap" : false
   } ],
   "totalSize" : 2,
   "totalPage" : 1,
@@ -886,7 +1157,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 03 Oct 2021 13:13:54 GMT
+Date: Wed, 06 Oct 2021 08:07:16 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 111
@@ -931,7 +1202,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 03 Oct 2021 13:13:52 GMT
+Date: Wed, 06 Oct 2021 08:07:16 GMT
 Connection: close
 Content-Length: 63
 
@@ -964,7 +1235,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 03 Oct 2021 13:13:54 GMT
+Date: Wed, 06 Oct 2021 08:07:16 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 205
@@ -1014,7 +1285,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 03 Oct 2021 13:13:56 GMT
+Date: Sat, 04 Sep 2021 01:54:13 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 79
@@ -1057,7 +1328,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 03 Oct 2021 13:13:57 GMT
+Date: Wed, 06 Oct 2021 08:07:19 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 585
@@ -1880,10 +2151,6064 @@ Content-Length: 87
 </div>
 </div>
 </div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_17"><a class="link" href="#_response_17">Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 06 Oct 2021 08:07:16 GMT
+Connection: close
+Content-Length: 80
+
+{
+  "code" : 1004,
+  "message" : "해당 ID를 가진 멤버가 없습니다."
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_멤버_달력_포스트_조회"><a class="link" href="#_멤버_달력_포스트_조회">멤버 달력 포스트 조회</a></h3>
+<div class="sect3">
+<h4 id="_request_18"><a class="link" href="#_request_18">Request</a></h4>
+<div class="paragraph">
+<p>Unresolved directive in studylogOverview.adoc - include::../../../build/generated-snippets/members/calendar-studylogs/http-request.adoc[]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_18"><a class="link" href="#_response_18">Response</a></h4>
+<div class="paragraph">
+<p>Unresolved directive in studylogOverview.adoc - include::../../../build/generated-snippets/members/calendar-studylogs/http-response.adoc[]</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="Report"><a class="link" href="#Report">리포트</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_리포트_생성"><a class="link" href="#_리포트_생성">리포트 생성</a></h3>
+<div class="sect3">
+<h4 id="_request_19"><a class="link" href="#_request_19">Request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /reports HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNjMzNTA3NjM5LCJleHAiOjE2MzM1MTEyMzksInJvbGUiOiJDUkVXIn0.6DG80UXauqow_fPCiXJ_BpnmMwqsCGlx7bM0NH1ckFk
+Content-Type: application/json; charset=UTF-8
+Host: localhost:4000
+Content-Length: 1806
+
+{
+  "id" : null,
+  "title" : "새로운 리포트",
+  "description" : "변경된 설명",
+  "abilityGraph" : {
+    "abilities" : [ {
+      "id" : 37,
+      "weight" : 1,
+      "represent" : true
+    }, {
+      "id" : 38,
+      "weight" : 1,
+      "represent" : true
+    }, {
+      "id" : 39,
+      "weight" : 1,
+      "represent" : true
+    }, {
+      "id" : 40,
+      "weight" : 1,
+      "represent" : true
+    }, {
+      "id" : 41,
+      "weight" : 1,
+      "represent" : true
+    } ]
+  },
+  "studylogs" : [ {
+    "id" : 49,
+    "abilities" : [ 59, 43, 58, 46, 49, 61, 56, 47, 44 ]
+  }, {
+    "id" : 58,
+    "abilities" : [ 57, 62, 53, 61, 45, 54, 48, 51, 55, 63, 59, 49, 60, 47, 58, 38, 46, 41, 43, 40, 50, 44, 37, 56, 39, 52 ]
+  }, {
+    "id" : 45,
+    "abilities" : [ 56, 44, 62 ]
+  }, {
+    "id" : 46,
+    "abilities" : [ 45, 49, 55, 54, 43, 63, 59, 46, 61, 48 ]
+  }, {
+    "id" : 52,
+    "abilities" : [ ]
+  }, {
+    "id" : 43,
+    "abilities" : [ 38, 59, 46, 44, 40, 54, 49, 52, 50, 41, 37, 39, 51, 42, 60, 43, 48, 61, 58, 45, 63, 62, 55, 56 ]
+  }, {
+    "id" : 60,
+    "abilities" : [ 57, 37, 43, 46, 44, 45, 40, 61, 60, 54, 51, 63, 49, 50, 56, 58, 53, 62, 41, 55, 48, 42 ]
+  }, {
+    "id" : 50,
+    "abilities" : [ 46 ]
+  }, {
+    "id" : 57,
+    "abilities" : [ 42, 59, 39, 37, 58, 61, 63 ]
+  }, {
+    "id" : 55,
+    "abilities" : [ 51, 55, 40, 44, 39, 38, 61, 50, 43, 56, 53, 58, 60, 46, 45, 47, 59, 52, 63, 62, 48, 49, 41, 37, 54, 57 ]
+  }, {
+    "id" : 47,
+    "abilities" : [ 45, 60, 61, 46, 42, 41 ]
+  }, {
+    "id" : 42,
+    "abilities" : [ 63, 42, 58, 57, 62, 48, 44, 52, 46, 60, 59, 40 ]
+  }, {
+    "id" : 56,
+    "abilities" : [ 53, 42, 41, 52, 45 ]
+  }, {
+    "id" : 48,
+    "abilities" : [ 43, 59, 48, 56, 54, 57, 60, 42, 47, 37, 58, 49, 50, 52, 38, 61 ]
+  } ],
+  "represent" : false
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_19"><a class="link" href="#_response_19">Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 06 Oct 2021 08:07:19 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 22776
+
+{
+  "id" : 4,
+  "title" : "새로운 리포트",
+  "description" : "변경된 설명",
+  "abilityGraph" : {
+    "abilities" : [ {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    } ]
+  },
+  "studylogs" : [ {
+    "id" : 49,
+    "createAt" : "2021-10-06T17:07:17.735646",
+    "updateAt" : "2021-10-06T17:07:17.735646",
+    "title" : "페이지네이션 데이터 47",
+    "abilities" : [ {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 58,
+    "createAt" : "2021-10-06T17:07:17.758427",
+    "updateAt" : "2021-10-06T17:07:17.758427",
+    "title" : "페이지네이션 데이터 56",
+    "abilities" : [ {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 45,
+    "createAt" : "2021-10-06T17:07:17.726725",
+    "updateAt" : "2021-10-06T17:07:17.726725",
+    "title" : "페이지네이션 데이터 43",
+    "abilities" : [ {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 46,
+    "createAt" : "2021-10-06T17:07:17.728743",
+    "updateAt" : "2021-10-06T17:07:17.728743",
+    "title" : "페이지네이션 데이터 44",
+    "abilities" : [ {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 52,
+    "createAt" : "2021-10-06T17:07:17.743762",
+    "updateAt" : "2021-10-06T17:07:17.743762",
+    "title" : "페이지네이션 데이터 50",
+    "abilities" : [ ]
+  }, {
+    "id" : 43,
+    "createAt" : "2021-10-06T17:07:17.717767",
+    "updateAt" : "2021-10-06T17:07:17.717767",
+    "title" : "페이지네이션 데이터 41",
+    "abilities" : [ {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 60,
+    "createAt" : "2021-10-06T17:07:17.762113",
+    "updateAt" : "2021-10-06T17:07:17.762113",
+    "title" : "페이지네이션 데이터 58",
+    "abilities" : [ {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 50,
+    "createAt" : "2021-10-06T17:07:17.73735",
+    "updateAt" : "2021-10-06T17:07:17.73735",
+    "title" : "페이지네이션 데이터 48",
+    "abilities" : [ {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 57,
+    "createAt" : "2021-10-06T17:07:17.756118",
+    "updateAt" : "2021-10-06T17:07:17.756118",
+    "title" : "페이지네이션 데이터 55",
+    "abilities" : [ {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 55,
+    "createAt" : "2021-10-06T17:07:17.751003",
+    "updateAt" : "2021-10-06T17:07:17.751003",
+    "title" : "페이지네이션 데이터 53",
+    "abilities" : [ {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 47,
+    "createAt" : "2021-10-06T17:07:17.731583",
+    "updateAt" : "2021-10-06T17:07:17.731583",
+    "title" : "페이지네이션 데이터 45",
+    "abilities" : [ {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    } ]
+  }, {
+    "id" : 42,
+    "createAt" : "2021-10-06T17:07:17.713326",
+    "updateAt" : "2021-10-06T17:07:17.713326",
+    "title" : "페이지네이션 데이터 40",
+    "abilities" : [ {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    } ]
+  }, {
+    "id" : 56,
+    "createAt" : "2021-10-06T17:07:17.754425",
+    "updateAt" : "2021-10-06T17:07:17.754425",
+    "title" : "페이지네이션 데이터 54",
+    "abilities" : [ {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 48,
+    "createAt" : "2021-10-06T17:07:17.733339",
+    "updateAt" : "2021-10-06T17:07:17.733339",
+    "title" : "페이지네이션 데이터 46",
+    "abilities" : [ {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    } ]
+  } ],
+  "represent" : false
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_멤버의_리포트_조회_단순_데이터_조회"><a class="link" href="#_멤버의_리포트_조회_단순_데이터_조회">멤버의 리포트 조회 - 단순 데이터 조회</a></h3>
+<div class="sect3">
+<h4 id="_request_20"><a class="link" href="#_request_20">Request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /reports?username=devhyun637&amp;type=simple&amp;page=0&amp;size=10 HTTP/1.1
+Content-Type: application/json; charset=UTF-8
+Host: localhost:4000</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_20"><a class="link" href="#_response_20">Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 06 Oct 2021 08:07:19 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 229
+
+[ {
+  "id" : 3,
+  "title" : "타이틀 입니다 3",
+  "represent" : true
+}, {
+  "id" : 2,
+  "title" : "타이틀 입니다 2",
+  "represent" : false
+}, {
+  "id" : 1,
+  "title" : "타이틀 입니다 1",
+  "represent" : false
+} ]</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_멤버의_리포트_조회_전체_데이터_조회"><a class="link" href="#_멤버의_리포트_조회_전체_데이터_조회">멤버의 리포트 조회 - 전체 데이터 조회</a></h3>
+<div class="sect3">
+<h4 id="_request_21"><a class="link" href="#_request_21">Request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /reports?username=devhyun637&amp;type=all&amp;page=0&amp;size=10 HTTP/1.1
+Content-Type: application/json; charset=UTF-8
+Host: localhost:4000</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_21"><a class="link" href="#_response_21">Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 06 Oct 2021 08:07:19 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 65770
+
+[ {
+  "id" : 3,
+  "title" : "타이틀 입니다 3",
+  "description" : "설명 입니다 3",
+  "abilityGraph" : {
+    "abilities" : [ {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    } ]
+  },
+  "studylogs" : [ {
+    "id" : 56,
+    "createAt" : "2021-10-06T17:07:17.754425",
+    "updateAt" : "2021-10-06T17:07:17.754425",
+    "title" : "페이지네이션 데이터 54",
+    "abilities" : [ {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 52,
+    "createAt" : "2021-10-06T17:07:17.743762",
+    "updateAt" : "2021-10-06T17:07:17.743762",
+    "title" : "페이지네이션 데이터 50",
+    "abilities" : [ {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    } ]
+  }, {
+    "id" : 54,
+    "createAt" : "2021-10-06T17:07:17.748561",
+    "updateAt" : "2021-10-06T17:07:17.748561",
+    "title" : "페이지네이션 데이터 52",
+    "abilities" : [ ]
+  }, {
+    "id" : 48,
+    "createAt" : "2021-10-06T17:07:17.733339",
+    "updateAt" : "2021-10-06T17:07:17.733339",
+    "title" : "페이지네이션 데이터 46",
+    "abilities" : [ {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    } ]
+  }, {
+    "id" : 51,
+    "createAt" : "2021-10-06T17:07:17.739574",
+    "updateAt" : "2021-10-06T17:07:17.739574",
+    "title" : "페이지네이션 데이터 49",
+    "abilities" : [ {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 55,
+    "createAt" : "2021-10-06T17:07:17.751003",
+    "updateAt" : "2021-10-06T17:07:17.751003",
+    "title" : "페이지네이션 데이터 53",
+    "abilities" : [ {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 47,
+    "createAt" : "2021-10-06T17:07:17.731583",
+    "updateAt" : "2021-10-06T17:07:17.731583",
+    "title" : "페이지네이션 데이터 45",
+    "abilities" : [ {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 60,
+    "createAt" : "2021-10-06T17:07:17.762113",
+    "updateAt" : "2021-10-06T17:07:17.762113",
+    "title" : "페이지네이션 데이터 58",
+    "abilities" : [ {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 43,
+    "createAt" : "2021-10-06T17:07:17.717767",
+    "updateAt" : "2021-10-06T17:07:17.717767",
+    "title" : "페이지네이션 데이터 41",
+    "abilities" : [ {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 50,
+    "createAt" : "2021-10-06T17:07:17.73735",
+    "updateAt" : "2021-10-06T17:07:17.73735",
+    "title" : "페이지네이션 데이터 48",
+    "abilities" : [ {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 58,
+    "createAt" : "2021-10-06T17:07:17.758427",
+    "updateAt" : "2021-10-06T17:07:17.758427",
+    "title" : "페이지네이션 데이터 56",
+    "abilities" : [ {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 44,
+    "createAt" : "2021-10-06T17:07:17.722707",
+    "updateAt" : "2021-10-06T17:07:17.722707",
+    "title" : "페이지네이션 데이터 42",
+    "abilities" : [ ]
+  }, {
+    "id" : 45,
+    "createAt" : "2021-10-06T17:07:17.726725",
+    "updateAt" : "2021-10-06T17:07:17.726725",
+    "title" : "페이지네이션 데이터 43",
+    "abilities" : [ {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 53,
+    "createAt" : "2021-10-06T17:07:17.746634",
+    "updateAt" : "2021-10-06T17:07:17.746634",
+    "title" : "페이지네이션 데이터 51",
+    "abilities" : [ {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 57,
+    "createAt" : "2021-10-06T17:07:17.756118",
+    "updateAt" : "2021-10-06T17:07:17.756118",
+    "title" : "페이지네이션 데이터 55",
+    "abilities" : [ {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 49,
+    "createAt" : "2021-10-06T17:07:17.735646",
+    "updateAt" : "2021-10-06T17:07:17.735646",
+    "title" : "페이지네이션 데이터 47",
+    "abilities" : [ {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    } ]
+  }, {
+    "id" : 42,
+    "createAt" : "2021-10-06T17:07:17.713326",
+    "updateAt" : "2021-10-06T17:07:17.713326",
+    "title" : "페이지네이션 데이터 40",
+    "abilities" : [ {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  } ],
+  "represent" : true
+}, {
+  "id" : 2,
+  "title" : "타이틀 입니다 2",
+  "description" : "설명 입니다 2",
+  "abilityGraph" : {
+    "abilities" : [ {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    } ]
+  },
+  "studylogs" : [ {
+    "id" : 55,
+    "createAt" : "2021-10-06T17:07:17.751003",
+    "updateAt" : "2021-10-06T17:07:17.751003",
+    "title" : "페이지네이션 데이터 53",
+    "abilities" : [ {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 48,
+    "createAt" : "2021-10-06T17:07:17.733339",
+    "updateAt" : "2021-10-06T17:07:17.733339",
+    "title" : "페이지네이션 데이터 46",
+    "abilities" : [ {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 42,
+    "createAt" : "2021-10-06T17:07:17.713326",
+    "updateAt" : "2021-10-06T17:07:17.713326",
+    "title" : "페이지네이션 데이터 40",
+    "abilities" : [ {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 54,
+    "createAt" : "2021-10-06T17:07:17.748561",
+    "updateAt" : "2021-10-06T17:07:17.748561",
+    "title" : "페이지네이션 데이터 52",
+    "abilities" : [ {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 47,
+    "createAt" : "2021-10-06T17:07:17.731583",
+    "updateAt" : "2021-10-06T17:07:17.731583",
+    "title" : "페이지네이션 데이터 45",
+    "abilities" : [ {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    } ]
+  } ],
+  "represent" : false
+}, {
+  "id" : 1,
+  "title" : "변역된 타이틀",
+  "description" : "변경된 설명",
+  "abilityGraph" : {
+    "abilities" : [ {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    } ]
+  },
+  "studylogs" : [ {
+    "id" : 49,
+    "createAt" : "2021-10-06T17:07:17.735646",
+    "updateAt" : "2021-10-06T17:07:17.735646",
+    "title" : "페이지네이션 데이터 47",
+    "abilities" : [ {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 58,
+    "createAt" : "2021-10-06T17:07:17.758427",
+    "updateAt" : "2021-10-06T17:07:17.758427",
+    "title" : "페이지네이션 데이터 56",
+    "abilities" : [ {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 45,
+    "createAt" : "2021-10-06T17:07:17.726725",
+    "updateAt" : "2021-10-06T17:07:17.726725",
+    "title" : "페이지네이션 데이터 43",
+    "abilities" : [ {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 46,
+    "createAt" : "2021-10-06T17:07:17.728743",
+    "updateAt" : "2021-10-06T17:07:17.728743",
+    "title" : "페이지네이션 데이터 44",
+    "abilities" : [ {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 52,
+    "createAt" : "2021-10-06T17:07:17.743762",
+    "updateAt" : "2021-10-06T17:07:17.743762",
+    "title" : "페이지네이션 데이터 50",
+    "abilities" : [ ]
+  }, {
+    "id" : 43,
+    "createAt" : "2021-10-06T17:07:17.717767",
+    "updateAt" : "2021-10-06T17:07:17.717767",
+    "title" : "페이지네이션 데이터 41",
+    "abilities" : [ {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 60,
+    "createAt" : "2021-10-06T17:07:17.762113",
+    "updateAt" : "2021-10-06T17:07:17.762113",
+    "title" : "페이지네이션 데이터 58",
+    "abilities" : [ {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 50,
+    "createAt" : "2021-10-06T17:07:17.73735",
+    "updateAt" : "2021-10-06T17:07:17.73735",
+    "title" : "페이지네이션 데이터 48",
+    "abilities" : [ {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 57,
+    "createAt" : "2021-10-06T17:07:17.756118",
+    "updateAt" : "2021-10-06T17:07:17.756118",
+    "title" : "페이지네이션 데이터 55",
+    "abilities" : [ {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 55,
+    "createAt" : "2021-10-06T17:07:17.751003",
+    "updateAt" : "2021-10-06T17:07:17.751003",
+    "title" : "페이지네이션 데이터 53",
+    "abilities" : [ {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 47,
+    "createAt" : "2021-10-06T17:07:17.731583",
+    "updateAt" : "2021-10-06T17:07:17.731583",
+    "title" : "페이지네이션 데이터 45",
+    "abilities" : [ {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    } ]
+  }, {
+    "id" : 42,
+    "createAt" : "2021-10-06T17:07:17.713326",
+    "updateAt" : "2021-10-06T17:07:17.713326",
+    "title" : "페이지네이션 데이터 40",
+    "abilities" : [ {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    } ]
+  }, {
+    "id" : 56,
+    "createAt" : "2021-10-06T17:07:17.754425",
+    "updateAt" : "2021-10-06T17:07:17.754425",
+    "title" : "페이지네이션 데이터 54",
+    "abilities" : [ {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 48,
+    "createAt" : "2021-10-06T17:07:17.733339",
+    "updateAt" : "2021-10-06T17:07:17.733339",
+    "title" : "페이지네이션 데이터 46",
+    "abilities" : [ {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    } ]
+  } ],
+  "represent" : false
+} ]</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_리포트_단건_조회"><a class="link" href="#_리포트_단건_조회">리포트 단건 조회</a></h3>
+<div class="sect3">
+<h4 id="_request_22"><a class="link" href="#_request_22">Request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /reports/1 HTTP/1.1
+Content-Type: application/json; charset=UTF-8
+Host: localhost:4000</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_22"><a class="link" href="#_response_22">Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 06 Oct 2021 08:07:19 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 22776
+
+{
+  "id" : 1,
+  "title" : "변역된 타이틀",
+  "description" : "변경된 설명",
+  "abilityGraph" : {
+    "abilities" : [ {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    } ]
+  },
+  "studylogs" : [ {
+    "id" : 49,
+    "createAt" : "2021-10-06T17:07:17.735646",
+    "updateAt" : "2021-10-06T17:07:17.735646",
+    "title" : "페이지네이션 데이터 47",
+    "abilities" : [ {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 58,
+    "createAt" : "2021-10-06T17:07:17.758427",
+    "updateAt" : "2021-10-06T17:07:17.758427",
+    "title" : "페이지네이션 데이터 56",
+    "abilities" : [ {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 45,
+    "createAt" : "2021-10-06T17:07:17.726725",
+    "updateAt" : "2021-10-06T17:07:17.726725",
+    "title" : "페이지네이션 데이터 43",
+    "abilities" : [ {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 46,
+    "createAt" : "2021-10-06T17:07:17.728743",
+    "updateAt" : "2021-10-06T17:07:17.728743",
+    "title" : "페이지네이션 데이터 44",
+    "abilities" : [ {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 52,
+    "createAt" : "2021-10-06T17:07:17.743762",
+    "updateAt" : "2021-10-06T17:07:17.743762",
+    "title" : "페이지네이션 데이터 50",
+    "abilities" : [ ]
+  }, {
+    "id" : 43,
+    "createAt" : "2021-10-06T17:07:17.717767",
+    "updateAt" : "2021-10-06T17:07:17.717767",
+    "title" : "페이지네이션 데이터 41",
+    "abilities" : [ {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 60,
+    "createAt" : "2021-10-06T17:07:17.762113",
+    "updateAt" : "2021-10-06T17:07:17.762113",
+    "title" : "페이지네이션 데이터 58",
+    "abilities" : [ {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 50,
+    "createAt" : "2021-10-06T17:07:17.73735",
+    "updateAt" : "2021-10-06T17:07:17.73735",
+    "title" : "페이지네이션 데이터 48",
+    "abilities" : [ {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 57,
+    "createAt" : "2021-10-06T17:07:17.756118",
+    "updateAt" : "2021-10-06T17:07:17.756118",
+    "title" : "페이지네이션 데이터 55",
+    "abilities" : [ {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 55,
+    "createAt" : "2021-10-06T17:07:17.751003",
+    "updateAt" : "2021-10-06T17:07:17.751003",
+    "title" : "페이지네이션 데이터 53",
+    "abilities" : [ {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 47,
+    "createAt" : "2021-10-06T17:07:17.731583",
+    "updateAt" : "2021-10-06T17:07:17.731583",
+    "title" : "페이지네이션 데이터 45",
+    "abilities" : [ {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    } ]
+  }, {
+    "id" : 42,
+    "createAt" : "2021-10-06T17:07:17.713326",
+    "updateAt" : "2021-10-06T17:07:17.713326",
+    "title" : "페이지네이션 데이터 40",
+    "abilities" : [ {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    } ]
+  }, {
+    "id" : 56,
+    "createAt" : "2021-10-06T17:07:17.754425",
+    "updateAt" : "2021-10-06T17:07:17.754425",
+    "title" : "페이지네이션 데이터 54",
+    "abilities" : [ {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 48,
+    "createAt" : "2021-10-06T17:07:17.733339",
+    "updateAt" : "2021-10-06T17:07:17.733339",
+    "title" : "페이지네이션 데이터 46",
+    "abilities" : [ {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    } ]
+  } ],
+  "represent" : false
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_리포트_수정"><a class="link" href="#_리포트_수정">리포트 수정</a></h3>
+<div class="sect3">
+<h4 id="_request_23"><a class="link" href="#_request_23">Request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /reports/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNjMzNTA3NjM5LCJleHAiOjE2MzM1MTEyMzksInJvbGUiOiJDUkVXIn0.6DG80UXauqow_fPCiXJ_BpnmMwqsCGlx7bM0NH1ckFk
+Content-Type: application/json; charset=UTF-8
+Host: localhost:4000
+Content-Length: 1803
+
+{
+  "id" : 1,
+  "title" : "변역된 타이틀",
+  "description" : "변경된 설명",
+  "abilityGraph" : {
+    "abilities" : [ {
+      "id" : 37,
+      "weight" : 1,
+      "represent" : true
+    }, {
+      "id" : 38,
+      "weight" : 1,
+      "represent" : true
+    }, {
+      "id" : 39,
+      "weight" : 1,
+      "represent" : true
+    }, {
+      "id" : 40,
+      "weight" : 1,
+      "represent" : true
+    }, {
+      "id" : 41,
+      "weight" : 1,
+      "represent" : true
+    } ]
+  },
+  "studylogs" : [ {
+    "id" : 49,
+    "abilities" : [ 59, 43, 58, 46, 49, 61, 56, 47, 44 ]
+  }, {
+    "id" : 58,
+    "abilities" : [ 57, 62, 53, 61, 45, 54, 48, 51, 55, 63, 59, 49, 60, 47, 58, 38, 46, 41, 43, 40, 50, 44, 37, 56, 39, 52 ]
+  }, {
+    "id" : 45,
+    "abilities" : [ 56, 44, 62 ]
+  }, {
+    "id" : 46,
+    "abilities" : [ 45, 49, 55, 54, 43, 63, 59, 46, 61, 48 ]
+  }, {
+    "id" : 52,
+    "abilities" : [ ]
+  }, {
+    "id" : 43,
+    "abilities" : [ 38, 59, 46, 44, 40, 54, 49, 52, 50, 41, 37, 39, 51, 42, 60, 43, 48, 61, 58, 45, 63, 62, 55, 56 ]
+  }, {
+    "id" : 60,
+    "abilities" : [ 57, 37, 43, 46, 44, 45, 40, 61, 60, 54, 51, 63, 49, 50, 56, 58, 53, 62, 41, 55, 48, 42 ]
+  }, {
+    "id" : 50,
+    "abilities" : [ 46 ]
+  }, {
+    "id" : 57,
+    "abilities" : [ 42, 59, 39, 37, 58, 61, 63 ]
+  }, {
+    "id" : 55,
+    "abilities" : [ 51, 55, 40, 44, 39, 38, 61, 50, 43, 56, 53, 58, 60, 46, 45, 47, 59, 52, 63, 62, 48, 49, 41, 37, 54, 57 ]
+  }, {
+    "id" : 47,
+    "abilities" : [ 45, 60, 61, 46, 42, 41 ]
+  }, {
+    "id" : 42,
+    "abilities" : [ 63, 42, 58, 57, 62, 48, 44, 52, 46, 60, 59, 40 ]
+  }, {
+    "id" : 56,
+    "abilities" : [ 53, 42, 41, 52, 45 ]
+  }, {
+    "id" : 48,
+    "abilities" : [ 43, 59, 48, 56, 54, 57, 60, 42, 47, 37, 58, 49, 50, 52, 38, 61 ]
+  } ],
+  "represent" : false
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_23"><a class="link" href="#_response_23">Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 06 Oct 2021 08:07:19 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 22776
+
+{
+  "id" : 1,
+  "title" : "변역된 타이틀",
+  "description" : "변경된 설명",
+  "abilityGraph" : {
+    "abilities" : [ {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "weight" : 1,
+      "percentage" : 0.2,
+      "present" : true
+    } ]
+  },
+  "studylogs" : [ {
+    "id" : 49,
+    "createAt" : "2021-10-06T17:07:17.735646",
+    "updateAt" : "2021-10-06T17:07:17.735646",
+    "title" : "페이지네이션 데이터 47",
+    "abilities" : [ {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 58,
+    "createAt" : "2021-10-06T17:07:17.758427",
+    "updateAt" : "2021-10-06T17:07:17.758427",
+    "title" : "페이지네이션 데이터 56",
+    "abilities" : [ {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 45,
+    "createAt" : "2021-10-06T17:07:17.726725",
+    "updateAt" : "2021-10-06T17:07:17.726725",
+    "title" : "페이지네이션 데이터 43",
+    "abilities" : [ {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 46,
+    "createAt" : "2021-10-06T17:07:17.728743",
+    "updateAt" : "2021-10-06T17:07:17.728743",
+    "title" : "페이지네이션 데이터 44",
+    "abilities" : [ {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 52,
+    "createAt" : "2021-10-06T17:07:17.743762",
+    "updateAt" : "2021-10-06T17:07:17.743762",
+    "title" : "페이지네이션 데이터 50",
+    "abilities" : [ ]
+  }, {
+    "id" : 43,
+    "createAt" : "2021-10-06T17:07:17.717767",
+    "updateAt" : "2021-10-06T17:07:17.717767",
+    "title" : "페이지네이션 데이터 41",
+    "abilities" : [ {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 60,
+    "createAt" : "2021-10-06T17:07:17.762113",
+    "updateAt" : "2021-10-06T17:07:17.762113",
+    "title" : "페이지네이션 데이터 58",
+    "abilities" : [ {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 50,
+    "createAt" : "2021-10-06T17:07:17.73735",
+    "updateAt" : "2021-10-06T17:07:17.73735",
+    "title" : "페이지네이션 데이터 48",
+    "abilities" : [ {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 57,
+    "createAt" : "2021-10-06T17:07:17.756118",
+    "updateAt" : "2021-10-06T17:07:17.756118",
+    "title" : "페이지네이션 데이터 55",
+    "abilities" : [ {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 55,
+    "createAt" : "2021-10-06T17:07:17.751003",
+    "updateAt" : "2021-10-06T17:07:17.751003",
+    "title" : "페이지네이션 데이터 53",
+    "abilities" : [ {
+      "id" : 51,
+      "name" : "OS",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 55,
+      "name" : "3D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 39,
+      "name" : "Graphics",
+      "color" : "#2f8aff",
+      "parent" : true
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 47,
+    "createAt" : "2021-10-06T17:07:17.731583",
+    "updateAt" : "2021-10-06T17:07:17.731583",
+    "title" : "페이지네이션 데이터 45",
+    "abilities" : [ {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    } ]
+  }, {
+    "id" : 42,
+    "createAt" : "2021-10-06T17:07:17.713326",
+    "updateAt" : "2021-10-06T17:07:17.713326",
+    "title" : "페이지네이션 데이터 40",
+    "abilities" : [ {
+      "id" : 63,
+      "name" : "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 62,
+      "name" : "테스트와 프로젝트 배포",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 44,
+      "name" : "브라우저",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 46,
+      "name" : "성능",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 40,
+      "name" : "UI/UX",
+      "color" : "#2fff6e",
+      "parent" : true
+    } ]
+  }, {
+    "id" : 56,
+    "createAt" : "2021-10-06T17:07:17.754425",
+    "updateAt" : "2021-10-06T17:07:17.754425",
+    "title" : "페이지네이션 데이터 54",
+    "abilities" : [ {
+      "id" : 53,
+      "name" : "트랜지션, 애니메이션",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 41,
+      "name" : "Architecture",
+      "color" : "#e5ffcc",
+      "parent" : true
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 45,
+      "name" : "비동기&amp;데이터 처리",
+      "color" : "#ff009a",
+      "parent" : false
+    } ]
+  }, {
+    "id" : 48,
+    "createAt" : "2021-10-06T17:07:17.733339",
+    "updateAt" : "2021-10-06T17:07:17.733339",
+    "title" : "페이지네이션 데이터 46",
+    "abilities" : [ {
+      "id" : 43,
+      "name" : "고급 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 59,
+      "name" : "UX 일반 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 48,
+      "name" : "네트워크",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 56,
+      "name" : "Vector 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 54,
+      "name" : "2D 그래픽스",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 57,
+      "name" : "인터랙션 디자인 이론",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 60,
+      "name" : "웹애플리케이션 구현 시 고려해야 하는 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    }, {
+      "id" : 42,
+      "name" : "기초 언어 시스템",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 47,
+      "name" : "HTML",
+      "color" : "#ff009a",
+      "parent" : false
+    }, {
+      "id" : 37,
+      "name" : "JavaScript &amp; HTML",
+      "color" : "#ff009a",
+      "parent" : true
+    }, {
+      "id" : 58,
+      "name" : "UI/UX 설계",
+      "color" : "#2fff6e",
+      "parent" : false
+    }, {
+      "id" : 49,
+      "name" : "알고리즘",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 50,
+      "name" : "자료구조",
+      "color" : "#9100ff",
+      "parent" : false
+    }, {
+      "id" : 52,
+      "name" : "CSS 스타일링: 레이아웃과 포지셔닝",
+      "color" : "#2f8aff",
+      "parent" : false
+    }, {
+      "id" : 38,
+      "name" : "CS",
+      "color" : "#9100ff",
+      "parent" : true
+    }, {
+      "id" : 61,
+      "name" : "프로젝트 개발 환경 설계",
+      "color" : "#e5ffcc",
+      "parent" : false
+    } ]
+  } ],
+  "represent" : false
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_리포트_삭제"><a class="link" href="#_리포트_삭제">리포트 삭제</a></h3>
+<div class="sect3">
+<h4 id="_request_24"><a class="link" href="#_request_24">Request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /reports/2 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNjMzNTA3NjQwLCJleHAiOjE2MzM1MTEyNDAsInJvbGUiOiJDUkVXIn0.bsHB2v4OdT_v6K89R_lOPQzjjj5dYX-gjLZTNdArwos
+Content-Type: application/json; charset=UTF-8
+Host: localhost:4000</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_24"><a class="link" href="#_response_24">Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Date: Wed, 06 Oct 2021 08:07:19 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2021-10-03 22:12:43 +0900
+Last updated 2021-10-06 16:56:11 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">
