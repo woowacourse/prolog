@@ -63,9 +63,12 @@ const ProfilePageNewReport = () => {
   const onSubmitReport = (event) => {
     event.preventDefault();
 
+    const currTitle = title.trim();
+
     const data = {
       id: null,
-      title: title !== '' ? title : `${new Date().toLocaleDateString()} ${nickname}의 리포트`,
+      title:
+        currTitle !== '' ? currTitle : `${new Date().toLocaleDateString()} ${nickname}의 리포트`,
       description,
       abilityGraph: { abilities: [] },
       studylogs: studyLogs.map((item) => ({ id: item.id, abilities: [] })),
