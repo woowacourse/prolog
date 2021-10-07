@@ -85,6 +85,48 @@ const requestGetUserTags = (username) => fetch(`${BASE_URL}/members/${username}/
 const requestGetCalendar = (year, month, username) =>
   fetch(`${BASE_URL}/members/${username}/calendar-posts?year=${year}&month=${month}`, {
     method: 'GET',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+  });
+
+const requestGetReportList = (username) =>
+  fetch(`${BASE_URL}/${username}/reports?type=simple`, {
+    method: 'GET',
+  });
+
+const requestGetReport = (reportId) =>
+  fetch(`${BASE_URL}/reports/${reportId}`, {
+    method: 'GET',
+  });
+
+const requestPostReport = (data, accessToken) =>
+  fetch(`${BASE_URL}/reports`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+const requestDeleteReport = (reportId, accessToken) =>
+  fetch(`${BASE_URL}/reports/${reportId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+const requestEditReport = (data, reportId, accessToken) =>
+  fetch(`${BASE_URL}/reports/${reportId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
   });
 
 const requestGetAbilities = (username, accessToken) =>
@@ -172,6 +214,11 @@ export {
   requestAddAbility,
   requestDeleteAbility,
   requestEditAbility,
+  requestGetReportList,
+  requestGetReport,
+  requestPostReport,
+  requestDeleteReport,
+  requestEditReport,
   requestPostScrap,
   requestDeleteScrap,
   requestGetMyScrap,
