@@ -2,6 +2,7 @@ import { useState } from 'react';
 import SubCategoryIcon from '../../components/@shared/Icons/SubCategoryIcon';
 import Chip from '../../components/Chip/Chip';
 import { COLOR } from '../../constants';
+import { ERROR_MESSAGE } from '../../constants/message';
 import { ManageButtonList, Button, FormContainer, ListForm, ColorPicker } from './styles';
 
 const AddAbilityForm = ({

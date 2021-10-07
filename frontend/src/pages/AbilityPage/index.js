@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import { COLOR } from '../../constants';
+import { ERROR_MESSAGE } from '../../constants/message';
 import {
   requestAddAbility,
   requestDeleteAbility,
@@ -47,9 +48,21 @@ const AbilityPage = () => {
 
   const addAbility = async ({ name, description, color, parent = null }) => {
     try {
-      await requestAddAbility(JSON.parse(accessToken), { name, description, color, parent });
+      const response = await requestAddAbility(JSON.parse(accessToken), {
+        name,
+        description,
+        color,
+        parent,
+      });
+
+      if (!response.ok) {
+        const json = await response.json();
+        throw new Error(json.code);
+      }
+
       await getData();
     } catch (error) {
+      alert(ERROR_MESSAGE[error.message]);
       console.error(error);
     }
   };
@@ -60,18 +73,37 @@ const AbilityPage = () => {
     }
 
     try {
-      await requestDeleteAbility(JSON.parse(accessToken), id);
+      const response = await requestDeleteAbility(JSON.parse(accessToken), id);
+
+      if (!response.ok) {
+        const json = await response.json();
+        throw new Error(json.code);
+      }
+
       await getData();
     } catch (error) {
+      alert(ERROR_MESSAGE[error.message]);
       console.error(error);
     }
   };
 
   const editAbility = async ({ id, name, description, color }) => {
     try {
-      await requestEditAbility(JSON.parse(accessToken), { id, name, description, color });
+      const response = await requestEditAbility(JSON.parse(accessToken), {
+        id,
+        name,
+        description,
+        color,
+      });
+
+      if (!response.ok) {
+        const json = await response.json();
+        throw new Error(json.code);
+      }
+
       await getData();
     } catch (error) {
+      alert(ERROR_MESSAGE[error.message]);
       console.error(error);
     }
   };

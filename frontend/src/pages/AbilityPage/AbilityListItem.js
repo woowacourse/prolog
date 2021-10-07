@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Chip from '../../components/Chip/Chip';
 import { COLOR } from '../../constants';
+import { ERROR_MESSAGE } from '../../constants/message';
 import AddAbilityForm from './AddAbilityForm';
 import EditAbilityForm from './EditAbilityForm';
 import { SubAbilityList, ManageButtonList, ArrowButton, Button, EditingListItem } from './styles';
@@ -29,10 +30,6 @@ const AbilityListItem = ({
 
   const openSubList = () => {
     setItemStatus((prevState) => ({ ...prevState, isOpened: true }));
-  };
-
-  const closeSubList = () => {
-    setItemStatus((prevState) => ({ ...prevState, isOpened: false }));
   };
 
   const closeAddForm = () => {
