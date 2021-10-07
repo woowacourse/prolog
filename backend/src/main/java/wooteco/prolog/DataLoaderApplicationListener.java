@@ -148,7 +148,7 @@ public class DataLoaderApplicationListener implements
 
         private static List<Long> getRandomAbilitiesOf(Member member,
                                                        AbilityService abilityService) {
-            List<AbilityResponse> abilitiesByMember = abilityService.findAbilitiesByMember(member);
+            List<AbilityResponse> abilitiesByMember = abilityService.findAbilitiesByMemberId(member.getId());
             Collections.shuffle(abilitiesByMember);
             return abilitiesByMember.subList(0, new Random().nextInt(abilitiesByMember.size()))
                 .stream()
@@ -158,7 +158,7 @@ public class DataLoaderApplicationListener implements
 
         private static List<AbilityRequest> getParentAbilitiesOf(Member member,
                                                                  AbilityService abilityService) {
-            return abilityService.findParentAbilitiesByMember(member).stream()
+            return abilityService.findParentAbilitiesByMemberId(member.getId()).stream()
                 .map(abilityResponse -> new AbilityRequest(
                     abilityResponse.getId(),
                     1L,
