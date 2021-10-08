@@ -38,12 +38,12 @@ const getMenuList = ({ username, isOwner }) => {
       path: `/${username}/posts`,
       Icon: PostIcon,
     },
-    {
-      key: PROFILE_PAGE_MENU.REPORTS,
-      title: '리포트',
-      path: `/${username}/reports`,
-      Icon: PostIcon,
-    },
+    // {
+    //   key: PROFILE_PAGE_MENU.REPORTS,
+    //   title: '리포트',
+    //   path: `/${username}/reports`,
+    //   Icon: PostIcon,
+    // },
   ];
   const privateMenu = [
     {
@@ -52,12 +52,12 @@ const getMenuList = ({ username, isOwner }) => {
       path: `/${username}/scraps`,
       Icon: ScrapIcon,
     },
-    {
-      key: PROFILE_PAGE_MENU.ABILITY,
-      title: '역량',
-      path: `/${username}/ability`,
-      Icon: PostIcon,
-    },
+    // {
+    //   key: PROFILE_PAGE_MENU.ABILITY,
+    //   title: '역량',
+    //   path: `/${username}/ability`,
+    //   Icon: PostIcon,
+    // },
   ];
 
   return isOwner ? [...defaultMenu, ...privateMenu] : defaultMenu;
