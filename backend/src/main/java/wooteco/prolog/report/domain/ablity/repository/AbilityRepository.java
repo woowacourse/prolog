@@ -9,9 +9,9 @@ import wooteco.prolog.report.domain.ablity.Ability;
 
 public interface AbilityRepository extends JpaRepository<Ability, Long> {
 
-    Optional<Ability> findByIdAndMember(Long id, Member member);
+    Optional<Ability> findByIdAndMemberId(Long abilityId, Long memberId);
 
-    List<Ability> findByMemberAndParentIsNull(Member member);
+    List<Ability> findByMemberIdAndParentIsNull(Long memberId);
 
     List<Ability> findByMemberId(Long memberId);
 

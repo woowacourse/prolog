@@ -24,6 +24,45 @@ import useNotFound from '../../hooks/useNotFound';
 import { Button, BUTTON_SIZE } from '..';
 import { useSelector } from 'react-redux';
 
+const getMenuList = ({ username, isOwner }) => {
+  const defaultMenu = [
+    {
+      key: PROFILE_PAGE_MENU.OVERVIEW,
+      title: '오버뷰',
+      path: `/${username}`,
+      Icon: OverviewIcon,
+    },
+    {
+      key: PROFILE_PAGE_MENU.POSTS,
+      title: '학습로그',
+      path: `/${username}/posts`,
+      Icon: PostIcon,
+    },
+    {
+      key: PROFILE_PAGE_MENU.REPORTS,
+      title: '리포트',
+      path: `/${username}/reports`,
+      Icon: PostIcon,
+    },
+  ];
+  const privateMenu = [
+    {
+      key: PROFILE_PAGE_MENU.SCRAPS,
+      title: '스크랩',
+      path: `/${username}/scraps`,
+      Icon: ScrapIcon,
+    },
+    {
+      key: PROFILE_PAGE_MENU.ABILITY,
+      title: '역량',
+      path: `/${username}/ability`,
+      Icon: PostIcon,
+    },
+  ];
+
+  return isOwner ? [...defaultMenu, ...privateMenu] : defaultMenu;
+};
+
 const ProfilePageSideBar = ({ menu }) => {
   const history = useHistory();
   const { username } = useParams();
@@ -39,28 +78,8 @@ const ProfilePageSideBar = ({ menu }) => {
 
   const { setNotFound } = useNotFound();
 
-  const goProfilePage = (event) => {
-    setSelectedMenu(event.currentTarget.value);
-    history.push(`/${username}`);
-  };
-
-  const goProfilePagePosts = (event) => {
-    setSelectedMenu(event.currentTarget.value);
-    history.push(`/${username}/posts`);
-  };
-
-  const goProfilePageScraps = (event) => {
-    setSelectedMenu(event.currentTarget.value);
-    history.push(`/${username}/scraps`);
-  };
-
-  const goProfilePageAccount = () => {
-    history.push(`/${username}/account`);
-  };
-  const goProfilePageReport = (event) => {
-    setSelectedMenu(event.currentTarget.value);
-    history.push(`/${username}/reports`);
-  };
+  const loginUser = useSelector((state) => state.user.profile);
+  const isOwner = !!loginUser.data && username === loginUser.data.username;
 
   const getProfile = async () => {
     try {
@@ -71,6 +90,7 @@ const ProfilePageSideBar = ({ menu }) => {
       }
 
       const user = await response.json();
+
       setUser(user);
       setNickname(user.nickname);
       setNotFound(false);
@@ -113,6 +133,11 @@ const ProfilePageSideBar = ({ menu }) => {
     }
   };
 
+  const onSelectMenu = ({ key, path }) => () => {
+    setSelectedMenu(key);
+    history.push(path);
+  };
+
   useEffect(() => {
     getProfile();
     setSelectedMenu(menu);
@@ -148,36 +173,17 @@ const ProfilePageSideBar = ({ menu }) => {
         </NicknameWrapper>
       </Profile>
       <MenuList>
-        <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.OVERVIEW}>
-          <MenuButton value={PROFILE_PAGE_MENU.OVERVIEW} type="button" onClick={goProfilePage}>
-            <OverviewIcon width="16" height="16" />
-            오버뷰
-          </MenuButton>
-        </MenuItem>
-        <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.POSTS}>
-          <MenuButton value={PROFILE_PAGE_MENU.POSTS} type="button" onClick={goProfilePagePosts}>
-            <PostIcon width="16" height="16" />
-            학습로그
-          </MenuButton>
-        </MenuItem>
-        {me.data && (
-          <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.SCRAPS}>
+        {getMenuList({ username, isOwner }).map((menuItem) => (
+          <MenuItem key={menuItem.key} isSelectedMenu={selectedMenu === menuItem.key}>
             <MenuButton
-              value={PROFILE_PAGE_MENU.SCRAPS}
               type="button"
-              onClick={goProfilePageScraps}
+              onClick={onSelectMenu({ key: menuItem.key, path: menuItem.path })}
             >
-              <ScrapIcon width="16" height="16" />
-              스크랩
+              <menuItem.Icon width="16" height="16" />
+              {menuItem.title}
             </MenuButton>
           </MenuItem>
-        )}
-        <MenuItem isSelectedMenu={selectedMenu === PROFILE_PAGE_MENU.REPORTS}>
-          <MenuButton value={PROFILE_PAGE_MENU.REPORTS} type="button" onClick={goProfilePageReport}>
-            <ReportIcon width="16" height="16" />
-            리포트
-          </MenuButton>
-        </MenuItem>
+        ))}
       </MenuList>
     </Container>
   );

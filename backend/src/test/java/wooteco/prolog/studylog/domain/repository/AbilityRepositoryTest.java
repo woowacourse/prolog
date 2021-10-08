@@ -58,7 +58,7 @@ class AbilityRepositoryTest {
         @Test
         void findByIdAndMember() {
             // when
-            Optional<Ability> foundAbility = abilityRepository.findByIdAndMember(savedAbility.getId(), savedMember);
+            Optional<Ability> foundAbility = abilityRepository.findByIdAndMemberId(savedAbility.getId(), savedMember.getId());
 
             // then
             assertThat(foundAbility).isPresent();
@@ -68,7 +68,7 @@ class AbilityRepositoryTest {
         @Test
         void findByIdAndMemberAbilityIdException() {
             // when
-            Optional<Ability> foundAbility = abilityRepository.findByIdAndMember(Long.MAX_VALUE, savedMember);
+            Optional<Ability> foundAbility = abilityRepository.findByIdAndMemberId(Long.MAX_VALUE, savedMember.getId());
 
             // then
             assertThat(foundAbility).isNotPresent();
@@ -81,7 +81,7 @@ class AbilityRepositoryTest {
             Member anotherMember = memberRepository.save(new Member("seovalue", "조앤", Role.CREW, 3L, "imageUrl"));
 
             // when
-            Optional<Ability> foundAbility = abilityRepository.findByIdAndMember(savedAbility.getId(), anotherMember);
+            Optional<Ability> foundAbility = abilityRepository.findByIdAndMemberId(savedAbility.getId(), anotherMember.getId());
 
             // then
             assertThat(foundAbility).isNotPresent();
@@ -97,7 +97,7 @@ class AbilityRepositoryTest {
         Ability childAbility = abilityRepository.save(Ability.child("마자용", "마자아아아~용", "하늘색", parentAbility, member));
 
         // when
-        List<Ability> parentAbilities = abilityRepository.findByMemberAndParentIsNull(member);
+        List<Ability> parentAbilities = abilityRepository.findByMemberIdAndParentIsNull(member.getId());
 
         // then
         assertThat(parentAbilities).containsExactly(parentAbility);
