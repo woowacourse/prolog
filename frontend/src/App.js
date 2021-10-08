@@ -1,7 +1,5 @@
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import styled from '@emotion/styled';
-
-import useSnackBar from './hooks/useSnackBar';
 import { PROFILE_PAGE_MENU, PATH } from './constants';
 import { NavBar } from './components';
 import {
@@ -19,14 +17,13 @@ import {
 } from './pages';
 import AbilityPage from './pages/AbilityPage';
 import useSnackBar from './hooks/useSnackBar';
+import GlobalStyles from './GlobalStyles';
 
 const Content = styled.div`
   max-width: 112rem;
   margin: 6rem auto;
   padding: 0 4rem;
 `;
-
-import GlobalStyles from './GlobalStyles';
 
 const App = () => {
   const { isSnackBarOpen, SnackBar } = useSnackBar();
@@ -110,11 +107,5 @@ const App = () => {
     </>
   );
 };
-
-const Content = styled.div`
-  max-width: 112rem;
-  margin: 6rem auto;
-  padding: 0 4rem;
-`;
 
 export default App;
