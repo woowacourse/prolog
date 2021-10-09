@@ -1,6 +1,10 @@
 import { COLOR } from '../constants';
 
 function getTextColor(hexColor) {
+  if (!hexColor) {
+    return `${COLOR.BLACK_900}`;
+  }
+
   const rgb = parseInt(hexColor.substring(1), 16);
 
   const r = (rgb >> 16) & 0xff;
