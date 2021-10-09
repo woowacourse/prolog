@@ -6,7 +6,8 @@ const Container = styled.div`
   width: ${({ width }) => (width ? width : 'fit-content')};
   max-width: ${({ maxWidth }) => maxWidth};
   background-color: ${({ backgroundColor }) => backgroundColor ?? COLOR.LIGHT_GRAY_200};
-  color: ${({ backgroundColor }) => getTextColor(backgroundColor) ?? COLOR.BLACK_900};
+  color: ${({ backgroundColor }) =>
+    backgroundColor ? getTextColor(backgroundColor) : COLOR.BLACK_900};
   padding: 0.2rem 0.8rem;
   border-radius: 5rem;
   margin-right: 1rem;
