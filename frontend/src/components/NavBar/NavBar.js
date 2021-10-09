@@ -53,9 +53,8 @@ const NavBar = () => {
     }
   }, [user]);
 
-  const goMainWithReload = () => {
+  const goMain = () => {
     history.push(PATH.ROOT);
-    window.location.reload();
   };
 
   const goNewPost = async () => {
@@ -124,7 +123,7 @@ const NavBar = () => {
   return (
     <Container isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>
       <Wrapper>
-        <Logo onClick={goMainWithReload} role="link">
+        <Logo onClick={goMain} role="link">
           <img src={LogoImage} alt="PROLOG 로고" />
           <span>{process.env.REACT_APP_MODE === 'PROD' ? 'BETA' : process.env.REACT_APP_MODE}</span>
         </Logo>
