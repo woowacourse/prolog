@@ -49,7 +49,7 @@ public class JwtTokenProvider {
             return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody()
                 .getSubject();
         } catch (JwtException | IllegalArgumentException e) {
-            log.warn(e.getMessage(), e);
+            log.info(e.getMessage(), e);
             throw new TokenNotValidException();
         }
     }
