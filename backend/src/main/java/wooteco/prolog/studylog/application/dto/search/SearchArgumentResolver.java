@@ -11,7 +11,7 @@ import java.util.Objects;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -72,7 +72,7 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
 
     private List<Long> convertToIdList(NativeWebRequest webRequest, String key) {
         String parameter = webRequest.getParameter(key);
-        if(Objects.isNull(parameter)) {
+        if (Objects.isNull(parameter)) {
             return null;
         }
 
@@ -108,7 +108,6 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
         return PageRequest.of(
             page,
             size,
-            Direction.DESC,
-            "id");
+            Sort.by("id").descending());
     }
 }

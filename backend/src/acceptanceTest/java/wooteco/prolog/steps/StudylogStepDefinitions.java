@@ -1,10 +1,12 @@
 package wooteco.prolog.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG1;
 import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG2;
 import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG3;
 
+import com.google.common.collect.Iterables;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -241,5 +243,25 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     @Then("스터디로그가 삭제된다")
     public void 스터디로그가삭제된다() {
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Then("{int}개의 스터디로그를 id의 역순으로 받는다")
+    public void 개의스터디로그를Id의역순으로받는다(int pageSize) {
+        StudylogsResponse studylogs = context.response.as(StudylogsResponse.class);
+
+        List<StudylogResponse> studylogResponses = new ArrayList<>(studylogs.getData());
+        studylogResponses.sort((o1, o2) -> {
+            if (o1.getCreatedAt().isAfter(o2.getCreatedAt())) {
+                return -1;
+            } else if (o1.getCreatedAt().equals(o2.getCreatedAt())) {
+                return 0;
+            }
+            return 1;
+        });
+
+        assertAll(
+            () -> assertThat(Iterables.elementsEqual(studylogs.getData(), studylogResponses)).isTrue(),
+            () -> assertThat(studylogs.getData().size()).isEqualTo(pageSize)
+        );
     }
 }
