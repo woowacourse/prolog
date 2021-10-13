@@ -24,4 +24,6 @@ public interface StudylogRepository extends JpaRepository<Studylog, Long>,
 
     @Query("select count(p) from Studylog p where p.member = :member")
     int countByMember(Member member);
+
+    List<Studylog> findAllByIdInOrderByIdDesc(List<Long> ids);
 }

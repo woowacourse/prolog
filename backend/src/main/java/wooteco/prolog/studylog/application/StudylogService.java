@@ -9,7 +9,6 @@ import static java.util.stream.Collectors.toMap;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -25,8 +24,6 @@ import wooteco.prolog.common.BaseEntity;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studylog.domain.StudylogScrap;
-import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
@@ -35,8 +32,10 @@ import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
+import wooteco.prolog.studylog.domain.StudylogScrap;
 import wooteco.prolog.studylog.domain.Tags;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
 import wooteco.prolog.studylog.exception.StudylogArgumentException;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
@@ -66,12 +65,12 @@ public class StudylogService {
     }
 
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request) {
-        if(Objects.nonNull(request.getIds())) {
+        if (Objects.nonNull(request.getIds())) {
             final Pageable pageable = request.getPageable();
 
             List<Long> ids = request.getIds();
 
-            int start = (int)pageable.getOffset();
+            int start = (int) pageable.getOffset();
             int end = Math.min((start + pageable.getPageSize()), ids.size());
 
             final Map<Long, Studylog> idAndStudylog = studylogRepository
@@ -88,10 +87,10 @@ public class StudylogService {
 
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
             return findPostsWithoutKeyword(request.getLevels(), request.getMissions(),
-                request.getTags(),
-                request.getUsernames(), request.getMembers(), request.getStartDate(),
-                request.getEndDate(),
-                request.getPageable());
+                                           request.getTags(),
+                                           request.getUsernames(), request.getMembers(), request.getStartDate(),
+                                           request.getEndDate(),
+                                           request.getPageable());
         }
 
         final StudylogDocumentResponse response = studylogDocumentService.findBySearchKeyword(
@@ -105,31 +104,11 @@ public class StudylogService {
             request.getPageable()
         );
 
-        final List<Studylog> studylogs = studylogRepository.findAllById(response.getStudylogIds());
+        final List<Studylog> studylogs = studylogRepository.findAllByIdInOrderByIdDesc(response.getStudylogIds());
         return StudylogsResponse.of(studylogs,
-            response.getTotalSize(),
-            response.getTotalPage(),
-            response.getCurrPage()
-        );
-    }
-
-    public StudylogsResponse findPostsWithoutKeyword(
-        List<Long> levelIds,
-        List<Long> missionIds,
-        List<Long> tagIds,
-        List<String> usernames,
-        LocalDate startDate,
-        LocalDate endDate,
-        Pageable pageable) {
-        return findPostsWithoutKeyword(
-            levelIds,
-            missionIds,
-            tagIds,
-            usernames,
-            new ArrayList<>(),
-            startDate,
-            endDate,
-            pageable
+                                    response.getTotalSize(),
+                                    response.getTotalPage(),
+                                    response.getCurrPage()
         );
     }
 
@@ -179,10 +158,10 @@ public class StudylogService {
         Mission mission = missionService.findById(studylogRequest.getMissionId());
 
         Studylog requestedStudylog = new Studylog(foundMember,
-            studylogRequest.getTitle(),
-            studylogRequest.getContent(),
-            mission,
-            tags.getList());
+                                                  studylogRequest.getTitle(),
+                                                  studylogRequest.getContent(),
+                                                  mission,
+                                                  tags.getList());
 
         Studylog createdStudylog = studylogRepository.save(requestedStudylog);
         memberTagService.registerMemberTag(tags, foundMember);
