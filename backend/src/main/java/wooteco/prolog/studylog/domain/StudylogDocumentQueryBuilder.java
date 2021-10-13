@@ -42,7 +42,8 @@ public class StudylogDocumentQueryBuilder {
                       end);
         makeFilterQuery(query, tags);
 
-        return query.withPageable(pageable)
+        return query
+            .withPageable(pageable)
             .build();
     }
 
