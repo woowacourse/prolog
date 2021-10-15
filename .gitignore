@@ -1,0 +1,7 @@
+# git clone 시 생성되는 gradle project파일
+.gradle
+.project
+.settings
+
+# Mac
+.DS_Store
