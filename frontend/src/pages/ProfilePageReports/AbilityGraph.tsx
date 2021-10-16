@@ -18,7 +18,15 @@ const MODE = {
   NEW: 'NEW',
 };
 
-const AbilityGraph = ({ abilities, mode }: { abilities: Ability[]; mode: string }) => {
+const AbilityGraph = ({
+  abilities,
+  setAbilities,
+  mode,
+}: {
+  abilities: Ability[];
+  setAbilities?: () => void;
+  mode: string;
+}) => {
   return (
     <Section>
       <h3>📊 역량 그래프</h3>

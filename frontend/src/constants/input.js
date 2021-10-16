@@ -10,4 +10,11 @@ const PROFILE = {
   },
 };
 
-export { POST_TITLE, PROFILE };
+const CHART = {
+  ABILITY_WEIGHT: {
+    MIN: 1,
+    MAX: 10,
+  },
+};
+
+export { POST_TITLE, PROFILE, CHART };

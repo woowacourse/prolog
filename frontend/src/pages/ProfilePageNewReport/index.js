@@ -9,7 +9,9 @@ import StudyLogModal from './StudyLogModal';
 import ReportInfoInput from './ReportInfoInput';
 import ReportStudyLogTable from './ReportStudyLogTable';
 import { Checkbox, Form, FormButtonWrapper } from './style';
-import { requestPostReport } from '../../service/requests';
+import { requestGetAbilities, requestPostReport } from '../../service/requests';
+import AbilityGraph from '../ProfilePageReports/AbilityGraph';
+import useRequest from '../../hooks/useRequest';
 
 const ProfilePageNewReport = () => {
   const { username } = useParams();
@@ -38,6 +40,7 @@ const ProfilePageNewReport = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [studyLogs, setStudyLogs] = useState([]);
+  const [abilities, setAbilities] = useState([]);
 
   const [isModalOpened, setIsModalOpened] = useState(false);
 
@@ -84,6 +87,25 @@ const ProfilePageNewReport = () => {
     }
   };
 
+  const { fetchData: getAbilities } = useRequest(
+    [],
+    () => requestGetAbilities(user.data.id, accessToken),
+    (data) => {
+      const parents = data.filter((item) => item.isParent);
+
+      setAbilities(() =>
+        parents.map(({ id, name, color }) => ({
+          id,
+          name,
+          color,
+          weight: 10 * Number((1 / parents.length).toFixed(2)),
+          percentage: Number((1 / parents.length).toFixed(2)),
+          present: true,
+        }))
+      );
+    }
+  );
+
   const onRegisterMainReport = () => setIsMainReport((currentState) => !currentState);
 
   const onModalOpen = () => setIsModalOpened(true);
@@ -113,17 +135,7 @@ const ProfilePageNewReport = () => {
           setDescription={setDescription}
         />
 
-        <section
-          style={{
-            height: '25rem',
-            border: '1px solid black',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          준비중인 기능입니다.
-        </section>
+        <AbilityGraph abilities={abilities} setAbilities={setAbilities} mode="NEW" />
 
         <ReportStudyLogTable
           onModalOpen={onModalOpen}
