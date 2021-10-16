@@ -422,28 +422,6 @@ public class AbilityDocumentation extends Documentation {
         assertThat(response.statusCode()).isEqualTo(OK.value());
     }
 
-    @Test
-    void 상위_역량을_제거할_때_하위_역량이_존재하는_경우_예외가_발생한다() {
-        // given
-        AbilityCreateRequest 상위_역량_생성_request = new AbilityCreateRequest("상위 역량 이름", "상위 역량 설명", "#001122", null);
-        AbilityResponse 상위_역량_response = 상위_역량을_생성하고_response를_반환한다(accessToken, 상위_역량_생성_request);
-        역량을_생성한다(accessToken, new AbilityCreateRequest("하위 역량 이름", "하위 역량 설명", "#001122", 상위_역량_response.getId()));
-
-        // when
-        ExtractableResponse<Response> response = given("abilities/delete-has-children-exception")
-            .header(AUTHORIZATION, "Bearer " + accessToken)
-            .when()
-            .delete("/abilities/" + 상위_역량_response.getId())
-            .then()
-            .log().all()
-            .extract();
-
-        // then
-        assertThat(response.statusCode()).isEqualTo(BAD_REQUEST.value());
-        assertThat((int) response.jsonPath().get("code")).isEqualTo(4001);
-        assertThat((String) response.jsonPath().get("message")).isEqualTo("해당 역량의 하위 역량이 존재합니다.");
-    }
-
     private String 로그인한다(GithubResponses githubResponse) {
         return RestAssured.given()
             .contentType(MediaType.APPLICATION_JSON_VALUE)

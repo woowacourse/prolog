@@ -109,6 +109,7 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         Long abilityId = getAbilityIdByName(abilityName);
 
         context.invokeHttpDeleteWithToken("/abilities/" + abilityId);
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
     @Then("{string} 역량이 포함되지 않은 목록을 받는다.")
@@ -164,6 +165,14 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         AbilityResponse response = parseResponseById(getAbilityIdByName(childName));
 
         assertThat(response.getColor()).isNotEqualTo(color);
+    }
+
+    @Then("비어있는 역량 목록을 받는다.")
+    public void 비어있는역량목록을받는다() {
+        List<AbilityResponse> responses = context.response.jsonPath()
+            .getList(".", AbilityResponse.class);
+
+        assertThat(responses).isEmpty();
     }
 
     private Long getAbilityIdByName(String abilityName) {

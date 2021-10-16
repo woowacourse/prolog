@@ -22,7 +22,6 @@ import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
 import wooteco.prolog.report.application.dto.ability.ChildAbilityDto;
 import wooteco.prolog.report.domain.ablity.Ability;
 import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
-import wooteco.prolog.report.exception.AbilityHasChildrenException;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
 import wooteco.prolog.studylog.exception.AbilityNameDuplicateException;
@@ -152,7 +151,7 @@ class AbilityServiceTest {
             parentAbility.getDescription(),
             parentAbility.getColor(),
             parentAbility.isParent(),
-            new ArrayList<>()
+            ChildAbilityDto.of(Collections.singletonList(childAbility))
         );
 
         // when
@@ -285,22 +284,6 @@ class AbilityServiceTest {
         assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isEmpty();
     }
 
-    @DisplayName("부모 역량 삭제 시도시 자식역량이 존재하면 예외가 발생한다.")
-    @Test
-    void deleteParentAbilityException() {
-        // given
-        AbilityCreateRequest parentCreateRequest = new AbilityCreateRequest("zi존브라운123", "이견 있습니까?", "이견을 피로 물들이는 붉은 색", null);
-        abilityService.createAbility(member.getId(), parentCreateRequest);
-        Ability parentAbility = abilityRepository.findByMemberIdAndParentIsNull(member.getId()).iterator().next();
-
-        AbilityCreateRequest childCreateRequest = new AbilityCreateRequest("손너잘", "내안으어두미", "이견을 피로 물들이는 붉은 색", parentAbility.getId());
-        abilityService.createAbility(member.getId(), childCreateRequest);
-
-        // when, then
-        assertThatThrownBy(() -> abilityService.deleteAbility(member.getId(), parentAbility.getId()))
-            .isExactlyInstanceOf(AbilityHasChildrenException.class);
-    }
-
     @DisplayName("자식 역량 삭제에 성공하면 부모 역량과 관계가 끊어진다.")
     @Test
     void deleteChildAbility() {
@@ -317,6 +300,27 @@ class AbilityServiceTest {
 
         // then
         assertThat(abilityIds).containsExactly(parentAbility.getId());
+    }
+
+    @DisplayName("부모 역량 삭제에 성공하면 부모의 자역 역량도 모두 삭제된다.")
+    @Test
+    void deleteParentAbilityAndChildrenAbilities() {
+        // given
+        Ability parentAbility = abilityRepository.save(Ability.parent("브라운", "파파 브라운", "갈색", member));
+        Ability childAbility1 = abilityRepository.save(Ability.child("현구막", "썬 현구막", "갈색", parentAbility, member));
+        Ability childAbility2 = abilityRepository.save(Ability.child("서니", "도터 서니", "갈색", parentAbility, member));
+
+        // when
+        assertThat(abilityRepository.findAll()).containsExactly(parentAbility, childAbility1, childAbility2);
+        assertThat(abilityService.findAbilitiesByMemberId(member.getId())).hasSize(3);
+
+        abilityService.deleteAbility(member.getId(), parentAbility.getId());
+
+        // then
+        assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isEmpty();
+        assertThat(abilityRepository.findById(parentAbility.getId())).isNotPresent();
+        assertThat(abilityRepository.findById(childAbility1.getId())).isNotPresent();
+        assertThat(abilityRepository.findById(childAbility2.getId())).isNotPresent();
     }
 
     @DisplayName("username을 통해 해당 멤버의 역량 목록을 조회한다.")
