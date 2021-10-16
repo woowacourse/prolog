@@ -15,7 +15,7 @@ const EditPostPage = () => {
 
   const { id: postId } = useParams();
   const { editData: editPost } = usePost({});
-  const [post] = useFetch({}, () => requestGetPost(postId));
+  const [post] = useFetch({}, () => requestGetPost('', postId));
 
   const [selectedMission, setSelectedMission] = useState('');
   const cardRefs = useRef([]);
