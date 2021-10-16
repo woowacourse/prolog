@@ -11,7 +11,7 @@
   <appender name="prod-async-slack-logger" class="ch.qos.logback.classic.AsyncAppender">
     <appender-ref ref="prod-slack-logger" />
     <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-      <level>WARN</level>
+      <level>ERROR</level>
     </filter>
   </appender>
 
@@ -26,7 +26,7 @@
   <appender name="dev-async-slack-logger" class="ch.qos.logback.classic.AsyncAppender">
     <appender-ref ref="dev-slack-logger" />
     <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-      <level>WARN</level>
+      <level>ERROR</level>
     </filter>
   </appender>
 </included>
