@@ -103,9 +103,7 @@ public class AbilityService {
     @Transactional
     public void deleteAbility(Long memberId, Long abilityId) {
         Ability ability = findAbilityByIdAndMemberId(abilityId, memberId);
-        ability.validateDeletable();
 
-        ability.deleteRelationshipWithParent();
         abilityRepository.delete(ability);
     }
 
