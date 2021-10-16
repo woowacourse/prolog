@@ -73,6 +73,12 @@ public class AbilityService {
         return AbilityResponse.of(findByMemberId(memberId));
     }
 
+    public List<AbilityResponse> findAbilitiesByMemberUsername(String username) {
+        Member member = memberService.findByUsername(username);
+
+        return AbilityResponse.of(findByMemberId(member.getId()));
+    }
+
     public List<AbilityResponse> findParentAbilitiesByMemberId(Long memberId) {
         List<Ability> parentAbilities = abilityRepository.findByMemberIdAndParentIsNull(memberId);
 

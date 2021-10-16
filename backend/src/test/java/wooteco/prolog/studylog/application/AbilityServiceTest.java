@@ -319,15 +319,15 @@ class AbilityServiceTest {
         assertThat(abilityIds).containsExactly(parentAbility.getId());
     }
 
-    @DisplayName("memberId를 통해 해당 멤버의 역량목록을 조회한다.")
+    @DisplayName("username을 통해 해당 멤버의 역량 목록을 조회한다.")
     @Test
-    void findMemberAbilitiesByMemberId() {
+    void findAbilitiesByMemberUsername() {
         // given
         Ability ability1 = abilityRepository.save(Ability.parent("나는ZI존브라운이다.", "이견있나?", "피의 붉은 색", member));
         Ability ability2 = abilityRepository.save(Ability.parent("나는킹갓브라운이다.", "이견은 없겠지?", "무지개 색", member));
 
         // when
-        List<AbilityResponse> abilityResponses = abilityService.findAbilitiesByMemberId(member.getId());
+        List<AbilityResponse> abilityResponses = abilityService.findAbilitiesByMemberUsername(member.getUsername());
 
         // then
         assertThat(abilityResponses).usingRecursiveComparison()

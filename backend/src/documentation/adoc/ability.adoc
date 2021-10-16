@@ -71,15 +71,15 @@ include::{snippets}/abilities/read/parent-only/http-request.adoc[]
 
 include::{snippets}/abilities/read/parent-only/http-response.adoc[]
 
-=== 멤버 ID를 통한 역량 목록 조회
+=== 멤버 username을 통한 역량 목록 조회
 
 ==== Request
 
-include::{snippets}/abilities/read/memberId/http-request.adoc[]
+include::{snippets}/abilities/read/username/http-request.adoc[]
 
 ==== Response
 
-include::{snippets}/abilities/read/memberId/http-response.adoc[]
+include::{snippets}/abilities/read/username/http-response.adoc[]
 
 === 역량 수정
 

@@ -47,9 +47,10 @@ public class AbilityController {
     }
 
     @MemberOnly
-    @GetMapping("/members/{memberId}/abilities")
-    public ResponseEntity<List<AbilityResponse>> findAbilitiesByMemberId(@AuthMemberPrincipal LoginMember member, @PathVariable Long memberId) {
-        return ResponseEntity.ok(abilityService.findAbilitiesByMemberId(memberId));
+    @GetMapping("/members/{username}/abilities")
+    public ResponseEntity<List<AbilityResponse>> findAbilitiesByUsername(@AuthMemberPrincipal LoginMember member,
+                                                                         @PathVariable String username) {
+        return ResponseEntity.ok(abilityService.findAbilitiesByMemberUsername(username));
     }
 
     @MemberOnly

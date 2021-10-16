@@ -13,7 +13,6 @@ import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.ExceptionDto;
 import wooteco.prolog.fixtures.AbilityAcceptanceFixture;
 import wooteco.prolog.fixtures.GithubResponses;
-import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
 import wooteco.prolog.report.application.dto.ability.AbilityResponse;
 import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
@@ -46,10 +45,7 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
     @When("{string}의 역량 목록을 조회하면")
     public void 의역량목록을조회하면(String member) {
         String username = GithubResponses.findByName(member).getLogin();
-        context.invokeHttpGetWithToken(String.format("/members/%s", username));
-
-        Long memberId = context.response.as(MemberResponse.class).getId();
-        context.invokeHttpGetWithToken(String.format("/members/%d/abilities", memberId));
+        context.invokeHttpGetWithToken(String.format("/members/%s/abilities", username));
     }
 
     @Then("역량 목록을 받는다.")
