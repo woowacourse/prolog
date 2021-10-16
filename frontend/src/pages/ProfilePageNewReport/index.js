@@ -63,22 +63,26 @@ const ProfilePageNewReport = () => {
     }
   };
 
-  const onSubmitReport = (event) => {
+  const onSubmitReport = async (event) => {
     event.preventDefault();
 
     const currTitle = title.trim();
+
+    console.log(abilities.map(({ id, weight, present }) => ({ id, weight, present })));
 
     const data = {
       id: null,
       title:
         currTitle !== '' ? currTitle : `${new Date().toLocaleDateString()} ${nickname}의 리포트`,
       description,
-      abilityGraph: { abilities: [] },
+      abilityGraph: {
+        abilities: abilities.map(({ id, weight, present }) => ({ id, weight, represent: present })),
+      },
       studylogs: studyLogs.map((item) => ({ id: item.id, abilities: [] })),
       represent: false,
     };
 
-    postNewReport(data);
+    await postNewReport(data);
   };
 
   const onCancelWriteReport = () => {
@@ -98,7 +102,7 @@ const ProfilePageNewReport = () => {
           id,
           name,
           color,
-          weight: 10 * Number((1 / parents.length).toFixed(2)),
+          weight: Math.ceil(10 * Number((1 / parents.length).toFixed(2))),
           percentage: Number((1 / parents.length).toFixed(2)),
           present: true,
         }))
@@ -111,6 +115,10 @@ const ProfilePageNewReport = () => {
   const onModalOpen = () => setIsModalOpened(true);
 
   const onModalClose = () => setIsModalOpened(false);
+
+  const onChangeAbilities = (data) => {
+    setAbilities(data);
+  };
 
   return (
     <>
@@ -135,7 +143,7 @@ const ProfilePageNewReport = () => {
           setDescription={setDescription}
         />
 
-        <AbilityGraph abilities={abilities} setAbilities={setAbilities} mode="NEW" />
+        <AbilityGraph abilities={abilities} setAbilities={onChangeAbilities} mode="NEW" />
 
         <ReportStudyLogTable
           onModalOpen={onModalOpen}

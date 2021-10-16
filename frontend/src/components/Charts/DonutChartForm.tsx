@@ -28,13 +28,23 @@ interface CanvasConfig {
 interface Props {
   chartData: ChartData;
   config: CanvasConfig;
+  onChangeData: (
+    data: {
+      id: number;
+      name: string;
+      weight: number;
+      percentage: number;
+      color: string;
+      present: boolean;
+    }[]
+  ) => void;
 }
 
 const DEFAULT_CATEGORY_VALUE = -1;
 const DEFAULT_CANVAS_WIDTH = 300;
 const DEFAULT_CANVAS_HEIGHT = 300;
 
-const DonutChartForm = ({ chartData, config }: Props) => {
+const DonutChartForm = ({ chartData, config, onChangeData }: Props) => {
   const { title, categoryTitle, data } = chartData;
   const {
     width = DEFAULT_CANVAS_WIDTH,
@@ -255,7 +265,12 @@ const DonutChartForm = ({ chartData, config }: Props) => {
                 currentCategory={currentCategory}
               >
                 <div>
-                  <input type="checkbox" checked={present} onChange={() => toggleIsPresent(id)} />
+                  <input
+                    type="checkbox"
+                    checked={present}
+                    onChange={() => toggleIsPresent(id)}
+                    onBlur={() => onChangeData(graphData)}
+                  />
                 </div>
                 <label>
                   <span />
@@ -268,6 +283,7 @@ const DonutChartForm = ({ chartData, config }: Props) => {
                     max={CHART.ABILITY_WEIGHT.MAX}
                     value={weight}
                     onChange={(event) => changeWeight(id, Number(event.target.value))}
+                    onBlur={() => onChangeData(graphData)}
                   />
                 </div>
 

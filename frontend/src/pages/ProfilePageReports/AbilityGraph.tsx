@@ -24,7 +24,16 @@ const AbilityGraph = ({
   mode,
 }: {
   abilities: Ability[];
-  setAbilities?: () => void;
+  setAbilities?: (
+    data: {
+      id: number;
+      name: string;
+      weight: number;
+      percentage: number;
+      color: string;
+      present: boolean;
+    }[]
+  ) => void;
   mode: string;
 }) => {
   return (
@@ -46,9 +55,21 @@ const AbilityGraph = ({
             chartData={{
               title: '역량 그래프',
               categoryTitle: '역량',
-              data: abilities.filter((item) => item.present),
+              data: abilities,
             }}
             config={{ backgroundColor: COLOR.WHITE, width: 400, height: 220 }}
+            onChangeData={
+              setAbilities as (
+                data: {
+                  id: number;
+                  name: string;
+                  weight: number;
+                  percentage: number;
+                  color: string;
+                  present: boolean;
+                }[]
+              ) => void
+            }
           />
         )}
       </Content>
