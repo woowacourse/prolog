@@ -8,7 +8,9 @@ const Report = ({ report = {} }) => {
       <h2>{report?.title}</h2>
       <p>{report?.description}</p>
 
-      <AbilityGraph abilities={report?.abilityGraph.abilities || []} mode="VIEW" />
+      {!!report?.abilityGraph?.abilities && (
+        <AbilityGraph abilities={report.abilityGraph.abilities} mode="VIEW" />
+      )}
 
       <ReportStudyLogTable studyLogs={report?.studylogs ?? []} />
     </Wrapper>
