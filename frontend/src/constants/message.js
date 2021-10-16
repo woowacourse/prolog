@@ -7,6 +7,7 @@ const ALERT_MESSAGE = {
   FAIL_TO_DELETE_POST: '글을 삭제할 수 없습니다.',
   FAIL_TO_UPLOAD_IMAGE: '이미지 업로드를 할 수 없습니다.',
   NEED_TO_LOGIN: '로그인 후 이용 가능합니다',
+  OVER_PROFILE_NICKNAME_MAX_LENGTH: '닉네임은 4글자 이하로 입력해주세요.',
 };
 
 const ERROR_MESSAGE = {
@@ -16,6 +17,7 @@ const ERROR_MESSAGE = {
   1000: '깃허브 로그인에 실패했습니다. 다시 로그인해 주세요.',
   1001: '깃허브 로그인에 실패했습니다. 다시 로그인해 주세요.',
   1002: '로그인 시간이 만료되었습니다. 다시 로그인해 주세요.',
+  1004: '존재하지 않는 회원입니다.',
 
   2001: '글 내용을 작성해 주세요.',
   2002: '글 제목을 입력해 주세요.',
