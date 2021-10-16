@@ -13,8 +13,8 @@ import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRe
 import wooteco.prolog.report.application.dto.report.request.studylog.ReportStudylogRequest;
 import wooteco.prolog.report.application.dto.report.response.ReportResponse;
 import wooteco.prolog.report.application.dto.report.response.SimpleReportResponse;
-import wooteco.prolog.report.application.dto.report.response.abilityGraph.GraphAbilityResponse;
-import wooteco.prolog.report.application.dto.report.response.abilityGraph.GraphResponse;
+import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphAbilityResponse;
+import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogAbilityResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogResponse;
 import wooteco.prolog.studylog.domain.Studylog;
@@ -144,6 +144,7 @@ public class ReportAssembler {
         return new GraphAbilityResponse(
             graphAbilityDto.getId(),
             graphAbilityDto.getName(),
+            graphAbilityDto.getColor(),
             graphAbilityDto.getWeight(),
             graphAbilityDto.getPercentage(),
             graphAbilityDto.isPresent()

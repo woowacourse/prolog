@@ -1,4 +1,4 @@
-package wooteco.prolog.report.application.dto.report.response.abilityGraph;
+package wooteco.prolog.report.application.dto.report.response.ability_graph;
 
 import wooteco.prolog.report.domain.report.abilitygraph.datastructure.GraphAbilityDto;
 
@@ -6,6 +6,7 @@ public class GraphAbilityResponse {
 
     private Long id;
     private String name;
+    private String color;
     private Long weight;
     private Double percentage;
     private Boolean present;
@@ -13,9 +14,10 @@ public class GraphAbilityResponse {
     private GraphAbilityResponse() {
     }
 
-    public GraphAbilityResponse(Long id, String name, Long weight, Double percentage, Boolean present) {
+    public GraphAbilityResponse(Long id, String name, String color, Long weight, Double percentage, Boolean present) {
         this.id = id;
         this.name = name;
+        this.color = color;
         this.weight = weight;
         this.percentage = percentage;
         this.present = present;
@@ -25,6 +27,7 @@ public class GraphAbilityResponse {
         return new GraphAbilityResponse(
             graphAbilityDto.getId(),
             graphAbilityDto.getName(),
+            graphAbilityDto.getColor(),
             graphAbilityDto.getWeight(),
             graphAbilityDto.getPercentage(),
             graphAbilityDto.isPresent()
@@ -37,6 +40,10 @@ public class GraphAbilityResponse {
 
     public String getName() {
         return name;
+    }
+
+    public String getColor() {
+        return color;
     }
 
     public Long getWeight() {

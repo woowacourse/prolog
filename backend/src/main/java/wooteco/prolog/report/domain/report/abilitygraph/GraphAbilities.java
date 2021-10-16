@@ -49,6 +49,7 @@ public class GraphAbilities {
             .map(ability -> new GraphAbilityDto(
                 ability.getAbilityId(),
                 ability.getName(),
+                ability.getColor(),
                 ability.getWeight(),
                 calculatePercentage(allWeight, ability),
                 ability.isPresent()

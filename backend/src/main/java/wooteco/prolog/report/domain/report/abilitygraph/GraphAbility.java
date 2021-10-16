@@ -61,6 +61,10 @@ public class GraphAbility implements Updatable<GraphAbility> {
         return ability.getName();
     }
 
+    public String getColor() {
+        return ability.getColor();
+    }
+
     public Long getWeight() {
         return weight;
     }

@@ -1,7 +1,7 @@
 package wooteco.prolog.report.application.dto.report.response;
 
 import java.util.List;
-import wooteco.prolog.report.application.dto.report.response.abilityGraph.GraphResponse;
+import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogResponse;
 
 public class ReportResponse {
