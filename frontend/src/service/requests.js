@@ -129,8 +129,8 @@ const requestEditReport = (data, reportId, accessToken) =>
     body: JSON.stringify(data),
   });
 
-const requestGetAbilities = (username, accessToken) =>
-  fetch(`${BASE_URL}/members/${username}/abilities`, {
+const requestGetAbilities = (userId, accessToken) =>
+  fetch(`${BASE_URL}/members/${userId}/abilities`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${accessToken}`,

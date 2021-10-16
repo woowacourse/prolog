@@ -7,6 +7,7 @@ import {
   requestDeleteReport,
   requestGetReport,
   requestGetReportList,
+  requestGetAbilities,
 } from '../../service/requests';
 import { API } from '../../constants';
 
@@ -35,7 +36,25 @@ const ProfilePageReports = () => {
       }
 
       const report = await response.json();
-      setReport(report);
+
+      // 현재 report API에 color 값이 들어가 있지 않아 임시로 역량 목록을 불러온 후, color 값을 넣어주는 식으로 코드 작성
+      // 추후 API 수정시 삭제 예정임.
+
+      const abilityResponse = await requestGetAbilities(user?.data.id, accessToken);
+      const abilities = await abilityResponse.json();
+
+      const abilityList = report.abilityGraph.abilities;
+
+      const abilityListWithColor = abilityList.map((ability) => {
+        const color = abilities.find((item) => item.id === ability.id).color;
+
+        return { ...ability, color: color };
+      });
+
+      setReport({
+        ...report,
+        abilityGraph: { ...report.abilityGraph, abilities: abilityListWithColor },
+      });
     } catch (error) {
       console.error(error);
     }
