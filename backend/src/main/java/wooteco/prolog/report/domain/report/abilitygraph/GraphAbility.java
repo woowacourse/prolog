@@ -85,6 +85,7 @@ public class GraphAbility implements Updatable<GraphAbility> {
     public void update(GraphAbility ability) {
         this.ability = ability.getAbility();
         this.weight = ability.getWeight();
+        this.isPresent = ability.isPresent();
     }
 
     @Override
