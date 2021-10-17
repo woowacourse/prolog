@@ -1,5 +1,11 @@
 package wooteco.prolog.report.application;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Service;
@@ -11,11 +17,18 @@ import wooteco.prolog.report.application.dto.ability.AbilityResponse;
 import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
 import wooteco.prolog.report.domain.ablity.Ability;
 import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
+import wooteco.prolog.report.exception.AbilityCsvException;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 
 @Service
 @Transactional(readOnly = true)
 public class AbilityService {
+
+    private static final int NAME = 0;
+    private static final int DESCRIPTION = 1;
+    private static final int COLOR = 2;
+    private static final int PARENT_ABILITY = 3;
+    private static final int CHILD_ABILITY = 4;
 
     private final AbilityRepository abilityRepository;
     private final MemberService memberService;
@@ -48,6 +61,16 @@ public class AbilityService {
         return extractChildAbility(member, abilities, name, description, color, parentId);
     }
 
+    private Ability extractParentAbility(Member member, List<Ability> abilities, String name, String description,
+                                         String color) {
+        Ability parentAbility = Ability.parent(name, description, color, member);
+
+        parentAbility.validateDuplicateName(abilities);
+        parentAbility.validateDuplicateColor(abilities);
+
+        return parentAbility;
+    }
+
     private Ability extractChildAbility(Member member, List<Ability> abilities, String name, String description,
                                         String color, Long parentId) {
         Ability parentAbility = findAbilityById(parentId);
@@ -57,16 +80,6 @@ public class AbilityService {
         childAbility.validateColorWithParent(abilities, parentAbility);
 
         return childAbility;
-    }
-
-    private Ability extractParentAbility(Member member, List<Ability> abilities, String name, String description,
-                                         String color) {
-        Ability parentAbility = Ability.parent(name, description, color, member);
-
-        parentAbility.validateDuplicateName(abilities);
-        parentAbility.validateDuplicateColor(abilities);
-
-        return parentAbility;
     }
 
     public List<AbilityResponse> findAbilitiesByMemberId(Long memberId) {
@@ -114,6 +127,51 @@ public class AbilityService {
 
     private Ability findAbilityByIdAndMemberId(Long abilityId, Long memberId) {
         return abilityRepository.findByIdAndMemberId(abilityId, memberId)
+            .orElseThrow(AbilityNotFoundException::new);
+    }
+
+    @Transactional
+    public void createTemplateAbilities(Long memberId, String template) {
+        URL url = ClassLoader.getSystemResource(String.format("static/%s-default-abilities.csv", template));
+
+        try (
+            FileReader fileReader = new FileReader(url.getFile());
+            CSVReader reader = new CSVReader(fileReader)
+        ) {
+            Member member = memberService.findById(memberId);
+            List<Ability> abilities = new ArrayList<>();
+
+            String[] line;
+            while ((line = reader.readNext()) != null) {
+                String[] splitLine = line[0].split("\\|");
+                saveParentOrChildAbility(member, abilities, splitLine);
+            }
+        } catch (IOException | NullPointerException | CsvValidationException e) {
+            throw new AbilityCsvException();
+        }
+    }
+
+    private void saveParentOrChildAbility(Member member, List<Ability> abilities, String[] splitLine) {
+        if (splitLine.length == PARENT_ABILITY) {
+            Ability parentAbility = extractParentAbility(member, new ArrayList<>(abilities),
+                splitLine[NAME], splitLine[DESCRIPTION], splitLine[COLOR]);
+
+            abilities.add(abilityRepository.save(parentAbility));
+        }
+
+        if (splitLine.length == CHILD_ABILITY){
+            Ability parentAbility = matchedNameAbility(abilities, splitLine[PARENT_ABILITY]);
+            Ability childAbility = extractChildAbility(member, new ArrayList<>(abilities),
+                splitLine[NAME], splitLine[DESCRIPTION], splitLine[COLOR], parentAbility.getId());
+
+            abilities.add(abilityRepository.save(childAbility));
+        }
+    }
+
+    private Ability matchedNameAbility(List<Ability> abilities, String abilityName) {
+        return abilities.stream()
+            .filter(ability -> abilityName.equals(ability.getName()))
+            .findAny()
             .orElseThrow(AbilityNotFoundException::new);
     }
 }

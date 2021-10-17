@@ -150,3 +150,33 @@ include::{snippets}/abilities/delete-has-children-exception/http-request.adoc[]
 ==== Response
 
 include::{snippets}/abilities/delete-has-children-exception/http-response.adoc[]
+
+=== 기본 역량 등록 - 백엔드
+
+==== Request
+
+include::{snippets}/abilities/create-template-be/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/abilities/create-template-be/http-response.adoc[]
+
+=== 기본 역량 등록 - 프론트엔드
+
+==== Request
+
+include::{snippets}/abilities/create-template-fe/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/abilities/create-template-fe/http-response.adoc[]
+
+=== 기본 역량 등록 - 잘못된 경로 입력시 예외 발생
+
+==== Request
+
+include::{snippets}/abilities/create-template-exception/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/abilities/create-template-exception/http-response.adoc[]

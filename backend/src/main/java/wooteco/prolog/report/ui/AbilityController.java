@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.aop.MemberOnly;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
@@ -30,6 +31,15 @@ public class AbilityController {
     @PostMapping("/abilities")
     public ResponseEntity<Void> createAbility(@AuthMemberPrincipal LoginMember member, @RequestBody AbilityCreateRequest abilityCreateRequest) {
         abilityService.createAbility(member.getId(), abilityCreateRequest);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @MemberOnly
+    @PostMapping("/abilities/template/{template}")
+    public ResponseEntity<Void> createBackendDefaultAbilities(@AuthMemberPrincipal LoginMember member,
+                                                              @PathVariable String template) {
+        abilityService.createTemplateAbilities(member.getId(), template);
 
         return ResponseEntity.ok().build();
     }

@@ -22,6 +22,7 @@ import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
 import wooteco.prolog.report.application.dto.ability.ChildAbilityDto;
 import wooteco.prolog.report.domain.ablity.Ability;
 import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
+import wooteco.prolog.report.exception.AbilityCsvException;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
 import wooteco.prolog.studylog.exception.AbilityNameDuplicateException;
@@ -336,5 +337,29 @@ class AbilityServiceTest {
         // then
         assertThat(abilityResponses).usingRecursiveComparison()
             .isEqualTo(AbilityResponse.of(Arrays.asList(ability1, ability2)));
+    }
+
+    @DisplayName("멤버ID와 과정 선택을 통해 기본 역량을 등록한다.")
+    @Test
+    void createTemplateAbilities() {
+        // given
+        assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isEmpty();
+
+        // when
+        abilityService.createTemplateAbilities(member.getId(), "be");
+
+        // then
+        assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isNotEmpty();
+    }
+
+    @DisplayName("멤버ID와 과정 선택을 통해 기본 역량을 등록할 때 과정을 잘못 입력할 경우 예외가 발생한다.")
+    @Test
+    void createTemplateAbilitiesException() {
+        // given
+        assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isEmpty();
+
+        // when, then
+        assertThatThrownBy(() -> abilityService.createTemplateAbilities(member.getId(), "ce"))
+            .isExactlyInstanceOf(AbilityCsvException.class);
     }
 }

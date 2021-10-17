@@ -422,6 +422,53 @@ public class AbilityDocumentation extends Documentation {
         assertThat(response.statusCode()).isEqualTo(OK.value());
     }
 
+    @Test
+    void 백엔드_기본_역량을_등록한다() {
+        // when
+        ExtractableResponse<Response> response = given("abilities/create-template-be")
+            .header(AUTHORIZATION, "Bearer " + accessToken)
+            .when()
+            .post("/abilities/template/be")
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(OK.value());
+    }
+
+    @Test
+    void 프론트엔드_기본_역량을_등록한다() {
+        // when
+        ExtractableResponse<Response> response = given("abilities/create-template-fe")
+            .header(AUTHORIZATION, "Bearer " + accessToken)
+            .when()
+            .post("/abilities/template/fe")
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(OK.value());
+    }
+
+    @Test
+    void 기본_역량_등록시_잘못된_과정을_선택하면_예외가_발생한다() {
+        // when
+        ExtractableResponse<Response> response = given("abilities/create-template-exception")
+            .header(AUTHORIZATION, "Bearer " + accessToken)
+            .when()
+            .post("/abilities/template/wrong-path")
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(BAD_REQUEST.value());
+        assertThat((int) response.jsonPath().get("code")).isEqualTo(4006);
+        assertThat((String) response.jsonPath().get("message")).isEqualTo("기본 역량 추가를 위한 CSV 동작 과정에서 에러가 발생했습니다.");
+    }
+
     private String 로그인한다(GithubResponses githubResponse) {
         return RestAssured.given()
             .contentType(MediaType.APPLICATION_JSON_VALUE)

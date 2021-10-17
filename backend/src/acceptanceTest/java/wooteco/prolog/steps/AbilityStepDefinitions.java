@@ -175,6 +175,21 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         assertThat(responses).isEmpty();
     }
 
+    @And("{string} 과정으로 기본 역량을 등록하고")
+    @When("{string} 과정으로 기본 역량을 등록하면")
+    public void 과정으로기본역량을등록하고(String template) {
+        context.invokeHttpPostWithToken("/abilities/template/" + template);
+    }
+
+    @Then("기본 역량 관련 예외가 발생한다.")
+    public void 기본역량관련예외가발생한다() {
+        ExceptionDto exceptionDto = context.response.as(ExceptionDto.class);
+
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(exceptionDto.getCode()).isEqualTo(BadRequestCode.ABILITY_CSV.getCode());
+        assertThat(exceptionDto.getMessage()).isEqualTo(BadRequestCode.ABILITY_CSV.getMessage());
+    }
+
     private Long getAbilityIdByName(String abilityName) {
         context.invokeHttpGetWithToken("/abilities");
         List<AbilityResponse> responses = context.response.jsonPath().getList(".", AbilityResponse.class);
