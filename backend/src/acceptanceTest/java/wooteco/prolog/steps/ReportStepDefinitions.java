@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.report.application.dto.report.request.ReportRequest;
@@ -12,6 +13,10 @@ import wooteco.prolog.report.application.dto.report.request.abilitigraph.Ability
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRequest;
 import wooteco.prolog.report.application.dto.report.request.studylog.ReportStudylogRequest;
 import wooteco.prolog.report.application.dto.report.response.ReportResponse;
+import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphAbilityResponse;
+import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphResponse;
+import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogAbilityResponse;
+import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogResponse;
 
 public class ReportStepDefinitions extends AcceptanceSteps {
 
@@ -68,6 +73,7 @@ public class ReportStepDefinitions extends AcceptanceSteps {
             true
         );
 
+        context.storage.put("reportRequest", reportRequest);
         context.invokeHttpPutWithToken("/reports/" + reportResponse.getId(), reportRequest);
     }
 
@@ -84,9 +90,37 @@ public class ReportStepDefinitions extends AcceptanceSteps {
 
         ReportResponse reportResponse = context.response.as(ReportResponse.class);
 
-//        assertThat(reportResponse)
-//            .usingRecursiveComparison()
-//            .isEqualTo(reportRequest);
+        ReportRequest reportRequest = (ReportRequest) context.storage.get("reportRequest");
+        ReportResponse expected = new ReportResponse(
+            reportRequest.getId(),
+            reportRequest.getTitle(),
+            reportRequest.getDescription(),
+            new GraphResponse(
+                Arrays.asList(
+                    new GraphAbilityResponse(
+                        3L, "디자인", "blue", 1L, 1.0, true
+                    )
+                )
+            ),
+            Arrays.asList(
+                new StudylogResponse(
+                    reportRequest.getStudylogs().get(0).getId(),
+                    LocalDateTime.now(),
+                    LocalDateTime.now(),
+                    "[자바][옵셔널] 학습log 제출합니다.",
+                    Arrays.asList(
+                        new StudylogAbilityResponse(
+                            3L, "디자인", "blue", true
+                        )
+                    )
+                )
+            ),
+            true
+        );
 
+        assertThat(reportResponse)
+            .usingRecursiveComparison()
+            .ignoringFields("studylogs.createAt", "studylogs.updateAt")
+            .isEqualTo(expected);
     }
 }
