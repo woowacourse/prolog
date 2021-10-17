@@ -50,7 +50,7 @@ const AbilityGraph = ({
             config={{ backgroundColor: COLOR.WHITE, width: 400, height: 220 }}
           />
         )}
-        {mode === MODE.NEW && (
+        {(mode === MODE.NEW || mode === MODE.EDIT) && (
           <DonutChartForm
             chartData={{
               title: '역량 그래프',
