@@ -367,8 +367,8 @@ public class DataLoaderApplicationListener implements
         TYCHE(new GithubProfileResponse(
             "티케",
             "devhyun637",
-            "59258239",
-            "https://avatars.githubusercontent.com/u/59258239?v=4")
+            "33603557",
+            "https://avatars.githubusercontent.com/u/33603557?v=4")
         ),
         SUNNY(new GithubProfileResponse(
                 "박선희",
