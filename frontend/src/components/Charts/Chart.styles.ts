@@ -2,8 +2,16 @@ import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
 
 export const Category = styled.div`
+  width: 28rem;
+
   h4 {
     margin-bottom: 0.5rem;
+  }
+
+  div {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
   }
 
   button {
@@ -26,9 +34,12 @@ export const Category = styled.div`
 `;
 
 export const CategoryList = styled.ul`
-  width: 280px;
-  height: 70%;
+  height: 14rem;
   overflow-y: scroll;
+
+  border: 1px solid ${COLOR.LIGHT_GRAY_400};
+  border-radius: 0.5rem;
+  background-color: ${COLOR.LIGHT_GRAY_50};
 `;
 
 export const CategoryItem = styled.li<{

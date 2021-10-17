@@ -180,9 +180,11 @@ const DonutChart = ({ chartData, config }: Props) => {
             </CategoryItem>
           ))}
         </CategoryList>
-        <button type="button" onClick={() => setCurrentCategory(DEFAULT_CATEGORY_VALUE)}>
-          reset
-        </button>
+        <div>
+          <button type="button" onClick={() => setCurrentCategory(DEFAULT_CATEGORY_VALUE)}>
+            reset
+          </button>
+        </div>
       </Category>
     </div>
   );

@@ -204,18 +204,7 @@ const DonutChartForm = ({ chartData, config, onChangeData }: Props) => {
       return;
     }
 
-    const filteredData =
-      currentCategory === DEFAULT_CATEGORY_VALUE
-        ? graphData
-        : graphData.map((item) => {
-            if (currentCategory !== item.id) {
-              return { ...item, color: getGrayscaleColor(item.color) };
-            }
-
-            return item;
-          });
-
-    draw(filteredData);
+    draw(graphData.filter((item) => item.present));
   }, [currentCategory, graphData]);
 
   useEffect(() => {
@@ -304,9 +293,6 @@ const DonutChartForm = ({ chartData, config, onChangeData }: Props) => {
               </CategoryItem>
             ))}
           </CategoryList>
-          <button type="button" onClick={() => setGraphData(chartData?.data || [])}>
-            reset
-          </button>
         </form>
       </Category>
     </div>
