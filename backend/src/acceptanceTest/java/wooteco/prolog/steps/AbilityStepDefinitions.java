@@ -13,7 +13,6 @@ import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.ExceptionDto;
 import wooteco.prolog.fixtures.AbilityAcceptanceFixture;
 import wooteco.prolog.fixtures.GithubResponses;
-import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
 import wooteco.prolog.report.application.dto.ability.AbilityResponse;
 import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
@@ -46,10 +45,7 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
     @When("{string}의 역량 목록을 조회하면")
     public void 의역량목록을조회하면(String member) {
         String username = GithubResponses.findByName(member).getLogin();
-        context.invokeHttpGetWithToken(String.format("/members/%s", username));
-
-        Long memberId = context.response.as(MemberResponse.class).getId();
-        context.invokeHttpGetWithToken(String.format("/members/%d/abilities", memberId));
+        context.invokeHttpGetWithToken(String.format("/members/%s/abilities", username));
     }
 
     @Then("역량 목록을 받는다.")
@@ -113,6 +109,7 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         Long abilityId = getAbilityIdByName(abilityName);
 
         context.invokeHttpDeleteWithToken("/abilities/" + abilityId);
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
     @Then("{string} 역량이 포함되지 않은 목록을 받는다.")
@@ -168,6 +165,29 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         AbilityResponse response = parseResponseById(getAbilityIdByName(childName));
 
         assertThat(response.getColor()).isNotEqualTo(color);
+    }
+
+    @Then("비어있는 역량 목록을 받는다.")
+    public void 비어있는역량목록을받는다() {
+        List<AbilityResponse> responses = context.response.jsonPath()
+            .getList(".", AbilityResponse.class);
+
+        assertThat(responses).isEmpty();
+    }
+
+    @And("{string} 과정으로 기본 역량을 등록하고")
+    @When("{string} 과정으로 기본 역량을 등록하면")
+    public void 과정으로기본역량을등록하고(String template) {
+        context.invokeHttpPostWithToken("/abilities/template/" + template);
+    }
+
+    @Then("기본 역량 관련 예외가 발생한다.")
+    public void 기본역량관련예외가발생한다() {
+        ExceptionDto exceptionDto = context.response.as(ExceptionDto.class);
+
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(exceptionDto.getCode()).isEqualTo(BadRequestCode.ABILITY_CSV.getCode());
+        assertThat(exceptionDto.getMessage()).isEqualTo(BadRequestCode.ABILITY_CSV.getMessage());
     }
 
     private Long getAbilityIdByName(String abilityName) {

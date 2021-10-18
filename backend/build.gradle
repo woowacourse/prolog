@@ -42,6 +42,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    // open csv
+    implementation 'com.opencsv:opencsv:5.5.2'
+
     // log
     implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
     implementation "com.github.maricn:logback-slack-appender:1.4.0"

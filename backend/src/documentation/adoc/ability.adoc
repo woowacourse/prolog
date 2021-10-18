@@ -71,15 +71,15 @@ include::{snippets}/abilities/read/parent-only/http-request.adoc[]
 
 include::{snippets}/abilities/read/parent-only/http-response.adoc[]
 
-=== 멤버 ID를 통한 역량 목록 조회
+=== 멤버 username을 통한 역량 목록 조회
 
 ==== Request
 
-include::{snippets}/abilities/read/memberId/http-request.adoc[]
+include::{snippets}/abilities/read/username/http-request.adoc[]
 
 ==== Response
 
-include::{snippets}/abilities/read/memberId/http-response.adoc[]
+include::{snippets}/abilities/read/username/http-response.adoc[]
 
 === 역량 수정
 
@@ -150,3 +150,33 @@ include::{snippets}/abilities/delete-has-children-exception/http-request.adoc[]
 ==== Response
 
 include::{snippets}/abilities/delete-has-children-exception/http-response.adoc[]
+
+=== 기본 역량 등록 - 백엔드
+
+==== Request
+
+include::{snippets}/abilities/create-template-be/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/abilities/create-template-be/http-response.adoc[]
+
+=== 기본 역량 등록 - 프론트엔드
+
+==== Request
+
+include::{snippets}/abilities/create-template-fe/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/abilities/create-template-fe/http-response.adoc[]
+
+=== 기본 역량 등록 - 잘못된 경로 입력시 예외 발생
+
+==== Request
+
+include::{snippets}/abilities/create-template-exception/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/abilities/create-template-exception/http-response.adoc[]

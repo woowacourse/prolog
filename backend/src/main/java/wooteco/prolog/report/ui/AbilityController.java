@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.aop.MemberOnly;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
@@ -35,6 +36,15 @@ public class AbilityController {
     }
 
     @MemberOnly
+    @PostMapping("/abilities/template/{template}")
+    public ResponseEntity<Void> createBackendDefaultAbilities(@AuthMemberPrincipal LoginMember member,
+                                                              @PathVariable String template) {
+        abilityService.createTemplateAbilities(member.getId(), template);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @MemberOnly
     @GetMapping("/abilities")
     public ResponseEntity<List<AbilityResponse>> findAbilitiesByMember(@AuthMemberPrincipal LoginMember member) {
         return ResponseEntity.ok(abilityService.findAbilitiesByMemberId(member.getId()));
@@ -47,9 +57,10 @@ public class AbilityController {
     }
 
     @MemberOnly
-    @GetMapping("/members/{memberId}/abilities")
-    public ResponseEntity<List<AbilityResponse>> findAbilitiesByMemberId(@AuthMemberPrincipal LoginMember member, @PathVariable Long memberId) {
-        return ResponseEntity.ok(abilityService.findAbilitiesByMemberId(memberId));
+    @GetMapping("/members/{username}/abilities")
+    public ResponseEntity<List<AbilityResponse>> findAbilitiesByUsername(@AuthMemberPrincipal LoginMember member,
+                                                                         @PathVariable String username) {
+        return ResponseEntity.ok(abilityService.findAbilitiesByMemberUsername(username));
     }
 
     @MemberOnly

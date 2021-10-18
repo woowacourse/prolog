@@ -1,23 +1,19 @@
 package wooteco.prolog.report.domain.ablity;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.report.exception.AbilityHasChildrenException;
 import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
 import wooteco.prolog.studylog.exception.AbilityNameDuplicateException;
 import wooteco.prolog.studylog.exception.AbilityParentColorDuplicateException;
@@ -76,32 +72,6 @@ class AbilityTest {
         assertThat(ability).usingRecursiveComparison()
             .ignoringFields("parent", "children", "member")
             .isEqualTo(updateTarget);
-    }
-    
-    @DisplayName("삭제가 가능한 상태인지 검증할 때")
-    @Nested
-    class Removable {
-        
-        @DisplayName("자식 역량이 없는 경우 예외가 발생하지 않는다.")
-        @Test
-        void isRemovable() {
-            // given
-            Ability ability = Ability.parent(1L, "역량", "너잘의 3인칭 역량", "파란색", member);
-
-            // when, then
-            assertThatCode(ability::validateDeletable).doesNotThrowAnyException();
-        }
-
-        @DisplayName("자식 역량이 있는 경우 예외가 발생한다.")
-        @Test
-        void isNotRemovable() {
-            // given
-            Ability parentAbility = Ability.parent(1L, "역량", "너잘의 3인칭 역량", "파란색", member);
-            Ability childAbility = Ability.child(2L, "역량", "너잘의 3인칭 역량", "파란색", parentAbility, member);
-
-            // when, then
-            assertThatThrownBy(parentAbility::validateDeletable).isExactlyInstanceOf(AbilityHasChildrenException.class);
-        }
     }
 
     @DisplayName("역량끼리 이름이 같은 경우 예외가 발생한다.")
