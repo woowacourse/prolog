@@ -90,8 +90,8 @@ const requestGetCalendar = (year, month, username) =>
     },
   });
 
-const requestGetReportList = (username) =>
-  fetch(`${BASE_URL}/${username}/reports?type=simple`, {
+const requestGetReportList = (username, type) =>
+  fetch(`${BASE_URL}/${username}/reports?type=${type}`, {
     method: 'GET',
   });
 

@@ -2,9 +2,35 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 
+import { Ability } from '../ProfilePageReports/AbilityGraph';
+
 import useRequest from '../../hooks/useRequest';
 import { requestGetReportList } from '../../service/requests';
-import { AddNewReportLink } from './styles';
+import { COLOR, REQUEST_REPORT_TYPE } from '../../constants';
+
+import { Chip } from '../../components';
+import { ReactComponent as StudyLogIcon } from '../../assets/images/post.svg';
+import {
+  Container,
+  AddNewReportLink,
+  ReportList,
+  Card,
+  AbilityList,
+  StudyLogCount,
+  Badge,
+} from './styles';
+import { css } from '@emotion/react';
+
+type Report = {
+  id: number;
+  title: string;
+  description: string;
+  abilityGraph: {
+    abilities: Ability[];
+  };
+  studylogs: [];
+  represent: boolean;
+};
 
 type UserProfile = {
   data: { username: string };
@@ -21,35 +47,91 @@ const ProfilePageReportsList = () => {
 
   const isOwner = !!user.data && username === user.data.username;
   const { response: reports, fetchData: getReports } = useRequest([], () =>
-    requestGetReportList(username)
+    requestGetReportList(username, REQUEST_REPORT_TYPE.ALL)
   );
 
   useEffect(() => {
     getReports();
   }, [username]);
 
+  console.log(reports);
+
   if (!reports.length) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <Container
+        css={css`
+          height: 70vh;
+
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          p {
+            margin: 0;
+            font-size: 2rem;
+            line-height: 1.5;
+          }
+        `}
+      >
         <p>등록된 리포트가 없습니다.</p>
         {isOwner && (
           <>
             <p>리포트를 작성해주세요.</p>
-            <AddNewReportLink to={`/${username}/report/write`}> 새 리포트 등록</AddNewReportLink>
+            <AddNewReportLink to={`/${username}/report/write`}>새 리포트 등록</AddNewReportLink>
           </>
         )}
-      </div>
+      </Container>
     );
   }
 
   return (
-    <ul>
-      {reports.map(({ id, title }: { id: number; title: string }) => (
-        <li key={id}>
-          <Link to={`/${username}/reports/${id}`}>{title}</Link>
-        </li>
-      ))}
-    </ul>
+    <Container>
+      {isOwner && (
+        <AddNewReportLink
+          to={`/${username}/report/write`}
+          css={css`
+            position: absolute;
+            bottom: -2rem;
+            right: 0;
+          `}
+        >
+          새 리포트 등록
+        </AddNewReportLink>
+      )}
+
+      <ReportList>
+        {reports?.map(({ id, title, description, abilityGraph, studylogs, represent }: Report) => (
+          <Card key={id}>
+            {represent && (
+              <Badge>
+                <span>대표 리포트</span>
+              </Badge>
+            )}
+
+            <Link to={`/${username}/reports/${id}`}>
+              <h4>{title}</h4>
+              <p>{description}</p>
+
+              <AbilityList>
+                {abilityGraph.abilities.map(({ id, name }: Ability) => (
+                  <li key={id}>
+                    <Chip backgroundColor={`${COLOR.LIGHT_BLUE_100}`}>{name}</Chip>
+                  </li>
+                ))}
+              </AbilityList>
+
+              <StudyLogCount>
+                <StudyLogIcon />
+                <p>{studylogs.length}개의 학습로그</p>
+              </StudyLogCount>
+
+              <time>2021-10-18</time>
+            </Link>
+          </Card>
+        ))}
+      </ReportList>
+    </Container>
   );
 };
 
