@@ -3,7 +3,7 @@ import DonutChartForm from '../../components/Charts/DonutChartForm';
 import { COLOR } from '../../constants';
 import { Content, Section } from './AbilityGraph.styles';
 
-type Ability = {
+export type Ability = {
   id: number;
   name: string;
   weight: number;
