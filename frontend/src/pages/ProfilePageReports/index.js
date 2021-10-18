@@ -35,6 +35,10 @@ const ProfilePageReports = () => {
     () => requestGetReport(reportId),
     (data) => {
       setReportName(data.title);
+    },
+    () => {
+      alert('존재하지 않는 리포트입니다.');
+      history.push(`/${username}/reports`);
     }
   );
 
@@ -55,7 +59,9 @@ const ProfilePageReports = () => {
       const reportId = reports?.find((report) => report.title === reportName)?.id;
       return requestDeleteReport(reportId, accessToken);
     },
-    () => {},
+    () => {
+      history.push(`/${username}/reports`);
+    },
     () => {
       alert('리포트 삭제에 실패하였습니다.');
     }
