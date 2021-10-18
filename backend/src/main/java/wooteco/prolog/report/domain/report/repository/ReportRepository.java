@@ -14,7 +14,8 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 
     Page<Report> findReportsByMember(Member member, Pageable pageable);
 
-    @Query("select r from Report r where r.member.username = :username")
+    @Query(value = "select r from Report r where r.member.username = :username",
+        countQuery = "select count(*) from Report r where r.member.username = :username")
     Page<Report> findReportsByUsername(String username, Pageable pageable);
 
     @Query(value = "select r from Report r where r.title = :title and r.member.username = :username")
