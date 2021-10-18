@@ -57,12 +57,17 @@ public class GraphAbilities {
     }
 
     private Double calculatePercentage(Long allWeight, GraphAbility ability) {
+        if(allWeight == 0 || !ability.isPresent()) {
+            return 0.0;
+        }
+
         double percentage = ability.getWeight() / (double) allWeight;
-        return  Math.round(percentage * 100) / 100.0;
+        return Math.round(percentage * 100) / 100.0;
     }
 
     private Long allWeight() {
         return abilities.stream()
+            .filter(GraphAbility::isPresent)
             .mapToLong(GraphAbility::getWeight)
             .sum();
     }

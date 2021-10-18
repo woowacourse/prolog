@@ -58,9 +58,14 @@ public class ReportStepDefinitions extends AcceptanceSteps {
             new GraphRequest(
                 Arrays.asList(
                     new AbilityRequest(
-                        3L,
                         1L,
+                        2L,
                         false
+                    ),
+                    new AbilityRequest(
+                        3L,
+                        2L,
+                        true
                     )
                 )
             ),
@@ -98,7 +103,10 @@ public class ReportStepDefinitions extends AcceptanceSteps {
             new GraphResponse(
                 Arrays.asList(
                     new GraphAbilityResponse(
-                        3L, "디자인", "blue", 1L, 1.0, false
+                        1L, "프로그래밍", "red", 2L, 0.0, false
+                    ),
+                    new GraphAbilityResponse(
+                        3L, "디자인", "blue", 2L, 1.0, true
                     )
                 )
             ),
