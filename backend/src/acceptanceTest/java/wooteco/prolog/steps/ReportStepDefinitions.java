@@ -8,11 +8,14 @@ import io.cucumber.java.en.When;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import wooteco.prolog.AcceptanceSteps;
+import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.report.application.dto.report.request.ReportRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.AbilityRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRequest;
 import wooteco.prolog.report.application.dto.report.request.studylog.ReportStudylogRequest;
+import wooteco.prolog.report.application.dto.report.response.ReportPageableResponse;
 import wooteco.prolog.report.application.dto.report.response.ReportResponse;
+import wooteco.prolog.report.application.dto.report.response.SimpleReportPageableResponse;
 import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphAbilityResponse;
 import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogAbilityResponse;
@@ -80,6 +83,40 @@ public class ReportStepDefinitions extends AcceptanceSteps {
 
         context.storage.put("reportRequest", reportRequest);
         context.invokeHttpPutWithToken("/reports/" + reportResponse.getId(), reportRequest);
+    }
+
+    @When("{string}의 리포트 목록을 조회하면")
+    public void 리포트를조회하면(String name) {
+        GithubResponses user = GithubResponses.findByName(name);
+        context.invokeHttpGet("/reports?username={name}&type=all&page=0&size=10", user.getLogin());
+    }
+
+    @When("{string}의 단순 리포트 목록을 조회하면")
+    public void 단순리포트를조회하면(String name) {
+        GithubResponses user = GithubResponses.findByName(name);
+        context.invokeHttpGet("/reports?username={name}&type=simple&page=0&size=10", user.getLogin());
+    }
+
+    @Then("리포트 목록이 조회된다")
+    public void 리포트목록이조회된다() {
+        ReportPageableResponse reportPageableResponse =
+            context.response.as(ReportPageableResponse.class);
+
+        assertThat(reportPageableResponse.getCurrentPage()).isOne();
+        assertThat(reportPageableResponse.getTotalPage()).isOne();
+        assertThat(reportPageableResponse.getTotalSize()).isOne();
+        assertThat(reportPageableResponse.getReports()).hasSize(1);
+    }
+
+    @Then("단순 리포트 목록이 조회된다")
+    public void 단순리포트목록이조회된다() {
+        SimpleReportPageableResponse simpleReportPageableResponse =
+            context.response.as(SimpleReportPageableResponse.class);
+
+        assertThat(simpleReportPageableResponse.getCurrentPage()).isOne();
+        assertThat(simpleReportPageableResponse.getTotalPage()).isOne();
+        assertThat(simpleReportPageableResponse.getTotalSize()).isOne();
+        assertThat(simpleReportPageableResponse.getReports()).hasSize(1);
     }
 
     @Then("리포트가 등록된다")

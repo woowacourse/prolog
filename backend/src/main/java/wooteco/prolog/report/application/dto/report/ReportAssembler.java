@@ -5,13 +5,16 @@ import static java.util.stream.Collectors.toList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.application.dto.report.request.ReportRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.AbilityRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRequest;
 import wooteco.prolog.report.application.dto.report.request.studylog.ReportStudylogRequest;
+import wooteco.prolog.report.application.dto.report.response.ReportPageableResponse;
 import wooteco.prolog.report.application.dto.report.response.ReportResponse;
+import wooteco.prolog.report.application.dto.report.response.SimpleReportPageableResponse;
 import wooteco.prolog.report.application.dto.report.response.SimpleReportResponse;
 import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphAbilityResponse;
 import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphResponse;
@@ -132,8 +135,6 @@ public class ReportAssembler {
         );
     }
 
-    ;
-
     private GraphResponse of(AbilityGraph abilityGraph) {
         List<GraphAbilityResponse> graphAbilityRespons = abilityGraph.getAbilities().stream()
             .map(this::of)
@@ -158,6 +159,32 @@ public class ReportAssembler {
             report.getId(),
             report.getTitle(),
             report.isRepresent()
+        );
+    }
+
+    public ReportPageableResponse of(Page<Report> reports) {
+        List<ReportResponse> reportResponses = reports.stream()
+            .map(this::of)
+            .collect(toList());
+
+        return new ReportPageableResponse(
+            reportResponses,
+            reports.getTotalElements(),
+            reports.getTotalPages(),
+            reports.getNumber() + 1
+        );
+    }
+
+    public SimpleReportPageableResponse simpleOf(Page<Report> reports) {
+        List<SimpleReportResponse> simpleReportResponses = reports.stream()
+            .map(this::simpleOf)
+            .collect(toList());
+
+        return new SimpleReportPageableResponse(
+            simpleReportResponses,
+            reports.getTotalElements(),
+            reports.getTotalPages(),
+            reports.getNumber() + 1
         );
     }
 }
