@@ -250,7 +250,42 @@ const EditingListItem = styled.li`
 `;
 
 const NoContent = styled.li`
-  grid-template-columns: 1fr;
+  && {
+    padding: 2rem 3rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    grid-template-columns: 1fr;
+
+    div {
+      padding: 2rem;
+    }
+
+    h3 {
+      margin-bottom: 2rem;
+    }
+
+    span {
+      color: ${COLOR.DARK_GRAY_700};
+    }
+
+    button {
+      width: 13rem;
+      height: 6rem;
+
+      border-radius: 1rem;
+
+      background-color: ${COLOR.LIGHT_BLUE_200};
+
+      :not(:last-child) {
+        margin-right: 1rem;
+      }
+    }
+  }
+
   text-align: center;
 `;
 

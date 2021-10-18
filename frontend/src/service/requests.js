@@ -197,6 +197,14 @@ const requestEditAbility = (accessToken, data) =>
     body: JSON.stringify(data),
   });
 
+const requestSetDefaultAbility = (accessToken, field) =>
+  fetch(`${BASE_URL}/abilities/template/${field}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
 export {
   requestGetPosts,
   requestGetPost,
@@ -214,6 +222,7 @@ export {
   requestAddAbility,
   requestDeleteAbility,
   requestEditAbility,
+  requestSetDefaultAbility,
   requestGetReportList,
   requestGetReport,
   requestPostReport,

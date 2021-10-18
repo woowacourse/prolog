@@ -1,13 +1,17 @@
+import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import { COLOR } from '../../constants';
 import { ERROR_MESSAGE } from '../../constants/message';
+import useMutation from '../../hooks/useMutation';
+import useRequest from '../../hooks/useRequest';
 import {
   requestAddAbility,
   requestDeleteAbility,
   requestEditAbility,
   requestGetAbilities,
+  requestSetDefaultAbility,
 } from '../../service/requests';
 import AbilityListItem from './AbilityListItem';
 import AddAbilityForm from './AddAbilityForm';
@@ -30,20 +34,17 @@ const AbilityPage = () => {
   const user = useSelector((state) => state.user.profile);
   const isMine = user.data && username === user.data.username;
 
-  const getData = async () => {
-    try {
-      const response = await requestGetAbilities(user.data.username, JSON.parse(accessToken));
-      const data = await response.json();
-
-      setAbilities(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const setAddFormIsOpened = (status) => () => {
     setAddFormStatus((prevState) => ({ ...prevState, isOpened: status }));
   };
+
+  const { fetchData: getData } = useRequest(
+    [],
+    () => requestGetAbilities(user.data.username, JSON.parse(accessToken)),
+    (data) => {
+      setAbilities(data);
+    }
+  );
 
   const addAbility = async ({ name, description, color, parent = null }) => {
     try {
@@ -107,6 +108,16 @@ const AbilityPage = () => {
     }
   };
 
+  const { mutate: addDefaultAbilities } = useMutation(
+    (field) => requestSetDefaultAbility(JSON.parse(accessToken), field),
+    () => {
+      getData();
+    },
+    () => {
+      alert('기본 역량을 등록하지 못했습니다.');
+    }
+  );
+
   useEffect(() => {
     if (user.data?.id) {
       getData();
@@ -151,7 +162,7 @@ const AbilityPage = () => {
             역량<span>{`(총 ${abilities?.length}개)`}</span>
           </div>
         </ListHeader>
-        {!abilities?.length && <NoContent>역량이 없습니다. 역량을 추가해주세요.</NoContent>}
+
         {abilities
           ?.filter(({ isParent }) => isParent)
           .map(({ id, name, description, color, isParent, children }) => (
@@ -168,6 +179,27 @@ const AbilityPage = () => {
               onEdit={editAbility}
             />
           ))}
+
+        {!abilities?.length && (
+          <NoContent>
+            <div>
+              <h3>존재하는 역량이 없습니다.</h3>
+              <span>
+                오른쪽 위의 '역량추가+'버튼을 눌러 역량을 추가하시거나,
+                <br />
+                아래의 버튼을 눌러 기본으로 제공되는 역량 목록을 추가해보세요.
+              </span>
+            </div>
+            <div>
+              <button type="button" onClick={() => addDefaultAbilities('fe')}>
+                프론트엔드
+              </button>
+              <button type="button" onClick={() => addDefaultAbilities('be')}>
+                백엔드
+              </button>
+            </div>
+          </NoContent>
+        )}
       </AbilityList>
     </Container>
   );
