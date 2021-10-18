@@ -92,7 +92,7 @@ const ProfilePageReportsList = () => {
           to={`/${username}/report/write`}
           css={css`
             position: absolute;
-            bottom: -2rem;
+            bottom: -6rem;
             right: 0;
           `}
         >

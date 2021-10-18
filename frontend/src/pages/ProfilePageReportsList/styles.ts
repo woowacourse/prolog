@@ -6,9 +6,16 @@ import { COLOR } from '../../constants';
 
 export const Container = styled.section<{ css?: SerializedStyles }>`
   width: 100%;
-  margin-bottom: 5rem;
+  height: fit-content;
+  padding: 2rem;
+  padding-left: 0;
+  margin-bottom: 7rem;
 
   position: relative;
+
+  border-radius: 1.5rem;
+  border: 0.5px solid ${COLOR.LIGHT_GRAY_200};
+  background-color: ${COLOR.LIGHT_GRAY_100};
 
   ${({ css }) => css};
 `;
@@ -21,7 +28,7 @@ export const AddNewReportLink = styled(NavLink)<{ css?: SerializedStyles }>`
 
   display: flex;
   align-items: center;
-  z-index: 1;
+  z-index: 0;
 
   border-radius: 1rem;
   background-color: ${COLOR.DARK_BLUE_800};
@@ -40,7 +47,6 @@ export const ReportList = styled.ol`
   width: 100%;
   height: fit-content;
   margin-left: 2rem;
-  margin-bottom: 4rem;
   position: relative;
 
   display: grid;
@@ -55,8 +61,7 @@ export const Card = styled.li`
 
   position: relative;
 
-  border-radius: 0.8rem;
-  border: 0.5px solid ${COLOR.LIGHT_GRAY_200};
+  border-radius: 0.5rem;
   background-color: ${COLOR.WHITE};
 
   word-break: break-all;
@@ -66,7 +71,7 @@ export const Card = styled.li`
   :hover {
     box-shadow: 0.5rem 0.5rem 0.5rem ${COLOR.LIGHT_GRAY_200};
 
-    transform: scale(1.05);
+    transform: scale(1.02);
     transition: transform 0.1s;
 
     cursor: pointer;
@@ -178,17 +183,18 @@ export const Badge = styled.div`
     display: block;
 
     position: absolute;
-    z-index: -1;
 
     border: 5px solid ${COLOR.DARK_BLUE_500};
   }
 
   ::before {
+    z-index: 0;
     top: 0;
     left: 0;
   }
 
   ::after {
+    z-index: 0;
     bottom: 0;
     right: 0;
   }
@@ -205,12 +211,14 @@ export const Badge = styled.div`
 
     background-color: ${COLOR.LIGHT_BLUE_800};
     box-shadow: 0 0.5rem 1rem ${COLOR.BLACK_OPACITY_200};
-    border: 0.2rem dotted #fff;
+    border: 0.2rem dotted ${COLOR.WHITE};
     outline: 0.4rem solid ${COLOR.LIGHT_BLUE_800};
 
-    color: #fff;
+    color: ${COLOR.WHITE};
     font-size: 1.4rem;
     text-shadow: 0 1px 1px ${COLOR.BLACK_OPACITY_200};
     text-align: center;
+
+    z-index: 1;
   }
 `;
