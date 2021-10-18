@@ -91,7 +91,7 @@ public class ReportStepDefinitions extends AcceptanceSteps {
     @Then("리포트가 수정된다")
     public void 리포트가수정된다() {
         int status = context.response.statusCode();
-        assertThat(status).isEqualTo(200);
+         assertThat(status).isEqualTo(200);
 
         ReportResponse reportResponse = context.response.as(ReportResponse.class);
 
@@ -105,10 +105,10 @@ public class ReportStepDefinitions extends AcceptanceSteps {
             new GraphResponse(
                 Arrays.asList(
                     new GraphAbilityResponse(
-                        1L, "프로그래밍", "red", 2L, 0.0, false
+                        3L, "디자인", "blue", 2L, 1.0, true
                     ),
                     new GraphAbilityResponse(
-                        3L, "디자인", "blue", 2L, 1.0, true
+                        1L, "프로그래밍", "red", 2L, 0.0, false
                     )
                 )
             ),
