@@ -202,10 +202,10 @@ public class AbilityDocumentation extends Documentation {
     }
 
     @Test
-    void 멤버_ID를_통해_역량_목록을_조회한다() {
+    void 멤버_Username을_통해_역량_목록을_조회한다() {
         // given
         String 서니_accessToken = 로그인한다(서니);
-        Long 서니_memberId = 멤버ID를_추출한다(서니);
+        String 서니_username = 멤버username을_추출한다(서니);
 
         AbilityResponse 상위_역량_response1 = 상위_역량을_생성하고_response를_반환한다(서니_accessToken, new AbilityCreateRequest("유저의 상위 역량 이름1", "유저의 상위 역량 설명1", "#001122", null));
         AbilityResponse 상위_역량_response2 = 상위_역량을_생성하고_response를_반환한다(서니_accessToken, new AbilityCreateRequest("유저의 상위 역량 이름2", "유저의 상위 역량 설명2", "#ffffff", null));
@@ -213,10 +213,10 @@ public class AbilityDocumentation extends Documentation {
         역량을_생성한다(서니_accessToken, new AbilityCreateRequest("유저의 하위 역량 이름2", "유저의 하위 역량 설명2", 상위_역량_response2.getColor(), 상위_역량_response2.getId()));
 
         // when
-        ExtractableResponse<Response> response = given("abilities/read/memberId")
+        ExtractableResponse<Response> response = given("abilities/read/username")
             .header(AUTHORIZATION, "Bearer " + accessToken)
             .when()
-            .get(String.format("/members/%s/abilities", 서니_memberId))
+            .get(String.format("/members/%s/abilities", 서니_username))
             .then()
             .log().all()
             .extract();
@@ -423,25 +423,50 @@ public class AbilityDocumentation extends Documentation {
     }
 
     @Test
-    void 상위_역량을_제거할_때_하위_역량이_존재하는_경우_예외가_발생한다() {
-        // given
-        AbilityCreateRequest 상위_역량_생성_request = new AbilityCreateRequest("상위 역량 이름", "상위 역량 설명", "#001122", null);
-        AbilityResponse 상위_역량_response = 상위_역량을_생성하고_response를_반환한다(accessToken, 상위_역량_생성_request);
-        역량을_생성한다(accessToken, new AbilityCreateRequest("하위 역량 이름", "하위 역량 설명", "#001122", 상위_역량_response.getId()));
-
+    void 백엔드_기본_역량을_등록한다() {
         // when
-        ExtractableResponse<Response> response = given("abilities/delete-has-children-exception")
+        ExtractableResponse<Response> response = given("abilities/create-template-be")
             .header(AUTHORIZATION, "Bearer " + accessToken)
             .when()
-            .delete("/abilities/" + 상위_역량_response.getId())
+            .post("/abilities/template/be")
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(OK.value());
+    }
+
+    @Test
+    void 프론트엔드_기본_역량을_등록한다() {
+        // when
+        ExtractableResponse<Response> response = given("abilities/create-template-fe")
+            .header(AUTHORIZATION, "Bearer " + accessToken)
+            .when()
+            .post("/abilities/template/fe")
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(OK.value());
+    }
+
+    @Test
+    void 기본_역량_등록시_잘못된_과정을_선택하면_예외가_발생한다() {
+        // when
+        ExtractableResponse<Response> response = given("abilities/create-template-exception")
+            .header(AUTHORIZATION, "Bearer " + accessToken)
+            .when()
+            .post("/abilities/template/wrong-path")
             .then()
             .log().all()
             .extract();
 
         // then
         assertThat(response.statusCode()).isEqualTo(BAD_REQUEST.value());
-        assertThat((int) response.jsonPath().get("code")).isEqualTo(4001);
-        assertThat((String) response.jsonPath().get("message")).isEqualTo("해당 역량의 하위 역량이 존재합니다.");
+        assertThat((int) response.jsonPath().get("code")).isEqualTo(4006);
+        assertThat((String) response.jsonPath().get("message")).isEqualTo("기본 역량 추가를 위한 CSV 동작 과정에서 에러가 발생했습니다.");
     }
 
     private String 로그인한다(GithubResponses githubResponse) {
@@ -455,13 +480,13 @@ public class AbilityDocumentation extends Documentation {
             .extract().body().as(TokenResponse.class).getAccessToken();
     }
 
-    private Long 멤버ID를_추출한다(GithubResponses githubResponse) {
+    private String 멤버username을_추출한다(GithubResponses githubResponse) {
         return RestAssured.given()
             .when()
             .get("/members/" + githubResponse.getLogin())
             .then()
             .log().all()
-            .extract().body().as(MemberResponse.class).getId();
+            .extract().body().as(MemberResponse.class).getUsername();
     }
 
     private AbilityResponse 상위_역량을_생성하고_response를_반환한다(String accessToken, AbilityCreateRequest request) {

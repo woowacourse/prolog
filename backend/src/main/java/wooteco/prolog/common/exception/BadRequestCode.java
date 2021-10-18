@@ -11,6 +11,7 @@ import wooteco.prolog.login.excetpion.TokenNotValidException;
 import wooteco.prolog.member.exception.DuplicateMemberTagException;
 import wooteco.prolog.member.exception.MemberNotAllowedException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
+import wooteco.prolog.report.exception.AbilityCsvException;
 import wooteco.prolog.studylog.exception.DuplicateReportTitleException;
 import wooteco.prolog.studylog.exception.StudylogScrapAlreadyRegisteredException;
 import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
@@ -83,7 +84,9 @@ public enum BadRequestCode {
                                    AbilityParentColorDuplicateException.class),
     ABILITY_PARENT_CHILD_COLOR_DIFFERENT(4004, "상위 역량과 하위 역량의 색상이 일치하지 않습니다.",
                                          AbilityParentChildColorDifferentException.class),
-    DUPLICATE_REPORT_TITLE(4005, "리포트의 이름은 중복일 수 없습니다.", DuplicateReportTitleException.class);
+    DUPLICATE_REPORT_TITLE(4005, "리포트의 이름은 중복일 수 없습니다.", DuplicateReportTitleException.class),
+    ABILITY_CSV(4006, "기본 역량 추가를 위한 CSV 동작 과정에서 에러가 발생했습니다.", AbilityCsvException.class)
+    ;
 
     private int code;
     private String message;
