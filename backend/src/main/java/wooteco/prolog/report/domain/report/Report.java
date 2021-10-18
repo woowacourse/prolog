@@ -1,5 +1,6 @@
 package wooteco.prolog.report.domain.report;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
@@ -12,10 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.domain.report.abilitygraph.AbilityGraph;
 import wooteco.prolog.report.domain.report.studylog.ReportedStudylog;
@@ -41,6 +42,12 @@ public class Report {
     private ReportedStudylogs studylogs;
 
     private Boolean isRepresent;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
@@ -106,6 +113,14 @@ public class Report {
 
     public Boolean isRepresent() {
         return isRepresent;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     public Member getMember() {
