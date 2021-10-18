@@ -73,7 +73,7 @@ public class ReportService {
 
             return reportAssembler.of(savedReport);
         } catch (Exception e) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(e);
         }
     }
 

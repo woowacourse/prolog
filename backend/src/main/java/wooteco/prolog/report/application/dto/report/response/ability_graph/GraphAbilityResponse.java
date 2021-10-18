@@ -9,18 +9,18 @@ public class GraphAbilityResponse {
     private String color;
     private Long weight;
     private Double percentage;
-    private Boolean present;
+    private Boolean isPresent;
 
     private GraphAbilityResponse() {
     }
 
-    public GraphAbilityResponse(Long id, String name, String color, Long weight, Double percentage, Boolean present) {
+    public GraphAbilityResponse(Long id, String name, String color, Long weight, Double percentage, Boolean isPresent) {
         this.id = id;
         this.name = name;
         this.color = color;
         this.weight = weight;
         this.percentage = percentage;
-        this.present = present;
+        this.isPresent = isPresent;
     }
 
     public static GraphAbilityResponse from(GraphAbilityDto graphAbilityDto) {
@@ -54,7 +54,7 @@ public class GraphAbilityResponse {
         return percentage;
     }
 
-    public Boolean isPresent() {
-        return present;
+    public Boolean getIsPresent() {
+        return isPresent;
     }
 }
