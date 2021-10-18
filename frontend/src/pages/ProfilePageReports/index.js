@@ -9,7 +9,7 @@ import {
   requestGetReport,
   requestGetReportList,
 } from '../../service/requests';
-import { API } from '../../constants';
+import { API, REQUEST_REPORT_TYPE } from '../../constants';
 
 import { Button, SelectBox } from '../../components';
 import Report from './Report';
@@ -19,11 +19,9 @@ import useMutation from '../../hooks/useMutation';
 
 const ProfilePageReports = () => {
   const history = useHistory();
-  const { reportId } = useParams();
+  const { reportId, username } = useParams();
 
   const [reportName, setReportName] = useState('');
-
-  const { username } = useParams();
 
   const loginUser = useSelector((state) => state.user.profile);
   const isOwner = !!loginUser.data && username === loginUser.data.username;
@@ -44,7 +42,7 @@ const ProfilePageReports = () => {
 
   const { response: reports, fetchData: getReports } = useRequest(
     [],
-    () => requestGetReportList(username),
+    () => requestGetReportList(username, REQUEST_REPORT_TYPE.SIMPLE),
     (data) => {
       const reportName = data.find((report) => report.id === Number(reportId)).title;
 
@@ -56,7 +54,6 @@ const ProfilePageReports = () => {
     () => {
       if (!window.confirm('리포트를 삭제하시겠습니까?')) return;
 
-      const reportId = reports?.find((report) => report.title === reportName)?.id;
       return requestDeleteReport(reportId, accessToken);
     },
     () => {
