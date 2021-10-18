@@ -18,5 +18,10 @@ Feature: 리포트 기능
 
   Scenario: 리포트 수정하기
     And 리포트를 등록하고
-    And 리포트를 수정하면
+    When 리포트를 수정하면
     Then 리포트가 수정된다
+
+  Scenario: 리포트 조회하기
+    And 리포트를 등록하고
+    When "브라운"의 리포트 목록을 조회하면
+    Then 리포트 목록이 조회된다

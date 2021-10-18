@@ -3,6 +3,7 @@ package wooteco.prolog.report.domain.report.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,10 +12,10 @@ import wooteco.prolog.report.domain.report.Report;
 
 public interface ReportRepository extends JpaRepository<Report, Long> {
 
-    List<Report> findReportsByMember(Member member, Pageable pageable);
+    Page<Report> findReportsByMember(Member member, Pageable pageable);
 
     @Query("select r from Report r where r.member.username = :username")
-    List<Report> findReportsByUsername(String username, Pageable pageable);
+    Page<Report> findReportsByUsername(String username, Pageable pageable);
 
     @Query(value = "select r from Report r where r.title = :title and r.member.username = :username")
     Optional<Report> findReportByTitleAndMemberUsername(String title, String username);

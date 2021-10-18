@@ -72,7 +72,7 @@ class ReportRepositoryTest {
         flushAndClear();
 
         PageRequest pageable = PageRequest.of(0, 10);
-        List<Report> reports = reportRepository.findReportsByMember(member, pageable);
+        List<Report> reports = reportRepository.findReportsByMember(member, pageable).toList();
         Report report1 = reports.get(0);
 
         assertThat(reportAssembler.of(report1))
