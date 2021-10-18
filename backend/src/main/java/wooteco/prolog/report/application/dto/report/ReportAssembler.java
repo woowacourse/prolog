@@ -98,6 +98,8 @@ public class ReportAssembler {
             report.getId(),
             report.getTitle(),
             report.getDescription(),
+            report.getCreatedAt(),
+            report.getUpdatedAt(),
             of(report.getAbilityGraph()),
             studylogResponses,
             report.isRepresent()

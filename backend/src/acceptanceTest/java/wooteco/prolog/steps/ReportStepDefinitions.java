@@ -100,6 +100,8 @@ public class ReportStepDefinitions extends AcceptanceSteps {
             reportRequest.getId(),
             reportRequest.getTitle(),
             reportRequest.getDescription(),
+            LocalDateTime.now(),
+            LocalDateTime.now(),
             new GraphResponse(
                 Arrays.asList(
                     new GraphAbilityResponse(
@@ -128,7 +130,7 @@ public class ReportStepDefinitions extends AcceptanceSteps {
 
         assertThat(reportResponse)
             .usingRecursiveComparison()
-            .ignoringFields("studylogs.createAt", "studylogs.updateAt")
+            .ignoringFields("studylogs.createAt", "studylogs.updateAt", "createdAt", "updatedAt")
             .isEqualTo(expected);
     }
 }
