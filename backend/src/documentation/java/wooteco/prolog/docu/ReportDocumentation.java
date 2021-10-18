@@ -188,7 +188,7 @@ class ReportDocumentation extends Documentation {
             .map(ability -> new AbilityRequest(
                 ability.getId(),
                 ability.getWeight(),
-                ability.isPresent())
+                ability.getIsPresent())
             ).collect(toList());
 
         return new GraphRequest(abilityRequests);

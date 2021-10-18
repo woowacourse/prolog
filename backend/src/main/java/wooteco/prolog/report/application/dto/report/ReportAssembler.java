@@ -69,7 +69,7 @@ public class ReportAssembler {
         return new GraphAbility(
             findAbilityById(abilityRequest.getId()),
             abilityRequest.getWeight(),
-            abilityRequest.isRepresent()
+            abilityRequest.getIsPresent()
         );
     }
 
