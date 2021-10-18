@@ -83,7 +83,7 @@ class ReportServiceTest {
 
         assertThat(reportResponse)
             .usingRecursiveComparison()
-            .ignoringFieldsMatchingRegexes(".*id", ".*updateAt", ".*createAt")
+            .ignoringFieldsMatchingRegexes(".*id", ".*updateAt", ".*createAt", ".*createdAt", ".*updatedAt")
             .isEqualTo(expected("jsons/report_post_response.json"));
     }
 
@@ -117,7 +117,7 @@ class ReportServiceTest {
 
         assertThat(reportResponse)
             .usingRecursiveComparison()
-            .ignoringFieldsMatchingRegexes(".*id", ".*updateAt", ".*createAt")
+            .ignoringFieldsMatchingRegexes(".*id", ".*updateAt", ".*createAt", ".*createdAt", ".*updatedAt")
             .isEqualTo(expected("jsons/report_put_response.json"));
     }
 
