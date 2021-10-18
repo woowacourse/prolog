@@ -9,7 +9,7 @@ type Ability = {
   weight: number;
   percentage: number;
   color: string;
-  present: boolean;
+  isPresent: boolean;
 };
 
 const MODE = {
@@ -31,7 +31,7 @@ const AbilityGraph = ({
       weight: number;
       percentage: number;
       color: string;
-      present: boolean;
+      isPresent: boolean;
     }[]
   ) => void;
   mode: string;
@@ -45,7 +45,7 @@ const AbilityGraph = ({
             chartData={{
               title: '역량 그래프',
               categoryTitle: '역량',
-              data: abilities.filter((item) => item.present),
+              data: abilities.filter((item) => item.isPresent),
             }}
             config={{ backgroundColor: COLOR.WHITE, width: 400, height: 220 }}
           />
@@ -66,7 +66,7 @@ const AbilityGraph = ({
                   weight: number;
                   percentage: number;
                   color: string;
-                  present: boolean;
+                  isPresent: boolean;
                 }[]
               ) => void
             }

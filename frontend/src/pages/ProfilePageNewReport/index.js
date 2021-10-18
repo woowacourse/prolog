@@ -68,15 +68,13 @@ const ProfilePageNewReport = () => {
 
     const currTitle = title.trim();
 
-    console.log(abilities.map(({ id, weight, present }) => ({ id, weight, present })));
-
     const data = {
       id: null,
       title:
         currTitle !== '' ? currTitle : `${new Date().toLocaleDateString()} ${nickname}의 리포트`,
       description,
       abilityGraph: {
-        abilities: abilities.map(({ id, weight, present }) => ({ id, weight, represent: present })),
+        abilities: abilities.map(({ id, weight, isPresent }) => ({ id, weight, isPresent })),
       },
       studylogs: studyLogs.map((item) => ({ id: item.id, abilities: [] })),
       represent: false,
@@ -93,7 +91,7 @@ const ProfilePageNewReport = () => {
 
   const { fetchData: getAbilities } = useRequest(
     [],
-    () => requestGetAbilities(user.data.id, accessToken),
+    () => requestGetAbilities(user.data.username, accessToken),
     (data) => {
       const parents = data.filter((item) => item.isParent);
 
@@ -104,7 +102,7 @@ const ProfilePageNewReport = () => {
           color,
           weight: Math.ceil(10 * Number((1 / parents.length).toFixed(2))),
           percentage: Number((1 / parents.length).toFixed(2)),
-          present: true,
+          isPresent: true,
         }))
       );
     }

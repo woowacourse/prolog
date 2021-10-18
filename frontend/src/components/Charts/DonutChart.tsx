@@ -14,7 +14,7 @@ interface ChartData {
     weight: number;
     percentage: number;
     color: string;
-    present: boolean;
+    isPresent: boolean;
   }[];
 }
 
@@ -53,7 +53,7 @@ const DonutChart = ({ chartData, config }: Props) => {
       weight: number;
       percentage: number;
       color: string;
-      present: boolean;
+      isPresent: boolean;
     }[]
   ) => {
     if (!canvasRef.current) {

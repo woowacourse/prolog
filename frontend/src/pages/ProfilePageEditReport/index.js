@@ -90,7 +90,7 @@ const ProfilePageEditReport = () => {
       title: title !== '' ? title : `${new Date().toLocaleDateString()} ${nickname}의 리포트`,
       description,
       abilityGraph: {
-        abilities: abilities.map(({ id, weight, present }) => ({ id, weight, represent: present })),
+        abilities: abilities.map(({ id, weight, isPresent }) => ({ id, weight, isPresent })),
       },
       studylogs: studyLogs.map((item) => ({ id: item.id, abilities: [] })),
       represent: false,

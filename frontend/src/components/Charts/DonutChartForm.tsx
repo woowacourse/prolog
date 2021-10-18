@@ -15,7 +15,7 @@ interface ChartData {
     weight: number;
     percentage: number;
     color: string;
-    present: boolean;
+    isPresent: boolean;
   }[];
 }
 
@@ -35,7 +35,7 @@ interface Props {
       weight: number;
       percentage: number;
       color: string;
-      present: boolean;
+      isPresent: boolean;
     }[]
   ) => void;
 }
@@ -64,7 +64,7 @@ const DonutChartForm = ({ chartData, config, onChangeData }: Props) => {
       weight: number;
       percentage: number;
       color: string;
-      present: boolean;
+      isPresent: boolean;
     }[]
   ) => {
     if (!canvasRef.current) {
@@ -114,17 +114,17 @@ const DonutChartForm = ({ chartData, config, onChangeData }: Props) => {
   const toggleIsPresent = (id: number) => {
     const toggledData = graphData.map((item) => {
       if (item.id === id) {
-        return { ...item, present: !item.present };
+        return { ...item, isPresent: !item.isPresent };
       }
       return item;
     });
 
     const sumOfWeights = toggledData.reduce(
-      (sum, { weight, present }) => sum + (present ? weight : 0),
+      (sum, { weight, isPresent }) => sum + (isPresent ? weight : 0),
       0
     );
     const resultData = toggledData.map((item) => {
-      if (item.present) {
+      if (item.isPresent) {
         return { ...item, percentage: Number((item.weight / sumOfWeights).toFixed(2)) };
       }
       return { ...item, percentage: 0 };
@@ -140,9 +140,12 @@ const DonutChartForm = ({ chartData, config, onChangeData }: Props) => {
       }
       return item;
     });
-    const sumOfWeights = data.reduce((sum, { weight, present }) => sum + (present ? weight : 0), 0);
+    const sumOfWeights = data.reduce(
+      (sum, { weight, isPresent }) => sum + (isPresent ? weight : 0),
+      0
+    );
     const resultData = data.map((item) => {
-      if (item.present) {
+      if (item.isPresent) {
         return { ...item, percentage: Number((item.weight / sumOfWeights).toFixed(2)) };
       }
       return { ...item, percentage: 0 };
@@ -204,7 +207,7 @@ const DonutChartForm = ({ chartData, config, onChangeData }: Props) => {
       return;
     }
 
-    draw(graphData.filter((item) => item.present));
+    draw(graphData.filter((item) => item.isPresent));
   }, [currentCategory, graphData]);
 
   useEffect(() => {
@@ -246,7 +249,7 @@ const DonutChartForm = ({ chartData, config, onChangeData }: Props) => {
               <div>가중치</div>
               <div>비율(%)</div>
             </CategoryListTitle>
-            {graphData.map(({ id, name, color, weight, percentage, present }) => (
+            {graphData.map(({ id, name, color, weight, percentage, isPresent }) => (
               <CategoryItem
                 key={id}
                 chipColor={color}
@@ -256,7 +259,7 @@ const DonutChartForm = ({ chartData, config, onChangeData }: Props) => {
                 <div>
                   <input
                     type="checkbox"
-                    checked={present}
+                    checked={isPresent}
                     onChange={() => toggleIsPresent(id)}
                     onBlur={() => onChangeData(graphData)}
                   />
