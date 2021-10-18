@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.ContentCachingRequestWrapper;
+import org.springframework.web.util.ContentCachingResponseWrapper;
 import wooteco.prolog.login.application.AuthorizationExtractor;
 import wooteco.prolog.login.application.JwtTokenProvider;
 
@@ -34,7 +36,7 @@ public class SlackMessageGenerator {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    public Optional<String> generate(HttpServletRequest request, HttpServletResponse response) {
+    public Optional<String> generate(ContentCachingRequestWrapper request, ContentCachingResponseWrapper response) {
         try {
             String status = String.valueOf(response.getStatus());
             if (!(status.startsWith("4") || status.startsWith("5"))) {
@@ -48,7 +50,7 @@ public class SlackMessageGenerator {
             String userId = token == null ? "Guest" : jwtTokenProvider.extractSubject(token);
             String profile = String.join(",", environment.getActiveProfiles());
             String requestURI = request.getRequestURI();
-            String body = request.getReader().lines().collect(Collectors.joining());
+            String body = new String(request.getContentAsByteArray());
 
             return Optional
                 .of(toMessage(profile, status, currentTime, userId, "테스트 에러 메세지", method, requestURI, body));
