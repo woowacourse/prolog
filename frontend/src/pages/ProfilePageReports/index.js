@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import { NavLink, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import localStorage from 'local-storage';
@@ -13,51 +14,61 @@ import { API } from '../../constants';
 import { Button, SelectBox } from '../../components';
 import Report from './Report';
 import { Container, AddNewReportLink, ButtonWrapper, ReportHeader, ReportBody } from './styles';
+import useRequest from '../../hooks/useRequest';
+import useMutation from '../../hooks/useMutation';
 
 const ProfilePageReports = () => {
-  const [reports, setReports] = useState([]);
+  const history = useHistory();
+  const { reportId } = useParams();
+
   const [reportName, setReportName] = useState('');
-  const [report, setReport] = useState(null);
 
   const { username } = useParams();
 
-  const user = useSelector((state) => state.user.profile);
-  const isOwner = !!user.data && username === user.data.username;
+  const loginUser = useSelector((state) => state.user.profile);
+  const isOwner = !!loginUser.data && username === loginUser.data.username;
 
   const accessToken = localStorage.get(API.ACCESS_TOKEN);
 
-  const getReport = async (reportId) => {
-    try {
-      const response = await requestGetReport(reportId);
-
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-
-      const report = await response.json();
-      setReport(report);
-    } catch (error) {
-      console.error(error);
+  const { response: report, fetchData: getReport } = useRequest(
+    {},
+    () => requestGetReport(reportId),
+    (data) => {
+      setReportName(data.title);
+    },
+    () => {
+      alert('존재하지 않는 리포트입니다.');
+      history.push(`/${username}/reports`);
     }
-  };
+  );
 
-  const getReports = async (username) => {
-    try {
-      const response = await requestGetReportList(username);
+  const { response: reports, fetchData: getReports } = useRequest(
+    [],
+    () => requestGetReportList(username),
+    (data) => {
+      const reportName = data.find((report) => report.id === Number(reportId)).title;
 
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-
-      const reportList = await response.json();
-      setReports(reportList);
-
-      if (reportList.length !== 0) {
-        setReportName(reportList[0].title);
-      }
-    } catch (error) {
-      console.error(error);
+      setReportName(reportName);
     }
+  );
+
+  const { mutate: onDeleteReport } = useMutation(
+    () => {
+      if (!window.confirm('리포트를 삭제하시겠습니까?')) return;
+
+      const reportId = reports?.find((report) => report.title === reportName)?.id;
+      return requestDeleteReport(reportId, accessToken);
+    },
+    () => {
+      history.push(`/${username}/reports`);
+    },
+    () => {
+      alert('리포트 삭제에 실패하였습니다.');
+    }
+  );
+
+  const makeSelectOptions = (options) => {
+    return options.map((option) => ({ id: option.id, name: option.title }));
   };
 
   useEffect(() => {
@@ -65,85 +76,54 @@ const ProfilePageReports = () => {
   }, []);
 
   useEffect(() => {
-    getReports(username);
-  }, [username]);
-
-  useEffect(() => {
     if (!reports || reports.length === 0) return;
 
     const searchTargetReportId = reports.find((report) => report.title === reportName)?.id;
 
     if (searchTargetReportId) {
-      getReport(searchTargetReportId);
+      history.push(`/${username}/reports/${searchTargetReportId}`);
     }
   }, [reportName]);
 
-  const onDeleteReport = async () => {
-    if (!window.confirm('리포트를 삭제하시겠습니까?')) return;
+  useEffect(() => {
+    getReport();
+  }, [reportId]);
 
-    const reportId = reports?.find((report) => report.title === reportName)?.id;
-
-    try {
-      const response = await requestDeleteReport(reportId, accessToken);
-
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-
-      getReports(username);
-    } catch (error) {
-      console.error(error);
-      alert('리포트 삭제에 실패하였습니다.');
-    }
-  };
-
-  const makeSelectOptions = (options) => {
-    return options.map((option) => ({ id: option.id, name: option.title }));
-  };
+  useEffect(() => {
+    getReports(username);
+  }, [username]);
 
   return (
     <Container reportsLength={reports.length}>
-      {reports.length === 0 ? (
-        <>
-          <p>등록된 리포트가 없습니다.</p>
-          {isOwner && (
-            <>
-              <p>리포트를 작성해주세요.</p>
-              <AddNewReportLink to={`/${username}/report/write`}> 새 리포트 등록</AddNewReportLink>
-            </>
-          )}
-        </>
-      ) : (
-        <>
-          <ReportHeader>
-            <SelectBox
-              options={makeSelectOptions(reports)}
-              selectedOption={reportName}
-              setSelectedOption={setReportName}
-              title="리포트 목록입니다."
-              name="reports"
-              width="50%"
-              maxHeight="10rem"
-              size="SMALL"
-            />
-            {isOwner && (
-              <AddNewReportLink to={`/${username}/report/write`}>새 리포트 등록</AddNewReportLink>
-            )}
-          </ReportHeader>
+      <ReportHeader>
+        {!!reportName && (
+          <SelectBox
+            options={makeSelectOptions(reports)}
+            selectedOption={reportName}
+            setSelectedOption={setReportName}
+            title="리포트 목록입니다."
+            name="reports"
+            width="50%"
+            maxHeight="10rem"
+            size="SMALL"
+          />
+        )}
+        {isOwner && (
+          <AddNewReportLink to={`/${username}/report/write`}>새 리포트 등록</AddNewReportLink>
+        )}
+      </ReportHeader>
 
-          <ReportBody>
-            {isOwner && (
-              <ButtonWrapper>
-                <NavLink to={`/${username}/reports/${report?.id}/edit`}>수정</NavLink>
-                <Button onClick={onDeleteReport} size="X_SMALL">
-                  삭제
-                </Button>
-              </ButtonWrapper>
-            )}
-            <Report report={report} />
-          </ReportBody>
-        </>
-      )}
+      <ReportBody>
+        {isOwner && (
+          <ButtonWrapper>
+            <NavLink to={`/${username}/reports/${report?.id}/edit`}>수정</NavLink>
+            <Button onClick={onDeleteReport} size="X_SMALL">
+              삭제
+            </Button>
+          </ButtonWrapper>
+        )}
+        <Report report={report} />
+      </ReportBody>
     </Container>
   );
 };

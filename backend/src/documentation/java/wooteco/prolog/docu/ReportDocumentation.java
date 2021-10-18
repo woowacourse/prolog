@@ -29,7 +29,7 @@ import wooteco.prolog.report.application.dto.report.request.abilitigraph.Ability
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRequest;
 import wooteco.prolog.report.application.dto.report.request.studylog.ReportStudylogRequest;
 import wooteco.prolog.report.application.dto.report.response.ReportResponse;
-import wooteco.prolog.report.application.dto.report.response.abilityGraph.GraphResponse;
+import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogAbilityResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogResponse;
 import wooteco.prolog.studylog.application.DocumentService;
@@ -188,7 +188,7 @@ class ReportDocumentation extends Documentation {
             .map(ability -> new AbilityRequest(
                 ability.getId(),
                 ability.getWeight(),
-                ability.isPresent())
+                ability.getIsPresent())
             ).collect(toList());
 
         return new GraphRequest(abilityRequests);

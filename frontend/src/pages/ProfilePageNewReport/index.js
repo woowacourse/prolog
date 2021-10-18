@@ -9,7 +9,9 @@ import StudyLogModal from './StudyLogModal';
 import ReportInfoInput from './ReportInfoInput';
 import ReportStudyLogTable from './ReportStudyLogTable';
 import { Checkbox, Form, FormButtonWrapper } from './style';
-import { requestPostReport } from '../../service/requests';
+import { requestGetAbilities, requestPostReport } from '../../service/requests';
+import AbilityGraph from '../ProfilePageReports/AbilityGraph';
+import useRequest from '../../hooks/useRequest';
 
 const ProfilePageNewReport = () => {
   const { username } = useParams();
@@ -38,6 +40,7 @@ const ProfilePageNewReport = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [studyLogs, setStudyLogs] = useState([]);
+  const [abilities, setAbilities] = useState([]);
 
   const [isModalOpened, setIsModalOpened] = useState(false);
 
@@ -60,7 +63,7 @@ const ProfilePageNewReport = () => {
     }
   };
 
-  const onSubmitReport = (event) => {
+  const onSubmitReport = async (event) => {
     event.preventDefault();
 
     const currTitle = title.trim();
@@ -70,12 +73,14 @@ const ProfilePageNewReport = () => {
       title:
         currTitle !== '' ? currTitle : `${new Date().toLocaleDateString()} ${nickname}의 리포트`,
       description,
-      abilityGraph: { abilities: [] },
+      abilityGraph: {
+        abilities: abilities.map(({ id, weight, isPresent }) => ({ id, weight, isPresent })),
+      },
       studylogs: studyLogs.map((item) => ({ id: item.id, abilities: [] })),
       represent: false,
     };
 
-    postNewReport(data);
+    await postNewReport(data);
   };
 
   const onCancelWriteReport = () => {
@@ -84,11 +89,34 @@ const ProfilePageNewReport = () => {
     }
   };
 
+  const { fetchData: getAbilities } = useRequest(
+    [],
+    () => requestGetAbilities(user.data.username, accessToken),
+    (data) => {
+      const parents = data.filter((item) => item.isParent);
+
+      setAbilities(() =>
+        parents.map(({ id, name, color }) => ({
+          id,
+          name,
+          color,
+          weight: Math.ceil(10 * Number((1 / parents.length).toFixed(2))),
+          percentage: Number((1 / parents.length).toFixed(2)),
+          isPresent: true,
+        }))
+      );
+    }
+  );
+
   const onRegisterMainReport = () => setIsMainReport((currentState) => !currentState);
 
   const onModalOpen = () => setIsModalOpened(true);
 
   const onModalClose = () => setIsModalOpened(false);
+
+  const onChangeAbilities = (data) => {
+    setAbilities(data);
+  };
 
   return (
     <>
@@ -113,17 +141,7 @@ const ProfilePageNewReport = () => {
           setDescription={setDescription}
         />
 
-        <section
-          style={{
-            height: '25rem',
-            border: '1px solid black',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          준비중인 기능입니다.
-        </section>
+        <AbilityGraph abilities={abilities} setAbilities={onChangeAbilities} mode="NEW" />
 
         <ReportStudyLogTable
           onModalOpen={onModalOpen}

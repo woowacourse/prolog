@@ -8,6 +8,8 @@ const FlexBox = styled.div`
     justify-content: ${justifyContent};
     align-items: ${alignItems};
   `}
+
+  ${({ css }) => css}
 `;
 
 export default FlexBox;

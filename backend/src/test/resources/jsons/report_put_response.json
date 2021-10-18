@@ -7,16 +7,18 @@
       {
         "id": 1,
         "name": "test parent ability1",
+        "color" : "test color1",
         "weight": 2,
         "percentage": 0.67,
-        "present": true
+        "isPresent": true
       },
       {
         "id": 3,
         "name": "test parent ability3",
+        "color": "test color3",
         "weight": 1,
         "percentage": 0.33,
-        "present": false
+        "isPresent": true
       }
     ]
   },

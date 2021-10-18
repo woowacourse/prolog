@@ -18,6 +18,7 @@ import {
 import AbilityPage from './pages/AbilityPage';
 import useSnackBar from './hooks/useSnackBar';
 import GlobalStyles from './GlobalStyles';
+import ProfilePageReportsList from './pages/ProfilePageReportsList';
 
 const Content = styled.div`
   max-width: 112rem;
@@ -57,6 +58,15 @@ const App = () => {
             <Route
               exact
               path={`${PATH.PROFILE_REPORTS}`}
+              render={() => (
+                <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
+                  <ProfilePageReportsList />
+                </ProfilePage>
+              )}
+            />
+            <Route
+              exact
+              path={`${PATH.PROFILE_REPORT}`}
               render={() => (
                 <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
                   <ProfilePageReports />

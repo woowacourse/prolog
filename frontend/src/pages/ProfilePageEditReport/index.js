@@ -11,6 +11,7 @@ import StudyLogModal from '../ProfilePageNewReport/StudyLogModal';
 import ReportInfoInput from '../ProfilePageNewReport/ReportInfoInput';
 import ReportStudyLogTable from '../ProfilePageNewReport/ReportStudyLogTable';
 import { Checkbox, Form, FormButtonWrapper } from '../ProfilePageNewReport/style';
+import AbilityGraph from '../ProfilePageReports/AbilityGraph';
 
 const ProfilePageEditReport = () => {
   const { username, id: reportId } = useParams();
@@ -25,6 +26,7 @@ const ProfilePageEditReport = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [studyLogs, setStudyLogs] = useState([]);
+  const [abilities, setAbilities] = useState([]);
   const [isModalOpened, setIsModalOpened] = useState(false);
 
   useEffect(() => {
@@ -55,6 +57,7 @@ const ProfilePageEditReport = () => {
       setTitle(report.title);
       setDescription(report.description);
       setStudyLogs(report.studylogs);
+      setAbilities(report.abilityGraph.abilities);
     } catch (error) {
       console.error(error);
       history.push(`/${username}/reports`);
@@ -73,7 +76,7 @@ const ProfilePageEditReport = () => {
         throw new Error(await response.text());
       }
 
-      history.push(`/${username}/reports`);
+      history.push(`/${username}/reports/${reportId}`);
     } catch (error) {
       console.error(error);
     }
@@ -86,7 +89,9 @@ const ProfilePageEditReport = () => {
       id: reportId,
       title: title !== '' ? title : `${new Date().toLocaleDateString()} ${nickname}의 리포트`,
       description,
-      abilityGraph: { abilities: [] },
+      abilityGraph: {
+        abilities: abilities.map(({ id, weight, isPresent }) => ({ id, weight, isPresent })),
+      },
       studylogs: studyLogs.map((item) => ({ id: item.id, abilities: [] })),
       represent: false,
     };
@@ -96,7 +101,7 @@ const ProfilePageEditReport = () => {
 
   const onCancelWriteReport = () => {
     if (window.confirm('리포트 수정을 취소하시겠습니까?')) {
-      history.push(`/${username}/reports`);
+      history.push(`/${username}/reports/${reportId}`);
     }
   };
 
@@ -105,6 +110,10 @@ const ProfilePageEditReport = () => {
   const onModalOpen = () => setIsModalOpened(true);
 
   const onModalClose = () => setIsModalOpened(false);
+
+  const onChangeAbilities = (data) => {
+    setAbilities(data);
+  };
 
   return (
     <>
@@ -129,16 +138,8 @@ const ProfilePageEditReport = () => {
           setDescription={setDescription}
         />
 
-        <section
-          style={{
-            height: '25rem',
-            border: '1px solid black',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          준비중인 기능입니다.
+        <section>
+          <AbilityGraph abilities={abilities} setAbilities={onChangeAbilities} mode="EDIT" />
         </section>
 
         <ReportStudyLogTable

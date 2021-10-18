@@ -11,7 +11,6 @@ import {
 } from '../../service/requests';
 import AbilityListItem from './AbilityListItem';
 import AddAbilityForm from './AddAbilityForm';
-import { abilityList } from './mockData';
 
 import { Container, AbilityList, Button, EditingListItem, ListHeader, NoContent } from './styles';
 
@@ -33,7 +32,7 @@ const AbilityPage = () => {
 
   const getData = async () => {
     try {
-      const response = await requestGetAbilities(user.data.id, JSON.parse(accessToken));
+      const response = await requestGetAbilities(user.data.username, JSON.parse(accessToken));
       const data = await response.json();
 
       setAbilities(data);
@@ -152,7 +151,7 @@ const AbilityPage = () => {
             역량<span>{`(총 ${abilities?.length}개)`}</span>
           </div>
         </ListHeader>
-        {!abilityList?.length && <NoContent>역량이 없습니다. 역량을 추가해주세요.</NoContent>}
+        {!abilities?.length && <NoContent>역량이 없습니다. 역량을 추가해주세요.</NoContent>}
         {abilities
           ?.filter(({ isParent }) => isParent)
           .map(({ id, name, description, color, isParent, children }) => (

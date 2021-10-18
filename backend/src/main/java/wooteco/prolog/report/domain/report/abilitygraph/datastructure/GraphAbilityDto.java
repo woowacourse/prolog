@@ -4,13 +4,15 @@ public class GraphAbilityDto {
 
     private Long id;
     private String name;
+    private String color;
     private Long weight;
     private Double percentage;
     private Boolean isPresent;
 
-    public GraphAbilityDto(Long id, String name, Long weight, Double percentage, Boolean isPresent) {
+    public GraphAbilityDto(Long id, String name, String color, Long weight, Double percentage, Boolean isPresent) {
         this.id = id;
         this.name = name;
+        this.color = color;
         this.weight = weight;
         this.percentage = percentage;
         this.isPresent = isPresent;
@@ -22,6 +24,10 @@ public class GraphAbilityDto {
 
     public String getName() {
         return name;
+    }
+
+    public String getColor() {
+        return color;
     }
 
     public Long getWeight() {
