@@ -1,4 +1,15 @@
-#!/bin/sh
+#!/bin/bash
+
+DEV_API="https://dev-api.prolog.techcourse.co.kr"
+PROD_API="https://api.prolog.techcourse.co.kr"
+USE_API=""
+
+if [ $USER == "ELASTIC-STACK-DEV" ];then
+	USE_API=${DEV_API}
+else
+	USE_API=${PROD_API}
+fi
+
 curl -X PUT "localhost:9200/studylog-document?pretty" -H 'Content-Type: application/json' -d'
 {
   "settings":{
@@ -31,4 +42,4 @@ curl -X PUT "localhost:9200/studylog-document?pretty" -H 'Content-Type: applicat
 }
 '
 
-curl -v https://dev-api.prolog.techcourse.co.kr/sync
+curl -v ${USE_API}/sync
