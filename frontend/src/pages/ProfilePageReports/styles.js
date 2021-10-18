@@ -20,24 +20,8 @@ const buttonStyle = css`
 
 const Container = styled.section`
   width: 100%;
+  height: fit-content;
   margin-bottom: 2rem;
-
-  ${({ reportsLength }) =>
-    !reportsLength &&
-    css`
-      height: 70vh;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-
-      p {
-        margin: 0;
-        font-size: 2rem;
-        line-height: 1.5;
-      }
-    `}
 
   a {
     ${buttonStyle};
