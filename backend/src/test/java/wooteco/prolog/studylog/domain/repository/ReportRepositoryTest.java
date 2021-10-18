@@ -77,7 +77,7 @@ class ReportRepositoryTest {
 
         assertThat(reportAssembler.of(report1))
             .usingRecursiveComparison()
-            .ignoringFieldsMatchingRegexes(".*id", ".*createAt", ".*updateAt")
+            .ignoringFieldsMatchingRegexes(".*id", ".*createAt", ".*updateAt", ".*createdAt", ".*updatedAt")
             .isEqualTo(reportAssembler.of(createReport(member)));
 
         System.out.println(new ObjectMapper().writeValueAsString(reportAssembler.of(report)));

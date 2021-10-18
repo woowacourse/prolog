@@ -2,6 +2,8 @@
   "id": 1,
   "title": "simple report",
   "description": "report for test",
+  "createdAt": null,
+  "updatedAt": null,
   "abilityGraph": {
     "abilities": [
       {
