@@ -1,5 +1,8 @@
 package wooteco.prolog.common.exception;
 
+import static wooteco.prolog.common.slacklogger.SlackAlarmErrorLevel.ERROR;
+import static wooteco.prolog.common.slacklogger.SlackAlarmErrorLevel.WARN;
+
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +16,7 @@ import wooteco.prolog.common.slacklogger.SlackAlarm;
 @RestControllerAdvice
 public class ExceptionController {
 
+    @SlackAlarm(level = WARN)
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ExceptionDto> loginExceptionHandler(BadRequestException e) {
         log.warn(e.getMessage());
@@ -20,7 +24,7 @@ public class ExceptionController {
             .body(new ExceptionDto(e.getCode(), e.getMessage()));
     }
 
-    @SlackAlarm
+    @SlackAlarm(level = ERROR)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionDto> runtimeExceptionHandler(Exception e) {
         if (e.getMessage() == null) {
