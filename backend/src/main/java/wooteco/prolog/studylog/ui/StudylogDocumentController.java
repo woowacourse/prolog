@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.studylog.application.DocumentService;
+import wooteco.prolog.studylog.application.dto.ElasticHealthResponse;
 
 @RestController
 @AllArgsConstructor
@@ -18,4 +19,9 @@ public class StudylogDocumentController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/health")
+    public ResponseEntity<ElasticHealthResponse> healthCheck() {
+        ElasticHealthResponse elasticHealthResponse = studylogDocumentService.healthCheck();
+        return ResponseEntity.ok(elasticHealthResponse);
+    }
 }

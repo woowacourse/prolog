@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import wooteco.prolog.studylog.application.dto.ElasticHealthResponse;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
+import wooteco.prolog.studylog.infrastructure.HealthCheckRestTemplate;
 
 public abstract class AbstractStudylogDocumentService implements DocumentService {
 
@@ -16,11 +18,14 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
 
     protected final StudylogDocumentRepository studylogDocumentRepository;
     protected final StudylogRepository studylogRepository;
+    private final HealthCheckRestTemplate healthCheckRestTemplate;
 
     public AbstractStudylogDocumentService(StudylogDocumentRepository studylogDocumentRepository,
-                                           StudylogRepository studylogRepository) {
+                                           StudylogRepository studylogRepository,
+                                           HealthCheckRestTemplate healthCheckRestTemplate) {
         this.studylogDocumentRepository = studylogDocumentRepository;
         this.studylogRepository = studylogRepository;
+        this.healthCheckRestTemplate = healthCheckRestTemplate;
     }
 
     @Override
@@ -71,5 +76,10 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
         }
         results.add(searchKeyword); // 기존 검색어도 리스트에 포함한다.
         return results;
+    }
+
+    @Override
+    public ElasticHealthResponse healthCheck() {
+        return null;
     }
 }

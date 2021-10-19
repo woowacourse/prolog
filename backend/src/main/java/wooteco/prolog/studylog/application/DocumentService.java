@@ -3,6 +3,7 @@ package wooteco.prolog.studylog.application;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
+import wooteco.prolog.studylog.application.dto.ElasticHealthResponse;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.domain.StudylogDocument;
 
@@ -30,4 +31,6 @@ public interface DocumentService {
         LocalDate end,
         Pageable pageable
     );
+
+    ElasticHealthResponse healthCheck();
 }
