@@ -5,21 +5,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-public class SlackMessage {
+@Component
+public class PrologSlack {
 
     private static final String SLACK_LOGGER_WEBHOOK_URI =
         System.getenv("SLACK_LOGGER_WEBHOOK_URI");
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private final String message;
-
-    public SlackMessage(String message) {
-        this.message = message;
-    }
-
-    public void send() {
+    public void send(String message) {
         WebClient.create(SLACK_LOGGER_WEBHOOK_URI)
             .post()
             .contentType(MediaType.APPLICATION_JSON)

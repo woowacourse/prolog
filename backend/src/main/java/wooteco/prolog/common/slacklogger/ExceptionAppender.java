@@ -21,12 +21,14 @@ public class ExceptionAppender {
 
     private final ThreadLocal<ContentCachingRequestWrapper> requestStorage;
     private final SlackMessageGenerator slackMessageGenerator;
+    private final PrologSlack prologSlack;
 
     public ExceptionAppender(ThreadLocal<ContentCachingRequestWrapper> requestStorage,
-                             SlackMessageGenerator slackMessageGenerator
-    ) {
+                             SlackMessageGenerator slackMessageGenerator,
+                             PrologSlack prologSlack) {
         this.requestStorage = requestStorage;
         this.slackMessageGenerator = slackMessageGenerator;
+        this.prologSlack = prologSlack;
     }
 
     @Before("@annotation(wooteco.prolog.common.slacklogger.SlackAlarm)")
@@ -44,9 +46,9 @@ public class ExceptionAppender {
         SlackAlarm annotation = signature.getMethod().getAnnotation(SlackAlarm.class);
         SlackAlarmErrorLevel level = annotation.level();
 
-        SlackMessage slackMessage = slackMessageGenerator
+        String message = slackMessageGenerator
             .generate(requestStorage.get(), (Exception) args[0], level);
-        slackMessage.send();
+        prologSlack.send(message);
 
         requestStorage.remove();
     }

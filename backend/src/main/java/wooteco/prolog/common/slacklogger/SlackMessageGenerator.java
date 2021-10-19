@@ -31,7 +31,7 @@ public class SlackMessageGenerator {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    public SlackMessage generate(ContentCachingRequestWrapper request,
+    public String generate(ContentCachingRequestWrapper request,
                                  Exception exception,
                                  SlackAlarmErrorLevel level) {
         try {
@@ -45,12 +45,10 @@ public class SlackMessageGenerator {
             String body = getBody(request);
             String exceptionMessage = extractExceptionMessage(exception, level);
 
-            return new SlackMessage(
-                toMessage(profile, currentTime, userId,
-                    exceptionMessage, method, requestURI, headers, body)
-            );
+            return toMessage(profile, currentTime, userId,
+                    exceptionMessage, method, requestURI, headers, body);
         } catch (Exception e) {
-            return new SlackMessage(String.format(EXTRACTION_ERROR_MESSAGE, e.getMessage()));
+            return String.format(EXTRACTION_ERROR_MESSAGE, e.getMessage());
         }
     }
 
