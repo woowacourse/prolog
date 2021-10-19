@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import wooteco.prolog.common.slacklogger.SlackAlarm;
 
 @Slf4j
 @RestControllerAdvice
@@ -19,6 +20,7 @@ public class ExceptionController {
             .body(new ExceptionDto(e.getCode(), e.getMessage()));
     }
 
+    @SlackAlarm
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionDto> runtimeExceptionHandler(Exception e) {
         if (e.getMessage() == null) {

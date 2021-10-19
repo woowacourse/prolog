@@ -8,18 +8,24 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
-import org.springframework.web.util.ContentCachingResponseWrapper;
 
 @Component
 public class ServletWrappingFilter extends OncePerRequestFilter {
+
+    private final ThreadLocal<ContentCachingRequestWrapper> requestStorage;
+
+    public ServletWrappingFilter(
+        ThreadLocal<ContentCachingRequestWrapper> requestStorage) {
+        this.requestStorage = requestStorage;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
         FilterChain filterChain) throws ServletException, IOException {
 
-        request = new ContentCachingRequestWrapper(request);
-        response = new ContentCachingResponseWrapper(response);
+        ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(request);
+        requestStorage.set(wrappedRequest);
 
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(wrappedRequest, response);
     }
 }
