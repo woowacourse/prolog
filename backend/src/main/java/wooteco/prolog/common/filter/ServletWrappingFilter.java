@@ -8,14 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
+import wooteco.prolog.common.slacklogger.RequestStorage;
 
 @Component
 public class ServletWrappingFilter extends OncePerRequestFilter {
 
-    private final ThreadLocal<ContentCachingRequestWrapper> requestStorage;
+    private final RequestStorage requestStorage;
 
-    public ServletWrappingFilter(
-        ThreadLocal<ContentCachingRequestWrapper> requestStorage) {
+    public ServletWrappingFilter(RequestStorage requestStorage) {
         this.requestStorage = requestStorage;
     }
 

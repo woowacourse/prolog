@@ -5,11 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.web.config.PageableHandlerMethodArgumentResolverCustomizer;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.ContentCachingRequestWrapper;
+import wooteco.prolog.common.slacklogger.RequestStorage;
 import wooteco.prolog.studylog.application.dto.search.SearchArgumentResolver;
 import wooteco.support.performance.PerformanceLogger;
 import wooteco.support.performance.RequestApiExtractor;
@@ -41,7 +44,8 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public ThreadLocal<ContentCachingRequestWrapper> requestStorage() {
-        return new ThreadLocal<>();
+    @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public RequestStorage requestStorage() {
+        return new RequestStorage();
     }
 }

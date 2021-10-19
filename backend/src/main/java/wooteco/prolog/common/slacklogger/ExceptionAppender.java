@@ -8,7 +8,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 
 @Slf4j
 @Aspect
@@ -19,11 +18,11 @@ public class ExceptionAppender {
 
     private static final String SLACK_ALARM_FORMAT = "[SlackAlarm] %s";
 
-    private final ThreadLocal<ContentCachingRequestWrapper> requestStorage;
+    private final RequestStorage requestStorage;
     private final SlackMessageGenerator slackMessageGenerator;
     private final PrologSlack prologSlack;
 
-    public ExceptionAppender(ThreadLocal<ContentCachingRequestWrapper> requestStorage,
+    public ExceptionAppender(RequestStorage requestStorage,
                              SlackMessageGenerator slackMessageGenerator,
                              PrologSlack prologSlack) {
         this.requestStorage = requestStorage;
@@ -49,8 +48,6 @@ public class ExceptionAppender {
         String message = slackMessageGenerator
             .generate(requestStorage.get(), (Exception) args[0], level);
         prologSlack.send(message);
-
-        requestStorage.remove();
     }
 
     private boolean validateIsException(Object[] args) {
