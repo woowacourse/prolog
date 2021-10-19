@@ -10,7 +10,7 @@ import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
-import wooteco.prolog.studylog.infrastructure.HealthCheckRestTemplate;
+import wooteco.prolog.studylog.infrastructure.HealthCheckClient;
 
 public abstract class AbstractStudylogDocumentService implements DocumentService {
 
@@ -18,14 +18,14 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
 
     protected final StudylogDocumentRepository studylogDocumentRepository;
     protected final StudylogRepository studylogRepository;
-    private final HealthCheckRestTemplate healthCheckRestTemplate;
+    private final HealthCheckClient healthCheckClient;
 
     public AbstractStudylogDocumentService(StudylogDocumentRepository studylogDocumentRepository,
                                            StudylogRepository studylogRepository,
-                                           HealthCheckRestTemplate healthCheckRestTemplate) {
+                                           HealthCheckClient healthCheckClient) {
         this.studylogDocumentRepository = studylogDocumentRepository;
         this.studylogRepository = studylogRepository;
-        this.healthCheckRestTemplate = healthCheckRestTemplate;
+        this.healthCheckClient = healthCheckClient;
     }
 
     @Override
@@ -80,6 +80,7 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
 
     @Override
     public ElasticHealthResponse healthCheck() {
+        healthCheckClient.healthCheck();
         return null;
     }
 }
