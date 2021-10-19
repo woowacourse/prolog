@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import wooteco.prolog.login.application.AuthorizationExtractor;
 import wooteco.prolog.login.application.JwtTokenProvider;
+import wooteco.prolog.login.excetpion.TokenNotValidException;
 
 @Component
 public class SlackMessageGenerator {
@@ -61,7 +62,11 @@ public class SlackMessageGenerator {
     }
 
     private String getUserId(String token) {
-        return token == null ? "Guest" : jwtTokenProvider.extractSubject(token);
+        try {
+            return jwtTokenProvider.extractSubject(token);
+        } catch (TokenNotValidException e) {
+            return "Guest";
+        }
     }
 
     private String extractHeaders(ContentCachingRequestWrapper request) {
