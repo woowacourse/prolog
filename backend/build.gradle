@@ -47,7 +47,6 @@ dependencies {
 
     // log
     implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
-    implementation "com.github.maricn:logback-slack-appender:1.4.0"
 
     // jwt
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
