@@ -54,20 +54,22 @@ public class ExceptionAppender {
     }
 
     private boolean validateIsException(Object[] args) {
-        if (args[0] instanceof Exception) {
-            return true;
+        if (!(args[0] instanceof Exception)) {
+            log.warn("[SlackAlarm] argument is not Exception");
+            return false;
         }
-        log.warn("[SlackAlarm] argument is not Exception");
-        return false;
+
+        return true;
     }
 
     private boolean validateHasOneArgument(Object[] args) {
-        if (args.length == 1) {
-            return true;
+        if (args.length != 1) {
+            log.warn(String
+                .format(SLACK_ALARM_FORMAT, "ambiguous exceptions! require just only one Exception"));
+            return false;
         }
-        log.warn(String
-            .format(SLACK_ALARM_FORMAT, "ambiguous exceptions! require just only one Exception"));
-        return false;
+
+        return true;
     }
 }
 
