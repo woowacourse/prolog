@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import wooteco.prolog.studylog.application.dto.ElasticHealthResponse;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 import wooteco.prolog.studylog.infrastructure.HealthCheckClient;
+import wooteco.prolog.studylog.infrastructure.dto.OverallHealthDto;
 
 public abstract class AbstractStudylogDocumentService implements DocumentService {
 
@@ -79,8 +79,7 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
     }
 
     @Override
-    public ElasticHealthResponse healthCheck() {
-        healthCheckClient.healthCheck();
-        return null;
+    public List<OverallHealthDto> healthCheck() {
+        return healthCheckClient.healthCheck();
     }
 }

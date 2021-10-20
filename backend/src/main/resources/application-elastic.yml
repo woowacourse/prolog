@@ -1,0 +1,32 @@
+spring:
+  jpa:
+    generate-ddl: true
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
+        use_sql_comment: false
+  flyway:
+      enabled: false
+
+security:
+  jwt:
+    token:
+      secret-key: secret_key
+      expire-length: 3600000
+
+github:
+  client:
+    id: f91b56445e08d44adb76
+    secret: f02769f780ed3d40f9db9283f5b7cc79ecf9074e
+  url:
+    access-token: https://github.com/login/oauth/access_token
+    profile: https://api.github.com/user
+
+elasticsearch:
+  host: 127.0.0.1
+  port: 9200

@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class TestDto {
+public class OverallHealthDto {
 
     private String epoch;
     private String timestamp;
     private String cluster;
+    private String status;
     @JsonProperty(value = "node.total")
     private String nodeTotal;
     @JsonProperty(value = "node.data")
@@ -26,6 +27,6 @@ public class TestDto {
     private String pendingTasks;
     @JsonProperty(value = "max_task_wait_time")
     private String maxTaskWaitTime;
-    @JsonProperty(value = "active_shards_precent")
+    @JsonProperty(value = "active_shards_percent")
     private String activeShardsPercent;
 }

@@ -1,12 +1,11 @@
 package wooteco.prolog.studylog.application;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
-import wooteco.prolog.studylog.application.dto.ElasticHealthResponse;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.domain.StudylogDocument;
+import wooteco.prolog.studylog.infrastructure.dto.OverallHealthDto;
 
 public interface DocumentService {
 
@@ -33,5 +32,5 @@ public interface DocumentService {
         Pageable pageable
     );
 
-    ElasticHealthResponse healthCheck() ;
+    List<OverallHealthDto> healthCheck() ;
 }
