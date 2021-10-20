@@ -1,6 +1,7 @@
 package wooteco.prolog.studylog.infrastructure;
 
 import java.util.List;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import wooteco.prolog.studylog.exception.ClusterHealthDownException;
@@ -8,6 +9,7 @@ import wooteco.prolog.studylog.exception.IndexHealthDownException;
 import wooteco.prolog.studylog.infrastructure.dto.ClusterHealth;
 import wooteco.prolog.studylog.infrastructure.dto.IndexHealth;
 
+@Profile({"elastic","dev","prod"})
 @Component
 public class HealthCheckScheduler {
 
