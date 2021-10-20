@@ -72,12 +72,12 @@ class ReportRepositoryTest {
         flushAndClear();
 
         PageRequest pageable = PageRequest.of(0, 10);
-        List<Report> reports = reportRepository.findReportsByMember(member, pageable);
+        List<Report> reports = reportRepository.findReportsByMember(member, pageable).toList();
         Report report1 = reports.get(0);
 
         assertThat(reportAssembler.of(report1))
             .usingRecursiveComparison()
-            .ignoringFieldsMatchingRegexes(".*id", ".*createAt", ".*updateAt")
+            .ignoringFieldsMatchingRegexes(".*id", ".*createAt", ".*updateAt", ".*createdAt", ".*updatedAt")
             .isEqualTo(reportAssembler.of(createReport(member)));
 
         System.out.println(new ObjectMapper().writeValueAsString(reportAssembler.of(report)));
@@ -104,8 +104,8 @@ class ReportRepositoryTest {
 
         Level level1 = levelRepository.save(LevelFixture.level1());
         Mission mission = missionRepository.save(MissionFixture.mission1(level1));
-        Ability ability4 = abilityRepository.save(AbilityFixture.childAbility1(member));
-        Ability ability5 = abilityRepository.save(AbilityFixture.childAbility2(member));
+        Ability ability4 = abilityRepository.save(AbilityFixture.childAbility1(member, ability1));
+        Ability ability5 = abilityRepository.save(AbilityFixture.childAbility2(member, ability2));
         Studylog studylog = studylogRepository.save(createStudyLog(member, mission));
         ReportedStudylogs reportedStudylogs = new ReportedStudylogs(Arrays.asList(
             new ReportedStudylog(
