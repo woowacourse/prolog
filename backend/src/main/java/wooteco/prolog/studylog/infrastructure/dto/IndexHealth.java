@@ -2,6 +2,7 @@ package wooteco.prolog.studylog.infrastructure.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class IndexHealthDto {
+public class IndexHealth {
 
     private String health;
     private String status;
@@ -28,4 +29,8 @@ public class IndexHealthDto {
     private String storeSize;
     @JsonProperty(value = "pri.store.size")
     private String priStoreSize;
+
+    public boolean isGreen() {
+        return Objects.equals(health, "green");
+    }
 }

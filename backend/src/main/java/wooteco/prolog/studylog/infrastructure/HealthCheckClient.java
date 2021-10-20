@@ -11,10 +11,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import wooteco.prolog.studylog.application.dto.ElasticHealthResponse;
 import wooteco.prolog.studylog.exception.JsonParseFailedException;
-import wooteco.prolog.studylog.infrastructure.dto.ClusterHealthDto;
-import wooteco.prolog.studylog.infrastructure.dto.ClusterHealthDtos;
-import wooteco.prolog.studylog.infrastructure.dto.IndexHealthDto;
-import wooteco.prolog.studylog.infrastructure.dto.IndexHealthDtos;
+import wooteco.prolog.studylog.infrastructure.dto.ClusterHealth;
+import wooteco.prolog.studylog.application.dto.ClusterHealthResponses;
+import wooteco.prolog.studylog.infrastructure.dto.IndexHealth;
+import wooteco.prolog.studylog.application.dto.IndexHealthResponses;
 
 @Profile({"elastic", "dev", "prod"})
 @Component
@@ -32,22 +32,22 @@ public class HealthCheckClient {
         return ElasticHealthResponse.of(healthOfCluster(), healthOfIndex(index));
     }
 
-    public ClusterHealthDtos healthOfCluster() {
+    public ClusterHealthResponses healthOfCluster() {
         try {
-            return ClusterHealthDtos.from(
+            return ClusterHealthResponses.from(
                 objectMapper.readValue(retrieve("/_cat/health"),
-                                       new TypeReference<List<ClusterHealthDto>>() {}
+                                       new TypeReference<List<ClusterHealth>>() {}
                 ));
         } catch (JsonProcessingException e) {
             throw new JsonParseFailedException();
         }
     }
 
-    public IndexHealthDtos healthOfIndex(String index) {
+    public IndexHealthResponses healthOfIndex(String index) {
         try {
-            return IndexHealthDtos.from(
+            return IndexHealthResponses.from(
                 objectMapper.readValue(retrieve("/_cat/indices/" + index),
-                                       new TypeReference<List<IndexHealthDto>>() {}
+                                       new TypeReference<List<IndexHealth>>() {}
                 ));
         } catch (JsonProcessingException e) {
             throw new JsonParseFailedException();

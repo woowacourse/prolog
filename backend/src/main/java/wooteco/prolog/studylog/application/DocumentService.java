@@ -6,10 +6,8 @@ import org.springframework.data.domain.Pageable;
 import wooteco.prolog.studylog.application.dto.ElasticHealthResponse;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.domain.StudylogDocument;
-import wooteco.prolog.studylog.infrastructure.dto.ClusterHealthDto;
-import wooteco.prolog.studylog.infrastructure.dto.ClusterHealthDtos;
-import wooteco.prolog.studylog.infrastructure.dto.IndexHealthDto;
-import wooteco.prolog.studylog.infrastructure.dto.IndexHealthDtos;
+import wooteco.prolog.studylog.application.dto.ClusterHealthResponses;
+import wooteco.prolog.studylog.application.dto.IndexHealthResponses;
 
 public interface DocumentService {
 
@@ -38,8 +36,8 @@ public interface DocumentService {
 
     ElasticHealthResponse checkHealth();
 
-    ClusterHealthDtos checkHealthOfCluster();
+    ClusterHealthResponses checkHealthOfCluster();
 
-    IndexHealthDtos checkHealthOfIndex();
+    IndexHealthResponses checkHealthOfIndex();
 
 }

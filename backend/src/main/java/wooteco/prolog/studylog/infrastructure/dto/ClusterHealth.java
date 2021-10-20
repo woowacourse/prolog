@@ -2,6 +2,7 @@ package wooteco.prolog.studylog.infrastructure.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class ClusterHealthDto {
+public class ClusterHealth {
 
     @JsonIgnore
     private String epoch;
@@ -31,4 +32,8 @@ public class ClusterHealthDto {
     private String maxTaskWaitTime;
     @JsonProperty(value = "active_shards_percent")
     private String activeShardsPercent;
+
+    public boolean isGreen() {
+        return Objects.equals(status, "green");
+    }
 }
