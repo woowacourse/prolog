@@ -37,6 +37,6 @@ public class SimpleReportsRequestType implements ReportsRequestType {
     public Object execute(String username, Pageable pageable) {
         Page<Report> reports = reportRepository.findReportsByUsername(username, pageable);
 
-        return reportAssembler.simpleOf(reports);
+        return reportAssembler.simpleOf(sort(reports));
     }
 }

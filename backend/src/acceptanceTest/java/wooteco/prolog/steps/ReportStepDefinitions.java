@@ -1,12 +1,19 @@
 package wooteco.prolog.steps;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.restassured.mapper.TypeRef;
+import io.restassured.response.Response;
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.report.application.dto.report.request.ReportRequest;
@@ -20,14 +27,44 @@ import wooteco.prolog.report.application.dto.report.response.ability_graph.Graph
 import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogAbilityResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogResponse;
+import wooteco.prolog.report.domain.report.Report;
 
 public class ReportStepDefinitions extends AcceptanceSteps {
+
+    private int reportCnt = 0;
 
     @When("리포트를 등록하(면)(고)")
     public void 리포트를등록() {
         ReportRequest reportRequest = new ReportRequest(
             null,
-            "새로운 리포트",
+            "새로운 리포트" + reportCnt++,
+            "리포트 설명",
+            new GraphRequest(
+                Arrays.asList(
+                    new AbilityRequest(
+                        1L,
+                        1L,
+                        true
+                    )
+                )
+            ),
+            Arrays.asList(
+                new ReportStudylogRequest(
+                    1L,
+                    Arrays.asList(1L)
+                )
+            ),
+            false
+        );
+
+        context.invokeHttpPostWithToken("/reports", reportRequest);
+    }
+
+    @When("대표 리포트를 등록하(면)(고)")
+    public void 대표리포트를등록() {
+        ReportRequest reportRequest = new ReportRequest(
+            null,
+            "새로운 리포트" + reportCnt++,
             "리포트 설명",
             new GraphRequest(
                 Arrays.asList(
@@ -96,6 +133,8 @@ public class ReportStepDefinitions extends AcceptanceSteps {
         GithubResponses user = GithubResponses.findByName(name);
         context.invokeHttpGet("/reports?username={name}&type=simple&page=0&size=10", user.getLogin());
     }
+
+    @Then("리포트")
 
     @Then("리포트 목록이 조회된다")
     public void 리포트목록이조회된다() {
@@ -169,5 +208,26 @@ public class ReportStepDefinitions extends AcceptanceSteps {
             .usingRecursiveComparison()
             .ignoringFields("studylogs.createAt", "studylogs.updateAt", "createdAt", "updatedAt")
             .isEqualTo(expected);
+    }
+
+    @Then("대표리포트, 생성날짜 순으로 정렬되어 반환된다")
+    public void 대표리포트생성날짜순으로정렬되어반환된다() {
+        ReportPageableResponse pageableResponse = context.response.as(
+            new TypeRef<ReportPageableResponse>() {});
+
+        List<ReportResponse> response = pageableResponse.getReports();
+
+        List<Long> ids = response.stream()
+            .map(ReportResponse::getId)
+            .collect(toList());
+
+        List<Long> expected = response.stream()
+            .sorted(comparing(ReportResponse::isRepresent)
+                .thenComparing(ReportResponse::getCreatedAt)
+                .reversed())
+            .map(ReportResponse::getId)
+            .collect(toList());
+
+        assertThat(ids).containsExactlyElementsOf(expected);
     }
 }

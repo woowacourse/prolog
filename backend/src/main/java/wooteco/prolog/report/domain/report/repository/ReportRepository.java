@@ -24,3 +24,4 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     @Query("select r from Report r where r.isRepresent = true and r.member.username = :username")
     Optional<Report> findRepresentReportOf(String username);
 }
+
