@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import wooteco.prolog.studylog.exception.JsonParseFailedException;
-import wooteco.prolog.studylog.infrastructure.dto.OverallHealthDto;
+import wooteco.prolog.studylog.infrastructure.dto.ClusterHealthDto;
+import wooteco.prolog.studylog.infrastructure.dto.IndexHealthDto;
 
 @Profile({"elastic", "dev", "prod"})
 @Component
@@ -24,44 +25,51 @@ public class HealthCheckClient {
         this.webClient = webClient;
     }
 
-    public List<OverallHealthDto> healthCheck() {
-        return healthOfOverall();
+    public List<ClusterHealthDto> healthCheck() {
+        return null;
     }
 
     /**
-     * 엘라스틱 서치에 대한 전반적인 상태를 응답합니다.
+     * 클러스터의 상태를 응답합니다.
      * GET _cat/health?format=json
      * @return
      */
-    public List<OverallHealthDto> healthOfOverall() {
-        Mono<String> body = webClient.get()
-            .uri(uriBuilder -> uriBuilder
-                .path("/_cat/health")
-                .queryParam("format", "json")
-                .build()
-            ).retrieve()
-            .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(RuntimeException::new))
-            .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(RuntimeException::new))
-            .bodyToMono(String.class);
-
-        String responseArray = body.block();
+    public List<ClusterHealthDto> healthOfCluster() {
         try {
-            return objectMapper.readValue(responseArray, new TypeReference<List<OverallHealthDto>>() {});
+            return objectMapper.readValue(retrieve("/_cat/health"),
+                                          new TypeReference<List<ClusterHealthDto>>() {}
+            );
         } catch (JsonProcessingException e) {
             throw new JsonParseFailedException();
         }
     }
 
-    public void healthOfIndex() {
-        // 인덱스 상태
-        // GET _cat/indices/studylog-document?format=json
+    /**
+     * 인덱스의 상태를 응답합니다.
+     * GET _cat/indices/studylog-document?format=json
+     */
+    public List<IndexHealthDto> healthOfIndex(String index) {
+        try {
+            return objectMapper.readValue(retrieve("/_cat/indices/" + index),
+                                          new TypeReference<List<IndexHealthDto>>() {}
+            );
+        } catch (JsonProcessingException e) {
+            throw new JsonParseFailedException();
+        }
     }
 
-    public void healthOfCluster() {
-
-        // 클러스터 상태
-        // GET _cluster/health?format=json
+    private String retrieve(String uri) {
+        // TODO 에러 처리
+        return webClient.get()
+            .uri(uriBuilder -> uriBuilder
+                .path(uri)
+                .queryParam("format", "json")
+                .build()
+            ).retrieve()
+            .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(RuntimeException::new))
+            .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(RuntimeException::new))
+            .bodyToMono(String.class)
+            .block();
     }
-
 
 }

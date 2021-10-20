@@ -10,7 +10,8 @@ import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 import wooteco.prolog.studylog.infrastructure.HealthCheckClient;
-import wooteco.prolog.studylog.infrastructure.dto.OverallHealthDto;
+import wooteco.prolog.studylog.infrastructure.dto.ClusterHealthDto;
+import wooteco.prolog.studylog.infrastructure.dto.IndexHealthDto;
 
 public abstract class AbstractStudylogDocumentService implements DocumentService {
 
@@ -79,7 +80,12 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
     }
 
     @Override
-    public List<OverallHealthDto> healthCheck() {
-        return healthCheckClient.healthCheck();
+    public List<ClusterHealthDto> checkHealthOfCluster() {
+        return healthCheckClient.healthOfCluster();
+    }
+
+    @Override
+    public List<IndexHealthDto> checkHealthOfIndex() {
+        return healthCheckClient.healthOfIndex("studylog-document");
     }
 }

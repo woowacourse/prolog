@@ -5,7 +5,8 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.domain.StudylogDocument;
-import wooteco.prolog.studylog.infrastructure.dto.OverallHealthDto;
+import wooteco.prolog.studylog.infrastructure.dto.ClusterHealthDto;
+import wooteco.prolog.studylog.infrastructure.dto.IndexHealthDto;
 
 public interface DocumentService {
 
@@ -32,5 +33,7 @@ public interface DocumentService {
         Pageable pageable
     );
 
-    List<OverallHealthDto> healthCheck() ;
+    List<ClusterHealthDto> checkHealthOfCluster();
+
+    List<IndexHealthDto> checkHealthOfIndex();
 }

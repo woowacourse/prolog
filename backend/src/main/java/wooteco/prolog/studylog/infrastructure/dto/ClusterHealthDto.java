@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class OverallHealthDto {
+public class ClusterHealthDto {
 
     private String epoch;
     private String timestamp;
