@@ -32,6 +32,7 @@ import wooteco.prolog.report.domain.report.studylog.ReportedStudylog;
 import wooteco.prolog.report.domain.report.studylog.ReportedStudylogAbility;
 import wooteco.prolog.report.domain.report.studylog.ReportedStudylogs;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 
 @Component
 public class ReportAssembler {
@@ -116,8 +117,7 @@ public class ReportAssembler {
             .collect(toList());
 
         Studylog studylog = studylogRepository.findById(reportedStudylog.getStudylogId())
-            .orElseThrow(IllegalArgumentException::new);
-
+            .orElseThrow(StudylogNotFoundException::new);
         return new StudylogResponse(
             studylog.getId(),
             studylog.getCreatedAt(),
