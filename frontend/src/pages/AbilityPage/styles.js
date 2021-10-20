@@ -302,7 +302,8 @@ export const FeButton = styled.button`
   background-repeat: no-repeat;
   background-position: center center;
 
-  :hover {
+  :hover,
+  :active {
     background-position: top;
 
     span {
@@ -334,7 +335,8 @@ export const BeButton = styled.button`
   background-repeat: no-repeat;
   background-position: center center;
 
-  :hover {
+  :hover,
+  :active {
     background-position: top;
 
     span {

@@ -23,7 +23,7 @@ const AbilityPage = () => {
   const history = useHistory();
   const { username } = useParams();
 
-  const [abilities, setAbilities] = useState([]);
+  const [abilities, setAbilities] = useState(null);
   const [addFormStatus, setAddFormStatus] = useState({
     isOpened: false,
     name: '',
@@ -171,7 +171,7 @@ const AbilityPage = () => {
             />
           ))}
 
-        {!abilities?.length && (
+        {abilities && !abilities.length && (
           <NoContent>
             <NoAbility getData={getData} accessToken={accessToken} />
           </NoContent>
