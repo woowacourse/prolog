@@ -1,5 +1,6 @@
 package wooteco.prolog.studylog.infrastructure.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ClusterHealthDto {
 
+    @JsonIgnore
     private String epoch;
     private String timestamp;
     private String cluster;

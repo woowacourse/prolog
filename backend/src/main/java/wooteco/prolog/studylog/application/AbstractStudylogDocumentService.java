@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import wooteco.prolog.studylog.application.dto.ElasticHealthResponse;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
@@ -11,7 +12,9 @@ import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 import wooteco.prolog.studylog.infrastructure.HealthCheckClient;
 import wooteco.prolog.studylog.infrastructure.dto.ClusterHealthDto;
+import wooteco.prolog.studylog.infrastructure.dto.ClusterHealthDtos;
 import wooteco.prolog.studylog.infrastructure.dto.IndexHealthDto;
+import wooteco.prolog.studylog.infrastructure.dto.IndexHealthDtos;
 
 public abstract class AbstractStudylogDocumentService implements DocumentService {
 
@@ -80,12 +83,18 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
     }
 
     @Override
-    public List<ClusterHealthDto> checkHealthOfCluster() {
+    public ElasticHealthResponse checkHealth() {
+        return healthCheckClient.healthCheck("studylog-document");
+    }
+
+    @Override
+    public ClusterHealthDtos checkHealthOfCluster() {
         return healthCheckClient.healthOfCluster();
     }
 
     @Override
-    public List<IndexHealthDto> checkHealthOfIndex() {
+    public IndexHealthDtos checkHealthOfIndex() {
         return healthCheckClient.healthOfIndex("studylog-document");
     }
 }
+

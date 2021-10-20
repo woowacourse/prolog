@@ -9,9 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import wooteco.prolog.studylog.application.dto.ElasticHealthResponse;
 import wooteco.prolog.studylog.exception.JsonParseFailedException;
 import wooteco.prolog.studylog.infrastructure.dto.ClusterHealthDto;
+import wooteco.prolog.studylog.infrastructure.dto.ClusterHealthDtos;
 import wooteco.prolog.studylog.infrastructure.dto.IndexHealthDto;
+import wooteco.prolog.studylog.infrastructure.dto.IndexHealthDtos;
 
 @Profile({"elastic", "dev", "prod"})
 @Component
@@ -25,34 +28,27 @@ public class HealthCheckClient {
         this.webClient = webClient;
     }
 
-    public List<ClusterHealthDto> healthCheck() {
-        return null;
+    public ElasticHealthResponse healthCheck(String index) {
+        return ElasticHealthResponse.of(healthOfCluster(), healthOfIndex(index));
     }
 
-    /**
-     * 클러스터의 상태를 응답합니다.
-     * GET _cat/health?format=json
-     * @return
-     */
-    public List<ClusterHealthDto> healthOfCluster() {
+    public ClusterHealthDtos healthOfCluster() {
         try {
-            return objectMapper.readValue(retrieve("/_cat/health"),
-                                          new TypeReference<List<ClusterHealthDto>>() {}
-            );
+            return ClusterHealthDtos.from(
+                objectMapper.readValue(retrieve("/_cat/health"),
+                                       new TypeReference<List<ClusterHealthDto>>() {}
+                ));
         } catch (JsonProcessingException e) {
             throw new JsonParseFailedException();
         }
     }
 
-    /**
-     * 인덱스의 상태를 응답합니다.
-     * GET _cat/indices/studylog-document?format=json
-     */
-    public List<IndexHealthDto> healthOfIndex(String index) {
+    public IndexHealthDtos healthOfIndex(String index) {
         try {
-            return objectMapper.readValue(retrieve("/_cat/indices/" + index),
-                                          new TypeReference<List<IndexHealthDto>>() {}
-            );
+            return IndexHealthDtos.from(
+                objectMapper.readValue(retrieve("/_cat/indices/" + index),
+                                       new TypeReference<List<IndexHealthDto>>() {}
+                ));
         } catch (JsonProcessingException e) {
             throw new JsonParseFailedException();
         }

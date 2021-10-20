@@ -3,10 +3,13 @@ package wooteco.prolog.studylog.application;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
+import wooteco.prolog.studylog.application.dto.ElasticHealthResponse;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.infrastructure.dto.ClusterHealthDto;
+import wooteco.prolog.studylog.infrastructure.dto.ClusterHealthDtos;
 import wooteco.prolog.studylog.infrastructure.dto.IndexHealthDto;
+import wooteco.prolog.studylog.infrastructure.dto.IndexHealthDtos;
 
 public interface DocumentService {
 
@@ -33,7 +36,10 @@ public interface DocumentService {
         Pageable pageable
     );
 
-    List<ClusterHealthDto> checkHealthOfCluster();
+    ElasticHealthResponse checkHealth();
 
-    List<IndexHealthDto> checkHealthOfIndex();
+    ClusterHealthDtos checkHealthOfCluster();
+
+    IndexHealthDtos checkHealthOfIndex();
+
 }
