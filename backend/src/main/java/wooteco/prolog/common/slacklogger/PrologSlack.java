@@ -13,7 +13,12 @@ public class PrologSlack {
 
     private static final String SLACK_LOGGER_WEBHOOK_URI =
         System.getenv("SLACK_LOGGER_WEBHOOK_URI");
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    public final ObjectMapper objectMapper;
+
+    public PrologSlack(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     public void send(String message) {
         WebClient.create(SLACK_LOGGER_WEBHOOK_URI)
@@ -30,7 +35,7 @@ public class PrologSlack {
             Map<String, String> values = new HashMap<>();
             values.put("text", message);
 
-            return OBJECT_MAPPER.writeValueAsString(values);
+            return objectMapper.writeValueAsString(values);
         } catch (JsonProcessingException ignored) {
         }
         return "{\"text\" : \"슬랙으로 보낼 데이터를 제이슨으로 변경하는데 에러가 발생함.\"}";
