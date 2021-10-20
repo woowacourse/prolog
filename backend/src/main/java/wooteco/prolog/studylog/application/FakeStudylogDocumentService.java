@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import wooteco.prolog.common.BaseEntity;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
+import wooteco.prolog.studylog.domain.DocumentQueryParser;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
@@ -41,9 +42,9 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
             .collect(Collectors.toList());
 
         return StudylogDocumentResponse.of(studylogIds,
-                                            studylogs.getTotalElements(),
-                                            studylogs.getTotalPages(),
-                                            studylogs.getNumber());
+                                           studylogs.getTotalElements(),
+                                           studylogs.getTotalPages(),
+                                           studylogs.getNumber());
     }
 
     private Specification<Studylog> makeSpecifications(String keyword, List<Long> tags, List<Long> missions,
@@ -52,16 +53,16 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
     ) {
         List<String> keywords = new ArrayList<>();
         if (Objects.nonNull(keyword)) {
-            keywords = preprocess(keyword);
+            keywords = DocumentQueryParser.removeSpecialChars(preprocess(keyword));
         }
 
         return StudylogSpecification.likeKeyword("title", keywords)
             .or(StudylogSpecification.likeKeyword("content", keywords))
             .and(StudylogSpecification.findByLevelIn(levels)
-            .and(StudylogSpecification.equalIn("mission", missions))
-            .and(StudylogSpecification.findByTagIn(tags))
-            .and(StudylogSpecification.findByUsernameIn(usernames))
-            .and(StudylogSpecification.findBetweenDate(start, end))
-            .and(StudylogSpecification.distinct(true)));
+                     .and(StudylogSpecification.equalIn("mission", missions))
+                     .and(StudylogSpecification.findByTagIn(tags))
+                     .and(StudylogSpecification.findByUsernameIn(usernames))
+                     .and(StudylogSpecification.findBetweenDate(start, end))
+                     .and(StudylogSpecification.distinct(true)));
     }
 }

@@ -52,6 +52,7 @@ public class GraphAbilities {
                 ability.getColor(),
                 ability.getWeight(),
                 calculatePercentage(allWeight, ability),
+                ability.isParent(),
                 ability.isPresent()
             )).collect(toList());
     }
