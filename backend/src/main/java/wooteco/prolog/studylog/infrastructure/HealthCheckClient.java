@@ -19,7 +19,6 @@ import wooteco.prolog.studylog.application.dto.ClusterHealthResponses;
 import wooteco.prolog.studylog.infrastructure.dto.IndexHealth;
 import wooteco.prolog.studylog.application.dto.IndexHealthResponses;
 
-@Profile({"elastic", "dev", "prod"})
 @Component
 public class HealthCheckClient {
 
