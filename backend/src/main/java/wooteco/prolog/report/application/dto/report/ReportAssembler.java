@@ -1,5 +1,6 @@
 package wooteco.prolog.report.application.dto.report;
 
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
@@ -115,7 +116,7 @@ public class ReportAssembler {
             .collect(toList());
 
         Studylog studylog = studylogRepository.findById(reportedStudylog.getStudylogId())
-                .orElseThrow(IllegalArgumentException::new);
+            .orElseThrow(IllegalArgumentException::new);
 
         return new StudylogResponse(
             studylog.getId(),
@@ -137,6 +138,8 @@ public class ReportAssembler {
 
     private GraphResponse of(AbilityGraph abilityGraph) {
         List<GraphAbilityResponse> graphAbilityRespons = abilityGraph.getAbilities().stream()
+            .sorted(comparing(GraphAbilityDto::getColor)
+                .thenComparing(graphAbilityDto -> !graphAbilityDto.isParent()))
             .map(this::of)
             .collect(toList());
 
