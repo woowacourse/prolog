@@ -15,6 +15,7 @@ import {
 } from '../../service/requests';
 import AbilityListItem from './AbilityListItem';
 import AddAbilityForm from './AddAbilityForm';
+import NoAbility from './NoAbility';
 
 import { Container, AbilityList, Button, EditingListItem, ListHeader, NoContent } from './styles';
 
@@ -108,16 +109,6 @@ const AbilityPage = () => {
     }
   };
 
-  const { mutate: addDefaultAbilities } = useMutation(
-    (field) => requestSetDefaultAbility(JSON.parse(accessToken), field),
-    () => {
-      getData();
-    },
-    () => {
-      alert('기본 역량을 등록하지 못했습니다.');
-    }
-  );
-
   useEffect(() => {
     if (user.data?.id) {
       getData();
@@ -182,22 +173,7 @@ const AbilityPage = () => {
 
         {!abilities?.length && (
           <NoContent>
-            <div>
-              <h3>존재하는 역량이 없습니다.</h3>
-              <span>
-                오른쪽 위의 '역량추가+'버튼을 눌러 역량을 추가하시거나,
-                <br />
-                아래의 버튼을 눌러 기본으로 제공되는 역량 목록을 추가해보세요.
-              </span>
-            </div>
-            <div>
-              <button type="button" onClick={() => addDefaultAbilities('fe')}>
-                프론트엔드
-              </button>
-              <button type="button" onClick={() => addDefaultAbilities('be')}>
-                백엔드
-              </button>
-            </div>
+            <NoAbility getData={getData} accessToken={accessToken} />
           </NoContent>
         )}
       </AbilityList>

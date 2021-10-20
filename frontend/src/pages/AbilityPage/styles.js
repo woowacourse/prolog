@@ -260,29 +260,12 @@ const NoContent = styled.li`
 
     grid-template-columns: 1fr;
 
-    div {
-      padding: 2rem;
-    }
-
     h3 {
-      margin-bottom: 2rem;
+      font-size: 1.8rem;
     }
 
-    span {
-      color: ${COLOR.DARK_GRAY_700};
-    }
-
-    button {
-      width: 13rem;
-      height: 6rem;
-
-      border-radius: 1rem;
-
-      background-color: ${COLOR.LIGHT_BLUE_200};
-
-      :not(:last-child) {
-        margin-right: 1rem;
-      }
+    div {
+      padding: 1rem;
     }
   }
 
@@ -296,6 +279,91 @@ const SubAbilityNameInput = styled.input`
 
 const SubAbilityDescriptionInput = styled.input`
   width: calc(100% - 1.4rem);
+`;
+
+export const NoAbilityContainer = styled.div`
+  width: 100%;
+  height: 640px;
+
+  background-image: url('../../assets/images/ability-template-body.png');
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: 58% bottom;
+
+  position: relative;
+`;
+
+export const FeButton = styled.button`
+  width: 13rem;
+  height: 12rem;
+
+  background-image: url('../../assets/images/ability-fe.png');
+  background-size: 60%;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+  :hover {
+    background-position: top;
+
+    span {
+      transform: scale(1.4);
+      color: ${COLOR.RED_500};
+    }
+  }
+
+  position: relative;
+
+  span {
+    color: ${COLOR.BLACK_900};
+
+    font-size: 1.8rem;
+    font-weight: bold;
+
+    position: absolute;
+    top: 0;
+    left: -80%;
+  }
+`;
+
+export const BeButton = styled.button`
+  width: 13rem;
+  height: 12rem;
+
+  background-image: url('../../assets/images/ability-be.png');
+  background-size: 60%;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+  :hover {
+    background-position: top;
+
+    span {
+      transform: scale(1.4);
+      color: ${COLOR.DARK_BLUE_300};
+    }
+  }
+
+  position: relative;
+
+  span {
+    color: ${COLOR.BLACK_900};
+
+    font-size: 1.8rem;
+    font-weight: bold;
+
+    position: absolute;
+    top: 0;
+    right: -80%;
+  }
+`;
+
+export const AnotherWay = styled.span`
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  font-size: 1.4rem;
+  color: ${COLOR.DARK_GRAY_600};
 `;
 
 export {
