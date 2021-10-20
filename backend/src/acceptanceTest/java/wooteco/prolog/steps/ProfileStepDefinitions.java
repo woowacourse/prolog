@@ -17,11 +17,11 @@ public class ProfileStepDefinitions extends AcceptanceSteps {
         context.invokeHttpGet("/members/" + username + "/profile");
     }
 
-    @Then("멤버 프로필이 조회된다")
-    public void 멤버프로필이조회된다() {
-        MemberResponse member = context.response.as(MemberResponse.class);
+    @Then("{string}의 멤버 프로필이 조회된다")
+    public void 멤버프로필이조회된다(String member) {
+        String memberName = context.response.as(MemberResponse.class).getNickname();
 
-        assertThat(member.getImageUrl()).isNotNull();
+        assertThat(memberName).isEqualTo(member);
     }
 
     @When("{string}의 프로필 스터디로그를 조회하면")
@@ -30,10 +30,14 @@ public class ProfileStepDefinitions extends AcceptanceSteps {
         context.invokeHttpGet("/members/" + username + "/posts");
     }
 
-    @Then("프로필 스터디로그가 조회된다")
-    public void 프로필스터디로그가조회된다() {
-        StudylogsResponse studylogs = context.response.as(StudylogsResponse.class);
+    @Then("{string}의 프로필 스터디로그가 조회된다")
+    public void 프로필스터디로그가조회된다(String member) {
+        String author = context.response.as(StudylogsResponse.class)
+            .getData()
+            .get(0)
+            .getAuthor()
+            .getNickname();
 
-        assertThat(studylogs.getData()).isNotEmpty();
+        assertThat(author).isEqualTo(member);
     }
 }
