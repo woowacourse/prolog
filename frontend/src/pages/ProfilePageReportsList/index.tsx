@@ -30,6 +30,7 @@ type Report = {
   };
   studylogs: [];
   represent: boolean;
+  createdAt: string;
 };
 
 type UserProfile = {
@@ -54,9 +55,9 @@ const ProfilePageReportsList = () => {
     getReports();
   }, [username]);
 
-  console.log(reports);
+  const { reports: reportList } = reports;
 
-  if (!reports.length) {
+  if (!reportList?.length) {
     return (
       <Container
         css={css`
@@ -101,35 +102,37 @@ const ProfilePageReportsList = () => {
       )}
 
       <ReportList>
-        {reports?.map(({ id, title, description, abilityGraph, studylogs, represent }: Report) => (
-          <Card key={id}>
-            {represent && (
-              <Badge>
-                <span>대표 리포트</span>
-              </Badge>
-            )}
+        {reportList?.map(
+          ({ id, title, description, abilityGraph, studylogs, represent, createdAt }: Report) => (
+            <Card key={id}>
+              {represent && (
+                <Badge>
+                  <span>대표 리포트</span>
+                </Badge>
+              )}
 
-            <Link to={`/${username}/reports/${id}`}>
-              <h4>{title}</h4>
-              <p>{description}</p>
+              <Link to={`/${username}/reports/${id}`}>
+                <h4>{title}</h4>
+                <p>{description}</p>
 
-              <AbilityList>
-                {abilityGraph.abilities.map(({ id, name }: Ability) => (
-                  <li key={id}>
-                    <Chip backgroundColor={`${COLOR.LIGHT_BLUE_100}`}>{name}</Chip>
-                  </li>
-                ))}
-              </AbilityList>
+                <AbilityList>
+                  {abilityGraph.abilities.map(({ id, name }: Ability) => (
+                    <li key={id}>
+                      <Chip backgroundColor={`${COLOR.LIGHT_BLUE_100}`}>{name}</Chip>
+                    </li>
+                  ))}
+                </AbilityList>
 
-              <StudyLogCount>
-                <StudyLogIcon />
-                <p>{studylogs.length}개의 학습로그</p>
-              </StudyLogCount>
+                <StudyLogCount>
+                  <StudyLogIcon />
+                  <p>{studylogs.length}개의 학습로그</p>
+                </StudyLogCount>
 
-              <time>2021-10-18</time>
-            </Link>
-          </Card>
-        ))}
+                <time>{new Date(createdAt).toLocaleDateString()}</time>
+              </Link>
+            </Card>
+          )
+        )}
       </ReportList>
     </Container>
   );
