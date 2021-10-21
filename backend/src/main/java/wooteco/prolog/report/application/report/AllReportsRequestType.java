@@ -35,18 +35,9 @@ public class AllReportsRequestType implements ReportsRequestType {
 
     @Override
     public Object execute(String username, Pageable pageable) {
-        List<ReportResponse> reportResponses = getReportResponses(username, pageable);
-        Page<Report> reportsByUsername = reportRepository
+        Page<Report> reports = reportRepository
             .findReportsByUsername(username, pageable);
 
-        return reportAssembler.of(reportsByUsername);
-    }
-
-    private List<ReportResponse> getReportResponses(String username, Pageable pageable) {
-        return reportRepository
-            .findReportsByUsername(username, pageable)
-            .stream()
-            .map(reportAssembler::of)
-            .collect(toList());
+        return reportAssembler.of(sort(reports));
     }
 }
