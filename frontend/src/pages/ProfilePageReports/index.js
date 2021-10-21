@@ -13,9 +13,10 @@ import { API, REQUEST_REPORT_TYPE } from '../../constants';
 
 import { Button, SelectBox } from '../../components';
 import Report from './Report';
-import { Container, AddNewReportLink, ButtonWrapper, ReportHeader, ReportBody } from './styles';
+import { Container, ButtonWrapper, ReportHeader, ReportBody } from './styles';
 import useRequest from '../../hooks/useRequest';
 import useMutation from '../../hooks/useMutation';
+import { AddNewReportLink } from '../ProfilePageReportsList/styles';
 
 const ProfilePageReports = () => {
   const history = useHistory();
@@ -32,6 +33,7 @@ const ProfilePageReports = () => {
     {},
     () => requestGetReport(reportId),
     (data) => {
+      console.log(data);
       setReportName(data.title);
     },
     () => {
@@ -42,13 +44,15 @@ const ProfilePageReports = () => {
 
   const { response: reports, fetchData: getReports } = useRequest(
     [],
-    () => requestGetReportList(username, REQUEST_REPORT_TYPE.SIMPLE),
+    () => requestGetReportList({ username, type: REQUEST_REPORT_TYPE.SIMPLE }),
     (data) => {
       const reportName = data.find((report) => report.id === Number(reportId)).title;
 
       setReportName(reportName);
     }
   );
+
+  const { reports: reportList } = reports;
 
   const { mutate: onDeleteReport } = useMutation(
     () => {
@@ -65,7 +69,7 @@ const ProfilePageReports = () => {
   );
 
   const makeSelectOptions = (options) => {
-    return options.map((option) => ({ id: option.id, name: option.title }));
+    return options?.map((option) => ({ id: option.id, name: option.title }));
   };
 
   useEffect(() => {
@@ -73,9 +77,9 @@ const ProfilePageReports = () => {
   }, []);
 
   useEffect(() => {
-    if (!reports || reports.length === 0) return;
+    if (!reportList || reportList.length === 0) return;
 
-    const searchTargetReportId = reports.find((report) => report.title === reportName)?.id;
+    const searchTargetReportId = reportList.find((report) => report.title === reportName)?.id;
 
     if (searchTargetReportId) {
       history.push(`/${username}/reports/${searchTargetReportId}`);
@@ -91,11 +95,11 @@ const ProfilePageReports = () => {
   }, [username]);
 
   return (
-    <Container reportsLength={reports.length}>
+    <Container>
       <ReportHeader>
         {!!reportName && (
           <SelectBox
-            options={makeSelectOptions(reports)}
+            options={makeSelectOptions(reportList)}
             selectedOption={reportName}
             setSelectedOption={setReportName}
             title="리포트 목록입니다."
