@@ -33,7 +33,6 @@ const ProfilePageReports = () => {
     {},
     () => requestGetReport(reportId),
     (data) => {
-      console.log(data);
       setReportName(data.title);
     },
     () => {
