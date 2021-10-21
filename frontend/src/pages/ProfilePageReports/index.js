@@ -33,7 +33,6 @@ const ProfilePageReports = () => {
     {},
     () => requestGetReport(reportId),
     (data) => {
-      console.log(data);
       setReportName(data.title);
     },
     () => {
@@ -46,7 +45,7 @@ const ProfilePageReports = () => {
     [],
     () => requestGetReportList({ username, type: REQUEST_REPORT_TYPE.SIMPLE }),
     (data) => {
-      const reportName = data.find((report) => report.id === Number(reportId)).title;
+      const reportName = data.reports.find((report) => report.id === Number(reportId)).title;
 
       setReportName(reportName);
     }
