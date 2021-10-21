@@ -135,8 +135,8 @@ const ProfilePageReportsList = () => {
           to={`/${username}/report/write`}
           css={css`
             position: absolute;
-            bottom: -6rem;
-            right: 0;
+            bottom: 0.5rem;
+            right: 0.5rem;
           `}
         >
           새 리포트 등록

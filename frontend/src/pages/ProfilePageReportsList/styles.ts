@@ -31,7 +31,7 @@ export const AddNewReportLink = styled(NavLink)<{ css?: SerializedStyles }>`
   z-index: 0;
 
   border-radius: 1rem;
-  background-color: ${COLOR.DARK_BLUE_800};
+  background-color: ${COLOR.LIGHT_BLUE_800};
 
   font-size: 1.3rem;
   color: ${COLOR.WHITE};
@@ -39,13 +39,13 @@ export const AddNewReportLink = styled(NavLink)<{ css?: SerializedStyles }>`
   ${({ css }) => css};
 
   :hover {
-    background-color: ${COLOR.DARK_BLUE_900};
+    background-color: ${COLOR.DARK_BLUE_300};
   }
 `;
 
 export const ReportList = styled.ol`
   width: 100%;
-  height: fit-content;
+  height: 55rem;
   margin-left: 2rem;
   position: relative;
 
