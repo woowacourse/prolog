@@ -1,4 +1,3 @@
-import React from 'react';
 import { PaginationContainer, PageButtonStyle, PageSkipButtonStyle } from './Pagination.styles';
 import { Button, BUTTON_SIZE, PageButton } from '../index';
 
