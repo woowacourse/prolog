@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ import useRequest from '../../hooks/useRequest';
 import { requestGetReportList } from '../../service/requests';
 import { COLOR, REQUEST_REPORT_TYPE } from '../../constants';
 
-import { Chip } from '../../components';
+import { Chip, Pagination } from '../../components';
 import { ReactComponent as StudyLogIcon } from '../../assets/images/post.svg';
 import {
   Container,
@@ -41,21 +41,63 @@ interface UserProfileState {
   user: { profile: UserProfile };
 }
 
+const defaultReports = {
+  reports: [],
+  currPage: 1,
+  totalSize: 0,
+  totalPage: 1,
+};
+
 const ProfilePageReportsList = () => {
   const { username } = useParams<{ username: string }>();
 
-  const user = useSelector<UserProfileState>((state) => state.user.profile) as UserProfile;
+  const [reports, setReports] = useState(defaultReports);
 
+  const user = useSelector<UserProfileState>((state) => state.user.profile) as UserProfile;
   const isOwner = !!user.data && username === user.data.username;
-  const { response: reports, fetchData: getReports } = useRequest([], () =>
-    requestGetReportList(username, REQUEST_REPORT_TYPE.ALL)
-  );
+
+  // const { response: reports, fetchData: getReports } = useRequest({}, (page = 1) =>
+  //   requestGetReportList({
+  //     username,
+  //     type: REQUEST_REPORT_TYPE.ALL,
+  //     size: 4,
+  //     page,
+  //   })
+  // );
+
+  // useEffect(() => {
+  //   getReports();
+  // }, [username]);
+
+  const getReports = async (page = 1) => {
+    try {
+      const response = await requestGetReportList({
+        username,
+        type: REQUEST_REPORT_TYPE.ALL,
+        size: 4,
+        page,
+      });
+
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+
+      const fetchReports = await response.json();
+      setReports({ ...fetchReports, currPage: page });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     getReports();
-  }, [username]);
+  }, []);
 
   const { reports: reportList } = reports;
+
+  const onSetPage = (page: number) => {
+    getReports(page);
+  };
 
   if (!reportList?.length) {
     return (
@@ -134,6 +176,7 @@ const ProfilePageReportsList = () => {
           )
         )}
       </ReportList>
+      <Pagination postsInfo={reports} onSetPage={onSetPage} />
     </Container>
   );
 };
