@@ -23,7 +23,7 @@ public class HealthCheckScheduler {
     public void clusterHealthCheckTask() {
         List<ClusterHealth> clusters = healthCheckClient.healthOfCluster().getClusters();
         for (ClusterHealth cluster : clusters) {
-            if (!cluster.isGreen()) {
+            if (cluster.isRed()) {
                 throw new ClusterHealthDownException(cluster.getStatus());
             }
         }
@@ -33,7 +33,7 @@ public class HealthCheckScheduler {
     public void indexHealthCheckTask() {
         List<IndexHealth> indices = healthCheckClient.healthOfIndex("studylog-document").getIndices();
         for (IndexHealth index : indices) {
-            if (!index.isGreen()) {
+            if (index.isRed()) {
                 throw new IndexHealthDownException(index.getHealth());
             }
         }
