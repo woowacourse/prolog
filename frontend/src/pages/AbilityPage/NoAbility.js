@@ -1,6 +1,6 @@
-import { SUCCESS_MESSAGE, CONFIRM_MESSAGE } from '../../constants/message';
 import useMutation from '../../hooks/useMutation';
 import useSnackBar from '../../hooks/useSnackBar';
+import { SUCCESS_MESSAGE, CONFIRM_MESSAGE } from '../../constants/message';
 import { requestSetDefaultAbility } from '../../service/requests';
 import { BeButton, FeButton, NoAbilityContainer, AnotherWay } from './styles';
 
@@ -56,7 +56,6 @@ const NoAbility = ({ getData, accessToken }) => {
           <span>백엔드</span>
         </BeButton>
       </div>
-      {/* {isSnackBarOpen && <SnackBar />} */}
     </NoAbilityContainer>
   );
 };

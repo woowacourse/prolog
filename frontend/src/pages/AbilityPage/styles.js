@@ -6,6 +6,8 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
 
+  font-size: 1.4rem;
+
   > div {
     display: flex;
     justify-content: space-between;

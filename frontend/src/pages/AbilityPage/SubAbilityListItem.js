@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Chip } from '../../components';
 import SubCategoryIcon from '../../components/@shared/Icons/SubCategoryIcon';
 import { COLOR } from '../../constants';

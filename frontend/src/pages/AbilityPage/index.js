@@ -10,6 +10,7 @@ import {
   ALERT_MESSAGE,
 } from '../../constants/message';
 import useRequest from '../../hooks/useRequest';
+import useMutation from '../../hooks/useMutation';
 import useSnackBar from '../../hooks/useSnackBar';
 import {
   requestAddAbility,
@@ -23,77 +24,72 @@ import NoAbility from './NoAbility';
 
 import { Container, AbilityList, Button, EditingListItem, ListHeader, NoContent } from './styles';
 
+const DEFAULT_ABILITY_FORM = {
+  isOpened: false,
+  name: '',
+  description: '',
+  color: '#f6d7fe',
+  parent: null,
+};
+
 const AbilityPage = () => {
   const history = useHistory();
   const { username } = useParams();
   const { isSnackBarOpen, SnackBar, openSnackBar } = useSnackBar();
 
   const [abilities, setAbilities] = useState(null);
-  const [addFormStatus, setAddFormStatus] = useState({
-    isOpened: false,
-    name: '',
-    description: '',
-    color: '#f6d7fe',
-  });
+  const [addFormStatus, setAddFormStatus] = useState(DEFAULT_ABILITY_FORM);
 
   const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
   const user = useSelector((state) => state.user.profile);
-  const isMine = user.data && username === user.data.username;
+  const isMine = user.data && username === user.data?.username;
 
-  const setAddFormIsOpened = (status) => () => {
-    setAddFormStatus((prevState) => ({ ...prevState, isOpened: status }));
+  const addFormClose = () => {
+    setAddFormStatus((prevState) => ({ ...prevState, isOpened: false }));
+  };
+
+  const addFormOpen = () => {
+    setAddFormStatus((prevState) => ({ ...prevState, isOpened: true }));
   };
 
   const { fetchData: getData } = useRequest(
     [],
-    () => requestGetAbilities(user.data.username, JSON.parse(accessToken)),
+    () => requestGetAbilities(username, JSON.parse(accessToken)),
     (data) => {
       setAbilities(data);
     }
   );
 
-  const addAbility = async ({ name, description, color, parent = null }) => {
-    try {
-      const response = await requestAddAbility(JSON.parse(accessToken), {
+  const { mutate: addAbility } = useMutation(
+    ({ name, description, color, parent = null }) =>
+      requestAddAbility(JSON.parse(accessToken), {
         name,
         description,
         color,
         parent,
-      });
-
-      if (!response.ok) {
-        const json = await response.json();
-        throw new Error(json.code);
-      }
-
+      }),
+    () => {
       openSnackBar(SUCCESS_MESSAGE.CREATE_ABILITY);
-      await getData();
-    } catch (error) {
-      alert(ERROR_MESSAGE[error.message]);
-      console.error(error);
+      getData();
+    },
+    (error) => {
+      openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
     }
-  };
+  );
 
-  const deleteAbility = (id) => async () => {
-    if (!window.confirm(CONFIRM_MESSAGE.DELETE_ABILITY)) {
-      return;
-    }
-
-    try {
-      const response = await requestDeleteAbility(JSON.parse(accessToken), id);
-
-      if (!response.ok) {
-        const json = await response.json();
-        throw new Error(json.code);
-      }
-
+  const { mutate: deleteAbility } = useMutation(
+    (id) => {
+      return requestDeleteAbility(JSON.parse(accessToken), id);
+    },
+    () => {
       openSnackBar(SUCCESS_MESSAGE.DELETE_ABILITY);
-      await getData();
-    } catch (error) {
-      alert(ERROR_MESSAGE[error.message]);
-      console.error(error);
+
+      getData();
+    },
+    (error) => {
+      openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
     }
-  };
+  );
 
   const editAbility = async ({ id, name, description, color }) => {
     try {
@@ -112,8 +108,7 @@ const AbilityPage = () => {
       openSnackBar(SUCCESS_MESSAGE.EDIT_ABILITY);
       await getData();
     } catch (error) {
-      alert(ERROR_MESSAGE[error.message]);
-      console.error(error);
+      openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
     }
   };
 
@@ -128,15 +123,35 @@ const AbilityPage = () => {
     history.push(`/${username}`);
   }
 
+  const onAddFormSubmit = async (event) => {
+    event.preventDefault();
+
+    await addAbility({
+      name: addFormStatus.name,
+      description: addFormStatus.description,
+      color: addFormStatus.color,
+      parent: addFormStatus.parent,
+    });
+
+    setAddFormStatus(DEFAULT_ABILITY_FORM);
+    addFormClose();
+  };
+
+  const onFormDataChange = (key) => (event) => {
+    setAddFormStatus({ ...addFormStatus, [key]: event.target.value });
+  };
+
+  const onDelete = (id) => () => {
+    if (window.confirm(CONFIRM_MESSAGE.DELETE_ABILITY)) {
+      deleteAbility(id);
+    }
+  };
+
   return (
     <Container>
       <div>
         <h2>역량</h2>
-        <Button
-          type="button"
-          backgroundColor={COLOR.LIGHT_GRAY_50}
-          onClick={setAddFormIsOpened(true)}
-        >
+        <Button type="button" backgroundColor={COLOR.LIGHT_GRAY_50} onClick={addFormOpen}>
           역량 추가 +
         </Button>
       </div>
@@ -144,13 +159,11 @@ const AbilityPage = () => {
         <AbilityList>
           <EditingListItem isParent={true}>
             <AddAbilityForm
-              name={addFormStatus.name}
-              color={addFormStatus.color}
-              description={addFormStatus.description}
+              formData={addFormStatus}
+              onFormDataChange={onFormDataChange}
               isParent={true}
-              setIsFormOpened={setAddFormIsOpened}
-              onClose={setAddFormIsOpened(false)}
-              onSubmit={addAbility}
+              onClose={addFormClose}
+              onSubmit={onAddFormSubmit}
             />
           </EditingListItem>
         </AbilityList>
@@ -164,18 +177,13 @@ const AbilityPage = () => {
 
         {abilities
           ?.filter(({ isParent }) => isParent)
-          .map(({ id, name, description, color, isParent, children }) => (
+          .map((ability) => (
             <AbilityListItem
-              key={id}
-              id={id}
-              name={name}
-              description={description}
-              color={color}
-              isParent={isParent}
-              subAbilities={children}
-              onDelete={deleteAbility}
-              onAdd={addAbility}
+              key={ability.id}
+              ability={ability}
+              addAbility={addAbility}
               onEdit={editAbility}
+              onDelete={onDelete}
             />
           ))}
 
