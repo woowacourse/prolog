@@ -261,6 +261,7 @@ const NoContent = styled.li`
     grid-template-columns: 1fr;
 
     h3 {
+      margin-top: 1.5rem;
       font-size: 1.8rem;
     }
 
@@ -285,10 +286,11 @@ export const NoAbilityContainer = styled.div`
   width: 100%;
   height: 640px;
 
-  background-image: url('../../assets/images/ability-template-body.png');
-  background-size: 70%;
+  background-image: url('../../assets/images/select-default-ability-bg.png');
+  background-size: cover;
   background-repeat: no-repeat;
-  background-position: 58% bottom;
+  background-position: center 140px;
+  clip: rect(0, 175px, 113px, 0);
 
   position: relative;
 `;
@@ -300,7 +302,7 @@ export const FeButton = styled.button`
   background-image: url('../../assets/images/ability-fe.png');
   background-size: 60%;
   background-repeat: no-repeat;
-  background-position: center center;
+  background-position: center bottom;
 
   :hover,
   :active {
@@ -333,7 +335,7 @@ export const BeButton = styled.button`
   background-image: url('../../assets/images/ability-be.png');
   background-size: 60%;
   background-repeat: no-repeat;
-  background-position: center center;
+  background-position: center bottom;
 
   :hover,
   :active {

@@ -1,15 +1,19 @@
 import useMutation from '../../hooks/useMutation';
+import useSnackBar from '../../hooks/useSnackBar';
 import { requestSetDefaultAbility } from '../../service/requests';
 import { BeButton, FeButton, NoAbilityContainer, AnotherWay } from './styles';
 
 const NoAbility = ({ getData, accessToken }) => {
+  const { openSnackBar } = useSnackBar();
+
   const { mutate: addDefaultAbilities } = useMutation(
     (field) => requestSetDefaultAbility(JSON.parse(accessToken), field),
     () => {
+      openSnackBar('기본 역량을 설정했습니다.');
       getData();
     },
     () => {
-      alert('기본 역량을 등록하지 못했습니다.');
+      openSnackBar('기본 역량 등록에 실패했습니다.');
     }
   );
 
@@ -51,6 +55,7 @@ const NoAbility = ({ getData, accessToken }) => {
           <span>백엔드</span>
         </BeButton>
       </div>
+      {/* {isSnackBarOpen && <SnackBar />} */}
     </NoAbilityContainer>
   );
 };

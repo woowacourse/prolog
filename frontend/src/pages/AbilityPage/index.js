@@ -6,6 +6,7 @@ import { COLOR } from '../../constants';
 import { ERROR_MESSAGE } from '../../constants/message';
 import useMutation from '../../hooks/useMutation';
 import useRequest from '../../hooks/useRequest';
+import useSnackBar from '../../hooks/useSnackBar';
 import {
   requestAddAbility,
   requestDeleteAbility,
@@ -22,6 +23,7 @@ import { Container, AbilityList, Button, EditingListItem, ListHeader, NoContent 
 const AbilityPage = () => {
   const history = useHistory();
   const { username } = useParams();
+  const { isSnackBarOpen, SnackBar, openSnackBar } = useSnackBar();
 
   const [abilities, setAbilities] = useState(null);
   const [addFormStatus, setAddFormStatus] = useState({
@@ -61,6 +63,7 @@ const AbilityPage = () => {
         throw new Error(json.code);
       }
 
+      openSnackBar('역량이 추가되었습니다.');
       await getData();
     } catch (error) {
       alert(ERROR_MESSAGE[error.message]);
@@ -81,6 +84,7 @@ const AbilityPage = () => {
         throw new Error(json.code);
       }
 
+      openSnackBar('삭제되었습니다.');
       await getData();
     } catch (error) {
       alert(ERROR_MESSAGE[error.message]);
@@ -102,6 +106,7 @@ const AbilityPage = () => {
         throw new Error(json.code);
       }
 
+      openSnackBar('수정되었습니다.');
       await getData();
     } catch (error) {
       alert(ERROR_MESSAGE[error.message]);
@@ -177,6 +182,7 @@ const AbilityPage = () => {
           </NoContent>
         )}
       </AbilityList>
+      {isSnackBarOpen && <SnackBar />}
     </Container>
   );
 };
