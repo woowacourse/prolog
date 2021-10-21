@@ -4,9 +4,9 @@ const useRequest = (defaultValue, callback, onSuccess, onError, onFinish) => {
   const [response, setResponse] = useState(defaultValue);
   const [error, setError] = useState('');
 
-  const fetchData = async () => {
+  const fetchData = async (data) => {
     try {
-      const response = await callback();
+      const response = await callback(data);
 
       if (!response.ok) {
         throw new Error(await response.text());
