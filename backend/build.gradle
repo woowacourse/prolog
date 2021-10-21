@@ -47,7 +47,6 @@ dependencies {
 
     // log
     implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
-    implementation "com.github.maricn:logback-slack-appender:1.4.0"
 
     // jwt
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
@@ -82,6 +81,9 @@ dependencies {
 
     //flyway
     implementation 'org.flywaydb:flyway-core:6.4.2'
+
+    // webclient
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'

@@ -9,21 +9,20 @@ import {
   requestGetReport,
   requestGetReportList,
 } from '../../service/requests';
-import { API } from '../../constants';
+import { API, REQUEST_REPORT_TYPE } from '../../constants';
 
 import { Button, SelectBox } from '../../components';
 import Report from './Report';
-import { Container, AddNewReportLink, ButtonWrapper, ReportHeader, ReportBody } from './styles';
+import { Container, ButtonWrapper, ReportHeader, ReportBody } from './styles';
 import useRequest from '../../hooks/useRequest';
 import useMutation from '../../hooks/useMutation';
+import { AddNewReportLink } from '../ProfilePageReportsList/styles';
 
 const ProfilePageReports = () => {
   const history = useHistory();
-  const { reportId } = useParams();
+  const { reportId, username } = useParams();
 
   const [reportName, setReportName] = useState('');
-
-  const { username } = useParams();
 
   const loginUser = useSelector((state) => state.user.profile);
   const isOwner = !!loginUser.data && username === loginUser.data.username;
@@ -44,19 +43,20 @@ const ProfilePageReports = () => {
 
   const { response: reports, fetchData: getReports } = useRequest(
     [],
-    () => requestGetReportList(username),
+    () => requestGetReportList({ username, type: REQUEST_REPORT_TYPE.SIMPLE }),
     (data) => {
-      const reportName = data.find((report) => report.id === Number(reportId)).title;
+      const reportName = data.reports.find((report) => report.id === Number(reportId)).title;
 
       setReportName(reportName);
     }
   );
 
+  const { reports: reportList } = reports;
+
   const { mutate: onDeleteReport } = useMutation(
     () => {
       if (!window.confirm('리포트를 삭제하시겠습니까?')) return;
 
-      const reportId = reports?.find((report) => report.title === reportName)?.id;
       return requestDeleteReport(reportId, accessToken);
     },
     () => {
@@ -68,7 +68,7 @@ const ProfilePageReports = () => {
   );
 
   const makeSelectOptions = (options) => {
-    return options.map((option) => ({ id: option.id, name: option.title }));
+    return options?.map((option) => ({ id: option.id, name: option.title }));
   };
 
   useEffect(() => {
@@ -76,9 +76,9 @@ const ProfilePageReports = () => {
   }, []);
 
   useEffect(() => {
-    if (!reports || reports.length === 0) return;
+    if (!reportList || reportList.length === 0) return;
 
-    const searchTargetReportId = reports.find((report) => report.title === reportName)?.id;
+    const searchTargetReportId = reportList.find((report) => report.title === reportName)?.id;
 
     if (searchTargetReportId) {
       history.push(`/${username}/reports/${searchTargetReportId}`);
@@ -94,11 +94,11 @@ const ProfilePageReports = () => {
   }, [username]);
 
   return (
-    <Container reportsLength={reports.length}>
+    <Container>
       <ReportHeader>
         {!!reportName && (
           <SelectBox
-            options={makeSelectOptions(reports)}
+            options={makeSelectOptions(reportList)}
             selectedOption={reportName}
             setSelectedOption={setReportName}
             title="리포트 목록입니다."

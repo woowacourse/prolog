@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import CancelIcon from '../@shared/Icons/CancelIcon';
 import { ChipText, Container } from './Chip.styles';
 import COLOR from '../../constants/color';
@@ -28,6 +29,17 @@ const Chip = ({
       )}
     </Container>
   );
+};
+
+Chip.propTypes = {
+  title: PropTypes.string,
+  maxWidth: PropTypes.string,
+  textAlign: PropTypes.string,
+  width: PropTypes.string,
+  color: PropTypes.string,
+  backgroundColor: PropTypes.string,
+  onDelete: PropTypes.func,
+  children: PropTypes.node,
 };
 
 export default Chip;
