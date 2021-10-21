@@ -1,10 +1,14 @@
-import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import { COLOR } from '../../constants';
-import { ERROR_MESSAGE } from '../../constants/message';
-import useMutation from '../../hooks/useMutation';
+import LOCAL_STORAGE_KEY from '../../constants/localStorage';
+import {
+  ERROR_MESSAGE,
+  SUCCESS_MESSAGE,
+  CONFIRM_MESSAGE,
+  ALERT_MESSAGE,
+} from '../../constants/message';
 import useRequest from '../../hooks/useRequest';
 import useSnackBar from '../../hooks/useSnackBar';
 import {
@@ -12,7 +16,6 @@ import {
   requestDeleteAbility,
   requestEditAbility,
   requestGetAbilities,
-  requestSetDefaultAbility,
 } from '../../service/requests';
 import AbilityListItem from './AbilityListItem';
 import AddAbilityForm from './AddAbilityForm';
@@ -33,7 +36,7 @@ const AbilityPage = () => {
     color: '#f6d7fe',
   });
 
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
   const user = useSelector((state) => state.user.profile);
   const isMine = user.data && username === user.data.username;
 
@@ -63,7 +66,7 @@ const AbilityPage = () => {
         throw new Error(json.code);
       }
 
-      openSnackBar('역량이 추가되었습니다.');
+      openSnackBar(SUCCESS_MESSAGE.CREATE_ABILITY);
       await getData();
     } catch (error) {
       alert(ERROR_MESSAGE[error.message]);
@@ -72,7 +75,7 @@ const AbilityPage = () => {
   };
 
   const deleteAbility = (id) => async () => {
-    if (!window.confirm('삭제하시겠습니까?')) {
+    if (!window.confirm(CONFIRM_MESSAGE.DELETE_ABILITY)) {
       return;
     }
 
@@ -84,7 +87,7 @@ const AbilityPage = () => {
         throw new Error(json.code);
       }
 
-      openSnackBar('삭제되었습니다.');
+      openSnackBar(SUCCESS_MESSAGE.DELETE_ABILITY);
       await getData();
     } catch (error) {
       alert(ERROR_MESSAGE[error.message]);
@@ -106,7 +109,7 @@ const AbilityPage = () => {
         throw new Error(json.code);
       }
 
-      openSnackBar('수정되었습니다.');
+      openSnackBar(SUCCESS_MESSAGE.EDIT_ABILITY);
       await getData();
     } catch (error) {
       alert(ERROR_MESSAGE[error.message]);
@@ -121,7 +124,7 @@ const AbilityPage = () => {
   }, [user]);
 
   if (user.data && !isMine) {
-    alert('잘못된 접근입니다.');
+    alert(ALERT_MESSAGE.ACCESS_DENIED);
     history.push(`/${username}`);
   }
 

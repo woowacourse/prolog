@@ -1,3 +1,4 @@
+import { SUCCESS_MESSAGE, CONFIRM_MESSAGE } from '../../constants/message';
 import useMutation from '../../hooks/useMutation';
 import useSnackBar from '../../hooks/useSnackBar';
 import { requestSetDefaultAbility } from '../../service/requests';
@@ -9,11 +10,11 @@ const NoAbility = ({ getData, accessToken }) => {
   const { mutate: addDefaultAbilities } = useMutation(
     (field) => requestSetDefaultAbility(JSON.parse(accessToken), field),
     () => {
-      openSnackBar('기본 역량을 설정했습니다.');
+      openSnackBar(SUCCESS_MESSAGE.SET_DEFAULT_ABILITIES);
       getData();
     },
     () => {
-      openSnackBar('기본 역량 등록에 실패했습니다.');
+      openSnackBar(CONFIRM_MESSAGE.SET_DEFAULT_ABILITIES);
     }
   );
 
