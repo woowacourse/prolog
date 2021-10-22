@@ -109,7 +109,7 @@ const ProfilePageReports = () => {
           />
         )}
         {isOwner && (
-          <AddNewReportLink to={`/${username}/report/write`}>새 리포트 등록</AddNewReportLink>
+          <AddNewReportLink to={`/${username}/reports/write`}>새 리포트 등록</AddNewReportLink>
         )}
       </ReportHeader>
 
