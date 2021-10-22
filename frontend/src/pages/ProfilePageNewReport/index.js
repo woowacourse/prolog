@@ -77,7 +77,7 @@ const ProfilePageNewReport = () => {
         abilities: abilities.map(({ id, weight, isPresent }) => ({ id, weight, isPresent })),
       },
       studylogs: studyLogs.map((item) => ({ id: item.id, abilities: [] })),
-      represent: false,
+      represent: isMainReport,
     };
 
     await postNewReport(data);
@@ -122,16 +122,15 @@ const ProfilePageNewReport = () => {
     <>
       <Form onSubmit={onSubmitReport}>
         <h2>새 리포트 작성하기</h2>
-        {/* <div>
+        <div>
           <Checkbox
             type="checkbox"
             onChange={onRegisterMainReport}
             checked={isMainReport}
             id="main_report_checkbox"
-            disabled
           />
           <label htmlFor="main_report_checkbox">대표 리포트로 지정하기</label>
-        </div> */}
+        </div>
 
         <ReportInfoInput
           nickname={nickname}
