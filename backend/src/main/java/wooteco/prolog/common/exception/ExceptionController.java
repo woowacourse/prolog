@@ -17,7 +17,6 @@ import wooteco.prolog.common.slacklogger.SlackAlarm;
 @RestControllerAdvice
 public class ExceptionController {
 
-    @SlackAlarm(level = WARN)
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ExceptionDto> badRequestExceptionHandler(BadRequestException e) {
         log.warn(e.getMessage());
