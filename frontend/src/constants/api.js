@@ -1,7 +1,7 @@
 const API = {
   ACCESS_TOKEN: 'accessToken',
   STATUS: {
-    EXPIRED_ACCESS_TOKEN: 500,
+    EXPIRED_ACCESS_TOKEN: 1002,
   },
 };
 
