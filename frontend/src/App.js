@@ -104,7 +104,7 @@ const App = () => {
               exact
               path={`${PATH.ABILITY}`}
               render={() => (
-                <ProfilePage>
+                <ProfilePage menu={PROFILE_PAGE_MENU.ABILITY}>
                   <AbilityPage />
                 </ProfilePage>
               )}

@@ -41,7 +41,7 @@ const NavBar = () => {
 
   useEffect(() => {
     if (accessToken) {
-      dispatch(getProfile(accessToken));
+      dispatch(getProfile());
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
