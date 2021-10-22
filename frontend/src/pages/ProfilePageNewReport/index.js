@@ -68,6 +68,10 @@ const ProfilePageNewReport = () => {
 
     const currTitle = title.trim();
 
+    if (studyLogs.length === 0) {
+      if (!window.confirm('등록된 학습로그가 없습니다.\n저장하시겠습니까?')) return;
+    }
+
     const data = {
       id: null,
       title:
