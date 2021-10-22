@@ -17,6 +17,7 @@ import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
+import wooteco.prolog.studylog.infrastructure.HealthCheckClient;
 
 @Profile({"local", "test"})
 @Service
@@ -24,8 +25,9 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
 
     public FakeStudylogDocumentService(
         StudylogDocumentRepository studylogDocumentRepository,
-        StudylogRepository studylogRepository) {
-        super(studylogDocumentRepository, studylogRepository);
+        StudylogRepository studylogRepository,
+        HealthCheckClient healthCheckClient) {
+        super(studylogDocumentRepository, studylogRepository, healthCheckClient);
     }
 
     @Override
