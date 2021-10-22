@@ -111,7 +111,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         context.invokeHttpPostWithToken("/posts", studylogRequests);
     }
 
-    @Given("서로 다른 레벨의 스터디로그를 다수 생성하고")
+    @Given("서로 다른 레벨을 가진 스터디로그를 다수 생성하고")
     public void 서로다른레벨을가진스터디로그를생성() {
         List<StudylogRequest> studylogRequests = new ArrayList<>();
 
