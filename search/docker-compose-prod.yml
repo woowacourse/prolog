@@ -87,7 +87,7 @@ services:
       - elastic
 
   kib01:
-    image: docker.elastic.co/kibana/kibana:7.14.0
+    image: docker.elastic.co/kibana/kibana:7.14.1
     container_name: kib01
     ports:
       - 5601:5601
