@@ -1,26 +1,21 @@
 spring:
   jpa:
     generate-ddl: true
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-#    hibernate:
-#      ddl-auto: create
-#    properties:
-#      hibernate:
-#        show_sql: false
-#        format_sql: true
-#        use_sql_comment: false
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
+        use_sql_comment: false
   flyway:
-      enabled: true
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:13306/prolog?useSSL=true
-    username: root
+      enabled: false
+
 security:
   jwt:
     token:
-      secret-key: secret_key
-      expire-length: 3600000
 
 github:
   client:
