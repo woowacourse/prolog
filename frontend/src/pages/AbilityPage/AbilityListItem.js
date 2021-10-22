@@ -1,27 +1,25 @@
 import { useEffect, useState } from 'react';
 import Chip from '../../components/Chip/Chip';
 import { COLOR } from '../../constants';
-import { ERROR_MESSAGE } from '../../constants/message';
+
 import AddAbilityForm from './AddAbilityForm';
 import EditAbilityForm from './EditAbilityForm';
 import { SubAbilityList, ManageButtonList, ArrowButton, Button, EditingListItem } from './styles';
 import SubAbilityListItem from './SubAbilityListItem';
 
-const AbilityListItem = ({
-  id,
-  name,
-  description,
-  color,
-  isParent,
-  subAbilities,
-  onDelete,
-  onAdd,
-  onEdit,
-}) => {
+const AbilityListItem = ({ ability, addAbility, onEdit, onDelete }) => {
+  const { id, name, description, color, isParent, children: subAbilities } = ability;
   const [itemStatus, setItemStatus] = useState({
     isOpened: false,
     isEditing: false,
     isAddFormOpened: false,
+  });
+
+  const [addFormStatus, setAddFormStatus] = useState({
+    name: '',
+    description: '',
+    color,
+    parent: id,
   });
 
   const toggleIsOpened = () => {
@@ -46,16 +44,6 @@ const AbilityListItem = ({
     }));
   };
 
-  const onSubmit = async ({ name, color, description, parent }) => {
-    try {
-      await onAdd({ name, color, description, parent });
-
-      openSubList();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const setEditStatus = (status) => () => {
     setItemStatus((prevState) => ({ ...prevState, isEditing: status }));
   };
@@ -65,6 +53,25 @@ const AbilityListItem = ({
       setItemStatus((prevState) => ({ ...prevState, isOpened: false }));
     }
   }, [subAbilities.length]);
+
+  const onAddFormSubmit = async (event) => {
+    event.preventDefault();
+
+    await addAbility({
+      name: addFormStatus.name,
+      description: addFormStatus.description,
+      color: addFormStatus.color,
+      parent: addFormStatus.parent,
+    });
+
+    setAddFormStatus({ ...addFormStatus, isOpened: false, name: '', description: '' });
+    closeAddForm();
+    openSubList();
+  };
+
+  const onFormDataChange = (key) => (event) => {
+    setAddFormStatus({ ...addFormStatus, [key]: event.target.value });
+  };
 
   return (
     <>
@@ -125,10 +132,11 @@ const AbilityListItem = ({
         <EditingListItem isParent={true}>
           <AddAbilityForm
             color={color}
-            setIsFormOpened={setIsAddFormOpened}
-            onSubmit={onSubmit}
-            onClose={closeAddForm}
-            parentId={id}
+            formData={addFormStatus}
+            onFormDataChange={onFormDataChange}
+            isParent={false}
+            onClose={setIsAddFormOpened(false)}
+            onSubmit={onAddFormSubmit}
           />
         </EditingListItem>
       )}

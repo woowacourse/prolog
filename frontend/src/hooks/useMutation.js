@@ -3,9 +3,9 @@ import { useState } from 'react';
 const useMutation = (callback, onSuccess, onError, onFinish) => {
   const [error, setError] = useState('');
 
-  const mutate = async () => {
+  const mutate = async (data) => {
     try {
-      const response = await callback();
+      const response = await callback(data);
 
       if (!response.ok) {
         throw new Error(await response.text());
