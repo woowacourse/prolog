@@ -16,6 +16,8 @@ spring:
 security:
   jwt:
     token:
+      secret-key: secret_key
+      expire-length: 3600000
 
 github:
   client:
