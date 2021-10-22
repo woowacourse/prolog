@@ -111,6 +111,24 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         context.invokeHttpPostWithToken("/posts", studylogRequests);
     }
 
+    @Given("서로 다른 레벨의 스터디로그를 다수 생성하고")
+    public void 서로다른레벨을가진스터디로그를생성() {
+        List<StudylogRequest> studylogRequests = new ArrayList<>();
+
+        for (int i = 0; i < 2; i++) {
+            studylogRequests.add(STUDYLOG1.getStudylogRequest());
+        }
+        for (int i = 0; i < 3; i++) {
+            studylogRequests.add(STUDYLOG2.getStudylogRequest());
+        }
+        for (int i = 0; i < 4; i++) {
+            studylogRequests.add(STUDYLOG3.getStudylogRequest());
+        }
+
+        context.invokeHttpPostWithToken("/posts", studylogRequests);
+    }
+
+
     @When("{int}번 미션과 {int}번 태그로 {long}개를 조회하면")
     public void 미션태그필터를사이즈와함께조회한다(int missionNumber, int tagNumber, Long pageSize) {
         String path = String.format("/posts?tags=%d&missions=%d&size=%d", tagNumber, missionNumber, pageSize);
@@ -139,6 +157,12 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     public void 을검색하고번미션과번태그로조회하면(String keyword, int missionNumber, int tagId) {
         String path = String.format("/posts?keyword=%s&missions=%d&tags=%d", keyword,
                                     missionNumber, tagId);
+        context.invokeHttpGet(path);
+    }
+
+    @When("{int}번 레벨의 스터디로그를 조회하면")
+    public void 특정레벨의스터디로그를조회하면(int levelNumber) {
+        String path = String.format("/posts?levels=%d", levelNumber);
         context.invokeHttpGet(path);
     }
 
