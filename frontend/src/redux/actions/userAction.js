@@ -44,7 +44,7 @@ export const login = () => async (dispatch) => {
   }
 };
 
-export const getProfile = (accessToken) => async (dispatch) => {
+export const getProfile = () => async (dispatch) => {
   dispatch({ type: GET_PROFILE });
   const accessToken = ls.get(API.ACCESS_TOKEN);
 
@@ -56,9 +56,7 @@ export const getProfile = (accessToken) => async (dispatch) => {
       },
     });
 
-    const status = response.status;
-
-    if (status === API.STATUS.EXPIRED_ACCESS_TOKEN) {
+    if (!response.ok) {
       throw new Error(await response.text());
     }
 

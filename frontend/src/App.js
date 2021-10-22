@@ -66,19 +66,19 @@ const App = () => {
             />
             <Route
               exact
-              path={`${PATH.PROFILE_REPORT}`}
+              path={`${PATH.PROFILE_NEW_REPORT}`}
               render={() => (
                 <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
-                  <ProfilePageReports />
+                  <ProfilePageNewReport />
                 </ProfilePage>
               )}
             />
             <Route
               exact
-              path={`${PATH.PROFILE_NEW_REPORT}`}
+              path={`${PATH.PROFILE_REPORT}`}
               render={() => (
                 <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
-                  <ProfilePageNewReport />
+                  <ProfilePageReports />
                 </ProfilePage>
               )}
             />
@@ -104,7 +104,7 @@ const App = () => {
               exact
               path={`${PATH.ABILITY}`}
               render={() => (
-                <ProfilePage>
+                <ProfilePage menu={PROFILE_PAGE_MENU.ABILITY}>
                   <AbilityPage />
                 </ProfilePage>
               )}

@@ -18,8 +18,9 @@ import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.StudylogDocumentQueryBuilder;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.prolog.studylog.infrastructure.HealthCheckClient;
 
-@Profile({"dev", "prod"})
+@Profile({"elastic", "dev", "prod"})
 @Service
 public class StudylogDocumentService extends AbstractStudylogDocumentService {
 
@@ -28,8 +29,9 @@ public class StudylogDocumentService extends AbstractStudylogDocumentService {
     public StudylogDocumentService(
         StudylogDocumentRepository studylogDocumentRepository,
         StudylogRepository studylogRepository,
-        ElasticsearchRestTemplate elasticsearchRestTemplate) {
-        super(studylogDocumentRepository, studylogRepository);
+        HealthCheckClient healthCheckClient,
+        ElasticsearchRestTemplate elasticsearchRestTemplate){
+        super(studylogDocumentRepository, studylogRepository, healthCheckClient);
         this.elasticsearchRestTemplate = elasticsearchRestTemplate;
     }
 

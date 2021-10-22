@@ -121,7 +121,7 @@ const ProfilePageReportsList = () => {
         {isOwner && (
           <>
             <p>리포트를 작성해주세요.</p>
-            <AddNewReportLink to={`/${username}/report/write`}>새 리포트 등록</AddNewReportLink>
+            <AddNewReportLink to={`/${username}/reports/write`}>새 리포트 등록</AddNewReportLink>
           </>
         )}
       </Container>
@@ -132,7 +132,7 @@ const ProfilePageReportsList = () => {
     <Container>
       {isOwner && (
         <AddNewReportLink
-          to={`/${username}/report/write`}
+          to={`/${username}/reports/write`}
           css={css`
             position: absolute;
             bottom: 0.5rem;
@@ -158,11 +158,13 @@ const ProfilePageReportsList = () => {
                 <p>{description}</p>
 
                 <AbilityList>
-                  {abilityGraph.abilities.map(({ id, name }: Ability) => (
-                    <li key={id}>
-                      <Chip backgroundColor={`${COLOR.LIGHT_BLUE_100}`}>{name}</Chip>
-                    </li>
-                  ))}
+                  {abilityGraph.abilities
+                    .filter(({ isPresent }) => isPresent)
+                    .map(({ id, name }: Ability) => (
+                      <li key={id}>
+                        <Chip backgroundColor={`${COLOR.LIGHT_BLUE_100}`}>{name}</Chip>
+                      </li>
+                    ))}
                 </AbilityList>
 
                 <StudyLogCount>
