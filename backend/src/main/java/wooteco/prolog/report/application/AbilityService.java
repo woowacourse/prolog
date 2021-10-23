@@ -146,7 +146,11 @@ public class AbilityService {
                 String[] splitLine = line[0].split("\\|");
                 saveParentOrChildAbility(member, abilities, splitLine);
             }
-        } catch (IOException | NullPointerException | CsvValidationException e) {
+        } catch (IOException e) {
+            throw new AbilityCsvException(e.getMessage());
+        } catch (NullPointerException e) {
+            throw new AbilityCsvException(e.getMessage());
+        } catch (CsvValidationException e) {
             throw new AbilityCsvException(e.getMessage());
         }
     }
