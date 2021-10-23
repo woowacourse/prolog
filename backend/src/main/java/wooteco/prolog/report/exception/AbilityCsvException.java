@@ -1,7 +1,8 @@
 package wooteco.prolog.report.exception;
 
-import wooteco.prolog.common.exception.BadRequestException;
+public class AbilityCsvException extends RuntimeException {
 
-public class AbilityCsvException extends BadRequestException {
-
+    public AbilityCsvException(String message) {
+        super(message);
+    }
 }

@@ -11,7 +11,6 @@ import wooteco.prolog.login.excetpion.TokenNotValidException;
 import wooteco.prolog.member.exception.DuplicateMemberTagException;
 import wooteco.prolog.member.exception.MemberNotAllowedException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
-import wooteco.prolog.report.exception.AbilityCsvException;
 import wooteco.prolog.report.exception.GraphAbilitiesAreNotParentException;
 import wooteco.prolog.report.exception.ReportNotFoundException;
 import wooteco.prolog.report.exception.ReportRequestTypeException;
@@ -89,14 +88,13 @@ public enum BadRequestCode {
     ABILITY_PARENT_CHILD_COLOR_DIFFERENT(4004, "상위 역량과 하위 역량의 색상이 일치하지 않습니다.",
                                          AbilityParentChildColorDifferentException.class),
     DUPLICATE_REPORT_TITLE(4005, "리포트의 이름은 중복일 수 없습니다.", DuplicateReportTitleException.class),
-    ABILITY_CSV(4006, "기본 역량 추가를 위한 CSV 동작 과정에서 에러가 발생했습니다.", AbilityCsvException.class),
     GRAPH_ABILITIES_ARE_NOT_PARENT_EXCEPTION(4007, "그래프의 역량은 부모 역량만 등록 가능합니다.",
         GraphAbilitiesAreNotParentException.class),
     REPORT_NOT_FOUND_EXCEPTION(4008, "리포트를 찾을 수 없습니다", ReportNotFoundException.class),
     REPORT_REQUEST_TYPE_EXCEPTION(4009, "리포트 검색 타입을 찾을 수 없습니다.", ReportRequestTypeException.class),
     REPORT_UPDATE_EXCEPTION(4010, "리포트를 업데이트 하는데 실패했습니다.", ReportUpdateException.class);
-
-    ;
+    // Deprecate ABILITY_CSV(4006, "기본 역량 추가를 위한 CSV 동작 과정에서 에러가 발생했습니다.", AbilityCsvException.class)
+    // 역량, 리포트 관련 예외가 추가될 경우 주석 제거 후 4006 우선 사용 권장.
 
     private int code;
     private String message;
