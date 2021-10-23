@@ -152,11 +152,11 @@ public class AbilityService {
                 testCount = 5;
             }
         } catch (IOException e) {
-            throw new AbilityCsvException(String.format("진짜제발 됐으면 좋겠다\n%s\n%d\n--------------------------\n\n%s", url.getFile(), testCount, e.getMessage()));
+            throw new AbilityCsvException(String.format("진짜제발 됐으면 좋겠다\n--------------------------\n%s\n%d", url.getFile(), testCount));
         } catch (NullPointerException e) {
-            throw new AbilityCsvException(String.format("이번엔 되면 안될까? 제발\n%s\n%d\n--------------------------\n\n%s", url.getFile(), testCount, e.getMessage()));
+            throw new AbilityCsvException(String.format("이번엔 되면 안될까? 제발\n--------------------------\n%s\n%d", url.getFile(), testCount));
         } catch (CsvValidationException e) {
-            throw new AbilityCsvException(String.format("춥고.. 배고프고.. 졸려..\n%s\n%d\n--------------------------\n\n%s", url.getFile(), testCount, e.getMessage()));
+            throw new AbilityCsvException(String.format("춥고.. 배고프고.. 졸려..\n--------------------------\n%s\n%d", url.getFile(), testCount));
         }
     }
 
