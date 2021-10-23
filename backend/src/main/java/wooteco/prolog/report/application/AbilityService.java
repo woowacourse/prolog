@@ -132,26 +132,30 @@ public class AbilityService {
 
     @Transactional
     public void createTemplateAbilities(Long memberId, String template) {
+        Member member = memberService.findById(memberId);
         URL url = ClassLoader.getSystemResource(String.format("static/%s-default-abilities.csv", template));
 
+        int testCount = 0;
         try (
             FileReader fileReader = new FileReader(url.getFile());
             CSVReader reader = new CSVReader(fileReader)
         ) {
-            Member member = memberService.findById(memberId);
             List<Ability> abilities = new ArrayList<>();
 
             String[] line;
             while ((line = reader.readNext()) != null) {
+                testCount = 1;
                 String[] splitLine = line[0].split("\\|");
+                testCount = 2;
                 saveParentOrChildAbility(member, abilities, splitLine);
+                testCount = 3;
             }
         } catch (IOException e) {
-            throw new AbilityCsvException(e.getMessage());
+            throw new AbilityCsvException(String.format("%s\n%d\n--------------------------\n\n%s", url.getFile(), testCount, e.getMessage()));
         } catch (NullPointerException e) {
-            throw new AbilityCsvException(e.getMessage());
+            throw new AbilityCsvException(String.format("%s\n%d\n--------------------------\n\n%s", url.getFile(), testCount, e.getMessage()));
         } catch (CsvValidationException e) {
-            throw new AbilityCsvException(e.getMessage());
+            throw new AbilityCsvException(String.format("%s\n%d\n--------------------------\n\n%s", url.getFile(), testCount, e.getMessage()));
         }
     }
 
