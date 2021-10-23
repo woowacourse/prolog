@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.MemberService;
@@ -20,6 +21,7 @@ import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
 import wooteco.prolog.report.exception.AbilityCsvException;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 public class AbilityService {
@@ -147,6 +149,7 @@ public class AbilityService {
                 saveParentOrChildAbility(member, abilities, splitLine);
             }
         } catch (IOException | NullPointerException | CsvValidationException e) {
+            log.error(e.getMessage());
             throw new AbilityCsvException();
         }
     }
