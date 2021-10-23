@@ -20,13 +20,11 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.application.AbilityService;
 import wooteco.prolog.report.application.ReportService;
-import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
 import wooteco.prolog.report.application.dto.ability.AbilityResponse;
 import wooteco.prolog.report.application.dto.report.request.ReportRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.AbilityRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRequest;
 import wooteco.prolog.report.application.dto.report.request.studylog.ReportStudylogRequest;
-import wooteco.prolog.report.exception.AbilityNotFoundException;
 import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
@@ -252,30 +250,35 @@ public class DataLoaderApplicationListener implements
     }
 
     public enum Members {
-        BROWN(
-            new GithubProfileResponse(
-                "류성현",
-                "gracefulBrown",
-                "46308949",
-                "https://avatars.githubusercontent.com/u/46308949?v=4")
-        ),
+        BROWN(new GithubProfileResponse(
+            "류성현",
+            "gracefulBrown",
+            "46308949",
+            "https://avatars.githubusercontent.com/u/46308949?v=4"
+        )),
         JOANNE(new GithubProfileResponse(
             "서민정",
             "seovalue",
             "123456",
-            "https://avatars.githubusercontent.com/u/48412963?v=4")
-        ),
+            "https://avatars.githubusercontent.com/u/48412963?v=4"
+        )),
         TYCHE(new GithubProfileResponse(
             "티케",
             "devhyun637",
             "59258239",
-            "https://avatars.githubusercontent.com/u/59258239?v=4")
-        ),
+            "https://avatars.githubusercontent.com/u/59258239?v=4"
+        )),
         SUNNY(new GithubProfileResponse(
-                "박선희",
-                "서니",
-                "67677561",
-                "https://avatars.githubusercontent.com/u/67677561?v=4"
+            "박선희",
+            "서니",
+            "67677561",
+            "https://avatars.githubusercontent.com/u/67677561?v=4"
+        )),
+        HYEON9MAK(new GithubProfileResponse(
+           "최현구",
+           "hyeon9mak",
+           "37354145",
+            "https://avatars.githubusercontent.com/u/37354145?v=4"
         ));
 
         private final GithubProfileResponse githubProfileResponse;
