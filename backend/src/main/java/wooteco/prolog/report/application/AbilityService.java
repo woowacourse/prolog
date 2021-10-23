@@ -132,30 +132,31 @@ public class AbilityService {
 
     @Transactional
     public void createTemplateAbilities(Long memberId, String template) {
+        int testCount = 0;
         Member member = memberService.findById(memberId);
         URL url = ClassLoader.getSystemResource(String.format("static/%s-default-abilities.csv", template));
-
-        int testCount = 0;
+        testCount = 1;
         try (
             FileReader fileReader = new FileReader(url.getFile());
             CSVReader reader = new CSVReader(fileReader)
         ) {
             List<Ability> abilities = new ArrayList<>();
 
+            testCount = 2;
             String[] line;
             while ((line = reader.readNext()) != null) {
-                testCount = 1;
-                String[] splitLine = line[0].split("\\|");
-                testCount = 2;
-                saveParentOrChildAbility(member, abilities, splitLine);
                 testCount = 3;
+                String[] splitLine = line[0].split("\\|");
+                testCount = 4;
+                saveParentOrChildAbility(member, abilities, splitLine);
+                testCount = 5;
             }
         } catch (IOException e) {
-            throw new AbilityCsvException(String.format("%s\n%d\n--------------------------\n\n%s", url.getFile(), testCount, e.getMessage()));
+            throw new AbilityCsvException(String.format("진짜제발 됐으면 좋겠다\n%s\n%d\n--------------------------\n\n%s", url.getFile(), testCount, e.getMessage()));
         } catch (NullPointerException e) {
-            throw new AbilityCsvException(String.format("%s\n%d\n--------------------------\n\n%s", url.getFile(), testCount, e.getMessage()));
+            throw new AbilityCsvException(String.format("이번엔 되면 안될까? 제발\n%s\n%d\n--------------------------\n\n%s", url.getFile(), testCount, e.getMessage()));
         } catch (CsvValidationException e) {
-            throw new AbilityCsvException(String.format("%s\n%d\n--------------------------\n\n%s", url.getFile(), testCount, e.getMessage()));
+            throw new AbilityCsvException(String.format("춥고.. 배고프고.. 졸려..\n%s\n%d\n--------------------------\n\n%s", url.getFile(), testCount, e.getMessage()));
         }
     }
 
