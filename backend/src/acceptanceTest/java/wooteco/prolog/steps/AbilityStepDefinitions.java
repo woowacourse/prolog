@@ -181,13 +181,11 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         context.invokeHttpPostWithToken("/abilities/template/" + template);
     }
 
-    @Then("기본 역량 관련 예외가 발생한다.")
-    public void 기본역량관련예외가발생한다() {
+    @Then("INTERNAL SERVER ERROR가 발생한다.")
+    public void INTERNALSERVERERROR가발생한다() {
         ExceptionDto exceptionDto = context.response.as(ExceptionDto.class);
 
-        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(exceptionDto.getCode()).isEqualTo(BadRequestCode.ABILITY_CSV.getCode());
-        assertThat(exceptionDto.getMessage()).isEqualTo(BadRequestCode.ABILITY_CSV.getMessage());
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 
     private Long getAbilityIdByName(String abilityName) {

@@ -464,9 +464,7 @@ public class AbilityDocumentation extends Documentation {
             .extract();
 
         // then
-        assertThat(response.statusCode()).isEqualTo(BAD_REQUEST.value());
-        assertThat((int) response.jsonPath().get("code")).isEqualTo(4006);
-        assertThat((String) response.jsonPath().get("message")).isEqualTo("기본 역량 추가를 위한 CSV 동작 과정에서 에러가 발생했습니다.");
+        assertThat(response.statusCode()).isEqualTo(INTERNAL_SERVER_ERROR.value());
     }
 
     private String 로그인한다(GithubResponses githubResponse) {

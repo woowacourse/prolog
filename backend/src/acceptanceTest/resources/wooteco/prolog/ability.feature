@@ -103,7 +103,7 @@ Feature: 역량 기능
 
   Scenario: 잘못된 과정 기본 역량 등록
     When "잘못된" 과정으로 기본 역량을 등록하면
-    Then 기본 역량 관련 예외가 발생한다.
+    Then INTERNAL SERVER ERROR가 발생한다.
 
   Scenario: 자식 역량 이름을 부모 역량과 같게 수정시 예외 발생
     And 부모역량 "프로그래밍"을 추가하고
