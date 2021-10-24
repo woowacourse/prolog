@@ -134,7 +134,7 @@ public class AbilityService {
     @Transactional
     public void createTemplateAbilities(Long memberId, String template) {
         Member member = memberService.findById(memberId);
-        URL url = ClassLoader.getSystemResource("static/be-default-abilities.csv");
+        URL url = ClassLoader.getSystemResource(String.format("static/%s-default-abilities.csv", template));
 
         try (
             FileReader fileReader = new FileReader(url.getFile());
