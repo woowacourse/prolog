@@ -95,7 +95,7 @@ const ProfilePageNewReport = () => {
 
   const { fetchData: getAbilities } = useRequest(
     [],
-    () => requestGetAbilities(user.data.username, accessToken),
+    () => requestGetAbilities(username, accessToken),
     (data) => {
       const parents = data.filter((item) => item.isParent);
 
