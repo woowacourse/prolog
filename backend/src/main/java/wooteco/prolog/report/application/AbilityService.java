@@ -132,31 +132,27 @@ public class AbilityService {
 
     @Transactional
     public void createTemplateAbilities(Long memberId, String template) {
-        int testCount = 0;
         Member member = memberService.findById(memberId);
-        URL url = ClassLoader.getSystemResource(String.format("static/%s-default-abilities.csv", template));
-        testCount = 1;
+        //BOOT-INF/classes/static/be-default-abilities.csv
+        URL url = ClassLoader.getSystemResource(String.format("classes/static/%s-default-abilities.csv", template));
+
         try (
             FileReader fileReader = new FileReader(url.getFile());
             CSVReader reader = new CSVReader(fileReader)
         ) {
             List<Ability> abilities = new ArrayList<>();
 
-            testCount = 2;
             String[] line;
             while ((line = reader.readNext()) != null) {
-                testCount = 3;
                 String[] splitLine = line[0].split("\\|");
-                testCount = 4;
                 saveParentOrChildAbility(member, abilities, splitLine);
-                testCount = 5;
             }
         } catch (IOException e) {
-            throw new AbilityCsvException(String.format("진짜제발 됐으면 좋겠다\n--------------------------\n%s\n%d", url.getFile(), testCount));
+            throw new AbilityCsvException(String.format("진짜제발 됐으면 좋겠다\n--------------------------\n%s\n", url.getFile()));
         } catch (NullPointerException e) {
-            throw new AbilityCsvException(String.format("이번엔 되면 안될까? 제발\n--------------------------\n%s\n%d", url.getFile(), testCount));
+            throw new AbilityCsvException(String.format("이번엔 되면 안될까? 제발\n--------------------------\n%s\n", url.getFile()));
         } catch (CsvValidationException e) {
-            throw new AbilityCsvException(String.format("춥고.. 배고프고.. 졸려..\n--------------------------\n%s\n%d", url.getFile(), testCount));
+            throw new AbilityCsvException(String.format("춥고.. 배고프고.. 졸려..\n--------------------------\n%s\n", url.getFile()));
         }
     }
 
