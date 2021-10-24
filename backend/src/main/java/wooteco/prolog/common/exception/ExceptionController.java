@@ -38,12 +38,10 @@ public class ExceptionController {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionDto> runtimeExceptionHandler(Exception e) {
         if (e.getMessage() == null) {
-            log.error("테스트 원 투 쓰리");
             log.error(e.getClass().toString());
             log.error(Arrays.stream(e.getStackTrace()).map(it -> it.toString())
                 .collect(Collectors.joining("\n")));
         } else {
-            log.error("테스트 포파입씩쓰");
             log.error(e.getMessage());
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
