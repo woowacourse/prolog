@@ -134,7 +134,7 @@ public class AbilityService {
     @Transactional
     public void createTemplateAbilities(Long memberId, String template) {
         Member member = memberService.findById(memberId);
-        URL url = ClassLoader.getSystemResource(String.format("static/%s-default-abilities.csv", template));
+        URL url = ClassLoader.getSystemResource(String.format("static/%s-default-abilities.txt", template));
 
         try (
             FileReader fileReader = new FileReader(url.getFile());
@@ -147,14 +147,8 @@ public class AbilityService {
                 String[] splitLine = line[0].split("\\|");
                 saveParentOrChildAbility(member, abilities, splitLine);
             }
-        } catch (FileNotFoundException e) {
-            throw new AbilityCsvException("뭐임마!");
-        } catch (IOException e) {
-            throw new AbilityCsvException(String.format("진짜제발 됐으면 좋겠다\n--------------------------\n%s\n", url.getFile()));
-        } catch (NullPointerException e) {
-            throw new AbilityCsvException(String.format("이번엔 되면 안될까? 제발\n--------------------------\n%s\n", url.getFile()));
-        } catch (CsvValidationException e) {
-            throw new AbilityCsvException(String.format("춥고.. 배고프고.. 졸려..\n--------------------------\n%s\n", url.getFile()));
+        } catch (IOException | NullPointerException | CsvValidationException e) {
+            throw new AbilityCsvException(e.getMessage());
         }
     }
 
