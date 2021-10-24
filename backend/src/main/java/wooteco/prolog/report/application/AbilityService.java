@@ -2,6 +2,7 @@ package wooteco.prolog.report.application;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
@@ -133,8 +134,7 @@ public class AbilityService {
     @Transactional
     public void createTemplateAbilities(Long memberId, String template) {
         Member member = memberService.findById(memberId);
-        //BOOT-INF/classes/static/be-default-abilities.csv
-        URL url = ClassLoader.getSystemResource(String.format("classes/static/%s-default-abilities.csv", template));
+        URL url = ClassLoader.getSystemResource("static/be-default-abilities.csv");
 
         try (
             FileReader fileReader = new FileReader(url.getFile());
@@ -147,6 +147,8 @@ public class AbilityService {
                 String[] splitLine = line[0].split("\\|");
                 saveParentOrChildAbility(member, abilities, splitLine);
             }
+        } catch (FileNotFoundException e) {
+            throw new AbilityCsvException("뭐임마!");
         } catch (IOException e) {
             throw new AbilityCsvException(String.format("진짜제발 됐으면 좋겠다\n--------------------------\n%s\n", url.getFile()));
         } catch (NullPointerException e) {
