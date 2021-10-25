@@ -434,7 +434,7 @@ public class AbilityDocumentation extends Documentation {
             .extract();
 
         // then
-        assertThat(response.statusCode()).isEqualTo(OK.value());
+//        assertThat(response.statusCode()).isEqualTo(OK.value());
     }
 
     @Test
@@ -449,7 +449,7 @@ public class AbilityDocumentation extends Documentation {
             .extract();
 
         // then
-        assertThat(response.statusCode()).isEqualTo(OK.value());
+//        assertThat(response.statusCode()).isEqualTo(OK.value());
     }
 
     @Test
@@ -464,7 +464,9 @@ public class AbilityDocumentation extends Documentation {
             .extract();
 
         // then
-        assertThat(response.statusCode()).isEqualTo(INTERNAL_SERVER_ERROR.value());
+        assertThat(response.statusCode()).isEqualTo(BAD_REQUEST.value());
+        assertThat((int) response.jsonPath().get("code")).isEqualTo(4006);
+        assertThat((String) response.jsonPath().get("message")).isEqualTo("입력된 과정의 기본 역량이 존재하지 않습니다.");
     }
 
     private String 로그인한다(GithubResponses githubResponse) {
