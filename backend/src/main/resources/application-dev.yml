@@ -1,6 +1,3 @@
-ability:
-  templatePath: BOOT-INF/classes/static
-
 spring:
   jpa:
     hibernate:
