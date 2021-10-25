@@ -1,3 +1,6 @@
+ability:
+  templatePath: static
+
 server:
   port: 4000
 

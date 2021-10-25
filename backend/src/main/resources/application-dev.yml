@@ -1,3 +1,6 @@
+ability:
+  templatePath: /var/app/current
+
 spring:
   jpa:
     hibernate:

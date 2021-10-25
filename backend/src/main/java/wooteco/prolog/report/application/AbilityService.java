@@ -2,13 +2,13 @@ package wooteco.prolog.report.application;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.MemberService;
@@ -33,6 +33,9 @@ public class AbilityService {
 
     private final AbilityRepository abilityRepository;
     private final MemberService memberService;
+
+    @Value("${ability.templatePath}")
+    private String defaultUrlPath;
 
     public AbilityService(AbilityRepository abilityRepository, MemberService memberService) {
         this.abilityRepository = abilityRepository;
@@ -134,7 +137,7 @@ public class AbilityService {
     @Transactional
     public void createTemplateAbilities(Long memberId, String template) {
         Member member = memberService.findById(memberId);
-        URL url = ClassLoader.getSystemResource(String.format("static/%s-default-abilities.txt", template));
+        URL url = ClassLoader.getSystemResource(String.format("%s/%s-default-abilities.txt", defaultUrlPath, template));
 
         try (
             FileReader fileReader = new FileReader(url.getFile());
