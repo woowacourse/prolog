@@ -1,5 +1,5 @@
 ability:
-  templatePath: /var/app/current
+  templatePath: BOOT-INF/classes/static
 
 spring:
   jpa:
