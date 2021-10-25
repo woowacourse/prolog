@@ -15,6 +15,7 @@ import wooteco.prolog.report.domain.ablity.Ability;
 import wooteco.prolog.report.domain.ablity.DefaultAbility;
 import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
 import wooteco.prolog.report.domain.ablity.repository.DefaultAbilityRepository;
+import wooteco.prolog.report.exception.DefaultAbilityNotFoundException;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 
 @Service
@@ -147,7 +148,14 @@ public class AbilityService {
     }
 
     private List<DefaultAbility> findDefaultAbilitiesByTemplate(String templateType) {
-        return defaultAbilityRepository.findByTemplateOrTemplate(COMMON_TYPE, templateType);
+        List<DefaultAbility> defaultAbilities = defaultAbilityRepository
+            .findByTemplateOrTemplate(COMMON_TYPE, templateType);
+
+        if (defaultAbilities.isEmpty()) {
+            throw new DefaultAbilityNotFoundException();
+        }
+
+        return defaultAbilities;
     }
 
     private Ability mapToParentAbility(Member member, DefaultAbility defaultAbility) {

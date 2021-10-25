@@ -21,8 +21,10 @@ import wooteco.prolog.report.application.dto.ability.AbilityResponse;
 import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
 import wooteco.prolog.report.application.dto.ability.ChildAbilityDto;
 import wooteco.prolog.report.domain.ablity.Ability;
+import wooteco.prolog.report.domain.ablity.DefaultAbility;
 import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
-import wooteco.prolog.report.exception.AbilityCsvException;
+import wooteco.prolog.report.domain.ablity.repository.DefaultAbilityRepository;
+import wooteco.prolog.report.exception.DefaultAbilityNotFoundException;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
 import wooteco.prolog.studylog.exception.AbilityNameDuplicateException;
@@ -37,6 +39,9 @@ class AbilityServiceTest {
 
     @Autowired
     private AbilityRepository abilityRepository;
+
+    @Autowired
+    private DefaultAbilityRepository defaultAbilityRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -343,6 +348,7 @@ class AbilityServiceTest {
     @Test
     void createTemplateAbilities() {
         // given
+        defaultAbilityRepository.save(new DefaultAbility("프로그래밍", "프로그래밍 입니다.", "#111111", "be", null));
         assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isEmpty();
 
         // when
@@ -356,10 +362,11 @@ class AbilityServiceTest {
     @Test
     void createTemplateAbilitiesException() {
         // given
+        defaultAbilityRepository.save(new DefaultAbility("프로그래밍", "프로그래밍 입니다.", "#111111", "be", null));
         assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isEmpty();
 
         // when, then
         assertThatThrownBy(() -> abilityService.createDefaultAbilities(member.getId(), "ce"))
-            .isExactlyInstanceOf(AbilityCsvException.class);
+            .isExactlyInstanceOf(DefaultAbilityNotFoundException.class);
     }
 }
