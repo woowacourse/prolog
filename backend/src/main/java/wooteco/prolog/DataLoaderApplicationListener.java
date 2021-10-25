@@ -79,10 +79,10 @@ public class DataLoaderApplicationListener implements
         studylogService.insertStudylogs(Members.SUNNY.value.getId(), StudylogGenerator.generate(20));
 
         // ability init
-        abilityService.createTemplateAbilities(Members.BROWN.value.getId(), "be");
-        abilityService.createTemplateAbilities(Members.JOANNE.value.getId(), "be");
-        abilityService.createTemplateAbilities(Members.TYCHE.value.getId(), "fe");
-        abilityService.createTemplateAbilities(Members.SUNNY.value.getId(), "fe");
+        abilityService.createDefaultAbilities(Members.BROWN.value.getId(), "be");
+        abilityService.createDefaultAbilities(Members.JOANNE.value.getId(), "be");
+        abilityService.createDefaultAbilities(Members.TYCHE.value.getId(), "fe");
+        abilityService.createDefaultAbilities(Members.SUNNY.value.getId(), "fe");
 
         ReportGenerator.generate(3, Members.TYCHE.value, abilityService, studylogService)
             .forEach(reportRequest -> reportService.createReport(

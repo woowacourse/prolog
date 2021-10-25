@@ -346,7 +346,7 @@ class AbilityServiceTest {
         assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isEmpty();
 
         // when
-        abilityService.createTemplateAbilities(member.getId(), "be");
+        abilityService.createDefaultAbilities(member.getId(), "be");
 
         // then
         assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isNotEmpty();
@@ -359,7 +359,7 @@ class AbilityServiceTest {
         assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isEmpty();
 
         // when, then
-        assertThatThrownBy(() -> abilityService.createTemplateAbilities(member.getId(), "ce"))
+        assertThatThrownBy(() -> abilityService.createDefaultAbilities(member.getId(), "ce"))
             .isExactlyInstanceOf(AbilityCsvException.class);
     }
 }

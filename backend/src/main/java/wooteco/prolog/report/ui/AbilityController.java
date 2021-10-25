@@ -38,7 +38,7 @@ public class AbilityController {
     @PostMapping("/abilities/template/{template}")
     public ResponseEntity<Void> createBackendDefaultAbilities(@AuthMemberPrincipal LoginMember member,
                                                               @PathVariable String template) {
-        abilityService.createTemplateAbilities(member.getId(), template);
+        abilityService.createDefaultAbilities(member.getId(), template);
 
         return ResponseEntity.ok().build();
     }
