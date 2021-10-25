@@ -240,47 +240,46 @@ const DonutChartForm = ({ chartData, config, onChangeData }: Props) => {
         </canvas>
       </div>
       <Category>
-        <form>
-          {!!categoryTitle && <h4>{categoryTitle}</h4>}
-          <CategoryList>
-            <CategoryListTitle>
-              <div>표시</div>
-              <div>역량</div>
-              <div>가중치</div>
-              <div>비율(%)</div>
-            </CategoryListTitle>
-            {graphData.map(({ id, name, color, weight, percentage, isPresent }) => (
-              <CategoryItem
-                key={id}
-                chipColor={color}
-                checked={id === currentCategory}
-                currentCategory={currentCategory}
-              >
-                <div>
-                  <input
-                    type="checkbox"
-                    checked={isPresent}
-                    onChange={() => toggleIsPresent(id)}
-                    onBlur={() => onChangeData(graphData)}
-                  />
-                </div>
-                <label>
-                  <span />
-                  {name}
-                </label>
-                <div>
-                  <input
-                    type="number"
-                    min={CHART.ABILITY_WEIGHT.MIN}
-                    max={CHART.ABILITY_WEIGHT.MAX}
-                    value={weight}
-                    onChange={(event) => changeWeight(id, Number(event.target.value))}
-                    onBlur={() => onChangeData(graphData)}
-                  />
-                </div>
+        {!!categoryTitle && <h4>{categoryTitle}</h4>}
+        <CategoryList>
+          <CategoryListTitle>
+            <div>표시</div>
+            <div>역량</div>
+            <div>가중치</div>
+            <div>비율(%)</div>
+          </CategoryListTitle>
+          {graphData.map(({ id, name, color, weight, percentage, isPresent }) => (
+            <CategoryItem
+              key={id}
+              chipColor={color}
+              checked={id === currentCategory}
+              currentCategory={currentCategory}
+            >
+              <div>
+                <input
+                  type="checkbox"
+                  checked={isPresent}
+                  onChange={() => toggleIsPresent(id)}
+                  onBlur={() => onChangeData(graphData)}
+                />
+              </div>
+              <label>
+                <span />
+                {name}
+              </label>
+              <div>
+                <input
+                  type="number"
+                  min={CHART.ABILITY_WEIGHT.MIN}
+                  max={CHART.ABILITY_WEIGHT.MAX}
+                  value={weight}
+                  onChange={(event) => changeWeight(id, Number(event.target.value))}
+                  onBlur={() => onChangeData(graphData)}
+                />
+              </div>
 
-                <div>
-                  {/* 
+              <div>
+                {/* 
                     * 정확한 계산상의 어려움으로 사용 보류
                   <input
                     type="number"
@@ -291,12 +290,11 @@ const DonutChartForm = ({ chartData, config, onChangeData }: Props) => {
                     onChange={(event) => changePercentage(id, Number(event.target.value))}
                   /> */}
 
-                  <p>{percentage}</p>
-                </div>
-              </CategoryItem>
-            ))}
-          </CategoryList>
-        </form>
+                <p>{percentage}</p>
+              </div>
+            </CategoryItem>
+          ))}
+        </CategoryList>
       </Category>
     </div>
   );
