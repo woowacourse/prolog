@@ -12,6 +12,7 @@ import io.restassured.response.Response;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
 import wooteco.prolog.GithubResponses;
@@ -22,6 +23,8 @@ import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
 import wooteco.prolog.report.application.dto.ability.AbilityResponse;
 import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
 import wooteco.prolog.report.application.dto.ability.ChildAbilityDto;
+import wooteco.prolog.report.application.dto.ability.DefaultAbilityCreateRequest;
+import wooteco.prolog.report.domain.ablity.repository.DefaultAbilityRepository;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 
 public class AbilityDocumentation extends Documentation {
@@ -424,6 +427,9 @@ public class AbilityDocumentation extends Documentation {
 
     @Test
     void 백엔드_기본_역량을_등록한다() {
+        // given
+        기본_역량을_생성한다(new DefaultAbilityCreateRequest("Java", "Java 입니다.", "#111111", "be"));
+
         // when
         ExtractableResponse<Response> response = given("abilities/create-template-be")
             .header(AUTHORIZATION, "Bearer " + accessToken)
@@ -434,11 +440,14 @@ public class AbilityDocumentation extends Documentation {
             .extract();
 
         // then
-//        assertThat(response.statusCode()).isEqualTo(OK.value());
+        assertThat(response.statusCode()).isEqualTo(OK.value());
     }
 
     @Test
     void 프론트엔드_기본_역량을_등록한다() {
+        // given
+        기본_역량을_생성한다(new DefaultAbilityCreateRequest("JavaScript", "JavaScript 입니다.", "#222222", "fe"));
+
         // when
         ExtractableResponse<Response> response = given("abilities/create-template-fe")
             .header(AUTHORIZATION, "Bearer " + accessToken)
@@ -449,7 +458,7 @@ public class AbilityDocumentation extends Documentation {
             .extract();
 
         // then
-//        assertThat(response.statusCode()).isEqualTo(OK.value());
+        assertThat(response.statusCode()).isEqualTo(OK.value());
     }
 
     @Test
@@ -518,6 +527,18 @@ public class AbilityDocumentation extends Documentation {
             .header(AUTHORIZATION, "Bearer" + accessToken)
             .when()
             .get("/abilities")
+            .then()
+            .log().all()
+            .extract();
+    }
+
+    private void 기본_역량을_생성한다(DefaultAbilityCreateRequest request) {
+        RestAssured.given()
+            .header(AUTHORIZATION, "Bearer " + accessToken)
+            .contentType(ContentType.JSON)
+            .body(request)
+            .when()
+            .post("/abilities/default")
             .then()
             .log().all()
             .extract();

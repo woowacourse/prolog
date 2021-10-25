@@ -11,6 +11,7 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
 import wooteco.prolog.report.application.dto.ability.AbilityResponse;
 import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
+import wooteco.prolog.report.application.dto.ability.DefaultAbilityCreateRequest;
 import wooteco.prolog.report.domain.ablity.Ability;
 import wooteco.prolog.report.domain.ablity.DefaultAbility;
 import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
@@ -131,7 +132,43 @@ public class AbilityService {
     }
 
     @Transactional
-    public void createDefaultAbilities(Long memberId, String template) {
+    public Long createDefaultAbility(DefaultAbilityCreateRequest request) {
+        if (request.hasParent()) {
+            DefaultAbility parentDefaultAbility = findDefaultAbilityById(request.getParentId());
+            DefaultAbility childDefaultAbility = createChildDefaultAbility(request, parentDefaultAbility);
+            return childDefaultAbility.getId();
+        }
+
+        DefaultAbility defaultAbility = createParentDefaultAbility(request);
+        return defaultAbility.getId();
+    }
+
+    private DefaultAbility createChildDefaultAbility(DefaultAbilityCreateRequest request, DefaultAbility parentDefaultAbility) {
+        return defaultAbilityRepository.save(new DefaultAbility(
+            request.getName(),
+            request.getDescription(),
+            request.getColor(),
+            request.getTemplate(),
+            parentDefaultAbility
+        ));
+    }
+
+    private DefaultAbility findDefaultAbilityById(Long defaultAbilityId) {
+        return defaultAbilityRepository.findById(defaultAbilityId)
+            .orElseThrow(DefaultAbilityNotFoundException::new);
+    }
+
+    private DefaultAbility createParentDefaultAbility(DefaultAbilityCreateRequest request) {
+        return defaultAbilityRepository.save(new DefaultAbility(
+            request.getName(),
+            request.getDescription(),
+            request.getColor(),
+            request.getTemplate()
+        ));
+    }
+
+    @Transactional
+    public void addDefaultAbilities(Long memberId, String template) {
         Member member = memberService.findById(memberId);
         List<DefaultAbility> defaultAbilities = findDefaultAbilitiesByTemplate(template);
         Map<DefaultAbility, Ability> parentAbilities = new HashMap<>();

@@ -348,11 +348,11 @@ class AbilityServiceTest {
     @Test
     void createTemplateAbilities() {
         // given
-        defaultAbilityRepository.save(new DefaultAbility("프로그래밍", "프로그래밍 입니다.", "#111111", "be", null));
+        defaultAbilityRepository.save(new DefaultAbility("프로그래밍", "프로그래밍 입니다.", "#111111", "be"));
         assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isEmpty();
 
         // when
-        abilityService.createDefaultAbilities(member.getId(), "be");
+        abilityService.addDefaultAbilities(member.getId(), "be");
 
         // then
         assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isNotEmpty();
@@ -362,11 +362,10 @@ class AbilityServiceTest {
     @Test
     void createTemplateAbilitiesException() {
         // given
-        defaultAbilityRepository.save(new DefaultAbility("프로그래밍", "프로그래밍 입니다.", "#111111", "be", null));
         assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isEmpty();
 
         // when, then
-        assertThatThrownBy(() -> abilityService.createDefaultAbilities(member.getId(), "ce"))
+        assertThatThrownBy(() -> abilityService.addDefaultAbilities(member.getId(), "ce"))
             .isExactlyInstanceOf(DefaultAbilityNotFoundException.class);
     }
 }

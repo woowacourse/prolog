@@ -30,6 +30,10 @@ public class DefaultAbility {
     @JoinColumn(name = "parent_id")
     private DefaultAbility parent;
 
+    public DefaultAbility(String name, String description, String color, String template) {
+        this(null, name, description, color, template, null);
+    }
+
     public DefaultAbility(String name, String description, String color,
                           String template, DefaultAbility parent) {
         this(null, name, description, color, template, parent);
@@ -47,6 +51,10 @@ public class DefaultAbility {
 
     public boolean isParent() {
         return Objects.isNull(parent);
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
