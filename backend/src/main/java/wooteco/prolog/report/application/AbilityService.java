@@ -1,12 +1,8 @@
 package wooteco.prolog.report.application;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,26 +11,31 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
 import wooteco.prolog.report.application.dto.ability.AbilityResponse;
 import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
+import wooteco.prolog.report.application.dto.ability.DefaultAbilityCreateRequest;
 import wooteco.prolog.report.domain.ablity.Ability;
+import wooteco.prolog.report.domain.ablity.DefaultAbility;
 import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
-import wooteco.prolog.report.exception.AbilityCsvException;
+import wooteco.prolog.report.domain.ablity.repository.DefaultAbilityRepository;
+import wooteco.prolog.report.exception.DefaultAbilityNotFoundException;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 
 @Service
 @Transactional(readOnly = true)
 public class AbilityService {
 
-    private static final int NAME = 0;
-    private static final int DESCRIPTION = 1;
-    private static final int COLOR = 2;
-    private static final int PARENT_ABILITY = 3;
-    private static final int CHILD_ABILITY = 4;
+    private static final String COMMON_TYPE = "common";
 
     private final AbilityRepository abilityRepository;
+    private final DefaultAbilityRepository defaultAbilityRepository;
     private final MemberService memberService;
 
-    public AbilityService(AbilityRepository abilityRepository, MemberService memberService) {
+    public AbilityService(
+        AbilityRepository abilityRepository,
+        DefaultAbilityRepository defaultAbilityRepository,
+        MemberService memberService
+    ) {
         this.abilityRepository = abilityRepository;
+        this.defaultAbilityRepository = defaultAbilityRepository;
         this.memberService = memberService;
     }
 
@@ -131,47 +132,91 @@ public class AbilityService {
     }
 
     @Transactional
-    public void createTemplateAbilities(Long memberId, String template) {
-        URL url = ClassLoader.getSystemResource(String.format("static/%s-default-abilities.csv", template));
+    public Long createDefaultAbility(DefaultAbilityCreateRequest request) {
+        if (request.hasParent()) {
+            DefaultAbility parentDefaultAbility = findDefaultAbilityById(request.getParentId());
+            DefaultAbility childDefaultAbility = createChildDefaultAbility(request, parentDefaultAbility);
+            return childDefaultAbility.getId();
+        }
 
-        try (
-            FileReader fileReader = new FileReader(url.getFile());
-            CSVReader reader = new CSVReader(fileReader)
-        ) {
-            Member member = memberService.findById(memberId);
-            List<Ability> abilities = new ArrayList<>();
+        DefaultAbility defaultAbility = createParentDefaultAbility(request);
+        return defaultAbility.getId();
+    }
 
-            String[] line;
-            while ((line = reader.readNext()) != null) {
-                String[] splitLine = line[0].split("\\|");
-                saveParentOrChildAbility(member, abilities, splitLine);
+    private DefaultAbility createChildDefaultAbility(DefaultAbilityCreateRequest request, DefaultAbility parentDefaultAbility) {
+        return defaultAbilityRepository.save(new DefaultAbility(
+            request.getName(),
+            request.getDescription(),
+            request.getColor(),
+            request.getTemplate(),
+            parentDefaultAbility
+        ));
+    }
+
+    private DefaultAbility findDefaultAbilityById(Long defaultAbilityId) {
+        return defaultAbilityRepository.findById(defaultAbilityId)
+            .orElseThrow(DefaultAbilityNotFoundException::new);
+    }
+
+    private DefaultAbility createParentDefaultAbility(DefaultAbilityCreateRequest request) {
+        return defaultAbilityRepository.save(new DefaultAbility(
+            request.getName(),
+            request.getDescription(),
+            request.getColor(),
+            request.getTemplate()
+        ));
+    }
+
+    @Transactional
+    public void addDefaultAbilities(Long memberId, String template) {
+        Member member = memberService.findById(memberId);
+        List<DefaultAbility> defaultAbilities = findDefaultAbilitiesByTemplate(template);
+        Map<DefaultAbility, Ability> parentAbilities = new HashMap<>();
+
+        for (DefaultAbility defaultAbility : defaultAbilities) {
+            if (defaultAbility.isParent()) {
+                Ability parentAbility = mapToParentAbility(member, defaultAbility);
+                parentAbilities.put(defaultAbility, parentAbility);
+            } else {
+                Ability parentAbility = parentAbilities.get(defaultAbility.getParent());
+                mapToChildAbility(member, defaultAbility, parentAbility);
             }
-        } catch (IOException | NullPointerException | CsvValidationException e) {
-            throw new AbilityCsvException();
         }
     }
 
-    private void saveParentOrChildAbility(Member member, List<Ability> abilities, String[] splitLine) {
-        if (splitLine.length == PARENT_ABILITY) {
-            Ability parentAbility = extractParentAbility(member, new ArrayList<>(abilities),
-                splitLine[NAME], splitLine[DESCRIPTION], splitLine[COLOR]);
+    private List<DefaultAbility> findDefaultAbilitiesByTemplate(String templateType) {
+        List<DefaultAbility> defaultAbilities = defaultAbilityRepository
+            .findByTemplateOrTemplate(COMMON_TYPE, templateType);
 
-            abilities.add(abilityRepository.save(parentAbility));
+        if (defaultAbilities.isEmpty()) {
+            throw new DefaultAbilityNotFoundException();
         }
 
-        if (splitLine.length == CHILD_ABILITY){
-            Ability parentAbility = matchedNameAbility(abilities, splitLine[PARENT_ABILITY]);
-            Ability childAbility = extractChildAbility(member, new ArrayList<>(abilities),
-                splitLine[NAME], splitLine[DESCRIPTION], splitLine[COLOR], parentAbility.getId());
-
-            abilities.add(abilityRepository.save(childAbility));
-        }
+        return defaultAbilities;
     }
 
-    private Ability matchedNameAbility(List<Ability> abilities, String abilityName) {
-        return abilities.stream()
-            .filter(ability -> abilityName.equals(ability.getName()))
-            .findAny()
-            .orElseThrow(AbilityNotFoundException::new);
+    private Ability mapToParentAbility(Member member, DefaultAbility defaultAbility) {
+        Ability parentAbility = extractParentAbility(
+            member,
+            findByMemberId(member.getId()),
+            defaultAbility.getName(),
+            defaultAbility.getDescription(),
+            defaultAbility.getColor()
+        );
+
+        return abilityRepository.save(parentAbility);
+    }
+
+    private Ability mapToChildAbility(Member member, DefaultAbility defaultAbility, Ability parentAbility) {
+        Ability childAbility = extractChildAbility(
+            member,
+            findByMemberId(member.getId()),
+            defaultAbility.getName(),
+            defaultAbility.getDescription(),
+            defaultAbility.getColor(),
+            parentAbility.getId()
+        );
+
+        return abilityRepository.save(childAbility);
     }
 }
