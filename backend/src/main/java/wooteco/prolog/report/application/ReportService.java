@@ -120,6 +120,7 @@ public class ReportService {
 
         long unrelatedAbilityCnt = studylogAbilityIds.stream()
             .filter(abilityId -> !childrenAbilityIds.contains(abilityId))
+            .filter(abilityId -> !graphAbilityIds.contains(abilityId))
             .count();
         
         if(!studylogAbilityIds.isEmpty() && unrelatedAbilityCnt != 0) {
