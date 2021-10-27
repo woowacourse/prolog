@@ -56,6 +56,7 @@ class ReportDocumentation extends Documentation {
 
     private static boolean flag = false;
 
+    @Autowired
     public ReportDocumentation(LevelService levelService,
                                MissionService missionService,
                                TagService tagService,
