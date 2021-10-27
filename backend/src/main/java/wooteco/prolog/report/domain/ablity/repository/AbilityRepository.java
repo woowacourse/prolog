@@ -16,4 +16,8 @@ public interface AbilityRepository extends JpaRepository<Ability, Long> {
 
     @Query("select count(a) from Ability a where a.id in :abilityIds and a.parent is null")
     Long countParentAbilitiesOf(List<Long> abilityIds);
+
+    @Query("select a from Ability a where a.parent.id in (:parentIds)")
+    List<Ability> findChildrenAbilitiesByParentId(List<Long> parentIds);
+
 }

@@ -23,6 +23,8 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.domain.report.abilitygraph.AbilityGraph;
 import wooteco.prolog.report.domain.report.studylog.ReportedStudylog;
 import wooteco.prolog.report.domain.report.studylog.ReportedStudylogs;
+import wooteco.prolog.report.exception.ReportDescriptionException;
+import wooteco.prolog.report.exception.ReportTitleLengthException;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -82,8 +84,23 @@ public class Report {
         this.isRepresent = isRepresent;
         this.member = member;
 
+        verifyTitleLength(title);
+        verifyDescriptionLength(description);
+
         abilityGraph.appendTo(this);
         studylogs.appendTo(this);
+    }
+
+    private void verifyTitleLength(String title) {
+        if(title.length() > 15) {
+            throw new ReportTitleLengthException();
+        }
+    }
+
+    private void verifyDescriptionLength(String description) {
+        if(description.length() > 150) {
+            throw new ReportDescriptionException();
+        }
     }
 
     public void update(Report report) {

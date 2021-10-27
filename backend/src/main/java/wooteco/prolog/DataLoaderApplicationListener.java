@@ -26,6 +26,9 @@ import wooteco.prolog.report.application.dto.report.request.ReportRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.AbilityRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRequest;
 import wooteco.prolog.report.application.dto.report.request.studylog.ReportStudylogRequest;
+import wooteco.prolog.report.domain.ablity.Ability;
+import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
+import wooteco.prolog.report.exception.AbilityNotFoundException;
 import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
@@ -56,6 +59,7 @@ public class DataLoaderApplicationListener implements
     private AbilityService abilityService;
     private UpdatedContentsRepository updatedContentsRepository;
     private ReportService reportService;
+    private AbilityRepository abilityRepository;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -137,7 +141,8 @@ public class DataLoaderApplicationListener implements
         abilityService.addDefaultAbilities(Members.TYCHE.value.getId(), "fe");
         abilityService.addDefaultAbilities(Members.SUNNY.value.getId(), "fe");
 
-        ReportGenerator.generate(3, Members.TYCHE.value, abilityService, studylogService)
+        ReportGenerator
+            .generate(3, Members.TYCHE.value, abilityService, studylogService, abilityRepository)
             .forEach(reportRequest -> reportService.createReport(
                 reportRequest,
                 new LoginMember(Members.TYCHE.value.getId(), Authority.MEMBER)
@@ -152,12 +157,13 @@ public class DataLoaderApplicationListener implements
         private static int cnt = 1;
 
         public static List<ReportRequest> generate(int size, Member member,
-                                             AbilityService abilityService,
-                                             StudylogService studylogService) {
+                                                   AbilityService abilityService,
+                                                   StudylogService studylogService,
+                                                   AbilityRepository abilityRepository) {
             ArrayList<ReportRequest> result = new ArrayList<>();
 
             for (int i = 0; i < size; i++) {
-                result.add(create(member, abilityService, studylogService));
+                result.add(create(member, abilityService, studylogService, abilityRepository));
             }
 
             return result;
@@ -166,26 +172,30 @@ public class DataLoaderApplicationListener implements
 
         private static ReportRequest create(Member member,
                                             AbilityService abilityService,
-                                            StudylogService studylogService) {
+                                            StudylogService studylogService,
+                                            AbilityRepository abilityRepository) {
+            GraphRequest graphRequest = createGraphRequest(member, abilityService);
             return new ReportRequest(
                 null,
                 "타이틀 입니다 " + cnt,
                 "설명 입니다 " + cnt++,
-                createGraphRequest(member, abilityService),
-                createReportStudylogRequest(member, studylogService, abilityService),
+                graphRequest,
+                createReportStudylogRequest(member, graphRequest, studylogService,
+                    abilityRepository),
                 true
             );
         }
 
         private static List<ReportStudylogRequest> createReportStudylogRequest(Member member,
+                                                                               GraphRequest graphRequest,
                                                                                StudylogService studylogService,
-                                                                               AbilityService abilityService) {
+                                                                               AbilityRepository abilityRepository) {
             List<ReportStudylogRequest> studylogs = studylogService
                 .findStudylogsOf(member.getUsername(), PageRequest.of(0, 20))
                 .getData().stream()
                 .map(studylogResponse -> new ReportStudylogRequest(
                     studylogResponse.getId(),
-                    getRandomAbilitiesOf(member, abilityService)
+                    getRandomAbilitiesOf(graphRequest, abilityRepository)
                 )).collect(toList());
 
             Collections.shuffle(studylogs);
@@ -197,13 +207,19 @@ public class DataLoaderApplicationListener implements
             return new GraphRequest(getParentAbilitiesOf(member, abilityService));
         }
 
-        private static List<Long> getRandomAbilitiesOf(Member member,
-                                                       AbilityService abilityService) {
-            List<AbilityResponse> abilitiesByMember = abilityService.findAbilitiesByMemberId(member.getId());
-            Collections.shuffle(abilitiesByMember);
-            return abilitiesByMember.subList(0, new Random().nextInt(abilitiesByMember.size()))
+        private static List<Long> getRandomAbilitiesOf(GraphRequest graphRequest,
+                                                       AbilityRepository abilityRepository) {
+            List<Long> abilityIds = graphRequest.getAbilities().stream()
+                .map(AbilityRequest::getId)
+                .collect(toList());
+
+            List<Ability> children = abilityRepository
+                .findChildrenAbilitiesByParentId(abilityIds);
+
+            Collections.shuffle(children);
+            return children.subList(0, new Random().nextInt(children.size()))
                 .stream()
-                .map(AbilityResponse::getId)
+                .map(Ability::getId)
                 .collect(toList());
         }
 
