@@ -9,27 +9,12 @@
         "isPresent":true
       },
       {
-        "id": 2,
-        "weight": 1,
-        "isPresent":true
-      },
-      {
         "id": 3,
         "weight": 1,
         "isPresent":false
       },
       {
-        "id": 4,
-        "weight": 1,
-        "isPresent":false
-      },
-      {
         "id": 5,
-        "weight": 1,
-        "isPresent":false
-      },
-      {
-        "id": 6,
         "weight": 1,
         "isPresent":false
       }
