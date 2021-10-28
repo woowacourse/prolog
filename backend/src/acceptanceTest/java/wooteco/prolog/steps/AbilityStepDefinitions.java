@@ -16,6 +16,7 @@ import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
 import wooteco.prolog.report.application.dto.ability.AbilityResponse;
 import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
+import wooteco.prolog.report.application.dto.ability.DefaultAbilityCreateRequest;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 
 public class AbilityStepDefinitions extends AcceptanceSteps {
@@ -181,13 +182,19 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         context.invokeHttpPostWithToken("/abilities/template/" + template);
     }
 
-    @Then("기본 역량 관련 예외가 발생한다.")
-    public void 기본역량관련예외가발생한다() {
+    @Then("기본 역량 조회 실패 관련 예외가 발생한다.")
+    public void 기본역량조회실패관련예외가발생한다() {
         ExceptionDto exceptionDto = context.response.as(ExceptionDto.class);
 
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(exceptionDto.getCode()).isEqualTo(BadRequestCode.ABILITY_CSV.getCode());
-        assertThat(exceptionDto.getMessage()).isEqualTo(BadRequestCode.ABILITY_CSV.getMessage());
+        assertThat(exceptionDto.getCode()).isEqualTo(BadRequestCode.DEFAULT_ABILITY_NOT_FOUND.getCode());
+        assertThat(exceptionDto.getMessage()).isEqualTo(BadRequestCode.DEFAULT_ABILITY_NOT_FOUND.getMessage());
+    }
+
+    @And("관리자가 기본 역량 {string}을 {string} 과정으로 추가하고")
+    public void 관리자가기본역량을과정으로추가하고(String defaultAbility, String template) {
+        DefaultAbilityCreateRequest request = new DefaultAbilityCreateRequest("defaultAbility", "defaultAbility 입니다.", "#color", template);
+        context.invokeHttpPostWithToken("/abilities/default", request);
     }
 
     private Long getAbilityIdByName(String abilityName) {

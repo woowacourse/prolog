@@ -32,6 +32,7 @@ import wooteco.prolog.report.application.dto.report.response.ReportResponse;
 import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogAbilityResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogResponse;
+import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
 import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
@@ -51,6 +52,7 @@ class ReportDocumentation extends Documentation {
     private final UpdatedContentsRepository updatedContentsRepository;
     private final ReportService reportService;
     private final ApplicationContext applicationContext;
+    private final AbilityRepository abilityRepository;
 
     private static boolean flag = false;
 
@@ -64,7 +66,8 @@ class ReportDocumentation extends Documentation {
                                AbilityService abilityService,
                                UpdatedContentsRepository updatedContentsRepository,
                                ReportService reportService,
-                               ApplicationContext applicationContext) {
+                               ApplicationContext applicationContext,
+                               AbilityRepository abilityRepository) {
         this.levelService = levelService;
         this.missionService = missionService;
         this.tagService = tagService;
@@ -75,6 +78,7 @@ class ReportDocumentation extends Documentation {
         this.updatedContentsRepository = updatedContentsRepository;
         this.reportService = reportService;
         this.applicationContext = applicationContext;
+        this.abilityRepository = abilityRepository;
     }
 
     @Override
@@ -96,7 +100,8 @@ class ReportDocumentation extends Documentation {
                 studyLogDocumentService,
                 abilityService,
                 updatedContentsRepository,
-                reportService
+                reportService,
+                abilityRepository
             );
             dataLoaderApplicationListener.onApplicationEvent(new ContextRefreshedEvent(applicationContext));
             flag = true;
