@@ -131,6 +131,7 @@ const DonutChartForm = ({ chartData, config, onChangeData }: Props) => {
     });
 
     setGraphData(resultData);
+    onChangeData(resultData);
   };
 
   const changeWeight = (id: number, value: number) => {
@@ -256,12 +257,7 @@ const DonutChartForm = ({ chartData, config, onChangeData }: Props) => {
               currentCategory={currentCategory}
             >
               <div>
-                <input
-                  type="checkbox"
-                  checked={isPresent}
-                  onChange={() => toggleIsPresent(id)}
-                  onBlur={() => onChangeData(graphData)}
-                />
+                <input type="checkbox" checked={isPresent} onChange={() => toggleIsPresent(id)} />
               </div>
               <label>
                 <span />
