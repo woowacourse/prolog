@@ -35,7 +35,7 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 30, unique = true)
+    @Column(unique = true)
     private String title;
 
     private String description;
@@ -92,7 +92,7 @@ public class Report {
     }
 
     private void verifyTitleLength(String title) {
-        if(title.length() > 15) {
+        if(title.length() > 30) {
             throw new ReportTitleLengthException();
         }
     }
