@@ -89,6 +89,7 @@ const ReportStudyLogTable = ({ onModalOpen, studyLogs, setStudyLogs }) => {
               />
             </th>
             <th scope="col">제목</th>
+            <th scope="col">역량</th>
           </tr>
         </Thead>
 
@@ -107,6 +108,18 @@ const ReportStudyLogTable = ({ onModalOpen, studyLogs, setStudyLogs }) => {
                 <a href={`/posts/${id}`} target="_blank" rel="noopener noreferrer">
                   {title}
                 </a>
+              </td>
+              <td>
+                <ul>
+                  <li></li>
+                </ul>
+                <Button
+                  size="XX_SMALL"
+                  type="button"
+                  css={{ backgroundColor: `${COLOR.LIGHT_BLUE_300}` }}
+                >
+                  +
+                </Button>
               </td>
             </tr>
           ))}
