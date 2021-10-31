@@ -9,6 +9,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import wooteco.prolog.login.aop.MemberAuthorityCache;
 import wooteco.prolog.login.application.AuthorizationExtractor;
 import wooteco.prolog.login.application.JwtTokenProvider;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
@@ -21,6 +22,7 @@ import wooteco.prolog.member.domain.Member;
 public class AuthMemberPrincipalArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final MemberAuthorityCache memberAuthorityCache;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -34,11 +36,13 @@ public class AuthMemberPrincipalArgumentResolver implements HandlerMethodArgumen
             .extract(webRequest.getNativeRequest(HttpServletRequest.class));
 
         if (credentials == null || credentials.isEmpty()) {
+            memberAuthorityCache.setAuthority(Authority.ANONYMOUS);
             return new LoginMember(Authority.ANONYMOUS);
         }
 
         try {
             Long id = Long.parseLong(jwtTokenProvider.extractSubject(credentials));
+            memberAuthorityCache.setAuthority(Authority.MEMBER);
             return new LoginMember(id, Authority.MEMBER);
         } catch (NumberFormatException e) {
             throw new TokenNotValidException();
