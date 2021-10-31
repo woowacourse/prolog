@@ -93,19 +93,22 @@ const Thead = styled.thead`
 
 const Tbody = styled.tbody`
   display: block;
-  min-height: 15rem;
+  min-height: 10rem;
 
   tr {
     width: 96%;
     border-bottom: 0.1rem solid ${COLOR.LIGHT_GRAY_300};
+    height: 6rem;
     margin: 0 auto;
 
     td:nth-of-type(1) {
+      height: 100%;
       width: 6%;
       text-align: center;
     }
 
     td:nth-of-type(2) {
+      height: 100%;
       width: 47%;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -120,22 +123,22 @@ const Tbody = styled.tbody`
     }
 
     td:nth-of-type(3) {
+      height: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
 
       ul {
         width: 90%;
+        height: 100%;
         margin-right: 1.5rem;
         overflow: auto;
 
-        li {
-          display: inline;
-          margin-right: 1.5rem;
-        }
+        display: flex;
+        align-items: center;
 
-        ::-webkit-scrollbar {
-          display: none;
+        li {
+          height: fit-content;
         }
       }
 
