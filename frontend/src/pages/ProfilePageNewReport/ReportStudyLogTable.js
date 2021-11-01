@@ -158,6 +158,17 @@ const ReportStudyLogTable = ({
     }
   };
 
+  const isChecked = (studyLogId, abilityId) => {
+    //studyLog에 Ability가 잉ㅆ는가?
+    const targetStudyLog = studyLogAbilities?.find(
+      (studyLogAbility) => studyLogAbility.id === studyLogId
+    );
+
+    if (!targetStudyLog) return false;
+
+    return targetStudyLog.abilities.map((ability) => Number(ability.id)).includes(abilityId);
+  };
+
   return (
     <Section>
       <h3>📚 학습로그 목록</h3>
@@ -217,15 +228,7 @@ const ReportStudyLogTable = ({
                 </a>
               </td>
               <td>
-                <ul>
-                  {selectedAbilities(id)}
-
-                  {/* {
-                    <li key={ability.id}>
-                      <Chip backgroundColor={ability.color}>{ability.name}</Chip>
-                    </li>
-                  } */}
-                </ul>
+                <ul>{selectedAbilities(id)}</ul>
                 <Button
                   size="XX_SMALL"
                   type="button"
@@ -245,6 +248,7 @@ const ReportStudyLogTable = ({
                                 <input
                                   type="checkbox"
                                   onChange={() => onAddAbilities(id, ability)}
+                                  checked={isChecked(id, ability.id)}
                                 />
                                 <span>{ability.name}</span>
                               </label>
