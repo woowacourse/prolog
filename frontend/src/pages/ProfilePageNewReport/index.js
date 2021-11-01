@@ -39,8 +39,9 @@ const ProfilePageNewReport = () => {
   const [isMainReport, setIsMainReport] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [studyLogs, setStudyLogs] = useState([]);
   const [abilities, setAbilities] = useState([]);
+  const [studyLogs, setStudyLogs] = useState([]);
+  const [studyLogAbilities, setStudyLogAbilities] = useState([]);
 
   const [isModalOpened, setIsModalOpened] = useState(false);
 
@@ -80,7 +81,10 @@ const ProfilePageNewReport = () => {
       abilityGraph: {
         abilities: abilities.map(({ id, weight, isPresent }) => ({ id, weight, isPresent })),
       },
-      studylogs: studyLogs.map((item) => ({ id: item.id, abilities: [] })),
+      studylogs: studyLogs.map((item) => ({
+        id: item.id,
+        abilities: item.abilities.map((ability) => ability.id),
+      })),
       represent: isMainReport,
     };
 
@@ -93,7 +97,7 @@ const ProfilePageNewReport = () => {
     }
   };
 
-  const { fetchData: getAbilities } = useRequest(
+  useRequest(
     [],
     () => requestGetAbilities(username, accessToken),
     (data) => {
@@ -150,6 +154,9 @@ const ProfilePageNewReport = () => {
           onModalOpen={onModalOpen}
           studyLogs={studyLogs}
           setStudyLogs={setStudyLogs}
+          abilities={abilities}
+          studyLogAbilities={studyLogAbilities}
+          setStudyLogAbilities={setStudyLogAbilities}
         />
 
         <FormButtonWrapper>

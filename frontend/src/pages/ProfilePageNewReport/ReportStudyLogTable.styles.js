@@ -101,6 +101,8 @@ const Tbody = styled.tbody`
     height: 6rem;
     margin: 0 auto;
 
+    position: relative;
+
     td:nth-of-type(1) {
       height: 100%;
       width: 6%;
@@ -128,7 +130,7 @@ const Tbody = styled.tbody`
       justify-content: space-between;
       align-items: center;
 
-      ul {
+      > ul {
         width: 90%;
         height: 100%;
         margin-right: 1.5rem;
@@ -152,6 +154,47 @@ const Tbody = styled.tbody`
   }
 `;
 
+const SelectAbilityBox = styled.div`
+  width: 20rem;
+  height: 24rem;
+
+  position: absolute;
+  top: 3rem;
+  right: 1rem;
+
+  border: 1px solid ${COLOR.LIGHT_GRAY_800};
+  background-color: ${COLOR.WHITE};
+  border-radius: 1rem;
+
+  z-index: 2;
+
+  ul {
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    li {
+      width: 100%;
+      padding: 1rem 0;
+
+      border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
+
+      label {
+        width: 100%;
+        display: block;
+      }
+
+      input {
+        margin-right: 1rem;
+      }
+    }
+  }
+`;
+
 const EmptyTableGuide = styled.span`
   display: inline-block;
   width: 100%;
@@ -161,4 +204,4 @@ const EmptyTableGuide = styled.span`
   bottom: 30%;
 `;
 
-export { Section, TableButtonWrapper, Table, Thead, Tbody, EmptyTableGuide };
+export { Section, TableButtonWrapper, Table, Thead, Tbody, SelectAbilityBox, EmptyTableGuide };
