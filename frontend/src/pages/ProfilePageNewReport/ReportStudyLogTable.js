@@ -256,7 +256,7 @@ const ReportStudyLogTable = ({
                                   onChange={() => onAddAbilities(id, ability)}
                                   checked={isChecked(id, ability.id)}
                                 />
-                                <span>{ability.name}</span>
+                                <Chip backgroundColor={ability.color}>{ability.name}</Chip>
                               </label>
                             </li>
                           )

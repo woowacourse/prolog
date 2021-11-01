@@ -185,7 +185,9 @@ const SelectAbilityBox = styled.div`
 
       label {
         width: 100%;
-        display: block;
+
+        display: flex;
+        align-items: center;
       }
 
       input {
