@@ -82,27 +82,36 @@ const Thead = styled.thead`
     }
 
     th:nth-of-type(2) {
-      width: 90%;
+      width: 30%;
+    }
+
+    th:nth-of-type(3) {
+      width: 60%;
     }
   }
 `;
 
 const Tbody = styled.tbody`
   display: block;
-  min-height: 15rem;
+  min-height: 10rem;
 
   tr {
-    width: 98%;
+    width: 96%;
     border-bottom: 0.1rem solid ${COLOR.LIGHT_GRAY_300};
+    height: 6rem;
     margin: 0 auto;
 
+    position: relative;
+
     td:nth-of-type(1) {
-      width: 8%;
+      height: 100%;
+      width: 6%;
       text-align: center;
     }
 
     td:nth-of-type(2) {
-      width: 92%;
+      height: 100%;
+      width: 47%;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -112,6 +121,77 @@ const Tbody = styled.tbody`
         :hover {
           text-decoration: underline;
         }
+      }
+    }
+
+    td:nth-of-type(3) {
+      height: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      > ul {
+        width: 90%;
+        height: 100%;
+        margin-right: 1.5rem;
+        overflow: auto;
+
+        display: flex;
+        align-items: center;
+
+        li {
+          height: fit-content;
+        }
+      }
+
+      button {
+        width: 10%;
+        margin-top: 0.1rem;
+        color: ${COLOR.DARK_GRAY_900};
+        font-size: 2rem;
+      }
+    }
+  }
+`;
+
+const SelectAbilityBox = styled.div`
+  width: 20rem;
+  height: 24rem;
+
+  position: absolute;
+  top: 3rem;
+  right: 1rem;
+
+  border: 1px solid ${COLOR.LIGHT_GRAY_800};
+  background-color: ${COLOR.WHITE};
+  border-radius: 1rem;
+
+  z-index: 2;
+
+  ul {
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    li {
+      width: 100%;
+      padding: 1rem 0;
+
+      border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
+
+      label {
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+      }
+
+      input {
+        margin-right: 1rem;
       }
     }
   }
@@ -126,4 +206,4 @@ const EmptyTableGuide = styled.span`
   bottom: 30%;
 `;
 
-export { Section, TableButtonWrapper, Table, Thead, Tbody, EmptyTableGuide };
+export { Section, TableButtonWrapper, Table, Thead, Tbody, SelectAbilityBox, EmptyTableGuide };

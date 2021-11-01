@@ -44,8 +44,9 @@ const Container = styled.div`
 `;
 
 const ChipText = styled.span`
-  font-size: 1.4rem;
   text-align: ${({ textAlign }) => (textAlign ? textAlign : 'center')};
+  font-size: ${({ fontSize }) => (fontSize ? fontSize : '1.4rem')};
+
   color: inherit;
 
   overflow: hidden;
