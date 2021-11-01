@@ -29,7 +29,8 @@ public class AbilityController {
 
     @MemberOnly
     @PostMapping("/abilities")
-    public ResponseEntity<Void> createAbility(@AuthMemberPrincipal LoginMember member, @RequestBody AbilityCreateRequest abilityCreateRequest) {
+    public ResponseEntity<Void> createAbility(@AuthMemberPrincipal LoginMember member,
+                                              @RequestBody AbilityCreateRequest abilityCreateRequest) {
         abilityService.createAbility(member.getId(), abilityCreateRequest);
 
         return ResponseEntity.ok().build();
@@ -44,11 +45,10 @@ public class AbilityController {
         return ResponseEntity.ok().build();
     }
 
-
     @MemberOnly
     @PostMapping("/abilities/template/{template}")
-    public ResponseEntity<Void> addBackendDefaultAbilities(@AuthMemberPrincipal LoginMember member,
-                                                           @PathVariable String template) {
+    public ResponseEntity<Void> addDefaultAbilities(@AuthMemberPrincipal LoginMember member,
+                                                    @PathVariable String template) {
         abilityService.addDefaultAbilities(member.getId(), template);
 
         return ResponseEntity.ok().build();
