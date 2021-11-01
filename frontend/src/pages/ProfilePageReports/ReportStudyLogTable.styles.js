@@ -89,20 +89,26 @@ const Tbody = styled.tbody`
 
     td:nth-of-type(1) {
       height: 100%;
-      width: 6%;
+      width: 5%;
       text-align: center;
     }
 
     td:nth-of-type(2) {
+      width: 47%;
       height: 100%;
-      width: 45%;
-
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      padding-right: 0.6rem;
 
       a {
+        width: 100%;
+        height: 100%;
+
+        display: block;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding-right: 0.6rem;
+        line-height: 6rem;
+
         :hover {
           text-decoration: underline;
         }
@@ -118,7 +124,7 @@ const Tbody = styled.tbody`
       > ul {
         width: 100%;
         height: 100%;
-        margin-right: 1.5rem;
+        margin-right: 0.5rem;
         overflow: auto;
 
         display: flex;
