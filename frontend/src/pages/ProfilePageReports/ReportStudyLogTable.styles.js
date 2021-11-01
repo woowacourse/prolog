@@ -99,15 +99,13 @@ const Tbody = styled.tbody`
 
       a {
         width: 100%;
-        height: 100%;
+        padding-right: 0.6rem;
 
         display: block;
 
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        padding-right: 0.6rem;
-        line-height: 6rem;
 
         :hover {
           text-decoration: underline;
