@@ -64,6 +64,14 @@ const ProfilePageNewReport = () => {
     }
   };
 
+  const getCheckedAbility = (studyLogId) => {
+    const targetStudyLogAbility = studyLogAbilities.find(
+      (studyLogAbility) => studyLogAbility.id === studyLogId
+    )?.abilities;
+
+    return targetStudyLogAbility?.map((ability) => ability.id) ?? [];
+  };
+
   const onSubmitReport = async (event) => {
     event.preventDefault();
 
@@ -83,7 +91,7 @@ const ProfilePageNewReport = () => {
       },
       studylogs: studyLogs.map((item) => ({
         id: item.id,
-        abilities: item.abilities.map((ability) => ability.id),
+        abilities: getCheckedAbility(item.id),
       })),
       represent: isMainReport,
     };
