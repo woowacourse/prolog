@@ -10,6 +10,7 @@ const Chip = ({
   width,
   color,
   backgroundColor,
+  fontSize,
   onDelete,
   children,
 }) => {
@@ -21,7 +22,9 @@ const Chip = ({
       color={color}
       backgroundColor={backgroundColor}
     >
-      <ChipText textAlign={textAlign}>{children}</ChipText>
+      <ChipText textAlign={textAlign} fontSize={fontSize}>
+        {children}
+      </ChipText>
       {onDelete && (
         <button type="button" onClick={onDelete}>
           <CancelIcon width="10px" height="10px" strokeWidth="2px" stroke={COLOR.BLACK_900} />
@@ -38,6 +41,7 @@ Chip.propTypes = {
   width: PropTypes.string,
   color: PropTypes.string,
   backgroundColor: PropTypes.string,
+  fontSize: PropTypes.string,
   onDelete: PropTypes.func,
   children: PropTypes.node,
 };

@@ -43,7 +43,9 @@ const ReportStudyLogTable = ({ studyLogs }) => {
                 <ul>
                   {abilities.map((ability) => (
                     <li key={ability.id}>
-                      <Chip backgroundColor={ability.color}>{ability.name}</Chip>
+                      <Chip backgroundColor={ability.color} fontSize="1.2rem">
+                        {ability.name}
+                      </Chip>
                     </li>
                   ))}
                 </ul>
