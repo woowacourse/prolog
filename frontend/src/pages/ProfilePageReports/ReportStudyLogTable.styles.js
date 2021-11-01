@@ -61,36 +61,42 @@ const Table = styled.table`
 const Thead = styled.thead`
   > tr {
     th:nth-of-type(1) {
-      width: 15%;
+      width: 10%;
       text-align: center;
     }
 
     th:nth-of-type(2) {
-      width: 85%;
+      width: 30%;
+    }
+
+    th:nth-of-type(3) {
+      width: 60%;
     }
   }
 `;
 
 const Tbody = styled.tbody`
   display: block;
-  min-height: 15rem;
+  min-height: 10rem;
 
   tr {
-    width: 98%;
+    width: 96%;
     border-bottom: 0.1rem solid ${COLOR.LIGHT_GRAY_300};
+    height: 6rem;
     margin: 0 auto;
 
-    td:nth-of-type(1) {
-      width: 12%;
-      text-align: center;
+    position: relative;
 
-      > span {
-        color: ${COLOR.BLACK_600};
-      }
+    td:nth-of-type(1) {
+      height: 100%;
+      width: 6%;
+      text-align: center;
     }
 
     td:nth-of-type(2) {
-      width: 88%;
+      height: 100%;
+      width: 45%;
+
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -99,6 +105,27 @@ const Tbody = styled.tbody`
       a {
         :hover {
           text-decoration: underline;
+        }
+      }
+    }
+
+    td:nth-of-type(3) {
+      height: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      > ul {
+        width: 100%;
+        height: 100%;
+        margin-right: 1.5rem;
+        overflow: auto;
+
+        display: flex;
+        align-items: center;
+
+        li {
+          height: fit-content;
         }
       }
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Pagination } from '../../components';
+import { Chip, Pagination } from '../../components';
 import useStudyLogsPagination from '../../hooks/useStudyLogsPagination';
 import { Section, Table, Tbody, Thead, EmptyTableGuide } from './ReportStudyLogTable.styles';
 
@@ -24,11 +24,12 @@ const ReportStudyLogTable = ({ studyLogs }) => {
               <span>번호</span>
             </th>
             <th scope="col">제목</th>
+            <th scope="col">역량</th>
           </tr>
         </Thead>
 
         <Tbody>
-          {currReportStudyLogs.map(({ id, title }, index) => (
+          {currReportStudyLogs.map(({ id, title, abilities }, index) => (
             <tr key={id}>
               <td>
                 <span>{(currPage - 1) * 10 + index + 1}</span>
@@ -37,6 +38,15 @@ const ReportStudyLogTable = ({ studyLogs }) => {
                 <a href={`/posts/${id}`} target="_blank" rel="noopener noreferrer">
                   {title}
                 </a>
+              </td>
+              <td>
+                <ul>
+                  {abilities.map((ability) => (
+                    <li key={ability.id}>
+                      <Chip backgroundColor={ability.color}>{ability.name}</Chip>
+                    </li>
+                  ))}
+                </ul>
               </td>
             </tr>
           ))}
