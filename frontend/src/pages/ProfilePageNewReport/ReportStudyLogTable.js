@@ -73,14 +73,18 @@ const ReportStudyLogTable = ({
   const onDeleteStudyLogInReport = () => {
     if (allChecked) {
       const moveTargetPage = currPage === totalPage ? currPage - 1 : currPage;
+      setStudyLogAbilities([]);
       setPage(moveTargetPage);
     }
 
     setStudyLogs((currStudyLogs) => filterOnlyNewList(currStudyLogs, deleteTargets));
+    setStudyLogAbilities((currStudyLogAbility) =>
+      filterOnlyNewList(currStudyLogAbility, deleteTargets)
+    );
     setDeleteTargets([]);
   };
 
-  // 페이지네이동
+  // 페이지 이동
   const onMoveToPage = (number) => {
     setDeleteTargets([]);
     setPage(number);
