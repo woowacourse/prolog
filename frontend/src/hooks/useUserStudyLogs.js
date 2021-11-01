@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { SHOW_ALL_FILTER } from '../pages/ProfilePageNewReport/StudyLogModal';
 import { requestGetPosts } from '../service/requests';
 
 const defaultValue = {
@@ -21,7 +22,9 @@ const useUserStudyLog = ({ levelId: currLevelId, username }) => {
 
       const query = {
         type: 'searchParams',
-        data: `levels=${currLevelId}&usernames=${username}&page=${page}`,
+        data: `usernames=${username}&page=${page}${
+          currLevelId && currLevelId !== SHOW_ALL_FILTER.id ? `&levels=${currLevelId}` : ''
+        }`,
       };
 
       const response = await requestGetPosts(query);

@@ -18,11 +18,17 @@ import {
   ReadMoreButton,
 } from './StudyLogModal.styles';
 
+export const SHOW_ALL_FILTER = {
+  id: -1,
+  name: '전체보기',
+};
+
 const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
   const [filters] = useFetch([], requestGetFilters);
-  const { levels } = filters;
 
-  const [selectedLevelName, setSelectedLevelName] = useState('');
+  const levels = [SHOW_ALL_FILTER, ...Array.from(filters?.levels ?? [])];
+
+  const [selectedLevelName, setSelectedLevelName] = useState(SHOW_ALL_FILTER.name);
   const [selectedStudyLogs, setSelectedStudyLogs] = useState(studyLogs);
 
   const { studyLogData, setPage } = useUserStudyLog({
