@@ -4,7 +4,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import localStorage from 'local-storage';
 
 import { requestEditReport, requestGetReport } from '../../service/requests';
-import { API, COLOR } from '../../constants';
+import { API, COLOR, ERROR_MESSAGE, REPORT_DESCRIPTION } from '../../constants';
 
 import { Button } from '../../components';
 import StudyLogModal from '../ProfilePageNewReport/StudyLogModal';
@@ -12,7 +12,7 @@ import ReportInfoInput from '../ProfilePageNewReport/ReportInfoInput';
 import ReportStudyLogTable from '../ProfilePageNewReport/ReportStudyLogTable';
 import { Checkbox, Form, FormButtonWrapper } from '../ProfilePageNewReport/style';
 import AbilityGraph from '../ProfilePageReports/AbilityGraph';
-import { ERROR_MESSAGE } from '../../constants/message';
+import { limitLetterLength } from '../../utils/validator';
 
 const ProfilePageEditReport = () => {
   const { username, id: reportId } = useParams();
@@ -77,8 +77,9 @@ const ProfilePageEditReport = () => {
   }, []);
 
   const postEditReport = async (data) => {
-    if (description.length >= 150) {
+    if (!limitLetterLength(description, REPORT_DESCRIPTION.MAX_LENGTH)) {
       alert('리포트 설명은 150글자를 넘을 수 없습니다.');
+
       return;
     }
 

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import localStorage from 'local-storage';
 
-import { API, COLOR } from '../../constants';
+import { API, COLOR, ERROR_MESSAGE, REPORT_DESCRIPTION } from '../../constants';
 import { Button } from '../../components';
 import StudyLogModal from './StudyLogModal';
 import ReportInfoInput from './ReportInfoInput';
@@ -12,7 +12,7 @@ import { Checkbox, Form, FormButtonWrapper } from './style';
 import { requestGetAbilities, requestPostReport } from '../../service/requests';
 import AbilityGraph from '../ProfilePageReports/AbilityGraph';
 import useRequest from '../../hooks/useRequest';
-import { ERROR_MESSAGE } from '../../constants/message';
+import { limitLetterLength } from '../../utils/validator';
 
 const ProfilePageNewReport = () => {
   const { username } = useParams();
@@ -79,8 +79,9 @@ const ProfilePageNewReport = () => {
 
     const currTitle = title.trim();
 
-    if (description.length >= 150) {
+    if (!limitLetterLength(description, REPORT_DESCRIPTION.MAX_LENGTH)) {
       alert('리포트 설명은 150글자를 넘을 수 없습니다.');
+
       return;
     }
 

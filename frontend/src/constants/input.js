@@ -17,4 +17,9 @@ const CHART = {
   },
 };
 
-export { POST_TITLE, PROFILE, CHART };
+const REPORT_DESCRIPTION = {
+  MIN_LENGTH: '1',
+  MAX_LENGTH: '150',
+};
+
+export { POST_TITLE, PROFILE, CHART, REPORT_DESCRIPTION };
