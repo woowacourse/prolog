@@ -12,6 +12,7 @@ import ReportInfoInput from '../ProfilePageNewReport/ReportInfoInput';
 import ReportStudyLogTable from '../ProfilePageNewReport/ReportStudyLogTable';
 import { Checkbox, Form, FormButtonWrapper } from '../ProfilePageNewReport/style';
 import AbilityGraph from '../ProfilePageReports/AbilityGraph';
+import { ERROR_MESSAGE } from '../../constants/message';
 
 const ProfilePageEditReport = () => {
   const { username, id: reportId } = useParams();
@@ -75,7 +76,12 @@ const ProfilePageEditReport = () => {
     getReport(reportId);
   }, []);
 
-  const postNewReport = async (data) => {
+  const postEditReport = async (data) => {
+    if (description.length >= 150) {
+      alert('리포트 설명은 150글자를 넘을 수 없습니다.');
+      return;
+    }
+
     try {
       const response = await requestEditReport(data, reportId, accessToken);
 
@@ -85,7 +91,13 @@ const ProfilePageEditReport = () => {
 
       history.push(`/${username}/reports/${reportId}`);
     } catch (error) {
-      console.error(error);
+      const errorCode = JSON.parse(error.message).code;
+
+      if (ERROR_MESSAGE[errorCode]) {
+        alert(ERROR_MESSAGE[errorCode]);
+      } else {
+        console.error(error);
+      }
     }
   };
 
@@ -115,7 +127,7 @@ const ProfilePageEditReport = () => {
       represent: isMainReport,
     };
 
-    postNewReport(data);
+    postEditReport(data);
   };
 
   const onCancelWriteReport = () => {

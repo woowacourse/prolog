@@ -12,6 +12,7 @@ import { Checkbox, Form, FormButtonWrapper } from './style';
 import { requestGetAbilities, requestPostReport } from '../../service/requests';
 import AbilityGraph from '../ProfilePageReports/AbilityGraph';
 import useRequest from '../../hooks/useRequest';
+import { ERROR_MESSAGE } from '../../constants/message';
 
 const ProfilePageNewReport = () => {
   const { username } = useParams();
@@ -56,8 +57,9 @@ const ProfilePageNewReport = () => {
       history.push(`/${username}/reports`);
     } catch (error) {
       const errorCode = JSON.parse(error.message).code;
-      if (errorCode === 4005) {
-        alert('중복된 리포트 이름은 사용할 수 없습니다.');
+
+      if (ERROR_MESSAGE[errorCode]) {
+        alert(ERROR_MESSAGE[errorCode]);
       } else {
         console.error(error);
       }
@@ -76,6 +78,11 @@ const ProfilePageNewReport = () => {
     event.preventDefault();
 
     const currTitle = title.trim();
+
+    if (description.length >= 150) {
+      alert('리포트 설명은 150글자를 넘을 수 없습니다.');
+      return;
+    }
 
     if (studyLogs.length === 0) {
       if (!window.confirm('등록된 학습로그가 없습니다.\n저장하시겠습니까?')) return;
