@@ -193,7 +193,7 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
 
     @And("관리자가 기본 역량 {string}을 {string} 과정으로 추가하고")
     public void 관리자가기본역량을과정으로추가하고(String defaultAbility, String template) {
-        DefaultAbilityCreateRequest request = new DefaultAbilityCreateRequest("defaultAbility", "defaultAbility 입니다.", "#color", template);
+        DefaultAbilityCreateRequest request = new DefaultAbilityCreateRequest(defaultAbility, "defaultAbility 입니다.", "#color", template);
         context.invokeHttpPostWithToken("/abilities/default", request);
     }
 
