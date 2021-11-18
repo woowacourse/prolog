@@ -27,6 +27,7 @@ import useFetch from '../../hooks/useFetch';
 import useFilterWithParams from '../../hooks/useFilterWithParams';
 import { SelectedFilterList } from '../MainPage/styles';
 import Chip from '../../components/Chip/Chip';
+import { isEmptyObject } from '../../utils/object';
 
 const ProfilePagePosts = () => {
   const {
@@ -52,7 +53,7 @@ const ProfilePagePosts = () => {
   const [hoveredPostId, setHoveredPostId] = useState(0);
   const [posts, setPosts] = useState([]);
 
-  const [filters] = useFetch([], requestGetFilters);
+  const [filters] = useFetch({}, requestGetFilters);
 
   const { error: postError, deleteData: deletePost } = usePost({});
 
@@ -97,7 +98,7 @@ const ProfilePagePosts = () => {
   useEffect(() => {
     const params = getFullParams();
 
-    history.push(`${PATH.ROOT}${username}/posts${params ? '?' + params : ''}`);
+    history.push(`${PATH.ROOT}${username}/posts${params && '?' + params}`);
   }, [postQueryParams, selectedFilterDetails, username]);
 
   useEffect(() => {
@@ -111,7 +112,9 @@ const ProfilePagePosts = () => {
   }, [history.location.search]);
 
   useEffect(() => {
-    if (filters.length === 0) {
+    delete filters.members;
+
+    if (isEmptyObject(filters)) {
       return;
     }
 
