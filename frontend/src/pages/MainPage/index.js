@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Card, FilterList, Pagination, ProfileChip } from '../../components';
+import { useEffect, useState } from 'react';
+import { Button, FilterList, Pagination } from '../../components';
 import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
@@ -7,22 +7,16 @@ import useFetch from '../../hooks/useFetch';
 import { requestGetFilters, requestGetPosts } from '../../service/requests';
 import { useSelector } from 'react-redux';
 import {
-  CardStyle,
-  Content,
-  Description,
   FilterListWrapper,
   HeaderContainer,
-  Mission,
   PostListContainer,
-  ProfileChipLocationStyle,
   SelectedFilterList,
-  Tags,
-  Title,
 } from './styles';
 import { ERROR_MESSAGE } from '../../constants/message';
 import Chip from '../../components/Chip/Chip';
 import FlexBox from '../../components/@shared/FlexBox/FlexBox';
 import useFilterWithParams from '../../hooks/useFilterWithParams';
+import StudyLogList from '../../components/Lists/StudyLogList';
 
 const MainPage = () => {
   const {
@@ -48,16 +42,6 @@ const MainPage = () => {
 
   const [filters] = useFetch([], requestGetFilters);
 
-  const goTargetPost = (id) => {
-    history.push(`${PATH.POST}/${id}`);
-  };
-
-  const goProfilePage = (username) => (event) => {
-    event.stopPropagation();
-
-    history.push(`/${username}`);
-  };
-
   const goNewPost = () => {
     const accessToken = localStorage.getItem('accessToken');
 
@@ -78,17 +62,13 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    const params = getFullParams();
+    const params = new URLSearchParams(getFullParams());
 
-    if (!search && !params) {
-      history.push(`${PATH.ROOT}`);
-    } else if (params && !search) {
-      history.push(`${PATH.ROOT}?${params ? params : ''}`);
-    } else if (search && !params) {
-      history.push(`${PATH.ROOT}?${search ? 'keyword=' + search : ''}`);
-    } else {
-      history.push(`${PATH.ROOT}?${search ? 'keyword=' + search : ''}&${params ?? ''}`);
+    if (search) {
+      params.set('keyword', search);
     }
+
+    history.push(`${PATH.ROOT}${params && '?' + params.toString()}`);
   }, [getFullParams, postQueryParams, selectedFilterDetails]);
 
   useEffect(() => {
@@ -173,34 +153,7 @@ const MainPage = () => {
 
       <PostListContainer>
         {posts?.data?.length === 0 && '작성된 글이 없습니다.'}
-        {posts &&
-          posts.data &&
-          posts.data.map((post) => {
-            const { id, author, mission, title, tags } = post;
-
-            return (
-              <Card key={id} size="SMALL" css={CardStyle} onClick={() => goTargetPost(id)}>
-                <Content>
-                  <Description>
-                    <Mission>{mission.name}</Mission>
-                    <Title>{title}</Title>
-                    <Tags>
-                      {tags?.map(({ id, name }) => (
-                        <span key={id}>{`#${name} `}</span>
-                      ))}
-                    </Tags>
-                  </Description>
-                  <ProfileChip
-                    imageSrc={author.imageUrl}
-                    css={ProfileChipLocationStyle}
-                    onClick={goProfilePage(author.username)}
-                  >
-                    {author.nickname}
-                  </ProfileChip>
-                </Content>
-              </Card>
-            );
-          })}
+        {posts && posts.data && <StudyLogList studylogs={posts.data} />}
       </PostListContainer>
       <Pagination postsInfo={posts} onSetPage={onSetPage}></Pagination>
     </>
