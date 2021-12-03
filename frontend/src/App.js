@@ -1,26 +1,19 @@
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import styled from '@emotion/styled';
-import { PROFILE_PAGE_MENU, PATH } from './constants';
+/** @jsxImportSource @emotion/react */
+/* 
+  - React.createElement 대신 jsx를 jsx라는 함수로 변환 (babel)
+  - @emotion/react 적용을 위해 필요
+*/
+import { css } from '@emotion/react';
+
+import { PATH } from './constants';
 import { NavBar } from './components';
-import {
-  MainPage,
-  NewPostPage,
-  PostPage,
-  LoginCallbackPage,
-  EditPostPage,
-  ProfilePage,
-  ProfilePagePosts,
-  ProfilePageReports,
-  ProfilePageNewReport,
-  ProfilePageEditReport,
-  ProfilePageScraps,
-} from './pages';
-import AbilityPage from './pages/AbilityPage';
+import pageRoutes from './routes';
+
 import useSnackBar from './hooks/useSnackBar';
 import GlobalStyles from './GlobalStyles';
-import ProfilePageReportsList from './pages/ProfilePageReportsList';
 
-const Content = styled.div`
+const ContentStyle = css`
   max-width: 112rem;
   margin: 6rem auto;
   padding: 0 4rem;
@@ -34,84 +27,14 @@ const App = () => {
       <GlobalStyles />
       <Router>
         <NavBar />
-        <Content>
+        <div css={ContentStyle}>
           <Switch>
-            <Route exact path={PATH.ROOT} component={MainPage} />
-            <Route exact path={PATH.LOGIN_CALLBACK} component={LoginCallbackPage} />
-            <Route exact path={PATH.NEW_POST} component={NewPostPage} />
-            <Route exact path={`${PATH.POST}/:id`} component={PostPage} />
-            <Route exact path={`${PATH.POST}/:id/edit`} component={EditPostPage} />
-            <Route
-              exact
-              path={`${PATH.PROFILE}`}
-              render={() => <ProfilePage menu={PROFILE_PAGE_MENU.OVERVIEW} />}
-            />
-            <Route
-              exact
-              path={PATH.PROFILE_POSTS}
-              render={() => (
-                <ProfilePage menu={PROFILE_PAGE_MENU.POSTS}>
-                  <ProfilePagePosts />
-                </ProfilePage>
-              )}
-            />
-            <Route
-              exact
-              path={`${PATH.PROFILE_REPORTS}`}
-              render={() => (
-                <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
-                  <ProfilePageReportsList />
-                </ProfilePage>
-              )}
-            />
-            <Route
-              exact
-              path={`${PATH.PROFILE_NEW_REPORT}`}
-              render={() => (
-                <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
-                  <ProfilePageNewReport />
-                </ProfilePage>
-              )}
-            />
-            <Route
-              exact
-              path={`${PATH.PROFILE_REPORT}`}
-              render={() => (
-                <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
-                  <ProfilePageReports />
-                </ProfilePage>
-              )}
-            />
-            <Route
-              exact
-              path={`${PATH.PROFILE_REPORTS}/:id/edit`}
-              render={() => (
-                <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
-                  <ProfilePageEditReport />
-                </ProfilePage>
-              )}
-            />
-            <Route
-              exact
-              path={PATH.PROFILE_SCRAPS}
-              render={() => (
-                <ProfilePage menu={PROFILE_PAGE_MENU.SCRAPS}>
-                  <ProfilePageScraps />
-                </ProfilePage>
-              )}
-            />
-            <Route
-              exact
-              path={`${PATH.ABILITY}`}
-              render={() => (
-                <ProfilePage menu={PROFILE_PAGE_MENU.ABILITY}>
-                  <AbilityPage />
-                </ProfilePage>
-              )}
-            />
+            {pageRoutes.map(({ path, render }) => (
+              <Route exact path={path} render={render} />
+            ))}
             <Redirect to={PATH.ROOT} />
           </Switch>
-        </Content>
+        </div>
       </Router>
       {isSnackBarOpen && <SnackBar />}
     </>
