@@ -60,6 +60,7 @@ public class StudylogService {
 
         List<StudylogResponse> data = studylogs.getData();
         updateScrap(data, findScrapIds(memberId));
+        updateViewed(data, findViewedIds(memberId));
         return studylogs;
     }
 
@@ -245,10 +246,26 @@ public class StudylogService {
             .collect(toList());
     }
 
+    private List<Long> findViewedIds(Long memberId) {
+        List<StudylogViewed> viewedList = studylogViewedRepository.findByMemberId(memberId);
+        return viewedList.stream()
+                .map(StudylogViewed::getStudylog)
+                .map(Studylog::getId)
+                .collect(toList());
+    }
+
     private void updateScrap(List<StudylogResponse> studylogs, List<Long> scrapIds) {
         studylogs.forEach(studylogResponse -> {
             if (scrapIds.stream().anyMatch(id -> id.equals(studylogResponse.getId()))) {
                 studylogResponse.setScrap(true);
+            }
+        });
+    }
+
+    private void updateViewed(List<StudylogResponse> studylogs, List<Long> viewedIds) {
+        studylogs.forEach(studylogResponse -> {
+            if (viewedIds.stream().anyMatch(id -> id.equals(studylogResponse.getId()))) {
+                studylogResponse.setViewed(true);
             }
         });
     }

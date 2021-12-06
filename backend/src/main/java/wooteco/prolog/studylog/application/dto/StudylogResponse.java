@@ -25,6 +25,7 @@ public class StudylogResponse {
     private String content;
     private List<TagResponse> tags;
     private boolean scrap;
+    private boolean viewed;
 
     public StudylogResponse(
         Studylog studylog,
@@ -39,15 +40,16 @@ public class StudylogResponse {
             studylog.getTitle(),
             studylog.getContent(),
             tagResponses,
+            false,
             false
         );
     }
 
     public static StudylogResponse of(Studylog studylog) {
-        return of(studylog, false);
+        return of(studylog, false, false);
     }
 
-    public static StudylogResponse of(Studylog studylog, boolean scrap) {
+    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean viewed) {
         List<StudylogTag> studylogTags = studylog.getStudylogTags();
         List<TagResponse> tagResponses = toTagResponses(studylogTags);
 
@@ -60,7 +62,8 @@ public class StudylogResponse {
             studylog.getTitle(),
             studylog.getContent(),
             tagResponses,
-            scrap
+            scrap,
+            viewed
         );
     }
 
@@ -71,7 +74,11 @@ public class StudylogResponse {
             .collect(toList());
     }
 
-    public void setScrap(boolean isScrap){
+    public void setScrap(boolean isScrap) {
         this.scrap = isScrap;
+    }
+
+    public void setViewed(boolean viewed) {
+        this.viewed = viewed;
     }
 }
