@@ -2,9 +2,6 @@ package wooteco.prolog.studylog.ui;
 
 import java.net.URI;
 import java.util.List;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.aop.MemberOnly;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
@@ -58,13 +54,11 @@ public class StudylogController {
     @GetMapping("/{id}")
     public ResponseEntity<StudylogResponse> showStudylog(
         @PathVariable String id,
-        @AuthMemberPrincipal LoginMember member
-        ) {
+        @AuthMemberPrincipal LoginMember member) {
         if (!NumberUtils.isNumeric(id)) {
             throw new StudylogNotFoundException();
         }
-        StudylogResponse studylogResponse = studylogService.findById(Long.parseLong(id), member.getId(),
-            member.isAnonymous());
+        StudylogResponse studylogResponse = studylogService.findById(Long.parseLong(id), member.getId(), member.isAnonymous());
         return ResponseEntity.ok(studylogResponse);
     }
 
