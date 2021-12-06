@@ -30,13 +30,11 @@ import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
-import wooteco.prolog.studylog.domain.Mission;
-import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.StudylogScrap;
-import wooteco.prolog.studylog.domain.Tags;
+import wooteco.prolog.studylog.domain.*;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
+import wooteco.prolog.studylog.domain.repository.StudylogViewedRepository;
 import wooteco.prolog.studylog.exception.StudylogArgumentException;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 
@@ -47,6 +45,7 @@ public class StudylogService {
 
     private final StudylogRepository studylogRepository;
     private final StudylogScrapRepository studylogScrapRepository;
+    private final StudylogViewedRepository studylogViewedRepository;
     private final MemberTagService memberTagService;
     private final DocumentService studylogDocumentService;
     private final MissionService missionService;
@@ -172,13 +171,22 @@ public class StudylogService {
 
     public StudylogResponse findById(Long id, Long memberId, boolean isAnonymousMember) {
         StudylogResponse studylog = findById(id);
-
         if (isAnonymousMember) {
             return studylog;
         }
 
+        if (!studylogViewedRepository.existsByMemberIdAndStudylogId(memberId, id)) {
+            insertStudylogViewed(id, memberId);
+        }
         updateScrap(singletonList(studylog), findScrapIds(memberId));
         return studylog;
+    }
+
+    private void insertStudylogViewed(Long id, Long memberId) {
+        Member viewedMember = memberService.findById(memberId);
+        Studylog viewedStudylog = studylogRepository.findById(id)
+                .orElseThrow(StudylogNotFoundException::new);
+        studylogViewedRepository.save(new StudylogViewed(viewedMember, viewedStudylog));
     }
 
     public StudylogResponse findById(Long id) {
