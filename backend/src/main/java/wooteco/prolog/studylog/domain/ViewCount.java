@@ -12,6 +12,10 @@ import javax.persistence.Embeddable;
 public class ViewCount {
     private int views;
 
+    public ViewCount(int views) {
+        this.views = views;
+    }
+
     public void increase() {
         this.views++;
     }

@@ -30,10 +30,7 @@ import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
-import wooteco.prolog.studylog.domain.Mission;
-import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.StudylogScrap;
-import wooteco.prolog.studylog.domain.Tags;
+import wooteco.prolog.studylog.domain.*;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
@@ -161,7 +158,8 @@ public class StudylogService {
                                                   studylogRequest.getTitle(),
                                                   studylogRequest.getContent(),
                                                   mission,
-                                                  tags.getList());
+                                                  tags.getList(),
+                                                  new ViewCount(0));
 
         Studylog createdStudylog = studylogRepository.save(requestedStudylog);
         memberTagService.registerMemberTag(tags, foundMember);
@@ -172,6 +170,8 @@ public class StudylogService {
 
     public StudylogResponse findById(Long id, Long memberId, boolean isAnonymousMember) {
         StudylogResponse studylog = findById(id);
+
+        increaseViewCount(id, memberId);
 
         if (isAnonymousMember) {
             return studylog;
@@ -185,9 +185,16 @@ public class StudylogService {
         Studylog studylog = studylogRepository.findById(id)
             .orElseThrow(StudylogNotFoundException::new);
 
-        studylog.increaseViewCount();
-
         return StudylogResponse.of(studylog);
+    }
+
+    private void increaseViewCount(Long id, Long memberId) {
+        Member foundMember = memberService.findById(memberId);
+
+        Studylog studylog = studylogRepository.findById(id)
+                .orElseThrow(StudylogNotFoundException::new);
+
+        studylog.increaseViewCount(foundMember);
     }
 
     @Transactional
