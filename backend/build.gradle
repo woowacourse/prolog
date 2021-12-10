@@ -40,6 +40,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // open csv
@@ -85,11 +86,11 @@ dependencies {
     // webclient
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+    // prometheus
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
-
-    // webClient
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
 
 ext {
