@@ -170,6 +170,7 @@ public class StudylogService {
         return StudylogResponse.of(createdStudylog);
     }
 
+    @Transactional
     public StudylogResponse findById(Long id, Long memberId, boolean isAnonymousMember) {
         StudylogResponse studylog = findById(id);
         if (isAnonymousMember) {
