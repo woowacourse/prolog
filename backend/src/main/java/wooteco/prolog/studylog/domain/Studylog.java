@@ -81,6 +81,11 @@ public class Studylog extends BaseEntity {
         studylogTags.add(convertToStudylogTags(tags));
     }
 
+
+    public void increaseViewCount() {
+        viewCount.increase();
+    }
+
     public Member getMember() {
         return member;
     }
@@ -99,5 +104,9 @@ public class Studylog extends BaseEntity {
 
     public String getContent() {
         return content.getContent();
+    }
+
+    public int getViewCount() {
+        return viewCount.getViews();
     }
 }

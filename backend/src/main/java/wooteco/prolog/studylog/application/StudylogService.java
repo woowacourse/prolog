@@ -185,6 +185,8 @@ public class StudylogService {
         Studylog studylog = studylogRepository.findById(id)
             .orElseThrow(StudylogNotFoundException::new);
 
+        studylog.increaseViewCount();
+
         return StudylogResponse.of(studylog);
     }
 

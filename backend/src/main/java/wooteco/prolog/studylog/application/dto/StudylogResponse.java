@@ -25,6 +25,7 @@ public class StudylogResponse {
     private String content;
     private List<TagResponse> tags;
     private boolean scrap;
+    private int viewCount;
 
     public StudylogResponse(
         Studylog studylog,
@@ -39,7 +40,8 @@ public class StudylogResponse {
             studylog.getTitle(),
             studylog.getContent(),
             tagResponses,
-            false
+            false,
+            studylog.getViewCount()
         );
     }
 
@@ -60,7 +62,8 @@ public class StudylogResponse {
             studylog.getTitle(),
             studylog.getContent(),
             tagResponses,
-            scrap
+            scrap,
+            studylog.getViewCount()
         );
     }
 
