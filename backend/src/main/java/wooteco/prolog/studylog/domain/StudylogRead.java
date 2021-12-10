@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class StudylogViewed {
+public class StudylogRead {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class StudylogViewed {
     @JoinColumn(name = "studylog_id", nullable = false)
     private Studylog studylog;
 
-    public StudylogViewed(Member member, Studylog studylog) {
+    public StudylogRead(Member member, Studylog studylog) {
         this.member = member;
         this.studylog = studylog;
     }

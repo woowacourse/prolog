@@ -12,7 +12,7 @@ import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.StudylogViewed;
+import wooteco.prolog.studylog.domain.StudylogRead;
 import wooteco.prolog.studylog.domain.repository.*;
 
 import java.util.Collections;
@@ -21,7 +21,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-class StudylogViewedRepositoryTest {
+class StudylogReadRepositoryTest {
 
     private static final Member 웨지 = new Member("sihyung92", "웨지", Role.CREW, 2222L,
             "https://avatars.githubusercontent.com/u/51393021?v=4");
@@ -46,7 +46,7 @@ class StudylogViewedRepositoryTest {
     private MissionRepository missionRepository;
 
     @Autowired
-    private StudylogViewedRepository studylogViewedRepository;
+    private StudylogReadRepository studylogReadRepository;
 
     @BeforeEach
     void setUp() {
@@ -62,11 +62,11 @@ class StudylogViewedRepositoryTest {
     @Test
     void existsByMemberIdAndStudylogId() {
         //given
-        StudylogViewed studylogViewed = new StudylogViewed(bada, studylog);
+        StudylogRead studylogRead = new StudylogRead(bada, studylog);
         //when
-        studylogViewedRepository.save(studylogViewed);
-        boolean expectTrue = studylogViewedRepository.existsByMemberIdAndStudylogId(bada.getId(), studylog.getId());
-        boolean expectFalse = studylogViewedRepository.existsByMemberIdAndStudylogId(member.getId(), studylog.getId());
+        studylogReadRepository.save(studylogRead);
+        boolean expectTrue = studylogReadRepository.existsByMemberIdAndStudylogId(bada.getId(), studylog.getId());
+        boolean expectFalse = studylogReadRepository.existsByMemberIdAndStudylogId(member.getId(), studylog.getId());
         //then
         assertThat(expectTrue).isTrue();
         assertThat(expectFalse).isFalse();
@@ -76,11 +76,11 @@ class StudylogViewedRepositoryTest {
     @Test
     void findByMemberId() {
         //given
-        StudylogViewed studylogViewed = new StudylogViewed(bada, studylog);
-        studylogViewedRepository.save(studylogViewed);
-        List<StudylogViewed> expected = Collections.singletonList(studylogViewed);
+        StudylogRead studylogRead = new StudylogRead(bada, studylog);
+        studylogReadRepository.save(studylogRead);
+        List<StudylogRead> expected = Collections.singletonList(studylogRead);
         //when
-        List<StudylogViewed> actual = studylogViewedRepository.findByMemberId(bada.getId());
+        List<StudylogRead> actual = studylogReadRepository.findByMemberId(bada.getId());
         //then
         assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
