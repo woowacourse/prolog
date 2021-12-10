@@ -168,9 +168,7 @@ public class StudylogService {
     }
 
     public StudylogResponse findById(Long id, Long memberId, boolean isAnonymousMember) {
-        StudylogResponse studylog = findById(id);
-
-        increaseViewCount(id, memberId);
+        StudylogResponse studylog = findById(id, memberId);
 
         if (isAnonymousMember) {
             return studylog;
@@ -180,10 +178,14 @@ public class StudylogService {
         return studylog;
     }
 
+    public StudylogResponse findById(Long id, Long memberId) {
+        increaseViewCount(id, memberId);
+        return findById(id);
+    }
+
     public StudylogResponse findById(Long id) {
         Studylog studylog = studylogRepository.findById(id)
             .orElseThrow(StudylogNotFoundException::new);
-
         return StudylogResponse.of(studylog);
     }
 
