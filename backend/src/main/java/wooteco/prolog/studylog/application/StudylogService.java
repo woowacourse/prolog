@@ -158,8 +158,7 @@ public class StudylogService {
                                                   studylogRequest.getTitle(),
                                                   studylogRequest.getContent(),
                                                   mission,
-                                                  tags.getList(),
-                                                  new ViewCount(0));
+                                                  tags.getList());
 
         Studylog createdStudylog = studylogRepository.save(requestedStudylog);
         memberTagService.registerMemberTag(tags, foundMember);

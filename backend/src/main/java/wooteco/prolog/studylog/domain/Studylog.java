@@ -37,12 +37,12 @@ public class Studylog extends BaseEntity {
     @Embedded
     private ViewCount viewCount;
 
-    public Studylog(Member member, String title, String content, Mission mission, List<Tag> tags, ViewCount viewCount) {
-        this(null, member, title, content, mission, tags, viewCount);
+    public Studylog(Member member, String title, String content, Mission mission, List<Tag> tags) {
+        this(null, member, title, content, mission, tags);
     }
 
     public Studylog(Long id, Member member, String title, String content, Mission mission,
-                    List<Tag> tags, ViewCount viewCount) {
+                    List<Tag> tags) {
         super(id);
         this.member = member;
         this.title = new Title(title);
@@ -50,7 +50,7 @@ public class Studylog extends BaseEntity {
         this.mission = mission;
         this.studylogTags = new StudylogTags();
         addTags(new Tags(tags));
-        this.viewCount = viewCount;
+        this.viewCount =  new ViewCount();
     }
 
     public void validateAuthor(Member member) {
