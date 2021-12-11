@@ -167,6 +167,7 @@ public class StudylogService {
         return StudylogResponse.of(createdStudylog);
     }
 
+    @Transactional
     public StudylogResponse findById(Long id, Long memberId, boolean isAnonymousMember) {
         StudylogResponse studylog = findById(id, memberId);
 
@@ -186,6 +187,7 @@ public class StudylogService {
     public StudylogResponse findById(Long id) {
         Studylog studylog = studylogRepository.findById(id)
             .orElseThrow(StudylogNotFoundException::new);
+
         return StudylogResponse.of(studylog);
     }
 
