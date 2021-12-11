@@ -91,6 +91,10 @@ public class Studylog extends BaseEntity {
         }
     }
 
+    public void increaseViewCount() {
+        viewCount.increase();
+    }
+
     public boolean isMine(Member member) {
         return this.member.equals(member);
     }
