@@ -10,4 +10,4 @@ management:
         include: "prometheus"
   metrics:
     tags:
-      application: ${spring.application.name}
+      application: prolog
