@@ -37,6 +37,9 @@ public class Studylog extends BaseEntity {
     @Embedded
     private ViewCount viewCount;
 
+    @Embedded
+    private Likes likes;
+
     public Studylog(Member member, String title, String content, Mission mission, List<Tag> tags) {
         this(null, member, title, content, mission, tags);
     }
@@ -51,6 +54,7 @@ public class Studylog extends BaseEntity {
         this.studylogTags = new StudylogTags();
         addTags(new Tags(tags));
         this.viewCount =  new ViewCount();
+        this.likes = new Likes();
     }
 
     public void validateAuthor(Member member) {
@@ -97,6 +101,18 @@ public class Studylog extends BaseEntity {
 
     public boolean isMine(Member member) {
         return this.member.equals(member);
+    }
+
+    public void like(Long id) {
+        likes.like(id);
+    }
+
+    public void unlike(Long id) {
+        likes.unlike(id);
+    }
+
+    public int getLikeCount() {
+        return likes.likeCount();
     }
 
     public Member getMember() {
