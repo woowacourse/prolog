@@ -79,7 +79,36 @@ const MainPage = () => {
         const response = await requestGetPosts({ type: 'searchParams', data: query });
         const data = await response.json();
 
-        setPosts(data);
+        console.log(data.data[0]);
+
+        setPosts({
+          ...data,
+          data: data.data.map(
+            ({
+              id,
+              author,
+              content,
+              mission,
+              title,
+              tags,
+              createdAt,
+              updatedAt,
+              viewed,
+              scrap,
+            }) => ({
+              id,
+              author,
+              content,
+              mission,
+              title,
+              tags,
+              createdAt,
+              updatedAt,
+              isRead: viewed,
+              isScrapped: scrap,
+            })
+          ),
+        });
       } catch (error) {
         console.error(error);
       }

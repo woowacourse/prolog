@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import { useHistory } from 'react-router';
 import { Card, ProfileChip } from '..';
-import { PATH } from '../../constants';
+import { COLOR, PATH } from '../../constants';
 
 import {
   CardStyle,
@@ -32,10 +33,22 @@ const StudyLogList = ({ studylogs }: Props) => {
   return (
     <>
       {studylogs.map((post) => {
-        const { id, author, mission, title, tags } = post;
+        const { id, author, mission, title, tags, isRead } = post;
 
         return (
-          <Card key={id} size="SMALL" cssProps={CardStyle} onClick={() => goTargetPost(id)}>
+          <Card
+            key={id}
+            size="SMALL"
+            cssProps={
+              isRead
+                ? css`
+                    ${CardStyle};
+                    background-color: ${COLOR.LIGHT_GRAY_100};
+                  `
+                : CardStyle
+            }
+            onClick={() => goTargetPost(id)}
+          >
             <div css={ContentStyle}>
               <div css={DescriptionStyle}>
                 <p css={MissionStyle}>{mission.name}</p>
