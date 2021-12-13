@@ -14,5 +14,6 @@ declare namespace Prolog {
     mission: Mission;
     title: string;
     tags: Tag[];
+    viewCount: number;
   }
 }

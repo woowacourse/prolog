@@ -8,13 +8,21 @@ const Button = ({
   alt,
   icon,
   css,
+  cssProps,
   backgroundImageUrl,
   onClick,
   type,
   disabled,
 }) => {
   return (
-    <Container size={size} icon={icon} css={css} onClick={onClick} type={type} disabled={disabled}>
+    <Container
+      size={size}
+      icon={icon}
+      css={cssProps || css}
+      onClick={onClick}
+      type={type}
+      disabled={disabled}
+    >
       {icon && <Icon src={icon} alt={alt} size={size} hasText={!!children} />}
       {backgroundImageUrl && <Image backgroundImage={backgroundImageUrl} />}
       {children && <span size={size}>{children}</span>}
@@ -28,6 +36,7 @@ Button.propTypes = {
   alt: PropTypes.string,
   icon: PropTypes.string,
   css: PropTypes.object,
+  cssProps: PropTypes.object,
   backgroundImageUrl: PropTypes.string,
   onClick: PropTypes.func,
   type: PropTypes.string,
