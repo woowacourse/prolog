@@ -34,7 +34,7 @@ import wooteco.prolog.studylog.domain.*;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
-import wooteco.prolog.studylog.domain.repository.StudylogViewedRepository;
+import wooteco.prolog.studylog.domain.repository.StudylogReadRepository;
 import wooteco.prolog.studylog.exception.StudylogArgumentException;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 
@@ -45,7 +45,7 @@ public class StudylogService {
 
     private final StudylogRepository studylogRepository;
     private final StudylogScrapRepository studylogScrapRepository;
-    private final StudylogViewedRepository studylogViewedRepository;
+    private final StudylogReadRepository studylogReadRepository;
     private final MemberTagService memberTagService;
     private final DocumentService studylogDocumentService;
     private final MissionService missionService;
@@ -60,7 +60,7 @@ public class StudylogService {
 
         List<StudylogResponse> data = studylogs.getData();
         updateScrap(data, findScrapIds(memberId));
-        updateViewed(data, findViewedIds(memberId));
+        updateRead(data, findReadIds(memberId));
         return studylogs;
     }
 
@@ -170,24 +170,25 @@ public class StudylogService {
         return StudylogResponse.of(createdStudylog);
     }
 
+    @Transactional
     public StudylogResponse findById(Long id, Long memberId, boolean isAnonymousMember) {
         StudylogResponse studylog = findById(id);
         if (isAnonymousMember) {
             return studylog;
         }
 
-        if (!studylogViewedRepository.existsByMemberIdAndStudylogId(memberId, id)) {
-            insertStudylogViewed(id, memberId);
+        if (!studylogReadRepository.existsByMemberIdAndStudylogId(memberId, id)) {
+            insertStudylogRead(id, memberId);
         }
         updateScrap(singletonList(studylog), findScrapIds(memberId));
         return studylog;
     }
 
-    private void insertStudylogViewed(Long id, Long memberId) {
-        Member viewedMember = memberService.findById(memberId);
-        Studylog viewedStudylog = studylogRepository.findById(id)
+    private void insertStudylogRead(Long id, Long memberId) {
+        Member readMember = memberService.findById(memberId);
+        Studylog readStudylog = studylogRepository.findById(id)
                 .orElseThrow(StudylogNotFoundException::new);
-        studylogViewedRepository.save(new StudylogViewed(viewedMember, viewedStudylog));
+        studylogReadRepository.save(new StudylogRead(readMember, readStudylog));
     }
 
     public StudylogResponse findById(Long id) {
@@ -246,10 +247,10 @@ public class StudylogService {
             .collect(toList());
     }
 
-    private List<Long> findViewedIds(Long memberId) {
-        List<StudylogViewed> viewedList = studylogViewedRepository.findByMemberId(memberId);
-        return viewedList.stream()
-                .map(StudylogViewed::getStudylog)
+    private List<Long> findReadIds(Long memberId) {
+        List<StudylogRead> readList = studylogReadRepository.findByMemberId(memberId);
+        return readList.stream()
+                .map(StudylogRead::getStudylog)
                 .map(Studylog::getId)
                 .collect(toList());
     }
@@ -262,10 +263,10 @@ public class StudylogService {
         });
     }
 
-    private void updateViewed(List<StudylogResponse> studylogs, List<Long> viewedIds) {
+    private void updateRead(List<StudylogResponse> studylogs, List<Long> readIds) {
         studylogs.forEach(studylogResponse -> {
-            if (viewedIds.stream().anyMatch(id -> id.equals(studylogResponse.getId()))) {
-                studylogResponse.setViewed(true);
+            if (readIds.stream().anyMatch(id -> id.equals(studylogResponse.getId()))) {
+                studylogResponse.setRead(true);
             }
         });
     }
