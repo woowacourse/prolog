@@ -152,7 +152,7 @@ const Button = styled.button`
   padding: 0.5rem 1.5rem;
   border-radius: 1rem;
 
-  :not(:first-child) {
+  :not(:first-of-child) {
     margin-left: 0.5rem;
   }
 `;
