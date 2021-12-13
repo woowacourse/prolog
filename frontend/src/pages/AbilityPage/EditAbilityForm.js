@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Chip from '../../components/Chip/Chip';
-import { COLOR } from '../../constants';
+import { COLOR, ERROR_MESSAGE } from '../../constants';
+import useSnackBar from '../../hooks/useSnackBar';
 import { ManageButtonList, Button, FormContainer, ListForm, ColorPicker } from './styles';
 
 const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEdit }) => {
@@ -9,6 +10,7 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
     description,
     color,
   });
+  const { isSnackBarOpen, SnackBar, openSnackBar } = useSnackBar();
 
   const onFormDataChange = (key) => (event) => {
     setFormData({ ...formData, [key]: event.target.value });
@@ -17,10 +19,21 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
   const onSubmit = async (event) => {
     event.preventDefault();
 
+    const newName = formData.name.trim();
+    if (!newName) {
+      openSnackBar(ERROR_MESSAGE.NEED_ABILITY_NAME);
+      return;
+    }
+
+    if (!formData.color) {
+      openSnackBar(ERROR_MESSAGE.NEED_ABILITY_COLOR);
+      return;
+    }
+
     try {
       await onEdit({
         id,
-        name: formData.name,
+        name: newName,
         description: formData.description,
         color: formData.color,
       });
@@ -29,6 +42,22 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
     } finally {
       onClose();
     }
+  };
+
+  /**
+   * disableSaveButton 함수
+   * 수정하고자 하는 역량의 정보가 이전과 동일하거나, 이름이 공백인 경우에는 등록이 불가능하다.
+   *
+   * @param {string} currentName - 현재의 수정하려고하는 역량 이름
+   */
+  const disableSaveButton = () => {
+    const { name: currentName, description: currentDesc, color: currentColor } = formData;
+
+    if (currentName === name && currentDesc === description && currentColor === color) {
+      return true;
+    }
+
+    return !currentName.trim() || !currentColor;
   };
 
   return (
@@ -53,6 +82,7 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
             value={formData.name}
             onChange={onFormDataChange('name')}
             maxLength={60}
+            required
           />
         </label>
         <label>
@@ -84,11 +114,17 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
           >
             취소
           </Button>
-          <Button backgroundColor={COLOR.DARK_BLUE_700} color={COLOR.WHITE}>
+          <Button
+            backgroundColor={COLOR.DARK_BLUE_700}
+            color={COLOR.WHITE}
+            disabled={disableSaveButton()}
+          >
             저장
           </Button>
         </ManageButtonList>
       </ListForm>
+
+      {isSnackBarOpen && <SnackBar />}
     </FormContainer>
   );
 };
