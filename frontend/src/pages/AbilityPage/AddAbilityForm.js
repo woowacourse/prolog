@@ -3,7 +3,14 @@ import Chip from '../../components/Chip/Chip';
 import { COLOR } from '../../constants';
 import { ManageButtonList, Button, FormContainer, ListForm, ColorPicker } from './styles';
 
-const AddAbilityForm = ({ formData, onFormDataChange, onClose, isParent, onSubmit }) => {
+const AddAbilityForm = ({
+  formData,
+  onFormDataChange,
+  onClose,
+  isParent,
+  onSubmit,
+  sabveButtondisabled,
+}) => {
   const { name, description, color } = formData;
 
   return (
@@ -21,6 +28,7 @@ const AddAbilityForm = ({ formData, onFormDataChange, onClose, isParent, onSubmi
           {name || '라벨 미리보기'}
         </Chip>
       </div>
+
       <ListForm isParent={isParent} onSubmit={onSubmit}>
         <label>
           이름
@@ -30,6 +38,7 @@ const AddAbilityForm = ({ formData, onFormDataChange, onClose, isParent, onSubmi
             value={name}
             maxLength={60}
             onChange={onFormDataChange('name')}
+            required
           />
         </label>
         <label>
@@ -46,10 +55,11 @@ const AddAbilityForm = ({ formData, onFormDataChange, onClose, isParent, onSubmi
             색상
             <ColorPicker>
               <input type="color" value={color} onChange={onFormDataChange('color')} />
-              <input type="text" value={color} onChange={onFormDataChange('color')} />
+              <input type="text" value={color} onChange={onFormDataChange('color')} required />
             </ColorPicker>
           </label>
         )}
+
         <ManageButtonList>
           <Button
             type="button"
@@ -60,7 +70,11 @@ const AddAbilityForm = ({ formData, onFormDataChange, onClose, isParent, onSubmi
           >
             취소
           </Button>
-          <Button backgroundColor={COLOR.DARK_BLUE_700} color={COLOR.WHITE} disabled={!name}>
+          <Button
+            backgroundColor={COLOR.DARK_BLUE_700}
+            color={COLOR.WHITE}
+            disabled={sabveButtondisabled}
+          >
             저장
           </Button>
         </ManageButtonList>

@@ -99,7 +99,12 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
             색상
             <ColorPicker>
               <input type="color" value={formData.color} onChange={onFormDataChange('color')} />
-              <input type="text" value={formData.color} onChange={onFormDataChange('color')} />
+              <input
+                type="text"
+                value={formData.color}
+                onChange={onFormDataChange('color')}
+                required
+              />
             </ColorPicker>
           </label>
         )}

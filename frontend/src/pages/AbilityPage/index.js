@@ -126,8 +126,19 @@ const AbilityPage = () => {
   const onAddFormSubmit = async (event) => {
     event.preventDefault();
 
+    const newName = addFormStatus.name.trim();
+    if (!newName) {
+      openSnackBar(ERROR_MESSAGE.NEED_ABILITY_NAME);
+      return;
+    }
+
+    if (!addFormStatus.color) {
+      openSnackBar(ERROR_MESSAGE.NEED_ABILITY_COLOR);
+      return;
+    }
+
     await addAbility({
-      name: addFormStatus.name,
+      name: newName,
       description: addFormStatus.description,
       color: addFormStatus.color,
       parent: addFormStatus.parent,
@@ -155,6 +166,7 @@ const AbilityPage = () => {
           역량 추가 +
         </Button>
       </div>
+
       {addFormStatus.isOpened && (
         <AbilityList>
           <EditingListItem isParent={true}>
@@ -164,10 +176,12 @@ const AbilityPage = () => {
               isParent={true}
               onClose={addFormClose}
               onSubmit={onAddFormSubmit}
+              sabveButtondisabled={!addFormStatus.name.trim() || !addFormStatus.color}
             />
           </EditingListItem>
         </AbilityList>
       )}
+
       <AbilityList>
         <ListHeader>
           <div>
@@ -193,6 +207,7 @@ const AbilityPage = () => {
           </NoContent>
         )}
       </AbilityList>
+
       {isSnackBarOpen && <SnackBar />}
     </Container>
   );
