@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Chip from '../../components/Chip/Chip';
 import { COLOR, ERROR_MESSAGE } from '../../constants';
 import useSnackBar from '../../hooks/useSnackBar';
+import { isCorrectHexCode } from '../../utils/hexCode';
 import { ManageButtonList, Button, FormContainer, ListForm, ColorPicker } from './styles';
 
 const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEdit }) => {
@@ -20,13 +21,20 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
     event.preventDefault();
 
     const newName = formData.name.trim();
+    const newColor = formData.color.trim();
+
     if (!newName) {
       openSnackBar(ERROR_MESSAGE.NEED_ABILITY_NAME);
       return;
     }
 
-    if (!formData.color) {
+    if (!newColor) {
       openSnackBar(ERROR_MESSAGE.NEED_ABILITY_COLOR);
+      return;
+    }
+
+    if (!isCorrectHexCode(newColor)) {
+      openSnackBar(ERROR_MESSAGE.INVALID_ABILIT_COLOR);
       return;
     }
 
@@ -57,7 +65,7 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
       return true;
     }
 
-    return !currentName.trim() || !currentColor;
+    return !currentName.trim() || !currentColor.trim();
   };
 
   return (

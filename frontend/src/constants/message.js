@@ -19,6 +19,7 @@ const ERROR_MESSAGE = {
 
   NEED_ABILITY_NAME: '역량의 이름은 공백일 수 없습니다.',
   NEED_ABILITY_COLOR: '역량의 색상을 선택해주세요.',
+  INVALID_ABILIT_COLOR: '유효하지 않은 색상코드입니다.',
 
   1000: '깃허브 로그인에 실패했습니다. 다시 로그인해 주세요.',
   1001: '깃허브 로그인에 실패했습니다. 다시 로그인해 주세요.',

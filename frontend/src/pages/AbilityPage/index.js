@@ -23,6 +23,7 @@ import AddAbilityForm from './AddAbilityForm';
 import NoAbility from './NoAbility';
 
 import { Container, AbilityList, Button, EditingListItem, ListHeader, NoContent } from './styles';
+import { isCorrectHexCode } from '../../utils/hexCode';
 
 const DEFAULT_ABILITY_FORM = {
   isOpened: false,
@@ -127,13 +128,20 @@ const AbilityPage = () => {
     event.preventDefault();
 
     const newName = addFormStatus.name.trim();
+    const newColor = addFormStatus.color.trim();
+
     if (!newName) {
       openSnackBar(ERROR_MESSAGE.NEED_ABILITY_NAME);
       return;
     }
 
-    if (!addFormStatus.color) {
+    if (!newColor) {
       openSnackBar(ERROR_MESSAGE.NEED_ABILITY_COLOR);
+      return;
+    }
+
+    if (!isCorrectHexCode(newColor)) {
+      openSnackBar(ERROR_MESSAGE.INVALID_ABILIT_COLOR);
       return;
     }
 
