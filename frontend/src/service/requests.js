@@ -1,6 +1,25 @@
 const BASE_URL = process.env.REACT_APP_API_URL;
 
+/*
+ * @deprecated
+ * post -> studylog로 변환 작업중
+ * 추후 의존성이 모두 제거되면 해당 함수 삭제 예정
+ */
 const requestGetPost = (postId, accessToken) => {
+  if (accessToken) {
+    return fetch(`${BASE_URL}/posts/${postId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  }
+
+  return fetch(`${BASE_URL}/posts/${postId}`);
+};
+
+const requestGetStudyLog = (postId, accessToken) => {
   if (accessToken) {
     return fetch(`${BASE_URL}/posts/${postId}`, {
       method: 'GET',
@@ -214,8 +233,9 @@ const requestSetDefaultAbility = (accessToken, field) =>
   });
 
 export {
-  requestGetPosts,
   requestGetPost,
+  requestGetPosts,
+  requestGetStudyLog,
   requestGetFilters,
   requestGetMissions,
   requestGetTags,

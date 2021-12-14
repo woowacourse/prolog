@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ERROR_MESSAGE } from '../constants/message';
 import {
   requestEditPost,
-  requestGetPost,
+  requestGetStudyLog,
   requestGetPosts,
   requestDeletePost,
 } from '../service/requests';
@@ -31,7 +31,7 @@ const useStudyLog = (defaultValue) => {
 
   const getData = async (postId, accessToken) => {
     try {
-      const response = await requestGetPost(postId, accessToken);
+      const response = await requestGetStudyLog(postId, accessToken);
 
       if (!response.ok) {
         throw new Error(await response.text());

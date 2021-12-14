@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
-import { requestGetPost, requestPostScrap, requestDeleteScrap } from '../../service/requests';
+import { requestPostScrap, requestDeleteScrap } from '../../service/requests';
 
 import { Button, BUTTON_SIZE, Card, ProfileChip } from '../../components';
 import { Viewer } from '@toast-ui/react-editor';
@@ -38,10 +38,8 @@ const PostPage = () => {
   const history = useHistory();
   const { id: postId } = useParams();
 
-  const [post, setPost] = useState({});
-
   const { NotFound } = useNotFound();
-  const { deleteData: deletePost } = useStudyLog({});
+  const { response: post, getData: getStudyLog, deleteData: deleteStudyLog } = useStudyLog({});
   const { openSnackBar } = useSnackBar();
 
   const accessToken = useSelector((state) => state.user.accessToken.data);
@@ -69,7 +67,7 @@ const PostPage = () => {
   const onDeletePost = async (id) => {
     if (!window.confirm(CONFIRM_MESSAGE.DELETE_POST)) return;
 
-    const hasError = await deletePost(id, accessToken);
+    const hasError = await deleteStudyLog(id, accessToken);
 
     if (hasError) {
       alert(ALERT_MESSAGE.FAIL_TO_DELETE_POST);
@@ -95,7 +93,7 @@ const PostPage = () => {
         throw new Error(response.status);
       }
 
-      getPostDetail();
+      await getStudyLog(postId, accessToken);
       openSnackBar(SNACKBAR_MESSAGE.SUCCESS_TO_SCRAP);
     } catch (error) {
       console.error(error);
@@ -114,27 +112,16 @@ const PostPage = () => {
         throw new Error(response.status);
       }
 
-      getPostDetail();
+      await getStudyLog(postId, accessToken);
       openSnackBar(SNACKBAR_MESSAGE.FAIL_TO_SCRAP);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const getPostDetail = useCallback(async () => {
-    try {
-      const response = await requestGetPost(postId, accessToken);
-      const data = await response.json();
-
-      setPost(data);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [accessToken, postId]);
-
   useEffect(() => {
-    getPostDetail();
-  }, [getPostDetail]);
+    getStudyLog(postId, accessToken);
+  }, [postId, accessToken]);
 
   return (
     <>
