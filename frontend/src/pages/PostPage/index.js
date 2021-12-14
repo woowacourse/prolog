@@ -29,7 +29,7 @@ import {
 import useNotFound from '../../hooks/useNotFound';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH, SNACKBAR_MESSAGE } from '../../constants';
 import { useSelector } from 'react-redux';
-import usePost from '../../hooks/usePost';
+import useStudyLog from '../../hooks/useStudyLog';
 import scrapIcon from '../../assets/images/scrap.svg';
 import unScrapIcon from '../../assets/images/scrap_filled.svg';
 import useSnackBar from '../../hooks/useSnackBar';
@@ -41,7 +41,7 @@ const PostPage = () => {
   const [post, setPost] = useState({});
 
   const { NotFound } = useNotFound();
-  const { deleteData: deletePost } = usePost({});
+  const { deleteData: deletePost } = useStudyLog({});
   const { openSnackBar } = useSnackBar();
 
   const accessToken = useSelector((state) => state.user.accessToken.data);
@@ -123,7 +123,7 @@ const PostPage = () => {
 
   const getPostDetail = useCallback(async () => {
     try {
-      const response = await requestGetPost(accessToken, postId);
+      const response = await requestGetPost(postId, accessToken);
       const data = await response.json();
 
       setPost(data);

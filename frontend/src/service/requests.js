@@ -1,6 +1,6 @@
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-const requestGetPost = (accessToken, postId) => {
+const requestGetPost = (postId, accessToken) => {
   if (accessToken) {
     return fetch(`${BASE_URL}/posts/${postId}`, {
       method: 'GET',

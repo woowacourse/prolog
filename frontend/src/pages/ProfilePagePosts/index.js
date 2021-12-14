@@ -22,7 +22,7 @@ import {
   Heading,
 } from './styles';
 import { useSelector } from 'react-redux';
-import usePost from '../../hooks/usePost';
+import useStudyLog from '../../hooks/useStudyLog';
 import useFetch from '../../hooks/useFetch';
 import useFilterWithParams from '../../hooks/useFilterWithParams';
 import { SelectedFilterList } from '../MainPage/styles';
@@ -55,7 +55,7 @@ const ProfilePagePosts = () => {
 
   const [filters] = useFetch({}, requestGetFilters);
 
-  const { error: postError, deleteData: deletePost } = usePost({});
+  const { error: postError, deleteData: deletePost } = useStudyLog({});
 
   const goTargetPost = (id) => {
     history.push(`${PATH.POST}/${id}`);
