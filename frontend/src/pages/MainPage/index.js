@@ -72,19 +72,19 @@ const MainPage = () => {
   }, [getFullParams, postQueryParams, selectedFilterDetails]);
 
   useEffect(() => {
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'));
+
     const getData = async () => {
       const query = new URLSearchParams(history.location.search);
 
       try {
-        const response = await requestGetPosts({ type: 'searchParams', data: query });
+        const response = await requestGetPosts({ type: 'searchParams', data: query }, accessToken);
         const data = await response.json();
-
-        console.log(data.data[0]);
 
         setPosts({
           ...data,
           data: data.data.map(
-            ({
+            ({ id, author, content, mission, title, tags, createdAt, updatedAt, read, scrap }) => ({
               id,
               author,
               content,
@@ -93,18 +93,7 @@ const MainPage = () => {
               tags,
               createdAt,
               updatedAt,
-              viewed,
-              scrap,
-            }) => ({
-              id,
-              author,
-              content,
-              mission,
-              title,
-              tags,
-              createdAt,
-              updatedAt,
-              isRead: viewed,
+              isRead: read,
               isScrapped: scrap,
             })
           ),

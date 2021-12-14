@@ -9,9 +9,9 @@ const requestGetPost = (accessToken, postId) => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-  } else {
-    return fetch(`${BASE_URL}/posts/${postId}`);
   }
+
+  return fetch(`${BASE_URL}/posts/${postId}`);
 };
 
 const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
@@ -20,9 +20,17 @@ const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
 
 const requestGetTags = () => fetch(`${BASE_URL}/tags`);
 
-const requestGetPosts = (query) => {
+const requestGetPosts = (query, accessToken) => {
+  const authConfig = accessToken
+    ? {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    : {};
+
   if (query.type === 'searchParams') {
-    return fetch(`${BASE_URL}/posts?${query.data.toString()}`);
+    return fetch(`${BASE_URL}/posts?${query.data.toString()}`, authConfig);
   }
 
   if (query.type === 'filter') {
@@ -35,7 +43,7 @@ const requestGetPosts = (query) => {
         )
       : '';
 
-    return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`);
+    return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`, authConfig);
   }
 };
 
