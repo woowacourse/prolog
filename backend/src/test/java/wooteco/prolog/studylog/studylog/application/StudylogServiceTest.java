@@ -300,6 +300,36 @@ class StudylogServiceTest {
         assertThat(scraps).doesNotContain(false);
     }
 
+    @DisplayName("스터디로그 조회 시 조회수가 오른다.")
+    @Test
+    void findByIdTest() {
+        List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1, studylog2);
+        StudylogResponse targetStudyLog = studylogResponses.get(0);
+
+        StudylogResponse studylogResponse = studylogService.findById
+                (targetStudyLog.getId(), member2.getId(), false);
+
+        assertThat(studylogResponse.getViewCount()).isEqualTo(1);
+
+        studylogResponse = studylogService.findById
+                (targetStudyLog.getId(), member2.getId(), false);
+
+
+        assertThat(studylogResponse.getViewCount()).isEqualTo(2);
+    }
+
+    @DisplayName("자신이 작성한 스터디로그 조회 시 조회수가 오르지 않는다.")
+    @Test
+    void findByIdSameUserTest() {
+        List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1, studylog2);
+        StudylogResponse targetStudyLog = studylogResponses.get(0);
+
+        StudylogResponse studylogResponse = studylogService.findById
+                (targetStudyLog.getId(), member1.getId(), false);
+
+        assertThat(studylogResponse.getViewCount()).isEqualTo(0);
+    }
+
     @DisplayName("유저 이름으로 스터디로그를 조회한다.")
     @Test
     void findStudylogsOfTest() {

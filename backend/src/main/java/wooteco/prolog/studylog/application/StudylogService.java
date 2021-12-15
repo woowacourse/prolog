@@ -172,6 +172,8 @@ public class StudylogService {
 
     @Transactional
     public StudylogResponse findById(Long id, Long memberId, boolean isAnonymousMember) {
+        increaseViewCount(id, memberId, isAnonymousMember);
+
         StudylogResponse studylog = findById(id);
         if (isAnonymousMember) {
             return studylog;
@@ -196,6 +198,19 @@ public class StudylogService {
             .orElseThrow(StudylogNotFoundException::new);
 
         return StudylogResponse.of(studylog);
+    }
+
+    private void increaseViewCount(Long id, Long memberId, boolean isAnonymousMember) {
+        Studylog studylog = studylogRepository.findById(id)
+                .orElseThrow(StudylogNotFoundException::new);
+
+        if (isAnonymousMember) {
+            studylog.increaseViewCount();
+            return;
+        }
+
+        Member foundMember = memberService.findById(memberId);
+        studylog.increaseViewCount(foundMember);
     }
 
     @Transactional

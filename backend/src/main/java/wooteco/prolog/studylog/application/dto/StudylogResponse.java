@@ -26,6 +26,7 @@ public class StudylogResponse {
     private List<TagResponse> tags;
     private boolean scrap;
     private boolean read;
+    private int viewCount;
 
     public StudylogResponse(
         Studylog studylog,
@@ -41,7 +42,8 @@ public class StudylogResponse {
             studylog.getContent(),
             tagResponses,
             false,
-            false
+            false,
+            studylog.getViewCount()
         );
     }
 
@@ -63,7 +65,8 @@ public class StudylogResponse {
             studylog.getContent(),
             tagResponses,
             scrap,
-            read
+            read,
+            studylog.getViewCount()
         );
     }
 
@@ -74,7 +77,7 @@ public class StudylogResponse {
             .collect(toList());
     }
 
-    public void setScrap(boolean isScrap) {
+    public void setScrap(boolean isScrap){
         this.scrap = isScrap;
     }
 

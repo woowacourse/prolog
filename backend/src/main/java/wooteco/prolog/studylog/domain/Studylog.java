@@ -34,6 +34,9 @@ public class Studylog extends BaseEntity {
     @Embedded
     private StudylogTags studylogTags;
 
+    @Embedded
+    private ViewCount viewCount;
+
     public Studylog(Member member, String title, String content, Mission mission, List<Tag> tags) {
         this(null, member, title, content, mission, tags);
     }
@@ -47,6 +50,7 @@ public class Studylog extends BaseEntity {
         this.mission = mission;
         this.studylogTags = new StudylogTags();
         addTags(new Tags(tags));
+        this.viewCount =  new ViewCount();
     }
 
     public void validateAuthor(Member member) {
@@ -81,6 +85,20 @@ public class Studylog extends BaseEntity {
         studylogTags.add(convertToStudylogTags(tags));
     }
 
+    public void increaseViewCount(Member member) {
+        if (!isMine(member)) {
+            viewCount.increase();
+        }
+    }
+
+    public void increaseViewCount() {
+        viewCount.increase();
+    }
+
+    public boolean isMine(Member member) {
+        return this.member.equals(member);
+    }
+
     public Member getMember() {
         return member;
     }
@@ -99,5 +117,9 @@ public class Studylog extends BaseEntity {
 
     public String getContent() {
         return content.getContent();
+    }
+
+    public int getViewCount() {
+        return viewCount.getViews();
     }
 }

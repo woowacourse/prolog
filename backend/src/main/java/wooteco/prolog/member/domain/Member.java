@@ -141,7 +141,7 @@ public class Member {
             return false;
         }
         Member member = (Member) o;
-        return Objects.equals(id, member.id);
+        return Objects.equals(id, member.getId());
     }
 
     @Override
