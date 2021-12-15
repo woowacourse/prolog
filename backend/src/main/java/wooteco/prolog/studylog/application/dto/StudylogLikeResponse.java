@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 public class StudylogLikeResponse {
 
     private boolean liked;
-    private Integer likeCount;
+    private Integer likesCount;
 
 }

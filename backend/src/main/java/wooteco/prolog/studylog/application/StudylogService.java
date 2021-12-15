@@ -139,7 +139,10 @@ public class StudylogService {
 
     public StudylogsResponse findStudylogsOf(String username, Pageable pageable) {
         Member member = memberService.findByUsername(username);
-        return StudylogsResponse.of(studylogRepository.findByMember(member, pageable), null);
+        return StudylogsResponse.of(
+            studylogRepository.findByMember(member, pageable),
+            member.getId()
+        );
     }
 
     @Transactional
