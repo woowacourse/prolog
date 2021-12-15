@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { requestGetPost, requestPostScrap, requestDeleteScrap } from '../../service/requests';
@@ -33,6 +34,8 @@ import usePost from '../../hooks/usePost';
 import scrapIcon from '../../assets/images/scrap.svg';
 import unScrapIcon from '../../assets/images/scrap_filled.svg';
 import useSnackBar from '../../hooks/useSnackBar';
+import ViewCount from '../../components/ViewCount/ViewCount';
+import { FlexStyle, JustifyContentSpaceBtwStyle } from '../../styles/flex.styles';
 
 const PostPage = () => {
   const history = useHistory();
@@ -143,7 +146,7 @@ const PostPage = () => {
           <Button
             size={BUTTON_SIZE.X_SMALL}
             type="button"
-            css={EditButtonStyle}
+            cssProps={EditButtonStyle}
             alt="수정 버튼"
             onClick={() => goEditTargetPost(post?.id)}
           >
@@ -152,7 +155,7 @@ const PostPage = () => {
           <Button
             size={BUTTON_SIZE.X_SMALL}
             type="button"
-            css={DeleteButtonStyle}
+            cssProps={DeleteButtonStyle}
             alt="삭제 버튼"
             onClick={() => onDeletePost(post?.id)}
           >
@@ -169,10 +172,13 @@ const PostPage = () => {
                 <IssuedDate>{new Date(post?.createdAt).toLocaleString('ko-KR')}</IssuedDate>
               </SubHeaderRightContent>
             </SubHeader>
-            <Title>{post?.title}</Title>
+            <div css={[FlexStyle, JustifyContentSpaceBtwStyle]}>
+              <Title>{post?.title}</Title>
+              <ViewCount count={post?.viewCount} />
+            </div>
             <ProfileChip
               imageSrc={post?.author?.imageUrl}
-              css={ProfileChipStyle}
+              cssProps={ProfileChipStyle}
               onClick={goProfilePage(post?.author?.username)}
             >
               {post?.author?.nickname}
@@ -198,7 +204,7 @@ const PostPage = () => {
                   size="X_SMALL"
                   icon={unScrapIcon}
                   alt="스크랩 아이콘"
-                  css={ScrapButtonStyle}
+                  cssProps={ScrapButtonStyle}
                   onClick={deleteScrap}
                 />
               ) : (
@@ -207,7 +213,7 @@ const PostPage = () => {
                   size="X_SMALL"
                   icon={scrapIcon}
                   alt="스크랩 아이콘"
-                  css={ScrapButtonStyle}
+                  cssProps={ScrapButtonStyle}
                   onClick={postScrap}
                 />
               )}

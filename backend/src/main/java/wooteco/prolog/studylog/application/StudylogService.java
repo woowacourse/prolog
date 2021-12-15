@@ -30,10 +30,7 @@ import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
-import wooteco.prolog.studylog.domain.Mission;
-import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.StudylogScrap;
-import wooteco.prolog.studylog.domain.Tags;
+import wooteco.prolog.studylog.domain.*;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
@@ -170,7 +167,10 @@ public class StudylogService {
         return StudylogResponse.of(createdStudylog);
     }
 
+    @Transactional
     public StudylogResponse findById(Long id, Long memberId, boolean isAnonymousMember) {
+        increaseViewCount(id, memberId, isAnonymousMember);
+
         StudylogResponse studylog = findById(id);
 
         if (isAnonymousMember) {
@@ -186,6 +186,19 @@ public class StudylogService {
             .orElseThrow(StudylogNotFoundException::new);
 
         return StudylogResponse.of(studylog);
+    }
+
+    private void increaseViewCount(Long id, Long memberId, boolean isAnonymousMember) {
+        Studylog studylog = studylogRepository.findById(id)
+                .orElseThrow(StudylogNotFoundException::new);
+
+        if (isAnonymousMember) {
+            studylog.increaseViewCount();
+            return;
+        }
+
+        Member foundMember = memberService.findById(memberId);
+        studylog.increaseViewCount(foundMember);
     }
 
     @Transactional

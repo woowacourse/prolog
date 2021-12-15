@@ -209,6 +209,12 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         context.invokeHttpGet(path);
     }
 
+    @When("로그인된 사용자가 {long}번째 스터디로그를 조회하면")
+    public void 로그인된사용자가스터디로그를조회하면(Long studylogId) {
+        String path = "/posts/" + studylogId;
+        context.invokeHttpGetWithToken(path);
+    }
+
     @When("id {string} 스터디로그를 조회하면")
     public void 여러개의스터디로그를조회하면(String studylogIds) {
         List<String> ids = Arrays.asList(studylogIds.split(","));
@@ -234,6 +240,22 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         StudylogResponse studylog = context.response.as(StudylogResponse.class);
 
         assertThat(studylog).isNotNull();
+    }
+
+    @Then("조회된 스터디로그의 조회수가 증가된다")
+    public void 조회된스터디로그의조회수가증가된다() {
+        StudylogResponse studylog = context.response.as(StudylogResponse.class);
+
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(studylog.getViewCount()).isEqualTo(1);
+    }
+
+    @Then("조회된 스터디로그의 조회수가 증가되지 않는다")
+    public void 조회된스터디로그의조회수가증가되지않는다() {
+        StudylogResponse studylog = context.response.as(StudylogResponse.class);
+
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(studylog.getViewCount()).isEqualTo(0);
     }
 
     @When("{long}번째 스터디로그를 수정하면")
