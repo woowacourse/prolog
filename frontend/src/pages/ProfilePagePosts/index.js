@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
 import { Button, BUTTON_SIZE, Card, FilterList, Pagination } from '../../components';
-import { requestGetFilters, requestGetPosts } from '../../service/requests';
+import { requestGetFilters } from '../../service/requests';
 import {
   ButtonList,
   CardStyles,
@@ -51,11 +51,15 @@ const ProfilePagePosts = () => {
 
   const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
   const [hoveredPostId, setHoveredPostId] = useState(0);
-  const [posts, setPosts] = useState([]);
 
   const [filters] = useFetch({}, requestGetFilters);
 
-  const { error: postError, deleteData: deletePost } = useStudyLog({});
+  const {
+    response: posts,
+    getAllData: getStudyLogs,
+    error: postError,
+    deleteData: deletePost,
+  } = useStudyLog([]);
 
   const goTargetPost = (id) => {
     history.push(`${PATH.POST}/${id}`);
@@ -69,15 +73,7 @@ const ProfilePagePosts = () => {
 
   const getData = async () => {
     const query = new URLSearchParams(history.location.search) + `&usernames=${username}`;
-
-    try {
-      const response = await requestGetPosts({ type: 'searchParams', data: query });
-      const data = await response.json();
-
-      setPosts(data);
-    } catch (error) {
-      console.error(error);
-    }
+    await getStudyLogs({ type: 'searchParams', data: query });
   };
 
   const onDeletePost = async (event, id) => {

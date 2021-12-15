@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Button, FilterList, Pagination } from '../../components';
 import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
 import useFetch from '../../hooks/useFetch';
-import { requestGetFilters, requestGetPosts } from '../../service/requests';
+import { requestGetFilters } from '../../service/requests';
 import { useSelector } from 'react-redux';
 import {
   FilterListWrapper,
@@ -17,6 +17,7 @@ import Chip from '../../components/Chip/Chip';
 import FlexBox from '../../components/@shared/FlexBox/FlexBox';
 import useFilterWithParams from '../../hooks/useFilterWithParams';
 import StudyLogList from '../../components/Lists/StudyLogList';
+import useStudyLog from '../../hooks/useStudyLog';
 
 const MainPage = () => {
   const {
@@ -38,7 +39,7 @@ const MainPage = () => {
   const user = useSelector((state) => state.user.profile);
   const isLoggedIn = !!user.data;
 
-  const [posts, setPosts] = useState([]);
+  const { response: posts, getAllData: getStudyLogs } = useStudyLog([]);
 
   const [filters] = useFetch([], requestGetFilters);
 
@@ -72,38 +73,10 @@ const MainPage = () => {
   }, [getFullParams, postQueryParams, selectedFilterDetails]);
 
   useEffect(() => {
-    const accessToken = JSON.parse(localStorage.getItem('accessToken'));
+    const accessToken = JSON.parse(localStorage.getItem('accessToken') ?? '');
+    const query = new URLSearchParams(history.location.search);
 
-    const getData = async () => {
-      const query = new URLSearchParams(history.location.search);
-
-      try {
-        const response = await requestGetPosts({ type: 'searchParams', data: query }, accessToken);
-        const data = await response.json();
-
-        setPosts({
-          ...data,
-          data: data.data.map(
-            ({ id, author, content, mission, title, tags, createdAt, updatedAt, read, scrap }) => ({
-              id,
-              author,
-              content,
-              mission,
-              title,
-              tags,
-              createdAt,
-              updatedAt,
-              isRead: read,
-              isScrapped: scrap,
-            })
-          ),
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    getData();
+    getStudyLogs({ type: 'searchParams', data: query }, accessToken);
   }, [history.location.search]);
 
   useEffect(() => {

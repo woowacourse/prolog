@@ -3,7 +3,7 @@ import { ERROR_MESSAGE } from '../constants/message';
 import {
   requestEditPost,
   requestGetStudyLog,
-  requestGetPosts,
+  requestGetStudyLogs,
   requestDeletePost,
 } from '../service/requests';
 
@@ -13,14 +13,30 @@ const useStudyLog = (defaultValue) => {
 
   const getAllData = async (query, accessToken) => {
     try {
-      const response = await requestGetPosts(query, accessToken);
+      const response = await requestGetStudyLogs(query, accessToken);
 
       if (!response.ok) {
         throw new Error(await response.text());
       }
       const json = await response.json();
 
-      setResponse(json);
+      setResponse({
+        ...json,
+        data: json.data.map(
+          ({ id, author, content, mission, title, tags, createdAt, updatedAt, read, scrap }) => ({
+            id,
+            author,
+            content,
+            mission,
+            title,
+            tags,
+            createdAt,
+            updatedAt,
+            isRead: read,
+            isScrapped: scrap,
+          })
+        ),
+      });
     } catch (error) {
       const errorResponse = JSON.parse(error.message);
 

@@ -39,6 +39,11 @@ const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
 
 const requestGetTags = () => fetch(`${BASE_URL}/tags`);
 
+/*
+ * @deprecated
+ * post -> studylog로 변환 작업중
+ * 추후 의존성이 모두 제거되면 해당 함수 삭제 예정
+ */
 const requestGetPosts = (query, accessToken) => {
   const authConfig = accessToken
     ? {
@@ -64,6 +69,37 @@ const requestGetPosts = (query, accessToken) => {
 
     return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`, authConfig);
   }
+
+  return fetch(`${BASE_URL}/posts`, authConfig);
+};
+
+const requestGetStudyLogs = (query, accessToken) => {
+  const authConfig = accessToken
+    ? {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    : {};
+
+  if (query.type === 'searchParams') {
+    return fetch(`${BASE_URL}/posts?${query.data.toString()}`, authConfig);
+  }
+
+  if (query.type === 'filter') {
+    const searchParams = Object.entries(query?.data?.postQueryParams).map(
+      ([key, value]) => `${key}=${value}`
+    );
+    const filterQuery = query.data.filterQuery.length
+      ? query.data.filterQuery.map(
+          ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
+        )
+      : '';
+
+    return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`, authConfig);
+  }
+
+  return fetch(`${BASE_URL}/posts`, authConfig);
 };
 
 const requestEditPost = (postId, data, accessToken) =>
@@ -236,6 +272,7 @@ export {
   requestGetPost,
   requestGetPosts,
   requestGetStudyLog,
+  requestGetStudyLogs,
   requestGetFilters,
   requestGetMissions,
   requestGetTags,
