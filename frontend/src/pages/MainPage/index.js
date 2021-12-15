@@ -73,10 +73,13 @@ const MainPage = () => {
   }, [getFullParams, postQueryParams, selectedFilterDetails]);
 
   useEffect(() => {
-    const accessToken = JSON.parse(localStorage.getItem('accessToken') ?? '');
+    const accessToken = localStorage.getItem('accessToken');
     const query = new URLSearchParams(history.location.search);
 
-    getStudyLogs({ type: 'searchParams', data: query }, accessToken);
+    getStudyLogs(
+      { type: 'searchParams', data: query },
+      accessToken ? JSON.parse(accessToken) : null
+    );
   }, [history.location.search]);
 
   useEffect(() => {
