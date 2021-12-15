@@ -48,15 +48,18 @@ public class Likes {
     public void unlike(Long id) {
         validateExistingLike(id);
         values.remove(new Like(id));
-
     }
 
     private void validateExistingLike(Long id) {
-        values.stream()
+        if (!likedByMember(id)) {
+            throw new InvalidUnlikeRequestException();
+        }
+    }
+
+    public boolean likedByMember(Long memberId) {
+        return values.stream()
             .map(Like::getMemberId)
-            .filter(memberId -> memberId.equals(id))
-            .findAny()
-            .orElseThrow(InvalidUnlikeRequestException::new);
+            .anyMatch(id -> id.equals(memberId));
     }
 
     public int likeCount() {

@@ -111,6 +111,10 @@ public class Studylog extends BaseEntity {
         likes.unlike(id);
     }
 
+    public boolean likedByMember(Long memberId) {
+        return likes.likedByMember(memberId);
+    }
+
     public int getLikeCount() {
         return likes.likeCount();
     }
