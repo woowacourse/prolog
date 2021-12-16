@@ -384,7 +384,7 @@ class StudylogServiceTest {
         studylogService.updateStudylog(member1.getId(), targetStudylog.getId(), updateStudylogRequest);
 
         //then
-        StudylogResponse expectedResult = StudylogResponse.of(studylogService.findById(targetStudylog.getId()));
+        StudylogResponse expectedResult = studylogService.findbyIdAndReturnStudylogResponse(targetStudylog.getId());
         List<String> updateTagNames = tags.stream()
             .map(Tag::getName)
             .collect(toList());

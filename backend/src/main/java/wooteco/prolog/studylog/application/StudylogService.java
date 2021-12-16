@@ -191,7 +191,11 @@ public class StudylogService {
         return studylogResponse;
     }
 
-    public Studylog findById(Long id) {
+    public StudylogResponse findbyIdAndReturnStudylogResponse(Long id) {
+        return StudylogResponse.of(findById(id));
+    }
+
+    private Studylog findById(Long id) {
         return studylogRepository.findById(id)
             .orElseThrow(StudylogNotFoundException::new);
     }
