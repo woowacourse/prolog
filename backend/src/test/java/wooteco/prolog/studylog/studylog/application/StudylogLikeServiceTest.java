@@ -60,7 +60,7 @@ public class StudylogLikeServiceTest {
 
         // then
         assertThat(studylogLikeResponse.isLiked()).isTrue();
-        assertThat(studylogLikeResponse.getLikeCount()).isOne();
+        assertThat(studylogLikeResponse.getLikesCount()).isOne();
     }
 
     @DisplayName("비로그인 사용자가 스터디로그를 좋아요 한다 - 실패")
@@ -111,7 +111,7 @@ public class StudylogLikeServiceTest {
 
         // then
         assertThat(studylogLikeResponse.isLiked()).isFalse();
-        assertThat(studylogLikeResponse.getLikeCount()).isZero();
+        assertThat(studylogLikeResponse.getLikesCount()).isZero();
     }
 
     @DisplayName("좋아요 하지 않은 사용자가 스터디로그를 좋아요 취소한다 - 실패")
