@@ -10,8 +10,6 @@ const Content = styled.div`
   width: 100%;
   height: fit-content;
   margin-left: 2.4rem;
-  display: flex;
-  justify-content: center;
 
   position: relative;
 `;
