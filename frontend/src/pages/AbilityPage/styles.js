@@ -2,7 +2,7 @@ import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
 
-const Container = styled.div`
+export const Container = styled.div`
   width: 100%;
   height: 100%;
 
@@ -38,22 +38,28 @@ const Container = styled.div`
   }
 `;
 
-const AbilityList = styled.ul`
+export const AbilityList = styled.ul`
   width: 100%;
   background-color: ${COLOR.WHITE};
 
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
   border-radius: 1rem;
 
+  > div {
+    width: 100%;
+    padding: 0.5rem 2rem;
+  }
+
   li {
     width: 100%;
+    min-height: 6rem;
+    padding: 0.5rem 2rem;
 
     display: grid;
     grid-template-columns: 0.2fr 1fr 2fr 1fr;
     justify-content: center;
     align-items: center;
 
-    padding: 0.5rem 2rem;
     border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
 
     :last-child {
@@ -62,7 +68,7 @@ const AbilityList = styled.ul`
   }
 `;
 
-const openList = keyframes`
+export const openList = keyframes`
   from {
     height: 0;
     max-height:0;
@@ -76,7 +82,7 @@ const openList = keyframes`
   }
 `;
 
-const SubAbilityList = styled.ul`
+export const SubAbilityList = styled.ul`
   border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
 
   overflow: hidden;
@@ -101,12 +107,12 @@ const SubAbilityList = styled.ul`
         `}
 `;
 
-const ManageButtonList = styled.div`
+export const ManageButtonList = styled.div`
   display: flex;
   justify-content: right;
 `;
 
-const ArrowButton = styled.button`
+export const ArrowButton = styled.button`
   width: 32px;
   height: 32px;
   position: relative;
@@ -141,7 +147,7 @@ const ArrowButton = styled.button`
   }
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   ${({ backgroundColor, color }) => `
     background-color: ${backgroundColor};
     color: ${color};
@@ -157,7 +163,7 @@ const Button = styled.button`
   }
 `;
 
-const FormContainer = styled.div`
+export const FormContainer = styled.div`
   padding: 1rem 0 2rem;
   ${({ isParent }) => !isParent && 'padding-bottom: 1rem;'}
 
@@ -174,7 +180,7 @@ const FormContainer = styled.div`
   }
 `;
 
-const ListForm = styled.form`
+export const ListForm = styled.form`
   display: grid;
   grid-template-columns: ${({ isParent }) => (isParent ? `1fr 2fr 1fr 0.8fr` : `1fr 3fr 0.8fr`)};
   justify-content: center;
@@ -223,7 +229,7 @@ const ListForm = styled.form`
   }
 `;
 
-const ColorPicker = styled.div`
+export const ColorPicker = styled.div`
   display: flex;
 
   input[type='text'] {
@@ -231,7 +237,7 @@ const ColorPicker = styled.div`
   }
 `;
 
-const ListHeader = styled.li`
+export const ListHeader = styled.div`
   && {
     grid-template-columns: 1fr;
     background-color: ${COLOR.LIGHT_GRAY_200};
@@ -240,7 +246,7 @@ const ListHeader = styled.li`
   }
 `;
 
-const EditingListItem = styled.li`
+export const EditingListItem = styled.li`
   && {
     ${({ isParent }) =>
       isParent ? 'grid-template-columns: 1fr' : 'grid-template-columns: 0.2fr 4fr'};
@@ -251,7 +257,7 @@ const EditingListItem = styled.li`
   }
 `;
 
-const NoContent = styled.li`
+export const NoContent = styled.li`
   && {
     padding: 2rem 3rem;
 
@@ -275,12 +281,12 @@ const NoContent = styled.li`
   text-align: center;
 `;
 
-const SubAbilityNameInput = styled.input`
+export const SubAbilityNameInput = styled.input`
   background-color: ${COLOR.WHITE}cc;
   border: none;
 `;
 
-const SubAbilityDescriptionInput = styled.input`
+export const SubAbilityDescriptionInput = styled.input`
   width: calc(100% - 1.4rem);
 `;
 
@@ -372,19 +378,16 @@ export const AnotherWay = styled.span`
   color: ${COLOR.DARK_GRAY_600};
 `;
 
-export {
-  Container,
-  AbilityList,
-  SubAbilityList,
-  ManageButtonList,
-  ArrowButton,
-  Button,
-  FormContainer,
-  ListForm,
-  ColorPicker,
-  EditingListItem,
-  ListHeader,
-  NoContent,
-  SubAbilityNameInput,
-  SubAbilityDescriptionInput,
-};
+export const FormButtonWrapper = styled.div`
+  width: 100%;
+  margin-top: 5rem;
+
+  display: flex;
+
+  > button {
+    width: 100%;
+    margin: 0 0.5rem;
+
+    font-size: 1.4rem;
+  }
+`;

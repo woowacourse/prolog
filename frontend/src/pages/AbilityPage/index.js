@@ -21,8 +21,17 @@ import {
 import AbilityListItem from './AbilityListItem';
 import AddAbilityForm from './AddAbilityForm';
 import NoAbility from './NoAbility';
+import { Button as FormButton } from '../../components';
 
-import { Container, AbilityList, Button, EditingListItem, ListHeader, NoContent } from './styles';
+import {
+  Container,
+  AbilityList,
+  Button,
+  EditingListItem,
+  ListHeader,
+  NoContent,
+  FormButtonWrapper,
+} from './styles';
 import { isCorrectHexCode } from '../../utils/hexCode';
 
 const DEFAULT_ABILITY_FORM = {
@@ -167,57 +176,70 @@ const AbilityPage = () => {
   };
 
   return (
-    <Container>
-      <div>
-        <h2>역량</h2>
-        <Button type="button" backgroundColor={COLOR.LIGHT_GRAY_50} onClick={addFormOpen}>
-          역량 추가 +
-        </Button>
-      </div>
+    <>
+      <Container>
+        <div>
+          <h2>역량</h2>
+          <Button type="button" backgroundColor={COLOR.LIGHT_GRAY_50} onClick={addFormOpen}>
+            역량 추가 +
+          </Button>
+        </div>
 
-      {addFormStatus.isOpened && (
-        <AbilityList>
-          <EditingListItem isParent={true}>
-            <AddAbilityForm
-              formData={addFormStatus}
-              onFormDataChange={onFormDataChange}
-              isParent={true}
-              onClose={addFormClose}
-              onSubmit={onAddFormSubmit}
-              sabveButtondisabled={!addFormStatus.name.trim() || !addFormStatus.color}
-            />
-          </EditingListItem>
-        </AbilityList>
-      )}
-
-      <AbilityList>
-        <ListHeader>
-          <div>
-            역량<span>{`(총 ${abilities?.length ?? 0}개)`}</span>
-          </div>
-        </ListHeader>
-
-        {abilities
-          ?.filter(({ isParent }) => isParent)
-          .map((ability) => (
-            <AbilityListItem
-              key={ability.id}
-              ability={ability}
-              addAbility={addAbility}
-              onEdit={editAbility}
-              onDelete={onDelete}
-            />
-          ))}
-
-        {abilities && !abilities.length && (
-          <NoContent>
-            <NoAbility getData={getData} accessToken={accessToken} />
-          </NoContent>
+        {addFormStatus.isOpened && (
+          <AbilityList>
+            <EditingListItem isParent={true}>
+              <AddAbilityForm
+                formData={addFormStatus}
+                onFormDataChange={onFormDataChange}
+                isParent={true}
+                onClose={addFormClose}
+                onSubmit={onAddFormSubmit}
+                sabveButtondisabled={!addFormStatus.name.trim() || !addFormStatus.color}
+              />
+            </EditingListItem>
+          </AbilityList>
         )}
-      </AbilityList>
+
+        <AbilityList>
+          <ListHeader>
+            <div>
+              역량<span>{`(총 ${abilities?.length ?? 0}개)`}</span>
+            </div>
+          </ListHeader>
+
+          {abilities
+            ?.filter(({ isParent }) => isParent)
+            .map((ability) => (
+              <AbilityListItem
+                key={ability.id}
+                ability={ability}
+                addAbility={addAbility}
+                onEdit={editAbility}
+                onDelete={onDelete}
+              />
+            ))}
+
+          {abilities && !abilities.length && (
+            <NoContent>
+              <NoAbility getData={getData} accessToken={accessToken} />
+            </NoContent>
+          )}
+        </AbilityList>
+      </Container>
+
+      <FormButtonWrapper>
+        <FormButton
+          size="X_SMALL"
+          css={{ backgroundColor: `${COLOR.LIGHT_GRAY_400}` }}
+          type="button"
+        >
+          되돌리기
+        </FormButton>
+        <FormButton size="X_SMALL">역량 저장</FormButton>
+      </FormButtonWrapper>
 
       {isSnackBarOpen && <SnackBar />}
-    </Container>
+    </>
   );
 };
 
