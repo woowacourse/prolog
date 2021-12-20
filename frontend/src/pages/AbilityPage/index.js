@@ -193,7 +193,7 @@ const AbilityPage = () => {
       <AbilityList>
         <ListHeader>
           <div>
-            역량<span>{`(총 ${abilities?.length}개)`}</span>
+            역량<span>{`(총 ${abilities?.length ?? 0}개)`}</span>
           </div>
         </ListHeader>
 
