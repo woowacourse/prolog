@@ -39,9 +39,9 @@ import useNotFound from '../../hooks/useNotFound';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH, SNACKBAR_MESSAGE } from '../../constants';
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
-import scrapIcon from '../../assets/images/scrap_filled.svg';
+import scrappedIcon from '../../assets/images/scrap_filled.svg';
 import unScrapIcon from '../../assets/images/scrap.svg';
-import likeIcon from '../../assets/images/heart-filled.svg';
+import likedIcon from '../../assets/images/heart-filled.svg';
 import unLikeIcon from '../../assets/images/heart.svg';
 import useSnackBar from '../../hooks/useSnackBar';
 import debounce from '../../utils/debounce';
@@ -59,6 +59,11 @@ const PostPage = () => {
 
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const myName = useSelector((state) => state.user.profile.data?.username);
+
+  const likeIcon = post?.liked ? likedIcon : unLikeIcon;
+  const likeIconAlt = post?.liked ? '좋아요' : '좋아요 취소';
+  const scrapIcon = post?.scrap ? scrappedIcon : unScrapIcon;
+  const scrapIconAlt = post?.scrap ? '스크랩 취소' : '스크랩';
 
   // if (errorStatus) {
   //   switch (errorStatus) {
@@ -180,6 +185,15 @@ const PostPage = () => {
         }, 300);
   };
 
+  const toggleScrap = () => {
+    if (post?.scrap) {
+      deleteScrap();
+      return;
+    }
+
+    postScrap();
+  };
+
   const getPostDetail = useCallback(async () => {
     try {
       const response = await requestGetPost(accessToken, postId);
@@ -264,8 +278,8 @@ const PostPage = () => {
               <Button
                 type="button"
                 size="X_SMALL"
-                icon={post?.liked ? likeIcon : unLikeIcon}
-                alt={post?.liked ? '좋아요' : '좋아요 취소'}
+                icon={likeIcon}
+                alt={likeIconAlt}
                 cssProps={LikeIconStyle}
                 onClick={toggleLike}
               >
@@ -274,10 +288,10 @@ const PostPage = () => {
               <Button
                 type="button"
                 size="X_SMALL"
-                icon={post?.scrap ? scrapIcon : unScrapIcon}
-                alt={post?.scrap ? '스크랩 취소' : '스크랩'}
+                icon={scrapIcon}
+                alt={scrapIconAlt}
                 cssProps={ScrapButtonStyle}
-                onClick={post?.scrap ? deleteScrap : postScrap}
+                onClick={toggleScrap}
               />
             </div>
           </BottomContainer>
