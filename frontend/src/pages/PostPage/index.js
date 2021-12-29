@@ -31,22 +31,19 @@ import {
   Title,
   SubHeaderRightContent,
   Content,
-  ScrapButtonStyle,
   BottomContainer,
-  LikeIconStyle,
 } from './styles';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH, SNACKBAR_MESSAGE } from '../../constants';
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
-import scrappedIcon from '../../assets/images/scrap_filled.svg';
-import unScrapIcon from '../../assets/images/scrap.svg';
-import likedIcon from '../../assets/images/heart-filled.svg';
-import unLikeIcon from '../../assets/images/heart.svg';
+
 import useSnackBar from '../../hooks/useSnackBar';
 import debounce from '../../utils/debounce';
 import { css } from '@emotion/react';
 import useMutation from '../../hooks/useMutation';
 import useRequest from '../../hooks/useRequest';
+import Like from '../../components/Reaction/Like';
+import Scrap from '../../components/Reaction/Scrap';
 
 const PostPage = () => {
   const history = useHistory();
@@ -61,11 +58,6 @@ const PostPage = () => {
 
   const accessToken = useSelector((state) => state.user.accessToken.data);
   const myName = useSelector((state) => state.user.profile.data?.username);
-
-  const likeIcon = post?.liked ? likedIcon : unLikeIcon;
-  const likeIconAlt = post?.liked ? '좋아요' : '좋아요 취소';
-  const scrapIcon = post?.scrap ? scrappedIcon : unScrapIcon;
-  const scrapIconAlt = post?.scrap ? '스크랩 취소' : '스크랩';
 
   const goProfilePage = (username) => (event) => {
     event.stopPropagation();
@@ -232,24 +224,8 @@ const PostPage = () => {
                 }
               `}
             >
-              <Button
-                type="button"
-                size="X_SMALL"
-                icon={likeIcon}
-                alt={likeIconAlt}
-                cssProps={LikeIconStyle}
-                onClick={toggleLike}
-              >
-                {post?.likesCount ?? 0}
-              </Button>
-              <Button
-                type="button"
-                size="X_SMALL"
-                icon={scrapIcon}
-                alt={scrapIconAlt}
-                cssProps={ScrapButtonStyle}
-                onClick={toggleScrap}
-              />
+              <Like liked={post?.liked} likesCount={post?.likesCount} onClick={toggleLike} />
+              <Scrap scrap={post?.scrap} onClick={toggleScrap} />
             </div>
           </BottomContainer>
         </CardInner>
