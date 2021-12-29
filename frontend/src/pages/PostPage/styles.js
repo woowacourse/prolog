@@ -132,30 +132,11 @@ const Content = styled.div`
     color: #222;
   }
 `;
-const ScrapButtonStyle = css`
-  background-color: transparent;
-  padding: 0;
-  width: fit-content;
-`;
 
 const BottomContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: auto;
-`;
-
-const LikeIconStyle = css`
-  flex-direction: column;
-  background-color: transparent;
-  padding: 0;
-  width: fit-content;
-  font-size: 1.4rem;
-
-  & > img {
-    margin-right: 0;
-    width: 2.4rem;
-    height: 2.4rem;
-  }
 `;
 
 export {
@@ -171,7 +152,5 @@ export {
   IssuedDate,
   ProfileChipStyle,
   Content,
-  ScrapButtonStyle,
   BottomContainer,
-  LikeIconStyle,
 };
