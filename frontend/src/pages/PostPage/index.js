@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
 import {
   requestGetPost,
@@ -35,7 +35,6 @@ import {
   BottomContainer,
   LikeIconStyle,
 } from './styles';
-import useNotFound from '../../hooks/useNotFound';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH, SNACKBAR_MESSAGE } from '../../constants';
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
@@ -46,14 +45,17 @@ import unLikeIcon from '../../assets/images/heart.svg';
 import useSnackBar from '../../hooks/useSnackBar';
 import debounce from '../../utils/debounce';
 import { css } from '@emotion/react';
+import useMutation from '../../hooks/useMutation';
+import useRequest from '../../hooks/useRequest';
 
 const PostPage = () => {
   const history = useHistory();
   const { id: postId } = useParams();
 
-  const [post, setPost] = useState({});
+  const { response: post, fetchData: fetchPost } = useRequest({}, () =>
+    requestGetPost(accessToken, postId)
+  );
 
-  const { NotFound } = useNotFound();
   const { deleteData: deletePost } = usePost({});
   const { openSnackBar } = useSnackBar();
 
@@ -64,15 +66,6 @@ const PostPage = () => {
   const likeIconAlt = post?.liked ? '좋아요' : '좋아요 취소';
   const scrapIcon = post?.scrap ? scrappedIcon : unScrapIcon;
   const scrapIconAlt = post?.scrap ? '스크랩 취소' : '스크랩';
-
-  // if (errorStatus) {
-  //   switch (errorStatus) {
-  //     case 2004:
-  //       return <NotFound />;
-  //     default:
-  //       return;
-  //   }
-  // }
 
   const goProfilePage = (username) => (event) => {
     event.stopPropagation();
@@ -98,82 +91,57 @@ const PostPage = () => {
     history.goBack();
   };
 
-  const postScrap = async () => {
-    if (!myName) {
-      alert(ALERT_MESSAGE.NEED_TO_LOGIN);
-      return;
-    }
-
-    try {
-      const response = await requestPostScrap(myName, accessToken, {
+  const { mutate: postScrap } = useMutation(
+    () => {
+      if (!myName) {
+        alert(ALERT_MESSAGE.NEED_TO_LOGIN);
+        return;
+      }
+      return requestPostScrap(myName, accessToken, {
         studylogId: postId,
       });
-
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-
-      getPostDetail();
+    },
+    () => {
+      fetchPost();
       openSnackBar(SNACKBAR_MESSAGE.SUCCESS_TO_SCRAP);
-    } catch (error) {
-      console.error(error);
     }
-  };
+  );
 
-  const deleteScrap = async () => {
-    if (!window.confirm(CONFIRM_MESSAGE.DELETE_SCRAP)) return;
+  const { mutate: deleteScrap } = useMutation(
+    () => {
+      if (!window.confirm(CONFIRM_MESSAGE.DELETE_SCRAP)) return;
 
-    try {
-      const response = await requestDeleteScrap(myName, accessToken, {
+      return requestDeleteScrap(myName, accessToken, {
         studylogId: postId,
       });
-
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-
-      getPostDetail();
+    },
+    () => {
+      fetchPost();
       openSnackBar(SNACKBAR_MESSAGE.FAIL_TO_SCRAP);
-    } catch (error) {
-      console.error(error);
     }
-  };
+  );
 
-  const postLike = async () => {
-    try {
-      const response = await requestPostLike(accessToken, postId);
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-
+  const { mutate: postLike } = useMutation(
+    () => requestPostLike(accessToken, postId),
+    () => {
       openSnackBar(SNACKBAR_MESSAGE.SET_LIKE);
-      setPost({ ...post, liked: data.liked, likesCount: data.likesCount });
-    } catch (error) {
-      openSnackBar(SNACKBAR_MESSAGE.ERROR_SET_LIKE);
-      console.error(error);
-    }
-  };
+      fetchPost();
+    },
+    () => openSnackBar(SNACKBAR_MESSAGE.ERROR_SET_LIKE)
+  );
 
-  const deleteLike = async () => {
-    if (!window.confirm(CONFIRM_MESSAGE.DELETE_LIKE)) return;
+  const { mutate: deleteLike } = useMutation(
+    () => {
+      if (!window.confirm(CONFIRM_MESSAGE.DELETE_LIKE)) return;
 
-    try {
-      const response = await requestDeleteLike(accessToken, postId);
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-
+      return requestDeleteLike(accessToken, postId);
+    },
+    () => {
       openSnackBar(SNACKBAR_MESSAGE.UNSET_LIKE);
-      setPost({ ...post, liked: data.liked, likesCount: data.likesCount });
-    } catch (error) {
-      openSnackBar(SNACKBAR_MESSAGE.ERROR_UNSET_LIKE);
-      console.error(error);
-    }
-  };
+      fetchPost();
+    },
+    () => openSnackBar(SNACKBAR_MESSAGE.ERROR_UNSET_LIKE)
+  );
 
   const toggleLike = () => {
     post?.liked
@@ -194,20 +162,9 @@ const PostPage = () => {
     postScrap();
   };
 
-  const getPostDetail = useCallback(async () => {
-    try {
-      const response = await requestGetPost(accessToken, postId);
-      const data = await response.json();
-
-      setPost(data);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [accessToken, postId]);
-
   useEffect(() => {
-    getPostDetail();
-  }, [getPostDetail]);
+    fetchPost();
+  }, [accessToken, postId]);
 
   return (
     <>
