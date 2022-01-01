@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { getResponseData } from '../utils/response';
 
 const useMutation = (callback, onSuccess, onError, onFinish) => {
   const [error, setError] = useState('');
@@ -7,11 +8,15 @@ const useMutation = (callback, onSuccess, onError, onFinish) => {
     try {
       const response = await callback(data);
 
+      if (!response) {
+        return;
+      }
+
       if (!response.ok) {
         throw new Error(await response.text());
       }
 
-      onSuccess?.();
+      onSuccess?.(await getResponseData(response));
     } catch (error) {
       const errorResponse = JSON.parse(error.message);
 

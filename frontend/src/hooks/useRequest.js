@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { getResponseData } from '../utils/response';
 
 const useRequest = (defaultValue, callback, onSuccess, onError, onFinish) => {
   const [response, setResponse] = useState(defaultValue);
@@ -8,14 +9,18 @@ const useRequest = (defaultValue, callback, onSuccess, onError, onFinish) => {
     try {
       const response = await callback(data);
 
+      if (!response) {
+        return;
+      }
+
       if (!response.ok) {
         throw new Error(await response.text());
       }
 
-      const json = await response.json();
+      const responseData = await getResponseData(response);
 
-      setResponse(json);
-      onSuccess?.(json);
+      setResponse(responseData);
+      onSuccess?.(responseData);
     } catch (error) {
       const errorResponse = JSON.parse(error.message);
 
