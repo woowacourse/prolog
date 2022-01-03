@@ -57,14 +57,14 @@ public class MemberStepDefinitions extends AcceptanceSteps {
     public void studylog를스크랩하면(String member, int studylogId){
         String username = GithubResponses.findByName(member).getLogin();
         context.invokeHttpPostWithToken("/members/" + username + "/scrap", new MemberScrapRequest((long)studylogId));
-        assertThat(context.response.statusCode()).isEqualTo(200);
+        assertThat(context.response.statusCode()).isEqualTo(201);
     }
 
     @When("{string}의 닉네임이 {int}번 스터디로그를 스크랩 취소하면")
     public void studylog를스크랩취소하면(String member, int studylogId){
         String username = GithubResponses.findByName(member).getLogin();
         context.invokeHttpDeleteWithToken("/members/" + username + "/scrap", new MemberScrapRequest((long)studylogId));
-        assertThat(context.response.statusCode()).isEqualTo(200);
+        assertThat(context.response.statusCode()).isEqualTo(204);
     }
 
     @Then("{string}의 닉네임이 스크랩한 {int}번 스터디로그를 볼 수 있다")
