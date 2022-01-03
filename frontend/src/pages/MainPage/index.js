@@ -39,13 +39,13 @@ const MainPage = () => {
   const user = useSelector((state) => state.user.profile);
   const isLoggedIn = !!user.data;
 
+  const accessToken = useSelector((state) => state.user.accessToken.data);
+
   const { response: posts, getAllData: getStudyLogs } = useStudyLog([]);
 
   const [filters] = useFetch([], requestGetFilters);
 
   const goNewPost = () => {
-    const accessToken = localStorage.getItem('accessToken');
-
     if (!accessToken) {
       alert(ERROR_MESSAGE.LOGIN_DEFAULT);
       window.location.reload();
@@ -73,14 +73,10 @@ const MainPage = () => {
   }, [getFullParams, postQueryParams, selectedFilterDetails]);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
     const query = new URLSearchParams(history.location.search);
 
-    getStudyLogs(
-      { type: 'searchParams', data: query },
-      accessToken ? JSON.parse(accessToken) : null
-    );
-  }, [history.location.search]);
+    getStudyLogs({ type: 'searchParams', data: query }, accessToken);
+  }, [history.location.search, accessToken]);
 
   useEffect(() => {
     if (filters.length === 0) {
