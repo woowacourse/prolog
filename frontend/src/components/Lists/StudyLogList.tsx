@@ -3,6 +3,8 @@ import { css } from '@emotion/react';
 import { useHistory } from 'react-router';
 import { Card, ProfileChip } from '..';
 import { COLOR, PATH } from '../../constants';
+import { AlignItemsEndStyle, FlexColumnStyle, FlexStyle } from '../../styles/flex.styles';
+import ViewCount from '../ViewCount/ViewCount';
 
 import {
   CardStyle,
@@ -33,7 +35,7 @@ const StudyLogList = ({ studylogs }: Props) => {
   return (
     <>
       {studylogs.map((post) => {
-        const { id, author, mission, title, tags, isRead } = post;
+        const { id, author, mission, title, tags, isRead, viewCount } = post;
 
         return (
           <Card
@@ -59,13 +61,16 @@ const StudyLogList = ({ studylogs }: Props) => {
                   ))}
                 </ul>
               </div>
-              <ProfileChip
-                imageSrc={author.imageUrl}
-                cssProps={ProfileChipLocationStyle}
-                onClick={goProfilePage(author.username)}
-              >
-                {author.nickname}
-              </ProfileChip>
+              <div css={[FlexStyle, FlexColumnStyle, AlignItemsEndStyle]}>
+                <ProfileChip
+                  imageSrc={author.imageUrl}
+                  cssProps={ProfileChipLocationStyle}
+                  onClick={goProfilePage(author.username)}
+                >
+                  {author.nickname}
+                </ProfileChip>
+                <ViewCount count={viewCount} />
+              </div>
             </div>
           </Card>
         );

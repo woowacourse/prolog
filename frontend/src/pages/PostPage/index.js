@@ -44,19 +44,22 @@ import useMutation from '../../hooks/useMutation';
 import useRequest from '../../hooks/useRequest';
 import Like from '../../components/Reaction/Like';
 import Scrap from '../../components/Reaction/Scrap';
+import { FlexStyle, JustifyContentSpaceBtwStyle } from '../../styles/flex.styles';
+import ViewCount from '../../components/ViewCount/ViewCount';
 
 const PostPage = () => {
   const history = useHistory();
   const { id: postId } = useParams();
 
   const { response: post, fetchData: fetchPost } = useRequest({}, () =>
-    requestGetPost(accessToken, postId)
+    requestGetPost(postId, accessToken)
   );
 
   const { deleteData: deletePost } = usePost({});
   const { openSnackBar } = useSnackBar();
 
   const accessToken = useSelector((state) => state.user.accessToken.data);
+  const isLoggedIn = !!accessToken;
   const myName = useSelector((state) => state.user.profile.data?.username);
 
   const goProfilePage = (username) => (event) => {
@@ -85,10 +88,11 @@ const PostPage = () => {
 
   const { mutate: postScrap } = useMutation(
     () => {
-      if (!myName) {
+      if (!isLoggedIn) {
         alert(ALERT_MESSAGE.NEED_TO_LOGIN);
         return;
       }
+
       return requestPostScrap(myName, accessToken, {
         studylogId: postId,
       });
@@ -114,7 +118,14 @@ const PostPage = () => {
   );
 
   const { mutate: postLike } = useMutation(
-    () => requestPostLike(accessToken, postId),
+    () => {
+      if (!isLoggedIn) {
+        alert(ALERT_MESSAGE.NEED_TO_LOGIN);
+        return;
+      }
+
+      return requestPostLike(accessToken, postId);
+    },
     () => {
       openSnackBar(SNACKBAR_MESSAGE.SET_LIKE);
       fetchPost();
@@ -191,7 +202,10 @@ const PostPage = () => {
                 <IssuedDate>{new Date(post?.createdAt).toLocaleString('ko-KR')}</IssuedDate>
               </SubHeaderRightContent>
             </SubHeader>
-            <Title>{post?.title}</Title>
+            <div css={[FlexStyle, JustifyContentSpaceBtwStyle]}>
+              <Title>{post?.title}</Title>
+              <ViewCount count={post?.viewCount} />
+            </div>
             <ProfileChip
               imageSrc={post?.author?.imageUrl}
               cssProps={ProfileChipStyle}

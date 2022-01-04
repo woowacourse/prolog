@@ -2,54 +2,25 @@ import { useState } from 'react';
 import { ERROR_MESSAGE } from '../constants/message';
 import {
   requestEditPost,
-  requestGetStudyLog,
-  requestGetStudyLogs,
+  requestGetPost,
+  requestGetPosts,
   requestDeletePost,
 } from '../service/requests';
 
-const useStudyLog = (defaultValue) => {
+const usePost = (defaultValue) => {
   const [response, setResponse] = useState(defaultValue);
   const [error, setError] = useState('');
 
-  const getAllData = async (query, accessToken) => {
+  const getAllData = async () => {
     try {
-      const response = await requestGetStudyLogs(query, accessToken);
+      const response = await requestGetPosts();
 
       if (!response.ok) {
         throw new Error(await response.text());
       }
       const json = await response.json();
 
-      setResponse({
-        ...json,
-        data: json.data.map(
-          ({
-            id,
-            author,
-            content,
-            mission,
-            title,
-            tags,
-            createdAt,
-            updatedAt,
-            read,
-            scrap,
-            viewCount,
-          }) => ({
-            id,
-            author,
-            content,
-            mission,
-            title,
-            tags,
-            createdAt,
-            updatedAt,
-            isRead: read,
-            isScrapped: scrap,
-            viewCount,
-          })
-        ),
-      });
+      setResponse(json);
     } catch (error) {
       const errorResponse = JSON.parse(error.message);
 
@@ -58,9 +29,9 @@ const useStudyLog = (defaultValue) => {
     }
   };
 
-  const getData = async (postId, accessToken) => {
+  const getData = async (postId) => {
     try {
-      const response = await requestGetStudyLog(postId, accessToken);
+      const response = await requestGetPost(postId);
 
       if (!response.ok) {
         throw new Error(await response.text());
@@ -117,4 +88,4 @@ const useStudyLog = (defaultValue) => {
   return { response, error, getAllData, getData, editData, deleteData };
 };
 
-export default useStudyLog;
+export default usePost;

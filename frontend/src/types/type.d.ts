@@ -19,5 +19,6 @@ declare namespace Prolog {
     updatedAt?: Date;
     isRead: boolean;
     isScrapped: boolean;
+    viewCount: number;
   }
 }
