@@ -25,7 +25,7 @@ public class LoginMember {
         return Authority.ANONYMOUS.equals(authority);
     }
 
-    private boolean isMember() {
+    public boolean isMember() {
         return Authority.MEMBER.equals(authority);
     }
 

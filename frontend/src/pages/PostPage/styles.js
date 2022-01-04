@@ -132,11 +132,6 @@ const Content = styled.div`
     color: #222;
   }
 `;
-const ScrapButtonStyle = css`
-  background-color: transparent;
-  padding: 0;
-  width: fit-content;
-`;
 
 const BottomContainer = styled.div`
   display: flex;
@@ -157,6 +152,5 @@ export {
   IssuedDate,
   ProfileChipStyle,
   Content,
-  ScrapButtonStyle,
   BottomContainer,
 };

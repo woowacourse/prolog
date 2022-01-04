@@ -268,6 +268,22 @@ const requestSetDefaultAbility = (accessToken, field) =>
     },
   });
 
+const requestPostLike = (accessToken, postId) =>
+  fetch(`${BASE_URL}/studylogs/${postId}/likes`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+const requestDeleteLike = (accessToken, postId) =>
+  fetch(`${BASE_URL}/studylogs/${postId}/likes`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
 export {
   requestGetPost,
   requestGetPosts,
@@ -296,4 +312,6 @@ export {
   requestPostScrap,
   requestDeleteScrap,
   requestGetMyScrap,
+  requestPostLike,
+  requestDeleteLike,
 };
