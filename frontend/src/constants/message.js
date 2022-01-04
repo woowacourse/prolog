@@ -2,6 +2,7 @@ const CONFIRM_MESSAGE = {
   DELETE_POST: '글을 삭제하시겠습니까?',
   DELETE_SCRAP: '스크랩을 취소하시겠습니까?',
   DELETE_ABILITY: '역량을 삭제하시겠습니까?',
+  DELETE_LIKE: '좋아요를 취소하시겠습니까?',
   SET_DEFAULT_ABILITIES: '기본 역량 등록에 실패했습니다.',
 };
 
@@ -52,6 +53,11 @@ const PLACEHOLDER = {
 const SNACKBAR_MESSAGE = {
   SUCCESS_TO_SCRAP: '스크랩을 완료했습니다.',
   FAIL_TO_SCRAP: '스크랩을 취소했습니다.',
+
+  SET_LIKE: '좋아요를 표시했습니다.',
+  UNSET_LIKE: '좋아요를 취소했습니다.',
+  ERROR_SET_LIKE: '좋아요 표시에 실패했습니다.',
+  ERROR_UNSET_LIKE: '좋아요 취소에 실패했습니다.',
 };
 
 export {

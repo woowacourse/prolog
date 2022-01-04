@@ -245,7 +245,7 @@ class StudylogServiceTest {
                 LocalDate.parse("20211231", DateTimeFormatter.BASIC_ISO_DATE),
                 null,
                 PageRequest.of(0, 10)
-            )
+            ), null
         );
 
         //then
@@ -384,7 +384,7 @@ class StudylogServiceTest {
         studylogService.updateStudylog(member1.getId(), targetStudylog.getId(), updateStudylogRequest);
 
         //then
-        StudylogResponse expectedResult = studylogService.findById(targetStudylog.getId());
+        StudylogResponse expectedResult = studylogService.findbyIdAndReturnStudylogResponse(targetStudylog.getId());
         List<String> updateTagNames = tags.stream()
             .map(Tag::getName)
             .collect(toList());

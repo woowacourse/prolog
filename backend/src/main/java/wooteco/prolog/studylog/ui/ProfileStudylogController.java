@@ -41,7 +41,8 @@ public class ProfileStudylogController {
             new ArrayList<>(),
             postFilterRequest.startDate,
             postFilterRequest.endDate,
-            pageable
+            pageable,
+            null
         );
         return ResponseEntity.ok().body(posts);
     }

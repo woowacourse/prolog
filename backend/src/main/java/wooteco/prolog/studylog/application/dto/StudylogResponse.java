@@ -26,11 +26,14 @@ public class StudylogResponse {
     private List<TagResponse> tags;
     private boolean scrap;
     private int viewCount;
+    private boolean liked;
+    private int likesCount;
 
     public StudylogResponse(
         Studylog studylog,
         MissionResponse missionResponse,
-        List<TagResponse> tagResponses) {
+        List<TagResponse> tagResponses,
+        boolean liked) {
         this(
             studylog.getId(),
             MemberResponse.of(studylog.getMember()),
@@ -41,15 +44,21 @@ public class StudylogResponse {
             studylog.getContent(),
             tagResponses,
             false,
-            studylog.getViewCount()
+            studylog.getViewCount(),
+            liked,
+            studylog.getLikeCount()
         );
     }
 
     public static StudylogResponse of(Studylog studylog) {
-        return of(studylog, false);
+        return of(studylog, false, null);
     }
 
-    public static StudylogResponse of(Studylog studylog, boolean scrap) {
+    public static StudylogResponse of(Studylog studylog, Long memberId) {
+        return of(studylog, false, memberId);
+    }
+
+    public static StudylogResponse of(Studylog studylog, boolean scrap, Long memberId) {
         List<StudylogTag> studylogTags = studylog.getStudylogTags();
         List<TagResponse> tagResponses = toTagResponses(studylogTags);
 
@@ -63,7 +72,9 @@ public class StudylogResponse {
             studylog.getContent(),
             tagResponses,
             scrap,
-            studylog.getViewCount()
+            studylog.getViewCount(),
+            studylog.likedByMember(memberId),
+            studylog.getLikeCount()
         );
     }
 
@@ -76,5 +87,9 @@ public class StudylogResponse {
 
     public void setScrap(boolean isScrap){
         this.scrap = isScrap;
+    }
+
+    public void setLiked(boolean isLiked) {
+        this.liked = isLiked;
     }
 }
