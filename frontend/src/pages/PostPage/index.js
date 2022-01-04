@@ -44,6 +44,8 @@ import useMutation from '../../hooks/useMutation';
 import useRequest from '../../hooks/useRequest';
 import Like from '../../components/Reaction/Like';
 import Scrap from '../../components/Reaction/Scrap';
+import { FlexStyle, JustifyContentSpaceBtwStyle } from '../../styles/flex.styles';
+import ViewCount from '../../components/ViewCount/ViewCount';
 
 const PostPage = () => {
   const history = useHistory();
@@ -200,7 +202,10 @@ const PostPage = () => {
                 <IssuedDate>{new Date(post?.createdAt).toLocaleString('ko-KR')}</IssuedDate>
               </SubHeaderRightContent>
             </SubHeader>
-            <Title>{post?.title}</Title>
+            <div css={[FlexStyle, JustifyContentSpaceBtwStyle]}>
+              <Title>{post?.title}</Title>
+              <ViewCount count={post?.viewCount} />
+            </div>
             <ProfileChip
               imageSrc={post?.author?.imageUrl}
               cssProps={ProfileChipStyle}

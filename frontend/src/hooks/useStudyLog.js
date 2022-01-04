@@ -23,7 +23,19 @@ const useStudyLog = (defaultValue) => {
       setResponse({
         ...json,
         data: json.data.map(
-          ({ id, author, content, mission, title, tags, createdAt, updatedAt, read, scrap }) => ({
+          ({
+            id,
+            author,
+            content,
+            mission,
+            title,
+            tags,
+            createdAt,
+            updatedAt,
+            read,
+            scrap,
+            viewCount,
+          }) => ({
             id,
             author,
             content,
@@ -34,6 +46,7 @@ const useStudyLog = (defaultValue) => {
             updatedAt,
             isRead: read,
             isScrapped: scrap,
+            viewCount,
           })
         ),
       });
