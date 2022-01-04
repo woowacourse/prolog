@@ -33,6 +33,16 @@ public class StudylogController {
         this.studylogService = studylogService;
     }
 
+    @PostMapping
+    @MemberOnly
+    public ResponseEntity<Void> createStudylog(@AuthMemberPrincipal LoginMember member,
+                                               @RequestBody List<StudylogRequest> studylogRequests) {
+        List<StudylogResponse> studylogResponse = studylogService
+            .insertStudylogs(member.getId(), studylogRequests);
+        return ResponseEntity.created(URI.create("/posts/" + studylogResponse.get(0).getId()))
+            .build();
+    }
+
     @GetMapping
     public ResponseEntity<StudylogsResponse> showAll(
         @AuthMemberPrincipal LoginMember member,
@@ -49,8 +59,26 @@ public class StudylogController {
         if (!NumberUtils.isNumeric(id)) {
             throw new StudylogNotFoundException();
         }
-        StudylogResponse studylogResponse = studylogService.findById(Long.parseLong(id), member.getId(),
-            member.isAnonymous());
+        StudylogResponse studylogResponse = studylogService.findById(Long.parseLong(id), member.getId(), member.isAnonymous());
         return ResponseEntity.ok(studylogResponse);
+    }
+
+    @PutMapping("/{id}")
+    @MemberOnly
+    public ResponseEntity<Void> updateStudylog(
+        @AuthMemberPrincipal LoginMember member,
+        @PathVariable Long id,
+        @RequestBody StudylogRequest studylogRequest
+    ) {
+        studylogService.updateStudylog(member.getId(), id, studylogRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    @MemberOnly
+    public ResponseEntity<Void> deleteStudylog(@AuthMemberPrincipal LoginMember member,
+                                               @PathVariable Long id) {
+        studylogService.deleteStudylog(member.getId(), id);
+        return ResponseEntity.noContent().build();
     }
 }

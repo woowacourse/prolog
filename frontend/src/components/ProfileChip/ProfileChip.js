@@ -14,13 +14,14 @@ const ProfileChip = ({ imageSrc, children, css, cssProps, onClick }) => {
 
 ProfileChip.propTypes = {
   imageSrc: PropTypes.string,
-  children: PropTypes.string.isRequired,
+  children: PropTypes.string,
   css: PropTypes.object,
   cssProps: PropTypes.object,
   onClick: PropTypes.func,
 };
 
 ProfileChip.defaultProps = {
+  children: 'nickname',
   imageSrc: NoProfileImage,
 };
 

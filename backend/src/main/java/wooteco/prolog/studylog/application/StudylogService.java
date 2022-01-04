@@ -34,6 +34,7 @@ import wooteco.prolog.studylog.domain.*;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
+import wooteco.prolog.studylog.domain.repository.StudylogReadRepository;
 import wooteco.prolog.studylog.exception.StudylogArgumentException;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 
@@ -44,6 +45,7 @@ public class StudylogService {
 
     private final StudylogRepository studylogRepository;
     private final StudylogScrapRepository studylogScrapRepository;
+    private final StudylogReadRepository studylogReadRepository;
     private final MemberTagService memberTagService;
     private final DocumentService studylogDocumentService;
     private final MissionService missionService;
@@ -58,6 +60,7 @@ public class StudylogService {
 
         List<StudylogResponse> data = studylogs.getData();
         updateScrap(data, findScrapIds(memberId));
+        updateRead(data, findReadIds(memberId));
         return studylogs;
     }
 
@@ -79,8 +82,7 @@ public class StudylogService {
                 .map(idAndStudylog::get)
                 .collect(toList());
 
-            return StudylogsResponse
-                .of(new PageImpl<>(studylogs, pageable, request.getIds().size()), memberId);
+            return StudylogsResponse.of(new PageImpl<>(studylogs, pageable, request.getIds().size()), memberId);
         }
 
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
@@ -186,6 +188,9 @@ public class StudylogService {
             return studylogResponse;
         }
 
+        if (!studylogReadRepository.existsByMemberIdAndStudylogId(memberId, id)) {
+            insertStudylogRead(id, memberId);
+        }
         updateScrap(singletonList(studylogResponse), findScrapIds(memberId));
         studylogResponse.setLiked(studylog.likedByMember(memberId));
         return studylogResponse;
@@ -193,6 +198,13 @@ public class StudylogService {
 
     public StudylogResponse findbyIdAndReturnStudylogResponse(Long id) {
         return StudylogResponse.of(findById(id));
+    }
+
+    private void insertStudylogRead(Long id, Long memberId) {
+        Member readMember = memberService.findById(memberId);
+        Studylog readStudylog = studylogRepository.findById(id)
+                .orElseThrow(StudylogNotFoundException::new);
+        studylogReadRepository.save(new StudylogRead(readMember, readStudylog));
     }
 
     private Studylog findById(Long id) {
@@ -262,10 +274,26 @@ public class StudylogService {
             .collect(toList());
     }
 
+    private List<Long> findReadIds(Long memberId) {
+        List<StudylogRead> readList = studylogReadRepository.findByMemberId(memberId);
+        return readList.stream()
+                .map(StudylogRead::getStudylog)
+                .map(Studylog::getId)
+                .collect(toList());
+    }
+
     private void updateScrap(List<StudylogResponse> studylogs, List<Long> scrapIds) {
         studylogs.forEach(studylogResponse -> {
             if (scrapIds.stream().anyMatch(id -> id.equals(studylogResponse.getId()))) {
                 studylogResponse.setScrap(true);
+            }
+        });
+    }
+
+    private void updateRead(List<StudylogResponse> studylogs, List<Long> readIds) {
+        studylogs.forEach(studylogResponse -> {
+            if (readIds.stream().anyMatch(id -> id.equals(studylogResponse.getId()))) {
+                studylogResponse.setRead(true);
             }
         });
     }

@@ -2,25 +2,41 @@ import { useState } from 'react';
 import { ERROR_MESSAGE } from '../constants/message';
 import {
   requestEditPost,
-  requestGetPost,
-  requestGetPosts,
+  requestGetStudyLog,
+  requestGetStudyLogs,
   requestDeletePost,
 } from '../service/requests';
 
-const usePost = (defaultValue) => {
+const useStudyLog = (defaultValue) => {
   const [response, setResponse] = useState(defaultValue);
   const [error, setError] = useState('');
 
-  const getAllData = async () => {
+  const getAllData = async (query, accessToken) => {
     try {
-      const response = await requestGetPosts();
+      const response = await requestGetStudyLogs(query, accessToken);
 
       if (!response.ok) {
         throw new Error(await response.text());
       }
       const json = await response.json();
 
-      setResponse(json);
+      setResponse({
+        ...json,
+        data: json.data.map(
+          ({ id, author, content, mission, title, tags, createdAt, updatedAt, read, scrap }) => ({
+            id,
+            author,
+            content,
+            mission,
+            title,
+            tags,
+            createdAt,
+            updatedAt,
+            isRead: read,
+            isScrapped: scrap,
+          })
+        ),
+      });
     } catch (error) {
       const errorResponse = JSON.parse(error.message);
 
@@ -29,9 +45,9 @@ const usePost = (defaultValue) => {
     }
   };
 
-  const getData = async (postId) => {
+  const getData = async (postId, accessToken) => {
     try {
-      const response = await requestGetPost(postId);
+      const response = await requestGetStudyLog(postId, accessToken);
 
       if (!response.ok) {
         throw new Error(await response.text());
@@ -88,4 +104,4 @@ const usePost = (defaultValue) => {
   return { response, error, getAllData, getData, editData, deleteData };
 };
 
-export default usePost;
+export default useStudyLog;

@@ -3,9 +3,9 @@ import { useHistory, useParams } from 'react-router-dom';
 import { SelectBox, Button, BUTTON_SIZE, EditPostCard } from '../../components';
 import { useSelector } from 'react-redux';
 import useFetch from '../../hooks/useFetch';
-import { requestGetMissions, requestGetPost, requestGetTags } from '../../service/requests';
+import { requestGetMissions, requestGetTags } from '../../service/requests';
 import { PATH } from '../../constants';
-import usePost from '../../hooks/usePost';
+import useStudyLog from '../../hooks/useStudyLog';
 import { SelectBoxWrapper, Post, SubmitButtonStyle } from '../NewPostPage/styles';
 
 const EditPostPage = () => {
@@ -14,8 +14,7 @@ const EditPostPage = () => {
   const accessToken = useSelector((state) => state.user.accessToken.data);
 
   const { id: postId } = useParams();
-  const { editData: editPost } = usePost({});
-  const [post] = useFetch({}, () => requestGetPost('', postId));
+  const { response: post, getData: getStudyLog, editData: editPost } = useStudyLog({});
 
   const [selectedMission, setSelectedMission] = useState('');
   const cardRefs = useRef([]);
@@ -59,6 +58,10 @@ const EditPostPage = () => {
       history.push(`${PATH.POST}/${postId}`);
     }
   }, [user, author]);
+
+  useEffect(() => {
+    getStudyLog(postId, accessToken);
+  }, [postId]);
 
   return (
     <form onSubmit={onEditPost}>

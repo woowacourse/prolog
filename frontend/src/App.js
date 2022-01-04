@@ -30,7 +30,7 @@ const App = () => {
         <div css={ContentStyle}>
           <Switch>
             {pageRoutes.map(({ path, render }) => (
-              <Route exact path={path} render={render} />
+              <Route exact path={path} render={render} key={path.toString} />
             ))}
             <Redirect to={PATH.ROOT} />
           </Switch>

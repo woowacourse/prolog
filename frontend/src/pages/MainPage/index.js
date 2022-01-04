@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Button, FilterList, Pagination } from '../../components';
 import { useHistory } from 'react-router';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
 import useFetch from '../../hooks/useFetch';
-import { requestGetFilters, requestGetPosts } from '../../service/requests';
+import { requestGetFilters } from '../../service/requests';
 import { useSelector } from 'react-redux';
 import {
   FilterListWrapper,
@@ -17,6 +17,7 @@ import Chip from '../../components/Chip/Chip';
 import FlexBox from '../../components/@shared/FlexBox/FlexBox';
 import useFilterWithParams from '../../hooks/useFilterWithParams';
 import StudyLogList from '../../components/Lists/StudyLogList';
+import useStudyLog from '../../hooks/useStudyLog';
 
 const MainPage = () => {
   const {
@@ -38,13 +39,13 @@ const MainPage = () => {
   const user = useSelector((state) => state.user.profile);
   const isLoggedIn = !!user.data;
 
-  const [posts, setPosts] = useState([]);
+  const accessToken = useSelector((state) => state.user.accessToken.data);
+
+  const { response: posts, getAllData: getStudyLogs } = useStudyLog([]);
 
   const [filters] = useFetch([], requestGetFilters);
 
   const goNewPost = () => {
-    const accessToken = localStorage.getItem('accessToken');
-
     if (!accessToken) {
       alert(ERROR_MESSAGE.LOGIN_DEFAULT);
       window.location.reload();
@@ -72,21 +73,10 @@ const MainPage = () => {
   }, [getFullParams, postQueryParams, selectedFilterDetails]);
 
   useEffect(() => {
-    const getData = async () => {
-      const query = new URLSearchParams(history.location.search);
+    const query = new URLSearchParams(history.location.search);
 
-      try {
-        const response = await requestGetPosts({ type: 'searchParams', data: query });
-        const data = await response.json();
-
-        setPosts(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    getData();
-  }, [history.location.search]);
+    getStudyLogs({ type: 'searchParams', data: query }, accessToken);
+  }, [history.location.search, accessToken]);
 
   useEffect(() => {
     if (filters.length === 0) {
