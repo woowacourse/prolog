@@ -57,6 +57,7 @@ const PostPage = () => {
   const { openSnackBar } = useSnackBar();
 
   const accessToken = useSelector((state) => state.user.accessToken.data);
+  const isLoggedIn = !!accessToken;
   const myName = useSelector((state) => state.user.profile.data?.username);
 
   const goProfilePage = (username) => (event) => {
@@ -85,10 +86,11 @@ const PostPage = () => {
 
   const { mutate: postScrap } = useMutation(
     () => {
-      if (!myName) {
+      if (!isLoggedIn) {
         alert(ALERT_MESSAGE.NEED_TO_LOGIN);
         return;
       }
+
       return requestPostScrap(myName, accessToken, {
         studylogId: postId,
       });
@@ -114,7 +116,14 @@ const PostPage = () => {
   );
 
   const { mutate: postLike } = useMutation(
-    () => requestPostLike(accessToken, postId),
+    () => {
+      if (!isLoggedIn) {
+        alert(ALERT_MESSAGE.NEED_TO_LOGIN);
+        return;
+      }
+
+      return requestPostLike(accessToken, postId);
+    },
     () => {
       openSnackBar(SNACKBAR_MESSAGE.SET_LIKE);
       fetchPost();
