@@ -50,7 +50,7 @@ const PostPage = () => {
   const { id: postId } = useParams();
 
   const { response: post, fetchData: fetchPost } = useRequest({}, () =>
-    requestGetPost(accessToken, postId)
+    requestGetPost(postId, accessToken)
   );
 
   const { deleteData: deletePost } = usePost({});
