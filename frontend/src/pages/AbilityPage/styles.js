@@ -238,6 +238,8 @@ export const ColorPicker = styled.div`
 `;
 
 export const ListHeader = styled.div`
+  font-size: 1.4rem;
+
   && {
     grid-template-columns: 1fr;
     background-color: ${COLOR.LIGHT_GRAY_200};
@@ -379,7 +381,8 @@ export const AnotherWay = styled.span`
 `;
 
 export const FormButtonWrapper = styled.div`
-  width: 100%;
+  width: 98%;
+  margin: 0 auto;
   margin-top: 5rem;
 
   display: flex;

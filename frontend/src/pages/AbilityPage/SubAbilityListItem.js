@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Chip } from '../../components';
+import PropTypes from 'prop-types';
+
 import SubCategoryIcon from '../../components/@shared/Icons/SubCategoryIcon';
-import { COLOR } from '../../constants';
+import { Chip } from '../../components';
 import EditSubAbilityForm from './EditSubAbilityForm';
 import { Button, ManageButtonList, EditingListItem } from './styles';
+import { COLOR } from '../../constants';
 
-const SubAbilityListItem = ({ id, name, description, color, onEdit, onDelete }) => {
+const SubAbilityListItem = ({ id, name, description, color, onEdit, onDelete, readOnly }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   return isEditing ? (
@@ -27,26 +29,38 @@ const SubAbilityListItem = ({ id, name, description, color, onEdit, onDelete }) 
         {name}
       </Chip>
       <p>{description}</p>
-      <ManageButtonList>
-        <Button
-          type="button"
-          backgroundColor={COLOR.LIGHT_GRAY_200}
-          color={COLOR.LIGHT_GRAY_900}
-          onClick={() => setIsEditing(true)}
-        >
-          수정
-        </Button>
-        <Button
-          type="button"
-          backgroundColor={COLOR.RED_200}
-          color={COLOR.RED_500}
-          onClick={onDelete(id)}
-        >
-          삭제
-        </Button>
-      </ManageButtonList>
+      {!readOnly && (
+        <ManageButtonList>
+          <Button
+            type="button"
+            backgroundColor={COLOR.LIGHT_GRAY_200}
+            color={COLOR.LIGHT_GRAY_900}
+            onClick={() => setIsEditing(true)}
+          >
+            수정
+          </Button>
+          <Button
+            type="button"
+            backgroundColor={COLOR.RED_200}
+            color={COLOR.RED_500}
+            onClick={onDelete(id)}
+          >
+            삭제
+          </Button>
+        </ManageButtonList>
+      )}
     </li>
   );
 };
 
 export default SubAbilityListItem;
+
+SubAbilityListItem.prototype = {
+  id: PropTypes.number,
+  name: PropTypes.string,
+  description: PropTypes.string,
+  color: PropTypes.string,
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func,
+  readOnly: PropTypes.bool,
+};
