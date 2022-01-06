@@ -11,6 +11,7 @@ const PATH = {
   POST: '/posts',
   NEW_POST: '/post/write',
   ABILITY: '/:username/ability',
+  ABILITY_HISTORY: '/:username/ability-history/:id',
 };
 
 export default PATH;
