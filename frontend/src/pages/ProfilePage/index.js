@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useParams, useHistory, useLocation } from 'react-router-dom';
 import {
   Container,
   Content,
@@ -17,10 +16,11 @@ import {
   TagContainer,
 } from './styles';
 import { PATH } from '../../constants';
-import { requestGetPosts, requestGetUserTags } from '../../service/requests';
+import { requestGetUserTags } from '../../service/requests';
 import useNotFound from '../../hooks/useNotFound';
 import { Calendar, Card, Pagination, ProfilePageSideBar, Tag } from '../../components';
 import useFetch from '../../hooks/useFetch';
+import useStudyLog from '../../hooks/useStudyLog';
 
 const initialPostQueryParams = {
   page: 1,
@@ -38,7 +38,9 @@ const ProfilePage = ({ children, menu }) => {
   const [filteringOption, setFilteringOption] = useState([
     { filterType: 'tags', filterDetailId: 0 },
   ]);
-  const [posts, setPosts] = useState([]);
+
+  const { response: posts, getAllData: getStudyLogs } = useStudyLog([]);
+
   const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
   const [hoveredPostId, setHoveredPostId] = useState(0);
   const [postQueryParams, setPostQueryParams] = useState(initialPostQueryParams);
@@ -47,26 +49,12 @@ const ProfilePage = ({ children, menu }) => {
   const [tags] = useFetch([], () => requestGetUserTags(username));
 
   const getUserPosts = useCallback(async () => {
-    try {
-      const filterQuery = [
-        ...filteringOption,
-        { filterType: 'usernames', filterDetailId: username },
-      ];
-      const response = await requestGetPosts({
-        type: 'filter',
-        data: { filterQuery, postQueryParams },
-      });
+    const filterQuery = [...filteringOption, { filterType: 'usernames', filterDetailId: username }];
 
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-
-      const posts = await response.json();
-
-      setPosts(posts);
-    } catch (error) {
-      console.error(error);
-    }
+    await getStudyLogs({
+      type: 'filter',
+      data: { filterQuery, postQueryParams },
+    });
   }, [postQueryParams, filteringOption, username]);
 
   const setFilteringOptionWithTagId = (id) =>

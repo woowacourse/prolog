@@ -12,6 +12,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
@@ -309,5 +311,41 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
             () -> assertThat(Iterables.elementsEqual(studylogs.getData(), studylogResponses)).isTrue(),
             () -> assertThat(studylogs.getData().size()).isEqualTo(pageSize)
         );
+    }
+
+    @When("로그인된 사용자가 {long}번째 스터디로그를 좋아요 하(면)(고)")
+    public void 로그인된사용자가스터디로그를좋아요(Long studylogId) {
+        String path = "/studylogs/" + studylogId + "/likes";
+        context.invokeHttpPostWithToken(path);
+    }
+
+    @When("로그인된 사용자가 {long}번째 스터디로그를 좋아요 취소하(면)(고)")
+    public void 로그인된사용자가스터디로그를좋아요취소(Long studylogId) {
+        String path = "/studylogs/" + studylogId + "/likes";
+        context.invokeHttpDeleteWithToken(path);
+    }
+
+    @Then("조회된 스터디로그의 좋아요 수가 증가한다")
+    public void 조회된스터디로그의좋아요수가증가한다() {
+        StudylogResponse response = context.response.as(StudylogResponse.class);
+        assertThat(response.getLikesCount()).isEqualTo(1);
+    }
+
+    @Then("조회된 스터디로그의 좋아요 수가 증가하지 않는다")
+    public void 조회된스터디로그의좋아요수가증가하지않는다() {
+        StudylogResponse response = context.response.as(StudylogResponse.class);
+        assertThat(response.getLikesCount()).isEqualTo(0);
+    }
+
+    @Then("조회된 스터디로그의 좋아요 여부가 참이다")
+    public void 조회된스터디로그의좋아요여부가참이다() {
+        StudylogResponse response = context.response.as(StudylogResponse.class);
+        assertThat(response.isLiked()).isTrue();
+    }
+
+    @Then("조회된 스터디로그의 좋아요 여부가 거짓이다")
+    public void 조회된스터디로그의좋아요여부가거짓이다() {
+        StudylogResponse response = context.response.as(StudylogResponse.class);
+        assertThat(response.isLiked()).isFalse();
     }
 }

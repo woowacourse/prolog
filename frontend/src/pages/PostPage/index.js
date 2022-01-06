@@ -1,7 +1,14 @@
 /** @jsxImportSource @emotion/react */
-import { useCallback, useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router';
-import { requestGetPost, requestPostScrap, requestDeleteScrap } from '../../service/requests';
+
+import { useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+import {
+  requestGetPost,
+  requestPostScrap,
+  requestDeleteScrap,
+  requestPostLike,
+  requestDeleteLike,
+} from '../../service/requests';
 
 import { Button, BUTTON_SIZE, Card, ProfileChip } from '../../components';
 import { Viewer } from '@toast-ui/react-editor';
@@ -24,40 +31,36 @@ import {
   Title,
   SubHeaderRightContent,
   Content,
-  ScrapButtonStyle,
   BottomContainer,
 } from './styles';
-import useNotFound from '../../hooks/useNotFound';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH, SNACKBAR_MESSAGE } from '../../constants';
 import { useSelector } from 'react-redux';
 import usePost from '../../hooks/usePost';
-import scrapIcon from '../../assets/images/scrap.svg';
-import unScrapIcon from '../../assets/images/scrap_filled.svg';
+
 import useSnackBar from '../../hooks/useSnackBar';
-import ViewCount from '../../components/ViewCount/ViewCount';
+import debounce from '../../utils/debounce';
+import { css } from '@emotion/react';
+import useMutation from '../../hooks/useMutation';
+import useRequest from '../../hooks/useRequest';
+import Like from '../../components/Reaction/Like';
+import Scrap from '../../components/Reaction/Scrap';
 import { FlexStyle, JustifyContentSpaceBtwStyle } from '../../styles/flex.styles';
+import ViewCount from '../../components/ViewCount/ViewCount';
 
 const PostPage = () => {
   const history = useHistory();
   const { id: postId } = useParams();
 
-  const [post, setPost] = useState({});
+  const { response: post, fetchData: fetchPost } = useRequest({}, () =>
+    requestGetPost(postId, accessToken)
+  );
 
-  const { NotFound } = useNotFound();
   const { deleteData: deletePost } = usePost({});
   const { openSnackBar } = useSnackBar();
 
   const accessToken = useSelector((state) => state.user.accessToken.data);
+  const isLoggedIn = !!accessToken;
   const myName = useSelector((state) => state.user.profile.data?.username);
-
-  // if (errorStatus) {
-  //   switch (errorStatus) {
-  //     case 2004:
-  //       return <NotFound />;
-  //     default:
-  //       return;
-  //   }
-  // }
 
   const goProfilePage = (username) => (event) => {
     event.stopPropagation();
@@ -83,61 +86,88 @@ const PostPage = () => {
     history.goBack();
   };
 
-  const postScrap = async () => {
-    if (!myName) {
-      alert(ALERT_MESSAGE.NEED_TO_LOGIN);
+  const { mutate: postScrap } = useMutation(
+    () => {
+      if (!isLoggedIn) {
+        alert(ALERT_MESSAGE.NEED_TO_LOGIN);
+        return;
+      }
+
+      return requestPostScrap(myName, accessToken, {
+        studylogId: postId,
+      });
+    },
+    () => {
+      fetchPost();
+      openSnackBar(SNACKBAR_MESSAGE.SUCCESS_TO_SCRAP);
+    }
+  );
+
+  const { mutate: deleteScrap } = useMutation(
+    () => {
+      if (!window.confirm(CONFIRM_MESSAGE.DELETE_SCRAP)) return;
+
+      return requestDeleteScrap(myName, accessToken, {
+        studylogId: postId,
+      });
+    },
+    () => {
+      fetchPost();
+      openSnackBar(SNACKBAR_MESSAGE.FAIL_TO_SCRAP);
+    }
+  );
+
+  const { mutate: postLike } = useMutation(
+    () => {
+      if (!isLoggedIn) {
+        alert(ALERT_MESSAGE.NEED_TO_LOGIN);
+        return;
+      }
+
+      return requestPostLike(accessToken, postId);
+    },
+    () => {
+      openSnackBar(SNACKBAR_MESSAGE.SET_LIKE);
+      fetchPost();
+    },
+    () => openSnackBar(SNACKBAR_MESSAGE.ERROR_SET_LIKE)
+  );
+
+  const { mutate: deleteLike } = useMutation(
+    () => {
+      if (!window.confirm(CONFIRM_MESSAGE.DELETE_LIKE)) return;
+
+      return requestDeleteLike(accessToken, postId);
+    },
+    () => {
+      openSnackBar(SNACKBAR_MESSAGE.UNSET_LIKE);
+      fetchPost();
+    },
+    () => openSnackBar(SNACKBAR_MESSAGE.ERROR_UNSET_LIKE)
+  );
+
+  const toggleLike = () => {
+    post?.liked
+      ? debounce(() => {
+          deleteLike();
+        }, 300)
+      : debounce(() => {
+          postLike();
+        }, 300);
+  };
+
+  const toggleScrap = () => {
+    if (post?.scrap) {
+      deleteScrap();
       return;
     }
 
-    try {
-      const response = await requestPostScrap(myName, accessToken, {
-        studylogId: postId,
-      });
-
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-
-      getPostDetail();
-      openSnackBar(SNACKBAR_MESSAGE.SUCCESS_TO_SCRAP);
-    } catch (error) {
-      console.error(error);
-    }
+    postScrap();
   };
-
-  const deleteScrap = async () => {
-    if (!window.confirm(CONFIRM_MESSAGE.DELETE_SCRAP)) return;
-
-    try {
-      const response = await requestDeleteScrap(myName, accessToken, {
-        studylogId: postId,
-      });
-
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-
-      getPostDetail();
-      openSnackBar(SNACKBAR_MESSAGE.FAIL_TO_SCRAP);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getPostDetail = useCallback(async () => {
-    try {
-      const response = await requestGetPost(accessToken, postId);
-      const data = await response.json();
-
-      setPost(data);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [accessToken, postId]);
 
   useEffect(() => {
-    getPostDetail();
-  }, [getPostDetail]);
+    fetchPost();
+  }, [accessToken, postId]);
 
   return (
     <>
@@ -197,26 +227,19 @@ const PostPage = () => {
                 <span key={id}>{`#${name} `}</span>
               ))}
             </Tags>
-            <div>
-              {post?.scrap ? (
-                <Button
-                  type="button"
-                  size="X_SMALL"
-                  icon={unScrapIcon}
-                  alt="스크랩 아이콘"
-                  cssProps={ScrapButtonStyle}
-                  onClick={deleteScrap}
-                />
-              ) : (
-                <Button
-                  type="button"
-                  size="X_SMALL"
-                  icon={scrapIcon}
-                  alt="스크랩 아이콘"
-                  cssProps={ScrapButtonStyle}
-                  onClick={postScrap}
-                />
-              )}
+            {/* TODO: 해당 css 적용 부분, 다른 사용자 리액션 pr 머지 후 삭제 및 flex 속성 적용 */}
+            <div
+              css={css`
+                display: flex;
+                align-items: baseline;
+
+                > *:not(:last-child) {
+                  margin-right: 1rem;
+                }
+              `}
+            >
+              <Like liked={post?.liked} likesCount={post?.likesCount} onClick={toggleLike} />
+              <Scrap scrap={post?.scrap} onClick={toggleScrap} />
             </div>
           </BottomContainer>
         </CardInner>

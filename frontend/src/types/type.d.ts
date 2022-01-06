@@ -11,9 +11,14 @@ declare namespace Prolog {
   interface StudyLog {
     id: number;
     author: Author;
+    content: string;
     mission: Mission;
     title: string;
     tags: Tag[];
+    createdAt: Date;
+    updatedAt?: Date;
+    isRead: boolean;
+    isScrapped: boolean;
     viewCount: number;
   }
 }

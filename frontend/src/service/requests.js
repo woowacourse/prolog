@@ -1,6 +1,11 @@
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-const requestGetPost = (accessToken, postId) => {
+/*
+ * @deprecated
+ * post -> studylog로 변환 작업중
+ * 추후 의존성이 모두 제거되면 해당 함수 삭제 예정
+ */
+const requestGetPost = (postId, accessToken) => {
   if (accessToken) {
     return fetch(`${BASE_URL}/posts/${postId}`, {
       method: 'GET',
@@ -9,9 +14,23 @@ const requestGetPost = (accessToken, postId) => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-  } else {
-    return fetch(`${BASE_URL}/posts/${postId}`);
   }
+
+  return fetch(`${BASE_URL}/posts/${postId}`);
+};
+
+const requestGetStudyLog = (postId, accessToken) => {
+  if (accessToken) {
+    return fetch(`${BASE_URL}/posts/${postId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  }
+
+  return fetch(`${BASE_URL}/posts/${postId}`);
 };
 
 const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
@@ -20,9 +39,22 @@ const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
 
 const requestGetTags = () => fetch(`${BASE_URL}/tags`);
 
-const requestGetPosts = (query) => {
+/*
+ * @deprecated
+ * post -> studylog로 변환 작업중
+ * 추후 의존성이 모두 제거되면 해당 함수 삭제 예정
+ */
+const requestGetPosts = (query, accessToken) => {
+  const authConfig = accessToken
+    ? {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    : {};
+
   if (query.type === 'searchParams') {
-    return fetch(`${BASE_URL}/posts?${query.data.toString()}`);
+    return fetch(`${BASE_URL}/posts?${query.data.toString()}`, authConfig);
   }
 
   if (query.type === 'filter') {
@@ -35,8 +67,39 @@ const requestGetPosts = (query) => {
         )
       : '';
 
-    return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`);
+    return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`, authConfig);
   }
+
+  return fetch(`${BASE_URL}/posts`, authConfig);
+};
+
+const requestGetStudyLogs = (query, accessToken) => {
+  const authConfig = accessToken
+    ? {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    : {};
+
+  if (query.type === 'searchParams') {
+    return fetch(`${BASE_URL}/posts?${query.data.toString()}`, authConfig);
+  }
+
+  if (query.type === 'filter') {
+    const searchParams = Object.entries(query?.data?.postQueryParams).map(
+      ([key, value]) => `${key}=${value}`
+    );
+    const filterQuery = query.data.filterQuery.length
+      ? query.data.filterQuery.map(
+          ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
+        )
+      : '';
+
+    return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`, authConfig);
+  }
+
+  return fetch(`${BASE_URL}/posts`, authConfig);
 };
 
 const requestEditPost = (postId, data, accessToken) =>
@@ -205,9 +268,27 @@ const requestSetDefaultAbility = (accessToken, field) =>
     },
   });
 
+const requestPostLike = (accessToken, postId) =>
+  fetch(`${BASE_URL}/studylogs/${postId}/likes`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+const requestDeleteLike = (accessToken, postId) =>
+  fetch(`${BASE_URL}/studylogs/${postId}/likes`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
 export {
-  requestGetPosts,
   requestGetPost,
+  requestGetPosts,
+  requestGetStudyLog,
+  requestGetStudyLogs,
   requestGetFilters,
   requestGetMissions,
   requestGetTags,
@@ -231,4 +312,6 @@ export {
   requestPostScrap,
   requestDeleteScrap,
   requestGetMyScrap,
+  requestPostLike,
+  requestDeleteLike,
 };
