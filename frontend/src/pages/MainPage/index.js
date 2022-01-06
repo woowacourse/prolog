@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Button, FilterList, Pagination } from '../../components';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { PATH } from '../../constants';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
 import useFetch from '../../hooks/useFetch';

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { Card, ProfileChip } from '..';
 import { COLOR, PATH } from '../../constants';
 import { AlignItemsEndStyle, FlexColumnStyle, FlexStyle } from '../../styles/flex.styles';

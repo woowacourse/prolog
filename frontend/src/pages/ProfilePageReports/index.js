@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
-import { NavLink, useParams } from 'react-router-dom';
+import { useHistory, NavLink, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import localStorage from 'local-storage';
 
