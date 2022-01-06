@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router-dom';
 import { COLOR } from '../../constants';
 import LOCAL_STORAGE_KEY from '../../constants/localStorage';
 import {
