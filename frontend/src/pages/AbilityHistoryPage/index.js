@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import useSnackBar from '../../hooks/useSnackBar';
 import AbilityListItem from '../AbilityPage/AbilityListItem';
 import { AbilityList, ListHeader } from '../AbilityPage/styles';
@@ -56,7 +57,13 @@ const mockAbility = [
 ];
 
 const AbilityHistoryPage = () => {
+  const { username, id: historyId } = useParams();
+  const { data: userData } = useSelector((state) => state.user.profile);
+
   const { isSnackBarOpen, SnackBar, openSnackBar } = useSnackBar();
+
+  // 역량 이력 삭제 메서드
+  const onDeleteAbilityHistory = () => {};
 
   return (
     <>
@@ -76,7 +83,9 @@ const AbilityHistoryPage = () => {
           ))}
       </AbilityList>
 
-      <DeleteButton>역량 이력 삭제</DeleteButton>
+      {username === userData?.username && (
+        <DeleteButton onClick={onDeleteAbilityHistory}>역량 이력 삭제</DeleteButton>
+      )}
 
       {isSnackBarOpen && <SnackBar />}
     </>
