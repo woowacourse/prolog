@@ -9,7 +9,7 @@ import { DropdownMenu } from '../index';
 import Button from '../Button/Button';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
 import NoProfileImage from '../../assets/images/no-profile-image.png';
-import { getProfile } from '../../redux/actions/userAction';
+import { getProfile, logout } from '../../redux/actions/userAction';
 import {
   Container,
   Wrapper,
@@ -78,10 +78,11 @@ const NavBar = () => {
     }
   };
 
-  const logout = () => {
-    localStorage.setItem('accessToken', '');
+  const onLogout = () => {
+    dispatch(logout());
+    localStorage.removeItem('accessToken');
 
-    window.location.reload();
+    // window.location.reload();
   };
 
   const onSearchKeywordsChange = (event) => {
@@ -104,6 +105,7 @@ const NavBar = () => {
   };
 
   if (userError) {
+    // alert(JSON.stringify(userError));
     localStorage.removeItem('accessToken');
   }
 
@@ -162,7 +164,7 @@ const NavBar = () => {
                       </li>
                     ))}
                     <li>
-                      <button type="button" onClick={logout}>
+                      <button type="button" onClick={onLogout}>
                         로그아웃
                       </button>
                     </li>
