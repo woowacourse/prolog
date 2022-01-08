@@ -260,6 +260,15 @@ const requestEditAbility = (accessToken, data) =>
     body: JSON.stringify(data),
   });
 
+const requestGetAbilityHistory = (accessToken, abilityId) =>
+  fetch(`${BASE_URL}/abilities-history/${abilityId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
 const requestDeleteAbilityHistory = (accessToken, abilityId) =>
   fetch(`${BASE_URL}/abilities-history/${abilityId}`, {
     method: 'DELETE',
@@ -312,6 +321,7 @@ export {
   requestAddAbility,
   requestDeleteAbility,
   requestEditAbility,
+  requestGetAbilityHistory,
   requestDeleteAbilityHistory,
   requestSetDefaultAbility,
   requestGetReportList,
