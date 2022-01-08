@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import useSnackBar from '../../hooks/useSnackBar';
+import { requestDeleteAbilityHistory } from '../../service/requests';
 import AbilityListItem from '../AbilityPage/AbilityListItem';
 import { AbilityList, ListHeader } from '../AbilityPage/styles';
 import { DeleteButton, Title } from './styles';
@@ -57,13 +59,37 @@ const mockAbility = [
 ];
 
 const AbilityHistoryPage = () => {
+  const history = useHistory();
   const { username, id: historyId } = useParams();
+
   const { data: userData } = useSelector((state) => state.user.profile);
+  const { data: accessToken } = useSelector((state) => state.user.accessToken);
 
   const { isSnackBarOpen, SnackBar, openSnackBar } = useSnackBar();
 
   // 역량 이력 삭제 메서드
-  const onDeleteAbilityHistory = () => {};
+  const onDeleteAbilityHistory = async () => {
+    const isConfirm = window.confirm(
+      '정말로 이력을 삭제하시겠습니까? 삭제한 후에는 복구가 어렵습니다.'
+    );
+
+    // if (!isConfirm) return;
+    // else {
+    //   try {
+    //     const response = await requestDeleteAbilityHistory(accessToken, historyId);
+
+    //     if (!response.ok) {
+    //       throw new Error(await response.text());
+    //     }
+
+    //     history.push('/');
+    //   } catch (error) {
+    //     const errorResponse = JSON.parse(error.message);
+
+    //     console.error(errorResponse);
+    //   }
+    // }
+  };
 
   return (
     <>
