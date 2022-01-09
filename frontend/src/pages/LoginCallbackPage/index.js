@@ -6,7 +6,8 @@ import { login } from '../../redux/actions/userAction';
 
 const LoginCallbackPage = () => {
   const dispatch = useDispatch();
-  const accessToken = useSelector((state) => state.user.accessToken.data);
+  const { loading, data: accessToken, error } = useSelector((state) => state.user.accessToken);
+
   const history = useHistory();
 
   useEffect(() => {
@@ -14,14 +15,23 @@ const LoginCallbackPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    if (loading) {
+      return;
+    }
+
+    if (error) {
+      console.error(error);
+      history.goBack();
+
+      return;
+    }
+
     if (accessToken) {
       history.goBack();
-    } else {
-      console.error('get accessToken failed');
-      history.push('/');
+
+      return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accessToken]);
+  }, [loading, error]);
 
   return <></>;
 };
