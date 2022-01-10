@@ -19,3 +19,7 @@ export const JustifyContentSpaceBtwStyle = css`
 export const AlignItemsEndStyle = css`
   align-items: flex-end;
 `;
+
+export const AlignItemsBaseLineStyle = css`
+  align-items: baseline;
+`;
