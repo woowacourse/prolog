@@ -115,6 +115,7 @@ const NicknameWrapper = styled.div`
 const EditButtonStyle = css`
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
   background-color: ${COLOR.WHITE};
+  color: ${COLOR.BLACK_800};
   margin: 0 0.5rem;
   width: 5rem;
   height: 3rem;

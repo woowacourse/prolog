@@ -101,6 +101,7 @@ const Navigation = styled.nav`
 
 const whiteBackgroundStyle = css`
   background-color: ${COLOR.WHITE};
+  color: ${COLOR.BLACK_800};
 `;
 
 const pencilButtonStyle = css`

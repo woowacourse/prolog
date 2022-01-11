@@ -10,7 +10,10 @@ const ButtonList = styled.div`
 
 const EditButtonStyle = css`
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
+
   background-color: ${COLOR.WHITE};
+  color: ${COLOR.BLACK_800};
+
   margin-right: 1rem;
 
   &:hover {
@@ -21,6 +24,7 @@ const EditButtonStyle = css`
 const DeleteButtonStyle = css`
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
   background-color: ${COLOR.RED_300};
+  color: ${COLOR.BLACK_800};
 
   &:hover {
     background-color: ${COLOR.RED_400};
