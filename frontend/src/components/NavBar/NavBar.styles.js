@@ -83,6 +83,22 @@ const DropdownStyle = css`
   }
 `;
 
+const Navigation = styled.nav`
+  margin-right: 1rem;
+
+  display: flex;
+  align-items: center;
+
+  > a {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  > *:not(:last-child) {
+    margin-right: 2rem;
+  }
+`;
+
 const whiteBackgroundStyle = css`
   background-color: ${COLOR.WHITE};
 `;
@@ -101,6 +117,7 @@ export {
   Wrapper,
   Logo,
   Menu,
+  Navigation,
   DropdownStyle,
   whiteBackgroundStyle,
   pencilButtonStyle,

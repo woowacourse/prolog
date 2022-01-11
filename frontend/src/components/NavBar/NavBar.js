@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory, Link, NavLink } from 'react-router-dom';
 import LogoImage from '../../assets/images/logo.svg';
 import { PATH } from '../../constants';
 import GithubLogin from '../GithubLogin/GithubLogin';
@@ -19,9 +19,20 @@ import {
   whiteBackgroundStyle,
   pencilButtonStyle,
   profileButtonStyle,
+  Navigation,
 } from './NavBar.styles';
 import { ERROR_MESSAGE } from '../../constants/message';
-import SearchBar from '../SearchBar/SearchBar';
+
+const navigationConfig = [
+  {
+    path: PATH.ROOT,
+    title: '홈',
+  },
+  {
+    path: PATH.STUDYLOG,
+    title: '학습로그',
+  },
+];
 
 const NavBar = () => {
   const history = useHistory();
@@ -35,8 +46,6 @@ const NavBar = () => {
 
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const [userImage, setUserImage] = useState(NoProfileImage);
-
-  const [searchKeywords, setSearchKeywords] = useState('');
 
   useEffect(() => {
     if (accessToken) {
@@ -84,25 +93,6 @@ const NavBar = () => {
     window.location.reload();
   };
 
-  const onSearchKeywordsChange = (event) => {
-    setSearchKeywords(event.target.value);
-  };
-
-  const onSearch = async (event) => {
-    event.preventDefault();
-
-    const query = new URLSearchParams(history.location.search);
-    query.set('page', 1);
-
-    if (searchKeywords) {
-      query.set('keyword', searchKeywords);
-    } else {
-      query.delete('keyword');
-    }
-
-    history.push(`${PATH.ROOT}?${query.toString()}`);
-  };
-
   if (userError) {
     localStorage.removeItem('accessToken');
   }
@@ -113,12 +103,6 @@ const NavBar = () => {
     }
   };
 
-  useEffect(() => {
-    const query = new URLSearchParams(history.location.search);
-
-    setSearchKeywords(query.get('keyword') ?? '');
-  }, [history.location.search]);
-
   return (
     <Container isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>
       <Wrapper>
@@ -127,7 +111,21 @@ const NavBar = () => {
           <span>{process.env.REACT_APP_MODE === 'PROD' ? 'BETA' : process.env.REACT_APP_MODE}</span>
         </Logo>
         <Menu role="menu">
-          <SearchBar onSubmit={onSearch} value={searchKeywords} onChange={onSearchKeywordsChange} />
+          <Navigation>
+            {navigationConfig.map(({ path, title }) => (
+              <NavLink
+                exact
+                key={path}
+                to={path}
+                activeStyle={{
+                  borderBottom: '2px solid black',
+                  fontWeight: '600',
+                }}
+              >
+                {title}
+              </NavLink>
+            ))}
+          </Navigation>
           {isLoggedIn ? (
             <>
               <Button
