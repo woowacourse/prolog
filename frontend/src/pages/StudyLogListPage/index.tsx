@@ -1,4 +1,6 @@
-import { useEffect } from 'react';
+/** @jsxImportSource @emotion/react */
+
+import { useEffect, useState } from 'react';
 import { Button, FilterList, Pagination } from '../../components';
 import { useHistory } from 'react-router-dom';
 import { PATH } from '../../constants';
@@ -18,6 +20,13 @@ import FlexBox from '../../components/@shared/FlexBox/FlexBox';
 import useFilterWithParams from '../../hooks/useFilterWithParams';
 import StudyLogList from '../../components/Lists/StudyLogList';
 import useStudyLog from '../../hooks/useStudyLog';
+import { css } from '@emotion/react';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import {
+  AlignItemsCenterStyle,
+  FlexStyle,
+  JustifyContentSpaceBtwStyle,
+} from '../../styles/flex.styles';
 
 type User = {
   profile: { loading: boolean; data: string; error: null | string };
@@ -50,6 +59,8 @@ const StudyLogListPage = (): JSX.Element => {
 
   const [filters] = useFetch([], requestGetFilters);
 
+  const [searchKeywords, setSearchKeywords] = useState('');
+
   const goNewPost = () => {
     if (!accessToken) {
       alert(ERROR_MESSAGE.LOGIN_DEFAULT);
@@ -65,6 +76,25 @@ const StudyLogListPage = (): JSX.Element => {
     params.delete('keyword');
 
     history.push(`${PATH.STUDYLOG}?${params.toString()}`);
+  };
+
+  const onSearchKeywordsChange = (event) => {
+    setSearchKeywords(event.target.value);
+  };
+
+  const onSearch = async (event) => {
+    event.preventDefault();
+
+    const query = new URLSearchParams(history.location.search);
+    query.set('page', '1');
+
+    if (searchKeywords) {
+      query.set('keyword', searchKeywords);
+    } else {
+      query.delete('keyword');
+    }
+
+    history.push(`${PATH.STUDYLOG}?${query.toString()}`);
   };
 
   useEffect(() => {
@@ -100,9 +130,39 @@ const StudyLogListPage = (): JSX.Element => {
     setSelectedFilterDetails(selectedFilterDetailsWithName);
   }, [filters]);
 
+  useEffect(() => {
+    const query = new URLSearchParams(history.location.search);
+
+    setSearchKeywords(query.get('keyword') ?? '');
+  }, [history.location.search]);
+
   return (
     <>
       <HeaderContainer>
+        <div
+          css={[
+            FlexStyle,
+            JustifyContentSpaceBtwStyle,
+            AlignItemsCenterStyle,
+            css`
+              margin-bottom: 1rem;
+            `,
+          ]}
+        >
+          <h1
+            css={css`
+              font-size: 2rem;
+            `}
+          >
+            학습로그
+          </h1>
+          <SearchBar
+            onSubmit={onSearch}
+            onChange={onSearchKeywordsChange}
+            value={searchKeywords}
+            css={css``}
+          />
+        </div>
         <FlexBox>
           <FilterListWrapper>
             <FilterList
@@ -122,6 +182,9 @@ const StudyLogListPage = (): JSX.Element => {
               icon={PencilIcon}
               alt="글쓰기 아이콘"
               onClick={goNewPost}
+              cssProps={css`
+                margin-left: 1rem;
+              `}
             >
               글쓰기
             </Button>
