@@ -3,7 +3,7 @@ package wooteco.prolog.report.domain.ablity;
 import javax.persistence.*;
 
 @Entity
-public class SnapshotAbility {
+public class HistoryAbility {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,14 +17,14 @@ public class SnapshotAbility {
     @JoinColumn(name = "ability_id")
     private Ability2 ability2;
 
-    protected SnapshotAbility() {
+    protected HistoryAbility() {
     }
 
-    public SnapshotAbility(History history, Ability2 ability) {
+    public HistoryAbility(History history, Ability2 ability) {
         this(null, history, ability);
     }
 
-    public SnapshotAbility(Long id, History history, Ability2 ability2) {
+    public HistoryAbility(Long id, History history, Ability2 ability2) {
         this.id = id;
         this.history = history;
         this.ability2 = ability2;

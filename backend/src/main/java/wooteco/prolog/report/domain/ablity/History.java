@@ -22,17 +22,17 @@ public class History {
     private LocalDateTime createdAt;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<SnapshotAbility> abilities;
+    private List<HistoryAbility> abilities;
 
     protected History() {
         this(new ArrayList<>());
     }
 
-    public History(List<SnapshotAbility> abilities) {
+    public History(List<HistoryAbility> abilities) {
         this(null, null, abilities);
     }
 
-    public History(Long id, LocalDateTime createdAt, List<SnapshotAbility> abilities) {
+    public History(Long id, LocalDateTime createdAt, List<HistoryAbility> abilities) {
         this.id = id;
         this.createdAt = createdAt;
         this.abilities = abilities;
@@ -43,12 +43,12 @@ public class History {
         validateDuplicateAbilityName(ability, abilities);
         validateDuplicateAbilityColor(ability, abilities);
 
-        this.abilities.add(new SnapshotAbility(this, ability));
+        this.abilities.add(new HistoryAbility(this, ability));
     }
 
     private List<Ability2> extractAbilities() {
         return abilities.stream()
-                .map(SnapshotAbility::getAbility)
+                .map(HistoryAbility::getAbility)
                 .collect(toList());
     }
 }
