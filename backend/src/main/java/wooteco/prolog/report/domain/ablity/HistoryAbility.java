@@ -1,6 +1,7 @@
 package wooteco.prolog.report.domain.ablity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class HistoryAbility {
@@ -40,5 +41,18 @@ public class HistoryAbility {
 
     public Ability2 getAbility() {
         return ability2;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HistoryAbility that = (HistoryAbility) o;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

@@ -8,6 +8,7 @@ import wooteco.prolog.report.domain.ablity.vo.Name;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static wooteco.prolog.report.domain.ablity.domain.AbilityValidator.*;
 
@@ -87,5 +88,18 @@ public class Ability2 {
 
     public List<Ability2> getChildren() {
         return children.getValues();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ability2 ability2 = (Ability2) o;
+        return Objects.equals(id, ability2.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
