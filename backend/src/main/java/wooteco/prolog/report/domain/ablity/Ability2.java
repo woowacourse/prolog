@@ -5,17 +5,37 @@ import wooteco.prolog.report.domain.ablity.vo.Color;
 import wooteco.prolog.report.domain.ablity.vo.Description;
 import wooteco.prolog.report.domain.ablity.vo.Name;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import static wooteco.prolog.report.domain.ablity.domain.AbilityValidator.*;
 
+@Entity
 public class Ability2 {
 
-    private final Name name;
-    private final Description description;
-    private final Color color;
-    private final Children children;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Embedded
+    private Name name;
+
+    @Embedded
+    private Description description;
+
+    @Embedded
+    private Color color;
+
+    @Embedded
+    private Children children;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Ability2 parent;
+
+    protected Ability2() {
+    }
 
     public Ability2(String name, String description, String color, List<Ability2> children) {
         this(new Name(name), new Description(description), new Color(color), new Children(new ArrayList<>(children)));

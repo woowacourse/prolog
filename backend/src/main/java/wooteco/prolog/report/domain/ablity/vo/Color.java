@@ -1,10 +1,17 @@
 package wooteco.prolog.report.domain.ablity.vo;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.util.Objects;
 
+@Embeddable
 public class Color {
 
-    private final String value;
+    @Column(name = "color")
+    private String value;
+
+    protected Color() {
+    }
 
     public Color(String value) {
         this.value = value;

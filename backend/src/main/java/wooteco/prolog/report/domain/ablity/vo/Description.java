@@ -1,10 +1,17 @@
 package wooteco.prolog.report.domain.ablity.vo;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.util.Objects;
 
+@Embeddable
 public class Description {
 
-    private final String value;
+    @Column(name = "description")
+    private String value;
+
+    protected Description() {
+    }
 
     public Description(String value) {
         this.value = value;

@@ -2,11 +2,20 @@ package wooteco.prolog.report.domain.ablity.vo;
 
 import wooteco.prolog.report.domain.ablity.Ability2;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import java.util.List;
 
+@Embeddable
 public class Children {
 
-    private final List<Ability2> values;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true, mappedBy = "parent")
+    private List<Ability2> values;
+
+    protected Children() {
+    }
 
     public Children(List<Ability2> values) {
         this.values = values;
