@@ -2,6 +2,9 @@ package wooteco.prolog.report.domain.ablity;
 
 import java.util.List;
 
+import static wooteco.prolog.report.domain.ablity.domain.AbilityValidator.validateDuplicateAbilityColor;
+import static wooteco.prolog.report.domain.ablity.domain.AbilityValidator.validateDuplicateAbilityName;
+
 public class Abilities {
 
     private final List<Ability2> values;
@@ -13,6 +16,8 @@ public class Abilities {
     }
 
     public void add(Ability2 ability) {
+        validateDuplicateAbilityName(ability, values);
+        validateDuplicateAbilityColor(ability, values);
         this.values.add(ability);
     }
 
