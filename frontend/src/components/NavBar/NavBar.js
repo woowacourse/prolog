@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,6 +22,7 @@ import {
   pencilButtonStyle,
   profileButtonStyle,
   Navigation,
+  loginButtonStyle,
 } from './NavBar.styles';
 import { ERROR_MESSAGE } from '../../constants/message';
 
@@ -133,14 +136,14 @@ const NavBar = () => {
                 icon={PencilIcon}
                 type="button"
                 onClick={goNewPost}
-                css={pencilButtonStyle}
+                cssProps={pencilButtonStyle}
               />
               <Button
                 size="XX_SMALL"
                 type="button"
                 backgroundImageUrl={userImage}
                 onClick={showDropdownMenu}
-                css={profileButtonStyle}
+                cssProps={profileButtonStyle}
               />
               {isDropdownToggled && (
                 <DropdownMenu css={DropdownStyle}>
@@ -170,9 +173,10 @@ const NavBar = () => {
             </>
           ) : (
             <GithubLogin>
-              <Button size="SMALL" type="button" icon={NoProfileImage} css={whiteBackgroundStyle}>
+              <div css={[loginButtonStyle]}>
+                <img src={NoProfileImage} alt="" />
                 로그인
-              </Button>
+              </div>
             </GithubLogin>
           )}
         </Menu>

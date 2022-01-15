@@ -104,6 +104,28 @@ const whiteBackgroundStyle = css`
   color: ${COLOR.BLACK_800};
 `;
 
+export const loginButtonStyle = css`
+  width: 9rem;
+  height: 3.6rem;
+  padding-right: 0.3rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: ${COLOR.WHITE};
+  border-radius: 1rem;
+
+  font-size: 1.8rem;
+  color: ${COLOR.BLACK_800};
+
+  img {
+    width: 2.4rem;
+    height: 2.4rem;
+    margin: 0;
+  }
+`;
+
 const pencilButtonStyle = css`
   width: 3.6rem;
   height: 3.6rem;
