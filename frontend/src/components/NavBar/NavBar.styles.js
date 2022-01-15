@@ -63,7 +63,7 @@ const Menu = styled.div`
   display: flex;
 
   & > * {
-    margin-left: 0.8rem;
+    margin-left: 1rem;
   }
 
   & > form {
@@ -131,6 +131,7 @@ const pencilButtonStyle = css`
   height: 3.6rem;
 
   background-color: ${COLOR.DARK_BLUE_800};
+  border-radius: 1.2rem;
 
   img {
     width: 2.4rem;
@@ -141,6 +142,8 @@ const pencilButtonStyle = css`
 const profileButtonStyle = css`
   width: 3.6rem;
   height: 3.6rem;
+
+  border-radius: 1.2rem;
 `;
 
 export {
