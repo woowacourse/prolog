@@ -107,6 +107,7 @@ const NavBar = () => {
   if (userError) {
     // alert(JSON.stringify(userError));
     localStorage.removeItem('accessToken');
+    dispatch(logout());
   }
 
   const onSelectMenu = (event) => {
