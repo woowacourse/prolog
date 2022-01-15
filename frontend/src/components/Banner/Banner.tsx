@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
+import { css } from '@emotion/react';
 import React from 'react';
 import {
   bannerWrapperStyle,
@@ -47,7 +48,18 @@ const Banner = ({
         {!reverse && sideImageUrl && (
           <div css={getBannerSideImageStyle(sideImageUrl, sideImagePadding, reverse)} />
         )}
-        <div css={bannerTextAreaStyle}>
+        <div
+          css={[
+            bannerTextAreaStyle,
+            !sideImageUrl
+              ? css`
+                  padding: 0;
+                  align-items: center;
+                  text-align: center;
+                `
+              : null,
+          ]}
+        >
           {textContents}
           {showMoreLink && (
             <a href={showMoreLink} target="_blank" rel="noreferrer noopener">

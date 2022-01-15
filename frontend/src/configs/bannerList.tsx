@@ -2,8 +2,7 @@ import { BannerType } from '../components/Banner/Banner';
 import { COLOR } from '../constants';
 
 import prologIcon from '../assets/images/prolog-banner-image.png';
-import wootecoIcon from '../assets/images/no-profile-image.png';
-import pencilIcon from '../assets/images/pencil_icon.svg';
+import wootecoIcon from '../assets/images/woteco-logo.png';
 
 // TODO: textContents Template Literal로 변경
 const bannerList: BannerType[] = [
@@ -35,38 +34,17 @@ const bannerList: BannerType[] = [
     reverse: true,
     showMoreLink: 'https://woowacourse.github.io/',
     showMoreLinkText: '알아보러가기',
-    sideImagePadding: 0,
+    sideImagePadding: 10,
   },
   {
     backgroundColor: COLOR.RED_600,
-    sideImageUrl: pencilIcon,
     textContents: (
       <>
-        <p>
-          <strong>임시배너</strong>입니다. 임시배너입니다.
-        </p>
-        <h2>임!시!배!너</h2>
+        <h2>(환) 우아한테크코스 4기🥳 (영)</h2>
+        <p>4기 크루 드루와 드루와~~</p>
       </>
     ),
     reverse: false,
-    sideImagePadding: 20,
-  },
-  {
-    backgroundColor: '#dabff7',
-    textContents: (
-      <>
-        <p>임시배너입니다. 임시배너입니다.</p>
-        <h2>임!시!배!너</h2>
-        <p>
-          하단에도 <strong>작성</strong>할 수 있습니다.
-        </p>
-        <p>너무 많이는 작성하지 말아주세요</p>
-      </>
-    ),
-    reverse: true,
-    sideImagePadding: 20,
-    showMoreLink: '/서니',
-    showMoreLinkText: '서니 프로필가기 >',
   },
 ];
 

@@ -8,6 +8,8 @@ export const BannerSliderWrapperStyle = css`
 
   position: relative;
   overflow: hidden;
+
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
 `;
 
 export const BannerSliderItemStyle = css`

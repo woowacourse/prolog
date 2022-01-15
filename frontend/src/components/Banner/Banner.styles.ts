@@ -6,8 +6,6 @@ export const bannerWrapperStyle = css`
   width: 100vw;
   height: 320px;
 
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
-
   overflow: hidden;
 
   strong,
@@ -21,9 +19,11 @@ export const bannerWrapperStyle = css`
   }
 
   a {
-    max-width: 15rem;
+    max-width: 18rem;
 
-    padding: 0.8rem 0;
+    padding: 0.8rem 2rem;
+
+    border-radius: 2rem;
 
     text-align: center;
   }
