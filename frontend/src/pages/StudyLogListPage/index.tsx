@@ -138,7 +138,7 @@ const StudyLogListPage = (): JSX.Element => {
   }, [history.location.search]);
 
   return (
-    <div css={MainContentStyle}>
+    <div css={[MainContentStyle]}>
       <HeaderContainer>
         <div
           css={[
@@ -152,10 +152,10 @@ const StudyLogListPage = (): JSX.Element => {
         >
           <h1
             css={css`
-              font-size: 2rem;
+              font-size: 2.4rem;
             `}
           >
-            학습로그
+            📚 학습로그
           </h1>
           <SearchBar
             onSubmit={onSearch}

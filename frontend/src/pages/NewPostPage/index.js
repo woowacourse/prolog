@@ -93,7 +93,7 @@ const NewPostPage = () => {
           ))}
         </ul>
 
-        <Button size={BUTTON_SIZE.SMALL} css={SubmitButtonStyle}>
+        <Button size={BUTTON_SIZE.SMALL} cssProps={SubmitButtonStyle}>
           작성완료
         </Button>
       </form>

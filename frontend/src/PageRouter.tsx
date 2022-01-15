@@ -8,7 +8,7 @@ import pageRoutes from './routes';
 
 export const MainContentStyle = css`
   max-width: 112rem;
-  margin: 6rem auto;
+  margin: 4rem auto;
   padding: 0 4rem;
 `;
 
