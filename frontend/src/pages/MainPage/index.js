@@ -1,5 +1,11 @@
+import Banner from '../../components/Banner/Banner';
+
 const MainPage = () => {
-  return <>메인페이지 개편 작업중입니다.</>;
+  return (
+    <>
+      <Banner />
+    </>
+  );
 };
 
 export default MainPage;

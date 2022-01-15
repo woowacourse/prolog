@@ -27,6 +27,7 @@ import {
   FlexStyle,
   JustifyContentSpaceBtwStyle,
 } from '../../styles/flex.styles';
+import { MainContentStyle } from '../../PageRouter';
 
 type User = {
   profile: { loading: boolean; data: string; error: null | string };
@@ -137,7 +138,7 @@ const StudyLogListPage = (): JSX.Element => {
   }, [history.location.search]);
 
   return (
-    <>
+    <div css={MainContentStyle}>
       <HeaderContainer>
         <div
           css={[
@@ -214,7 +215,7 @@ const StudyLogListPage = (): JSX.Element => {
         {posts && posts.data && <StudyLogList studylogs={posts.data} />}
       </PostListContainer>
       <Pagination postsInfo={posts} onSetPage={onSetPage}></Pagination>
-    </>
+    </div>
   );
 };
 
