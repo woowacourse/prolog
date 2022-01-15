@@ -146,7 +146,7 @@ const NavBar = () => {
                 cssProps={profileButtonStyle}
               />
               {isDropdownToggled && (
-                <DropdownMenu css={DropdownStyle}>
+                <DropdownMenu cssProps={DropdownStyle}>
                   <ul onClick={onSelectMenu}>
                     {[
                       {
