@@ -32,7 +32,7 @@ const RecentStudyLogList = ({ studylogs }: { studylogs: Prolog.StudyLog[] }) => 
             padding-left: 1.2rem;
           `}
         >
-          최신 학습로그📚
+          📚 최신 학습로그
         </h2>
         <Link to={PATH.STUDYLOG}>{`더보기 >`}</Link>
       </div>
