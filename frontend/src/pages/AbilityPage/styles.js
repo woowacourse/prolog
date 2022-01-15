@@ -8,23 +8,6 @@ export const Container = styled.div`
 
   font-size: 1.4rem;
 
-  > div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  h2 {
-    text-align: left;
-    font-weight: 600;
-
-    span {
-      font-weight: 400;
-      font-size: 1.6rem;
-      padding-left: 0.5rem;
-    }
-  }
-
   button:disabled {
     opacity: 0.3;
   }
@@ -35,6 +18,73 @@ export const Container = styled.div`
 
   > *:not(:last-child) {
     margin-bottom: 1rem;
+  }
+`;
+
+export const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  position: relative;
+
+  h2 {
+    text-align: left;
+    font-weight: 600;
+  }
+`;
+
+export const AbilityHistoryContainer = styled.div`
+  width: 30rem;
+  height: fit-content;
+  max-height: 20rem;
+
+  position: absolute;
+  top: 3.5rem;
+  right: 1rem;
+
+  background-color: ${COLOR.WHITE};
+  border-radius: 0.5rem;
+  border: 1px solid ${COLOR.BLACK_OPACITY_200};
+  box-shadow: 2px 2px 4px ${COLOR.BLACK_OPACITY_100};
+  z-index: 2;
+
+  h3 {
+    width: 100%;
+    padding: 1rem;
+
+    color: ${COLOR.DARK_GRAY_800};
+    font-size: 1.4rem;
+    font-weight: 500;
+
+    background-color: ${COLOR.WHITE};
+    border-bottom: 1px solid ${COLOR.LIGHT_GRAY_500};
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+  }
+
+  :before {
+    content: '';
+    position: absolute;
+    top: -11px;
+    right: 21px;
+
+    border-top: 0px solid transparent;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    border-bottom: 10px solid ${COLOR.BLACK_OPACITY_200};
+  }
+
+  :after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    right: 22px;
+
+    border-top: 0px solid transparent;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid ${COLOR.WHITE};
   }
 `;
 

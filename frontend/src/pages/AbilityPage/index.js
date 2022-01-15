@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { COLOR } from '../../constants';
@@ -17,6 +17,7 @@ import {
   requestDeleteAbility,
   requestEditAbility,
   requestGetAbilities,
+  requestGetAbilityHistories,
 } from '../../service/requests';
 import AbilityListItem from './AbilityListItem';
 import AddAbilityForm from './AddAbilityForm';
@@ -31,8 +32,12 @@ import {
   ListHeader,
   NoContent,
   FormButtonWrapper,
+  HeaderContainer,
+  AbilityHistoryContainer,
 } from './styles';
 import { isCorrectHexCode } from '../../utils/hexCode';
+import AbilityHistory from '../../components/Lists/AbilityHistoryList';
+import AbilityHistoryList from '../../components/Lists/AbilityHistoryList';
 
 const DEFAULT_ABILITY_FORM = {
   isOpened: false,
@@ -42,17 +47,51 @@ const DEFAULT_ABILITY_FORM = {
   parent: null,
 };
 
+const MockAbility = [
+  { id: 1, title: '2022-02-22 역량' },
+  { id: 2, title: '2022-02-21 역량' },
+  { id: 3, title: '2022-02-20 역량' },
+  { id: 4, title: '2022-02-19 역량' },
+  { id: 5, title: '2022-02-18 역량' },
+  { id: 6, title: '2022-02-17 역량' },
+  { id: 7, title: '2022-02-16 역량' },
+];
+
 const AbilityPage = () => {
   const history = useHistory();
   const { username } = useParams();
   const { isSnackBarOpen, SnackBar, openSnackBar } = useSnackBar();
 
+  const abilityHistoryModalRef = useRef(null);
+
   const [abilities, setAbilities] = useState(null);
   const [addFormStatus, setAddFormStatus] = useState(DEFAULT_ABILITY_FORM);
+  const [isModalOpened, setIsModalOpened] = useState(false);
 
   const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
   const user = useSelector((state) => state.user.profile);
   const isMine = user.data && username === user.data?.username;
+
+  /** 역량 이력 모달 밖의 영역을 선택했을 때, 모달이 닫히도록 하는 기능 */
+  useEffect(() => {
+    const onCloseModal = ({ target }) => {
+      if (isModalOpened && !abilityHistoryModalRef.current?.contains(target)) {
+        setIsModalOpened(false);
+      }
+    };
+
+    document.addEventListener('click', onCloseModal);
+
+    return () => {
+      document.removeEventListener('click', onCloseModal);
+    };
+  }, [isModalOpened]);
+
+  window.addEventListener('keyup', (event) => {
+    if (event.key !== 'Escape') return;
+
+    setIsModalOpened(false);
+  });
 
   const addFormClose = () => {
     setAddFormStatus((prevState) => ({ ...prevState, isOpened: false }));
@@ -175,15 +214,46 @@ const AbilityPage = () => {
     }
   };
 
+  // 역량 이력 가져오기
+  // 역량 이력 -> [{ 이력 id, 이력 title }]
+  const onShowAbilistyHistories = async () => {
+    setIsModalOpened(true);
+    // try {
+    //   const response = await requestGetAbilityHistories(accessToken);
+    //   if (!response.ok) {
+    //     throw new Error(await response.text());
+    //   }
+    //   const json = await response.json();
+    //   console.log(json);
+    // } catch (error) {
+    //   const errorResponse = JSON.parse(error.message);
+    //   console.error(errorResponse);
+    // }
+  };
+
   return (
     <>
       <Container>
-        <div>
+        <HeaderContainer>
           <h2>역량</h2>
-          <Button type="button" backgroundColor={COLOR.LIGHT_GRAY_50} onClick={addFormOpen}>
+          {/* <Button type="button" backgroundColor={COLOR.LIGHT_GRAY_50} onClick={addFormOpen}>
             역량 추가 +
+          </Button> */}
+          <Button
+            type="button"
+            backgroundColor={COLOR.LIGHT_GRAY_50}
+            onClick={onShowAbilistyHistories}
+          >
+            역량 이력
           </Button>
-        </div>
+
+          {isModalOpened && (
+            <AbilityHistoryContainer ref={abilityHistoryModalRef}>
+              <h3>역량 이력 {MockAbility.length}개</h3>
+              <AbilityHistoryList list={MockAbility} />
+            </AbilityHistoryContainer>
+          )}
+        </HeaderContainer>
 
         {addFormStatus.isOpened && (
           <AbilityList>
@@ -220,11 +290,11 @@ const AbilityPage = () => {
               />
             ))}
 
-          {abilities && !abilities.length && (
+          {/* {abilities && !abilities.length && (
             <NoContent>
               <NoAbility getData={getData} accessToken={accessToken} />
             </NoContent>
-          )}
+          )} */}
         </AbilityList>
       </Container>
 
