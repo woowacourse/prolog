@@ -129,14 +129,14 @@ const NavBar = () => {
           {isLoggedIn ? (
             <>
               <Button
-                size="SMALL"
+                size="XX_SMALL"
                 icon={PencilIcon}
                 type="button"
                 onClick={goNewPost}
                 css={pencilButtonStyle}
               />
               <Button
-                size="SMALL"
+                size="XX_SMALL"
                 type="button"
                 backgroundImageUrl={userImage}
                 onClick={showDropdownMenu}
