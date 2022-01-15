@@ -1,9 +1,10 @@
-import Banner from '../../components/Banner/Banner';
+import BannerList from '../../components/Banner/BannerList';
+import bannerList from './bannerList';
 
 const MainPage = () => {
   return (
     <>
-      <Banner />
+      <BannerList bannerList={bannerList} />
     </>
   );
 };
