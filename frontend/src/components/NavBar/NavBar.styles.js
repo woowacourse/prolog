@@ -37,7 +37,7 @@ const Wrapper = styled.div`
 `;
 
 const Logo = styled.div`
-  height: 3rem;
+  height: 2.4rem;
   position: relative;
 
   img {
