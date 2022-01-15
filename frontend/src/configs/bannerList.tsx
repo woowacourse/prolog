@@ -5,6 +5,7 @@ import prologIcon from '../assets/images/prolog-banner-image.png';
 import wootecoIcon from '../assets/images/no-profile-image.png';
 import pencilIcon from '../assets/images/pencil_icon.svg';
 
+// TODO: textContents Template Literal로 변경
 const bannerList: BannerType[] = [
   {
     backgroundColor: COLOR.DARK_BLUE_800,
