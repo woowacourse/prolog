@@ -1,9 +1,9 @@
-import { BannerType } from '../../components/Banner/Banner';
-import { COLOR } from '../../constants';
+import { BannerType } from '../components/Banner/Banner';
+import { COLOR } from '../constants';
 
-import prologIcon from '../../assets/images/prolog-banner-image.png';
-import wootecoIcon from '../../assets/images/no-profile-image.png';
-import pencilIcon from '../../assets/images/pencil_icon.svg';
+import prologIcon from '../assets/images/prolog-banner-image.png';
+import wootecoIcon from '../assets/images/no-profile-image.png';
+import pencilIcon from '../assets/images/pencil_icon.svg';
 
 const bannerList: BannerType[] = [
   {
