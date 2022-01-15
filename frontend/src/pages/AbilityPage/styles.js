@@ -7,6 +7,7 @@ export const Container = styled.div`
   height: 100%;
 
   font-size: 1.4rem;
+  position: relative;
 
   button:disabled {
     opacity: 0.3;
@@ -17,7 +18,7 @@ export const Container = styled.div`
   }
 
   > *:not(:last-child) {
-    margin-bottom: 1rem;
+    margin-bottom: 0.3rem;
   }
 `;
 
@@ -29,6 +30,7 @@ export const HeaderContainer = styled.div`
   position: relative;
 
   h2 {
+    visibility: hidden;
     text-align: left;
     font-weight: 600;
   }
@@ -41,7 +43,7 @@ export const AbilityHistoryContainer = styled.div`
 
   position: absolute;
   top: 3.5rem;
-  right: 1rem;
+  left: 1rem;
 
   background-color: ${COLOR.WHITE};
   border-radius: 0.5rem;
@@ -67,7 +69,7 @@ export const AbilityHistoryContainer = styled.div`
     content: '';
     position: absolute;
     top: -11px;
-    right: 21px;
+    left: 21px;
 
     border-top: 0px solid transparent;
     border-left: 11px solid transparent;
@@ -79,7 +81,7 @@ export const AbilityHistoryContainer = styled.div`
     content: '';
     position: absolute;
     top: -10px;
-    right: 22px;
+    left: 22px;
 
     border-top: 0px solid transparent;
     border-left: 10px solid transparent;
@@ -90,10 +92,11 @@ export const AbilityHistoryContainer = styled.div`
 
 export const AbilityList = styled.ul`
   width: 100%;
+
   background-color: ${COLOR.WHITE};
 
-  border: 1px solid ${COLOR.LIGHT_GRAY_200};
-  border-radius: 1rem;
+  border: 2px solid ${COLOR.LIGHT_GRAY_400};
+  border-radius: 0.5rem;
 
   > div {
     width: 100%;
@@ -115,6 +118,10 @@ export const AbilityList = styled.ul`
     :last-child {
       border: none;
     }
+  }
+
+  && {
+    margin-bottom: 1rem;
   }
 `;
 
@@ -204,9 +211,10 @@ export const Button = styled.button`
   `}
 
   ${({ borderColor }) => borderColor && `border: 1px solid ${borderColor};`}
+  font-size: ${({ fontSize }) => (fontSize ? ` ${fontSize}` : '1.4rem')};
 
   padding: 0.5rem 1.5rem;
-  border-radius: 1rem;
+  border-radius: 0.8rem;
 
   :not(:first-of-child) {
     margin-left: 0.5rem;
@@ -288,13 +296,22 @@ export const ColorPicker = styled.div`
 `;
 
 export const ListHeader = styled.div`
-  font-size: 1.4rem;
+  position: relative;
+  margin: 1rem 0;
 
-  && {
-    grid-template-columns: 1fr;
-    background-color: ${COLOR.LIGHT_GRAY_200};
-    border-top-left-radius: 1rem;
-    border-top-right-radius: 1rem;
+  h3 {
+    margin-left: 0.6rem;
+
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: ${COLOR.BLACK_900};
+
+    > span {
+      margin-left: 0.5rem;
+
+      font-size: 1.4rem;
+      color: ${COLOR.DARK_GRAY_900};
+    }
   }
 `;
 

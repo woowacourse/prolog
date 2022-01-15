@@ -7,9 +7,7 @@ import { requestEditReport, requestGetReport } from '../../service/requests';
 import { API, COLOR, ERROR_MESSAGE, REPORT_DESCRIPTION } from '../../constants';
 
 import { Button } from '../../components';
-import StudyLogModal from '../ProfilePageNewReport/StudyLogModal';
 import ReportInfoInput from '../ProfilePageNewReport/ReportInfoInput';
-import ReportStudyLogTable from '../ProfilePageNewReport/ReportStudyLogTable';
 import { Checkbox, Form, FormButtonWrapper } from '../ProfilePageNewReport/style';
 import AbilityGraph from '../ProfilePageReports/AbilityGraph';
 import { limitLetterLength } from '../../utils/validator';
@@ -29,7 +27,6 @@ const ProfilePageEditReport = () => {
   const [studyLogs, setStudyLogs] = useState([]);
   const [abilities, setAbilities] = useState([]);
   const [studyLogAbilities, setStudyLogAbilities] = useState([]);
-  const [isModalOpened, setIsModalOpened] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -139,10 +136,6 @@ const ProfilePageEditReport = () => {
 
   const onRegisterMainReport = () => setIsMainReport((currentState) => !currentState);
 
-  const onModalOpen = () => setIsModalOpened(true);
-
-  const onModalClose = () => setIsModalOpened(false);
-
   const onChangeAbilities = (data) => {
     setAbilities(data);
   };
@@ -173,15 +166,6 @@ const ProfilePageEditReport = () => {
           <AbilityGraph abilities={abilities} setAbilities={onChangeAbilities} mode="EDIT" />
         </section>
 
-        <ReportStudyLogTable
-          onModalOpen={onModalOpen}
-          studyLogs={studyLogs}
-          setStudyLogs={setStudyLogs}
-          abilities={abilities}
-          studyLogAbilities={studyLogAbilities}
-          setStudyLogAbilities={setStudyLogAbilities}
-        />
-
         <FormButtonWrapper>
           <Button
             size="X_SMALL"
@@ -194,15 +178,6 @@ const ProfilePageEditReport = () => {
           <Button size="X_SMALL">리포트 수정</Button>
         </FormButtonWrapper>
       </Form>
-
-      {isModalOpened && (
-        <StudyLogModal
-          onModalClose={onModalClose}
-          username={username}
-          studyLogs={studyLogs}
-          setStudyLogs={setStudyLogs}
-        />
-      )}
     </>
   );
 };

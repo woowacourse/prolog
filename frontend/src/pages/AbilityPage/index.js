@@ -38,6 +38,9 @@ import {
 import { isCorrectHexCode } from '../../utils/hexCode';
 import AbilityHistory from '../../components/Lists/AbilityHistoryList';
 import AbilityHistoryList from '../../components/Lists/AbilityHistoryList';
+import ReportStudyLogTable from './ReportStudyLogTable';
+import StudyLogModal from './StudyLogModal';
+import { TableButtonWrapper } from './ReportStudyLogTable.styles';
 
 const DEFAULT_ABILITY_FORM = {
   isOpened: false,
@@ -67,6 +70,9 @@ const AbilityPage = () => {
   const [abilities, setAbilities] = useState(null);
   const [addFormStatus, setAddFormStatus] = useState(DEFAULT_ABILITY_FORM);
   const [isModalOpened, setIsModalOpened] = useState(false);
+  const [isReportModalOpened, setReportIsModalOpened] = useState(false);
+  const [studyLogs, setStudyLogs] = useState([]);
+  const [studyLogAbilities, setStudyLogAbilities] = useState([]);
 
   const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
   const user = useSelector((state) => state.user.profile);
@@ -100,6 +106,10 @@ const AbilityPage = () => {
   const addFormOpen = () => {
     setAddFormStatus((prevState) => ({ ...prevState, isOpened: true }));
   };
+
+  const onReportModalOpen = () => setReportIsModalOpened(true);
+
+  const onReportModalClose = () => setReportIsModalOpened(false);
 
   const { fetchData: getData } = useRequest(
     [],
@@ -235,16 +245,15 @@ const AbilityPage = () => {
     <>
       <Container>
         <HeaderContainer>
-          <h2>역량</h2>
-          {/* <Button type="button" backgroundColor={COLOR.LIGHT_GRAY_50} onClick={addFormOpen}>
-            역량 추가 +
-          </Button> */}
+          {/* <h2>역량 페이지</h2> */}
           <Button
             type="button"
             backgroundColor={COLOR.LIGHT_GRAY_50}
+            borderColor={COLOR.LIGHT_GRAY_400}
+            fontSize="1.2rem"
             onClick={onShowAbilistyHistories}
           >
-            역량 이력
+            🕖 히스토리
           </Button>
 
           {isModalOpened && (
@@ -254,6 +263,18 @@ const AbilityPage = () => {
             </AbilityHistoryContainer>
           )}
         </HeaderContainer>
+
+        <ListHeader>
+          <h3>
+            📚 역량 <span>{`(총 ${abilities?.length ?? 0}개)`}</span>
+          </h3>
+
+          <TableButtonWrapper>
+            <Button type="button" backgroundColor={COLOR.LIGHT_BLUE_300} onClick={addFormOpen}>
+              역량 추가하기
+            </Button>
+          </TableButtonWrapper>
+        </ListHeader>
 
         {addFormStatus.isOpened && (
           <AbilityList>
@@ -271,12 +292,6 @@ const AbilityPage = () => {
         )}
 
         <AbilityList>
-          <ListHeader>
-            <div>
-              역량<span>{`(총 ${abilities?.length ?? 0}개)`}</span>
-            </div>
-          </ListHeader>
-
           {abilities
             ?.filter(({ isParent }) => isParent)
             .map((ability) => (
@@ -298,6 +313,15 @@ const AbilityPage = () => {
         </AbilityList>
       </Container>
 
+      <ReportStudyLogTable
+        onModalOpen={onReportModalOpen}
+        studyLogs={studyLogs}
+        setStudyLogs={setStudyLogs}
+        abilities={abilities}
+        studyLogAbilities={studyLogAbilities}
+        setStudyLogAbilities={setStudyLogAbilities}
+      />
+
       <FormButtonWrapper>
         <FormButton
           size="X_SMALL"
@@ -308,6 +332,15 @@ const AbilityPage = () => {
         </FormButton>
         <FormButton size="X_SMALL">역량 저장</FormButton>
       </FormButtonWrapper>
+
+      {isReportModalOpened && (
+        <StudyLogModal
+          onModalClose={onReportModalClose}
+          username={username}
+          studyLogs={studyLogs}
+          setStudyLogs={setStudyLogs}
+        />
+      )}
 
       {isSnackBarOpen && <SnackBar />}
     </>

@@ -7,7 +7,7 @@ import { onToggleCheckbox } from '../../utils/toggleCheckbox';
 import { filterIds } from '../../utils/filteringList';
 import { COLOR } from '../../constants';
 import { Button, Modal, SelectBox } from '../../components';
-import { Checkbox } from './style';
+import { Checkbox } from '../ProfilePageNewReport/style';
 import {
   Form,
   TitleContainer,

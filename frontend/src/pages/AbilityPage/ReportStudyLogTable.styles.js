@@ -39,6 +39,16 @@ const TableButtonWrapper = styled.div`
   position: absolute;
   right: 0;
   top: -0.5rem;
+
+  > button {
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.8rem;
+    font-size: 1.4rem;
+
+    :not(:disabled):hover {
+      filter: brightness(0.9);
+    }
+  }
 `;
 
 const Table = styled.table`

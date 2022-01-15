@@ -5,7 +5,7 @@ import { filterOnlyNewList } from '../../utils/filteringList';
 import useReportStudyLogs from '../../hooks/useReportStudyLogs';
 import { Button, Chip, Pagination } from '../../components';
 import COLOR from '../../constants/color';
-import { Checkbox } from './style';
+import { Checkbox } from '../ProfilePageNewReport/style';
 import {
   Section,
   Table,
@@ -177,7 +177,7 @@ const ReportStudyLogTable = ({
 
   return (
     <Section>
-      <h3>📚 학습로그 목록</h3>
+      <h3>📝 학습로그 목록</h3>
       <span>
         {deleteTargets?.length ?? 0}개 선택 (총 {totalSize ?? 0}개)
       </span>
