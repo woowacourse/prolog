@@ -33,49 +33,56 @@ const StudyLogList = ({ studylogs }: Props) => {
   };
 
   return (
-    <>
+    <ul
+      css={css`
+        > li:not(:last-child) {
+          margin-bottom: 1.6rem;
+        }
+      `}
+    >
       {studylogs.map((post) => {
         const { id, author, mission, title, tags, isRead, viewCount } = post;
 
         return (
-          <Card
-            key={id}
-            size="SMALL"
-            cssProps={
-              isRead
-                ? css`
-                    ${CardStyle};
-                    background-color: ${COLOR.LIGHT_GRAY_100};
-                  `
-                : CardStyle
-            }
-            onClick={() => goTargetPost(id)}
-          >
-            <div css={ContentStyle}>
-              <div css={DescriptionStyle}>
-                <p css={MissionStyle}>{mission.name}</p>
-                <h3>{title}</h3>
-                <ul css={TagListStyle}>
-                  {tags?.map(({ id, name }) => (
-                    <span key={id}>{`#${name} `}</span>
-                  ))}
-                </ul>
+          <li key={id}>
+            <Card
+              size="SMALL"
+              cssProps={
+                isRead
+                  ? css`
+                      ${CardStyle};
+                      background-color: ${COLOR.LIGHT_GRAY_100};
+                    `
+                  : CardStyle
+              }
+              onClick={() => goTargetPost(id)}
+            >
+              <div css={ContentStyle}>
+                <div css={DescriptionStyle}>
+                  <p css={MissionStyle}>{mission.name}</p>
+                  <h3>{title}</h3>
+                  <ul css={TagListStyle}>
+                    {tags?.map(({ id, name }) => (
+                      <span key={id}>{`#${name} `}</span>
+                    ))}
+                  </ul>
+                </div>
+                <div css={[FlexStyle, FlexColumnStyle, AlignItemsEndStyle]}>
+                  <ProfileChip
+                    imageSrc={author.imageUrl}
+                    cssProps={ProfileChipLocationStyle}
+                    onClick={goProfilePage(author.username)}
+                  >
+                    {author.nickname}
+                  </ProfileChip>
+                  <ViewCount count={viewCount} />
+                </div>
               </div>
-              <div css={[FlexStyle, FlexColumnStyle, AlignItemsEndStyle]}>
-                <ProfileChip
-                  imageSrc={author.imageUrl}
-                  cssProps={ProfileChipLocationStyle}
-                  onClick={goProfilePage(author.username)}
-                >
-                  {author.nickname}
-                </ProfileChip>
-                <ViewCount count={viewCount} />
-              </div>
-            </div>
-          </Card>
+            </Card>
+          </li>
         );
       })}
-    </>
+    </ul>
   );
 };
 

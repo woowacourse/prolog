@@ -82,6 +82,7 @@ const BannerList = ({ bannerList = [] }: { bannerList: BannerType[] }): JSX.Elem
           index
         ) => (
           <div
+            key={`bannerList-${index}`}
             css={[
               BannerSliderItemStyle,
               css`
@@ -107,6 +108,7 @@ const BannerList = ({ bannerList = [] }: { bannerList: BannerType[] }): JSX.Elem
         <div css={BannerControllerWrapperStyle}>
           {Array.from({ length: bannerList.length }).map((_, index) => (
             <button
+              key={`banner-${index}-button`}
               type="button"
               css={[
                 getBannerControllerItemStyle(currentBannerBackgroundColor),
