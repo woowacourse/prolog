@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
 import {
-  Container,
   Content,
   Overview,
   TagTitle,
@@ -25,7 +24,6 @@ import useFetch from '../../hooks/useFetch';
 import useStudyLog from '../../hooks/useStudyLog';
 import { MainContentStyle } from '../../PageRouter';
 import { FlexStyle } from '../../styles/flex.styles';
-import { css } from '@emotion/react';
 
 const initialPostQueryParams = {
   page: 1,
