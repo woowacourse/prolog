@@ -48,11 +48,11 @@ const AbilityListItem = ({ ability, addAbility, onEdit, onDelete, readOnly }) =>
     setItemStatus((prevState) => ({ ...prevState, isEditing: status }));
   };
 
-  useEffect(() => {
-    if (!subAbilities.length) {
-      setItemStatus((prevState) => ({ ...prevState, isOpened: false }));
-    }
-  }, [subAbilities.length]);
+  // useEffect(() => {
+  //   if (!subAbilities.length) {
+  //     setItemStatus((prevState) => ({ ...prevState, isOpened: false }));
+  //   }
+  // }, [subAbilities.length]);
 
   const onAddFormSubmit = async (event) => {
     event.preventDefault();
@@ -81,7 +81,7 @@ const AbilityListItem = ({ ability, addAbility, onEdit, onDelete, readOnly }) =>
             isParent={isParent}
             isOpened={itemStatus.isOpened}
             onClick={toggleIsOpened}
-            disabled={!subAbilities.length}
+            disabled={!subAbilities?.length}
           ></ArrowButton>
           <Chip title={name} textAlign="left" maxWidth="140px" backgroundColor={color}>
             {name}
@@ -124,7 +124,7 @@ const AbilityListItem = ({ ability, addAbility, onEdit, onDelete, readOnly }) =>
         </li>
       )}
 
-      {itemStatus.isEditing && (
+      {/* {itemStatus.isEditing && (
         <EditingListItem isParent={true}>
           <EditAbilityForm
             id={id}
@@ -136,9 +136,9 @@ const AbilityListItem = ({ ability, addAbility, onEdit, onDelete, readOnly }) =>
             onEdit={onEdit}
           />
         </EditingListItem>
-      )}
+      )} */}
 
-      {itemStatus.isAddFormOpened && (
+      {/* {itemStatus.isAddFormOpened && (
         <EditingListItem isParent={true}>
           <AddAbilityForm
             color={color}
@@ -149,9 +149,9 @@ const AbilityListItem = ({ ability, addAbility, onEdit, onDelete, readOnly }) =>
             onSubmit={onAddFormSubmit}
           />
         </EditingListItem>
-      )}
+      )} */}
 
-      {!!subAbilities.length && (
+      {/* {!!subAbilities.length && (
         <SubAbilityList isOpened={itemStatus.isOpened}>
           {subAbilities.map(({ id, name, description, color }) => (
             <SubAbilityListItem
@@ -166,7 +166,7 @@ const AbilityListItem = ({ ability, addAbility, onEdit, onDelete, readOnly }) =>
             />
           ))}
         </SubAbilityList>
-      )}
+      )} */}
     </>
   );
 };

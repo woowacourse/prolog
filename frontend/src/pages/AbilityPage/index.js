@@ -35,48 +35,33 @@ import {
   HeaderContainer,
   AbilityHistoryContainer,
 } from './styles';
-import { isCorrectHexCode } from '../../utils/hexCode';
+
 import AbilityHistory from '../../components/Lists/AbilityHistoryList';
 import AbilityHistoryList from '../../components/Lists/AbilityHistoryList';
 import ReportStudyLogTable from './ReportStudyLogTable';
 import StudyLogModal from './StudyLogModal';
 import { TableButtonWrapper } from './ReportStudyLogTable.styles';
 
-const DEFAULT_ABILITY_FORM = {
-  isOpened: false,
-  name: '',
-  description: '',
-  color: '#f6d7fe',
-  parent: null,
-};
+import useAddAbility from '../../hooks/useAddAbility';
 
-const MockAbility = [
-  { id: 1, title: '2022-02-22 역량' },
-  { id: 2, title: '2022-02-21 역량' },
-  { id: 3, title: '2022-02-20 역량' },
-  { id: 4, title: '2022-02-19 역량' },
-  { id: 5, title: '2022-02-18 역량' },
-  { id: 6, title: '2022-02-17 역량' },
-  { id: 7, title: '2022-02-16 역량' },
-];
-
+// TODO : 다른 사람들에게는 Readonly로 보일 수 있도록 수정해야함.
 const AbilityPage = () => {
-  const history = useHistory();
   const { username } = useParams();
   const { isSnackBarOpen, SnackBar, openSnackBar } = useSnackBar();
 
+  const { abilities, addFormStatus, setAddFormStatus, onAddFormSubmit, addFormOpen, addFormClose } =
+    useAddAbility({ openSnackBar });
+
   const abilityHistoryModalRef = useRef(null);
 
-  const [abilities, setAbilities] = useState(null);
-  const [addFormStatus, setAddFormStatus] = useState(DEFAULT_ABILITY_FORM);
+  // const [abilities, setAbilities] = useState(null);
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [isReportModalOpened, setReportIsModalOpened] = useState(false);
   const [studyLogs, setStudyLogs] = useState([]);
   const [studyLogAbilities, setStudyLogAbilities] = useState([]);
+  const [abilityHistories, setAbilityHistories] = useState([]);
 
   const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
-  const user = useSelector((state) => state.user.profile);
-  const isMine = user.data && username === user.data?.username;
 
   /** 역량 이력 모달 밖의 영역을 선택했을 때, 모달이 닫히도록 하는 기능 */
   useEffect(() => {
@@ -99,23 +84,14 @@ const AbilityPage = () => {
     setIsModalOpened(false);
   });
 
-  const addFormClose = () => {
-    setAddFormStatus((prevState) => ({ ...prevState, isOpened: false }));
-  };
-
-  const addFormOpen = () => {
-    setAddFormStatus((prevState) => ({ ...prevState, isOpened: true }));
-  };
-
   const onReportModalOpen = () => setReportIsModalOpened(true);
-
   const onReportModalClose = () => setReportIsModalOpened(false);
 
   const { fetchData: getData } = useRequest(
     [],
     () => requestGetAbilities(username, JSON.parse(accessToken)),
     (data) => {
-      setAbilities(data);
+      // setAbilities(data);
     }
   );
 
@@ -171,49 +147,6 @@ const AbilityPage = () => {
     }
   };
 
-  useEffect(() => {
-    if (user.data?.id) {
-      getData();
-    }
-  }, [user]);
-
-  if (user.data && !isMine) {
-    alert(ALERT_MESSAGE.ACCESS_DENIED);
-    history.push(`/${username}`);
-  }
-
-  const onAddFormSubmit = async (event) => {
-    event.preventDefault();
-
-    const newName = addFormStatus.name.trim();
-    const newColor = addFormStatus.color.trim();
-
-    if (!newName) {
-      openSnackBar(ERROR_MESSAGE.NEED_ABILITY_NAME);
-      return;
-    }
-
-    if (!newColor) {
-      openSnackBar(ERROR_MESSAGE.NEED_ABILITY_COLOR);
-      return;
-    }
-
-    if (!isCorrectHexCode(newColor)) {
-      openSnackBar(ERROR_MESSAGE.INVALID_ABILIT_COLOR);
-      return;
-    }
-
-    await addAbility({
-      name: newName,
-      description: addFormStatus.description,
-      color: addFormStatus.color,
-      parent: addFormStatus.parent,
-    });
-
-    setAddFormStatus(DEFAULT_ABILITY_FORM);
-    addFormClose();
-  };
-
   const onFormDataChange = (key) => (event) => {
     setAddFormStatus({ ...addFormStatus, [key]: event.target.value });
   };
@@ -224,28 +157,18 @@ const AbilityPage = () => {
     }
   };
 
-  // 역량 이력 가져오기
-  // 역량 이력 -> [{ 이력 id, 이력 title }]
+  /**
+   * 역량 이력 가져오기 -> [{ 이력 id, 이력 title }]
+   */
   const onShowAbilistyHistories = async () => {
     setIsModalOpened(true);
-    // try {
-    //   const response = await requestGetAbilityHistories(accessToken);
-    //   if (!response.ok) {
-    //     throw new Error(await response.text());
-    //   }
-    //   const json = await response.json();
-    //   console.log(json);
-    // } catch (error) {
-    //   const errorResponse = JSON.parse(error.message);
-    //   console.error(errorResponse);
-    // }
+    setAbilityHistories([]);
   };
 
   return (
     <>
       <Container>
         <HeaderContainer>
-          {/* <h2>역량 페이지</h2> */}
           <Button
             type="button"
             backgroundColor={COLOR.LIGHT_GRAY_50}
@@ -258,8 +181,8 @@ const AbilityPage = () => {
 
           {isModalOpened && (
             <AbilityHistoryContainer ref={abilityHistoryModalRef}>
-              <h3>역량 이력 {MockAbility.length}개</h3>
-              <AbilityHistoryList list={MockAbility} />
+              <h3>역량 이력 {abilityHistories?.length}개</h3>
+              <AbilityHistoryList list={abilityHistories} />
             </AbilityHistoryContainer>
           )}
         </HeaderContainer>
@@ -294,9 +217,9 @@ const AbilityPage = () => {
         <AbilityList height="36rem">
           {abilities
             ?.filter(({ isParent }) => isParent)
-            .map((ability) => (
+            .map((ability, index) => (
               <AbilityListItem
-                key={ability.id}
+                key={index}
                 ability={ability}
                 addAbility={addAbility}
                 onEdit={editAbility}
@@ -304,12 +227,6 @@ const AbilityPage = () => {
                 readOnly={false}
               />
             ))}
-
-          {/* {abilities && !abilities.length && (
-            <NoContent>
-              <NoAbility getData={getData} accessToken={accessToken} />
-            </NoContent>
-          )} */}
         </AbilityList>
       </Container>
 
