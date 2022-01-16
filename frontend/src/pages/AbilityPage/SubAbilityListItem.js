@@ -33,16 +33,18 @@ const SubAbilityListItem = ({ id, name, description, color, onEdit, onDelete, re
         <ManageButtonList>
           <Button
             type="button"
+            color={COLOR.BLACK_900}
             backgroundColor={COLOR.LIGHT_GRAY_200}
-            color={COLOR.LIGHT_GRAY_900}
+            fontSize="1.2rem"
             onClick={() => setIsEditing(true)}
           >
             수정
           </Button>
           <Button
             type="button"
+            color={COLOR.BLACK_900}
+            fontSize="1.2rem"
             backgroundColor={COLOR.RED_200}
-            color={COLOR.RED_500}
             onClick={onDelete(id)}
           >
             삭제

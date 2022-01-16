@@ -92,11 +92,18 @@ export const AbilityHistoryContainer = styled.div`
 
 export const AbilityList = styled.ul`
   width: 100%;
+  ${({ height }) =>
+    height &&
+    `
+    min-height: ${height}; 
+    max-height: ${height};
+  `}
 
   background-color: ${COLOR.WHITE};
-
   border: 2px solid ${COLOR.LIGHT_GRAY_400};
   border-radius: 0.5rem;
+
+  overflow: auto;
 
   > div {
     width: 100%;
@@ -106,18 +113,14 @@ export const AbilityList = styled.ul`
   li {
     width: 100%;
     min-height: 6rem;
-    padding: 0.5rem 2rem;
+    padding: 0.5rem;
 
     display: grid;
-    grid-template-columns: 0.2fr 1fr 2fr 1fr;
+    grid-template-columns: 0.2fr 1fr 2fr 0.9fr;
     justify-content: center;
     align-items: center;
 
     border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
-
-    :last-child {
-      border: none;
-    }
   }
 
   && {
@@ -165,8 +168,12 @@ export const SubAbilityList = styled.ul`
 `;
 
 export const ManageButtonList = styled.div`
-  display: flex;
-  justify-content: right;
+  width: fit-content;
+  margin-left: 0.5rem;
+
+  button {
+    margin-right: 0.2rem;
+  }
 `;
 
 export const ArrowButton = styled.button`
@@ -240,9 +247,13 @@ export const FormContainer = styled.div`
 
 export const ListForm = styled.form`
   display: grid;
-  grid-template-columns: ${({ isParent }) => (isParent ? `1fr 2fr 1fr 0.8fr` : `1fr 3fr 0.8fr`)};
+  grid-template-columns: ${({ isParent }) =>
+    isParent ? `1fr 2fr 1fr 0.8fr` : `0.2fr 1fr 3fr 1fr`};
   justify-content: center;
   align-items: end;
+  grid-column-gap: 0.5rem;
+
+  margin-left: 1.2rem;
 
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -350,15 +361,6 @@ export const NoContent = styled.li`
   text-align: center;
 `;
 
-export const SubAbilityNameInput = styled.input`
-  background-color: ${COLOR.WHITE}cc;
-  border: none;
-`;
-
-export const SubAbilityDescriptionInput = styled.input`
-  width: calc(100% - 1.4rem);
-`;
-
 export const NoAbilityContainer = styled.div`
   width: 100%;
   height: 640px;
@@ -459,5 +461,23 @@ export const FormButtonWrapper = styled.div`
     margin: 0 0.5rem;
 
     font-size: 1.4rem;
+  }
+`;
+
+export const ColorChip = styled.div`
+  height: 3.2rem;
+  position: relative;
+
+  ${({ visibility }) => visibility && `visibility: ${visibility}`}
+
+  :before {
+    content: '';
+    width: 1.3rem;
+    height: 1.3rem;
+    position: absolute;
+    top: 1rem;
+    left: 0.4rem;
+    border-radius: 50%;
+    ${({ backgroundColor }) => backgroundColor && `background-color: ${backgroundColor}`}
   }
 `;

@@ -3,6 +3,7 @@ import { Chip } from '../../components';
 import { COLOR } from '../../constants';
 import {
   Button,
+  ColorChip,
   FormContainer,
   ListForm,
   ManageButtonList,
@@ -40,17 +41,16 @@ const EditSubAbilityForm = ({ id, name, color, description, onClose, onEdit }) =
   return (
     <FormContainer isParent={false}>
       <ListForm isParent={false} onSubmit={onSubmit}>
-        <Chip title={name} backgroundColor={color} textAlign="left">
-          <SubAbilityNameInput
-            type="text"
-            placeholder="이름"
-            value={formData.name}
-            onChange={onFormDataChange('name')}
-            maxLength={60}
-          />
-        </Chip>
+        <ColorChip backgroundColor={color} />
+        <input
+          type="text"
+          placeholder="이름"
+          value={formData.name}
+          onChange={onFormDataChange('name')}
+          maxLength={60}
+        />
 
-        <SubAbilityDescriptionInput
+        <input
           type="text"
           placeholder="설명"
           value={formData.description}
@@ -60,14 +60,15 @@ const EditSubAbilityForm = ({ id, name, color, description, onClose, onEdit }) =
         <ManageButtonList>
           <Button
             type="button"
-            backgroundColor={COLOR.WHITE}
             color={COLOR.DARK_GRAY_900}
+            fontSize="1.2rem"
+            backgroundColor={COLOR.WHITE}
             borderColor={COLOR.DARK_BLUE_700}
             onClick={onClose}
           >
             취소
           </Button>
-          <Button backgroundColor={COLOR.DARK_BLUE_700} color={COLOR.WHITE}>
+          <Button fontSize="1.2rem" backgroundColor={COLOR.DARK_BLUE_700} color={COLOR.WHITE}>
             저장
           </Button>
         </ManageButtonList>

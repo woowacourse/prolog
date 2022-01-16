@@ -193,7 +193,7 @@ const ReportStudyLogTable = ({
         </Button>
         <Button
           size="XX_SMALL"
-          css={{ backgroundColor: `${COLOR.LIGHT_BLUE_300}` }}
+          css={{ border: `1px solid ${COLOR.DARK_GRAY_800}` }}
           type="button"
           onClick={onModalOpen}
         >

@@ -92,24 +92,29 @@ const AbilityListItem = ({ ability, addAbility, onEdit, onDelete, readOnly }) =>
             <ManageButtonList>
               <Button
                 type="button"
-                backgroundColor={COLOR.DARK_BLUE_700}
-                color={COLOR.WHITE}
+                color={COLOR.BLACK_900}
+                fontSize="1.2rem"
+                borderColor={COLOR.DARK_GRAY_800}
                 onClick={setIsAddFormOpened(true)}
               >
                 추가
               </Button>
               <Button
                 type="button"
+                color={COLOR.BLACK_900}
+                fontSize="1.2rem"
                 backgroundColor={COLOR.LIGHT_GRAY_200}
-                color={COLOR.LIGHT_GRAY_900}
+                borderColor={COLOR.LIGHT_GRAY_200}
                 onClick={setEditStatus(true)}
               >
                 수정
               </Button>
               <Button
                 type="button"
+                color={COLOR.BLACK_900}
+                fontSize="1.2rem"
                 backgroundColor={COLOR.RED_200}
-                color={COLOR.RED_500}
+                borderColor={COLOR.RED_200}
                 onClick={onDelete(id)}
               >
                 삭제

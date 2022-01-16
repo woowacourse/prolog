@@ -270,7 +270,7 @@ const AbilityPage = () => {
           </h3>
 
           <TableButtonWrapper>
-            <Button type="button" backgroundColor={COLOR.LIGHT_BLUE_300} onClick={addFormOpen}>
+            <Button type="button" borderColor={COLOR.DARK_GRAY_800} onClick={addFormOpen}>
               역량 추가하기
             </Button>
           </TableButtonWrapper>
@@ -291,7 +291,7 @@ const AbilityPage = () => {
           </AbilityList>
         )}
 
-        <AbilityList>
+        <AbilityList height="36rem">
           {abilities
             ?.filter(({ isParent }) => isParent)
             .map((ability) => (
@@ -323,14 +323,7 @@ const AbilityPage = () => {
       />
 
       <FormButtonWrapper>
-        <FormButton
-          size="X_SMALL"
-          css={{ backgroundColor: `${COLOR.LIGHT_GRAY_400}` }}
-          type="button"
-        >
-          되돌리기
-        </FormButton>
-        <FormButton size="X_SMALL">역량 저장</FormButton>
+        <FormButton size="X_SMALL">저장</FormButton>
       </FormButtonWrapper>
 
       {isReportModalOpened && (
