@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { ERROR_MESSAGE } from '../constants';
+
+import useSnackBar from './useSnackBar';
 import { isCorrectHexCode } from '../utils/hexCode';
+import { ERROR_MESSAGE } from '../constants';
 
 const DEFAULT_ABILITY_FORM = {
   isOpened: false,
@@ -10,7 +12,8 @@ const DEFAULT_ABILITY_FORM = {
   parent: null,
 };
 
-const useAddAbility = ({ openSnackBar }) => {
+const useAddAbility = () => {
+  const { openSnackBar } = useSnackBar();
   const [abilities, setAbilities] = useState([]);
   const [addFormStatus, setAddFormStatus] = useState(DEFAULT_ABILITY_FORM);
 
