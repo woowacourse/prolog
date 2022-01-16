@@ -91,6 +91,7 @@ const NoPost = styled.div`
 const EditButtonStyle = css`
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
   background-color: ${COLOR.WHITE};
+  color: ${COLOR.BLACK_800};
 
   &:hover {
     background-color: ${COLOR.LIGHT_GRAY_300};
