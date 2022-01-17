@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { requestGetPosts } from '../service/requests';
+import { requestGetStudyLogs } from '../service/requests';
 import { filterIds } from '../utils/filteringList';
 
 const defaultValue = {
@@ -19,9 +19,9 @@ const useReportStudyLogs = (studyLogs) => {
     try {
       const query = {
         type: 'searchParams',
-        data: `ids=${currStudyLogIds.join(',')}&page=${currentPage}`,
+        data: `ids=${currStudyLogIds.join(',')}&page=${currentPage}&size=5`,
       };
-      const response = await requestGetPosts(query);
+      const response = await requestGetStudyLogs(query);
 
       if (!response.ok) {
         throw new Error(response.status);
@@ -53,7 +53,7 @@ const useReportStudyLogs = (studyLogs) => {
   }, [studyLogs]);
 
   useEffect(() => {
-    if (studyLogs.length > 10) {
+    if (studyLogs.length > 5) {
       getPosts(studyLogIds, page);
     }
 

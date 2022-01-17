@@ -103,7 +103,7 @@ const Thead = styled.thead`
 
 const Tbody = styled.tbody`
   display: block;
-  min-height: 10rem;
+  min-height: 30rem;
 
   tr {
     width: 96%;
