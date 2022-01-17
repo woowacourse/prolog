@@ -237,6 +237,7 @@ export const FormContainer = styled.div`
     padding: 1rem 0 0 1rem;
 
     display: flex;
+    align-items: center;
   }
 
   h3 {

@@ -29,6 +29,7 @@ const AddAbilityForm = ({
           textAlign="left"
           backgroundColor={color}
           minWidth="3rem"
+          height="2.4rem"
           fontSize="1.4rem"
           maxLength={60}
         >
