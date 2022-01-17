@@ -124,7 +124,7 @@ const AbilityListItem = ({ ability, addAbility, onEdit, onDelete, readOnly }) =>
         </li>
       )}
 
-      {/* {itemStatus.isEditing && (
+      {itemStatus.isEditing && (
         <EditingListItem isParent={true}>
           <EditAbilityForm
             id={id}
@@ -136,7 +136,7 @@ const AbilityListItem = ({ ability, addAbility, onEdit, onDelete, readOnly }) =>
             onEdit={onEdit}
           />
         </EditingListItem>
-      )} */}
+      )}
 
       {/* {itemStatus.isAddFormOpened && (
         <EditingListItem isParent={true}>

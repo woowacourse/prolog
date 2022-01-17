@@ -5,13 +5,12 @@ import { ERROR_MESSAGE, SUCCESS_MESSAGE, CONFIRM_MESSAGE } from '../../constants
 import useRequest from '../../hooks/useRequest';
 import useMutation from '../../hooks/useMutation';
 import useSnackBar from '../../hooks/useSnackBar';
-import useAddAbility from '../../hooks/useAddAbility';
+import useAbility from '../../hooks/useAbility';
 import useAbilityHistory from '../../hooks/useAbilityHistory';
 
 import {
   requestAddAbility,
   requestDeleteAbility,
-  requestEditAbility,
   requestGetAbilities,
 } from '../../service/requests';
 import AbilityListItem from './AbilityListItem';
@@ -49,9 +48,11 @@ const AbilityPage = () => {
     addFormStatus,
     setAddFormStatus,
     onAddFormSubmit,
+    onDelete: onDeleteAbility,
+    onEdit: onEditAbility,
     addFormOpen,
     addFormClose,
-  } = useAddAbility();
+  } = useAbility();
   const {
     isModalOpened: isAbilityHistoryModalOpened,
     abilityHistories,
@@ -106,35 +107,8 @@ const AbilityPage = () => {
     }
   );
 
-  const editAbility = async ({ id, name, description, color }) => {
-    try {
-      const response = await requestEditAbility(JSON.parse(accessToken), {
-        id,
-        name,
-        description,
-        color,
-      });
-
-      if (!response.ok) {
-        const json = await response.json();
-        throw new Error(json.code);
-      }
-
-      openSnackBar(SUCCESS_MESSAGE.EDIT_ABILITY);
-      await getData();
-    } catch (error) {
-      openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
-    }
-  };
-
   const onFormDataChange = (key) => (event) => {
     setAddFormStatus({ ...addFormStatus, [key]: event.target.value });
-  };
-
-  const onDelete = (id) => () => {
-    if (window.confirm(CONFIRM_MESSAGE.DELETE_ABILITY)) {
-      deleteAbility(id);
-    }
   };
 
   return (
@@ -194,8 +168,8 @@ const AbilityPage = () => {
                 key={index}
                 ability={ability}
                 addAbility={addAbility}
-                onEdit={editAbility}
-                onDelete={onDelete}
+                onEdit={onEditAbility}
+                onDelete={onDeleteAbility}
                 readOnly={false}
               />
             ))}
