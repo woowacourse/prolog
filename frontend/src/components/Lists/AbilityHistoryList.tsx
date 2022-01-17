@@ -11,7 +11,7 @@ interface Props {
 }
 
 const AbilityHistoryList = ({ list }: Props) => {
-  const { username } = useParams();
+  const { username } = useParams<{ username?: string }>();
 
   return (
     <List>
