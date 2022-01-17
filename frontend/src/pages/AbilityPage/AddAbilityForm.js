@@ -84,6 +84,7 @@ const AddAbilityForm = ({
             color={COLOR.WHITE}
             fontSize="1.2rem"
             backgroundColor={COLOR.DARK_BLUE_700}
+            borderColor={COLOR.DARK_BLUE_700}
             disabled={saveButtondisabled}
           >
             저장
