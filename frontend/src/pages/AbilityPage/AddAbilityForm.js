@@ -16,7 +16,7 @@ const AddAbilityForm = ({
   onClose,
   isParent,
   onSubmit,
-  sabveButtondisabled,
+  saveButtondisabled,
 }) => {
   const { name, description, color } = formData;
 
@@ -84,7 +84,7 @@ const AddAbilityForm = ({
             color={COLOR.WHITE}
             fontSize="1.2rem"
             backgroundColor={COLOR.DARK_BLUE_700}
-            disabled={sabveButtondisabled}
+            disabled={saveButtondisabled}
           >
             저장
           </Button>

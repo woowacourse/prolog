@@ -154,7 +154,7 @@ const AbilityPage = () => {
                 isParent={true}
                 onClose={addFormClose}
                 onSubmit={onAddFormSubmit}
-                sabveButtondisabled={!addFormStatus.name.trim() || !addFormStatus.color}
+                saveButtondisabled={!addFormStatus.name.trim() || !addFormStatus.color}
               />
             </EditingListItem>
           </AbilityList>
