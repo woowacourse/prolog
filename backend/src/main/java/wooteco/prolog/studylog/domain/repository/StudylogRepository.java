@@ -1,6 +1,5 @@
 package wooteco.prolog.studylog.domain.repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -10,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.StudylogRead;
 
 public interface StudylogRepository extends JpaRepository<Studylog, Long>,
     JpaSpecificationExecutor<Studylog> {
@@ -30,5 +28,5 @@ public interface StudylogRepository extends JpaRepository<Studylog, Long>,
     List<Studylog> findAllByIdInOrderByIdDesc(List<Long> ids);
 
     @Query("select p from Studylog p where :date <= p.createdAt")
-    List<Studylog> findByPastDateAndSize(LocalDateTime date, Pageable size);
+    List<Studylog> findByPastDays(LocalDateTime date);
 }
