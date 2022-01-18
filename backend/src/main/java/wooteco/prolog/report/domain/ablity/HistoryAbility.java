@@ -17,7 +17,7 @@ public class HistoryAbility {
     @JoinColumn(name = "abilitiesSnapshot_id")
     private History history;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "ability_id")
     private Ability2 ability2;
 

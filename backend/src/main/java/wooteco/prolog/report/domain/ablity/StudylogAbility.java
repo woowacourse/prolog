@@ -13,7 +13,7 @@ public class StudylogAbility {
     @ManyToOne
     private History history;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Ability2 ability;
 
     private Long studylogId;

@@ -36,35 +36,36 @@ class Ability2Test {
     @DisplayName("생성시 부모 역량과 같은 이름을 가진 자식역량을 추가할 수 없다.")
     @Test
     void create_isSameNameWithParent() {
-        assertThatThrownBy(() -> new Ability2(
+        Ability2 ability = new Ability2(
                 "역량",
                 "역량입니다",
                 "1234",
-                Collections.singletonList(
-                        new Ability2(
-                                "역량",
-                                "역량입니다",
-                                "1234",
-                                new ArrayList<>())
-                )
-        )).isInstanceOf(AbilityNameDuplicateException.class);
+                new ArrayList<>()
+        );
+
+        assertThatThrownBy(() -> ability.addChild(new Ability2(
+                "역량",
+                "역량입니다",
+                "1234",
+                new ArrayList<>()))
+        ).isInstanceOf(AbilityNameDuplicateException.class);
     }
 
     @DisplayName("생성시 부모 역량과 다른 색을 가진 자식역량을 추가할 수 없다.")
     @Test
     void create_isSameColorWithParent() {
-        assertThatThrownBy(() -> new Ability2(
-                        "역량",
-                        "역량입니다",
-                        "1234",
-                        Collections.singletonList(
-                                new Ability2(
-                                        "자식역량",
-                                        "역량입니다",
-                                        "12345",
-                                        new ArrayList<>())
-                        )
-                )
+        Ability2 ability = new Ability2(
+                "역량",
+                "역량입니다",
+                "1234",
+                new ArrayList<>()
+        );
+
+        assertThatThrownBy(() -> ability.addChild(new Ability2(
+                "역량",
+                "역량입니다",
+                "12345",
+                new ArrayList<>()))
         ).isInstanceOf(AbilityParentChildColorDifferentException.class);
     }
 

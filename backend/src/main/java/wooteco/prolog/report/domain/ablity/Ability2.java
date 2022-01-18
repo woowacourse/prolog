@@ -39,11 +39,20 @@ public class Ability2 {
     protected Ability2() {
     }
 
-    public Ability2(String name, String description, String color, List<Ability2> children) {
-        this(new Name(name), new Description(description), new Color(color), new Children(new ArrayList<>(children)));
+    public Ability2(String name, String description, String color, List<AbilityChild> children) {
+        this(null, new Name(name), new Description(description), new Color(color), new Children(new ArrayList<>(children)));
     }
 
     public Ability2(Name name, Description description, Color color, Children children) {
+        this(null, name, description, color, children);
+    }
+
+    public Ability2(Long id, String name, String description, String color, List<AbilityChild> children) {
+        this(id, new Name(name), new Description(description), new Color(color), new Children(new ArrayList<>(children)));
+    }
+
+    public Ability2(Long id, Name name, Description description, Color color, Children children) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.color = color;
@@ -56,7 +65,7 @@ public class Ability2 {
     public void addChild(Ability2 ability) {
         validateSameColor(this.color, ability.color);
         validateSameName(this.name, ability.name);
-        this.children.add(ability);
+        this.children.add(this, ability);
     }
 
     public boolean isSameName(Ability2 ability) {
@@ -97,6 +106,18 @@ public class Ability2 {
 
     public List<Ability2> getChildren() {
         return children.getValues();
+    }
+
+    public boolean isExactlyEquals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ability2 ability2 = (Ability2) o;
+        return Objects.equals(getId(), ability2.getId()) &&
+                Objects.equals(getName(), ability2.getName()) &&
+                Objects.equals(getDescription(), ability2.getDescription()) &&
+                Objects.equals(getColor(), ability2.getColor()) &&
+                Objects.equals(getChildren(), ability2.getChildren()) &&
+                Objects.equals(isParent(), ability2.isParent());
     }
 
     @Override

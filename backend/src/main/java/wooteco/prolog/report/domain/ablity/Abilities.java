@@ -3,10 +3,7 @@ package wooteco.prolog.report.domain.ablity;
 import wooteco.prolog.report.domain.ablity.vo.Name;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +15,7 @@ import static wooteco.prolog.report.domain.ablity.domain.AbilityValidator.valida
 @Embeddable
 public class Abilities {
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true, mappedBy = "history")
     private List<HistoryAbility> values;
 
     protected Abilities() {

@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
-import static wooteco.prolog.report.domain.ablity.domain.AbilityValidator.validateDuplicateAbilityColor;
-import static wooteco.prolog.report.domain.ablity.domain.AbilityValidator.validateDuplicateAbilityName;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity(name = "abilities_history")
@@ -27,18 +25,18 @@ public class History {
     @Embedded
     private Abilities abilities;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<StudylogAbility> studylogs;
+    @Embedded
+    private Studylogs studylogs;
 
     public History() {
         this(new ArrayList<>(), new ArrayList<>());
     }
 
     public History(List<HistoryAbility> abilities, List<StudylogAbility> studylogs) {
-        this(null, null, abilities, studylogs);
+        this(null, null, abilities, new Studylogs(studylogs));
     }
 
-    public History(Long id, LocalDateTime createdAt, List<HistoryAbility> abilities, List<StudylogAbility> studylogs) {
+    public History(Long id, LocalDateTime createdAt, List<HistoryAbility> abilities, Studylogs studylogs) {
         this.id = id;
         this.createdAt = createdAt;
         this.abilities = new Abilities(abilities);
@@ -69,6 +67,10 @@ public class History {
 
     public List<Ability2> getAbilities() {
         return abilities.getValues();
+    }
+
+    public StudylogsMappedToAbility getStudylogsMappedToAbility() {
+        return studylogs.getMapped();
     }
 
     @Override
