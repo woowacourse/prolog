@@ -17,7 +17,7 @@ class HistoryTest {
     @BeforeEach
     void setUp() {
         history = new History();
-        history.add(new Ability2(
+        history.addAbility(new Ability2(
                 "역량",
                 "역량입니다",
                 "1234",
@@ -28,7 +28,7 @@ class HistoryTest {
     @DisplayName("동일한 이름의 부모역량은 추가할 수 없다.")
     @Test
     void add_hasSameName() {
-        assertThatThrownBy(() -> history.add(new Ability2(
+        assertThatThrownBy(() -> history.addAbility(new Ability2(
                 "역량",
                 "역량입니다",
                 "12345",
@@ -39,7 +39,7 @@ class HistoryTest {
     @DisplayName("동일한 색상의 부모역량을 추가할 수 없다.")
     @Test
     void add_hasSameColor() {
-        assertThatThrownBy(() -> history.add(new Ability2(
+        assertThatThrownBy(() -> history.addAbility(new Ability2(
                 "역량2",
                 "역량입니다",
                 "1234",

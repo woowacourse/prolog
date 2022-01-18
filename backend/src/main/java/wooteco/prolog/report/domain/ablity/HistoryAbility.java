@@ -1,6 +1,9 @@
 package wooteco.prolog.report.domain.ablity;
 
+import wooteco.prolog.report.domain.ablity.vo.Name;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -10,7 +13,7 @@ public class HistoryAbility {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "abilitiesSnapshot_id")
     private History history;
 
@@ -31,12 +34,32 @@ public class HistoryAbility {
         this.ability2 = ability2;
     }
 
+    public boolean isSameAbilityName(String abilityName) {
+        return ability2.isSameName(new Name(abilityName));
+    }
+
     public Long getId() {
         return id;
     }
 
-    public History getAbilitiesSnapshot() {
-        return history;
+    public String getName() {
+        return ability2.getName();
+    }
+
+    public String getDescription() {
+        return ability2.getDescription();
+    }
+
+    public String getColor() {
+        return ability2.getColor();
+    }
+
+    public Boolean isParent() {
+        return ability2.isParent();
+    }
+
+    public List<Ability2> getChildren() {
+        return ability2.getChildren();
     }
 
     public Ability2 getAbility() {

@@ -1,16 +1,19 @@
 package wooteco.prolog.report.domain.ablity;
 
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 import static wooteco.prolog.report.domain.ablity.domain.AbilityValidator.validateDuplicateAbilityColor;
 import static wooteco.prolog.report.domain.ablity.domain.AbilityValidator.validateDuplicateAbilityName;
 
+@EntityListeners(AuditingEntityListener.class)
 @Entity(name = "abilities_history")
 public class History {
 
@@ -21,34 +24,65 @@ public class History {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @Embedded
+    private Abilities abilities;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<HistoryAbility> abilities;
+    private List<StudylogAbility> studylogs;
 
-    protected History() {
-        this(new ArrayList<>());
+    public History() {
+        this(new ArrayList<>(), new ArrayList<>());
     }
 
-    public History(List<HistoryAbility> abilities) {
-        this(null, null, abilities);
+    public History(List<HistoryAbility> abilities, List<StudylogAbility> studylogs) {
+        this(null, null, abilities, studylogs);
     }
 
-    public History(Long id, LocalDateTime createdAt, List<HistoryAbility> abilities) {
+    public History(Long id, LocalDateTime createdAt, List<HistoryAbility> abilities, List<StudylogAbility> studylogs) {
         this.id = id;
         this.createdAt = createdAt;
-        this.abilities = abilities;
+        this.abilities = new Abilities(abilities);
+        this.studylogs = studylogs;
     }
 
-    public void add(Ability2 ability) {
-        List<Ability2> abilities = extractAbilities();
-        validateDuplicateAbilityName(ability, abilities);
-        validateDuplicateAbilityColor(ability, abilities);
-
+    public void addAbility(Ability2 ability) {
         this.abilities.add(new HistoryAbility(this, ability));
     }
 
-    private List<Ability2> extractAbilities() {
-        return abilities.stream()
-                .map(HistoryAbility::getAbility)
+    public void mappingStudylogAndAbilities(Long studylogId, List<String> abilityNames) {
+        List<StudylogAbility> studylogAbilities = abilityNames.stream()
+                .distinct()
+                .map(abilities::findAbilityByName)
+                .map(ability -> new StudylogAbility(null, this, ability, studylogId))
                 .collect(toList());
+
+        studylogs.addAll(studylogAbilities);
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public List<Ability2> getAbilities() {
+        return abilities.getValues();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        History history = (History) o;
+        return Objects.equals(id, history.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+
 }

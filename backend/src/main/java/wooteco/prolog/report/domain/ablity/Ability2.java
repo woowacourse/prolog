@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static wooteco.prolog.report.domain.ablity.domain.AbilityValidator.*;
+import static wooteco.prolog.report.domain.ablity.domain.AbilityValidator.validateSameColor;
+import static wooteco.prolog.report.domain.ablity.domain.AbilityValidator.validateSameName;
 
 @Entity
 public class Ability2 {
@@ -72,6 +73,14 @@ public class Ability2 {
 
     public boolean isSameColor(Color color) {
         return this.color.equals(color);
+    }
+
+    public boolean isParent() {
+        return Objects.isNull(parent);
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
