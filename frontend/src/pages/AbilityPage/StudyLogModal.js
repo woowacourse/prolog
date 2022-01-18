@@ -52,16 +52,13 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
     }
   }, [levelName]);
 
-  const checkTarget = (id) => {
-    return filterIds(selectedStudyLogs).includes(id);
-  };
   const selectedStudyLogLength = selectedStudyLogs.length;
   const studyLogLength = studyLogs.length;
 
   const onSelectStudyLogs = (event) => {
     event.preventDefault();
 
-    setStudyLogs(selectedStudyLogs);
+    setStudyLogs(selectedStudyLogs.map(({ id, title }) => ({ id, title, abilities: [] })));
     onModalClose();
   };
 
@@ -69,6 +66,10 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
     const targetStudyLog = studyLogsByLevel.find((post) => post.id === id);
 
     setSelectedStudyLogs(onToggleCheckbox(selectedStudyLogs, targetStudyLog));
+  };
+
+  const checkTarget = (id) => {
+    return filterIds(selectedStudyLogs).includes(id);
   };
 
   const onGetMoreStudyLog = () => {
@@ -107,14 +108,15 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
                 <strong>{levelName}</strong>의 학습로그 총 {totalSize ?? 0}개
               </span>
               <DeleteGuide>이미 등록된 학습로그는 학습로그 목록에서 삭제 가능합니다.</DeleteGuide>
+
               <ul ref={listRef}>
                 {studyLogsByLevel?.map(({ id, mission, title }) => (
                   <StudyLog key={id} isChecked={checkTarget(id)}>
                     <label>
                       <Checkbox
                         type="checkbox"
-                        checked={checkTarget(id)}
                         onChange={() => onToggleStudyLog(id)}
+                        checked={checkTarget(id)}
                         disabled={filterIds(studyLogs).includes(id)}
                       />
                       <div>
@@ -124,6 +126,7 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
                     </label>
                   </StudyLog>
                 ))}
+
                 {studyLogsByLevel?.length < totalSize && (
                   <ReadMoreButton type="button" onClick={onGetMoreStudyLog}>
                     더보기
