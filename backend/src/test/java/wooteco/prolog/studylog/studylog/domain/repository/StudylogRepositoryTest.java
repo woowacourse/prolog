@@ -4,6 +4,9 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.domain.Member;
@@ -21,6 +25,7 @@ import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
+import wooteco.prolog.studylog.domain.StudylogRead;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.domain.repository.LevelRepository;
@@ -177,5 +182,19 @@ class StudylogRepositoryTest {
                 .findByMember(member1, PageRequest.of(0, 10));
         //then
         assertThat(expectedResult.getContent()).containsExactlyInAnyOrder(studylog1, studylog2);
+    }
+
+    @DisplayName("주어진 날짜 이후의 글 목록을 제시된 개수만큼 가져온다.")
+    @Test
+    void findByPastDateAndSize() {
+        // given
+        LocalDateTime localDateTime = LocalDateTime.now().minusDays(7);
+        PageRequest pageable = PageRequest.of(0, 2);
+
+        // when
+        List<Studylog> studylogs = studylogRepository.findByPastDateAndSize(localDateTime, pageable);
+
+        // then
+        assertThat(studylogs).hasSize(2);
     }
 }
