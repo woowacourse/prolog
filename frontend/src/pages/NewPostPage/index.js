@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { SelectBox, Button, BUTTON_SIZE, NewPostCard } from '../../components';
@@ -8,6 +10,7 @@ import useFetch from '../../hooks/useFetch';
 import { requestGetMissions, requestGetTags } from '../../service/requests';
 import { SelectBoxWrapper, Post, SubmitButtonStyle } from './styles';
 import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
+import { MainContentStyle } from '../../PageRouter';
 
 const NewPostPage = () => {
   const dispatch = useDispatch();
@@ -69,30 +72,32 @@ const NewPostPage = () => {
   }, [missions]);
 
   return (
-    <form onSubmit={onFinishWriting}>
-      <SelectBoxWrapper>
-        <SelectBox
-          options={missions}
-          selectedOption={selectedMission}
-          setSelectedOption={setSelectedMission}
-          title="우아한테크코스 미션 목록입니다."
-          name="mission_subjects"
-          width="100%"
-          maxHeight="25rem"
-        />
-      </SelectBoxWrapper>
-      <ul>
-        {postIds.map((postId, index) => (
-          <Post key={postId}>
-            <NewPostCard ref={cardRefs} postOrder={index} tagOptions={tagOptions} />
-          </Post>
-        ))}
-      </ul>
+    <div css={MainContentStyle}>
+      <form onSubmit={onFinishWriting}>
+        <SelectBoxWrapper>
+          <SelectBox
+            options={missions}
+            selectedOption={selectedMission}
+            setSelectedOption={setSelectedMission}
+            title="우아한테크코스 미션 목록입니다."
+            name="mission_subjects"
+            width="100%"
+            maxHeight="25rem"
+          />
+        </SelectBoxWrapper>
+        <ul>
+          {postIds.map((postId, index) => (
+            <Post key={postId}>
+              <NewPostCard ref={cardRefs} postOrder={index} tagOptions={tagOptions} />
+            </Post>
+          ))}
+        </ul>
 
-      <Button size={BUTTON_SIZE.SMALL} css={SubmitButtonStyle}>
-        작성완료
-      </Button>
-    </form>
+        <Button size={BUTTON_SIZE.SMALL} cssProps={SubmitButtonStyle}>
+          작성완료
+        </Button>
+      </form>
+    </div>
   );
 };
 

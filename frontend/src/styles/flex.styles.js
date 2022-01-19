@@ -16,6 +16,14 @@ export const JustifyContentSpaceBtwStyle = css`
   justify-content: space-between;
 `;
 
+export const AlignItemsCenterStyle = css`
+  align-items: center;
+`;
+
 export const AlignItemsEndStyle = css`
   align-items: flex-end;
+`;
+
+export const AlignItemsBaseLineStyle = css`
+  align-items: baseline;
 `;

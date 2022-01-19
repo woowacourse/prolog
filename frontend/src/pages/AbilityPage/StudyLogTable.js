@@ -172,7 +172,7 @@ const ReportStudyLogTable = ({
         <TableButtonWrapper>
           <Button
             size="XX_SMALL"
-            css={{ backgroundColor: `${COLOR.RED_200}` }}
+            css={{ backgroundColor: `${COLOR.RED_200}`, color: `${COLOR.BLACK_900}` }}
             type="button"
             onClick={onDeleteStudyLogInReport}
             disabled={!deleteTargets.length}
@@ -181,7 +181,11 @@ const ReportStudyLogTable = ({
           </Button>
           <Button
             size="XX_SMALL"
-            css={{ border: `1px solid ${COLOR.DARK_GRAY_800}` }}
+            css={{
+              border: `1px solid ${COLOR.DARK_GRAY_800}`,
+              backgroundColor: `${COLOR.WHITE}`,
+              color: `${COLOR.BLACK_900}`,
+            }}
             type="button"
             onClick={onModalOpen}
           >

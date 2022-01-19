@@ -30,7 +30,6 @@ import {
 } from './styles';
 import { TableButtonWrapper } from './StudyLogTable.styles';
 
-// TODO : 다른 사람들에게는 Readonly로 보일 수 있도록 수정해야함.
 const AbilityPage = () => {
   const { username } = useParams();
   const $abilityHistory = useRef(null);
