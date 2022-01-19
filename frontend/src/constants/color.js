@@ -1,5 +1,5 @@
 const COLOR = {
-  WHITE: '#fff',
+  WHITE: '#ffffff',
 
   RED_50: '#fbdfdf',
   RED_100: '#f8c8c8',
@@ -42,7 +42,7 @@ const COLOR = {
   LIGHT_GRAY_900: '#878787',
 
   DARK_GRAY_400: '#737373',
-  DARK_GRAY_500: '#666',
+  DARK_GRAY_500: '#666666',
   DARK_GRAY_600: '#595959',
   DARK_GRAY_700: '#4d4d4d',
   DARK_GRAY_800: '#404040',
@@ -51,7 +51,7 @@ const COLOR = {
   BLACK_600: '#262626',
   BLACK_700: '#1a1a1a',
   BLACK_800: '#0d0d0d',
-  BLACK_900: '#000',
+  BLACK_900: '#000000',
 
   BLACK_OPACITY_100: 'rgba(0, 0, 0, 0.1)',
   BLACK_OPACITY_200: 'rgba(0, 0, 0, 0.2)',

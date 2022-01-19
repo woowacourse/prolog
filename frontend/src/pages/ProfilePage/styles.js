@@ -4,14 +4,13 @@ import COLOR from '../../constants/color';
 
 const Container = styled.div`
   display: flex;
+  margin-bottom: 10rem;
 `;
 
 const Content = styled.div`
   width: 100%;
   height: fit-content;
   margin-left: 2.4rem;
-  display: flex;
-  justify-content: center;
 
   position: relative;
 `;

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import useFetch from '../../hooks/useFetch';
 import useUserStudyLog from '../../hooks/useUserStudyLogs';
@@ -7,7 +7,7 @@ import { onToggleCheckbox } from '../../utils/toggleCheckbox';
 import { filterIds } from '../../utils/filteringList';
 import { COLOR } from '../../constants';
 import { Button, Modal, SelectBox } from '../../components';
-import { Checkbox } from './style';
+import { Checkbox } from '../ProfilePageNewReport/style';
 import {
   Form,
   TitleContainer,
@@ -18,30 +18,30 @@ import {
   ReadMoreButton,
 } from './StudyLogModal.styles';
 
-export const SHOW_ALL_FILTER = {
+export const SHOW_ALL_STUDYLOGS = {
   id: -1,
   name: '전체보기',
 };
 
 const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
+  /**
+   * filters: levels, memebers, missions, tags로 이루어진 객체
+   * 이중 levels의 목록에다가 추가로 전체보기 메뉴를 추가한다.
+   * 전체보기 메뉴는 어떠한 아이디와도 겹치지 않게 하기 위해서 -1로 지정한다. (SHOW_ALL_STUDYLOGS)
+   */
   const [filters] = useFetch([], requestGetFilters);
+  const levels = [SHOW_ALL_STUDYLOGS, ...Array.from(filters?.levels ?? [])];
 
-  const levels = [SHOW_ALL_FILTER, ...Array.from(filters?.levels ?? [])];
-
-  const [selectedLevelName, setSelectedLevelName] = useState(SHOW_ALL_FILTER.name);
+  const [levelName, setLevelName] = useState(SHOW_ALL_STUDYLOGS.name);
   const [selectedStudyLogs, setSelectedStudyLogs] = useState(studyLogs);
 
   const { studyLogData, setPage } = useUserStudyLog({
-    levelId: levels?.find((level) => level.name === selectedLevelName)?.id,
+    levelId: levels?.find((level) => level.name === levelName)?.id,
     username,
   });
+  const { totalSize, totalPage, currPage, data: studyLogsByLevel } = studyLogData;
 
   const listRef = useRef(null);
-
-  useEffect(() => {
-    window.scrollTo({ top: 300, behavior: 'smooth' });
-  }, []);
-
   useEffect(() => {
     if (listRef.current) {
       listRef.current.scrollTo({
@@ -50,33 +50,40 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
         behavior: 'auto',
       });
     }
-  }, [selectedLevelName]);
+  }, [levelName]);
 
-  const { totalSize, totalPage, currPage, data: currLevelStudyLogs } = studyLogData;
-
-  const checkTarget = (id) => {
-    return filterIds(selectedStudyLogs).includes(id);
-  };
   const selectedStudyLogLength = selectedStudyLogs.length;
   const studyLogLength = studyLogs.length;
 
   const onSelectStudyLogs = (event) => {
     event.preventDefault();
 
-    setStudyLogs(selectedStudyLogs);
+    setStudyLogs(
+      selectedStudyLogs.map(({ id, title }) => {
+        if (filterIds(studyLogs).includes(id)) {
+          return studyLogs.find((studyLog) => studyLog.id === id);
+        } else {
+          return { id, title, abilities: [] };
+        }
+      })
+    );
     onModalClose();
   };
 
   const onToggleStudyLog = (id) => {
-    const targetStudyLog = currLevelStudyLogs.find((post) => post.id === id);
+    const targetStudyLog = studyLogsByLevel.find((post) => post.id === id);
 
     setSelectedStudyLogs(onToggleCheckbox(selectedStudyLogs, targetStudyLog));
   };
 
+  const checkTarget = (id) => {
+    return filterIds(selectedStudyLogs).includes(id);
+  };
+
   const onGetMoreStudyLog = () => {
-    if (currPage < totalPage) {
-      setPage((page) => page + 1);
-    }
+    if (currPage >= totalPage) return;
+
+    setPage((page) => page + 1);
   };
 
   return (
@@ -93,10 +100,10 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
           <h3>레벨</h3>
           <SelectBox
             options={levels}
-            selectedOption={selectedLevelName}
-            setSelectedOption={setSelectedLevelName}
+            selectedOption={levelName}
+            setSelectedOption={setLevelName}
             title="우아한테크코스 과정 레벨 목록입니다."
-            name="level"
+            name="레벨"
           />
         </SelectBoxContainer>
 
@@ -106,17 +113,18 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
           ) : (
             <>
               <span>
-                <strong>{selectedLevelName}</strong>의 학습로그 총 {totalSize ?? 0}개
+                <strong>{levelName}</strong>의 학습로그 총 {totalSize ?? 0}개
               </span>
               <DeleteGuide>이미 등록된 학습로그는 학습로그 목록에서 삭제 가능합니다.</DeleteGuide>
+
               <ul ref={listRef}>
-                {currLevelStudyLogs?.map(({ id, mission, title }) => (
+                {studyLogsByLevel?.map(({ id, mission, title }) => (
                   <StudyLog key={id} isChecked={checkTarget(id)}>
                     <label>
                       <Checkbox
                         type="checkbox"
-                        checked={checkTarget(id)}
                         onChange={() => onToggleStudyLog(id)}
+                        checked={checkTarget(id)}
                         disabled={filterIds(studyLogs).includes(id)}
                       />
                       <div>
@@ -126,7 +134,8 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
                     </label>
                   </StudyLog>
                 ))}
-                {currLevelStudyLogs?.length < totalSize && (
+
+                {studyLogsByLevel?.length < totalSize && (
                   <ReadMoreButton type="button" onClick={onGetMoreStudyLog}>
                     더보기
                   </ReadMoreButton>

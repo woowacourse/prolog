@@ -4,6 +4,7 @@ import { getTextColor } from '../../utils/textColorPicker';
 
 const Container = styled.div`
   width: ${({ width }) => (width ? width : 'fit-content')};
+  height: ${({ height }) => (height ? height : 'fit-content')};
   max-width: ${({ maxWidth }) => maxWidth};
   background-color: ${({ backgroundColor }) => backgroundColor ?? COLOR.LIGHT_GRAY_200};
   color: ${({ backgroundColor }) =>

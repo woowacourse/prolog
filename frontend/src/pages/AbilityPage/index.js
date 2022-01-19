@@ -1,223 +1,172 @@
-import { useEffect, useState } from 'react';
+import { useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
+
 import { useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
-import { COLOR } from '../../constants';
-import LOCAL_STORAGE_KEY from '../../constants/localStorage';
-import {
-  ERROR_MESSAGE,
-  SUCCESS_MESSAGE,
-  CONFIRM_MESSAGE,
-  ALERT_MESSAGE,
-} from '../../constants/message';
 import useRequest from '../../hooks/useRequest';
-import useMutation from '../../hooks/useMutation';
 import useSnackBar from '../../hooks/useSnackBar';
-import {
-  requestAddAbility,
-  requestDeleteAbility,
-  requestEditAbility,
-  requestGetAbilities,
-} from '../../service/requests';
+import useAbility from '../../hooks/useAbility';
+import useAbilityHistory from '../../hooks/useAbilityHistory';
+
+import { requestGetAbilities } from '../../service/requests';
 import AbilityListItem from './AbilityListItem';
 import AddAbilityForm from './AddAbilityForm';
-import NoAbility from './NoAbility';
+import { Button as FormButton } from '../../components';
+import AbilityHistoryList from '../../components/Lists/AbilityHistoryList';
+import ReportStudyLogTable from './StudyLogTable';
+import StudyLogModal from './StudyLogModal';
 
-import { Container, AbilityList, Button, EditingListItem, ListHeader, NoContent } from './styles';
-import { isCorrectHexCode } from '../../utils/hexCode';
+import { COLOR } from '../../constants';
+import LOCAL_STORAGE_KEY from '../../constants/localStorage';
 
-const DEFAULT_ABILITY_FORM = {
-  isOpened: false,
-  name: '',
-  description: '',
-  color: '#f6d7fe',
-  parent: null,
-};
+import {
+  Container,
+  AbilityList,
+  Button,
+  EditingListItem,
+  ListHeader,
+  FormButtonWrapper,
+  HeaderContainer,
+  AbilityHistoryContainer,
+} from './styles';
+import { TableButtonWrapper } from './StudyLogTable.styles';
 
 const AbilityPage = () => {
-  const history = useHistory();
   const { username } = useParams();
-  const { isSnackBarOpen, SnackBar, openSnackBar } = useSnackBar();
+  const $abilityHistory = useRef(null);
 
-  const [abilities, setAbilities] = useState(null);
-  const [addFormStatus, setAddFormStatus] = useState(DEFAULT_ABILITY_FORM);
+  const user = useSelector((state) => state.user.profile);
+  const readOnly = username !== user?.data?.username;
+
+  const [isReportModalOpened, setReportIsModalOpened] = useState(false);
+  const [studyLogs, setStudyLogs] = useState([]);
+
+  const { isSnackBarOpen, SnackBar, openSnackBar } = useSnackBar();
+  const {
+    abilities,
+    addFormStatus,
+    setAddFormStatus,
+    onAddFormSubmit,
+    onDelete: onDeleteAbility,
+    onEdit: onEditAbility,
+    addFormOpen,
+    addFormClose,
+  } = useAbility(studyLogs);
+  const {
+    isModalOpened: isAbilityHistoryModalOpened,
+    abilityHistories,
+    onShowAbilistyHistories,
+  } = useAbilityHistory({ targetRef: $abilityHistory });
 
   const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
-  const user = useSelector((state) => state.user.profile);
-  const isMine = user.data && username === user.data?.username;
 
-  const addFormClose = () => {
-    setAddFormStatus((prevState) => ({ ...prevState, isOpened: false }));
-  };
-
-  const addFormOpen = () => {
-    setAddFormStatus((prevState) => ({ ...prevState, isOpened: true }));
-  };
+  const onReportModalOpen = () => setReportIsModalOpened(true);
+  const onReportModalClose = () => setReportIsModalOpened(false);
 
   const { fetchData: getData } = useRequest(
     [],
     () => requestGetAbilities(username, JSON.parse(accessToken)),
     (data) => {
-      setAbilities(data);
+      // setAbilities(data);
     }
   );
-
-  const { mutate: addAbility } = useMutation(
-    ({ name, description, color, parent = null }) =>
-      requestAddAbility(JSON.parse(accessToken), {
-        name,
-        description,
-        color,
-        parent,
-      }),
-    () => {
-      openSnackBar(SUCCESS_MESSAGE.CREATE_ABILITY);
-      getData();
-    },
-    (error) => {
-      openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
-    }
-  );
-
-  const { mutate: deleteAbility } = useMutation(
-    (id) => {
-      return requestDeleteAbility(JSON.parse(accessToken), id);
-    },
-    () => {
-      openSnackBar(SUCCESS_MESSAGE.DELETE_ABILITY);
-
-      getData();
-    },
-    (error) => {
-      openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
-    }
-  );
-
-  const editAbility = async ({ id, name, description, color }) => {
-    try {
-      const response = await requestEditAbility(JSON.parse(accessToken), {
-        id,
-        name,
-        description,
-        color,
-      });
-
-      if (!response.ok) {
-        const json = await response.json();
-        throw new Error(json.code);
-      }
-
-      openSnackBar(SUCCESS_MESSAGE.EDIT_ABILITY);
-      await getData();
-    } catch (error) {
-      openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
-    }
-  };
-
-  useEffect(() => {
-    if (user.data?.id) {
-      getData();
-    }
-  }, [user]);
-
-  if (user.data && !isMine) {
-    alert(ALERT_MESSAGE.ACCESS_DENIED);
-    history.push(`/${username}`);
-  }
-
-  const onAddFormSubmit = async (event) => {
-    event.preventDefault();
-
-    const newName = addFormStatus.name.trim();
-    const newColor = addFormStatus.color.trim();
-
-    if (!newName) {
-      openSnackBar(ERROR_MESSAGE.NEED_ABILITY_NAME);
-      return;
-    }
-
-    if (!newColor) {
-      openSnackBar(ERROR_MESSAGE.NEED_ABILITY_COLOR);
-      return;
-    }
-
-    if (!isCorrectHexCode(newColor)) {
-      openSnackBar(ERROR_MESSAGE.INVALID_ABILIT_COLOR);
-      return;
-    }
-
-    await addAbility({
-      name: newName,
-      description: addFormStatus.description,
-      color: addFormStatus.color,
-      parent: addFormStatus.parent,
-    });
-
-    setAddFormStatus(DEFAULT_ABILITY_FORM);
-    addFormClose();
-  };
 
   const onFormDataChange = (key) => (event) => {
     setAddFormStatus({ ...addFormStatus, [key]: event.target.value });
   };
 
-  const onDelete = (id) => () => {
-    if (window.confirm(CONFIRM_MESSAGE.DELETE_ABILITY)) {
-      deleteAbility(id);
-    }
-  };
-
   return (
-    <Container>
-      <div>
-        <h2>역량</h2>
-        <Button type="button" backgroundColor={COLOR.LIGHT_GRAY_50} onClick={addFormOpen}>
-          역량 추가 +
-        </Button>
-      </div>
+    <>
+      <Container>
+        <HeaderContainer>
+          <Button
+            type="button"
+            backgroundColor={COLOR.LIGHT_GRAY_50}
+            borderColor={COLOR.LIGHT_GRAY_400}
+            fontSize="1.2rem"
+            onClick={onShowAbilistyHistories}
+          >
+            🕖 히스토리
+          </Button>
 
-      {addFormStatus.isOpened && (
-        <AbilityList>
-          <EditingListItem isParent={true}>
-            <AddAbilityForm
-              formData={addFormStatus}
-              onFormDataChange={onFormDataChange}
-              isParent={true}
-              onClose={addFormClose}
-              onSubmit={onAddFormSubmit}
-              sabveButtondisabled={!addFormStatus.name.trim() || !addFormStatus.color}
-            />
-          </EditingListItem>
-        </AbilityList>
-      )}
+          {isAbilityHistoryModalOpened && (
+            <AbilityHistoryContainer ref={$abilityHistory}>
+              <h3>역량 이력 {abilityHistories?.length}개</h3>
+              <AbilityHistoryList list={abilityHistories} />
+            </AbilityHistoryContainer>
+          )}
+        </HeaderContainer>
 
-      <AbilityList>
         <ListHeader>
-          <div>
-            역량<span>{`(총 ${abilities?.length}개)`}</span>
-          </div>
+          <h3>
+            📚 역량 <span>{`(총 ${abilities?.length ?? 0}개)`}</span>
+          </h3>
+
+          {!readOnly && (
+            <TableButtonWrapper>
+              <Button type="button" borderColor={COLOR.DARK_GRAY_800} onClick={addFormOpen}>
+                역량 추가하기
+              </Button>
+            </TableButtonWrapper>
+          )}
         </ListHeader>
 
-        {abilities
-          ?.filter(({ isParent }) => isParent)
-          .map((ability) => (
-            <AbilityListItem
-              key={ability.id}
-              ability={ability}
-              addAbility={addAbility}
-              onEdit={editAbility}
-              onDelete={onDelete}
-            />
-          ))}
-
-        {abilities && !abilities.length && (
-          <NoContent>
-            <NoAbility getData={getData} accessToken={accessToken} />
-          </NoContent>
+        {!readOnly && addFormStatus.isOpened && (
+          <AbilityList>
+            <EditingListItem isParent={true}>
+              <AddAbilityForm
+                formData={addFormStatus}
+                onFormDataChange={onFormDataChange}
+                isParent={true}
+                onClose={addFormClose}
+                onSubmit={onAddFormSubmit}
+                saveButtondisabled={!addFormStatus.name.trim() || !addFormStatus.color}
+              />
+            </EditingListItem>
+          </AbilityList>
         )}
-      </AbilityList>
+
+        <AbilityList height="36rem">
+          {abilities
+            ?.filter(({ isParent }) => isParent)
+            .map((ability, index) => (
+              <AbilityListItem
+                key={index}
+                ability={ability}
+                // addAbility={}
+                onEdit={onEditAbility}
+                onDelete={onDeleteAbility}
+                readOnly={false}
+                readOnly={readOnly}
+              />
+            ))}
+        </AbilityList>
+      </Container>
+
+      <ReportStudyLogTable
+        onModalOpen={onReportModalOpen}
+        studyLogs={studyLogs}
+        setStudyLogs={setStudyLogs}
+        abilities={abilities}
+        readOnly={readOnly}
+      />
+
+      {!readOnly && (
+        <FormButtonWrapper>
+          <FormButton size="X_SMALL">저장</FormButton>
+        </FormButtonWrapper>
+      )}
+
+      {!readOnly && isReportModalOpened && (
+        <StudyLogModal
+          onModalClose={onReportModalClose}
+          username={username}
+          studyLogs={studyLogs}
+          setStudyLogs={setStudyLogs}
+        />
+      )}
 
       {isSnackBarOpen && <SnackBar />}
-    </Container>
+    </>
   );
 };
 

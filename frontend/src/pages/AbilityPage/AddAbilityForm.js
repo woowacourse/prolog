@@ -1,7 +1,14 @@
 import SubCategoryIcon from '../../components/@shared/Icons/SubCategoryIcon';
 import Chip from '../../components/Chip/Chip';
 import { COLOR } from '../../constants';
-import { ManageButtonList, Button, FormContainer, ListForm, ColorPicker } from './styles';
+import {
+  ManageButtonList,
+  Button,
+  FormContainer,
+  ListForm,
+  ColorPicker,
+  ColorChip,
+} from './styles';
 
 const AddAbilityForm = ({
   formData,
@@ -9,7 +16,7 @@ const AddAbilityForm = ({
   onClose,
   isParent,
   onSubmit,
-  sabveButtondisabled,
+  saveButtondisabled,
 }) => {
   const { name, description, color } = formData;
 
@@ -22,6 +29,7 @@ const AddAbilityForm = ({
           textAlign="left"
           backgroundColor={color}
           minWidth="3rem"
+          height="2.4rem"
           fontSize="1.4rem"
           maxLength={60}
         >
@@ -30,6 +38,7 @@ const AddAbilityForm = ({
       </div>
 
       <ListForm isParent={isParent} onSubmit={onSubmit}>
+        {!isParent && <ColorChip backgroundColor={color} visibility="hidden" />}
         <label>
           이름
           <input
@@ -63,17 +72,20 @@ const AddAbilityForm = ({
         <ManageButtonList>
           <Button
             type="button"
-            backgroundColor={COLOR.WHITE}
             color={COLOR.DARK_GRAY_900}
+            fontSize="1.2rem"
+            backgroundColor={COLOR.WHITE}
             borderColor={COLOR.DARK_BLUE_700}
             onClick={onClose}
           >
             취소
           </Button>
           <Button
-            backgroundColor={COLOR.DARK_BLUE_700}
             color={COLOR.WHITE}
-            disabled={sabveButtondisabled}
+            fontSize="1.2rem"
+            backgroundColor={COLOR.DARK_BLUE_700}
+            borderColor={COLOR.DARK_BLUE_700}
+            disabled={saveButtondisabled}
           >
             저장
           </Button>

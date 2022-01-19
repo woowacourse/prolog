@@ -260,6 +260,33 @@ const requestEditAbility = (accessToken, data) =>
     body: JSON.stringify(data),
   });
 
+const requestGetAbilityHistory = (accessToken, abilityId) =>
+  fetch(`${BASE_URL}/abilities-history/${abilityId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+const requestGetAbilityHistories = (accessToken) =>
+  fetch(`${BASE_URL}/abilities-histories`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+const requestDeleteAbilityHistory = (accessToken, abilityId) =>
+  fetch(`${BASE_URL}/abilities-history/${abilityId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
 const requestSetDefaultAbility = (accessToken, field) =>
   fetch(`${BASE_URL}/abilities/template/${field}`, {
     method: 'POST',
@@ -303,6 +330,9 @@ export {
   requestAddAbility,
   requestDeleteAbility,
   requestEditAbility,
+  requestGetAbilityHistory,
+  requestGetAbilityHistories,
+  requestDeleteAbilityHistory,
   requestSetDefaultAbility,
   requestGetReportList,
   requestGetReport,

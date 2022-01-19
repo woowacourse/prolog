@@ -15,7 +15,7 @@ import {
 } from './Calendar.styles';
 import { ReactComponent as ArrowIcon } from '../../assets/images/right-arrow-angle.svg';
 import { requestGetCalendar } from '../../service/requests';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 
 const getStartDayOfMonth = (year, month) => {
   return new Date(year, month, 1).getDay();

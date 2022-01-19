@@ -39,6 +39,16 @@ const TableButtonWrapper = styled.div`
   position: absolute;
   right: 0;
   top: -0.5rem;
+
+  > button {
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.8rem;
+    font-size: 1.4rem;
+
+    :not(:disabled):hover {
+      filter: brightness(0.9);
+    }
+  }
 `;
 
 const Table = styled.table`
@@ -93,7 +103,7 @@ const Thead = styled.thead`
 
 const Tbody = styled.tbody`
   display: block;
-  min-height: 10rem;
+  min-height: 30rem;
 
   tr {
     width: 96%;
@@ -105,13 +115,13 @@ const Tbody = styled.tbody`
 
     td:nth-of-type(1) {
       height: 100%;
-      width: 6%;
+      width: 5%;
       text-align: center;
     }
 
     td:nth-of-type(2) {
       height: 100%;
-      width: 47%;
+      width: 45%;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;

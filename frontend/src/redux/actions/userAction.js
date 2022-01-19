@@ -6,6 +6,8 @@ export const LOGIN = 'user/LOGIN';
 export const LOGIN_SUCCESS = 'user/LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'user/LOGIN_FAILURE';
 
+export const LOGOUT = 'user/LOGOUT';
+
 export const GET_PROFILE = 'user/GET_PROFILE';
 export const GET_PROFILE_SUCCESS = 'user/GET_PROFILE_SUCCESS';
 export const GET_PROFILE_FAILURE = 'user/GET_PROFILE_FAILURE';
@@ -42,6 +44,10 @@ export const login = () => async (dispatch) => {
     console.error(errorResponse);
     dispatch({ type: LOGIN_FAILURE, payload: errorResponse });
   }
+};
+
+export const logout = () => async (dispatch) => {
+  dispatch({ type: LOGOUT });
 };
 
 export const getProfile = () => async (dispatch) => {

@@ -49,6 +49,7 @@ import {
   JustifyContentSpaceBtwStyle,
 } from '../../styles/flex.styles';
 import ViewCount from '../../components/ViewCount/ViewCount';
+import { MainContentStyle } from '../../PageRouter';
 
 const PostPage = () => {
   const history = useHistory();
@@ -181,7 +182,7 @@ const PostPage = () => {
   }, [accessToken, postId]);
 
   return (
-    <>
+    <div css={MainContentStyle}>
       {myName === studyLog?.author?.username && (
         <ButtonList>
           <Button
@@ -259,7 +260,7 @@ const PostPage = () => {
           </BottomContainer>
         </CardInner>
       </Card>
-    </>
+    </div>
   );
 };
 

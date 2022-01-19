@@ -5,6 +5,7 @@ import {
   GET_PROFILE,
   GET_PROFILE_SUCCESS,
   GET_PROFILE_FAILURE,
+  LOGOUT,
 } from '../actions/userAction';
 import ls from 'local-storage';
 import { API } from '../../constants';
@@ -30,7 +31,7 @@ const userReducer = (state = initialState, action) => {
         ...state,
         accessToken: {
           loading: true,
-          data: '',
+          data: null,
           error: null,
         },
       };
@@ -48,7 +49,21 @@ const userReducer = (state = initialState, action) => {
         ...state,
         accessToken: {
           loading: false,
-          data: '',
+          data: null,
+          error: action.payload,
+        },
+      };
+
+    case LOGOUT:
+      return {
+        accessToken: {
+          loading: false,
+          data: null,
+          error: action.payload,
+        },
+        profile: {
+          loading: false,
+          data: null,
           error: action.payload,
         },
       };

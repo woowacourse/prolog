@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+/** @jsxImportSource @emotion/react */
+
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
 import {
-  Container,
   Content,
   Overview,
   TagTitle,
@@ -21,6 +22,8 @@ import useNotFound from '../../hooks/useNotFound';
 import { Calendar, Card, Pagination, ProfilePageSideBar, Tag } from '../../components';
 import useFetch from '../../hooks/useFetch';
 import useStudyLog from '../../hooks/useStudyLog';
+import { MainContentStyle } from '../../PageRouter';
+import { FlexStyle } from '../../styles/flex.styles';
 
 const initialPostQueryParams = {
   page: 1,
@@ -104,7 +107,7 @@ const ProfilePage = ({ children, menu }) => {
   }
 
   return (
-    <Container>
+    <div css={[MainContentStyle, FlexStyle]}>
       <ProfilePageSideBar menu={menu} />
       <Content>
         {children ? (
@@ -130,7 +133,7 @@ const ProfilePage = ({ children, menu }) => {
                 ))}
               </TagContainer>
             </div>
-            <Card title="캘린더" css={CardStyles}>
+            <Card title="캘린더" cssProps={CardStyles}>
               <Calendar
                 newDate={state?.date}
                 onClick={(year, month, day) => {
@@ -141,7 +144,7 @@ const ProfilePage = ({ children, menu }) => {
                 setSelectedDay={setSelectedDay}
               />
             </Card>
-            <Card title="학습로그" css={CardStyles}>
+            <Card title="학습로그" cssProps={CardStyles}>
               {posts?.data?.length ? (
                 <>
                   {posts?.data?.map((post) => {
@@ -181,7 +184,7 @@ const ProfilePage = ({ children, menu }) => {
           </Overview>
         )}
       </Content>
-    </Container>
+    </div>
   );
 };
 

@@ -2,28 +2,12 @@ import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
 
-const Container = styled.div`
+export const Container = styled.div`
   width: 100%;
   height: 100%;
 
   font-size: 1.4rem;
-
-  > div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  h2 {
-    text-align: left;
-    font-weight: 600;
-
-    span {
-      font-weight: 400;
-      font-size: 1.6rem;
-      padding-left: 0.5rem;
-    }
-  }
+  position: relative;
 
   button:disabled {
     opacity: 0.3;
@@ -34,35 +18,117 @@ const Container = styled.div`
   }
 
   > *:not(:last-child) {
+    margin-bottom: 0.3rem;
+  }
+`;
+
+export const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  position: relative;
+
+  h2 {
+    visibility: hidden;
+    text-align: left;
+    font-weight: 600;
+  }
+`;
+
+export const AbilityHistoryContainer = styled.div`
+  width: 30rem;
+  height: fit-content;
+  max-height: 20rem;
+
+  position: absolute;
+  top: 3.5rem;
+  left: 1rem;
+
+  background-color: ${COLOR.WHITE};
+  border-radius: 0.5rem;
+  border: 1px solid ${COLOR.BLACK_OPACITY_200};
+  box-shadow: 2px 2px 4px ${COLOR.BLACK_OPACITY_100};
+  z-index: 2;
+
+  h3 {
+    width: 100%;
+    padding: 1rem;
+
+    color: ${COLOR.DARK_GRAY_800};
+    font-size: 1.4rem;
+    font-weight: 500;
+
+    background-color: ${COLOR.WHITE};
+    border-bottom: 1px solid ${COLOR.LIGHT_GRAY_500};
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+  }
+
+  :before {
+    content: '';
+    position: absolute;
+    top: -11px;
+    left: 21px;
+
+    border-top: 0px solid transparent;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    border-bottom: 10px solid ${COLOR.BLACK_OPACITY_200};
+  }
+
+  :after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 22px;
+
+    border-top: 0px solid transparent;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid ${COLOR.WHITE};
+  }
+`;
+
+export const AbilityList = styled.ul`
+  width: 100%;
+  ${({ height }) =>
+    height &&
+    `
+    min-height: ${height}; 
+    max-height: ${height};
+  `}
+
+  background-color: ${COLOR.WHITE};
+  border: 2px solid ${COLOR.LIGHT_GRAY_400};
+  border-radius: 0.5rem;
+
+  overflow: auto;
+
+  > div {
+    width: 100%;
+    padding: 0.5rem 2rem;
+  }
+
+  li {
+    width: 100%;
+    min-height: 6rem;
+    padding: 0.5rem;
+
+    display: grid;
+    grid-template-columns: 0.2fr 1fr 2fr 0.9fr;
+    justify-content: center;
+    align-items: center;
+
+    border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
+  }
+
+  && {
     margin-bottom: 1rem;
   }
 `;
 
-const AbilityList = styled.ul`
-  width: 100%;
-  background-color: ${COLOR.WHITE};
-
-  border: 1px solid ${COLOR.LIGHT_GRAY_200};
-  border-radius: 1rem;
-
-  li {
-    width: 100%;
-
-    display: grid;
-    grid-template-columns: 0.2fr 1fr 2fr 1fr;
-    justify-content: center;
-    align-items: center;
-
-    padding: 0.5rem 2rem;
-    border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
-
-    :last-child {
-      border: none;
-    }
-  }
-`;
-
-const openList = keyframes`
+export const openList = keyframes`
   from {
     height: 0;
     max-height:0;
@@ -76,7 +142,7 @@ const openList = keyframes`
   }
 `;
 
-const SubAbilityList = styled.ul`
+export const SubAbilityList = styled.ul`
   border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
 
   overflow: hidden;
@@ -101,12 +167,16 @@ const SubAbilityList = styled.ul`
         `}
 `;
 
-const ManageButtonList = styled.div`
-  display: flex;
-  justify-content: right;
+export const ManageButtonList = styled.div`
+  width: fit-content;
+  margin-left: 0.5rem;
+
+  button {
+    margin-right: 0.2rem;
+  }
 `;
 
-const ArrowButton = styled.button`
+export const ArrowButton = styled.button`
   width: 32px;
   height: 32px;
   position: relative;
@@ -141,23 +211,24 @@ const ArrowButton = styled.button`
   }
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   ${({ backgroundColor, color }) => `
     background-color: ${backgroundColor};
     color: ${color};
   `}
 
   ${({ borderColor }) => borderColor && `border: 1px solid ${borderColor};`}
+  font-size: ${({ fontSize }) => (fontSize ? ` ${fontSize}` : '1.4rem')};
 
   padding: 0.5rem 1.5rem;
-  border-radius: 1rem;
+  border-radius: 0.8rem;
 
   :not(:first-of-child) {
     margin-left: 0.5rem;
   }
 `;
 
-const FormContainer = styled.div`
+export const FormContainer = styled.div`
   padding: 1rem 0 2rem;
   ${({ isParent }) => !isParent && 'padding-bottom: 1rem;'}
 
@@ -166,6 +237,7 @@ const FormContainer = styled.div`
     padding: 1rem 0 0 1rem;
 
     display: flex;
+    align-items: center;
   }
 
   h3 {
@@ -174,11 +246,15 @@ const FormContainer = styled.div`
   }
 `;
 
-const ListForm = styled.form`
+export const ListForm = styled.form`
   display: grid;
-  grid-template-columns: ${({ isParent }) => (isParent ? `1fr 2fr 1fr 0.8fr` : `1fr 3fr 0.8fr`)};
+  grid-template-columns: ${({ isParent }) =>
+    isParent ? `1fr 2fr 1fr 0.8fr` : `0.2fr 1fr 3fr 1fr`};
   justify-content: center;
   align-items: end;
+  grid-column-gap: 0.5rem;
+
+  margin-left: 1.2rem;
 
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -223,7 +299,7 @@ const ListForm = styled.form`
   }
 `;
 
-const ColorPicker = styled.div`
+export const ColorPicker = styled.div`
   display: flex;
 
   input[type='text'] {
@@ -231,16 +307,27 @@ const ColorPicker = styled.div`
   }
 `;
 
-const ListHeader = styled.li`
-  && {
-    grid-template-columns: 1fr;
-    background-color: ${COLOR.LIGHT_GRAY_200};
-    border-top-left-radius: 1rem;
-    border-top-right-radius: 1rem;
+export const ListHeader = styled.div`
+  position: relative;
+  margin: 1rem 0;
+
+  h3 {
+    margin-left: 0.6rem;
+
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: ${COLOR.BLACK_900};
+
+    > span {
+      margin-left: 0.5rem;
+
+      font-size: 1.4rem;
+      color: ${COLOR.DARK_GRAY_900};
+    }
   }
 `;
 
-const EditingListItem = styled.li`
+export const EditingListItem = styled.li`
   && {
     ${({ isParent }) =>
       isParent ? 'grid-template-columns: 1fr' : 'grid-template-columns: 0.2fr 4fr'};
@@ -251,7 +338,7 @@ const EditingListItem = styled.li`
   }
 `;
 
-const NoContent = styled.li`
+export const NoContent = styled.li`
   && {
     padding: 2rem 3rem;
 
@@ -273,15 +360,6 @@ const NoContent = styled.li`
   }
 
   text-align: center;
-`;
-
-const SubAbilityNameInput = styled.input`
-  background-color: ${COLOR.WHITE}cc;
-  border: none;
-`;
-
-const SubAbilityDescriptionInput = styled.input`
-  width: calc(100% - 1.4rem);
 `;
 
 export const NoAbilityContainer = styled.div`
@@ -372,19 +450,35 @@ export const AnotherWay = styled.span`
   color: ${COLOR.DARK_GRAY_600};
 `;
 
-export {
-  Container,
-  AbilityList,
-  SubAbilityList,
-  ManageButtonList,
-  ArrowButton,
-  Button,
-  FormContainer,
-  ListForm,
-  ColorPicker,
-  EditingListItem,
-  ListHeader,
-  NoContent,
-  SubAbilityNameInput,
-  SubAbilityDescriptionInput,
-};
+export const FormButtonWrapper = styled.div`
+  width: 98%;
+  margin: 0 auto;
+  margin-top: 5rem;
+
+  display: flex;
+
+  > button {
+    width: 100%;
+    margin: 0 0.5rem;
+
+    font-size: 1.4rem;
+  }
+`;
+
+export const ColorChip = styled.div`
+  height: 3.2rem;
+  position: relative;
+
+  ${({ visibility }) => visibility && `visibility: ${visibility}`}
+
+  :before {
+    content: '';
+    width: 1.3rem;
+    height: 1.3rem;
+    position: absolute;
+    top: 1rem;
+    left: 0.4rem;
+    border-radius: 50%;
+    ${({ backgroundColor }) => backgroundColor && `background-color: ${backgroundColor}`}
+  }
+`;

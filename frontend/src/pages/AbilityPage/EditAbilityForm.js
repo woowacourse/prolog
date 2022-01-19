@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import Chip from '../../components/Chip/Chip';
-import { COLOR, ERROR_MESSAGE } from '../../constants';
-import useSnackBar from '../../hooks/useSnackBar';
-import { isCorrectHexCode } from '../../utils/hexCode';
+import { COLOR } from '../../constants';
 import { ManageButtonList, Button, FormContainer, ListForm, ColorPicker } from './styles';
 
 const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEdit }) => {
@@ -11,45 +9,21 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
     description,
     color,
   });
-  const { isSnackBarOpen, SnackBar, openSnackBar } = useSnackBar();
 
   const onFormDataChange = (key) => (event) => {
     setFormData({ ...formData, [key]: event.target.value });
   };
 
-  const onSubmit = async (event) => {
+  const onSubmit = (event) => {
     event.preventDefault();
 
-    const newName = formData.name.trim();
-    const newColor = formData.color.trim();
-
-    if (!newName) {
-      openSnackBar(ERROR_MESSAGE.NEED_ABILITY_NAME);
-      return;
-    }
-
-    if (!newColor) {
-      openSnackBar(ERROR_MESSAGE.NEED_ABILITY_COLOR);
-      return;
-    }
-
-    if (!isCorrectHexCode(newColor)) {
-      openSnackBar(ERROR_MESSAGE.INVALID_ABILIT_COLOR);
-      return;
-    }
-
-    try {
-      await onEdit({
-        id,
-        name: newName,
-        description: formData.description,
-        color: formData.color,
-      });
-    } catch (error) {
-      alert(error.message);
-    } finally {
-      onClose();
-    }
+    onEdit({
+      id,
+      name: formData.name,
+      description: formData.description,
+      color: formData.color,
+      onClose,
+    });
   };
 
   /**
@@ -125,24 +99,24 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
         <ManageButtonList>
           <Button
             type="button"
-            backgroundColor={COLOR.WHITE}
             color={COLOR.DARK_GRAY_900}
+            fontSize="1.2rem"
+            backgroundColor={COLOR.WHITE}
             borderColor={COLOR.DARK_BLUE_700}
             onClick={onClose}
           >
             취소
           </Button>
           <Button
-            backgroundColor={COLOR.DARK_BLUE_700}
             color={COLOR.WHITE}
+            fontSize="1.2rem"
+            backgroundColor={COLOR.DARK_BLUE_700}
             disabled={disableSaveButton()}
           >
             저장
           </Button>
         </ManageButtonList>
       </ListForm>
-
-      {isSnackBarOpen && <SnackBar />}
     </FormContainer>
   );
 };

@@ -5,12 +5,17 @@ import COLOR from '../../constants/color';
 
 const selectedStyle = css`
   background-color: ${COLOR.DARK_BLUE_800};
-  color: white;
+  color: ${COLOR.WHITE};
+`;
+
+const unselectedStyle = css`
+  background-color: transparent;
+  color: ${COLOR.BLACK_800};
 `;
 
 const PageButton = ({ children, ...props }) => {
   return (
-    <Button {...props} css={props.selected ? selectedStyle : null}>
+    <Button {...props} css={props.selected ? selectedStyle : unselectedStyle}>
       {children}
     </Button>
   );

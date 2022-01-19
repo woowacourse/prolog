@@ -8,6 +8,7 @@ const Chip = ({
   maxWidth,
   textAlign,
   width,
+  height,
   color,
   backgroundColor,
   fontSize,
@@ -19,6 +20,7 @@ const Chip = ({
       title={title}
       maxWidth={maxWidth}
       width={width}
+      height={height}
       color={color}
       backgroundColor={backgroundColor}
     >
@@ -39,6 +41,7 @@ Chip.propTypes = {
   maxWidth: PropTypes.string,
   textAlign: PropTypes.string,
   width: PropTypes.string,
+  height: PropTypes.string,
   color: PropTypes.string,
   backgroundColor: PropTypes.string,
   fontSize: PropTypes.string,

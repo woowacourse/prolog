@@ -1,6 +1,4 @@
 import styled from '@emotion/styled';
-import { css } from '@emotion/react';
-import COLOR from '../../constants/color';
 
 const HeaderContainer = styled.div`
   display: flex;
