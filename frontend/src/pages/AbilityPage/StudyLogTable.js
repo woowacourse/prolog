@@ -34,6 +34,10 @@ const ReportStudyLogTable = ({
 
   const selectAbilityBoxRef = useRef(null);
 
+  useEffect(() => {
+    setDeleteTargets([]);
+  }, [selectedStudyLogs]);
+
   // 역량선택 모달 닫기 관련
   useEffect(() => {
     const onCloseOptionList = (event) => {
@@ -72,14 +76,10 @@ const ReportStudyLogTable = ({
   const onDeleteStudyLogInReport = () => {
     if (allChecked) {
       const moveTargetPage = currPage === totalPage ? currPage - 1 : currPage;
-      // setStudyLogAbilities([]);
       setPage(moveTargetPage);
     }
 
     setSelectedStudyLogs((currStudyLogs) => filterOnlyNewList(currStudyLogs, deleteTargets));
-    // setStudyLogAbilities((currStudyLogAbility) =>
-    //   filterOnlyNewList(currStudyLogAbility, deleteTargets)
-    // );
     setDeleteTargets([]);
   };
 
