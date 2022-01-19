@@ -3,6 +3,9 @@ package wooteco.prolog.report.application;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.repository.MemberRepository;
+import wooteco.prolog.member.exception.MemberNotFoundException;
 import wooteco.prolog.report.application.dto.Ability2.HistoryRequest;
 import wooteco.prolog.report.application.dto.Ability2.HistoryResponse;
 import wooteco.prolog.report.application.dto.HistoryDtoAssembler;
@@ -24,14 +27,25 @@ import static java.util.stream.Collectors.toMap;
 @Transactional(readOnly = true)
 public class HistoryAbilityService {
 
+    private final MemberRepository memberRepository;
     private final HistoryRepository historyRepository;
     private final HistoryDtoAssembler historyDtoAssembler;
     private final EntityManager entityManager;
 
+    public HistoryResponse readLatestHistoryByUsername(String username) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(MemberNotFoundException::new);
+
+        History history = historyRepository.findFirstByMemberIdOrderByCreatedAtDesc(member.getId())
+                .orElseThrow(IllegalArgumentException::new);
+
+        return historyDtoAssembler.toHistoryResponse(history);
+    }
+
     @Transactional
     public HistoryResponse update(HistoryRequest requests, Long memberId) {
         History history = historyDtoAssembler.toHistory(requests, memberId);
-        historyRepository.findFirstByOrderByCreatedAtDesc()
+        historyRepository.findFirstByMemberIdOrderByCreatedAtDesc(memberId)
                 .ifPresent(savedHistory -> dirtyCheck(savedHistory, history));
 
         History savedHistory = entityManager.merge(history);
@@ -63,9 +77,5 @@ public class HistoryAbilityService {
         }
 
         return !savedAbility.isExactlyEquals(ability);
-    }
-
-    public void readLastHistory() {
-
     }
 }

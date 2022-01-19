@@ -3,6 +3,7 @@ package wooteco.prolog.report.ui;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,13 @@ public class AbilityController {
         HistoryResponse response = historyAbilityService.update(historyRequest, member.getId());
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("members/{username}/abilities")
+    public ResponseEntity<HistoryResponse> readLatestHistory(@PathVariable String username) {
+        HistoryResponse historyResponse = historyAbilityService.readLatestHistoryByUsername(username);
+
+        return ResponseEntity.ok(historyResponse);
     }
 
     @MemberOnly
