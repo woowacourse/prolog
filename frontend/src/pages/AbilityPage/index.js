@@ -7,7 +7,7 @@ import useSnackBar from '../../hooks/useSnackBar';
 import useAbility from '../../hooks/useAbility';
 import useAbilityHistory from '../../hooks/useAbilityHistory';
 
-import { requestGetAbilities } from '../../service/requests';
+import { requestGetAbilities, requestPutAbility } from '../../service/requests';
 import AbilityListItem from './AbilityListItem';
 import AddAbilityForm from './AddAbilityForm';
 import { Button as FormButton } from '../../components';
@@ -15,7 +15,7 @@ import AbilityHistoryList from '../../components/Lists/AbilityHistoryList';
 import ReportStudyLogTable from './StudyLogTable';
 import StudyLogModal from './StudyLogModal';
 
-import { COLOR } from '../../constants';
+import { COLOR, ERROR_MESSAGE } from '../../constants';
 import LOCAL_STORAGE_KEY from '../../constants/localStorage';
 
 import {
@@ -35,6 +35,7 @@ const AbilityPage = () => {
   const $abilityHistory = useRef(null);
 
   const user = useSelector((state) => state.user.profile);
+  const { data: accessToken } = useSelector((state) => state.user.accessToken);
   const readOnly = username !== user?.data?.username;
 
   const [isReportModalOpened, setReportIsModalOpened] = useState(false);
@@ -57,18 +58,44 @@ const AbilityPage = () => {
     onShowAbilistyHistories,
   } = useAbilityHistory({ targetRef: $abilityHistory });
 
-  const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
-
   const onReportModalOpen = () => setReportIsModalOpened(true);
   const onReportModalClose = () => setReportIsModalOpened(false);
 
+  // TODO: fetchData 오류 해결하기
   const { fetchData: getData } = useRequest(
     [],
-    () => requestGetAbilities(username, JSON.parse(accessToken)),
+    () => requestGetAbilities(username),
     (data) => {
-      // setAbilities(data);
+      console.log(data);
+      // TODO: 데이터 형식을 보고 저장하는 데이터 형식 - studylogs, abilities와 맞추기
     }
   );
+
+  // TODO: putData 오류 해결하기
+  const putAbility = async (data) => {
+    try {
+      const response = await requestPutAbility(accessToken, data);
+
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+
+      getData();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onSaveAbility = (event) => {
+    event.preventDefault();
+
+    const data = {
+      abilities,
+      studylogs: studyLogs.map(({ id, abilities }) => ({ id, abilityNames: abilities })),
+    };
+
+    putAbility(data);
+  };
 
   const onFormDataChange = (key) => (event) => {
     setAddFormStatus({ ...addFormStatus, [key]: event.target.value });
@@ -152,7 +179,9 @@ const AbilityPage = () => {
 
       {!readOnly && (
         <FormButtonWrapper>
-          <FormButton size="X_SMALL">저장</FormButton>
+          <FormButton size="X_SMALL" onClick={onSaveAbility}>
+            저장
+          </FormButton>
         </FormButtonWrapper>
       )}
 

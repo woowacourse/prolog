@@ -192,24 +192,6 @@ const requestEditReport = (data, reportId, accessToken) =>
     body: JSON.stringify(data),
   });
 
-const requestGetAbilities = (username, accessToken) =>
-  fetch(`${BASE_URL}/members/${username}/abilities`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-const requestAddAbility = (accessToken, data) =>
-  fetch(`${BASE_URL}/abilities`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(data),
-  });
-
 const requestPostScrap = (username, accessToken, data) =>
   fetch(`${BASE_URL}/members/${username}/scrap`, {
     method: 'POST',
@@ -242,6 +224,39 @@ const requestGetMyScrap = (username, accessToken, postQueryParams) => {
   });
 };
 
+const requestGetAbilities = (username) =>
+  fetch(`${BASE_URL}/members/${username}/abilities`, {
+    method: 'GET',
+  });
+
+/*
+ * @deprecated
+ * 역량 정책이 달라짐에 따라서 duplicated가 확정이 되면 삭제해야함.
+ */
+const requestAddAbility = (accessToken, data) =>
+  fetch(`${BASE_URL}/abilities`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+export const requestPutAbility = (accessToken, data) =>
+  fetch(`${BASE_URL}/abilities`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+/*
+ * @deprecated
+ * 역량 정책이 달라짐에 따라서 duplicated가 확정이 되면 삭제해야함.
+ */
 const requestDeleteAbility = (accessToken, abilityId) =>
   fetch(`${BASE_URL}/abilities/${abilityId}`, {
     method: 'DELETE',
@@ -250,6 +265,10 @@ const requestDeleteAbility = (accessToken, abilityId) =>
     },
   });
 
+/*
+ * @deprecated
+ * 역량 정책이 달라짐에 따라서 duplicated가 확정이 되면 삭제해야함.
+ */
 const requestEditAbility = (accessToken, data) =>
   fetch(`${BASE_URL}/abilities/${data.id}`, {
     method: 'PUT',
