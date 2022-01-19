@@ -78,7 +78,7 @@ class HistoryServiceTest {
         );
     }
 
-    @DisplayName("역량 이력을 저장한다.")
+  /*  @DisplayName("역량 이력을 저장한다.")
     @Test
     void update() {
         HistoryResponse expected = historyAbilityService.update(historyRequest);
@@ -145,5 +145,5 @@ class HistoryServiceTest {
                 abilityResponse.getColor(),
                 toAbilityUpdateRequests(abilityResponse.getChildren())
         );
-    }
+    }*/
 }
