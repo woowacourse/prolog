@@ -1,4 +1,3 @@
-import { set } from 'local-storage';
 import { useEffect, useState } from 'react';
 import { requestGetStudyLogs } from '../service/requests';
 import { filterIds } from '../utils/filteringList';
