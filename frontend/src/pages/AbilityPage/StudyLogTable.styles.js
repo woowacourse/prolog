@@ -115,13 +115,13 @@ const Tbody = styled.tbody`
 
     td:nth-of-type(1) {
       height: 100%;
-      width: 6%;
+      width: 5%;
       text-align: center;
     }
 
     td:nth-of-type(2) {
       height: 100%;
-      width: 47%;
+      width: 45%;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;

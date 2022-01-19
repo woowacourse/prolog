@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import useFetch from '../../hooks/useFetch';
 import useUserStudyLog from '../../hooks/useUserStudyLogs';
@@ -58,7 +58,15 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
   const onSelectStudyLogs = (event) => {
     event.preventDefault();
 
-    setStudyLogs(selectedStudyLogs.map(({ id, title }) => ({ id, title, abilities: [] })));
+    setStudyLogs(
+      selectedStudyLogs.map(({ id, title }) => {
+        if (filterIds(studyLogs).includes(id)) {
+          return studyLogs.find((studyLog) => studyLog.id === id);
+        } else {
+          return { id, title, abilities: [] };
+        }
+      })
+    );
     onModalClose();
   };
 

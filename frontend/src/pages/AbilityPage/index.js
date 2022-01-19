@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { ERROR_MESSAGE, SUCCESS_MESSAGE, CONFIRM_MESSAGE } from '../../constants/message';
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
 import useRequest from '../../hooks/useRequest';
 import useMutation from '../../hooks/useMutation';
 import useSnackBar from '../../hooks/useSnackBar';
@@ -15,10 +15,9 @@ import {
 } from '../../service/requests';
 import AbilityListItem from './AbilityListItem';
 import AddAbilityForm from './AddAbilityForm';
-import NoAbility from './NoAbility';
 import { Button as FormButton } from '../../components';
 import AbilityHistoryList from '../../components/Lists/AbilityHistoryList';
-import ReportStudyLogTable from './ReportStudyLogTable';
+import ReportStudyLogTable from './StudyLogTable';
 import StudyLogModal from './StudyLogModal';
 
 import { COLOR } from '../../constants';
@@ -30,12 +29,11 @@ import {
   Button,
   EditingListItem,
   ListHeader,
-  NoContent,
   FormButtonWrapper,
   HeaderContainer,
   AbilityHistoryContainer,
 } from './styles';
-import { TableButtonWrapper } from './ReportStudyLogTable.styles';
+import { TableButtonWrapper } from './StudyLogTable.styles';
 
 // TODO : 다른 사람들에게는 Readonly로 보일 수 있도록 수정해야함.
 const AbilityPage = () => {
@@ -44,7 +42,7 @@ const AbilityPage = () => {
 
   const { isSnackBarOpen, SnackBar, openSnackBar } = useSnackBar();
   const {
-    abilities, //
+    abilities,
     addFormStatus,
     setAddFormStatus,
     onAddFormSubmit,
@@ -61,7 +59,6 @@ const AbilityPage = () => {
 
   const [isReportModalOpened, setReportIsModalOpened] = useState(false);
   const [studyLogs, setStudyLogs] = useState([]);
-  const [studyLogAbilities, setStudyLogAbilities] = useState([]);
 
   const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
 
@@ -93,19 +90,19 @@ const AbilityPage = () => {
     }
   );
 
-  const { mutate: deleteAbility } = useMutation(
-    (id) => {
-      return requestDeleteAbility(JSON.parse(accessToken), id);
-    },
-    () => {
-      openSnackBar(SUCCESS_MESSAGE.DELETE_ABILITY);
+  // const { mutate: deleteAbility } = useMutation(
+  //   (id) => {
+  //     return requestDeleteAbility(JSON.parse(accessToken), id);
+  //   },
+  //   () => {
+  //     openSnackBar(SUCCESS_MESSAGE.DELETE_ABILITY);
 
-      getData();
-    },
-    (error) => {
-      openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
-    }
-  );
+  //     getData();
+  //   },
+  //   (error) => {
+  //     openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
+  //   }
+  // );
 
   const onFormDataChange = (key) => (event) => {
     setAddFormStatus({ ...addFormStatus, [key]: event.target.value });
@@ -181,8 +178,6 @@ const AbilityPage = () => {
         studyLogs={studyLogs}
         setStudyLogs={setStudyLogs}
         abilities={abilities}
-        studyLogAbilities={studyLogAbilities}
-        setStudyLogAbilities={setStudyLogAbilities}
       />
 
       <FormButtonWrapper>

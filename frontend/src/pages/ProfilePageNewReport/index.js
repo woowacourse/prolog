@@ -7,7 +7,7 @@ import { API, COLOR, ERROR_MESSAGE, REPORT_DESCRIPTION } from '../../constants';
 import { Button } from '../../components';
 import StudyLogModal from '../AbilityPage/StudyLogModal';
 import ReportInfoInput from './ReportInfoInput';
-import ReportStudyLogTable from '../AbilityPage/ReportStudyLogTable';
+import ReportStudyLogTable from '../AbilityPage/StudyLogTable';
 import { Checkbox, Form, FormButtonWrapper } from './style';
 import { requestGetAbilities, requestPostReport } from '../../service/requests';
 import AbilityGraph from '../ProfilePageReports/AbilityGraph';
