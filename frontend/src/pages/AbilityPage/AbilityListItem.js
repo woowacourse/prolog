@@ -38,10 +38,11 @@ const AbilityListItem = ({ ability, addAbility, onEdit, onDelete, readOnly }) =>
   };
 
   const setIsAddFormOpened = (status) => () => {
-    setItemStatus((prevState) => ({
-      ...prevState,
-      isAddFormOpened: status,
-    }));
+    alert('준비중인 기능입니다.');
+    // setItemStatus((prevState) => ({
+    //   ...prevState,
+    //   isAddFormOpened: status,
+    // }));
   };
 
   const setEditStatus = (status) => () => {

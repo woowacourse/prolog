@@ -3,16 +3,11 @@ import { useParams } from 'react-router-dom';
 
 import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
 import useRequest from '../../hooks/useRequest';
-import useMutation from '../../hooks/useMutation';
 import useSnackBar from '../../hooks/useSnackBar';
 import useAbility from '../../hooks/useAbility';
 import useAbilityHistory from '../../hooks/useAbilityHistory';
 
-import {
-  requestAddAbility,
-  requestDeleteAbility,
-  requestGetAbilities,
-} from '../../service/requests';
+import { requestGetAbilities } from '../../service/requests';
 import AbilityListItem from './AbilityListItem';
 import AddAbilityForm from './AddAbilityForm';
 import { Button as FormButton } from '../../components';
@@ -72,37 +67,6 @@ const AbilityPage = () => {
       // setAbilities(data);
     }
   );
-
-  const { mutate: addAbility } = useMutation(
-    ({ name, description, color, parent = null }) =>
-      requestAddAbility(JSON.parse(accessToken), {
-        name,
-        description,
-        color,
-        parent,
-      }),
-    () => {
-      openSnackBar(SUCCESS_MESSAGE.CREATE_ABILITY);
-      getData();
-    },
-    (error) => {
-      openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
-    }
-  );
-
-  // const { mutate: deleteAbility } = useMutation(
-  //   (id) => {
-  //     return requestDeleteAbility(JSON.parse(accessToken), id);
-  //   },
-  //   () => {
-  //     openSnackBar(SUCCESS_MESSAGE.DELETE_ABILITY);
-
-  //     getData();
-  //   },
-  //   (error) => {
-  //     openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
-  //   }
-  // );
 
   const onFormDataChange = (key) => (event) => {
     setAddFormStatus({ ...addFormStatus, [key]: event.target.value });
@@ -164,7 +128,7 @@ const AbilityPage = () => {
               <AbilityListItem
                 key={index}
                 ability={ability}
-                addAbility={addAbility}
+                // addAbility={}
                 onEdit={onEditAbility}
                 onDelete={onDeleteAbility}
                 readOnly={false}
