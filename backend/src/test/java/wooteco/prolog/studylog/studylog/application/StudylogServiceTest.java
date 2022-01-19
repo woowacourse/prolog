@@ -451,15 +451,15 @@ class StudylogServiceTest {
     }
 
     @Test
-    @DisplayName("캘린더 포스트 조회 기능")
+    @DisplayName("캘린더 스터디로그 조회 기능")
     @Transactional
-    void calendarPostTest() throws Exception {
+    void calendarStudylogTest() throws Exception {
         //given
         insertStudylogs(member1, studylog1, studylog2, studylog3);
 
         //when
         final List<CalendarStudylogResponse> calendarPosts =
-            studylogService.findCalendarPosts(member1.getUsername(), LocalDate.now());
+            studylogService.findCalendarStudylogs(member1.getUsername(), LocalDate.now());
 
         //then
         assertThat(calendarPosts)

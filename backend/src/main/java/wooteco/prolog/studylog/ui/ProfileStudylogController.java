@@ -31,20 +31,38 @@ public class ProfileStudylogController {
     @Deprecated
     @GetMapping(value = "/{username}/posts", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StudylogsResponse> findAllPostsOfMine(@PathVariable String username,
-                                                                PostFilterRequest postFilterRequest,
-                                                                @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
-        final StudylogsResponse posts = studylogService.findPostsWithoutKeyword(
-            postFilterRequest.levels,
-            postFilterRequest.missions,
-            postFilterRequest.tags,
+                                                                    StudylogFilterRequest studylogFilterRequest,
+                                                                    @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
+        final StudylogsResponse studylogs = studylogService.findStudylogsWithoutKeyword(
+            studylogFilterRequest.levels,
+            studylogFilterRequest.missions,
+            studylogFilterRequest.tags,
             Collections.singletonList(username),
             new ArrayList<>(),
-            postFilterRequest.startDate,
-            postFilterRequest.endDate,
+            studylogFilterRequest.startDate,
+            studylogFilterRequest.endDate,
             pageable,
             null
         );
-        return ResponseEntity.ok().body(posts);
+        return ResponseEntity.ok().body(studylogs);
+    }
+
+    @GetMapping(value = "/{username}/studylogs", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StudylogsResponse> findAllStudylogsOfMine(@PathVariable String username,
+                                                                    StudylogFilterRequest studylogFilterRequest,
+                                                                    @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
+        final StudylogsResponse studylogs = studylogService.findStudylogsWithoutKeyword(
+            studylogFilterRequest.levels,
+            studylogFilterRequest.missions,
+            studylogFilterRequest.tags,
+            Collections.singletonList(username),
+            new ArrayList<>(),
+            studylogFilterRequest.startDate,
+            studylogFilterRequest.endDate,
+            pageable,
+            null
+        );
+        return ResponseEntity.ok().body(studylogs);
     }
 
     @GetMapping(value = "/{username}/profile", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -54,7 +72,7 @@ public class ProfileStudylogController {
     }
 
     @Data
-    public static class PostFilterRequest {
+    public static class StudylogFilterRequest {
         private List<Long> levels;
         private List<Long> missions;
         private List<Long> tags;

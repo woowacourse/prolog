@@ -129,7 +129,7 @@ public class MemberDocumentation extends Documentation {
     private List<StudylogRequest> createStudylogRequest(int size) {
         List<StudylogRequest> studylogRequests = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            String title = "뭐라도 포스트가 있어야하니까";
+            String title = "뭐라도 스터디로그가 있어야하니까";
             String content = "SPA 방식으로 앱을 구현하였음.\n" + "router 를 구현 하여 이용함.\n";
             Long levelId = 레벨_등록함(new LevelRequest("레벨" + i));
             Long missionId = 미션_등록함(new MissionRequest(String.format("레벨%d 미션", i), levelId));

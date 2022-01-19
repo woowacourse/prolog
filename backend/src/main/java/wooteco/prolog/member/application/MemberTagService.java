@@ -23,8 +23,8 @@ public class MemberTagService {
 
     public List<MemberTagResponse> findByMember(String memberName) {
         final Member member = memberService.findByUsername(memberName);
-        final int postCount = studylogRepository.countByMember(member);
-        return MemberTagResponse.asListFrom(member.getMemberTagsWithSort(), postCount);
+        final int studylogCount = studylogRepository.countByMember(member);
+        return MemberTagResponse.asListFrom(member.getMemberTagsWithSort(), studylogCount);
     }
 
     public void registerMemberTag(Tags tags, Member member) {

@@ -11,7 +11,7 @@ include::{snippets}/members/tags/http-request.adoc[]
 
 include::{snippets}/members/tags/http-response.adoc[]
 
-=== 멤버 달력 포스트 조회
+=== 멤버 달력 스터디로그 조회
 
 ==== Request
 
