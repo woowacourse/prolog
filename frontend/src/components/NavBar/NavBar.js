@@ -93,8 +93,7 @@ const NavBar = () => {
   const onLogout = () => {
     dispatch(logout());
     localStorage.removeItem('accessToken');
-
-    // window.location.reload();
+    window.location.reload();
   };
 
   if (userError) {
