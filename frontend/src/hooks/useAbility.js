@@ -14,7 +14,7 @@ const DEFAULT_ABILITY_FORM = {
   parent: null,
 };
 
-const useAbility = () => {
+const useAbility = (studylogs) => {
   const [abilities, setAbilities] = useState([]);
   const [addFormStatus, setAddFormStatus] = useState(DEFAULT_ABILITY_FORM);
 
@@ -62,7 +62,14 @@ const useAbility = () => {
   };
 
   const onDelete = (id) => () => {
+    const abilitySet = [...new Set(studylogs.map(({ abilities }) => abilities).flat())];
+
     if (window.confirm(CONFIRM_MESSAGE.DELETE_ABILITY)) {
+      if (abilitySet.includes(id)) {
+        alert('학습로그에 매핑된 역량은 삭제할 수 없습니다.');
+        return;
+      }
+
       setAbilities((prevAbilities) => prevAbilities.filter((ability) => ability.id !== id));
     }
   };

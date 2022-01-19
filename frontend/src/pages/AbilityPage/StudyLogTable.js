@@ -250,7 +250,7 @@ const ReportStudyLogTable = ({
                   <SelectAbilityBox ref={selectAbilityBoxRef}>
                     <ul>
                       {abilities?.map((ability) => (
-                        <li key={ability.id}>
+                        <li key={ability.name}>
                           <label>
                             <input
                               type="checkbox"

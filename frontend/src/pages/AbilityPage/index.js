@@ -37,6 +37,9 @@ const AbilityPage = () => {
   const user = useSelector((state) => state.user.profile);
   const readOnly = username !== user?.data?.username;
 
+  const [isReportModalOpened, setReportIsModalOpened] = useState(false);
+  const [studyLogs, setStudyLogs] = useState([]);
+
   const { isSnackBarOpen, SnackBar, openSnackBar } = useSnackBar();
   const {
     abilities,
@@ -47,15 +50,12 @@ const AbilityPage = () => {
     onEdit: onEditAbility,
     addFormOpen,
     addFormClose,
-  } = useAbility();
+  } = useAbility(studyLogs);
   const {
     isModalOpened: isAbilityHistoryModalOpened,
     abilityHistories,
     onShowAbilistyHistories,
   } = useAbilityHistory({ targetRef: $abilityHistory });
-
-  const [isReportModalOpened, setReportIsModalOpened] = useState(false);
-  const [studyLogs, setStudyLogs] = useState([]);
 
   const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
 
