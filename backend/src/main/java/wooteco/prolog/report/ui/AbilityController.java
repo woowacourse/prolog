@@ -40,7 +40,7 @@ public class AbilityController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("members/{username}/abilities")
+    @GetMapping("/members/{username}/abilities")
     public ResponseEntity<HistoryResponse> readLatestHistory(@PathVariable String username) {
         HistoryResponse historyResponse = historyAbilityService.readLatestHistoryByUsername(username);
 
@@ -90,13 +90,13 @@ public class AbilityController {
         return ResponseEntity.ok(abilityService.findParentAbilitiesByMemberId(member.getId()));
     }
 
-    @Deprecated
-    @MemberOnly
-    @GetMapping("/members/{username}/abilities")
-    public ResponseEntity<List<AbilityResponse>> findAbilitiesByUsername(@AuthMemberPrincipal LoginMember member,
-                                                                         @PathVariable String username) {
-        return ResponseEntity.ok(abilityService.findAbilitiesByMemberUsername(username));
-    }
+//    @Deprecated
+//    @MemberOnly
+//    @GetMapping("/members/{username}/abilities")
+//    public ResponseEntity<List<AbilityResponse>> findAbilitiesByUsername(@AuthMemberPrincipal LoginMember member,
+//                                                                         @PathVariable String username) {
+//        return ResponseEntity.ok(abilityService.findAbilitiesByMemberUsername(username));
+//    }
 
     @Deprecated
     @MemberOnly
