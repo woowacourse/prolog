@@ -13,7 +13,6 @@ import {
   ProfilePageScraps,
   StudyLogListPage,
 } from './pages';
-import AbilityHistoryPage from './pages/AbilityHistoryPage';
 import AbilityPage from './pages/AbilityPage';
 import ProfilePageReportsList from './pages/ProfilePageReportsList';
 
@@ -94,14 +93,6 @@ const pageRoutes = [
     render: () => (
       <ProfilePage menu={PROFILE_PAGE_MENU.ABILITY}>
         <AbilityPage />
-      </ProfilePage>
-    ),
-  },
-  {
-    path: [PATH.ABILITY_HISTORY],
-    render: () => (
-      <ProfilePage menu={PROFILE_PAGE_MENU.ABILITY}>
-        <AbilityHistoryPage />
       </ProfilePage>
     ),
   },
