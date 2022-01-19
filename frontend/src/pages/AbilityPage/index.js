@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
+import { useSelector } from 'react-redux';
 import useRequest from '../../hooks/useRequest';
 import useSnackBar from '../../hooks/useSnackBar';
 import useAbility from '../../hooks/useAbility';
@@ -34,6 +34,9 @@ import { TableButtonWrapper } from './StudyLogTable.styles';
 const AbilityPage = () => {
   const { username } = useParams();
   const $abilityHistory = useRef(null);
+
+  const user = useSelector((state) => state.user.profile);
+  const readOnly = username !== user?.data?.username;
 
   const { isSnackBarOpen, SnackBar, openSnackBar } = useSnackBar();
   const {
@@ -99,14 +102,16 @@ const AbilityPage = () => {
             📚 역량 <span>{`(총 ${abilities?.length ?? 0}개)`}</span>
           </h3>
 
-          <TableButtonWrapper>
-            <Button type="button" borderColor={COLOR.DARK_GRAY_800} onClick={addFormOpen}>
-              역량 추가하기
-            </Button>
-          </TableButtonWrapper>
+          {!readOnly && (
+            <TableButtonWrapper>
+              <Button type="button" borderColor={COLOR.DARK_GRAY_800} onClick={addFormOpen}>
+                역량 추가하기
+              </Button>
+            </TableButtonWrapper>
+          )}
         </ListHeader>
 
-        {addFormStatus.isOpened && (
+        {!readOnly && addFormStatus.isOpened && (
           <AbilityList>
             <EditingListItem isParent={true}>
               <AddAbilityForm
@@ -132,6 +137,7 @@ const AbilityPage = () => {
                 onEdit={onEditAbility}
                 onDelete={onDeleteAbility}
                 readOnly={false}
+                readOnly={readOnly}
               />
             ))}
         </AbilityList>
@@ -142,13 +148,16 @@ const AbilityPage = () => {
         studyLogs={studyLogs}
         setStudyLogs={setStudyLogs}
         abilities={abilities}
+        readOnly={readOnly}
       />
 
-      <FormButtonWrapper>
-        <FormButton size="X_SMALL">저장</FormButton>
-      </FormButtonWrapper>
+      {!readOnly && (
+        <FormButtonWrapper>
+          <FormButton size="X_SMALL">저장</FormButton>
+        </FormButtonWrapper>
+      )}
 
-      {isReportModalOpened && (
+      {!readOnly && isReportModalOpened && (
         <StudyLogModal
           onModalClose={onReportModalClose}
           username={username}

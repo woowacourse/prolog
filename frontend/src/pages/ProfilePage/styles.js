@@ -4,6 +4,7 @@ import COLOR from '../../constants/color';
 
 const Container = styled.div`
   display: flex;
+  margin-bottom: 10rem;
 `;
 
 const Content = styled.div`

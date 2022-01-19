@@ -21,6 +21,7 @@ const ReportStudyLogTable = ({
   studyLogs: selectedStudyLogs,
   setStudyLogs: setSelectedStudyLogs,
   abilities,
+  readOnly,
 }) => {
   const { selectedStudyLogData, setPage } = useReportStudyLogs(selectedStudyLogs);
   const { currPage, totalPage, totalSize, data: currStudyLogs } = selectedStudyLogData;
@@ -166,36 +167,41 @@ const ReportStudyLogTable = ({
       <span>
         {deleteTargets?.length ?? 0}개 선택 (총 {totalSize ?? 0}개)
       </span>
-      <TableButtonWrapper>
-        <Button
-          size="XX_SMALL"
-          css={{ backgroundColor: `${COLOR.RED_200}` }}
-          type="button"
-          onClick={onDeleteStudyLogInReport}
-          disabled={!deleteTargets.length}
-        >
-          삭제
-        </Button>
-        <Button
-          size="XX_SMALL"
-          css={{ border: `1px solid ${COLOR.DARK_GRAY_800}` }}
-          type="button"
-          onClick={onModalOpen}
-        >
-          학습로그 불러오기
-        </Button>
-      </TableButtonWrapper>
+
+      {!readOnly && (
+        <TableButtonWrapper>
+          <Button
+            size="XX_SMALL"
+            css={{ backgroundColor: `${COLOR.RED_200}` }}
+            type="button"
+            onClick={onDeleteStudyLogInReport}
+            disabled={!deleteTargets.length}
+          >
+            삭제
+          </Button>
+          <Button
+            size="XX_SMALL"
+            css={{ border: `1px solid ${COLOR.DARK_GRAY_800}` }}
+            type="button"
+            onClick={onModalOpen}
+          >
+            학습로그 불러오기
+          </Button>
+        </TableButtonWrapper>
+      )}
 
       <Table>
         <Thead>
           <tr>
             <th scope="col">
-              <Checkbox
-                type="checkbox"
-                onChange={onToggleAllStudyLog}
-                checked={currStudyLogs?.length && allChecked}
-                disabled={!currStudyLogs?.length}
-              />
+              {!readOnly && (
+                <Checkbox
+                  type="checkbox"
+                  onChange={onToggleAllStudyLog}
+                  checked={currStudyLogs?.length && allChecked}
+                  disabled={!currStudyLogs?.length}
+                />
+              )}
             </th>
             <th scope="col">제목</th>
             <th scope="col">역량</th>
@@ -206,12 +212,14 @@ const ReportStudyLogTable = ({
           {currStudyLogs?.map(({ id, title }) => (
             <tr key={id}>
               <td>
-                <Checkbox
-                  type="checkbox"
-                  value={title | ''}
-                  checked={deleteTargets.map((studyLog) => studyLog.id).includes(id)}
-                  onChange={() => onToggleStudyLog(id)}
-                />
+                {!readOnly && (
+                  <Checkbox
+                    type="checkbox"
+                    value={title | ''}
+                    checked={deleteTargets.map((studyLog) => studyLog.id).includes(id)}
+                    onChange={() => onToggleStudyLog(id)}
+                  />
+                )}
               </td>
 
               <td>
@@ -223,14 +231,16 @@ const ReportStudyLogTable = ({
               <td>
                 <ul>{selectedAbilities(id)}</ul>
 
-                <Button
-                  size="XX_SMALL"
-                  type="button"
-                  css={{ backgroundColor: `${COLOR.LIGHT_BLUE_300}` }}
-                  onClick={(event) => onOpenAbilityBox(event, id)}
-                >
-                  +
-                </Button>
+                {!readOnly && (
+                  <Button
+                    size="XX_SMALL"
+                    type="button"
+                    css={{ backgroundColor: `${COLOR.LIGHT_BLUE_300}` }}
+                    onClick={(event) => onOpenAbilityBox(event, id)}
+                  >
+                    +
+                  </Button>
+                )}
 
                 {selectAbilityBox.id === id && selectAbilityBox.state && (
                   <SelectAbilityBox ref={selectAbilityBoxRef}>
@@ -258,7 +268,11 @@ const ReportStudyLogTable = ({
       <Pagination postsInfo={selectedStudyLogData} onSetPage={onMoveToPage} />
 
       {currStudyLogs.length === 0 && (
-        <EmptyTableGuide>'학습로그 불러오기'를 통해 학습로그를 추가해주세요.</EmptyTableGuide>
+        <EmptyTableGuide>
+          {readOnly
+            ? '등록된 학습로그가 없습니다.'
+            : `'학습로그 불러오기'를 통해 학습로그를 추가해주세요.'`}
+        </EmptyTableGuide>
       )}
     </Section>
   );
