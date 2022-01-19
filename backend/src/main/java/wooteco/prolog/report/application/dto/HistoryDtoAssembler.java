@@ -19,8 +19,8 @@ public class HistoryDtoAssembler {
     private HistoryDtoAssembler() {
     }
 
-    public History toHistory(HistoryRequest requests) {
-        History history = new History();
+    public History toHistory(HistoryRequest requests, Long memberId) {
+        History history = new History(memberId);
 
         requests.getAbilities().stream()
                 .map(this::toAbility)

@@ -28,19 +28,25 @@ public class History {
     @Embedded
     private Studylogs studylogs;
 
-    public History() {
-        this(new ArrayList<>(), new ArrayList<>());
+    private Long memberId;
+
+    protected History() {
     }
 
-    public History(List<HistoryAbility> abilities, List<StudylogAbility> studylogs) {
-        this(null, null, abilities, new Studylogs(studylogs));
+    public History(Long memberId) {
+        this(new ArrayList<>(), new ArrayList<>(), memberId);
     }
 
-    public History(Long id, LocalDateTime createdAt, List<HistoryAbility> abilities, Studylogs studylogs) {
+    public History(List<HistoryAbility> abilities, List<StudylogAbility> studylogs, Long memberId) {
+        this(null, null, abilities, new Studylogs(studylogs), memberId);
+    }
+
+    public History(Long id, LocalDateTime createdAt, List<HistoryAbility> abilities, Studylogs studylogs, Long memberId) {
         this.id = id;
         this.createdAt = createdAt;
         this.abilities = new Abilities(abilities);
         this.studylogs = studylogs;
+        this.memberId = memberId;
     }
 
     public void addAbility(Ability2 ability) {

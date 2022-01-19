@@ -29,8 +29,8 @@ public class HistoryAbilityService {
     private final EntityManager entityManager;
 
     @Transactional
-    public HistoryResponse update(HistoryRequest requests) {
-        History history = historyDtoAssembler.toHistory(requests);
+    public HistoryResponse update(HistoryRequest requests, Long memberId) {
+        History history = historyDtoAssembler.toHistory(requests, memberId);
         historyRepository.findFirstByOrderByCreatedAtDesc()
                 .ifPresent(savedHistory -> dirtyCheck(savedHistory, history));
 
@@ -63,5 +63,9 @@ public class HistoryAbilityService {
         }
 
         return !savedAbility.isExactlyEquals(ability);
+    }
+
+    public void readLastHistory() {
+
     }
 }
