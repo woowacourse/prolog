@@ -242,7 +242,7 @@ class StudylogServiceTest {
                 usernames,
                 new ArrayList<>(),
                 LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
-                LocalDate.parse("20211231", DateTimeFormatter.BASIC_ISO_DATE),
+                LocalDate.parse("99991231", DateTimeFormatter.BASIC_ISO_DATE),
                 null,
                 PageRequest.of(0, 10)
             ), null
@@ -282,7 +282,7 @@ class StudylogServiceTest {
                 usernames,
                 new ArrayList<>(),
                 LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
-                LocalDate.parse("20211231", DateTimeFormatter.BASIC_ISO_DATE),
+                LocalDate.parse("99991231", DateTimeFormatter.BASIC_ISO_DATE),
                 null,
                 PageRequest.of(0, 10)
             ), member1.getId(), member1.isAnonymous()
