@@ -13,17 +13,17 @@ import {
   MissionStyle,
   TagListStyle,
   ProfileChipLocationStyle,
-} from './StudyLogList.styles';
+} from './StudylogList.styles';
 
 interface Props {
-  studylogs: Prolog.StudyLog[];
+  studylogs: Prolog.Studylog[];
 }
 
-const StudyLogList = ({ studylogs }: Props) => {
+const StudylogList = ({ studylogs }: Props) => {
   const history = useHistory();
 
   const goTargetPost = (id: number) => {
-    history.push(`${PATH.POST}/${id}`);
+    history.push(`${PATH.STUDYLOG}/${id}`);
   };
 
   const goProfilePage = (username: string) => (event: MouseEvent) => {
@@ -40,8 +40,8 @@ const StudyLogList = ({ studylogs }: Props) => {
         }
       `}
     >
-      {studylogs.map((post) => {
-        const { id, author, mission, title, tags, isRead, viewCount } = post;
+      {studylogs.map((studylog) => {
+        const { id, author, mission, title, tags, isRead, viewCount } = studylog;
 
         return (
           <li key={id}>
@@ -86,4 +86,4 @@ const StudyLogList = ({ studylogs }: Props) => {
   );
 };
 
-export default StudyLogList;
+export default StudylogList;

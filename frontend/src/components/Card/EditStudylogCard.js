@@ -9,7 +9,7 @@ import 'prismjs/themes/prism.css';
 import Prism from 'prismjs';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
 
-import { POST_TITLE } from '../../constants';
+import { STUDYLOG_TITLE } from '../../constants';
 
 const TitleInput = styled.input`
   width: 100%;
@@ -29,7 +29,7 @@ const TitleInput = styled.input`
   }
 `;
 
-const EditPostCard = forwardRef(({ post, tagOptions }, ref) => {
+const EditStudylogCard = forwardRef(({ post, tagOptions }, ref) => {
   const { title, tags, content } = post;
   const prevTags = tags?.map((tag) => ({
     value: tag.name,
@@ -54,8 +54,8 @@ const EditPostCard = forwardRef(({ post, tagOptions }, ref) => {
       <TitleInput
         placeholder="제목을 입력해주세요"
         required
-        minLength={POST_TITLE.MIN_LENGTH}
-        maxLength={POST_TITLE.MAX_LENGTH}
+        minLength={STUDYLOG_TITLE.MIN_LENGTH}
+        maxLength={STUDYLOG_TITLE.MAX_LENGTH}
         autoFocus
         ref={(element) => assignRefValue('title', element)}
         defaultValue={title}
@@ -82,4 +82,4 @@ const EditPostCard = forwardRef(({ post, tagOptions }, ref) => {
   );
 });
 
-export default EditPostCard;
+export default EditStudylogCard;

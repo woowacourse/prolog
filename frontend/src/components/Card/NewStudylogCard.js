@@ -1,15 +1,15 @@
 import React, { forwardRef, useEffect, useState } from 'react';
 import { Card, CARD_SIZE, CreatableSelectBox } from '..';
 import { Editor } from '@toast-ui/react-editor';
-import { EditorWrapper, TitleCount, TitleInput } from './NewPostCard.styles';
-import { ALERT_MESSAGE, PLACEHOLDER, POST_TITLE } from '../../constants';
+import { EditorWrapper, TitleCount, TitleInput } from './NewStudylogCard.styles';
+import { ALERT_MESSAGE, PLACEHOLDER, STUDYLOG_TITLE } from '../../constants';
 
 import '@toast-ui/editor/dist/toastui-editor.css';
 import 'prismjs/themes/prism.css';
 import Prism from 'prismjs';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
 
-const NewPostCard = forwardRef(({ postOrder, tagOptions }, ref) => {
+const NewStudylogCard = forwardRef(({ postOrder, tagOptions }, ref) => {
   const [title, setTitle] = useState('');
 
   const assignRefValue = (key, value) =>
@@ -23,9 +23,9 @@ const NewPostCard = forwardRef(({ postOrder, tagOptions }, ref) => {
   };
 
   useEffect(() => {
-    if (title.length <= POST_TITLE.MAX_LENGTH) return;
+    if (title.length <= STUDYLOG_TITLE.MAX_LENGTH) return;
 
-    setTitle((prevState) => prevState.substr(0, POST_TITLE.MAX_LENGTH));
+    setTitle((prevState) => prevState.substr(0, STUDYLOG_TITLE.MAX_LENGTH));
   }, [title]);
 
   return (
@@ -33,9 +33,9 @@ const NewPostCard = forwardRef(({ postOrder, tagOptions }, ref) => {
       <TitleCount>{title.length}/50</TitleCount>
       <TitleInput
         type="text"
-        placeholder={PLACEHOLDER.POST_TITLE}
-        minLength={POST_TITLE.MIN_LENGTH}
-        maxLength={POST_TITLE.MAX_LENGTH}
+        placeholder={PLACEHOLDER.STUDYLOG_TITLE}
+        minLength={STUDYLOG_TITLE.MIN_LENGTH}
+        maxLength={STUDYLOG_TITLE.MAX_LENGTH}
         value={title}
         onChange={(event) => setTitle(event.target.value)}
         required
@@ -45,7 +45,7 @@ const NewPostCard = forwardRef(({ postOrder, tagOptions }, ref) => {
       <hr />
       <EditorWrapper>
         <Editor
-          placeholder={PLACEHOLDER.POST_CONTENT}
+          placeholder={PLACEHOLDER.STUDYLOG_CONTENT}
           previewStyle="vertical"
           height="60vh"
           initialEditType="markdown"
@@ -66,4 +66,4 @@ const NewPostCard = forwardRef(({ postOrder, tagOptions }, ref) => {
   );
 });
 
-export default NewPostCard;
+export default NewStudylogCard;

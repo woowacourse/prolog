@@ -20,7 +20,7 @@ const PageRouter = (): JSX.Element => {
         {pageRoutes.map(({ path, render }) => (
           <Route exact path={path} render={render} key={path.toString()} />
         ))}
-        <Redirect to={PATH.ROOT} />
+        {/* <Redirect to={PATH.ROOT} /> */}
       </Switch>
     </Router>
   );

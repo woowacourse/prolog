@@ -178,7 +178,7 @@ const ProfilePageReportsList = () => {
           )
         )}
       </ReportList>
-      <Pagination postsInfo={reports} onSetPage={onSetPage} />
+      <Pagination studylogsInfo={reports} onSetPage={onSetPage} />
     </Container>
   );
 };

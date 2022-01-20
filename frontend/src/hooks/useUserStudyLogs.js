@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { SHOW_ALL_FILTER } from '../pages/ProfilePageNewReport/StudyLogModal';
-import { requestGetPosts } from '../service/requests';
+import { requestGetStudylogs } from '../service/requests';
 
 const defaultValue = {
   totalSize: 0,
@@ -10,13 +10,13 @@ const defaultValue = {
   levelId: 0,
 };
 
-const useUserStudyLog = ({ levelId: currLevelId, username }) => {
-  const [studyLogData, setStudyLogData] = useState(defaultValue);
+const useUserStudylogs = ({ levelId: currLevelId, username }) => {
+  const [studylogData, setStudylogData] = useState(defaultValue);
   const [page, setPage] = useState(1);
 
-  const getPosts = async (page = 1) => {
+  const getStudylogs = async (page = 1) => {
     try {
-      if (currLevelId !== studyLogData.levelId) {
+      if (currLevelId !== studylogData.levelId) {
         setPage(1);
       }
 
@@ -27,7 +27,7 @@ const useUserStudyLog = ({ levelId: currLevelId, username }) => {
         }`,
       };
 
-      const response = await requestGetPosts(query);
+      const response = await requestGetStudylogs(query);
 
       if (!response.ok) {
         throw new Error(response.status);
@@ -35,11 +35,11 @@ const useUserStudyLog = ({ levelId: currLevelId, username }) => {
 
       const responseData = await response.json();
 
-      if (studyLogData.data && studyLogData.levelId === currLevelId) {
-        responseData.data = [...studyLogData.data, ...responseData.data];
+      if (studylogData.data && studylogData.levelId === currLevelId) {
+        responseData.data = [...studylogData.data, ...responseData.data];
       }
 
-      setStudyLogData({ ...responseData, levelId: currLevelId });
+      setStudylogData({ ...responseData, levelId: currLevelId });
     } catch (error) {
       console.error(error);
     }
@@ -47,12 +47,12 @@ const useUserStudyLog = ({ levelId: currLevelId, username }) => {
 
   useEffect(() => {
     if (currLevelId) {
-      getPosts(page);
+      getStudylogs(page);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currLevelId, page]);
 
-  return { studyLogData, setPage };
+  return { studylogData, setPage };
 };
 
-export default useUserStudyLog;
+export default useUserStudylogs;

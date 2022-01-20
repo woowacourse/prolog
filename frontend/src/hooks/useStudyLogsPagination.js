@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const useStudyLogsPagination = (studyLogs) => {
+const useStudylogsPagination = (studyLogs) => {
   const [page, setPage] = useState(1);
 
   const [reportStudyLogData, setReportStudyLogData] = useState({
@@ -31,4 +31,4 @@ const useStudyLogsPagination = (studyLogs) => {
   return { setPage, reportStudyLogData };
 };
 
-export default useStudyLogsPagination;
+export default useStudylogsPagination;

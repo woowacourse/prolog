@@ -2,41 +2,51 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { SelectBox, Button, BUTTON_SIZE, NewPostCard } from '../../components';
-import { nanoid } from 'nanoid';
-import { useDispatch, useSelector } from 'react-redux';
-import { createPost } from '../../redux/actions/postAction';
-import useFetch from '../../hooks/useFetch';
-import { requestGetMissions, requestGetTags } from '../../service/requests';
-import { SelectBoxWrapper, Post, SubmitButtonStyle } from './styles';
-import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
-import { MainContentStyle } from '../../PageRouter';
+import { useSelector } from 'react-redux';
 
-const NewPostPage = () => {
-  const dispatch = useDispatch();
+import { SelectBox, Button, BUTTON_SIZE, NewStudylogCard } from '../../components';
+
+import useFetch from '../../hooks/useFetch';
+import useStudylog from '../../hooks/useStudylog';
+import { requestGetMissions, requestGetTags } from '../../service/requests';
+
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
+
+import { SelectBoxWrapper, Post, SubmitButtonStyle } from './styles';
+import { MainContentStyle } from '../../PageRouter';
+import { PATH } from '../../constants';
+
+// TODO: 이전 한번에 여러개의 학습로그를 작성할 수 있는 부분에서 발생한 레거시.
+// 현재 단일 학습로그만 작성. 기획상 동시에 여러건의 학습로그 작성을 없앤 상태로 제거 필요함.
+const NewStudylogPage = () => {
   const history = useHistory();
 
   const accessToken = useSelector((state) => state.user.accessToken.data);
-  const { error } = useSelector((state) => state.post.posts);
 
-  const [postIds] = useState([nanoid()]);
   const [selectedMission, setSelectedMission] = useState('');
+
+  const cardRefs = useRef([]);
+
+  const { success, error, postData: postStudylog } = useStudylog({});
 
   const [missions] = useFetch([], requestGetMissions);
   const [tags] = useFetch([], requestGetTags);
-
-  const cardRefs = useRef([]);
 
   const tagOptions = tags.map(({ name }) => ({ value: name, label: `#${name}` }));
 
   useEffect(() => {
     if (error) {
-      alert(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
+      alert(error);
     }
-  }, [error]);
 
-  const onFinishWriting = async (e) => {
-    e.preventDefault();
+    if (success) {
+      alert(SUCCESS_MESSAGE.CREATE_STUDYLOG);
+      history.push(PATH.STUDYLOG);
+    }
+  }, [success, error]);
+
+  const onFinishWriting = async (event) => {
+    event.preventDefault();
 
     const [prologData] = cardRefs.current.map(({ title, content, tags }) => {
       return {
@@ -57,12 +67,7 @@ const NewPostPage = () => {
       return;
     }
 
-    const isSuccess = await dispatch(createPost([prologData], accessToken));
-
-    if (isSuccess) {
-      alert(SUCCESS_MESSAGE.CREATE_POST);
-      history.push('/');
-    }
+    await postStudylog([prologData], accessToken);
   };
 
   useEffect(() => {
@@ -86,9 +91,9 @@ const NewPostPage = () => {
           />
         </SelectBoxWrapper>
         <ul>
-          {postIds.map((postId, index) => (
+          {[0].map((postId, index) => (
             <Post key={postId}>
-              <NewPostCard ref={cardRefs} postOrder={index} tagOptions={tagOptions} />
+              <NewStudylogCard ref={cardRefs} postOrder={index} tagOptions={tagOptions} />
             </Post>
           ))}
         </ul>
@@ -101,4 +106,4 @@ const NewPostPage = () => {
   );
 };
 
-export default NewPostPage;
+export default NewStudylogPage;

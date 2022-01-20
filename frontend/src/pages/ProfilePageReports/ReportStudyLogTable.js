@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { Chip, Pagination } from '../../components';
-import useStudyLogsPagination from '../../hooks/useStudyLogsPagination';
+import useStudylogsPagination from '../../hooks/useStudylogsPagination';
 import { Section, Table, Tbody, Thead, EmptyTableGuide } from './ReportStudyLogTable.styles';
 
 const ReportStudyLogTable = ({ studyLogs }) => {
-  const { setPage, reportStudyLogData } = useStudyLogsPagination(studyLogs);
+  const { setPage, reportStudyLogData } = useStudylogsPagination(studyLogs);
   const { currPage, totalSize, data: currReportStudyLogs } = reportStudyLogData;
 
   const onMoveToPage = (number) => {

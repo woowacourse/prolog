@@ -8,7 +8,7 @@ declare namespace Prolog {
   type Mission = { id: number; name: string };
   type Tag = { id: number; name: string };
 
-  interface StudyLog {
+  interface Studylog {
     id: number;
     author: Author;
     content: string;

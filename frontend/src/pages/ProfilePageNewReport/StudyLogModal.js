@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import useFetch from '../../hooks/useFetch';
-import useUserStudyLog from '../../hooks/useUserStudyLogs';
+import useUserStudylogs from '../../hooks/useUserStudylogs';
 import { requestGetFilters } from '../../service/requests';
 import { onToggleCheckbox } from '../../utils/toggleCheckbox';
 import { filterIds } from '../../utils/filteringList';
@@ -31,7 +31,7 @@ const StudyLogModal = ({ onModalClose, username, studyLogs, setStudyLogs }) => {
   const [selectedLevelName, setSelectedLevelName] = useState(SHOW_ALL_FILTER.name);
   const [selectedStudyLogs, setSelectedStudyLogs] = useState(studyLogs);
 
-  const { studyLogData, setPage } = useUserStudyLog({
+  const { studyLogData, setPage } = useUserStudylogs({
     levelId: levels?.find((level) => level.name === selectedLevelName)?.id,
     username,
   });

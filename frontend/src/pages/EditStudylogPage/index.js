@@ -2,22 +2,26 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { SelectBox, Button, BUTTON_SIZE, EditPostCard } from '../../components';
 import { useSelector } from 'react-redux';
+
+import { SelectBox, Button, BUTTON_SIZE, EditStudylogCard } from '../../components';
+
 import useFetch from '../../hooks/useFetch';
+import useStudyLog from '../../hooks/useStudylog';
 import { requestGetMissions, requestGetTags } from '../../service/requests';
+
 import { PATH } from '../../constants';
-import useStudyLog from '../../hooks/useStudyLog';
-import { SelectBoxWrapper, Post, SubmitButtonStyle } from '../NewPostPage/styles';
+
+import { SelectBoxWrapper, Post, SubmitButtonStyle } from '../NewStudylogPage/styles';
 import { MainContentStyle } from '../../PageRouter';
 
-const EditPostPage = () => {
+const EditStudylogPage = () => {
   const history = useHistory();
   const user = useSelector((state) => state.user.profile.data?.username);
   const accessToken = useSelector((state) => state.user.accessToken.data);
 
-  const { id: postId } = useParams();
-  const { response: post, getData: getStudyLog, editData: editPost } = useStudyLog({});
+  const { id: studylogId } = useParams();
+  const { response: studylog, getData: getStudyLog, editData: editStudylog } = useStudyLog({});
 
   const [selectedMission, setSelectedMission] = useState('');
   const cardRefs = useRef([]);
@@ -25,10 +29,10 @@ const EditPostPage = () => {
   const [missions] = useFetch([], requestGetMissions);
   const [tags] = useFetch([], requestGetTags);
 
-  const { id, author, mission } = post;
+  const { id, author, mission } = studylog;
   const tagOptions = tags.map(({ name }) => ({ value: name, label: `#${name}` }));
 
-  const onEditPost = async (event) => {
+  const onEditStudylog = async (event) => {
     event.preventDefault();
 
     const { title, content, tags } = cardRefs.current;
@@ -37,10 +41,11 @@ const EditPostPage = () => {
       title: title.value,
       content: content.getInstance().getMarkdown(),
       tags:
-        tags?.map((tag) => ({ name: tag.value })) || post.tags.map((tag) => ({ name: tag.name })),
+        tags?.map((tag) => ({ name: tag.value })) ||
+        studylog.tags.map((tag) => ({ name: tag.name })),
     };
 
-    const hasError = await editPost(postId, data, accessToken);
+    const hasError = await editStudylog(studylogId, data, accessToken);
 
     if (hasError) {
       alert('글을 수정할 수 없습니다. 다시 시도해주세요');
@@ -58,17 +63,17 @@ const EditPostPage = () => {
   useEffect(() => {
     if (author && user !== author.username) {
       alert('본인이 작성하지 않은 글은 수정할 수 없습니다.');
-      history.push(`${PATH.POST}/${postId}`);
+      history.push(`${PATH.POST}/${studylogId}`);
     }
   }, [user, author]);
 
   useEffect(() => {
-    getStudyLog(postId, accessToken);
-  }, [postId]);
+    getStudyLog(studylogId, accessToken);
+  }, [studylogId]);
 
   return (
     <div css={MainContentStyle}>
-      <form onSubmit={onEditPost}>
+      <form onSubmit={onEditStudylog}>
         <SelectBoxWrapper>
           <SelectBox
             options={missions}
@@ -81,7 +86,7 @@ const EditPostPage = () => {
           />
         </SelectBoxWrapper>
         <Post key={id}>
-          <EditPostCard ref={cardRefs} post={post} tagOptions={tagOptions} />
+          <EditStudylogCard ref={cardRefs} post={studylog} tagOptions={tagOptions} />
         </Post>
         <Button size={BUTTON_SIZE.SMALL} cssProps={SubmitButtonStyle}>
           작성완료
@@ -91,4 +96,4 @@ const EditPostPage = () => {
   );
 };
 
-export default EditPostPage;
+export default EditStudylogPage;

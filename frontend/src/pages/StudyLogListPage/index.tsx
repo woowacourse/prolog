@@ -1,27 +1,33 @@
 /** @jsxImportSource @emotion/react */
 
 import { useEffect, useState } from 'react';
-import { Button, FilterList, Pagination } from '../../components';
 import { useHistory } from 'react-router-dom';
-import { PATH } from '../../constants';
-import PencilIcon from '../../assets/images/pencil_icon.svg';
-import useFetch from '../../hooks/useFetch';
-import { requestGetFilters } from '../../service/requests';
 import { useSelector } from 'react-redux';
+
+import { Button, FilterList, Pagination } from '../../components';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import Chip from '../../components/Chip/Chip';
+import FlexBox from '../../components/@shared/FlexBox/FlexBox';
+import StudylogList from '../../components/Lists/StudylogList';
+
+import useFetch from '../../hooks/useFetch';
+import useFilterWithParams from '../../hooks/useFilterWithParams';
+import useStudylog from '../../hooks/useStudylog';
+import { requestGetFilters } from '../../service/requests';
+
+import { PATH } from '../../constants';
+import { ERROR_MESSAGE } from '../../constants/message';
+
+import PencilIcon from '../../assets/images/pencil_icon.svg';
+
+import { css } from '@emotion/react';
+
 import {
   FilterListWrapper,
   HeaderContainer,
   PostListContainer,
   SelectedFilterList,
 } from './styles';
-import { ERROR_MESSAGE } from '../../constants/message';
-import Chip from '../../components/Chip/Chip';
-import FlexBox from '../../components/@shared/FlexBox/FlexBox';
-import useFilterWithParams from '../../hooks/useFilterWithParams';
-import StudyLogList from '../../components/Lists/StudyLogList';
-import useStudyLog from '../../hooks/useStudyLog';
-import { css } from '@emotion/react';
-import SearchBar from '../../components/SearchBar/SearchBar';
 import {
   AlignItemsCenterStyle,
   FlexStyle,
@@ -34,7 +40,7 @@ type User = {
   accessToken: { loading: boolean; data: string; error: null | string };
 };
 
-const StudyLogListPage = (): JSX.Element => {
+const StudylogListPage = (): JSX.Element => {
   const {
     postQueryParams,
     selectedFilter,
@@ -56,20 +62,20 @@ const StudyLogListPage = (): JSX.Element => {
 
   const accessToken = useSelector((state: { user: User }) => state.user.accessToken.data);
 
-  const { response: posts, getAllData: getStudyLogs } = useStudyLog([]);
+  const { response: studylogs, getAllData: getStudyLogs } = useStudylog([]);
 
   const [filters] = useFetch([], requestGetFilters);
 
   const [searchKeywords, setSearchKeywords] = useState('');
 
-  const goNewPost = () => {
+  const goNewStudylog = () => {
     if (!accessToken) {
       alert(ERROR_MESSAGE.LOGIN_DEFAULT);
       window.location.reload();
       return;
     }
 
-    history.push(PATH.NEW_POST);
+    history.push(PATH.NEW_STUDYLOG);
   };
 
   const onDeleteSearchKeyword = () => {
@@ -182,7 +188,7 @@ const StudyLogListPage = (): JSX.Element => {
               size="SMALL"
               icon={PencilIcon}
               alt="글쓰기 아이콘"
-              onClick={goNewPost}
+              onClick={goNewStudylog}
               cssProps={css`
                 margin-left: 1rem;
               `}
@@ -211,12 +217,12 @@ const StudyLogListPage = (): JSX.Element => {
       </HeaderContainer>
 
       <PostListContainer>
-        {posts?.data?.length === 0 && '작성된 글이 없습니다.'}
-        {posts && posts.data && <StudyLogList studylogs={posts.data} />}
+        {studylogs?.data?.length === 0 && '작성된 글이 없습니다.'}
+        {studylogs && studylogs.data && <StudylogList studylogs={studylogs.data} />}
       </PostListContainer>
-      <Pagination postsInfo={posts} onSetPage={onSetPage}></Pagination>
+      <Pagination studylogsInfo={studylogs} onSetPage={onSetPage}></Pagination>
     </div>
   );
 };
 
-export default StudyLogListPage;
+export default StudylogListPage;

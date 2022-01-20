@@ -1,13 +1,14 @@
 import { PaginationContainer, PageButtonStyle, PageSkipButtonStyle } from './Pagination.styles';
 import { Button, BUTTON_SIZE, PageButton } from '../index';
 
-const Pagination = ({ postsInfo, onSetPage }) => {
-  const basePage = Math.floor((postsInfo.currPage - 1) / 5) * 5 + 1;
+const Pagination = ({ studylogsInfo, onSetPage }) => {
+  const basePage = Math.floor((studylogsInfo.currPage - 1) / 5) * 5 + 1;
   const paginationArray = Array.from({
-    length: postsInfo?.totalPage - basePage + 1 > 5 ? 5 : postsInfo?.totalPage - basePage + 1,
+    length:
+      studylogsInfo?.totalPage - basePage + 1 > 5 ? 5 : studylogsInfo?.totalPage - basePage + 1,
   }).map((_, index) => index);
   const isEnableMovePrevSection = basePage - 5 > 0;
-  const isEnableMoveNextSection = basePage + 5 <= postsInfo.totalPage;
+  const isEnableMoveNextSection = basePage + 5 <= studylogsInfo.totalPage;
 
   const movePrevSection = () => {
     if (isEnableMovePrevSection) {
@@ -42,7 +43,7 @@ const Pagination = ({ postsInfo, onSetPage }) => {
             key={index}
             size={BUTTON_SIZE.XX_SMALL}
             css={PageButtonStyle}
-            selected={basePage + index === postsInfo.currPage}
+            selected={basePage + index === studylogsInfo.currPage}
             onClick={movePage(basePage + index)}
             type="button"
           >

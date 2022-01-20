@@ -77,7 +77,7 @@ const NavBar = () => {
       return;
     }
 
-    history.push(PATH.NEW_POST);
+    history.push(PATH.NEW_STUDYLOG);
   };
 
   const showDropdownMenu = () => {
@@ -155,7 +155,7 @@ const NavBar = () => {
                       },
                       {
                         menu: '내 학습로그',
-                        path: `/${user?.data.username}/posts`,
+                        path: `/${user?.data.username}/studylogs`,
                       },
                     ].map(({ menu, path }) => (
                       <li key={menu}>

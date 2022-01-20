@@ -1,5 +1,5 @@
 const CONFIRM_MESSAGE = {
-  DELETE_POST: '글을 삭제하시겠습니까?',
+  DELETE_STUDYLOG: '글을 삭제하시겠습니까?',
   DELETE_SCRAP: '스크랩을 취소하시겠습니까?',
   DELETE_ABILITY: '역량을 삭제하시겠습니까?',
   DELETE_LIKE: '좋아요를 취소하시겠습니까?',
@@ -8,7 +8,7 @@ const CONFIRM_MESSAGE = {
 
 const ALERT_MESSAGE = {
   ACCESS_DENIED: '잘못된 접근입니다.',
-  FAIL_TO_DELETE_POST: '글을 삭제할 수 없습니다.',
+  FAIL_TO_DELETE_STUDYLOG: '글을 삭제할 수 없습니다.',
   FAIL_TO_UPLOAD_IMAGE: '이미지 업로드를 할 수 없습니다.',
   NEED_TO_LOGIN: '로그인 후 이용 가능합니다',
   OVER_PROFILE_NICKNAME_MAX_LENGTH: '닉네임은 4글자 이하로 입력해주세요.',
@@ -37,7 +37,7 @@ const ERROR_MESSAGE = {
 };
 
 const SUCCESS_MESSAGE = {
-  CREATE_POST: '글이 작성되었습니다.',
+  CREATE_STUDYLOG: '글이 작성되었습니다.',
   CREATE_ABILITY: '역량을 추가했습니다.',
   EDIT_ABILITY: '역량을 수정했습니다.',
   DELETE_ABILITY: '역량을 삭제했습니다.',
@@ -45,8 +45,8 @@ const SUCCESS_MESSAGE = {
 };
 
 const PLACEHOLDER = {
-  POST_TITLE: '제목을 입력해주세요',
-  POST_CONTENT: '학습로그를 작성해주세요',
+  STUDYLOG_TITLE: '제목을 입력해주세요',
+  STUDYLOG_CONTENT: '학습로그를 작성해주세요',
   TAG: '#태그선택',
 };
 

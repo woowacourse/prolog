@@ -22,14 +22,14 @@ import {
   Heading,
 } from './styles';
 import { useSelector } from 'react-redux';
-import useStudyLog from '../../hooks/useStudyLog';
+import useStudyLog from '../../hooks/useStudylog';
 import useFetch from '../../hooks/useFetch';
 import useFilterWithParams from '../../hooks/useFilterWithParams';
 import { SelectedFilterList } from '../MainPage/styles';
 import Chip from '../../components/Chip/Chip';
 import { isEmptyObject } from '../../utils/object';
 
-const ProfilePagePosts = () => {
+const ProfilePageStudylogs = () => {
   const {
     postQueryParams,
     selectedFilter,
@@ -55,35 +55,35 @@ const ProfilePagePosts = () => {
   const [filters] = useFetch({}, requestGetFilters);
 
   const {
-    response: posts,
-    getAllData: getStudyLogs,
-    error: postError,
-    deleteData: deletePost,
+    response: studylogs,
+    getAllData: getStudylogs,
+    error: studylogError,
+    deleteData: deleteStudylog,
   } = useStudyLog([]);
 
-  const goTargetPost = (id) => {
-    history.push(`${PATH.POST}/${id}`);
+  const goTargetStudylog = (id) => {
+    history.push(`${PATH.STUDYLOG}/${id}`);
   };
 
-  const goEditTargetPost = (id) => (event) => {
+  const goEditTargetStudylog = (id) => (event) => {
     event.stopPropagation();
 
-    history.push(`${PATH.POST}/${id}/edit`);
+    history.push(`${PATH.STUDYLOG}/${id}/edit`);
   };
 
   const getData = async () => {
     const query = new URLSearchParams(history.location.search) + `&usernames=${username}`;
-    await getStudyLogs({ type: 'searchParams', data: query });
+    await getStudylogs({ type: 'searchParams', data: query });
   };
 
-  const onDeletePost = async (event, id) => {
+  const onDeleteStudylog = async (event, id) => {
     event.stopPropagation();
 
     if (!window.confirm(CONFIRM_MESSAGE.DELETE_POST)) return;
 
-    await deletePost(id, accessToken);
+    await deleteStudylog(id, accessToken);
 
-    if (postError) {
+    if (studylogError) {
       alert(ALERT_MESSAGE.FAIL_TO_DELETE_POST);
       return;
     }
@@ -94,7 +94,7 @@ const ProfilePagePosts = () => {
   useEffect(() => {
     const params = getFullParams();
 
-    history.push(`${PATH.ROOT}${username}/posts${params && '?' + params}`);
+    history.push(`${PATH.ROOT}${username}/studylogs${params && '?' + params}`);
   }, [postQueryParams, selectedFilterDetails, username]);
 
   useEffect(() => {
@@ -153,16 +153,16 @@ const ProfilePagePosts = () => {
         </SelectedFilterList>
       </HeaderContainer>
       <Card css={CardStyles}>
-        {posts?.data?.length ? (
+        {studylogs?.data?.length ? (
           <>
-            {posts?.data?.map((post) => {
+            {studylogs?.data?.map((post) => {
               const { id, mission, title, tags, content } = post;
 
               return (
                 <PostItem
                   key={id}
                   size="SMALL"
-                  onClick={() => goTargetPost(id)}
+                  onClick={() => goTargetStudylog(id)}
                   onMouseEnter={() => setHoveredPostId(id)}
                   onMouseLeave={() => setHoveredPostId(0)}
                 >
@@ -182,7 +182,7 @@ const ProfilePagePosts = () => {
                       type="button"
                       css={EditButtonStyle}
                       alt="수정 버튼"
-                      onClick={goEditTargetPost(id)}
+                      onClick={goEditTargetStudylog(id)}
                     >
                       수정
                     </Button>
@@ -192,7 +192,7 @@ const ProfilePagePosts = () => {
                       css={DeleteButtonStyle}
                       alt="삭제 버튼"
                       onClick={(event) => {
-                        onDeletePost(event, id);
+                        onDeleteStudylog(event, id);
                       }}
                     >
                       삭제
@@ -201,7 +201,7 @@ const ProfilePagePosts = () => {
                 </PostItem>
               );
             })}
-            <Pagination postsInfo={posts} onSetPage={onSetPage} />
+            <Pagination studylogsInfo={studylogs} onSetPage={onSetPage} />
           </>
         ) : (
           <NoPost>작성한 글이 없습니다 🥲</NoPost>
@@ -211,4 +211,4 @@ const ProfilePagePosts = () => {
   );
 };
 
-export default ProfilePagePosts;
+export default ProfilePageStudylogs;

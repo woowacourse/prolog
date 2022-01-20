@@ -1,6 +1,6 @@
 import { PROFILE_PAGE_MENU } from '../../constants';
 
-import { ReactComponent as PostIcon } from '../../assets/images/post.svg';
+import { ReactComponent as StudylogIcon } from '../../assets/images/post.svg';
 import { ReactComponent as OverviewIcon } from '../../assets/images/overview.svg';
 import { ReactComponent as ScrapIcon } from '../../assets/images/scrap.svg';
 import { ReactComponent as ReportIcon } from '../../assets/images/reportIcon.svg';
@@ -14,10 +14,10 @@ const getMenuList = ({ username, isOwner }: { username: string; isOwner: boolean
       Icon: OverviewIcon,
     },
     {
-      key: PROFILE_PAGE_MENU.POSTS,
+      key: PROFILE_PAGE_MENU.STUDYLOG,
       title: '학습로그',
-      path: `/${username}/posts`,
-      Icon: PostIcon,
+      path: `/${username}/studylogs`,
+      Icon: StudylogIcon,
     },
     {
       key: PROFILE_PAGE_MENU.REPORTS,
@@ -37,7 +37,7 @@ const getMenuList = ({ username, isOwner }: { username: string; isOwner: boolean
       key: PROFILE_PAGE_MENU.ABILITY,
       title: '역량',
       path: `/${username}/ability`,
-      Icon: PostIcon,
+      Icon: StudylogIcon,
     },
   ];
 

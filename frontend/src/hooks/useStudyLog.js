@@ -1,19 +1,21 @@
 import { useState } from 'react';
 import { ERROR_MESSAGE } from '../constants/message';
 import {
-  requestEditPost,
-  requestGetStudyLog,
-  requestGetStudyLogs,
-  requestDeletePost,
+  requestEditStudylog,
+  requestGetStudylog,
+  requestGetStudylogs,
+  requestDeleteStudylog,
+  requestPostStudylog,
 } from '../service/requests';
 
-const useStudyLog = (defaultValue) => {
+const useStudylog = (defaultValue) => {
   const [response, setResponse] = useState(defaultValue);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
   const getAllData = async (query, accessToken) => {
     try {
-      const response = await requestGetStudyLogs(query, accessToken);
+      const response = await requestGetStudylogs(query, accessToken);
 
       if (!response.ok) {
         throw new Error(await response.text());
@@ -50,6 +52,7 @@ const useStudyLog = (defaultValue) => {
           })
         ),
       });
+      setSuccess(true);
     } catch (error) {
       const errorResponse = JSON.parse(error.message);
 
@@ -58,9 +61,9 @@ const useStudyLog = (defaultValue) => {
     }
   };
 
-  const getData = async (postId, accessToken) => {
+  const getData = async (studylogId, accessToken) => {
     try {
-      const response = await requestGetStudyLog(postId, accessToken);
+      const response = await requestGetStudylog(studylogId, accessToken);
 
       if (!response.ok) {
         throw new Error(await response.text());
@@ -68,53 +71,75 @@ const useStudyLog = (defaultValue) => {
       const json = await response.json();
 
       setResponse(json);
+      setSuccess(true);
     } catch (error) {
       const errorResponse = JSON.parse(error.message);
 
       console.error(errorResponse);
-      setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
+      setError(ERROR_MESSAGE[errorResponse.code] ?? ERROR_MESSAGE.DEFAULT);
     }
   };
 
-  const editData = async (postId, data, accessToken) => {
+  const postData = async (data, accessToken) => {
     try {
-      const response = await requestEditPost(postId, data, accessToken);
+      const response = await requestPostStudylog(data, accessToken);
 
       if (!response.ok) {
         throw new Error(await response.text());
       }
 
       setResponse(response);
+      setSuccess(true);
     } catch (error) {
       const errorResponse = JSON.parse(error.message);
 
-      console.error(errorResponse);
-      setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
+      setError(ERROR_MESSAGE[errorResponse.code] ?? ERROR_MESSAGE.DEFAULT);
 
-      return ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT;
+      return ERROR_MESSAGE[errorResponse.code] ?? ERROR_MESSAGE.DEFAULT;
     }
   };
 
-  const deleteData = async (postId, accessToken) => {
+  const editData = async (studylogId, data, accessToken) => {
     try {
-      const response = await requestDeletePost(postId, accessToken);
+      const response = await requestEditStudylog(studylogId, data, accessToken);
 
       if (!response.ok) {
         throw new Error(await response.text());
       }
 
       setResponse(response);
+      setSuccess(true);
     } catch (error) {
       const errorResponse = JSON.parse(error.message);
 
       console.error(errorResponse);
-      setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
+      setError(ERROR_MESSAGE[errorResponse.code] ?? ERROR_MESSAGE.DEFAULT);
 
-      return ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT;
+      return ERROR_MESSAGE[errorResponse.code] ?? ERROR_MESSAGE.DEFAULT;
     }
   };
 
-  return { response, error, getAllData, getData, editData, deleteData };
+  const deleteData = async (studylogId, accessToken) => {
+    try {
+      const response = await requestDeleteStudylog(studylogId, accessToken);
+
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+
+      setResponse(response);
+      setSuccess(true);
+    } catch (error) {
+      const errorResponse = JSON.parse(error.message);
+
+      console.error(errorResponse);
+      setError(ERROR_MESSAGE[errorResponse.code] ?? ERROR_MESSAGE.DEFAULT);
+
+      return ERROR_MESSAGE[errorResponse.code] ?? ERROR_MESSAGE.DEFAULT;
+    }
+  };
+
+  return { response, error, success, getAllData, getData, postData, editData, deleteData };
 };
 
-export default useStudyLog;
+export default useStudylog;

@@ -1,13 +1,9 @@
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-/*
- * @deprecated
- * post -> studylog로 변환 작업중
- * 추후 의존성이 모두 제거되면 해당 함수 삭제 예정
- */
-const requestGetPost = (postId, accessToken) => {
+/* 학습로그 관련 요청 */
+export const requestGetStudylog = (studylogId, accessToken) => {
   if (accessToken) {
-    return fetch(`${BASE_URL}/posts/${postId}`, {
+    return fetch(`${BASE_URL}/posts/${studylogId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
@@ -16,35 +12,10 @@ const requestGetPost = (postId, accessToken) => {
     });
   }
 
-  return fetch(`${BASE_URL}/posts/${postId}`);
+  return fetch(`${BASE_URL}/studylogs/${studylogId}`);
 };
 
-const requestGetStudyLog = (postId, accessToken) => {
-  if (accessToken) {
-    return fetch(`${BASE_URL}/posts/${postId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-  }
-
-  return fetch(`${BASE_URL}/posts/${postId}`);
-};
-
-const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
-
-const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
-
-const requestGetTags = () => fetch(`${BASE_URL}/tags`);
-
-/*
- * @deprecated
- * post -> studylog로 변환 작업중
- * 추후 의존성이 모두 제거되면 해당 함수 삭제 예정
- */
-const requestGetPosts = (query, accessToken) => {
+export const requestGetStudylogs = (query, accessToken) => {
   const authConfig = accessToken
     ? {
         headers: {
@@ -54,11 +25,11 @@ const requestGetPosts = (query, accessToken) => {
     : {};
 
   if (query.type === 'searchParams') {
-    return fetch(`${BASE_URL}/posts?${query.data.toString()}`, authConfig);
+    return fetch(`${BASE_URL}/studylogs?${query.data.toString()}`, authConfig);
   }
 
   if (query.type === 'filter') {
-    const searchParams = Object.entries(query?.data?.postQueryParams).map(
+    const searchParams = Object.entries(query?.data?.studylogQueryParams).map(
       ([key, value]) => `${key}=${value}`
     );
     const filterQuery = query.data.filterQuery.length
@@ -67,43 +38,27 @@ const requestGetPosts = (query, accessToken) => {
         )
       : '';
 
-    return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`, authConfig);
-  }
-
-  return fetch(`${BASE_URL}/posts`, authConfig);
-};
-
-const requestGetStudyLogs = (query, accessToken) => {
-  const authConfig = accessToken
-    ? {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    : {};
-
-  if (query.type === 'searchParams') {
-    return fetch(`${BASE_URL}/posts?${query.data.toString()}`, authConfig);
-  }
-
-  if (query.type === 'filter') {
-    const searchParams = Object.entries(query?.data?.postQueryParams).map(
-      ([key, value]) => `${key}=${value}`
+    return fetch(
+      `${BASE_URL}/studylogs?${[...filterQuery, ...searchParams].join('&')}`,
+      authConfig
     );
-    const filterQuery = query.data.filterQuery.length
-      ? query.data.filterQuery.map(
-          ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
-        )
-      : '';
-
-    return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`, authConfig);
   }
 
-  return fetch(`${BASE_URL}/posts`, authConfig);
+  return fetch(`${BASE_URL}/studylogs`, authConfig);
 };
 
-const requestEditPost = (postId, data, accessToken) =>
-  fetch(`${BASE_URL}/posts/${postId}`, {
+export const requestPostStudylog = (posts, accessToken) =>
+  fetch(`${BASE_URL}/studylogs`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(posts),
+  });
+
+export const requestEditStudylog = (studylogId, data, accessToken) =>
+  fetch(`${BASE_URL}/studylogs/${studylogId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
@@ -112,8 +67,8 @@ const requestEditPost = (postId, data, accessToken) =>
     body: JSON.stringify(data),
   });
 
-const requestDeletePost = (postId, accessToken) =>
-  fetch(`${BASE_URL}/posts/${postId}`, {
+export const requestDeleteStudylog = (studylogId, accessToken) =>
+  fetch(`${BASE_URL}/studylogs/${studylogId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
@@ -121,9 +76,19 @@ const requestDeletePost = (postId, accessToken) =>
     },
   });
 
-const requestGetProfile = (username) => fetch(`${BASE_URL}/members/${username}/profile`);
+/* 학습로그 필터링 */
 
-const requestEditProfile = (data, accessToken) =>
+export const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
+
+export const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
+
+export const requestGetTags = () => fetch(`${BASE_URL}/tags`);
+
+/* 프로필 */
+
+export const requestGetProfile = (username) => fetch(`${BASE_URL}/members/${username}/profile`);
+
+export const requestEditProfile = (data, accessToken) =>
   fetch(`${BASE_URL}/members/${data.username}`, {
     method: 'PUT',
     headers: {
@@ -133,37 +98,41 @@ const requestEditProfile = (data, accessToken) =>
     body: JSON.stringify(data),
   });
 
-const requestGetUserPosts = (username, postSearchParams, filteringOption) => {
-  const searchParams = Object.entries(postSearchParams).map(([key, value]) => `${key}=${value}`);
+export const requestGetUserStudylogs = (username, studylogsearchParams, filteringOption) => {
+  const searchParams = Object.entries(studylogsearchParams).map(
+    ([key, value]) => `${key}=${value}`
+  );
   const filterQuery = filteringOption.length
     ? filteringOption.map(({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`)
     : '';
   return fetch(
-    `${BASE_URL}/members/${username}/posts?${[...filterQuery, ...searchParams].join('&')}`
+    `${BASE_URL}/members/${username}/studylogs?${[...filterQuery, ...searchParams].join('&')}`
   );
 };
 
-const requestGetUserTags = (username) => fetch(`${BASE_URL}/members/${username}/tags`);
+export const requestGetUserTags = (username) => fetch(`${BASE_URL}/members/${username}/tags`);
 
-const requestGetCalendar = (year, month, username) =>
-  fetch(`${BASE_URL}/members/${username}/calendar-posts?year=${year}&month=${month}`, {
+export const requestGetCalendar = (year, month, username) =>
+  fetch(`${BASE_URL}/members/${username}/calendar-studylogs?year=${year}&month=${month}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
     },
   });
 
-const requestGetReportList = ({ username, type, size = 10, page = 1 }) =>
+/*리포트*/
+
+export const requestGetReportList = ({ username, type, size = 10, page = 1 }) =>
   fetch(`${BASE_URL}/${username}/reports?type=${type}&page=${page}&size=${size}`, {
     method: 'GET',
   });
 
-const requestGetReport = (reportId) =>
+export const requestGetReport = (reportId) =>
   fetch(`${BASE_URL}/reports/${reportId}`, {
     method: 'GET',
   });
 
-const requestPostReport = (data, accessToken) =>
+export const requestPostReport = (data, accessToken) =>
   fetch(`${BASE_URL}/reports`, {
     method: 'POST',
     headers: {
@@ -173,7 +142,7 @@ const requestPostReport = (data, accessToken) =>
     body: JSON.stringify(data),
   });
 
-const requestDeleteReport = (reportId, accessToken) =>
+export const requestDeleteReport = (reportId, accessToken) =>
   fetch(`${BASE_URL}/reports/${reportId}`, {
     method: 'DELETE',
     headers: {
@@ -182,7 +151,7 @@ const requestDeleteReport = (reportId, accessToken) =>
     },
   });
 
-const requestEditReport = (data, reportId, accessToken) =>
+export const requestEditReport = (data, reportId, accessToken) =>
   fetch(`${BASE_URL}/reports/${reportId}`, {
     method: 'PUT',
     headers: {
@@ -192,7 +161,9 @@ const requestEditReport = (data, reportId, accessToken) =>
     body: JSON.stringify(data),
   });
 
-const requestGetAbilities = (username, accessToken) =>
+/* 역량 */
+
+export const requestGetAbilities = (username, accessToken) =>
   fetch(`${BASE_URL}/members/${username}/abilities`, {
     method: 'GET',
     headers: {
@@ -200,7 +171,7 @@ const requestGetAbilities = (username, accessToken) =>
     },
   });
 
-const requestAddAbility = (accessToken, data) =>
+export const requestAddAbility = (accessToken, data) =>
   fetch(`${BASE_URL}/abilities`, {
     method: 'POST',
     headers: {
@@ -210,7 +181,9 @@ const requestAddAbility = (accessToken, data) =>
     body: JSON.stringify(data),
   });
 
-const requestPostScrap = (username, accessToken, data) =>
+/* 사용자 리액션 */
+
+export const requestPostScrap = (username, accessToken, data) =>
   fetch(`${BASE_URL}/members/${username}/scrap`, {
     method: 'POST',
     headers: {
@@ -220,7 +193,7 @@ const requestPostScrap = (username, accessToken, data) =>
     body: JSON.stringify(data),
   });
 
-const requestDeleteScrap = (username, accessToken, data) =>
+export const requestDeleteScrap = (username, accessToken, data) =>
   fetch(`${BASE_URL}/members/${username}/scrap`, {
     method: 'DELETE',
     headers: {
@@ -230,8 +203,8 @@ const requestDeleteScrap = (username, accessToken, data) =>
     body: JSON.stringify(data),
   });
 
-const requestGetMyScrap = (username, accessToken, postQueryParams) => {
-  const searchParams = Object.entries(postQueryParams).map(([key, value]) => `${key}=${value}`);
+export const requestGetMyScrap = (username, accessToken, studylogQueryParams) => {
+  const searchParams = Object.entries(studylogQueryParams).map(([key, value]) => `${key}=${value}`);
 
   return fetch(`${BASE_URL}/members/${username}/scrap?${[...searchParams].join('&')}`, {
     method: 'GET',
@@ -242,7 +215,7 @@ const requestGetMyScrap = (username, accessToken, postQueryParams) => {
   });
 };
 
-const requestDeleteAbility = (accessToken, abilityId) =>
+export const requestDeleteAbility = (accessToken, abilityId) =>
   fetch(`${BASE_URL}/abilities/${abilityId}`, {
     method: 'DELETE',
     headers: {
@@ -250,7 +223,7 @@ const requestDeleteAbility = (accessToken, abilityId) =>
     },
   });
 
-const requestEditAbility = (accessToken, data) =>
+export const requestEditAbility = (accessToken, data) =>
   fetch(`${BASE_URL}/abilities/${data.id}`, {
     method: 'PUT',
     headers: {
@@ -260,7 +233,7 @@ const requestEditAbility = (accessToken, data) =>
     body: JSON.stringify(data),
   });
 
-const requestSetDefaultAbility = (accessToken, field) =>
+export const requestSetDefaultAbility = (accessToken, field) =>
   fetch(`${BASE_URL}/abilities/template/${field}`, {
     method: 'POST',
     headers: {
@@ -268,33 +241,31 @@ const requestSetDefaultAbility = (accessToken, field) =>
     },
   });
 
-const requestPostLike = (accessToken, postId) =>
-  fetch(`${BASE_URL}/studylogs/${postId}/likes`, {
+export const requestPostLike = (accessToken, studylogId) =>
+  fetch(`${BASE_URL}/studylogs/${studylogId}/likes`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
   });
 
-const requestDeleteLike = (accessToken, postId) =>
-  fetch(`${BASE_URL}/studylogs/${postId}/likes`, {
+export const requestDeleteLike = (accessToken, studylogId) =>
+  fetch(`${BASE_URL}/studylogs/${studylogId}/likes`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
   });
 
-export {
-  requestGetPost,
-  requestGetPosts,
-  requestGetStudyLog,
-  requestGetStudyLogs,
+export default {
+  requestGetStudylog,
+  requestGetStudylogs,
   requestGetFilters,
   requestGetMissions,
   requestGetTags,
-  requestEditPost,
-  requestGetUserPosts,
-  requestDeletePost,
+  requestEditStudylog,
+  requestGetUserStudylogs,
+  requestDeleteStudylog,
   requestGetProfile,
   requestEditProfile,
   requestGetUserTags,

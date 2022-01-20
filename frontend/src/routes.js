@@ -1,17 +1,17 @@
 import { PATH, PROFILE_PAGE_MENU } from './constants';
 import {
-  EditPostPage,
+  EditStudylogPage,
   LoginCallbackPage,
   MainPage,
-  NewPostPage,
-  PostPage,
+  NewStudylogPage,
+  StudylogPage,
   ProfilePage,
   ProfilePageEditReport,
   ProfilePageNewReport,
-  ProfilePagePosts,
+  ProfilePageStudylogs,
   ProfilePageReports,
   ProfilePageScraps,
-  StudyLogListPage,
+  StudylogListPage,
 } from './pages';
 import AbilityPage from './pages/AbilityPage';
 import ProfilePageReportsList from './pages/ProfilePageReportsList';
@@ -26,25 +26,25 @@ const pageRoutes = [
     path: [PATH.LOGIN_CALLBACK],
     render: () => <LoginCallbackPage />,
   },
-  { path: [PATH.STUDYLOG], render: () => <StudyLogListPage /> },
-  { path: [PATH.NEW_POST], render: () => <NewPostPage /> },
+  { path: [PATH.STUDYLOG], render: () => <StudylogListPage /> },
+  { path: [PATH.NEW_STUDYLOG], render: () => <NewStudylogPage /> },
   {
-    path: [`${PATH.POST}/:id`],
-    render: () => <PostPage />,
+    path: [`${PATH.STUDYLOG}/:id`],
+    render: () => <StudylogPage />,
   },
   {
-    path: `${PATH.POST}/:id/edit`,
-    render: () => <EditPostPage />,
+    path: `${PATH.STUDYLOG}/:id/edit`,
+    render: () => <EditStudylogPage />,
   },
   {
     path: [PATH.PROFILE],
     render: () => <ProfilePage menu={PROFILE_PAGE_MENU.OVERVIEW} />,
   },
   {
-    path: [PATH.PROFILE_POSTS],
+    path: [PATH.PROFILE_STUDYLOG],
     render: () => (
-      <ProfilePage menu={PROFILE_PAGE_MENU.POSTS}>
-        <ProfilePagePosts />
+      <ProfilePage menu={PROFILE_PAGE_MENU.STUDYLOG}>
+        <ProfilePageStudylogs />
       </ProfilePage>
     ),
   },
