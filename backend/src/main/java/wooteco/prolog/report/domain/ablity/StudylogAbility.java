@@ -10,10 +10,12 @@ public class StudylogAbility {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "history_id")
     private History history;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "ability_id")
     private Ability2 ability;
 
     private Long studylogId;

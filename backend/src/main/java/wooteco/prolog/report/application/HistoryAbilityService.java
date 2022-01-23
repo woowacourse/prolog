@@ -11,7 +11,9 @@ import wooteco.prolog.report.application.dto.Ability2.HistoryResponse;
 import wooteco.prolog.report.application.dto.HistoryDtoAssembler;
 import wooteco.prolog.report.domain.ablity.Ability2;
 import wooteco.prolog.report.domain.ablity.History;
+import wooteco.prolog.report.domain.ablity.StudylogAbility;
 import wooteco.prolog.report.domain.ablity.repository.HistoryRepository;
+import wooteco.prolog.report.domain.report.repository.StudylogAbilityRepository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -31,6 +33,7 @@ public class HistoryAbilityService {
     private final HistoryRepository historyRepository;
     private final HistoryDtoAssembler historyDtoAssembler;
     private final EntityManager entityManager;
+    private final StudylogAbilityRepository studylogAbilityRepository;
 
     public HistoryResponse readLatestHistoryByUsername(String username) {
         Member member = memberRepository.findByUsername(username)
