@@ -9,6 +9,7 @@ import static java.util.stream.Collectors.toMap;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -43,6 +44,8 @@ import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 @Transactional(readOnly = true)
 public class StudylogService {
 
+    private static final int A_WEEK = 7;
+    
     private final StudylogRepository studylogRepository;
     private final StudylogScrapRepository studylogScrapRepository;
     private final StudylogReadRepository studylogReadRepository;
@@ -62,6 +65,42 @@ public class StudylogService {
         updateScrap(data, findScrapIds(memberId));
         updateRead(data, findReadIds(memberId));
         return studylogs;
+    }
+
+    public StudylogsResponse findMostPopularStudylogs(
+        Pageable pageable,
+        Long memberId,
+        boolean isAnonymousMember
+    ) {
+        List<Studylog> studylogs = findStudyLogsByDays(pageable, LocalDateTime.now());
+
+        List<Studylog> result = studylogs.stream()
+            .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
+            .collect(toList())
+            .subList(0, pageable.getPageSize());
+
+        PageImpl<Studylog> page = new PageImpl<>(result, pageable, pageable.getPageSize());
+        StudylogsResponse studylogsResponse = StudylogsResponse.of(page, memberId);
+
+        if (isAnonymousMember) {
+            return studylogsResponse;
+        }
+        List<StudylogResponse> data = studylogsResponse.getData();
+        updateScrap(data, findScrapIds(memberId));
+        updateRead(data, findReadIds(memberId));
+        return studylogsResponse;
+    }
+
+    private List<Studylog> findStudyLogsByDays(Pageable pageable, LocalDateTime dateTime) {
+        int decreaseDays = 0;
+        while (true) {
+            decreaseDays += A_WEEK;
+            List<Studylog> studylogs = studylogRepository.findByPastDays(dateTime.minusDays(decreaseDays));
+
+            if (studylogs.size() >= pageable.getPageSize()) {
+                return studylogs;
+            }
+        }
     }
 
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Long memberId) {
@@ -191,6 +230,7 @@ public class StudylogService {
         if (!studylogReadRepository.existsByMemberIdAndStudylogId(memberId, id)) {
             insertStudylogRead(id, memberId);
         }
+        updateRead(singletonList(studylogResponse), findReadIds(memberId));
         updateScrap(singletonList(studylogResponse), findScrapIds(memberId));
         studylogResponse.setLiked(studylog.likedByMember(memberId));
         return studylogResponse;
