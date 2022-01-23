@@ -39,7 +39,7 @@ public class TagService {
         return existTags.addAll(newTags);
     }
 
-    public List<TagResponse> findTagsIncludedInPost() {
+    public List<TagResponse> findTagsIncludedInStudylogs() {
         return studylogTagService.findAll().stream()
             .map(StudylogTag::getTag)
             .distinct()
@@ -59,7 +59,7 @@ public class TagService {
         return tagRepository.findAllById(tagIds);
     }
 
-    public Tags findByPostAndMember(Studylog studylog, Member member) {
-        return new Tags(tagRepository.findByPostAndMember(studylog, member));
+    public Tags findByStudylogsAndMember(Studylog studylog, Member member) {
+        return new Tags(tagRepository.findByStudylogAndMember(studylog, member));
     }
 }

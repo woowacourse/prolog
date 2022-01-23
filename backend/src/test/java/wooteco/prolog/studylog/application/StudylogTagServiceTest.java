@@ -1,4 +1,4 @@
-package wooteco.prolog.posttag.application;
+package wooteco.prolog.studylog.application;
 
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,14 +16,8 @@ import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestConstructor.AutowireMode;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
-import wooteco.prolog.login.ui.LoginMember;
-import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studylog.application.LevelService;
-import wooteco.prolog.studylog.application.MissionService;
-import wooteco.prolog.studylog.application.StudylogService;
-import wooteco.prolog.studylog.application.StudylogTagService;
 import wooteco.prolog.studylog.application.dto.LevelRequest;
 import wooteco.prolog.studylog.application.dto.LevelResponse;
 import wooteco.prolog.studylog.application.dto.MissionRequest;
@@ -61,7 +55,7 @@ class StudylogTagServiceTest {
                 .findOrCreateMember(new GithubProfileResponse("이름", "별명", "1", "image"));
     }
 
-    @DisplayName("포스트 태그가 등록되면 포스트 태그를 찾아올 수 있는지 확인한다.")
+    @DisplayName("스터디로그 태그가 등록되면 스터디로그 태그를 찾아올 수 있는지 확인한다.")
     @Test
     @Transactional
     public void findAllTest() {
@@ -69,7 +63,7 @@ class StudylogTagServiceTest {
         List<TagRequest> tagRequests1 = createTagRequests("태그1", "태그2");
         List<TagRequest> tagRequests2 = createTagRequests("태그2", "태그3");
 
-        addTagRequestToPost(tagRequests1, tagRequests2);
+        addTagRequestToStudylog(tagRequests1, tagRequests2);
 
         //when
         List<StudylogTag> studylogTags = studylogTagService.findAll();
@@ -88,12 +82,12 @@ class StudylogTagServiceTest {
     }
 
     @SafeVarargs
-    private final List<StudylogResponse> addTagRequestToPost(List<TagRequest>... tagRequests) {
-        List<StudylogRequest> posts = Arrays.stream(tagRequests)
+    private final List<StudylogResponse> addTagRequestToStudylog(List<TagRequest>... tagRequests) {
+        List<StudylogRequest> studylogs = Arrays.stream(tagRequests)
                 .map(it -> new StudylogRequest("이름", "별명", 1L, it))
                 .collect(toList());
 
-        return studylogService.insertStudylogs(member.getId(), posts);
+        return studylogService.insertStudylogs(member.getId(), studylogs);
     }
 
     private List<TagRequest> createTagRequests(String... tags) {
@@ -102,7 +96,7 @@ class StudylogTagServiceTest {
                 .collect(toList());
     }
 
-    @DisplayName("태그를 기반으로 포스트 태그를 조회할 수 있는지 확인")
+    @DisplayName("태그를 기반으로 스터디로그 태그를 조회할 수 있는지 확인")
     @Test
     @Transactional
     public void findByTags() {
@@ -111,11 +105,11 @@ class StudylogTagServiceTest {
         List<TagRequest> tagRequests2 = createTagRequests("태그1", "태그2");
         List<TagRequest> tagRequests3 = createTagRequests("태그1", "태그2", "태그3");
         List<StudylogResponse> studylogRespons =
-                addTagRequestToPost(tagRequests1, tagRequests2, tagRequests3);
+                addTagRequestToStudylog(tagRequests1, tagRequests2, tagRequests3);
 
         //when
         List<Tag> insertedTags = studylogRespons.stream()
-                .flatMap(postResponse -> postResponse.getTags().stream())
+                .flatMap(studylogResponse -> studylogResponse.getTags().stream())
                 .map(tagResponse -> new Tag(tagResponse.getId(), tagResponse.getName()))
                 .collect(toList());
 

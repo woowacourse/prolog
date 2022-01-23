@@ -32,18 +32,29 @@ public class StudyLogOverviewController {
         return ResponseEntity.ok(MemberDataResponses.of(memberTagService.findByMember(username)));
     }
 
+    @Deprecated
     @GetMapping("/{username}/calendar-posts")
     public ResponseEntity<MemberDataResponses<CalendarStudylogResponse>> findPostsOfMine(
-            CalendarPostRequest calendarPostRequest, @PathVariable String username) {
+        CalendarStudylogRequest calendarStudylogRequest, @PathVariable String username) {
         return ResponseEntity.ok(
             MemberDataResponses.of(
-                        studylogService.findCalendarPosts(username, calendarPostRequest.localDate())
+                        studylogService.findCalendarStudylogs(username, calendarStudylogRequest.localDate())
                 )
         );
     }
 
+    @GetMapping("/{username}/calendar-studylogs")
+    public ResponseEntity<MemberDataResponses<CalendarStudylogResponse>> findStudylogsOfMine(
+        CalendarStudylogRequest calendarStudylogRequest, @PathVariable String username) {
+        return ResponseEntity.ok(
+            MemberDataResponses.of(
+                studylogService.findCalendarStudylogs(username, calendarStudylogRequest.localDate())
+            )
+        );
+    }
+
     @Data
-    public static class CalendarPostRequest {
+    public static class CalendarStudylogRequest {
 
         private int year = LocalDate.now().getYear();
         private Month month = LocalDate.now().getMonth();

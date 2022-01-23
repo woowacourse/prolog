@@ -43,20 +43,20 @@ public class StudyLogOverviewStepDefinitions extends AcceptanceSteps {
                 );
     }
 
-    @When("{string}의 {int}년 {int}월 포스트 목록을 조회하면")
-    public void 나의포스트목록을조회하면(String name, int year, int month) {
+    @When("{string}의 {int}년 {int}월 스터디로그 목록을 조회하면")
+    public void 나의스터디로그목록을조회하면(String name, int year, int month) {
         final String memberName = GithubResponses.findByName(name).getLogin();
-        String path = String.format("members/%s/calendar-posts?year=%d&month=%d", memberName, year, month);
+        String path = String.format("members/%s/calendar-studylogs?year=%d&month=%d", memberName, year, month);
         context.invokeHttpGet(path);
     }
 
-    @When("{string}의 이번 달 포스트 목록을 조회하면")
-    public void 이번달포스트목록을조회하면(String name) {
-        나의포스트목록을조회하면(name, Year.now().getValue(), MonthDay.now().getMonth().getValue());
+    @When("{string}의 이번 달 스터디로그 목록을 조회하면")
+    public void 이번달스터디로그목록을조회하면(String name) {
+        나의스터디로그목록을조회하면(name, Year.now().getValue(), MonthDay.now().getMonth().getValue());
     }
 
-    @Then("해당 유저의 포스트 목록이 조회된다")
-    public void 나의포스트목록이조회된다() {
+    @Then("해당 유저의 스터디로그 목록이 조회된다")
+    public void 나의스터디로그목록이조회된다() {
         final List<CalendarStudylogResponse> data = context.response.then().extract()
                 .body()
                 .jsonPath()

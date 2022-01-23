@@ -22,10 +22,10 @@ public class MemberTagResponse {
         return new MemberTagResponse(TagResponse.of(memberTag.getTag()), memberTag.getCount());
     }
 
-    public static List<MemberTagResponse> asListFrom(List<MemberTag> memberTags, int postCount) {
+    public static List<MemberTagResponse> asListFrom(List<MemberTag> memberTags, int stuylogCount) {
         List<MemberTagResponse> memberTagResponses = new ArrayList<>();
         final TagResponse allTagResponse = new TagResponse(0L, "ALL");
-        memberTagResponses.add(new MemberTagResponse(allTagResponse, postCount));
+        memberTagResponses.add(new MemberTagResponse(allTagResponse, stuylogCount));
         memberTagResponses.addAll(memberTags.stream()
             .map(MemberTagResponse::of)
             .collect(Collectors.toList()));

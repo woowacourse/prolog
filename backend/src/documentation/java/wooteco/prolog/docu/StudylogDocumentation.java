@@ -34,7 +34,7 @@ class StudylogDocumentation extends Documentation {
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .body(studylogRequest)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .when().post("/posts")
+            .when().post("/studylogs")
             .then().log().all().extract();
 
         // then

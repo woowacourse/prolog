@@ -242,7 +242,7 @@ class StudylogServiceTest {
                 usernames,
                 new ArrayList<>(),
                 LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
-                LocalDate.parse("20211231", DateTimeFormatter.BASIC_ISO_DATE),
+                LocalDate.parse("99991231", DateTimeFormatter.BASIC_ISO_DATE),
                 null,
                 PageRequest.of(0, 10)
             ), null
@@ -282,7 +282,7 @@ class StudylogServiceTest {
                 usernames,
                 new ArrayList<>(),
                 LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
-                LocalDate.parse("20211231", DateTimeFormatter.BASIC_ISO_DATE),
+                LocalDate.parse("99991231", DateTimeFormatter.BASIC_ISO_DATE),
                 null,
                 PageRequest.of(0, 10)
             ), member1.getId(), member1.isAnonymous()
@@ -451,15 +451,15 @@ class StudylogServiceTest {
     }
 
     @Test
-    @DisplayName("캘린더 포스트 조회 기능")
+    @DisplayName("캘린더 스터디로그 조회 기능")
     @Transactional
-    void calendarPostTest() throws Exception {
+    void calendarStudylogTest() throws Exception {
         //given
         insertStudylogs(member1, studylog1, studylog2, studylog3);
 
         //when
         final List<CalendarStudylogResponse> calendarPosts =
-            studylogService.findCalendarPosts(member1.getUsername(), LocalDate.now());
+            studylogService.findCalendarStudylogs(member1.getUsername(), LocalDate.now());
 
         //then
         assertThat(calendarPosts)
