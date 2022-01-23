@@ -53,7 +53,7 @@ public class HistoryDtoAssembler {
     private List<Ability2> extractChildren(AbilityUpdateRequest request) {
         List<Ability2> children = Collections.emptyList();
 
-        if (Objects.nonNull(request.getChildren()) || request.getChildren().size() == 0) {
+        if (Objects.nonNull(request.getChildren()) && request.getChildren().size() != 0) {
             children = request.getChildren().stream()
                     .map(this::toAbility)
                     .collect(toList());
