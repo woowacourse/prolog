@@ -17,7 +17,10 @@ const MainPage = () => {
   const { response: recentStudylogs, getAllData: fetchRecentStudylogs } = useStudyLog([]);
 
   useEffect(() => {
-    fetchRecentStudylogs({ type: 'searchParams', data: 'size=3' }, JSON.parse(accessToken));
+    fetchRecentStudylogs(
+      { type: 'searchParams', data: 'size=3' },
+      accessToken && JSON.parse(accessToken)
+    );
   }, []);
 
   return (
