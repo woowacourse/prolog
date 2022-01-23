@@ -16,10 +16,10 @@ import {
 } from './StudylogList.styles';
 
 interface Props {
-  studylogs: Prolog.StudyLog[];
+  studylogs: Prolog.Studylog[];
 }
 
-const StudyLogList = ({ studylogs }: Props) => {
+const StudylogList = ({ studylogs }: Props) => {
   const history = useHistory();
 
   const goTargetPost = (id: number) => {
@@ -86,4 +86,4 @@ const StudyLogList = ({ studylogs }: Props) => {
   );
 };
 
-export default StudyLogList;
+export default StudylogList;

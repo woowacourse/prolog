@@ -18,7 +18,7 @@ import { ERROR_MESSAGE } from '../../constants/message';
 import Chip from '../../components/Chip/Chip';
 import FlexBox from '../../components/@shared/FlexBox/FlexBox';
 import useFilterWithParams from '../../hooks/useFilterWithParams';
-import StudyLogList from '../../components/Lists/StudylogList';
+import StudylogList from '../../components/Lists/StudylogList';
 import useStudylog from '../../hooks/useStudylog';
 import { css } from '@emotion/react';
 import SearchBar from '../../components/SearchBar/SearchBar';
@@ -34,7 +34,7 @@ type User = {
   accessToken: { loading: boolean; data: string; error: null | string };
 };
 
-const StudyLogListPage = (): JSX.Element => {
+const StudylogListPage = (): JSX.Element => {
   const {
     postQueryParams,
     selectedFilter,
@@ -56,7 +56,7 @@ const StudyLogListPage = (): JSX.Element => {
 
   const accessToken = useSelector((state: { user: User }) => state.user.accessToken.data);
 
-  const { response: posts, getAllData: getStudyLogs } = useStudylog([]);
+  const { response: posts, getAllData: getStudylogs } = useStudylog([]);
 
   const [filters] = useFetch([], requestGetFilters);
 
@@ -111,7 +111,7 @@ const StudyLogListPage = (): JSX.Element => {
   useEffect(() => {
     const query = new URLSearchParams(history.location.search);
 
-    getStudyLogs({ type: 'searchParams', data: query }, accessToken);
+    getStudylogs({ type: 'searchParams', data: query }, accessToken);
   }, [history.location.search, accessToken]);
 
   useEffect(() => {
@@ -212,11 +212,11 @@ const StudyLogListPage = (): JSX.Element => {
 
       <PostListContainer>
         {posts?.data?.length === 0 && '작성된 글이 없습니다.'}
-        {posts && posts.data && <StudyLogList studylogs={posts.data} />}
+        {posts && posts.data && <StudylogList studylogs={posts.data} />}
       </PostListContainer>
       <Pagination postsInfo={posts} onSetPage={onSetPage}></Pagination>
     </div>
   );
 };
 
-export default StudyLogListPage;
+export default StudylogListPage;
