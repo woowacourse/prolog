@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Chip, Pagination } from '../../components';
 import useStudyLogsPagination from '../../hooks/useStudyLogsPagination';
-import { Section, Table, Tbody, Thead, EmptyTableGuide } from './ReportStudyLogTable.styles';
+import { Section, Table, Tbody, Thead, EmptyTableGuide } from './ReportStudylogTable.styles';
 
 const ReportStudyLogTable = ({ studyLogs }) => {
   const { setPage, reportStudyLogData } = useStudyLogsPagination(studyLogs);

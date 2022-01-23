@@ -14,7 +14,7 @@ import {
   Thead,
   EmptyTableGuide,
   SelectAbilityBox,
-} from './ReportStudyLogTable.styles';
+} from './ReportStudylogTable.styles';
 
 const ReportStudyLogTable = ({
   onModalOpen,
