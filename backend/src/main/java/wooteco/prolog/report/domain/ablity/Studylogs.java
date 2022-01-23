@@ -1,18 +1,17 @@
 package wooteco.prolog.report.domain.ablity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Embeddable
 public class Studylogs {
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true, mappedBy = "history")
     private List<StudylogAbility> values;
 
     protected Studylogs() {
+        this.values = new ArrayList<>();
     }
 
     public Studylogs(List<StudylogAbility> values) {
