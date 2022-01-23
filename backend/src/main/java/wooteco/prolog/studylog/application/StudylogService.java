@@ -9,6 +9,7 @@ import static java.util.stream.Collectors.toMap;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -73,13 +74,7 @@ public class StudylogService {
         boolean isAnonymousMember
     ) {
         List<Studylog> studylogs = findStudyLogsByDays(pageable, LocalDateTime.now());
-
-        List<Studylog> result = studylogs.stream()
-            .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
-            .collect(toList())
-            .subList(0, pageable.getPageSize());
-
-        PageImpl<Studylog> page = new PageImpl<>(result, pageable, pageable.getPageSize());
+        PageImpl<Studylog> page = new PageImpl<>(studylogs, pageable, studylogs.size());
         StudylogsResponse studylogsResponse = StudylogsResponse.of(page, memberId);
 
         if (isAnonymousMember) {
@@ -93,13 +88,26 @@ public class StudylogService {
 
     private List<Studylog> findStudyLogsByDays(Pageable pageable, LocalDateTime dateTime) {
         int decreaseDays = 0;
+        int searchFailedCount = 0;
+
         while (true) {
             decreaseDays += A_WEEK;
             List<Studylog> studylogs = studylogRepository.findByPastDays(dateTime.minusDays(decreaseDays));
 
             if (studylogs.size() >= pageable.getPageSize()) {
-                return studylogs;
+                return studylogs.stream()
+                    .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
+                    .collect(toList())
+                    .subList(0, pageable.getPageSize());
             }
+
+            if (searchFailedCount >= 2) {
+                return studylogs.stream()
+                    .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
+                    .collect(toList());
+            }
+
+            searchFailedCount += 1;
         }
     }
 

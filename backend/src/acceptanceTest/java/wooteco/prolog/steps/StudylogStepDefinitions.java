@@ -348,4 +348,18 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         StudylogResponse response = context.response.as(StudylogResponse.class);
         assertThat(response.isLiked()).isFalse();
     }
+
+    @Then("인기있는 스터디로그 목록 요청시 id {string} 순서로 조회된다")
+    public void 스터디로그가Id순서로조회된다(String studylogIds) {
+        context.invokeHttpGet("/studylogs/most-popular");
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        StudylogsResponse studylogsResponse = context.response.as(StudylogsResponse.class);
+
+        List<String> ids = Arrays.asList(studylogIds.split(", "));
+        for (int i = 0; i < ids.size(); i++) {
+            StudylogResponse response = studylogsResponse.getData().get(i);
+            Long id = Long.parseLong(ids.get(i));
+            assertThat(response.getId()).isEqualTo(id);
+        }
+    }
 }

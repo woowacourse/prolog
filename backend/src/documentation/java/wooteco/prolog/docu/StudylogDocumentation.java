@@ -6,6 +6,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
@@ -95,6 +96,32 @@ class StudylogDocumentation extends Documentation {
         // given
         StudylogsResponse studylogsResponse = response.as(StudylogsResponse.class);
         assertThat(studylogsResponse.getData()).hasSize(1);
+    }
+
+    @Test
+    void 인기있는_스터디로그_목록을_조회한다() {
+        // given
+        String studylogLocation1 = 스터디로그_등록함(Collections.singletonList(createStudylogRequest1())).header("Location");
+        String studylogLocation2 = 스터디로그_등록함(Collections.singletonList(createStudylogRequest2())).header("Location");
+        Long studylogId1 = Long.parseLong(studylogLocation1.split("/posts/")[1]);
+        Long studylogId2 = Long.parseLong(studylogLocation2.split("/posts/")[1]);
+
+        스터디로그_단건_조회(studylogId1);
+        스터디로그_단건_조회(studylogId2);
+        스터디로그_단건_좋아요(studylogId2);
+
+        // when
+        ExtractableResponse<Response> response = given("studylogs/most-popular")
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .when().get("/studylogs/most-popular")
+            .then().log().all().extract();
+
+        // then
+        // given
+        StudylogsResponse mostPopularStudylogsResponse = response.as(StudylogsResponse.class);
+        assertThat(mostPopularStudylogsResponse.getData()).hasSize(2);
+        assertThat(mostPopularStudylogsResponse.getData().get(0).getId()).isEqualTo(studylogId2);
+        assertThat(mostPopularStudylogsResponse.getData().get(1).getId()).isEqualTo(studylogId1);
     }
 
     @Test
@@ -194,5 +221,18 @@ class StudylogDocumentation extends Documentation {
             .as(MissionResponse.class)
             .getId();
     }
-}
 
+    private void 스터디로그_단건_좋아요(Long studylogId) {
+        given("studylog/like")
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .when().post("/studylogs/" + studylogId + "/likes")
+            .then().log().all().extract();
+    }
+
+    private void 스터디로그_단건_조회(Long studylogId) {
+        given("studylog/read")
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .when().get("/studylogs/" + studylogId)
+            .then().log().all().extract();
+    }
+}
