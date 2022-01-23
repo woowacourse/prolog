@@ -9,6 +9,7 @@ const HeaderContainer = styled.div`
 const FilterListWrapper = styled.div`
   height: 4.8rem;
   flex-grow: 1;
+  margin-right: 1rem;
 `;
 
 const SelectedFilterList = styled.div`
