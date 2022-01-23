@@ -30,7 +30,6 @@ const useAbility = (studylogs) => {
 
   const makeNewAbility = ({ name, description, color }) => {
     const newAbility = {
-      id: name,
       name,
       description,
       color,
