@@ -1,6 +1,6 @@
 import { Wrapper } from './Report.styles';
 import AbilityGraph from './AbilityGraph';
-import ReportStudyLogTable from './ReportStudyLogTable';
+import ReportStudylogTable from './ReportStudylogTable';
 
 const Report = ({ report = {} }) => {
   return (
@@ -12,7 +12,7 @@ const Report = ({ report = {} }) => {
         <AbilityGraph abilities={report.abilityGraph.abilities} mode="VIEW" />
       )}
 
-      <ReportStudyLogTable studyLogs={report?.studylogs ?? []} />
+      <ReportStudylogTable Studylogs={report?.studylogs ?? []} />
     </Wrapper>
   );
 };

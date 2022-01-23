@@ -47,7 +47,7 @@ class ReportDocumentation extends Documentation {
     private final TagService tagService;
     private final MemberService memberService;
     private final StudylogService studylogService;
-    private final DocumentService studyLogDocumentService;
+    private final DocumentService studylogDocumentService;
     private final AbilityService abilityService;
     private final UpdatedContentsRepository updatedContentsRepository;
     private final ReportService reportService;
@@ -62,7 +62,7 @@ class ReportDocumentation extends Documentation {
                                TagService tagService,
                                MemberService memberService,
                                StudylogService studylogService,
-                               DocumentService studyLogDocumentService,
+                               DocumentService studylogDocumentService,
                                AbilityService abilityService,
                                UpdatedContentsRepository updatedContentsRepository,
                                ReportService reportService,
@@ -73,7 +73,7 @@ class ReportDocumentation extends Documentation {
         this.tagService = tagService;
         this.memberService = memberService;
         this.studylogService = studylogService;
-        this.studyLogDocumentService = studyLogDocumentService;
+        this.studylogDocumentService = studylogDocumentService;
         this.abilityService = abilityService;
         this.updatedContentsRepository = updatedContentsRepository;
         this.reportService = reportService;
@@ -97,7 +97,7 @@ class ReportDocumentation extends Documentation {
                 tagService,
                 memberService,
                 studylogService,
-                studyLogDocumentService,
+                studylogDocumentService,
                 abilityService,
                 updatedContentsRepository,
                 reportService,

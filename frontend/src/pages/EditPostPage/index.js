@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { SelectBox, Button, BUTTON_SIZE, EditPostCard } from '../../components';
@@ -5,8 +7,9 @@ import { useSelector } from 'react-redux';
 import useFetch from '../../hooks/useFetch';
 import { requestGetMissions, requestGetTags } from '../../service/requests';
 import { PATH } from '../../constants';
-import useStudyLog from '../../hooks/useStudyLog';
+import useStudylog from '../../hooks/useStudylog';
 import { SelectBoxWrapper, Post, SubmitButtonStyle } from '../NewPostPage/styles';
+import { MainContentStyle } from '../../PageRouter';
 
 const EditPostPage = () => {
   const history = useHistory();
@@ -14,7 +17,7 @@ const EditPostPage = () => {
   const accessToken = useSelector((state) => state.user.accessToken.data);
 
   const { id: postId } = useParams();
-  const { response: post, getData: getStudyLog, editData: editPost } = useStudyLog({});
+  const { response: post, getData: getStudylog, editData: editPost } = useStudylog({});
 
   const [selectedMission, setSelectedMission] = useState('');
   const cardRefs = useRef([]);
@@ -60,29 +63,31 @@ const EditPostPage = () => {
   }, [user, author]);
 
   useEffect(() => {
-    getStudyLog(postId, accessToken);
+    getStudylog(postId, accessToken);
   }, [postId]);
 
   return (
-    <form onSubmit={onEditPost}>
-      <SelectBoxWrapper>
-        <SelectBox
-          options={missions}
-          selectedOption={selectedMission}
-          setSelectedOption={setSelectedMission}
-          title="우아한테크코스 미션 목록입니다."
-          name="mission_subjects"
-          width="100%"
-          maxHeight="25rem"
-        />
-      </SelectBoxWrapper>
-      <Post key={id}>
-        <EditPostCard ref={cardRefs} post={post} tagOptions={tagOptions} />
-      </Post>
-      <Button size={BUTTON_SIZE.SMALL} css={SubmitButtonStyle}>
-        작성완료
-      </Button>
-    </form>
+    <div css={MainContentStyle}>
+      <form onSubmit={onEditPost}>
+        <SelectBoxWrapper>
+          <SelectBox
+            options={missions}
+            selectedOption={selectedMission}
+            setSelectedOption={setSelectedMission}
+            title="우아한테크코스 미션 목록입니다."
+            name="mission_subjects"
+            width="100%"
+            maxHeight="25rem"
+          />
+        </SelectBoxWrapper>
+        <Post key={id}>
+          <EditPostCard ref={cardRefs} post={post} tagOptions={tagOptions} />
+        </Post>
+        <Button size={BUTTON_SIZE.SMALL} cssProps={SubmitButtonStyle}>
+          작성완료
+        </Button>
+      </form>
+    </div>
   );
 };
 

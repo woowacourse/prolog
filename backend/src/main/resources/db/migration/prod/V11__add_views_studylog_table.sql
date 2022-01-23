@@ -1,0 +1,1 @@
+ALTER TABLE studylog ADD views BIGINT DEFAULT 0;

@@ -144,7 +144,7 @@ class ReportServiceTest {
         return memberRepository.save(member);
     }
 
-    private Studylog createStudyLog(Member member, Mission mission) {
+    private Studylog createStudylog(Member member, Mission mission) {
         return StudylogFixture.builder()
             .mission(mission)
             .title("title")
@@ -166,9 +166,9 @@ class ReportServiceTest {
         Level level1 = levelRepository.save(LevelFixture.level1());
         Mission mission = missionRepository.save(MissionFixture.mission1(level1));
 
-        studylogRepository.save(createStudyLog(member, mission));
-        studylogRepository.save(createStudyLog(member, mission));
-        studylogRepository.save(createStudyLog(member, mission));
+        studylogRepository.save(createStudylog(member, mission));
+        studylogRepository.save(createStudylog(member, mission));
+        studylogRepository.save(createStudylog(member, mission));
     }
 
     @Test

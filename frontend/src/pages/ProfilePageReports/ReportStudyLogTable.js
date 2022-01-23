@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { Chip, Pagination } from '../../components';
-import useStudyLogsPagination from '../../hooks/useStudyLogsPagination';
-import { Section, Table, Tbody, Thead, EmptyTableGuide } from './ReportStudyLogTable.styles';
+import useStudylogsPagination from '../../hooks/useStudylogsPagination';
+import { Section, Table, Tbody, Thead, EmptyTableGuide } from './ReportStudylogTable.styles';
 
-const ReportStudyLogTable = ({ studyLogs }) => {
-  const { setPage, reportStudyLogData } = useStudyLogsPagination(studyLogs);
-  const { currPage, totalSize, data: currReportStudyLogs } = reportStudyLogData;
+const ReportStudylogTable = ({ Studylogs }) => {
+  const { setPage, reportStudylogData } = useStudylogsPagination(Studylogs);
+  const { currPage, totalSize, data: currReportStudylogs } = reportStudylogData;
 
   const onMoveToPage = (number) => {
     setPage(number);
@@ -29,7 +29,7 @@ const ReportStudyLogTable = ({ studyLogs }) => {
         </Thead>
 
         <Tbody>
-          {currReportStudyLogs.map(({ id, title, abilities }, index) => (
+          {currReportStudylogs.map(({ id, title, abilities }, index) => (
             <tr key={id}>
               <td>
                 <span>{(currPage - 1) * 10 + index + 1}</span>
@@ -54,11 +54,11 @@ const ReportStudyLogTable = ({ studyLogs }) => {
           ))}
         </Tbody>
       </Table>
-      <Pagination postsInfo={reportStudyLogData} onSetPage={onMoveToPage} />
+      <Pagination postsInfo={reportStudylogData} onSetPage={onMoveToPage} />
 
-      {studyLogs.length === 0 && <EmptyTableGuide>등록된 학습로그가 없습니다.</EmptyTableGuide>}
+      {Studylogs.length === 0 && <EmptyTableGuide>등록된 학습로그가 없습니다.</EmptyTableGuide>}
     </Section>
   );
 };
 
-export default ReportStudyLogTable;
+export default ReportStudylogTable;

@@ -1,11 +1,14 @@
 import { css } from '@emotion/react';
+import { COLOR } from '../../constants';
 
 export const LikeIconStyle = css`
   flex-direction: column;
-  background-color: transparent;
   padding: 0;
   width: fit-content;
   font-size: 1.4rem;
+
+  background-color: transparent;
+  color: ${COLOR.BLACK_800};
 
   & > img {
     margin-right: 0;

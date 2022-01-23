@@ -41,7 +41,7 @@ public class StudylogController {
                                                @RequestBody List<StudylogRequest> studylogRequests) {
         List<StudylogResponse> studylogResponse = studylogService
             .insertStudylogs(member.getId(), studylogRequests);
-        return ResponseEntity.created(URI.create("/posts/" + studylogResponse.get(0).getId()))
+        return ResponseEntity.created(URI.create("/studylogs/" + studylogResponse.get(0).getId()))
             .build();
     }
 

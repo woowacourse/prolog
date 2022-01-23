@@ -48,7 +48,7 @@ public class MemberReactionController {
         MemberScrapResponse memberScrapResponse = studylogScrapService
             .registerScrap(member.getId(), studylogIdRequest.getStudylogId());
         return ResponseEntity
-            .created(URI.create("/posts/" + memberScrapResponse.getStudylogResponse().getId()))
+            .created(URI.create("/studylogs/" + memberScrapResponse.getStudylogResponse().getId()))
             .build();
     }
 

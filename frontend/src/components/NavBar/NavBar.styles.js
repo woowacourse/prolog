@@ -19,7 +19,7 @@ const DropdownToggledStyle = css`
 
 const Container = styled.div`
   width: 100%;
-  height: 6.4rem;
+  height: 4.8rem;
   background-color: ${COLOR.LIGHT_BLUE_400};
 
   ${({ isDropdownToggled }) => isDropdownToggled && DropdownToggledStyle}
@@ -37,7 +37,7 @@ const Wrapper = styled.div`
 `;
 
 const Logo = styled.div`
-  height: 3rem;
+  height: 2.4rem;
   position: relative;
 
   img {
@@ -63,7 +63,7 @@ const Menu = styled.div`
   display: flex;
 
   & > * {
-    margin-left: 1.6rem;
+    margin-left: 1rem;
   }
 
   & > form {
@@ -72,7 +72,7 @@ const Menu = styled.div`
 `;
 
 const DropdownStyle = css`
-  top: 70px;
+  top: 4.6rem;
   right: 0px;
   transform: translateX(-24%);
 
@@ -83,17 +83,67 @@ const DropdownStyle = css`
   }
 `;
 
+const Navigation = styled.nav`
+  margin-right: 1rem;
+
+  display: flex;
+  align-items: center;
+
+  > a {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  > *:not(:last-child) {
+    margin-right: 2rem;
+  }
+`;
+
 const whiteBackgroundStyle = css`
   background-color: ${COLOR.WHITE};
+  color: ${COLOR.BLACK_800};
+`;
+
+export const loginButtonStyle = css`
+  width: 9rem;
+  height: 3.6rem;
+  padding-right: 0.3rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: ${COLOR.WHITE};
+  border-radius: 1rem;
+
+  font-size: 1.8rem;
+  color: ${COLOR.BLACK_800};
+
+  img {
+    width: 2.4rem;
+    height: 2.4rem;
+    margin: 0;
+  }
 `;
 
 const pencilButtonStyle = css`
-  width: 4.8rem;
+  width: 3.6rem;
+  height: 3.6rem;
+
   background-color: ${COLOR.DARK_BLUE_800};
+  border-radius: 1.2rem;
+
+  img {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
 `;
 
 const profileButtonStyle = css`
-  width: 4.8rem;
+  width: 3.6rem;
+  height: 3.6rem;
+
+  border-radius: 1.2rem;
 `;
 
 export {
@@ -101,6 +151,7 @@ export {
   Wrapper,
   Logo,
   Menu,
+  Navigation,
   DropdownStyle,
   whiteBackgroundStyle,
   pencilButtonStyle,

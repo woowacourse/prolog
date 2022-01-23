@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import wooteco.prolog.studylog.application.dto.ElasticHealthResponse;
 import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.StudylogDocument;
-import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
+import wooteco.prolog.studylog.domain.StudyLogDocument;
+import wooteco.prolog.studylog.domain.repository.StudyLogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 import wooteco.prolog.studylog.infrastructure.HealthCheckClient;
@@ -18,11 +18,11 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
 
     private static final String EMPTY = " ";
 
-    protected final StudylogDocumentRepository studylogDocumentRepository;
+    protected final StudyLogDocumentRepository studylogDocumentRepository;
     protected final StudylogRepository studylogRepository;
     private final HealthCheckClient healthCheckClient;
 
-    public AbstractStudylogDocumentService(StudylogDocumentRepository studylogDocumentRepository,
+    public AbstractStudylogDocumentService(StudyLogDocumentRepository studylogDocumentRepository,
                                            StudylogRepository studylogRepository,
                                            HealthCheckClient healthCheckClient) {
         this.studylogDocumentRepository = studylogDocumentRepository;
@@ -31,18 +31,18 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
     }
 
     @Override
-    public void save(StudylogDocument studylogDocument) {
+    public void save(StudyLogDocument studylogDocument) {
         studylogDocumentRepository.save(studylogDocument);
     }
 
     @Override
-    public StudylogDocument findById(Long id) {
+    public StudyLogDocument findById(Long id) {
         return studylogDocumentRepository.findById(id)
             .orElseThrow(StudylogDocumentNotFoundException::new);
     }
 
     @Override
-    public void delete(StudylogDocument studylogDocument) {
+    public void delete(StudyLogDocument studylogDocument) {
         studylogDocumentRepository.delete(studylogDocument);
     }
 
@@ -65,7 +65,7 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
     }
 
     @Override
-    public void update(StudylogDocument studylogDocument) {
+    public void update(StudyLogDocument studylogDocument) {
         studylogDocumentRepository.save(studylogDocument);
     }
 

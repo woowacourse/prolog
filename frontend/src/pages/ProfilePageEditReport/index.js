@@ -7,9 +7,9 @@ import { requestEditReport, requestGetReport } from '../../service/requests';
 import { API, COLOR, ERROR_MESSAGE, REPORT_DESCRIPTION } from '../../constants';
 
 import { Button } from '../../components';
-import StudyLogModal from '../ProfilePageNewReport/StudyLogModal';
+import StudylogModal from '../ProfilePageNewReport/StudylogModal';
 import ReportInfoInput from '../ProfilePageNewReport/ReportInfoInput';
-import ReportStudyLogTable from '../ProfilePageNewReport/ReportStudyLogTable';
+import ReportStudylogTable from '../ProfilePageNewReport/ReportStudylogTable';
 import { Checkbox, Form, FormButtonWrapper } from '../ProfilePageNewReport/style';
 import AbilityGraph from '../ProfilePageReports/AbilityGraph';
 import { limitLetterLength } from '../../utils/validator';
@@ -26,9 +26,9 @@ const ProfilePageEditReport = () => {
   const [isMainReport, setIsMainReport] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [studyLogs, setStudyLogs] = useState([]);
+  const [Studylogs, setStudylogs] = useState([]);
   const [abilities, setAbilities] = useState([]);
-  const [studyLogAbilities, setStudyLogAbilities] = useState([]);
+  const [StudylogAbilities, setStudylogAbilities] = useState([]);
   const [isModalOpened, setIsModalOpened] = useState(false);
 
   useEffect(() => {
@@ -58,12 +58,12 @@ const ProfilePageEditReport = () => {
       setIsMainReport(report.represent);
       setTitle(report.title);
       setDescription(report.description);
-      setStudyLogs(report.studylogs);
+      setStudylogs(report.studylogs);
       setAbilities(report.abilityGraph.abilities);
-      report.studylogs.forEach((reportStudyLog) => {
-        setStudyLogAbilities((currStudyLogAbilities) => [
-          ...currStudyLogAbilities,
-          { id: reportStudyLog.id, abilities: reportStudyLog.abilities },
+      report.studylogs.forEach((reportStudylog) => {
+        setStudylogAbilities((currStudylogAbilities) => [
+          ...currStudylogAbilities,
+          { id: reportStudylog.id, abilities: reportStudylog.abilities },
         ]);
       });
     } catch (error) {
@@ -102,12 +102,12 @@ const ProfilePageEditReport = () => {
     }
   };
 
-  const getCheckedAbility = (studyLogId) => {
-    const targetStudyLogAbility = studyLogAbilities.find(
-      (studyLogAbility) => studyLogAbility.id === studyLogId
+  const getCheckedAbility = (StudylogId) => {
+    const targetStudylogAbility = StudylogAbilities.find(
+      (StudylogAbility) => StudylogAbility.id === StudylogId
     )?.abilities;
 
-    return targetStudyLogAbility?.map((ability) => ability.id) ?? [];
+    return targetStudylogAbility?.map((ability) => ability.id) ?? [];
   };
 
   const onSubmitReport = (event) => {
@@ -120,8 +120,8 @@ const ProfilePageEditReport = () => {
       abilityGraph: {
         abilities: abilities.map(({ id, weight, isPresent }) => ({ id, weight, isPresent })),
       },
-      // studylogs: studyLogs.map((item) => ({ id: item.id, abilities: [] })),
-      studylogs: studyLogs.map((item) => ({
+      // studylogs: Studylogs.map((item) => ({ id: item.id, abilities: [] })),
+      studylogs: Studylogs.map((item) => ({
         id: item.id,
         abilities: getCheckedAbility(item.id),
       })),
@@ -173,13 +173,13 @@ const ProfilePageEditReport = () => {
           <AbilityGraph abilities={abilities} setAbilities={onChangeAbilities} mode="EDIT" />
         </section>
 
-        <ReportStudyLogTable
+        <ReportStudylogTable
           onModalOpen={onModalOpen}
-          studyLogs={studyLogs}
-          setStudyLogs={setStudyLogs}
+          Studylogs={Studylogs}
+          setStudylogs={setStudylogs}
           abilities={abilities}
-          studyLogAbilities={studyLogAbilities}
-          setStudyLogAbilities={setStudyLogAbilities}
+          StudylogAbilities={StudylogAbilities}
+          setStudylogAbilities={setStudylogAbilities}
         />
 
         <FormButtonWrapper>
@@ -196,11 +196,11 @@ const ProfilePageEditReport = () => {
       </Form>
 
       {isModalOpened && (
-        <StudyLogModal
+        <StudylogModal
           onModalClose={onModalClose}
           username={username}
-          studyLogs={studyLogs}
-          setStudyLogs={setStudyLogs}
+          Studylogs={Studylogs}
+          setStudylogs={setStudylogs}
         />
       )}
     </>

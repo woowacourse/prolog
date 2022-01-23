@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { SHOW_ALL_FILTER } from '../pages/ProfilePageNewReport/StudyLogModal';
+import { SHOW_ALL_FILTER } from '../pages/ProfilePageNewReport/StudylogModal';
 import { requestGetPosts } from '../service/requests';
 
 const defaultValue = {
@@ -10,13 +10,13 @@ const defaultValue = {
   levelId: 0,
 };
 
-const useUserStudyLog = ({ levelId: currLevelId, username }) => {
-  const [studyLogData, setStudyLogData] = useState(defaultValue);
+const useUserStudylog = ({ levelId: currLevelId, username }) => {
+  const [StudylogData, setStudylogData] = useState(defaultValue);
   const [page, setPage] = useState(1);
 
   const getPosts = async (page = 1) => {
     try {
-      if (currLevelId !== studyLogData.levelId) {
+      if (currLevelId !== StudylogData.levelId) {
         setPage(1);
       }
 
@@ -35,11 +35,11 @@ const useUserStudyLog = ({ levelId: currLevelId, username }) => {
 
       const responseData = await response.json();
 
-      if (studyLogData.data && studyLogData.levelId === currLevelId) {
-        responseData.data = [...studyLogData.data, ...responseData.data];
+      if (StudylogData.data && StudylogData.levelId === currLevelId) {
+        responseData.data = [...StudylogData.data, ...responseData.data];
       }
 
-      setStudyLogData({ ...responseData, levelId: currLevelId });
+      setStudylogData({ ...responseData, levelId: currLevelId });
     } catch (error) {
       console.error(error);
     }
@@ -52,7 +52,7 @@ const useUserStudyLog = ({ levelId: currLevelId, username }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currLevelId, page]);
 
-  return { studyLogData, setPage };
+  return { StudylogData, setPage };
 };
 
-export default useUserStudyLog;
+export default useUserStudylog;

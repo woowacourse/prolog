@@ -1,4 +1,4 @@
-package wooteco.prolog.posttag.domain.repository;
+package wooteco.prolog.studylog.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,11 +17,6 @@ import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
-import wooteco.prolog.studylog.domain.repository.LevelRepository;
-import wooteco.prolog.studylog.domain.repository.MissionRepository;
-import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.studylog.domain.repository.StudylogTagRepository;
-import wooteco.prolog.studylog.domain.repository.TagRepository;
 
 @DataJpaTest
 class StudylogTagRepositoryTest {
@@ -47,9 +42,9 @@ class StudylogTagRepositoryTest {
     @Autowired
     private TagRepository tagRepository;
 
-    @DisplayName("PostTag 생성")
+    @DisplayName("StudylogTag 생성")
     @Test
-    void createPostTag() {
+    void createStudylogTag() {
         // given
         Member member = memberRepository.save(웨지);
         Level level = levelRepository.save(new Level("레벨1"));
@@ -68,7 +63,7 @@ class StudylogTagRepositoryTest {
                 .isEqualTo(studylogTag);
     }
 
-    @DisplayName("Tag 리스트와 매칭되는 PostTag 리스트 조회")
+    @DisplayName("Tag 리스트와 매칭되는 StudylogTag 리스트 조회")
     @Test
     void findByTagIn() {
         // given
@@ -95,7 +90,7 @@ class StudylogTagRepositoryTest {
                 .containsExactlyInAnyOrder(studylogTag1, studylogTag2, studylogTag3);
     }
 
-    @DisplayName("Tag 리스트와 매칭되는 PostTag가 없을시 빈 리스트 조회")
+    @DisplayName("Tag 리스트와 매칭되는 studylogTag가 없을시 빈 리스트 조회")
     @Test
     void findByTagInEmpty() {
         // given

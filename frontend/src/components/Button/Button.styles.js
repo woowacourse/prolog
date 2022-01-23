@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { COLOR } from '../../constants';
 
 const BUTTON_SIZE = {
   XX_SMALL: 'XX_SMALL',
@@ -69,6 +70,9 @@ const Container = styled.button`
   justify-content: center;
   align-items: center;
   border: none;
+
+  background-color: ${COLOR.DARK_BLUE_800};
+  color: ${COLOR.WHITE};
 
   ${({ size }) => containerSizeStyle[size] || containerSizeStyle.MEDIUM};
   ${({ css }) => css};

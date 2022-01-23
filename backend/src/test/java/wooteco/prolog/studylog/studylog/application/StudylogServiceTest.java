@@ -50,7 +50,7 @@ import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.StudylogDocument;
+import wooteco.prolog.studylog.domain.StudyLogDocument;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 import wooteco.support.utils.IntegrationTest;
@@ -187,7 +187,7 @@ class StudylogServiceTest {
         Long id = studylogResponses.get(0).getId();
 
         // when
-        StudylogDocument studylogDocument = studylogDocumentService.findById(id);
+        StudyLogDocument studylogDocument = studylogDocumentService.findById(id);
         // then
         assertAll(
             () -> assertThat(studylogDocument.getId()).isEqualTo(id),
@@ -245,7 +245,7 @@ class StudylogServiceTest {
                 usernames,
                 new ArrayList<>(),
                 LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
-                LocalDate.parse("20211231", DateTimeFormatter.BASIC_ISO_DATE),
+                LocalDate.parse("99991231", DateTimeFormatter.BASIC_ISO_DATE),
                 null,
                 PageRequest.of(0, 10)
             ), null
@@ -285,7 +285,7 @@ class StudylogServiceTest {
                 usernames,
                 new ArrayList<>(),
                 LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
-                LocalDate.parse("20211231", DateTimeFormatter.BASIC_ISO_DATE),
+                LocalDate.parse("99991231", DateTimeFormatter.BASIC_ISO_DATE),
                 null,
                 PageRequest.of(0, 10)
             ), member1.getId(), member1.isAnonymous()
@@ -375,15 +375,15 @@ class StudylogServiceTest {
     @Test
     void findByIdTest() {
         List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1, studylog2);
-        StudylogResponse targetStudyLog = studylogResponses.get(0);
+        StudylogResponse targetStudylog = studylogResponses.get(0);
 
         StudylogResponse studylogResponse = studylogService.findById
-                (targetStudyLog.getId(), member2.getId(), false);
+                (targetStudylog.getId(), member2.getId(), false);
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(1);
 
         studylogResponse = studylogService.findById
-                (targetStudyLog.getId(), member2.getId(), false);
+                (targetStudylog.getId(), member2.getId(), false);
 
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(2);
@@ -393,10 +393,10 @@ class StudylogServiceTest {
     @Test
     void findByIdSameUserTest() {
         List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1, studylog2);
-        StudylogResponse targetStudyLog = studylogResponses.get(0);
+        StudylogResponse targetStudylog = studylogResponses.get(0);
 
         StudylogResponse studylogResponse = studylogService.findById
-                (targetStudyLog.getId(), member1.getId(), false);
+                (targetStudylog.getId(), member1.getId(), false);
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(0);
     }
@@ -484,7 +484,7 @@ class StudylogServiceTest {
         studylogService.updateStudylog(member1.getId(), id, updateStudylogRequest);
 
         // when
-        StudylogDocument studylogDocument = studylogDocumentService.findById(id);
+        StudyLogDocument studylogDocument = studylogDocumentService.findById(id);
 
         // then
         assertAll(
@@ -522,15 +522,15 @@ class StudylogServiceTest {
     }
 
     @Test
-    @DisplayName("캘린더 포스트 조회 기능")
+    @DisplayName("캘린더 스터디로그 조회 기능")
     @Transactional
-    void calendarPostTest() throws Exception {
+    void calendarStudylogTest() throws Exception {
         //given
         insertStudylogs(member1, studylog1, studylog2, studylog3);
 
         //when
         final List<CalendarStudylogResponse> calendarPosts =
-            studylogService.findCalendarPosts(member1.getUsername(), LocalDate.now());
+            studylogService.findCalendarStudylogs(member1.getUsername(), LocalDate.now());
 
         //then
         assertThat(calendarPosts)

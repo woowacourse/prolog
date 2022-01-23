@@ -5,9 +5,9 @@ import localStorage from 'local-storage';
 
 import { API, COLOR, ERROR_MESSAGE, REPORT_DESCRIPTION } from '../../constants';
 import { Button } from '../../components';
-import StudyLogModal from './StudyLogModal';
+import StudylogModal from './StudylogModal';
 import ReportInfoInput from './ReportInfoInput';
-import ReportStudyLogTable from './ReportStudyLogTable';
+import ReportStudylogTable from './ReportStudylogTable';
 import { Checkbox, Form, FormButtonWrapper } from './style';
 import { requestGetAbilities, requestPostReport } from '../../service/requests';
 import AbilityGraph from '../ProfilePageReports/AbilityGraph';
@@ -41,8 +41,8 @@ const ProfilePageNewReport = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [abilities, setAbilities] = useState([]);
-  const [studyLogs, setStudyLogs] = useState([]);
-  const [studyLogAbilities, setStudyLogAbilities] = useState([]);
+  const [Studylogs, setStudylogs] = useState([]);
+  const [StudylogAbilities, setStudylogAbilities] = useState([]);
 
   const [isModalOpened, setIsModalOpened] = useState(false);
 
@@ -66,12 +66,12 @@ const ProfilePageNewReport = () => {
     }
   };
 
-  const getCheckedAbility = (studyLogId) => {
-    const targetStudyLogAbility = studyLogAbilities.find(
-      (studyLogAbility) => studyLogAbility.id === studyLogId
+  const getCheckedAbility = (StudylogId) => {
+    const targetStudylogAbility = StudylogAbilities.find(
+      (StudylogAbility) => StudylogAbility.id === StudylogId
     )?.abilities;
 
-    return targetStudyLogAbility?.map((ability) => ability.id) ?? [];
+    return targetStudylogAbility?.map((ability) => ability.id) ?? [];
   };
 
   const onSubmitReport = async (event) => {
@@ -85,7 +85,7 @@ const ProfilePageNewReport = () => {
       return;
     }
 
-    if (studyLogs.length === 0) {
+    if (Studylogs.length === 0) {
       if (!window.confirm('등록된 학습로그가 없습니다.\n저장하시겠습니까?')) return;
     }
 
@@ -97,7 +97,7 @@ const ProfilePageNewReport = () => {
       abilityGraph: {
         abilities: abilities.map(({ id, weight, isPresent }) => ({ id, weight, isPresent })),
       },
-      studylogs: studyLogs.map((item) => ({
+      studylogs: Studylogs.map((item) => ({
         id: item.id,
         abilities: getCheckedAbility(item.id),
       })),
@@ -166,13 +166,13 @@ const ProfilePageNewReport = () => {
 
         <AbilityGraph abilities={abilities} setAbilities={onChangeAbilities} mode="NEW" />
 
-        <ReportStudyLogTable
+        <ReportStudylogTable
           onModalOpen={onModalOpen}
-          studyLogs={studyLogs}
-          setStudyLogs={setStudyLogs}
+          Studylogs={Studylogs}
+          setStudylogs={setStudylogs}
           abilities={abilities}
-          studyLogAbilities={studyLogAbilities}
-          setStudyLogAbilities={setStudyLogAbilities}
+          StudylogAbilities={StudylogAbilities}
+          setStudylogAbilities={setStudylogAbilities}
         />
 
         <FormButtonWrapper>
@@ -189,11 +189,11 @@ const ProfilePageNewReport = () => {
       </Form>
 
       {isModalOpened && (
-        <StudyLogModal
+        <StudylogModal
           onModalClose={onModalClose}
           username={username}
-          studyLogs={studyLogs}
-          setStudyLogs={setStudyLogs}
+          Studylogs={Studylogs}
+          setStudylogs={setStudylogs}
         />
       )}
     </>

@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import COLOR from '../../constants/color';
 import { BUTTON_SIZE, Container, Icon, Image } from './Button.styles';
 
 const Button = ({
@@ -45,10 +44,6 @@ Button.propTypes = {
 
 Button.defaultProps = {
   size: BUTTON_SIZE.MEDIUM,
-  css: {
-    backgroundColor: COLOR.DARK_BLUE_800,
-    color: COLOR.WHITE,
-  },
 };
 
 export default Button;

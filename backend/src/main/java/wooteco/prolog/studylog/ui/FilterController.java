@@ -30,7 +30,7 @@ public class FilterController {
     public ResponseEntity<FilterResponse> showAll() {
         List<LevelResponse> levelResponses = levelService.findAll();
         List<MissionResponse> missionResponses = missionService.findAll();
-        List<TagResponse> tagResponses = tagService.findTagsIncludedInPost();
+        List<TagResponse> tagResponses = tagService.findTagsIncludedInStudylogs();
         List<MemberResponse> memberResponses = memberService.findAll();
         return ResponseEntity.ok()
             .body(new FilterResponse(levelResponses, missionResponses, tagResponses, memberResponses));

@@ -36,10 +36,10 @@ import wooteco.prolog.studylog.domain.repository.TagRepository;
 @DataJpaTest
 class StudylogRepositoryTest {
 
-    private static final String POST1_TITLE = "이것은 제목";
-    private static final String POST2_TITLE = "이것은 두번째 제목";
-    private static final String POST3_TITLE = "이것은 3 제목";
-    private static final String POST4_TITLE = "이것은 네번 제목";
+    private static final String STUDYLOG1_TITLE = "이것은 제목";
+    private static final String STUDYLOG2_TITLE = "이것은 두번째 제목";
+    private static final String STUDYLOG3_TITLE = "이것은 3 제목";
+    private static final String STUDYLOG4_TITLE = "이것은 네번 제목";
 
     @Autowired
     private StudylogRepository studylogRepository;
@@ -73,10 +73,10 @@ class StudylogRepositoryTest {
             tag1, tag2, tag3, tag4, tag5
     );
 
-    private final Studylog studylog1 = new Studylog(member1, POST1_TITLE, "피케이와 포모의 포스트", mission1, asList(tag1, tag2));
-    private final Studylog studylog2 = new Studylog(member1, POST2_TITLE, "피케이와 포모의 포스트 2", mission1, asList(tag2, tag3));
-    private final Studylog studylog3 = new Studylog(member2, POST3_TITLE, "피케이 포스트", mission2, asList(tag3, tag4, tag5));
-    private final Studylog studylog4 = new Studylog(member2, POST4_TITLE, "포모의 포스트", mission2, asList());
+    private final Studylog studylog1 = new Studylog(member1, STUDYLOG1_TITLE, "피케이와 포모의 스터디로그", mission1, asList(tag1, tag2));
+    private final Studylog studylog2 = new Studylog(member1, STUDYLOG2_TITLE, "피케이와 포모의 스터디로그 2", mission1, asList(tag2, tag3));
+    private final Studylog studylog3 = new Studylog(member2, STUDYLOG3_TITLE, "피케이 스터디로그", mission2, asList(tag3, tag4, tag5));
+    private final Studylog studylog4 = new Studylog(member2, STUDYLOG4_TITLE, "포모의 스터디로그", mission2, asList());
 
     @BeforeEach
     void setUp() {
@@ -100,10 +100,10 @@ class StudylogRepositoryTest {
                 .and(StudylogSpecification.distinct(true));
 
         // when
-        Page<Studylog> posts = studylogRepository.findAll(specs, PageRequest.of(0, 10));
+        Page<Studylog> studylogs = studylogRepository.findAll(specs, PageRequest.of(0, 10));
 
         //then
-        assertThat(posts).containsExactlyInAnyOrder(studylog1, studylog2);
+        assertThat(studylogs).containsExactlyInAnyOrder(studylog1, studylog2);
     }
 
     @DisplayName("미션으로 찾기")
@@ -115,10 +115,10 @@ class StudylogRepositoryTest {
                 .and(StudylogSpecification.distinct(true));
 
         // when
-        Page<Studylog> posts = studylogRepository.findAll(specs, PageRequest.of(0, 10));
+        Page<Studylog> studylogs = studylogRepository.findAll(specs, PageRequest.of(0, 10));
 
         //then
-        assertThat(posts).containsExactlyInAnyOrder(studylog3, studylog4);
+        assertThat(studylogs).containsExactlyInAnyOrder(studylog3, studylog4);
     }
 
     @DisplayName("태그로 찾기")
@@ -131,10 +131,10 @@ class StudylogRepositoryTest {
                 .and(StudylogSpecification.distinct(true));
 
         // when
-        Page<Studylog> posts = studylogRepository.findAll(specs, PageRequest.of(0, 10));
+        Page<Studylog> studylogs = studylogRepository.findAll(specs, PageRequest.of(0, 10));
 
         //then
-        assertThat(posts).containsExactlyInAnyOrder(studylog1, studylog2);
+        assertThat(studylogs).containsExactlyInAnyOrder(studylog1, studylog2);
     }
 
     @DisplayName("멤버로 찾기")
@@ -146,10 +146,10 @@ class StudylogRepositoryTest {
                 .and(StudylogSpecification.distinct(true));
 
         // when
-        Page<Studylog> posts = studylogRepository.findAll(specs, PageRequest.of(0, 10));
+        Page<Studylog> studylogs = studylogRepository.findAll(specs, PageRequest.of(0, 10));
 
         //then
-        assertThat(posts).containsExactlyInAnyOrder(studylog1, studylog2, studylog3, studylog4);
+        assertThat(studylogs).containsExactlyInAnyOrder(studylog1, studylog2, studylog3, studylog4);
     }
 
     @DisplayName("레벨, 미션, 태그로 찾기")
@@ -165,12 +165,12 @@ class StudylogRepositoryTest {
                 .and(StudylogSpecification.findByTagIn(tagIds))
                 .and(StudylogSpecification.distinct(true));
         // when
-        Page<Studylog> posts = studylogRepository.findAll(specs, PageRequest.of(0, 10));
+        Page<Studylog> studylogs = studylogRepository.findAll(specs, PageRequest.of(0, 10));
 
-        assertThat(posts).containsExactlyInAnyOrder(studylog1, studylog2);
+        assertThat(studylogs).containsExactlyInAnyOrder(studylog1, studylog2);
     }
 
-    @DisplayName("멤버로 포스트를 찾아오는지 테스트")
+    @DisplayName("멤버로 스터디로그를 찾아오는지 테스트")
     @Test
     @Transactional
     void findByMemberTest() {

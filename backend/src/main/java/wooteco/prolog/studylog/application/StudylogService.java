@@ -133,7 +133,7 @@ public class StudylogService {
         }
 
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
-            return findPostsWithoutKeyword(request.getLevels(), request.getMissions(),
+            return findStudylogsWithoutKeyword(request.getLevels(), request.getMissions(),
                 request.getTags(),
                 request.getUsernames(), request.getMembers(), request.getStartDate(),
                 request.getEndDate(),
@@ -161,7 +161,7 @@ public class StudylogService {
         );
     }
 
-    public StudylogsResponse findPostsWithoutKeyword(
+    public StudylogsResponse findStudylogsWithoutKeyword(
         List<Long> levelIds,
         List<Long> missionIds,
         List<Long> tagIds,
@@ -182,8 +182,8 @@ public class StudylogService {
                 .and(StudylogSpecification.findBetweenDate(startDate, endDate))
                 .and(StudylogSpecification.distinct(true));
 
-        Page<Studylog> posts = studylogRepository.findAll(specs, pageable);
-        return StudylogsResponse.of(posts, memberId);
+        Page<Studylog> studylogs = studylogRepository.findAll(specs, pageable);
+        return StudylogsResponse.of(studylogs, memberId);
     }
 
     public StudylogsResponse findStudylogsOf(String username, Pageable pageable) {
@@ -280,7 +280,7 @@ public class StudylogService {
         Studylog studylog = studylogRepository.findById(studylogId)
             .orElseThrow(StudylogNotFoundException::new);
         studylog.validateAuthor(foundMember);
-        final Tags originalTags = tagService.findByPostAndMember(studylog, foundMember);
+        final Tags originalTags = tagService.findByStudylogsAndMember(studylog, foundMember);
 
         Mission mission = missionService.findById(studylogRequest.getMissionId());
         Tags newTags = tagService.findOrCreate(studylogRequest.getTags());
@@ -297,13 +297,13 @@ public class StudylogService {
             .orElseThrow(StudylogNotFoundException::new);
         studylog.validateAuthor(foundMember);
 
-        final Tags tags = tagService.findByPostAndMember(studylog, foundMember);
+        final Tags tags = tagService.findByStudylogsAndMember(studylog, foundMember);
         studylogDocumentService.delete(studylog.toStudylogDocument());
         studylogRepository.delete(studylog);
         memberTagService.removeMemberTag(tags, foundMember);
     }
 
-    public List<CalendarStudylogResponse> findCalendarPosts(String username, LocalDate localDate) {
+    public List<CalendarStudylogResponse> findCalendarStudylogs(String username, LocalDate localDate) {
         final Member member = memberService.findByUsername(username);
         final LocalDateTime start = localDate.with(firstDayOfMonth()).atStartOfDay();
         final LocalDateTime end = localDate.with(lastDayOfMonth()).atTime(LocalTime.MAX);

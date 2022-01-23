@@ -9,14 +9,14 @@ import { requestGetReportList } from '../../service/requests';
 import { COLOR, REQUEST_REPORT_TYPE } from '../../constants';
 
 import { Chip, Pagination } from '../../components';
-import { ReactComponent as StudyLogIcon } from '../../assets/images/post.svg';
+import { ReactComponent as StudylogIcon } from '../../assets/images/post.svg';
 import {
   Container,
   AddNewReportLink,
   ReportList,
   Card,
   AbilityList,
-  StudyLogCount,
+  StudylogCount,
   Badge,
 } from './styles';
 import { css } from '@emotion/react';
@@ -167,10 +167,10 @@ const ProfilePageReportsList = () => {
                     ))}
                 </AbilityList>
 
-                <StudyLogCount>
-                  <StudyLogIcon />
+                <StudylogCount>
+                  <StudylogIcon />
                   <p>{studylogs.length}개의 학습로그</p>
-                </StudyLogCount>
+                </StudylogCount>
 
                 <time>{new Date(createdAt).toLocaleDateString()}</time>
               </Link>

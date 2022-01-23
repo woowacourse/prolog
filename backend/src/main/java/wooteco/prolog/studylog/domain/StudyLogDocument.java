@@ -18,7 +18,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @Builder
 @AllArgsConstructor
 @Document(indexName = "studylog-document")
-public class StudylogDocument {
+public class StudyLogDocument {
 
     @Field(type = FieldType.Long)
     private Long id;

@@ -11,6 +11,7 @@ import {
   ProfilePagePosts,
   ProfilePageReports,
   ProfilePageScraps,
+  StudylogListPage,
 } from './pages';
 import AbilityPage from './pages/AbilityPage';
 import ProfilePageReportsList from './pages/ProfilePageReportsList';
@@ -20,10 +21,12 @@ const pageRoutes = [
     path: [PATH.ROOT],
     render: () => <MainPage />,
   },
+
   {
     path: [PATH.LOGIN_CALLBACK],
     render: () => <LoginCallbackPage />,
   },
+  { path: [PATH.STUDYLOG], render: () => <StudylogListPage /> },
   { path: [PATH.NEW_POST], render: () => <NewPostPage /> },
   {
     path: [`${PATH.POST}/:id`],
