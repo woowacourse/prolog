@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
 import { useEffect } from 'react';
-import useStudyLog from '../../hooks/useStudyLog';
+import useStudylog from '../../hooks/useStudylog';
 
 import BannerList from '../../components/Banner/BannerList';
-import RecentStudyLogList from './RecentStudyLogList';
+import RecentStudyLogList from './RecentStudylogList';
 
 import LOCAL_STORAGE_KEY from '../../constants/localStorage';
 
@@ -14,7 +14,7 @@ import bannerList from '../../configs/bannerList';
 
 const MainPage = () => {
   const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
-  const { response: recentStudylogs, getAllData: fetchRecentStudylogs } = useStudyLog([]);
+  const { response: recentStudylogs, getAllData: fetchRecentStudylogs } = useStudylog([]);
 
   useEffect(() => {
     fetchRecentStudylogs(

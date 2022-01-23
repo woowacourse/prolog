@@ -5,9 +5,9 @@ import localStorage from 'local-storage';
 
 import { API, COLOR, ERROR_MESSAGE, REPORT_DESCRIPTION } from '../../constants';
 import { Button } from '../../components';
-import StudyLogModal from './StudyLogModal';
+import StudylogModal from './StudylogModal';
 import ReportInfoInput from './ReportInfoInput';
-import ReportStudyLogTable from './ReportStudyLogTable';
+import ReportStudylogTable from './ReportStudylogTable';
 import { Checkbox, Form, FormButtonWrapper } from './style';
 import { requestGetAbilities, requestPostReport } from '../../service/requests';
 import AbilityGraph from '../ProfilePageReports/AbilityGraph';
@@ -41,8 +41,8 @@ const ProfilePageNewReport = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [abilities, setAbilities] = useState([]);
-  const [studyLogs, setStudyLogs] = useState([]);
-  const [studyLogAbilities, setStudyLogAbilities] = useState([]);
+  const [studyLogs, setStudylogs] = useState([]);
+  const [studyLogAbilities, setStudylogAbilities] = useState([]);
 
   const [isModalOpened, setIsModalOpened] = useState(false);
 
@@ -67,11 +67,11 @@ const ProfilePageNewReport = () => {
   };
 
   const getCheckedAbility = (studyLogId) => {
-    const targetStudyLogAbility = studyLogAbilities.find(
+    const targetStudylogAbility = studyLogAbilities.find(
       (studyLogAbility) => studyLogAbility.id === studyLogId
     )?.abilities;
 
-    return targetStudyLogAbility?.map((ability) => ability.id) ?? [];
+    return targetStudylogAbility?.map((ability) => ability.id) ?? [];
   };
 
   const onSubmitReport = async (event) => {
@@ -166,13 +166,13 @@ const ProfilePageNewReport = () => {
 
         <AbilityGraph abilities={abilities} setAbilities={onChangeAbilities} mode="NEW" />
 
-        <ReportStudyLogTable
+        <ReportStudylogTable
           onModalOpen={onModalOpen}
           studyLogs={studyLogs}
-          setStudyLogs={setStudyLogs}
+          setStudylogs={setStudylogs}
           abilities={abilities}
           studyLogAbilities={studyLogAbilities}
-          setStudyLogAbilities={setStudyLogAbilities}
+          setStudylogAbilities={setStudylogAbilities}
         />
 
         <FormButtonWrapper>
@@ -189,11 +189,11 @@ const ProfilePageNewReport = () => {
       </Form>
 
       {isModalOpened && (
-        <StudyLogModal
+        <StudylogModal
           onModalClose={onModalClose}
           username={username}
           studyLogs={studyLogs}
-          setStudyLogs={setStudyLogs}
+          setStudylogs={setStudylogs}
         />
       )}
     </>

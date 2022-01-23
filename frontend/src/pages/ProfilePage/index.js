@@ -21,7 +21,7 @@ import { requestGetUserTags } from '../../service/requests';
 import useNotFound from '../../hooks/useNotFound';
 import { Calendar, Card, Pagination, ProfilePageSideBar, Tag } from '../../components';
 import useFetch from '../../hooks/useFetch';
-import useStudyLog from '../../hooks/useStudyLog';
+import useStudylog from '../../hooks/useStudylog';
 import { MainContentStyle } from '../../PageRouter';
 import { FlexStyle } from '../../styles/flex.styles';
 
@@ -42,7 +42,7 @@ const ProfilePage = ({ children, menu }) => {
     { filterType: 'tags', filterDetailId: 0 },
   ]);
 
-  const { response: posts, getAllData: getStudyLogs } = useStudyLog([]);
+  const { response: posts, getAllData: getStudyLogs } = useStudylog([]);
 
   const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
   const [hoveredPostId, setHoveredPostId] = useState(0);

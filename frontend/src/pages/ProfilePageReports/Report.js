@@ -1,6 +1,6 @@
 import { Wrapper } from './Report.styles';
 import AbilityGraph from './AbilityGraph';
-import ReportStudyLogTable from './ReportStudyLogTable';
+import ReportStudyLogTable from './ReportStudylogTable';
 
 const Report = ({ report = {} }) => {
   return (
