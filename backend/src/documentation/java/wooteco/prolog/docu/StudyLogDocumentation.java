@@ -1,24 +1,27 @@
 package wooteco.prolog.docu;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.Disabled;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
-import wooteco.prolog.studylog.application.dto.*;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import wooteco.prolog.studylog.application.dto.LevelRequest;
+import wooteco.prolog.studylog.application.dto.LevelResponse;
+import wooteco.prolog.studylog.application.dto.MissionRequest;
+import wooteco.prolog.studylog.application.dto.MissionResponse;
+import wooteco.prolog.studylog.application.dto.StudylogRequest;
+import wooteco.prolog.studylog.application.dto.StudylogResponse;
+import wooteco.prolog.studylog.application.dto.StudylogsResponse;
+import wooteco.prolog.studylog.application.dto.TagRequest;
 
 class StudyLogDocumentation extends Documentation {
 
@@ -63,7 +66,7 @@ class StudyLogDocumentation extends Documentation {
         ExtractableResponse<Response> response = given("studylog/list")
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .accept(MediaType.APPLICATION_JSON_VALUE)
-            .when().get("/posts")
+            .when().get("/studylogs")
             .then().log().all().extract();
 
         // then
@@ -102,8 +105,8 @@ class StudyLogDocumentation extends Documentation {
         // given
         String studylogLocation1 = 스터디로그_등록함(Collections.singletonList(createStudylogRequest1())).header("Location");
         String studylogLocation2 = 스터디로그_등록함(Collections.singletonList(createStudylogRequest2())).header("Location");
-        Long studylogId1 = Long.parseLong(studylogLocation1.split("/posts/")[1]);
-        Long studylogId2 = Long.parseLong(studylogLocation2.split("/posts/")[1]);
+        Long studylogId1 = Long.parseLong(studylogLocation1.split("/studylogs/")[1]);
+        Long studylogId2 = Long.parseLong(studylogLocation2.split("/studylogs/")[1]);
 
         스터디로그_단건_조회(studylogId1);
         스터디로그_단건_조회(studylogId2);
@@ -190,7 +193,7 @@ class StudyLogDocumentation extends Documentation {
             .body(request)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().log().all()
-            .post("/posts")
+            .post("/studylogs")
             .then().log().all().extract();
     }
 
