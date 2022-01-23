@@ -36,7 +36,7 @@ import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH, SNACKBAR_MESSAGE } from '../../co
 import { useSelector } from 'react-redux';
 
 import useSnackBar from '../../hooks/useSnackBar';
-import useStudyLog from '../../hooks/useStudyLog';
+import useStudylog from '../../hooks/useStudylog';
 import debounce from '../../utils/debounce';
 import { css } from '@emotion/react';
 import useMutation from '../../hooks/useMutation';
@@ -61,7 +61,7 @@ const PostPage = () => {
   const myName = useSelector((state) => state.user.profile.data?.username);
 
   const { id: postId } = useParams();
-  const { response: studyLog, getData, deleteData } = useStudyLog({});
+  const { response: studyLog, getData, deleteData } = useStudylog({});
 
   const getStudyLog = useCallback(() => getData(postId, accessToken), [
     postId,

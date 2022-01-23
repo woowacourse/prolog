@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import useFetch from '../../hooks/useFetch';
 import { requestGetMissions, requestGetTags } from '../../service/requests';
 import { PATH } from '../../constants';
-import useStudyLog from '../../hooks/useStudyLog';
+import useStudylog from '../../hooks/useStudylog';
 import { SelectBoxWrapper, Post, SubmitButtonStyle } from '../NewPostPage/styles';
 import { MainContentStyle } from '../../PageRouter';
 
@@ -17,7 +17,7 @@ const EditPostPage = () => {
   const accessToken = useSelector((state) => state.user.accessToken.data);
 
   const { id: postId } = useParams();
-  const { response: post, getData: getStudyLog, editData: editPost } = useStudyLog({});
+  const { response: post, getData: getStudyLog, editData: editPost } = useStudylog({});
 
   const [selectedMission, setSelectedMission] = useState('');
   const cardRefs = useRef([]);

@@ -10,4 +10,4 @@ export { default as ProfilePageNewReport } from './ProfilePageNewReport';
 export { default as ProfilePageEditReport } from './ProfilePageEditReport';
 export { default as LoginCallbackPage } from './LoginCallbackPage';
 export { default as EditPostPage } from './EditPostPage';
-export { default as StudyLogListPage } from './StudyLogListPage';
+export { default as StudylogListPage } from './StudylogListPage';
