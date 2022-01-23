@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import {
   requestPostScrap,
@@ -99,7 +99,7 @@ const StudylogPage = () => {
       });
     },
     () => {
-      getStudylog(studylogId);
+      getStudylog(studylogId, accessToken);
       openSnackBar(SNACKBAR_MESSAGE.SUCCESS_TO_SCRAP);
     }
   );
@@ -113,7 +113,7 @@ const StudylogPage = () => {
       });
     },
     () => {
-      getStudylog(studylogId);
+      getStudylog(studylogId, accessToken);
       openSnackBar(SNACKBAR_MESSAGE.FAIL_TO_SCRAP);
     }
   );
@@ -129,7 +129,7 @@ const StudylogPage = () => {
     },
     () => {
       openSnackBar(SNACKBAR_MESSAGE.SET_LIKE);
-      getStudylog(studylogId);
+      getStudylog(studylogId, accessToken);
     },
     () => openSnackBar(SNACKBAR_MESSAGE.ERROR_SET_LIKE)
   );
@@ -142,7 +142,7 @@ const StudylogPage = () => {
     },
     () => {
       openSnackBar(SNACKBAR_MESSAGE.UNSET_LIKE);
-      getStudylog(studylogId);
+      getStudylog(studylogId, accessToken);
     },
     () => openSnackBar(SNACKBAR_MESSAGE.ERROR_UNSET_LIKE)
   );
@@ -167,7 +167,7 @@ const StudylogPage = () => {
   };
 
   useEffect(() => {
-    getStudylog(studylogId);
+    getStudylog(studylogId, accessToken);
   }, [accessToken, studylogId]);
 
   return (

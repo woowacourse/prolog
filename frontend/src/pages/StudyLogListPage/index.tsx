@@ -62,7 +62,7 @@ const StudylogListPage = (): JSX.Element => {
 
   const accessToken = useSelector((state: { user: User }) => state.user.accessToken.data);
 
-  const { response: studylogs, getAllData: getStudyLogs } = useStudylog([]);
+  const { response: studylogs, getAllData: getStudylogs } = useStudylog([]);
 
   const [filters] = useFetch([], requestGetFilters);
 
@@ -117,7 +117,7 @@ const StudylogListPage = (): JSX.Element => {
   useEffect(() => {
     const query = new URLSearchParams(history.location.search);
 
-    getStudyLogs({ type: 'searchParams', data: query }, accessToken);
+    getStudylogs({ type: 'searchParams', data: query }, accessToken);
   }, [history.location.search, accessToken]);
 
   useEffect(() => {

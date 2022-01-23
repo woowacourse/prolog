@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { onToggleCheckbox } from '../../utils/toggleCheckbox';
 import { filterOnlyNewList } from '../../utils/filteringList';
-import useReportStudyLogs from '../../hooks/useReportStudyLogs';
+import useReportStudylogs from '../../hooks/useReportStudylogs';
 import { Button, Chip, Pagination } from '../../components';
 import COLOR from '../../constants/color';
 import { Checkbox } from './style';
@@ -14,18 +14,18 @@ import {
   Thead,
   EmptyTableGuide,
   SelectAbilityBox,
-} from './ReportStudyLogTable.styles';
+} from './ReportStudylogTable.styles';
 
-const ReportStudyLogTable = ({
+const ReportStudylogTable = ({
   onModalOpen,
   studyLogs,
-  setStudyLogs,
+  setStudylogs,
   abilities,
   studyLogAbilities,
-  setStudyLogAbilities,
+  setStudylogAbilities,
 }) => {
-  const { reportStudyLogData, setPage } = useReportStudyLogs(studyLogs);
-  const { currPage, totalPage, totalSize, data: currReportStudyLogs } = reportStudyLogData;
+  const { reportStudylogData, setPage } = useReportStudylogs(studyLogs);
+  const { currPage, totalPage, totalSize, data: currReportStudylogs } = reportStudylogData;
 
   const [deleteTargets, setDeleteTargets] = useState([]);
   const [selectAbilityBox, setSelectAbilityBox] = useState({
@@ -53,33 +53,33 @@ const ReportStudyLogTable = ({
   }, [selectAbilityBox, selectAbilityBoxRef]);
 
   // 학습로그 표 전체삭제
-  const allChecked = deleteTargets?.length === currReportStudyLogs?.length;
-  const onToggleAllStudyLog = () => {
+  const allChecked = deleteTargets?.length === currReportStudylogs?.length;
+  const onToggleAllStudylog = () => {
     if (allChecked) {
       setDeleteTargets([]);
     } else {
-      setDeleteTargets(currReportStudyLogs);
+      setDeleteTargets(currReportStudylogs);
     }
   };
 
   // 학습로그 목록 체크박스
-  const onToggleStudyLog = (id) => {
-    const targetStudyLog = studyLogs.find((studyLog) => studyLog.id === id);
+  const onToggleStudylog = (id) => {
+    const targetStudylog = studyLogs.find((studyLog) => studyLog.id === id);
 
-    setDeleteTargets(onToggleCheckbox(deleteTargets, targetStudyLog));
+    setDeleteTargets(onToggleCheckbox(deleteTargets, targetStudylog));
   };
 
   // 학습로그 삭제
-  const onDeleteStudyLogInReport = () => {
+  const onDeleteStudylogInReport = () => {
     if (allChecked) {
       const moveTargetPage = currPage === totalPage ? currPage - 1 : currPage;
-      setStudyLogAbilities([]);
+      setStudylogAbilities([]);
       setPage(moveTargetPage);
     }
 
-    setStudyLogs((currStudyLogs) => filterOnlyNewList(currStudyLogs, deleteTargets));
-    setStudyLogAbilities((currStudyLogAbility) =>
-      filterOnlyNewList(currStudyLogAbility, deleteTargets)
+    setStudylogs((currStudylogs) => filterOnlyNewList(currStudylogs, deleteTargets));
+    setStudylogAbilities((currStudylogAbility) =>
+      filterOnlyNewList(currStudylogAbility, deleteTargets)
     );
     setDeleteTargets([]);
   };
@@ -99,11 +99,11 @@ const ReportStudyLogTable = ({
 
   // 선택된 역량 추가
   const selectedAbilities = (studyLogId) => {
-    const targetStudyLogAbilities = studyLogAbilities.find(
+    const targetStudylogAbilities = studyLogAbilities.find(
       (studyLogAbility) => studyLogAbility.id === studyLogId
     );
 
-    return targetStudyLogAbilities?.abilities?.map((ability) => (
+    return targetStudylogAbilities?.abilities?.map((ability) => (
       <li key={ability.id}>
         <Chip backgroundColor={ability.color} fontSize="1.2rem">
           {ability.name}
@@ -114,13 +114,13 @@ const ReportStudyLogTable = ({
 
   // 학습로그 목록에 역량 추가
   const onAddAbilities = (studyLogId, currAbility) => {
-    const targetStudyLogAbility = studyLogAbilities?.find(
+    const targetStudylogAbility = studyLogAbilities?.find(
       (studyLogAbility) => studyLogAbility.id === studyLogId
     );
 
-    if (!targetStudyLogAbility) {
-      setStudyLogAbilities((currStudyLog) => [
-        ...currStudyLog,
+    if (!targetStudylogAbility) {
+      setStudylogAbilities((currStudylog) => [
+        ...currStudylog,
         {
           id: studyLogId,
           abilities: [currAbility],
@@ -129,35 +129,35 @@ const ReportStudyLogTable = ({
     } else {
       const index = studyLogAbilities
         .map((studyLog) => studyLog.id)
-        .indexOf(targetStudyLogAbility.id);
+        .indexOf(targetStudylogAbility.id);
 
-      if (targetStudyLogAbility.abilities.find((ability) => ability.id === currAbility.id)) {
-        const abilityIndex = targetStudyLogAbility.abilities
+      if (targetStudylogAbility.abilities.find((ability) => ability.id === currAbility.id)) {
+        const abilityIndex = targetStudylogAbility.abilities
           .map((ability) => ability.id)
           .indexOf(currAbility.id);
 
-        const deleteStudyLogAbility = {
+        const deleteStudylogAbility = {
           id: studyLogId,
           abilities: [
-            ...targetStudyLogAbility.abilities.slice(0, abilityIndex),
-            ...targetStudyLogAbility.abilities.slice(abilityIndex + 1),
+            ...targetStudylogAbility.abilities.slice(0, abilityIndex),
+            ...targetStudylogAbility.abilities.slice(abilityIndex + 1),
           ],
         };
 
-        setStudyLogAbilities([
+        setStudylogAbilities([
           ...studyLogAbilities.slice(0, index),
-          deleteStudyLogAbility,
+          deleteStudylogAbility,
           ...studyLogAbilities.slice(index + 1),
         ]);
       } else {
-        const addStudyLogAbiliityResult = {
+        const addStudylogAbiliityResult = {
           id: studyLogId,
-          abilities: [...targetStudyLogAbility.abilities, currAbility],
+          abilities: [...targetStudylogAbility.abilities, currAbility],
         };
 
-        setStudyLogAbilities([
+        setStudylogAbilities([
           ...studyLogAbilities.slice(0, index),
-          addStudyLogAbiliityResult,
+          addStudylogAbiliityResult,
           ...studyLogAbilities.slice(index + 1),
         ]);
       }
@@ -166,13 +166,13 @@ const ReportStudyLogTable = ({
 
   const isChecked = (studyLogId, abilityId) => {
     //studyLog에 Ability가 잉ㅆ는가?
-    const targetStudyLog = studyLogAbilities?.find(
+    const targetStudylog = studyLogAbilities?.find(
       (studyLogAbility) => studyLogAbility.id === studyLogId
     );
 
-    if (!targetStudyLog) return false;
+    if (!targetStudylog) return false;
 
-    return targetStudyLog.abilities.map((ability) => Number(ability.id)).includes(abilityId);
+    return targetStudylog.abilities.map((ability) => Number(ability.id)).includes(abilityId);
   };
 
   return (
@@ -186,7 +186,7 @@ const ReportStudyLogTable = ({
           size="XX_SMALL"
           css={{ backgroundColor: `${COLOR.RED_200}` }}
           type="button"
-          onClick={onDeleteStudyLogInReport}
+          onClick={onDeleteStudylogInReport}
           disabled={!deleteTargets.length}
         >
           삭제
@@ -207,9 +207,9 @@ const ReportStudyLogTable = ({
             <th scope="col">
               <Checkbox
                 type="checkbox"
-                onChange={onToggleAllStudyLog}
-                checked={currReportStudyLogs?.length && allChecked}
-                disabled={!currReportStudyLogs?.length}
+                onChange={onToggleAllStudylog}
+                checked={currReportStudylogs?.length && allChecked}
+                disabled={!currReportStudylogs?.length}
               />
             </th>
             <th scope="col">제목</th>
@@ -218,14 +218,14 @@ const ReportStudyLogTable = ({
         </Thead>
 
         <Tbody>
-          {currReportStudyLogs?.map(({ id, title }) => (
+          {currReportStudylogs?.map(({ id, title }) => (
             <tr key={id}>
               <td>
                 <Checkbox
                   type="checkbox"
                   value={title | ''}
                   checked={deleteTargets.map((studyLog) => studyLog.id).includes(id)}
-                  onChange={() => onToggleStudyLog(id)}
+                  onChange={() => onToggleStudylog(id)}
                 />
               </td>
               <td>
@@ -269,13 +269,13 @@ const ReportStudyLogTable = ({
           ))}
         </Tbody>
       </Table>
-      <Pagination postsInfo={reportStudyLogData} onSetPage={onMoveToPage} />
+      <Pagination postsInfo={reportStudylogData} onSetPage={onMoveToPage} />
 
-      {currReportStudyLogs.length === 0 && (
+      {currReportStudylogs.length === 0 && (
         <EmptyTableGuide>'학습로그 불러오기'를 통해 학습로그를 추가해주세요.</EmptyTableGuide>
       )}
     </Section>
   );
 };
 
-export default ReportStudyLogTable;
+export default ReportStudylogTable;

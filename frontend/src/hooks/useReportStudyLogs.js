@@ -9,17 +9,17 @@ const defaultValue = {
   data: [],
 };
 
-const useReportStudyLogs = (studyLogs) => {
-  const [reportStudyLogData, setReportStudyLogData] = useState(defaultValue);
+const useReportStudylogs = (studyLogs) => {
+  const [reportStudylogData, setReportStudylogData] = useState(defaultValue);
   const [page, setPage] = useState(1);
 
   const studyLogIds = filterIds(studyLogs);
 
-  const getStudylogs = async (currStudyLogIds, currentPage = 1) => {
+  const getStudylogs = async (currStudylogIds, currentPage = 1) => {
     try {
       const query = {
         type: 'searchParams',
-        data: `ids=${currStudyLogIds.join(',')}&page=${currentPage}`,
+        data: `ids=${currStudylogIds.join(',')}&page=${currentPage}`,
       };
       const response = await requestGetStudylogs(query);
 
@@ -29,7 +29,7 @@ const useReportStudyLogs = (studyLogs) => {
 
       const responseData = await response.json();
 
-      setReportStudyLogData(responseData);
+      setReportStudylogData(responseData);
     } catch (error) {
       console.error(error);
     }
@@ -37,10 +37,10 @@ const useReportStudyLogs = (studyLogs) => {
 
   useEffect(() => {
     if (studyLogs.length === 0) {
-      setReportStudyLogData(defaultValue);
+      setReportStudylogData(defaultValue);
     } else {
       // 모달을 열어 학습로그를 새로 추가한 경우
-      if (studyLogIds.length > reportStudyLogData.totalSize) {
+      if (studyLogIds.length > reportStudylogData.totalSize) {
         setPage(1);
         getStudylogs(studyLogIds, 1);
       } else {
@@ -60,7 +60,7 @@ const useReportStudyLogs = (studyLogs) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  return { reportStudyLogData, setReportStudyLogData, setPage };
+  return { reportStudylogData, setReportStudylogData, setPage };
 };
 
-export default useReportStudyLogs;
+export default useReportStudylogs;

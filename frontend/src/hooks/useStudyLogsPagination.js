@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 const useStudylogsPagination = (studyLogs) => {
   const [page, setPage] = useState(1);
 
-  const [reportStudyLogData, setReportStudyLogData] = useState({
+  const [reportStudylogData, setReportStudylogData] = useState({
     currPage: 1,
     totalPage: 1,
     totalSize: 0,
@@ -11,7 +11,7 @@ const useStudylogsPagination = (studyLogs) => {
   });
 
   useEffect(() => {
-    setReportStudyLogData({
+    setReportStudylogData({
       currPage: 1,
       totalPage: Math.ceil(studyLogs.length / 10),
       totalSize: studyLogs.length,
@@ -20,7 +20,7 @@ const useStudylogsPagination = (studyLogs) => {
   }, [studyLogs]);
 
   useEffect(() => {
-    setReportStudyLogData({
+    setReportStudylogData({
       currPage: page,
       totalPage: Math.ceil(studyLogs.length / 10),
       totalSize: studyLogs.length,
@@ -28,7 +28,7 @@ const useStudylogsPagination = (studyLogs) => {
     });
   }, [page]);
 
-  return { setPage, reportStudyLogData };
+  return { setPage, reportStudylogData };
 };
 
 export default useStudylogsPagination;

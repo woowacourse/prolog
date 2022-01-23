@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { SHOW_ALL_FILTER } from '../pages/ProfilePageNewReport/StudyLogModal';
+import { SHOW_ALL_FILTER } from '../pages/ProfilePageNewReport/StudylogModal';
 import { requestGetStudylogs } from '../service/requests';
 
 const defaultValue = {

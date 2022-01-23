@@ -22,7 +22,7 @@ import {
   Heading,
 } from './styles';
 import { useSelector } from 'react-redux';
-import useStudyLog from '../../hooks/useStudylog';
+import useStudylog from '../../hooks/useStudylog';
 import useFetch from '../../hooks/useFetch';
 import useFilterWithParams from '../../hooks/useFilterWithParams';
 import { SelectedFilterList } from '../MainPage/styles';
@@ -59,7 +59,7 @@ const ProfilePageStudylogs = () => {
     getAllData: getStudylogs,
     error: studylogError,
     deleteData: deleteStudylog,
-  } = useStudyLog([]);
+  } = useStudylog([]);
 
   const goTargetStudylog = (id) => {
     history.push(`${PATH.STUDYLOG}/${id}`);

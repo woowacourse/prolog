@@ -3,7 +3,7 @@ const BASE_URL = process.env.REACT_APP_API_URL;
 /* 학습로그 관련 요청 */
 export const requestGetStudylog = (studylogId, accessToken) => {
   if (accessToken) {
-    return fetch(`${BASE_URL}/posts/${studylogId}`, {
+    return fetch(`${BASE_URL}/studylogs/${studylogId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',

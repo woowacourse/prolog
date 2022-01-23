@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import useStudylog from '../../hooks/useStudylog';
 
 import BannerList from '../../components/Banner/BannerList';
-import RecentStudyLogList from './RecentStudyLogList';
+import RecentStudylogList from './RecentStudylogList';
 
 import LOCAL_STORAGE_KEY from '../../constants/localStorage';
 
@@ -17,14 +17,17 @@ const MainPage = () => {
   const { response: recentStudylogs, getAllData: fetchRecentStudylogs } = useStudylog([]);
 
   useEffect(() => {
-    fetchRecentStudylogs({ type: 'searchParams', data: 'size=3' }, JSON.parse(accessToken));
+    fetchRecentStudylogs(
+      { type: 'searchParams', data: 'size=3' },
+      accessToken && JSON.parse(accessToken)
+    );
   }, []);
 
   return (
     <>
       <BannerList bannerList={bannerList} />
       <main css={MainContentStyle}>
-        <RecentStudyLogList studylogs={recentStudylogs.data} />
+        <RecentStudylogList studylogs={recentStudylogs.data} />
       </main>
     </>
   );

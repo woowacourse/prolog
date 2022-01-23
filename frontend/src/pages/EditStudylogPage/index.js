@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { SelectBox, Button, BUTTON_SIZE, EditStudylogCard } from '../../components';
 
 import useFetch from '../../hooks/useFetch';
-import useStudyLog from '../../hooks/useStudylog';
+import useStudylog from '../../hooks/useStudylog';
 import { requestGetMissions, requestGetTags } from '../../service/requests';
 
 import { PATH } from '../../constants';
@@ -21,7 +21,7 @@ const EditStudylogPage = () => {
   const accessToken = useSelector((state) => state.user.accessToken.data);
 
   const { id: studylogId } = useParams();
-  const { response: studylog, getData: getStudyLog, editData: editStudylog } = useStudyLog({});
+  const { response: studylog, getData: getStudylog, editData: editStudylog } = useStudylog({});
 
   const [selectedMission, setSelectedMission] = useState('');
   const cardRefs = useRef([]);
@@ -68,7 +68,7 @@ const EditStudylogPage = () => {
   }, [user, author]);
 
   useEffect(() => {
-    getStudyLog(studylogId, accessToken);
+    getStudylog(studylogId, accessToken);
   }, [studylogId]);
 
   return (
