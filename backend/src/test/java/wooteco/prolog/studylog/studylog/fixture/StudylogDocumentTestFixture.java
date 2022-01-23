@@ -3,7 +3,7 @@ package wooteco.prolog.studylog.studylog.fixture;
 import java.util.Arrays;
 import java.util.List;
 
-public class StudyLogDocumentTestFixture {
+public class StudylogDocumentTestFixture {
 
     private static String 포함된_단어 = "테스트";
     private static String 일부만_포함된_단어 = "테스";

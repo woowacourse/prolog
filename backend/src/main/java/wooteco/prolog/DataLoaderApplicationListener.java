@@ -55,7 +55,7 @@ public class DataLoaderApplicationListener implements
     private TagService tagService;
     private MemberService memberService;
     private StudylogService studylogService;
-    private DocumentService studyLogDocumentService;
+    private DocumentService studylogDocumentService;
     private AbilityService abilityService;
     private UpdatedContentsRepository updatedContentsRepository;
     private ReportService reportService;
@@ -63,7 +63,7 @@ public class DataLoaderApplicationListener implements
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        studyLogDocumentService.deleteAll();
+        studylogDocumentService.deleteAll();
 
         // level init
         Levels.init(levelService);

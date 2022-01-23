@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { ERROR_MESSAGE } from '../constants/message';
 import {
   requestEditPost,
-  requestGetStudyLog,
-  requestGetStudyLogs,
+  requestGetStudylog,
+  requestGetStudylogs,
   requestDeletePost,
 } from '../service/requests';
 
@@ -13,7 +13,7 @@ const useStudylog = (defaultValue) => {
 
   const getAllData = async (query, accessToken) => {
     try {
-      const response = await requestGetStudyLogs(query, accessToken);
+      const response = await requestGetStudylogs(query, accessToken);
 
       if (!response.ok) {
         throw new Error(await response.text());
@@ -60,7 +60,7 @@ const useStudylog = (defaultValue) => {
 
   const getData = async (postId, accessToken) => {
     try {
-      const response = await requestGetStudyLog(postId, accessToken);
+      const response = await requestGetStudylog(postId, accessToken);
 
       if (!response.ok) {
         throw new Error(await response.text());

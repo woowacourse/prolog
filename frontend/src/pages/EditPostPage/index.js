@@ -17,7 +17,7 @@ const EditPostPage = () => {
   const accessToken = useSelector((state) => state.user.accessToken.data);
 
   const { id: postId } = useParams();
-  const { response: post, getData: getStudyLog, editData: editPost } = useStudylog({});
+  const { response: post, getData: getStudylog, editData: editPost } = useStudylog({});
 
   const [selectedMission, setSelectedMission] = useState('');
   const cardRefs = useRef([]);
@@ -63,7 +63,7 @@ const EditPostPage = () => {
   }, [user, author]);
 
   useEffect(() => {
-    getStudyLog(postId, accessToken);
+    getStudylog(postId, accessToken);
   }, [postId]);
 
   return (

@@ -19,7 +19,7 @@ const requestGetPost = (postId, accessToken) => {
   return fetch(`${BASE_URL}/posts/${postId}`);
 };
 
-const requestGetStudyLog = (postId, accessToken) => {
+const requestGetStudylog = (postId, accessToken) => {
   if (accessToken) {
     return fetch(`${BASE_URL}/posts/${postId}`, {
       method: 'GET',
@@ -73,7 +73,7 @@ const requestGetPosts = (query, accessToken) => {
   return fetch(`${BASE_URL}/posts`, authConfig);
 };
 
-const requestGetStudyLogs = (query, accessToken) => {
+const requestGetStudylogs = (query, accessToken) => {
   const authConfig = accessToken
     ? {
         headers: {
@@ -287,8 +287,8 @@ const requestDeleteLike = (accessToken, postId) =>
 export {
   requestGetPost,
   requestGetPosts,
-  requestGetStudyLog,
-  requestGetStudyLogs,
+  requestGetStudylog,
+  requestGetStudylogs,
   requestGetFilters,
   requestGetMissions,
   requestGetTags,

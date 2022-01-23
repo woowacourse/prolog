@@ -51,11 +51,11 @@ public class FakeStudylogDocumentRepository implements StudylogDocumentRepositor
     }
 
     @Override
-    public <S extends StudylogDocument> Iterable<S> saveAll(Iterable<S> inputStudyLogDocuments) {
+    public <S extends StudylogDocument> Iterable<S> saveAll(Iterable<S> inputStudylogDocuments) {
         List<StudylogDocument> studylogDocumentsWithId = new ArrayList<>();
-        for (StudylogDocument studyLogDocument : inputStudyLogDocuments) {
-            STUDYLOG_DOCUMENTS.add(studyLogDocument);
-            STUDYLOG_DOCUMENTS.add(studyLogDocument);
+        for (StudylogDocument studylogDocument : inputStudylogDocuments) {
+            STUDYLOG_DOCUMENTS.add(studylogDocument);
+            STUDYLOG_DOCUMENTS.add(studylogDocument);
         }
         return (Iterable<S>) studylogDocumentsWithId;
     }

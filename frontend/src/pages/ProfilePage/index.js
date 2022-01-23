@@ -42,7 +42,7 @@ const ProfilePage = ({ children, menu }) => {
     { filterType: 'tags', filterDetailId: 0 },
   ]);
 
-  const { response: posts, getAllData: getStudyLogs } = useStudylog([]);
+  const { response: posts, getAllData: getStudylogs } = useStudylog([]);
 
   const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
   const [hoveredPostId, setHoveredPostId] = useState(0);
@@ -54,7 +54,7 @@ const ProfilePage = ({ children, menu }) => {
   const getUserPosts = useCallback(async () => {
     const filterQuery = [...filteringOption, { filterType: 'usernames', filterDetailId: username }];
 
-    await getStudyLogs({
+    await getStudylogs({
       type: 'filter',
       data: { filterQuery, postQueryParams },
     });

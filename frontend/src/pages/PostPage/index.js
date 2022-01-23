@@ -61,14 +61,14 @@ const PostPage = () => {
   const myName = useSelector((state) => state.user.profile.data?.username);
 
   const { id: postId } = useParams();
-  const { response: studyLog, getData, deleteData } = useStudylog({});
+  const { response: Studylog, getData, deleteData } = useStudylog({});
 
-  const getStudyLog = useCallback(() => getData(postId, accessToken), [
+  const getStudylog = useCallback(() => getData(postId, accessToken), [
     postId,
     accessToken,
     getData,
   ]);
-  const deleteStudyLog = useCallback(() => deleteData(postId, accessToken), [
+  const deleteStudylog = useCallback(() => deleteData(postId, accessToken), [
     postId,
     accessToken,
     deleteData,
@@ -87,7 +87,7 @@ const PostPage = () => {
   const onDeletePost = async (id) => {
     if (!window.confirm(CONFIRM_MESSAGE.DELETE_POST)) return;
 
-    const hasError = await deleteStudyLog(id, accessToken);
+    const hasError = await deleteStudylog(id, accessToken);
 
     if (hasError) {
       alert(ALERT_MESSAGE.FAIL_TO_DELETE_POST);
@@ -110,7 +110,7 @@ const PostPage = () => {
       });
     },
     () => {
-      getStudyLog();
+      getStudylog();
       openSnackBar(SNACKBAR_MESSAGE.SUCCESS_TO_SCRAP);
     }
   );
@@ -124,7 +124,7 @@ const PostPage = () => {
       });
     },
     () => {
-      getStudyLog();
+      getStudylog();
       openSnackBar(SNACKBAR_MESSAGE.FAIL_TO_SCRAP);
     }
   );
@@ -140,7 +140,7 @@ const PostPage = () => {
     },
     () => {
       openSnackBar(SNACKBAR_MESSAGE.SET_LIKE);
-      getStudyLog();
+      getStudylog();
     },
     () => openSnackBar(SNACKBAR_MESSAGE.ERROR_SET_LIKE)
   );
@@ -153,13 +153,13 @@ const PostPage = () => {
     },
     () => {
       openSnackBar(SNACKBAR_MESSAGE.UNSET_LIKE);
-      getStudyLog();
+      getStudylog();
     },
     () => openSnackBar(SNACKBAR_MESSAGE.ERROR_UNSET_LIKE)
   );
 
   const toggleLike = () => {
-    studyLog?.liked
+    Studylog?.liked
       ? debounce(() => {
           deleteLike();
         }, 300)
@@ -169,7 +169,7 @@ const PostPage = () => {
   };
 
   const toggleScrap = () => {
-    if (studyLog?.scrap) {
+    if (Studylog?.scrap) {
       deleteScrap();
       return;
     }
@@ -178,19 +178,19 @@ const PostPage = () => {
   };
 
   useEffect(() => {
-    getStudyLog();
+    getStudylog();
   }, [accessToken, postId]);
 
   return (
     <div css={MainContentStyle}>
-      {myName === studyLog?.author?.username && (
+      {myName === Studylog?.author?.username && (
         <ButtonList>
           <Button
             size={BUTTON_SIZE.X_SMALL}
             type="button"
             cssProps={EditButtonStyle}
             alt="수정 버튼"
-            onClick={() => goEditTargetPost(studyLog?.id)}
+            onClick={() => goEditTargetPost(Studylog?.id)}
           >
             수정
           </Button>
@@ -199,43 +199,43 @@ const PostPage = () => {
             type="button"
             cssProps={DeleteButtonStyle}
             alt="삭제 버튼"
-            onClick={() => onDeletePost(studyLog?.id)}
+            onClick={() => onDeletePost(Studylog?.id)}
           >
             삭제
           </Button>
         </ButtonList>
       )}
-      <Card key={studyLog?.id} size="LARGE">
+      <Card key={Studylog?.id} size="LARGE">
         <CardInner>
           <div>
             <SubHeader>
-              <Mission>{studyLog?.mission?.name}</Mission>
+              <Mission>{Studylog?.mission?.name}</Mission>
               <SubHeaderRightContent>
-                <IssuedDate>{new Date(studyLog?.createdAt).toLocaleString('ko-KR')}</IssuedDate>
+                <IssuedDate>{new Date(Studylog?.createdAt).toLocaleString('ko-KR')}</IssuedDate>
               </SubHeaderRightContent>
             </SubHeader>
             <div css={[FlexStyle, JustifyContentSpaceBtwStyle]}>
-              <Title>{studyLog?.title}</Title>
-              <ViewCount count={studyLog?.viewCount} />
+              <Title>{Studylog?.title}</Title>
+              <ViewCount count={Studylog?.viewCount} />
             </div>
             <ProfileChip
-              imageSrc={studyLog?.author?.imageUrl}
+              imageSrc={Studylog?.author?.imageUrl}
               cssProps={ProfileChipStyle}
-              onClick={goProfilePage(studyLog?.author?.username)}
+              onClick={goProfilePage(Studylog?.author?.username)}
             >
-              {studyLog?.author?.nickname}
+              {Studylog?.author?.nickname}
             </ProfileChip>
           </div>
           <Content>
             <Viewer
-              initialValue={studyLog?.content}
+              initialValue={Studylog?.content}
               extendedAutolinks={true}
               plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
             />
           </Content>
           <BottomContainer>
             <Tags>
-              {studyLog?.tags?.map(({ id, name }) => (
+              {Studylog?.tags?.map(({ id, name }) => (
                 <span key={id}>{`#${name} `}</span>
               ))}
             </Tags>
@@ -251,11 +251,11 @@ const PostPage = () => {
               ]}
             >
               <Like
-                liked={studyLog?.liked}
-                likesCount={studyLog?.likesCount}
+                liked={Studylog?.liked}
+                likesCount={Studylog?.likesCount}
                 onClick={toggleLike}
               />
-              <Scrap scrap={studyLog?.scrap} onClick={toggleScrap} />
+              <Scrap scrap={Studylog?.scrap} onClick={toggleScrap} />
             </div>
           </BottomContainer>
         </CardInner>

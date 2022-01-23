@@ -15,7 +15,7 @@ import wooteco.prolog.fixtures.TagAcceptanceFixture;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.studylog.application.dto.MemberTagResponse;
 
-public class StudyLogOverviewStepDefinitions extends AcceptanceSteps {
+public class StudylogOverviewStepDefinitions extends AcceptanceSteps {
 
     @When("{string}의 태그 목록을 조회하면")
     public void 나의태그목록을조회하면(String name) {

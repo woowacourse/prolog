@@ -26,9 +26,9 @@ const ProfilePageEditReport = () => {
   const [isMainReport, setIsMainReport] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [studyLogs, setStudylogs] = useState([]);
+  const [Studylogs, setStudylogs] = useState([]);
   const [abilities, setAbilities] = useState([]);
-  const [studyLogAbilities, setStudylogAbilities] = useState([]);
+  const [StudylogAbilities, setStudylogAbilities] = useState([]);
   const [isModalOpened, setIsModalOpened] = useState(false);
 
   useEffect(() => {
@@ -102,9 +102,9 @@ const ProfilePageEditReport = () => {
     }
   };
 
-  const getCheckedAbility = (studyLogId) => {
-    const targetStudylogAbility = studyLogAbilities.find(
-      (studyLogAbility) => studyLogAbility.id === studyLogId
+  const getCheckedAbility = (StudylogId) => {
+    const targetStudylogAbility = StudylogAbilities.find(
+      (StudylogAbility) => StudylogAbility.id === StudylogId
     )?.abilities;
 
     return targetStudylogAbility?.map((ability) => ability.id) ?? [];
@@ -120,8 +120,8 @@ const ProfilePageEditReport = () => {
       abilityGraph: {
         abilities: abilities.map(({ id, weight, isPresent }) => ({ id, weight, isPresent })),
       },
-      // studylogs: studyLogs.map((item) => ({ id: item.id, abilities: [] })),
-      studylogs: studyLogs.map((item) => ({
+      // studylogs: Studylogs.map((item) => ({ id: item.id, abilities: [] })),
+      studylogs: Studylogs.map((item) => ({
         id: item.id,
         abilities: getCheckedAbility(item.id),
       })),
@@ -175,10 +175,10 @@ const ProfilePageEditReport = () => {
 
         <ReportStudylogTable
           onModalOpen={onModalOpen}
-          studyLogs={studyLogs}
+          Studylogs={Studylogs}
           setStudylogs={setStudylogs}
           abilities={abilities}
-          studyLogAbilities={studyLogAbilities}
+          StudylogAbilities={StudylogAbilities}
           setStudylogAbilities={setStudylogAbilities}
         />
 
@@ -199,7 +199,7 @@ const ProfilePageEditReport = () => {
         <StudylogModal
           onModalClose={onModalClose}
           username={username}
-          studyLogs={studyLogs}
+          Studylogs={Studylogs}
           setStudylogs={setStudylogs}
         />
       )}

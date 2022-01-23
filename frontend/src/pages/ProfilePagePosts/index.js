@@ -56,7 +56,7 @@ const ProfilePagePosts = () => {
 
   const {
     response: posts,
-    getAllData: getStudyLogs,
+    getAllData: getStudylogs,
     error: postError,
     deleteData: deletePost,
   } = useStudylog([]);
@@ -73,7 +73,7 @@ const ProfilePagePosts = () => {
 
   const getData = async () => {
     const query = new URLSearchParams(history.location.search) + `&usernames=${username}`;
-    await getStudyLogs({ type: 'searchParams', data: query });
+    await getStudylogs({ type: 'searchParams', data: query });
   };
 
   const onDeletePost = async (event, id) => {

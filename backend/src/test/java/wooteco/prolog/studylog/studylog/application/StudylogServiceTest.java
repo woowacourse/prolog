@@ -304,15 +304,15 @@ class StudylogServiceTest {
     @Test
     void findByIdTest() {
         List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1, studylog2);
-        StudylogResponse targetStudyLog = studylogResponses.get(0);
+        StudylogResponse targetStudylog = studylogResponses.get(0);
 
         StudylogResponse studylogResponse = studylogService.findById
-                (targetStudyLog.getId(), member2.getId(), false);
+                (targetStudylog.getId(), member2.getId(), false);
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(1);
 
         studylogResponse = studylogService.findById
-                (targetStudyLog.getId(), member2.getId(), false);
+                (targetStudylog.getId(), member2.getId(), false);
 
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(2);
@@ -322,10 +322,10 @@ class StudylogServiceTest {
     @Test
     void findByIdSameUserTest() {
         List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1, studylog2);
-        StudylogResponse targetStudyLog = studylogResponses.get(0);
+        StudylogResponse targetStudylog = studylogResponses.get(0);
 
         StudylogResponse studylogResponse = studylogService.findById
-                (targetStudyLog.getId(), member1.getId(), false);
+                (targetStudylog.getId(), member1.getId(), false);
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(0);
     }

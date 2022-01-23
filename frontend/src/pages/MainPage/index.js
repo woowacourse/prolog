@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import useStudylog from '../../hooks/useStudylog';
 
 import BannerList from '../../components/Banner/BannerList';
-import RecentStudyLogList from './RecentStudylogList';
+import RecentStudylogList from './RecentStudylogList';
 
 import LOCAL_STORAGE_KEY from '../../constants/localStorage';
 
@@ -27,7 +27,7 @@ const MainPage = () => {
     <>
       <BannerList bannerList={bannerList} />
       <main css={MainContentStyle}>
-        <RecentStudyLogList studylogs={recentStudylogs.data} />
+        <RecentStudylogList studylogs={recentStudylogs.data} />
       </main>
     </>
   );

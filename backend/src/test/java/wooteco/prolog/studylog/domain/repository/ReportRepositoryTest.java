@@ -83,7 +83,7 @@ class ReportRepositoryTest {
         System.out.println(new ObjectMapper().writeValueAsString(reportAssembler.of(report)));
     }
 
-    private Studylog createStudyLog(Member member, Mission mission) {
+    private Studylog createStudylog(Member member, Mission mission) {
         return StudylogFixture.builder()
             .mission(mission)
             .title("title")
@@ -106,7 +106,7 @@ class ReportRepositoryTest {
         Mission mission = missionRepository.save(MissionFixture.mission1(level1));
         Ability ability4 = abilityRepository.save(AbilityFixture.childAbility1(member, ability1));
         Ability ability5 = abilityRepository.save(AbilityFixture.childAbility2(member, ability2));
-        Studylog studylog = studylogRepository.save(createStudyLog(member, mission));
+        Studylog studylog = studylogRepository.save(createStudylog(member, mission));
         ReportedStudylogs reportedStudylogs = new ReportedStudylogs(Arrays.asList(
             new ReportedStudylog(
                 studylog.getId(),

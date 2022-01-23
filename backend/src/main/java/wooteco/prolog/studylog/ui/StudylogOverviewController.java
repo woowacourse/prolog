@@ -21,7 +21,7 @@ import wooteco.prolog.studylog.application.dto.MemberTagResponse;
 @RestController
 @RequestMapping("/members")
 @RequiredArgsConstructor
-public class StudyLogOverviewController {
+public class StudylogOverviewController {
 
     private final StudylogService studylogService;
     private final MemberTagService memberTagService;

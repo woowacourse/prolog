@@ -70,7 +70,7 @@ const SelectBoxContainer = styled.section`
   }
 `;
 
-const StudyLogListContainer = styled.section`
+const StudylogListContainer = styled.section`
   width: 100%;
   padding: 2rem;
 
@@ -113,7 +113,7 @@ const DeleteGuide = styled.span`
   }
 `;
 
-const StudyLog = styled.li`
+const Studylog = styled.li`
   label {
     width: 100%;
     padding: 0 1rem;
@@ -173,7 +173,7 @@ export {
   DeleteGuide,
   TitleContainer,
   SelectBoxContainer,
-  StudyLogListContainer,
-  StudyLog,
+  StudylogListContainer,
+  Studylog,
   ReadMoreButton,
 };

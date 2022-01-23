@@ -5,7 +5,7 @@ import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
 import wooteco.prolog.GithubResponses;
 
-public class StudyLogOverviewDocumentation extends Documentation {
+public class StudylogOverviewDocumentation extends Documentation {
 
     @Test
     void 유저의_태그를_조회한다() {

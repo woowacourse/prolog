@@ -28,13 +28,13 @@ public class StudylogScrapService {
     private final StudylogRepository studylogRepository;
 
     @Transactional
-    public MemberScrapResponse registerScrap(Long memberId, Long studyLogId) {
+    public MemberScrapResponse registerScrap(Long memberId, Long studylogId) {
         if (studylogScrapRepository
-            .countByMemberIdAndScrapStudylogId(memberId, studyLogId) > 0) {
+            .countByMemberIdAndScrapStudylogId(memberId, studylogId) > 0) {
             throw new StudylogScrapAlreadyRegisteredException();
         }
 
-        Studylog studylog = studylogRepository.findById(studyLogId)
+        Studylog studylog = studylogRepository.findById(studylogId)
             .orElseThrow(StudylogNotFoundException::new);
 
         Member member = memberRepository.findById(memberId)
@@ -47,9 +47,9 @@ public class StudylogScrapService {
     }
 
     @Transactional
-    public void unregisterScrap(Long memberId, Long studyLogId) {
+    public void unregisterScrap(Long memberId, Long studylogId) {
         StudylogScrap scrap = studylogScrapRepository
-            .findByMemberIdAndStudylogId(memberId, studyLogId).orElseThrow(
+            .findByMemberIdAndStudylogId(memberId, studylogId).orElseThrow(
                 StudylogScrapNotExistException::new);
 
         studylogScrapRepository.delete(scrap);

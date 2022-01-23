@@ -41,8 +41,8 @@ const ProfilePageNewReport = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [abilities, setAbilities] = useState([]);
-  const [studyLogs, setStudylogs] = useState([]);
-  const [studyLogAbilities, setStudylogAbilities] = useState([]);
+  const [Studylogs, setStudylogs] = useState([]);
+  const [StudylogAbilities, setStudylogAbilities] = useState([]);
 
   const [isModalOpened, setIsModalOpened] = useState(false);
 
@@ -66,9 +66,9 @@ const ProfilePageNewReport = () => {
     }
   };
 
-  const getCheckedAbility = (studyLogId) => {
-    const targetStudylogAbility = studyLogAbilities.find(
-      (studyLogAbility) => studyLogAbility.id === studyLogId
+  const getCheckedAbility = (StudylogId) => {
+    const targetStudylogAbility = StudylogAbilities.find(
+      (StudylogAbility) => StudylogAbility.id === StudylogId
     )?.abilities;
 
     return targetStudylogAbility?.map((ability) => ability.id) ?? [];
@@ -85,7 +85,7 @@ const ProfilePageNewReport = () => {
       return;
     }
 
-    if (studyLogs.length === 0) {
+    if (Studylogs.length === 0) {
       if (!window.confirm('등록된 학습로그가 없습니다.\n저장하시겠습니까?')) return;
     }
 
@@ -97,7 +97,7 @@ const ProfilePageNewReport = () => {
       abilityGraph: {
         abilities: abilities.map(({ id, weight, isPresent }) => ({ id, weight, isPresent })),
       },
-      studylogs: studyLogs.map((item) => ({
+      studylogs: Studylogs.map((item) => ({
         id: item.id,
         abilities: getCheckedAbility(item.id),
       })),
@@ -168,10 +168,10 @@ const ProfilePageNewReport = () => {
 
         <ReportStudylogTable
           onModalOpen={onModalOpen}
-          studyLogs={studyLogs}
+          Studylogs={Studylogs}
           setStudylogs={setStudylogs}
           abilities={abilities}
-          studyLogAbilities={studyLogAbilities}
+          StudylogAbilities={StudylogAbilities}
           setStudylogAbilities={setStudylogAbilities}
         />
 
@@ -192,7 +192,7 @@ const ProfilePageNewReport = () => {
         <StudylogModal
           onModalClose={onModalClose}
           username={username}
-          studyLogs={studyLogs}
+          Studylogs={Studylogs}
           setStudylogs={setStudylogs}
         />
       )}
