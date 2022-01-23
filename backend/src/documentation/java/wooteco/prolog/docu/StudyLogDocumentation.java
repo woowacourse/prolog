@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class StudylogDocumentation extends Documentation {
+class StudyLogDocumentation extends Documentation {
 
     @Test
     void 스터디로그를_생성한다() {
