@@ -3,7 +3,7 @@
 import { Link } from 'react-router-dom';
 import { css } from '@emotion/react';
 
-import StudylogList from '../../components/Lists/StudylogList';
+import StudyLogList from '../../components/Lists/StudylogList';
 import { PATH } from '../../constants';
 import {
   FlexStyle,
@@ -11,7 +11,7 @@ import {
   JustifyContentSpaceBtwStyle,
 } from '../../styles/flex.styles';
 
-const RecentStudylogList = ({ studylogs }: { studylogs: Prolog.Studylog[] }) => {
+const RecentStudylogList = ({ studylogs }: { studylogs: Prolog.StudyLog[] }) => {
   return (
     <section>
       <div
@@ -37,7 +37,7 @@ const RecentStudylogList = ({ studylogs }: { studylogs: Prolog.Studylog[] }) => 
         <Link to={PATH.STUDYLOG}>{`더보기 >`}</Link>
       </div>
       {studylogs?.length === 0 && '작성된 글이 없습니다.'}
-      {!!studylogs?.length && <StudylogList studylogs={studylogs} />}
+      {!!studylogs?.length && <StudyLogList studylogs={studylogs} />}
     </section>
   );
 };
