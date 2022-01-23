@@ -1,25 +1,20 @@
 package wooteco.prolog.docu;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
-import wooteco.prolog.studylog.application.dto.LevelRequest;
-import wooteco.prolog.studylog.application.dto.LevelResponse;
-import wooteco.prolog.studylog.application.dto.MissionRequest;
-import wooteco.prolog.studylog.application.dto.MissionResponse;
-import wooteco.prolog.studylog.application.dto.StudylogRequest;
-import wooteco.prolog.studylog.application.dto.StudylogResponse;
-import wooteco.prolog.studylog.application.dto.StudylogsResponse;
-import wooteco.prolog.studylog.application.dto.TagRequest;
+import wooteco.prolog.studylog.application.dto.*;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class StudylogDocumentation extends Documentation {
 
@@ -79,6 +74,7 @@ class StudylogDocumentation extends Documentation {
         assertThat(studylogsTitles).usingRecursiveComparison().isEqualTo(expectedTitles);
     }
 
+    @Disabled
     @Test
     void 스터디로그_목록을_검색_및_필터링한다() {
         // given
