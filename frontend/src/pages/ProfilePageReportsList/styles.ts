@@ -148,7 +148,7 @@ export const AbilityList = styled.ul`
   }
 `;
 
-export const StudyLogCount = styled.div`
+export const StudylogCount = styled.div`
   margin: 0.5rem;
   margin-top: 1.5rem;
 
