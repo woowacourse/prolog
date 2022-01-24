@@ -11,12 +11,12 @@ const defaultValue = {
 };
 
 const useUserStudylog = ({ levelId: currLevelId, username }) => {
-  const [StudylogData, setStudylogData] = useState(defaultValue);
+  const [studylogData, setStudylogData] = useState(defaultValue);
   const [page, setPage] = useState(1);
 
   const getPosts = async (page = 1) => {
     try {
-      if (currLevelId !== StudylogData.levelId) {
+      if (currLevelId !== studylogData.levelId) {
         setPage(1);
       }
 
@@ -35,8 +35,8 @@ const useUserStudylog = ({ levelId: currLevelId, username }) => {
 
       const responseData = await response.json();
 
-      if (StudylogData.data && StudylogData.levelId === currLevelId) {
-        responseData.data = [...StudylogData.data, ...responseData.data];
+      if (studylogData.data && studylogData.levelId === currLevelId) {
+        responseData.data = [...studylogData.data, ...responseData.data];
       }
 
       setStudylogData({ ...responseData, levelId: currLevelId });
@@ -52,7 +52,7 @@ const useUserStudylog = ({ levelId: currLevelId, username }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currLevelId, page]);
 
-  return { StudylogData, setPage };
+  return { studylogData, setPage };
 };
 
 export default useUserStudylog;

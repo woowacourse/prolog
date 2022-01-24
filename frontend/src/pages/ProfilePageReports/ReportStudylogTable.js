@@ -4,8 +4,8 @@ import { Chip, Pagination } from '../../components';
 import useStudylogsPagination from '../../hooks/useStudylogsPagination';
 import { Section, Table, Tbody, Thead, EmptyTableGuide } from './ReportStudylogTable.styles';
 
-const ReportStudylogTable = ({ Studylogs }) => {
-  const { setPage, reportStudylogData } = useStudylogsPagination(Studylogs);
+const ReportStudylogTable = ({ studylogs }) => {
+  const { setPage, reportStudylogData } = useStudylogsPagination(studylogs);
   const { currPage, totalSize, data: currReportStudylogs } = reportStudylogData;
 
   const onMoveToPage = (number) => {
@@ -56,7 +56,7 @@ const ReportStudylogTable = ({ Studylogs }) => {
       </Table>
       <Pagination postsInfo={reportStudylogData} onSetPage={onMoveToPage} />
 
-      {Studylogs.length === 0 && <EmptyTableGuide>등록된 학습로그가 없습니다.</EmptyTableGuide>}
+      {studylogs.length === 0 && <EmptyTableGuide>등록된 학습로그가 없습니다.</EmptyTableGuide>}
     </Section>
   );
 };

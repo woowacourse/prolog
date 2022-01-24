@@ -23,15 +23,15 @@ export const SHOW_ALL_FILTER = {
   name: '전체보기',
 };
 
-const StudylogModal = ({ onModalClose, username, Studylogs, setStudylogs }) => {
+const StudylogModal = ({ onModalClose, username, studylogs, setStudylogs }) => {
   const [filters] = useFetch([], requestGetFilters);
 
   const levels = [SHOW_ALL_FILTER, ...Array.from(filters?.levels ?? [])];
 
   const [selectedLevelName, setSelectedLevelName] = useState(SHOW_ALL_FILTER.name);
-  const [selectedStudylogs, setSelectedStudylogs] = useState(Studylogs);
+  const [selectedStudylogs, setSelectedStudylogs] = useState(studylogs);
 
-  const { StudylogData, setPage } = useUserStudylog({
+  const { studylogData, setPage } = useUserStudylog({
     levelId: levels?.find((level) => level.name === selectedLevelName)?.id,
     username,
   });
@@ -52,13 +52,13 @@ const StudylogModal = ({ onModalClose, username, Studylogs, setStudylogs }) => {
     }
   }, [selectedLevelName]);
 
-  const { totalSize, totalPage, currPage, data: currLevelStudylogs } = StudylogData;
+  const { totalSize, totalPage, currPage, data: currLevelStudylogs } = studylogData;
 
   const checkTarget = (id) => {
     return filterIds(selectedStudylogs).includes(id);
   };
   const selectedStudylogLength = selectedStudylogs.length;
-  const StudylogLength = Studylogs.length;
+  const studylogLength = studylogs.length;
 
   const onSelectStudylogs = (event) => {
     event.preventDefault();
@@ -117,7 +117,7 @@ const StudylogModal = ({ onModalClose, username, Studylogs, setStudylogs }) => {
                         type="checkbox"
                         checked={checkTarget(id)}
                         onChange={() => onToggleStudylog(id)}
-                        disabled={filterIds(Studylogs).includes(id)}
+                        disabled={filterIds(studylogs).includes(id)}
                       />
                       <div>
                         <p>{mission.level.name}</p>
@@ -139,9 +139,9 @@ const StudylogModal = ({ onModalClose, username, Studylogs, setStudylogs }) => {
         <Button
           size="X_SMALL"
           css={{ backgroundColor: `${COLOR.LIGHT_BLUE_500}` }}
-          disabled={selectedStudylogLength === StudylogLength}
+          disabled={selectedStudylogLength === studylogLength}
         >
-          등록 ({selectedStudylogLength - StudylogLength}개 선택)
+          등록 ({selectedStudylogLength - studylogLength}개 선택)
         </Button>
       </Form>
     </Modal>

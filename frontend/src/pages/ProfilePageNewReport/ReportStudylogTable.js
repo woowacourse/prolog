@@ -18,13 +18,13 @@ import {
 
 const ReportStudylogTable = ({
   onModalOpen,
-  Studylogs,
+  studylogs,
   setStudylogs,
   abilities,
-  StudylogAbilities,
+  studylogAbilities,
   setStudylogAbilities,
 }) => {
-  const { reportStudylogData, setPage } = useReportStudylogs(Studylogs);
+  const { reportStudylogData, setPage } = useReportStudylogs(studylogs);
   const { currPage, totalPage, totalSize, data: currReportStudylogs } = reportStudylogData;
 
   const [deleteTargets, setDeleteTargets] = useState([]);
@@ -64,7 +64,7 @@ const ReportStudylogTable = ({
 
   // 학습로그 목록 체크박스
   const onToggleStudylog = (id) => {
-    const targetStudylog = Studylogs.find((Studylog) => Studylog.id === id);
+    const targetStudylog = studylogs.find((studylog) => studylog.id === id);
 
     setDeleteTargets(onToggleCheckbox(deleteTargets, targetStudylog));
   };
@@ -98,9 +98,9 @@ const ReportStudylogTable = ({
   };
 
   // 선택된 역량 추가
-  const selectedAbilities = (StudylogId) => {
-    const targetStudylogAbilities = StudylogAbilities.find(
-      (StudylogAbility) => StudylogAbility.id === StudylogId
+  const selectedAbilities = (studylogId) => {
+    const targetStudylogAbilities = studylogAbilities.find(
+      (studylogAbility) => studylogAbility.id === studylogId
     );
 
     return targetStudylogAbilities?.abilities?.map((ability) => (
@@ -113,22 +113,22 @@ const ReportStudylogTable = ({
   };
 
   // 학습로그 목록에 역량 추가
-  const onAddAbilities = (StudylogId, currAbility) => {
-    const targetStudylogAbility = StudylogAbilities?.find(
-      (StudylogAbility) => StudylogAbility.id === StudylogId
+  const onAddAbilities = (studylogId, currAbility) => {
+    const targetStudylogAbility = studylogAbilities?.find(
+      (studylogAbility) => studylogAbility.id === studylogId
     );
 
     if (!targetStudylogAbility) {
       setStudylogAbilities((currStudylog) => [
         ...currStudylog,
         {
-          id: StudylogId,
+          id: studylogId,
           abilities: [currAbility],
         },
       ]);
     } else {
-      const index = StudylogAbilities
-        .map((Studylog) => Studylog.id)
+      const index = studylogAbilities
+        .map((studylog) => studylog.id)
         .indexOf(targetStudylogAbility.id);
 
       if (targetStudylogAbility.abilities.find((ability) => ability.id === currAbility.id)) {
@@ -137,7 +137,7 @@ const ReportStudylogTable = ({
           .indexOf(currAbility.id);
 
         const deleteStudylogAbility = {
-          id: StudylogId,
+          id: studylogId,
           abilities: [
             ...targetStudylogAbility.abilities.slice(0, abilityIndex),
             ...targetStudylogAbility.abilities.slice(abilityIndex + 1),
@@ -145,29 +145,29 @@ const ReportStudylogTable = ({
         };
 
         setStudylogAbilities([
-          ...StudylogAbilities.slice(0, index),
+          ...studylogAbilities.slice(0, index),
           deleteStudylogAbility,
-          ...StudylogAbilities.slice(index + 1),
+          ...studylogAbilities.slice(index + 1),
         ]);
       } else {
         const addStudylogAbiliityResult = {
-          id: StudylogId,
+          id: studylogId,
           abilities: [...targetStudylogAbility.abilities, currAbility],
         };
 
         setStudylogAbilities([
-          ...StudylogAbilities.slice(0, index),
+          ...studylogAbilities.slice(0, index),
           addStudylogAbiliityResult,
-          ...StudylogAbilities.slice(index + 1),
+          ...studylogAbilities.slice(index + 1),
         ]);
       }
     }
   };
 
-  const isChecked = (StudylogId, abilityId) => {
-    //Studylog에 Ability가 잉ㅆ는가?
-    const targetStudylog = StudylogAbilities?.find(
-      (StudylogAbility) => StudylogAbility.id === StudylogId
+  const isChecked = (studylogId, abilityId) => {
+    //studylog에 Ability가 잉ㅆ는가?
+    const targetStudylog = studylogAbilities?.find(
+      (studylogAbility) => studylogAbility.id === studylogId
     );
 
     if (!targetStudylog) return false;
@@ -224,7 +224,7 @@ const ReportStudylogTable = ({
                 <Checkbox
                   type="checkbox"
                   value={title | ''}
-                  checked={deleteTargets.map((Studylog) => Studylog.id).includes(id)}
+                  checked={deleteTargets.map((studylog) => studylog.id).includes(id)}
                   onChange={() => onToggleStudylog(id)}
                 />
               </td>
