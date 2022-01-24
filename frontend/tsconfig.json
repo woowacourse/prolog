@@ -22,7 +22,6 @@
     "noImplicitAny": false
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx"
+    "src",
   ]
 }
