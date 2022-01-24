@@ -13,7 +13,7 @@ import {
   MissionStyle,
   TagListStyle,
   ProfileChipLocationStyle,
-} from './StudylogLists.styles';
+} from './StudylogList.styles';
 
 interface Props {
   studylogs: Prolog.Studylog[];
