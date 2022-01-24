@@ -17,6 +17,8 @@ import wooteco.prolog.studylog.exception.AuthorNotValidException;
 @Entity
 public class Studylog extends BaseEntity {
 
+    private static final int POPULAR_SCORE = 3;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
@@ -113,6 +115,10 @@ public class Studylog extends BaseEntity {
 
     public boolean likedByMember(Long memberId) {
         return likes.likedByMember(memberId);
+    }
+
+    public int getPopularScore() {
+        return (getLikeCount() * POPULAR_SCORE) + getViewCount();
     }
 
     public int getLikeCount() {

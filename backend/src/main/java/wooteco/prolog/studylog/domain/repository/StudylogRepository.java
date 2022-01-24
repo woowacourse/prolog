@@ -26,4 +26,7 @@ public interface StudylogRepository extends JpaRepository<Studylog, Long>,
     int countByMember(Member member);
 
     List<Studylog> findAllByIdInOrderByIdDesc(List<Long> ids);
+
+    @Query("select p from Studylog p where :date <= p.createdAt")
+    List<Studylog> findByPastDays(LocalDateTime date);
 }
