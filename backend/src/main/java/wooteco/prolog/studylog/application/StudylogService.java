@@ -9,7 +9,6 @@ import static java.util.stream.Collectors.toMap;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +72,7 @@ public class StudylogService {
         Long memberId,
         boolean isAnonymousMember
     ) {
-        List<Studylog> studylogs = findStudyLogsByDays(pageable, LocalDateTime.now());
+        List<Studylog> studylogs = findStudylogsByDays(pageable, LocalDateTime.now());
         PageImpl<Studylog> page = new PageImpl<>(studylogs, pageable, studylogs.size());
         StudylogsResponse studylogsResponse = StudylogsResponse.of(page, memberId);
 
@@ -86,7 +85,7 @@ public class StudylogService {
         return studylogsResponse;
     }
 
-    private List<Studylog> findStudyLogsByDays(Pageable pageable, LocalDateTime dateTime) {
+    private List<Studylog> findStudylogsByDays(Pageable pageable, LocalDateTime dateTime) {
         int decreaseDays = 0;
         int searchFailedCount = 0;
 

@@ -50,7 +50,7 @@ import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.StudyLogDocument;
+import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 import wooteco.support.utils.IntegrationTest;
@@ -187,7 +187,7 @@ class StudylogServiceTest {
         Long id = studylogResponses.get(0).getId();
 
         // when
-        StudyLogDocument studylogDocument = studylogDocumentService.findById(id);
+        StudylogDocument studylogDocument = studylogDocumentService.findById(id);
         // then
         assertAll(
             () -> assertThat(studylogDocument.getId()).isEqualTo(id),
@@ -484,7 +484,7 @@ class StudylogServiceTest {
         studylogService.updateStudylog(member1.getId(), id, updateStudylogRequest);
 
         // when
-        StudyLogDocument studylogDocument = studylogDocumentService.findById(id);
+        StudylogDocument studylogDocument = studylogDocumentService.findById(id);
 
         // then
         assertAll(

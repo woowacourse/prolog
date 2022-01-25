@@ -23,7 +23,7 @@ import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 
-class StudyLogDocumentation extends Documentation {
+class StudylogDocumentation extends Documentation {
 
     @Test
     void 스터디로그를_생성한다() {
