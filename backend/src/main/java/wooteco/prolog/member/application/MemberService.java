@@ -10,6 +10,8 @@ import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
+import wooteco.prolog.member.application.dto.ProfileIntroRequest;
+import wooteco.prolog.member.application.dto.ProfileIntroResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.member.exception.MemberNotAllowedException;
@@ -43,6 +45,11 @@ public class MemberService {
         return MemberResponse.of(member);
     }
 
+    public ProfileIntroResponse findProfileIntro(String username) {
+        Member member = findByUsername(username);
+        return ProfileIntroResponse.of(member);
+    }
+
     @Deprecated
     @Transactional
     public void updateMember_deprecated(Long memberId, MemberUpdateRequest updateRequest) {
@@ -67,6 +74,24 @@ public class MemberService {
 
         persistMember.updateImageUrl(updateRequest.getImageUrl());
         persistMember.updateNickname(updateRequest.getNickname());
+    }
+
+    @Transactional
+    public void updateProfileIntro(LoginMember loginMember,
+                             String username,
+                             ProfileIntroRequest updateRequest) {
+        loginMember.act().throwIfAnonymous(MemberNotAllowedException::new);
+
+        Member persistMember = loginMember.act().ifMember(memberId -> {
+            Member member = findById(memberId);
+            if (!Objects.equals(member.getUsername(), username)) {
+                throw new MemberNotAllowedException();
+            }
+            return member;
+        }).getReturnValue(Member.class);
+
+
+        persistMember.updateProfileIntro(updateRequest.getText());
     }
 
     public List<MemberResponse> findAll() {

@@ -44,6 +44,9 @@ public class Member {
     @Column(nullable = false)
     private String imageUrl;
 
+    @Column
+    private String profileIntro;
+
     @Embedded
     private MemberTags memberTags;
 
@@ -92,6 +95,12 @@ public class Member {
     public void updateImageUrl(String imageUrl) {
         if (!ObjectUtils.isEmpty(imageUrl)) {
             this.imageUrl = imageUrl;
+        }
+    }
+
+    public void updateProfileIntro(String text) {
+        if (!ObjectUtils.isEmpty(text)) {
+            this.profileIntro = text;
         }
     }
 
