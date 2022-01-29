@@ -284,6 +284,9 @@ const requestDeleteLike = (accessToken, postId) =>
     },
   });
 
+const requestGetProfileIntroduction = (username) =>
+  fetch(`${BASE_URL}/members/${username}/profile-intro`);
+
 export {
   requestGetPost,
   requestGetPosts,
@@ -314,4 +317,5 @@ export {
   requestGetMyScrap,
   requestPostLike,
   requestDeleteLike,
+  requestGetProfileIntroduction,
 };
