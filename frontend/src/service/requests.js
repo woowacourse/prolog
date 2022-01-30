@@ -287,6 +287,16 @@ const requestDeleteLike = (accessToken, postId) =>
 const requestGetProfileIntroduction = (username) =>
   fetch(`${BASE_URL}/members/${username}/profile-intro`);
 
+const requestEditProfileIntroduction = (username, data, accessToken) =>
+  fetch(`${BASE_URL}/members/${username}/profile-intro`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
 export {
   requestGetPost,
   requestGetPosts,
@@ -318,4 +328,5 @@ export {
   requestPostLike,
   requestDeleteLike,
   requestGetProfileIntroduction,
+  requestEditProfileIntroduction,
 };

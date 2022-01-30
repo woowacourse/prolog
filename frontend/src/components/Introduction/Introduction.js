@@ -1,12 +1,19 @@
 /** @jsxImportSource @emotion/react */
 
+import { useState } from 'react';
 import { css } from '@emotion/react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import useFetch from '../../hooks/useFetch';
-import { requestGetProfileIntroduction } from '../../service/requests';
-import { COLOR } from '../../constants';
+import useMutation from '../../hooks/useMutation';
+import useRequest from '../../hooks/useRequest';
+import {
+  requestEditProfileIntroduction,
+  requestGetProfileIntroduction,
+} from '../../service/requests';
+import { COLOR, ERROR_MESSAGE } from '../../constants';
+
+import { Button } from '..';
 
 // Markdown Parser
 import '@toast-ui/editor/dist/toastui-editor.css';
@@ -14,7 +21,14 @@ import 'prismjs/themes/prism.css';
 import { Editor, Viewer } from '@toast-ui/react-editor';
 import Prism from 'prismjs';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
-import { useState } from 'react';
+
+import {
+  AlignItemsCenterStyle,
+  FlexColumnStyle,
+  FlexStyle,
+  JustifyContentCenterStyle,
+} from '../../styles/flex.styles';
+import { markdownStyle } from '../../styles/markdown.styles';
 
 const Introduction = () => {
   const { username } = useParams();
@@ -25,14 +39,34 @@ const Introduction = () => {
 
   const isOwner = username === loginName;
 
-  const [response] = useFetch({ text: '' }, requestGetProfileIntroduction(username));
-  const data = response.text;
+  const { response, fetchData } = useRequest({ text: '' }, () =>
+    requestGetProfileIntroduction(username)
+  );
+  const data = response?.text ?? '';
+
+  const [content, setContent] = useState('');
+
+  const { mutate: editProfileIntro } = useMutation(
+    () => {
+      const data = content.getInstance().getMarkdown();
+
+      return requestEditProfileIntroduction(username, { text: data }, accessToken);
+    },
+    async () => {
+      await fetchData();
+
+      setIsEditing(false);
+    },
+    (error) => {
+      alert(ERROR_MESSAGE[error.code]);
+    }
+  );
 
   return (
     <>
       <div
         css={[
-          !isOwner && data.length === 0
+          !isOwner && data.trim(' ').length === 0
             ? css`
                 display: none;
               `
@@ -41,7 +75,6 @@ const Introduction = () => {
                 min-height: 12rem;
                 max-height: fit-content;
 
-                padding: 1.6rem 2rem 1.8rem;
                 margin-bottom: 2rem;
 
                 position: relative;
@@ -50,11 +83,11 @@ const Introduction = () => {
                 border: 1px solid ${COLOR.LIGHT_GRAY_200};
                 border-radius: 2rem;
 
-                display: flex;
                 justify-content: center;
                 align-items: center;
               `,
           isOwner &&
+            !isEditing &&
             css`
               button {
                 opacity: 0;
@@ -66,13 +99,20 @@ const Introduction = () => {
                 }
               }
             `,
+          FlexStyle,
         ]}
       >
-        {isOwner && !isEditing && data.length === 0 && (
+        {isOwner && !isEditing && data.trim(' ').length === 0 && (
           <p
-            css={css`
-              margin: 0;
-            `}
+            css={[
+              css`
+                margin: 0;
+                width: 100%;
+              `,
+              FlexStyle,
+              JustifyContentCenterStyle,
+              AlignItemsCenterStyle,
+            ]}
           >
             소개글을 작성해 보세요! :D
           </p>
@@ -103,51 +143,107 @@ const Introduction = () => {
             수정
           </button>
         )}
-        {!isEditing && data.length !== 0 && (
-          <div
-            css={css`
-              width: 100%;
-
-              && * {
-                margin: 0;
-                line-height: 2;
-              }
-
-              h1 {
-                border-bottom: 2px solid ${COLOR.LIGHT_GRAY_300};
-              }
-
-              h3 {
-                font-size: 1.8rem;
-              }
-
-              a {
-                text-decoration: none;
-                font-size: 1.6rem;
-              }
-
-              p {
-                font-size: 1.4rem;
-              }
-
-              && li::before {
-                margin-top: 8px;
-                transform: translateY(70%);
-              }
-            `}
+        {!isEditing && data.trim(' ').length !== 0 && (
+          <section
+            css={[
+              markdownStyle,
+              css`
+                width: 100%;
+                padding: 0rem 2rem 1.8rem;
+              `,
+            ]}
           >
             <Viewer
               initialValue={data}
               extendedAutolinks={true}
               plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
             />
-          </div>
+          </section>
         )}
         {isEditing && (
-          <>
-            <Editor />
-            <button type="button">저장</button>
-          </>
+          <section
+            css={[
+              FlexStyle,
+              FlexColumnStyle,
+              css`
+                width: 100%;
+                border-radius: inherit;
+                padding-bottom: 1rem;
+
+                h2 {
+                  padding: 1rem 2rem 0;
+
+                  font-size: 2rem;
+
+                  background-color: ${COLOR.LIGHT_BLUE_200};
+                  border-radius: inherit;
+                  border-bottom-left-radius: 0;
+                  border-bottom-right-radius: 0;
+                }
+
+                .toastui-editor-defaultUI {
+                  border: 0;
+                }
+
+                .toastui-editor-toolbar {
+                  background-color: ${COLOR.LIGHT_BLUE_200};
+                  /* background-color: transparent; */
+                }
+
+                .toastui-editor-md-tab-container,
+                .toastui-editor-defaultUI-toolbar {
+                  background-color: transparent;
+                }
+
+                .toastui-editor-defaultUI-toolbar button {
+                  background-color: ${COLOR.WHITE};
+
+                  :hover {
+                    background-color: ${COLOR.LIGHT_GRAY_100};
+                  }
+                }
+
+                .toastui-editor-md-preview {
+                  ${markdownStyle}
+                }
+              `,
+            ]}
+          >
+            <h2>자기소개 수정</h2>
+            <Editor
+              ref={setContent}
+              initialValue={data}
+              height="480px"
+              initialEditType="markdown"
+              toolbarItems={[
+                ['heading', 'bold', 'italic', 'strike'],
+                ['hr', 'quote'],
+                ['ul', 'ol', 'task'],
+                ['indent'],
+              ]}
+              extendedAutolinks={true}
+              plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+            />
+            <Button
+              size="X_SMALL"
+              type="button"
+              cssProps={css`
+                margin-top: 1rem;
+                background-color: ${COLOR.LIGHT_BLUE_200};
+                color: ${COLOR.BLACK_800};
+                border-radius: 1.2rem;
+                align-self: flex-end;
+                margin-right: 1rem;
+
+                :hover {
+                  background-color: ${COLOR.LIGHT_BLUE_400};
+                }
+              `}
+              onClick={editProfileIntro}
+            >
+              저장
+            </Button>
+          </section>
         )}
       </div>
     </>
