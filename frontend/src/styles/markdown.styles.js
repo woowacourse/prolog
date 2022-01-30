@@ -7,6 +7,10 @@ export const markdownStyle = css`
     line-height: 2;
   }
 
+  && h1:first-of-type {
+    margin-top: 0;
+  }
+
   h1 {
     border-bottom: 2px solid ${COLOR.LIGHT_GRAY_300};
     padding: 0;
