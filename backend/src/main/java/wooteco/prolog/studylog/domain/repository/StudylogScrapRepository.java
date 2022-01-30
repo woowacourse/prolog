@@ -13,6 +13,8 @@ public interface StudylogScrapRepository extends JpaRepository<StudylogScrap, Lo
     @Query("select count(ms) from StudylogScrap ms where ms.member.id = :memberId and ms.studylog.id = :studylogId")
     int countByMemberIdAndScrapStudylogId(Long memberId, Long studylogId);
 
+    boolean existsByMemberIdAndStudylogId(Long memberId, Long studylogId);
+
     Optional<StudylogScrap> findByMemberIdAndStudylogId(Long memberId, Long studylogId);
 
     Page<StudylogScrap> findByMemberId(Long memberId, Pageable pageable);

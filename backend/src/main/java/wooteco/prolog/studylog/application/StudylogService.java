@@ -37,6 +37,8 @@ import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
 import wooteco.prolog.studylog.domain.repository.StudylogReadRepository;
 import wooteco.prolog.studylog.exception.StudylogArgumentException;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
+import wooteco.prolog.studylog.exception.StudylogReadNotExistException;
+import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
 
 @Service
 @AllArgsConstructor
@@ -251,8 +253,23 @@ public class StudylogService {
 
         final Tags tags = tagService.findByStudylogsAndMember(studylog, foundMember);
         studylogDocumentService.delete(studylog.toStudylogDocument());
+        checkScrapedOrRead(memberId, studylogId);
         studylogRepository.delete(studylog);
         memberTagService.removeMemberTag(tags, foundMember);
+    }
+
+    private void checkScrapedOrRead(Long memberId, Long studylogId) {
+        if (studylogScrapRepository.existsByMemberIdAndStudylogId(memberId, studylogId)) {
+            StudylogScrap studylogScrap = studylogScrapRepository.findByMemberIdAndStudylogId(memberId, studylogId)
+                    .orElseThrow(StudylogScrapNotExistException::new);
+            studylogScrapRepository.delete(studylogScrap);
+        }
+
+        if (studylogReadRepository.existsByMemberIdAndStudylogId(memberId, studylogId)) {
+            StudylogRead studylogRead = studylogReadRepository.findByMemberIdAndStudylogId(memberId, studylogId)
+                    .orElseThrow(StudylogReadNotExistException::new);
+            studylogReadRepository.delete(studylogRead);
+        }
     }
 
     public List<CalendarStudylogResponse> findCalendarStudylogs(String username, LocalDate localDate) {
