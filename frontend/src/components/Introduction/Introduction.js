@@ -36,7 +36,7 @@ const Introduction = () => {
   const [editorContentRef, setEditorContentRef] = useState('');
 
   const { user } = useContext(UserContext);
-  const { accessToken, loginName } = user;
+  const { accessToken, username: loginName } = user;
 
   const { response, fetchData } = useRequest({ text: '' }, () =>
     requestGetProfileIntroduction(username)
@@ -44,6 +44,7 @@ const Introduction = () => {
   const data = response?.text ?? '';
 
   const isOwner = username === loginName;
+
   const hasIntro = !!data.length;
 
   const { mutate: editProfileIntro } = useMutation(
