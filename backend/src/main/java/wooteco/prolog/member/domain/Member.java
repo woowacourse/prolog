@@ -44,7 +44,7 @@ public class Member {
     @Column(nullable = false)
     private String imageUrl;
 
-    @Column
+    @Column(columnDefinition = "text")
     private String profileIntro;
 
     @Embedded
