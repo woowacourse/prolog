@@ -16,9 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.Query;
 
-public class StudyLogDocumentQueryBuilder {
+public class StudylogDocumentQueryBuilder {
 
-    private StudyLogDocumentQueryBuilder() {
+    private StudylogDocumentQueryBuilder() {
     }
 
     public static Query makeQuery(List<String> inputKeywords,

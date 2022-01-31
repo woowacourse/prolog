@@ -4,7 +4,10 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -177,5 +180,28 @@ class StudylogRepositoryTest {
                 .findByMember(member1, PageRequest.of(0, 10));
         //then
         assertThat(expectedResult.getContent()).containsExactlyInAnyOrder(studylog1, studylog2);
+    }
+
+    @DisplayName("주어진 날짜시간 이후의 글 목록을 가져온다.")
+    @Test
+    void findByPastDateAndSize() throws InterruptedException {
+        // given
+        TimeUnit.SECONDS.sleep(2); // 2초간 정지
+
+        Studylog studylog = studylogRepository.save(new Studylog(
+            member1,
+            "새로운 글",
+            "새로운 글이얌",
+            mission1,
+            asList(tag1, tag2)
+        ));
+
+        // when
+        LocalDateTime localDateTime = LocalDateTime.now().minusSeconds(1);
+        List<Studylog> studylogs = studylogRepository.findByPastDays(localDateTime);
+
+        // then
+        assertThat(studylogs).hasSize(1);
+        assertThat(studylogs).containsExactly(studylog);
     }
 }
