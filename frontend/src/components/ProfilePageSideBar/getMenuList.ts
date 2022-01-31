@@ -14,7 +14,7 @@ const getMenuList = ({ username, isOwner }: { username: string; isOwner: boolean
       Icon: OverviewIcon,
     },
     {
-      key: PROFILE_PAGE_MENU.POSTS,
+      key: PROFILE_PAGE_MENU.STUDYLOGS,
       title: '학습로그',
       path: `/${username}/studylogs`,
       Icon: StudylogIcon,

@@ -46,13 +46,13 @@ const StudylogPage = () => {
 
   const { mutate: deleteStudylog } = useMutation(
     () => {
-      if (!window.confirm(CONFIRM_MESSAGE.DELETE_POST)) return;
+      if (!window.confirm(CONFIRM_MESSAGE.DELETE_STUDYLOG)) return;
 
       return requestDeleteStudylog({ id, accessToken });
     },
     {
       onError: (error) => {
-        alert(ERROR_MESSAGE[error.code] ?? ALERT_MESSAGE.FAIL_TO_DELETE_POST);
+        alert(ERROR_MESSAGE[error.code] ?? ALERT_MESSAGE.FAIL_TO_DELETE_STUDYLOG);
       },
     }
   );

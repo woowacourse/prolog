@@ -1,7 +1,7 @@
 const PATH = {
   ROOT: '/',
   PROFILE: '/:username',
-  PROFILE_POSTS: '/:username/studylogs',
+  PROFILE_STUDYLOGS: '/:username/studylogs',
   PROFILE_SCRAPS: '/:username/scraps',
   PROFILE_ACCOUNT: '/:username/account',
   PROFILE_REPORTS: '/:username/reports',

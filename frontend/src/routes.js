@@ -41,9 +41,9 @@ const pageRoutes = [
     render: () => <ProfilePage menu={PROFILE_PAGE_MENU.OVERVIEW} />,
   },
   {
-    path: [PATH.PROFILE_POSTS],
+    path: [PATH.PROFILE_STUDYLOGS],
     render: () => (
-      <ProfilePage menu={PROFILE_PAGE_MENU.POSTS}>
+      <ProfilePage menu={PROFILE_PAGE_MENU.STUDYLOGS}>
         <ProfilePageStudylogs />
       </ProfilePage>
     ),

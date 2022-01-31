@@ -86,12 +86,12 @@ const ProfilePageStudylogs = () => {
   const onDeletePost = async (event, id) => {
     event.stopPropagation();
 
-    if (!window.confirm(CONFIRM_MESSAGE.DELETE_POST)) return;
+    if (!window.confirm(CONFIRM_MESSAGE.DELETE_STUDYLOG)) return;
 
     await deletePost(id, accessToken);
 
     if (postError) {
-      alert(ALERT_MESSAGE.FAIL_TO_DELETE_POST);
+      alert(ALERT_MESSAGE.FAIL_TO_DELETE_STUDYLOG);
       return;
     }
 
