@@ -8,6 +8,10 @@ export const FlexColumnStyle = css`
   flex-direction: column;
 `;
 
+export const JustifyContentCenterStyle = css`
+  justify-content: center;
+`;
+
 export const JustifyContentEndStyle = css`
   justify-content: flex-end;
 `;

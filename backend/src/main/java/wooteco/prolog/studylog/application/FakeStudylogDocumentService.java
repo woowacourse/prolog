@@ -14,7 +14,7 @@ import wooteco.prolog.common.BaseEntity;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.domain.DocumentQueryParser;
 import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.repository.StudyLogDocumentRepository;
+import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
 import wooteco.prolog.studylog.infrastructure.HealthCheckClient;
@@ -24,7 +24,7 @@ import wooteco.prolog.studylog.infrastructure.HealthCheckClient;
 public class FakeStudylogDocumentService extends AbstractStudylogDocumentService {
 
     public FakeStudylogDocumentService(
-        StudyLogDocumentRepository studylogDocumentRepository,
+        StudylogDocumentRepository studylogDocumentRepository,
         StudylogRepository studylogRepository,
         HealthCheckClient healthCheckClient) {
         super(studylogDocumentRepository, studylogRepository, healthCheckClient);
