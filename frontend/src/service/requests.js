@@ -1,5 +1,6 @@
 import { BASE_URL } from '../configs/environment';
 
+/* Studylog 관련 request */
 export const requestGetStudylog = ({ id, accessToken }) => {
   if (accessToken) {
     return fetch(`${BASE_URL}/studylogs/${id}`, {
@@ -14,23 +15,7 @@ export const requestGetStudylog = ({ id, accessToken }) => {
   return fetch(`${BASE_URL}/studylogs/${id}`);
 };
 
-export const requestPostStudylog = ({ accessToken, data }) =>
-  fetch(`${BASE_URL}/studylogs`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify([data]),
-  });
-
-const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
-
-const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
-
-const requestGetTags = () => fetch(`${BASE_URL}/tags`);
-
-const requestGetStudylogs = ({ query, accessToken }) => {
+export const requestGetStudylogs = ({ query, accessToken }) => {
   const authConfig = accessToken
     ? {
         headers: {
@@ -62,6 +47,16 @@ const requestGetStudylogs = ({ query, accessToken }) => {
   return fetch(`${BASE_URL}/studylogs`, authConfig);
 };
 
+export const requestPostStudylog = ({ accessToken, data }) =>
+  fetch(`${BASE_URL}/studylogs`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify([data]),
+  });
+
 export const requestEditStudylog = ({ id, data, accessToken }) =>
   fetch(`${BASE_URL}/studylogs/${id}`, {
     method: 'PUT',
@@ -81,18 +76,6 @@ export const requestDeleteStudylog = ({ id, accessToken }) =>
     },
   });
 
-const requestGetProfile = (username) => fetch(`${BASE_URL}/members/${username}/profile`);
-
-const requestEditProfile = (data, accessToken) =>
-  fetch(`${BASE_URL}/members/${data.username}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(data),
-  });
-
 export const requestGetUserStudylogs = (username, postSearchParams, filteringOption) => {
   const searchParams = Object.entries(postSearchParams).map(([key, value]) => `${key}=${value}`);
   const filterQuery = filteringOption.length
@@ -103,9 +86,7 @@ export const requestGetUserStudylogs = (username, postSearchParams, filteringOpt
   );
 };
 
-const requestGetUserTags = (username) => fetch(`${BASE_URL}/members/${username}/tags`);
-
-const requestGetCalendar = (year, month, username) =>
+export const requestGetCalendar = (year, month, username) =>
   fetch(`${BASE_URL}/members/${username}/calendar-studylogs?year=${year}&month=${month}`, {
     method: 'GET',
     headers: {
@@ -113,84 +94,7 @@ const requestGetCalendar = (year, month, username) =>
     },
   });
 
-const requestGetReportList = ({ username, type, size = 10, page = 1 }) =>
-  fetch(`${BASE_URL}/${username}/reports?type=${type}&page=${page}&size=${size}`, {
-    method: 'GET',
-  });
-
-const requestGetReport = (reportId) =>
-  fetch(`${BASE_URL}/reports/${reportId}`, {
-    method: 'GET',
-  });
-
-const requestPostReport = (data, accessToken) =>
-  fetch(`${BASE_URL}/reports`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(data),
-  });
-
-const requestDeleteReport = (reportId, accessToken) =>
-  fetch(`${BASE_URL}/reports/${reportId}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-const requestEditReport = (data, reportId, accessToken) =>
-  fetch(`${BASE_URL}/reports/${reportId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(data),
-  });
-
-const requestGetAbilities = (username, accessToken) =>
-  fetch(`${BASE_URL}/members/${username}/abilities`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-const requestAddAbility = (accessToken, data) =>
-  fetch(`${BASE_URL}/abilities`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(data),
-  });
-
-const requestPostScrap = ({ username, accessToken, id: studylogId }) =>
-  fetch(`${BASE_URL}/members/${username}/scrap`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({ studylogId }),
-  });
-
-const requestDeleteScrap = ({ username, accessToken, id: studylogId }) =>
-  fetch(`${BASE_URL}/members/${username}/scrap`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({ studylogId }),
-  });
-
-const requestGetMyScrap = ({ username, accessToken, postQueryParams }) => {
+export const requestGetMyScrap = ({ username, accessToken, postQueryParams }) => {
   const searchParams = Object.entries(postQueryParams).map(([key, value]) => `${key}=${value}`);
 
   return fetch(`${BASE_URL}/members/${username}/scrap?${[...searchParams].join('&')}`, {
@@ -202,7 +106,117 @@ const requestGetMyScrap = ({ username, accessToken, postQueryParams }) => {
   });
 };
 
-const requestDeleteAbility = (accessToken, abilityId) =>
+/* Filter 관련 request */
+export const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
+
+export const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
+
+export const requestGetTags = () => fetch(`${BASE_URL}/tags`);
+
+export const requestGetUserTags = (username) => fetch(`${BASE_URL}/members/${username}/tags`);
+
+/* User 관련 request */
+export const loginRequest = ({ code }) =>
+  fetch(`${BASE_URL}/login/token`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: JSON.stringify({ code }),
+  });
+
+export const getUserProfileRequest = ({ accessToken }) =>
+  fetch(`${BASE_URL}/members/me`, {
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+export const requestGetProfile = (username) => fetch(`${BASE_URL}/members/${username}/profile`);
+
+export const requestEditProfile = (data, accessToken) =>
+  fetch(`${BASE_URL}/members/${data.username}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+export const requestGetProfileIntroduction = (username) =>
+  fetch(`${BASE_URL}/members/${username}/profile-intro`);
+
+export const requestEditProfileIntroduction = (username, data, accessToken) =>
+  fetch(`${BASE_URL}/members/${username}/profile-intro`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+/* Report 관련 requests */
+export const requestGetReportList = ({ username, type, size = 10, page = 1 }) =>
+  fetch(`${BASE_URL}/${username}/reports?type=${type}&page=${page}&size=${size}`, {
+    method: 'GET',
+  });
+
+export const requestGetReport = (reportId) =>
+  fetch(`${BASE_URL}/reports/${reportId}`, {
+    method: 'GET',
+  });
+
+export const requestPostReport = (data, accessToken) =>
+  fetch(`${BASE_URL}/reports`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+export const requestDeleteReport = (reportId, accessToken) =>
+  fetch(`${BASE_URL}/reports/${reportId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+export const requestEditReport = (data, reportId, accessToken) =>
+  fetch(`${BASE_URL}/reports/${reportId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+export const requestGetAbilities = (username, accessToken) =>
+  fetch(`${BASE_URL}/members/${username}/abilities`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+export const requestAddAbility = (accessToken, data) =>
+  fetch(`${BASE_URL}/abilities`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+export const requestDeleteAbility = (accessToken, abilityId) =>
   fetch(`${BASE_URL}/abilities/${abilityId}`, {
     method: 'DELETE',
     headers: {
@@ -210,7 +224,7 @@ const requestDeleteAbility = (accessToken, abilityId) =>
     },
   });
 
-const requestEditAbility = (accessToken, data) =>
+export const requestEditAbility = (accessToken, data) =>
   fetch(`${BASE_URL}/abilities/${data.id}`, {
     method: 'PUT',
     headers: {
@@ -220,12 +234,33 @@ const requestEditAbility = (accessToken, data) =>
     body: JSON.stringify(data),
   });
 
-const requestSetDefaultAbility = (accessToken, field) =>
+export const requestSetDefaultAbility = (accessToken, field) =>
   fetch(`${BASE_URL}/abilities/template/${field}`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
+  });
+
+/* 사용자 리액션 관련 requests */
+export const requestPostScrap = ({ username, accessToken, id: studylogId }) =>
+  fetch(`${BASE_URL}/members/${username}/scrap`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({ studylogId }),
+  });
+
+export const requestDeleteScrap = ({ username, accessToken, id: studylogId }) =>
+  fetch(`${BASE_URL}/members/${username}/scrap`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({ studylogId }),
   });
 
 export const requestPostLike = ({ accessToken, id }) =>
@@ -243,42 +278,3 @@ export const requestDeleteLike = ({ accessToken, id }) =>
       Authorization: `Bearer ${accessToken}`,
     },
   });
-
-const requestGetProfileIntroduction = (username) =>
-  fetch(`${BASE_URL}/members/${username}/profile-intro`);
-
-const requestEditProfileIntroduction = (username, data, accessToken) =>
-  fetch(`${BASE_URL}/members/${username}/profile-intro`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(data),
-  });
-
-export {
-  requestGetStudylogs,
-  requestGetFilters,
-  requestGetMissions,
-  requestGetTags,
-  requestGetProfile,
-  requestEditProfile,
-  requestGetUserTags,
-  requestGetCalendar,
-  requestGetAbilities,
-  requestAddAbility,
-  requestDeleteAbility,
-  requestEditAbility,
-  requestSetDefaultAbility,
-  requestGetReportList,
-  requestGetReport,
-  requestPostReport,
-  requestDeleteReport,
-  requestEditReport,
-  requestPostScrap,
-  requestDeleteScrap,
-  requestGetMyScrap,
-  requestGetProfileIntroduction,
-  requestEditProfileIntroduction,
-};

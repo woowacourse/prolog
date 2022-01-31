@@ -1,9 +1,9 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 
 import LOCAL_STORAGE_KEY from '../constants/localStorage';
 import useMutation from '../hooks/useMutation';
 import useRequest from '../hooks/useRequest';
-import { getUserProfileRequest, loginRequest } from '../service/userRequests';
+import { getUserProfileRequest, loginRequest } from '../service/requests';
 import { getLocalStorageItem } from '../utils/localStorage';
 
 const DEFAULT_USER = {
@@ -43,10 +43,6 @@ const UserProvider = ({ children }) => {
     localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
     setState(DEFAULT_USER);
   };
-
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
 
   return (
     <UserContext.Provider value={{ user: state, onLogin, onLogout }}>
