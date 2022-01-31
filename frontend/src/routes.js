@@ -1,14 +1,14 @@
 import { PATH, PROFILE_PAGE_MENU } from './constants';
 import {
-  EditPostPage,
+  EditStudylogPage,
   LoginCallbackPage,
   MainPage,
-  NewPostPage,
-  PostPage,
+  NewStudylogPage,
+  StudylogPage,
   ProfilePage,
   ProfilePageEditReport,
   ProfilePageNewReport,
-  ProfilePagePosts,
+  ProfilePageStudylogs,
   ProfilePageReports,
   ProfilePageScraps,
   StudylogListPage,
@@ -27,14 +27,14 @@ const pageRoutes = [
     render: () => <LoginCallbackPage />,
   },
   { path: [PATH.STUDYLOG], render: () => <StudylogListPage /> },
-  { path: [PATH.NEW_POST], render: () => <NewPostPage /> },
+  { path: [PATH.NEW_STUDYLOG], render: () => <NewStudylogPage /> },
   {
     path: [`${PATH.STUDYLOG}/:id`],
-    render: () => <PostPage />,
+    render: () => <StudylogPage />,
   },
   {
     path: `${PATH.STUDYLOG}/:id/edit`,
-    render: () => <EditPostPage />,
+    render: () => <EditStudylogPage />,
   },
   {
     path: [PATH.PROFILE],
@@ -44,7 +44,7 @@ const pageRoutes = [
     path: [PATH.PROFILE_POSTS],
     render: () => (
       <ProfilePage menu={PROFILE_PAGE_MENU.POSTS}>
-        <ProfilePagePosts />
+        <ProfilePageStudylogs />
       </ProfilePage>
     ),
   },

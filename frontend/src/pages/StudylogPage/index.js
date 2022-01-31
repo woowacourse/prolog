@@ -31,7 +31,7 @@ import {
   SNACKBAR_MESSAGE,
 } from '../../constants';
 
-const PostPage = () => {
+const StudylogPage = () => {
   const { id } = useParams();
   const history = useHistory();
 
@@ -190,4 +190,4 @@ const PostPage = () => {
   );
 };
 
-export default PostPage;
+export default StudylogPage;

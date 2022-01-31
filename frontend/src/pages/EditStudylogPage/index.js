@@ -20,7 +20,7 @@ import { UserContext } from '../../contexts/UserProvider';
 import useRequest from '../../hooks/useRequest';
 import useMutation from '../../hooks/useMutation';
 
-const EditPostPage = () => {
+const EditStudylogPage = () => {
   const history = useHistory();
 
   const { user } = useContext(UserContext);
@@ -106,4 +106,4 @@ const EditPostPage = () => {
   );
 };
 
-export default EditPostPage;
+export default EditStudylogPage;

@@ -34,7 +34,7 @@ import {
   Heading,
 } from './styles';
 
-const ProfilePagePosts = () => {
+const ProfilePageStudylogs = () => {
   const {
     postQueryParams,
     selectedFilter,
@@ -218,4 +218,4 @@ const ProfilePagePosts = () => {
   );
 };
 
-export default ProfilePagePosts;
+export default ProfilePageStudylogs;

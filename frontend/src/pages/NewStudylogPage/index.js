@@ -18,7 +18,7 @@ import { PATH } from '../../constants';
 import { MainContentStyle } from '../../PageRouter';
 import { SelectBoxWrapper, Studylog, SubmitButtonStyle } from './styles';
 
-const NewPostPage = () => {
+const NewStudylogPage = () => {
   const history = useHistory();
 
   const { user } = useContext(UserContext);
@@ -107,4 +107,4 @@ const NewPostPage = () => {
   );
 };
 
-export default NewPostPage;
+export default NewStudylogPage;
