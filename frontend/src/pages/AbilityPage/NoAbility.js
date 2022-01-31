@@ -9,12 +9,14 @@ const NoAbility = ({ getData, accessToken }) => {
 
   const { mutate: addDefaultAbilities } = useMutation(
     (field) => requestSetDefaultAbility(JSON.parse(accessToken), field),
-    () => {
-      openSnackBar(SUCCESS_MESSAGE.SET_DEFAULT_ABILITIES);
-      getData();
-    },
-    () => {
-      openSnackBar(CONFIRM_MESSAGE.SET_DEFAULT_ABILITIES);
+    {
+      onSuccess: () => {
+        openSnackBar(SUCCESS_MESSAGE.SET_DEFAULT_ABILITIES);
+        getData();
+      },
+      onError: () => {
+        openSnackBar(CONFIRM_MESSAGE.SET_DEFAULT_ABILITIES);
+      },
     }
   );
 

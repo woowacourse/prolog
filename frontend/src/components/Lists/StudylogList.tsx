@@ -23,7 +23,7 @@ const StudylogList = ({ studylogs }: Props) => {
   const history = useHistory();
 
   const goTargetPost = (id: number) => {
-    history.push(`${PATH.POST}/${id}`);
+    history.push(`${PATH.STUDYLOG}/${id}`);
   };
 
   const goProfilePage = (username: string) => (event: MouseEvent) => {

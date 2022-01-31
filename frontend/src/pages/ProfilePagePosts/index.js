@@ -1,8 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
-import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
-import { Button, BUTTON_SIZE, Card, FilterList, Pagination } from '../../components';
+
+import useStudylog from '../../hooks/useStudylog';
+import useFetch from '../../hooks/useFetch';
+import useFilterWithParams from '../../hooks/useFilterWithParams';
+import { UserContext } from '../../contexts/UserProvider';
+
 import { requestGetFilters } from '../../service/requests';
+
+import { Button, BUTTON_SIZE, Card, FilterList, Pagination } from '../../components';
+import Chip from '../../components/Chip/Chip';
+
+import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
+import { isEmptyObject } from '../../utils/object';
+
+import { SelectedFilterList } from '../MainPage/styles';
 import {
   ButtonList,
   CardStyles,
@@ -21,13 +33,6 @@ import {
   Title,
   Heading,
 } from './styles';
-import { useSelector } from 'react-redux';
-import useStudylog from '../../hooks/useStudylog';
-import useFetch from '../../hooks/useFetch';
-import useFilterWithParams from '../../hooks/useFilterWithParams';
-import { SelectedFilterList } from '../MainPage/styles';
-import Chip from '../../components/Chip/Chip';
-import { isEmptyObject } from '../../utils/object';
 
 const ProfilePagePosts = () => {
   const {
@@ -44,8 +49,10 @@ const ProfilePagePosts = () => {
   } = useFilterWithParams();
 
   const history = useHistory();
-  const accessToken = useSelector((state) => state.user.accessToken.data);
-  const myName = useSelector((state) => state.user.profile.data?.username);
+
+  const { user } = useContext(UserContext);
+  const { accessToken, username: myName } = user;
+
   const { username } = useParams();
   const { state } = useLocation();
 
@@ -62,18 +69,18 @@ const ProfilePagePosts = () => {
   } = useStudylog([]);
 
   const goTargetPost = (id) => {
-    history.push(`${PATH.POST}/${id}`);
+    history.push(`${PATH.STUDYLOG}/${id}`);
   };
 
   const goEditTargetPost = (id) => (event) => {
     event.stopPropagation();
 
-    history.push(`${PATH.POST}/${id}/edit`);
+    history.push(`${PATH.STUDYLOG}/${id}/edit`);
   };
 
   const getData = async () => {
     const query = new URLSearchParams(history.location.search) + `&usernames=${username}`;
-    await getStudylogs({ type: 'searchParams', data: query });
+    await getStudylogs({ query: { type: 'searchParams', data: query }, accessToken });
   };
 
   const onDeletePost = async (event, id) => {

@@ -1,15 +1,17 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { css } from '@emotion/react';
 
 import { Ability } from '../ProfilePageReports/AbilityGraph';
 
 import useRequest from '../../hooks/useRequest';
 import { requestGetReportList } from '../../service/requests';
-import { COLOR, REQUEST_REPORT_TYPE } from '../../constants';
+import { UserContext } from '../../contexts/UserProvider';
 
 import { Chip, Pagination } from '../../components';
-import { ReactComponent as StudylogIcon } from '../../assets/images/post.svg';
+
+import { COLOR, REQUEST_REPORT_TYPE } from '../../constants';
+
 import {
   Container,
   AddNewReportLink,
@@ -19,7 +21,8 @@ import {
   StudylogCount,
   Badge,
 } from './styles';
-import { css } from '@emotion/react';
+
+import { ReactComponent as StudylogIcon } from '../../assets/images/post.svg';
 
 type Report = {
   id: number;
@@ -33,14 +36,6 @@ type Report = {
   createdAt: string;
 };
 
-type UserProfile = {
-  data: { username: string };
-};
-
-interface UserProfileState {
-  user: { profile: UserProfile };
-}
-
 const defaultReports = {
   reports: [],
   currPage: 1,
@@ -53,8 +48,10 @@ const ProfilePageReportsList = () => {
 
   const [reports, setReports] = useState(defaultReports);
 
-  const user = useSelector<UserProfileState>((state) => state.user.profile) as UserProfile;
-  const isOwner = !!user.data && username === user.data.username;
+  const { user: loginUser } = useContext(UserContext);
+  const { username: loginUsername } = loginUser;
+
+  const isOwner = username === loginUsername;
 
   // const { response: reports, fetchData: getReports } = useRequest({}, (page = 1) =>
   //   requestGetReportList({

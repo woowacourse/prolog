@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect } from 'react';
 import styled from '@emotion/styled';
 
 import { Card, CARD_SIZE, CreatableSelectBox } from '..';
@@ -29,8 +29,8 @@ const TitleInput = styled.input`
   }
 `;
 
-const EditPostCard = forwardRef(({ post, tagOptions }, ref) => {
-  const { title, tags, content } = post;
+const EditPostCard = forwardRef(({ studylog, tagOptions }, ref) => {
+  const { title, tags, content } = studylog;
   const prevTags = tags?.map((tag) => ({
     value: tag.name,
     label: '#' + tag.name,
@@ -61,17 +61,20 @@ const EditPostCard = forwardRef(({ post, tagOptions }, ref) => {
         defaultValue={title}
       />
       <hr />
-      <Editor
-        placeholder="여기에 학습로그를 작성해주세요."
-        previewStyle="vertical"
-        height="50vh"
-        initialValue={content}
-        initialEditType="markdown"
-        toolbarItems={[['heading', 'bold', 'italic', 'strike']]}
-        ref={(element) => assignRefValue('content', element)}
-        extendedAutolinks={true}
-        plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
-      />
+      {/* Editor, Viewer 적용 시점 컨트롤 필요 */}
+      {content && (
+        <Editor
+          placeholder="여기에 학습로그를 작성해주세요."
+          previewStyle="vertical"
+          height="50vh"
+          initialValue={content}
+          initialEditType="markdown"
+          toolbarItems={[['heading', 'bold', 'italic', 'strike']]}
+          ref={(element) => assignRefValue('content', element)}
+          extendedAutolinks={true}
+          plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+        />
+      )}
       <CreatableSelectBox
         defaultValue={prevTags}
         options={tagOptions}

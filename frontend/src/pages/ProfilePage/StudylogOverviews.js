@@ -75,7 +75,7 @@ const StudylogOverview = () => {
     setFilteringOption([{ filterType: 'tags', filterDetailId: id }]);
 
   const goTargetPost = (id) => {
-    history.push(`${PATH.POST}/${id}`);
+    history.push(`${PATH.STUDYLOG}/${id}`);
   };
 
   const onSetPage = (page) => {

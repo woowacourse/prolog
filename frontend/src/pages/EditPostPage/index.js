@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+
 import { SelectBox, Button, BUTTON_SIZE, EditPostCard } from '../../components';
-import { useSelector } from 'react-redux';
+
 import useFetch from '../../hooks/useFetch';
 import {
   requestEditStudylog,
@@ -12,7 +13,7 @@ import {
   requestGetTags,
 } from '../../service/requests';
 import { ALERT_MESSAGE, ERROR_MESSAGE, PATH } from '../../constants';
-import useStudylog from '../../hooks/useStudylog';
+
 import { SelectBoxWrapper, Post, SubmitButtonStyle } from '../NewPostPage/styles';
 import { MainContentStyle } from '../../PageRouter';
 import { UserContext } from '../../contexts/UserProvider';
@@ -27,7 +28,10 @@ const EditPostPage = () => {
 
   const { id } = useParams();
 
-  const { response: studylog, fetchData: getStudylog } = useRequest({}, requestGetStudylog);
+  const { response: studylog, fetchData: getStudylog } = useRequest({}, () =>
+    requestGetStudylog({ id, accessToken })
+  );
+
   const { mutate: editPost } = useMutation(requestEditStudylog, {
     onSuccess: () => {
       history.goBack();
@@ -69,12 +73,12 @@ const EditPostPage = () => {
   useEffect(() => {
     if (author && username !== author.username) {
       alert(ALERT_MESSAGE.CANNOT_EDIT_OTHERS);
-      history.push(`${PATH.POST}/${id}`);
+      history.push(`${PATH.STUDYLOG}/${id}`);
     }
   }, [username, author]);
 
   useEffect(() => {
-    getStudylog(id, accessToken);
+    getStudylog();
   }, [id]);
 
   return (
@@ -92,7 +96,7 @@ const EditPostPage = () => {
           />
         </SelectBoxWrapper>
         <Post key={id}>
-          <EditPostCard ref={cardRefs} post={studylog} tagOptions={tagOptions} />
+          <EditPostCard ref={cardRefs} studylog={studylog} tagOptions={tagOptions} />
         </Post>
         <Button size={BUTTON_SIZE.SMALL} cssProps={SubmitButtonStyle}>
           작성완료

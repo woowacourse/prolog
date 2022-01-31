@@ -83,7 +83,7 @@ const requestGetPosts = (query, accessToken) => {
   return fetch(`${BASE_URL}/posts`, authConfig);
 };
 
-const requestGetStudylogs = (query, accessToken) => {
+const requestGetStudylogs = ({ query, accessToken }) => {
   const authConfig = accessToken
     ? {
         headers: {
@@ -93,7 +93,7 @@ const requestGetStudylogs = (query, accessToken) => {
     : {};
 
   if (query.type === 'searchParams') {
-    return fetch(`${BASE_URL}/posts?${query.data.toString()}`, authConfig);
+    return fetch(`${BASE_URL}/studylogs?${query.data.toString()}`, authConfig);
   }
 
   if (query.type === 'filter') {
@@ -106,10 +106,13 @@ const requestGetStudylogs = (query, accessToken) => {
         )
       : '';
 
-    return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`, authConfig);
+    return fetch(
+      `${BASE_URL}/studylogs?${[...filterQuery, ...searchParams].join('&')}`,
+      authConfig
+    );
   }
 
-  return fetch(`${BASE_URL}/posts`, authConfig);
+  return fetch(`${BASE_URL}/studylogs`, authConfig);
 };
 
 const requestEditPost = (postId, data, accessToken) =>
@@ -259,7 +262,7 @@ const requestDeleteScrap = ({ username, accessToken, id: studylogId }) =>
     body: JSON.stringify({ studylogId }),
   });
 
-const requestGetMyScrap = (username, accessToken, postQueryParams) => {
+const requestGetMyScrap = ({ username, accessToken, postQueryParams }) => {
   const searchParams = Object.entries(postQueryParams).map(([key, value]) => `${key}=${value}`);
 
   return fetch(`${BASE_URL}/members/${username}/scrap?${[...searchParams].join('&')}`, {

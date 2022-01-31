@@ -29,11 +29,11 @@ const pageRoutes = [
   { path: [PATH.STUDYLOG], render: () => <StudylogListPage /> },
   { path: [PATH.NEW_POST], render: () => <NewPostPage /> },
   {
-    path: [`${PATH.POST}/:id`],
+    path: [`${PATH.STUDYLOG}/:id`],
     render: () => <PostPage />,
   },
   {
-    path: `${PATH.POST}/:id/edit`,
+    path: `${PATH.STUDYLOG}/:id/edit`,
     render: () => <EditPostPage />,
   },
   {

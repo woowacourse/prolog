@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { css } from '@emotion/react';
-import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import useMutation from '../../hooks/useMutation';
@@ -29,14 +28,15 @@ import {
 } from '../../styles/flex.styles';
 import { markdownStyle } from '../../styles/markdown.styles';
 import { EditButtonStyle, WrapperStyle } from './Introduction.styles';
+import { UserContext } from '../../contexts/UserProvider';
 
 const Introduction = () => {
   const { username } = useParams();
   const [isEditing, setIsEditing] = useState(false);
   const [editorContentRef, setEditorContentRef] = useState('');
 
-  const accessToken = useSelector((state) => state.user.accessToken.data);
-  const loginName = useSelector((state) => state.user.profile.data?.username);
+  const { user } = useContext(UserContext);
+  const { accessToken, loginName } = user;
 
   const { response, fetchData } = useRequest({ text: '' }, () =>
     requestGetProfileIntroduction(username)
@@ -53,13 +53,15 @@ const Introduction = () => {
         { text: editorContentRef.getInstance().getMarkdown() },
         accessToken
       ),
-    async () => {
-      await fetchData();
+    {
+      onSuccess: async () => {
+        await fetchData();
 
-      setIsEditing(false);
-    },
-    (error) => {
-      alert(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
+        setIsEditing(false);
+      },
+      onError: (error) => {
+        alert(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
+      },
     }
   );
 

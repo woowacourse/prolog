@@ -1,27 +1,29 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useContext, useEffect, useState } from 'react';
+
 import { useHistory, useParams } from 'react-router-dom';
-import localStorage from 'local-storage';
 
 import { requestEditReport, requestGetReport } from '../../service/requests';
-import { API, COLOR, ERROR_MESSAGE, REPORT_DESCRIPTION } from '../../constants';
+import { UserContext } from '../../contexts/UserProvider';
 
 import { Button } from '../../components';
 import StudylogModal from '../ProfilePageNewReport/StudylogModal';
 import ReportInfoInput from '../ProfilePageNewReport/ReportInfoInput';
 import ReportStudylogTable from '../ProfilePageNewReport/ReportStudylogTable';
-import { Checkbox, Form, FormButtonWrapper } from '../ProfilePageNewReport/style';
 import AbilityGraph from '../ProfilePageReports/AbilityGraph';
+
+import { COLOR, ERROR_MESSAGE, REPORT_DESCRIPTION } from '../../constants';
 import { limitLetterLength } from '../../utils/validator';
+
+import { Checkbox, Form, FormButtonWrapper } from '../ProfilePageNewReport/style';
 
 const ProfilePageEditReport = () => {
   const { username, id: reportId } = useParams();
   const history = useHistory();
 
-  const user = useSelector((state) => state.user.profile);
-  const nickname = user.data?.nickname ?? username;
-  const isLoggedIn = !!user.data;
-  const accessToken = localStorage.get(API.ACCESS_TOKEN);
+  const { user } = useContext(UserContext);
+  const { isLoggedIn, accessToken } = user;
+
+  const nickname = user.nickname ?? user.username;
 
   const [isMainReport, setIsMainReport] = useState(false);
   const [title, setTitle] = useState('');
@@ -33,7 +35,7 @@ const ProfilePageEditReport = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      if (username !== user.data.username) {
+      if (username !== user.username) {
         alert('본인의 리포트만 수정할 수 있습니다.');
         history.push(`/${username}/reports`);
       }
@@ -43,7 +45,7 @@ const ProfilePageEditReport = () => {
         history.push(`/${username}/reports`);
       }
     }
-  }, [isLoggedIn, username, user.data, history, accessToken]);
+  }, [isLoggedIn, username, user, history, accessToken]);
 
   const getReport = async (reportId) => {
     try {

@@ -2,39 +2,27 @@
 
 import { useContext, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+
+import Content from './Content';
+import { Button, BUTTON_SIZE } from '../../components';
+import { ButtonList, EditButtonStyle, DeleteButtonStyle } from './styles';
+
+import { MainContentStyle } from '../../PageRouter';
+import { UserContext } from '../../contexts/UserProvider';
+import useSnackBar from '../../hooks/useSnackBar';
+import useRequest from '../../hooks/useRequest';
+import useMutation from '../../hooks/useMutation';
+import debounce from '../../utils/debounce';
+
 import {
   requestPostScrap,
   requestDeleteScrap,
-  requestPostLike,
   requestDeleteLike,
   requestGetStudylog,
   requestDeleteStudylog,
   requestStudylogLike,
 } from '../../service/requests';
 
-import { Button, BUTTON_SIZE, Card, ProfileChip } from '../../components';
-import { Viewer } from '@toast-ui/react-editor';
-
-import '@toast-ui/editor/dist/toastui-editor.css';
-import 'prismjs/themes/prism.css';
-import Prism from 'prismjs';
-import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
-
-import {
-  ButtonList,
-  EditButtonStyle,
-  DeleteButtonStyle,
-  CardInner,
-  IssuedDate,
-  Mission,
-  ProfileChipStyle,
-  SubHeader,
-  Tags,
-  Title,
-  SubHeaderRightContent,
-  Content,
-  BottomContainer,
-} from './styles';
 import {
   ALERT_MESSAGE,
   CONFIRM_MESSAGE,
@@ -43,39 +31,19 @@ import {
   SNACKBAR_MESSAGE,
 } from '../../constants';
 
-import useSnackBar from '../../hooks/useSnackBar';
-
-import debounce from '../../utils/debounce';
-import { css } from '@emotion/react';
-import useMutation from '../../hooks/useMutation';
-
-import Like from '../../components/Reaction/Like';
-import Scrap from '../../components/Reaction/Scrap';
-import {
-  AlignItemsBaseLineStyle,
-  FlexStyle,
-  JustifyContentSpaceBtwStyle,
-} from '../../styles/flex.styles';
-import ViewCount from '../../components/ViewCount/ViewCount';
-import { MainContentStyle } from '../../PageRouter';
-import { UserContext } from '../../contexts/UserProvider';
-import useRequest from '../../hooks/useRequest';
-
-import defaultProfileImage from '../../assets/images/no-profile-image.png';
-
 const PostPage = () => {
+  const { id } = useParams();
   const history = useHistory();
-
-  const { openSnackBar } = useSnackBar();
 
   const { user } = useContext(UserContext);
   const { accessToken, isLoggedIn, username } = user;
 
-  const { id } = useParams();
+  const { openSnackBar } = useSnackBar();
 
   const { response: studylog, fetchData: getStudylog } = useRequest({}, () =>
     requestGetStudylog({ id, accessToken })
   );
+
   const { mutate: deleteStudylog } = useMutation(
     () => {
       if (!window.confirm(CONFIRM_MESSAGE.DELETE_POST)) return;
@@ -89,18 +57,7 @@ const PostPage = () => {
     }
   );
 
-  const {
-    author = null,
-    mission = {},
-    title = '',
-    content = '',
-    tags = [],
-    createdAt = null,
-    viewCount = 0,
-    liked = false,
-    likesCount = 0,
-    scrap = false,
-  } = studylog;
+  const { author = null, liked = false, scrap = false } = studylog;
 
   const goAuthorProfilePage = (event) => {
     event.stopPropagation();
@@ -113,7 +70,7 @@ const PostPage = () => {
   };
 
   const goEditTargetPost = () => {
-    history.push(`${PATH.POST}/${id}/edit`);
+    history.push(`${PATH.STUDYLOG}/${id}/edit`);
   };
 
   const { mutate: postScrap } = useMutation(
@@ -207,77 +164,28 @@ const PostPage = () => {
     <div css={MainContentStyle}>
       {username === author?.username && (
         <ButtonList>
-          <Button
-            size={BUTTON_SIZE.X_SMALL}
-            type="button"
-            cssProps={EditButtonStyle}
-            alt="수정 버튼"
-            onClick={goEditTargetPost}
-          >
-            수정
-          </Button>
-          <Button
-            size={BUTTON_SIZE.X_SMALL}
-            type="button"
-            cssProps={DeleteButtonStyle}
-            alt="삭제 버튼"
-            onClick={deleteStudylog}
-          >
-            삭제
-          </Button>
+          {[
+            { title: '수정', cssProps: EditButtonStyle, onClick: goEditTargetPost },
+            { title: '삭제', cssProps: DeleteButtonStyle, onClick: deleteStudylog },
+          ].map(({ title, cssProps, onClick }) => (
+            <Button
+              key={title}
+              size={BUTTON_SIZE.X_SMALL}
+              type="button"
+              cssProps={cssProps}
+              onClick={onClick}
+            >
+              {title}
+            </Button>
+          ))}
         </ButtonList>
       )}
-      <Card key={id} size="LARGE">
-        <CardInner>
-          <div>
-            <SubHeader>
-              <Mission>{mission.name}</Mission>
-              <SubHeaderRightContent>
-                <IssuedDate>{new Date(createdAt).toLocaleString('ko-KR')}</IssuedDate>
-              </SubHeaderRightContent>
-            </SubHeader>
-            <div css={[FlexStyle, JustifyContentSpaceBtwStyle]}>
-              <Title>{title}</Title>
-              <ViewCount count={viewCount} />
-            </div>
-            <ProfileChip
-              imageSrc={author?.imageUrl || defaultProfileImage}
-              cssProps={ProfileChipStyle}
-              onClick={goAuthorProfilePage}
-            >
-              {author?.nickname}
-            </ProfileChip>
-          </div>
-          <Content>
-            <Viewer
-              initialValue={content}
-              extendedAutolinks={true}
-              plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
-            />
-          </Content>
-          <BottomContainer>
-            <Tags>
-              {tags?.map(({ id, name }) => (
-                <span key={id}>{`#${name} `}</span>
-              ))}
-            </Tags>
-            <div
-              css={[
-                FlexStyle,
-                AlignItemsBaseLineStyle,
-                css`
-                  > *:not(:last-child) {
-                    margin-right: 1rem;
-                  }
-                `,
-              ]}
-            >
-              <Like liked={liked} likesCount={likesCount} onClick={toggleLike} />
-              <Scrap scrap={scrap} onClick={toggleScrap} />
-            </div>
-          </BottomContainer>
-        </CardInner>
-      </Card>
+      <Content
+        studylog={studylog}
+        toggleLike={toggleLike}
+        toggleScrap={toggleScrap}
+        goAuthorProfilePage={goAuthorProfilePage}
+      />
     </div>
   );
 };
