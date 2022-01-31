@@ -14,7 +14,7 @@ import {
 } from '../../service/requests';
 import { ALERT_MESSAGE, ERROR_MESSAGE, PATH } from '../../constants';
 
-import { SelectBoxWrapper, Studylog, SubmitButtonStyle } from '../NewPostPage/styles';
+import { SelectBoxWrapper, Studylog, SubmitButtonStyle } from '../NewStudylogPage/styles';
 import { MainContentStyle } from '../../PageRouter';
 import { UserContext } from '../../contexts/UserProvider';
 import useRequest from '../../hooks/useRequest';
