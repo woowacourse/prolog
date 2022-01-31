@@ -60,14 +60,14 @@ const StudylogListPage = (): JSX.Element => {
 
   const [searchKeywords, setSearchKeywords] = useState('');
 
-  const goNewPost = () => {
+  const goNewStudylog = () => {
     if (!accessToken) {
       alert(ERROR_MESSAGE.LOGIN_DEFAULT);
       window.location.reload();
       return;
     }
 
-    history.push(PATH.NEW_POST);
+    history.push(PATH.NEW_STUDYLOG);
   };
 
   const onDeleteSearchKeyword = () => {
@@ -180,7 +180,7 @@ const StudylogListPage = (): JSX.Element => {
               size="SMALL"
               icon={PencilIcon}
               alt="글쓰기 아이콘"
-              onClick={goNewPost}
+              onClick={goNewStudylog}
               cssProps={css`
                 margin-left: 1rem;
               `}

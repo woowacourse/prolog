@@ -51,14 +51,14 @@ const NavBar = () => {
     history.push(PATH.ROOT);
   };
 
-  const goNewPost = async () => {
+  const goNewStudylog = async () => {
     if (!accessToken) {
       alert(ERROR_MESSAGE.LOGIN_DEFAULT);
 
       return;
     }
 
-    history.push(PATH.NEW_POST);
+    history.push(PATH.NEW_STUDYLOG);
   };
 
   const showDropdownMenu = () => {
@@ -106,7 +106,7 @@ const NavBar = () => {
                 size="XX_SMALL"
                 icon={PencilIcon}
                 type="button"
-                onClick={goNewPost}
+                onClick={goNewStudylog}
                 cssProps={pencilButtonStyle}
               />
               <Button

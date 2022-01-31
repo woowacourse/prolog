@@ -29,7 +29,7 @@ const TitleInput = styled.input`
   }
 `;
 
-const EditPostCard = forwardRef(({ studylog, tagOptions }, ref) => {
+const EditStudylogCard = forwardRef(({ studylog, tagOptions }, ref) => {
   const { title, tags, content } = studylog;
   const prevTags = tags?.map((tag) => ({
     value: tag.name,
@@ -85,4 +85,4 @@ const EditPostCard = forwardRef(({ studylog, tagOptions }, ref) => {
   );
 });
 
-export default EditPostCard;
+export default EditStudylogCard;

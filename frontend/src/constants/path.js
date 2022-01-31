@@ -8,8 +8,7 @@ const PATH = {
   PROFILE_REPORT: '/:username/reports/:reportId',
   PROFILE_NEW_REPORT: '/:username/reports/write',
   LOGIN_CALLBACK: '/login/callback',
-  POST: '/posts', // @deprecated
-  NEW_POST: '/studylog/write',
+  NEW_STUDYLOG: '/studylog/write',
   ABILITY: '/:username/ability',
   STUDYLOG: '/studylogs',
 };

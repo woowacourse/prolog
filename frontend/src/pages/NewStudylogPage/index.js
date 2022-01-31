@@ -9,7 +9,7 @@ import useMutation from '../../hooks/useMutation';
 import { UserContext } from '../../contexts/UserProvider';
 import { requestGetMissions, requestGetTags, requestPostStudylog } from '../../service/requests';
 
-import { SelectBox, Button, BUTTON_SIZE, NewPostCard } from '../../components';
+import { SelectBox, Button, BUTTON_SIZE, NewStudylogCard } from '../../components';
 
 import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
 import ERROR_CODE from '../../constants/errorCode';
@@ -94,7 +94,7 @@ const NewStudylogPage = () => {
           {/* @deprecate 예정으로 studylog로 변경 x */}
           {postIds.map((postId, index) => (
             <Studylog key={postId}>
-              <NewPostCard ref={cardRefs} postOrder={index} tagOptions={tagOptions} />
+              <NewStudylogCard ref={cardRefs} postOrder={index} tagOptions={tagOptions} />
             </Studylog>
           ))}
         </ul>

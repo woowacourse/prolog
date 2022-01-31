@@ -68,7 +68,7 @@ const ProfilePageStudylogs = () => {
     deleteData: deletePost,
   } = useStudylog([]);
 
-  const goTargetPost = (id) => {
+  const goTargetStudylog = (id) => {
     history.push(`${PATH.STUDYLOG}/${id}`);
   };
 
@@ -169,7 +169,7 @@ const ProfilePageStudylogs = () => {
                 <PostItem
                   key={id}
                   size="SMALL"
-                  onClick={() => goTargetPost(id)}
+                  onClick={() => goTargetStudylog(id)}
                   onMouseEnter={() => setHoveredPostId(id)}
                   onMouseLeave={() => setHoveredPostId(0)}
                 >

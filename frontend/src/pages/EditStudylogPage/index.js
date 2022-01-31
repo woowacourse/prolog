@@ -3,7 +3,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
-import { SelectBox, Button, BUTTON_SIZE, EditPostCard } from '../../components';
+import { SelectBox, Button, BUTTON_SIZE, EditStudylogCard } from '../../components';
 
 import useFetch from '../../hooks/useFetch';
 import {
@@ -96,7 +96,7 @@ const EditStudylogPage = () => {
           />
         </SelectBoxWrapper>
         <Studylog key={id}>
-          <EditPostCard ref={cardRefs} studylog={studylog} tagOptions={tagOptions} />
+          <EditStudylogCard ref={cardRefs} studylog={studylog} tagOptions={tagOptions} />
         </Studylog>
         <Button size={BUTTON_SIZE.SMALL} cssProps={SubmitButtonStyle}>
           작성완료

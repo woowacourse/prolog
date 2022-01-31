@@ -74,7 +74,7 @@ const StudylogOverview = () => {
   const setFilteringOptionWithTagId = (id) =>
     setFilteringOption([{ filterType: 'tags', filterDetailId: id }]);
 
-  const goTargetPost = (id) => {
+  const goTargetStudylog = (id) => {
     history.push(`${PATH.STUDYLOG}/${id}`);
   };
 
@@ -140,7 +140,7 @@ const StudylogOverview = () => {
                 <PostItem
                   key={id}
                   size="SMALL"
-                  onClick={() => goTargetPost(id)}
+                  onClick={() => goTargetStudylog(id)}
                   onMouseEnter={() => setHoveredPostId(id)}
                   onMouseLeave={() => setHoveredPostId(0)}
                 >
