@@ -27,7 +27,7 @@ const useUserStudylog = ({ levelId: currLevelId, username }) => {
         }`,
       };
 
-      const response = await requestGetStudylogs(query);
+      const response = await requestGetStudylogs({ query });
 
       if (!response.ok) {
         throw new Error(response.status);

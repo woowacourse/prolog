@@ -51,8 +51,10 @@ const StudylogOverview = () => {
     const filterQuery = [...filteringOption, { filterType: 'usernames', filterDetailId: username }];
 
     await getStudylogs({
-      type: 'filter',
-      data: { filterQuery, postQueryParams },
+      query: {
+        type: 'filter',
+        data: { filterQuery, postQueryParams },
+      },
     });
   }, [postQueryParams, filteringOption, username]);
 

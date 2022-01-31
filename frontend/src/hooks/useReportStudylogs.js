@@ -21,7 +21,7 @@ const useReportStudylogs = (Studylogs) => {
         type: 'searchParams',
         data: `ids=${currStudylogIds.join(',')}&page=${currentPage}`,
       };
-      const response = await requestGetStudylogs(query);
+      const response = await requestGetStudylogs({ query });
 
       if (!response.ok) {
         throw new Error(response.status);
