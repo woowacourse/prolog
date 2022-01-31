@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { requestGetPosts } from '../service/requests';
+import { requestGetStudylogs } from '../service/requests';
 import { filterIds } from '../utils/filteringList';
 
 const defaultValue = {
@@ -15,13 +15,13 @@ const useReportStudylogs = (Studylogs) => {
 
   const StudylogIds = filterIds(Studylogs);
 
-  const getPosts = async (currStudylogIds, currentPage = 1) => {
+  const getStudylogs = async (currStudylogIds, currentPage = 1) => {
     try {
       const query = {
         type: 'searchParams',
         data: `ids=${currStudylogIds.join(',')}&page=${currentPage}`,
       };
-      const response = await requestGetPosts(query);
+      const response = await requestGetStudylogs(query);
 
       if (!response.ok) {
         throw new Error(response.status);
@@ -42,10 +42,10 @@ const useReportStudylogs = (Studylogs) => {
       // 모달을 열어 학습로그를 새로 추가한 경우
       if (StudylogIds.length > reportStudylogData.totalSize) {
         setPage(1);
-        getPosts(StudylogIds, 1);
+        getStudylogs(StudylogIds, 1);
       } else {
         // 기존의 학습로그 목록에서 삭제만 한 경우
-        getPosts(StudylogIds, page);
+        getStudylogs(StudylogIds, page);
       }
     }
 
@@ -54,7 +54,7 @@ const useReportStudylogs = (Studylogs) => {
 
   useEffect(() => {
     if (Studylogs.length > 10) {
-      getPosts(StudylogIds, page);
+      getStudylogs(StudylogIds, page);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

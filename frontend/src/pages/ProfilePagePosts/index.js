@@ -62,7 +62,7 @@ const ProfilePagePosts = () => {
   const [filters] = useFetch({}, requestGetFilters);
 
   const {
-    response: posts,
+    response: studylogs,
     getAllData: getStudylogs,
     error: postError,
     deleteData: deletePost,
@@ -101,7 +101,7 @@ const ProfilePagePosts = () => {
   useEffect(() => {
     const params = getFullParams();
 
-    history.push(`${PATH.ROOT}${username}/posts${params && '?' + params}`);
+    history.push(`${PATH.ROOT}${username}/studylogs${params && '?' + params}`);
   }, [postQueryParams, selectedFilterDetails, username]);
 
   useEffect(() => {
@@ -160,10 +160,10 @@ const ProfilePagePosts = () => {
         </SelectedFilterList>
       </HeaderContainer>
       <Card css={CardStyles}>
-        {posts?.data?.length ? (
+        {studylogs?.data?.length ? (
           <>
-            {posts?.data?.map((post) => {
-              const { id, mission, title, tags, content } = post;
+            {studylogs?.data?.map((studylog) => {
+              const { id, mission, title, tags, content } = studylog;
 
               return (
                 <PostItem
@@ -208,7 +208,7 @@ const ProfilePagePosts = () => {
                 </PostItem>
               );
             })}
-            <Pagination postsInfo={posts} onSetPage={onSetPage} />
+            <Pagination dataInfo={studylogs} onSetPage={onSetPage} />
           </>
         ) : (
           <NoPost>작성한 글이 없습니다 🥲</NoPost>

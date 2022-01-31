@@ -40,8 +40,8 @@ const StudylogList = ({ studylogs }: Props) => {
         }
       `}
     >
-      {studylogs.map((post) => {
-        const { id, author, mission, title, tags, isRead, viewCount } = post;
+      {studylogs.map((studylog) => {
+        const { id, author, mission, title, tags, isRead, viewCount } = studylog;
 
         return (
           <li key={id}>

@@ -1,24 +1,5 @@
 import { BASE_URL } from '../configs/environment';
 
-/*
- * @deprecated
- * post -> studylog로 변환 작업중
- * 추후 의존성이 모두 제거되면 해당 함수 삭제 예정
- */
-const requestGetPost = (postId, accessToken) => {
-  if (accessToken) {
-    return fetch(`${BASE_URL}/posts/${postId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-  }
-
-  return fetch(`${BASE_URL}/posts/${postId}`);
-};
-
 export const requestGetStudylog = ({ id, accessToken }) => {
   if (accessToken) {
     return fetch(`${BASE_URL}/studylogs/${id}`, {
@@ -30,11 +11,11 @@ export const requestGetStudylog = ({ id, accessToken }) => {
     });
   }
 
-  return fetch(`${BASE_URL}/posts/${id}`);
+  return fetch(`${BASE_URL}/studylogs/${id}`);
 };
 
 export const requestPostStudylog = ({ accessToken, data }) =>
-  fetch(`${BASE_URL}/posts`, {
+  fetch(`${BASE_URL}/studylogs`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
@@ -48,40 +29,6 @@ const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
 const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
 
 const requestGetTags = () => fetch(`${BASE_URL}/tags`);
-
-/*
- * @deprecated
- * post -> studylog로 변환 작업중
- * 추후 의존성이 모두 제거되면 해당 함수 삭제 예정
- */
-const requestGetPosts = (query, accessToken) => {
-  const authConfig = accessToken
-    ? {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    : {};
-
-  if (query.type === 'searchParams') {
-    return fetch(`${BASE_URL}/posts?${query.data.toString()}`, authConfig);
-  }
-
-  if (query.type === 'filter') {
-    const searchParams = Object.entries(query?.data?.postQueryParams).map(
-      ([key, value]) => `${key}=${value}`
-    );
-    const filterQuery = query.data.filterQuery.length
-      ? query.data.filterQuery.map(
-          ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
-        )
-      : '';
-
-    return fetch(`${BASE_URL}/posts?${[...filterQuery, ...searchParams].join('&')}`, authConfig);
-  }
-
-  return fetch(`${BASE_URL}/posts`, authConfig);
-};
 
 const requestGetStudylogs = ({ query, accessToken }) => {
   const authConfig = accessToken
@@ -115,16 +62,6 @@ const requestGetStudylogs = ({ query, accessToken }) => {
   return fetch(`${BASE_URL}/studylogs`, authConfig);
 };
 
-const requestEditPost = (postId, data, accessToken) =>
-  fetch(`${BASE_URL}/posts/${postId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(data),
-  });
-
 export const requestEditStudylog = ({ id, data, accessToken }) =>
   fetch(`${BASE_URL}/studylogs/${id}`, {
     method: 'PUT',
@@ -133,15 +70,6 @@ export const requestEditStudylog = ({ id, data, accessToken }) =>
       Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify(data),
-  });
-
-const requestDeletePost = (postId, accessToken) =>
-  fetch(`${BASE_URL}/posts/${postId}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Authorization: `Bearer ${accessToken}`,
-    },
   });
 
 export const requestDeleteStudylog = ({ id, accessToken }) =>
@@ -165,20 +93,20 @@ const requestEditProfile = (data, accessToken) =>
     body: JSON.stringify(data),
   });
 
-const requestGetUserPosts = (username, postSearchParams, filteringOption) => {
+export const requestGetUserStudylogs = (username, postSearchParams, filteringOption) => {
   const searchParams = Object.entries(postSearchParams).map(([key, value]) => `${key}=${value}`);
   const filterQuery = filteringOption.length
     ? filteringOption.map(({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`)
     : '';
   return fetch(
-    `${BASE_URL}/members/${username}/posts?${[...filterQuery, ...searchParams].join('&')}`
+    `${BASE_URL}/members/${username}/studylogs?${[...filterQuery, ...searchParams].join('&')}`
   );
 };
 
 const requestGetUserTags = (username) => fetch(`${BASE_URL}/members/${username}/tags`);
 
 const requestGetCalendar = (year, month, username) =>
-  fetch(`${BASE_URL}/members/${username}/calendar-posts?year=${year}&month=${month}`, {
+  fetch(`${BASE_URL}/members/${username}/calendar-studylogs?year=${year}&month=${month}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
@@ -300,15 +228,7 @@ const requestSetDefaultAbility = (accessToken, field) =>
     },
   });
 
-const requestPostLike = (accessToken, postId) =>
-  fetch(`${BASE_URL}/studylogs/${postId}/likes`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-export const requestStudylogLike = ({ accessToken, id }) =>
+export const requestPostLike = ({ accessToken, id }) =>
   fetch(`${BASE_URL}/studylogs/${id}/likes`, {
     method: 'POST',
     headers: {
@@ -316,8 +236,8 @@ export const requestStudylogLike = ({ accessToken, id }) =>
     },
   });
 
-const requestDeleteLike = (accessToken, postId) =>
-  fetch(`${BASE_URL}/studylogs/${postId}/likes`, {
+export const requestDeleteLike = ({ accessToken, id }) =>
+  fetch(`${BASE_URL}/studylogs/${id}/likes`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -338,15 +258,10 @@ const requestEditProfileIntroduction = (username, data, accessToken) =>
   });
 
 export {
-  requestGetPost,
-  requestGetPosts,
   requestGetStudylogs,
   requestGetFilters,
   requestGetMissions,
   requestGetTags,
-  requestEditPost,
-  requestGetUserPosts,
-  requestDeletePost,
   requestGetProfile,
   requestEditProfile,
   requestGetUserTags,
@@ -364,8 +279,6 @@ export {
   requestPostScrap,
   requestDeleteScrap,
   requestGetMyScrap,
-  requestPostLike,
-  requestDeleteLike,
   requestGetProfileIntroduction,
   requestEditProfileIntroduction,
 };

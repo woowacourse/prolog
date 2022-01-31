@@ -7,7 +7,7 @@ const SelectBoxWrapper = styled.div`
   margin: 3rem 0;
 `;
 
-const Post = styled.div`
+const Studylog = styled.div`
   margin-bottom: 4.8rem;
 
   .toastui-editor-contents h1,
@@ -59,4 +59,4 @@ const SubmitButtonStyle = css`
   }
 `;
 
-export { SelectBoxWrapper, Post, SubmitButtonStyle };
+export { SelectBoxWrapper, Studylog, SubmitButtonStyle };

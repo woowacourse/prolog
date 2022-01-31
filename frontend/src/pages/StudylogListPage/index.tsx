@@ -212,7 +212,7 @@ const StudylogListPage = (): JSX.Element => {
         {studylogs?.data?.length === 0 && '작성된 글이 없습니다.'}
         {studylogs && studylogs.data && <StudylogList studylogs={studylogs.data} />}
       </PostListContainer>
-      <Pagination postsInfo={studylogs} onSetPage={onSetPage}></Pagination>
+      <Pagination dataInfo={studylogs} onSetPage={onSetPage}></Pagination>
     </div>
   );
 };

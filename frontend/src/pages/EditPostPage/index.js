@@ -14,7 +14,7 @@ import {
 } from '../../service/requests';
 import { ALERT_MESSAGE, ERROR_MESSAGE, PATH } from '../../constants';
 
-import { SelectBoxWrapper, Post, SubmitButtonStyle } from '../NewPostPage/styles';
+import { SelectBoxWrapper, Studylog, SubmitButtonStyle } from '../NewPostPage/styles';
 import { MainContentStyle } from '../../PageRouter';
 import { UserContext } from '../../contexts/UserProvider';
 import useRequest from '../../hooks/useRequest';
@@ -32,7 +32,7 @@ const EditPostPage = () => {
     requestGetStudylog({ id, accessToken })
   );
 
-  const { mutate: editPost } = useMutation(requestEditStudylog, {
+  const { mutate: editStudylog } = useMutation((data) => requestEditStudylog(data), {
     onSuccess: () => {
       history.goBack();
     },
@@ -50,7 +50,7 @@ const EditPostPage = () => {
   const { author, mission } = studylog;
   const tagOptions = tags.map(({ name }) => ({ value: name, label: `#${name}` }));
 
-  const onEditPost = async (event) => {
+  const onEditStudylog = async (event) => {
     event.preventDefault();
 
     const { title, content, tags } = cardRefs.current;
@@ -63,7 +63,7 @@ const EditPostPage = () => {
         studylog.tags.map((tag) => ({ name: tag.name })),
     };
 
-    editPost(id, data, accessToken);
+    editStudylog({ id, data, accessToken });
   };
 
   useEffect(() => {
@@ -83,7 +83,7 @@ const EditPostPage = () => {
 
   return (
     <div css={MainContentStyle}>
-      <form onSubmit={onEditPost}>
+      <form onSubmit={onEditStudylog}>
         <SelectBoxWrapper>
           <SelectBox
             options={missions}
@@ -95,9 +95,9 @@ const EditPostPage = () => {
             maxHeight="25rem"
           />
         </SelectBoxWrapper>
-        <Post key={id}>
+        <Studylog key={id}>
           <EditPostCard ref={cardRefs} studylog={studylog} tagOptions={tagOptions} />
-        </Post>
+        </Studylog>
         <Button size={BUTTON_SIZE.SMALL} cssProps={SubmitButtonStyle}>
           작성완료
         </Button>

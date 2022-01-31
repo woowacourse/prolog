@@ -2,17 +2,21 @@
 
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { SelectBox, Button, BUTTON_SIZE, NewPostCard } from '../../components';
 import { nanoid } from 'nanoid';
+
 import useFetch from '../../hooks/useFetch';
-import { requestGetMissions, requestGetTags, requestPostStudylog } from '../../service/requests';
-import { SelectBoxWrapper, Post, SubmitButtonStyle } from './styles';
-import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
-import { MainContentStyle } from '../../PageRouter';
-import { UserContext } from '../../contexts/UserProvider';
 import useMutation from '../../hooks/useMutation';
+import { UserContext } from '../../contexts/UserProvider';
+import { requestGetMissions, requestGetTags, requestPostStudylog } from '../../service/requests';
+
+import { SelectBox, Button, BUTTON_SIZE, NewPostCard } from '../../components';
+
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
 import ERROR_CODE from '../../constants/errorCode';
 import { PATH } from '../../constants';
+
+import { MainContentStyle } from '../../PageRouter';
+import { SelectBoxWrapper, Studylog, SubmitButtonStyle } from './styles';
 
 const NewPostPage = () => {
   const history = useHistory();
@@ -87,10 +91,11 @@ const NewPostPage = () => {
           />
         </SelectBoxWrapper>
         <ul>
+          {/* @deprecate 예정으로 studylog로 변경 x */}
           {postIds.map((postId, index) => (
-            <Post key={postId}>
+            <Studylog key={postId}>
               <NewPostCard ref={cardRefs} postOrder={index} tagOptions={tagOptions} />
-            </Post>
+            </Studylog>
           ))}
         </ul>
 

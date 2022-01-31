@@ -4,17 +4,17 @@ export const CREATE_POST_FAILURE = 'post/CREATE_POST_FAILURE';
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-export const createPost = (posts, accessToken) => async (dispatch) => {
+export const createPost = (studylogs, accessToken) => async (dispatch) => {
   dispatch({ type: CREATE_POST });
 
   try {
-    const response = await fetch(`${BASE_URL}/posts`, {
+    const response = await fetch(`${BASE_URL}/studylogs`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify(posts),
+      body: JSON.stringify(studylogs),
     });
 
     if (!response.ok) throw new Error(await response.text());

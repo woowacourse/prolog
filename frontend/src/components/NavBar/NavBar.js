@@ -126,7 +126,7 @@ const NavBar = () => {
                       },
                       {
                         menu: '내 학습로그',
-                        path: `/${username}/posts`,
+                        path: `/${username}/studylogs`,
                       },
                     ].map(({ menu, path }) => (
                       <li key={menu}>

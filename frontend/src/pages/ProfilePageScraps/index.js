@@ -88,8 +88,8 @@ const ProfilePageScraps = () => {
       <Card css={CardStyles}>
         {studylogs?.data?.length ? (
           <>
-            {studylogs?.data?.map((post) => {
-              const { id, mission, title, tags, content } = post;
+            {studylogs?.data?.map((studylog) => {
+              const { id, mission, title, tags, content } = studylog;
 
               return (
                 <PostItem
@@ -125,7 +125,7 @@ const ProfilePageScraps = () => {
                 </PostItem>
               );
             })}
-            <Pagination postsInfo={studylogs} onSetPage={onSetPage} />
+            <Pagination dataInfo={studylogs} onSetPage={onSetPage} />
           </>
         ) : (
           <NoPost>스크랩한 글이 없습니다 🥲</NoPost>

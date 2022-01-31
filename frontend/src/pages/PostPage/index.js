@@ -20,7 +20,7 @@ import {
   requestDeleteLike,
   requestGetStudylog,
   requestDeleteStudylog,
-  requestStudylogLike,
+  requestPostLike,
 } from '../../service/requests';
 
 import {
@@ -111,7 +111,7 @@ const PostPage = () => {
         return;
       }
 
-      return requestStudylogLike({ accessToken, id });
+      return requestPostLike({ accessToken, id });
     },
     {
       onSuccess: async () => {
@@ -126,7 +126,7 @@ const PostPage = () => {
     () => {
       if (!window.confirm(CONFIRM_MESSAGE.DELETE_LIKE)) return;
 
-      return requestDeleteLike(accessToken, id);
+      return requestDeleteLike({ accessToken, id });
     },
     {
       onSuccess: async () => {

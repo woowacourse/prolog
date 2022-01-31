@@ -45,7 +45,7 @@ const StudylogOverview = () => {
   const [hoveredPostId, setHoveredPostId] = useState(0);
   const [tags] = useFetch([], () => requestGetUserTags(username));
 
-  const { response: posts, getAllData: getStudylogs } = useStudylog([]);
+  const { response: studylogs, getAllData: getStudylogs } = useStudylog([]);
 
   const getUserPosts = useCallback(async () => {
     const filterQuery = [...filteringOption, { filterType: 'usernames', filterDetailId: username }];
@@ -131,10 +131,10 @@ const StudylogOverview = () => {
         />
       </Card>
       <Card title="학습로그" cssProps={CardStyles}>
-        {posts?.data?.length ? (
+        {studylogs?.data?.length ? (
           <>
-            {posts?.data?.map((post) => {
-              const { id, mission, title, tags, createdAt } = post;
+            {studylogs?.data?.map((studylog) => {
+              const { id, mission, title, tags, createdAt } = studylog;
 
               return (
                 <PostItem
@@ -161,7 +161,7 @@ const StudylogOverview = () => {
                 </PostItem>
               );
             })}
-            <Pagination postsInfo={posts} onSetPage={onSetPage} />
+            <Pagination dataInfo={studylogs} onSetPage={onSetPage} />
           </>
         ) : (
           <NoPost>작성한 글이 없습니다 🥲</NoPost>
