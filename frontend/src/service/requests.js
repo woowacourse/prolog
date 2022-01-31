@@ -1,4 +1,4 @@
-const BASE_URL = process.env.REACT_APP_API_URL;
+import { BASE_URL } from '../configs/environment';
 
 /*
  * @deprecated
@@ -19,9 +19,9 @@ const requestGetPost = (postId, accessToken) => {
   return fetch(`${BASE_URL}/posts/${postId}`);
 };
 
-const requestGetStudylog = (postId, accessToken) => {
+export const requestGetStudylog = ({ id, accessToken }) => {
   if (accessToken) {
-    return fetch(`${BASE_URL}/posts/${postId}`, {
+    return fetch(`${BASE_URL}/studylogs/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
@@ -30,8 +30,18 @@ const requestGetStudylog = (postId, accessToken) => {
     });
   }
 
-  return fetch(`${BASE_URL}/posts/${postId}`);
+  return fetch(`${BASE_URL}/posts/${id}`);
 };
+
+export const requestPostStudylog = ({ accessToken, data }) =>
+  fetch(`${BASE_URL}/posts`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify([data]),
+  });
 
 const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
 
@@ -112,8 +122,27 @@ const requestEditPost = (postId, data, accessToken) =>
     body: JSON.stringify(data),
   });
 
+export const requestEditStudylog = ({ id, data, accessToken }) =>
+  fetch(`${BASE_URL}/studylogs/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+
 const requestDeletePost = (postId, accessToken) =>
   fetch(`${BASE_URL}/posts/${postId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+export const requestDeleteStudylog = ({ id, accessToken }) =>
+  fetch(`${BASE_URL}/studylogs/${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
@@ -210,24 +239,24 @@ const requestAddAbility = (accessToken, data) =>
     body: JSON.stringify(data),
   });
 
-const requestPostScrap = (username, accessToken, data) =>
+const requestPostScrap = ({ username, accessToken, id: studylogId }) =>
   fetch(`${BASE_URL}/members/${username}/scrap`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({ studylogId }),
   });
 
-const requestDeleteScrap = (username, accessToken, data) =>
+const requestDeleteScrap = ({ username, accessToken, id: studylogId }) =>
   fetch(`${BASE_URL}/members/${username}/scrap`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify({ studylogId }),
   });
 
 const requestGetMyScrap = (username, accessToken, postQueryParams) => {
@@ -276,6 +305,14 @@ const requestPostLike = (accessToken, postId) =>
     },
   });
 
+export const requestStudylogLike = ({ accessToken, id }) =>
+  fetch(`${BASE_URL}/studylogs/${id}/likes`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
 const requestDeleteLike = (accessToken, postId) =>
   fetch(`${BASE_URL}/studylogs/${postId}/likes`, {
     method: 'DELETE',
@@ -287,7 +324,6 @@ const requestDeleteLike = (accessToken, postId) =>
 export {
   requestGetPost,
   requestGetPosts,
-  requestGetStudylog,
   requestGetStudylogs,
   requestGetFilters,
   requestGetMissions,

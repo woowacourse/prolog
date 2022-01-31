@@ -1,12 +1,15 @@
 /** @jsxImportSource @emotion/react */
 
-import { useCallback, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import {
   requestPostScrap,
   requestDeleteScrap,
   requestPostLike,
   requestDeleteLike,
+  requestGetStudylog,
+  requestDeleteStudylog,
+  requestStudylogLike,
 } from '../../service/requests';
 
 import { Button, BUTTON_SIZE, Card, ProfileChip } from '../../components';
@@ -32,11 +35,16 @@ import {
   Content,
   BottomContainer,
 } from './styles';
-import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH, SNACKBAR_MESSAGE } from '../../constants';
-import { useSelector } from 'react-redux';
+import {
+  ALERT_MESSAGE,
+  CONFIRM_MESSAGE,
+  ERROR_MESSAGE,
+  PATH,
+  SNACKBAR_MESSAGE,
+} from '../../constants';
 
 import useSnackBar from '../../hooks/useSnackBar';
-import useStudylog from '../../hooks/useStudylog';
+
 import debounce from '../../utils/debounce';
 import { css } from '@emotion/react';
 import useMutation from '../../hooks/useMutation';
@@ -50,52 +58,62 @@ import {
 } from '../../styles/flex.styles';
 import ViewCount from '../../components/ViewCount/ViewCount';
 import { MainContentStyle } from '../../PageRouter';
+import { UserContext } from '../../contexts/UserProvider';
+import useRequest from '../../hooks/useRequest';
+
+import defaultProfileImage from '../../assets/images/no-profile-image.png';
 
 const PostPage = () => {
   const history = useHistory();
 
   const { openSnackBar } = useSnackBar();
 
-  const accessToken = useSelector((state) => state.user.accessToken.data);
-  const isLoggedIn = !!accessToken;
-  const myName = useSelector((state) => state.user.profile.data?.username);
+  const { user } = useContext(UserContext);
+  const { accessToken, isLoggedIn, username } = user;
 
-  const { id: postId } = useParams();
-  const { response: Studylog, getData, deleteData } = useStudylog({});
+  const { id } = useParams();
 
-  const getStudylog = useCallback(() => getData(postId, accessToken), [
-    postId,
-    accessToken,
-    getData,
-  ]);
-  const deleteStudylog = useCallback(() => deleteData(postId, accessToken), [
-    postId,
-    accessToken,
-    deleteData,
-  ]);
+  const { response: studylog, fetchData: getStudylog } = useRequest({}, () =>
+    requestGetStudylog({ id, accessToken })
+  );
+  const { mutate: deleteStudylog } = useMutation(
+    () => {
+      if (!window.confirm(CONFIRM_MESSAGE.DELETE_POST)) return;
 
-  const goProfilePage = (username) => (event) => {
+      return requestDeleteStudylog({ id, accessToken });
+    },
+    {
+      onError: (error) => {
+        alert(ERROR_MESSAGE[error.code] ?? ALERT_MESSAGE.FAIL_TO_DELETE_POST);
+      },
+    }
+  );
+
+  const {
+    author = null,
+    mission = {},
+    title = '',
+    content = '',
+    tags = [],
+    createdAt = null,
+    viewCount = 0,
+    liked = false,
+    likesCount = 0,
+    scrap = false,
+  } = studylog;
+
+  const goAuthorProfilePage = (event) => {
     event.stopPropagation();
 
-    history.push(`/${username}`);
-  };
-
-  const goEditTargetPost = (id) => {
-    history.push(`${PATH.POST}/${id}/edit`);
-  };
-
-  const onDeletePost = async (id) => {
-    if (!window.confirm(CONFIRM_MESSAGE.DELETE_POST)) return;
-
-    const hasError = await deleteStudylog(id, accessToken);
-
-    if (hasError) {
-      alert(ALERT_MESSAGE.FAIL_TO_DELETE_POST);
-
+    if (!author) {
       return;
     }
 
-    history.goBack();
+    history.push(`/${author?.username}`);
+  };
+
+  const goEditTargetPost = () => {
+    history.push(`${PATH.POST}/${id}/edit`);
   };
 
   const { mutate: postScrap } = useMutation(
@@ -105,13 +123,13 @@ const PostPage = () => {
         return;
       }
 
-      return requestPostScrap(myName, accessToken, {
-        studylogId: postId,
-      });
+      return requestPostScrap({ username, accessToken, id });
     },
-    () => {
-      getStudylog();
-      openSnackBar(SNACKBAR_MESSAGE.SUCCESS_TO_SCRAP);
+    {
+      onSuccess: async () => {
+        await getStudylog();
+        openSnackBar(SNACKBAR_MESSAGE.SUCCESS_TO_SCRAP);
+      },
     }
   );
 
@@ -119,13 +137,13 @@ const PostPage = () => {
     () => {
       if (!window.confirm(CONFIRM_MESSAGE.DELETE_SCRAP)) return;
 
-      return requestDeleteScrap(myName, accessToken, {
-        studylogId: postId,
-      });
+      return requestDeleteScrap({ username, accessToken, id });
     },
-    () => {
-      getStudylog();
-      openSnackBar(SNACKBAR_MESSAGE.FAIL_TO_SCRAP);
+    {
+      onSuccess: async () => {
+        await getStudylog();
+        openSnackBar(SNACKBAR_MESSAGE.DELETE_SCRAP);
+      },
     }
   );
 
@@ -136,30 +154,34 @@ const PostPage = () => {
         return;
       }
 
-      return requestPostLike(accessToken, postId);
+      return requestStudylogLike({ accessToken, id });
     },
-    () => {
-      openSnackBar(SNACKBAR_MESSAGE.SET_LIKE);
-      getStudylog();
-    },
-    () => openSnackBar(SNACKBAR_MESSAGE.ERROR_SET_LIKE)
+    {
+      onSuccess: async () => {
+        await getStudylog();
+        openSnackBar(SNACKBAR_MESSAGE.SET_LIKE);
+      },
+      onError: () => openSnackBar(SNACKBAR_MESSAGE.ERROR_SET_LIKE),
+    }
   );
 
   const { mutate: deleteLike } = useMutation(
     () => {
       if (!window.confirm(CONFIRM_MESSAGE.DELETE_LIKE)) return;
 
-      return requestDeleteLike(accessToken, postId);
+      return requestDeleteLike(accessToken, id);
     },
-    () => {
-      openSnackBar(SNACKBAR_MESSAGE.UNSET_LIKE);
-      getStudylog();
-    },
-    () => openSnackBar(SNACKBAR_MESSAGE.ERROR_UNSET_LIKE)
+    {
+      onSuccess: async () => {
+        await getStudylog();
+        openSnackBar(SNACKBAR_MESSAGE.UNSET_LIKE);
+      },
+      onError: () => openSnackBar(SNACKBAR_MESSAGE.ERROR_UNSET_LIKE),
+    }
   );
 
   const toggleLike = () => {
-    Studylog?.liked
+    liked
       ? debounce(() => {
           deleteLike();
         }, 300)
@@ -169,7 +191,7 @@ const PostPage = () => {
   };
 
   const toggleScrap = () => {
-    if (Studylog?.scrap) {
+    if (scrap) {
       deleteScrap();
       return;
     }
@@ -179,18 +201,18 @@ const PostPage = () => {
 
   useEffect(() => {
     getStudylog();
-  }, [accessToken, postId]);
+  }, [accessToken, id]);
 
   return (
     <div css={MainContentStyle}>
-      {myName === Studylog?.author?.username && (
+      {username === author?.username && (
         <ButtonList>
           <Button
             size={BUTTON_SIZE.X_SMALL}
             type="button"
             cssProps={EditButtonStyle}
             alt="수정 버튼"
-            onClick={() => goEditTargetPost(Studylog?.id)}
+            onClick={goEditTargetPost}
           >
             수정
           </Button>
@@ -199,43 +221,43 @@ const PostPage = () => {
             type="button"
             cssProps={DeleteButtonStyle}
             alt="삭제 버튼"
-            onClick={() => onDeletePost(Studylog?.id)}
+            onClick={deleteStudylog}
           >
             삭제
           </Button>
         </ButtonList>
       )}
-      <Card key={Studylog?.id} size="LARGE">
+      <Card key={id} size="LARGE">
         <CardInner>
           <div>
             <SubHeader>
-              <Mission>{Studylog?.mission?.name}</Mission>
+              <Mission>{mission.name}</Mission>
               <SubHeaderRightContent>
-                <IssuedDate>{new Date(Studylog?.createdAt).toLocaleString('ko-KR')}</IssuedDate>
+                <IssuedDate>{new Date(createdAt).toLocaleString('ko-KR')}</IssuedDate>
               </SubHeaderRightContent>
             </SubHeader>
             <div css={[FlexStyle, JustifyContentSpaceBtwStyle]}>
-              <Title>{Studylog?.title}</Title>
-              <ViewCount count={Studylog?.viewCount} />
+              <Title>{title}</Title>
+              <ViewCount count={viewCount} />
             </div>
             <ProfileChip
-              imageSrc={Studylog?.author?.imageUrl}
+              imageSrc={author?.imageUrl || defaultProfileImage}
               cssProps={ProfileChipStyle}
-              onClick={goProfilePage(Studylog?.author?.username)}
+              onClick={goAuthorProfilePage}
             >
-              {Studylog?.author?.nickname}
+              {author?.nickname}
             </ProfileChip>
           </div>
           <Content>
             <Viewer
-              initialValue={Studylog?.content}
+              initialValue={content}
               extendedAutolinks={true}
               plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
             />
           </Content>
           <BottomContainer>
             <Tags>
-              {Studylog?.tags?.map(({ id, name }) => (
+              {tags?.map(({ id, name }) => (
                 <span key={id}>{`#${name} `}</span>
               ))}
             </Tags>
@@ -250,12 +272,8 @@ const PostPage = () => {
                 `,
               ]}
             >
-              <Like
-                liked={Studylog?.liked}
-                likesCount={Studylog?.likesCount}
-                onClick={toggleLike}
-              />
-              <Scrap scrap={Studylog?.scrap} onClick={toggleScrap} />
+              <Like liked={liked} likesCount={likesCount} onClick={toggleLike} />
+              <Scrap scrap={scrap} onClick={toggleScrap} />
             </div>
           </BottomContainer>
         </CardInner>

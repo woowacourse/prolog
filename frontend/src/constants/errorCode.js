@@ -1,5 +1,7 @@
 const ERROR_CODE = {
   NON_EXISTENT_MEMBER: 1004,
+  NO_CONTENT: 2001,
+  NO_TITLE: 2002,
 };
 
 export default ERROR_CODE;

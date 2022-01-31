@@ -1,23 +1,41 @@
 /** @jsxImportSource @emotion/react */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { SelectBox, Button, BUTTON_SIZE, EditPostCard } from '../../components';
 import { useSelector } from 'react-redux';
 import useFetch from '../../hooks/useFetch';
-import { requestGetMissions, requestGetTags } from '../../service/requests';
-import { PATH } from '../../constants';
+import {
+  requestEditStudylog,
+  requestGetMissions,
+  requestGetStudylog,
+  requestGetTags,
+} from '../../service/requests';
+import { ALERT_MESSAGE, ERROR_MESSAGE, PATH } from '../../constants';
 import useStudylog from '../../hooks/useStudylog';
 import { SelectBoxWrapper, Post, SubmitButtonStyle } from '../NewPostPage/styles';
 import { MainContentStyle } from '../../PageRouter';
+import { UserContext } from '../../contexts/UserProvider';
+import useRequest from '../../hooks/useRequest';
+import useMutation from '../../hooks/useMutation';
 
 const EditPostPage = () => {
   const history = useHistory();
-  const user = useSelector((state) => state.user.profile.data?.username);
-  const accessToken = useSelector((state) => state.user.accessToken.data);
 
-  const { id: postId } = useParams();
-  const { response: post, getData: getStudylog, editData: editPost } = useStudylog({});
+  const { user } = useContext(UserContext);
+  const { accessToken, username } = user;
+
+  const { id } = useParams();
+
+  const { response: studylog, fetchData: getStudylog } = useRequest({}, requestGetStudylog);
+  const { mutate: editPost } = useMutation(requestEditStudylog, {
+    onSuccess: () => {
+      history.goBack();
+    },
+    onError: (error) => {
+      alert(ERROR_MESSAGE[error.code] ?? '글을 수정할 수 없습니다. 다시 시도해주세요');
+    },
+  });
 
   const [selectedMission, setSelectedMission] = useState('');
   const cardRefs = useRef([]);
@@ -25,7 +43,7 @@ const EditPostPage = () => {
   const [missions] = useFetch([], requestGetMissions);
   const [tags] = useFetch([], requestGetTags);
 
-  const { id, author, mission } = post;
+  const { author, mission } = studylog;
   const tagOptions = tags.map(({ name }) => ({ value: name, label: `#${name}` }));
 
   const onEditPost = async (event) => {
@@ -37,18 +55,11 @@ const EditPostPage = () => {
       title: title.value,
       content: content.getInstance().getMarkdown(),
       tags:
-        tags?.map((tag) => ({ name: tag.value })) || post.tags.map((tag) => ({ name: tag.name })),
+        tags?.map((tag) => ({ name: tag.value })) ||
+        studylog.tags.map((tag) => ({ name: tag.name })),
     };
 
-    const hasError = await editPost(postId, data, accessToken);
-
-    if (hasError) {
-      alert('글을 수정할 수 없습니다. 다시 시도해주세요');
-
-      return;
-    }
-
-    history.goBack();
+    editPost(id, data, accessToken);
   };
 
   useEffect(() => {
@@ -56,15 +67,15 @@ const EditPostPage = () => {
   }, [mission]);
 
   useEffect(() => {
-    if (author && user !== author.username) {
-      alert('본인이 작성하지 않은 글은 수정할 수 없습니다.');
-      history.push(`${PATH.POST}/${postId}`);
+    if (author && username !== author.username) {
+      alert(ALERT_MESSAGE.CANNOT_EDIT_OTHERS);
+      history.push(`${PATH.POST}/${id}`);
     }
-  }, [user, author]);
+  }, [username, author]);
 
   useEffect(() => {
-    getStudylog(postId, accessToken);
-  }, [postId]);
+    getStudylog(id, accessToken);
+  }, [id]);
 
   return (
     <div css={MainContentStyle}>
@@ -81,7 +92,7 @@ const EditPostPage = () => {
           />
         </SelectBoxWrapper>
         <Post key={id}>
-          <EditPostCard ref={cardRefs} post={post} tagOptions={tagOptions} />
+          <EditPostCard ref={cardRefs} post={studylog} tagOptions={tagOptions} />
         </Post>
         <Button size={BUTTON_SIZE.SMALL} cssProps={SubmitButtonStyle}>
           작성완료
