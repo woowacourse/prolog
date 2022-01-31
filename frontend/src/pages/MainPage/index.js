@@ -13,12 +13,12 @@ import { UserContext } from '../../contexts/UserProvider';
 
 const MainPage = () => {
   const { user } = useContext(UserContext);
-  const accessToken = user.accessToken;
+  const { accessToken } = user;
   const { response: recentStudylogs, getAllData: fetchRecentStudylogs } = useStudylog([]);
 
   useEffect(() => {
     fetchRecentStudylogs({ query: { type: 'searchParams', data: 'size=3' }, accessToken });
-  }, []);
+  }, [accessToken]);
 
   return (
     <>

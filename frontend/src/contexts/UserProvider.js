@@ -12,7 +12,7 @@ const DEFAULT_USER = {
   nickname: null,
   role: null,
   imageUrl: null,
-  accessToken: getLocalStorageItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
+  accessToken: null,
   isLoggedIn: false,
 };
 
@@ -25,9 +25,18 @@ const UserProvider = ({ children }) => {
     DEFAULT_USER,
     () => getUserProfileRequest({ accessToken: state.accessToken }),
     ({ id: userId, username, nickname, role, imageUrl }) => {
-      setState({ ...state, userId, username, nickname, role, imageUrl, isLoggedIn: true });
+      setState((prev) => ({
+        ...prev,
+        userId,
+        username,
+        nickname,
+        role,
+        imageUrl,
+        isLoggedIn: true,
+      }));
     },
     () => {
+      localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
       setState(DEFAULT_USER);
     }
   );
@@ -35,7 +44,6 @@ const UserProvider = ({ children }) => {
   const { mutate: onLogin } = useMutation(loginRequest, {
     onSuccess: ({ accessToken }) => {
       localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, JSON.stringify(accessToken));
-      setState({ ...state, accessToken });
     },
   });
 
@@ -43,6 +51,14 @@ const UserProvider = ({ children }) => {
     localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
     setState(DEFAULT_USER);
   };
+
+  useState(() => {
+    const accessToken = getLocalStorageItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+
+    if (accessToken) {
+      setState({ ...state, accessToken });
+    }
+  }, []);
 
   return (
     <UserContext.Provider value={{ user: state, onLogin, onLogout }}>

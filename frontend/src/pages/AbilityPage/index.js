@@ -59,7 +59,7 @@ const AbilityPage = () => {
 
   const { fetchData: getData } = useRequest(
     [],
-    () => requestGetAbilities(username, JSON.parse(accessToken)),
+    () => requestGetAbilities(username, accessToken),
     (data) => {
       setAbilities(data);
     }
@@ -67,7 +67,7 @@ const AbilityPage = () => {
 
   const { mutate: addAbility } = useMutation(
     ({ name, description, color, parent = null }) =>
-      requestAddAbility(JSON.parse(accessToken), {
+      requestAddAbility(accessToken, {
         name,
         description,
         color,
@@ -86,7 +86,7 @@ const AbilityPage = () => {
 
   const { mutate: deleteAbility } = useMutation(
     (id) => {
-      return requestDeleteAbility(JSON.parse(accessToken), id);
+      return requestDeleteAbility(accessToken, id);
     },
     () => {
       openSnackBar(SUCCESS_MESSAGE.DELETE_ABILITY);
@@ -100,7 +100,7 @@ const AbilityPage = () => {
 
   const editAbility = async ({ id, name, description, color }) => {
     try {
-      const response = await requestEditAbility(JSON.parse(accessToken), {
+      const response = await requestEditAbility(accessToken, {
         id,
         name,
         description,
