@@ -14,9 +14,9 @@ import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
-import wooteco.prolog.studylog.domain.StudylogDocument;
-import wooteco.prolog.studylog.domain.StudylogDocumentQueryBuilder;
-import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
+import wooteco.prolog.studylog.domain.StudyLogDocument;
+import wooteco.prolog.studylog.domain.StudyLogDocumentQueryBuilder;
+import wooteco.prolog.studylog.domain.repository.StudyLogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.infrastructure.HealthCheckClient;
 
@@ -27,7 +27,7 @@ public class StudylogDocumentService extends AbstractStudylogDocumentService {
     private final ElasticsearchRestTemplate elasticsearchRestTemplate;
 
     public StudylogDocumentService(
-        StudylogDocumentRepository studylogDocumentRepository,
+        StudyLogDocumentRepository studylogDocumentRepository,
         StudylogRepository studylogRepository,
         HealthCheckClient healthCheckClient,
         ElasticsearchRestTemplate elasticsearchRestTemplate){
@@ -47,15 +47,15 @@ public class StudylogDocumentService extends AbstractStudylogDocumentService {
         Pageable pageable
     ) {
 
-        final Query query = StudylogDocumentQueryBuilder.makeQuery(preprocess(keyword), tags, missions, levels,
+        final Query query = StudyLogDocumentQueryBuilder.makeQuery(preprocess(keyword), tags, missions, levels,
                                                                    usernames, start, end, pageable);
 
         // Query 결과를 ES에서 조회한다.
-        final SearchHits<StudylogDocument> searchHits
-            = elasticsearchRestTemplate.search(query, StudylogDocument.class, IndexCoordinates.of("studylog-document"));
+        final SearchHits<StudyLogDocument> searchHits
+            = elasticsearchRestTemplate.search(query, StudyLogDocument.class, IndexCoordinates.of("studylog-document"));
 
         // 조회된 SearchHits를 페이징할 수 있는 SearchPage로 변경한다.
-        final SearchPage<StudylogDocument> searchPages
+        final SearchPage<StudyLogDocument> searchPages
             = SearchHitSupport.searchPageFor(searchHits, query.getPageable());
 
         final List<Long> studylogIds = searchPages.stream()

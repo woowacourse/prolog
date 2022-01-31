@@ -1,29 +1,22 @@
 package wooteco.prolog.docu;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
-import wooteco.prolog.studylog.application.dto.LevelRequest;
-import wooteco.prolog.studylog.application.dto.LevelResponse;
-import wooteco.prolog.studylog.application.dto.MissionRequest;
-import wooteco.prolog.studylog.application.dto.MissionResponse;
-import wooteco.prolog.studylog.application.dto.StudylogRequest;
-import wooteco.prolog.studylog.application.dto.StudylogResponse;
-import wooteco.prolog.studylog.application.dto.StudylogsResponse;
-import wooteco.prolog.studylog.application.dto.TagRequest;
+import wooteco.prolog.studylog.application.dto.*;
 
-class StudylogDocumentation extends Documentation {
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class StudyLogDocumentation extends Documentation {
 
     @Test
     void 스터디로그를_생성한다() {
@@ -66,7 +59,7 @@ class StudylogDocumentation extends Documentation {
         ExtractableResponse<Response> response = given("studylog/list")
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .accept(MediaType.APPLICATION_JSON_VALUE)
-            .when().get("/studylogs")
+            .when().get("/posts")
             .then().log().all().extract();
 
         // then
@@ -98,32 +91,6 @@ class StudylogDocumentation extends Documentation {
         // given
         StudylogsResponse studylogsResponse = response.as(StudylogsResponse.class);
         assertThat(studylogsResponse.getData()).hasSize(1);
-    }
-
-    @Test
-    void 인기있는_스터디로그_목록을_조회한다() {
-        // given
-        String studylogLocation1 = 스터디로그_등록함(Collections.singletonList(createStudylogRequest1())).header("Location");
-        String studylogLocation2 = 스터디로그_등록함(Collections.singletonList(createStudylogRequest2())).header("Location");
-        Long studylogId1 = Long.parseLong(studylogLocation1.split("/studylogs/")[1]);
-        Long studylogId2 = Long.parseLong(studylogLocation2.split("/studylogs/")[1]);
-
-        스터디로그_단건_조회(studylogId1);
-        스터디로그_단건_조회(studylogId2);
-        스터디로그_단건_좋아요(studylogId2);
-
-        // when
-        ExtractableResponse<Response> response = given("studylogs/most-popular")
-            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-            .when().get("/studylogs/most-popular")
-            .then().log().all().extract();
-
-        // then
-        // given
-        StudylogsResponse mostPopularStudylogsResponse = response.as(StudylogsResponse.class);
-        assertThat(mostPopularStudylogsResponse.getData()).hasSize(2);
-        assertThat(mostPopularStudylogsResponse.getData().get(0).getId()).isEqualTo(studylogId2);
-        assertThat(mostPopularStudylogsResponse.getData().get(1).getId()).isEqualTo(studylogId1);
     }
 
     @Test
@@ -193,7 +160,7 @@ class StudylogDocumentation extends Documentation {
             .body(request)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().log().all()
-            .post("/studylogs")
+            .post("/posts")
             .then().log().all().extract();
     }
 
@@ -223,18 +190,5 @@ class StudylogDocumentation extends Documentation {
             .as(MissionResponse.class)
             .getId();
     }
-
-    private void 스터디로그_단건_좋아요(Long studylogId) {
-        given("studylog/like")
-            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-            .when().post("/studylogs/" + studylogId + "/likes")
-            .then().log().all().extract();
-    }
-
-    private void 스터디로그_단건_조회(Long studylogId) {
-        given("studylog/read")
-            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-            .when().get("/studylogs/" + studylogId)
-            .then().log().all().extract();
-    }
 }
+

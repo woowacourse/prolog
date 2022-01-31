@@ -2,8 +2,6 @@ package wooteco.prolog.studylog.ui;
 
 import java.net.URI;
 import java.util.List;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,15 +48,6 @@ public class StudylogController {
         @AuthMemberPrincipal LoginMember member,
         @SearchParams StudylogsSearchRequest searchRequest) {
         StudylogsResponse studylogsResponse = studylogService.findStudylogs(searchRequest, member.getId(), member.isAnonymous());
-        return ResponseEntity.ok(studylogsResponse);
-    }
-
-    @GetMapping("/most-popular")
-    public ResponseEntity<StudylogsResponse> showPopularStudylogs(
-        @AuthMemberPrincipal LoginMember member,
-        @PageableDefault Pageable pageable
-    ) {
-        StudylogsResponse studylogsResponse = studylogService.findMostPopularStudylogs(pageable, member.getId(), member.isAnonymous());
         return ResponseEntity.ok(studylogsResponse);
     }
 

@@ -33,7 +33,6 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
-import wooteco.prolog.studylog.application.StudylogLikeService;
 import wooteco.prolog.studylog.application.StudylogScrapService;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
@@ -50,7 +49,7 @@ import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.StudylogDocument;
+import wooteco.prolog.studylog.domain.StudyLogDocument;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 import wooteco.support.utils.IntegrationTest;
@@ -84,8 +83,6 @@ class StudylogServiceTest {
     private MemberService memberService;
     @Autowired
     private DocumentService studylogDocumentService;
-    @Autowired
-    private StudylogLikeService studylogLikeService;
 
     private Member member1;
     private Member member2;
@@ -187,7 +184,7 @@ class StudylogServiceTest {
         Long id = studylogResponses.get(0).getId();
 
         // when
-        StudylogDocument studylogDocument = studylogDocumentService.findById(id);
+        StudyLogDocument studylogDocument = studylogDocumentService.findById(id);
         // then
         assertAll(
             () -> assertThat(studylogDocument.getId()).isEqualTo(id),
@@ -303,74 +300,6 @@ class StudylogServiceTest {
         assertThat(scraps).doesNotContain(false);
     }
 
-    @DisplayName("로그인하지 않은 상태에서 일주일을 기준으로 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
-    @Test
-    void findMostPopularStudylogsWithoutLogin() {
-        // given
-        insertStudylogs(member1, studylog1, studylog2, studylog3);
-        studylogService.findById(2L, member1.getId(), false);
-        studylogScrapService.registerScrap(member1.getId(), 2L);
-        studylogService.findById(3L, member1.getId(), false);
-        studylogScrapService.registerScrap(member1.getId(), 3L);
-        studylogLikeService.likeStudylog(member1.getId(), 3L, true);
-
-        // when
-        PageRequest pageRequest = PageRequest.of(0, 2);
-        StudylogsResponse studylogs = studylogService.findMostPopularStudylogs(
-            pageRequest,
-            null,
-            true
-        );
-
-        // then
-        assertThat(studylogs.getTotalSize()).isEqualTo(2);
-        for (StudylogResponse studylogResponse : studylogs.getData()) {
-            assertThat(studylogResponse.isScrap()).isFalse();
-            assertThat(studylogResponse.isRead()).isFalse();
-        }
-    }
-
-    @DisplayName("로그인한 상태에서 일주일을 기준으로 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
-    @Test
-    void findMostPopularStudylogsWithLogin() {
-        // given
-        List<StudylogResponse> insertResponses = insertStudylogs(
-            member1,
-            studylog1,
-            studylog2,
-            studylog3
-        );
-
-        StudylogResponse studylogResponse2 = insertResponses.get(1);
-        StudylogResponse studylogResponse3 = insertResponses.get(2);
-
-        // 2번째 멤버가 1번째 멤버의 게시글 2번, 3번을 조회
-        studylogService.findById(studylogResponse2.getId(), member2.getId(), false);
-        studylogService.findById(studylogResponse3.getId(), member2.getId(), false);
-        // 2번, 3번 글 스크랩
-        studylogScrapService.registerScrap(member2.getId(), studylogResponse2.getId());
-        studylogScrapService.registerScrap(member2.getId(), studylogResponse3.getId());
-        // 3번 글 좋아요
-        studylogLikeService.likeStudylog(member2.getId(), studylogResponse3.getId(), true);
-
-        // when
-        PageRequest pageRequest = PageRequest.of(0, 2);
-        StudylogsResponse popularStudylogs = studylogService.findMostPopularStudylogs(
-            pageRequest,
-            member2.getId(),
-            member2.isAnonymous()
-        );
-
-        // then
-        assertThat(popularStudylogs.getTotalSize()).isEqualTo(2);
-        assertThat(popularStudylogs.getData().get(0).getId()).isEqualTo(studylogResponse3.getId());
-        assertThat(popularStudylogs.getData().get(1).getId()).isEqualTo(studylogResponse2.getId());
-        for (StudylogResponse studylogResponse : popularStudylogs.getData()) {
-            assertThat(studylogResponse.isScrap()).isTrue();
-            assertThat(studylogResponse.isRead()).isTrue();
-        }
-    }
-
     @DisplayName("스터디로그 조회 시 조회수가 오른다.")
     @Test
     void findByIdTest() {
@@ -484,7 +413,7 @@ class StudylogServiceTest {
         studylogService.updateStudylog(member1.getId(), id, updateStudylogRequest);
 
         // when
-        StudylogDocument studylogDocument = studylogDocumentService.findById(id);
+        StudyLogDocument studylogDocument = studylogDocumentService.findById(id);
 
         // then
         assertAll(

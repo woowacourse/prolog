@@ -5,23 +5,23 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import wooteco.prolog.studylog.application.dto.ElasticHealthResponse;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
-import wooteco.prolog.studylog.domain.StudylogDocument;
+import wooteco.prolog.studylog.domain.StudyLogDocument;
 import wooteco.prolog.studylog.application.dto.ClusterHealthResponses;
 import wooteco.prolog.studylog.application.dto.IndexHealthResponses;
 
 public interface DocumentService {
 
-    void save(StudylogDocument toStudylogDocument);
+    void save(StudyLogDocument toStudyLogDocument);
 
-    StudylogDocument findById(Long id);
+    StudyLogDocument findById(Long id);
 
-    void delete(StudylogDocument studylogDocument);
+    void delete(StudyLogDocument studylogDocument);
 
     void deleteAll();
 
     void sync();
 
-    void update(StudylogDocument studylogDocument);
+    void update(StudyLogDocument studylogDocument);
 
     StudylogDocumentResponse findBySearchKeyword(
         String keyword,
