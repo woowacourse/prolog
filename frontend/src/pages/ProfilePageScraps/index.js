@@ -38,10 +38,7 @@ const ProfilePageScraps = () => {
   const { accessToken } = user;
 
   const { username } = useParams();
-  const { state } = useLocation();
 
-  const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
-  const [hoveredPostId, setHoveredStudylogId] = useState(0);
   const [postQueryParams, setPostQueryParams] = useState(initialPostQueryParams);
 
   const goTargetStudylog = (id) => {
@@ -73,14 +70,8 @@ const ProfilePageScraps = () => {
   };
 
   useEffect(() => {
-    if (!shouldInitialLoad) {
-      setShouldInitialLoad(true);
-
-      return;
-    }
-
     getMyScrap();
-  }, [history.location.search, getMyScrap]);
+  }, [postQueryParams]);
 
   return (
     <Container>
@@ -92,16 +83,10 @@ const ProfilePageScraps = () => {
               const { id, mission, title, tags, content } = studylog;
 
               return (
-                <PostItem
-                  key={id}
-                  size="SMALL"
-                  onClick={() => goTargetStudylog(id)}
-                  onMouseEnter={() => setHoveredStudylogId(id)}
-                  onMouseLeave={() => setHoveredStudylogId(0)}
-                >
+                <PostItem key={id} size="SMALL" onClick={() => goTargetStudylog(id)}>
                   <Description>
                     <Mission>{mission.name}</Mission>
-                    <Title isHovered={id === hoveredPostId}>{title}</Title>
+                    <Title>{title}</Title>
                     <Content>{content}</Content>
                     <Tags>
                       {tags.map(({ id, name }) => (
@@ -109,7 +94,7 @@ const ProfilePageScraps = () => {
                       ))}
                     </Tags>
                   </Description>
-                  <ButtonList isVisible={hoveredPostId === id}>
+                  <ButtonList>
                     <Button
                       size={BUTTON_SIZE.X_SMALL}
                       type="button"
