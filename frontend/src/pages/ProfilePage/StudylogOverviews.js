@@ -42,7 +42,6 @@ const StudylogOverview = () => {
   const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
   const [postQueryParams, setPostQueryParams] = useState(initialPostQueryParams);
 
-  const [hoveredPostId, setHoveredPostId] = useState(0);
   const [tags] = useFetch([], () => requestGetUserTags(username));
 
   const { response: studylogs, getAllData: getStudylogs } = useStudylog([]);
@@ -139,15 +138,9 @@ const StudylogOverview = () => {
               const { id, mission, title, tags, createdAt } = studylog;
 
               return (
-                <PostItem
-                  key={id}
-                  size="SMALL"
-                  onClick={() => goTargetStudylog(id)}
-                  onMouseEnter={() => setHoveredPostId(id)}
-                  onMouseLeave={() => setHoveredPostId(0)}
-                >
+                <PostItem key={id} size="SMALL" onClick={() => goTargetStudylog(id)}>
                   <Description>
-                    <Title isHovered={id === hoveredPostId}>{title}</Title>
+                    <Title>{title}</Title>
                     <PostBottomContainer>
                       <Mission>{mission.name}</Mission>
                       <div>{new Date(createdAt).toLocaleString('ko-KR')}</div>
