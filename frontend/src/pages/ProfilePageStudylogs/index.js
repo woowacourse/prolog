@@ -57,9 +57,10 @@ const ProfilePageStudylogs = () => {
   const { state } = useLocation();
 
   const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
-  const [hoveredPostId, setHoveredPostId] = useState(0);
 
   const [filters] = useFetch({}, requestGetFilters);
+
+  const isOwner = myName === username;
 
   const {
     response: studylogs,
@@ -166,16 +167,10 @@ const ProfilePageStudylogs = () => {
               const { id, mission, title, tags, content } = studylog;
 
               return (
-                <PostItem
-                  key={id}
-                  size="SMALL"
-                  onClick={() => goTargetStudylog(id)}
-                  onMouseEnter={() => setHoveredPostId(id)}
-                  onMouseLeave={() => setHoveredPostId(0)}
-                >
+                <PostItem key={id} size="SMALL" onClick={() => goTargetStudylog(id)}>
                   <Description>
                     <Mission>{mission.name}</Mission>
-                    <Title isHovered={id === hoveredPostId}>{title}</Title>
+                    <Title>{title}</Title>
                     <Content>{content}</Content>
                     <Tags>
                       {tags.map(({ id, name }) => (
@@ -183,27 +178,29 @@ const ProfilePageStudylogs = () => {
                       ))}
                     </Tags>
                   </Description>
-                  <ButtonList isVisible={hoveredPostId === id && myName === username}>
-                    <Button
-                      size={BUTTON_SIZE.X_SMALL}
-                      type="button"
-                      css={EditButtonStyle}
-                      alt="수정 버튼"
-                      onClick={goEditTargetPost(id)}
-                    >
-                      수정
-                    </Button>
-                    <Button
-                      size={BUTTON_SIZE.X_SMALL}
-                      type="button"
-                      css={DeleteButtonStyle}
-                      alt="삭제 버튼"
-                      onClick={(event) => {
-                        onDeletePost(event, id);
-                      }}
-                    >
-                      삭제
-                    </Button>
+                  <ButtonList>
+                    {isOwner && (
+                      <>
+                        <Button
+                          size={BUTTON_SIZE.X_SMALL}
+                          type="button"
+                          css={EditButtonStyle}
+                          onClick={goEditTargetPost(id)}
+                        >
+                          수정
+                        </Button>
+                        <Button
+                          size={BUTTON_SIZE.X_SMALL}
+                          type="button"
+                          css={DeleteButtonStyle}
+                          onClick={(event) => {
+                            onDeletePost(event, id);
+                          }}
+                        >
+                          삭제
+                        </Button>
+                      </>
+                    )}
                   </ButtonList>
                 </PostItem>
               );

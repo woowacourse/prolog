@@ -28,6 +28,11 @@ const PostItem = styled.div`
 
   &:hover {
     background-color: ${COLOR.LIGHT_GRAY_50};
+
+    /* hover 상태 변경으로 인한 리렌더링으로, 추후 components as selector 적용 예정 */
+    > div:last-child {
+      visibility: visible;
+    }
   }
 `;
 
@@ -78,8 +83,7 @@ const ButtonList = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 1.6rem;
-
-  ${({ isVisible }) => (isVisible ? 'visibility: visible' : 'visibility: hidden')};
+  visibility: hidden;
 `;
 
 const NoPost = styled.div`
