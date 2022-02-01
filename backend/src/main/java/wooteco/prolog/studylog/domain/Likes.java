@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import org.hibernate.annotations.BatchSize;
 import wooteco.prolog.studylog.exception.InvalidLikeRequestException;
 import wooteco.prolog.studylog.exception.InvalidUnlikeRequestException;
 
 @Embeddable
 public class Likes {
 
-    @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "studylog_id")
-    @BatchSize(size = 1000)
-    private final List<Like> values;
+    @OneToMany(
+        cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+        orphanRemoval = true,
+        mappedBy = "studylog"
+    )
+    private List<Like> values;
 
     public Likes() {
         this(new ArrayList<>());
@@ -30,9 +30,9 @@ public class Likes {
         return values;
     }
 
-    public void like(Long id) {
-        validateNewLike(id);
-        values.add(new Like(id));
+    public void like(Studylog studylog, Long memberId) {
+        validateNewLike(memberId);
+        values.add(new Like(studylog, memberId));
     }
 
     private void validateNewLike(Long id) {
@@ -45,9 +45,9 @@ public class Likes {
             });
     }
 
-    public void unlike(Long id) {
-        validateExistingLike(id);
-        values.remove(new Like(id));
+    public void unlike(Studylog studylog, Long memberId) {
+        validateExistingLike(memberId);
+        values.remove(new Like(studylog, memberId));
     }
 
     private void validateExistingLike(Long id) {
