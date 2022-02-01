@@ -35,7 +35,7 @@ const ReportStudylogTable = ({ studylogs }) => {
                 <span>{(currPage - 1) * 10 + index + 1}</span>
               </td>
               <td>
-                <a href={`/posts/${id}`} target="_blank" rel="noopener noreferrer">
+                <a href={`/studylogs/${id}`} target="_blank" rel="noopener noreferrer">
                   {title}
                 </a>
               </td>
@@ -54,7 +54,7 @@ const ReportStudylogTable = ({ studylogs }) => {
           ))}
         </Tbody>
       </Table>
-      <Pagination postsInfo={reportStudylogData} onSetPage={onMoveToPage} />
+      <Pagination dataInfo={reportStudylogData} onSetPage={onMoveToPage} />
 
       {studylogs.length === 0 && <EmptyTableGuide>등록된 학습로그가 없습니다.</EmptyTableGuide>}
     </Section>

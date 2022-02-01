@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import { COLOR } from '../../constants';
-import { markdownStyle } from '../../styles/markdown.styles';
 
 export const WrapperStyle = css`
   width: 100%;
@@ -74,10 +73,6 @@ export const EditorStyle = css`
     :hover {
       background-color: ${COLOR.LIGHT_GRAY_100};
     }
-  }
-
-  .toastui-editor-md-preview {
-    ${markdownStyle}
   }
 `;
 

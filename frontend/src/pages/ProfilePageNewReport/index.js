@@ -1,31 +1,33 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import localStorage from 'local-storage';
 
-import { API, COLOR, ERROR_MESSAGE, REPORT_DESCRIPTION } from '../../constants';
+import useRequest from '../../hooks/useRequest';
+import { requestGetAbilities, requestPostReport } from '../../service/requests';
+import { UserContext } from '../../contexts/UserProvider';
+
 import { Button } from '../../components';
 import StudylogModal from './StudylogModal';
 import ReportInfoInput from './ReportInfoInput';
 import ReportStudylogTable from './ReportStudylogTable';
-import { Checkbox, Form, FormButtonWrapper } from './style';
-import { requestGetAbilities, requestPostReport } from '../../service/requests';
 import AbilityGraph from '../ProfilePageReports/AbilityGraph';
-import useRequest from '../../hooks/useRequest';
+
+import { COLOR, ERROR_MESSAGE, REPORT_DESCRIPTION } from '../../constants';
 import { limitLetterLength } from '../../utils/validator';
+
+import { Checkbox, Form, FormButtonWrapper } from './style';
 
 const ProfilePageNewReport = () => {
   const { username } = useParams();
   const history = useHistory();
 
-  const user = useSelector((state) => state.user.profile);
-  const nickname = user.data?.nickname ?? username;
-  const isLoggedIn = !!user.data;
-  const accessToken = localStorage.get(API.ACCESS_TOKEN);
+  const { user } = useContext(UserContext);
+  const { isLoggedIn, accessToken } = user;
+
+  const nickname = user.nickname ?? user.username;
 
   useEffect(() => {
     if (isLoggedIn) {
-      if (username !== user.data.username) {
+      if (username !== user.username) {
         alert('본인의 리포트만 작성할 수 있습니다.');
         history.push(`/${username}/reports`);
       }

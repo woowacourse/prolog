@@ -68,7 +68,7 @@ const StudylogModal = ({ onModalClose, username, studylogs, setStudylogs }) => {
   };
 
   const onToggleStudylog = (id) => {
-    const targetStudylog = currLevelStudylogs.find((post) => post.id === id);
+    const targetStudylog = currLevelStudylogs.find((studylog) => studylog.id === id);
 
     setSelectedStudylogs(onToggleCheckbox(selectedStudylogs, targetStudylog));
   };

@@ -20,6 +20,11 @@ const PostItem = styled.div`
 
   &:hover {
     background-color: ${COLOR.LIGHT_GRAY_50};
+
+    /* ButtonList에 대한 조건, 추후 @emotion/babel-plugin을 적용하여, components as selectors로 변경예정 */
+    > div:last-child {
+      visibility: visible;
+    }
   }
 `;
 
@@ -71,7 +76,7 @@ const ButtonList = styled.div`
   justify-content: center;
   gap: 1.6rem;
 
-  visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
+  visibility: hidden;
 `;
 
 const NoPost = styled.div`

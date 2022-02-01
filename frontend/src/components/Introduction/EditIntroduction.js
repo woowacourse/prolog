@@ -16,6 +16,7 @@ import { Editor } from '@toast-ui/react-editor';
 import Prism from 'prismjs';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
 import { css } from '@emotion/react';
+import { markdownStyle } from '../../styles/markdown.styles';
 
 const DEFAULT_EDITOR_HEIGHT = '480px';
 
@@ -27,7 +28,7 @@ const EditIntroduction = ({
   onCancel,
 }) => {
   return (
-    <section css={[FlexStyle, FlexColumnStyle, EditorWrapperStyle, EditorStyle]}>
+    <section css={[FlexStyle, FlexColumnStyle, EditorWrapperStyle, EditorStyle, markdownStyle]}>
       <h2>자기소개 수정</h2>
       <Editor
         ref={editorRef}

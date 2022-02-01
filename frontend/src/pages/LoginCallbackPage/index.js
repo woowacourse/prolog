@@ -1,37 +1,34 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { login } from '../../redux/actions/userAction';
+import { UserContext } from '../../contexts/UserProvider';
 
+// TODO: 로그인 실패 시 에러처리 하기, 로딩 상태 관리
 const LoginCallbackPage = () => {
-  const dispatch = useDispatch();
-  const { loading, data: accessToken, error } = useSelector((state) => state.user.accessToken);
-
   const history = useHistory();
+  const code = new URLSearchParams(history.location.search).get('code');
+
+  const { user, onLogin } = useContext(UserContext);
+  const isLoggedIn = user.isLoggedIn;
 
   useEffect(() => {
-    dispatch(login());
-  }, [dispatch]);
+    const login = async () => {
+      await onLogin({ code });
+      history.goBack();
+    };
 
-  useEffect(() => {
-    if (loading) {
-      return;
+    if (code) {
+      login();
     }
+  }, [code]);
 
-    if (error) {
-      console.error(error);
+  useEffect(() => {
+    if (isLoggedIn) {
       history.goBack();
 
       return;
     }
-
-    if (accessToken) {
-      history.goBack();
-
-      return;
-    }
-  }, [loading, error]);
+  }, []);
 
   return <></>;
 };

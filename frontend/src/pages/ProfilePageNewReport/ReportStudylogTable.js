@@ -229,7 +229,7 @@ const ReportStudylogTable = ({
                 />
               </td>
               <td>
-                <a href={`/posts/${id}`} target="_blank" rel="noopener noreferrer">
+                <a href={`/studylogs/${id}`} target="_blank" rel="noopener noreferrer">
                   {title}
                 </a>
               </td>
@@ -269,7 +269,7 @@ const ReportStudylogTable = ({
           ))}
         </Tbody>
       </Table>
-      <Pagination postsInfo={reportStudylogData} onSetPage={onMoveToPage} />
+      <Pagination dataInfo={reportStudylogData} onSetPage={onMoveToPage} />
 
       {currReportStudylogs.length === 0 && (
         <EmptyTableGuide>'학습로그 불러오기'를 통해 학습로그를 추가해주세요.</EmptyTableGuide>

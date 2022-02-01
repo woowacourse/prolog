@@ -1,20 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory, NavLink, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import localStorage from 'local-storage';
+
+import useRequest from '../../hooks/useRequest';
+import useMutation from '../../hooks/useMutation';
+import { UserContext } from '../../contexts/UserProvider';
+
+import { Button, SelectBox } from '../../components';
+import Report from './Report';
 
 import {
   requestDeleteReport,
   requestGetReport,
   requestGetReportList,
 } from '../../service/requests';
-import { API, REQUEST_REPORT_TYPE } from '../../constants';
+import { REQUEST_REPORT_TYPE } from '../../constants';
 
-import { Button, SelectBox } from '../../components';
-import Report from './Report';
 import { Container, ButtonWrapper, ReportHeader, ReportBody } from './styles';
-import useRequest from '../../hooks/useRequest';
-import useMutation from '../../hooks/useMutation';
 import { AddNewReportLink } from '../ProfilePageReportsList/styles';
 
 const ProfilePageReports = () => {
@@ -23,10 +24,10 @@ const ProfilePageReports = () => {
 
   const [reportName, setReportName] = useState('');
 
-  const loginUser = useSelector((state) => state.user.profile);
-  const isOwner = !!loginUser.data && username === loginUser.data.username;
+  const { user: loginUser } = useContext(UserContext);
+  const { accessToken, username: loginUsername } = loginUser;
 
-  const accessToken = localStorage.get(API.ACCESS_TOKEN);
+  const isOwner = username === loginUsername;
 
   const { response: report, fetchData: getReport } = useRequest(
     {},
@@ -58,11 +59,13 @@ const ProfilePageReports = () => {
 
       return requestDeleteReport(reportId, accessToken);
     },
-    () => {
-      history.push(`/${username}/reports`);
-    },
-    () => {
-      alert('리포트 삭제에 실패하였습니다.');
+    {
+      onSuccess: () => {
+        history.push(`/${username}/reports`);
+      },
+      onError: () => {
+        alert('리포트 삭제에 실패하였습니다.');
+      },
     }
   );
 

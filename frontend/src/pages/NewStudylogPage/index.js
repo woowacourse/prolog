@@ -1,23 +1,29 @@
 /** @jsxImportSource @emotion/react */
 
-import React, { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { SelectBox, Button, BUTTON_SIZE, NewPostCard } from '../../components';
 import { nanoid } from 'nanoid';
-import { useDispatch, useSelector } from 'react-redux';
-import { createPost } from '../../redux/actions/postAction';
-import useFetch from '../../hooks/useFetch';
-import { requestGetMissions, requestGetTags } from '../../service/requests';
-import { SelectBoxWrapper, Post, SubmitButtonStyle } from './styles';
-import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
-import { MainContentStyle } from '../../PageRouter';
 
-const NewPostPage = () => {
-  const dispatch = useDispatch();
+import useFetch from '../../hooks/useFetch';
+import useMutation from '../../hooks/useMutation';
+import { UserContext } from '../../contexts/UserProvider';
+import { requestGetMissions, requestGetTags, requestPostStudylog } from '../../service/requests';
+
+import { SelectBox, Button, BUTTON_SIZE, NewStudylogCard } from '../../components';
+
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
+import ERROR_CODE from '../../constants/errorCode';
+import { PATH } from '../../constants';
+
+import { MainContentStyle } from '../../PageRouter';
+import { SelectBoxWrapper, Studylog, SubmitButtonStyle } from './styles';
+
+const NewStudylogPage = () => {
   const history = useHistory();
 
-  const accessToken = useSelector((state) => state.user.accessToken.data);
-  const { error } = useSelector((state) => state.post.posts);
+  const { user } = useContext(UserContext);
+
+  const { accessToken } = user;
 
   const [postIds] = useState([nanoid()]);
   const [selectedMission, setSelectedMission] = useState('');
@@ -29,14 +35,18 @@ const NewPostPage = () => {
 
   const tagOptions = tags.map(({ name }) => ({ value: name, label: `#${name}` }));
 
-  useEffect(() => {
-    if (error) {
+  const { mutate: postStudylog } = useMutation(requestPostStudylog, {
+    onSuccess: () => {
+      alert(SUCCESS_MESSAGE.CREATE_POST);
+      history.push(PATH.STUDYLOG);
+    },
+    onError: (error) => {
       alert(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
-    }
-  }, [error]);
+    },
+  });
 
-  const onFinishWriting = async (e) => {
-    e.preventDefault();
+  const onFinishWriting = async (event) => {
+    event.preventDefault();
 
     const [prologData] = cardRefs.current.map(({ title, content, tags }) => {
       return {
@@ -48,21 +58,16 @@ const NewPostPage = () => {
     });
 
     if (!prologData.title) {
-      alert(ERROR_MESSAGE[2002]);
+      alert(ERROR_MESSAGE[ERROR_CODE.NO_TITLE]);
       return;
     }
 
     if (!prologData.content) {
-      alert(ERROR_MESSAGE[2001]);
+      alert(ERROR_MESSAGE[ERROR_CODE.NO_CONTENT]);
       return;
     }
 
-    const isSuccess = await dispatch(createPost([prologData], accessToken));
-
-    if (isSuccess) {
-      alert(SUCCESS_MESSAGE.CREATE_POST);
-      history.push('/');
-    }
+    postStudylog({ data: prologData, accessToken });
   };
 
   useEffect(() => {
@@ -86,10 +91,11 @@ const NewPostPage = () => {
           />
         </SelectBoxWrapper>
         <ul>
+          {/* @deprecate 예정으로 studylog로 변경 x */}
           {postIds.map((postId, index) => (
-            <Post key={postId}>
-              <NewPostCard ref={cardRefs} postOrder={index} tagOptions={tagOptions} />
-            </Post>
+            <Studylog key={postId}>
+              <NewStudylogCard ref={cardRefs} postOrder={index} tagOptions={tagOptions} />
+            </Studylog>
           ))}
         </ul>
 
@@ -101,4 +107,4 @@ const NewPostPage = () => {
   );
 };
 
-export default NewPostPage;
+export default NewStudylogPage;

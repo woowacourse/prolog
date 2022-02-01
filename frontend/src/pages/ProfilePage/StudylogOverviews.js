@@ -42,17 +42,18 @@ const StudylogOverview = () => {
   const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
   const [postQueryParams, setPostQueryParams] = useState(initialPostQueryParams);
 
-  const [hoveredPostId, setHoveredPostId] = useState(0);
   const [tags] = useFetch([], () => requestGetUserTags(username));
 
-  const { response: posts, getAllData: getStudylogs } = useStudylog([]);
+  const { response: studylogs, getAllData: getStudylogs } = useStudylog([]);
 
   const getUserPosts = useCallback(async () => {
     const filterQuery = [...filteringOption, { filterType: 'usernames', filterDetailId: username }];
 
     await getStudylogs({
-      type: 'filter',
-      data: { filterQuery, postQueryParams },
+      query: {
+        type: 'filter',
+        data: { filterQuery, postQueryParams },
+      },
     });
   }, [postQueryParams, filteringOption, username]);
 
@@ -74,8 +75,8 @@ const StudylogOverview = () => {
   const setFilteringOptionWithTagId = (id) =>
     setFilteringOption([{ filterType: 'tags', filterDetailId: id }]);
 
-  const goTargetPost = (id) => {
-    history.push(`${PATH.POST}/${id}`);
+  const goTargetStudylog = (id) => {
+    history.push(`${PATH.STUDYLOG}/${id}`);
   };
 
   const onSetPage = (page) => {
@@ -131,21 +132,15 @@ const StudylogOverview = () => {
         />
       </Card>
       <Card title="학습로그" cssProps={CardStyles}>
-        {posts?.data?.length ? (
+        {studylogs?.data?.length ? (
           <>
-            {posts?.data?.map((post) => {
-              const { id, mission, title, tags, createdAt } = post;
+            {studylogs?.data?.map((studylog) => {
+              const { id, mission, title, tags, createdAt } = studylog;
 
               return (
-                <PostItem
-                  key={id}
-                  size="SMALL"
-                  onClick={() => goTargetPost(id)}
-                  onMouseEnter={() => setHoveredPostId(id)}
-                  onMouseLeave={() => setHoveredPostId(0)}
-                >
+                <PostItem key={id} size="SMALL" onClick={() => goTargetStudylog(id)}>
                   <Description>
-                    <Title isHovered={id === hoveredPostId}>{title}</Title>
+                    <Title>{title}</Title>
                     <PostBottomContainer>
                       <Mission>{mission.name}</Mission>
                       <div>{new Date(createdAt).toLocaleString('ko-KR')}</div>
@@ -161,7 +156,7 @@ const StudylogOverview = () => {
                 </PostItem>
               );
             })}
-            <Pagination postsInfo={posts} onSetPage={onSetPage} />
+            <Pagination dataInfo={studylogs} onSetPage={onSetPage} />
           </>
         ) : (
           <NoPost>작성한 글이 없습니다 🥲</NoPost>

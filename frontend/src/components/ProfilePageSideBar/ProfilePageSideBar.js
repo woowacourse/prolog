@@ -1,5 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
+
+import { requestEditProfile, requestGetProfile } from '../../service/requests';
+import useRequest from '../../hooks/useRequest';
+import useMutation from '../../hooks/useMutation';
+import { UserContext } from '../../contexts/UserProvider';
+import { Button, BUTTON_SIZE } from '..';
+
+import getMenuList from './getMenuList';
+
+import { PROFILE } from '../../constants/input';
+import { ALERT_MESSAGE } from '../../constants';
 
 import {
   Profile,
@@ -15,22 +26,14 @@ import {
   NicknameInput,
 } from './ProfilePageSideBar.styles';
 
-import { requestEditProfile, requestGetProfile } from '../../service/requests';
-import useRequest from '../../hooks/useRequest';
-import useMutation from '../../hooks/useMutation';
-import { Button, BUTTON_SIZE } from '..';
-import { useSelector } from 'react-redux';
-import getMenuList from './getMenuList';
-import { PROFILE } from '../../constants/input';
-import { ALERT_MESSAGE } from '../../constants';
-
 const ProfilePageSideBar = ({ menu }) => {
   const history = useHistory();
   const { username } = useParams();
 
-  const loginUser = useSelector((state) => state.user.profile);
-  const accessToken = useSelector((state) => state.user.accessToken.data);
-  const isOwner = !!loginUser.data && username === loginUser.data.username;
+  const { user: loginUser } = useContext(UserContext);
+  const { accessToken, username: loginUsername } = loginUser;
+
+  const isOwner = username === loginUsername;
 
   const [selectedMenu, setSelectedMenu] = useState('');
 
@@ -61,12 +64,15 @@ const ProfilePageSideBar = ({ menu }) => {
 
       return requestEditProfile({ username, nickname, imageUrl: user.imageUrl }, accessToken);
     },
-    () => {
-      setNickname(nickname);
-      setIsProfileEditing(false);
-    },
-    () => {
-      alert('회원 정보 수정에 실패했습니다.');
+    {
+      onSuccess: () => {
+        // TODO: 중앙 상태 닉네임 변경해주기
+        setNickname(nickname);
+        setIsProfileEditing(false);
+      },
+      onError: () => {
+        alert('회원 정보 수정에 실패했습니다.');
+      },
     }
   );
 

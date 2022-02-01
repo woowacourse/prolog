@@ -1,14 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { COLOR } from '../../constants';
-import LOCAL_STORAGE_KEY from '../../constants/localStorage';
-import {
-  ERROR_MESSAGE,
-  SUCCESS_MESSAGE,
-  CONFIRM_MESSAGE,
-  ALERT_MESSAGE,
-} from '../../constants/message';
+
 import useRequest from '../../hooks/useRequest';
 import useMutation from '../../hooks/useMutation';
 import useSnackBar from '../../hooks/useSnackBar';
@@ -18,12 +10,23 @@ import {
   requestEditAbility,
   requestGetAbilities,
 } from '../../service/requests';
+import { UserContext } from '../../contexts/UserProvider';
+
 import AbilityListItem from './AbilityListItem';
 import AddAbilityForm from './AddAbilityForm';
 import NoAbility from './NoAbility';
 
-import { Container, AbilityList, Button, EditingListItem, ListHeader, NoContent } from './styles';
 import { isCorrectHexCode } from '../../utils/hexCode';
+
+import { COLOR } from '../../constants';
+import {
+  ERROR_MESSAGE,
+  SUCCESS_MESSAGE,
+  CONFIRM_MESSAGE,
+  ALERT_MESSAGE,
+} from '../../constants/message';
+
+import { Container, AbilityList, Button, EditingListItem, ListHeader, NoContent } from './styles';
 
 const DEFAULT_ABILITY_FORM = {
   isOpened: false,
@@ -41,9 +44,10 @@ const AbilityPage = () => {
   const [abilities, setAbilities] = useState(null);
   const [addFormStatus, setAddFormStatus] = useState(DEFAULT_ABILITY_FORM);
 
-  const accessToken = localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
-  const user = useSelector((state) => state.user.profile);
-  const isMine = user.data && username === user.data?.username;
+  const { user } = useContext(UserContext);
+  const { accessToken } = user;
+
+  const isMine = username === user.username;
 
   const addFormClose = () => {
     setAddFormStatus((prevState) => ({ ...prevState, isOpened: false }));
@@ -55,7 +59,7 @@ const AbilityPage = () => {
 
   const { fetchData: getData } = useRequest(
     [],
-    () => requestGetAbilities(username, JSON.parse(accessToken)),
+    () => requestGetAbilities(username, accessToken),
     (data) => {
       setAbilities(data);
     }
@@ -63,24 +67,26 @@ const AbilityPage = () => {
 
   const { mutate: addAbility } = useMutation(
     ({ name, description, color, parent = null }) =>
-      requestAddAbility(JSON.parse(accessToken), {
+      requestAddAbility(accessToken, {
         name,
         description,
         color,
         parent,
       }),
-    () => {
-      openSnackBar(SUCCESS_MESSAGE.CREATE_ABILITY);
-      getData();
-    },
-    (error) => {
-      openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
+    {
+      onSuccess: () => {
+        openSnackBar(SUCCESS_MESSAGE.CREATE_ABILITY);
+        getData();
+      },
+      onError: () => (error) => {
+        openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
+      },
     }
   );
 
   const { mutate: deleteAbility } = useMutation(
     (id) => {
-      return requestDeleteAbility(JSON.parse(accessToken), id);
+      return requestDeleteAbility(accessToken, id);
     },
     () => {
       openSnackBar(SUCCESS_MESSAGE.DELETE_ABILITY);
@@ -94,7 +100,7 @@ const AbilityPage = () => {
 
   const editAbility = async ({ id, name, description, color }) => {
     try {
-      const response = await requestEditAbility(JSON.parse(accessToken), {
+      const response = await requestEditAbility(accessToken, {
         id,
         name,
         description,

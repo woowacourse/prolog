@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { getResponseData } from '../utils/response';
 
-const useMutation = (callback, onSuccess, onError, onFinish) => {
+const useMutation = (callback, { onSuccess, onError, onFinish }) => {
   const [error, setError] = useState('');
 
   const mutate = async (data) => {

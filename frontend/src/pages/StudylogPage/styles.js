@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
+import { markdownStyle } from '../../styles/markdown.styles';
 
 const ButtonList = styled.div`
   display: flex;
@@ -97,7 +98,7 @@ const ProfileChipStyle = css`
   }
 `;
 
-const Content = styled.div`
+const ViewerWrapper = styled.div`
   word-break: break-all;
 
   .toastui-editor-contents h1,
@@ -135,6 +136,8 @@ const Content = styled.div`
   .toastui-editor-contents ol > li::before {
     color: #222;
   }
+
+  ${markdownStyle};
 `;
 
 const BottomContainer = styled.div`
@@ -155,6 +158,6 @@ export {
   Tags,
   IssuedDate,
   ProfileChipStyle,
-  Content,
   BottomContainer,
+  ViewerWrapper,
 };

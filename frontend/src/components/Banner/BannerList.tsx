@@ -60,6 +60,12 @@ const BannerList = ({ bannerList = [] }: { bannerList: BannerType[] }): JSX.Elem
     };
   }, [currentBannerIndex, mouseOnBanner, playBanner]);
 
+  useEffect(() => {
+    return () => {
+      clearTimeout(bannerSwitchIntervalId.current as NodeJS.Timeout);
+    };
+  }, []);
+
   return (
     <div
       css={BannerSliderWrapperStyle}

@@ -1,118 +1,51 @@
 import { useState } from 'react';
 import { ERROR_MESSAGE } from '../constants/message';
 import {
-  requestEditPost,
   requestGetStudylog,
   requestGetStudylogs,
-  requestDeletePost,
+  requestDeleteStudylog,
+  requestEditStudylog,
 } from '../service/requests';
+import useMutation from './useMutation';
 
 const useStudylog = (defaultValue) => {
   const [response, setResponse] = useState(defaultValue);
   const [error, setError] = useState('');
 
-  const getAllData = async (query, accessToken) => {
-    try {
-      const response = await requestGetStudylogs(query, accessToken);
+  const onSuccess = (data) => {
+    setResponse(data);
+  };
 
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-      const json = await response.json();
+  const onError = (error) => {
+    console.error(error);
+    setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
+  };
 
+  const { mutate: getAllData } = useMutation(requestGetStudylogs, {
+    onSuccess: (data) => {
       setResponse({
-        ...json,
-        data: json.data.map(
-          ({
-            id,
-            author,
-            content,
-            mission,
-            title,
-            tags,
-            createdAt,
-            updatedAt,
-            read,
-            scrap,
-            viewCount,
-          }) => ({
-            id,
-            author,
-            content,
-            mission,
-            title,
-            tags,
-            createdAt,
-            updatedAt,
+        ...data,
+        data: data.data.map((item) => {
+          const { read, scrap } = item;
+          return {
+            ...item,
             isRead: read,
             isScrapped: scrap,
-            viewCount,
-          })
-        ),
+          };
+        }),
       });
-    } catch (error) {
-      const errorResponse = JSON.parse(error.message);
+    },
+    onError,
+  });
 
-      console.error(errorResponse);
-      setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
-    }
-  };
+  const { mutate: getData } = useMutation(requestGetStudylog, {
+    onSuccess,
+    onError,
+  });
 
-  const getData = async (postId, accessToken) => {
-    try {
-      const response = await requestGetStudylog(postId, accessToken);
+  const { mutate: editData } = useMutation(requestEditStudylog, { onSuccess, onError });
 
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-      const json = await response.json();
-
-      setResponse(json);
-    } catch (error) {
-      const errorResponse = JSON.parse(error.message);
-
-      console.error(errorResponse);
-      setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
-    }
-  };
-
-  const editData = async (postId, data, accessToken) => {
-    try {
-      const response = await requestEditPost(postId, data, accessToken);
-
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-
-      setResponse(response);
-    } catch (error) {
-      const errorResponse = JSON.parse(error.message);
-
-      console.error(errorResponse);
-      setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
-
-      return ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT;
-    }
-  };
-
-  const deleteData = async (postId, accessToken) => {
-    try {
-      const response = await requestDeletePost(postId, accessToken);
-
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-
-      setResponse(response);
-    } catch (error) {
-      const errorResponse = JSON.parse(error.message);
-
-      console.error(errorResponse);
-      setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
-
-      return ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT;
-    }
-  };
+  const { mutate: deleteData } = useMutation(requestDeleteStudylog, { onSuccess, onError });
 
   return { response, error, getAllData, getData, editData, deleteData };
 };

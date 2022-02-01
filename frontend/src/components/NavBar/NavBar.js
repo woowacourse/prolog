@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useContext, useState } from 'react';
 import { useHistory, Link, NavLink } from 'react-router-dom';
 import LogoImage from '../../assets/images/logo.svg';
 import { PATH } from '../../constants';
@@ -11,20 +10,21 @@ import { DropdownMenu } from '../index';
 import Button from '../Button/Button';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
 import NoProfileImage from '../../assets/images/no-profile-image.png';
-import { getProfile } from '../../redux/actions/userAction';
+
 import {
   Container,
   Wrapper,
   Logo,
   Menu,
   DropdownStyle,
-  whiteBackgroundStyle,
   pencilButtonStyle,
   profileButtonStyle,
   Navigation,
   loginButtonStyle,
 } from './NavBar.styles';
 import { ERROR_MESSAGE } from '../../constants/message';
+import { UserContext } from '../../contexts/UserProvider';
+import { APP_MODE, isProd } from '../../configs/environment';
 
 const navigationConfig = [
   {
@@ -39,45 +39,26 @@ const navigationConfig = [
 
 const NavBar = () => {
   const history = useHistory();
-  const dispatch = useDispatch();
+  const logoTag = isProd ? 'BETA' : APP_MODE;
 
-  const accessToken = useSelector((state) => state.user.accessToken.data);
-  const user = useSelector((state) => state.user.profile);
+  const { user, onLogout } = useContext(UserContext);
 
-  const isLoggedIn = !!user.data;
-  const userError = user.error;
+  const { username, imageUrl: userImage = NoProfileImage, accessToken, isLoggedIn } = user;
 
   const [isDropdownToggled, setDropdownToggled] = useState(false);
-  const [userImage, setUserImage] = useState(NoProfileImage);
-
-  useEffect(() => {
-    if (accessToken) {
-      dispatch(getProfile());
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accessToken]);
-
-  useEffect(() => {
-    if (user.data?.imageUrl) {
-      setUserImage(user.data?.imageUrl);
-    }
-  }, [user]);
 
   const goMain = () => {
     history.push(PATH.ROOT);
   };
 
-  const goNewPost = async () => {
-    const accessToken = localStorage.getItem('accessToken');
-
+  const goNewStudylog = async () => {
     if (!accessToken) {
       alert(ERROR_MESSAGE.LOGIN_DEFAULT);
-      window.location.reload();
+
       return;
     }
 
-    history.push(PATH.NEW_POST);
+    history.push(PATH.NEW_STUDYLOG);
   };
 
   const showDropdownMenu = () => {
@@ -90,16 +71,6 @@ const NavBar = () => {
     }
   };
 
-  const logout = () => {
-    localStorage.setItem('accessToken', '');
-
-    window.location.reload();
-  };
-
-  if (userError) {
-    localStorage.removeItem('accessToken');
-  }
-
   const onSelectMenu = (event) => {
     if (event.target.tagName === 'A') {
       setDropdownToggled(false);
@@ -109,9 +80,9 @@ const NavBar = () => {
   return (
     <Container isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>
       <Wrapper>
-        <Logo onClick={goMain} role="link">
-          <img src={LogoImage} alt="PROLOG 로고" />
-          <span>{process.env.REACT_APP_MODE === 'PROD' ? 'BETA' : process.env.REACT_APP_MODE}</span>
+        <Logo onClick={goMain} role="link" aria-label="프롤로그 홈으로 이동하기">
+          <img src={LogoImage} alt="" />
+          <span>{logoTag}</span>
         </Logo>
         <Menu role="menu">
           <Navigation>
@@ -135,7 +106,7 @@ const NavBar = () => {
                 size="XX_SMALL"
                 icon={PencilIcon}
                 type="button"
-                onClick={goNewPost}
+                onClick={goNewStudylog}
                 cssProps={pencilButtonStyle}
               />
               <Button
@@ -151,11 +122,11 @@ const NavBar = () => {
                     {[
                       {
                         menu: '내 프로필',
-                        path: `/${user?.data.username}`,
+                        path: `/${username}`,
                       },
                       {
                         menu: '내 학습로그',
-                        path: `/${user?.data.username}/posts`,
+                        path: `/${username}/studylogs`,
                       },
                     ].map(({ menu, path }) => (
                       <li key={menu}>
@@ -163,7 +134,7 @@ const NavBar = () => {
                       </li>
                     ))}
                     <li>
-                      <button type="button" onClick={logout}>
+                      <button type="button" onClick={onLogout}>
                         로그아웃
                       </button>
                     </li>

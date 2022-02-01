@@ -1,38 +1,38 @@
 /** @jsxImportSource @emotion/react */
 
-import { useEffect, useState } from 'react';
-import { Button, FilterList, Pagination } from '../../components';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { PATH } from '../../constants';
-import PencilIcon from '../../assets/images/pencil_icon.svg';
+import { css } from '@emotion/react';
+
 import useFetch from '../../hooks/useFetch';
+import useFilterWithParams from '../../hooks/useFilterWithParams';
+import useStudylog from '../../hooks/useStudylog';
 import { requestGetFilters } from '../../service/requests';
-import { useSelector } from 'react-redux';
+import { UserContext } from '../../contexts/UserProvider';
+
+import { Button, FilterList, Pagination } from '../../components';
+import FlexBox from '../../components/@shared/FlexBox/FlexBox';
+import Chip from '../../components/Chip/Chip';
+import StudylogList from '../../components/Lists/StudylogList';
+import SearchBar from '../../components/SearchBar/SearchBar';
+
+import { ERROR_MESSAGE } from '../../constants/message';
+import { PATH } from '../../constants';
+
+import { MainContentStyle } from '../../PageRouter';
 import {
   FilterListWrapper,
   HeaderContainer,
   PostListContainer,
   SelectedFilterList,
 } from './styles';
-import { ERROR_MESSAGE } from '../../constants/message';
-import Chip from '../../components/Chip/Chip';
-import FlexBox from '../../components/@shared/FlexBox/FlexBox';
-import useFilterWithParams from '../../hooks/useFilterWithParams';
-import StudylogList from '../../components/Lists/StudylogList';
-import useStudylog from '../../hooks/useStudylog';
-import { css } from '@emotion/react';
-import SearchBar from '../../components/SearchBar/SearchBar';
 import {
   AlignItemsCenterStyle,
   FlexStyle,
   JustifyContentSpaceBtwStyle,
 } from '../../styles/flex.styles';
-import { MainContentStyle } from '../../PageRouter';
 
-type User = {
-  profile: { loading: boolean; data: string; error: null | string };
-  accessToken: { loading: boolean; data: string; error: null | string };
-};
+import PencilIcon from '../../assets/images/pencil_icon.svg';
 
 const StudylogListPage = (): JSX.Element => {
   const {
@@ -51,25 +51,23 @@ const StudylogListPage = (): JSX.Element => {
   const history = useHistory();
   const search = new URLSearchParams(history.location.search).get('keyword');
 
-  const user = useSelector((state: { user: User }) => state.user.profile);
-  const isLoggedIn = !!user.data;
+  const { user } = useContext(UserContext);
+  const { isLoggedIn, accessToken } = user;
 
-  const accessToken = useSelector((state: { user: User }) => state.user.accessToken.data);
-
-  const { response: posts, getAllData: getStudylogs } = useStudylog([]);
+  const { response: studylogs, getAllData: getStudylogs } = useStudylog([]);
 
   const [filters] = useFetch([], requestGetFilters);
 
   const [searchKeywords, setSearchKeywords] = useState('');
 
-  const goNewPost = () => {
+  const goNewStudylog = () => {
     if (!accessToken) {
       alert(ERROR_MESSAGE.LOGIN_DEFAULT);
       window.location.reload();
       return;
     }
 
-    history.push(PATH.NEW_POST);
+    history.push(PATH.NEW_STUDYLOG);
   };
 
   const onDeleteSearchKeyword = () => {
@@ -111,7 +109,7 @@ const StudylogListPage = (): JSX.Element => {
   useEffect(() => {
     const query = new URLSearchParams(history.location.search);
 
-    getStudylogs({ type: 'searchParams', data: query }, accessToken);
+    getStudylogs({ query: { type: 'searchParams', data: query }, accessToken });
   }, [history.location.search, accessToken]);
 
   useEffect(() => {
@@ -182,7 +180,7 @@ const StudylogListPage = (): JSX.Element => {
               size="SMALL"
               icon={PencilIcon}
               alt="글쓰기 아이콘"
-              onClick={goNewPost}
+              onClick={goNewStudylog}
               cssProps={css`
                 margin-left: 1rem;
               `}
@@ -211,10 +209,10 @@ const StudylogListPage = (): JSX.Element => {
       </HeaderContainer>
 
       <PostListContainer>
-        {posts?.data?.length === 0 && '작성된 글이 없습니다.'}
-        {posts && posts.data && <StudylogList studylogs={posts.data} />}
+        {studylogs?.data?.length === 0 && '작성된 글이 없습니다.'}
+        {studylogs && studylogs.data && <StudylogList studylogs={studylogs.data} />}
       </PostListContainer>
-      <Pagination postsInfo={posts} onSetPage={onSetPage}></Pagination>
+      <Pagination dataInfo={studylogs} onSetPage={onSetPage}></Pagination>
     </div>
   );
 };

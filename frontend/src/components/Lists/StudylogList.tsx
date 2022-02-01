@@ -23,7 +23,7 @@ const StudylogList = ({ studylogs }: Props) => {
   const history = useHistory();
 
   const goTargetPost = (id: number) => {
-    history.push(`${PATH.POST}/${id}`);
+    history.push(`${PATH.STUDYLOG}/${id}`);
   };
 
   const goProfilePage = (username: string) => (event: MouseEvent) => {
@@ -40,8 +40,8 @@ const StudylogList = ({ studylogs }: Props) => {
         }
       `}
     >
-      {studylogs.map((post) => {
-        const { id, author, mission, title, tags, isRead, viewCount } = post;
+      {studylogs.map((studylog) => {
+        const { id, author, mission, title, tags, isRead, viewCount } = studylog;
 
         return (
           <li key={id}>

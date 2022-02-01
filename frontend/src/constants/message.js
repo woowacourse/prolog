@@ -1,5 +1,7 @@
+import ERROR_CODE from './errorCode';
+
 const CONFIRM_MESSAGE = {
-  DELETE_POST: '글을 삭제하시겠습니까?',
+  DELETE_STUDYLOG: '글을 삭제하시겠습니까?',
   DELETE_SCRAP: '스크랩을 취소하시겠습니까?',
   DELETE_ABILITY: '역량을 삭제하시겠습니까?',
   DELETE_LIKE: '좋아요를 취소하시겠습니까?',
@@ -8,10 +10,12 @@ const CONFIRM_MESSAGE = {
 
 const ALERT_MESSAGE = {
   ACCESS_DENIED: '잘못된 접근입니다.',
-  FAIL_TO_DELETE_POST: '글을 삭제할 수 없습니다.',
+  FAIL_TO_DELETE_STUDYLOG: '글을 삭제할 수 없습니다.',
   FAIL_TO_UPLOAD_IMAGE: '이미지 업로드를 할 수 없습니다.',
   NEED_TO_LOGIN: '로그인 후 이용 가능합니다',
   OVER_PROFILE_NICKNAME_MAX_LENGTH: '닉네임은 4글자 이하로 입력해주세요.',
+
+  CANNOT_EDIT_OTHERS: '본인이 작성하지 않은 글은 수정할 수 없습니다.',
 };
 
 const ERROR_MESSAGE = {
@@ -27,8 +31,8 @@ const ERROR_MESSAGE = {
   1002: '로그인 시간이 만료되었습니다. 다시 로그인해 주세요.',
   1004: '존재하지 않는 회원입니다.',
 
-  2001: '글 내용을 작성해 주세요.',
-  2002: '글 제목을 입력해 주세요.',
+  [ERROR_CODE.NO_CONTENT]: '글 내용을 작성해 주세요.',
+  [ERROR_CODE.NO_TITLE]: '글 제목을 입력해 주세요.',
 
   4001: '하위 역량이 존재 할 때에는, 상위 역량을 삭제할 수 없습니다.',
   4002: '같은 이름의 역량이 존재합니다.',
@@ -52,7 +56,7 @@ const PLACEHOLDER = {
 
 const SNACKBAR_MESSAGE = {
   SUCCESS_TO_SCRAP: '스크랩을 완료했습니다.',
-  FAIL_TO_SCRAP: '스크랩을 취소했습니다.',
+  DELETE_SCRAP: '스크랩을 취소했습니다.',
 
   SET_LIKE: '좋아요를 표시했습니다.',
   UNSET_LIKE: '좋아요를 취소했습니다.',
