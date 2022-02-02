@@ -2,9 +2,12 @@ package wooteco.prolog.studylog.domain;
 
 import java.util.Objects;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -20,9 +23,14 @@ public class Like {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "studylog_id")
+    private Studylog studylog;
+
     private Long memberId;
 
-    public Like(Long memberId) {
+    public Like(Studylog studylog, Long memberId) {
+        this.studylog = studylog;
         this.memberId = memberId;
     }
 

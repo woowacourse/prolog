@@ -106,11 +106,11 @@ public class Studylog extends BaseEntity {
     }
 
     public void like(Long id) {
-        likes.like(id);
+        likes.like(this, id);
     }
 
     public void unlike(Long id) {
-        likes.unlike(id);
+        likes.unlike(this, id);
     }
 
     public boolean likedByMember(Long memberId) {

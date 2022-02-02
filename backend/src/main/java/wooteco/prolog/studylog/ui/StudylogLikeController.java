@@ -21,7 +21,7 @@ public class StudylogLikeController {
         this.studylogLikeService = studylogLikeService;
     }
 
-    @PostMapping("{studylogId}/likes")
+    @PostMapping("/{studylogId}/likes")
     public ResponseEntity<StudylogLikeResponse> likeStudylog(
         @AuthMemberPrincipal LoginMember member,
         @PathVariable Long studylogId
@@ -31,7 +31,7 @@ public class StudylogLikeController {
         return ResponseEntity.ok(studylogLikeResponse);
     }
 
-    @DeleteMapping("{studylogId}/likes")
+    @DeleteMapping("/{studylogId}/likes")
     public ResponseEntity<StudylogLikeResponse> unlikeStudylog(
         @AuthMemberPrincipal LoginMember member,
         @PathVariable Long studylogId
