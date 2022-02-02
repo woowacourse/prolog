@@ -23,7 +23,13 @@ const UserProvider = ({ children }) => {
 
   const userProfileRequest = useRequest(
     DEFAULT_USER,
-    () => getUserProfileRequest({ accessToken: state.accessToken }),
+    () => {
+      if (!state.accessToken) {
+        return;
+      }
+
+      return getUserProfileRequest({ accessToken: state.accessToken });
+    },
     ({ id: userId, username, nickname, role, imageUrl }) => {
       setState((prev) => ({
         ...prev,
