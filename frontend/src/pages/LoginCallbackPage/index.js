@@ -1,5 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { PATH } from '../../constants';
 
 import { UserContext } from '../../contexts/UserProvider';
 
@@ -14,7 +15,8 @@ const LoginCallbackPage = () => {
   useEffect(() => {
     const login = async () => {
       await onLogin({ code });
-      history.goBack();
+      // history.goBack()을 이용하는 경우 로그인 허용 페이지로 돌아갈 가능성 있음.
+      history.push(PATH.ROOT);
     };
 
     if (code) {
@@ -24,7 +26,7 @@ const LoginCallbackPage = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      history.goBack();
+      history.push(PATH.ROOT);
 
       return;
     }

@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 import LOCAL_STORAGE_KEY from '../constants/localStorage';
 import useMutation from '../hooks/useMutation';
@@ -23,7 +23,13 @@ const UserProvider = ({ children }) => {
 
   const userProfileRequest = useRequest(
     DEFAULT_USER,
-    () => getUserProfileRequest({ accessToken: state.accessToken }),
+    () => {
+      if (!state.accessToken) {
+        return;
+      }
+
+      return getUserProfileRequest({ accessToken: state.accessToken });
+    },
     ({ id: userId, username, nickname, role, imageUrl }) => {
       setState((prev) => ({
         ...prev,
@@ -44,6 +50,7 @@ const UserProvider = ({ children }) => {
   const { mutate: onLogin } = useMutation(loginRequest, {
     onSuccess: ({ accessToken }) => {
       localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, JSON.stringify(accessToken));
+      setState((prev) => ({ ...prev, accessToken }));
     },
   });
 
@@ -52,13 +59,17 @@ const UserProvider = ({ children }) => {
     setState(DEFAULT_USER);
   };
 
-  useState(() => {
+  useEffect(() => {
     const accessToken = getLocalStorageItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
 
     if (accessToken) {
       setState({ ...state, accessToken });
     }
   }, []);
+
+  useEffect(() => {
+    userProfileRequest.fetchData();
+  }, [state.accessToken]);
 
   return (
     <UserContext.Provider value={{ user: state, onLogin, onLogout }}>
