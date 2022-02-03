@@ -1,10 +1,5 @@
 package wooteco.prolog.studylog.application;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +12,12 @@ import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
-import wooteco.prolog.studylog.infrastructure.HealthCheckClient;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Profile({"local", "test"})
 @Service
@@ -25,9 +25,8 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
 
     public FakeStudylogDocumentService(
         StudylogDocumentRepository studylogDocumentRepository,
-        StudylogRepository studylogRepository,
-        HealthCheckClient healthCheckClient) {
-        super(studylogDocumentRepository, studylogRepository, healthCheckClient);
+        StudylogRepository studylogRepository){
+        super(studylogDocumentRepository, studylogRepository);
     }
 
     @Override
