@@ -82,7 +82,7 @@ const NavBar = () => {
       <Wrapper>
         <Logo onClick={goMain} role="link" aria-label="프롤로그 홈으로 이동하기">
           <img src={LogoImage} alt="" />
-          <span>{logoTag}</span>
+          {!isProd && <span>{logoTag}</span>}
         </Logo>
         <Menu role="menu">
           <Navigation>
