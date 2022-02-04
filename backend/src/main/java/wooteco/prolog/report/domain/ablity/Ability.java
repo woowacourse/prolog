@@ -1,7 +1,5 @@
 package wooteco.prolog.report.domain.ablity;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -13,13 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.report.exception.AbilityHasChildrenException;
 import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
 import wooteco.prolog.studylog.exception.AbilityNameDuplicateException;
 import wooteco.prolog.studylog.exception.AbilityParentColorDuplicateException;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Ability {
 
@@ -33,18 +32,16 @@ public class Ability {
 
     private String color;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
     private Ability parent;
 
-    @OneToMany(mappedBy = "target", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<AbilityRelationship> children;
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Ability> children;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
-
-    protected Ability() {
-    }
 
     public Ability(Long id, String name, String description, String color) {
         this.id = id;
@@ -83,27 +80,36 @@ public class Ability {
     }
 
     public void addChildAbility(Ability childAbility) {
-        AbilityRelationship abilityRelationship = new AbilityRelationship(childAbility, this);
-        this.children.add(abilityRelationship);
+        children.add(childAbility);
     }
 
     public void updateWithValidation(Ability updateAbility, List<Ability> abilities) {
-        removeUnnecessaryValidationAbilities(abilities);
-
-        updateAbility.validateDuplicateName(abilities);
-        updateAbility.validateDuplicateColor(abilities);
+        updateAbility.validateDuplicateName(removedUnnecessaryNameValidationAbilities(abilities));
+        updateAbility.validateDuplicateColor(removedUnnecessaryColorValidationAbilities(abilities));
 
         update(updateAbility);
     }
 
-    private void removeUnnecessaryValidationAbilities(List<Ability> abilities) {
+    private List<Ability> removedUnnecessaryNameValidationAbilities(List<Ability> abilities) {
+        List<Ability> removeAbilities = new ArrayList<>(abilities);
+
+        removeAbilities.remove(this);
+
+        return removeAbilities;
+    }
+
+    private List<Ability> removedUnnecessaryColorValidationAbilities(List<Ability> abilities) {
+        List<Ability> removeAbilities = new ArrayList<>(abilities);
+
         if (this.isParent()) {
-            abilities.removeAll(this.getChildren());
-            abilities.remove(this);
+            removeAbilities.removeAll(this.getChildren());
+            removeAbilities.remove(this);
         } else {
-            abilities.removeAll(parent.getChildren());
-            abilities.remove(parent);
+            removeAbilities.removeAll(parent.getChildren());
+            removeAbilities.remove(parent);
         }
+
+        return removeAbilities;
     }
 
     private void update(Ability updateAbility) {
@@ -125,26 +131,6 @@ public class Ability {
 
     public boolean isParent() {
         return Objects.isNull(parent);
-    }
-
-    public boolean hasParent() {
-        return !Objects.isNull(parent);
-    }
-
-    public void validateDeletable() {
-        if (!children.isEmpty()) {
-            throw new AbilityHasChildrenException();
-        }
-    }
-
-    public void deleteRelationshipWithParent() {
-        if (this.hasParent()) {
-            parent.removeChild(this);
-        }
-    }
-
-    private void removeChild(Ability ability) {
-        children.removeIf(abilityRelationship -> abilityRelationship.isSameWithSource(ability));
     }
 
     public void validateDuplicateName(List<Ability> abilities) {
@@ -206,9 +192,7 @@ public class Ability {
     }
 
     public List<Ability> getChildren() {
-        return children.stream()
-            .map(AbilityRelationship::getSource)
-            .collect(toList());
+        return children;
     }
 
     @Override

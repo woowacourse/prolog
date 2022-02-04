@@ -1,20 +1,24 @@
 package wooteco.prolog.report.application.dto.report;
 
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.application.dto.report.request.ReportRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.AbilityRequest;
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRequest;
 import wooteco.prolog.report.application.dto.report.request.studylog.ReportStudylogRequest;
+import wooteco.prolog.report.application.dto.report.response.ReportPageableResponse;
 import wooteco.prolog.report.application.dto.report.response.ReportResponse;
+import wooteco.prolog.report.application.dto.report.response.SimpleReportPageableResponse;
 import wooteco.prolog.report.application.dto.report.response.SimpleReportResponse;
-import wooteco.prolog.report.application.dto.report.response.abilityGraph.GraphAbilityResponse;
-import wooteco.prolog.report.application.dto.report.response.abilityGraph.GraphResponse;
+import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphAbilityResponse;
+import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogAbilityResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogResponse;
 import wooteco.prolog.studylog.domain.Studylog;
@@ -28,6 +32,7 @@ import wooteco.prolog.report.domain.report.studylog.ReportedStudylog;
 import wooteco.prolog.report.domain.report.studylog.ReportedStudylogAbility;
 import wooteco.prolog.report.domain.report.studylog.ReportedStudylogs;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 
 @Component
 public class ReportAssembler {
@@ -69,7 +74,7 @@ public class ReportAssembler {
         return new GraphAbility(
             findAbilityById(abilityRequest.getId()),
             abilityRequest.getWeight(),
-            abilityRequest.isRepresent()
+            abilityRequest.getIsPresent()
         );
     }
 
@@ -98,6 +103,8 @@ public class ReportAssembler {
             report.getId(),
             report.getTitle(),
             report.getDescription(),
+            report.getCreatedAt(),
+            report.getUpdatedAt(),
             of(report.getAbilityGraph()),
             studylogResponses,
             report.isRepresent()
@@ -110,8 +117,7 @@ public class ReportAssembler {
             .collect(toList());
 
         Studylog studylog = studylogRepository.findById(reportedStudylog.getStudylogId())
-                .orElseThrow(IllegalArgumentException::new);
-
+            .orElseThrow(StudylogNotFoundException::new);
         return new StudylogResponse(
             studylog.getId(),
             studylog.getCreatedAt(),
@@ -130,10 +136,10 @@ public class ReportAssembler {
         );
     }
 
-    ;
-
     private GraphResponse of(AbilityGraph abilityGraph) {
         List<GraphAbilityResponse> graphAbilityRespons = abilityGraph.getAbilities().stream()
+            .sorted(comparing(GraphAbilityDto::getColor)
+                .thenComparing(graphAbilityDto -> !graphAbilityDto.isParent()))
             .map(this::of)
             .collect(toList());
 
@@ -144,6 +150,7 @@ public class ReportAssembler {
         return new GraphAbilityResponse(
             graphAbilityDto.getId(),
             graphAbilityDto.getName(),
+            graphAbilityDto.getColor(),
             graphAbilityDto.getWeight(),
             graphAbilityDto.getPercentage(),
             graphAbilityDto.isPresent()
@@ -155,6 +162,32 @@ public class ReportAssembler {
             report.getId(),
             report.getTitle(),
             report.isRepresent()
+        );
+    }
+
+    public ReportPageableResponse of(Page<Report> reports) {
+        List<ReportResponse> reportResponses = reports.stream()
+            .map(this::of)
+            .collect(toList());
+
+        return new ReportPageableResponse(
+            reportResponses,
+            reports.getTotalElements(),
+            reports.getTotalPages(),
+            reports.getNumber() + 1
+        );
+    }
+
+    public SimpleReportPageableResponse simpleOf(Page<Report> reports) {
+        List<SimpleReportResponse> simpleReportResponses = reports.stream()
+            .map(this::simpleOf)
+            .collect(toList());
+
+        return new SimpleReportPageableResponse(
+            simpleReportResponses,
+            reports.getTotalElements(),
+            reports.getTotalPages(),
+            reports.getNumber() + 1
         );
     }
 }

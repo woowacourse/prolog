@@ -44,6 +44,9 @@ public class Member {
     @Column(nullable = false)
     private String imageUrl;
 
+    @Column(columnDefinition = "text")
+    private String profileIntro;
+
     @Embedded
     private MemberTags memberTags;
 
@@ -95,6 +98,12 @@ public class Member {
         }
     }
 
+    public void updateProfileIntro(String text) {
+        if (!ObjectUtils.isEmpty(text)) {
+            this.profileIntro = text;
+        }
+    }
+
     public void addTag(Tag tag) {
         memberTags.add(new MemberTag(this, tag));
     }
@@ -141,7 +150,7 @@ public class Member {
             return false;
         }
         Member member = (Member) o;
-        return Objects.equals(id, member.id);
+        return Objects.equals(id, member.getId());
     }
 
     @Override

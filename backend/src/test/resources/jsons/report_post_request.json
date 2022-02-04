@@ -6,17 +6,17 @@
       {
         "id": 1,
         "weight": 1,
-        "represent":true
-      },
-      {
-        "id": 2,
-        "weight": 1,
-        "represent":true
+        "isPresent":true
       },
       {
         "id": 3,
         "weight": 1,
-        "represent":false
+        "isPresent":false
+      },
+      {
+        "id": 5,
+        "weight": 1,
+        "isPresent":false
       }
     ]
   },

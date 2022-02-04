@@ -14,6 +14,7 @@ const PaginationContainer = styled.div`
 
 const PageButtonStyle = css`
   background-color: transparent;
+  color: ${COLOR.BLACK_800};
   transition: transform 0.1s ease;
 
   :hover {
@@ -23,6 +24,7 @@ const PageButtonStyle = css`
 
 const PageSkipButtonStyle = css`
   background-color: ${COLOR.LIGHT_GRAY_200};
+  color: ${COLOR.BLACK_800};
 
   :disabled {
     visibility: hidden;

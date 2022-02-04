@@ -1,7 +1,8 @@
 package wooteco.prolog.report.application.dto.report.response;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import wooteco.prolog.report.application.dto.report.response.abilityGraph.GraphResponse;
+import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogResponse;
 
 public class ReportResponse {
@@ -9,6 +10,8 @@ public class ReportResponse {
     private Long id;
     private String title;
     private String description;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private GraphResponse abilityGraph;
     private List<StudylogResponse> studylogs;
     private Boolean represent;
@@ -19,12 +22,16 @@ public class ReportResponse {
     public ReportResponse(Long id,
                           String title,
                           String description,
+                          LocalDateTime createdAt,
+                          LocalDateTime updatedAt,
                           GraphResponse abilityGraph,
                           List<StudylogResponse> studylogs,
                           Boolean represent) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.abilityGraph = abilityGraph;
         this.studylogs = studylogs;
         this.represent = represent;
@@ -40,6 +47,14 @@ public class ReportResponse {
 
     public String getDescription() {
         return description;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     public GraphResponse getAbilityGraph() {

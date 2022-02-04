@@ -2,36 +2,41 @@
   "id": 1,
   "title": "simple report",
   "description": "report for test",
+  "createdAt": "2021-10-19T02:28:35.582",
+  "updatedAt": "2021-10-19T02:28:35.582",
   "abilityGraph": {
     "abilities": [
       {
         "id": 1,
         "name": "test parent ability1",
+        "color": "test color1",
         "weight": 1,
-        "percentage": 0.33,
-        "present": true
-      },
-      {
-        "id": 2,
-        "name": "test parent ability2",
-        "weight": 1,
-        "percentage": 0.33,
-        "present": true
+        "percentage": 1,
+        "isPresent": true
       },
       {
         "id": 3,
-        "name": "test parent ability3",
+        "name": "test parent ability2",
+        "color": "test color2",
         "weight": 1,
-        "percentage": 0.33,
-        "present": false
+        "percentage": 0,
+        "isPresent": false
+      },
+      {
+        "id": 5,
+        "name": "test parent ability3",
+        "color": "test color3",
+        "weight": 1,
+        "percentage": 0,
+        "isPresent": false
       }
     ]
   },
   "studylogs": [
     {
       "id": 1,
-      "createAt": "2021-09-21T20:58:20.601485",
-      "updateAt": "2021-09-21T20:58:20.601485",
+      "createAt": "2021-10-19T02:28:35.565",
+      "updateAt": "2021-10-19T02:28:35.565",
       "title": "title",
       "abilities": [
         {
@@ -42,9 +47,9 @@
         },
         {
           "id": 2,
-          "name": "test parent ability2",
-          "color": "test color2",
-          "parent": true
+          "name": "test child ability1",
+          "color": "test color1",
+          "parent": false
         }
       ]
     }

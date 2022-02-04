@@ -1,28 +1,33 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import localStorage from 'local-storage';
 
-import { API, COLOR } from '../../constants';
+import useRequest from '../../hooks/useRequest';
+import { requestGetAbilities, requestPostReport } from '../../service/requests';
+import { UserContext } from '../../contexts/UserProvider';
+
 import { Button } from '../../components';
-import StudyLogModal from './StudyLogModal';
+import StudylogModal from './StudylogModal';
 import ReportInfoInput from './ReportInfoInput';
-import ReportStudyLogTable from './ReportStudyLogTable';
+import ReportStudylogTable from './ReportStudylogTable';
+import AbilityGraph from '../ProfilePageReports/AbilityGraph';
+
+import { COLOR, ERROR_MESSAGE, REPORT_DESCRIPTION } from '../../constants';
+import { limitLetterLength } from '../../utils/validator';
+
 import { Checkbox, Form, FormButtonWrapper } from './style';
-import { requestPostReport } from '../../service/requests';
 
 const ProfilePageNewReport = () => {
   const { username } = useParams();
   const history = useHistory();
 
-  const user = useSelector((state) => state.user.profile);
-  const nickname = user.data?.nickname ?? username;
-  const isLoggedIn = !!user.data;
-  const accessToken = localStorage.get(API.ACCESS_TOKEN);
+  const { user } = useContext(UserContext);
+  const { isLoggedIn, accessToken } = user;
+
+  const nickname = user.nickname ?? user.username;
 
   useEffect(() => {
     if (isLoggedIn) {
-      if (username !== user.data.username) {
+      if (username !== user.username) {
         alert('본인의 리포트만 작성할 수 있습니다.');
         history.push(`/${username}/reports`);
       }
@@ -37,7 +42,9 @@ const ProfilePageNewReport = () => {
   const [isMainReport, setIsMainReport] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [studyLogs, setStudyLogs] = useState([]);
+  const [abilities, setAbilities] = useState([]);
+  const [Studylogs, setStudylogs] = useState([]);
+  const [StudylogAbilities, setStudylogAbilities] = useState([]);
 
   const [isModalOpened, setIsModalOpened] = useState(false);
 
@@ -52,30 +59,54 @@ const ProfilePageNewReport = () => {
       history.push(`/${username}/reports`);
     } catch (error) {
       const errorCode = JSON.parse(error.message).code;
-      if (errorCode === 4005) {
-        alert('중복된 리포트 이름은 사용할 수 없습니다.');
+
+      if (ERROR_MESSAGE[errorCode]) {
+        alert(ERROR_MESSAGE[errorCode]);
       } else {
         console.error(error);
       }
     }
   };
 
-  const onSubmitReport = (event) => {
+  const getCheckedAbility = (StudylogId) => {
+    const targetStudylogAbility = StudylogAbilities.find(
+      (StudylogAbility) => StudylogAbility.id === StudylogId
+    )?.abilities;
+
+    return targetStudylogAbility?.map((ability) => ability.id) ?? [];
+  };
+
+  const onSubmitReport = async (event) => {
     event.preventDefault();
 
     const currTitle = title.trim();
+
+    if (!limitLetterLength(description, REPORT_DESCRIPTION.MAX_LENGTH)) {
+      alert('리포트 설명은 150글자를 넘을 수 없습니다.');
+
+      return;
+    }
+
+    if (Studylogs.length === 0) {
+      if (!window.confirm('등록된 학습로그가 없습니다.\n저장하시겠습니까?')) return;
+    }
 
     const data = {
       id: null,
       title:
         currTitle !== '' ? currTitle : `${new Date().toLocaleDateString()} ${nickname}의 리포트`,
       description,
-      abilityGraph: { abilities: [] },
-      studylogs: studyLogs.map((item) => ({ id: item.id, abilities: [] })),
-      represent: false,
+      abilityGraph: {
+        abilities: abilities.map(({ id, weight, isPresent }) => ({ id, weight, isPresent })),
+      },
+      studylogs: Studylogs.map((item) => ({
+        id: item.id,
+        abilities: getCheckedAbility(item.id),
+      })),
+      represent: isMainReport,
     };
 
-    postNewReport(data);
+    await postNewReport(data);
   };
 
   const onCancelWriteReport = () => {
@@ -84,26 +115,48 @@ const ProfilePageNewReport = () => {
     }
   };
 
+  useRequest(
+    [],
+    () => requestGetAbilities(username, accessToken),
+    (data) => {
+      const parents = data.filter((item) => item.isParent);
+
+      setAbilities(() =>
+        parents.map(({ id, name, color }) => ({
+          id,
+          name,
+          color,
+          weight: Math.ceil(10 * Number((1 / parents.length).toFixed(2))),
+          percentage: Number((1 / parents.length).toFixed(2)),
+          isPresent: true,
+        }))
+      );
+    }
+  );
+
   const onRegisterMainReport = () => setIsMainReport((currentState) => !currentState);
 
   const onModalOpen = () => setIsModalOpened(true);
 
   const onModalClose = () => setIsModalOpened(false);
 
+  const onChangeAbilities = (data) => {
+    setAbilities(data);
+  };
+
   return (
     <>
       <Form onSubmit={onSubmitReport}>
         <h2>새 리포트 작성하기</h2>
-        {/* <div>
+        <div>
           <Checkbox
             type="checkbox"
             onChange={onRegisterMainReport}
             checked={isMainReport}
             id="main_report_checkbox"
-            disabled
           />
           <label htmlFor="main_report_checkbox">대표 리포트로 지정하기</label>
-        </div> */}
+        </div>
 
         <ReportInfoInput
           nickname={nickname}
@@ -113,22 +166,15 @@ const ProfilePageNewReport = () => {
           setDescription={setDescription}
         />
 
-        <section
-          style={{
-            height: '25rem',
-            border: '1px solid black',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          준비중인 기능입니다.
-        </section>
+        <AbilityGraph abilities={abilities} setAbilities={onChangeAbilities} mode="NEW" />
 
-        <ReportStudyLogTable
+        <ReportStudylogTable
           onModalOpen={onModalOpen}
-          studyLogs={studyLogs}
-          setStudyLogs={setStudyLogs}
+          Studylogs={Studylogs}
+          setStudylogs={setStudylogs}
+          abilities={abilities}
+          StudylogAbilities={StudylogAbilities}
+          setStudylogAbilities={setStudylogAbilities}
         />
 
         <FormButtonWrapper>
@@ -145,11 +191,11 @@ const ProfilePageNewReport = () => {
       </Form>
 
       {isModalOpened && (
-        <StudyLogModal
+        <StudylogModal
           onModalClose={onModalClose}
           username={username}
-          studyLogs={studyLogs}
-          setStudyLogs={setStudyLogs}
+          Studylogs={Studylogs}
+          setStudylogs={setStudylogs}
         />
       )}
     </>

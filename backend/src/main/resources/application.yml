@@ -3,3 +3,14 @@ server:
 spring:
   flyway:
     enabled: false
+management:
+  health:
+    elasticsearch:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus"
+  metrics:
+    tags:
+      application: prolog

@@ -7,12 +7,12 @@
       {
         "id": 1,
         "weight": 2,
-        "represent":true
+        "isPresent":true
       },
       {
         "id": 3,
         "weight": 1,
-        "represent":true
+        "isPresent":true
       }
     ]
   },

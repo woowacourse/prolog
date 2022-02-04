@@ -1,6 +1,8 @@
 package wooteco.prolog.report.application;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,19 +11,31 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
 import wooteco.prolog.report.application.dto.ability.AbilityResponse;
 import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
+import wooteco.prolog.report.application.dto.ability.DefaultAbilityCreateRequest;
 import wooteco.prolog.report.domain.ablity.Ability;
+import wooteco.prolog.report.domain.ablity.DefaultAbility;
 import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
+import wooteco.prolog.report.domain.ablity.repository.DefaultAbilityRepository;
+import wooteco.prolog.report.exception.DefaultAbilityNotFoundException;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 
 @Service
 @Transactional(readOnly = true)
 public class AbilityService {
 
+    private static final String COMMON_TYPE = "common";
+
     private final AbilityRepository abilityRepository;
+    private final DefaultAbilityRepository defaultAbilityRepository;
     private final MemberService memberService;
 
-    public AbilityService(AbilityRepository abilityRepository, MemberService memberService) {
+    public AbilityService(
+        AbilityRepository abilityRepository,
+        DefaultAbilityRepository defaultAbilityRepository,
+        MemberService memberService
+    ) {
         this.abilityRepository = abilityRepository;
+        this.defaultAbilityRepository = defaultAbilityRepository;
         this.memberService = memberService;
     }
 
@@ -48,6 +62,16 @@ public class AbilityService {
         return extractChildAbility(member, abilities, name, description, color, parentId);
     }
 
+    private Ability extractParentAbility(Member member, List<Ability> abilities, String name, String description,
+                                         String color) {
+        Ability parentAbility = Ability.parent(name, description, color, member);
+
+        parentAbility.validateDuplicateName(abilities);
+        parentAbility.validateDuplicateColor(abilities);
+
+        return parentAbility;
+    }
+
     private Ability extractChildAbility(Member member, List<Ability> abilities, String name, String description,
                                         String color, Long parentId) {
         Ability parentAbility = findAbilityById(parentId);
@@ -59,18 +83,14 @@ public class AbilityService {
         return childAbility;
     }
 
-    private Ability extractParentAbility(Member member, List<Ability> abilities, String name, String description,
-                                         String color) {
-        Ability parentAbility = Ability.parent(name, description, color, member);
-
-        parentAbility.validateDuplicateName(abilities);
-        parentAbility.validateDuplicateColor(abilities);
-
-        return parentAbility;
-    }
-
     public List<AbilityResponse> findAbilitiesByMemberId(Long memberId) {
         return AbilityResponse.of(findByMemberId(memberId));
+    }
+
+    public List<AbilityResponse> findAbilitiesByMemberUsername(String username) {
+        Member member = memberService.findByUsername(username);
+
+        return AbilityResponse.of(findByMemberId(member.getId()));
     }
 
     public List<AbilityResponse> findParentAbilitiesByMemberId(Long memberId) {
@@ -97,9 +117,7 @@ public class AbilityService {
     @Transactional
     public void deleteAbility(Long memberId, Long abilityId) {
         Ability ability = findAbilityByIdAndMemberId(abilityId, memberId);
-        ability.validateDeletable();
 
-        ability.deleteRelationshipWithParent();
         abilityRepository.delete(ability);
     }
 
@@ -111,5 +129,94 @@ public class AbilityService {
     private Ability findAbilityByIdAndMemberId(Long abilityId, Long memberId) {
         return abilityRepository.findByIdAndMemberId(abilityId, memberId)
             .orElseThrow(AbilityNotFoundException::new);
+    }
+
+    @Transactional
+    public Long createDefaultAbility(DefaultAbilityCreateRequest request) {
+        if (request.hasParent()) {
+            DefaultAbility parentDefaultAbility = findDefaultAbilityById(request.getParentId());
+            DefaultAbility childDefaultAbility = createChildDefaultAbility(request, parentDefaultAbility);
+            return childDefaultAbility.getId();
+        }
+
+        DefaultAbility defaultAbility = createParentDefaultAbility(request);
+        return defaultAbility.getId();
+    }
+
+    private DefaultAbility createChildDefaultAbility(DefaultAbilityCreateRequest request, DefaultAbility parentDefaultAbility) {
+        return defaultAbilityRepository.save(new DefaultAbility(
+            request.getName(),
+            request.getDescription(),
+            request.getColor(),
+            request.getTemplate(),
+            parentDefaultAbility
+        ));
+    }
+
+    private DefaultAbility findDefaultAbilityById(Long defaultAbilityId) {
+        return defaultAbilityRepository.findById(defaultAbilityId)
+            .orElseThrow(DefaultAbilityNotFoundException::new);
+    }
+
+    private DefaultAbility createParentDefaultAbility(DefaultAbilityCreateRequest request) {
+        return defaultAbilityRepository.save(new DefaultAbility(
+            request.getName(),
+            request.getDescription(),
+            request.getColor(),
+            request.getTemplate()
+        ));
+    }
+
+    @Transactional
+    public void addDefaultAbilities(Long memberId, String template) {
+        Member member = memberService.findById(memberId);
+        List<DefaultAbility> defaultAbilities = findDefaultAbilitiesByTemplate(template);
+        Map<DefaultAbility, Ability> parentAbilities = new HashMap<>();
+
+        for (DefaultAbility defaultAbility : defaultAbilities) {
+            if (defaultAbility.isParent()) {
+                Ability parentAbility = mapToParentAbility(member, defaultAbility);
+                parentAbilities.put(defaultAbility, parentAbility);
+            } else {
+                Ability parentAbility = parentAbilities.get(defaultAbility.getParent());
+                mapToChildAbility(member, defaultAbility, parentAbility);
+            }
+        }
+    }
+
+    private List<DefaultAbility> findDefaultAbilitiesByTemplate(String templateType) {
+        List<DefaultAbility> defaultAbilities = defaultAbilityRepository
+            .findByTemplateOrTemplate(COMMON_TYPE, templateType);
+
+        if (defaultAbilities.isEmpty()) {
+            throw new DefaultAbilityNotFoundException();
+        }
+
+        return defaultAbilities;
+    }
+
+    private Ability mapToParentAbility(Member member, DefaultAbility defaultAbility) {
+        Ability parentAbility = extractParentAbility(
+            member,
+            findByMemberId(member.getId()),
+            defaultAbility.getName(),
+            defaultAbility.getDescription(),
+            defaultAbility.getColor()
+        );
+
+        return abilityRepository.save(parentAbility);
+    }
+
+    private Ability mapToChildAbility(Member member, DefaultAbility defaultAbility, Ability parentAbility) {
+        Ability childAbility = extractChildAbility(
+            member,
+            findByMemberId(member.getId()),
+            defaultAbility.getName(),
+            defaultAbility.getDescription(),
+            defaultAbility.getColor(),
+            parentAbility.getId()
+        );
+
+        return abilityRepository.save(childAbility);
     }
 }

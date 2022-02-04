@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import wooteco.prolog.report.domain.ablity.Ability;
 import wooteco.prolog.report.domain.report.common.Updatable;
 
@@ -21,6 +23,7 @@ public class GraphAbility implements Updatable<GraphAbility> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ability_id", nullable = false)
     private Ability ability;
@@ -61,6 +64,10 @@ public class GraphAbility implements Updatable<GraphAbility> {
         return ability.getName();
     }
 
+    public String getColor() {
+        return ability.getColor();
+    }
+
     public Long getWeight() {
         return weight;
     }
@@ -81,6 +88,7 @@ public class GraphAbility implements Updatable<GraphAbility> {
     public void update(GraphAbility ability) {
         this.ability = ability.getAbility();
         this.weight = ability.getWeight();
+        this.isPresent = ability.isPresent();
     }
 
     @Override

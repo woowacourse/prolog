@@ -2,7 +2,6 @@ package wooteco.prolog.studylog.exception;
 
 import wooteco.prolog.common.exception.BadRequestException;
 
-public class StudylogScrapNotValidUserException extends
-    BadRequestException {
+public class StudylogScrapNotValidUserException extends BadRequestException {
 
 }

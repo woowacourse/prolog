@@ -11,7 +11,17 @@ import wooteco.prolog.login.excetpion.TokenNotValidException;
 import wooteco.prolog.member.exception.DuplicateMemberTagException;
 import wooteco.prolog.member.exception.MemberNotAllowedException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
+import wooteco.prolog.report.exception.DefaultAbilityNotFoundException;
+import wooteco.prolog.report.exception.GraphAbilitiesAreNotParentException;
+import wooteco.prolog.report.exception.ReportDescriptionException;
+import wooteco.prolog.report.exception.ReportNotFoundException;
+import wooteco.prolog.report.exception.ReportRequestTypeException;
+import wooteco.prolog.report.exception.ReportTitleLengthException;
+import wooteco.prolog.report.exception.ReportUpdateException;
+import wooteco.prolog.report.exception.UnRelatedAbilityExistenceException;
 import wooteco.prolog.studylog.exception.DuplicateReportTitleException;
+import wooteco.prolog.studylog.exception.InvalidLikeRequestException;
+import wooteco.prolog.studylog.exception.InvalidUnlikeRequestException;
 import wooteco.prolog.studylog.exception.StudylogScrapAlreadyRegisteredException;
 import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
 import wooteco.prolog.studylog.exception.StudylogScrapNotValidUserException;
@@ -83,7 +93,20 @@ public enum BadRequestCode {
                                    AbilityParentColorDuplicateException.class),
     ABILITY_PARENT_CHILD_COLOR_DIFFERENT(4004, "상위 역량과 하위 역량의 색상이 일치하지 않습니다.",
                                          AbilityParentChildColorDifferentException.class),
-    DUPLICATE_REPORT_TITLE(4005, "리포트의 이름은 중복일 수 없습니다.", DuplicateReportTitleException.class);
+    DUPLICATE_REPORT_TITLE(4005, "리포트의 이름은 중복일 수 없습니다.", DuplicateReportTitleException.class),
+    DEFAULT_ABILITY_NOT_FOUND(4006, "입력된 과정의 기본 역량이 존재하지 않습니다.", DefaultAbilityNotFoundException.class),
+    GRAPH_ABILITIES_ARE_NOT_PARENT_EXCEPTION(4007, "그래프의 역량은 부모 역량만 등록 가능합니다.",
+        GraphAbilitiesAreNotParentException.class),
+    REPORT_NOT_FOUND_EXCEPTION(4008, "리포트를 찾을 수 없습니다", ReportNotFoundException.class),
+    REPORT_REQUEST_TYPE_EXCEPTION(4009, "리포트 검색 타입을 찾을 수 없습니다.", ReportRequestTypeException.class),
+    REPORT_UPDATE_EXCEPTION(4010, "리포트를 업데이트 하는데 실패했습니다.", ReportUpdateException.class),
+    UNRELATED_ABILITY_EXISTENCE_EXCEPTION(4011, "역량 그래프와 관련이 없는 역량이 스터디 로그 역량에 존재합니다.",
+        UnRelatedAbilityExistenceException.class),
+    REPORT_DESCRIPTION_EXCEPTION(4012, "리포트 설명은 150자를 넘을 수 없습니다.", ReportDescriptionException.class),
+    REPORT_TITLE_LENGTH_EXCEPTION(4013, "리포트 제목은 15자를 넘을 수 없습니다.", ReportTitleLengthException.class),
+
+    INVALID_LIKE_REQUEST_EXCEPTION(5001, "스터디로그를 좋아요 할 수 없습니다.", InvalidLikeRequestException.class),
+    INVALID_UNLIKE_REQUEST_EXCEPTION(5002, "스터디로그를 좋아요 취소 할 수 없습니다.", InvalidUnlikeRequestException .class);
 
     private int code;
     private String message;

@@ -29,9 +29,10 @@ import wooteco.prolog.report.application.dto.report.request.abilitigraph.Ability
 import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRequest;
 import wooteco.prolog.report.application.dto.report.request.studylog.ReportStudylogRequest;
 import wooteco.prolog.report.application.dto.report.response.ReportResponse;
-import wooteco.prolog.report.application.dto.report.response.abilityGraph.GraphResponse;
+import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogAbilityResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogResponse;
+import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
 import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.LevelService;
 import wooteco.prolog.studylog.application.MissionService;
@@ -46,11 +47,12 @@ class ReportDocumentation extends Documentation {
     private final TagService tagService;
     private final MemberService memberService;
     private final StudylogService studylogService;
-    private final DocumentService studyLogDocumentService;
+    private final DocumentService studylogDocumentService;
     private final AbilityService abilityService;
     private final UpdatedContentsRepository updatedContentsRepository;
     private final ReportService reportService;
     private final ApplicationContext applicationContext;
+    private final AbilityRepository abilityRepository;
 
     private static boolean flag = false;
 
@@ -60,21 +62,23 @@ class ReportDocumentation extends Documentation {
                                TagService tagService,
                                MemberService memberService,
                                StudylogService studylogService,
-                               DocumentService studyLogDocumentService,
+                               DocumentService studylogDocumentService,
                                AbilityService abilityService,
                                UpdatedContentsRepository updatedContentsRepository,
                                ReportService reportService,
-                               ApplicationContext applicationContext) {
+                               ApplicationContext applicationContext,
+                               AbilityRepository abilityRepository) {
         this.levelService = levelService;
         this.missionService = missionService;
         this.tagService = tagService;
         this.memberService = memberService;
         this.studylogService = studylogService;
-        this.studyLogDocumentService = studyLogDocumentService;
+        this.studylogDocumentService = studylogDocumentService;
         this.abilityService = abilityService;
         this.updatedContentsRepository = updatedContentsRepository;
         this.reportService = reportService;
         this.applicationContext = applicationContext;
+        this.abilityRepository = abilityRepository;
     }
 
     @Override
@@ -93,10 +97,11 @@ class ReportDocumentation extends Documentation {
                 tagService,
                 memberService,
                 studylogService,
-                studyLogDocumentService,
+                studylogDocumentService,
                 abilityService,
                 updatedContentsRepository,
-                reportService
+                reportService,
+                abilityRepository
             );
             dataLoaderApplicationListener.onApplicationEvent(new ContextRefreshedEvent(applicationContext));
             flag = true;
@@ -188,7 +193,7 @@ class ReportDocumentation extends Documentation {
             .map(ability -> new AbilityRequest(
                 ability.getId(),
                 ability.getWeight(),
-                ability.isPresent())
+                ability.getIsPresent())
             ).collect(toList());
 
         return new GraphRequest(abilityRequests);

@@ -18,7 +18,7 @@ const FilterList = ({
   setSelectedFilterDetails,
   isVisibleResetFilter,
   onResetFilter,
-  css,
+  css = null,
 }) => {
   const [searchKeyword, setSearchKeyword] = useState('');
 

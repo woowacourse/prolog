@@ -40,11 +40,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // open csv
+    implementation 'com.opencsv:opencsv:5.5.2'
 
     // log
     implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
-    implementation "com.github.maricn:logback-slack-appender:1.4.0"
 
     // jwt
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
@@ -79,6 +82,12 @@ dependencies {
 
     //flyway
     implementation 'org.flywaydb:flyway-core:6.4.2'
+
+    // webclient
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // prometheus
+    implementation 'io.micrometer:micrometer-registry-prometheus'
 
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'

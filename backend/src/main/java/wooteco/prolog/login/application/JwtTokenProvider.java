@@ -6,11 +6,14 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import wooteco.prolog.login.excetpion.TokenNotValidException;
 import wooteco.prolog.member.domain.Member;
 
 @Component
+@Slf4j
 public class JwtTokenProvider {
 
     @Value("${security.jwt.token.secret-key}")
@@ -42,6 +45,12 @@ public class JwtTokenProvider {
     }
 
     public String extractSubject(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        try {
+            return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody()
+                .getSubject();
+        } catch (JwtException | IllegalArgumentException e) {
+            log.info(e.getMessage(), e);
+            throw new TokenNotValidException();
+        }
     }
 }

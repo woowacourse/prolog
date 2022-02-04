@@ -1,10 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router';
-import { useHistory } from 'react-router-dom';
-import { ReactComponent as PostIcon } from '../../assets/images/post.svg';
-import { ReactComponent as OverviewIcon } from '../../assets/images/overview.svg';
-import { ReactComponent as ScrapIcon } from '../../assets/images/scrap.svg';
-import { ReactComponent as ReportIcon } from '../../assets/images/reportIcon.svg';
+import { useState, useEffect, useContext } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+
+import { requestEditProfile, requestGetProfile } from '../../service/requests';
+import useRequest from '../../hooks/useRequest';
+import useMutation from '../../hooks/useMutation';
+import { UserContext } from '../../contexts/UserProvider';
+import { Button, BUTTON_SIZE } from '..';
+
+import getMenuList from './getMenuList';
+
+import { PROFILE } from '../../constants/input';
+import { ALERT_MESSAGE } from '../../constants';
+
 import {
   Profile,
   Image,
@@ -18,120 +25,56 @@ import {
   NicknameWrapper,
   NicknameInput,
 } from './ProfilePageSideBar.styles';
-import { PROFILE_PAGE_MENU } from '../../constants';
-import { requestEditProfile, requestGetProfile } from '../../service/requests';
-import useNotFound from '../../hooks/useNotFound';
-import { Button, BUTTON_SIZE } from '..';
-import { useSelector } from 'react-redux';
-
-const getMenuList = ({ username, isOwner }) => {
-  const defaultMenu = [
-    {
-      key: PROFILE_PAGE_MENU.OVERVIEW,
-      title: '오버뷰',
-      path: `/${username}`,
-      Icon: OverviewIcon,
-    },
-    {
-      key: PROFILE_PAGE_MENU.POSTS,
-      title: '학습로그',
-      path: `/${username}/posts`,
-      Icon: PostIcon,
-    },
-    // {
-    //   key: PROFILE_PAGE_MENU.REPORTS,
-    //   title: '리포트',
-    //   path: `/${username}/reports`,
-    //   Icon: PostIcon,
-    // },
-  ];
-  const privateMenu = [
-    {
-      key: PROFILE_PAGE_MENU.SCRAPS,
-      title: '스크랩',
-      path: `/${username}/scraps`,
-      Icon: ScrapIcon,
-    },
-    // {
-    //   key: PROFILE_PAGE_MENU.ABILITY,
-    //   title: '역량',
-    //   path: `/${username}/ability`,
-    //   Icon: PostIcon,
-    // },
-  ];
-
-  return isOwner ? [...defaultMenu, ...privateMenu] : defaultMenu;
-};
 
 const ProfilePageSideBar = ({ menu }) => {
   const history = useHistory();
   const { username } = useParams();
-  const me = useSelector((state) => state.user.profile);
-  const accessToken = useSelector((state) => state.user.accessToken.data);
-  const myName = useSelector((state) => state.user.profile.data?.username);
 
-  const [user, setUser] = useState({});
+  const { user: loginUser } = useContext(UserContext);
+  const { accessToken, username: loginUsername } = loginUser;
+
+  const isOwner = username === loginUsername;
+
   const [selectedMenu, setSelectedMenu] = useState('');
 
   const [isProfileEditing, setIsProfileEditing] = useState(false);
   const [nickname, setNickname] = useState('');
 
-  const { setNotFound } = useNotFound();
+  const { response: user, fetchData: getProfile } = useRequest(
+    {},
+    () => requestGetProfile(username),
+    (data) => {
+      setNickname(data.nickname);
+    }
+  );
 
-  const loginUser = useSelector((state) => state.user.profile);
-  const isOwner = !!loginUser.data && username === loginUser.data.username;
+  const { mutate: editProfile } = useMutation(
+    () => {
+      if (!isOwner) {
+        setIsProfileEditing(false);
 
-  const getProfile = async () => {
-    try {
-      const response = await requestGetProfile(username);
-
-      if (!response.ok) {
-        throw new Error(await response.text());
+        return;
       }
 
-      const user = await response.json();
+      if (nickname.length > PROFILE.NICKNAME.MAX_LENGTH) {
+        alert(ALERT_MESSAGE.OVER_PROFILE_NICKNAME_MAX_LENGTH);
 
-      setUser(user);
-      setNickname(user.nickname);
-      setNotFound(false);
-    } catch (error) {
-      const errorResponse = JSON.parse(error.message);
-
-      console.error(errorResponse);
-
-      if (errorResponse.code === 1004) {
-        setNotFound(true);
-      }
-    }
-  };
-
-  const editProfile = async () => {
-    if (nickname === user.nickname) return setIsProfileEditing(false);
-
-    if (nickname.length > 4) {
-      alert('닉네임은 4글자 이하로 입력해주세요.');
-
-      return;
-    }
-
-    try {
-      const response = await requestEditProfile(
-        { username, nickname, imageUrl: user.imageUrl },
-        accessToken
-      );
-
-      if (!response.ok) {
-        throw new Error(await response.text());
+        return;
       }
 
-      setUser((prevValue) => ({ ...prevValue, nickname }));
-      setNickname(nickname);
-      setIsProfileEditing(false);
-    } catch (error) {
-      console.error(error.message);
-      alert('회원 정보 수정에 실패했습니다.');
+      return requestEditProfile({ username, nickname, imageUrl: user.imageUrl }, accessToken);
+    },
+    {
+      onSuccess: () => {
+        // TODO: 중앙 상태 닉네임 변경해주기
+        setNickname(nickname);
+        setIsProfileEditing(false);
+      },
+      onError: () => {
+        alert('회원 정보 수정에 실패했습니다.');
+      },
     }
-  };
+  );
 
   const onSelectMenu = ({ key, path }) => () => {
     setSelectedMenu(key);
@@ -139,6 +82,7 @@ const ProfilePageSideBar = ({ menu }) => {
   };
 
   useEffect(() => {
+    setNickname(nickname);
     getProfile();
     setSelectedMenu(menu);
   }, [username]);
@@ -155,9 +99,9 @@ const ProfilePageSideBar = ({ menu }) => {
               onChange={({ target }) => setNickname(target.value)}
             />
           ) : (
-            <Nickname>{user?.nickname}</Nickname>
+            <Nickname>{nickname}</Nickname>
           )}
-          {myName === username && (
+          {isOwner && (
             <Button
               size={BUTTON_SIZE.X_SMALL}
               type="button"

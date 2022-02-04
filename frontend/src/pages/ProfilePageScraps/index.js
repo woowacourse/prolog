@@ -1,8 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
-import { CONFIRM_MESSAGE, PATH } from '../../constants';
-import { Button, BUTTON_SIZE, Card, Pagination } from '../../components';
+
+import useRequest from '../../hooks/useRequest';
+import useMutation from '../../hooks/useMutation';
 import { requestDeleteScrap, requestGetMyScrap } from '../../service/requests';
+import { UserContext } from '../../contexts/UserProvider';
+
+import { Button, BUTTON_SIZE, Card, Pagination } from '../../components';
+
+import { CONFIRM_MESSAGE, PATH } from '../../constants';
+
 import {
   ButtonList,
   CardStyles,
@@ -17,7 +24,6 @@ import {
   Title,
   Heading,
 } from './styles';
-import { useSelector } from 'react-redux';
 
 const initialPostQueryParams = {
   page: 1,
@@ -27,84 +33,60 @@ const initialPostQueryParams = {
 
 const ProfilePageScraps = () => {
   const history = useHistory();
-  const accessToken = useSelector((state) => state.user.accessToken.data);
-  const { username } = useParams();
-  const { state } = useLocation();
 
-  const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
-  const [hoveredPostId, setHoveredPostId] = useState(0);
-  const [posts, setPosts] = useState([]);
+  const { user } = useContext(UserContext);
+  const { accessToken } = user;
+
+  const { username } = useParams();
+
   const [postQueryParams, setPostQueryParams] = useState(initialPostQueryParams);
 
-  const goTargetPost = (id) => {
-    history.push(`${PATH.POST}/${id}`);
+  const goTargetStudylog = (id) => {
+    history.push(`${PATH.STUDYLOG}/${id}`);
   };
 
-  const getMyScrap = useCallback(async () => {
-    try {
-      const response = await requestGetMyScrap(username, accessToken, postQueryParams);
-      const data = await response.json();
-
-      setPosts(data);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [postQueryParams, username]);
+  const { response: studylogs, fetchData: getMyScrap } = useRequest([], () =>
+    requestGetMyScrap({ username, accessToken, postQueryParams })
+  );
 
   const onSetPage = (page) => {
     setPostQueryParams({ ...postQueryParams, page });
   };
 
-  const onDeleteScrap = async (event, studylogId) => {
+  const { mutate: deleteScrap } = useMutation(requestDeleteScrap, {
+    onSuccess: () => {
+      getMyScrap();
+    },
+  });
+
+  const onDeleteScrap = async (event, id) => {
     event.stopPropagation();
 
-    if (!window.confirm(CONFIRM_MESSAGE.DELETE_SCRAP)) return;
-
-    try {
-      const response = await requestDeleteScrap(username, accessToken, {
-        studylogId,
-      });
-
-      if (!response.ok) {
-        throw new Error(response.status);
-      }
-
-      getMyScrap();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    if (!shouldInitialLoad) {
-      setShouldInitialLoad(true);
-
+    if (!window.confirm(CONFIRM_MESSAGE.DELETE_SCRAP)) {
       return;
     }
 
+    deleteScrap({ username, accessToken, id });
+  };
+
+  useEffect(() => {
     getMyScrap();
-  }, [history.location.search, getMyScrap]);
+  }, [postQueryParams]);
 
   return (
     <Container>
       <Heading>스크랩</Heading>
       <Card css={CardStyles}>
-        {posts?.data?.length ? (
+        {studylogs?.data?.length ? (
           <>
-            {posts?.data?.map((post) => {
-              const { id, mission, title, tags, content } = post;
+            {studylogs?.data?.map((studylog) => {
+              const { id, mission, title, tags, content } = studylog;
 
               return (
-                <PostItem
-                  key={id}
-                  size="SMALL"
-                  onClick={() => goTargetPost(id)}
-                  onMouseEnter={() => setHoveredPostId(id)}
-                  onMouseLeave={() => setHoveredPostId(0)}
-                >
+                <PostItem key={id} size="SMALL" onClick={() => goTargetStudylog(id)}>
                   <Description>
                     <Mission>{mission.name}</Mission>
-                    <Title isHovered={id === hoveredPostId}>{title}</Title>
+                    <Title>{title}</Title>
                     <Content>{content}</Content>
                     <Tags>
                       {tags.map(({ id, name }) => (
@@ -112,7 +94,7 @@ const ProfilePageScraps = () => {
                       ))}
                     </Tags>
                   </Description>
-                  <ButtonList isVisible={hoveredPostId === id}>
+                  <ButtonList>
                     <Button
                       size={BUTTON_SIZE.X_SMALL}
                       type="button"
@@ -128,7 +110,7 @@ const ProfilePageScraps = () => {
                 </PostItem>
               );
             })}
-            <Pagination postsInfo={posts} onSetPage={onSetPage} />
+            <Pagination dataInfo={studylogs} onSetPage={onSetPage} />
           </>
         ) : (
           <NoPost>스크랩한 글이 없습니다 🥲</NoPost>

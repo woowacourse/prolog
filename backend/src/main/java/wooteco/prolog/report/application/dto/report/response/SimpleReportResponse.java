@@ -23,7 +23,7 @@ public class SimpleReportResponse {
         return title;
     }
 
-    public Boolean getRepresent() {
+    public Boolean getIsRepresent() {
         return isRepresent;
     }
 }

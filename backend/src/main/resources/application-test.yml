@@ -30,3 +30,11 @@ github:
     access-token: http://localhost:4000/github/login/oauth/access_token
     profile: http://localhost:4000/github/user
 
+elasticsearch:
+  host: 127.0.0.1
+  port: 9200
+
+management:
+  health:
+    elasticsearch:
+      enabled: false

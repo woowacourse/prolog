@@ -1,46 +1,17 @@
-import { useState } from 'react';
 import SubCategoryIcon from '../../components/@shared/Icons/SubCategoryIcon';
 import Chip from '../../components/Chip/Chip';
 import { COLOR } from '../../constants';
-import { ERROR_MESSAGE } from '../../constants/message';
 import { ManageButtonList, Button, FormContainer, ListForm, ColorPicker } from './styles';
 
 const AddAbilityForm = ({
-  id,
-  name,
-  color,
-  description,
+  formData,
+  onFormDataChange,
   onClose,
   isParent,
   onSubmit,
-  parentId = null,
+  sabveButtondisabled,
 }) => {
-  const [formData, setFormData] = useState({
-    name,
-    description,
-    color,
-  });
-
-  const onFormDataChange = (key) => (event) => {
-    setFormData({ ...formData, [key]: event.target.value });
-  };
-
-  const onFormSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      await onSubmit({
-        name: formData.name,
-        color: formData.color,
-        description: formData.description,
-        parent: parentId,
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      onClose();
-    }
-  };
+  const { name, description, color } = formData;
 
   return (
     <FormContainer>
@@ -49,23 +20,25 @@ const AddAbilityForm = ({
         <Chip
           title={name}
           textAlign="left"
-          backgroundColor={formData.color}
+          backgroundColor={color}
           minWidth="3rem"
           fontSize="1.4rem"
           maxLength={60}
         >
-          {formData.name || '라벨 미리보기'}
+          {name || '라벨 미리보기'}
         </Chip>
       </div>
-      <ListForm isParent={isParent} onSubmit={onFormSubmit}>
+
+      <ListForm isParent={isParent} onSubmit={onSubmit}>
         <label>
           이름
           <input
             type="text"
             placeholder="이름"
-            value={formData.name}
+            value={name}
             maxLength={60}
             onChange={onFormDataChange('name')}
+            required
           />
         </label>
         <label>
@@ -73,7 +46,7 @@ const AddAbilityForm = ({
           <input
             type="text"
             placeholder="설명"
-            value={formData.description}
+            value={description}
             onChange={onFormDataChange('description')}
           />
         </label>
@@ -81,11 +54,12 @@ const AddAbilityForm = ({
           <label>
             색상
             <ColorPicker>
-              <input type="color" value={formData.color} onChange={onFormDataChange('color')} />
-              <input type="text" value={formData.color} onChange={onFormDataChange('color')} />
+              <input type="color" value={color} onChange={onFormDataChange('color')} />
+              <input type="text" value={color} onChange={onFormDataChange('color')} required />
             </ColorPicker>
           </label>
         )}
+
         <ManageButtonList>
           <Button
             type="button"
@@ -99,7 +73,7 @@ const AddAbilityForm = ({
           <Button
             backgroundColor={COLOR.DARK_BLUE_700}
             color={COLOR.WHITE}
-            disabled={!formData.name}
+            disabled={sabveButtondisabled}
           >
             저장
           </Button>

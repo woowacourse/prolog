@@ -16,6 +16,7 @@ import wooteco.prolog.report.application.AbilityService;
 import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
 import wooteco.prolog.report.application.dto.ability.AbilityResponse;
 import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
+import wooteco.prolog.report.application.dto.ability.DefaultAbilityCreateRequest;
 
 @RestController
 public class AbilityController {
@@ -28,8 +29,27 @@ public class AbilityController {
 
     @MemberOnly
     @PostMapping("/abilities")
-    public ResponseEntity<Void> createAbility(@AuthMemberPrincipal LoginMember member, @RequestBody AbilityCreateRequest abilityCreateRequest) {
+    public ResponseEntity<Void> createAbility(@AuthMemberPrincipal LoginMember member,
+                                              @RequestBody AbilityCreateRequest abilityCreateRequest) {
         abilityService.createAbility(member.getId(), abilityCreateRequest);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @MemberOnly
+    @PostMapping("/abilities/default")
+    public ResponseEntity<Void> createDefaultAbilities(@AuthMemberPrincipal LoginMember member,
+                                                       @RequestBody DefaultAbilityCreateRequest request) {
+        abilityService.createDefaultAbility(request);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @MemberOnly
+    @PostMapping("/abilities/template/{template}")
+    public ResponseEntity<Void> addDefaultAbilities(@AuthMemberPrincipal LoginMember member,
+                                                    @PathVariable String template) {
+        abilityService.addDefaultAbilities(member.getId(), template);
 
         return ResponseEntity.ok().build();
     }
@@ -47,9 +67,10 @@ public class AbilityController {
     }
 
     @MemberOnly
-    @GetMapping("/members/{memberId}/abilities")
-    public ResponseEntity<List<AbilityResponse>> findAbilitiesByMemberId(@AuthMemberPrincipal LoginMember member, @PathVariable Long memberId) {
-        return ResponseEntity.ok(abilityService.findAbilitiesByMemberId(memberId));
+    @GetMapping("/members/{username}/abilities")
+    public ResponseEntity<List<AbilityResponse>> findAbilitiesByUsername(@AuthMemberPrincipal LoginMember member,
+                                                                         @PathVariable String username) {
+        return ResponseEntity.ok(abilityService.findAbilitiesByMemberUsername(username));
     }
 
     @MemberOnly

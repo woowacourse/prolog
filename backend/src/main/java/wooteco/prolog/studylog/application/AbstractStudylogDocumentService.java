@@ -1,14 +1,15 @@
 package wooteco.prolog.studylog.application;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class AbstractStudylogDocumentService implements DocumentService {
 
@@ -31,7 +32,7 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
     @Override
     public StudylogDocument findById(Long id) {
         return studylogDocumentRepository.findById(id)
-            .orElseThrow(StudylogDocumentNotFoundException::new);
+                .orElseThrow(StudylogDocumentNotFoundException::new);
     }
 
     @Override
@@ -51,9 +52,9 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
 
         List<Studylog> studylogs = studylogRepository.findAll();
         studylogDocumentRepository.saveAll(
-            studylogs.stream()
-                .map(Studylog::toStudylogDocument)
-                .collect(Collectors.toList())
+                studylogs.stream()
+                        .map(Studylog::toStudylogDocument)
+                        .collect(Collectors.toList())
         );
     }
 
@@ -73,3 +74,4 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
         return results;
     }
 }
+

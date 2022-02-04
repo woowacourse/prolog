@@ -1,8 +1,8 @@
+/** @jsxImportSource @emotion/react */
+
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
-import { Link } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { useHistory, Link, NavLink } from 'react-router-dom';
 import LogoImage from '../../assets/images/logo.svg';
 import { PATH } from '../../constants';
 import GithubLogin from '../GithubLogin/GithubLogin';
@@ -10,63 +10,55 @@ import { DropdownMenu } from '../index';
 import Button from '../Button/Button';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
 import NoProfileImage from '../../assets/images/no-profile-image.png';
-import { getProfile } from '../../redux/actions/userAction';
+
 import {
   Container,
   Wrapper,
   Logo,
   Menu,
   DropdownStyle,
-  whiteBackgroundStyle,
   pencilButtonStyle,
   profileButtonStyle,
+  Navigation,
+  loginButtonStyle,
 } from './NavBar.styles';
 import { ERROR_MESSAGE } from '../../constants/message';
-import SearchBar from '../SearchBar/SearchBar';
+import { UserContext } from '../../contexts/UserProvider';
+import { APP_MODE, isProd } from '../../configs/environment';
+
+const navigationConfig = [
+  {
+    path: PATH.ROOT,
+    title: '홈',
+  },
+  {
+    path: PATH.STUDYLOG,
+    title: '학습로그',
+  },
+];
 
 const NavBar = () => {
   const history = useHistory();
-  const dispatch = useDispatch();
+  const logoTag = isProd ? 'BETA' : APP_MODE;
 
-  const accessToken = useSelector((state) => state.user.accessToken.data);
-  const user = useSelector((state) => state.user.profile);
+  const { user, onLogout } = useContext(UserContext);
 
-  const isLoggedIn = !!user.data;
-  const userError = user.error;
+  const { username, imageUrl: userImage = NoProfileImage, accessToken, isLoggedIn } = user;
 
   const [isDropdownToggled, setDropdownToggled] = useState(false);
-  const [userImage, setUserImage] = useState(NoProfileImage);
-
-  const [searchKeywords, setSearchKeywords] = useState('');
-
-  useEffect(() => {
-    if (accessToken) {
-      dispatch(getProfile(accessToken));
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accessToken]);
-
-  useEffect(() => {
-    if (user.data?.imageUrl) {
-      setUserImage(user.data?.imageUrl);
-    }
-  }, [user]);
 
   const goMain = () => {
     history.push(PATH.ROOT);
   };
 
-  const goNewPost = async () => {
-    const accessToken = localStorage.getItem('accessToken');
-
+  const goNewStudylog = async () => {
     if (!accessToken) {
       alert(ERROR_MESSAGE.LOGIN_DEFAULT);
-      window.location.reload();
+
       return;
     }
 
-    history.push(PATH.NEW_POST);
+    history.push(PATH.NEW_STUDYLOG);
   };
 
   const showDropdownMenu = () => {
@@ -79,83 +71,62 @@ const NavBar = () => {
     }
   };
 
-  const logout = () => {
-    localStorage.setItem('accessToken', '');
-
-    window.location.reload();
-  };
-
-  const onSearchKeywordsChange = (event) => {
-    setSearchKeywords(event.target.value);
-  };
-
-  const onSearch = async (event) => {
-    event.preventDefault();
-
-    const query = new URLSearchParams(history.location.search);
-    query.set('page', 1);
-
-    if (searchKeywords) {
-      query.set('keyword', searchKeywords);
-    } else {
-      query.delete('keyword');
-    }
-
-    history.push(`${PATH.ROOT}?${query.toString()}`);
-  };
-
-  if (userError) {
-    localStorage.removeItem('accessToken');
-  }
-
   const onSelectMenu = (event) => {
     if (event.target.tagName === 'A') {
       setDropdownToggled(false);
     }
   };
 
-  useEffect(() => {
-    const query = new URLSearchParams(history.location.search);
-
-    setSearchKeywords(query.get('keyword') ?? '');
-  }, [history.location.search]);
-
   return (
     <Container isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>
       <Wrapper>
-        <Logo onClick={goMain} role="link">
-          <img src={LogoImage} alt="PROLOG 로고" />
-          <span>{process.env.REACT_APP_MODE === 'PROD' ? 'BETA' : process.env.REACT_APP_MODE}</span>
+        <Logo onClick={goMain} role="link" aria-label="프롤로그 홈으로 이동하기">
+          <img src={LogoImage} alt="" />
+          <span>{logoTag}</span>
         </Logo>
         <Menu role="menu">
-          <SearchBar onSubmit={onSearch} value={searchKeywords} onChange={onSearchKeywordsChange} />
+          <Navigation>
+            {navigationConfig.map(({ path, title }) => (
+              <NavLink
+                exact
+                key={path}
+                to={path}
+                activeStyle={{
+                  borderBottom: '2px solid black',
+                  fontWeight: '600',
+                }}
+              >
+                {title}
+              </NavLink>
+            ))}
+          </Navigation>
           {isLoggedIn ? (
             <>
               <Button
-                size="SMALL"
+                size="XX_SMALL"
                 icon={PencilIcon}
                 type="button"
-                onClick={goNewPost}
-                css={pencilButtonStyle}
+                onClick={goNewStudylog}
+                cssProps={pencilButtonStyle}
               />
               <Button
-                size="SMALL"
+                size="XX_SMALL"
                 type="button"
                 backgroundImageUrl={userImage}
                 onClick={showDropdownMenu}
-                css={profileButtonStyle}
+                cssProps={profileButtonStyle}
               />
               {isDropdownToggled && (
-                <DropdownMenu css={DropdownStyle}>
+                <DropdownMenu cssProps={DropdownStyle}>
                   <ul onClick={onSelectMenu}>
                     {[
                       {
                         menu: '내 프로필',
-                        path: `/${user?.data.username}`,
+                        path: `/${username}`,
                       },
                       {
                         menu: '내 학습로그',
-                        path: `/${user?.data.username}/posts`,
+                        path: `/${username}/studylogs`,
                       },
                     ].map(({ menu, path }) => (
                       <li key={menu}>
@@ -163,7 +134,7 @@ const NavBar = () => {
                       </li>
                     ))}
                     <li>
-                      <button type="button" onClick={logout}>
+                      <button type="button" onClick={onLogout}>
                         로그아웃
                       </button>
                     </li>
@@ -173,9 +144,10 @@ const NavBar = () => {
             </>
           ) : (
             <GithubLogin>
-              <Button size="SMALL" type="button" icon={NoProfileImage} css={whiteBackgroundStyle}>
+              <div css={[loginButtonStyle]}>
+                <img src={NoProfileImage} alt="" />
                 로그인
-              </Button>
+              </div>
             </GithubLogin>
           )}
         </Menu>

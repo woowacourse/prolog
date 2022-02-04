@@ -6,6 +6,14 @@ const GlobalStyles = () => (
     styles={css`
       @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
+      @font-face {
+        font-family: 'BMHANNAPro';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.0/BMHANNAPro.woff')
+          format('woff');
+        font-weight: normal;
+        font-style: normal;
+      }
+
       * {
         box-sizing: border-box;
       }
@@ -29,7 +37,8 @@ const GlobalStyles = () => (
         height: 100%;
       }
 
-      ul {
+      ul,
+      ol {
         list-style: none;
         margin: 0;
         padding: 0;

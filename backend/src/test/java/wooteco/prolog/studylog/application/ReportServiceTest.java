@@ -29,6 +29,7 @@ import wooteco.prolog.report.application.ReportService;
 import wooteco.prolog.report.application.dto.report.ReportAssembler;
 import wooteco.prolog.report.application.dto.report.request.ReportRequest;
 import wooteco.prolog.report.application.dto.report.response.ReportResponse;
+import wooteco.prolog.report.domain.ablity.Ability;
 import wooteco.prolog.studylog.domain.Level;
 import wooteco.prolog.studylog.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
@@ -83,7 +84,7 @@ class ReportServiceTest {
 
         assertThat(reportResponse)
             .usingRecursiveComparison()
-            .ignoringFieldsMatchingRegexes(".*id", ".*updateAt", ".*createAt")
+            .ignoringFieldsMatchingRegexes(".*id", ".*updateAt", ".*createAt", ".*createdAt", ".*updatedAt")
             .isEqualTo(expected("jsons/report_post_response.json"));
     }
 
@@ -117,7 +118,7 @@ class ReportServiceTest {
 
         assertThat(reportResponse)
             .usingRecursiveComparison()
-            .ignoringFieldsMatchingRegexes(".*id", ".*updateAt", ".*createAt")
+            .ignoringFieldsMatchingRegexes(".*id", ".*updateAt", ".*createAt", ".*createdAt", ".*updatedAt")
             .isEqualTo(expected("jsons/report_put_response.json"));
     }
 
@@ -143,7 +144,7 @@ class ReportServiceTest {
         return memberRepository.save(member);
     }
 
-    private Studylog createStudyLog(Member member, Mission mission) {
+    private Studylog createStudylog(Member member, Mission mission) {
         return StudylogFixture.builder()
             .mission(mission)
             .title("title")
@@ -153,18 +154,21 @@ class ReportServiceTest {
     }
 
     private void setAbilities(Member member) {
-        abilityRepository.save(AbilityFixture.parentAbility1(member));
-        abilityRepository.save(AbilityFixture.parentAbility2(member));
-        abilityRepository.save(AbilityFixture.parentAbility3(member));
+        Ability parent1 = abilityRepository.save(AbilityFixture.parentAbility1(member));
+        abilityRepository.save(AbilityFixture.childAbility1(member, parent1));
+        Ability parent2 = abilityRepository.save(AbilityFixture.parentAbility2(member));
+        abilityRepository.save(AbilityFixture.childAbility2(member, parent2));
+        Ability parent3 = abilityRepository.save(AbilityFixture.parentAbility3(member));
+        abilityRepository.save(AbilityFixture.childAbility3(member, parent3));
     }
 
     private void setStudylogs(Member member) {
         Level level1 = levelRepository.save(LevelFixture.level1());
         Mission mission = missionRepository.save(MissionFixture.mission1(level1));
 
-        studylogRepository.save(createStudyLog(member, mission));
-        studylogRepository.save(createStudyLog(member, mission));
-        studylogRepository.save(createStudyLog(member, mission));
+        studylogRepository.save(createStudylog(member, mission));
+        studylogRepository.save(createStudylog(member, mission));
+        studylogRepository.save(createStudylog(member, mission));
     }
 
     @Test

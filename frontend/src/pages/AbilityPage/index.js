@@ -1,95 +1,106 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router';
-import { COLOR } from '../../constants';
-import { ERROR_MESSAGE } from '../../constants/message';
+import { useContext, useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+
+import useRequest from '../../hooks/useRequest';
+import useMutation from '../../hooks/useMutation';
+import useSnackBar from '../../hooks/useSnackBar';
 import {
   requestAddAbility,
   requestDeleteAbility,
   requestEditAbility,
   requestGetAbilities,
 } from '../../service/requests';
+import { UserContext } from '../../contexts/UserProvider';
+
 import AbilityListItem from './AbilityListItem';
 import AddAbilityForm from './AddAbilityForm';
-import { abilityList } from './mockData';
+import NoAbility from './NoAbility';
+
+import { isCorrectHexCode } from '../../utils/hexCode';
+
+import { COLOR } from '../../constants';
+import {
+  ERROR_MESSAGE,
+  SUCCESS_MESSAGE,
+  CONFIRM_MESSAGE,
+  ALERT_MESSAGE,
+} from '../../constants/message';
 
 import { Container, AbilityList, Button, EditingListItem, ListHeader, NoContent } from './styles';
+
+const DEFAULT_ABILITY_FORM = {
+  isOpened: false,
+  name: '',
+  description: '',
+  color: '#f6d7fe',
+  parent: null,
+};
 
 const AbilityPage = () => {
   const history = useHistory();
   const { username } = useParams();
+  const { isSnackBarOpen, SnackBar, openSnackBar } = useSnackBar();
 
-  const [abilities, setAbilities] = useState([]);
-  const [addFormStatus, setAddFormStatus] = useState({
-    isOpened: false,
-    name: '',
-    description: '',
-    color: '#f6d7fe',
-  });
+  const [abilities, setAbilities] = useState(null);
+  const [addFormStatus, setAddFormStatus] = useState(DEFAULT_ABILITY_FORM);
 
-  const accessToken = localStorage.getItem('accessToken');
-  const user = useSelector((state) => state.user.profile);
-  const isMine = user.data && username === user.data.username;
+  const { user } = useContext(UserContext);
+  const { accessToken } = user;
 
-  const getData = async () => {
-    try {
-      const response = await requestGetAbilities(user.data.id, JSON.parse(accessToken));
-      const data = await response.json();
+  const isMine = username === user.username;
 
+  const addFormClose = () => {
+    setAddFormStatus((prevState) => ({ ...prevState, isOpened: false }));
+  };
+
+  const addFormOpen = () => {
+    setAddFormStatus((prevState) => ({ ...prevState, isOpened: true }));
+  };
+
+  const { fetchData: getData } = useRequest(
+    [],
+    () => requestGetAbilities(username, accessToken),
+    (data) => {
       setAbilities(data);
-    } catch (error) {
-      console.error(error);
     }
-  };
+  );
 
-  const setAddFormIsOpened = (status) => () => {
-    setAddFormStatus((prevState) => ({ ...prevState, isOpened: status }));
-  };
-
-  const addAbility = async ({ name, description, color, parent = null }) => {
-    try {
-      const response = await requestAddAbility(JSON.parse(accessToken), {
+  const { mutate: addAbility } = useMutation(
+    ({ name, description, color, parent = null }) =>
+      requestAddAbility(accessToken, {
         name,
         description,
         color,
         parent,
-      });
-
-      if (!response.ok) {
-        const json = await response.json();
-        throw new Error(json.code);
-      }
-
-      await getData();
-    } catch (error) {
-      alert(ERROR_MESSAGE[error.message]);
-      console.error(error);
+      }),
+    {
+      onSuccess: () => {
+        openSnackBar(SUCCESS_MESSAGE.CREATE_ABILITY);
+        getData();
+      },
+      onError: () => (error) => {
+        openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
+      },
     }
-  };
+  );
 
-  const deleteAbility = (id) => async () => {
-    if (!window.confirm('삭제하시겠습니까?')) {
-      return;
+  const { mutate: deleteAbility } = useMutation(
+    (id) => {
+      return requestDeleteAbility(accessToken, id);
+    },
+    () => {
+      openSnackBar(SUCCESS_MESSAGE.DELETE_ABILITY);
+
+      getData();
+    },
+    (error) => {
+      openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
     }
-
-    try {
-      const response = await requestDeleteAbility(JSON.parse(accessToken), id);
-
-      if (!response.ok) {
-        const json = await response.json();
-        throw new Error(json.code);
-      }
-
-      await getData();
-    } catch (error) {
-      alert(ERROR_MESSAGE[error.message]);
-      console.error(error);
-    }
-  };
+  );
 
   const editAbility = async ({ id, name, description, color }) => {
     try {
-      const response = await requestEditAbility(JSON.parse(accessToken), {
+      const response = await requestEditAbility(accessToken, {
         id,
         name,
         description,
@@ -101,10 +112,10 @@ const AbilityPage = () => {
         throw new Error(json.code);
       }
 
+      openSnackBar(SUCCESS_MESSAGE.EDIT_ABILITY);
       await getData();
     } catch (error) {
-      alert(ERROR_MESSAGE[error.message]);
-      console.error(error);
+      openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
     }
   };
 
@@ -115,61 +126,103 @@ const AbilityPage = () => {
   }, [user]);
 
   if (user.data && !isMine) {
-    alert('잘못된 접근입니다.');
+    alert(ALERT_MESSAGE.ACCESS_DENIED);
     history.push(`/${username}`);
   }
+
+  const onAddFormSubmit = async (event) => {
+    event.preventDefault();
+
+    const newName = addFormStatus.name.trim();
+    const newColor = addFormStatus.color.trim();
+
+    if (!newName) {
+      openSnackBar(ERROR_MESSAGE.NEED_ABILITY_NAME);
+      return;
+    }
+
+    if (!newColor) {
+      openSnackBar(ERROR_MESSAGE.NEED_ABILITY_COLOR);
+      return;
+    }
+
+    if (!isCorrectHexCode(newColor)) {
+      openSnackBar(ERROR_MESSAGE.INVALID_ABILIT_COLOR);
+      return;
+    }
+
+    await addAbility({
+      name: newName,
+      description: addFormStatus.description,
+      color: addFormStatus.color,
+      parent: addFormStatus.parent,
+    });
+
+    setAddFormStatus(DEFAULT_ABILITY_FORM);
+    addFormClose();
+  };
+
+  const onFormDataChange = (key) => (event) => {
+    setAddFormStatus({ ...addFormStatus, [key]: event.target.value });
+  };
+
+  const onDelete = (id) => () => {
+    if (window.confirm(CONFIRM_MESSAGE.DELETE_ABILITY)) {
+      deleteAbility(id);
+    }
+  };
 
   return (
     <Container>
       <div>
         <h2>역량</h2>
-        <Button
-          type="button"
-          backgroundColor={COLOR.LIGHT_GRAY_50}
-          onClick={setAddFormIsOpened(true)}
-        >
+        <Button type="button" backgroundColor={COLOR.LIGHT_GRAY_50} onClick={addFormOpen}>
           역량 추가 +
         </Button>
       </div>
+
       {addFormStatus.isOpened && (
         <AbilityList>
           <EditingListItem isParent={true}>
             <AddAbilityForm
-              name={addFormStatus.name}
-              color={addFormStatus.color}
-              description={addFormStatus.description}
+              formData={addFormStatus}
+              onFormDataChange={onFormDataChange}
               isParent={true}
-              setIsFormOpened={setAddFormIsOpened}
-              onClose={setAddFormIsOpened(false)}
-              onSubmit={addAbility}
+              onClose={addFormClose}
+              onSubmit={onAddFormSubmit}
+              sabveButtondisabled={!addFormStatus.name.trim() || !addFormStatus.color}
             />
           </EditingListItem>
         </AbilityList>
       )}
+
       <AbilityList>
         <ListHeader>
           <div>
             역량<span>{`(총 ${abilities?.length}개)`}</span>
           </div>
         </ListHeader>
-        {!abilityList?.length && <NoContent>역량이 없습니다. 역량을 추가해주세요.</NoContent>}
+
         {abilities
           ?.filter(({ isParent }) => isParent)
-          .map(({ id, name, description, color, isParent, children }) => (
+          .map((ability) => (
             <AbilityListItem
-              key={id}
-              id={id}
-              name={name}
-              description={description}
-              color={color}
-              isParent={isParent}
-              subAbilities={children}
-              onDelete={deleteAbility}
-              onAdd={addAbility}
+              key={ability.id}
+              ability={ability}
+              addAbility={addAbility}
               onEdit={editAbility}
+              onDelete={onDelete}
             />
           ))}
+
+        {abilities && !abilities.length && (
+          <NoContent>
+            <NoAbility getData={getData} accessToken={accessToken} />
+          </NoContent>
+        )}
       </AbilityList>
+
+      {isSnackBarOpen && <SnackBar />}
     </Container>
   );
 };

@@ -3,7 +3,6 @@ package wooteco.prolog.studylog.ui;
 import java.net.URI;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.aop.MemberOnly;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
@@ -28,7 +26,7 @@ import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 import wooteco.support.number.NumberUtils;
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/studylogs")
 public class StudylogController {
 
     private final StudylogService studylogService;
@@ -43,7 +41,7 @@ public class StudylogController {
                                                @RequestBody List<StudylogRequest> studylogRequests) {
         List<StudylogResponse> studylogResponse = studylogService
             .insertStudylogs(member.getId(), studylogRequests);
-        return ResponseEntity.created(URI.create("/posts/" + studylogResponse.get(0).getId()))
+        return ResponseEntity.created(URI.create("/studylogs/" + studylogResponse.get(0).getId()))
             .build();
     }
 
@@ -55,16 +53,24 @@ public class StudylogController {
         return ResponseEntity.ok(studylogsResponse);
     }
 
+    @GetMapping("/most-popular")
+    public ResponseEntity<StudylogsResponse> showPopularStudylogs(
+        @AuthMemberPrincipal LoginMember member,
+        @PageableDefault Pageable pageable
+    ) {
+        StudylogsResponse studylogsResponse = studylogService.findMostPopularStudylogs(pageable, member.getId(), member.isAnonymous());
+        return ResponseEntity.ok(studylogsResponse);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<StudylogResponse> showStudylog(
         @PathVariable String id,
         @AuthMemberPrincipal LoginMember member
-        ) {
+    ) {
         if (!NumberUtils.isNumeric(id)) {
             throw new StudylogNotFoundException();
         }
-        StudylogResponse studylogResponse = studylogService.findById(Long.parseLong(id), member.getId(),
-            member.isAnonymous());
+        StudylogResponse studylogResponse = studylogService.findById(Long.parseLong(id), member.getId(), member.isAnonymous());
         return ResponseEntity.ok(studylogResponse);
     }
 

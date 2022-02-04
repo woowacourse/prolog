@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { NavLink } from 'react-router-dom';
 
 import COLOR from '../../constants/color';
 
@@ -20,24 +19,8 @@ const buttonStyle = css`
 
 const Container = styled.section`
   width: 100%;
+  height: fit-content;
   margin-bottom: 2rem;
-
-  ${({ reportsLength }) =>
-    !reportsLength &&
-    css`
-      height: 70vh;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-
-      p {
-        margin: 0;
-        font-size: 2rem;
-        line-height: 1.5;
-      }
-    `}
 
   a {
     ${buttonStyle};
@@ -98,13 +81,4 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const AddNewReportLink = styled(NavLink)`
-  background-color: ${COLOR.DARK_BLUE_800};
-  color: ${COLOR.WHITE};
-
-  :hover {
-    background-color: ${COLOR.DARK_BLUE_900};
-  }
-`;
-
-export { Container, ReportHeader, ReportBody, ButtonWrapper, AddNewReportLink };
+export { Container, ReportHeader, ReportBody, ButtonWrapper };

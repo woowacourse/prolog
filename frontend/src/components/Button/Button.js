@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import COLOR from '../../constants/color';
 import { BUTTON_SIZE, Container, Icon, Image } from './Button.styles';
 
 const Button = ({
@@ -8,13 +7,21 @@ const Button = ({
   alt,
   icon,
   css,
+  cssProps,
   backgroundImageUrl,
   onClick,
   type,
   disabled,
 }) => {
   return (
-    <Container size={size} icon={icon} css={css} onClick={onClick} type={type} disabled={disabled}>
+    <Container
+      size={size}
+      icon={icon}
+      css={cssProps || css}
+      onClick={onClick}
+      type={type}
+      disabled={disabled}
+    >
       {icon && <Icon src={icon} alt={alt} size={size} hasText={!!children} />}
       {backgroundImageUrl && <Image backgroundImage={backgroundImageUrl} />}
       {children && <span size={size}>{children}</span>}
@@ -28,17 +35,15 @@ Button.propTypes = {
   alt: PropTypes.string,
   icon: PropTypes.string,
   css: PropTypes.object,
+  cssProps: PropTypes.object,
   backgroundImageUrl: PropTypes.string,
   onClick: PropTypes.func,
   type: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 Button.defaultProps = {
   size: BUTTON_SIZE.MEDIUM,
-  css: {
-    backgroundColor: COLOR.DARK_BLUE_800,
-    color: COLOR.WHITE,
-  },
 };
 
 export default Button;
