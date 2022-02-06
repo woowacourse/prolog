@@ -10,7 +10,7 @@ import { ButtonList, EditButtonStyle, DeleteButtonStyle } from './styles';
 import { MainContentStyle } from '../../PageRouter';
 import { UserContext } from '../../contexts/UserProvider';
 import useSnackBar from '../../hooks/useSnackBar';
-import useRequest from '../../hooks/useRequest';
+import useStudylog from '../../hooks/useStudylog';
 import useMutation from '../../hooks/useMutation';
 import debounce from '../../utils/debounce';
 
@@ -18,7 +18,6 @@ import {
   requestPostScrap,
   requestDeleteScrap,
   requestDeleteLike,
-  requestGetStudylog,
   requestDeleteStudylog,
   requestPostLike,
 } from '../../service/requests';
@@ -40,9 +39,8 @@ const StudylogPage = () => {
 
   const { openSnackBar } = useSnackBar();
 
-  const { response: studylog, fetchData: getStudylog } = useRequest({}, () =>
-    requestGetStudylog({ id, accessToken })
-  );
+  const { response: studylog, getData } = useStudylog({});
+  const getStudylog = () => getData({ id, accessToken });
 
   const { mutate: deleteStudylog } = useMutation(
     () => {
@@ -157,7 +155,12 @@ const StudylogPage = () => {
   };
 
   useEffect(() => {
-    getStudylog();
+    // accessToken 이 있을 시에 studylogs -> me -> studylogs 순서 제어를 위한 임시 코드
+    const timeout = setTimeout(() => getStudylog(), 0);
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [accessToken, id]);
 
   return (
