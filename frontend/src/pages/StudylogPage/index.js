@@ -49,6 +49,9 @@ const StudylogPage = () => {
       return requestDeleteStudylog({ id, accessToken });
     },
     {
+      onSuccess: () => {
+        history.push(PATH.STUDYLOG);
+      },
       onError: (error) => {
         alert(ERROR_MESSAGE[error.code] ?? ALERT_MESSAGE.FAIL_TO_DELETE_STUDYLOG);
       },
