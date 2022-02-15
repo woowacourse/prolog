@@ -29,6 +29,7 @@ import {
   PATH,
   SNACKBAR_MESSAGE,
 } from '../../constants';
+import { SUCCESS_MESSAGE } from '../../constants/message';
 
 const StudylogPage = () => {
   const { id } = useParams();
@@ -50,6 +51,7 @@ const StudylogPage = () => {
     },
     {
       onSuccess: () => {
+        openSnackBar(SUCCESS_MESSAGE.DELETE_STUDYLOG);
         history.push(PATH.STUDYLOG);
       },
       onError: (error) => {
