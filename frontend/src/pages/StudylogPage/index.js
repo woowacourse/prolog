@@ -29,6 +29,7 @@ import {
   PATH,
   SNACKBAR_MESSAGE,
 } from '../../constants';
+import { SUCCESS_MESSAGE } from '../../constants/message';
 
 const StudylogPage = () => {
   const { id } = useParams();
@@ -49,6 +50,10 @@ const StudylogPage = () => {
       return requestDeleteStudylog({ id, accessToken });
     },
     {
+      onSuccess: () => {
+        openSnackBar(SUCCESS_MESSAGE.DELETE_STUDYLOG);
+        history.push(PATH.STUDYLOG);
+      },
       onError: (error) => {
         alert(ERROR_MESSAGE[error.code] ?? ALERT_MESSAGE.FAIL_TO_DELETE_STUDYLOG);
       },
