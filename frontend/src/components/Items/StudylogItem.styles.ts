@@ -19,6 +19,7 @@ export const ContentStyle = css`
 `;
 
 export const DescriptionStyle = css`
+  width: calc(100% - 12rem);
   display: flex;
   flex-direction: column;
   height: inherit;
@@ -27,6 +28,19 @@ export const DescriptionStyle = css`
     font-size: 2.8rem;
     color: ${COLOR.DARK_GRAY_900};
     font-weight: bold;
+
+    height: 100%;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media screen and (max-width: 420px) {
+      font-size: 2.5rem;
+      height: calc(2.5rem * 4.5);
+    }
   }
 `;
 

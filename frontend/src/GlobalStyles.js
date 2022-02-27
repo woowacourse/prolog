@@ -80,6 +80,12 @@ const GlobalStyles = () => (
       h6 {
         margin: 0;
       }
+
+      @media screen and (max-width: 420px) {
+        html {
+          font-size: 8px;
+        }
+      }
     `}
   />
 );

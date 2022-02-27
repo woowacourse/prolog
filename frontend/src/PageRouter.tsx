@@ -10,6 +10,13 @@ export const MainContentStyle = css`
   max-width: 112rem;
   margin: 4rem auto;
   padding: 0 4rem;
+
+  @media screen and (max-width: 420px) {
+    min-width: 280px;
+    max-width: 420px;
+    padding: 0 1rem;
+    margin: 2rem auto;
+  }
 `;
 
 const PageRouter = (): JSX.Element => {

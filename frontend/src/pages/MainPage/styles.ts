@@ -4,6 +4,11 @@ import { css } from '@emotion/react';
 export const SectionHeaderGapStyle = css`
   padding-left: 1.2rem;
   margin-bottom: 1.2rem;
+
+  @media screen and (max-width: 420px) {
+    padding-left: 0.8rem;
+    margin-bottom: 0.4rem;
+  }
 `;
 
 // 인기있는 학습로그

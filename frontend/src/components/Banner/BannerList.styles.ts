@@ -10,6 +10,10 @@ export const BannerSliderWrapperStyle = css`
   overflow: hidden;
 
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+
+  @media screen and (max-width: 420px) {
+    height: 180px;
+  }
 `;
 
 export const BannerSliderItemStyle = css`
