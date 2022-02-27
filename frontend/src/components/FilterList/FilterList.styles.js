@@ -33,6 +33,10 @@ const Container = styled.div`
 
   & > div:not(:last-child) {
     margin-right: 3.2rem;
+
+    @media screen and (max-width: 420px) {
+      margin-right: 2rem;
+    }
   }
 
   & > div {

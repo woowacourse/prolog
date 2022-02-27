@@ -132,7 +132,7 @@ export const ContentsAreaStyle = css`
   height: 100%;
 
   > a > div {
-    height: 100%;
+    height: calc(1.4rem * 4.5);
 
     font-size: 1.4rem;
 
