@@ -105,7 +105,7 @@ const ReportStudylogTable = ({
 
     return targetStudylogAbilities?.abilities?.map((ability) => (
       <li key={ability.id}>
-        <Chip backgroundColor={ability.color} fontSize="1.2rem">
+        <Chip title={ability.name} backgroundColor={ability.color} fontSize="1.2rem">
           {ability.name}
         </Chip>
       </li>
@@ -256,7 +256,9 @@ const ReportStudylogTable = ({
                                   onChange={() => onAddAbilities(id, ability)}
                                   checked={isChecked(id, ability.id)}
                                 />
-                                <Chip backgroundColor={ability.color}>{ability.name}</Chip>
+                                <Chip title={ability.name} backgroundColor={ability.color}>
+                                  {ability.name}
+                                </Chip>
                               </label>
                             </li>
                           )

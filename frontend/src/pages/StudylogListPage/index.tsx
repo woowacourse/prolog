@@ -194,12 +194,16 @@ const StudylogListPage = (): JSX.Element => {
           <ul>
             {!!search && (
               <li>
-                <Chip onDelete={onDeleteSearchKeyword}>{`검색어 : ${search}`}</Chip>
+                <Chip
+                  title={`검색어 : ${search}`}
+                  onDelete={onDeleteSearchKeyword}
+                >{`검색어 : ${search}`}</Chip>
               </li>
             )}
             {selectedFilterDetails.map(({ filterType, filterDetailId, name }) => (
               <li key={filterType + filterDetailId + name}>
                 <Chip
+                  title={`${filterType}: ${name}`}
                   onDelete={() => onUnsetFilter({ filterType, filterDetailId })}
                 >{`${filterType}: ${name}`}</Chip>
               </li>
