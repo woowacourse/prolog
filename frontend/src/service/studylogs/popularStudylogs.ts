@@ -1,12 +1,20 @@
-// TODO: 팔레트 색상 추가
 const RANDOM_COLOR_PALLETS = [
   '#ff9797',
-  '#ff9ebb',
   '#ffcb20',
-  '#5ce17d',
+  '#bade95',
   '#a5e1e6',
+  '#ff9ebb',
   '#74bcff',
   '#c886ce',
+  '#9fece0',
+  '#a1d9ed',
+  '#b3a4d0',
+  '#c3a9c9',
+  '#f0ec85',
+  '#eeb887',
+  '#d19191',
+  '#dddf95',
+  '#d28ab1',
 ];
 
 export const getRandomColor = (id: number): string => {
