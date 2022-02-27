@@ -42,6 +42,7 @@ const ERROR_MESSAGE = {
 
 const SUCCESS_MESSAGE = {
   CREATE_POST: '글이 작성되었습니다.',
+  DELETE_STUDYLOG: '글이 삭제되었습니다.',
   CREATE_ABILITY: '역량을 추가했습니다.',
   EDIT_ABILITY: '역량을 수정했습니다.',
   DELETE_ABILITY: '역량을 삭제했습니다.',
