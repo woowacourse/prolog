@@ -85,7 +85,14 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
 
           <div>
             {/* 태그 영역 */}
-            <ul css={[FlexStyle]}>
+            <ul
+              css={[
+                FlexStyle,
+                css`
+                  overflow: scroll;
+                `,
+              ]}
+            >
               {tags.slice(0, 2).map(({ name: tagName, id: tagId }) => (
                 <Link to={`${PATH.STUDYLOGS}?tags=${tagId}`} key={tagId}>
                   <Chip title={tagName} onClick={() => {}}>
