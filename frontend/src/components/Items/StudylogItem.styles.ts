@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { COLOR } from '../../constants';
+import { COLOR } from '../../enumerations/color';
 
 export const CardStyle = css`
   transition: transform 0.2s ease;

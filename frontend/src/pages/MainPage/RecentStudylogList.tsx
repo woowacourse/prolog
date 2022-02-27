@@ -3,7 +3,8 @@
 import { Link } from 'react-router-dom';
 
 import StudylogList from '../../components/Lists/StudylogList';
-import { PATH } from '../../constants';
+import { PATH } from '../../enumerations/path';
+import { Studylog } from '../../models/Studylogs';
 
 import {
   FlexStyle,
@@ -12,12 +13,12 @@ import {
 } from '../../styles/flex.styles';
 import { SectionHeaderGapStyle } from './styles';
 
-const RecentStudylogList = ({ studylogs }: { studylogs: Prolog.Studylog[] }) => {
+const RecentStudylogList = ({ studylogs }: { studylogs: Studylog[] }) => {
   return (
     <section>
       <div css={[FlexStyle, JustifyContentSpaceBtwStyle, AlignItemsCenterStyle]}>
         <h2 css={[SectionHeaderGapStyle]}>📚 최신 학습로그</h2>
-        <Link to={PATH.STUDYLOG}>{`더보기 >`}</Link>
+        <Link to={PATH.STUDYLOGS}>{`더보기 >`}</Link>
       </div>
       {studylogs?.length === 0 && '작성된 글이 없습니다.'}
       {!!studylogs?.length && <StudylogList studylogs={studylogs} />}

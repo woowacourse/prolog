@@ -20,6 +20,7 @@ export interface Tag {
   name: string;
 }
 
+// TODO: read, scrap => isRead, isScrapped로 변경
 export interface Studylog {
   id: number;
   author: Author;
@@ -29,8 +30,8 @@ export interface Studylog {
   tags: Tag[];
   createdAt: Date;
   updatedAt?: Date;
-  isRead: boolean;
-  isScrapped: boolean;
+  read: boolean;
+  scrap: boolean;
   viewCount: number;
   liked: boolean;
   likesCount: number;
