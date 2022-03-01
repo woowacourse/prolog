@@ -38,7 +38,8 @@ jobs:
           cd backend
           mkdir -p deploy
           cp build/libs/*.jar deploy/application.jar
-          cp -r .ebextensions deploy/.ebextensions          
+          cp -r .ebextensions deploy/.ebextensions
+          cp -r deploy-config deploy
           cd deploy && zip -r deploy.zip .
 
       - name: Deploy to EB
