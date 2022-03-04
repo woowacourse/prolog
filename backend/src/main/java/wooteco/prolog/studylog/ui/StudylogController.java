@@ -37,58 +37,41 @@ public class StudylogController {
 
     @PostMapping
     @MemberOnly
-    public ResponseEntity<Void> createStudylog(@AuthMemberPrincipal LoginMember member,
-                                               @RequestBody List<StudylogRequest> studylogRequests) {
-        List<StudylogResponse> studylogResponse = studylogService
-            .insertStudylogs(member.getId(), studylogRequests);
-        return ResponseEntity.created(URI.create("/studylogs/" + studylogResponse.get(0).getId()))
-            .build();
+    public ResponseEntity<Void> createStudylog(@AuthMemberPrincipal LoginMember member, @RequestBody List<StudylogRequest> studylogRequests) {
+        List<StudylogResponse> studylogResponse = studylogService.insertStudylogs(member.getId(), studylogRequests);
+        return ResponseEntity.created(URI.create("/studylogs/" + studylogResponse.get(0).getId())).build();
     }
 
     @GetMapping
-    public ResponseEntity<StudylogsResponse> showAll(
-        @AuthMemberPrincipal LoginMember member,
-        @SearchParams StudylogsSearchRequest searchRequest) {
+    public ResponseEntity<StudylogsResponse> showAll(@AuthMemberPrincipal LoginMember member, @SearchParams StudylogsSearchRequest searchRequest) {
         StudylogsResponse studylogsResponse = studylogService.findStudylogs(searchRequest, member.getId(), member.isAnonymous());
         return ResponseEntity.ok(studylogsResponse);
     }
 
     @GetMapping("/most-popular")
-    public ResponseEntity<StudylogsResponse> showPopularStudylogs(
-        @AuthMemberPrincipal LoginMember member,
-        @PageableDefault Pageable pageable
-    ) {
+    public ResponseEntity<StudylogsResponse> showPopularStudylogs(@AuthMemberPrincipal LoginMember member, @PageableDefault Pageable pageable) {
         StudylogsResponse studylogsResponse = studylogService.findMostPopularStudylogs(pageable, member.getId(), member.isAnonymous());
         return ResponseEntity.ok(studylogsResponse);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudylogResponse> showStudylog(
-        @PathVariable String id,
-        @AuthMemberPrincipal LoginMember member
-    ) {
+    public ResponseEntity<StudylogResponse> showStudylog(@PathVariable String id, @AuthMemberPrincipal LoginMember member) {
         if (!NumberUtils.isNumeric(id)) {
             throw new StudylogNotFoundException();
         }
-        StudylogResponse studylogResponse = studylogService.findById(Long.parseLong(id), member.getId(), member.isAnonymous());
-        return ResponseEntity.ok(studylogResponse);
+        return ResponseEntity.ok(studylogService.findById(member, Long.parseLong(id)));
     }
 
     @PutMapping("/{id}")
     @MemberOnly
-    public ResponseEntity<Void> updateStudylog(
-        @AuthMemberPrincipal LoginMember member,
-        @PathVariable Long id,
-        @RequestBody StudylogRequest studylogRequest
-    ) {
+    public ResponseEntity<Void> updateStudylog(@AuthMemberPrincipal LoginMember member, @PathVariable Long id, @RequestBody StudylogRequest studylogRequest) {
         studylogService.updateStudylog(member.getId(), id, studylogRequest);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     @MemberOnly
-    public ResponseEntity<Void> deleteStudylog(@AuthMemberPrincipal LoginMember member,
-                                               @PathVariable Long id) {
+    public ResponseEntity<Void> deleteStudylog(@AuthMemberPrincipal LoginMember member, @PathVariable Long id) {
         studylogService.deleteStudylog(member.getId(), id);
         return ResponseEntity.noContent().build();
     }
