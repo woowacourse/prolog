@@ -2,7 +2,6 @@ package wooteco.prolog.studylog.application;
 
 import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
-import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
@@ -15,7 +14,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import lombok.AllArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -63,7 +61,6 @@ public class StudylogService {
     private final MissionService missionService;
     private final MemberService memberService;
     private final TagService tagService;
-    private final ApplicationEventPublisher eventPublisher;
 
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Long memberId, boolean isAnonymousMember) {
         StudylogsResponse studylogs = findStudylogs(request, memberId);
@@ -238,10 +235,11 @@ public class StudylogService {
         onStudylogRetrieveEvent(loginMember, findById(studylogId));
 
         Studylog studylog = findById(studylogId);
-        StudylogResponse studylogResponse = StudylogResponse.of(studylog);
-        updateRead(singletonList(studylogResponse), findReadIds(loginMember.getId()));
-        updateScrap(singletonList(studylogResponse), findScrapIds(loginMember.getId()));
-        studylogResponse.setLiked(studylog.likedByMember(loginMember.getId()));
+        boolean liked = studylog.likedByMember(loginMember.getId());
+        boolean read = studylogReadRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylogId).isPresent();
+        boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylogId).isPresent();
+
+        StudylogResponse studylogResponse = StudylogResponse.of(studylog, scraped, read, liked);
         return studylogResponse;
     }
 
