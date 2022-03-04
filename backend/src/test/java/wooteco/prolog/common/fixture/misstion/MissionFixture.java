@@ -1,7 +1,7 @@
 package wooteco.prolog.common.fixture.misstion;
 
-import wooteco.prolog.studylog.domain.Level;
-import wooteco.prolog.studylog.domain.Mission;
+import wooteco.prolog.session.domain.Level;
+import wooteco.prolog.session.domain.Mission;
 
 public class MissionFixture {
 

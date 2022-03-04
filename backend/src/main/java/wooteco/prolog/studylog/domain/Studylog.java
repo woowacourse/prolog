@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.BaseEntity;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.exception.AuthorNotValidException;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

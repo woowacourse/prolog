@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.member.application.dto.MemberResponse;
+import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
 
