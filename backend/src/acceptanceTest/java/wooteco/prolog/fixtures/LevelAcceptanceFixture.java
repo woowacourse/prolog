@@ -1,6 +1,6 @@
 package wooteco.prolog.fixtures;
 
-import wooteco.prolog.studylog.application.dto.LevelRequest;
+import wooteco.prolog.session.application.dto.LevelRequest;
 
 public class LevelAcceptanceFixture {
 

@@ -1,4 +1,4 @@
-package wooteco.prolog.studylog.application;
+package wooteco.prolog.session.application;
 
 import static java.util.stream.Collectors.toList;
 
@@ -6,10 +6,10 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.studylog.application.dto.LevelRequest;
-import wooteco.prolog.studylog.application.dto.LevelResponse;
-import wooteco.prolog.studylog.domain.Level;
-import wooteco.prolog.studylog.domain.repository.LevelRepository;
+import wooteco.prolog.session.application.dto.LevelRequest;
+import wooteco.prolog.session.application.dto.LevelResponse;
+import wooteco.prolog.session.domain.Level;
+import wooteco.prolog.session.domain.repository.LevelRepository;
 import wooteco.prolog.studylog.exception.DuplicateLevelException;
 import wooteco.prolog.studylog.exception.LevelNotFoundException;
 

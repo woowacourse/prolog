@@ -1,6 +1,6 @@
-package wooteco.prolog.studylog.application.dto;
+package wooteco.prolog.session.application.dto;
 
-import wooteco.prolog.studylog.domain.Level;
+import wooteco.prolog.session.domain.Level;
 
 public class LevelRequest {
 

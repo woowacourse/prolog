@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
-import wooteco.prolog.studylog.application.LevelService;
-import wooteco.prolog.studylog.application.MissionService;
+import wooteco.prolog.session.application.LevelService;
+import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.studylog.application.TagService;
 import wooteco.prolog.studylog.application.dto.FilterResponse;
-import wooteco.prolog.studylog.application.dto.LevelResponse;
-import wooteco.prolog.studylog.application.dto.MissionResponse;
+import wooteco.prolog.session.application.dto.LevelResponse;
+import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.TagResponse;
 
 @RestController
