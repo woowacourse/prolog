@@ -47,8 +47,7 @@ public class Studylog extends BaseEntity {
         this(null, member, title, content, mission, tags);
     }
 
-    public Studylog(Long id, Member member, String title, String content, Mission mission,
-                    List<Tag> tags) {
+    public Studylog(Long id, Member member, String title, String content, Mission mission, List<Tag> tags) {
         super(id);
         this.member = member;
         this.title = new Title(title);
