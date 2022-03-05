@@ -26,9 +26,6 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: Studylog[] }): JSX.Elem
           </li>
         ))}
       </ul>
-      <div css={[PopularStudylogListRightControlStyle]}>
-        <button>{'>'}</button>
-      </div>
     </section>
   );
 };
