@@ -18,7 +18,7 @@ import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
-import wooteco.prolog.session.application.dto.MembersResponse;
+import wooteco.prolog.member.application.dto.MembersResponse;
 
 @RestController
 @AllArgsConstructor
