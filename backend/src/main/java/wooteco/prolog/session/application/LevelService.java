@@ -20,7 +20,6 @@ public class LevelService {
 
     private LevelRepository levelRepository;
 
-
     @Transactional
     public LevelResponse create(LevelRequest levelRequest) {
         validateName(levelRequest.getName());
@@ -43,9 +42,5 @@ public class LevelService {
         return levelRepository.findAll().stream()
             .map(LevelResponse::of)
             .collect(toList());
-    }
-
-    public List<Level> findByIds(List<Long> levelIds) {
-        return levelRepository.findAllById(levelIds);
     }
 }
