@@ -61,6 +61,7 @@ public class StudylogService {
     private final MissionService missionService;
     private final MemberService memberService;
     private final TagService tagService;
+    private final StudylogMissionService studylogMissionService;
 
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Long memberId, boolean isAnonymousMember) {
         StudylogsResponse studylogs = findStudylogs(request, memberId);
@@ -201,8 +202,7 @@ public class StudylogService {
     }
 
     @Transactional
-    public List<StudylogResponse> insertStudylogs(Long memberId,
-                                                  List<StudylogRequest> studylogRequests) {
+    public List<StudylogResponse> insertStudylogs(Long memberId, List<StudylogRequest> studylogRequests) {
         if (studylogRequests.size() == 0) {
             throw new StudylogArgumentException();
         }
@@ -213,21 +213,27 @@ public class StudylogService {
     }
 
     private StudylogResponse insertStudylog(Long memberId, StudylogRequest studylogRequest) {
-        final Member foundMember = memberService.findById(memberId);
+        Member member = memberService.findById(memberId);
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
         Mission mission = missionService.findById(studylogRequest.getMissionId());
 
-        Studylog requestedStudylog = new Studylog(foundMember,
+        Studylog requestedStudylog = new Studylog(member,
             studylogRequest.getTitle(),
             studylogRequest.getContent(),
             mission,
             tags.getList());
 
         Studylog createdStudylog = studylogRepository.save(requestedStudylog);
-        memberTagService.registerMemberTag(tags, foundMember);
 
-        studylogDocumentService.save(createdStudylog.toStudylogDocument());
+        onStudylogCreatedEvent(member, tags, mission, createdStudylog);
+
         return StudylogResponse.of(createdStudylog);
+    }
+
+    private void onStudylogCreatedEvent(Member foundMember, Tags tags, Mission mission, Studylog createdStudylog) {
+        memberTagService.registerMemberTag(tags, foundMember);
+        studylogMissionService.save(createdStudylog.getId(), mission.getId());
+        studylogDocumentService.save(createdStudylog.toStudylogDocument());
     }
 
     @Transactional
@@ -239,8 +245,7 @@ public class StudylogService {
         boolean read = studylogReadRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylogId).isPresent();
         boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylogId).isPresent();
 
-        StudylogResponse studylogResponse = StudylogResponse.of(studylog, scraped, read, liked);
-        return studylogResponse;
+        return StudylogResponse.of(studylog, scraped, read, liked);
     }
 
     private void onStudylogRetrieveEvent(LoginMember loginMember, Studylog studylog) {
