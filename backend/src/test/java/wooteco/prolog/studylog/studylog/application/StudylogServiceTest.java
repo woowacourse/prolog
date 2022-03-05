@@ -314,9 +314,9 @@ class StudylogServiceTest {
     void findMostPopularStudylogsWithoutLogin() {
         // given
         insertStudylogs(member1, studylog1, studylog2, studylog3);
-        studylogService.findById(loginMember3, 2L);
+        studylogService.retrieveStudylogById(loginMember3, 2L);
         studylogScrapService.registerScrap(member1.getId(), 2L);
-        studylogService.findById(loginMember3, 3L);
+        studylogService.retrieveStudylogById(loginMember3, 3L);
         studylogScrapService.registerScrap(member1.getId(), 3L);
         studylogLikeService.likeStudylog(member1.getId(), 3L, true);
 
@@ -351,8 +351,8 @@ class StudylogServiceTest {
         StudylogResponse studylogResponse3 = insertResponses.get(2);
 
         // 2번째 멤버가 1번째 멤버의 게시글 2번, 3번을 조회
-        studylogService.findById(loginMember2, studylogResponse2.getId());
-        studylogService.findById(loginMember2, studylogResponse3.getId());
+        studylogService.retrieveStudylogById(loginMember2, studylogResponse2.getId());
+        studylogService.retrieveStudylogById(loginMember2, studylogResponse3.getId());
 
         // 2번, 3번 글 스크랩
         studylogScrapService.registerScrap(member2.getId(), studylogResponse2.getId());
@@ -385,11 +385,11 @@ class StudylogServiceTest {
         List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1, studylog2);
         StudylogResponse targetStudylog = studylogResponses.get(0);
 
-        StudylogResponse studylogResponse = studylogService.findById(loginMember2, targetStudylog.getId());
+        StudylogResponse studylogResponse = studylogService.retrieveStudylogById(loginMember2, targetStudylog.getId());
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(1);
 
-        studylogResponse = studylogService.findById(loginMember3, targetStudylog.getId());
+        studylogResponse = studylogService.retrieveStudylogById(loginMember3, targetStudylog.getId());
 
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(2);
@@ -401,7 +401,7 @@ class StudylogServiceTest {
         List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1, studylog2);
         StudylogResponse targetStudylog = studylogResponses.get(0);
 
-        StudylogResponse studylogResponse = studylogService.findById(loginMember1, targetStudylog.getId());
+        StudylogResponse studylogResponse = studylogService.retrieveStudylogById(loginMember1, targetStudylog.getId());
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(0);
     }

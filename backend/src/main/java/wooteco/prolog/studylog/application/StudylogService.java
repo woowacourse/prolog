@@ -237,15 +237,14 @@ public class StudylogService {
     }
 
     @Transactional
-    public StudylogResponse findById(LoginMember loginMember, Long studylogId) {
-        onStudylogRetrieveEvent(loginMember, findById(studylogId));
+    public StudylogResponse retrieveStudylogById(LoginMember loginMember, Long studylogId) {
+        Studylog studylog = findStudylogById(studylogId);
+        StudylogResponse studylogResponse = toStudylogResponse(loginMember, studylog);
 
-        Studylog studylog = findById(studylogId);
-        boolean liked = studylog.likedByMember(loginMember.getId());
-        boolean read = studylogReadRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylogId).isPresent();
-        boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylogId).isPresent();
+        // 읽음과 조회수 증가는 이후 조회부터 반영
+        onStudylogRetrieveEvent(loginMember, studylog);
 
-        return StudylogResponse.of(studylog, scraped, read, liked);
+        return studylogResponse;
     }
 
     private void onStudylogRetrieveEvent(LoginMember loginMember, Studylog studylog) {
@@ -261,9 +260,17 @@ public class StudylogService {
         }
     }
 
+    private StudylogResponse toStudylogResponse(LoginMember loginMember, Studylog studylog) {
+        boolean liked = studylog.likedByMember(loginMember.getId());
+        boolean read = studylogReadRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId()).isPresent();
+        boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId()).isPresent();
+
+        return StudylogResponse.of(studylog, scraped, read, liked);
+    }
+
 
     public StudylogResponse findByIdAndReturnStudylogResponse(Long id) {
-        return StudylogResponse.of(findById(id));
+        return StudylogResponse.of(findStudylogById(id));
     }
 
     private void insertStudylogRead(Long id, Long memberId) {
@@ -273,9 +280,8 @@ public class StudylogService {
         studylogReadRepository.save(new StudylogRead(readMember, readStudylog));
     }
 
-    private Studylog findById(Long id) {
-        return studylogRepository.findById(id)
-            .orElseThrow(StudylogNotFoundException::new);
+    private Studylog findStudylogById(Long id) {
+        return studylogRepository.findById(id).orElseThrow(StudylogNotFoundException::new);
     }
 
     private void increaseViewCount(LoginMember loginMember, Studylog studylog) {

@@ -59,7 +59,7 @@ public class StudylogController {
         if (!NumberUtils.isNumeric(id)) {
             throw new StudylogNotFoundException();
         }
-        return ResponseEntity.ok(studylogService.findById(member, Long.parseLong(id)));
+        return ResponseEntity.ok(studylogService.retrieveStudylogById(member, Long.parseLong(id)));
     }
 
     @PutMapping("/{id}")
