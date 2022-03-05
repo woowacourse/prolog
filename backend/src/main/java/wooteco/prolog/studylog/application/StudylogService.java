@@ -201,7 +201,8 @@ public class StudylogService {
             .collect(toList());
     }
 
-    private StudylogResponse insertStudylog(Long memberId, StudylogRequest studylogRequest) {
+    @Transactional
+    public StudylogResponse insertStudylog(Long memberId, StudylogRequest studylogRequest) {
         Member member = memberService.findById(memberId);
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
         Mission mission = missionService.findById(studylogRequest.getMissionId());
