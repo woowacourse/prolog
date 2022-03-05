@@ -10,7 +10,9 @@ import useMutation from './useMutation';
 
 const useStudylog = (defaultValue) => {
   const [response, setResponse] = useState(defaultValue);
+  // TODO: errorObj로 통일, 현재는 해당 메시지를 다른곳에서 이용하고 있어 별도로 생성함.
   const [error, setError] = useState('');
+  const [errorObj, setErrorObj] = useState({});
 
   const onSuccess = (data) => {
     setResponse(data);
@@ -18,7 +20,9 @@ const useStudylog = (defaultValue) => {
 
   const onError = (error) => {
     console.error(error);
+
     setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
+    setErrorObj({ code: error.code, message: ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT })
   };
 
   const { mutate: getAllData } = useMutation(requestGetStudylogs, {
@@ -47,7 +51,7 @@ const useStudylog = (defaultValue) => {
 
   const { mutate: deleteData } = useMutation(requestDeleteStudylog, { onSuccess, onError });
 
-  return { response, error, getAllData, getData, editData, deleteData };
+  return { response, error, errorObj, getAllData, getData, editData, deleteData };
 };
 
 export default useStudylog;
