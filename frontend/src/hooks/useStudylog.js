@@ -19,6 +19,7 @@ const useStudylog = (defaultValue) => {
 
   const onSuccess = (data) => {
     setResponse(data);
+    setError('');
   };
 
   const onError = (error) => {

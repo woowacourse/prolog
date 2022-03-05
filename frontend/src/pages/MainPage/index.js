@@ -14,11 +14,17 @@ import { UserContext } from '../../contexts/UserProvider';
 const MainPage = () => {
   const { user } = useContext(UserContext);
   const { accessToken } = user;
-  const { response: recentStudylogs, getAllData: fetchRecentStudylogs } = useStudylog([]);
+  const { response: recentStudylogs, error: recentStudylogsError, getAllData: fetchRecentStudylogs } = useStudylog([]);
 
   useEffect(() => {
     fetchRecentStudylogs({ query: { type: 'searchParams', data: 'size=3' }, accessToken });
   }, [accessToken]);
+
+  useEffect(() => {
+    if (recentStudylogsError) {
+      alert(recentStudylogsError)
+    }
+  }, [recentStudylogsError])
 
   return (
     <>
