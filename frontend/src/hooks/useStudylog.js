@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+
+import { UserContext } from '../contexts/UserProvider';
 import { ERROR_MESSAGE } from '../constants/message';
 import {
   requestGetStudylog,
@@ -7,12 +9,13 @@ import {
   requestEditStudylog,
 } from '../service/requests';
 import useMutation from './useMutation';
+import ERROR_CODE from '../constants/errorCode';
 
 const useStudylog = (defaultValue) => {
   const [response, setResponse] = useState(defaultValue);
-  // TODO: errorObj로 통일, 현재는 해당 메시지를 다른곳에서 이용하고 있어 별도로 생성함.
   const [error, setError] = useState('');
-  const [errorObj, setErrorObj] = useState({});
+
+  const { onLogout } = useContext(UserContext)
 
   const onSuccess = (data) => {
     setResponse(data);
@@ -21,8 +24,11 @@ const useStudylog = (defaultValue) => {
   const onError = (error) => {
     console.error(error);
 
+    if (error.code === ERROR_CODE.EXPIRED_ACCESS_TOKEN) {
+      onLogout();
+    }
+
     setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
-    setErrorObj({ code: error.code, message: ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT })
   };
 
   const { mutate: getAllData } = useMutation(requestGetStudylogs, {
@@ -51,7 +57,7 @@ const useStudylog = (defaultValue) => {
 
   const { mutate: deleteData } = useMutation(requestDeleteStudylog, { onSuccess, onError });
 
-  return { response, error, errorObj, getAllData, getData, editData, deleteData };
+  return { response, error, getAllData, getData, editData, deleteData };
 };
 
 export default useStudylog;
