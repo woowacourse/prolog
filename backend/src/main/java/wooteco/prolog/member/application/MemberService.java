@@ -18,7 +18,7 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.member.exception.MemberNotAllowedException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
-import wooteco.prolog.session.application.dto.MembersResponse;
+import wooteco.prolog.member.application.dto.MembersResponse;
 
 @Service
 @AllArgsConstructor
