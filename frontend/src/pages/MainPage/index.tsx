@@ -12,6 +12,7 @@ import { requestGetPopularStudylogs } from '../../apis/studylogs';
 import { requestGetStudylogs } from '../../service/requests';
 
 import { MainContentStyle } from '../../PageRouter';
+import { getRowGapStyle } from '../../styles/layout.styles';
 
 import type { Studylog } from '../../models/Studylogs';
 
@@ -39,7 +40,7 @@ const MainPage = () => {
   return (
     <>
       <BannerList bannerList={bannerList} />
-      <main css={MainContentStyle}>
+      <main css={[MainContentStyle, getRowGapStyle(5.8)]}>
         {/* TODO: 로딩상태 관리 */}
         {fetchPopularStudylogsRequest.response.data.length !== 0 && (
           <PopularStudyLogList studylogs={fetchPopularStudylogsRequest.response.data} />
