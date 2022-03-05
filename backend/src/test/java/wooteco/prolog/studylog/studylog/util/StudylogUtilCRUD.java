@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import wooteco.prolog.login.ui.LoginMember;
-import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.util.MemberFixture;
 import wooteco.prolog.member.util.MemberUtilCRUD;
