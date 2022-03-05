@@ -34,6 +34,10 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media screen and (max-width: 420px) {
+    padding: 0 1rem;
+  }
 `;
 
 const Logo = styled.div`
@@ -64,6 +68,10 @@ const Menu = styled.div`
 
   & > * {
     margin-left: 1rem;
+
+    @media screen and (max-width: 420px) {
+      margin-left: 0.5rem;
+    }
   }
 
   & > form {
@@ -80,6 +88,10 @@ const DropdownStyle = css`
 
   & * {
     text-align: center;
+  }
+
+  @media screen and (max-width: 420px) {
+    transform: translateX(-10%);
   }
 `;
 

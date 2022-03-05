@@ -159,7 +159,9 @@ const ProfilePageReportsList = () => {
                     .filter(({ isPresent }) => isPresent)
                     .map(({ id, name }: Ability) => (
                       <li key={id}>
-                        <Chip backgroundColor={`${COLOR.LIGHT_BLUE_100}`}>{name}</Chip>
+                        <Chip title={name} backgroundColor={`${COLOR.LIGHT_BLUE_100}`}>
+                          {name}
+                        </Chip>
                       </li>
                     ))}
                 </AbilityList>
