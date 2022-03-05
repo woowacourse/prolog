@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+
+import { UserContext } from '../contexts/UserProvider';
 import { ERROR_MESSAGE } from '../constants/message';
 import {
   requestGetStudylog,
@@ -7,17 +9,26 @@ import {
   requestEditStudylog,
 } from '../service/requests';
 import useMutation from './useMutation';
+import ERROR_CODE from '../constants/errorCode';
 
 const useStudylog = (defaultValue) => {
   const [response, setResponse] = useState(defaultValue);
   const [error, setError] = useState('');
 
+  const { onLogout } = useContext(UserContext)
+
   const onSuccess = (data) => {
     setResponse(data);
+    setError('');
   };
 
   const onError = (error) => {
     console.error(error);
+
+    if (error.code === ERROR_CODE.EXPIRED_ACCESS_TOKEN) {
+      onLogout();
+    }
+
     setError(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
   };
 
