@@ -120,23 +120,12 @@ public class StudylogService {
 
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Long memberId) {
         if (Objects.nonNull(request.getIds())) {
-            final Pageable pageable = request.getPageable();
-
+            Pageable pageable = request.getPageable();
             List<Long> ids = request.getIds();
 
-            int start = (int) pageable.getOffset();
-            int end = Math.min((start + pageable.getPageSize()), ids.size());
+            Page<Studylog> studylogs = studylogRepository.findByIdInOrderByIdAsc(ids, pageable);
 
-            final Map<Long, Studylog> idAndStudylog = studylogRepository
-                .findByIdIn(ids.subList(start, end))
-                .stream()
-                .collect(toMap(BaseEntity::getId, Function.identity()));
-
-            final List<Studylog> studylogs = ids.subList(start, end).stream()
-                .map(idAndStudylog::get)
-                .collect(toList());
-
-            return StudylogsResponse.of(new PageImpl<>(studylogs, pageable, request.getIds().size()), memberId);
+            return StudylogsResponse.of(studylogs, memberId);
         }
 
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
