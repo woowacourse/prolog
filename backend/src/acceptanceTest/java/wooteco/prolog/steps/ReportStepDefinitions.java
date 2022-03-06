@@ -4,15 +4,11 @@ import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.mapper.TypeRef;
-import io.restassured.response.Response;
-import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.GithubResponses;
@@ -27,7 +23,6 @@ import wooteco.prolog.report.application.dto.report.response.ability_graph.Graph
 import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogAbilityResponse;
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogResponse;
-import wooteco.prolog.report.domain.report.Report;
 
 public class ReportStepDefinitions extends AcceptanceSteps {
 

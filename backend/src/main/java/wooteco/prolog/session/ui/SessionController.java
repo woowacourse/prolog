@@ -1,5 +1,6 @@
 package wooteco.prolog.session.ui;
 
+import java.net.URI;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,9 @@ public class SessionController {
     private final SessionService sessionService;
 
     @PostMapping
-    public ResponseEntity<SessionResponse> create(@RequestBody SessionRequest sessionRequest) {
+    public ResponseEntity<Void> create(@RequestBody SessionRequest sessionRequest) {
         SessionResponse sessionResponse = sessionService.create(sessionRequest);
-        return ResponseEntity.ok(sessionResponse);
+        return ResponseEntity.created(URI.create("/sessions/" + sessionResponse.getId())).build();
     }
 
     @GetMapping
