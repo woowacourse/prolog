@@ -12,6 +12,11 @@ spring:
         use_sql_comment: false
   flyway:
       enabled: false
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:testdb
 
 security:
   jwt:

@@ -1,4 +1,4 @@
-package wooteco.prolog.studylog.ui;
+package wooteco.prolog.session.ui;
 
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.studylog.application.MissionService;
-import wooteco.prolog.studylog.application.dto.MissionRequest;
-import wooteco.prolog.studylog.application.dto.MissionResponse;
+import wooteco.prolog.session.application.MissionService;
+import wooteco.prolog.session.application.dto.MissionRequest;
+import wooteco.prolog.session.application.dto.MissionResponse;
 
 @RestController
 @RequestMapping("/missions")

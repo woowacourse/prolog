@@ -1,7 +1,6 @@
 package wooteco.prolog.studylog.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,12 +29,12 @@ import wooteco.prolog.report.application.dto.report.ReportAssembler;
 import wooteco.prolog.report.application.dto.report.request.ReportRequest;
 import wooteco.prolog.report.application.dto.report.response.ReportResponse;
 import wooteco.prolog.report.domain.ablity.Ability;
-import wooteco.prolog.studylog.domain.Level;
-import wooteco.prolog.studylog.domain.Mission;
+import wooteco.prolog.session.domain.Level;
+import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
-import wooteco.prolog.studylog.domain.repository.LevelRepository;
-import wooteco.prolog.studylog.domain.repository.MissionRepository;
+import wooteco.prolog.session.domain.repository.LevelRepository;
+import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.exception.DuplicateReportTitleException;
 
