@@ -391,7 +391,6 @@ class StudylogServiceTest {
 
         studylogResponse = studylogService.retrieveStudylogById(loginMember3, targetStudylog.getId());
 
-
         assertThat(studylogResponse.getViewCount()).isEqualTo(2);
     }
 

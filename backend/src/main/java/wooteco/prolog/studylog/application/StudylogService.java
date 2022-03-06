@@ -228,10 +228,10 @@ public class StudylogService {
     @Transactional
     public StudylogResponse retrieveStudylogById(LoginMember loginMember, Long studylogId) {
         Studylog studylog = findStudylogById(studylogId);
-        StudylogResponse studylogResponse = toStudylogResponse(loginMember, studylog);
 
-        // 읽음과 조회수 증가는 이후 조회부터 반영
         onStudylogRetrieveEvent(loginMember, studylog);
+
+        StudylogResponse studylogResponse = toStudylogResponse(loginMember, studylog);
 
         return studylogResponse;
     }
