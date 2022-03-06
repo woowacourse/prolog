@@ -129,9 +129,9 @@ task createDocument(type: Copy) {
     into file("src/main/resources/static")
 }
 
-bootJar {
-    dependsOn createDocument
-}
+//bootJar {
+//    dependsOn createDocument
+//}
 
 task acceptanceTest(type: Test) {
     testClassesDirs = sourceSets.acceptanceTest.output.classesDirs
