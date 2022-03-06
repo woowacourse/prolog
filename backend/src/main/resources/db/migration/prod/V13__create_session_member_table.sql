@@ -1,3 +1,10 @@
+CREATE TABLE `session`
+(
+    id   BIGINT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(45) NOT NULL,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB;
+
 CREATE TABLE session_member
 (
     id          BIGINT NOT NULL AUTO_INCREMENT,
