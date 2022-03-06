@@ -44,7 +44,7 @@ public class MemberController {
 
     // admin only
     @GetMapping
-    public ResponseEntity<MembersResponse> show(@PageableDefault(direction = DESC) Pageable pageable) {
+    public ResponseEntity<MembersResponse> show(@PageableDefault(direction = DESC, sort = "id") Pageable pageable) {
         MembersResponse response = memberService.findAll(pageable);
         return ResponseEntity.ok(response);
     }
