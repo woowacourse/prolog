@@ -387,10 +387,15 @@ class StudylogServiceTest {
 
         StudylogResponse studylogResponse = studylogService.retrieveStudylogById(loginMember2, targetStudylog.getId());
 
+        // 조회 응답에는 조회 이력이 반영되지 않는다.
+        assertThat(studylogResponse.getViewCount()).isEqualTo(0);
+
+        studylogResponse = studylogService.retrieveStudylogById(loginMember2, targetStudylog.getId());
+
+        // 앞선 조회의 이력이 반영된 응답
         assertThat(studylogResponse.getViewCount()).isEqualTo(1);
 
         studylogResponse = studylogService.retrieveStudylogById(loginMember3, targetStudylog.getId());
-
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(2);
     }
