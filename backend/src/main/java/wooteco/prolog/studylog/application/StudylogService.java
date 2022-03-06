@@ -3,16 +3,13 @@ package wooteco.prolog.studylog.application;
 import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.common.BaseEntity;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
@@ -61,7 +57,6 @@ public class StudylogService {
     private final MissionService missionService;
     private final MemberService memberService;
     private final TagService tagService;
-    private final StudylogMissionService studylogMissionService;
 
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Long memberId, boolean isAnonymousMember) {
         StudylogsResponse studylogs = findStudylogs(request, memberId);
@@ -221,7 +216,6 @@ public class StudylogService {
 
     private void onStudylogCreatedEvent(Member foundMember, Tags tags, Mission mission, Studylog createdStudylog) {
         memberTagService.registerMemberTag(tags, foundMember);
-        studylogMissionService.save(createdStudylog.getId(), mission.getId());
         studylogDocumentService.save(createdStudylog.toStudylogDocument());
     }
 
