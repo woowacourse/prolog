@@ -3,7 +3,7 @@ package wooteco.prolog.common.fixture.studylog;
 import java.util.ArrayList;
 import java.util.List;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studylog.domain.Mission;
+import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.Tag;
 

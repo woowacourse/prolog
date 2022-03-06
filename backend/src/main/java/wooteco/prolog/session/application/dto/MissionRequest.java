@@ -1,4 +1,4 @@
-package wooteco.prolog.studylog.application.dto;
+package wooteco.prolog.session.application.dto;
 
 import lombok.Getter;
 

@@ -1,16 +1,16 @@
 package wooteco.prolog.studylog.application.dto;
 
+import static java.util.stream.Collectors.toList;
+
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.member.application.dto.MemberResponse;
+import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -53,15 +53,7 @@ public class StudylogResponse {
         );
     }
 
-    public static StudylogResponse of(Studylog studylog) {
-        return of(studylog, false, false, null);
-    }
-
-    public static StudylogResponse of(Studylog studylog, Long memberId) {
-        return of(studylog, false, false, memberId);
-    }
-
-    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, Long memberId) {
+    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, boolean liked) {
         List<StudylogTag> studylogTags = studylog.getStudylogTags();
         List<TagResponse> tagResponses = toTagResponses(studylogTags);
 
@@ -77,9 +69,21 @@ public class StudylogResponse {
             scrap,
             read,
             studylog.getViewCount(),
-            studylog.likedByMember(memberId),
+            liked,
             studylog.getLikeCount()
         );
+    }
+
+    public static StudylogResponse of(Studylog studylog) {
+        return of(studylog, false, false, null);
+    }
+
+    public static StudylogResponse of(Studylog studylog, Long memberId) {
+        return of(studylog, false, false, memberId);
+    }
+
+    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, Long memberId) {
+        return StudylogResponse.of(studylog, scrap, read, studylog.likedByMember(memberId));
     }
 
     private static List<TagResponse> toTagResponses(List<StudylogTag> studylogTags) {
@@ -89,15 +93,11 @@ public class StudylogResponse {
             .collect(toList());
     }
 
-    public void setScrap(boolean isScrap){
+    public void setScrap(boolean isScrap) {
         this.scrap = isScrap;
     }
 
     public void setRead(boolean read) {
         this.read = read;
-    }
-
-    public void setLiked(boolean isLiked) {
-        this.liked = isLiked;
     }
 }

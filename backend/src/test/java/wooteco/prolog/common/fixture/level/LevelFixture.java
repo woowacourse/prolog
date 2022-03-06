@@ -1,6 +1,6 @@
 package wooteco.prolog.common.fixture.level;
 
-import wooteco.prolog.studylog.domain.Level;
+import wooteco.prolog.session.domain.Level;
 
 public class LevelFixture {
 

@@ -34,8 +34,8 @@ import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogA
 import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogResponse;
 import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
 import wooteco.prolog.studylog.application.DocumentService;
-import wooteco.prolog.studylog.application.LevelService;
-import wooteco.prolog.studylog.application.MissionService;
+import wooteco.prolog.session.application.LevelService;
+import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.TagService;
 import wooteco.prolog.update.UpdatedContentsRepository;

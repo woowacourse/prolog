@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
 import wooteco.prolog.GithubResponses;
-import wooteco.prolog.studylog.application.dto.LevelRequest;
-import wooteco.prolog.studylog.application.dto.LevelResponse;
-import wooteco.prolog.studylog.application.dto.MissionRequest;
-import wooteco.prolog.studylog.application.dto.MissionResponse;
+import wooteco.prolog.session.application.dto.LevelRequest;
+import wooteco.prolog.session.application.dto.LevelResponse;
+import wooteco.prolog.session.application.dto.MissionRequest;
+import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 

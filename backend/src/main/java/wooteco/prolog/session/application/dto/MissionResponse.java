@@ -1,9 +1,9 @@
-package wooteco.prolog.studylog.application.dto;
+package wooteco.prolog.session.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.studylog.domain.Mission;
+import wooteco.prolog.session.domain.Mission;
 
 @NoArgsConstructor
 @AllArgsConstructor

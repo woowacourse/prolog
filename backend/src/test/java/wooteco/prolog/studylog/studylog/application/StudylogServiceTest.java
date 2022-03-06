@@ -31,24 +31,24 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.DocumentService;
-import wooteco.prolog.studylog.application.LevelService;
-import wooteco.prolog.studylog.application.MissionService;
+import wooteco.prolog.session.application.LevelService;
+import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.studylog.application.StudylogLikeService;
 import wooteco.prolog.studylog.application.StudylogScrapService;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
-import wooteco.prolog.studylog.application.dto.LevelRequest;
-import wooteco.prolog.studylog.application.dto.LevelResponse;
-import wooteco.prolog.studylog.application.dto.MissionRequest;
-import wooteco.prolog.studylog.application.dto.MissionResponse;
+import wooteco.prolog.session.application.dto.LevelRequest;
+import wooteco.prolog.session.application.dto.LevelResponse;
+import wooteco.prolog.session.application.dto.MissionRequest;
+import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.application.dto.TagResponse;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
-import wooteco.prolog.studylog.domain.Level;
-import wooteco.prolog.studylog.domain.Mission;
+import wooteco.prolog.session.domain.Level;
+import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.Tag;
@@ -89,6 +89,10 @@ class StudylogServiceTest {
 
     private Member member1;
     private Member member2;
+
+    private LoginMember loginMember1;
+    private LoginMember loginMember2;
+    private LoginMember loginMember3;
 
     private Level level1;
     private Level level2;
@@ -162,10 +166,12 @@ class StudylogServiceTest {
         this.mission1 = new Mission(missionResponse1.getId(), missionResponse1.getName(), level1);
         this.mission2 = new Mission(missionResponse2.getId(), missionResponse2.getName(), level1);
 
-        this.member1 = memberService
-            .findOrCreateMember(new GithubProfileResponse("이름1", "별명1", "1", "image"));
-        this.member2 = memberService
-            .findOrCreateMember(new GithubProfileResponse("이름2", "별명2", "2", "image"));
+        this.member1 = memberService.findOrCreateMember(new GithubProfileResponse("이름1", "별명1", "1", "image"));
+        this.member2 = memberService.findOrCreateMember(new GithubProfileResponse("이름2", "별명2", "2", "image"));
+
+        this.loginMember1 = new LoginMember(member1.getId(), Authority.MEMBER);
+        this.loginMember2 = new LoginMember(member2.getId(), Authority.MEMBER);
+        this.loginMember3 = new LoginMember(null, Authority.ANONYMOUS);
 
         this.studylog1 = new Studylog(member1,
                                       STUDYLOG1_TITLE, "피케이와 포모의 스터디로그", mission1,
@@ -308,9 +314,9 @@ class StudylogServiceTest {
     void findMostPopularStudylogsWithoutLogin() {
         // given
         insertStudylogs(member1, studylog1, studylog2, studylog3);
-        studylogService.findById(2L, member1.getId(), false);
+        studylogService.retrieveStudylogById(loginMember3, 2L);
         studylogScrapService.registerScrap(member1.getId(), 2L);
-        studylogService.findById(3L, member1.getId(), false);
+        studylogService.retrieveStudylogById(loginMember3, 3L);
         studylogScrapService.registerScrap(member1.getId(), 3L);
         studylogLikeService.likeStudylog(member1.getId(), 3L, true);
 
@@ -345,11 +351,13 @@ class StudylogServiceTest {
         StudylogResponse studylogResponse3 = insertResponses.get(2);
 
         // 2번째 멤버가 1번째 멤버의 게시글 2번, 3번을 조회
-        studylogService.findById(studylogResponse2.getId(), member2.getId(), false);
-        studylogService.findById(studylogResponse3.getId(), member2.getId(), false);
+        studylogService.retrieveStudylogById(loginMember2, studylogResponse2.getId());
+        studylogService.retrieveStudylogById(loginMember2, studylogResponse3.getId());
+
         // 2번, 3번 글 스크랩
         studylogScrapService.registerScrap(member2.getId(), studylogResponse2.getId());
         studylogScrapService.registerScrap(member2.getId(), studylogResponse3.getId());
+
         // 3번 글 좋아요
         studylogLikeService.likeStudylog(member2.getId(), studylogResponse3.getId(), true);
 
@@ -377,14 +385,11 @@ class StudylogServiceTest {
         List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1, studylog2);
         StudylogResponse targetStudylog = studylogResponses.get(0);
 
-        StudylogResponse studylogResponse = studylogService.findById
-                (targetStudylog.getId(), member2.getId(), false);
+        StudylogResponse studylogResponse = studylogService.retrieveStudylogById(loginMember2, targetStudylog.getId());
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(1);
 
-        studylogResponse = studylogService.findById
-                (targetStudylog.getId(), member2.getId(), false);
-
+        studylogResponse = studylogService.retrieveStudylogById(loginMember3, targetStudylog.getId());
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(2);
     }
@@ -395,8 +400,7 @@ class StudylogServiceTest {
         List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1, studylog2);
         StudylogResponse targetStudylog = studylogResponses.get(0);
 
-        StudylogResponse studylogResponse = studylogService.findById
-                (targetStudylog.getId(), member1.getId(), false);
+        StudylogResponse studylogResponse = studylogService.retrieveStudylogById(loginMember1, targetStudylog.getId());
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(0);
     }
@@ -455,7 +459,7 @@ class StudylogServiceTest {
         studylogService.updateStudylog(member1.getId(), targetStudylog.getId(), updateStudylogRequest);
 
         //then
-        StudylogResponse expectedResult = studylogService.findbyIdAndReturnStudylogResponse(targetStudylog.getId());
+        StudylogResponse expectedResult = studylogService.findByIdAndReturnStudylogResponse(targetStudylog.getId());
         List<String> updateTagNames = tags.stream()
             .map(Tag::getName)
             .collect(toList());

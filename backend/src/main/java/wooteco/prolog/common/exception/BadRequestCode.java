@@ -28,7 +28,7 @@ import wooteco.prolog.studylog.exception.StudylogScrapNotValidUserException;
 import wooteco.prolog.report.exception.AbilityHasChildrenException;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
-import wooteco.prolog.studylog.domain.Mission;
+import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.domain.TagName;
 import wooteco.prolog.studylog.domain.Title;
 import wooteco.prolog.studylog.exception.AbilityParentColorDuplicateException;
