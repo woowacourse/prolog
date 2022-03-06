@@ -24,9 +24,11 @@ public class SessionMemberService {
     @Transactional
     public void registerMembers(Long sessionId, SessionMemberRequest sessionMemberRequest) {
         List<Member> members = memberService.findByIdIn(sessionMemberRequest.getMemberIds());
-        members.stream()
+        List<SessionMember> sessionMembers = members.stream()
             .map(it -> new SessionMember(sessionId, it))
             .collect(toList());
+
+        sessionMemberRepository.saveAll(sessionMembers);
     }
 
     public List<MemberResponse> findAllMembersBySessionId(Long sessionId) {
