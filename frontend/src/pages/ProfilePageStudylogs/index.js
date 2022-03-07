@@ -89,7 +89,7 @@ const ProfilePageStudylogs = () => {
 
     if (!window.confirm(CONFIRM_MESSAGE.DELETE_STUDYLOG)) return;
 
-    await deletePost(id, accessToken);
+    await deletePost({ id, accessToken });
 
     if (postError) {
       alert(ALERT_MESSAGE.FAIL_TO_DELETE_STUDYLOG);
