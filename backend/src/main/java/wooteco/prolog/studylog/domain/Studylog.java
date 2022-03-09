@@ -55,7 +55,7 @@ public class Studylog extends BaseEntity {
         this.mission = mission;
         this.studylogTags = new StudylogTags();
         addTags(new Tags(tags));
-        this.viewCount =  new ViewCount();
+        this.viewCount = new ViewCount();
         this.likes = new Likes();
     }
 
@@ -147,5 +147,9 @@ public class Studylog extends BaseEntity {
 
     public int getViewCount() {
         return viewCount.getViews();
+    }
+
+    public boolean isBelongsTo(Long memberId) {
+        return this.member.getId().equals(memberId);
     }
 }

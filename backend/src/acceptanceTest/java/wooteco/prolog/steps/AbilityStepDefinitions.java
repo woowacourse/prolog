@@ -9,14 +9,14 @@ import io.cucumber.java.en.When;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
+import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
+import wooteco.prolog.ability.application.dto.AbilityResponse;
+import wooteco.prolog.ability.application.dto.AbilityUpdateRequest;
+import wooteco.prolog.ability.application.dto.DefaultAbilityCreateRequest;
 import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.ExceptionDto;
 import wooteco.prolog.fixtures.AbilityAcceptanceFixture;
 import wooteco.prolog.fixtures.GithubResponses;
-import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
-import wooteco.prolog.report.application.dto.ability.AbilityResponse;
-import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
-import wooteco.prolog.report.application.dto.ability.DefaultAbilityCreateRequest;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 
 public class AbilityStepDefinitions extends AcceptanceSteps {
@@ -27,15 +27,18 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
 
         AbilityCreateRequest request = fixture.toCreateRequestWithParentId(null);
         context.invokeHttpPostWithToken("/abilities", request);
+        context.storage.put(abilityName, context.response.as(AbilityResponse.class));
     }
 
     @When("{string}의 자식역량 {string}(을)(를) 추가하(면)(고)")
     public void 자식역량을추가하면(String parentAbility, String childAbility) {
+        String username = (String) context.storage.get("username");
         AbilityAcceptanceFixture fixture = AbilityAcceptanceFixture.findByName(childAbility);
-        Long parentAbilityId = getAbilityIdByName(parentAbility);
+        Long parentAbilityId = getAbilityIdByName(username, parentAbility);
 
         AbilityCreateRequest request = fixture.toCreateRequestWithParentId(parentAbilityId);
         context.invokeHttpPostWithToken("/abilities", request);
+        context.storage.put(childAbility, context.response.as(AbilityResponse.class));
     }
 
     @When("역량 목록을 조회하면")
@@ -71,7 +74,7 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
     @Then("부모 역량 목록을 받는다.")
     public void 부모역량목록을받는다() {
         List<AbilityResponse> responses = context.response.jsonPath().getList(".", AbilityResponse.class);
-        assertThat(responses.stream().allMatch(AbilityResponse::getIsParent)).isTrue();
+        assertThat(responses.stream().allMatch(AbilityResponse::isParent)).isTrue();
     }
 
     @And("{string} 역량을 이름 {string}, 설명 {string}, 색상 {string} 으로 수정하고")
@@ -99,8 +102,8 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
 
         assertThat(responses.stream().anyMatch(response ->
             name.equals(response.getName()) &&
-            description.equals(response.getDescription()) &&
-            color.equals(response.getColor()))
+                description.equals(response.getDescription()) &&
+                color.equals(response.getColor()))
         ).isTrue();
     }
 
@@ -198,7 +201,17 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
     }
 
     private Long getAbilityIdByName(String abilityName) {
-        context.invokeHttpGetWithToken("/abilities");
+        context.invokeHttpGetWithToken("/members/{username}/abilities");
+        List<AbilityResponse> responses = context.response.jsonPath().getList(".", AbilityResponse.class);
+
+        return responses.stream().filter(response -> abilityName.equals(response.getName()))
+            .map(AbilityResponse::getId)
+            .findAny()
+            .orElseThrow(AbilityNotFoundException::new);
+    }
+
+    private Long getAbilityIdByName(String username, String abilityName) {
+        context.invokeHttpGetWithToken("/members/" + username + "/abilities");
         List<AbilityResponse> responses = context.response.jsonPath().getList(".", AbilityResponse.class);
 
         return responses.stream().filter(response -> abilityName.equals(response.getName()))

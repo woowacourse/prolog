@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import wooteco.prolog.report.domain.ablity.Ability;
+import wooteco.prolog.ability.domain.Ability;
 import wooteco.prolog.report.domain.report.common.Updatable;
 
 @Entity

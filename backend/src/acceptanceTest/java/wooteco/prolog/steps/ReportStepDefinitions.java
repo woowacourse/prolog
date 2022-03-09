@@ -12,17 +12,17 @@ import java.util.Arrays;
 import java.util.List;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.GithubResponses;
-import wooteco.prolog.report.application.dto.report.request.ReportRequest;
-import wooteco.prolog.report.application.dto.report.request.abilitigraph.AbilityRequest;
-import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRequest;
-import wooteco.prolog.report.application.dto.report.request.studylog.ReportStudylogRequest;
-import wooteco.prolog.report.application.dto.report.response.ReportPageableResponse;
-import wooteco.prolog.report.application.dto.report.response.ReportResponse;
-import wooteco.prolog.report.application.dto.report.response.SimpleReportPageableResponse;
-import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphAbilityResponse;
-import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphResponse;
-import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogAbilityResponse;
-import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogResponse;
+import wooteco.prolog.report.application.dto.request.ReportRequest;
+import wooteco.prolog.report.application.dto.request.abilitigraph.AbilityRequest;
+import wooteco.prolog.report.application.dto.request.abilitigraph.GraphRequest;
+import wooteco.prolog.report.application.dto.request.studylog.ReportStudylogRequest;
+import wooteco.prolog.report.application.dto.response.ReportPageableResponse;
+import wooteco.prolog.report.application.dto.response.ReportResponse;
+import wooteco.prolog.report.application.dto.response.SimpleReportPageableResponse;
+import wooteco.prolog.report.application.dto.response.ability_graph.GraphAbilityResponse;
+import wooteco.prolog.report.application.dto.response.ability_graph.GraphResponse;
+import wooteco.prolog.report.application.dto.response.studylogs.StudylogAbilityResponse;
+import wooteco.prolog.report.application.dto.response.studylogs.StudylogResponse;
 
 public class ReportStepDefinitions extends AcceptanceSteps {
 

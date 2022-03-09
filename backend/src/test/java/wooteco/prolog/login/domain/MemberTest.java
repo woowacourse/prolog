@@ -9,7 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
-import wooteco.prolog.report.domain.ablity.Ability;
 
 class MemberTest {
 

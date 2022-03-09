@@ -37,9 +37,9 @@ public class StudylogController {
 
     @PostMapping
     @MemberOnly
-    public ResponseEntity<Void> createStudylog(@AuthMemberPrincipal LoginMember member, @RequestBody List<StudylogRequest> studylogRequests) {
+    public ResponseEntity<StudylogResponse> createStudylog(@AuthMemberPrincipal LoginMember member, @RequestBody List<StudylogRequest> studylogRequests) {
         List<StudylogResponse> studylogResponse = studylogService.insertStudylogs(member.getId(), studylogRequests);
-        return ResponseEntity.created(URI.create("/studylogs/" + studylogResponse.get(0).getId())).build();
+        return ResponseEntity.created(URI.create("/studylogs/" + studylogResponse.get(0).getId())).body(studylogResponse.get(0));
     }
 
     @GetMapping
