@@ -30,25 +30,26 @@ import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.session.application.LevelService;
 import wooteco.prolog.session.application.MissionService;
-import wooteco.prolog.studylog.application.StudylogLikeService;
-import wooteco.prolog.studylog.application.StudylogScrapService;
-import wooteco.prolog.studylog.application.StudylogService;
-import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.session.application.dto.LevelRequest;
 import wooteco.prolog.session.application.dto.LevelResponse;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.session.domain.Level;
+import wooteco.prolog.session.domain.Mission;
+import wooteco.prolog.studylog.application.DocumentService;
+import wooteco.prolog.studylog.application.StudylogLikeService;
+import wooteco.prolog.studylog.application.StudylogScrapService;
+import wooteco.prolog.studylog.application.StudylogService;
+import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
+import wooteco.prolog.studylog.application.dto.RssFeedResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.application.dto.TagResponse;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
-import wooteco.prolog.session.domain.Level;
-import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.Tag;
@@ -71,6 +72,8 @@ class StudylogServiceTest {
     private static List<Tag> tags = asList(
         tag1, tag2, tag3, tag4, tag5
     );
+
+    private static final String LINK_PREFIX = "https://prolog.techcourse.co.kr/studylogs/";
 
     @Autowired
     private StudylogService studylogService;
@@ -556,29 +559,58 @@ class StudylogServiceTest {
             .isInstanceOf(StudylogDocumentNotFoundException.class);
     }
 
-    private List<StudylogResponse> insertStudylogs(Member member, List<Studylog> studylogs) {
-        List<StudylogRequest> studylogRequests = studylogs.stream()
-            .map(studylog ->
-                     new StudylogRequest(
-                         studylog.getTitle(),
-                         studylog.getContent(),
-                         studylog.getMission().getId(),
-                         toTagRequests(studylog)
-                     )
-            )
+    @DisplayName("RSS 피드를 조회한다.")
+    @Test
+    void readRssFeeds() {
+        // given
+        insertStudylogs(member1, studylog1, studylog2);
+        insertStudylogs(member2, studylog3);
+
+        StudylogsResponse studylogs1 = studylogService
+            .findStudylogsOf(member1.getUsername(), Pageable.unpaged());
+        StudylogsResponse studylogs2 = studylogService
+            .findStudylogsOf(member2.getUsername(), Pageable.unpaged());
+
+        List<Long> studylogIds1 = studylogs1.getData().stream()
+            .map(StudylogResponse::getId)
+            .collect(toList());
+        List<Long> studylogIds2 = studylogs2.getData().stream()
+            .map(StudylogResponse::getId)
             .collect(toList());
 
-        return studylogService.insertStudylogs(member.getId(), studylogRequests);
+        studylogIds1.addAll(studylogIds2);
+
+        List<String> studylogLinks = studylogIds1.stream()
+            .map(studylogId -> LINK_PREFIX + studylogId)
+            .collect(toList());
+
+        // when
+        List<RssFeedResponse> responses = studylogService.readRssFeeds();
+
+        // then
+        assertThat(responses).hasSize(3);
+        assertThat(responses)
+            .extracting(RssFeedResponse::getLink)
+            .containsExactlyInAnyOrderElementsOf(studylogLinks);
     }
 
     private List<StudylogResponse> insertStudylogs(Member member, Studylog... studylogs) {
         return insertStudylogs(member, asList(studylogs));
     }
 
-    private List<TagRequest> toTagRequests(Studylog studylog) {
-        return studylog.getStudylogTags().stream()
-            .map(studylogTag -> new TagRequest(studylogTag.getTag().getName()))
+    private List<StudylogResponse> insertStudylogs(Member member, List<Studylog> studylogs) {
+        List<StudylogRequest> studylogRequests = studylogs.stream()
+            .map(studylog ->
+                new StudylogRequest(
+                    studylog.getTitle(),
+                    studylog.getContent(),
+                    studylog.getMission().getId(),
+                    toTagRequests(studylog)
+                )
+            )
             .collect(toList());
+
+        return studylogService.insertStudylogs(member.getId(), studylogRequests);
     }
 
     private List<TagRequest> toTagRequests(List<Tag> tags) {
@@ -587,7 +619,9 @@ class StudylogServiceTest {
             .collect(toList());
     }
 
-    private LoginMember toLoginMember(Member member) {
-        return new LoginMember(member.getId(), Authority.MEMBER);
+    private List<TagRequest> toTagRequests(Studylog studylog) {
+        return studylog.getStudylogTags().stream()
+            .map(studylogTag -> new TagRequest(studylogTag.getTag().getName()))
+            .collect(toList());
     }
 }

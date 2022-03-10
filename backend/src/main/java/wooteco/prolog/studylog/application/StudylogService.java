@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -371,13 +372,15 @@ public class StudylogService {
     public List<RssFeedResponse> readRssFeeds() {
         List<Studylog> studylogs = studylogRepository.findAll();
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
         return studylogs.stream()
             .map(studylog -> new RssFeedResponse(
                 studylog.getTitle(),
                 studylog.getContent(),
-                studylog.getMemberNickname(),
+                studylog.getUsername(),
                 LINK_PREFIX + studylog.getId(),
-                Date.from(Instant.parse(studylog.getCreatedAt().toString()))
+                Date.from(Instant.parse(studylog.getCreatedAt().format(formatter)))
             ))
             .collect(toList());
     }
