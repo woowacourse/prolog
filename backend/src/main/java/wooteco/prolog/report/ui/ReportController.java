@@ -14,16 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.aop.MemberOnly;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
-import wooteco.prolog.report.application.ReportService;
-import wooteco.prolog.report.application.dto.request.ReportRequest;
+import wooteco.prolog.report.application.ReportService2;
+import wooteco.prolog.report.application.dto.request.ReportRequest2;
 import wooteco.prolog.report.application.dto.response.ReportResponse;
 
 @RestController
 public class ReportController {
 
-    private final ReportService reportService;
+    private final ReportService2 reportService;
 
-    public ReportController(ReportService reportService) {
+    public ReportController(ReportService2 reportService) {
         this.reportService = reportService;
     }
 
@@ -56,7 +56,7 @@ public class ReportController {
 
     @MemberOnly
     @PostMapping("/reports")
-    public ResponseEntity<ReportResponse> createReport(@AuthMemberPrincipal LoginMember member, @RequestBody ReportRequest reportRequest) {
+    public ResponseEntity<ReportResponse> createReport(@AuthMemberPrincipal LoginMember member, @RequestBody ReportRequest2 reportRequest) {
         ReportResponse reportResponse = reportService.createReport(reportRequest, member);
         return ResponseEntity.ok(reportResponse);
     }
@@ -66,7 +66,7 @@ public class ReportController {
     public ResponseEntity<ReportResponse> updateReport(
         @PathVariable Long reportId,
         @AuthMemberPrincipal LoginMember member,
-        @RequestBody ReportRequest reportRequest
+        @RequestBody ReportRequest2 reportRequest
     ) {
         ReportResponse reportResponse = reportService.updateReport(reportId, reportRequest, member);
 

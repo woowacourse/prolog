@@ -79,4 +79,14 @@ public class StudylogAbilityService {
 
         return AbilityStudylogResponse.listOf(studylogAbilities);
     }
+
+    public List<StudylogAbility> findAbilityStudylogs(String username, List<Long> abilityIds) {
+        if (abilityIds != null && !abilityIds.isEmpty()) {
+            return studylogAbilityRepository.findByAbilityIn(abilityIds);
+        }
+
+        Member member = memberService.findByUsername(username);
+
+        return studylogAbilityRepository.findByMemberId(member.getId());
+    }
 }

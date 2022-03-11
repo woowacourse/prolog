@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.GithubResponses;
-import wooteco.prolog.report.application.dto.request.ReportRequest;
+import wooteco.prolog.report.application.dto.request.ReportRequest2;
 import wooteco.prolog.report.application.dto.request.abilitigraph.AbilityRequest;
 import wooteco.prolog.report.application.dto.request.abilitigraph.GraphRequest;
 import wooteco.prolog.report.application.dto.request.studylog.ReportStudylogRequest;
@@ -30,7 +30,7 @@ public class ReportStepDefinitions extends AcceptanceSteps {
 
     @When("리포트를 등록하(면)(고)")
     public void 리포트를등록() {
-        ReportRequest reportRequest = new ReportRequest(
+        ReportRequest2 reportRequest = new ReportRequest2(
             null,
             "새로운 리포트" + reportCnt++,
             "리포트 설명",
@@ -57,7 +57,7 @@ public class ReportStepDefinitions extends AcceptanceSteps {
 
     @When("대표 리포트를 등록하(면)(고)")
     public void 대표리포트를등록() {
-        ReportRequest reportRequest = new ReportRequest(
+        ReportRequest2 reportRequest = new ReportRequest2(
             null,
             "새로운 리포트" + reportCnt++,
             "리포트 설명",
@@ -86,7 +86,7 @@ public class ReportStepDefinitions extends AcceptanceSteps {
     public void 리포트를수정하면() {
         ReportResponse reportResponse = context.response.as(ReportResponse.class);
 
-        ReportRequest reportRequest = new ReportRequest(
+        ReportRequest2 reportRequest = new ReportRequest2(
             reportResponse.getId(),
             "변경된 리포트",
             "변경된 리포트 설명1",
@@ -166,7 +166,7 @@ public class ReportStepDefinitions extends AcceptanceSteps {
 
         ReportResponse reportResponse = context.response.as(ReportResponse.class);
 
-        ReportRequest reportRequest = (ReportRequest) context.storage.get("reportRequest");
+        ReportRequest2 reportRequest = (ReportRequest2) context.storage.get("reportRequest");
         ReportResponse expected = new ReportResponse(
             reportRequest.getId(),
             reportRequest.getTitle(),

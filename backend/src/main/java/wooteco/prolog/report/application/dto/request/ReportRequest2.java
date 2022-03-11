@@ -4,7 +4,7 @@ import java.util.List;
 import wooteco.prolog.report.application.dto.request.abilitigraph.GraphRequest;
 import wooteco.prolog.report.application.dto.request.studylog.ReportStudylogRequest;
 
-public class ReportRequest {
+public class ReportRequest2 {
 
     private Long id;
     private String title;
@@ -13,15 +13,15 @@ public class ReportRequest {
     private List<ReportStudylogRequest>studylogs;
     private Boolean represent;
 
-    private ReportRequest() {
+    private ReportRequest2() {
     }
 
-    public ReportRequest(Long id,
-                         String title,
-                         String description,
-                         GraphRequest abilityGraph,
-                         List<ReportStudylogRequest> studylogs,
-                         Boolean represent) {
+    public ReportRequest2(Long id,
+                          String title,
+                          String description,
+                          GraphRequest abilityGraph,
+                          List<ReportStudylogRequest> studylogs,
+                          Boolean represent) {
         this.id = id;
         this.title = title;
         this.description = description;

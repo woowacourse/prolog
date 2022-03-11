@@ -23,8 +23,8 @@ import wooteco.prolog.login.application.dto.TokenRequest;
 import wooteco.prolog.login.application.dto.TokenResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.ability.application.AbilityService;
-import wooteco.prolog.report.application.ReportService;
-import wooteco.prolog.report.application.dto.request.ReportRequest;
+import wooteco.prolog.report.application.ReportService2;
+import wooteco.prolog.report.application.dto.request.ReportRequest2;
 import wooteco.prolog.report.application.dto.request.abilitigraph.AbilityRequest;
 import wooteco.prolog.report.application.dto.request.abilitigraph.GraphRequest;
 import wooteco.prolog.report.application.dto.request.studylog.ReportStudylogRequest;
@@ -50,7 +50,7 @@ class ReportDocumentation extends Documentation {
     private final DocumentService studylogDocumentService;
     private final AbilityService abilityService;
     private final UpdatedContentsRepository updatedContentsRepository;
-    private final ReportService reportService;
+    private final ReportService2 reportService;
     private final ApplicationContext applicationContext;
     private final AbilityRepository abilityRepository;
 
@@ -65,7 +65,7 @@ class ReportDocumentation extends Documentation {
                                DocumentService studylogDocumentService,
                                AbilityService abilityService,
                                UpdatedContentsRepository updatedContentsRepository,
-                               ReportService reportService,
+                               ReportService2 reportService,
                                ApplicationContext applicationContext,
                                AbilityRepository abilityRepository) {
         this.levelService = levelService;
@@ -165,7 +165,7 @@ class ReportDocumentation extends Documentation {
     @Test
     void 레포트를업데이트한다() {
         final ReportResponse reportResponse = 리포트조회(1L);
-        final ReportRequest changedReport = 리포트변경(reportResponse);
+        final ReportRequest2 changedReport = 리포트변경(reportResponse);
         given("reports/update")
             .contentType(ContentType.JSON)
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + 로그인(GithubResponses.티케))
@@ -177,8 +177,8 @@ class ReportDocumentation extends Documentation {
             .extract();
     }
 
-    private ReportRequest 리포트변경(ReportResponse reportResponse) {
-        return new ReportRequest(
+    private ReportRequest2 리포트변경(ReportResponse reportResponse) {
+        return new ReportRequest2(
             reportResponse.getId(),
             "변역된 타이틀",
             "변경된 설명",
@@ -216,7 +216,7 @@ class ReportDocumentation extends Documentation {
     void 리포트를생성한다() {
         ReportResponse reportResponse = 리포트조회(1L);
         String accessToken = 로그인(GithubResponses.티케);
-        final ReportRequest reportRequest = toNewReportRequest(reportResponse);
+        final ReportRequest2 reportRequest = toNewReportRequest(reportResponse);
         given("reports/create")
             .contentType(ContentType.JSON)
             .body(reportRequest)
@@ -241,8 +241,8 @@ class ReportDocumentation extends Documentation {
             .extract();
     }
 
-    private ReportRequest toNewReportRequest(ReportResponse reportResponse) {
-        return new ReportRequest(
+    private ReportRequest2 toNewReportRequest(ReportResponse reportResponse) {
+        return new ReportRequest2(
             null,
             "새로운 리포트",
             reportResponse.getDescription(),

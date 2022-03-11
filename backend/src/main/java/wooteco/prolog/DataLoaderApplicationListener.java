@@ -19,9 +19,9 @@ import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.ability.application.AbilityService;
-import wooteco.prolog.report.application.ReportService;
+import wooteco.prolog.report.application.ReportService2;
 import wooteco.prolog.ability.application.dto.DefaultAbilityCreateRequest;
-import wooteco.prolog.report.application.dto.request.ReportRequest;
+import wooteco.prolog.report.application.dto.request.ReportRequest2;
 import wooteco.prolog.report.application.dto.request.abilitigraph.AbilityRequest;
 import wooteco.prolog.report.application.dto.request.abilitigraph.GraphRequest;
 import wooteco.prolog.report.application.dto.request.studylog.ReportStudylogRequest;
@@ -56,7 +56,7 @@ public class DataLoaderApplicationListener implements
     private DocumentService studylogDocumentService;
     private AbilityService abilityService;
     private UpdatedContentsRepository updatedContentsRepository;
-    private ReportService reportService;
+    private ReportService2 reportService;
     private AbilityRepository abilityRepository;
 
     @Override
@@ -154,11 +154,11 @@ public class DataLoaderApplicationListener implements
 
         private static int cnt = 1;
 
-        public static List<ReportRequest> generate(int size, Member member,
-                                                   AbilityService abilityService,
-                                                   StudylogService studylogService,
-                                                   AbilityRepository abilityRepository) {
-            ArrayList<ReportRequest> result = new ArrayList<>();
+        public static List<ReportRequest2> generate(int size, Member member,
+                                                    AbilityService abilityService,
+                                                    StudylogService studylogService,
+                                                    AbilityRepository abilityRepository) {
+            ArrayList<ReportRequest2> result = new ArrayList<>();
 
             for (int i = 0; i < size; i++) {
                 result.add(create(member, abilityService, studylogService, abilityRepository));
@@ -168,12 +168,12 @@ public class DataLoaderApplicationListener implements
 
         }
 
-        private static ReportRequest create(Member member,
-                                            AbilityService abilityService,
-                                            StudylogService studylogService,
-                                            AbilityRepository abilityRepository) {
+        private static ReportRequest2 create(Member member,
+                                             AbilityService abilityService,
+                                             StudylogService studylogService,
+                                             AbilityRepository abilityRepository) {
             GraphRequest graphRequest = createGraphRequest(member, abilityService);
-            return new ReportRequest(
+            return new ReportRequest2(
                 null,
                 "타이틀 입니다 " + cnt,
                 "설명 입니다 " + cnt++,

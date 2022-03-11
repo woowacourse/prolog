@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.report.application.dto.request.ReportRequest;
+import wooteco.prolog.report.application.dto.request.ReportRequest2;
 import wooteco.prolog.report.application.dto.request.abilitigraph.AbilityRequest;
 import wooteco.prolog.report.application.dto.request.abilitigraph.GraphRequest;
 import wooteco.prolog.report.application.dto.request.studylog.ReportStudylogRequest;
@@ -46,7 +46,7 @@ public class ReportAssembler {
         this.studylogRepository = studylogRepository;
     }
 
-    public Report of(ReportRequest reportRequest, Member member) {
+    public Report of(ReportRequest2 reportRequest, Member member) {
         List<ReportedStudylog> reportedStudylogs = reportRequest.getStudylogs().stream()
             .map(this::of)
             .collect(toList());

@@ -1,182 +1,83 @@
 package wooteco.prolog.report.application;
 
-import static java.util.stream.Collectors.toList;
 
-import java.util.Collection;
+import static java.util.stream.Collectors.toMap;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.login.ui.LoginMember;
-import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.member.exception.MemberNotAllowedException;
-import wooteco.prolog.member.exception.MemberNotFoundException;
-import wooteco.prolog.report.application.dto.ReportAssembler;
-import wooteco.prolog.report.application.dto.request.ReportRequest;
-import wooteco.prolog.report.application.dto.request.abilitigraph.AbilityRequest;
-import wooteco.prolog.report.application.dto.response.ReportResponse;
-import wooteco.prolog.report.application.report.ReportsRequestType;
+import wooteco.prolog.ability.application.AbilityService;
+import wooteco.prolog.ability.application.StudylogAbilityService;
 import wooteco.prolog.ability.domain.Ability;
-import wooteco.prolog.report.domain.report.Report;
-import wooteco.prolog.ability.domain.repository.AbilityRepository;
-import wooteco.prolog.report.domain.report.abilitygraph.datastructure.GraphAbilityDto;
-import wooteco.prolog.report.domain.report.repository.ReportRepository;
-import wooteco.prolog.report.domain.report.studylog.ReportedStudylog;
-import wooteco.prolog.report.domain.report.studylog.ReportedStudylogAbility;
-import wooteco.prolog.report.exception.GraphAbilitiesAreNotParentException;
-import wooteco.prolog.report.exception.ReportNotFoundException;
-import wooteco.prolog.report.exception.ReportRequestTypeException;
-import wooteco.prolog.report.exception.ReportUpdateException;
-import wooteco.prolog.report.exception.UnRelatedAbilityExistenceException;
-import wooteco.prolog.studylog.exception.DuplicateReportTitleException;
+import wooteco.prolog.ability.domain.StudylogAbility;
+import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.member.application.MemberService;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.report.application.dto.ReportRequest;
+import wooteco.prolog.report.domain.Report;
+import wooteco.prolog.report.domain.ReportAbility;
+import wooteco.prolog.report.domain.ReportAbilityStudylog;
+import wooteco.prolog.report.domain.repository.ReportAbilityRepository;
+import wooteco.prolog.report.domain.repository.ReportAbilityStudylogRepository;
+import wooteco.prolog.report.domain.repository.ReportRepository;
 
 @Service
 @Transactional(readOnly = true)
-@RequiredArgsConstructor
 public class ReportService {
 
-    private final ReportAssembler reportAssembler;
-    private final ReportRepository reportRepository;
-    private final AbilityRepository abilityRepository;
-    private final MemberRepository memberRepository;
-    private final List<ReportsRequestType> reportsRequestTypes;
+    private ReportRepository reportRepository;
+    private ReportAbilityRepository reportAbilityRepository;
+    private ReportAbilityStudylogRepository reportAbilityStudylogRepository;
+    private MemberService memberService;
+    private AbilityService abilityService;
+    private StudylogAbilityService studylogAbilityService;
 
-    @Transactional
-    public ReportResponse createReport(ReportRequest reportRequest, LoginMember loginMember) {
-        Member member = findMemberById(loginMember.getId());
-        Report report = reportAssembler.of(reportRequest, member);
-
-        verifyGraphAbilitiesAreParent(reportRequest);
-        verifyStudylogAbilitiesAreChildrenOfGraphAbilities(report);
-        verifyDuplicateTitle(report);
-        checkIsRepresent(member, report);
-
-        Report savedReport = reportRepository.save(report);
-
-        return reportAssembler.of(savedReport);
+    public ReportService(ReportRepository reportRepository, ReportAbilityRepository reportAbilityRepository,
+                         ReportAbilityStudylogRepository reportAbilityStudylogRepository, MemberService memberService,
+                         AbilityService abilityService,
+                         StudylogAbilityService studylogAbilityService) {
+        this.reportRepository = reportRepository;
+        this.reportAbilityRepository = reportAbilityRepository;
+        this.reportAbilityStudylogRepository = reportAbilityStudylogRepository;
+        this.memberService = memberService;
+        this.abilityService = abilityService;
+        this.studylogAbilityService = studylogAbilityService;
     }
 
     @Transactional
-    public ReportResponse updateReport(Long reportId, ReportRequest reportRequest, LoginMember loginMember) {
-        try {
-            Member member = findMemberById(loginMember.getId());
-            Report updateSourceReport = reportAssembler.of(reportRequest, member);
+    public void createReport(LoginMember loginMember, ReportRequest reportRequest) {
+        Report report = reportRepository.save(new Report(reportRequest.getTitle(), reportRequest.getDescription()));
+        Map<Long, Float> reportRequestMap = reportRequest.getReportAbility().stream()
+            .collect(toMap(it -> it.getAbilityId(), it -> it.getWeight()));
 
-            verifyGraphAbilitiesAreParent(reportRequest);
-            verifyStudylogAbilitiesAreChildrenOfGraphAbilities(updateSourceReport);
-            verifyDuplicateTitle(updateSourceReport);
-            checkIsRepresent(member, updateSourceReport);
+        List<Long> abilityIds = new ArrayList<>(reportRequestMap.keySet());
+        List<Ability> abilities = abilityService.findByIdIn(loginMember.getId(), abilityIds);
 
-            Report savedReport = reportRepository.findById(reportId)
-                .orElseThrow(ReportNotFoundException::new);
-            verifyIsAllowedUser(member, savedReport);
+        Map<Long, ReportAbility> reportAbilities = abilities.stream()
+            .map(it -> createReportAbilities(report, it, reportRequestMap.get(it.getId())))
+            .collect(toMap(it -> it.getOriginAbilityId(), Function.identity()));
 
-            savedReport.update(updateSourceReport);
+        reportAbilityRepository.saveAll(reportAbilities.values());
 
-            return reportAssembler.of(savedReport);
-        } catch (Exception e) {
-            throw new ReportUpdateException();
+        Member member = memberService.findById(loginMember.getId());
+        List<StudylogAbility> studylogAbilities = studylogAbilityService.findAbilityStudylogs(member.getUsername(), abilityIds);
+
+        List<ReportAbilityStudylog> reportAbilityStudylogs = studylogAbilities.stream()
+            .map(it -> new ReportAbilityStudylog(reportAbilities.get(it.getAbility().getId()), it.getStudylog(), it.getAbility().getId()))
+            .collect(Collectors.toList());
+
+        reportAbilityStudylogRepository.saveAll(reportAbilityStudylogs);
+    }
+
+    private ReportAbility createReportAbilities(Report report, Ability ability, Float weight) {
+        if (ability.isParent()) {
+            return new ReportAbility(report, weight, ability.getId(), ability.getName(), ability.getDescription(), ability.getColor(),
+                createReportAbilities(report, ability.getParent(), null));
         }
-    }
-
-    private void verifyDuplicateTitle(Report target) {
-        reportRepository.findReportByTitleAndMemberUsername(
-            target.getTitle(),
-            target.getMember().getUsername()
-        )
-            .filter(report -> !report.getId().equals(target.getId()))
-            .ifPresent( r -> {
-                throw new DuplicateReportTitleException();
-            });
-    }
-
-    private void verifyIsAllowedUser(Member member, Report savedReport) {
-        if (!Objects.equals(savedReport.getMember(), member)) {
-            throw new MemberNotAllowedException();
-        }
-    }
-
-    private void verifyStudylogAbilitiesAreChildrenOfGraphAbilities(Report report) {
-        List<Long> graphAbilityIds = report.getAbilityGraph().getAbilities().stream()
-            .filter(GraphAbilityDto::isPresent)
-            .map(GraphAbilityDto::getId)
-            .collect(toList());
-
-        List<Long> studylogAbilityIds = report.getStudylogs().stream()
-            .map(ReportedStudylog::getAbilities)
-            .flatMap(Collection::stream)
-            .map(ReportedStudylogAbility::getAbility)
-            .map(Ability::getId)
-            .collect(toList());
-
-        List<Long> childrenAbilityIds = abilityRepository
-            .findChildrenAbilitiesByParentId(graphAbilityIds).stream()
-            .map(Ability::getId)
-            .collect(toList());
-
-        long unrelatedAbilityCnt = studylogAbilityIds.stream()
-            .filter(abilityId -> !childrenAbilityIds.contains(abilityId))
-            .filter(abilityId -> !graphAbilityIds.contains(abilityId))
-            .count();
-        
-        if(!studylogAbilityIds.isEmpty() && unrelatedAbilityCnt != 0) {
-            throw new UnRelatedAbilityExistenceException();
-        }
-    }
-
-    private void verifyGraphAbilitiesAreParent(ReportRequest reportRequest) {
-        List<Long> abilityIds = reportRequest.getAbilityGraph().getAbilities().stream()
-            .map(AbilityRequest::getId)
-            .distinct()
-            .collect(toList());
-
-        Long count = abilityRepository.countParentAbilitiesOf(abilityIds);
-
-        if (count != abilityIds.size()) {
-            throw new GraphAbilitiesAreNotParentException();
-        }
-    }
-
-    private void checkIsRepresent(Member member, Report updateSourceReport) {
-        if (updateSourceReport.isRepresent()) {
-            reportRepository.findRepresentReportOf(member.getUsername())
-                .ifPresent(Report::toUnRepresent);
-        }
-    }
-
-    public Object findReportsByUsername(String username, String type, Pageable pageable) {
-        ReportsRequestType reportsRequest = reportsRequestTypes.stream()
-            .filter(reportsRequestType -> reportsRequestType.isSupport(type))
-            .findAny()
-            .orElseThrow(ReportRequestTypeException::new);
-
-        return reportsRequest.execute(username, pageable);
-    }
-
-    public ReportResponse findReportById(Long reportId) {
-        Report report = reportRepository.findById(reportId)
-            .orElseThrow(ReportNotFoundException::new);
-
-        return reportAssembler.of(report);
-    }
-
-    private Member findMemberById(Long id) {
-        return memberRepository.findById(id)
-            .orElseThrow(MemberNotFoundException::new);
-    }
-
-    @Transactional
-    public void deleteReport(Long reportId, LoginMember loginMember) {
-        Member member = findMemberById(loginMember.getId());
-        Report report = reportRepository.findById(reportId)
-            .orElseThrow(ReportNotFoundException::new);
-
-        verifyIsAllowedUser(member, report);
-
-        reportRepository.deleteById(reportId);
+        return new ReportAbility(report, weight, ability.getId(), ability.getName(), ability.getDescription(), ability.getColor(), null);
     }
 }

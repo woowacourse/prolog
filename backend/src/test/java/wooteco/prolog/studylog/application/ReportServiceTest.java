@@ -24,9 +24,9 @@ import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.report.application.ReportService;
+import wooteco.prolog.report.application.ReportService2;
 import wooteco.prolog.report.application.dto.ReportAssembler;
-import wooteco.prolog.report.application.dto.request.ReportRequest;
+import wooteco.prolog.report.application.dto.request.ReportRequest2;
 import wooteco.prolog.report.application.dto.response.ReportResponse;
 import wooteco.prolog.ability.domain.Ability;
 import wooteco.prolog.session.domain.Level;
@@ -43,7 +43,7 @@ import wooteco.prolog.studylog.exception.DuplicateReportTitleException;
 class ReportServiceTest {
 
     @Autowired
-    private ReportService reportService;
+    private ReportService2 reportService;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -75,7 +75,7 @@ class ReportServiceTest {
         Member member = createMember();
         setAbilities(member);
         setStudylogs(member);
-        ReportRequest reportRequest = createRequest("jsons/report_post_request.json");
+        ReportRequest2 reportRequest = createRequest("jsons/report_post_request.json");
         ReportResponse reportResponse = reportService.createReport(
             reportRequest,
             new LoginMember(member.getId(), Authority.MEMBER)
@@ -92,7 +92,7 @@ class ReportServiceTest {
         Member member = createMember();
         setAbilities(member);
         setStudylogs(member);
-        ReportRequest reportRequest = createRequest("jsons/report_post_request.json");
+        ReportRequest2 reportRequest = createRequest("jsons/report_post_request.json");
 
         LoginMember loginMember = new LoginMember(member.getId(), Authority.MEMBER);
         reportService.createReport(reportRequest, loginMember);
@@ -105,10 +105,10 @@ class ReportServiceTest {
         Member member = createMember();
         setAbilities(member);
         setStudylogs(member);
-        ReportRequest request = createRequest("jsons/report_post_request.json");
+        ReportRequest2 request = createRequest("jsons/report_post_request.json");
         reportService.createReport(request, new LoginMember(member.getId(), Authority.MEMBER));
 
-        ReportRequest updateRequest = createRequest("jsons/report_put_request.json");
+        ReportRequest2 updateRequest = createRequest("jsons/report_put_request.json");
         ReportResponse reportResponse = reportService.updateReport(
             1L,
                 updateRequest,
@@ -121,9 +121,9 @@ class ReportServiceTest {
             .isEqualTo(expected("jsons/report_put_response.json"));
     }
 
-    private ReportRequest createRequest(String source) throws IOException {
+    private ReportRequest2 createRequest(String source) throws IOException {
         String json = getJson(source);
-        return objectMapper.readValue(json, ReportRequest.class);
+        return objectMapper.readValue(json, ReportRequest2.class);
     }
 
     private ReportResponse expected(String source) throws IOException {
