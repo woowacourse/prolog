@@ -18,6 +18,7 @@ import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.application.dto.ReportRequest;
+import wooteco.prolog.report.application.dto.ReportResponse;
 import wooteco.prolog.report.domain.Report;
 import wooteco.prolog.report.domain.ReportAbility;
 import wooteco.prolog.report.domain.ReportAbilityStudylog;
@@ -49,9 +50,9 @@ public class ReportService {
     }
 
     @Transactional
-    public void createReport(LoginMember loginMember, ReportRequest reportRequest) {
+    public ReportResponse createReport(LoginMember loginMember, ReportRequest reportRequest) {
         Report report = reportRepository.save(new Report(reportRequest.getTitle(), reportRequest.getDescription()));
-        Map<Long, Float> reportRequestMap = reportRequest.getReportAbility().stream()
+        Map<Long, Integer> reportRequestMap = reportRequest.getReportAbility().stream()
             .collect(toMap(it -> it.getAbilityId(), it -> it.getWeight()));
 
         List<Long> abilityIds = new ArrayList<>(reportRequestMap.keySet());
@@ -61,7 +62,7 @@ public class ReportService {
             .map(it -> createReportAbilities(report, it, reportRequestMap.get(it.getId())))
             .collect(toMap(it -> it.getOriginAbilityId(), Function.identity()));
 
-        reportAbilityRepository.saveAll(reportAbilities.values());
+        List<ReportAbility> persistReportAbilities = reportAbilityRepository.saveAll(reportAbilities.values());
 
         Member member = memberService.findById(loginMember.getId());
         List<StudylogAbility> studylogAbilities = studylogAbilityService.findAbilityStudylogs(member.getUsername(), abilityIds);
@@ -70,11 +71,13 @@ public class ReportService {
             .map(it -> new ReportAbilityStudylog(reportAbilities.get(it.getAbility().getId()), it.getStudylog(), it.getAbility().getId()))
             .collect(Collectors.toList());
 
-        reportAbilityStudylogRepository.saveAll(reportAbilityStudylogs);
+        List<ReportAbilityStudylog> persistReportAbilityStudylogs = reportAbilityStudylogRepository.saveAll(reportAbilityStudylogs);
+
+        return ReportResponse.of(report, persistReportAbilities, persistReportAbilityStudylogs);
     }
 
-    private ReportAbility createReportAbilities(Report report, Ability ability, Float weight) {
-        if (ability.isParent()) {
+    private ReportAbility createReportAbilities(Report report, Ability ability, Integer weight) {
+        if (ability.getParent() != null) {
             return new ReportAbility(report, weight, ability.getId(), ability.getName(), ability.getDescription(), ability.getColor(),
                 createReportAbilities(report, ability.getParent(), null));
         }

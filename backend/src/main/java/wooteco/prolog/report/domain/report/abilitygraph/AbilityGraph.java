@@ -9,8 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import wooteco.prolog.report.domain.report.Report;
+import wooteco.prolog.report.domain.report.Report2;
 import wooteco.prolog.report.domain.report.abilitygraph.datastructure.GraphAbilityDto;
 
 @Entity
@@ -25,7 +24,7 @@ public class AbilityGraph {
 
     @ManyToOne
     @JoinColumn(name = "report_id")
-    private Report report;
+    private Report2 report;
 
     protected AbilityGraph() {
     }
@@ -34,11 +33,11 @@ public class AbilityGraph {
         this(null, graphAbilities, null);
     }
 
-    public AbilityGraph(GraphAbilities graphAbilities, Report report) {
+    public AbilityGraph(GraphAbilities graphAbilities, Report2 report) {
         this(null, graphAbilities, report);
     }
 
-    public AbilityGraph(Long id, GraphAbilities graphAbilities, Report report) {
+    public AbilityGraph(Long id, GraphAbilities graphAbilities, Report2 report) {
         this.id = id;
         this.graphAbilities = graphAbilities;
         this.report = report;
@@ -54,7 +53,7 @@ public class AbilityGraph {
         graphAbilities.update(abilityGraph.getGraphAbilities(), this);
     }
 
-    public void appendTo(Report report) {
+    public void appendTo(Report2 report) {
         this.report = report;
     }
 

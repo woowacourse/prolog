@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
@@ -20,6 +21,7 @@ import wooteco.prolog.studylog.exception.AbilityParentColorDuplicateException;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@EqualsAndHashCode
 public class Ability {
 
     @Id
@@ -193,23 +195,6 @@ public class Ability {
 
     public List<Ability> getChildren() {
         return children;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Ability)) {
-            return false;
-        }
-        Ability ability = (Ability) o;
-        return Objects.equals(id, ability.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 
     public boolean isBelongsTo(Long memberId) {

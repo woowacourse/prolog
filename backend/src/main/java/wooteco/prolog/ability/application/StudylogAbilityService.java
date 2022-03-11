@@ -55,7 +55,7 @@ public class StudylogAbilityService {
 
     public List<AbilityStudylogResponse> findAbilityStudylogsByAbilityIds(String username, List<Long> abilityIds) {
         if (abilityIds != null && !abilityIds.isEmpty()) {
-            return AbilityStudylogResponse.listOf(studylogAbilityRepository.findByAbilityIn(abilityIds));
+            return AbilityStudylogResponse.listOf(studylogAbilityRepository.findByAbilityIdIn(abilityIds));
         }
 
         List<Studylog> studylogs = studylogService.findStudylogsByUsername(username, Pageable.unpaged());
@@ -70,7 +70,7 @@ public class StudylogAbilityService {
 
     public List<AbilityStudylogResponse> findAbilityStudylogsMappingOnlyByAbilityIds(String username, List<Long> abilityIds) {
         if (abilityIds != null && !abilityIds.isEmpty()) {
-            return AbilityStudylogResponse.listOf(studylogAbilityRepository.findByAbilityIn(abilityIds));
+            return AbilityStudylogResponse.listOf(studylogAbilityRepository.findByAbilityIdIn(abilityIds));
         }
 
         Member member = memberService.findByUsername(username);
@@ -82,7 +82,7 @@ public class StudylogAbilityService {
 
     public List<StudylogAbility> findAbilityStudylogs(String username, List<Long> abilityIds) {
         if (abilityIds != null && !abilityIds.isEmpty()) {
-            return studylogAbilityRepository.findByAbilityIn(abilityIds);
+            return studylogAbilityRepository.findByAbilityIdIn(abilityIds);
         }
 
         Member member = memberService.findByUsername(username);

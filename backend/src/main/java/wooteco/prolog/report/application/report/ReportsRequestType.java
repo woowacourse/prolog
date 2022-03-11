@@ -7,16 +7,16 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import wooteco.prolog.report.domain.report.Report;
+import wooteco.prolog.report.domain.report.Report2;
 
 public interface ReportsRequestType {
     boolean isSupport(String type);
     Object execute(String username, Pageable pageable);
 
-    default Page<Report> sort(Page<Report> reports) {
-        List<Report> sorted = reports.stream()
-            .sorted(comparing(Report::isRepresent)
-                .thenComparing(Report::getCreatedAt)
+    default Page<Report2> sort(Page<Report2> reports) {
+        List<Report2> sorted = reports.stream()
+            .sorted(comparing(Report2::isRepresent)
+                .thenComparing(Report2::getCreatedAt)
                 .reversed()
             ).collect(toList());
 

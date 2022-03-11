@@ -5,18 +5,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.testcontainers.shaded.org.apache.commons.lang.StringUtils;
 import wooteco.prolog.report.application.dto.ReportAssembler;
-import wooteco.prolog.report.domain.report.Report;
-import wooteco.prolog.report.domain.report.repository.ReportRepository;
+import wooteco.prolog.report.domain.report.Report2;
+import wooteco.prolog.report.domain.report.repository.ReportRepository2;
 
 @Component
 public class AllReportsRequestType implements ReportsRequestType {
 
     private static final String TYPE = "all";
 
-    private final ReportRepository reportRepository;
+    private final ReportRepository2 reportRepository;
     private final ReportAssembler reportAssembler;
 
-    public AllReportsRequestType(ReportRepository reportRepository,
+    public AllReportsRequestType(ReportRepository2 reportRepository,
                                  ReportAssembler reportAssembler
     ) {
         this.reportRepository = reportRepository;
@@ -30,7 +30,7 @@ public class AllReportsRequestType implements ReportsRequestType {
 
     @Override
     public Object execute(String username, Pageable pageable) {
-        Page<Report> reports = reportRepository
+        Page<Report2> reports = reportRepository
             .findReportsByUsername(username, pageable);
 
         return reportAssembler.of(sort(reports));

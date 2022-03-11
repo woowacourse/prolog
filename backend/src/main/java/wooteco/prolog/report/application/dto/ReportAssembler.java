@@ -23,7 +23,7 @@ import wooteco.prolog.report.application.dto.response.studylogs.StudylogAbilityR
 import wooteco.prolog.report.application.dto.response.studylogs.StudylogResponse;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.ability.domain.Ability;
-import wooteco.prolog.report.domain.report.Report;
+import wooteco.prolog.report.domain.report.Report2;
 import wooteco.prolog.report.domain.report.abilitygraph.AbilityGraph;
 import wooteco.prolog.report.domain.report.abilitygraph.GraphAbilities;
 import wooteco.prolog.report.domain.report.abilitygraph.GraphAbility;
@@ -46,12 +46,12 @@ public class ReportAssembler {
         this.studylogRepository = studylogRepository;
     }
 
-    public Report of(ReportRequest2 reportRequest, Member member) {
+    public Report2 of(ReportRequest2 reportRequest, Member member) {
         List<ReportedStudylog> reportedStudylogs = reportRequest.getStudylogs().stream()
             .map(this::of)
             .collect(toList());
 
-        return new Report(
+        return new Report2(
             reportRequest.getId(),
             reportRequest.getTitle(),
             reportRequest.getDescription(),
@@ -94,7 +94,7 @@ public class ReportAssembler {
         return entityManager.getReference(Ability.class, id);
     }
 
-    public ReportResponse of(Report report) {
+    public ReportResponse of(Report2 report) {
         List<StudylogResponse> studylogResponses = report.getStudylogs().stream()
             .map(this::of)
             .collect(toList());
@@ -157,7 +157,7 @@ public class ReportAssembler {
         );
     }
 
-    public SimpleReportResponse simpleOf(Report report) {
+    public SimpleReportResponse simpleOf(Report2 report) {
         return new SimpleReportResponse(
             report.getId(),
             report.getTitle(),
@@ -165,7 +165,7 @@ public class ReportAssembler {
         );
     }
 
-    public ReportPageableResponse of(Page<Report> reports) {
+    public ReportPageableResponse of(Page<Report2> reports) {
         List<ReportResponse> reportResponses = reports.stream()
             .map(this::of)
             .collect(toList());
@@ -178,7 +178,7 @@ public class ReportAssembler {
         );
     }
 
-    public SimpleReportPageableResponse simpleOf(Page<Report> reports) {
+    public SimpleReportPageableResponse simpleOf(Page<Report2> reports) {
         List<SimpleReportResponse> simpleReportResponses = reports.stream()
             .map(this::simpleOf)
             .collect(toList());

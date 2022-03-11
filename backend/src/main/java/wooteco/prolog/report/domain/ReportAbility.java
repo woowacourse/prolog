@@ -1,5 +1,6 @@
 package wooteco.prolog.report.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,7 +23,7 @@ public class ReportAbility {
     @JoinColumn(name = "report_id")
     private Report report;
 
-    private Float weight;
+    private Integer weight;
 
     private Long originAbilityId;
 
@@ -32,11 +33,11 @@ public class ReportAbility {
 
     private String color;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "parent_id")
     private ReportAbility parent;
 
-    public ReportAbility(Report report, Float weight, Long originAbilityId, String name, String description, String color, ReportAbility parent) {
+    public ReportAbility(Report report, Integer weight, Long originAbilityId, String name, String description, String color, ReportAbility parent) {
         this.report = report;
         this.weight = weight;
         this.originAbilityId = originAbilityId;

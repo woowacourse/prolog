@@ -1,6 +1,5 @@
 package wooteco.prolog.report.domain.report.studylog;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
@@ -12,8 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.report.domain.report.Report;
+import wooteco.prolog.report.domain.report.Report2;
 import wooteco.prolog.report.domain.report.common.Updatable;
 import wooteco.prolog.report.domain.report.common.UpdateUtil;
 
@@ -36,7 +34,7 @@ public class ReportedStudylog implements Updatable<ReportedStudylog> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "report_id", nullable = false)
-    private Report report;
+    private Report2 report;
 
     protected ReportedStudylog() {
     }
@@ -50,7 +48,7 @@ public class ReportedStudylog implements Updatable<ReportedStudylog> {
     public ReportedStudylog(Long id,
                             Long studylogId,
                             List<ReportedStudylogAbility> abilities,
-                            Report report) {
+                            Report2 report) {
         this.id = id;
         this.studylogId = studylogId;
         this.abilities = abilities;
@@ -63,7 +61,7 @@ public class ReportedStudylog implements Updatable<ReportedStudylog> {
         return id;
     }
 
-    public void appendTo(Report report) {
+    public void appendTo(Report2 report) {
         this.report = report;
     }
 

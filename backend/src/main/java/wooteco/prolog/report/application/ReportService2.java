@@ -21,10 +21,10 @@ import wooteco.prolog.report.application.dto.request.abilitigraph.AbilityRequest
 import wooteco.prolog.report.application.dto.response.ReportResponse;
 import wooteco.prolog.report.application.report.ReportsRequestType;
 import wooteco.prolog.ability.domain.Ability;
-import wooteco.prolog.report.domain.report.Report;
+import wooteco.prolog.report.domain.report.Report2;
 import wooteco.prolog.ability.domain.repository.AbilityRepository;
 import wooteco.prolog.report.domain.report.abilitygraph.datastructure.GraphAbilityDto;
-import wooteco.prolog.report.domain.report.repository.ReportRepository;
+import wooteco.prolog.report.domain.report.repository.ReportRepository2;
 import wooteco.prolog.report.domain.report.studylog.ReportedStudylog;
 import wooteco.prolog.report.domain.report.studylog.ReportedStudylogAbility;
 import wooteco.prolog.report.exception.GraphAbilitiesAreNotParentException;
@@ -40,7 +40,7 @@ import wooteco.prolog.studylog.exception.DuplicateReportTitleException;
 public class ReportService2 {
 
     private final ReportAssembler reportAssembler;
-    private final ReportRepository reportRepository;
+    private final ReportRepository2 reportRepository;
     private final AbilityRepository abilityRepository;
     private final MemberRepository memberRepository;
     private final List<ReportsRequestType> reportsRequestTypes;
@@ -48,14 +48,14 @@ public class ReportService2 {
     @Transactional
     public ReportResponse createReport(ReportRequest2 reportRequest, LoginMember loginMember) {
         Member member = findMemberById(loginMember.getId());
-        Report report = reportAssembler.of(reportRequest, member);
+        Report2 report = reportAssembler.of(reportRequest, member);
 
         verifyGraphAbilitiesAreParent(reportRequest);
         verifyStudylogAbilitiesAreChildrenOfGraphAbilities(report);
         verifyDuplicateTitle(report);
         checkIsRepresent(member, report);
 
-        Report savedReport = reportRepository.save(report);
+        Report2 savedReport = reportRepository.save(report);
 
         return reportAssembler.of(savedReport);
     }
@@ -64,14 +64,14 @@ public class ReportService2 {
     public ReportResponse updateReport(Long reportId, ReportRequest2 reportRequest, LoginMember loginMember) {
         try {
             Member member = findMemberById(loginMember.getId());
-            Report updateSourceReport = reportAssembler.of(reportRequest, member);
+            Report2 updateSourceReport = reportAssembler.of(reportRequest, member);
 
             verifyGraphAbilitiesAreParent(reportRequest);
             verifyStudylogAbilitiesAreChildrenOfGraphAbilities(updateSourceReport);
             verifyDuplicateTitle(updateSourceReport);
             checkIsRepresent(member, updateSourceReport);
 
-            Report savedReport = reportRepository.findById(reportId)
+            Report2 savedReport = reportRepository.findById(reportId)
                 .orElseThrow(ReportNotFoundException::new);
             verifyIsAllowedUser(member, savedReport);
 
@@ -83,7 +83,7 @@ public class ReportService2 {
         }
     }
 
-    private void verifyDuplicateTitle(Report target) {
+    private void verifyDuplicateTitle(Report2 target) {
         reportRepository.findReportByTitleAndMemberUsername(
             target.getTitle(),
             target.getMember().getUsername()
@@ -94,13 +94,13 @@ public class ReportService2 {
             });
     }
 
-    private void verifyIsAllowedUser(Member member, Report savedReport) {
+    private void verifyIsAllowedUser(Member member, Report2 savedReport) {
         if (!Objects.equals(savedReport.getMember(), member)) {
             throw new MemberNotAllowedException();
         }
     }
 
-    private void verifyStudylogAbilitiesAreChildrenOfGraphAbilities(Report report) {
+    private void verifyStudylogAbilitiesAreChildrenOfGraphAbilities(Report2 report) {
         List<Long> graphAbilityIds = report.getAbilityGraph().getAbilities().stream()
             .filter(GraphAbilityDto::isPresent)
             .map(GraphAbilityDto::getId)
@@ -141,10 +141,10 @@ public class ReportService2 {
         }
     }
 
-    private void checkIsRepresent(Member member, Report updateSourceReport) {
+    private void checkIsRepresent(Member member, Report2 updateSourceReport) {
         if (updateSourceReport.isRepresent()) {
             reportRepository.findRepresentReportOf(member.getUsername())
-                .ifPresent(Report::toUnRepresent);
+                .ifPresent(Report2::toUnRepresent);
         }
     }
 
@@ -158,7 +158,7 @@ public class ReportService2 {
     }
 
     public ReportResponse findReportById(Long reportId) {
-        Report report = reportRepository.findById(reportId)
+        Report2 report = reportRepository.findById(reportId)
             .orElseThrow(ReportNotFoundException::new);
 
         return reportAssembler.of(report);
@@ -172,7 +172,7 @@ public class ReportService2 {
     @Transactional
     public void deleteReport(Long reportId, LoginMember loginMember) {
         Member member = findMemberById(loginMember.getId());
-        Report report = reportRepository.findById(reportId)
+        Report2 report = reportRepository.findById(reportId)
             .orElseThrow(ReportNotFoundException::new);
 
         verifyIsAllowedUser(member, report);

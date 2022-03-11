@@ -1,7 +1,7 @@
 package wooteco.prolog.common.fixture.report;
 
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.report.domain.report.Report;
+import wooteco.prolog.report.domain.report.Report2;
 import wooteco.prolog.report.domain.report.abilitygraph.AbilityGraph;
 import wooteco.prolog.report.domain.report.studylog.ReportedStudylogs;
 
@@ -55,8 +55,8 @@ public class ReportFixture {
             return this;
         }
 
-        public Report build() {
-            return new Report(
+        public Report2 build() {
+            return new Report2(
                 this.id,
                 this.title,
                 this.description,

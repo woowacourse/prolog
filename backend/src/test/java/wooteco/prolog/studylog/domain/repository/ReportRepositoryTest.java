@@ -22,14 +22,14 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.report.application.dto.ReportAssembler;
 import wooteco.prolog.ability.domain.repository.AbilityRepository;
-import wooteco.prolog.report.domain.report.repository.ReportRepository;
+import wooteco.prolog.report.domain.report.repository.ReportRepository2;
 import wooteco.prolog.session.domain.Level;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.repository.LevelRepository;
 import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.ability.domain.Ability;
-import wooteco.prolog.report.domain.report.Report;
+import wooteco.prolog.report.domain.report.Report2;
 import wooteco.prolog.report.domain.report.abilitygraph.AbilityGraph;
 import wooteco.prolog.report.domain.report.abilitygraph.GraphAbilities;
 import wooteco.prolog.report.domain.report.abilitygraph.GraphAbility;
@@ -42,7 +42,7 @@ import wooteco.prolog.report.domain.report.studylog.ReportedStudylogs;
 class ReportRepositoryTest {
 
     @Autowired
-    private ReportRepository reportRepository;
+    private ReportRepository2 reportRepository;
 
     @Autowired
     private StudylogRepository studylogRepository;
@@ -68,14 +68,14 @@ class ReportRepositoryTest {
     @Test
     void findReportByMember() throws JsonProcessingException {
         Member member = memberRepository.save(MemberFixture.crewMember1());
-        Report report = createReport(member);
+        Report2 report = createReport(member);
         reportRepository.save(report);
 
         flushAndClear();
 
         PageRequest pageable = PageRequest.of(0, 10);
-        List<Report> reports = reportRepository.findReportsByMember(member, pageable).toList();
-        Report report1 = reports.get(0);
+        List<Report2> reports = reportRepository.findReportsByMember(member, pageable).toList();
+        Report2 report1 = reports.get(0);
 
         assertThat(reportAssembler.of(report1))
             .usingRecursiveComparison()
@@ -94,7 +94,7 @@ class ReportRepositoryTest {
             .build();
     }
 
-    private Report createReport(Member member) {
+    private Report2 createReport(Member member) {
         Ability ability1 = abilityRepository.save(AbilityFixture.parentAbility1(member));
         Ability ability2 = abilityRepository.save(AbilityFixture.parentAbility2(member));
         Ability ability3 = abilityRepository.save(AbilityFixture.parentAbility3(member));

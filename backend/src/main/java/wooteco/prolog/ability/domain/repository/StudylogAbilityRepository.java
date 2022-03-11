@@ -8,7 +8,7 @@ public interface StudylogAbilityRepository extends JpaRepository<StudylogAbility
 
     List<StudylogAbility> findByMemberId(Long memberId);
 
-    List<StudylogAbility> findByAbilityIn(List<Long> abilityIds);
+    List<StudylogAbility> findByAbilityIdIn(List<Long> abilityIds);
 
     List<StudylogAbility> findByStudylogIdIn(List<Long> studylogIds);
 

@@ -5,7 +5,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import wooteco.prolog.report.domain.report.Report;
+import wooteco.prolog.report.domain.report.Report2;
 import wooteco.prolog.report.domain.report.common.UpdateUtil;
 
 @Embeddable
@@ -26,11 +26,11 @@ public class ReportedStudylogs {
         this.values = values;
     }
 
-    public void appendTo(Report report) {
+    public void appendTo(Report2 report) {
         getValues().forEach(studylog -> studylog.appendTo(report));
     }
 
-    public void update(ReportedStudylogs studylogs, Report report) {
+    public void update(ReportedStudylogs studylogs, Report2 report) {
         studylogs.getValues().forEach(v -> v.appendTo(report));
 
         UpdateUtil.execute(getValues(), studylogs.getValues());

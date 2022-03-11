@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class ReportAbilityRequest {
 
     private Long abilityId;
-    private Float weight;
+    private int weight;
 
 }

@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.List;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.GithubResponses;
+import wooteco.prolog.report.application.dto.ReportAbilityRequest;
+import wooteco.prolog.report.application.dto.ReportRequest;
 import wooteco.prolog.report.application.dto.request.ReportRequest2;
 import wooteco.prolog.report.application.dto.request.abilitigraph.AbilityRequest;
 import wooteco.prolog.report.application.dto.request.abilitigraph.GraphRequest;
@@ -30,28 +32,16 @@ public class ReportStepDefinitions extends AcceptanceSteps {
 
     @When("리포트를 등록하(면)(고)")
     public void 리포트를등록() {
-        ReportRequest2 reportRequest = new ReportRequest2(
-            null,
+        ReportRequest reportRequest = new ReportRequest(
             "새로운 리포트" + reportCnt++,
             "리포트 설명",
-            new GraphRequest(
-                Arrays.asList(
-                    new AbilityRequest(
-                        1L,
-                        1L,
-                        true
-                    )
-                )
-            ),
             Arrays.asList(
-                new ReportStudylogRequest(
-                    1L,
-                    Arrays.asList(1L)
-                )
-            ),
-            false
+                new ReportAbilityRequest(1L, 5),
+                new ReportAbilityRequest(2L, 10),
+                new ReportAbilityRequest(3L, 1),
+                new ReportAbilityRequest(4L, 2)
+            )
         );
-
         context.invokeHttpPostWithToken("/reports", reportRequest);
     }
 

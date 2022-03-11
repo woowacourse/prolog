@@ -29,7 +29,7 @@ import wooteco.prolog.report.exception.ReportTitleLengthException;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Report {
+public class Report2 {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,23 +58,23 @@ public class Report {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    public Report(String title,
-                  String description,
-                  AbilityGraph abilityGraph,
-                  ReportedStudylogs studylogs,
-                  Boolean isRepresent,
-                  Member member
+    public Report2(String title,
+                   String description,
+                   AbilityGraph abilityGraph,
+                   ReportedStudylogs studylogs,
+                   Boolean isRepresent,
+                   Member member
     ) {
      this(null, title, description, abilityGraph, studylogs, isRepresent, member);
     }
 
-    public Report(Long id,
-                  String title,
-                  String description,
-                  AbilityGraph abilityGraph,
-                  ReportedStudylogs studylogs,
-                  Boolean isRepresent,
-                  Member member
+    public Report2(Long id,
+                   String title,
+                   String description,
+                   AbilityGraph abilityGraph,
+                   ReportedStudylogs studylogs,
+                   Boolean isRepresent,
+                   Member member
     ) {
         this.id = id;
         this.title = title;
@@ -103,7 +103,7 @@ public class Report {
         }
     }
 
-    public void update(Report report) {
+    public void update(Report2 report) {
         this.title = report.title;
         this.description = report.description;
         this.abilityGraph.update(report.abilityGraph);
@@ -156,10 +156,10 @@ public class Report {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Report)) {
+        if (!(o instanceof Report2)) {
             return false;
         }
-        Report report = (Report) o;
+        Report2 report = (Report2) o;
         return Objects.equals(getId(), report.getId());
     }
 
