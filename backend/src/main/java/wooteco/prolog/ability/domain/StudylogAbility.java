@@ -23,13 +23,13 @@ public class StudylogAbility {
 
     private Long memberId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "studylog_id", nullable = false)
-    private Studylog studylog;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ability_id", nullable = false)
     private Ability ability;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "studylog_id", nullable = false)
+    private Studylog studylog;
 
     public StudylogAbility(Long memberId, Ability ability, Studylog studylog) {
         this.memberId = memberId;

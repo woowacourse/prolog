@@ -34,6 +34,26 @@ public class ReportAbilityResponse {
             studylogs);
     }
 
+    public static List<ReportAbilityResponse> listOf(List<ReportAbility> reportAbilities) {
+        return reportAbilities.stream()
+            .map(ReportAbilityResponse::of)
+            .collect(Collectors.toList());
+    }
+
+    public static ReportAbilityResponse of(ReportAbility reportAbility) {
+        List<StudylogResponse> studylogs = reportAbility.getStudylogs().stream()
+            .map(it -> StudylogResponse.of(it.getStudylog()))
+            .collect(Collectors.toList());
+
+        return new ReportAbilityResponse(
+            reportAbility.getWeight(),
+            reportAbility.getName(),
+            reportAbility.getDescription(),
+            reportAbility.getColor(),
+            reportAbility.getParent() == null ? null : ReportAbilityResponse.of(reportAbility.getParent(), Collections.emptyList()),
+            studylogs);
+    }
+
     public static List<ReportAbilityResponse> listOf(List<ReportAbility> reportAbilities, List<ReportAbilityStudylog> reportAbilityStudylogs) {
         return reportAbilities.stream()
             .map(it -> createReportAbilityResponse(it, reportAbilityStudylogs))
