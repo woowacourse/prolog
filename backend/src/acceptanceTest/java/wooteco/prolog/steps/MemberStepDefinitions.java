@@ -60,7 +60,7 @@ public class MemberStepDefinitions extends AcceptanceSteps {
     @When("{string}의 닉네임이 {int}번 스터디로그를 스크랩 취소하면")
     public void studylog를스크랩취소하면(String member, int studylogId){
         String username = GithubResponses.findByName(member).getLogin();
-        context.invokeHttpDeleteWithToken("/members/" + username + "/scrap", new MemberScrapRequest((long)studylogId));
+        context.invokeHttpDeleteWithToken("/members/" + username + "/scrap?studylog=" + studylogId);
         assertThat(context.response.statusCode()).isEqualTo(204);
     }
 
