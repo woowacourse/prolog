@@ -13,11 +13,6 @@ import wooteco.prolog.report.application.dto.ReportAbilityRequest;
 import wooteco.prolog.report.application.dto.ReportRequest;
 import wooteco.prolog.report.application.dto.ReportResponse;
 import wooteco.prolog.report.application.dto.ReportUpdateRequest;
-import wooteco.prolog.report.application.dto.request.ReportRequest2;
-import wooteco.prolog.report.application.dto.request.abilitigraph.AbilityRequest;
-import wooteco.prolog.report.application.dto.request.abilitigraph.GraphRequest;
-import wooteco.prolog.report.application.dto.request.studylog.ReportStudylogRequest;
-import wooteco.prolog.report.application.dto.response.SimpleReportPageableResponse;
 
 public class ReportStepDefinitions extends AcceptanceSteps {
 
@@ -35,33 +30,6 @@ public class ReportStepDefinitions extends AcceptanceSteps {
                 new ReportAbilityRequest(4L, 2)
             )
         );
-        context.invokeHttpPostWithToken("/reports", reportRequest);
-    }
-
-    @When("대표 리포트를 등록하(면)(고)")
-    public void 대표리포트를등록() {
-        ReportRequest2 reportRequest = new ReportRequest2(
-            null,
-            "새로운 리포트" + reportCnt++,
-            "리포트 설명",
-            new GraphRequest(
-                Arrays.asList(
-                    new AbilityRequest(
-                        1L,
-                        1L,
-                        true
-                    )
-                )
-            ),
-            Arrays.asList(
-                new ReportStudylogRequest(
-                    1L,
-                    Arrays.asList(1L)
-                )
-            ),
-            true
-        );
-
         context.invokeHttpPostWithToken("/reports", reportRequest);
     }
 
@@ -98,17 +66,6 @@ public class ReportStepDefinitions extends AcceptanceSteps {
         assertThat(reportPageableResponse.getTotalPage()).isOne();
         assertThat(reportPageableResponse.getTotalSize()).isOne();
         assertThat(reportPageableResponse.getData()).hasSize(1);
-    }
-
-    @Then("단순 리포트 목록이 조회된다")
-    public void 단순리포트목록이조회된다() {
-        SimpleReportPageableResponse simpleReportPageableResponse =
-            context.response.as(SimpleReportPageableResponse.class);
-
-        assertThat(simpleReportPageableResponse.getCurrentPage()).isOne();
-        assertThat(simpleReportPageableResponse.getTotalPage()).isOne();
-        assertThat(simpleReportPageableResponse.getTotalSize()).isOne();
-        assertThat(simpleReportPageableResponse.getReports()).hasSize(1);
     }
 
     @Then("리포트가 등록된다")
