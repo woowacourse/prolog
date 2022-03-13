@@ -10,12 +10,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.view.feed.AbstractRssFeedView;
 import wooteco.prolog.studylog.application.dto.RssFeedResponse;
 
 @Service
-@Transactional(readOnly = true)
 public class RssFeedService extends AbstractRssFeedView {
 
     private final StudylogService studylogService;
