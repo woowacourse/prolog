@@ -1,13 +1,13 @@
 package wooteco.prolog.studylog.ui;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.View;
 import wooteco.prolog.studylog.application.RssFeedService;
 
-@RestController
-@RequestMapping("/api")
+@Controller
+@RequestMapping("/rss-feeds")
 public class RssFeedController {
 
     private final RssFeedService rssFeedService;
@@ -16,7 +16,7 @@ public class RssFeedController {
         this.rssFeedService = rssFeedService;
     }
 
-    @GetMapping("/rss-feed")
+    @GetMapping
     public View getRssFeed() {
         return rssFeedService;
     }
