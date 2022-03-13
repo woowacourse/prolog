@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.aop.MemberOnly;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
@@ -56,9 +57,9 @@ public class MemberReactionController {
     @MemberOnly
     public ResponseEntity<Void> unregisterScrap(
         @AuthMemberPrincipal LoginMember member,
-        @RequestBody MemberScrapRequest studylogIdRequest
+        @RequestParam Long studylog
     ) {
-        studylogScrapService.unregisterScrap(member.getId(), studylogIdRequest.getStudylogId());
+        studylogScrapService.unregisterScrap(member.getId(), studylog);
         return ResponseEntity.noContent().build();
     }
 }
