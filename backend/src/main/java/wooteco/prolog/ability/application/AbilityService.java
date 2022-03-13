@@ -90,7 +90,7 @@ public class AbilityService {
     public List<AbilityResponse> findAbilitiesByMemberUsername(String username) {
         Member member = memberService.findByUsername(username);
 
-        return AbilityResponse.listOf(findByMemberId(member.getId()));
+        return findParentAbilitiesByMemberId(member.getId());
     }
 
     public List<AbilityResponse> findParentAbilitiesByMemberId(Long memberId) {
