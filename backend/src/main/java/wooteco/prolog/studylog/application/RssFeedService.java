@@ -28,9 +28,9 @@ public class RssFeedService extends AbstractRssFeedView {
         Channel feed,
         HttpServletRequest request
     ) {
-        feed.setTitle("PROLOG");
-        feed.setDescription("내가 안다고 생각한게 진짜 아는걸까?🧐\n학습로그를 작성하며 메타인지를 경험해보세요!");
+        feed.setTitle("Prolog | 우아한테크코스 학습로그 저장소");
         feed.setLink("https://prolog.techcourse.co.kr/");
+        feed.setDescription("우아한테크코스 크루들이 배운 내용을 기록하는 학습로그 저장소입니다.");
     }
 
     @Override
@@ -49,10 +49,10 @@ public class RssFeedService extends AbstractRssFeedView {
                 content.setValue(rssFeedResponse.getContent());
 
                 item.setTitle(rssFeedResponse.getTitle());
-                item.setContent(content);
-                item.setAuthor(rssFeedResponse.getAuthor());
                 item.setLink(rssFeedResponse.getLink());
+                item.setContent(content);
                 item.setPubDate(rssFeedResponse.getDate());
+                item.setAuthor(rssFeedResponse.getAuthor());
 
                 return item;
             })
