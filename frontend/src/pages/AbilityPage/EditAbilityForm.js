@@ -1,54 +1,42 @@
 import { useState } from 'react';
 import Chip from '../../components/Chip/Chip';
 import { COLOR, ERROR_MESSAGE } from '../../constants';
-import useSnackBar from '../../hooks/useSnackBar';
 import { isCorrectHexCode } from '../../utils/hexCode';
 import { ManageButtonList, Button, FormContainer, ListForm, ColorPicker } from './styles';
 
 const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEdit }) => {
   const [formData, setFormData] = useState({
+    id,
     name,
     description,
     color,
   });
-  const { isSnackBarOpen, SnackBar, openSnackBar } = useSnackBar();
 
-  const onFormDataChange = (key) => (event) => {
-    setFormData({ ...formData, [key]: event.target.value });
+  const onFormDataChange = (event, key) => {
+    setFormData((prevData) => ({ ...prevData, [key]: event.target.value }));
   };
 
-  const onSubmit = async (event) => {
+  const onSubmit = (event) => {
     event.preventDefault();
+    const { isLoading, mutate } = onEdit;
 
-    const newName = formData.name.trim();
-    const newColor = formData.color.trim();
-
-    if (!newName) {
-      openSnackBar(ERROR_MESSAGE.NEED_ABILITY_NAME);
+    if (!formData.name.trim()) {
+      alert(ERROR_MESSAGE.NEED_ABILITY_NAME);
       return;
     }
 
-    if (!newColor) {
-      openSnackBar(ERROR_MESSAGE.NEED_ABILITY_COLOR);
+    if (!formData.color.trim()) {
+      alert(ERROR_MESSAGE.NEED_ABILITY_COLOR);
       return;
     }
 
-    if (!isCorrectHexCode(newColor)) {
-      openSnackBar(ERROR_MESSAGE.INVALID_ABILIT_COLOR);
+    if (!isCorrectHexCode(formData.color.trim())) {
+      alert(ERROR_MESSAGE.INVALID_ABILIT_COLOR);
       return;
     }
 
-    try {
-      await onEdit({
-        id,
-        name: newName,
-        description: formData.description,
-        color: formData.color,
-      });
-    } catch (error) {
-      alert(error.message);
-    } finally {
-      onClose();
+    if (!isLoading) {
+      mutate(formData);
     }
   };
 
@@ -86,6 +74,7 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
           {formData.name}
         </Chip>
       </div>
+
       <ListForm isParent={isParent} onSubmit={onSubmit}>
         <label>
           이름
@@ -93,7 +82,7 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
             type="text"
             placeholder="이름"
             value={formData.name}
-            onChange={onFormDataChange('name')}
+            onChange={(event) => onFormDataChange(event, 'name')}
             maxLength={60}
             required
           />
@@ -104,18 +93,23 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
             type="text"
             placeholder="설명"
             value={formData.description}
-            onChange={onFormDataChange('description')}
+            onChange={(event) => onFormDataChange(event, 'description')}
           />
         </label>
+
         {isParent && (
           <label>
             색상
             <ColorPicker>
-              <input type="color" value={formData.color} onChange={onFormDataChange('color')} />
+              <input
+                type="color"
+                value={formData.color}
+                onChange={(event) => onFormDataChange(event, 'color')}
+              />
               <input
                 type="text"
                 value={formData.color}
-                onChange={onFormDataChange('color')}
+                onChange={(event) => onFormDataChange(event, 'color')}
                 required
               />
             </ColorPicker>
@@ -125,9 +119,9 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
         <ManageButtonList>
           <Button
             type="button"
+            borderColor={COLOR.DARK_BLUE_700}
             backgroundColor={COLOR.WHITE}
             color={COLOR.DARK_GRAY_900}
-            borderColor={COLOR.DARK_BLUE_700}
             onClick={onClose}
           >
             취소
@@ -141,8 +135,6 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
           </Button>
         </ManageButtonList>
       </ListForm>
-
-      {isSnackBarOpen && <SnackBar />}
     </FormContainer>
   );
 };

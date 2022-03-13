@@ -1,187 +1,83 @@
-import { useContext, useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useContext, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useMutation, useQuery } from 'react-query';
+import axios from 'axios';
 
-import useRequest from '../../hooks/useRequest';
-import useMutation from '../../hooks/useMutation';
-import useSnackBar from '../../hooks/useSnackBar';
-import {
-  requestAddAbility,
-  requestDeleteAbility,
-  requestEditAbility,
-  requestGetAbilities,
-} from '../../service/requests';
+import useAbility from '../../hooks/useAbility';
 import { UserContext } from '../../contexts/UserProvider';
 
 import AbilityListItem from './AbilityListItem';
 import AddAbilityForm from './AddAbilityForm';
-import NoAbility from './NoAbility';
-
-import { isCorrectHexCode } from '../../utils/hexCode';
 
 import { COLOR } from '../../constants';
-import {
-  ERROR_MESSAGE,
-  SUCCESS_MESSAGE,
-  CONFIRM_MESSAGE,
-  ALERT_MESSAGE,
-} from '../../constants/message';
-
-import { Container, AbilityList, Button, EditingListItem, ListHeader, NoContent } from './styles';
-
-const DEFAULT_ABILITY_FORM = {
-  isOpened: false,
-  name: '',
-  description: '',
-  color: '#f6d7fe',
-  parent: null,
-};
+import { Container, AbilityList, EditingListItem, ListHeader, AddAbilityButton } from './styles';
 
 const AbilityPage = () => {
-  const history = useHistory();
   const { username } = useParams();
-  const { isSnackBarOpen, SnackBar, openSnackBar } = useSnackBar();
-
-  const [abilities, setAbilities] = useState(null);
-  const [addFormStatus, setAddFormStatus] = useState(DEFAULT_ABILITY_FORM);
-
   const { user } = useContext(UserContext);
-  const { accessToken } = user;
+  const readOnly = username !== user.username;
 
-  const isMine = username === user.username;
+  // TODO: 역량 등록하기
 
-  const addFormClose = () => {
-    setAddFormStatus((prevState) => ({ ...prevState, isOpened: false }));
-  };
+  const [studyLogs, setStudyLogs] = useState([]);
 
-  const addFormOpen = () => {
-    setAddFormStatus((prevState) => ({ ...prevState, isOpened: true }));
-  };
+  const {
+    addFormStatus,
+    setAddFormStatus,
+    onAddFormSubmit,
+    addFormOpen,
+    addFormClose,
+  } = useAbility(studyLogs);
 
-  const { fetchData: getData } = useRequest(
-    [],
-    () => requestGetAbilities(username, accessToken),
-    (data) => {
-      setAbilities(data);
-    }
-  );
+  // TODO: 역량 이력 불러오기, API 레이어 분리
+  const { data: abilities } = useQuery([`${username}-abilities`], async () => {
+    const { data } = await axios({
+      method: 'get',
+      url: `http://localhost:5000/members/${username}/abilities`,
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
+      },
+    });
+    return data;
+  });
 
-  const { mutate: addAbility } = useMutation(
-    ({ name, description, color, parent = null }) =>
-      requestAddAbility(accessToken, {
-        name,
-        description,
-        color,
-        parent,
+  // TODO: 역량 처리가 정말 이 위치에서 쓰여야하는 것인지 고민해보기 (부모가 정말 알아야하는 값인가?)
+  const onDeleteAbility = useMutation(
+    async (id) =>
+      await axios({
+        method: 'delete',
+        url: `http://localhost:5000/abilities/${id}`,
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
       }),
     {
       onSuccess: () => {
-        openSnackBar(SUCCESS_MESSAGE.CREATE_ABILITY);
-        getData();
+        alert('역량 삭제하였습니다.');
       },
-      onError: () => (error) => {
-        openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
+      onError: () => {
+        alert('역량 삭제에 실패하였습니다. 잠시후 다시 시도해주세요.');
       },
     }
   );
-
-  const { mutate: deleteAbility } = useMutation(
-    (id) => {
-      return requestDeleteAbility(accessToken, id);
-    },
-    () => {
-      openSnackBar(SUCCESS_MESSAGE.DELETE_ABILITY);
-
-      getData();
-    },
-    (error) => {
-      openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
-    }
-  );
-
-  const editAbility = async ({ id, name, description, color }) => {
-    try {
-      const response = await requestEditAbility(accessToken, {
-        id,
-        name,
-        description,
-        color,
-      });
-
-      if (!response.ok) {
-        const json = await response.json();
-        throw new Error(json.code);
-      }
-
-      openSnackBar(SUCCESS_MESSAGE.EDIT_ABILITY);
-      await getData();
-    } catch (error) {
-      openSnackBar(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
-    }
-  };
-
-  useEffect(() => {
-    if (user.data?.id) {
-      getData();
-    }
-  }, [user]);
-
-  if (user.data && !isMine) {
-    alert(ALERT_MESSAGE.ACCESS_DENIED);
-    history.push(`/${username}`);
-  }
-
-  const onAddFormSubmit = async (event) => {
-    event.preventDefault();
-
-    const newName = addFormStatus.name.trim();
-    const newColor = addFormStatus.color.trim();
-
-    if (!newName) {
-      openSnackBar(ERROR_MESSAGE.NEED_ABILITY_NAME);
-      return;
-    }
-
-    if (!newColor) {
-      openSnackBar(ERROR_MESSAGE.NEED_ABILITY_COLOR);
-      return;
-    }
-
-    if (!isCorrectHexCode(newColor)) {
-      openSnackBar(ERROR_MESSAGE.INVALID_ABILIT_COLOR);
-      return;
-    }
-
-    await addAbility({
-      name: newName,
-      description: addFormStatus.description,
-      color: addFormStatus.color,
-      parent: addFormStatus.parent,
-    });
-
-    setAddFormStatus(DEFAULT_ABILITY_FORM);
-    addFormClose();
-  };
 
   const onFormDataChange = (key) => (event) => {
     setAddFormStatus({ ...addFormStatus, [key]: event.target.value });
   };
 
-  const onDelete = (id) => () => {
-    if (window.confirm(CONFIRM_MESSAGE.DELETE_ABILITY)) {
-      deleteAbility(id);
-    }
-  };
-
   return (
     <Container>
-      <div>
-        <h2>역량</h2>
-        <Button type="button" backgroundColor={COLOR.LIGHT_GRAY_50} onClick={addFormOpen}>
-          역량 추가 +
-        </Button>
-      </div>
+      <ListHeader>
+        <h3>📚 역량</h3>
 
-      {addFormStatus.isOpened && (
+        {!readOnly && (
+          <AddAbilityButton type="button" borderColor={COLOR.DARK_GRAY_800} onClick={addFormOpen}>
+            ✚ 역량 추가하기
+          </AddAbilityButton>
+        )}
+      </ListHeader>
+
+      {!readOnly && addFormStatus.isOpened && (
         <AbilityList>
           <EditingListItem isParent={true}>
             <AddAbilityForm
@@ -190,39 +86,24 @@ const AbilityPage = () => {
               isParent={true}
               onClose={addFormClose}
               onSubmit={onAddFormSubmit}
-              sabveButtondisabled={!addFormStatus.name.trim() || !addFormStatus.color}
+              saveButtondisabled={!addFormStatus.name.trim() || !addFormStatus.color}
             />
           </EditingListItem>
         </AbilityList>
       )}
 
-      <AbilityList>
-        <ListHeader>
-          <div>
-            역량<span>{`(총 ${abilities?.length}개)`}</span>
-          </div>
-        </ListHeader>
-
+      <AbilityList height="36rem">
         {abilities
           ?.filter(({ isParent }) => isParent)
           .map((ability) => (
             <AbilityListItem
               key={ability.id}
               ability={ability}
-              addAbility={addAbility}
-              onEdit={editAbility}
-              onDelete={onDelete}
+              onDelete={onDeleteAbility}
+              readOnly={readOnly}
             />
           ))}
-
-        {abilities && !abilities.length && (
-          <NoContent>
-            <NoAbility getData={getData} accessToken={accessToken} />
-          </NoContent>
-        )}
       </AbilityList>
-
-      {isSnackBarOpen && <SnackBar />}
     </Container>
   );
 };
