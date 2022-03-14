@@ -1,9 +1,8 @@
 import { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 
-import useAbility from '../../hooks/useAbility';
 import { UserContext } from '../../contexts/UserProvider';
 
 import AbilityListItem from './AbilityListItem';
@@ -11,29 +10,37 @@ import AddAbilityForm from './AddAbilityForm';
 
 import { COLOR } from '../../constants';
 import { Container, AbilityList, EditingListItem, ListHeader, AddAbilityButton } from './styles';
+import { BASE_URL } from '../../configs/environment';
+
+const DEFAULT_ABILITY_FORM = {
+  isOpened: false,
+  name: '',
+  description: '',
+  color: '#000000',
+  isParent: null,
+};
 
 const AbilityPage = () => {
+  const queryClient = useQueryClient();
   const { username } = useParams();
   const { user } = useContext(UserContext);
   const readOnly = username !== user.username;
 
-  // TODO: 역량 등록하기
+  const [addFormStatus, setAddFormStatus] = useState(DEFAULT_ABILITY_FORM);
 
-  const [studyLogs, setStudyLogs] = useState([]);
+  const addFormClose = () => {
+    setAddFormStatus((prevState) => ({ ...prevState, isOpened: false }));
+  };
 
-  const {
-    addFormStatus,
-    setAddFormStatus,
-    onAddFormSubmit,
-    addFormOpen,
-    addFormClose,
-  } = useAbility(studyLogs);
+  const addFormOpen = () => {
+    setAddFormStatus((prevState) => ({ ...prevState, isOpened: true }));
+  };
 
   // TODO: 역량 이력 불러오기, API 레이어 분리
   const { data: abilities } = useQuery([`${username}-abilities`], async () => {
     const { data } = await axios({
       method: 'get',
-      url: `http://localhost:5000/members/${username}/abilities`,
+      url: `${BASE_URL}/members/${username}/abilities`,
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
       },
@@ -46,7 +53,7 @@ const AbilityPage = () => {
     async (id) =>
       await axios({
         method: 'delete',
-        url: `http://localhost:5000/abilities/${id}`,
+        url: `${BASE_URL}/abilities/${id}`,
         headers: {
           Authorization: `Bearer ${user.accessToken}`,
         },
@@ -54,9 +61,32 @@ const AbilityPage = () => {
     {
       onSuccess: () => {
         alert('역량 삭제하였습니다.');
+        queryClient.invalidateQueries([`${username}-abilities`]);
       },
       onError: () => {
         alert('역량 삭제에 실패하였습니다. 잠시후 다시 시도해주세요.');
+      },
+    }
+  );
+
+  // 역량 등록하기
+  const onAddAbility = useMutation(
+    async (ability) =>
+      await axios({
+        method: 'post',
+        url: `${BASE_URL}/abilities`,
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+        data: { ...ability },
+      }),
+    {
+      onSuccess: () => {
+        addFormClose();
+        queryClient.invalidateQueries([`${username}-abilities`]);
+      },
+      onError: () => {
+        alert('역량 등록에 실패하였습니다.');
       },
     }
   );
@@ -85,7 +115,7 @@ const AbilityPage = () => {
               onFormDataChange={onFormDataChange}
               isParent={true}
               onClose={addFormClose}
-              onSubmit={onAddFormSubmit}
+              onSubmit={onAddAbility}
               saveButtondisabled={!addFormStatus.name.trim() || !addFormStatus.color}
             />
           </EditingListItem>

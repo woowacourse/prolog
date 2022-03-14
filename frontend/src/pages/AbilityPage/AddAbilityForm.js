@@ -13,6 +13,13 @@ const AddAbilityForm = ({
 }) => {
   const { name, description, color } = formData;
 
+  const onSubmitAbility = (event) => {
+    event.preventDefault();
+
+    const newAbility = { name, description, color, isParent: null };
+    onSubmit.mutate(newAbility);
+  };
+
   return (
     <FormContainer>
       <div>
@@ -29,7 +36,7 @@ const AddAbilityForm = ({
         </Chip>
       </div>
 
-      <ListForm isParent={isParent} onSubmit={onSubmit}>
+      <ListForm isParent={isParent} onSubmit={onSubmitAbility}>
         <label>
           이름
           <input
