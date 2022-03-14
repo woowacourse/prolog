@@ -55,4 +55,11 @@ public class MemberController {
         MembersResponse response = memberService.findAll(pageable);
         return ResponseEntity.ok(response);
     }
+
+    @Deprecated
+    @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
+    @MemberOnly
+    public ResponseEntity<MemberResponse> findMemberInfoOfMine(@AuthMemberPrincipal LoginMember member) {
+        return ResponseEntity.ok().body(MemberResponse.of(memberService.findById(member.getId())));
+    }
 }
