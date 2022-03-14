@@ -12,7 +12,7 @@ const DEFAULT_USER = {
   nickname: null,
   role: null,
   imageUrl: null,
-  accessToken: null,
+  accessToken: getLocalStorageItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
   isLoggedIn: false,
 };
 
@@ -20,6 +20,10 @@ export const UserContext = createContext(DEFAULT_USER);
 
 const UserProvider = ({ children }) => {
   const [state, setState] = useState(DEFAULT_USER);
+
+  useEffect(() => {
+    userProfileRequest.fetchData();
+  }, [state.accessToken]);
 
   const userProfileRequest = useRequest(
     DEFAULT_USER,
@@ -58,18 +62,6 @@ const UserProvider = ({ children }) => {
     localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
     setState(DEFAULT_USER);
   };
-
-  useEffect(() => {
-    const accessToken = getLocalStorageItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
-
-    if (accessToken) {
-      setState({ ...state, accessToken });
-    }
-  }, []);
-
-  useEffect(() => {
-    userProfileRequest.fetchData();
-  }, [state.accessToken]);
 
   return (
     <UserContext.Provider value={{ user: state, onLogin, onLogout }}>
