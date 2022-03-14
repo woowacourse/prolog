@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -19,7 +19,7 @@ import {
   AbilityItem,
 } from './styles';
 
-const AbilityListItem = ({ ability, addAbility, onDelete, readOnly }) => {
+const AbilityListItem = ({ ability, onAddAbility, onDelete, readOnly }) => {
   const { username: pageUsername } = useParams();
   const { user } = useContext(UserContext);
   const queryClient = useQueryClient();
@@ -37,12 +37,12 @@ const AbilityListItem = ({ ability, addAbility, onDelete, readOnly }) => {
     parent: id,
   });
 
+  useEffect(() => {
+    setAddFormStatus({ name: '', description: '', color, parent: id });
+  }, [itemStatus.isAddFormOpened, subAbilities.length]);
+
   const toggleIsOpened = () => {
     setItemStatus((prevState) => ({ ...prevState, isOpened: !prevState.isOpened }));
-  };
-
-  const openSubList = () => {
-    setItemStatus((prevState) => ({ ...prevState, isOpened: true }));
   };
 
   const closeAddForm = () => {
@@ -52,36 +52,8 @@ const AbilityListItem = ({ ability, addAbility, onDelete, readOnly }) => {
     }));
   };
 
-  const setIsAddFormOpened = (status) => () => {
-    setItemStatus((prevState) => ({
-      ...prevState,
-      isAddFormOpened: status,
-    }));
-  };
-
   const setEditStatus = (status) => {
     setItemStatus((prevState) => ({ ...prevState, isEditing: status }));
-  };
-
-  // useEffect(() => {
-  //   if (!subAbilities.length) {
-  //     setItemStatus((prevState) => ({ ...prevState, isOpened: false }));
-  //   }
-  // }, [subAbilities.length]);
-
-  const onAddFormSubmit = async (event) => {
-    event.preventDefault();
-
-    await addAbility({
-      name: addFormStatus.name,
-      description: addFormStatus.description,
-      color: addFormStatus.color,
-      parent: addFormStatus.parent,
-    });
-
-    setAddFormStatus({ ...addFormStatus, isOpened: false, name: '', description: '' });
-    closeAddForm();
-    openSubList();
   };
 
   const onDeleteAbility = (id) => {
@@ -92,7 +64,11 @@ const AbilityListItem = ({ ability, addAbility, onDelete, readOnly }) => {
     }
   };
 
-  // TODO: 역량 수정하기
+  const onAddChildAbility = () => {
+    setItemStatus((prevState) => ({ ...prevState, isOpened: true, isAddFormOpened: true }));
+  };
+
+  // 자식 역량 수정하기
   const onEditAbility = useMutation(
     async (formData) =>
       await axios({
@@ -126,7 +102,7 @@ const AbilityListItem = ({ ability, addAbility, onDelete, readOnly }) => {
           color={COLOR.BLACK_900}
           fontSize="1.2rem"
           borderColor={COLOR.DARK_GRAY_800}
-          // onClick={setIsAddFormOpened(true)}
+          onClick={onAddChildAbility}
         >
           추가
         </Button>
@@ -193,14 +169,14 @@ const AbilityListItem = ({ ability, addAbility, onDelete, readOnly }) => {
 
       {/* 새로운 자식 역량 추가 */}
       {itemStatus.isAddFormOpened && (
-        <EditingListItem isParent={true}>
+        <EditingListItem isParent={false}>
           <AddAbilityForm
             color={color}
             formData={addFormStatus}
             onFormDataChange={onFormDataChange}
             isParent={false}
-            onClose={() => setEditStatus(false)}
-            onSubmit={onAddFormSubmit}
+            onClose={closeAddForm}
+            onSubmit={onAddAbility}
           />
         </EditingListItem>
       )}

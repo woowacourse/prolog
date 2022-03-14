@@ -31,7 +31,7 @@ const EditSubAbilityForm = ({ id, name, color, description, onClose, onEdit }) =
 
   return (
     <FormContainer isParent={false}>
-      <ListForm isParent={false} onSubmit={onSubmit}>
+      <ListForm isParent={false} isEditing={true} onSubmit={onSubmit}>
         <ColorChip backgroundColor={color} />
         <input
           type="text"
@@ -51,7 +51,7 @@ const EditSubAbilityForm = ({ id, name, color, description, onClose, onEdit }) =
         <ManageButtonList>
           <Button
             type="button"
-            color={COLOR.DARK_GRAY_900}
+            color={COLOR.RED_100}
             fontSize="1.2rem"
             backgroundColor={COLOR.WHITE}
             borderColor={COLOR.DARK_BLUE_700}

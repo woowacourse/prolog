@@ -11,25 +11,25 @@ const AddAbilityForm = ({
   onSubmit,
   sabveButtondisabled,
 }) => {
-  const { name, description, color } = formData;
+  const { name, description, color, parent } = formData;
 
   const onSubmitAbility = (event) => {
     event.preventDefault();
 
-    const newAbility = { name, description, color, isParent: null };
+    const newAbility = { name, description, color, parent: parent ?? null };
     onSubmit.mutate(newAbility);
   };
 
   return (
     <FormContainer>
       <div>
-        {!isParent && <SubCategoryIcon width={32} />}
+        {/* {!isParent && <SubCategoryIcon width={32} />} */}
         <Chip
           title={name}
           textAlign="left"
           backgroundColor={color}
           minWidth="3rem"
-          fontSize="1.4rem"
+          fontSize="1.2rem"
           maxLength={60}
         >
           {name || '라벨 미리보기'}
@@ -43,7 +43,7 @@ const AddAbilityForm = ({
             type="text"
             placeholder="이름"
             value={name}
-            maxLength={60}
+            maxLength={30}
             onChange={onFormDataChange('name')}
             required
           />
@@ -70,6 +70,7 @@ const AddAbilityForm = ({
         <ManageButtonList>
           <Button
             type="button"
+            fontSize="12px"
             backgroundColor={COLOR.WHITE}
             color={COLOR.DARK_GRAY_900}
             borderColor={COLOR.DARK_BLUE_700}
@@ -78,6 +79,7 @@ const AddAbilityForm = ({
             취소
           </Button>
           <Button
+            fontSize="12px"
             backgroundColor={COLOR.DARK_BLUE_700}
             color={COLOR.WHITE}
             disabled={sabveButtondisabled}

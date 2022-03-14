@@ -78,51 +78,53 @@ export const ArrowButton = styled.button`
 export const FormContainer = styled.div`
   padding: 1rem 0 2rem;
   ${({ isParent }) => !isParent && 'padding-bottom: 1rem;'}
+  border-bottom: 1px solid ${COLOR.LIGHT_GRAY_100};
 
   > div {
     width: 100%;
-    padding: 1rem 0 0 1rem;
+    padding: 0.5rem 2rem;
 
     display: flex;
-    align-items: center;
-  }
-
-  h3 {
-    font-size: 1.6rem;
-    font-weight: 500;
+    align-items: end;
   }
 `;
 
 export const ListForm = styled.form`
   display: grid;
-  grid-template-columns: ${({ isParent }) =>
-    isParent ? `1fr 2fr 1fr 0.8fr` : `0.2fr 1fr 3fr 1fr`};
-  justify-content: center;
+  grid-template-columns: ${({ isParent, isEditing }) =>
+    isParent ? `1fr 2fr 1fr 0.8fr` : isEditing ? `0.2fr 1fr 3fr 1fr` : `1fr 3fr 1fr`};
+  justify-content: space-around;
   align-items: end;
   grid-column-gap: 0.5rem;
 
-  margin-left: 1.2rem;
-
+  margin: 0 1rem;
   padding-top: 1rem;
   padding-bottom: 1rem;
-  ${({ isParent }) => (isParent ? 'padding-left: 1rem;' : 'padding-left: 4rem;')}
+  ${({ isParent }) => (isParent ? 'padding-left: 1rem;' : 'padding-left: 1rem;')}
 
   label {
     width: 100%;
-
     padding-right: 1rem;
   }
 
   input {
-    display: block;
     width: 100%;
-    background-color: ${COLOR.LIGHT_GRAY_100};
+    padding: 0.4rem;
 
+    display: block;
+    background-color: ${COLOR.LIGHT_GRAY_100};
     border-radius: 0.5rem;
     border: 1px solid ${COLOR.LIGHT_GRAY_200};
 
     font-size: 1.4rem;
-    padding: 0.4rem 0.5rem;
+
+    ${({ isParent }) =>
+      !isParent &&
+      css`
+        margin-top: 0.2rem;
+        margin-left: -0.2rem;
+        font-size: 1.3rem;
+      `}
   }
 
   input[type='color'] {
@@ -154,14 +156,11 @@ export const ColorPicker = styled.div`
   }
 `;
 
+// 역량 추가하는 곳
 export const EditingListItem = styled.li`
   && {
     ${({ isParent }) =>
-      isParent ? 'grid-template-columns: 1fr' : 'grid-template-columns: 0.2fr 4fr'};
-  }
-
-  form {
-    padding-left: 0;
+      isParent ? 'grid-template-columns: 1fr' : 'grid-template-columns: 0.1fr 4fr'};
   }
 `;
 

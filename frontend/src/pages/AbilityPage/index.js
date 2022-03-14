@@ -82,7 +82,7 @@ const AbilityPage = () => {
       }),
     {
       onSuccess: () => {
-        addFormClose();
+        setAddFormStatus({ ...DEFAULT_ABILITY_FORM, isOpened: true });
         queryClient.invalidateQueries([`${username}-abilities`]);
       },
       onError: () => {
@@ -107,6 +107,7 @@ const AbilityPage = () => {
         )}
       </ListHeader>
 
+      {/* 부모역량 추가하기 */}
       {!readOnly && addFormStatus.isOpened && (
         <AbilityList>
           <EditingListItem isParent={true}>
@@ -131,6 +132,7 @@ const AbilityPage = () => {
               ability={ability}
               onDelete={onDeleteAbility}
               readOnly={readOnly}
+              onAddAbility={onAddAbility}
             />
           ))}
       </AbilityList>
