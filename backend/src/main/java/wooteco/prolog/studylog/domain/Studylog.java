@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.BaseEntity;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.exception.AuthorNotValidException;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -46,8 +47,7 @@ public class Studylog extends BaseEntity {
         this(null, member, title, content, mission, tags);
     }
 
-    public Studylog(Long id, Member member, String title, String content, Mission mission,
-                    List<Tag> tags) {
+    public Studylog(Long id, Member member, String title, String content, Mission mission, List<Tag> tags) {
         super(id);
         this.member = member;
         this.title = new Title(title);

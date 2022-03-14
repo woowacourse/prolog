@@ -1,4 +1,4 @@
-package wooteco.prolog.studylog.domain;
+package wooteco.prolog.session.domain;
 
 import java.util.Objects;
 import javax.persistence.Column;
