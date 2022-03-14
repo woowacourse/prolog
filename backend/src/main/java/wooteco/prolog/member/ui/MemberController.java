@@ -48,4 +48,11 @@ public class MemberController {
     public ResponseEntity<MemberResponse> findMemberInfoOfMine(@AuthMemberPrincipal LoginMember member) {
         return ResponseEntity.ok().body(MemberResponse.of(memberService.findById(member.getId())));
     }
+
+    // admin only
+    @GetMapping
+    public ResponseEntity<MembersResponse> show(@PageableDefault(direction = DESC, sort = "id") Pageable pageable) {
+        MembersResponse response = memberService.findAll(pageable);
+        return ResponseEntity.ok(response);
+    }
 }
