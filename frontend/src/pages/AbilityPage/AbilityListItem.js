@@ -205,6 +205,7 @@ const AbilityListItem = ({ ability, addAbility, onDelete, readOnly }) => {
         </EditingListItem>
       )}
 
+      {/* 자식역량 조회, 삭제, 수정 */}
       {!!subAbilities.length && (
         <SubAbilityList isOpened={itemStatus.isOpened}>
           {subAbilities.map(({ id, name, description, color }) => (

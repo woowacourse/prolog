@@ -16,7 +16,7 @@ const EditSubAbilityForm = ({ id, name, color, description, onClose, onEdit }) =
     event.preventDefault();
 
     try {
-      await onEdit({
+      await onEdit.mutate({
         id,
         name: formData.name,
         description: formData.description,
