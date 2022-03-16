@@ -7,7 +7,7 @@ import org.springframework.web.servlet.View;
 import wooteco.prolog.studylog.application.RssFeedService;
 
 @Controller
-@RequestMapping("/rss-feeds")
+@RequestMapping("/rss")
 public class RssFeedController {
 
     private final RssFeedService rssFeedService;
