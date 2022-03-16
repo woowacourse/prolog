@@ -370,7 +370,7 @@ public class StudylogService {
     }
 
     public List<RssFeedResponse> readRssFeeds() {
-        List<Studylog> studylogs = studylogRepository.findAll();
+        List<Studylog> studylogs = studylogRepository.findTop10ByOrderByCreatedAtDesc();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 

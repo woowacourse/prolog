@@ -31,4 +31,6 @@ public interface StudylogRepository extends JpaRepository<Studylog, Long>,
 
     @Query("select p from Studylog p where :date <= p.createdAt")
     List<Studylog> findByPastDays(LocalDateTime date);
+
+    List<Studylog> findTop10ByOrderByCreatedAtDesc();
 }
