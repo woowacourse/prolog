@@ -27,7 +27,7 @@ class RssFeedDocumentation extends Documentation {
 
         // when
         ExtractableResponse<Response> response = given("rss-feed/read")
-            .when().get("/rss-feeds")
+            .when().get("/rss")
             .then().log().all().extract();
 
         // then
