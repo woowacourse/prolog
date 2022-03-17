@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.view.feed.AbstractRssFeedView;
 import wooteco.prolog.studylog.application.dto.RssFeedResponse;
@@ -17,6 +18,9 @@ import wooteco.prolog.studylog.application.dto.RssFeedResponse;
 public class RssFeedService extends AbstractRssFeedView {
 
     private final StudylogService studylogService;
+
+    @Value("${studylog.url}")
+    private String url;
 
     public RssFeedService(StudylogService studylogService) {
         this.studylogService = studylogService;
@@ -39,7 +43,7 @@ public class RssFeedService extends AbstractRssFeedView {
         HttpServletRequest request,
         HttpServletResponse response
     ) {
-        List<RssFeedResponse> rssFeedResponses = studylogService.readRssFeeds();
+        List<RssFeedResponse> rssFeedResponses = studylogService.readRssFeeds(url);
 
         return rssFeedResponses.stream()
             .map(rssFeedResponse -> {

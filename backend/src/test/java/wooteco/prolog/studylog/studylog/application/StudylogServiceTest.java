@@ -73,7 +73,7 @@ class StudylogServiceTest {
         tag1, tag2, tag3, tag4, tag5
     );
 
-    private static final String LINK_PREFIX = "https://prolog.techcourse.co.kr/studylogs/";
+    private static final String URL = "http://localhost:8080/studylogs";
 
     @Autowired
     private StudylogService studylogService;
@@ -581,11 +581,11 @@ class StudylogServiceTest {
         studylogIds1.addAll(studylogIds2);
 
         List<String> studylogLinks = studylogIds1.stream()
-            .map(studylogId -> LINK_PREFIX + studylogId)
+            .map(studylogId -> URL + studylogId)
             .collect(toList());
 
         // when
-        List<RssFeedResponse> responses = studylogService.readRssFeeds();
+        List<RssFeedResponse> responses = studylogService.readRssFeeds(URL);
 
         // then
         assertThat(responses).hasSize(3);

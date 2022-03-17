@@ -38,3 +38,6 @@ management:
   health:
     elasticsearch:
       enabled: false
+
+studylog:
+  url: http://localhost:8080/studylogs

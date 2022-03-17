@@ -35,3 +35,6 @@ github:
 elasticsearch:
   host: 127.0.0.1
   port: 9200
+
+studylog:
+  url: https://127.0.0.1:8080/studylogs

@@ -52,7 +52,6 @@ import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
 public class StudylogService {
 
     private static final int A_WEEK = 7;
-    private static final String LINK_PREFIX = "https://prolog.techcourse.co.kr/studylogs/";
 
     private final StudylogRepository studylogRepository;
     private final StudylogScrapRepository studylogScrapRepository;
@@ -191,7 +190,7 @@ public class StudylogService {
 
     @Transactional
     public List<StudylogResponse> insertStudylogs(Long memberId, List<StudylogRequest> studylogRequests) {
-        if (studylogRequests.size() == 0) {
+        if (studylogRequests.isEmpty()) {
             throw new StudylogArgumentException();
         }
 
@@ -369,7 +368,7 @@ public class StudylogService {
         });
     }
 
-    public List<RssFeedResponse> readRssFeeds() {
+    public List<RssFeedResponse> readRssFeeds(String url) {
         List<Studylog> studylogs = studylogRepository.findTop10ByOrderByCreatedAtDesc();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -379,7 +378,7 @@ public class StudylogService {
                 studylog.getTitle(),
                 studylog.getContent(),
                 studylog.getUsername(),
-                LINK_PREFIX + studylog.getId(),
+                url + studylog.getId(),
                 Date.from(Instant.parse(studylog.getCreatedAt().format(formatter)))
             ))
             .collect(toList());
