@@ -10,19 +10,19 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.feed.AbstractRssFeedView;
-import wooteco.prolog.studylog.application.dto.RssFeedResponse;
+import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
 
-@Service
-public class RssFeedService extends AbstractRssFeedView {
+@Component
+public class StudylogRssFeedView extends AbstractRssFeedView {
 
     private final StudylogService studylogService;
 
     @Value("${studylog.url}")
     private String url;
 
-    public RssFeedService(StudylogService studylogService) {
+    public StudylogRssFeedView(StudylogService studylogService) {
         this.studylogService = studylogService;
     }
 
@@ -43,20 +43,20 @@ public class RssFeedService extends AbstractRssFeedView {
         HttpServletRequest request,
         HttpServletResponse response
     ) {
-        List<RssFeedResponse> rssFeedResponses = studylogService.readRssFeeds(url);
+        List<StudylogRssFeedResponse> studylogRssFeedResponses = studylogService.readRssFeeds(url);
 
-        return rssFeedResponses.stream()
-            .map(rssFeedResponse -> {
+        return studylogRssFeedResponses.stream()
+            .map(studylogRssFeedResponse -> {
                 Item item = new Item();
 
                 Content content = new Content();
-                content.setValue(rssFeedResponse.getContent());
+                content.setValue(studylogRssFeedResponse.getContent());
 
-                item.setTitle(rssFeedResponse.getTitle());
-                item.setLink(rssFeedResponse.getLink());
+                item.setTitle(studylogRssFeedResponse.getTitle());
+                item.setLink(studylogRssFeedResponse.getLink());
                 item.setContent(content);
-                item.setPubDate(rssFeedResponse.getDate());
-                item.setAuthor(rssFeedResponse.getAuthor());
+                item.setPubDate(studylogRssFeedResponse.getDate());
+                item.setAuthor(studylogRssFeedResponse.getAuthor());
 
                 return item;
             })
