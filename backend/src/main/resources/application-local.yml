@@ -37,4 +37,5 @@ elasticsearch:
   port: 9200
 
 studylog:
-  url: https://127.0.0.1:8080/studylogs
+  link: http://127.0.0.1:8080/
+  url: http://127.0.0.1:8080/studylogs

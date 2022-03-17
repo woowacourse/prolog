@@ -384,4 +384,3 @@ public class StudylogService {
             .collect(toList());
     }
 }
-x

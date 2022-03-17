@@ -19,6 +19,8 @@ public class StudylogRssFeedView extends AbstractRssFeedView {
 
     private final StudylogService studylogService;
 
+    @Value("${studylog.link}")
+    private String link;
     @Value("${studylog.url}")
     private String url;
 
@@ -33,7 +35,7 @@ public class StudylogRssFeedView extends AbstractRssFeedView {
         HttpServletRequest request
     ) {
         feed.setTitle("Prolog | 우아한테크코스 학습로그 저장소");
-        feed.setLink("https://prolog.techcourse.co.kr/");
+        feed.setLink(link);
         feed.setDescription("우아한테크코스 크루들이 배운 내용을 기록하는 학습로그 저장소입니다.");
     }
 
