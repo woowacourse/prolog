@@ -27,7 +27,7 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
-import wooteco.prolog.studylog.application.dto.RssFeedResponse;
+import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
@@ -368,13 +368,13 @@ public class StudylogService {
         });
     }
 
-    public List<RssFeedResponse> readRssFeeds(String url) {
+    public List<StudylogRssFeedResponse> readRssFeeds(String url) {
         List<Studylog> studylogs = studylogRepository.findTop10ByOrderByCreatedAtDesc();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
         return studylogs.stream()
-            .map(studylog -> new RssFeedResponse(
+            .map(studylog -> new StudylogRssFeedResponse(
                 studylog.getTitle(),
                 studylog.getContent(),
                 studylog.getUsername(),
@@ -384,3 +384,4 @@ public class StudylogService {
             .collect(toList());
     }
 }
+x

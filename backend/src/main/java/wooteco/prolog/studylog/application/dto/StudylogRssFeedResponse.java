@@ -2,7 +2,7 @@ package wooteco.prolog.studylog.application.dto;
 
 import java.util.Date;
 
-public class RssFeedResponse {
+public class StudylogRssFeedResponse {
 
     private final String title;
     private final String content;
@@ -10,7 +10,13 @@ public class RssFeedResponse {
     private final String link;
     private final Date date;
 
-    public RssFeedResponse(String title, String content, String author, String link, Date date) {
+    public StudylogRssFeedResponse(
+        String title,
+        String content,
+        String author,
+        String link,
+        Date date
+    ) {
         this.title = title;
         this.content = content;
         this.author = author;

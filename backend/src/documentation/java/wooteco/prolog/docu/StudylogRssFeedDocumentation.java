@@ -18,7 +18,7 @@ import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 
-class RssFeedDocumentation extends Documentation {
+class StudylogRssFeedDocumentation extends Documentation {
 
     @Test
     void RSS_피드를_조회한다() {

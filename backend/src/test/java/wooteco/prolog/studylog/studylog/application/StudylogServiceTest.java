@@ -43,7 +43,7 @@ import wooteco.prolog.studylog.application.StudylogLikeService;
 import wooteco.prolog.studylog.application.StudylogScrapService;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
-import wooteco.prolog.studylog.application.dto.RssFeedResponse;
+import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
@@ -585,12 +585,12 @@ class StudylogServiceTest {
             .collect(toList());
 
         // when
-        List<RssFeedResponse> responses = studylogService.readRssFeeds(URL);
+        List<StudylogRssFeedResponse> responses = studylogService.readRssFeeds(URL);
 
         // then
         assertThat(responses).hasSize(3);
         assertThat(responses)
-            .extracting(RssFeedResponse::getLink)
+            .extracting(StudylogRssFeedResponse::getLink)
             .containsExactlyInAnyOrderElementsOf(studylogLinks);
     }
 
