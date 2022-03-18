@@ -15,7 +15,7 @@ public class AbilityResponse {
     private String name;
     private String description;
     private String color;
-    private boolean parent;
+    private boolean isParent;
     private List<ChildAbilityResponse> children;
 
     public static List<AbilityResponse> listOf(List<Ability> abilities) {
