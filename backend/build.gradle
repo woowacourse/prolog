@@ -90,7 +90,7 @@ dependencies {
     implementation 'io.micrometer:micrometer-registry-prometheus'
 
     // rss feed
-    implementation 'com.rometools:rome:1.10.0'
+    implementation 'com.rometools:rome:1.18.0'
 
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'

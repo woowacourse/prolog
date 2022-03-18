@@ -1,7 +1,17 @@
 package wooteco.prolog.studylog.application.dto;
 
-import java.util.Date;
+import static java.util.stream.Collectors.toList;
 
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import wooteco.prolog.studylog.domain.Studylog;
+
+@AllArgsConstructor
+@Getter
 public class StudylogRssFeedResponse {
 
     private final String title;
@@ -10,37 +20,20 @@ public class StudylogRssFeedResponse {
     private final String link;
     private final Date date;
 
-    public StudylogRssFeedResponse(
-        String title,
-        String content,
-        String author,
-        String link,
-        Date date
-    ) {
-        this.title = title;
-        this.content = content;
-        this.author = author;
-        this.link = link;
-        this.date = date;
+    public static List<StudylogRssFeedResponse> listOf(List<Studylog> studylogs, String url) {
+
+        return studylogs.stream()
+            .map(studylog -> StudylogRssFeedResponse.of(studylog, url))
+            .collect(toList());
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public Date getDate() {
-        return date;
+    public static StudylogRssFeedResponse of(Studylog studylog, String url) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        return new StudylogRssFeedResponse(
+            studylog.getTitle(),
+            studylog.getContent(),
+            studylog.getUsername(),
+            url + "/" + studylog.getId(),
+            java.sql.Date.from(Instant.parse(studylog.getCreatedAt().format(formatter))));
     }
 }
