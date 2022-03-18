@@ -26,9 +26,13 @@ import wooteco.prolog.session.domain.Level;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.repository.LevelRepository;
 import wooteco.prolog.session.domain.repository.MissionRepository;
+import wooteco.prolog.session.domain.Level;
+import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
+import wooteco.prolog.session.domain.repository.LevelRepository;
+import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
 import wooteco.prolog.studylog.domain.repository.StudylogTagRepository;
@@ -127,7 +131,7 @@ class StudylogRepositoryTest {
     void findWithTags() {
         // given
         List<StudylogTag> studylogTags = studylogTagRepository.findByTagIn(asList(tag1, tag2));
-        List<Long> tagIds = studylogTags.stream().map(it -> it.getTag().getId()).collect(toList());
+        List<Long> tagIds = studylogTags.stream().map(it -> it.getTag().getId()).collect(Collectors.toList());
         Specification<Studylog> specs = StudylogSpecification.findByTagIn(tagIds)
                 .and(StudylogSpecification.distinct(true));
 
@@ -160,7 +164,7 @@ class StudylogRepositoryTest {
         List<Long> levelIds = singletonList(level1.getId());
         List<Long> missionIds = singletonList(mission1.getId());
         List<StudylogTag> studylogTags = studylogTagRepository.findByTagIn(asList(tag1, tag2));
-        List<Long> tagIds = studylogTags.stream().map(it -> it.getTag().getId()).collect(toList());
+        List<Long> tagIds = studylogTags.stream().map(it -> it.getTag().getId()).collect(Collectors.toList());
         Specification<Studylog> specs = StudylogSpecification.findByLevelIn(levelIds)
                 .and(StudylogSpecification.equalIn("mission", missionIds))
                 .and(StudylogSpecification.findByTagIn(tagIds))
