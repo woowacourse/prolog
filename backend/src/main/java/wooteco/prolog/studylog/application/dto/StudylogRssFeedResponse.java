@@ -33,7 +33,7 @@ public class StudylogRssFeedResponse {
             studylog.getTitle(),
             studylog.getContent(),
             studylog.getUsername(),
-            url + "/" + studylog.getId(),
+            url + "/studylogs/" + studylog.getId(),
             java.sql.Date.from(Instant.parse(studylog.getCreatedAt().format(formatter))));
     }
 }

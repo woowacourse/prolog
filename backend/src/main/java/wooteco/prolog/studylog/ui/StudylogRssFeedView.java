@@ -17,14 +17,14 @@ import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
 @Component
 public class StudylogRssFeedView extends AbstractRssFeedView {
 
-    @Value("${studylog.link}")
-    private String link;
+    @Value("${application.url}")
+    private String url;
 
     @Override
     protected void buildFeedMetadata(Map<String, Object> model, Channel feed, HttpServletRequest request) {
         feed.setTitle("Prolog | 우아한테크코스 학습로그 저장소");
         feed.setDescription("우아한테크코스 크루들이 배운 내용을 기록하는 학습로그 저장소입니다.");
-        feed.setLink(link);
+        feed.setLink(url);
     }
 
     @Override

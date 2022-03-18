@@ -17,7 +17,7 @@ public class StudylogRssFeedController {
     private final StudylogService studylogService;
     private final StudylogRssFeedView studylogRssFeedView;
 
-    @Value("${studylog.url}")
+    @Value("${application.url}")
     private String url;
 
     public StudylogRssFeedController(

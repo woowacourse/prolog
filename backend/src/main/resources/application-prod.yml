@@ -28,6 +28,5 @@ github:
     access-token: https://github.com/login/oauth/access_token
     profile: https://api.github.com/user
 
-studylog:
-  link: https://prolog.techcourse.co.kr/
-  url: https://prolog.techcourse.co.kr/studylogs
+application:
+  url: https://prolog.techcourse.co.kr
