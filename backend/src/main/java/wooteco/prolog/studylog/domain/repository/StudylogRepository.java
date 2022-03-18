@@ -13,8 +13,6 @@ import wooteco.prolog.studylog.domain.Studylog;
 public interface StudylogRepository extends JpaRepository<Studylog, Long>,
     JpaSpecificationExecutor<Studylog> {
 
-    List<Studylog> findByIdIn(List<Long> ids);
-
     Page<Studylog> findByIdInOrderByIdAsc(List<Long> ids, Pageable pageable);
 
     @Query(value = "select distinct p from Studylog p left join fetch p.studylogTags.values pt left join fetch pt.tag where p.member = :member",
@@ -31,4 +29,6 @@ public interface StudylogRepository extends JpaRepository<Studylog, Long>,
 
     @Query("select p from Studylog p where :date <= p.createdAt")
     List<Studylog> findByPastDays(LocalDateTime date);
+
+    List<Studylog> findTop10ByOrderByCreatedAtDesc();
 }

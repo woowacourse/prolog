@@ -27,6 +27,7 @@ import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
+import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.domain.Studylog;
@@ -163,7 +164,6 @@ public class StudylogService {
         Pageable pageable,
         Long memberId
     ) {
-
         Specification<Studylog> specs =
             StudylogSpecification.findByLevelIn(levelIds)
                 .and(StudylogSpecification.equalIn("mission", missionIds))
@@ -187,7 +187,7 @@ public class StudylogService {
 
     @Transactional
     public List<StudylogResponse> insertStudylogs(Long memberId, List<StudylogRequest> studylogRequests) {
-        if (studylogRequests.size() == 0) {
+        if (studylogRequests.isEmpty()) {
             throw new StudylogArgumentException();
         }
 
@@ -363,5 +363,10 @@ public class StudylogService {
                 studylogResponse.setRead(true);
             }
         });
+    }
+
+    public List<StudylogRssFeedResponse> readRssFeeds(String url) {
+        List<Studylog> studylogs = studylogRepository.findTop10ByOrderByCreatedAtDesc();
+        return StudylogRssFeedResponse.listOf(studylogs, url);
     }
 }
