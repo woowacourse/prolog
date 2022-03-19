@@ -432,7 +432,7 @@ public class AbilityDocumentation extends Documentation {
         ExtractableResponse<Response> response = given("abilities/create-template-be")
             .header(AUTHORIZATION, "Bearer " + accessToken)
             .when()
-            .post("/abilities/template/be")
+            .post("/abilities/templates/be")
             .then()
             .log().all()
             .extract();
@@ -450,7 +450,7 @@ public class AbilityDocumentation extends Documentation {
         ExtractableResponse<Response> response = given("abilities/create-template-fe")
             .header(AUTHORIZATION, "Bearer " + accessToken)
             .when()
-            .post("/abilities/template/fe")
+            .post("/abilities/templates/fe")
             .then()
             .log().all()
             .extract();

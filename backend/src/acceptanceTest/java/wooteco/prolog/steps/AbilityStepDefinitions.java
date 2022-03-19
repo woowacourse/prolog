@@ -27,18 +27,21 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
 
         AbilityCreateRequest request = fixture.toCreateRequestWithParentId(null);
         context.invokeHttpPostWithToken("/abilities", request);
-        context.storage.put(abilityName, context.response.as(AbilityResponse.class));
+        if (context.response.statusCode() == HttpStatus.OK.value()) {
+            context.storage.put(abilityName, context.response.as(AbilityResponse.class));
+        }
     }
 
     @When("{string}의 자식역량 {string}(을)(를) 추가하(면)(고)")
     public void 자식역량을추가하면(String parentAbility, String childAbility) {
-        String username = (String) context.storage.get("username");
         AbilityAcceptanceFixture fixture = AbilityAcceptanceFixture.findByName(childAbility);
-        Long parentAbilityId = getAbilityIdByName(username, parentAbility);
+        Long parentAbilityId = getAbilityIdByName(parentAbility);
 
         AbilityCreateRequest request = fixture.toCreateRequestWithParentId(parentAbilityId);
         context.invokeHttpPostWithToken("/abilities", request);
-        context.storage.put(childAbility, context.response.as(AbilityResponse.class));
+        if (context.response.statusCode() == HttpStatus.OK.value()) {
+            context.storage.put(childAbility, context.response.as(AbilityResponse.class));
+        }
     }
 
     @When("역량 목록을 조회하면")
@@ -68,7 +71,8 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
 
     @When("부모 역량 목록을 조회하면")
     public void 부모역량목록을조회하면() {
-        context.invokeHttpGetWithToken("/abilities/parent-only");
+        String username = (String) context.storage.get("username");
+        context.invokeHttpGetWithToken("/members/"+username+"/abilities");
     }
 
     @Then("부모 역량 목록을 받는다.")
@@ -182,7 +186,7 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
     @And("{string} 과정으로 기본 역량을 등록하고")
     @When("{string} 과정으로 기본 역량을 등록하면")
     public void 과정으로기본역량을등록하고(String template) {
-        context.invokeHttpPostWithToken("/abilities/template/" + template);
+        context.invokeHttpPostWithToken("/abilities/templates/" + template);
     }
 
     @Then("기본 역량 조회 실패 관련 예외가 발생한다.")
@@ -201,18 +205,14 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
     }
 
     private Long getAbilityIdByName(String abilityName) {
-        context.invokeHttpGetWithToken("/members/{username}/abilities");
+        String username = (String) context.storage.get("username");
+        context.invokeHttpGetWithToken("/members/" + username + "/abilities");
         List<AbilityResponse> responses = context.response.jsonPath().getList(".", AbilityResponse.class);
 
-        return responses.stream().filter(response -> abilityName.equals(response.getName()))
+        Long aLong = responses.stream().filter(response -> abilityName.equals(response.getName()))
             .map(AbilityResponse::getId)
             .findAny()
             .orElseThrow(AbilityNotFoundException::new);
-    }
-
-    private Long getAbilityIdByName(String username, String abilityName) {
-        context.invokeHttpGetWithToken("/members/" + username + "/abilities");
-        List<AbilityResponse> responses = context.response.jsonPath().getList(".", AbilityResponse.class);
 
         return responses.stream().filter(response -> abilityName.equals(response.getName()))
             .map(AbilityResponse::getId)
