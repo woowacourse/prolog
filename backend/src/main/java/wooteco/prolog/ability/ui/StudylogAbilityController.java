@@ -34,13 +34,13 @@ public class StudylogAbilityController {
         return ResponseEntity.ok().body(abilityResponses);
     }
 
-    @GetMapping("/members/{username}/abilityStudylogs")
+    @GetMapping("/members/{username}/ability-studylogs")
     public ResponseEntity<List<AbilityStudylogResponse>> findAbilityStudylogs(@PathVariable String username, @RequestParam(required = false) List<Long> abilityIds) {
         List<AbilityStudylogResponse> studylogs = studylogAbilityService.findAbilityStudylogsByAbilityIds(username, abilityIds);
         return ResponseEntity.ok().body(studylogs);
     }
 
-    @GetMapping("/members/{username}/abilityStudylogs/mapping-only")
+    @GetMapping("/members/{username}/ability-studylogs/mapping-only")
     public ResponseEntity<List<AbilityStudylogResponse>> findAbilityStudylogsMappingOnly(@PathVariable String username, @RequestParam(required = false) List<Long> abilityIds) {
         List<AbilityStudylogResponse> studylogs = studylogAbilityService.findAbilityStudylogsMappingOnlyByAbilityIds(username, abilityIds);
         return ResponseEntity.ok().body(studylogs);
