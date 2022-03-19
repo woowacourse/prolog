@@ -149,10 +149,6 @@ public class Studylog extends BaseEntity {
         return viewCount.getViews();
     }
 
-    public String getUsername() {
-        return member.getUsername();
-    }
-
     public String getNickname() {
         return member.getNickname();
     }
