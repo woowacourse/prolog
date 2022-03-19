@@ -1,4 +1,4 @@
-import { COLOR } from '../../constants';
+import { COLOR } from '../../../constants';
 
 const abilityList = [
   {
