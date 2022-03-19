@@ -121,11 +121,6 @@ Feature: 역량 기능
     When 역량 목록을 조회하면
     Then 역량 목록을 받는다.
 
-  Scenario: (프론트엔드) 기본 역량 등록하기
-    And "fe" 과정으로 기본 역량을 등록하고
-    When 역량 목록을 조회하면
-    Then 역량 목록을 받는다.
-
   Scenario: (프론트엔드) 기본 역량 삭제하기
     And 관리자가 기본 역량 "JavaScript"을 "fe" 과정으로 추가하고
     And "fe" 과정으로 기본 역량을 등록하고
