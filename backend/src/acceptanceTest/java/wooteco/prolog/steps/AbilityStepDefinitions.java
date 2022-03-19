@@ -72,7 +72,7 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
     @When("부모 역량 목록을 조회하면")
     public void 부모역량목록을조회하면() {
         String username = (String) context.storage.get("username");
-        context.invokeHttpGetWithToken("/members/"+username+"/abilities/parent-only");
+        context.invokeHttpGetWithToken("/members/" + username + "/abilities");
     }
 
     @Then("부모 역량 목록을 받는다.")
@@ -206,13 +206,8 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
 
     private Long getAbilityIdByName(String abilityName) {
         String username = (String) context.storage.get("username");
-        context.invokeHttpGetWithToken("/members/" + username + "/abilities");
+        context.invokeHttpGetWithToken("/members/" + username + "/abilities/flat");
         List<AbilityResponse> responses = context.response.jsonPath().getList(".", AbilityResponse.class);
-
-        Long aLong = responses.stream().filter(response -> abilityName.equals(response.getName()))
-            .map(AbilityResponse::getId)
-            .findAny()
-            .orElseThrow(AbilityNotFoundException::new);
 
         return responses.stream().filter(response -> abilityName.equals(response.getName()))
             .map(AbilityResponse::getId)

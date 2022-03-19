@@ -43,12 +43,12 @@ public class AbilityController {
 
     @GetMapping("/members/{username}/abilities")
     public ResponseEntity<List<AbilityResponse>> findAbilitiesByUsername(@PathVariable String username) {
-        return ResponseEntity.ok(abilityService.findFlatAbilitiesByMember(username));
+        return ResponseEntity.ok(abilityService.findParentAbilitiesByUsername(username));
     }
 
-    @GetMapping("/members/{username}/abilities/parent-only")
+    @GetMapping("/members/{username}/abilities/flat")
     public ResponseEntity<List<AbilityResponse>> findParentAbilitiesByUsername(@PathVariable String username) {
-        return ResponseEntity.ok(abilityService.findParentAbilitiesByUsername(username));
+        return ResponseEntity.ok(abilityService.findFlatAbilitiesByMember(username));
     }
 
     @MemberOnly
