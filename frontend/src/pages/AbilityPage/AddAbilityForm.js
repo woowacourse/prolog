@@ -17,7 +17,11 @@ const AddAbilityForm = ({
     event.preventDefault();
 
     const newAbility = { name, description, color, parent: parent ?? null };
+
     onSubmit.mutate(newAbility);
+    if (onSubmit.isSuccess) {
+      onClose();
+    }
   };
 
   return (

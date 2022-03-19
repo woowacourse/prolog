@@ -1,9 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 
-import { UserContext } from '../../contexts/UserProvider';
 import Chip from '../../components/Chip/Chip';
 import AddAbilityForm from './AddAbilityForm';
 import EditAbilityForm from './EditAbilityForm';
@@ -18,10 +16,10 @@ import {
   EditingListItem,
   AbilityItem,
 } from './styles';
+import AbilityRequest from '../../apis/ability';
 
 const AbilityListItem = ({ ability, onAddAbility, onDelete, readOnly }) => {
   const { username: pageUsername } = useParams();
-  const { user } = useContext(UserContext);
   const queryClient = useQueryClient();
 
   const { id, name, description, color, isParent, children: subAbilities } = ability;
@@ -73,17 +71,10 @@ const AbilityListItem = ({ ability, onAddAbility, onDelete, readOnly }) => {
     setItemStatus((prevState) => ({ ...prevState, isOpened: true, isAddFormOpened: true }));
   };
 
-  // 자식 역량 수정하기
+  /** 역량 수정 */
   const onEditAbility = useMutation(
-    async (formData) =>
-      await axios({
-        method: 'put',
-        url: `http://localhost:5000/abilities/${formData.id}`,
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-        data: { ...formData },
-      }),
+    (formData) =>
+      AbilityRequest.updateAbility({ url: `/abilities/${formData.id}`, data: formData }),
     {
       onSuccess: () => {
         queryClient.invalidateQueries([`${pageUsername}-abilities`]);

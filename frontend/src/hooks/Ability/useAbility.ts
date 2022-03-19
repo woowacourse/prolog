@@ -29,7 +29,8 @@ const useAbility = ({ username, setAddFormStatus, addFormClose }: Props) => {
     (ability) => AbilityRequest.addAbility({ url: `/abilities`, data: ability }),
     {
       onSuccess: () => {
-        setAddFormStatus({ ...DEFAULT_ABILITY_FORM, isOpened: true });
+        // TODO: 스크롤을 해당 위치로 보내는 기능 고려하기
+        setAddFormStatus({ ...DEFAULT_ABILITY_FORM, isOpened: false });
         queryClient.invalidateQueries([`${username}-abilities`]);
       },
       onError: () => {
