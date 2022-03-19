@@ -43,7 +43,8 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
 
     @When("역량 목록을 조회하면")
     public void 역량목록을조회하면() {
-        context.invokeHttpGetWithToken("/abilities");
+        String username = (String) context.storage.get("username");
+        context.invokeHttpGetWithToken("/members/" + username + "/abilities");
     }
 
     @When("{string}의 역량 목록을 조회하면")
@@ -56,8 +57,7 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
     public void 역량목록을받는다() {
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
 
-        List<AbilityResponse> responses = context.response.jsonPath()
-            .getList(".", AbilityResponse.class);
+        List<String> responses = context.response.jsonPath().getList("name", String.class);
         assertThat(responses).isNotEmpty();
     }
 
@@ -74,7 +74,7 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
     @Then("부모 역량 목록을 받는다.")
     public void 부모역량목록을받는다() {
         List<AbilityResponse> responses = context.response.jsonPath().getList(".", AbilityResponse.class);
-        assertThat(responses.stream().allMatch(AbilityResponse::isParent)).isTrue();
+        assertThat(responses.stream().allMatch(AbilityResponse::getIsParent)).isTrue();
     }
 
     @And("{string} 역량을 이름 {string}, 설명 {string}, 색상 {string} 으로 수정하고")

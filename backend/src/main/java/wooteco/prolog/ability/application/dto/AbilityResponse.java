@@ -34,4 +34,8 @@ public class AbilityResponse {
             ChildAbilityResponse.of(ability.getChildren())
         );
     }
+
+    public boolean getIsParent() {
+        return isParent;
+    }
 }

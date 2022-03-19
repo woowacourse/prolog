@@ -4,10 +4,13 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import wooteco.prolog.ability.domain.Ability;
 
 @AllArgsConstructor
+@Getter
 public class ChildAbilityResponse {
+
     private Long id;
     private String name;
     private String description;
@@ -28,22 +31,6 @@ public class ChildAbilityResponse {
             childAbility.getColor(),
             childAbility.isParent()
         );
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getColor() {
-        return color;
     }
 
     public boolean getIsParent() {

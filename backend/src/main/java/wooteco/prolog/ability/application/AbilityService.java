@@ -189,8 +189,7 @@ public class AbilityService {
     }
 
     private List<DefaultAbility> findDefaultAbilitiesByTemplate(String templateType) {
-        List<DefaultAbility> defaultAbilities = defaultAbilityRepository
-            .findByTemplateOrTemplate(COMMON_TYPE, templateType);
+        List<DefaultAbility> defaultAbilities = defaultAbilityRepository.findByTemplateOrTemplate(COMMON_TYPE, templateType);
 
         if (defaultAbilities.isEmpty()) {
             throw new DefaultAbilityNotFoundException();

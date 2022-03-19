@@ -34,6 +34,13 @@ public class AbilityController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/abilities/default")
+    public ResponseEntity<Void> createDefaultAbilities(@RequestBody DefaultAbilityCreateRequest request) {
+        abilityService.createDefaultAbility(request);
+
+        return ResponseEntity.ok().build();
+    }
+
     @MemberOnly
     @PostMapping("/abilities")
     public ResponseEntity<AbilityResponse> createAbility(@AuthMemberPrincipal LoginMember member, @RequestBody AbilityCreateRequest abilityCreateRequest) {
