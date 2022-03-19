@@ -2,7 +2,6 @@ package wooteco.prolog.docu;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.http.MediaType.APPLICATION_RSS_XML_VALUE;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -31,7 +30,7 @@ class StudylogRssFeedDocumentation extends Documentation {
             .then().log().all().extract();
 
         // then
-        assertThat(response.contentType()).isEqualTo(APPLICATION_RSS_XML_VALUE);
+        assertThat(response.contentType()).isEqualTo("application/rss+xml;charset=UTF-8");
     }
 
     private ExtractableResponse<Response> 스터디로그_등록함(List<StudylogRequest> request) {

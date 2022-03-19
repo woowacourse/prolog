@@ -38,22 +38,26 @@ public class StudylogRssFeedView extends AbstractRssFeedView {
 
     private Item createItem(StudylogRssFeedResponse rssFeedResponse) {
         Item item = new Item();
+
         item.setTitle(rssFeedResponse.getTitle());
         item.setLink(rssFeedResponse.getLink());
         item.setPubDate(rssFeedResponse.getDate());
         item.setAuthor(rssFeedResponse.getAuthor());
         item.setContent(createContent(rssFeedResponse));
+
         return item;
     }
 
     private Content createContent(StudylogRssFeedResponse rssFeedResponse) {
         Content content = new Content();
+
         content.setValue(rssFeedResponse.getContent());
+
         return content;
     }
 
     @Override
-    public void setContentType(String contentType) {
-        super.setContentType("text/xml; charset=UTF-8");
+    protected void setResponseContentType(HttpServletRequest request, HttpServletResponse response) {
+        response.setContentType("application/rss+xml;charset=UTF-8");
     }
 }

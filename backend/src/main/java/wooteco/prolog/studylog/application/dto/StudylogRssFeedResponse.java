@@ -21,7 +21,6 @@ public class StudylogRssFeedResponse {
     private final Date date;
 
     public static List<StudylogRssFeedResponse> listOf(List<Studylog> studylogs, String url) {
-
         return studylogs.stream()
             .map(studylog -> StudylogRssFeedResponse.of(studylog, url))
             .collect(toList());
@@ -29,11 +28,13 @@ public class StudylogRssFeedResponse {
 
     public static StudylogRssFeedResponse of(Studylog studylog, String url) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
         return new StudylogRssFeedResponse(
             studylog.getTitle(),
             studylog.getContent(),
             studylog.getNickname(),
             url + "/studylogs/" + studylog.getId(),
-            java.sql.Date.from(Instant.parse(studylog.getCreatedAt().format(formatter))));
+            Date.from(Instant.parse(studylog.getCreatedAt().format(formatter)))
+        );
     }
 }
