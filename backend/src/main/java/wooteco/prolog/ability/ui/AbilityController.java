@@ -34,13 +34,6 @@ public class AbilityController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/abilities/default")
-    public ResponseEntity<Void> createDefaultAbilities(@RequestBody DefaultAbilityCreateRequest request) {
-        abilityService.createDefaultAbility(request);
-
-        return ResponseEntity.ok().build();
-    }
-
     @MemberOnly
     @PostMapping("/abilities")
     public ResponseEntity<AbilityResponse> createAbility(@AuthMemberPrincipal LoginMember member, @RequestBody AbilityCreateRequest abilityCreateRequest) {
@@ -50,13 +43,12 @@ public class AbilityController {
 
     @GetMapping("/members/{username}/abilities")
     public ResponseEntity<List<AbilityResponse>> findAbilitiesByUsername(@PathVariable String username) {
-        return ResponseEntity.ok(abilityService.findAbilitiesByMemberUsername(username));
+        return ResponseEntity.ok(abilityService.findFlatAbilitiesByMember(username));
     }
 
-    @MemberOnly
-    @GetMapping("/abilities/parent-only")
-    public ResponseEntity<List<AbilityResponse>> findParentAbilitiesByMember(@AuthMemberPrincipal LoginMember member) {
-        return ResponseEntity.ok(abilityService.findParentAbilitiesByMemberId(member.getId()));
+    @GetMapping("/members/{username}/abilities/parent-only")
+    public ResponseEntity<List<AbilityResponse>> findParentAbilitiesByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(abilityService.findParentAbilitiesByUsername(username));
     }
 
     @MemberOnly
@@ -71,6 +63,14 @@ public class AbilityController {
     @DeleteMapping("/abilities/{abilityId}")
     public ResponseEntity<Void> deleteAbility(@AuthMemberPrincipal LoginMember member, @PathVariable Long abilityId) {
         abilityService.deleteAbility(member.getId(), abilityId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Deprecated
+    @PostMapping("/abilities/default")
+    public ResponseEntity<Void> createDefaultAbilities(@RequestBody DefaultAbilityCreateRequest request) {
+        abilityService.createDefaultAbility(request);
+
         return ResponseEntity.ok().build();
     }
 }

@@ -24,6 +24,12 @@ public class AbilityResponse {
             .collect(toList());
     }
 
+    public static List<AbilityResponse> flatListOf(List<Ability> abilities) {
+        return abilities.stream()
+            .map(AbilityResponse::flatOf)
+            .collect(toList());
+    }
+
     public static AbilityResponse of(Ability ability) {
         return new AbilityResponse(
             ability.getId(),
@@ -32,6 +38,17 @@ public class AbilityResponse {
             ability.getColor(),
             ability.isParent(),
             ChildAbilityResponse.of(ability.getChildren())
+        );
+    }
+
+    public static AbilityResponse flatOf(Ability ability) {
+        return new AbilityResponse(
+            ability.getId(),
+            ability.getName(),
+            ability.getDescription(),
+            ability.getColor(),
+            ability.isParent(),
+            null
         );
     }
 

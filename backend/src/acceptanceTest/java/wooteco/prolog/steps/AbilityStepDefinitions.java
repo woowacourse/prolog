@@ -72,7 +72,7 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
     @When("부모 역량 목록을 조회하면")
     public void 부모역량목록을조회하면() {
         String username = (String) context.storage.get("username");
-        context.invokeHttpGetWithToken("/members/"+username+"/abilities");
+        context.invokeHttpGetWithToken("/members/"+username+"/abilities/parent-only");
     }
 
     @Then("부모 역량 목록을 받는다.")

@@ -99,6 +99,20 @@ public class AbilityService {
         return AbilityResponse.listOf(parentAbilities);
     }
 
+    public List<AbilityResponse> findParentAbilitiesByUsername(String username) {
+        Member member = memberService.findByUsername(username);
+        List<Ability> parentAbilities = abilityRepository.findByMemberIdAndParentIsNull(member.getId());
+
+        return AbilityResponse.listOf(parentAbilities);
+    }
+
+    public List<AbilityResponse> findFlatAbilitiesByMember(String username) {
+        Member member = memberService.findByUsername(username);
+        List<Ability> parentAbilities = abilityRepository.findByMemberId(member.getId());
+
+        return AbilityResponse.flatListOf(parentAbilities);
+    }
+
     @Transactional
     public List<AbilityResponse> updateAbility(Long memberId, Long abilityId, AbilityUpdateRequest request) {
         Ability legacyAbility = findAbilityByIdAndMemberId(abilityId, memberId);
