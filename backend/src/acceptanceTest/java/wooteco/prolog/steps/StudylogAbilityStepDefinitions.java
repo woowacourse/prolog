@@ -52,13 +52,13 @@ public class StudylogAbilityStepDefinitions extends AcceptanceSteps {
     @When("{string}이 작성한 학습로그에 역량정보를 포함하여 조회하면")
     public void 작성한학습로그에역량정보를포함하여조회하면(String member) {
         String username = GithubResponses.findByName(member).getLogin();
-        context.invokeHttpGet("/members/" + username + "/abilityStudylogs");
+        context.invokeHttpGet("/members/" + username + "/ability-studylogs");
     }
 
     @When("{string}이 작성한 역량이 맵핑된 학습로그를 조회하면")
     public void 작성한역량이맵핑된학습로그를조회하면(String member) {
         String username = GithubResponses.findByName(member).getLogin();
-        context.invokeHttpGet("/members/" + username + "/abilityStudylogs/mapping-only");
+        context.invokeHttpGet("/members/" + username + "/ability-studylogs/mapping-only");
     }
 
     @Then("{string} 학습로그가 조회된다")
