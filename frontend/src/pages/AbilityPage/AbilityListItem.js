@@ -30,6 +30,7 @@ const AbilityListItem = ({ ability, onAddAbility, onDelete, readOnly }) => {
     isEditing: false,
     isAddFormOpened: false,
   });
+
   const [addFormStatus, setAddFormStatus] = useState({
     name: '',
     description: '',
@@ -42,6 +43,10 @@ const AbilityListItem = ({ ability, onAddAbility, onDelete, readOnly }) => {
   }, [itemStatus.isAddFormOpened, subAbilities.length]);
 
   const toggleIsOpened = () => {
+    if (itemStatus.isOpened) {
+      closeAddForm();
+    }
+
     setItemStatus((prevState) => ({ ...prevState, isOpened: !prevState.isOpened }));
   };
 

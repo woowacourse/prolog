@@ -30,7 +30,7 @@ const AddAbilityForm = ({
           backgroundColor={color}
           minWidth="3rem"
           fontSize="1.2rem"
-          maxLength={60}
+          maxLength={30}
         >
           {name || '라벨 미리보기'}
         </Chip>

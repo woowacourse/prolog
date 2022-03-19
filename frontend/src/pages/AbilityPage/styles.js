@@ -188,94 +188,6 @@ export const NoContent = styled.li`
   text-align: center;
 `;
 
-export const NoAbilityContainer = styled.div`
-  width: 100%;
-  height: 640px;
-
-  background-image: url('../../assets/images/select-default-ability-bg.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center 140px;
-  clip: rect(0, 175px, 113px, 0);
-
-  position: relative;
-`;
-
-export const FeButton = styled.button`
-  width: 13rem;
-  height: 12rem;
-
-  background-image: url('../../assets/images/ability-fe.png');
-  background-size: 60%;
-  background-repeat: no-repeat;
-  background-position: center bottom;
-
-  :hover,
-  :active {
-    background-position: top;
-
-    span {
-      transform: scale(1.4);
-      color: ${COLOR.RED_500};
-    }
-  }
-
-  position: relative;
-
-  span {
-    color: ${COLOR.BLACK_900};
-
-    font-size: 1.8rem;
-    font-weight: bold;
-
-    position: absolute;
-    top: 0;
-    left: -80%;
-  }
-`;
-
-export const BeButton = styled.button`
-  width: 13rem;
-  height: 12rem;
-
-  background-image: url('../../assets/images/ability-be.png');
-  background-size: 60%;
-  background-repeat: no-repeat;
-  background-position: center bottom;
-
-  :hover,
-  :active {
-    background-position: top;
-
-    span {
-      transform: scale(1.4);
-      color: ${COLOR.DARK_BLUE_300};
-    }
-  }
-
-  position: relative;
-
-  span {
-    color: ${COLOR.BLACK_900};
-
-    font-size: 1.8rem;
-    font-weight: bold;
-
-    position: absolute;
-    top: 0;
-    right: -80%;
-  }
-`;
-
-export const AnotherWay = styled.span`
-  position: absolute;
-  right: 0;
-  top: 0;
-
-  font-size: 1.4rem;
-  color: ${COLOR.DARK_GRAY_600};
-`;
-
 export const FormButtonWrapper = styled.div`
   width: 98%;
   margin: 0 auto;
@@ -339,7 +251,12 @@ export const AddAbilityButton = styled.button`
 
 export const AbilityList = styled.ul`
   width: 100%;
-  max-height: 70rem;
+  ${({ height }) =>
+    height &&
+    `
+    min-height: ${height}; 
+    max-height: 64rem;
+    `}
 
   background-color: ${COLOR.WHITE};
   border: 2px solid ${COLOR.LIGHT_GRAY_400};
@@ -350,7 +267,19 @@ export const AbilityList = styled.ul`
   > div {
     width: 100%;
     padding: 0.5rem 2rem;
-    border: 1px solid red;
+  }
+
+  > span {
+    ${({ height }) =>
+      height &&
+      `
+    height: ${height}; 
+    `}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 1.4rem;
   }
 
   && {

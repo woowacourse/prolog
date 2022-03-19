@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import { UserContext } from '../../contexts/UserProvider';
 
+import EmptyAbility from './Ability/EmptyAbility';
 import AbilityListItem from './AbilityListItem';
 import AddAbilityForm from './AddAbilityForm';
 
@@ -37,7 +38,7 @@ const AbilityPage = () => {
   };
 
   // TODO: 역량 이력 불러오기, API 레이어 분리
-  const { data: abilities } = useQuery([`${username}-abilities`], async () => {
+  const { data: abilities = [] } = useQuery([`${username}-abilities`], async () => {
     const { data } = await axios({
       method: 'get',
       url: `${BASE_URL}/members/${username}/abilities`,
@@ -60,7 +61,7 @@ const AbilityPage = () => {
       }),
     {
       onSuccess: () => {
-        alert('역량 삭제하였습니다.');
+        addFormClose();
         queryClient.invalidateQueries([`${username}-abilities`]);
       },
       onError: () => {
@@ -84,6 +85,7 @@ const AbilityPage = () => {
       onSuccess: () => {
         setAddFormStatus({ ...DEFAULT_ABILITY_FORM, isOpened: true });
         queryClient.invalidateQueries([`${username}-abilities`]);
+        addFormClose();
       },
       onError: () => {
         alert('역량 등록에 실패하였습니다.');
@@ -91,6 +93,7 @@ const AbilityPage = () => {
     }
   );
 
+  // TODO: 너무 많은 인터렉션이 일어나고 있음. 그래도 괜찮을지 고민해보기. ex) uncontrolled 방법
   const onFormDataChange = (key) => (event) => {
     setAddFormStatus({ ...addFormStatus, [key]: event.target.value });
   };
@@ -123,18 +126,26 @@ const AbilityPage = () => {
         </AbilityList>
       )}
 
-      <AbilityList height="36rem">
-        {abilities
-          ?.filter(({ isParent }) => isParent)
-          .map((ability) => (
-            <AbilityListItem
-              key={ability.id}
-              ability={ability}
-              onDelete={onDeleteAbility}
-              readOnly={readOnly}
-              onAddAbility={onAddAbility}
-            />
-          ))}
+      <AbilityList height="32rem">
+        {abilities.length === 0 ? (
+          readOnly ? (
+            <span>등록된 역량이 없습니다.</span>
+          ) : (
+            <EmptyAbility user={user} />
+          )
+        ) : (
+          abilities
+            .filter(({ isParent }) => isParent)
+            .map((ability) => (
+              <AbilityListItem
+                key={ability.id}
+                ability={ability}
+                onDelete={onDeleteAbility}
+                readOnly={readOnly}
+                onAddAbility={onAddAbility}
+              />
+            ))
+        )}
       </AbilityList>
     </Container>
   );
