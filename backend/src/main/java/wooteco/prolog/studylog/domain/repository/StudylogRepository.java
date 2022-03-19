@@ -10,10 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.domain.Studylog;
 
-public interface StudylogRepository extends JpaRepository<Studylog, Long>,
-    JpaSpecificationExecutor<Studylog> {
-
-    Page<Studylog> findByIdInOrderByIdAsc(List<Long> ids, Pageable pageable);
+public interface StudylogRepository extends JpaRepository<Studylog, Long>, JpaSpecificationExecutor<Studylog> {
 
     Page<Studylog> findByIdInOrderByIdAsc(List<Long> ids, Pageable pageable);
 
