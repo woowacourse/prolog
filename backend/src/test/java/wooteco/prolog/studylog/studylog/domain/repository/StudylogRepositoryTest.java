@@ -2,9 +2,12 @@ package wooteco.prolog.studylog.studylog.domain.repository;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -20,6 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
+import wooteco.prolog.session.domain.Level;
+import wooteco.prolog.session.domain.Mission;
+import wooteco.prolog.session.domain.repository.LevelRepository;
+import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.session.domain.Level;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
@@ -202,5 +209,41 @@ class StudylogRepositoryTest {
         // then
         assertThat(studylogs).hasSize(1);
         assertThat(studylogs).containsExactly(studylog);
+    }
+
+    @DisplayName("스터디로그 중 최신 10개만 조회한다.")
+    @Test
+    void findTop10OrderByCreatedAtDesc() {
+        // given
+        List<String> titles = new ArrayList<>();
+
+        for (int i = 1; i <= 11; i++) {
+            Studylog studylog = new Studylog(
+                member1,
+                String.valueOf(i),
+                String.valueOf(i),
+                mission1,
+                asList(tag1, tag2)
+            );
+            Studylog savedStudylog = studylogRepository.save(studylog);
+
+            titles.add(savedStudylog.getTitle());
+        }
+
+        List<String> sources = titles.stream()
+            .sorted(Comparator.reverseOrder())
+            .limit(10)
+            .collect(toList());
+
+        // when
+        List<Studylog> studylogs = studylogRepository.findTop10ByOrderByCreatedAtDesc();
+
+        List<String> targets = studylogs.stream()
+            .map(Studylog::getTitle)
+            .collect(toList());
+
+        // then
+        assertThat(studylogs).hasSize(10);
+        assertThat(targets).containsExactlyInAnyOrderElementsOf(sources);
     }
 }

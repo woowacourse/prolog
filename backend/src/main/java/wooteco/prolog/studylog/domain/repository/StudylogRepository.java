@@ -10,10 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.domain.Studylog;
 
-public interface StudylogRepository extends JpaRepository<Studylog, Long>,
-    JpaSpecificationExecutor<Studylog> {
-
-    List<Studylog> findByIdIn(List<Long> ids);
+public interface StudylogRepository extends JpaRepository<Studylog, Long>, JpaSpecificationExecutor<Studylog> {
 
     Page<Studylog> findByIdInOrderByIdAsc(List<Long> ids, Pageable pageable);
 
@@ -31,4 +28,6 @@ public interface StudylogRepository extends JpaRepository<Studylog, Long>,
 
     @Query("select p from Studylog p where :date <= p.createdAt")
     List<Studylog> findByPastDays(LocalDateTime date);
+
+    List<Studylog> findTop10ByOrderByCreatedAtDesc();
 }

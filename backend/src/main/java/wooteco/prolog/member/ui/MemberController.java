@@ -43,17 +43,22 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
-    @MemberOnly
-    public ResponseEntity<MemberResponse> findMemberInfoOfMine(@AuthMemberPrincipal LoginMember member) {
-        return ResponseEntity.ok().body(MemberResponse.of(memberService.findById(member.getId())));
-    }
-
     // admin only
     @GetMapping
     public ResponseEntity<MembersResponse> show(@PageableDefault(direction = DESC, sort = "id") Pageable pageable) {
         MembersResponse response = memberService.findAll(pageable);
         return ResponseEntity.ok(response);
+    }
+
+    @Deprecated
+    @PutMapping("/me")
+    @MemberOnly
+    public ResponseEntity<Void> updateMember_deprecated(
+        @AuthMemberPrincipal LoginMember member,
+        @RequestBody MemberUpdateRequest updateRequest
+    ) {
+        memberService.updateMember_deprecated(member.getId(), updateRequest);
+        return ResponseEntity.ok().build();
     }
 
     @Deprecated
