@@ -56,7 +56,7 @@ const AbilityListItem = ({ ability, onAddAbility, onDelete, readOnly }) => {
   const onDeleteAbility = (targetId) => {
     const { isLoading, mutate } = onDelete;
 
-    if (id === targetId && subAbilities) {
+    if (id === targetId && subAbilities.length) {
       alert('하위 역량이 있는 역량은 삭제할 수 없습니다.');
       return;
     }
