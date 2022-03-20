@@ -31,16 +31,27 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
             STUDYLOG2.getStudylogRequest()
         );
 
-        context.invokeHttpPostWithToken("/posts", studylogRequests);
+        context.invokeHttpPostWithToken("/studylogs", studylogRequests);
     }
 
+    @Given("스터디로그를 작성하고")
     @When("스터디로그를 작성하면")
     public void 스터디로그를작성하면() {
         List<StudylogRequest> studylogRequests = Arrays.asList(
             STUDYLOG1.getStudylogRequest()
         );
 
-        context.invokeHttpPostWithToken("/posts", studylogRequests);
+        context.invokeHttpPostWithToken("/studylogs", studylogRequests);
+    }
+
+    @Given("{string} 스터디로그를 작성하고")
+    public void 특정스터디로그를작성하고(String title) {
+        List<StudylogRequest> studylogRequests = Arrays.asList(
+            new StudylogRequest(title, "content", 1L, Collections.emptyList())
+        );
+
+        context.invokeHttpPostWithToken("/studylogs", studylogRequests);
+        context.storage.put(title, context.response.as(StudylogResponse.class));
     }
 
     @Then("스터디로그가 작성된다")
@@ -57,7 +68,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
             studylogRequests.add(STUDYLOG1.getStudylogRequest());
         }
 
-        context.invokeHttpPostWithToken("/posts", studylogRequests);
+        context.invokeHttpPostWithToken("/studylogs", studylogRequests);
     }
 
     @Given("{int}번 미션의 스터디로그를 {long}개 작성하고")
@@ -75,7 +86,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
             studylogRequests.add(requests.get(0));
         }
 
-        context.invokeHttpPostWithToken("/posts", studylogRequests);
+        context.invokeHttpPostWithToken("/studylogs", studylogRequests);
     }
 
     @Given("{int}번 태그의 스터디로그를 {long}개 작성하고")
@@ -93,7 +104,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
             studylogRequests.add(requests.get(0));
         }
 
-        context.invokeHttpPostWithToken("/posts", studylogRequests);
+        context.invokeHttpPostWithToken("/studylogs", studylogRequests);
     }
 
     @Given("서로 다른 태그와 미션을 가진 스터디로그를 다수 생성하고")
@@ -110,7 +121,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
             studylogRequests.add(STUDYLOG3.getStudylogRequest());
         }
 
-        context.invokeHttpPostWithToken("/posts", studylogRequests);
+        context.invokeHttpPostWithToken("/studylogs", studylogRequests);
     }
 
     @Given("서로 다른 레벨을 가진 스터디로그를 다수 생성하고")
@@ -127,62 +138,62 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
             studylogRequests.add(STUDYLOG3.getStudylogRequest());
         }
 
-        context.invokeHttpPostWithToken("/posts", studylogRequests);
+        context.invokeHttpPostWithToken("/studylogs", studylogRequests);
     }
 
 
     @When("{int}번 미션과 {int}번 태그로 {long}개를 조회하면")
     public void 미션태그필터를사이즈와함께조회한다(int missionNumber, int tagNumber, Long pageSize) {
-        String path = String.format("/posts?tags=%d&missions=%d&size=%d", tagNumber, missionNumber, pageSize);
+        String path = String.format("/studylogs?tags=%d&missions=%d&size=%d", tagNumber, missionNumber, pageSize);
         context.invokeHttpGet(path);
     }
 
     @When("{int}번 미션과 {int}번 태그로 조회하면")
     public void 미션태그를조회한다(int missionNumber, int tagNumber) {
-        String path = String.format("/posts?tags=%d&missions=%d", tagNumber, missionNumber);
+        String path = String.format("/studylogs?tags=%d&missions=%d", tagNumber, missionNumber);
         context.invokeHttpGet(path);
     }
 
     @When("{string}(을)(를) 검색하면")
     public void 을검색하면(String keyword) {
-        String path = String.format("/posts?keyword=%s", keyword);
+        String path = String.format("/studylogs?keyword=%s", keyword);
         context.invokeHttpGet(path);
     }
 
     @When("{string}을 검색하고 {int}번 태그의 스터디로그를 조회하면")
     public void 을검색하고번태그의스터디로그를조회하면(String keyword, int tagId) {
-        String path = String.format("/posts?keyword=%s&tags=%d", keyword, tagId);
+        String path = String.format("/studylogs?keyword=%s&tags=%d", keyword, tagId);
         context.invokeHttpGet(path);
     }
 
     @When("{string}을 검색하고 {int}번 미션과 {int}번 태그로 조회하면")
     public void 을검색하고번미션과번태그로조회하면(String keyword, int missionNumber, int tagId) {
-        String path = String.format("/posts?keyword=%s&missions=%d&tags=%d", keyword,
+        String path = String.format("/studylogs?keyword=%s&missions=%d&tags=%d", keyword,
                                     missionNumber, tagId);
         context.invokeHttpGet(path);
     }
 
     @When("{int}번 레벨의 스터디로그를 조회하면")
     public void 특정레벨의스터디로그를조회하면(int levelNumber) {
-        String path = String.format("/posts?levels=%d", levelNumber);
+        String path = String.format("/studylogs?levels=%d", levelNumber);
         context.invokeHttpGet(path);
     }
 
     @When("{int}번 미션의 스터디로그를 조회하면")
     public void 특정미션의스터디로그를조회하면(int missionNumber) {
-        String path = String.format("/posts?missions=%d", missionNumber);
+        String path = String.format("/studylogs?missions=%d", missionNumber);
         context.invokeHttpGet(path);
     }
 
     @When("총 {long}개, {int}번 태그의 스터디로그를 조회하면")
     public void 특정태그의스터디로그를조회하면(Long pageSize, int tagNumber) {
-        String path = String.format("/posts?tags=%d&size=%d", tagNumber, pageSize);
+        String path = String.format("/studylogs?tags=%d&size=%d", tagNumber, pageSize);
         context.invokeHttpGet(path);
     }
 
     @When("{long}개, {long}쪽의 페이지를 조회하면")
     public void 스터디로그페이지를조회하면(Long pageSize, Long pageNumber) {
-        String path = String.format("/posts?page=%d&size=%d", pageNumber, pageSize);
+        String path = String.format("/studylogs?page=%d&size=%d", pageNumber, pageSize);
         context.invokeHttpGet(path);
     }
 
@@ -195,7 +206,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
     @When("스터디로그 목록을 조회하면")
     public void 스터디로그목록을조회하면() {
-        context.invokeHttpGet("/posts");
+        context.invokeHttpGet("/studylogs");
     }
 
     @Then("스터디로그 목록을 받는다")
@@ -207,20 +218,20 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
     @When("{long}번째 스터디로그를 조회하면")
     public void 스터디로그를조회하면(Long studylogId) {
-        String path = "/posts/" + studylogId;
+        String path = "/studylogs/" + studylogId;
         context.invokeHttpGet(path);
     }
 
     @When("로그인된 사용자가 {long}번째 스터디로그를 조회하면")
     public void 로그인된사용자가스터디로그를조회하면(Long studylogId) {
-        String path = "/posts/" + studylogId;
+        String path = "/studylogs/" + studylogId;
         context.invokeHttpGetWithToken(path);
     }
 
     @When("id {string} 스터디로그를 조회하면")
     public void 여러개의스터디로그를조회하면(String studylogIds) {
         List<String> ids = Arrays.asList(studylogIds.split(","));
-        String path = "/posts?ids=" + String.join(",", ids);
+        String path = "/studylogs?ids=" + String.join(",", ids);
         context.invokeHttpGet(path);
     }
 
@@ -237,7 +248,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     public void 스터디로그가조회된다(Long studylogId) {
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
 
-        String path = "/posts/" + studylogId;
+        String path = "/studylogs/" + studylogId;
         context.invokeHttpGet(path);
         StudylogResponse studylog = context.response.as(StudylogResponse.class);
 
@@ -262,7 +273,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
     @When("{long}번째 스터디로그를 수정하면")
     public void 스터디로그를수정하면(Long studylogId) {
-        String path = "/posts/" + studylogId;
+        String path = "/studylogs/" + studylogId;
         context.invokeHttpPutWithToken(path, STUDYLOG3.getStudylogRequest());
     }
 
@@ -270,7 +281,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     public void 스터디로그가수정된다(Long studylogId) {
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
 
-        String path = "/posts/" + studylogId;
+        String path = "/studylogs/" + studylogId;
         context.invokeHttpGet(path);
         StudylogResponse studylog = context.response.as(StudylogResponse.class);
 
@@ -284,7 +295,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
     @When("{long}번째 스터디로그를 삭제하면")
     public void 스터디로그를삭제하면(Long studylogId) {
-        String path = "/posts/" + studylogId;
+        String path = "/studylogs/" + studylogId;
         context.invokeHttpDeleteWithToken(path);
     }
 

@@ -1,13 +1,21 @@
 import { useEffect, useState } from 'react';
-import Chip from '../../components/Chip/Chip';
-import { COLOR } from '../../constants';
+import { useMutation, useQueryClient } from 'react-query';
+import { useParams } from 'react-router-dom';
 
+import Chip from '../../components/Chip/Chip';
 import AddAbilityForm from './AddAbilityForm';
 import EditAbilityForm from './EditAbilityForm';
-import { SubAbilityList, ManageButtonList, ArrowButton, Button, EditingListItem } from './styles';
 import SubAbilityListItem from './SubAbilityListItem';
 
-const AbilityListItem = ({ ability, addAbility, onEdit, onDelete }) => {
+import { SubAbilityList, ArrowButton, EditingListItem, AbilityItem } from './styles';
+import AbilityRequest from '../../apis/ability';
+import AbilityManageButton from './Ability/AbilityManageButton';
+import { ERROR_MESSAGE } from '../../constants';
+
+const AbilityListItem = ({ ability, onAddAbility, onDelete, readOnly }) => {
+  const { username: pageUsername } = useParams();
+  const queryClient = useQueryClient();
+
   const { id, name, description, color, isParent, children: subAbilities } = ability;
   const [itemStatus, setItemStatus] = useState({
     isOpened: false,
@@ -22,12 +30,16 @@ const AbilityListItem = ({ ability, addAbility, onEdit, onDelete }) => {
     parent: id,
   });
 
-  const toggleIsOpened = () => {
-    setItemStatus((prevState) => ({ ...prevState, isOpened: !prevState.isOpened }));
-  };
+  useEffect(() => {
+    setAddFormStatus({ name: '', description: '', color, parent: id });
+  }, [itemStatus.isAddFormOpened, subAbilities.length]);
 
-  const openSubList = () => {
-    setItemStatus((prevState) => ({ ...prevState, isOpened: true }));
+  const toggleIsOpened = () => {
+    if (itemStatus.isOpened) {
+      closeAddForm();
+    }
+
+    setItemStatus((prevState) => ({ ...prevState, isOpened: !prevState.isOpened }));
   };
 
   const closeAddForm = () => {
@@ -37,37 +49,43 @@ const AbilityListItem = ({ ability, addAbility, onEdit, onDelete }) => {
     }));
   };
 
-  const setIsAddFormOpened = (status) => () => {
-    setItemStatus((prevState) => ({
-      ...prevState,
-      isAddFormOpened: status,
-    }));
-  };
-
-  const setEditStatus = (status) => () => {
+  const setEditStatus = (status) => {
     setItemStatus((prevState) => ({ ...prevState, isEditing: status }));
   };
 
-  useEffect(() => {
-    if (!subAbilities.length) {
-      setItemStatus((prevState) => ({ ...prevState, isOpened: false }));
+  const onDeleteAbility = (targetId) => {
+    const { isLoading, mutate } = onDelete;
+
+    if (id === targetId && subAbilities.length) {
+      alert('하위 역량이 있는 역량은 삭제할 수 없습니다.');
+      return;
     }
-  }, [subAbilities.length]);
 
-  const onAddFormSubmit = async (event) => {
-    event.preventDefault();
-
-    await addAbility({
-      name: addFormStatus.name,
-      description: addFormStatus.description,
-      color: addFormStatus.color,
-      parent: addFormStatus.parent,
-    });
-
-    setAddFormStatus({ ...addFormStatus, isOpened: false, name: '', description: '' });
-    closeAddForm();
-    openSubList();
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      if (!isLoading) mutate(targetId);
+    }
   };
+
+  const onAddChildAbility = () => {
+    setItemStatus((prevState) => ({ ...prevState, isOpened: true, isAddFormOpened: true }));
+  };
+
+  /** 역량 수정 */
+  const onEditAbility = useMutation(
+    (formData) =>
+      AbilityRequest.updateAbility({ url: `/abilities/${formData.id}`, data: formData }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([`${pageUsername}-abilities`]);
+        setEditStatus(false);
+      },
+      onError: (errorData) => {
+        const errorCode = errorData?.code;
+
+        alert(ERROR_MESSAGE[errorCode] ?? '역량 수정을 할 수 없습니다. 잠시후 다시 시도해주세요.');
+      },
+    }
+  );
 
   const onFormDataChange = (key) => (event) => {
     setAddFormStatus({ ...addFormStatus, [key]: event.target.value });
@@ -75,47 +93,7 @@ const AbilityListItem = ({ ability, addAbility, onEdit, onDelete }) => {
 
   return (
     <>
-      {!itemStatus.isEditing && (
-        <li key={id}>
-          <ArrowButton
-            isParent={isParent}
-            isOpened={itemStatus.isOpened}
-            onClick={toggleIsOpened}
-            disabled={!subAbilities.length}
-          ></ArrowButton>
-          <Chip title={name} textAlign="left" maxWidth="140px" backgroundColor={color}>
-            {name}
-          </Chip>
-          <p>{description}</p>
-          <ManageButtonList>
-            <Button
-              type="button"
-              backgroundColor={COLOR.DARK_BLUE_700}
-              color={COLOR.WHITE}
-              onClick={setIsAddFormOpened(true)}
-            >
-              추가
-            </Button>
-            <Button
-              type="button"
-              backgroundColor={COLOR.LIGHT_GRAY_200}
-              color={COLOR.LIGHT_GRAY_900}
-              onClick={setEditStatus(true)}
-            >
-              수정
-            </Button>
-            <Button
-              type="button"
-              backgroundColor={COLOR.RED_200}
-              color={COLOR.RED_500}
-              onClick={onDelete(id)}
-            >
-              삭제
-            </Button>
-          </ManageButtonList>
-        </li>
-      )}
-      {itemStatus.isEditing && (
+      {itemStatus.isEditing ? (
         <EditingListItem isParent={true}>
           <EditAbilityForm
             id={id}
@@ -123,23 +101,54 @@ const AbilityListItem = ({ ability, addAbility, onEdit, onDelete }) => {
             color={color}
             description={description}
             isParent={isParent}
-            onClose={setEditStatus(false)}
-            onEdit={onEdit}
+            onClose={() => setEditStatus(false)}
+            onEdit={onEditAbility}
+            readOnly={readOnly}
           />
         </EditingListItem>
+      ) : (
+        <AbilityItem>
+          <ArrowButton
+            isParent={isParent}
+            isOpened={itemStatus.isOpened}
+            onClick={toggleIsOpened}
+            disabled={!subAbilities?.length}
+          />
+          <Chip
+            title={name}
+            textAlign="left"
+            maxWidth="140px"
+            backgroundColor={color}
+            fontSize="12px"
+          >
+            {name}
+          </Chip>
+          <p>{description}</p>
+          {!readOnly && (
+            <AbilityManageButton
+              addEvent={onAddChildAbility}
+              updateEvent={() => setEditStatus(true)}
+              deleteEvent={() => onDeleteAbility(id)}
+            />
+          )}
+        </AbilityItem>
       )}
+
+      {/* 새로운 자식 역량 추가 */}
       {itemStatus.isAddFormOpened && (
-        <EditingListItem isParent={true}>
+        <EditingListItem isParent={false}>
           <AddAbilityForm
             color={color}
             formData={addFormStatus}
             onFormDataChange={onFormDataChange}
             isParent={false}
-            onClose={setIsAddFormOpened(false)}
-            onSubmit={onAddFormSubmit}
+            onClose={closeAddForm}
+            onSubmit={onAddAbility}
           />
         </EditingListItem>
       )}
+
+      {/* 자식역량 조회, 삭제, 수정 */}
       {!!subAbilities.length && (
         <SubAbilityList isOpened={itemStatus.isOpened}>
           {subAbilities.map(({ id, name, description, color }) => (
@@ -149,8 +158,9 @@ const AbilityListItem = ({ ability, addAbility, onEdit, onDelete }) => {
               name={name}
               description={description}
               color={color}
-              onEdit={onEdit}
-              onDelete={onDelete}
+              onDelete={() => onDeleteAbility(id)}
+              onEdit={onEditAbility}
+              readOnly={readOnly}
             />
           ))}
         </SubAbilityList>

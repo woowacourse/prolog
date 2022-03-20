@@ -185,6 +185,11 @@ public class StudylogService {
         );
     }
 
+    public List<Studylog> findStudylogsByUsername(String username, Pageable pageable) {
+        Member member = memberService.findByUsername(username);
+        return studylogRepository.findByMember(member, pageable).getContent();
+    }
+
     @Transactional
     public List<StudylogResponse> insertStudylogs(Long memberId, List<StudylogRequest> studylogRequests) {
         if (studylogRequests.isEmpty()) {
@@ -263,7 +268,7 @@ public class StudylogService {
         studylogReadRepository.save(new StudylogRead(readMember, readStudylog));
     }
 
-    private Studylog findStudylogById(Long id) {
+    public Studylog findStudylogById(Long id) {
         return studylogRepository.findById(id).orElseThrow(StudylogNotFoundException::new);
     }
 
@@ -365,8 +370,16 @@ public class StudylogService {
         });
     }
 
+    public List<Studylog> findByIdIn(List<Long> ids) {
+        return studylogRepository.findByIdIn(ids);
+    }
+
     public List<StudylogRssFeedResponse> readRssFeeds(String url) {
         List<Studylog> studylogs = studylogRepository.findTop10ByOrderByCreatedAtDesc();
         return StudylogRssFeedResponse.listOf(studylogs, url);
+    }
+  
+    public Studylog save(Studylog studylog) {
+      return studylogRepository.save(studylog);
     }
 }
