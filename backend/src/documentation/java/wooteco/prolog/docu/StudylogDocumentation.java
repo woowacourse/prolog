@@ -158,13 +158,38 @@ class StudylogDocumentation extends Documentation {
 
     @Test
     void 스터디로그를_삭제한다() {
-        ExtractableResponse<Response> studylogResponse = 스터디로그_등록함(Arrays.asList(createStudylogRequest1()));
+        ExtractableResponse<Response> studylogResponse = 스터디로그_등록함(
+            Arrays.asList(createStudylogRequest1()));
         String location = studylogResponse.header("Location");
 
         given("studylog/delete")
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .when().delete(location);
+    }
+
+    @Test
+    void 스터지로그를_좋아요한다() {
+        ExtractableResponse<Response> response = 스터디로그_등록함(Collections.singletonList(createStudylogRequest1()));
+        long studylogId = Long.parseLong(response.header("Location").split("/studylogs/")[1]);
+
+        given("studylog/like")
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .when().post("/studylogs/" + studylogId + "/likes")
+            .then().log().all();
+    }
+
+    @Test
+    void 스터지로그를_좋아요_취소한다() {
+        ExtractableResponse<Response> response = 스터디로그_등록함(Collections.singletonList(createStudylogRequest1()));
+        long studylogId = Long.parseLong(response.header("Location").split("/studylogs/")[1]);
+
+        스터디로그_단건_좋아요(studylogId);
+
+        given("studylog/unlike")
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .when().delete("/studylogs/" + studylogId + "/likes")
+            .then().log().all();
     }
 
     private StudylogRequest createStudylogRequest1() {
@@ -225,14 +250,14 @@ class StudylogDocumentation extends Documentation {
     }
 
     private void 스터디로그_단건_좋아요(Long studylogId) {
-        given("studylog/like")
+        RestAssured.given()
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .when().post("/studylogs/" + studylogId + "/likes")
             .then().log().all().extract();
     }
 
     private void 스터디로그_단건_조회(Long studylogId) {
-        given("studylog/read")
+        RestAssured.given()
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .when().get("/studylogs/" + studylogId)
             .then().log().all().extract();
