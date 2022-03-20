@@ -30,3 +30,23 @@ include::{snippets}/members/scrap/list/http-request.adoc[]
 ==== Response
 
 include::{snippets}/members/scrap/list/http-response.adoc[]
+
+=== 사용자 스터디로그 좋아요
+
+==== Request
+
+include::{snippets}/studylog/like/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/studylog/like/http-response.adoc[]
+
+=== 사용자 스터디로그 좋아요 취소
+
+==== Request
+
+include::{snippets}/studylog/unlike/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/studylog/unlike/http-response.adoc[]

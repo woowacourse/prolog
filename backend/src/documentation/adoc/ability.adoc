@@ -141,16 +141,6 @@ include::{snippets}/abilities/delete/http-request.adoc[]
 
 include::{snippets}/abilities/delete/http-response.adoc[]
 
-=== 역량 제거 - 하위 역량 존재시 예외 발생
-
-==== Request
-
-include::{snippets}/abilities/delete-has-children-exception/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/delete-has-children-exception/http-response.adoc[]
-
 === 기본 역량 등록 - 백엔드
 
 ==== Request

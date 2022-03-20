@@ -27,6 +27,15 @@ import wooteco.prolog.studylog.application.dto.TagRequest;
 public class MemberDocumentation extends Documentation {
 
     @Test
+    void 사용자_본인_정보를_조회한다() {
+        given("members/me")
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .when().get("/members/me")
+            .then().log().all()
+            .extract();
+    }
+
+    @Test
     void 자신의_사용자_정보를_수정한다() {
         MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest(
             "다른이름",
@@ -87,10 +96,8 @@ public class MemberDocumentation extends Documentation {
         //when & then
         given("members/scrap/delete")
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(new MemberScrapRequest(logId))
             .when()
-            .delete("/members/{nickname}/scrap", GithubResponses.소롱.getLogin())
+            .delete("/members/{nickname}/scrap?studylog="+ logId, GithubResponses.소롱.getLogin())
             .then().log().all()
             .assertThat()
             .statusCode(equalTo(HttpStatus.NO_CONTENT.value()));
