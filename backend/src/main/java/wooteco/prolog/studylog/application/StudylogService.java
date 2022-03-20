@@ -71,6 +71,16 @@ public class StudylogService {
         return studylogs;
     }
 
+    public void updateMostPopularStudylogs(
+        Pageable pageable,
+        Long id,
+        boolean anonymous
+    ) {
+        List<Studylog> studylogs = findStudylogsByDays(pageable, LocalDateTime.now());
+
+
+    }
+
     public StudylogsResponse findMostPopularStudylogs(
         Pageable pageable,
         Long memberId,

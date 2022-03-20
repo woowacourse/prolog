@@ -48,6 +48,12 @@ public class StudylogController {
         return ResponseEntity.ok(studylogsResponse);
     }
 
+    @PutMapping("/most-popular")
+    public ResponseEntity<Void> updatePopularStudylogs(@AuthMemberPrincipal LoginMember member, @PageableDefault Pageable pageable) {
+        studylogService.updateMostPopularStudylogs(pageable, member.getId(), member.isAnonymous());
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/most-popular")
     public ResponseEntity<StudylogsResponse> showPopularStudylogs(@AuthMemberPrincipal LoginMember member, @PageableDefault Pageable pageable) {
         StudylogsResponse studylogsResponse = studylogService.findMostPopularStudylogs(pageable, member.getId(), member.isAnonymous());
