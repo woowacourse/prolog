@@ -1,7 +1,5 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
-import axios from 'axios';
 
 import { UserContext } from '../../contexts/UserProvider';
 import useAbility from '../../hooks/Ability/useAbility';
@@ -10,18 +8,14 @@ import useParentAbilityForm from '../../hooks/Ability/useParentAbilityForm';
 import EmptyAbility from './Ability/EmptyAbility';
 import AbilityListItem from './AbilityListItem';
 import AddAbilityForm from './AddAbilityForm';
-import ReportStudyLogTable from './StudyLogs/StudyLogTable';
 
 import { COLOR } from '../../constants';
 import { Container, AbilityList, EditingListItem, ListHeader, AddAbilityButton } from './styles';
-import { BASE_URL } from '../../configs/environment';
 
 const AbilityPage = () => {
   const { username } = useParams();
   const { user } = useContext(UserContext);
   const readOnly = username !== user.username;
-
-  const [page, setPage] = useState(1);
 
   const {
     addFormStatus, //
@@ -52,23 +46,6 @@ const AbilityPage = () => {
   const showEmptyAbility = () => {
     return readOnly ? <span>등록된 역량이 없습니다.</span> : <EmptyAbility user={user} />;
   };
-
-  /** 학습로그와 매핑된 역량 가져오기 */
-  const { data: studyLogs = [] } = useQuery([`${username}-studylogs`, page], async () => {
-    const { data } = await axios({
-      method: 'get',
-      url: `${BASE_URL}/members/${username}/posts`,
-      headers: {
-        Authorization: `Bearer ${user.accessToken}`,
-      },
-      params: {
-        size: 5,
-        page: page,
-      },
-    });
-
-    return { ...data };
-  });
 
   return (
     <Container>
@@ -113,13 +90,6 @@ const AbilityPage = () => {
                 />
               ))}
       </AbilityList>
-
-      <ReportStudyLogTable
-        studyLogs={studyLogs}
-        abilities={abilities}
-        readOnly={readOnly}
-        setPage={setPage}
-      />
     </Container>
   );
 };
