@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.session.application.SessionMemberService;
-import wooteco.prolog.session.application.dto.SessionMemberRequest;
+import wooteco.prolog.session.application.dto.SessionGroupMemberRequest;
 
 @RestController
 @RequestMapping("/sessions/{sessionId}/members")
@@ -20,10 +20,17 @@ public class SessionMemberController {
 
     private final SessionMemberService sessionMemberService;
 
+//    // admin only
+//    @PostMapping
+//    public ResponseEntity<Void> register(@PathVariable Long sessionId, @RequestBody SessionMemberRequest sessionMemberRequest) {
+//        sessionMemberService.registerMembers(sessionId, sessionMemberRequest);
+//        return ResponseEntity.ok().build();
+//    }
+
     // admin only
     @PostMapping
-    public ResponseEntity<Void> register(@PathVariable Long sessionId, @RequestBody SessionMemberRequest sessionMemberRequest) {
-        sessionMemberService.registerMembers(sessionId, sessionMemberRequest);
+    public ResponseEntity<Void> registerByGroupId(@PathVariable Long sessionId, @RequestBody SessionGroupMemberRequest sessionGroupMemberRequest) {
+        sessionMemberService.registerMembersByGroupId(sessionId, sessionGroupMemberRequest);
         return ResponseEntity.ok().build();
     }
 

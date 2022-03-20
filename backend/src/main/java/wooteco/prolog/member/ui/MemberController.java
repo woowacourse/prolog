@@ -50,6 +50,18 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
 
+    @Deprecated
+    @PutMapping("/me")
+    @MemberOnly
+    public ResponseEntity<Void> updateMember_deprecated(
+        @AuthMemberPrincipal LoginMember member,
+        @RequestBody MemberUpdateRequest updateRequest
+    ) {
+        memberService.updateMember_deprecated(member.getId(), updateRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @Deprecated
     @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
     @MemberOnly
     public ResponseEntity<MemberResponse> findMemberInfoOfMine(@AuthMemberPrincipal LoginMember member) {

@@ -152,4 +152,8 @@ public class Studylog extends BaseEntity {
     public boolean isBelongsTo(Long memberId) {
         return this.member.getId().equals(memberId);
     }
+  
+    public String getNickname() {
+        return member.getNickname();
+    }
 }
