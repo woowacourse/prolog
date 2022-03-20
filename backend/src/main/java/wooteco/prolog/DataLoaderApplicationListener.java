@@ -121,7 +121,7 @@ public class DataLoaderApplicationListener implements
         abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("프로그래밍 테크닉, 개발 프랙티스, 개발 방법론", "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론 입니다.", "#2fff6e", "fe", uiuxId));
 
         // ability init
-        abilityService.addDefaultAbilities(Members.BROWN.value.getId(), "be");
+//        abilityService.addDefaultAbilities(Members.BROWN.value.getId(), "be");
         abilityService.addDefaultAbilities(Members.JOANNE.value.getId(), "be");
         abilityService.addDefaultAbilities(Members.SUNNY.value.getId(), "fe");
 

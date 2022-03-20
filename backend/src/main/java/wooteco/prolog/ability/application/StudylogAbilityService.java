@@ -65,7 +65,7 @@ public class StudylogAbilityService {
 
         List<StudylogAbility> studylogAbilities = studylogAbilityRepository.findByStudylogIdIn(studylogIds);
 
-        return AbilityStudylogResponse.listOf(studylogAbilities);
+        return AbilityStudylogResponse.listOf(studylogs, studylogAbilities);
     }
 
     public List<AbilityStudylogResponse> findAbilityStudylogsMappingOnlyByAbilityIds(String username, List<Long> abilityIds) {
