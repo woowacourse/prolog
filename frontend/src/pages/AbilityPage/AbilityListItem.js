@@ -53,16 +53,16 @@ const AbilityListItem = ({ ability, onAddAbility, onDelete, readOnly }) => {
     setItemStatus((prevState) => ({ ...prevState, isEditing: status }));
   };
 
-  const onDeleteAbility = (id) => {
+  const onDeleteAbility = (targetId) => {
     const { isLoading, mutate } = onDelete;
 
-    if (subAbilities) {
+    if (id === targetId && subAbilities) {
       alert('하위 역량이 있는 역량은 삭제할 수 없습니다.');
       return;
     }
 
     if (window.confirm('정말 삭제하시겠습니까?')) {
-      if (!isLoading) mutate(id);
+      if (!isLoading) mutate(targetId);
     }
   };
 
