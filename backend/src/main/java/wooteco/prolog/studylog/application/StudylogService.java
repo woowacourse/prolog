@@ -370,10 +370,6 @@ public class StudylogService {
         });
     }
 
-    public List<Studylog> findByIdIn(List<Long> ids) {
-        return studylogRepository.findByIdIn(ids);
-    }
-
     public List<StudylogRssFeedResponse> readRssFeeds(String url) {
         List<Studylog> studylogs = studylogRepository.findTop10ByOrderByCreatedAtDesc();
         return StudylogRssFeedResponse.listOf(studylogs, url);
