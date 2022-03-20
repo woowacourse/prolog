@@ -15,15 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.report.application.AbilityService;
-import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
-import wooteco.prolog.report.application.dto.ability.AbilityResponse;
-import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
-import wooteco.prolog.report.application.dto.ability.ChildAbilityDto;
-import wooteco.prolog.report.domain.ablity.Ability;
-import wooteco.prolog.report.domain.ablity.DefaultAbility;
-import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
-import wooteco.prolog.report.domain.ablity.repository.DefaultAbilityRepository;
+import wooteco.prolog.ability.application.AbilityService;
+import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
+import wooteco.prolog.ability.application.dto.AbilityResponse;
+import wooteco.prolog.ability.application.dto.AbilityUpdateRequest;
+import wooteco.prolog.ability.application.dto.ChildAbilityResponse;
+import wooteco.prolog.ability.domain.Ability;
+import wooteco.prolog.ability.domain.DefaultAbility;
+import wooteco.prolog.ability.domain.repository.AbilityRepository;
+import wooteco.prolog.ability.domain.repository.DefaultAbilityRepository;
 import wooteco.prolog.report.exception.DefaultAbilityNotFoundException;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
@@ -157,7 +157,7 @@ class AbilityServiceTest {
             parentAbility.getDescription(),
             parentAbility.getColor(),
             parentAbility.isParent(),
-            ChildAbilityDto.of(Collections.singletonList(childAbility))
+            ChildAbilityResponse.of(Collections.singletonList(childAbility))
         );
 
         // when
@@ -233,7 +233,7 @@ class AbilityServiceTest {
             .findAny()
             .orElseThrow(AbilityNotFoundException::new);
 
-        ChildAbilityDto updatedChildResponse = updatedParentResponse.getChildren().get(0);
+        ChildAbilityResponse updatedChildResponse = updatedParentResponse.getChildren().get(0);
 
         assertThat(updatedParentResponse.getColor()).isEqualTo(newColor);
         assertThat(updatedChildResponse.getColor()).isEqualTo(newColor);
@@ -251,7 +251,7 @@ class AbilityServiceTest {
 
         AbilityCreateRequest createChildRequest1 = new AbilityCreateRequest("자식 프로그래밍", "부모 프로그래밍의 자식입니다.", createdParentResponse.getColor(), createdParentResponse.getId());
         abilityService.createAbility(member.getId(), createChildRequest1);
-        ChildAbilityDto childAbilityDto = abilityService.findParentAbilitiesByMemberId(member.getId()).get(0).getChildren().get(0);
+        ChildAbilityResponse childAbilityDto = abilityService.findParentAbilitiesByMemberId(member.getId()).get(0).getChildren().get(0);
 
         String newColor = "#ffffff";
         String newName = "완전히 새로운 이름";
@@ -262,7 +262,7 @@ class AbilityServiceTest {
         List<AbilityResponse> abilityResponses = abilityService.updateAbility(member.getId(), request);
 
         // then
-        ChildAbilityDto childAbilityResponse = abilityResponses.stream()
+        ChildAbilityResponse childAbilityResponse = abilityResponses.stream()
             .filter(response -> response.getId().equals(createdParentResponse.getId()))
             .map(AbilityResponse::getChildren)
             .map(list -> list.get(0))
@@ -282,7 +282,7 @@ class AbilityServiceTest {
 
         // when
         assertThat(abilityService.findAbilitiesByMemberId(member.getId())).usingRecursiveComparison()
-            .isEqualTo(AbilityResponse.of(Collections.singletonList(ability)));
+            .isEqualTo(AbilityResponse.listOf(Collections.singletonList(ability)));
 
         abilityService.deleteAbility(member.getId(), ability.getId());
 
@@ -341,7 +341,7 @@ class AbilityServiceTest {
 
         // then
         assertThat(abilityResponses).usingRecursiveComparison()
-            .isEqualTo(AbilityResponse.of(Arrays.asList(ability1, ability2)));
+            .isEqualTo(AbilityResponse.listOf(Arrays.asList(ability1, ability2)));
     }
 
     @DisplayName("멤버ID와 과정 선택을 통해 기본 역량을 등록한다.")

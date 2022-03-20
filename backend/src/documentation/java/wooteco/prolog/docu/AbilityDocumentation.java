@@ -12,19 +12,17 @@ import io.restassured.response.Response;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
 import wooteco.prolog.GithubResponses;
 import wooteco.prolog.login.application.dto.TokenRequest;
 import wooteco.prolog.login.application.dto.TokenResponse;
 import wooteco.prolog.member.application.dto.MemberResponse;
-import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
-import wooteco.prolog.report.application.dto.ability.AbilityResponse;
-import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
-import wooteco.prolog.report.application.dto.ability.ChildAbilityDto;
-import wooteco.prolog.report.application.dto.ability.DefaultAbilityCreateRequest;
-import wooteco.prolog.report.domain.ablity.repository.DefaultAbilityRepository;
+import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
+import wooteco.prolog.ability.application.dto.AbilityResponse;
+import wooteco.prolog.ability.application.dto.AbilityUpdateRequest;
+import wooteco.prolog.ability.application.dto.ChildAbilityResponse;
+import wooteco.prolog.ability.application.dto.DefaultAbilityCreateRequest;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 
 public class AbilityDocumentation extends Documentation {
@@ -297,7 +295,7 @@ public class AbilityDocumentation extends Documentation {
             .findAny()
             .orElseThrow(AbilityNotFoundException::new);
 
-        ChildAbilityDto childAbilityResponse = updatedAbilityResponse.getChildren().get(0);
+        ChildAbilityResponse childAbilityResponse = updatedAbilityResponse.getChildren().get(0);
 
         assertThat(response.statusCode()).isEqualTo(OK.value());
         assertThat(updatedAbilityResponse.getId()).isEqualTo(생성된_상위_역량.getId());
@@ -434,7 +432,7 @@ public class AbilityDocumentation extends Documentation {
         ExtractableResponse<Response> response = given("abilities/create-template-be")
             .header(AUTHORIZATION, "Bearer " + accessToken)
             .when()
-            .post("/abilities/template/be")
+            .post("/abilities/templates/be")
             .then()
             .log().all()
             .extract();
@@ -452,7 +450,7 @@ public class AbilityDocumentation extends Documentation {
         ExtractableResponse<Response> response = given("abilities/create-template-fe")
             .header(AUTHORIZATION, "Bearer " + accessToken)
             .when()
-            .post("/abilities/template/fe")
+            .post("/abilities/templates/fe")
             .then()
             .log().all()
             .extract();

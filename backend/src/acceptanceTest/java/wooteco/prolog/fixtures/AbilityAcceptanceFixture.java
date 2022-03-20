@@ -1,7 +1,7 @@
 package wooteco.prolog.fixtures;
 
 import java.util.Arrays;
-import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
+import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
 
 public enum AbilityAcceptanceFixture {
     PROGRAMMING("프로그래밍", "프로그래밍 관련입니다.", "red"),
