@@ -7,16 +7,9 @@ import AddAbilityForm from './AddAbilityForm';
 import EditAbilityForm from './EditAbilityForm';
 import SubAbilityListItem from './SubAbilityListItem';
 
-import { COLOR } from '../../constants';
-import {
-  SubAbilityList,
-  ManageButtonList,
-  ArrowButton,
-  Button,
-  EditingListItem,
-  AbilityItem,
-} from './styles';
+import { SubAbilityList, ArrowButton, EditingListItem, AbilityItem } from './styles';
 import AbilityRequest from '../../apis/ability';
+import AbilityManageButton from './Ability/AbilityManageButton';
 
 const AbilityListItem = ({ ability, onAddAbility, onDelete, readOnly }) => {
   const { username: pageUsername } = useParams();
@@ -90,42 +83,6 @@ const AbilityListItem = ({ ability, onAddAbility, onDelete, readOnly }) => {
     setAddFormStatus({ ...addFormStatus, [key]: event.target.value });
   };
 
-  const manageButton = (id) => {
-    return (
-      <ManageButtonList>
-        <Button
-          type="button"
-          color={COLOR.BLACK_900}
-          fontSize="1.2rem"
-          borderColor={COLOR.DARK_GRAY_800}
-          onClick={onAddChildAbility}
-        >
-          추가
-        </Button>
-        <Button
-          type="button"
-          color={COLOR.BLACK_900}
-          fontSize="1.2rem"
-          backgroundColor={COLOR.LIGHT_GRAY_200}
-          borderColor={COLOR.LIGHT_GRAY_200}
-          onClick={() => setEditStatus(true)}
-        >
-          수정
-        </Button>
-        <Button
-          type="button"
-          color={COLOR.BLACK_900}
-          fontSize="1.2rem"
-          backgroundColor={COLOR.RED_200}
-          borderColor={COLOR.RED_200}
-          onClick={() => onDeleteAbility(id)}
-        >
-          삭제
-        </Button>
-      </ManageButtonList>
-    );
-  };
-
   return (
     <>
       {itemStatus.isEditing ? (
@@ -159,7 +116,13 @@ const AbilityListItem = ({ ability, onAddAbility, onDelete, readOnly }) => {
             {name}
           </Chip>
           <p>{description}</p>
-          {!readOnly && manageButton(id)}
+          {!readOnly && (
+            <AbilityManageButton
+              addEvent={onAddChildAbility}
+              updateEvent={() => setEditStatus(true)}
+              deleteEvent={() => onDeleteAbility(id)}
+            />
+          )}
         </AbilityItem>
       )}
 

@@ -35,6 +35,7 @@ const useAbility = ({ username, setAddFormStatus, addFormClose }: Props) => {
       },
       onError: () => {
         alert('역량 등록에 실패하였습니다.');
+        // TODO: 실패했을 때 역량 폼을 유지하는 방법 고려하기 - 지금 오락가락함
       },
     }
   );

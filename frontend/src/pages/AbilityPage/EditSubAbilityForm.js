@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { COLOR } from '../../constants';
-import { Button, ColorChip, FormContainer, ListForm, ManageButtonList } from './styles';
+import { useState } from 'react';
+import AbilityManageButton from './Ability/AbilityManageButton';
+import { ColorChip, FormContainer, ListForm } from './styles';
 
 const EditSubAbilityForm = ({ id, name, color, description, onClose, onEdit }) => {
   const [formData, setFormData] = useState({
@@ -48,21 +48,7 @@ const EditSubAbilityForm = ({ id, name, color, description, onClose, onEdit }) =
           onChange={onFormDataChange('description')}
         />
 
-        <ManageButtonList>
-          <Button
-            type="button"
-            color={COLOR.RED_100}
-            fontSize="1.2rem"
-            backgroundColor={COLOR.WHITE}
-            borderColor={COLOR.DARK_BLUE_700}
-            onClick={onClose}
-          >
-            취소
-          </Button>
-          <Button fontSize="1.2rem" backgroundColor={COLOR.DARK_BLUE_700} color={COLOR.WHITE}>
-            저장
-          </Button>
-        </ManageButtonList>
+        <AbilityManageButton cancelEvent={onClose} save={true} />
       </ListForm>
     </FormContainer>
   );

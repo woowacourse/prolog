@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import Chip from '../../components/Chip/Chip';
-import { COLOR, ERROR_MESSAGE } from '../../constants';
+import { ERROR_MESSAGE } from '../../constants';
 import { isCorrectHexCode } from '../../utils/hexCode';
-import { ManageButtonList, Button, FormContainer, ListForm, ColorPicker } from './styles';
+import AbilityManageButton from './Ability/AbilityManageButton';
+import { FormContainer, ListForm, ColorPicker } from './styles';
 
 const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEdit }) => {
   const [formData, setFormData] = useState({
@@ -118,26 +119,11 @@ const EditAbilityForm = ({ id, name, color, description, isParent, onClose, onEd
           </label>
         )}
 
-        <ManageButtonList>
-          <Button
-            type="button"
-            fontSize="1.2rem"
-            borderColor={COLOR.DARK_BLUE_700}
-            backgroundColor={COLOR.WHITE}
-            color={COLOR.DARK_GRAY_900}
-            onClick={onClose}
-          >
-            취소
-          </Button>
-          <Button
-            fontSize="1.2rem"
-            backgroundColor={COLOR.DARK_BLUE_700}
-            color={COLOR.WHITE}
-            disabled={disableSaveButton()}
-          >
-            저장
-          </Button>
-        </ManageButtonList>
+        <AbilityManageButton
+          cancelEvent={onClose}
+          save={true}
+          disableSaveButton={disableSaveButton()}
+        />
       </ListForm>
     </FormContainer>
   );

@@ -32,14 +32,6 @@ export const openList = keyframes`
   }
 `;
 
-export const ManageButtonList = styled.div`
-  margin-left: 0.5rem;
-
-  button {
-    margin-left: 0.2rem;
-  }
-`;
-
 export const ArrowButton = styled.button`
   width: 32px;
   height: 32px;
@@ -303,24 +295,6 @@ export const AbilityItem = styled.li`
   align-items: center;
 
   border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
-`;
-
-// 통일시킬 필요가 있음, 또는 컴포넌트화하기
-export const Button = styled.button`
-  ${({ backgroundColor, color }) => `
-    background-color: ${backgroundColor};
-    color: ${color};
-  `}
-
-  ${({ borderColor }) => borderColor && `border: 1px solid ${borderColor};`}
-  font-size: ${({ fontSize }) => (fontSize ? ` ${fontSize}` : '1.4rem')};
-
-  padding: 0.5rem 1.5rem;
-  border-radius: 0.8rem;
-
-  :not(:first-of-child) {
-    margin-left: 0.5rem;
-  }
 `;
 
 export const SubAbilityList = styled.ul`

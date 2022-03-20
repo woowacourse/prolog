@@ -1,39 +1,12 @@
 import { useState } from 'react';
 import { Chip } from '../../components';
 import SubCategoryIcon from '../../components/@shared/Icons/SubCategoryIcon';
-import { COLOR } from '../../constants';
+import AbilityManageButton from './Ability/AbilityManageButton';
 import EditSubAbilityForm from './EditSubAbilityForm';
-import { Button, ManageButtonList, EditingListItem } from './styles';
+import { EditingListItem } from './styles';
 
 const SubAbilityListItem = ({ id, name, description, color, onEdit, onDelete, readOnly }) => {
   const [isEditing, setIsEditing] = useState(false);
-
-  const manageButton = (id) => {
-    return (
-      <ManageButtonList>
-        <Button
-          type="button"
-          color={COLOR.BLACK_900}
-          fontSize="1.2rem"
-          backgroundColor={COLOR.LIGHT_GRAY_200}
-          borderColor={COLOR.LIGHT_GRAY_200}
-          onClick={() => setIsEditing(true)}
-        >
-          수정
-        </Button>
-        <Button
-          type="button"
-          color={COLOR.BLACK_900}
-          fontSize="1.2rem"
-          backgroundColor={COLOR.RED_200}
-          borderColor={COLOR.RED_200}
-          onClick={() => onDelete(id)}
-        >
-          삭제
-        </Button>
-      </ManageButtonList>
-    );
-  };
 
   return isEditing ? (
     <EditingListItem>
@@ -54,7 +27,12 @@ const SubAbilityListItem = ({ id, name, description, color, onEdit, onDelete, re
         {name}
       </Chip>
       <p>{description}</p>
-      {!readOnly && manageButton(id)}
+      {!readOnly && (
+        <AbilityManageButton
+          updateEvent={() => setIsEditing(true)}
+          deleteEvent={() => onDelete(id)}
+        />
+      )}
     </li>
   );
 };
