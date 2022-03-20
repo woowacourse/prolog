@@ -27,6 +27,7 @@ const SubAbilityListItem = ({ id, name, description, color, onEdit, onDelete, re
         {name}
       </Chip>
       <p>{description}</p>
+
       {!readOnly && (
         <AbilityManageButton
           updateEvent={() => setIsEditing(true)}
