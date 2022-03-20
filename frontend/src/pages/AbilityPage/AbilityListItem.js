@@ -10,6 +10,7 @@ import SubAbilityListItem from './SubAbilityListItem';
 import { SubAbilityList, ArrowButton, EditingListItem, AbilityItem } from './styles';
 import AbilityRequest from '../../apis/ability';
 import AbilityManageButton from './Ability/AbilityManageButton';
+import { ERROR_MESSAGE } from '../../constants';
 
 const AbilityListItem = ({ ability, onAddAbility, onDelete, readOnly }) => {
   const { username: pageUsername } = useParams();
@@ -73,8 +74,10 @@ const AbilityListItem = ({ ability, onAddAbility, onDelete, readOnly }) => {
         queryClient.invalidateQueries([`${pageUsername}-abilities`]);
         setEditStatus(false);
       },
-      onError: () => {
-        alert('역량 수정을 할 수 없습니다. 잠시후 다시 시도해주세요.');
+      onError: (errorData) => {
+        const errorCode = errorData?.code;
+
+        alert(ERROR_MESSAGE[errorCode] ?? '역량 수정을 할 수 없습니다. 잠시후 다시 시도해주세요.');
       },
     }
   );

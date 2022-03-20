@@ -1,9 +1,13 @@
-import axios, { Method } from 'axios';
+import axios, { AxiosError, Method } from 'axios';
 
 import { BASE_URL } from '../configs/environment';
 import LOCAL_STORAGE_KEY from '../constants/localStorage';
 import { getLocalStorageItem } from '../utils/localStorage';
 
+export interface ErrorData {
+  code: number;
+  message: string;
+}
 interface Config {
   method?: Method;
   url: string;
@@ -40,7 +44,7 @@ export class API {
 
       return response.data;
     } catch (error) {
-      throw error;
+      throw (error as AxiosError).response?.data;
     }
   }
 
