@@ -16,6 +16,7 @@ import wooteco.prolog.ability.domain.repository.AbilityRepository;
 import wooteco.prolog.ability.domain.repository.DefaultAbilityRepository;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.report.exception.AbilityHasChildrenException;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 import wooteco.prolog.report.exception.DefaultAbilityNotFoundException;
 
@@ -135,6 +136,10 @@ public class AbilityService {
     @Transactional
     public void deleteAbility(Long memberId, Long abilityId) {
         Ability ability = findAbilityByIdAndMemberId(abilityId, memberId);
+
+        if (ability.isParent() && !ability.getChildren().isEmpty()) {
+            throw new AbilityHasChildrenException();
+        }
 
         abilityRepository.delete(ability);
     }

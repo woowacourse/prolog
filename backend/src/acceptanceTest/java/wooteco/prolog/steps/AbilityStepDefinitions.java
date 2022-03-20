@@ -117,7 +117,6 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         Long abilityId = getAbilityIdByName(abilityName);
 
         context.invokeHttpDeleteWithToken("/abilities/" + abilityId);
-        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
     @Then("{string} 역량이 포함되지 않은 목록을 받는다.")
