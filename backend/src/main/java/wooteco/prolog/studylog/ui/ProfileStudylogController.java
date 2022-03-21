@@ -84,7 +84,7 @@ public class ProfileStudylogController {
     }
 
     @PutMapping(value = "/{username}/profile-intro", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProfileIntroResponse> findMemberProfileIntro(@AuthMemberPrincipal LoginMember member, @PathVariable String username,
+    public ResponseEntity<Void> findMemberProfileIntro(@AuthMemberPrincipal LoginMember member, @PathVariable String username,
                                                                        @RequestBody ProfileIntroRequest updateRequest) {
         memberService.updateProfileIntro(member, username, updateRequest);
         return ResponseEntity.ok().build();

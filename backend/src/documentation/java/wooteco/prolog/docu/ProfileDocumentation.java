@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
 import wooteco.prolog.GithubResponses;
+import wooteco.prolog.member.application.dto.ProfileIntroRequest;
 import wooteco.prolog.session.application.dto.LevelRequest;
 import wooteco.prolog.session.application.dto.LevelResponse;
 import wooteco.prolog.session.application.dto.MissionRequest;
@@ -25,13 +26,33 @@ public class ProfileDocumentation extends Documentation {
 
         given("profile/studylog")
             .accept(MediaType.APPLICATION_JSON_VALUE)
-            .when().get("/members/{username}/posts", GithubResponses.소롱.getLogin());
+            .when().get("/members/{username}/studylogs", GithubResponses.소롱.getLogin());
     }
 
     @Test
     void 사용자_프로필을_조회한다() {
         given("profile/profile")
             .when().get("/members/{username}/profile", GithubResponses.소롱.getLogin())
+            .then().log().all()
+            .extract();
+    }
+
+    @Test
+    void 사용자_소개글을_조회한다() {
+        given("profile/profile-intro")
+            .when().get("/members/{username}/profile-intro", GithubResponses.소롱.getLogin())
+            .then().log().all()
+            .extract();
+    }
+
+    @Test
+    void 사용자가_본인의_소개글을_수정한다() {
+        ProfileIntroRequest request = new ProfileIntroRequest("수정된 소개글 입니다.");
+        given("profile/update-profile-intro")
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(request)
+            .when().put("/members/{username}/profile-intro", GithubResponses.소롱.getLogin())
             .then().log().all()
             .extract();
     }

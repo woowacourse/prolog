@@ -73,7 +73,7 @@ class StudylogServiceTest {
         tag1, tag2, tag3, tag4, tag5
     );
 
-    private static final String URL = "http://localhost:8080/studylogs";
+    private static final String URL = "http://localhost:8080";
 
     @Autowired
     private StudylogService studylogService;
@@ -581,7 +581,7 @@ class StudylogServiceTest {
         studylogIds1.addAll(studylogIds2);
 
         List<String> studylogLinks = studylogIds1.stream()
-            .map(studylogId -> URL + studylogId)
+            .map(studylogId -> URL + "/studylogs/" + studylogId)
             .collect(toList());
 
         // when

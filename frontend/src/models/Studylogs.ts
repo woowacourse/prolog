@@ -1,7 +1,10 @@
+type Role = 'UNVALIDATED' | 'CREW' | 'COACH' | 'ADMIN';
 export interface Author {
+  id: number;
   username: string;
   nickname: string;
   imageUrl: string;
+  role: Role;
 }
 
 export interface Level {
@@ -35,4 +38,11 @@ export interface Studylog {
   viewCount: number;
   liked: boolean;
   likesCount: number;
+}
+
+export interface StudyLogsByFilter {
+  data: Studylog[];
+  totalSize: number;
+  totalPage: number;
+  currPage: number;
 }

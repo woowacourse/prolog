@@ -1,0 +1,18 @@
+[[level]]
+== 레벨
+
+=== 레벨 등록
+
+==== Request
+include::{snippets}/levels/create/http-request.adoc[]
+
+==== Response
+include::{snippets}/levels/create/http-response.adoc[]
+
+=== 레벨 목록 조회
+
+==== Request
+include::{snippets}/levels/list/http-request.adoc[]
+
+==== Response
+include::{snippets}/levels/list/http-response.adoc[]
