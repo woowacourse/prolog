@@ -25,6 +25,7 @@ import {
 import { ERROR_MESSAGE } from '../../constants/message';
 import { UserContext } from '../../contexts/UserProvider';
 import { APP_MODE, isProd } from '../../configs/environment';
+import { useGoogleAnalytics } from '../../hooks/useGoogleAnalytics';
 
 const navigationConfig = [
   {
@@ -38,6 +39,8 @@ const navigationConfig = [
 ];
 
 const NavBar = () => {
+  useGoogleAnalytics();
+
   const history = useHistory();
   const logoTag = isProd ? 'BETA' : APP_MODE;
 
