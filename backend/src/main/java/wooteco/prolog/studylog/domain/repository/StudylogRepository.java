@@ -33,4 +33,6 @@ public interface StudylogRepository extends JpaRepository<Studylog, Long>,
     List<Studylog> findByPastDays(LocalDateTime date);
 
     List<Studylog> findTop10ByOrderByCreatedAtDesc();
+
+    List<Studylog> findAllByIds(List<Long> studylogIds);
 }
