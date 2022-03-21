@@ -28,19 +28,6 @@ class AbilityTest {
         member = mock(Member.class);
     }
 
-    @DisplayName("자식 역량 생성시 부모 역량과 자동으로 관계를 맺는다.")
-    @Test
-    void addChildAbility() {
-        Ability parentAbility = Ability.parent(1L, "Language", "discription", "red", member);
-        Ability childAbility = Ability.child(2L, "Language", "discription", "red", parentAbility, member);
-
-        assertThat(parentAbility.getChildren())
-            .usingRecursiveComparison()
-            .isEqualTo(Collections.singletonList(childAbility));
-
-        assertThat(childAbility.getParent()).isEqualTo(parentAbility);
-    }
-
     @DisplayName("부모 역량인지 확인한다.")
     @ParameterizedTest
     @MethodSource("parametersForIsParent")
