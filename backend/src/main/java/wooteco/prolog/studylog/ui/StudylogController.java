@@ -49,8 +49,9 @@ public class StudylogController {
     }
 
     @PutMapping("/most-popular")
-    public ResponseEntity<Void> updatePopularStudylogs(@AuthMemberPrincipal LoginMember member, @PageableDefault Pageable pageable) {
-        studylogService.updateMostPopularStudylogs(pageable, member.getId(), member.isAnonymous());
+    @MemberOnly
+    public ResponseEntity<Void> updatePopularStudylogs(@PageableDefault Pageable pageable) {
+        studylogService.updateMostPopularStudylogs(pageable);
         return ResponseEntity.ok().build();
     }
 
