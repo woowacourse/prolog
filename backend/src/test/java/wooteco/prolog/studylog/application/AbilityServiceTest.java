@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -308,6 +309,8 @@ class AbilityServiceTest {
         assertThat(abilityIds).containsExactly(parentAbility.getId());
     }
 
+    // 스펙이 변경되어 Disabled 처리함
+    @Disabled
     @DisplayName("부모 역량 삭제에 성공하면 부모의 자역 역량도 모두 삭제된다.")
     @Test
     void deleteParentAbilityAndChildrenAbilities() {

@@ -15,7 +15,7 @@ import wooteco.support.autoceptor.AutoInterceptorPatternMaker;
 
 @Configuration
 @AllArgsConstructor
-@Profile({"local", "dev", "prod"})
+@Profile("!docu")
 public class LoginConfig implements WebMvcConfigurer {
 
     private final static String BASE_PACKAGE = "wooteco.prolog";

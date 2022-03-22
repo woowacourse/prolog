@@ -14,5 +14,3 @@ public class AbilityCreateRequest {
     private String color;
     private Long parent;
 }
-
-
