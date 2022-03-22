@@ -20,7 +20,7 @@ public class StudylogOverviewDocumentation extends Documentation {
     void 유저의_달력_스터디로그를_조회한다() {
         given("members/calendar-studylogs")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/members/{username}/calendar-stydylogs?year=2021&month=8", GithubResponses.브라운.getLogin())
+                .when().get("/members/{username}/calendar-studylogs?year=2021&month=8", GithubResponses.브라운.getLogin())
                 .then().log().all()
                 .extract();
     }
