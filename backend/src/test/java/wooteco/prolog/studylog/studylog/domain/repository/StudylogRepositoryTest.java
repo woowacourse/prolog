@@ -15,7 +15,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -27,19 +26,16 @@ import wooteco.prolog.session.domain.Level;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.repository.LevelRepository;
 import wooteco.prolog.session.domain.repository.MissionRepository;
-import wooteco.prolog.session.domain.Level;
-import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
-import wooteco.prolog.session.domain.repository.LevelRepository;
-import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
 import wooteco.prolog.studylog.domain.repository.StudylogTagRepository;
 import wooteco.prolog.studylog.domain.repository.TagRepository;
+import wooteco.support.utils.RepositoryTest;
 
-@DataJpaTest
+@RepositoryTest
 class StudylogRepositoryTest {
 
     private static final String STUDYLOG1_TITLE = "이것은 제목";
@@ -76,7 +72,7 @@ class StudylogRepositoryTest {
     private final Tag tag4 = new Tag("집필왕웨지");
     private final Tag tag5 = new Tag("피케이");
     private final List<Tag> tags = asList(
-            tag1, tag2, tag3, tag4, tag5
+        tag1, tag2, tag3, tag4, tag5
     );
 
     private final Studylog studylog1 = new Studylog(member1, STUDYLOG1_TITLE, "피케이와 포모의 스터디로그", mission1, asList(tag1, tag2));
@@ -103,7 +99,7 @@ class StudylogRepositoryTest {
         //given
         List<Long> levelIds = singletonList(level1.getId());
         Specification<Studylog> specs = StudylogSpecification.findByLevelIn(levelIds)
-                .and(StudylogSpecification.distinct(true));
+            .and(StudylogSpecification.distinct(true));
 
         // when
         Page<Studylog> studylogs = studylogRepository.findAll(specs, PageRequest.of(0, 10));
@@ -118,7 +114,7 @@ class StudylogRepositoryTest {
         //given
         List<Long> missionIds = singletonList(mission2.getId());
         Specification<Studylog> specs = StudylogSpecification.equalIn("mission", missionIds)
-                .and(StudylogSpecification.distinct(true));
+            .and(StudylogSpecification.distinct(true));
 
         // when
         Page<Studylog> studylogs = studylogRepository.findAll(specs, PageRequest.of(0, 10));
@@ -134,7 +130,7 @@ class StudylogRepositoryTest {
         List<StudylogTag> studylogTags = studylogTagRepository.findByTagIn(asList(tag1, tag2));
         List<Long> tagIds = studylogTags.stream().map(it -> it.getTag().getId()).collect(Collectors.toList());
         Specification<Studylog> specs = StudylogSpecification.findByTagIn(tagIds)
-                .and(StudylogSpecification.distinct(true));
+            .and(StudylogSpecification.distinct(true));
 
         // when
         Page<Studylog> studylogs = studylogRepository.findAll(specs, PageRequest.of(0, 10));
@@ -149,7 +145,7 @@ class StudylogRepositoryTest {
         // given
         List<String> usernames = asList(member1.getUsername(), member2.getUsername());
         Specification<Studylog> specs = StudylogSpecification.findByUsernameIn(usernames)
-                .and(StudylogSpecification.distinct(true));
+            .and(StudylogSpecification.distinct(true));
 
         // when
         Page<Studylog> studylogs = studylogRepository.findAll(specs, PageRequest.of(0, 10));
@@ -167,9 +163,9 @@ class StudylogRepositoryTest {
         List<StudylogTag> studylogTags = studylogTagRepository.findByTagIn(asList(tag1, tag2));
         List<Long> tagIds = studylogTags.stream().map(it -> it.getTag().getId()).collect(Collectors.toList());
         Specification<Studylog> specs = StudylogSpecification.findByLevelIn(levelIds)
-                .and(StudylogSpecification.equalIn("mission", missionIds))
-                .and(StudylogSpecification.findByTagIn(tagIds))
-                .and(StudylogSpecification.distinct(true));
+            .and(StudylogSpecification.equalIn("mission", missionIds))
+            .and(StudylogSpecification.findByTagIn(tagIds))
+            .and(StudylogSpecification.distinct(true));
         // when
         Page<Studylog> studylogs = studylogRepository.findAll(specs, PageRequest.of(0, 10));
 
@@ -183,7 +179,7 @@ class StudylogRepositoryTest {
         //given
         //when
         Page<Studylog> expectedResult = studylogRepository
-                .findByMember(member1, PageRequest.of(0, 10));
+            .findByMember(member1, PageRequest.of(0, 10));
         //then
         assertThat(expectedResult.getContent()).containsExactlyInAnyOrder(studylog1, studylog2);
     }
