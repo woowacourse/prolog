@@ -6,15 +6,15 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
+import wooteco.support.utils.RepositoryTest;
 
-@DataJpaTest
+@RepositoryTest
 class MemberRepositoryTest {
 
     private static final Member 웨지 = new Member("sihyung92", "웨지", Role.CREW, 2222L,
-                                                "https://avatars.githubusercontent.com/u/51393021?v=4");
+        "https://avatars.githubusercontent.com/u/51393021?v=4");
 
     @Autowired
     private MemberRepository memberRepository;

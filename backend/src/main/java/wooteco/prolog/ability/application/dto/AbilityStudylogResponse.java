@@ -14,7 +14,7 @@ import wooteco.prolog.studylog.domain.Studylog;
 public class AbilityStudylogResponse {
 
     private StudylogResponse studylog;
-    private List<AbilityResponse> abilities;
+    private List<HierarchyAbilityResponse> abilities;
 
     public static List<AbilityStudylogResponse> listOf(List<StudylogAbility> studylogAbilities) {
         return studylogAbilities.stream()
@@ -26,8 +26,8 @@ public class AbilityStudylogResponse {
 
     public static AbilityStudylogResponse of(Studylog studylog, List<StudylogAbility> studylogAbilities) {
         StudylogResponse studylogResponse = StudylogResponse.of(studylog);
-        List<AbilityResponse> abilityResponses = studylogAbilities.stream()
-            .map(it -> AbilityResponse.of(it.getAbility()))
+        List<HierarchyAbilityResponse> abilityResponses = studylogAbilities.stream()
+            .map(it -> HierarchyAbilityResponse.of(it.getAbility()))
             .collect(Collectors.toList());
 
         return new AbilityStudylogResponse(studylogResponse, abilityResponses);
@@ -35,7 +35,7 @@ public class AbilityStudylogResponse {
 
     public static List<AbilityStudylogResponse> listOf(List<Studylog> studylogs, List<StudylogAbility> studylogAbilities) {
         return studylogs.stream()
-            .map(studylog -> new AbilityStudylogResponse(StudylogResponse.of(studylog), AbilityResponse.listOf(extractAbilitiesOfStudylog(studylogAbilities, studylog))))
+            .map(studylog -> new AbilityStudylogResponse(StudylogResponse.of(studylog), HierarchyAbilityResponse.listOf(extractAbilitiesOfStudylog(studylogAbilities, studylog))))
             .collect(Collectors.toList());
     }
 

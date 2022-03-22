@@ -3,10 +3,4 @@
 
 === 필터 목록 조회
 
-==== Request
-
-include::{snippets}/filter/list/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/filter/list/http-response.adoc[]
+operation::filter/list[snippets='http-request,http-response']

@@ -27,9 +27,9 @@ public class StudylogAbilityController {
 
     @MemberOnly
     @PutMapping("/studylogs/{studylogId}/abilities")
-    public ResponseEntity<List<AbilityResponse>> addAbilityStudylogs(@AuthMemberPrincipal LoginMember member,
-                                                                     @PathVariable Long studylogId,
-                                                                     @RequestBody StudylogAbilityRequest studylogAbilityRequest) {
+    public ResponseEntity<List<AbilityResponse>> updateStudylogAbilities(@AuthMemberPrincipal LoginMember member,
+                                                                        @PathVariable Long studylogId,
+                                                                        @RequestBody StudylogAbilityRequest studylogAbilityRequest) {
         List<AbilityResponse> abilityResponses = studylogAbilityService.updateStudylogAbilities(member.getId(), studylogId, studylogAbilityRequest);
         return ResponseEntity.ok().body(abilityResponses);
     }

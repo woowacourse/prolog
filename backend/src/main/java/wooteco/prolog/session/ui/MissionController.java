@@ -22,7 +22,7 @@ public class MissionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MissionResponse>> showCategories() {
+    public ResponseEntity<List<MissionResponse>> showMissions() {
         List<MissionResponse> responses = missionService.findAll();
         return ResponseEntity.ok(responses);
     }

@@ -122,8 +122,8 @@ public class DataLoaderApplicationListener implements
 
         // ability init
 //        abilityService.addDefaultAbilities(Members.BROWN.value.getId(), "be");
-        abilityService.addDefaultAbilities(Members.JOANNE.value.getId(), "be");
-        abilityService.addDefaultAbilities(Members.SUNNY.value.getId(), "fe");
+        abilityService.applyDefaultAbilities(Members.JOANNE.value.getId(), "be");
+        abilityService.applyDefaultAbilities(Members.SUNNY.value.getId(), "fe");
 
         updatedContentsRepository.save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
     }

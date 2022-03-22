@@ -8,7 +8,6 @@ import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
@@ -19,12 +18,13 @@ import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
+import wooteco.support.utils.RepositoryTest;
 
-@DataJpaTest
+@RepositoryTest
 class StudylogTagRepositoryTest {
 
     private static final Member 웨지 = new Member("sihyung92", "웨지", Role.CREW, 2222L,
-            "https://avatars.githubusercontent.com/u/51393021?v=4");
+        "https://avatars.githubusercontent.com/u/51393021?v=4");
 
     @Autowired
     private StudylogTagRepository studylogTagRepository;
@@ -61,8 +61,8 @@ class StudylogTagRepositoryTest {
         // then
         assertThat(savedStudylogTag.getId()).isNotNull();
         assertThat(savedStudylogTag).usingRecursiveComparison()
-                .ignoringFields("id", "createdAt", "updatedAt")
-                .isEqualTo(studylogTag);
+            .ignoringFields("id", "createdAt", "updatedAt")
+            .isEqualTo(studylogTag);
     }
 
     @DisplayName("Tag 리스트와 매칭되는 StudylogTag 리스트 조회")
@@ -89,7 +89,7 @@ class StudylogTagRepositoryTest {
 
         // then
         assertThat(studylogTags).usingFieldByFieldElementComparator()
-                .containsExactlyInAnyOrder(studylogTag1, studylogTag2, studylogTag3);
+            .containsExactlyInAnyOrder(studylogTag1, studylogTag2, studylogTag3);
     }
 
     @DisplayName("Tag 리스트와 매칭되는 studylogTag가 없을시 빈 리스트 조회")

@@ -85,45 +85,17 @@ public class Ability {
         children.add(childAbility);
     }
 
-    public void updateWithValidation(Ability updateAbility, List<Ability> abilities) {
-        updateAbility.validateDuplicateName(removedUnnecessaryNameValidationAbilities(abilities));
-        updateAbility.validateDuplicateColor(removedUnnecessaryColorValidationAbilities(abilities));
-
-        update(updateAbility);
-    }
-
-    private List<Ability> removedUnnecessaryNameValidationAbilities(List<Ability> abilities) {
-        List<Ability> removeAbilities = new ArrayList<>(abilities);
-
-        removeAbilities.remove(this);
-
-        return removeAbilities;
-    }
-
-    private List<Ability> removedUnnecessaryColorValidationAbilities(List<Ability> abilities) {
-        List<Ability> removeAbilities = new ArrayList<>(abilities);
-
-        if (this.isParent()) {
-            removeAbilities.removeAll(this.getChildren());
-            removeAbilities.remove(this);
-        } else {
-            removeAbilities.removeAll(parent.getChildren());
-            removeAbilities.remove(parent);
-        }
-
-        return removeAbilities;
-    }
-
-    private void update(Ability updateAbility) {
+    public void update(Ability updateAbility) {
         this.name = updateAbility.name;
         this.description = updateAbility.description;
-
-        if (this.isParent()) {
-            updateColor(updateAbility);
-        }
+        updateColor(updateAbility);
     }
 
     private void updateColor(Ability updateAbility) {
+        if (!this.isParent()) {
+            return;
+        }
+
         this.color = updateAbility.color;
 
         for (Ability childAbility : getChildren()) {

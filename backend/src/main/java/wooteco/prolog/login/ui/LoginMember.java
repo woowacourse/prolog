@@ -2,7 +2,9 @@ package wooteco.prolog.login.ui;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class LoginMember {
 
     public enum Authority {

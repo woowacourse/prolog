@@ -10,7 +10,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
-import wooteco.prolog.ability.application.dto.AbilityResponse;
+import wooteco.prolog.ability.application.dto.HierarchyAbilityResponse;
 import wooteco.prolog.ability.application.dto.AbilityUpdateRequest;
 import wooteco.prolog.ability.application.dto.DefaultAbilityCreateRequest;
 import wooteco.prolog.common.exception.BadRequestCode;
@@ -28,7 +28,7 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         AbilityCreateRequest request = fixture.toCreateRequestWithParentId(null);
         context.invokeHttpPostWithToken("/abilities", request);
         if (context.response.statusCode() == HttpStatus.OK.value()) {
-            context.storage.put(abilityName, context.response.as(AbilityResponse.class));
+            context.storage.put(abilityName, context.response.as(HierarchyAbilityResponse.class));
         }
     }
 
@@ -40,7 +40,7 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         AbilityCreateRequest request = fixture.toCreateRequestWithParentId(parentAbilityId);
         context.invokeHttpPostWithToken("/abilities", request);
         if (context.response.statusCode() == HttpStatus.OK.value()) {
-            context.storage.put(childAbility, context.response.as(AbilityResponse.class));
+            context.storage.put(childAbility, context.response.as(HierarchyAbilityResponse.class));
         }
     }
 
@@ -77,8 +77,8 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
 
     @Then("부모 역량 목록을 받는다.")
     public void 부모역량목록을받는다() {
-        List<AbilityResponse> responses = context.response.jsonPath().getList(".", AbilityResponse.class);
-        assertThat(responses.stream().allMatch(AbilityResponse::getIsParent)).isTrue();
+        List<HierarchyAbilityResponse> responses = context.response.jsonPath().getList(".", HierarchyAbilityResponse.class);
+        assertThat(responses.stream().allMatch(HierarchyAbilityResponse::getIsParent)).isTrue();
     }
 
     @And("{string} 역량을 이름 {string}, 설명 {string}, 색상 {string} 으로 수정하고")
@@ -92,8 +92,8 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
 
     @Then("{string}의 자식역량 {string}도 {string}으로 바뀐다.")
     public void 의자식역량도으로바뀐다(String parentName, String childName, String color) {
-        AbilityResponse parentResponse = parseResponseById(getAbilityIdByName(parentName));
-        AbilityResponse childResponse = parseResponseById(getAbilityIdByName(childName));
+        HierarchyAbilityResponse parentResponse = parseResponseById(getAbilityIdByName(parentName));
+        HierarchyAbilityResponse childResponse = parseResponseById(getAbilityIdByName(childName));
 
         assertThat(parentResponse.getColor()).isEqualTo(color);
         assertThat(childResponse.getColor()).isEqualTo(color);
@@ -101,8 +101,10 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
 
     @Then("이름 {string}, 설명 {string}, 색상 {string} 역량이 포함된 역량 목록을 받는다.")
     public void 이름설명색상역량이포함된역량목록을받는다(String name, String description, String color) {
-        List<AbilityResponse> responses = context.response.jsonPath()
-            .getList(".", AbilityResponse.class);
+        String username = (String) context.storage.get("username");
+        context.invokeHttpGetWithToken("/members/" + username + "/abilities");
+        List<HierarchyAbilityResponse> responses = context.response.jsonPath()
+            .getList(".", HierarchyAbilityResponse.class);
 
         assertThat(responses.stream().anyMatch(response ->
             name.equals(response.getName()) &&
@@ -121,8 +123,8 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
 
     @Then("{string} 역량이 포함되지 않은 목록을 받는다.")
     public void 역량이포함되지않은목록을받는다(String abilityName) {
-        List<AbilityResponse> responses = context.response.jsonPath()
-            .getList(".", AbilityResponse.class);
+        List<HierarchyAbilityResponse> responses = context.response.jsonPath()
+            .getList(".", HierarchyAbilityResponse.class);
 
         assertThatThrownBy(() -> getAbilityIdByName(abilityName))
             .isExactlyInstanceOf(AbilityNotFoundException.class);
@@ -169,15 +171,15 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
 
     @Then("자식역량 {string}의 색상은 {string}으로 바뀌지 않는다.")
     public void 자식역량의색상은으로바뀌지않는다(String childName, String color) {
-        AbilityResponse response = parseResponseById(getAbilityIdByName(childName));
+        HierarchyAbilityResponse response = parseResponseById(getAbilityIdByName(childName));
 
         assertThat(response.getColor()).isNotEqualTo(color);
     }
 
     @Then("비어있는 역량 목록을 받는다.")
     public void 비어있는역량목록을받는다() {
-        List<AbilityResponse> responses = context.response.jsonPath()
-            .getList(".", AbilityResponse.class);
+        List<HierarchyAbilityResponse> responses = context.response.jsonPath()
+            .getList(".", HierarchyAbilityResponse.class);
 
         assertThat(responses).isEmpty();
     }
@@ -206,16 +208,16 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
     private Long getAbilityIdByName(String abilityName) {
         String username = (String) context.storage.get("username");
         context.invokeHttpGetWithToken("/members/" + username + "/abilities/flat");
-        List<AbilityResponse> responses = context.response.jsonPath().getList(".", AbilityResponse.class);
+        List<HierarchyAbilityResponse> responses = context.response.jsonPath().getList(".", HierarchyAbilityResponse.class);
 
         return responses.stream().filter(response -> abilityName.equals(response.getName()))
-            .map(AbilityResponse::getId)
+            .map(HierarchyAbilityResponse::getId)
             .findAny()
             .orElseThrow(AbilityNotFoundException::new);
     }
 
-    private AbilityResponse parseResponseById(Long id) {
-        List<AbilityResponse> responses = context.response.jsonPath().getList(".", AbilityResponse.class);
+    private HierarchyAbilityResponse parseResponseById(Long id) {
+        List<HierarchyAbilityResponse> responses = context.response.jsonPath().getList(".", HierarchyAbilityResponse.class);
 
         return responses.stream()
             .filter(response -> response.getId().equals(id))
