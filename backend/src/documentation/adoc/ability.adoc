@@ -1,172 +1,28 @@
 [[Ability]]
 == 역량
 
-=== 상위 역량 생성
+=== 기본 역량 등록
+- 백엔드는 `be`, 프론트엔드는 `fe`
+- 그 외 값을 입력 시 에러가 발생한다
 
-==== Request
+operation::abilities/create-template-be[snippets='http-request,http-response']
 
-include::{snippets}/abilities/create-parent/http-request.adoc[]
+=== 역량 생성
+- 상위 역량 등록 시 parent값을 null로 둔다
+- 기존에 존재하는 역량 이름을 등록할 수 없다
+- 기존에 존재하는 색상을 등록할 수 없다
+- 하위 역량 등록 시 상위 역량의 색상과 다른 경우 등록할 수 없다
 
-==== Response
-
-include::{snippets}/abilities/create-parent/http-response.adoc[]
-
-=== 하위 역량 생성
-
-==== Request
-
-include::{snippets}/abilities/create-child/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/create-child/http-response.adoc[]
-
-=== 역량 생성 - 역량간 이름 중복시 예외 발생
-
-==== Request
-
-include::{snippets}/abilities/create-name-duplicate-exception/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/create-name-duplicate-exception/http-response.adoc[]
-
-=== 역량 생성 - 상/하위 관계가 아닌 역량간 색상 중복시 예외 발생
-
-==== Request
-
-include::{snippets}/abilities/create-color-duplicate-exception/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/create-color-duplicate-exception/http-response.adoc[]
-
-=== 하위 역량 생성 - 상위 관계의 역량과 색상이 다른 경우 예외 발생
-
-==== Request
-
-include::{snippets}/abilities/create-color-different-exception/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/create-color-different-exception/http-response.adoc[]
+operation::abilities/create[snippets='http-request,http-response']
 
 === 역량 목록 조회
 
-==== Request
-
-include::{snippets}/abilities/read/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/read/http-response.adoc[]
-
-=== 상위 역량 목록 조회
-
-==== Request
-
-include::{snippets}/abilities/read/parent-only/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/read/parent-only/http-response.adoc[]
-
-=== 멤버 username을 통한 역량 목록 조회
-
-==== Request
-
-include::{snippets}/abilities/read/username/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/read/username/http-response.adoc[]
+operation::abilities/read[snippets='http-request,http-response']
 
 === 역량 수정
 
-==== Request
-
-include::{snippets}/abilities/update/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/update/http-response.adoc[]
-
-=== 상위 역량 수정 - 하위 역량 색상도 함께 수정
-
-==== Request
-
-include::{snippets}/abilities/update-with-children-color/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/update-with-children-color/http-response.adoc[]
-
-=== 하위 역량 수정 - 색상 수정 무시
-
-==== Request
-
-include::{snippets}/abilities/update-ignore-child-color/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/update-ignore-child-color/http-response.adoc[]
-
-=== 역량 수정 - 역량 이름 중복 예외 발생
-
-==== Request
-
-include::{snippets}/abilities/update-duplicate-name-exception/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/update-duplicate-name-exception/http-response.adoc[]
-
-=== 역량 수정 - 역량 색상 중복 예외 발생
-
-==== Request
-
-include::{snippets}/abilities/update-duplicate-color-exception/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/update-duplicate-color-exception/http-response.adoc[]
+operation::abilities/update[snippets='http-request,http-response']
 
 === 역량 제거
 
-==== Request
-
-include::{snippets}/abilities/delete/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/delete/http-response.adoc[]
-
-=== 기본 역량 등록 - 백엔드
-
-==== Request
-
-include::{snippets}/abilities/create-template-be/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/create-template-be/http-response.adoc[]
-
-=== 기본 역량 등록 - 프론트엔드
-
-==== Request
-
-include::{snippets}/abilities/create-template-fe/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/create-template-fe/http-response.adoc[]
-
-=== 기본 역량 등록 - 잘못된 경로 입력시 예외 발생
-
-==== Request
-
-include::{snippets}/abilities/create-template-exception/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/create-template-exception/http-response.adoc[]
+operation::abilities/delete[snippets='http-request,http-response']

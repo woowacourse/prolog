@@ -29,8 +29,8 @@ public class AbilityController {
 
     @MemberOnly
     @PostMapping("/abilities/templates/{template}")
-    public ResponseEntity<Void> addDefaultAbilities(@AuthMemberPrincipal LoginMember member, @PathVariable String template) {
-        abilityService.addDefaultAbilities(member.getId(), template);
+    public ResponseEntity<Void> applyDefaultAbilities(@AuthMemberPrincipal LoginMember member, @PathVariable String template) {
+        abilityService.applyDefaultAbilities(member.getId(), template);
         return ResponseEntity.ok().build();
     }
 

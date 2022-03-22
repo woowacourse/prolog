@@ -191,7 +191,7 @@ public class AbilityService {
     }
 
     @Transactional
-    public void addDefaultAbilities(Long memberId, String template) {
+    public void applyDefaultAbilities(Long memberId, String template) {
         Member member = memberService.findById(memberId);
         List<DefaultAbility> defaultAbilities = findDefaultAbilitiesByTemplate(template);
         Map<DefaultAbility, Ability> parentAbilities = new HashMap<>();

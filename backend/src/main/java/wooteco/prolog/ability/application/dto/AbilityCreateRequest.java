@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class AbilityCreateRequest {
 
     private String name;
@@ -14,3 +14,5 @@ public class AbilityCreateRequest {
     private String color;
     private Long parent;
 }
+
+

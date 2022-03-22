@@ -352,7 +352,7 @@ class AbilityServiceTest {
         assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isEmpty();
 
         // when
-        abilityService.addDefaultAbilities(member.getId(), "be");
+        abilityService.applyDefaultAbilities(member.getId(), "be");
 
         // then
         assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isNotEmpty();
@@ -365,7 +365,7 @@ class AbilityServiceTest {
         assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isEmpty();
 
         // when, then
-        assertThatThrownBy(() -> abilityService.addDefaultAbilities(member.getId(), "ce"))
+        assertThatThrownBy(() -> abilityService.applyDefaultAbilities(member.getId(), "ce"))
             .isExactlyInstanceOf(DefaultAbilityNotFoundException.class);
     }
 }
