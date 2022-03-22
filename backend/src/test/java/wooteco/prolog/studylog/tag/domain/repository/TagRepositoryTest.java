@@ -12,7 +12,7 @@ import wooteco.prolog.studylog.domain.repository.TagRepository;
 import wooteco.support.utils.RepositoryTest;
 
 @RepositoryTest
-public class TagRepositoryTest {
+class TagRepositoryTest {
 
     @Autowired
     private TagRepository tagRepository;

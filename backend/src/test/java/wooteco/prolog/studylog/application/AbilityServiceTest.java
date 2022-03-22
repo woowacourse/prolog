@@ -13,9 +13,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.Role;
-import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.ability.application.AbilityService;
 import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
 import wooteco.prolog.ability.application.dto.AbilityResponse;
@@ -25,9 +22,12 @@ import wooteco.prolog.ability.domain.Ability;
 import wooteco.prolog.ability.domain.DefaultAbility;
 import wooteco.prolog.ability.domain.repository.AbilityRepository;
 import wooteco.prolog.ability.domain.repository.DefaultAbilityRepository;
-import wooteco.prolog.report.exception.DefaultAbilityNotFoundException;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
+import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
+import wooteco.prolog.report.exception.DefaultAbilityNotFoundException;
 import wooteco.prolog.studylog.exception.AbilityNameDuplicateException;
 import wooteco.prolog.studylog.exception.AbilityParentColorDuplicateException;
 import wooteco.support.utils.IntegrationTest;
@@ -365,10 +365,11 @@ class AbilityServiceTest {
     @Test
     void createTemplateAbilitiesException() {
         // given
-        assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isEmpty();
+        Long memberId = member.getId();
+        assertThat(abilityService.findAbilitiesByMemberId(memberId)).isEmpty();
 
         // when, then
-        assertThatThrownBy(() -> abilityService.applyDefaultAbilities(member.getId(), "ce"))
+        assertThatThrownBy(() -> abilityService.applyDefaultAbilities(memberId, "ce"))
             .isExactlyInstanceOf(DefaultAbilityNotFoundException.class);
     }
 }
