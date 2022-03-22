@@ -34,3 +34,8 @@ operation::abilities/delete[snippets='http-request,http-response']
 - 자식 역량을 선택한 상황에서 부모 역량을 함께 등록할 수 없다
 
 operation::abilities/studylog-update[snippets='http-request,http-response']
+
+=== 역량 포함 모든 학습로그 조회
+- abilityIds : 필수값 아님
+
+operation::abilities/studylog-list[snippets='http-request,http-response']

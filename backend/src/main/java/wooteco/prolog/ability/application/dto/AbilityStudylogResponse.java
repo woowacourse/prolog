@@ -14,11 +14,11 @@ import wooteco.prolog.studylog.domain.Studylog;
 public class AbilityStudylogResponse {
 
     private StudylogResponse studylog;
-    private List<HierarchyAbilityResponse> abilities;
+    private List<AbilityResponse> abilities;
 
     public static List<AbilityStudylogResponse> listOf(List<StudylogAbility> studylogAbilities) {
         return studylogAbilities.stream()
-            .collect(Collectors.groupingBy(it -> it.getStudylog()))
+            .collect(Collectors.groupingBy(StudylogAbility::getStudylog))
             .entrySet().stream()
             .map(it -> AbilityStudylogResponse.of(it.getKey(), it.getValue()))
             .collect(Collectors.toList());
@@ -26,8 +26,8 @@ public class AbilityStudylogResponse {
 
     public static AbilityStudylogResponse of(Studylog studylog, List<StudylogAbility> studylogAbilities) {
         StudylogResponse studylogResponse = StudylogResponse.of(studylog);
-        List<HierarchyAbilityResponse> abilityResponses = studylogAbilities.stream()
-            .map(it -> HierarchyAbilityResponse.of(it.getAbility()))
+        List<AbilityResponse> abilityResponses = studylogAbilities.stream()
+            .map(it -> AbilityResponse.of(it.getAbility()))
             .collect(Collectors.toList());
 
         return new AbilityStudylogResponse(studylogResponse, abilityResponses);
@@ -35,14 +35,14 @@ public class AbilityStudylogResponse {
 
     public static List<AbilityStudylogResponse> listOf(List<Studylog> studylogs, List<StudylogAbility> studylogAbilities) {
         return studylogs.stream()
-            .map(studylog -> new AbilityStudylogResponse(StudylogResponse.of(studylog), HierarchyAbilityResponse.listOf(extractAbilitiesOfStudylog(studylogAbilities, studylog))))
+            .map(studylog -> new AbilityStudylogResponse(StudylogResponse.of(studylog), AbilityResponse.listOf(extractAbilitiesOfStudylog(studylogAbilities, studylog))))
             .collect(Collectors.toList());
     }
 
     private static List<Ability> extractAbilitiesOfStudylog(List<StudylogAbility> studylogAbilities, Studylog studylog) {
         return studylogAbilities.stream()
-            .filter(it -> it.getStudylog().getId() == studylog.getId())
-            .map(it -> it.getAbility())
+            .filter(it -> it.getStudylog().equals(studylog))
+            .map(StudylogAbility::getAbility)
             .collect(Collectors.toList());
     }
 }
