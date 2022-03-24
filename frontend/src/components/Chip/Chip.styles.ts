@@ -22,13 +22,21 @@ export type ContainerProps = {
   /**
    * @default none
    */
+  border?: string;
+  /**
+   * @default none
+   */
+  lineHeight?: string;
+  /**
+   * @default none
+   */
   onClick?: () => void;
 };
 
 const Container = styled.div<ContainerProps>`
   width: ${({ width }) => (width ? getSize(width) : 'fit-content')};
   ${({ maxWidth }) => maxWidth && `max-width: ${getSize(maxWidth)}`};
-  margin-right: 1rem;
+  margin-right: 1.4rem;
   padding: 0.2rem 0.8rem;
 
   display: flex;
@@ -39,10 +47,12 @@ const Container = styled.div<ContainerProps>`
   color: ${({ backgroundColor }) =>
     backgroundColor ? getTextColor(backgroundColor) : COLOR.BLACK_900};
   border-radius: 5rem;
+  ${({ border }) => border && `border: ${border}`};
 
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  ${({ lineHeight }) => lineHeight && `line-height: ${lineHeight}`};
 
   cursor: default;
 
@@ -58,10 +68,10 @@ const Container = styled.div<ContainerProps>`
     align-items: center;
 
     &:hover {
-      background-color: ${COLOR.RED_100};
+      background-color: ${COLOR.BLACK_900};
 
       svg {
-        stroke: ${COLOR.RED_600};
+        stroke: ${COLOR.WHITE};
       }
     }
   }

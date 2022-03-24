@@ -22,24 +22,15 @@ type ComponentProps = {
 type ChipProps = ContainerProps & ChipTextProps & ComponentProps;
 
 const Chip = ({
-  title,
-  maxWidth,
   textAlign,
-  width,
-  backgroundColor,
   fontSize,
   onClick,
   onDelete,
   children,
+  ...props
 }: ChipProps): JSX.Element => {
   return (
-    <Container
-      title={title}
-      maxWidth={maxWidth}
-      width={width}
-      backgroundColor={backgroundColor}
-      onClick={onClick}
-    >
+    <Container {...props} onClick={onClick}>
       <ChipText textAlign={textAlign} fontSize={fontSize}>
         {children}
       </ChipText>
@@ -59,6 +50,8 @@ Chip.propTypes = {
   width: PropTypes.string,
   color: PropTypes.string,
   backgroundColor: PropTypes.string,
+  border: PropTypes.string,
+  lineHeight: PropTypes.string,
   fontSize: PropTypes.string,
   onDelete: PropTypes.func,
   children: PropTypes.node,
