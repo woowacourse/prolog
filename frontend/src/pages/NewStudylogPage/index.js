@@ -3,13 +3,14 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { nanoid } from 'nanoid';
+import TagManager from 'react-gtm-module';
 
 import useFetch from '../../hooks/useFetch';
 import useMutation from '../../hooks/useMutation';
 import { UserContext } from '../../contexts/UserProvider';
 import { requestGetMissions, requestGetTags, requestPostStudylog } from '../../service/requests';
 
-import { SelectBox, Button, BUTTON_SIZE, NewStudylogCard } from '../../components';
+import { Button, BUTTON_SIZE, NewStudylogCard, SelectBox } from '../../components';
 
 import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
 import ERROR_CODE from '../../constants/errorCode';
@@ -23,7 +24,7 @@ const NewStudylogPage = () => {
 
   const { user } = useContext(UserContext);
 
-  const { accessToken } = user;
+  const { accessToken, username, userId } = user;
 
   const [postIds] = useState([nanoid()]);
   const [selectedMission, setSelectedMission] = useState('');
@@ -37,6 +38,14 @@ const NewStudylogPage = () => {
 
   const { mutate: postStudylog } = useMutation(requestPostStudylog, {
     onSuccess: () => {
+      TagManager.dataLayer({
+        dataLayer: {
+          event: 'write_studylog',
+          user_id: userId,
+          username,
+        },
+      });
+
       alert(SUCCESS_MESSAGE.CREATE_POST);
       history.push(PATH.STUDYLOG);
     },

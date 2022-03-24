@@ -2,6 +2,7 @@
 
 import { useContext, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import TagManager from 'react-gtm-module';
 
 import Content from './Content';
 import { Button, BUTTON_SIZE } from '../../components';
@@ -36,11 +37,24 @@ const StudylogPage = () => {
   const history = useHistory();
 
   const { user } = useContext(UserContext);
-  const { accessToken, isLoggedIn, username } = user;
+  const { accessToken, isLoggedIn, username, userId } = user;
 
   const { openSnackBar } = useSnackBar();
 
-  const { response: studylog, getData } = useStudylog({});
+  const onSuccessWriteStudylog = (studylog) => {
+    TagManager.dataLayer({
+      dataLayer: {
+        event: 'page_view_studylog',
+        mine: username === studylog.author?.username,
+        user_id: userId,
+        username,
+        target: studylog.id,
+      },
+    });
+  };
+
+  const { response: studylog, getData } = useStudylog({}, onSuccessWriteStudylog);
+
   const getStudylog = () => getData({ id, accessToken });
 
   const { mutate: deleteStudylog } = useMutation(
