@@ -378,4 +378,8 @@ public class StudylogService {
     public Studylog save(Studylog studylog) {
       return studylogRepository.save(studylog);
     }
+
+    public List<Studylog> findStudylogsInPeriod(Long memberId, LocalDate startDate, LocalDate endDate) {
+        return studylogRepository.findByMemberIdAndCreatedAtBetween(memberId, LocalDateTime.of(startDate, LocalTime.MIN), LocalDateTime.of(endDate, LocalTime.MAX));
+    }
 }

@@ -1,7 +1,6 @@
 package wooteco.prolog.report.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,25 +13,25 @@ import wooteco.prolog.studylog.domain.Studylog;
 @Entity
 @NoArgsConstructor
 @Getter
-public class ReportAbilityStudylog {
+public class ReportStudylog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    private Long reportId;
+
+    @ManyToOne
     @JoinColumn(name = "report_ability_id")
     private ReportAbility reportAbility;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "studylog_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "studylog_id")
     private Studylog studylog;
 
-    private Long originAbilityId;
-
-    public ReportAbilityStudylog(ReportAbility reportAbility, Studylog studylog, Long originAbilityId) {
+    public ReportStudylog(Long reportId, ReportAbility reportAbility, Studylog studylog) {
+        this.reportId = reportId;
         this.reportAbility = reportAbility;
         this.studylog = studylog;
-        this.originAbilityId = originAbilityId;
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.data.web.config.PageableHandlerMethodArgumentResolver
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 import wooteco.prolog.common.slacklogger.RequestStorage;
 import wooteco.prolog.studylog.application.dto.search.SearchArgumentResolver;
 import wooteco.support.performance.PerformanceLogger;

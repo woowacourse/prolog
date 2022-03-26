@@ -1,5 +1,6 @@
 package wooteco.prolog.ability.application;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Pageable;
@@ -97,5 +98,10 @@ public class StudylogAbilityService {
         Member member = memberService.findByUsername(username);
 
         return studylogAbilityRepository.findByMemberId(member.getId());
+    }
+
+    public List<StudylogAbility> findStudylogAbilitiesInPeriod(Long memberId, LocalDate startDate, LocalDate endDate) {
+        List<Studylog> studylogs = studylogService.findStudylogsInPeriod(memberId, startDate, endDate);
+        return studylogAbilityRepository.findByStudylogIdIn(studylogs.stream().map(Studylog::getId).collect(Collectors.toList()));
     }
 }

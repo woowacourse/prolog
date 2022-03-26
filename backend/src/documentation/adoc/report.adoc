@@ -3,61 +3,8 @@
 
 === 리포트 생성
 
-==== Request
+operation::reports/create[snippets='http-request,http-response']
 
-include::{snippets}/reports/create/http-request.adoc[]
+=== 리포트 목록 조회
 
-==== Response
-
-include::{snippets}/reports/create/http-response.adoc[]
-
-
-=== 멤버의 리포트 조회 - 단순 데이터 조회
-
-==== Request
-
-include::{snippets}/reports/read/members/simple/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/reports/read/members/simple/http-response.adoc[]
-
-=== 멤버의 리포트 조회 - 전체 데이터 조회
-
-==== Request
-
-include::{snippets}/reports/read/members/all/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/reports/read/members/all/http-response.adoc[]
-
-=== 리포트 단건 조회
-
-==== Request
-
-include::{snippets}/reports/read/once/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/reports/read/once/http-response.adoc[]
-
-=== 리포트 수정
-
-==== Request
-
-include::{snippets}/reports/update/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/reports/update/http-response.adoc[]
-
-=== 리포트 삭제
-
-==== Request
-
-include::{snippets}/reports/delete/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/reports/delete/http-response.adoc[]
+operation::reports/read[snippets='http-request,http-response']
