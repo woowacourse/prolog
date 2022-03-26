@@ -48,8 +48,10 @@ public class StudylogController {
         return ResponseEntity.ok(studylogsResponse);
     }
 
+    /**
+     * 갱신할 스터디로그 개수를 지정해야하기 때문에 pageable 필요
+     */
     @PutMapping("/most-popular")
-    @MemberOnly
     public ResponseEntity<Void> updatePopularStudylogs(@PageableDefault Pageable pageable) {
         studylogService.updateMostPopularStudylogs(pageable);
         return ResponseEntity.ok().build();

@@ -7,6 +7,7 @@ import static java.util.stream.Collectors.toList;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -98,8 +99,7 @@ public class StudylogService {
         Long memberId,
         boolean isAnonymousMember
     ) {
-        List<Long> studylogIds = getMostPopularStudylogIds();
-        List<Studylog> studylogs = studylogRepository.findAllByIds(studylogIds);
+        List<Studylog> studylogs = getSortedMostPopularStudyLogs();
         PageImpl<Studylog> page = new PageImpl<>(studylogs, pageable, studylogs.size());
         StudylogsResponse studylogsResponse = StudylogsResponse.of(page, memberId);
 
@@ -110,6 +110,23 @@ public class StudylogService {
         updateScrap(data, findScrapIds(memberId));
         updateRead(data, findReadIds(memberId));
         return studylogsResponse;
+    }
+
+    private List<Studylog> getSortedMostPopularStudyLogs() {
+        List<Long> studylogIds = getMostPopularStudylogIds();
+        List<Studylog> studylogs = studylogRepository.findAllById(studylogIds);
+
+        List<Studylog> sortedStudylogs = new ArrayList<>();
+        for (Long studylogId : studylogIds) {
+            Studylog sortStudylog = studylogs.stream()
+                .filter(studylog -> Objects.equals(studylog.getId(), studylogId))
+                .findAny()
+                .orElseThrow(StudylogNotFoundException::new);
+
+            sortedStudylogs.add(sortStudylog);
+        }
+
+        return sortedStudylogs;
     }
 
     private List<Long> getMostPopularStudylogIds() {

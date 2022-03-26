@@ -13,8 +13,8 @@ import io.cucumber.java.en.When;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.StudylogAcceptanceFixture;
@@ -358,6 +358,15 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     public void 조회된스터디로그의좋아요여부가거짓이다() {
         StudylogResponse response = context.response.as(StudylogResponse.class);
         assertThat(response.isLiked()).isFalse();
+    }
+
+    @When("인기 있는 스터디로그 목록을 {string}개만큼 갱신하고")
+    public void 인기있는스터디로그목록을개만큼갱신하고(String studylogCount) {
+        context.invokeHttpPutWithToken(
+            "/studylogs/most-popular",
+            PageRequest.of(1, Integer.parseInt(studylogCount))
+        );
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
     @Then("인기있는 스터디로그 목록 요청시 id {string} 순서로 조회된다")
