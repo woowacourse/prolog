@@ -99,7 +99,7 @@ public class StudylogService {
         boolean isAnonymousMember
     ) {
         List<Long> studylogIds = getMostPopularStudylogIds();
-        List<Studylog> studylogs = studylogRepository.findAllById(studylogIds);
+        List<Studylog> studylogs = studylogRepository.findAllByIds(studylogIds);
         PageImpl<Studylog> page = new PageImpl<>(studylogs, pageable, studylogs.size());
         StudylogsResponse studylogsResponse = StudylogsResponse.of(page, memberId);
 
