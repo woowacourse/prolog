@@ -2,6 +2,7 @@ package wooteco.prolog.docu;
 
 import static org.apache.http.HttpHeaders.AUTHORIZATION;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
@@ -24,6 +25,7 @@ import wooteco.prolog.report.application.dto.ReportAbilityResponse;
 import wooteco.prolog.report.application.dto.ReportRequest;
 import wooteco.prolog.report.application.dto.ReportResponse;
 import wooteco.prolog.report.application.dto.ReportStudylogResponse;
+import wooteco.prolog.report.application.dto.ReportUpdateRequest;
 import wooteco.prolog.report.ui.ReportController;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
@@ -53,7 +55,36 @@ public class ReportDocumentation extends NewDocumentation {
 
         given
             .when().get("/members/username/reports")
+            .then().log().all().apply(document("reports/list")).statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void 리포트_조회() {
+        when(reportService.findReportById(any())).thenReturn(REPORT_RESPONSE);
+
+        given
+            .when().get("/reports/1")
             .then().log().all().apply(document("reports/read")).statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void 역량_수정() {
+        doNothing().when(reportService).updateReport(any(), any(), any());
+
+        given.header(AUTHORIZATION, "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+            .body(REPORT_UPDATE_REQUEST)
+            .when().put("/reports/1")
+            .then().log().all().apply(document("reports/update")).statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void 역량_제거() {
+        doNothing().when(reportService).deleteReport(any(), any());
+
+        given.header(AUTHORIZATION, "Bearer " + accessToken)
+            .when().delete("/reports/1")
+            .then().log().all().apply(document("reports/delete")).statusCode(HttpStatus.NO_CONTENT.value());
     }
 
     private static final ReportRequest REPORT_REQUEST = new ReportRequest(
@@ -68,6 +99,11 @@ public class ReportDocumentation extends NewDocumentation {
             new ReportAbilityRequest(4L, 3),
             new ReportAbilityRequest(5L, 2)
         )
+    );
+
+    private static final ReportUpdateRequest REPORT_UPDATE_REQUEST = new ReportUpdateRequest(
+        "새로운 리포트",
+        "새로운 리포트 설명"
     );
 
     private static final ReportResponse REPORT_RESPONSE = new ReportResponse(
