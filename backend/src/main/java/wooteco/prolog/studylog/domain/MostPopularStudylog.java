@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.BaseEntity;
 
+
 /**
  * 홈페이지를 클릭할 때마다 매번 조회되는 테이블(엔티티).
  * 조회 시마다 다른 테이블들과 계속해서 JOIN이 발생함.
@@ -17,7 +18,6 @@ import wooteco.prolog.common.BaseEntity;
  * @author hyeon9mak
  */
 
-@EqualsAndHashCode
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
