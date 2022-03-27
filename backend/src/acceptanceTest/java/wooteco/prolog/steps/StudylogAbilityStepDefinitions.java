@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import org.assertj.core.util.Lists;
 import wooteco.prolog.AcceptanceSteps;
-import wooteco.prolog.ability.application.dto.AbilityResponse;
+import wooteco.prolog.ability.application.dto.HierarchyAbilityResponse;
 import wooteco.prolog.ability.application.dto.AbilityStudylogResponse;
 import wooteco.prolog.ability.application.dto.StudylogAbilityRequest;
 import wooteco.prolog.fixtures.GithubResponses;
@@ -18,7 +18,7 @@ public class StudylogAbilityStepDefinitions extends AcceptanceSteps {
 
     @When("{string} 학습로그에 {string} 역량을 맵핑하(면)(고)")
     public void 역량에학습로그를맵핑하면(String studylogName, String abilityName) {
-        AbilityResponse ability = (AbilityResponse) context.storage.get(abilityName);
+        HierarchyAbilityResponse ability = (HierarchyAbilityResponse) context.storage.get(abilityName);
         StudylogResponse studylog = (StudylogResponse) context.storage.get(studylogName);
 
         StudylogAbilityRequest requestBody = new StudylogAbilityRequest(Lists.newArrayList(ability.getId()));
@@ -27,8 +27,8 @@ public class StudylogAbilityStepDefinitions extends AcceptanceSteps {
 
     @When("{string} 학습로그에 {string}, {string} 역량을 맵핑하(면)(고)")
     public void 학습로그에역량을맵핑하면(String studylogName, String abilityName1, String abilityName2) {
-        AbilityResponse ability1 = (AbilityResponse) context.storage.get(abilityName1);
-        AbilityResponse ability2 = (AbilityResponse) context.storage.get(abilityName2);
+        HierarchyAbilityResponse ability1 = (HierarchyAbilityResponse) context.storage.get(abilityName1);
+        HierarchyAbilityResponse ability2 = (HierarchyAbilityResponse) context.storage.get(abilityName2);
         StudylogResponse studylog = (StudylogResponse) context.storage.get(studylogName);
 
         StudylogAbilityRequest requestBody = new StudylogAbilityRequest(Lists.newArrayList(ability1.getId(), ability2.getId()));

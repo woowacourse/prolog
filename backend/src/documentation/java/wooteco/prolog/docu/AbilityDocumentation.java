@@ -295,14 +295,11 @@ public class AbilityDocumentation extends Documentation {
             .findAny()
             .orElseThrow(AbilityNotFoundException::new);
 
-        ChildAbilityResponse childAbilityResponse = updatedAbilityResponse.getChildren().get(0);
-
         assertThat(response.statusCode()).isEqualTo(OK.value());
         assertThat(updatedAbilityResponse.getId()).isEqualTo(생성된_상위_역량.getId());
         assertThat(updatedAbilityResponse.getName()).isEqualTo(새로운_이름);
         assertThat(updatedAbilityResponse.getDescription()).isEqualTo(새로운_설명);
         assertThat(updatedAbilityResponse.getColor()).isEqualTo(새로운_색상);
-        assertThat(childAbilityResponse.getColor()).isEqualTo(새로운_색상);
     }
 
     @Test

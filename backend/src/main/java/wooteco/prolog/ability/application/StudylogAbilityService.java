@@ -37,10 +37,20 @@ public class StudylogAbilityService {
     public List<AbilityResponse> updateStudylogAbilities(Long memberId, Long studylogId, StudylogAbilityRequest studylogAbilityRequest) {
         Studylog studylog = studylogService.findStudylogById(studylogId);
         if (!studylog.isBelongsTo(memberId)) {
-            throw new RuntimeException("자신의 학습로그의 역량만 수정이 가능합니다.");
+            throw new IllegalArgumentException("자신의 학습로그의 역량만 수정이 가능합니다.");
         }
 
         List<Ability> abilities = abilityService.findByIdIn(memberId, studylogAbilityRequest.getAbilities());
+        // 자식 역량이 있는데 부모 역량이 있는 경우 예외처리
+        abilities.stream()
+            .filter(it -> !it.isParent())
+            .filter(it -> abilities.contains(it.getParent()))
+            .findFirst()
+            .ifPresent(it -> {
+                throw new IllegalArgumentException("자식 역량이 존재하는 경우 부모 역량을 선택할 수 없습니다.");
+            });
+
+
         List<StudylogAbility> studylogAbilities = abilities.stream()
             .map(it -> new StudylogAbility(memberId, it, studylog))
             .collect(Collectors.toList());

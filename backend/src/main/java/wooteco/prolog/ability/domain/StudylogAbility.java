@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.studylog.domain.Studylog;
@@ -15,6 +16,7 @@ import wooteco.prolog.studylog.domain.Studylog;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
+@EqualsAndHashCode(of = "id")
 public class StudylogAbility {
 
     @Id

@@ -1,5 +1,6 @@
 package wooteco.prolog.ability.application;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
 import wooteco.prolog.ability.application.dto.AbilityResponse;
 import wooteco.prolog.ability.application.dto.AbilityUpdateRequest;
 import wooteco.prolog.ability.application.dto.DefaultAbilityCreateRequest;
+import wooteco.prolog.ability.application.dto.HierarchyAbilityResponse;
 import wooteco.prolog.ability.domain.Ability;
 import wooteco.prolog.ability.domain.DefaultAbility;
 import wooteco.prolog.ability.domain.repository.AbilityRepository;
@@ -84,49 +86,49 @@ public class AbilityService {
         return childAbility;
     }
 
-    public List<AbilityResponse> findAbilitiesByMemberId(Long memberId) {
-        return AbilityResponse.listOf(findByMemberId(memberId));
+    public List<HierarchyAbilityResponse> findAbilitiesByMemberId(Long memberId) {
+        return HierarchyAbilityResponse.listOf(findByMemberId(memberId));
     }
 
-    public List<AbilityResponse> findAbilitiesByMemberUsername(String username) {
+    public List<HierarchyAbilityResponse> findAbilitiesByMemberUsername(String username) {
         Member member = memberService.findByUsername(username);
 
         return findParentAbilitiesByMemberId(member.getId());
     }
 
-    public List<AbilityResponse> findParentAbilitiesByMemberId(Long memberId) {
+    public List<HierarchyAbilityResponse> findParentAbilitiesByMemberId(Long memberId) {
         List<Ability> parentAbilities = abilityRepository.findByMemberIdAndParentIsNull(memberId);
-
-        return AbilityResponse.listOf(parentAbilities);
+        return HierarchyAbilityResponse.listOf(parentAbilities);
     }
 
-    public List<AbilityResponse> findParentAbilitiesByUsername(String username) {
+    public List<HierarchyAbilityResponse> findParentAbilitiesByUsername(String username) {
         Member member = memberService.findByUsername(username);
         List<Ability> parentAbilities = abilityRepository.findByMemberIdAndParentIsNull(member.getId());
 
-        return AbilityResponse.listOf(parentAbilities);
+        return HierarchyAbilityResponse.listOf(parentAbilities);
     }
 
     public List<AbilityResponse> findFlatAbilitiesByMember(String username) {
         Member member = memberService.findByUsername(username);
-        List<Ability> parentAbilities = abilityRepository.findByMemberId(member.getId());
+        List<Ability> abilities = abilityRepository.findByMemberId(member.getId());
 
-        return AbilityResponse.flatListOf(parentAbilities);
+        return AbilityResponse.listOf(abilities);
     }
 
     @Transactional
-    public List<AbilityResponse> updateAbility(Long memberId, Long abilityId, AbilityUpdateRequest request) {
-        Ability legacyAbility = findAbilityByIdAndMemberId(abilityId, memberId);
-        Ability updateAbility = request.toEntity();
-        List<Ability> abilities = findByMemberId(memberId);
+    public void updateAbility(Long memberId, Long abilityId, AbilityUpdateRequest request) {
+        Ability ability = findAbilityByIdAndMemberId(abilityId, memberId);
+        List<Ability> abilities = new ArrayList<>(findByMemberId(memberId));
+        abilities.remove(ability);
 
-        legacyAbility.updateWithValidation(updateAbility, abilities);
+        if (ability.isParent()) {
+            request.toEntity().validateDuplicateName(abilities);
+            request.toEntity().validateDuplicateColor(abilities);
+        }
 
-        return findAbilitiesByMemberId(memberId);
-    }
+        request.toEntity().validateDuplicateName(abilities);
 
-    public List<AbilityResponse> updateAbility(Long memberId, AbilityUpdateRequest request) {
-        return updateAbility(memberId, request.getId(), request);
+        ability.update(request.toEntity());
     }
 
     private List<Ability> findByMemberId(Long memberId) {
@@ -144,7 +146,7 @@ public class AbilityService {
         abilityRepository.delete(ability);
     }
 
-    private Ability findAbilityById(Long parentId) {
+    public Ability findAbilityById(Long parentId) {
         return abilityRepository.findById(parentId)
             .orElseThrow(AbilityNotFoundException::new);
     }
@@ -191,7 +193,7 @@ public class AbilityService {
     }
 
     @Transactional
-    public void addDefaultAbilities(Long memberId, String template) {
+    public void applyDefaultAbilities(Long memberId, String template) {
         Member member = memberService.findById(memberId);
         List<DefaultAbility> defaultAbilities = findDefaultAbilitiesByTemplate(template);
         Map<DefaultAbility, Ability> parentAbilities = new HashMap<>();

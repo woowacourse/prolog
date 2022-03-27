@@ -5,20 +5,29 @@ import java.util.stream.Collectors;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.common.BaseEntity;
+import wooteco.prolog.common.AuditingEntity;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.exception.AuthorNotValidException;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Studylog extends BaseEntity {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+public class Studylog extends AuditingEntity {
 
     private static final int POPULAR_SCORE = 3;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
@@ -44,11 +53,6 @@ public class Studylog extends BaseEntity {
     private Likes likes;
 
     public Studylog(Member member, String title, String content, Mission mission, List<Tag> tags) {
-        this(null, member, title, content, mission, tags);
-    }
-
-    public Studylog(Long id, Member member, String title, String content, Mission mission, List<Tag> tags) {
-        super(id);
         this.member = member;
         this.title = new Title(title);
         this.content = new Content(content);
@@ -152,7 +156,7 @@ public class Studylog extends BaseEntity {
     public boolean isBelongsTo(Long memberId) {
         return this.member.getId().equals(memberId);
     }
-  
+
     public String getNickname() {
         return member.getNickname();
     }

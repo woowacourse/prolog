@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import wooteco.prolog.ability.application.dto.HierarchyAbilityResponse;
 import wooteco.prolog.login.aop.MemberOnly;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
@@ -30,7 +31,7 @@ public class AbilityController {
     @MemberOnly
     @PostMapping("/abilities/templates/{template}")
     public ResponseEntity<Void> addDefaultAbilities(@AuthMemberPrincipal LoginMember member, @PathVariable String template) {
-        abilityService.addDefaultAbilities(member.getId(), template);
+        abilityService.applyDefaultAbilities(member.getId(), template);
         return ResponseEntity.ok().build();
     }
 
@@ -42,7 +43,7 @@ public class AbilityController {
     }
 
     @GetMapping("/members/{username}/abilities")
-    public ResponseEntity<List<AbilityResponse>> findAbilitiesByUsername(@PathVariable String username) {
+    public ResponseEntity<List<HierarchyAbilityResponse>> findAbilitiesByUsername(@PathVariable String username) {
         return ResponseEntity.ok(abilityService.findParentAbilitiesByUsername(username));
     }
 
@@ -53,10 +54,11 @@ public class AbilityController {
 
     @MemberOnly
     @PutMapping("/abilities/{abilityId}")
-    public ResponseEntity<List<AbilityResponse>> updateAbility(@AuthMemberPrincipal LoginMember member,
+    public ResponseEntity<Void> updateAbility(@AuthMemberPrincipal LoginMember member,
                                                                @PathVariable Long abilityId,
                                                                @RequestBody AbilityUpdateRequest abilityUpdateRequest) {
-        return ResponseEntity.ok(abilityService.updateAbility(member.getId(), abilityId, abilityUpdateRequest));
+        abilityService.updateAbility(member.getId(), abilityId, abilityUpdateRequest);
+        return ResponseEntity.ok().build();
     }
 
     @MemberOnly

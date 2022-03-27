@@ -1,11 +1,14 @@
 package wooteco.prolog.studylog.studylog.domain.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Collections;
+import java.util.List;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
@@ -15,21 +18,18 @@ import wooteco.prolog.session.domain.repository.LevelRepository;
 import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogRead;
-import wooteco.prolog.studylog.domain.repository.*;
+import wooteco.prolog.studylog.domain.repository.StudylogReadRepository;
+import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.support.utils.RepositoryTest;
 
-import java.util.Collections;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-@DataJpaTest
+@RepositoryTest
 class StudylogReadRepositoryTest {
 
     private static final Member 웨지 = new Member("sihyung92", "웨지", Role.CREW, 2222L,
-            "https://avatars.githubusercontent.com/u/51393021?v=4");
+        "https://avatars.githubusercontent.com/u/51393021?v=4");
 
     private static final Member 바다 = new Member("xrabcde", "바다", Role.CREW, 1111L,
-            "https://avatars.githubusercontent.com/u/56033755?v=4");
+        "https://avatars.githubusercontent.com/u/56033755?v=4");
 
     private Studylog studylog;
     private Member member;
@@ -57,7 +57,7 @@ class StudylogReadRepositoryTest {
         Level level = levelRepository.save(new Level("레벨1"));
         Mission mission = missionRepository.save(new Mission("미션", level));
         studylog = studylogRepository
-                .save(new Studylog(member, "제목", "내용", mission, Lists.emptyList()));
+            .save(new Studylog(member, "제목", "내용", mission, Lists.emptyList()));
     }
 
     @DisplayName("멤버 아이디와 스터디로그 아이디로 조회한 적이 있다면 true, 없다면 false를 반환한다.")

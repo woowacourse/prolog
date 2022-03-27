@@ -7,13 +7,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import wooteco.prolog.session.domain.Level;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.repository.LevelRepository;
 import wooteco.prolog.session.domain.repository.MissionRepository;
+import wooteco.support.utils.RepositoryTest;
 
-@DataJpaTest
+@RepositoryTest
 class MissionRepositoryTest {
 
     @Autowired

@@ -58,6 +58,8 @@ dependencies {
     // rest-assured
     acceptanceTestImplementation 'io.rest-assured:rest-assured:3.3.0'
     documentationImplementation 'io.rest-assured:rest-assured:3.3.0'
+    documentationImplementation 'io.rest-assured:spring-mock-mvc:3.3.0'
+
 
     // cucumber
     acceptanceTestImplementation 'io.cucumber:cucumber-java:6.10.4'
@@ -66,7 +68,8 @@ dependencies {
 
     // rest docs
     asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.5.RELEASE'
-    documentationImplementation 'org.springframework.restdocs:spring-restdocs-restassured:2.0.5.RELEASE'
+    documentationImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    documentationImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
 
     //lombok
     compileOnly 'org.projectlombok:lombok:1.18.20'

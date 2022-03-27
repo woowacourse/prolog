@@ -1,80 +1,42 @@
 package wooteco.prolog.docu;
 
-import io.restassured.RestAssured;
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
-import java.util.Arrays;
-import java.util.List;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.MediaType;
-import wooteco.prolog.Documentation;
-import wooteco.prolog.session.application.dto.LevelRequest;
-import wooteco.prolog.session.application.dto.LevelResponse;
-import wooteco.prolog.session.application.dto.MissionRequest;
-import wooteco.prolog.studylog.application.dto.TagRequest;
+import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
-public class FilterDocumentation extends Documentation {
+import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import wooteco.prolog.NewDocumentation;
+import wooteco.prolog.member.application.dto.MemberResponse;
+import wooteco.prolog.member.domain.Role;
+import wooteco.prolog.session.application.dto.LevelResponse;
+import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.studylog.application.FilterService;
+import wooteco.prolog.studylog.application.dto.FilterResponse;
+import wooteco.prolog.studylog.application.dto.TagResponse;
+import wooteco.prolog.studylog.ui.FilterController;
+
+@WebMvcTest(controllers = FilterController.class)
+public class FilterDocumentation extends NewDocumentation {
+
+    @MockBean
+    private FilterService filterService;
 
     @Test
-    void 필터_목록을_조회한다() {
-        LevelRequest levelRequest1 = new LevelRequest("레벨1");
-        Long level1 = 레벨_등록함(levelRequest1);
-        LevelRequest levelRequest2 = new LevelRequest("레벨2");
-        Long level2 = 레벨_등록함(levelRequest2);
+    void 필터_목록_조회() {
+        when(filterService.showAll()).thenReturn(FILTER_RESPONSE);
 
-        MissionRequest request1 = new MissionRequest("지하철 노선도 미션 1", level1);
-        미션_등록함(request1);
-        MissionRequest request2 = new MissionRequest("지하철 노선도 미션 2", level2);
-        미션_등록함(request2);
-
-        List<TagRequest> tagRequests = Arrays.asList(
-            new TagRequest("자바"),
-            new TagRequest("파이썬"),
-            new TagRequest("자바스크립트")
-        );
-        태그_등록함(tagRequests);
-
-        given("filter/list")
-            .accept(MediaType.APPLICATION_JSON_VALUE)
+        given
             .when().get("/filters")
-            .then().log().all().extract();
+            .then().log().all().apply(document("filter/list")).statusCode(HttpStatus.OK.value());
     }
 
-    private Long 레벨_등록함(LevelRequest request) {
-        return RestAssured
-            .given().log().all()
-            .body(request)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .when()
-            .post("/levels")
-            .then()
-            .log().all()
-            .extract()
-            .as(LevelResponse.class)
-            .getId();
-    }
-
-    private ExtractableResponse<Response> 미션_등록함(MissionRequest request) {
-        return RestAssured
-            .given().log().all()
-            .body(request)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .when()
-            .post("/missions")
-            .then()
-            .log().all()
-            .extract();
-    }
-
-    private ExtractableResponse<Response> 태그_등록함(List<TagRequest> request) {
-        return RestAssured
-            .given().log().all()
-            .body(request)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .when()
-            .post("/tags")
-            .then()
-            .log().all()
-            .extract();
-    }
+    private static final FilterResponse FILTER_RESPONSE = new FilterResponse(
+        Lists.newArrayList(new LevelResponse(1L, "레벨1"), new LevelResponse(2L, "레벨2")),
+        Lists.newArrayList(new MissionResponse(1L, "지하철 노선도 미션 1", new LevelResponse(1L, "레벨1")), new MissionResponse(2L, "지하철 노선도 미션 2", new LevelResponse(2L, "레벨2"))),
+        Lists.newArrayList(new TagResponse(1L, "자바"), new TagResponse(2L, "파이썬"), new TagResponse(3L, "자바스크립트")),
+        Lists.newArrayList(new MemberResponse(1L, "username", "nickname", Role.CREW, "imageUrl"))
+    );
 }

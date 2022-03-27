@@ -18,7 +18,7 @@ public class AbilityStudylogResponse {
 
     public static List<AbilityStudylogResponse> listOf(List<StudylogAbility> studylogAbilities) {
         return studylogAbilities.stream()
-            .collect(Collectors.groupingBy(it -> it.getStudylog()))
+            .collect(Collectors.groupingBy(StudylogAbility::getStudylog))
             .entrySet().stream()
             .map(it -> AbilityStudylogResponse.of(it.getKey(), it.getValue()))
             .collect(Collectors.toList());
@@ -41,8 +41,8 @@ public class AbilityStudylogResponse {
 
     private static List<Ability> extractAbilitiesOfStudylog(List<StudylogAbility> studylogAbilities, Studylog studylog) {
         return studylogAbilities.stream()
-            .filter(it -> it.getStudylog().getId() == studylog.getId())
-            .map(it -> it.getAbility())
+            .filter(it -> it.getStudylog().equals(studylog))
+            .map(StudylogAbility::getAbility)
             .collect(Collectors.toList());
     }
 }

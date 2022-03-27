@@ -16,17 +16,10 @@ public class AbilityResponse {
     private String description;
     private String color;
     private boolean isParent;
-    private List<ChildAbilityResponse> children;
 
     public static List<AbilityResponse> listOf(List<Ability> abilities) {
         return abilities.stream()
             .map(AbilityResponse::of)
-            .collect(toList());
-    }
-
-    public static List<AbilityResponse> flatListOf(List<Ability> abilities) {
-        return abilities.stream()
-            .map(AbilityResponse::flatOf)
             .collect(toList());
     }
 
@@ -36,19 +29,7 @@ public class AbilityResponse {
             ability.getName(),
             ability.getDescription(),
             ability.getColor(),
-            ability.isParent(),
-            ChildAbilityResponse.of(ability.getChildren())
-        );
-    }
-
-    public static AbilityResponse flatOf(Ability ability) {
-        return new AbilityResponse(
-            ability.getId(),
-            ability.getName(),
-            ability.getDescription(),
-            ability.getColor(),
-            ability.isParent(),
-            null
+            ability.isParent()
         );
     }
 

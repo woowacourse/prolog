@@ -2,12 +2,15 @@ package wooteco.prolog.studylog.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.common.BaseEntity;
+import wooteco.prolog.common.AuditingEntity;
 
 
 /**
@@ -18,10 +21,16 @@ import wooteco.prolog.common.BaseEntity;
  * @author hyeon9mak
  */
 
+@EqualsAndHashCode
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class MostPopularStudylog extends BaseEntity {
+public class MostPopularStudylog extends AuditingEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private Long studylogId;
@@ -38,3 +47,4 @@ public class MostPopularStudylog extends BaseEntity {
         this.deleted = true;
     }
 }
+
