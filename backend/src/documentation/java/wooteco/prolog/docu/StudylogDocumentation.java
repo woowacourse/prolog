@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
@@ -101,7 +102,7 @@ class StudylogDocumentation extends Documentation {
     }
 
     @Test
-    void 인기있는_스터디로그_목록을_조회한다() {
+    void 인기있는_스터디로그_목록을_갱신하고_조회한다() {
         // given
         String studylogLocation1 = 스터디로그_등록함(Collections.singletonList(createStudylogRequest1())).header("Location");
         String studylogLocation2 = 스터디로그_등록함(Collections.singletonList(createStudylogRequest2())).header("Location");
@@ -111,6 +112,8 @@ class StudylogDocumentation extends Documentation {
         스터디로그_단건_조회(studylogId1);
         스터디로그_단건_조회(studylogId2);
         스터디로그_단건_좋아요(studylogId2);
+
+        인기있는_스터디로그_목록_갱신(2);
 
         // when
         ExtractableResponse<Response> response = given("studylogs/popular")
@@ -124,6 +127,16 @@ class StudylogDocumentation extends Documentation {
         assertThat(mostPopularStudylogsResponse.getData()).hasSize(2);
         assertThat(mostPopularStudylogsResponse.getData().get(0).getId()).isEqualTo(studylogId2);
         assertThat(mostPopularStudylogsResponse.getData().get(1).getId()).isEqualTo(studylogId1);
+    }
+
+    private void 인기있는_스터디로그_목록_갱신(int studylogCount) {
+        RestAssured.given()
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(PageRequest.of(1, studylogCount))
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().put("/studylogs/popular")
+            .then().log().all()
+            .extract();
     }
 
     @Test
