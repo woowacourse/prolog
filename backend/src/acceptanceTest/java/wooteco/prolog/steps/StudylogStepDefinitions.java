@@ -363,7 +363,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     @When("인기 있는 스터디로그 목록을 {string}개만큼 갱신하고")
     public void 인기있는스터디로그목록을개만큼갱신하고(String studylogCount) {
         context.invokeHttpPutWithToken(
-            "/studylogs/most-popular",
+            "/studylogs/popular",
             PageRequest.of(1, Integer.parseInt(studylogCount))
         );
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -371,7 +371,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
     @Then("인기있는 스터디로그 목록 요청시 id {string} 순서로 조회된다")
     public void 스터디로그가Id순서로조회된다(String studylogIds) {
-        context.invokeHttpGet("/studylogs/most-popular");
+        context.invokeHttpGet("/studylogs/popular");
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
         StudylogsResponse studylogsResponse = context.response.as(StudylogsResponse.class);
 

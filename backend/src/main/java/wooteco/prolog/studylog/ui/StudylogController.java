@@ -51,13 +51,13 @@ public class StudylogController {
     /**
      * 갱신할 스터디로그 개수를 지정해야하기 때문에 pageable 필요
      */
-    @PutMapping("/most-popular")
+    @PutMapping("/popular")
     public ResponseEntity<Void> updatePopularStudylogs(@PageableDefault Pageable pageable) {
         studylogService.updateMostPopularStudylogs(pageable);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/most-popular")
+    @GetMapping("/popular")
     public ResponseEntity<StudylogsResponse> showPopularStudylogs(@AuthMemberPrincipal LoginMember member, @PageableDefault Pageable pageable) {
         StudylogsResponse studylogsResponse = studylogService.findMostPopularStudylogs(pageable, member.getId(), member.isAnonymous());
         return ResponseEntity.ok(studylogsResponse);

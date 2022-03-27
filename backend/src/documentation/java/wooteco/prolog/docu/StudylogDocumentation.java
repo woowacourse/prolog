@@ -113,9 +113,9 @@ class StudylogDocumentation extends Documentation {
         스터디로그_단건_좋아요(studylogId2);
 
         // when
-        ExtractableResponse<Response> response = given("studylogs/most-popular")
+        ExtractableResponse<Response> response = given("studylogs/popular")
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-            .when().get("/studylogs/most-popular")
+            .when().get("/studylogs/popular")
             .then().log().all().extract();
 
         // then
