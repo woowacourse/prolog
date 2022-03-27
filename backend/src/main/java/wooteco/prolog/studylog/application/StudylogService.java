@@ -113,25 +113,15 @@ public class StudylogService {
     }
 
     private List<Studylog> getSortedMostPopularStudyLogs() {
-        List<Long> studylogIds = getMostPopularStudylogIds();
-        List<Studylog> studylogs = studylogRepository.findAllById(studylogIds);
-
-        List<Studylog> sortedStudylogs = new ArrayList<>();
-        for (Long studylogId : studylogIds) {
-            Studylog sortStudylog = studylogs.stream()
-                .filter(studylog -> Objects.equals(studylog.getId(), studylogId))
-                .findAny()
-                .orElseThrow(StudylogNotFoundException::new);
-
-            sortedStudylogs.add(sortStudylog);
-        }
-
-        return sortedStudylogs;
+        return studylogRepository.findAllById(getMostPopularStudylogIds())
+            .stream()
+            .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
+            .collect(toList());
     }
 
     private List<Long> getMostPopularStudylogIds() {
-        List<MostPopularStudylog> mostPopularStudylogs = mostPopularStudylogRepository.findAllByDeletedFalse();
-        return mostPopularStudylogs.stream()
+        return mostPopularStudylogRepository.findAllByDeletedFalse()
+            .stream()
             .map(MostPopularStudylog::getStudylogId)
             .collect(toList());
     }
