@@ -54,10 +54,30 @@ const AbilityPage = () => {
   };
 
   /** 학습로그와 매핑된 역량 가져오기 */
+  const { data: mappedStudyLogs = [] } = useQuery(
+    [`${username}-ability-studylogs`, page],
+    async () => {
+      const { data } = await axios({
+        method: 'get',
+        url: `${BASE_URL}/members/${username}/ability-studylogs`,
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+        params: {
+          size: 5,
+          page: page,
+        },
+      });
+
+      return { ...data };
+    }
+  );
+
+  /** 학습로그 totalPage 가져오기 */
   const { data: studyLogs = [] } = useQuery([`${username}-studylogs`, page], async () => {
     const { data } = await axios({
       method: 'get',
-      url: `${BASE_URL}/members/${username}/posts`,
+      url: `${BASE_URL}/members/${username}/studylogs`,
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
       },
@@ -115,10 +135,13 @@ const AbilityPage = () => {
       </AbilityList>
 
       <ReportStudyLogTable
-        studyLogs={studyLogs}
+        mappedStudyLogs={mappedStudyLogs}
         abilities={abilities}
         readOnly={readOnly}
         setPage={setPage}
+        // 페이지네이션을 위한 studylogs
+        studyLogs={studyLogs}
+        totalSize={studyLogs.totalSize ?? 0}
       />
     </Container>
   );

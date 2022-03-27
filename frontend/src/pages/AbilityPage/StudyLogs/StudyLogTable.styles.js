@@ -60,7 +60,6 @@ export const Tbody = styled.tbody`
 
     td {
       text-align: left;
-      padding-left: 1rem;
     }
   }
 `;
@@ -85,8 +84,8 @@ export const StudyLogTitle = styled.td`
 `;
 
 export const MappedAbility = styled.td`
+  padding: 1rem 0;
   height: 100%;
-  margin: 1rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -122,7 +121,7 @@ export const SelectAbilityBox = styled.div`
   height: 24rem;
 
   position: absolute;
-  top: 3rem;
+  bottom: 3rem;
   right: 1rem;
 
   border: 1px solid ${COLOR.LIGHT_GRAY_800};
