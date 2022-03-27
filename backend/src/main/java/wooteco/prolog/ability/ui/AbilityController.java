@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.ability.application.dto.HierarchyAbilityResponse;
-import wooteco.prolog.login.aop.MemberOnly;
-import wooteco.prolog.login.domain.AuthMemberPrincipal;
-import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.ability.application.AbilityService;
 import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
 import wooteco.prolog.ability.application.dto.AbilityResponse;
 import wooteco.prolog.ability.application.dto.AbilityUpdateRequest;
 import wooteco.prolog.ability.application.dto.DefaultAbilityCreateRequest;
+import wooteco.prolog.ability.application.dto.HierarchyAbilityResponse;
+import wooteco.prolog.login.aop.MemberOnly;
+import wooteco.prolog.login.domain.AuthMemberPrincipal;
+import wooteco.prolog.login.ui.LoginMember;
 
 @RestController
 public class AbilityController {
@@ -30,7 +30,7 @@ public class AbilityController {
 
     @MemberOnly
     @PostMapping("/abilities/templates/{template}")
-    public ResponseEntity<Void> addDefaultAbilities(@AuthMemberPrincipal LoginMember member, @PathVariable String template) {
+    public ResponseEntity<Void> applyDefaultAbilities(@AuthMemberPrincipal LoginMember member, @PathVariable String template) {
         abilityService.applyDefaultAbilities(member.getId(), template);
         return ResponseEntity.ok().build();
     }
@@ -55,8 +55,8 @@ public class AbilityController {
     @MemberOnly
     @PutMapping("/abilities/{abilityId}")
     public ResponseEntity<Void> updateAbility(@AuthMemberPrincipal LoginMember member,
-                                                               @PathVariable Long abilityId,
-                                                               @RequestBody AbilityUpdateRequest abilityUpdateRequest) {
+                                              @PathVariable Long abilityId,
+                                              @RequestBody AbilityUpdateRequest abilityUpdateRequest) {
         abilityService.updateAbility(member.getId(), abilityId, abilityUpdateRequest);
         return ResponseEntity.ok().build();
     }

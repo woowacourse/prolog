@@ -25,39 +25,7 @@ operation::abilities/update[snippets='http-request,http-response']
 
 === 역량 제거
 
-<<<<<<< HEAD
-==== Request
-
-include::{snippets}/abilities/delete/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/delete/http-response.adoc[]
-
-=== 기본 역량 등록 - 백엔드
-
-==== Request
-
-include::{snippets}/abilities/create-template-be/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/create-template-be/http-response.adoc[]
-
-=== 기본 역량 등록 - 프론트엔드
-
-==== Request
-
-include::{snippets}/abilities/create-template-fe/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/abilities/create-template-fe/http-response.adoc[]
-
-=== 기본 역량 등록 - 잘못된 경로 입력시 예외 발생
-=======
 operation::abilities/delete[snippets='http-request,http-response']
->>>>>>> 4bcea10b6760cdd13f6c2da1ce3d152620967f39
 
 === 학습로그 역량 갱신
 - 역량은 기본적으로 자식역량을 선택하는 것을 권장한다
@@ -70,8 +38,4 @@ operation::abilities/studylog-update[snippets='http-request,http-response']
 === 역량 포함 모든 학습로그 조회
 - abilityIds : 필수값 아님
 
-<<<<<<< HEAD
-include::{snippets}/abilities/create-template-exception/http-response.adoc[]
-=======
 operation::abilities/studylog-list[snippets='http-request,http-response']
->>>>>>> 4bcea10b6760cdd13f6c2da1ce3d152620967f39
