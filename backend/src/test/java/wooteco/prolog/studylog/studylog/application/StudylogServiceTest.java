@@ -312,7 +312,7 @@ class StudylogServiceTest {
         assertThat(scraps).doesNotContain(false);
     }
 
-    @DisplayName("로그인하지 않은 상태에서 일주일을 기준으로 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
+    @DisplayName("로그인하지 않은 상태에서 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
     @Test
     void findMostPopularStudylogsWithoutLogin() {
         // given
@@ -325,6 +325,7 @@ class StudylogServiceTest {
 
         // when
         PageRequest pageRequest = PageRequest.of(0, 2);
+        studylogService.updateMostPopularStudylogs(pageRequest);
         StudylogsResponse studylogs = studylogService.findMostPopularStudylogs(
             pageRequest,
             null,
@@ -339,7 +340,7 @@ class StudylogServiceTest {
         }
     }
 
-    @DisplayName("로그인한 상태에서 일주일을 기준으로 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
+    @DisplayName("로그인한 상태에서 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
     @Test
     void findMostPopularStudylogsWithLogin() {
         // given
@@ -366,6 +367,7 @@ class StudylogServiceTest {
 
         // when
         PageRequest pageRequest = PageRequest.of(0, 2);
+        studylogService.updateMostPopularStudylogs(pageRequest);
         StudylogsResponse popularStudylogs = studylogService.findMostPopularStudylogs(
             pageRequest,
             member2.getId(),
