@@ -20,6 +20,10 @@ export const Section = styled.section`
     font-size: 1.4rem;
     margin-left: 1rem;
   }
+
+  > table {
+    position: relative;
+  }
 `;
 
 export const TableRow = styled.tr`
@@ -111,6 +115,7 @@ export const EmptyTableGuide = styled.span`
   display: inline-block;
   width: 100%;
   text-align: center;
+  font-size: 1.6rem;
 
   position: absolute;
   bottom: 30%;

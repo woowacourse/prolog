@@ -122,12 +122,11 @@ const ReportStudyLogTable = ({
               </Styled.TableRow>
             ))}
           </Styled.Tbody>
+          {currStudyLogs?.length === 0 && (
+            <Styled.EmptyTableGuide>등록된 학습로그가 없습니다.</Styled.EmptyTableGuide>
+          )}
         </table>
         <Pagination dataInfo={studyLogs} onSetPage={setPage} />
-
-        {currStudyLogs?.length === 0 && (
-          <Styled.EmptyTableGuide>등록된 학습로그가 없습니다.</Styled.EmptyTableGuide>
-        )}
       </Styled.Section>
     </>
   );
