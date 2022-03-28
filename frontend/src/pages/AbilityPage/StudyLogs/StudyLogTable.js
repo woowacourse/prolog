@@ -89,7 +89,9 @@ const ReportStudyLogTable = ({
           <Styled.Tbody>
             {currStudyLogs?.map(({ studylog, abilities }) => (
               <Styled.TableRow key={studylog.id}>
-                <Styled.StudyLogTitle>
+                <Styled.StudyLogTitle
+                  isSelected={selectAbilityBox.id === studylog.id && selectAbilityBox.isOpen}
+                >
                   <a href={`/studylogs/${studylog.id}`} target="_blank" rel="noopener noreferrer">
                     {studylog.title}
                   </a>
@@ -99,24 +101,26 @@ const ReportStudyLogTable = ({
                   <ul id="mapped-abilities-list">{selectedAbilities(abilities)}</ul>
 
                   {!readOnly && (
-                    <Button
-                      id="add-ability-button"
-                      size="XX_SMALL"
-                      type="button"
-                      css={{ backgroundColor: `${COLOR.LIGHT_BLUE_300}` }}
-                      onClick={(event) => onOpenAbilityBox(event, studylog.id)}
-                    >
-                      +
-                    </Button>
-                  )}
+                    <>
+                      <Button
+                        id="add-ability-button"
+                        size="XX_SMALL"
+                        type="button"
+                        css={{ backgroundColor: `${COLOR.LIGHT_BLUE_300}` }}
+                        onClick={(event) => onOpenAbilityBox(event, studylog.id)}
+                      >
+                        +
+                      </Button>
 
-                  {selectAbilityBox.id === studylog.id && selectAbilityBox.isOpen && (
-                    <SelectAbilityBox
-                      selectAbilityBoxRef={selectAbilityBoxRef}
-                      studylog={studylog}
-                      abilities={abilities}
-                      wholeAbility={wholeAbility}
-                    />
+                      {selectAbilityBox.id === studylog.id && selectAbilityBox.isOpen && (
+                        <SelectAbilityBox
+                          selectAbilityBoxRef={selectAbilityBoxRef}
+                          studylog={studylog}
+                          abilities={abilities}
+                          wholeAbility={wholeAbility}
+                        />
+                      )}
+                    </>
                   )}
                 </Styled.MappedAbility>
               </Styled.TableRow>

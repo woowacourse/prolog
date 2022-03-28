@@ -81,6 +81,8 @@ export const StudyLogTitle = styled.td`
   font-size: 1.6rem;
 
   a {
+    ${({ isSelected }) => isSelected && `color: ${COLOR.LIGHT_BLUE_900}`};
+
     :hover {
       text-decoration: underline;
     }
@@ -93,6 +95,7 @@ export const MappedAbility = styled.td`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 
   > #mapped-abilities-list {
     width: 95%;
