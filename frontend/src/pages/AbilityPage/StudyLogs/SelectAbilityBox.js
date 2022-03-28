@@ -40,12 +40,12 @@ const SelectAbilityBox = ({
     }
   );
 
-  // TODO : 역량이 추가만 되고 있고, 삭제가 안되고 있다.
   const toggleAbility = ({ studylogId, abilitieIds, targetAblityId }) => {
     const targetIndex = abilitieIds.findIndex((id) => id === targetAblityId);
 
     if (targetIndex === -1) {
-      mappingAbility.mutate({ studylogId, abilities: [targetAblityId] });
+      const newAbilities = [...abilitieIds, targetAblityId];
+      mappingAbility.mutate({ studylogId, abilities: newAbilities });
     } else {
       const deletedAbilities = [
         ...abilitieIds.slice(0, targetIndex),
