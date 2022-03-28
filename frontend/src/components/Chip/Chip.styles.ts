@@ -68,10 +68,10 @@ const Container = styled.div<ContainerProps>`
     align-items: center;
 
     &:hover {
-      background-color: ${COLOR.BLACK_900};
+      background-color: ${COLOR.WHITE};
 
       svg {
-        stroke: ${COLOR.WHITE};
+        stroke: ${COLOR.BLACK_900};
       }
     }
   }
