@@ -13,8 +13,8 @@ import io.cucumber.java.en.When;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.StudylogAcceptanceFixture;
@@ -360,9 +360,18 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         assertThat(response.isLiked()).isFalse();
     }
 
+    @When("인기 있는 스터디로그 목록을 {string}개만큼 갱신하고")
+    public void 인기있는스터디로그목록을개만큼갱신하고(String studylogCount) {
+        context.invokeHttpPutWithToken(
+            "/studylogs/popular",
+            PageRequest.of(1, Integer.parseInt(studylogCount))
+        );
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
     @Then("인기있는 스터디로그 목록 요청시 id {string} 순서로 조회된다")
     public void 스터디로그가Id순서로조회된다(String studylogIds) {
-        context.invokeHttpGet("/studylogs/most-popular");
+        context.invokeHttpGet("/studylogs/popular");
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
         StudylogsResponse studylogsResponse = context.response.as(StudylogsResponse.class);
 
