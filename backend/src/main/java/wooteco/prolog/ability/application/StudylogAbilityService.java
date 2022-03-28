@@ -35,6 +35,7 @@ public class StudylogAbilityService {
         this.memberService = memberService;
     }
 
+    @Transactional
     public List<AbilityResponse> updateStudylogAbilities(Long memberId, Long studylogId, StudylogAbilityRequest studylogAbilityRequest) {
         Studylog studylog = studylogService.findStudylogById(studylogId);
         if (!studylog.isBelongsTo(memberId)) {

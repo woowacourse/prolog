@@ -86,6 +86,21 @@ public class StudylogAbilityStepDefinitions extends AcceptanceSteps {
         assertThat(abilityNames.contains(abilityName2)).isTrue();
     }
 
+    @Then("{string}, {string} 역량만 맵핑된 {string} 학습로그가 조회된다")
+    public void 역량만맵핑된학습로그가조회된다(String abilityName1, String abilityName2, String studylogName) {
+        List<AbilityStudylogResponse> abilityStudylogResponses = context.response.jsonPath().getList(".", AbilityStudylogResponse.class);
+        Optional<AbilityStudylogResponse> abilityStudylog = abilityStudylogResponses.stream()
+            .filter(it -> it.getStudylog().getTitle().equals(studylogName))
+            .findAny();
+        assertThat(abilityStudylogResponses.size()).isEqualTo(1);
+        assertThat(abilityStudylog.isPresent()).isTrue();
+        assertThat(abilityStudylog.get().getAbilities().size()).isEqualTo(2);
+
+        List<String> abilityNames = context.response.jsonPath().getList("abilities[0].name");
+        assertThat(abilityNames.contains(abilityName1)).isTrue();
+        assertThat(abilityNames.contains(abilityName2)).isTrue();
+    }
+
     @Then("역량이 맵핑되지 않은 {string} 학습로그가 조회된다")
     public void 역량이맵핑되지않은학습로그가조회된다(String studylogName) {
         List<AbilityStudylogResponse> abilityStudylogResponses = context.response.jsonPath().getList(".", AbilityStudylogResponse.class);
