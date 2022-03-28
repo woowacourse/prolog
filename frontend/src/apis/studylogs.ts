@@ -2,12 +2,12 @@ import { BASE_URL } from '../configs/environment';
 
 export const requestGetPopularStudylogs = ({ accessToken }: { accessToken?: string }) => {
   if (accessToken) {
-    return fetch(`${BASE_URL}/studylogs/most-popular`, {
+    return fetch(`${BASE_URL}/studylogs/popular`, {
       headers: { Authorization: 'Bearer ' + accessToken },
     });
   }
 
-  return fetch(`${BASE_URL}/studylogs/most-popular`);
+  return fetch(`${BASE_URL}/studylogs/popular`);
 };
 
 export type StudylogQuery =
