@@ -3,14 +3,16 @@ import { COLOR } from '../../../constants';
 
 export const Wrapper = styled.div`
   width: 35rem;
-  height: 40rem;
+  min-height: 20rem;
+  max-height: 40rem;
   position: absolute;
-  bottom: 2rem;
-  right: 1rem;
+  right: 10%;
+  bottom: 30%;
 
-  border: 2px solid ${COLOR.LIGHT_GRAY_900};
+  border: 2px solid ${COLOR.LIGHT_GRAY_200};
   background-color: ${COLOR.WHITE};
   border-radius: 1rem;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.25);
 
   z-index: 2;
 `;
@@ -45,7 +47,8 @@ export const Header = styled.div`
 
 export const AbilityList = styled.ul`
   width: 100%;
-  height: 32rem;
+  min-height: 12rem;
+  max-height: 32rem;
   padding: 1rem;
 
   display: flex;
@@ -53,6 +56,8 @@ export const AbilityList = styled.ul`
   overflow-y: auto;
 
   background-color: ${COLOR.WHITE};
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
 
   > li:last-of-type {
     border: none;
@@ -90,4 +95,12 @@ export const AbilityName = styled.span`
   width: 25rem;
   padding: 1rem 0;
   font-size: 1.2rem;
+`;
+
+export const EmptyAbilityGuide = styled.p`
+  width: 100%;
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
