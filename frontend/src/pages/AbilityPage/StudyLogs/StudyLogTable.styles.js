@@ -95,7 +95,7 @@ export const MappedAbility = styled.td`
 
     li {
       display: inline-table;
-      margin: 0.3rem 0;
+      margin: 0.2rem 0;
     }
   }
 
@@ -114,47 +114,4 @@ export const EmptyTableGuide = styled.span`
 
   position: absolute;
   bottom: 30%;
-`;
-
-export const SelectAbilityBox = styled.div`
-  width: 50rem;
-  height: 24rem;
-
-  position: absolute;
-  bottom: 3rem;
-  right: 1rem;
-
-  border: 1px solid ${COLOR.LIGHT_GRAY_800};
-  background-color: ${COLOR.WHITE};
-  border-radius: 1rem;
-
-  z-index: 2;
-
-  ul {
-    width: 100%;
-    height: 100%;
-    padding: 1rem;
-    overflow-y: auto;
-
-    display: flex;
-    flex-direction: column;
-
-    li {
-      width: 100%;
-      padding: 1rem 0;
-
-      border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
-
-      label {
-        width: 100%;
-
-        display: flex;
-        align-items: center;
-      }
-
-      input {
-        margin-right: 1rem;
-      }
-    }
-  }
 `;

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Button, Chip, Pagination } from '../../../components';
 import * as Styled from './StudyLogTable.styles.js';
 import { COLOR } from '../../../constants';
+import SelectAbilityBox from './SelectAbilityBox';
 
 // TODO. 각 레벨별로 학습로그를 볼 수 있는 기능을 추가한다.
 // TODO. 매핑된 역량은 삭제할 수 없다는 예외사항을 추가한다.
@@ -17,10 +18,8 @@ const ReportStudyLogTable = ({
   totalSize,
 }) => {
   const currStudyLogs = Object.values(mappedStudyLogs);
-
-  const wholeAbility = abilities
-    ?.map((parentAbility) => [parentAbility, ...parentAbility.children])
-    .flat();
+  /** 역량 선택은 자식 역량만 선택할 수 있다. */
+  const wholeAbility = abilities?.map((parentAbility) => [...parentAbility.children]).flat();
 
   const selectAbilityBoxRef = useRef(null);
   const [selectAbilityBox, setSelectAbilityBox] = useState({
@@ -59,43 +58,18 @@ const ReportStudyLogTable = ({
         <li key={ability.id}>
           <Chip
             backgroundColor={ability.color}
-            border={`1px solid ${COLOR.BLACK_OPACITY_500}`}
+            border={`1px solid ${COLOR.BLACK_OPACITY_300}`}
             fontSize="1.2rem"
-            lineHeight="1.6rem"
-            // onDelete={onDeleteMappingAbility()}
+            lineHeight="1.5"
+            // onDelete={() => {
+            //   console.log('delete');
+            // }}
           >
             {ability.name}
           </Chip>
         </li>
       );
     });
-  };
-
-  /**
-   * 역량을 선택할 수 있다.
-   * 역량은 자식역량만 선택할 수 있다.
-   */
-  const selectAbilities = () => {
-    return (
-      <Styled.SelectAbilityBox ref={selectAbilityBoxRef}>
-        <ul>
-          {wholeAbility?.map((ability) => (
-            <li key={ability.id}>
-              <label>
-                <input
-                  type="checkbox"
-                  // onChange={() => onAddAbilities(id, ability)}
-                  // checked={isChecked(id, ability)}
-                />
-                <Chip backgroundColor={ability.color} fontSize="1.2rem">
-                  {ability.name}
-                </Chip>
-              </label>
-            </li>
-          ))}
-        </ul>
-      </Styled.SelectAbilityBox>
-    );
   };
 
   return (
@@ -136,9 +110,14 @@ const ReportStudyLogTable = ({
                     </Button>
                   )}
 
-                  {selectAbilityBox.id === studylog.id &&
-                    selectAbilityBox.isOpen &&
-                    selectAbilities()}
+                  {selectAbilityBox.id === studylog.id && selectAbilityBox.isOpen && (
+                    <SelectAbilityBox
+                      selectAbilityBoxRef={selectAbilityBoxRef}
+                      studylog={studylog}
+                      abilities={abilities}
+                      wholeAbility={wholeAbility}
+                    />
+                  )}
                 </Styled.MappedAbility>
               </Styled.TableRow>
             ))}
