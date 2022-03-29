@@ -1,7 +1,6 @@
 package wooteco.prolog.studylog.ui;
 
 import java.net.URI;
-import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -37,9 +36,9 @@ public class StudylogController {
 
     @PostMapping
     @MemberOnly
-    public ResponseEntity<StudylogResponse> createStudylog(@AuthMemberPrincipal LoginMember member, @RequestBody List<StudylogRequest> studylogRequests) {
-        List<StudylogResponse> studylogResponse = studylogService.insertStudylogs(member.getId(), studylogRequests);
-        return ResponseEntity.created(URI.create("/studylogs/" + studylogResponse.get(0).getId())).body(studylogResponse.get(0));
+    public ResponseEntity<StudylogResponse> createStudylog(@AuthMemberPrincipal LoginMember member, @RequestBody StudylogRequest studylogRequest) {
+        StudylogResponse studylogResponse = studylogService.insertStudylog(member.getId(), studylogRequest);
+        return ResponseEntity.created(URI.create("/studylogs/" + studylogResponse.getId())).body(studylogResponse);
     }
 
     @GetMapping
@@ -48,7 +47,16 @@ public class StudylogController {
         return ResponseEntity.ok(studylogsResponse);
     }
 
-    @GetMapping("/most-popular")
+    /**
+     * 갱신할 스터디로그 개수를 지정해야하기 때문에 pageable 필요
+     */
+    @PutMapping("/popular")
+    public ResponseEntity<Void> updatePopularStudylogs(@PageableDefault Pageable pageable) {
+        studylogService.updateMostPopularStudylogs(pageable);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/popular")
     public ResponseEntity<StudylogsResponse> showPopularStudylogs(@AuthMemberPrincipal LoginMember member, @PageableDefault Pageable pageable) {
         StudylogsResponse studylogsResponse = studylogService.findMostPopularStudylogs(pageable, member.getId(), member.isAnonymous());
         return ResponseEntity.ok(studylogsResponse);

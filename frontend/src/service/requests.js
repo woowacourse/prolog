@@ -54,7 +54,7 @@ export const requestPostStudylog = ({ accessToken, data }) =>
       'Content-Type': 'application/json; charset=UTF-8',
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify([data]),
+    body: JSON.stringify(data),
   });
 
 export const requestEditStudylog = ({ id, data, accessToken }) =>

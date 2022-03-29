@@ -11,15 +11,16 @@ import {
 import useMutation from './useMutation';
 import ERROR_CODE from '../constants/errorCode';
 
-const useStudylog = (defaultValue) => {
+const useStudylog = (defaultValue, onSuccessHandler) => {
   const [response, setResponse] = useState(defaultValue);
   const [error, setError] = useState('');
 
-  const { onLogout } = useContext(UserContext)
+  const { onLogout } = useContext(UserContext);
 
   const onSuccess = (data) => {
     setResponse(data);
     setError('');
+    onSuccessHandler(data);
   };
 
   const onError = (error) => {

@@ -128,7 +128,7 @@ class StudylogRepositoryTest {
     void findWithTags() {
         // given
         List<StudylogTag> studylogTags = studylogTagRepository.findByTagIn(asList(tag1, tag2));
-        List<Long> tagIds = studylogTags.stream().map(it -> it.getTag().getId()).collect(Collectors.toList());
+        List<Long> tagIds = studylogTags.stream().map(it -> it.getTag().getId()).collect(toList());
         Specification<Studylog> specs = StudylogSpecification.findByTagIn(tagIds)
             .and(StudylogSpecification.distinct(true));
 
@@ -161,7 +161,7 @@ class StudylogRepositoryTest {
         List<Long> levelIds = singletonList(level1.getId());
         List<Long> missionIds = singletonList(mission1.getId());
         List<StudylogTag> studylogTags = studylogTagRepository.findByTagIn(asList(tag1, tag2));
-        List<Long> tagIds = studylogTags.stream().map(it -> it.getTag().getId()).collect(Collectors.toList());
+        List<Long> tagIds = studylogTags.stream().map(it -> it.getTag().getId()).collect(toList());
         Specification<Studylog> specs = StudylogSpecification.findByLevelIn(levelIds)
             .and(StudylogSpecification.equalIn("mission", missionIds))
             .and(StudylogSpecification.findByTagIn(tagIds))

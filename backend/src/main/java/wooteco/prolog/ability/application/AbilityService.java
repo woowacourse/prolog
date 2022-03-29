@@ -66,7 +66,7 @@ public class AbilityService {
     }
 
     private Ability extractParentAbility(Member member, List<Ability> abilities, String name, String description,
-                                         String color) {
+        String color) {
         Ability parentAbility = Ability.parent(name, description, color, member);
 
         parentAbility.validateDuplicateName(abilities);
@@ -76,7 +76,7 @@ public class AbilityService {
     }
 
     private Ability extractChildAbility(Member member, List<Ability> abilities, String name, String description,
-                                        String color, Long parentId) {
+        String color, Long parentId) {
         Ability parentAbility = findAbilityById(parentId);
         Ability childAbility = Ability.child(name, description, color, parentAbility, member);
 
