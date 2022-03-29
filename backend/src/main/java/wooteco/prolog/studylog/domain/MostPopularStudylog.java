@@ -21,7 +21,6 @@ import wooteco.prolog.common.AuditingEntity;
  * @author hyeon9mak
  */
 
-@EqualsAndHashCode
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
