@@ -7,7 +7,6 @@ import static java.util.stream.Collectors.toList;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -31,12 +30,12 @@ import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
-import wooteco.prolog.studylog.domain.MostPopularStudylog;
+import wooteco.prolog.studylog.domain.PopularStudylog;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogRead;
 import wooteco.prolog.studylog.domain.StudylogScrap;
 import wooteco.prolog.studylog.domain.Tags;
-import wooteco.prolog.studylog.domain.repository.MostPopularStudylogRepository;
+import wooteco.prolog.studylog.domain.repository.PopularStudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogReadRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
@@ -56,7 +55,7 @@ public class StudylogService {
     private final StudylogRepository studylogRepository;
     private final StudylogScrapRepository studylogScrapRepository;
     private final StudylogReadRepository studylogReadRepository;
-    private final MostPopularStudylogRepository mostPopularStudylogRepository;
+    private final PopularStudylogRepository popularStudylogRepository;
     private final MemberTagService memberTagService;
     private final DocumentService studylogDocumentService;
     private final MissionService missionService;
@@ -75,31 +74,31 @@ public class StudylogService {
         return studylogs;
     }
 
-    public void updateMostPopularStudylogs(Pageable pageable) {
-        deleteAllLegacyMostPopularStudylogs();
+    public void updatePopularStudylogs(Pageable pageable) {
+        deleteAllLegacyPopularStudylogs();
 
         List<Studylog> studylogs = findStudylogsByDays(pageable, LocalDateTime.now());
-        List<MostPopularStudylog> mostPopularStudylogs = studylogs.stream()
-            .map(it -> new MostPopularStudylog(it.getId()))
+        List<PopularStudylog> popularStudylogs = studylogs.stream()
+            .map(it -> new PopularStudylog(it.getId()))
             .collect(toList());
 
-        mostPopularStudylogRepository.saveAll(mostPopularStudylogs);
+        popularStudylogRepository.saveAll(popularStudylogs);
     }
 
-    private void deleteAllLegacyMostPopularStudylogs() {
-        List<MostPopularStudylog> mostPopularStudylogs = mostPopularStudylogRepository.findAllByDeletedFalse();
+    private void deleteAllLegacyPopularStudylogs() {
+        List<PopularStudylog> popularStudylogs = popularStudylogRepository.findAllByDeletedFalse();
 
-        for (MostPopularStudylog mostPopularStudylog : mostPopularStudylogs) {
-            mostPopularStudylog.delete();
+        for (PopularStudylog popularStudylog : popularStudylogs) {
+            popularStudylog.delete();
         }
     }
 
-    public StudylogsResponse findMostPopularStudylogs(
+    public StudylogsResponse findPopularStudylogs(
         Pageable pageable,
         Long memberId,
         boolean isAnonymousMember
     ) {
-        List<Studylog> studylogs = getSortedMostPopularStudyLogs();
+        List<Studylog> studylogs = getSortedPopularStudyLogs();
         PageImpl<Studylog> page = new PageImpl<>(studylogs, pageable, studylogs.size());
         StudylogsResponse studylogsResponse = StudylogsResponse.of(page, memberId);
 
@@ -112,17 +111,17 @@ public class StudylogService {
         return studylogsResponse;
     }
 
-    private List<Studylog> getSortedMostPopularStudyLogs() {
-        return studylogRepository.findAllById(getMostPopularStudylogIds())
+    private List<Studylog> getSortedPopularStudyLogs() {
+        return studylogRepository.findAllById(getPopularStudylogIds())
             .stream()
             .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
             .collect(toList());
     }
 
-    private List<Long> getMostPopularStudylogIds() {
-        return mostPopularStudylogRepository.findAllByDeletedFalse()
+    private List<Long> getPopularStudylogIds() {
+        return popularStudylogRepository.findAllByDeletedFalse()
             .stream()
-            .map(MostPopularStudylog::getStudylogId)
+            .map(PopularStudylog::getStudylogId)
             .collect(toList());
     }
 

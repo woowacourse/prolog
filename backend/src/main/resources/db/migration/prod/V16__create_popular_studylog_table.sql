@@ -1,4 +1,4 @@
-CREATE TABLE most_popular_studylog
+CREATE TABLE popular_studylog
 (
     id          BIGINT AUTO_INCREMENT NOT NULL,
     studylog_id BIGINT         NOT NULL,

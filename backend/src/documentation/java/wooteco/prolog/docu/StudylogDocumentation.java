@@ -119,10 +119,10 @@ class StudylogDocumentation extends Documentation {
 
         // then
         // given
-        StudylogsResponse mostPopularStudylogsResponse = response.as(StudylogsResponse.class);
-        assertThat(mostPopularStudylogsResponse.getData()).hasSize(2);
-        assertThat(mostPopularStudylogsResponse.getData().get(0).getId()).isEqualTo(studylogId2);
-        assertThat(mostPopularStudylogsResponse.getData().get(1).getId()).isEqualTo(studylogId1);
+        StudylogsResponse popularStudylogsResponse = response.as(StudylogsResponse.class);
+        assertThat(popularStudylogsResponse.getData()).hasSize(2);
+        assertThat(popularStudylogsResponse.getData().get(0).getId()).isEqualTo(studylogId2);
+        assertThat(popularStudylogsResponse.getData().get(1).getId()).isEqualTo(studylogId1);
     }
 
     private void 인기있는_스터디로그_목록_갱신(int studylogCount) {

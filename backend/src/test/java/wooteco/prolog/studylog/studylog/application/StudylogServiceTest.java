@@ -314,7 +314,7 @@ class StudylogServiceTest {
 
     @DisplayName("로그인하지 않은 상태에서 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
     @Test
-    void findMostPopularStudylogsWithoutLogin() {
+    void findPopularStudylogsWithoutLogin() {
         // given
         insertStudylogs(member1, studylog1, studylog2, studylog3);
         studylogService.retrieveStudylogById(loginMember3, 2L);
@@ -325,8 +325,8 @@ class StudylogServiceTest {
 
         // when
         PageRequest pageRequest = PageRequest.of(0, 2);
-        studylogService.updateMostPopularStudylogs(pageRequest);
-        StudylogsResponse studylogs = studylogService.findMostPopularStudylogs(
+        studylogService.updatePopularStudylogs(pageRequest);
+        StudylogsResponse studylogs = studylogService.findPopularStudylogs(
             pageRequest,
             null,
             true
@@ -342,7 +342,7 @@ class StudylogServiceTest {
 
     @DisplayName("로그인한 상태에서 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
     @Test
-    void findMostPopularStudylogsWithLogin() {
+    void findPopularStudylogsWithLogin() {
         // given
         List<StudylogResponse> insertResponses = insertStudylogs(
             member1,
@@ -367,8 +367,8 @@ class StudylogServiceTest {
 
         // when
         PageRequest pageRequest = PageRequest.of(0, 2);
-        studylogService.updateMostPopularStudylogs(pageRequest);
-        StudylogsResponse popularStudylogs = studylogService.findMostPopularStudylogs(
+        studylogService.updatePopularStudylogs(pageRequest);
+        StudylogsResponse popularStudylogs = studylogService.findPopularStudylogs(
             pageRequest,
             member2.getId(),
             member2.isAnonymous()

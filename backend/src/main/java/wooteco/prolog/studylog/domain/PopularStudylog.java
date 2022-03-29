@@ -25,7 +25,7 @@ import wooteco.prolog.common.AuditingEntity;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class MostPopularStudylog extends AuditingEntity {
+public class PopularStudylog extends AuditingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +37,7 @@ public class MostPopularStudylog extends AuditingEntity {
     @Column(nullable = false)
     private boolean deleted;
 
-    public MostPopularStudylog(Long studylogId) {
+    public PopularStudylog(Long studylogId) {
         this.studylogId = studylogId;
         this.deleted = false;
     }

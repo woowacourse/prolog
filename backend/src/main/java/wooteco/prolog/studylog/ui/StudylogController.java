@@ -52,13 +52,13 @@ public class StudylogController {
      */
     @PutMapping("/popular")
     public ResponseEntity<Void> updatePopularStudylogs(@PageableDefault Pageable pageable) {
-        studylogService.updateMostPopularStudylogs(pageable);
+        studylogService.updatePopularStudylogs(pageable);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/popular")
     public ResponseEntity<StudylogsResponse> showPopularStudylogs(@AuthMemberPrincipal LoginMember member, @PageableDefault Pageable pageable) {
-        StudylogsResponse studylogsResponse = studylogService.findMostPopularStudylogs(pageable, member.getId(), member.isAnonymous());
+        StudylogsResponse studylogsResponse = studylogService.findPopularStudylogs(pageable, member.getId(), member.isAnonymous());
         return ResponseEntity.ok(studylogsResponse);
     }
 
