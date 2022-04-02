@@ -11,6 +11,7 @@ const ReportInfo = ({
   setDescription,
   setStartDate,
   setEndDate,
+  edit,
 }) => {
   const onWriteTitle = ({ target: { value } }) => setTitle(value);
   const onWriteDesc = ({ target: { value } }) => setDescription(value);
@@ -20,19 +21,35 @@ const ReportInfo = ({
     setEndDate(endDate);
   };
 
+  const dateFormat = 'YYYY-MM-DD';
+
   return (
     <section>
       <Styled.DateContainer>
         <span>✏️ 기간 선택</span>
-        <DatePicker.RangePicker
-          size="large"
-          ranges={{
-            Today: [moment(), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-          }}
-          format="YYYY-MM-DD"
-          onChange={onSelectDate}
-        />
+        {edit ? (
+          <DatePicker.RangePicker
+            size="large"
+            ranges={{
+              Today: [moment(), moment()],
+              'This Month': [moment().startOf('month'), moment().endOf('month')],
+            }}
+            format={dateFormat}
+            onChange={onSelectDate}
+            defaultValue={[moment('2019-09-03', dateFormat), moment('2019-11-22', dateFormat)]}
+            disabled
+          />
+        ) : (
+          <DatePicker.RangePicker
+            size="large"
+            ranges={{
+              Today: [moment(), moment()],
+              'This Month': [moment().startOf('month'), moment().endOf('month')],
+            }}
+            format={dateFormat}
+            onChange={onSelectDate}
+          />
+        )}
       </Styled.DateContainer>
 
       <Styled.Label htmlFor="report_title">

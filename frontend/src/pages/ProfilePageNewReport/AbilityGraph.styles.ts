@@ -119,5 +119,9 @@ export const AbilityWeight = styled.td`
 
     font-size: 1.4rem;
     border: 1px solid ${COLOR.LIGHT_GRAY_500};
+
+    :disabled {
+      cursor: not-allowed;
+    }
   }
 `;

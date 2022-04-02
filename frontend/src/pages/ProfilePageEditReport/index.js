@@ -1,42 +1,77 @@
 import { useContext, useEffect, useState } from 'react';
-
 import { useHistory, useParams } from 'react-router-dom';
 
-import { requestEditReport, requestGetReport } from '../../service/requests';
 import { UserContext } from '../../contexts/UserProvider';
-
 import { Button } from '../../components';
-import StudylogModal from '../ProfilePageNewReport/StudylogModal';
-import ReportInfoInput from '../ProfilePageNewReport/ReportInfoInput';
-import ReportStudylogTable from '../ProfilePageNewReport/ReportStudylogTable';
-import AbilityGraph from '../ProfilePageReports/AbilityGraph';
+import ReportInfo from '../ProfilePageNewReport/ReportInfo';
+import { COLOR } from '../../constants';
+import { Form, FormButtonWrapper } from '../ProfilePageNewReport/style';
+import AbilityGraph from '../ProfilePageNewReport/AbilityGraph';
 
-import { COLOR, ERROR_MESSAGE, REPORT_DESCRIPTION } from '../../constants';
-import { limitLetterLength } from '../../utils/validator';
+const mockAbilities = [
+  {
+    id: 1,
+    name: '부모 역량 이름',
+    description: '부모 역량 설명',
+    color: '#001122',
+    isParent: true,
+    children: [
+      {
+        id: 2,
+        name: '자식 역량 이름',
+        description: '자식 역량 설명',
+        color: '#001122',
+        isParent: false,
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: '부모 역량 이름2',
+    description: '부모 역량 설명',
+    color: '#FF2',
+    isParent: true,
+    children: [
+      {
+        id: 2,
+        name: '자식 역량 이름',
+        description: '자식 역량 설명',
+        color: '#001122',
+        isParent: false,
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: '부모2 역량 이름',
+    description: '부모2 역량 설명',
+    color: '#554433',
+    isParent: true,
+    children: [
+      {
+        id: 4,
+        name: '자식2 역량 이름',
+        description: '자식2 역량 설명',
+        color: '#001122',
+        isParent: false,
+      },
+    ],
+  },
+];
 
-import { Checkbox, Form, FormButtonWrapper } from '../ProfilePageNewReport/style';
-
-const ProfilePageEditReport = () => {
-  const { username, id: reportId } = useParams();
+const ProfilePageNewReport = () => {
   const history = useHistory();
-
+  const { username } = useParams();
   const { user } = useContext(UserContext);
+
   const { isLoggedIn, accessToken } = user;
 
   const nickname = user.nickname ?? user.username;
 
-  const [isMainReport, setIsMainReport] = useState(false);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [Studylogs, setStudylogs] = useState([]);
-  const [abilities, setAbilities] = useState([]);
-  const [StudylogAbilities, setStudylogAbilities] = useState([]);
-  const [isModalOpened, setIsModalOpened] = useState(false);
-
   useEffect(() => {
     if (isLoggedIn) {
       if (username !== user.username) {
-        alert('본인의 리포트만 수정할 수 있습니다.');
+        alert('본인의 리포트만 작성할 수 있습니다.');
         history.push(`/${username}/reports`);
       }
     } else {
@@ -45,144 +80,55 @@ const ProfilePageEditReport = () => {
         history.push(`/${username}/reports`);
       }
     }
-  }, [isLoggedIn, username, user, history, accessToken]);
+  }, [isLoggedIn, username, user.data, history]);
 
-  const getReport = async (reportId) => {
-    try {
-      const response = await requestGetReport(reportId);
+  const startDate = '';
+  const endDate = '';
+  const [title, setTitle] = useState('테스트 제목');
+  const [description, setDescription] = useState('테스트 내용');
 
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
+  const [abilities, setAbilities] = useState(
+    mockAbilities.map(({ id, name, color }) => ({
+      id,
+      name,
+      color,
+      weight: 0,
+    }))
+  );
 
-      const report = await response.json();
-
-      setIsMainReport(report.represent);
-      setTitle(report.title);
-      setDescription(report.description);
-      setStudylogs(report.studylogs);
-      setAbilities(report.abilityGraph.abilities);
-      report.studylogs.forEach((reportStudylog) => {
-        setStudylogAbilities((currStudylogAbilities) => [
-          ...currStudylogAbilities,
-          { id: reportStudylog.id, abilities: reportStudylog.abilities },
-        ]);
-      });
-    } catch (error) {
-      console.error(error);
-      history.push(`/${username}/reports`);
-    }
-  };
-
-  useEffect(() => {
-    getReport(reportId);
-  }, []);
-
-  const postEditReport = async (data) => {
-    if (!limitLetterLength(description, REPORT_DESCRIPTION.MAX_LENGTH)) {
-      alert('리포트 설명은 150글자를 넘을 수 없습니다.');
-
-      return;
-    }
-
-    try {
-      const response = await requestEditReport(data, reportId, accessToken);
-
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-
-      history.push(`/${username}/reports/${reportId}`);
-    } catch (error) {
-      const errorCode = JSON.parse(error.message).code;
-
-      if (ERROR_MESSAGE[errorCode]) {
-        alert(ERROR_MESSAGE[errorCode]);
-      } else {
-        console.error(error);
-      }
-    }
-  };
-
-  const getCheckedAbility = (StudylogId) => {
-    const targetStudylogAbility = StudylogAbilities.find(
-      (StudylogAbility) => StudylogAbility.id === StudylogId
-    )?.abilities;
-
-    return targetStudylogAbility?.map((ability) => ability.id) ?? [];
-  };
-
-  const onSubmitReport = (event) => {
+  const onSubmitReport = async (event) => {
     event.preventDefault();
 
     const data = {
-      id: reportId,
-      title: title !== '' ? title : `${new Date().toLocaleDateString()} ${nickname}의 리포트`,
+      title,
       description,
-      abilityGraph: {
-        abilities: abilities.map(({ id, weight, isPresent }) => ({ id, weight, isPresent })),
-      },
-      // studylogs: Studylogs.map((item) => ({ id: item.id, abilities: [] })),
-      studylogs: Studylogs.map((item) => ({
-        id: item.id,
-        abilities: getCheckedAbility(item.id),
-      })),
-      represent: isMainReport,
+      startDate,
+      endDate,
+      reportAbility: abilities.map(({ id, weight }) => ({ abilityId: id, weight })),
     };
-
-    postEditReport(data);
   };
 
   const onCancelWriteReport = () => {
     if (window.confirm('리포트 수정을 취소하시겠습니까?')) {
-      history.push(`/${username}/reports/${reportId}`);
+      history.push(`/${username}/reports`);
     }
-  };
-
-  const onRegisterMainReport = () => setIsMainReport((currentState) => !currentState);
-
-  const onModalOpen = () => setIsModalOpened(true);
-
-  const onModalClose = () => setIsModalOpened(false);
-
-  const onChangeAbilities = (data) => {
-    setAbilities(data);
   };
 
   return (
     <>
       <Form onSubmit={onSubmitReport}>
-        <h2>리포트 수정하기</h2>
-        <div>
-          <Checkbox
-            type="checkbox"
-            onChange={onRegisterMainReport}
-            checked={isMainReport}
-            id="main_report_checkbox"
-          />
-          <label htmlFor="main_report_checkbox">대표 리포트로 지정하기</label>
-        </div>
+        <h2>새 리포트 작성하기</h2>
 
-        <ReportInfoInput
+        <ReportInfo
           nickname={nickname}
           title={title}
           setTitle={setTitle}
           desc={description}
           setDescription={setDescription}
+          edit={true}
         />
 
-        <section>
-          <AbilityGraph abilities={abilities} setAbilities={onChangeAbilities} mode="EDIT" />
-        </section>
-
-        <ReportStudylogTable
-          onModalOpen={onModalOpen}
-          Studylogs={Studylogs}
-          setStudylogs={setStudylogs}
-          abilities={abilities}
-          StudylogAbilities={StudylogAbilities}
-          setStudylogAbilities={setStudylogAbilities}
-        />
+        <AbilityGraph abilities={abilities} setAbilities={setAbilities} edit={true} />
 
         <FormButtonWrapper>
           <Button
@@ -196,17 +142,8 @@ const ProfilePageEditReport = () => {
           <Button size="X_SMALL">리포트 수정</Button>
         </FormButtonWrapper>
       </Form>
-
-      {isModalOpened && (
-        <StudylogModal
-          onModalClose={onModalClose}
-          username={username}
-          Studylogs={Studylogs}
-          setStudylogs={setStudylogs}
-        />
-      )}
     </>
   );
 };
 
-export default ProfilePageEditReport;
+export default ProfilePageNewReport;

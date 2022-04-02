@@ -12,7 +12,7 @@ import {
 import * as Styled from './AbilityGraph.styles';
 import { COLOR } from '../../constants';
 
-const AbilityGraph = ({ abilities, setAbilities }) => {
+const AbilityGraph = ({ abilities, setAbilities, edit }) => {
   ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
   const graphData = {
     labels: abilities.map((ability) => ability.name),
@@ -80,6 +80,7 @@ const AbilityGraph = ({ abilities, setAbilities }) => {
                     max={20}
                     defaultValue={ability.weight}
                     onChange={(event) => onUpdateWeight(event, ability.id)}
+                    disabled={edit}
                   />
                 </Styled.AbilityWeight>
               </Styled.TableRow>
