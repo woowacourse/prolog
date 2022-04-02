@@ -13,10 +13,10 @@ type ComponentProps = {
    * @description 내용이 너비를 벗어나는 경우 hover 시에 전체 내용을 확인하기 위한 title
    * TODO: 추후 css 요소로 변경 / 스크린 리더로 확인 시 두번 읽히는 이슈 있음.
    */
-  title: string;
+  title?: string;
   onClick?: () => void;
   onDelete?: () => void;
-  children: ReactNode;
+  children?: ReactNode;
 };
 
 type ChipProps = ContainerProps & ChipTextProps & ComponentProps;

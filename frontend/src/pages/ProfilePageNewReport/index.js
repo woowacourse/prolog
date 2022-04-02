@@ -1,26 +1,69 @@
 import { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
-import useRequest from '../../hooks/useRequest';
-import { requestGetAbilities, requestPostReport } from '../../service/requests';
 import { UserContext } from '../../contexts/UserProvider';
-
 import { Button } from '../../components';
-import StudylogModal from './StudylogModal';
-import ReportInfoInput from './ReportInfoInput';
-import ReportStudylogTable from './ReportStudylogTable';
-import AbilityGraph from '../ProfilePageReports/AbilityGraph';
+import ReportInfo from './ReportInfo';
+import { COLOR } from '../../constants';
+import { Form, FormButtonWrapper } from './style';
+import AbilityGraph from './AbilityGraph';
 
-import { COLOR, ERROR_MESSAGE, REPORT_DESCRIPTION } from '../../constants';
-import { limitLetterLength } from '../../utils/validator';
-
-import { Checkbox, Form, FormButtonWrapper } from './style';
+const mockAbilities = [
+  {
+    id: 1,
+    name: '부모 역량 이름',
+    description: '부모 역량 설명',
+    color: '#001122',
+    isParent: true,
+    children: [
+      {
+        id: 2,
+        name: '자식 역량 이름',
+        description: '자식 역량 설명',
+        color: '#001122',
+        isParent: false,
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: '부모 역량 이름2',
+    description: '부모 역량 설명',
+    color: '#FF2',
+    isParent: true,
+    children: [
+      {
+        id: 2,
+        name: '자식 역량 이름',
+        description: '자식 역량 설명',
+        color: '#001122',
+        isParent: false,
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: '부모2 역량 이름',
+    description: '부모2 역량 설명',
+    color: '#554433',
+    isParent: true,
+    children: [
+      {
+        id: 4,
+        name: '자식2 역량 이름',
+        description: '자식2 역량 설명',
+        color: '#001122',
+        isParent: false,
+      },
+    ],
+  },
+];
 
 const ProfilePageNewReport = () => {
-  const { username } = useParams();
   const history = useHistory();
-
+  const { username } = useParams();
   const { user } = useContext(UserContext);
+
   const { isLoggedIn, accessToken } = user;
 
   const nickname = user.nickname ?? user.username;
@@ -37,76 +80,42 @@ const ProfilePageNewReport = () => {
         history.push(`/${username}/reports`);
       }
     }
-  }, [isLoggedIn, username, user.data, history, accessToken]);
+  }, [isLoggedIn, username, user.data, history]);
 
-  const [isMainReport, setIsMainReport] = useState(false);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [abilities, setAbilities] = useState([]);
-  const [Studylogs, setStudylogs] = useState([]);
-  const [StudylogAbilities, setStudylogAbilities] = useState([]);
 
-  const [isModalOpened, setIsModalOpened] = useState(false);
-
-  const postNewReport = async (data) => {
-    try {
-      const response = await requestPostReport(data, accessToken);
-
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-
-      history.push(`/${username}/reports`);
-    } catch (error) {
-      const errorCode = JSON.parse(error.message).code;
-
-      if (ERROR_MESSAGE[errorCode]) {
-        alert(ERROR_MESSAGE[errorCode]);
-      } else {
-        console.error(error);
-      }
-    }
-  };
-
-  const getCheckedAbility = (StudylogId) => {
-    const targetStudylogAbility = StudylogAbilities.find(
-      (StudylogAbility) => StudylogAbility.id === StudylogId
-    )?.abilities;
-
-    return targetStudylogAbility?.map((ability) => ability.id) ?? [];
-  };
+  const [abilities, setAbilities] = useState(
+    mockAbilities.map(({ id, name, color }) => ({
+      id,
+      name,
+      color,
+      weight: 0,
+    }))
+  );
 
   const onSubmitReport = async (event) => {
     event.preventDefault();
 
-    const currTitle = title.trim();
-
-    if (!limitLetterLength(description, REPORT_DESCRIPTION.MAX_LENGTH)) {
-      alert('리포트 설명은 150글자를 넘을 수 없습니다.');
-
+    if (!startDate || !endDate) {
+      alert('기간을 선택해주세요');
       return;
     }
 
-    if (Studylogs.length === 0) {
-      if (!window.confirm('등록된 학습로그가 없습니다.\n저장하시겠습니까?')) return;
+    if (calculateWeight(abilities) !== 20) {
+      alert('역량의 가중치의 합이 20이 되어야합니다.');
+      return;
     }
 
     const data = {
-      id: null,
-      title:
-        currTitle !== '' ? currTitle : `${new Date().toLocaleDateString()} ${nickname}의 리포트`,
+      title,
       description,
-      abilityGraph: {
-        abilities: abilities.map(({ id, weight, isPresent }) => ({ id, weight, isPresent })),
-      },
-      studylogs: Studylogs.map((item) => ({
-        id: item.id,
-        abilities: getCheckedAbility(item.id),
-      })),
-      represent: isMainReport,
+      startDate,
+      endDate,
+      reportAbility: abilities.map(({ id, weight }) => ({ abilityId: id, weight })),
     };
-
-    await postNewReport(data);
   };
 
   const onCancelWriteReport = () => {
@@ -115,67 +124,22 @@ const ProfilePageNewReport = () => {
     }
   };
 
-  useRequest(
-    [],
-    () => requestGetAbilities(username, accessToken),
-    (data) => {
-      const parents = data.filter((item) => item.isParent);
-
-      setAbilities(() =>
-        parents.map(({ id, name, color }) => ({
-          id,
-          name,
-          color,
-          weight: Math.ceil(10 * Number((1 / parents.length).toFixed(2))),
-          percentage: Number((1 / parents.length).toFixed(2)),
-          isPresent: true,
-        }))
-      );
-    }
-  );
-
-  const onRegisterMainReport = () => setIsMainReport((currentState) => !currentState);
-
-  const onModalOpen = () => setIsModalOpened(true);
-
-  const onModalClose = () => setIsModalOpened(false);
-
-  const onChangeAbilities = (data) => {
-    setAbilities(data);
-  };
-
   return (
     <>
       <Form onSubmit={onSubmitReport}>
         <h2>새 리포트 작성하기</h2>
-        <div>
-          <Checkbox
-            type="checkbox"
-            onChange={onRegisterMainReport}
-            checked={isMainReport}
-            id="main_report_checkbox"
-          />
-          <label htmlFor="main_report_checkbox">대표 리포트로 지정하기</label>
-        </div>
 
-        <ReportInfoInput
+        <ReportInfo
           nickname={nickname}
           title={title}
           setTitle={setTitle}
           desc={description}
           setDescription={setDescription}
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
         />
 
-        <AbilityGraph abilities={abilities} setAbilities={onChangeAbilities} mode="NEW" />
-
-        <ReportStudylogTable
-          onModalOpen={onModalOpen}
-          Studylogs={Studylogs}
-          setStudylogs={setStudylogs}
-          abilities={abilities}
-          StudylogAbilities={StudylogAbilities}
-          setStudylogAbilities={setStudylogAbilities}
-        />
+        <AbilityGraph abilities={abilities} setAbilities={setAbilities} />
 
         <FormButtonWrapper>
           <Button
@@ -189,17 +153,12 @@ const ProfilePageNewReport = () => {
           <Button size="X_SMALL">리포트 등록</Button>
         </FormButtonWrapper>
       </Form>
-
-      {isModalOpened && (
-        <StudylogModal
-          onModalClose={onModalClose}
-          username={username}
-          Studylogs={Studylogs}
-          setStudylogs={setStudylogs}
-        />
-      )}
     </>
   );
 };
 
 export default ProfilePageNewReport;
+
+const calculateWeight = (abilities) => {
+  return abilities.reduce((sum, ability) => (sum += Number(ability.weight)), 0);
+};

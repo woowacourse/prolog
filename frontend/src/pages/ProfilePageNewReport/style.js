@@ -1,24 +1,15 @@
 import styled from '@emotion/styled';
 
-const Form = styled.form`
+export const Form = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  position: relative;
 
   > h2 {
     display: inline-block;
     margin: 0 auto 1rem;
-  }
-
-  > div {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-
-    > label {
-      font-size: 1.4rem;
-    }
   }
 
   > button {
@@ -31,14 +22,11 @@ const Form = styled.form`
   }
 `;
 
-const Checkbox = styled.input`
-  margin-right: 1rem;
-  -webkit-transform: scale(1.4);
-`;
-
-const FormButtonWrapper = styled.div`
+export const FormButtonWrapper = styled.div`
   width: 100%;
-  margin-top: 2rem;
+  margin-bottom: 4rem;
+  display: flex;
+  align-items: center;
 
   > button {
     width: 100%;
@@ -47,5 +35,3 @@ const FormButtonWrapper = styled.div`
     font-size: 1.4rem;
   }
 `;
-
-export { Form, Checkbox, FormButtonWrapper };
