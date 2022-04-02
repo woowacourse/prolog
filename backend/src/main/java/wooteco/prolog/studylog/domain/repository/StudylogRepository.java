@@ -28,10 +28,9 @@ public interface StudylogRepository extends JpaRepository<Studylog, Long>, JpaSp
     @Query("select p from Studylog p where :date <= p.createdAt")
     List<Studylog> findByPastDays(LocalDateTime date);
 
-    List<Studylog> findTop10ByOrderByCreatedAtDesc();
-
+    List<Studylog> findDeletedFalseAndTop10ByOrderByCreatedAtDesc();
 
     List<Studylog> findByMemberIdAndCreatedAtBetween(Long memberId, LocalDateTime startDate, LocalDateTime endDate);
 
-    Page<Studylog> findByIdInOrderByIdAsc(List<Long> ids, Pageable pageable);
+    Page<Studylog> findByIdInAndDeletedFalseOrderByIdAsc(List<Long> ids, Pageable pageable);
 }

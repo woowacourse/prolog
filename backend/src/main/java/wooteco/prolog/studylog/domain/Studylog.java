@@ -22,7 +22,8 @@ import wooteco.prolog.studylog.exception.AuthorNotValidException;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Studylog extends AuditingEntity {
-
+    private static final String DELETED_TITLE = "삭제된 학습로그";
+    private static final String DELETED_CONTENT = "삭제된 학습로그입니다.";
     private static final int POPULAR_SCORE = 3;
 
     @Id
@@ -51,6 +52,8 @@ public class Studylog extends AuditingEntity {
 
     @Embedded
     private Likes likes;
+
+    private boolean deleted;
 
     public Studylog(Member member, String title, String content, Mission mission, List<Tag> tags) {
         this.member = member;
@@ -142,10 +145,16 @@ public class Studylog extends AuditingEntity {
     }
 
     public String getTitle() {
+        if (deleted) {
+            return DELETED_TITLE;
+        }
         return title.getTitle();
     }
 
     public String getContent() {
+        if (deleted) {
+            return DELETED_CONTENT;
+        }
         return content.getContent();
     }
 
@@ -159,5 +168,13 @@ public class Studylog extends AuditingEntity {
 
     public String getNickname() {
         return member.getNickname();
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void delete() {
+        this.deleted = true;
     }
 }
