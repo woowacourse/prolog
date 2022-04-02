@@ -1,5 +1,6 @@
 package wooteco.prolog.report.ui;
 
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
@@ -15,25 +16,28 @@ import wooteco.prolog.login.aop.MemberOnly;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.report.application.ReportService;
-import wooteco.prolog.report.application.dto.PageableResponse;
+import wooteco.prolog.common.PageableResponse;
 import wooteco.prolog.report.application.dto.ReportRequest;
 import wooteco.prolog.report.application.dto.ReportResponse;
 import wooteco.prolog.report.application.dto.ReportUpdateRequest;
 
 @RestController
+@AllArgsConstructor
 public class ReportController {
 
     private final ReportService reportService;
-
-    public ReportController(ReportService reportService) {
-        this.reportService = reportService;
-    }
 
     @MemberOnly
     @PostMapping("/reports")
     public ResponseEntity<ReportResponse> createReport(@AuthMemberPrincipal LoginMember member, @RequestBody ReportRequest reportRequest) {
         ReportResponse response = reportService.createReport(member, reportRequest);
         return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/reports/{reportId}")
+    public ResponseEntity<ReportResponse> findReports(@PathVariable Long reportId) {
+        ReportResponse response = reportService.findReportById(reportId);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/members/{username}/reports")
@@ -45,10 +49,10 @@ public class ReportController {
 
     @MemberOnly
     @PutMapping("/reports/{reportId}")
-    public ResponseEntity<ReportResponse> updateReport(@AuthMemberPrincipal LoginMember member, @PathVariable Long reportId, @RequestBody ReportUpdateRequest reportUpdateRequest) {
-        ReportResponse reportResponse = reportService.updateReport(member, reportId, reportUpdateRequest);
+    public ResponseEntity<Void> updateReport(@AuthMemberPrincipal LoginMember member, @PathVariable Long reportId, @RequestBody ReportUpdateRequest reportUpdateRequest) {
+        reportService.updateReport(member, reportId, reportUpdateRequest);
 
-        return ResponseEntity.ok(reportResponse);
+        return ResponseEntity.ok().build();
     }
 
     @MemberOnly

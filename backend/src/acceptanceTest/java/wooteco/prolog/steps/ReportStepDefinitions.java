@@ -4,11 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.time.LocalDate;
 import java.util.Arrays;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
+import wooteco.prolog.common.PageableResponse;
 import wooteco.prolog.fixtures.GithubResponses;
-import wooteco.prolog.report.application.dto.PageableResponse;
 import wooteco.prolog.report.application.dto.ReportAbilityRequest;
 import wooteco.prolog.report.application.dto.ReportRequest;
 import wooteco.prolog.report.application.dto.ReportResponse;
@@ -23,6 +24,8 @@ public class ReportStepDefinitions extends AcceptanceSteps {
         ReportRequest reportRequest = new ReportRequest(
             "새로운 리포트" + reportCnt++,
             "리포트 설명",
+            LocalDate.now().minusDays(7).toString(),
+            LocalDate.now().toString(),
             Arrays.asList(
                 new ReportAbilityRequest(1L, 5),
                 new ReportAbilityRequest(2L, 10),
@@ -31,11 +34,14 @@ public class ReportStepDefinitions extends AcceptanceSteps {
             )
         );
         context.invokeHttpPostWithToken("/reports", reportRequest);
+        if (context.response.statusCode() == HttpStatus.CREATED.value()) {
+            context.storage.put("report", context.response.as(ReportResponse.class));
+        }
     }
 
     @When("리포트를 수정하면")
     public void 리포트를수정하면() {
-        ReportResponse reportResponse = context.response.as(ReportResponse.class);
+        ReportResponse report = (ReportResponse) context.storage.get("report");
 
         ReportUpdateRequest reportUpdateRequest = new ReportUpdateRequest(
             "변경된 리포트",
@@ -43,7 +49,7 @@ public class ReportStepDefinitions extends AcceptanceSteps {
         );
 
         context.storage.put("reportRequest", reportUpdateRequest);
-        context.invokeHttpPutWithToken("/reports/" + reportResponse.getId(), reportUpdateRequest);
+        context.invokeHttpPutWithToken("/reports/" + report.getId(), reportUpdateRequest);
     }
 
     @When("{string}의 리포트 목록을 조회하면")
@@ -71,7 +77,7 @@ public class ReportStepDefinitions extends AcceptanceSteps {
     @Then("리포트가 등록된다")
     public void 리포트가등록또는수정된다() {
         int status = context.response.statusCode();
-        assertThat(status).isEqualTo(200);
+        assertThat(status).isEqualTo(HttpStatus.OK.value());
     }
 
     @Then("리포트가 수정된다")

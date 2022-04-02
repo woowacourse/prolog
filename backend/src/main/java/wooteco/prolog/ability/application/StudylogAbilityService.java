@@ -1,5 +1,6 @@
 package wooteco.prolog.ability.application;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +35,7 @@ public class StudylogAbilityService {
         this.memberService = memberService;
     }
 
+    @Transactional
     public List<AbilityResponse> updateStudylogAbilities(Long memberId, Long studylogId, StudylogAbilityRequest studylogAbilityRequest) {
         Studylog studylog = studylogService.findStudylogById(studylogId);
         if (!studylog.isBelongsTo(memberId)) {
@@ -62,14 +64,14 @@ public class StudylogAbilityService {
             .collect(Collectors.toList());
     }
 
-    public List<AbilityStudylogResponse> findAbilityStudylogsByAbilityIds(String username, List<Long> abilityIds) {
+    public List<AbilityStudylogResponse> findAbilityStudylogsByAbilityIds(String username, List<Long> abilityIds, Pageable pageable) {
         if (abilityIds != null && !abilityIds.isEmpty()) {
-            return AbilityStudylogResponse.listOf(studylogAbilityRepository.findByAbilityIdIn(abilityIds));
+            return AbilityStudylogResponse.listOf(studylogAbilityRepository.findByAbilityIdIn(abilityIds, pageable));
         }
 
-        List<Studylog> studylogs = studylogService.findStudylogsByUsername(username, Pageable.unpaged());
+        List<Studylog> studylogs = studylogService.findStudylogsByUsername(username, pageable);
         List<Long> studylogIds = studylogs.stream()
-            .map(it -> it.getId())
+            .map(Studylog::getId)
             .collect(Collectors.toList());
 
         List<StudylogAbility> studylogAbilities = studylogAbilityRepository.findByStudylogIdIn(studylogIds);
@@ -77,14 +79,14 @@ public class StudylogAbilityService {
         return AbilityStudylogResponse.listOf(studylogs, studylogAbilities);
     }
 
-    public List<AbilityStudylogResponse> findAbilityStudylogsMappingOnlyByAbilityIds(String username, List<Long> abilityIds) {
+    public List<AbilityStudylogResponse> findAbilityStudylogsMappingOnlyByAbilityIds(String username, List<Long> abilityIds, Pageable pageable) {
         if (abilityIds != null && !abilityIds.isEmpty()) {
-            return AbilityStudylogResponse.listOf(studylogAbilityRepository.findByAbilityIdIn(abilityIds));
+            return AbilityStudylogResponse.listOf(studylogAbilityRepository.findByAbilityIdIn(abilityIds, pageable));
         }
 
         Member member = memberService.findByUsername(username);
 
-        List<StudylogAbility> studylogAbilities = studylogAbilityRepository.findByMemberId(member.getId());
+        List<StudylogAbility> studylogAbilities = studylogAbilityRepository.findByMemberId(member.getId(), pageable);
 
         return AbilityStudylogResponse.listOf(studylogAbilities);
     }
@@ -97,5 +99,10 @@ public class StudylogAbilityService {
         Member member = memberService.findByUsername(username);
 
         return studylogAbilityRepository.findByMemberId(member.getId());
+    }
+
+    public List<StudylogAbility> findStudylogAbilitiesInPeriod(Long memberId, LocalDate startDate, LocalDate endDate) {
+        List<Studylog> studylogs = studylogService.findStudylogsInPeriod(memberId, startDate, endDate);
+        return studylogAbilityRepository.findByStudylogIdIn(studylogs.stream().map(Studylog::getId).collect(Collectors.toList()));
     }
 }

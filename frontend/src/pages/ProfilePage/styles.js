@@ -12,8 +12,6 @@ const Content = styled.div`
   margin-left: 2.4rem;
   display: flex;
   justify-content: center;
-
-  position: relative;
 `;
 
 const Overview = styled.div`

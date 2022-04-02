@@ -85,13 +85,15 @@ const MenuItem = styled.li`
 `;
 
 const MenuButton = styled.button`
+  width: 100%;
+  padding: 1rem;
   display: flex;
-  gap: 0.6rem;
   align-items: center;
+  gap: 0.6rem;
+
   font-size: 1.6rem;
-  color: ${COLOR.LIGHT_GRAY_900};
   font-weight: 300;
-  padding: 2rem;
+  color: ${COLOR.LIGHT_GRAY_900};
 `;
 
 const NicknameInput = styled.input`
