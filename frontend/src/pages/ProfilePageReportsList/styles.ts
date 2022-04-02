@@ -7,50 +7,40 @@ import { COLOR } from '../../constants';
 export const Container = styled.section<{ css?: SerializedStyles }>`
   width: 100%;
   height: 100%;
-  padding: 2rem;
   margin-bottom: 7rem;
-
+  padding: 2rem;
   position: relative;
 
   ${({ css }) => css};
-`;
 
-// export const AddNewReportLink = styled(NavLink)<{ css?: SerializedStyles }>`
-//   width: fit-content;
-//   height: 3rem;
-//   margin: 1rem;
-//   padding: 0.8rem 2rem;
-
-//   display: flex;
-//   align-items: center;
-//   z-index: 0;
-
-//   border-radius: 1rem;
-//   background-color: ${COLOR.LIGHT_BLUE_800};
-
-//   font-size: 1.3rem;
-//   color: ${COLOR.WHITE};
-
-//   ${({ css }) => css};
-
-//   :hover {
-//     background-color: ${COLOR.DARK_BLUE_300};
-//   }
-// `;
-
-export const TimelineWrapper = styled.div`
-  :before {
-    content: '';
-    height: 80%;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 2px;
-    background-color: ${COLOR.DARK_BLUE_900};
+  > h2 {
+    font-size: 1.8rem;
+    text-align: center;
   }
 `;
 
-export const Reports = styled.ul``;
+export const AddFirstReportLink = styled(NavLink)<{ css?: SerializedStyles }>`
+  width: fit-content;
+  height: 3rem;
+  margin: 1rem;
+  padding: 0.8rem 2rem;
+
+  display: flex;
+  align-items: center;
+  z-index: 0;
+
+  border-radius: 1rem;
+  background-color: ${COLOR.LIGHT_BLUE_800};
+
+  font-size: 1.3rem;
+  color: ${COLOR.WHITE};
+
+  ${({ css }) => css};
+
+  :hover {
+    background-color: ${COLOR.DARK_BLUE_300};
+  }
+`;
 
 export const AddNewReportLink = styled(NavLink)`
   width: 3rem;
@@ -79,33 +69,39 @@ export const AddNewReportLink = styled(NavLink)`
   }
 `;
 
-export const Report = styled.li`
+/** 타임라인 영역 UI */
+export const TimelineWrapper = styled.div`
+  margin-top: 5rem;
+
+  /** 가운데 선 */
+  :before {
+    content: '';
+    height: 80%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    background-color: ${COLOR.DARK_BLUE_900};
+  }
+`;
+
+/** 개별 리포트 */
+export const Report = styled.li<{ readOnly?: boolean }>`
   width: 35rem;
-  height: 10rem;
+  height: 11rem;
   margin-bottom: 5rem;
   padding: 1rem;
   position: relative;
 
-  border-radius: 2rem;
+  border-radius: 1.5rem;
   background-color: ${COLOR.LIGHT_BLUE_200};
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 
   :first-of-type {
-    margin-top: 10rem;
+    margin-top: ${({ readOnly }) => !readOnly && '10rem'};
   }
 
   :nth-of-type(odd) {
-    float: right;
-    clear: left;
-    border-top-left-radius: 0;
-
-    :after {
-      left: 0;
-      transform: translateX(-4.6rem);
-    }
-  }
-
-  :nth-of-type(even) {
     float: left;
     clear: right;
     border-top-right-radius: 0;
@@ -116,10 +112,22 @@ export const Report = styled.li`
     }
   }
 
+  :nth-of-type(even) {
+    float: right;
+    clear: left;
+    border-top-left-radius: 0;
+
+    :after {
+      left: 0;
+      transform: translateX(-4.6rem);
+    }
+  }
+
+  /** 타임라인의 점 */
   :after {
     content: '';
     position: absolute;
-    top: 2rem;
+    top: ${({ readOnly }) => (readOnly ? '0rem' : '2rem')};
     width: 1.5rem;
     height: 1.5rem;
     border: 1px solid ${COLOR.DARK_BLUE_900};
@@ -137,6 +145,7 @@ export const Report = styled.li`
   }
 `;
 
+/** 리포트 날짜 */
 export const ReportDate = styled.span`
   font-size: 1.2rem;
   font-weight: 500;
@@ -145,18 +154,29 @@ export const ReportDate = styled.span`
   left: 0;
 `;
 
+/** 리포트 제목 */
+export const ReportTtile = styled.span`
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: ${COLOR.BLACK_900};
+`;
+
+/** 리포트 설명 */
 export const ReportDesc = styled.p`
   margin: 0;
-
   display: -webkit-box;
-  overflow: hidden;
+
   font-size: 1.2rem;
   text-overflow: ellipsis;
-  -webkit-line-clamp: 3;
+  color: ${COLOR.DARK_GRAY_600};
+
+  overflow: hidden;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 `;
 
-export const TextButton = styled.button`
+/** 리포트 보러가는 링크 */
+export const GoReportLink = styled(NavLink)`
   position: absolute;
   bottom: 1rem;
   font-size: 1.2rem;
