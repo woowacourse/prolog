@@ -30,7 +30,7 @@ const ProfilePageNewReport = () => {
     return data;
   });
 
-  /** 리포트 등록 */
+  /** 리포트 수정 */
   const onEditReport = useMutation(
     async (reportData) => {
       const { data } = await axios({
