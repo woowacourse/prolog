@@ -213,6 +213,7 @@ public class StudylogService {
         Studylog createdStudylog = studylogRepository.save(requestedStudylog);
 
         onStudylogCreatedEvent(member, tags, mission, createdStudylog);
+        deleteStudylogTemp(memberId);
 
         return StudylogResponse.of(createdStudylog);
     }
