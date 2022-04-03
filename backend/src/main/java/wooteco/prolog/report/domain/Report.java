@@ -1,6 +1,7 @@
 package wooteco.prolog.report.domain;
 
 import java.time.LocalDate;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,6 +21,7 @@ public class Report {
 
     private String title;
 
+    @Column(nullable = false, columnDefinition = "text")
     private String description;
 
     private LocalDate startDate;
