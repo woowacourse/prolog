@@ -1,72 +1,28 @@
 import { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import { useMutation } from 'react-query';
 
 import { UserContext } from '../../contexts/UserProvider';
 import { Button } from '../../components';
 import ReportInfo from './ReportInfo';
-import { COLOR } from '../../constants';
+import { COLOR, ERROR_MESSAGE } from '../../constants';
 import { Form, FormButtonWrapper } from './style';
 import AbilityGraph from './AbilityGraph';
-
-const mockAbilities = [
-  {
-    id: 1,
-    name: '부모 역량 이름',
-    description: '부모 역량 설명',
-    color: '#001122',
-    isParent: true,
-    children: [
-      {
-        id: 2,
-        name: '자식 역량 이름',
-        description: '자식 역량 설명',
-        color: '#001122',
-        isParent: false,
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: '부모 역량 이름2',
-    description: '부모 역량 설명',
-    color: '#FF2',
-    isParent: true,
-    children: [
-      {
-        id: 2,
-        name: '자식 역량 이름',
-        description: '자식 역량 설명',
-        color: '#001122',
-        isParent: false,
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: '부모2 역량 이름',
-    description: '부모2 역량 설명',
-    color: '#554433',
-    isParent: true,
-    children: [
-      {
-        id: 4,
-        name: '자식2 역량 이름',
-        description: '자식2 역량 설명',
-        color: '#001122',
-        isParent: false,
-      },
-    ],
-  },
-];
+import axios from 'axios';
+import { BASE_URL } from '../../configs/environment';
+import useAbility from '../../hooks/Ability/useAbility';
 
 const ProfilePageNewReport = () => {
   const history = useHistory();
+
   const { username } = useParams();
   const { user } = useContext(UserContext);
-
   const { isLoggedIn, accessToken } = user;
-
   const nickname = user.nickname ?? user.username;
+
+  const { abilities: abilityList, isLoading } = useAbility({
+    username,
+  });
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -86,14 +42,51 @@ const ProfilePageNewReport = () => {
   const [endDate, setEndDate] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [abilities, setAbilities] = useState([]);
 
-  const [abilities, setAbilities] = useState(
-    mockAbilities.map(({ id, name, color }) => ({
-      id,
-      name,
-      color,
-      weight: 0,
-    }))
+  useEffect(() => {
+    setAbilities(
+      abilityList?.map(({ id, name, color }) => ({
+        id,
+        name,
+        color,
+        weight: 0,
+      })) ?? []
+    );
+  }, [isLoading]);
+
+  /** 리포트 등록 */
+  const onAddReport = useMutation(
+    (reportData) => {
+      const { data } = axios({
+        method: 'post',
+        url: `${BASE_URL}/reports`,
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+        data: {
+          reportData,
+        },
+      });
+
+      if (!data) {
+        throw new Error();
+      }
+
+      return { ...data };
+    },
+    {
+      onSuccess: () => {
+        history.push(`/${username}/reports`);
+      },
+      onError: (errorData) => {
+        const errorCode = errorData?.code;
+
+        alert(
+          ERROR_MESSAGE[errorCode] ?? '리포트 등록에 실패하였습니다. 잠시후 다시 시도해주세요.'
+        );
+      },
+    }
   );
 
   const onSubmitReport = async (event) => {
@@ -104,18 +97,24 @@ const ProfilePageNewReport = () => {
       return;
     }
 
+    if (abilityList.length < 3) {
+      alert('2개 이상의 역량을 등록해주세요.');
+      return;
+    }
+
     if (calculateWeight(abilities) !== 20) {
       alert('역량의 가중치의 합이 20이 되어야합니다.');
       return;
     }
 
-    const data = {
+    /** 리포트 등록 */
+    onAddReport.mutate({
       title,
       description,
       startDate,
       endDate,
       reportAbility: abilities.map(({ id, weight }) => ({ abilityId: id, weight })),
-    };
+    });
   };
 
   const onCancelWriteReport = () => {
