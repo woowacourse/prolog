@@ -24,7 +24,7 @@ const ProfilePageReports = () => {
     async () => {
       const { data } = await axios({
         method: 'get',
-        url: `${BASE_URL}/reports/1`,
+        url: `${BASE_URL}/reports/${reportId}`,
       });
 
       return data;
