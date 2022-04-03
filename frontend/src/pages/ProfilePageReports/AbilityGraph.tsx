@@ -1,79 +1,42 @@
-import DonutChart from '../../components/Charts/DonutChart';
-import DonutChartForm from '../../components/Charts/DonutChartForm';
+import { Radar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+import * as Styled from './AbilityGraph.styles';
 import { COLOR } from '../../constants';
-import { Content, Section } from './AbilityGraph.styles';
 
-export type Ability = {
-  id: number;
-  name: string;
-  weight: number;
-  percentage: number;
-  color: string;
-  isPresent: boolean;
-};
+const AbilityGraph = ({ abilities }) => {
+  ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
+  const graphData = {
+    labels: abilities.map((ability) => ability.name),
+    datasets: [
+      {
+        label: '역량 가중치',
+        data: abilities.map((ability) => ability.weight),
+        backgroundColor: `${COLOR.LIGHT_BLUE_100}BB`,
+        borderColor: `${COLOR.LIGHT_BLUE_400}`,
+        borderWidth: 1.5,
+      },
+    ],
+  };
 
-const MODE = {
-  VIEW: 'VIEW',
-  EDIT: 'EDIT',
-  NEW: 'NEW',
-};
-
-const AbilityGraph = ({
-  abilities,
-  setAbilities,
-  mode,
-}: {
-  abilities: Ability[];
-  setAbilities?: (
-    data: {
-      id: number;
-      name: string;
-      weight: number;
-      percentage: number;
-      color: string;
-      isPresent: boolean;
-    }[]
-  ) => void;
-  mode: string;
-}) => {
   return (
-    <Section>
-      <h3>📊 역량 그래프</h3>
-      <Content>
-        {mode === MODE.VIEW && (
-          <DonutChart
-            chartData={{
-              title: '역량 그래프',
-              categoryTitle: '역량',
-              data: abilities.filter((item) => item.isPresent),
-            }}
-            config={{ backgroundColor: COLOR.WHITE, width: 400, height: 220 }}
-          />
-        )}
-        {(mode === MODE.NEW || mode === MODE.EDIT) && (
-          <DonutChartForm
-            chartData={{
-              title: '역량 그래프',
-              categoryTitle: '역량',
-              data: abilities,
-            }}
-            config={{ backgroundColor: COLOR.WHITE, width: 400, height: 220 }}
-            onChangeData={
-              setAbilities as (
-                data: {
-                  id: number;
-                  name: string;
-                  weight: number;
-                  percentage: number;
-                  color: string;
-                  isPresent: boolean;
-                }[]
-              ) => void
-            }
-          />
-        )}
-      </Content>
-    </Section>
+    <Styled.AbilityGraphContainer>
+      <Styled.Title>📊 역량그래프</Styled.Title>
+
+      <div>
+        <div id="ability-graph-wrapper">
+          <Radar data={graphData} />
+        </div>
+      </div>
+    </Styled.AbilityGraphContainer>
   );
 };
 
