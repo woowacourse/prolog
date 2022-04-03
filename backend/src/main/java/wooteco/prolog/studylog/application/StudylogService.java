@@ -23,21 +23,10 @@ import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.domain.Mission;
-import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
-import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
-import wooteco.prolog.studylog.application.dto.StudylogRequest;
-import wooteco.prolog.studylog.application.dto.StudylogResponse;
-import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
-import wooteco.prolog.studylog.application.dto.StudylogsResponse;
+import wooteco.prolog.studylog.application.dto.*;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
-import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.StudylogRead;
-import wooteco.prolog.studylog.domain.StudylogScrap;
-import wooteco.prolog.studylog.domain.Tags;
-import wooteco.prolog.studylog.domain.repository.StudylogReadRepository;
-import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
-import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
+import wooteco.prolog.studylog.domain.*;
+import wooteco.prolog.studylog.domain.repository.*;
 import wooteco.prolog.studylog.exception.StudylogArgumentException;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 import wooteco.prolog.studylog.exception.StudylogReadNotExistException;
@@ -51,6 +40,7 @@ public class StudylogService {
     private static final int A_WEEK = 7;
 
     private final StudylogRepository studylogRepository;
+    private final StudylogTempRepository studylogTempRepository;
     private final StudylogScrapRepository studylogScrapRepository;
     private final StudylogReadRepository studylogReadRepository;
     private final MemberTagService memberTagService;
@@ -69,6 +59,14 @@ public class StudylogService {
         updateScrap(data, findScrapIds(memberId));
         updateRead(data, findReadIds(memberId));
         return studylogs;
+    }
+
+    public StudylogTempResponse findStudylogTemp(Long memberId) {
+        if (studylogTempRepository.existsByMemberId(memberId)) {
+            StudylogTemp studylogTemp = studylogTempRepository.findByMemberId(memberId);
+            return StudylogTempResponse.from(studylogTemp);
+        }
+        return StudylogTempResponse.toNull();
     }
 
     public StudylogsResponse findMostPopularStudylogs(
@@ -219,6 +217,28 @@ public class StudylogService {
         return StudylogResponse.of(createdStudylog);
     }
 
+    @Transactional
+    public StudylogTempResponse insertStudylogTemp(Long memberId, StudylogRequest studylogRequest) {
+        Member member = memberService.findById(memberId);
+        Tags tags = tagService.findOrCreate(studylogRequest.getTags());
+        Mission mission = missionService.findById(studylogRequest.getMissionId());
+        StudylogTemp requestedStudylogTemp = new StudylogTemp(member,
+                studylogRequest.getTitle(),
+                studylogRequest.getContent(),
+                mission,
+                tags);
+
+        deleteStudylogTemp(memberId);
+        StudylogTemp createdStudylogTemp = studylogTempRepository.save(requestedStudylogTemp);
+        return StudylogTempResponse.from(createdStudylogTemp);
+    }
+
+    private void deleteStudylogTemp(Long memberId) {
+        if (studylogTempRepository.existsByMemberId(memberId)) {
+            studylogTempRepository.deleteByMemberId(memberId);
+        }
+    }
+
     private void onStudylogCreatedEvent(Member foundMember, Tags tags, Mission mission, Studylog createdStudylog) {
         memberTagService.registerMemberTag(tags, foundMember);
         studylogDocumentService.save(createdStudylog.toStudylogDocument());
@@ -255,7 +275,6 @@ public class StudylogService {
 
         return StudylogResponse.of(studylog, scraped, read, liked);
     }
-
 
     public StudylogResponse findByIdAndReturnStudylogResponse(Long id) {
         return StudylogResponse.of(findStudylogById(id));
