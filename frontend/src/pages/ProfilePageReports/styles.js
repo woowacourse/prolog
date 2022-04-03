@@ -26,7 +26,7 @@ const Container = styled.section`
   padding: 0 2rem;
   margin-bottom: 2rem;
 
-  background-color: ${COLOR.LIGHT_BLUE_100}33;
+  border: 2px solid ${COLOR.LIGHT_BLUE_200};
   border-radius: 1rem;
 
   a {

@@ -1,16 +1,16 @@
 import { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
+import axios from 'axios';
 
 import { UserContext } from '../../contexts/UserProvider';
 import { Button } from '../../components';
 import ReportInfo from './ReportInfo';
 import { COLOR, ERROR_MESSAGE } from '../../constants';
 import { Form, FormButtonWrapper } from './style';
-import AbilityGraph from './AbilityGraph';
-import axios from 'axios';
 import { BASE_URL } from '../../configs/environment';
 import useAbility from '../../hooks/Ability/useAbility';
+import AbilityGraph from './AbilityGraph';
 
 const ProfilePageNewReport = () => {
   const history = useHistory();

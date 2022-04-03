@@ -24,7 +24,7 @@ export const Form = styled.form`
 
 export const FormButtonWrapper = styled.div`
   width: 100%;
-  margin-bottom: 4rem;
+  margin: 4rem 0;
   display: flex;
   align-items: center;
 
