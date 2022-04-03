@@ -77,7 +77,7 @@ export const TimelineWrapper = styled.div`
   /** 가운데 선 */
   :before {
     content: '';
-    height: 80%;
+    height: 90%;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);

@@ -28,7 +28,7 @@ const ProfilePageReportsList = () => {
       url: `${BASE_URL}/members/${username}/reports`,
     });
 
-    return { ...data };
+    return [...data.data];
   });
 
   if (!ReportList?.length) {
