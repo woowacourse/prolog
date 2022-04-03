@@ -6,6 +6,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.common.PageableResponse;
@@ -52,6 +53,13 @@ public class ReportStepDefinitions extends AcceptanceSteps {
         context.invokeHttpPutWithToken("/reports/" + report.getId(), reportUpdateRequest);
     }
 
+    @When("리포트를 삭제하면")
+    public void 리포트를삭제하면() {
+        ReportResponse report = (ReportResponse) context.storage.get("report");
+
+        context.invokeHttpDeleteWithToken("/reports/" + report.getId());
+    }
+
     @When("{string}의 리포트 목록을 조회하면")
     public void 리포트를조회하면(String name) {
         GithubResponses user = GithubResponses.findByName(name);
@@ -89,5 +97,22 @@ public class ReportStepDefinitions extends AcceptanceSteps {
     @Then("리포트가 수정된다")
     public void 리포트가수정된다() {
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @Then("리포트가 삭제된다")
+    public void 리포트가삭제된다() {
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Then("리포트 목록에서 제거된다")
+    public void 리포트목록에서제거된다() {
+        String username = (String) context.storage.get("username");
+        context.invokeHttpGetWithToken("/members/" + username + "/reports");
+
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        ReportResponse report = (ReportResponse) context.storage.get("report");
+        List<Long> reportIds = context.response.jsonPath().getList("id");
+
+        assertThat(reportIds).isNull();
     }
 }

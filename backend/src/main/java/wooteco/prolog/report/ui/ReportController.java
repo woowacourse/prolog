@@ -1,5 +1,6 @@
 package wooteco.prolog.report.ui;
 
+import java.net.URI;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -31,7 +32,7 @@ public class ReportController {
     @PostMapping("/reports")
     public ResponseEntity<ReportResponse> createReport(@AuthMemberPrincipal LoginMember member, @RequestBody ReportRequest reportRequest) {
         ReportResponse response = reportService.createReport(member, reportRequest);
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.created(URI.create("/reports/" + response.getId())).body(response);
     }
 
     @GetMapping("/reports/{reportId}")
