@@ -67,13 +67,13 @@ const ReportInfo = ({
 
       <Styled.Label htmlFor="report_desc">
         ✏️ 리포트 설명
-        <span>{desc.length}/2000</span>
+        <span>{desc.length}/300</span>
         <Styled.Desc
           id="report_desc"
           placeholder="리포트에 대해서 소개해주세요."
           value={desc}
           onChange={onWriteDesc}
-          maxLength={2000}
+          maxLength={300}
         />
       </Styled.Label>
     </section>

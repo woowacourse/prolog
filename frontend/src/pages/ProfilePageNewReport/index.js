@@ -57,8 +57,8 @@ const ProfilePageNewReport = () => {
 
   /** 리포트 등록 */
   const onAddReport = useMutation(
-    (reportData) => {
-      const { data } = axios({
+    async (reportData) => {
+      const { data } = await axios({
         method: 'post',
         url: `${BASE_URL}/reports`,
         headers: {
@@ -68,10 +68,6 @@ const ProfilePageNewReport = () => {
           ...reportData,
         },
       });
-
-      if (!data) {
-        throw new Error();
-      }
 
       return { ...data };
     },
