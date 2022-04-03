@@ -39,6 +39,7 @@ export const AddFirstReportLink = styled(NavLink)<{ css?: SerializedStyles }>`
 
   :hover {
     background-color: ${COLOR.DARK_BLUE_300};
+    color: ${COLOR.WHITE};
   }
 `;
 

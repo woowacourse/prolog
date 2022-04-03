@@ -4,6 +4,9 @@ import { css } from '@emotion/react';
 
 import { UserContext } from '../../contexts/UserProvider';
 import * as Styled from './styles';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import { BASE_URL } from '../../configs/environment';
 
 // type Report = {
 //   id: number;
@@ -13,33 +16,20 @@ import * as Styled from './styles';
 //   endDate: string;
 // };
 
-const mockData = {
-  data: [
-    {
-      id: 1,
-      title: '새로운 리포트',
-      description: '새로운 리포트 설명',
-      startDate: '2022-03-01',
-      endDate: '2022-03-15',
-    },
-    {
-      id: 2,
-      title: '두번째 새로운 리포트',
-      description:
-        '두번째 새로운 리포트 설명 두번째 새로운 리포트 설명두번째 새로운 리포트 설명두번째 새로운 리포트 설명두번째 새로운 리포트 설명두번째 새로운 리포트 설명',
-      startDate: '2022-03-15',
-      endDate: '2022-03-29',
-    },
-  ],
-};
-
 const ProfilePageReportsList = () => {
   const { username } = useParams<{ username: string }>();
   const { user } = useContext(UserContext);
   const readOnly = username !== user.username;
 
-  // TODO: 데이터 연동하기
-  const ReportList = mockData.data;
+  /** 리포트 목록 가져오기 */
+  const { data: ReportList = [] } = useQuery([`${username}-studylogs`], async () => {
+    const { data } = await axios({
+      method: 'get',
+      url: `${BASE_URL}/members/${username}/reports`,
+    });
+
+    return { ...data };
+  });
 
   if (!ReportList?.length) {
     return (
