@@ -3,20 +3,23 @@ import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
 
 export const AbilityGraphContainer = styled.div`
-  margin: 2rem 0;
   display: flex;
   flex-direction: column;
   align-items: baseline;
 
   > div {
-    display: flex;
+    > div {
+      padding-top: 2rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
 
-    #ability-graph-wrapper {
-      width: 50%;
+      border: 2px solid ${COLOR.LIGHT_BLUE_200};
+      border-radius: 0.5rem;
     }
 
     > table {
-      width: 50%;
+      width: 100%;
     }
   }
 `;
@@ -78,7 +81,7 @@ export const Tbody = styled.tbody`
   }
 `;
 
-export const AbilityName = styled.td<{ abilityColor: string }>`
+export const AbilityName = styled.td`
   height: 100%;
   width: 80%;
   padding: 0 1rem;

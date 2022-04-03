@@ -1,30 +1,69 @@
-import { Radar } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend,
-} from 'chart.js';
+import Chart from 'react-apexcharts';
 
 import * as Styled from './AbilityGraph.styles';
 import { COLOR } from '../../constants';
 
 const AbilityGraph = ({ abilities, setAbilities, edit }) => {
-  ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
-  const graphData = {
-    labels: abilities.map((ability) => ability.name),
-    datasets: [
+  const options = {
+    series: [
       {
-        label: '역량 가중치',
+        name: '역량 가중치',
         data: abilities.map((ability) => ability.weight),
-        backgroundColor: `${COLOR.LIGHT_BLUE_100}BB`,
-        borderColor: `${COLOR.LIGHT_BLUE_400}`,
-        borderWidth: 1.5,
       },
     ],
+    chart: {
+      type: 'radar',
+    },
+    dataLabels: {
+      enabled: true,
+    },
+    plotOptions: {
+      radar: {
+        size: 120,
+        polygons: {
+          strokeColors: '#e9e9e9',
+          fill: {
+            colors: ['#f8f8f8', '#fff'],
+          },
+        },
+      },
+    },
+    colors: [`${COLOR.DARK_BLUE_500}`],
+    markers: {
+      size: 4,
+      colors: [`${COLOR.WHITE}`],
+      strokeColor: `${COLOR.DARK_BLUE_500}`,
+      strokeWidth: 2,
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return val;
+        },
+      },
+    },
+    xaxis: {
+      categories: abilities.map((ability) => ability.name),
+      labels: {
+        style: {
+          colors: Array.from({ length: abilities.length }).fill(`${COLOR.BLACK_800}`),
+          fontSize: '12px',
+          fontWeight: 400,
+        },
+      },
+    },
+    yaxis: {
+      tickAmount: 7,
+      labels: {
+        formatter: function (item, i) {
+          if (i % 2 === 0) {
+            return Math.floor(item);
+          } else {
+            return '';
+          }
+        },
+      },
+    },
   };
 
   const onUpdateWeight = (event, targetId) => {
@@ -51,9 +90,7 @@ const AbilityGraph = ({ abilities, setAbilities, edit }) => {
       <Styled.Title>📊 역량그래프 설정</Styled.Title>
 
       <div>
-        <div id="ability-graph-wrapper">
-          <Radar data={graphData} />
-        </div>
+        <Chart options={options} type={options.chart.type} series={options.series} width="750" />
 
         <table>
           <Styled.Thead>
