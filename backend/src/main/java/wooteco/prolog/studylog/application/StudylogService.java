@@ -155,7 +155,7 @@ public class StudylogService {
             Pageable pageable = request.getPageable();
             List<Long> ids = request.getIds();
 
-            Page<Studylog> studylogs = studylogRepository.findByIdInOrderByIdAsc(ids, pageable);
+            Page<Studylog> studylogs = studylogRepository.findByIdInAndDeletedFalseOrderByIdAsc(ids, pageable);
 
             return StudylogsResponse.of(studylogs, memberId);
         }
@@ -339,15 +339,14 @@ public class StudylogService {
     @Transactional
     public void deleteStudylog(Long memberId, Long studylogId) {
         final Member foundMember = memberService.findById(memberId);
-        Studylog studylog = studylogRepository.findById(studylogId)
-            .orElseThrow(StudylogNotFoundException::new);
+        Studylog studylog = studylogRepository.findById(studylogId).orElseThrow(StudylogNotFoundException::new);
         studylog.validateAuthor(foundMember);
 
         final Tags tags = tagService.findByStudylogsAndMember(studylog, foundMember);
         studylogDocumentService.delete(studylog.toStudylogDocument());
         checkScrapedOrRead(memberId, studylogId);
-        studylogRepository.delete(studylog);
         memberTagService.removeMemberTag(tags, foundMember);
+        studylog.delete();
     }
 
     private void checkScrapedOrRead(Long memberId, Long studylogId) {
@@ -408,12 +407,12 @@ public class StudylogService {
     }
 
     public List<StudylogRssFeedResponse> readRssFeeds(String url) {
-        List<Studylog> studylogs = studylogRepository.findTop10ByOrderByCreatedAtDesc();
+        List<Studylog> studylogs = studylogRepository.findDeletedFalseAndTop10ByOrderByCreatedAtDesc();
         return StudylogRssFeedResponse.listOf(studylogs, url);
     }
-  
+
     public Studylog save(Studylog studylog) {
-      return studylogRepository.save(studylog);
+        return studylogRepository.save(studylog);
     }
 
     public List<Studylog> findStudylogsInPeriod(Long memberId, LocalDate startDate, LocalDate endDate) {

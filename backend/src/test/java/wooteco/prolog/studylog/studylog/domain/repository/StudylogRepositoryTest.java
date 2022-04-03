@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -232,7 +231,7 @@ class StudylogRepositoryTest {
             .collect(toList());
 
         // when
-        List<Studylog> studylogs = studylogRepository.findTop10ByOrderByCreatedAtDesc();
+        List<Studylog> studylogs = studylogRepository.findDeletedFalseAndTop10ByOrderByCreatedAtDesc();
 
         List<String> targets = studylogs.stream()
             .map(Studylog::getTitle)

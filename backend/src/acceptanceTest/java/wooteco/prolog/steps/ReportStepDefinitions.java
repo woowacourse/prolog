@@ -58,10 +58,9 @@ public class ReportStepDefinitions extends AcceptanceSteps {
         context.invokeHttpGet("/members/{name}/reports?page=0&size=10", user.getLogin());
     }
 
-    @When("{string}의 단순 리포트 목록을 조회하면")
-    public void 단순리포트를조회하면(String name) {
-        GithubResponses user = GithubResponses.findByName(name);
-        context.invokeHttpGet("/reports?username={name}&type=simple&page=0&size=10", user.getLogin());
+    @When("{long}번째 리포트를 조회하면")
+    public void 리포트를조회하면(Long reportId) {
+        context.invokeHttpGet("/reports/{reportId}", reportId);
     }
 
     @Then("리포트 목록이 조회된다")
@@ -72,6 +71,13 @@ public class ReportStepDefinitions extends AcceptanceSteps {
         assertThat(reportPageableResponse.getTotalPage()).isOne();
         assertThat(reportPageableResponse.getTotalSize()).isOne();
         assertThat(reportPageableResponse.getData()).hasSize(1);
+    }
+
+    @Then("리포트가 조회된다")
+    public void 리포트가조회된다() {
+        ReportResponse reportResponse = context.response.as(ReportResponse.class);
+
+        assertThat(reportResponse.getId()).isNotNull();
     }
 
     @Then("리포트가 등록된다")
