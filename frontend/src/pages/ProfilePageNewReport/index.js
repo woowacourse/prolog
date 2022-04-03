@@ -65,7 +65,7 @@ const ProfilePageNewReport = () => {
           Authorization: `Bearer ${user.accessToken}`,
         },
         data: {
-          reportData,
+          ...reportData,
         },
       });
 

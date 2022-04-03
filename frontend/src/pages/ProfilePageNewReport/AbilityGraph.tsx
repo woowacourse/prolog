@@ -31,7 +31,7 @@ const AbilityGraph = ({ abilities, setAbilities, edit }) => {
     setAbilities((prev) =>
       prev.map((ability) => {
         if (ability.id === targetId) {
-          return { ...ability, weight: event.target.value };
+          return { ...ability, weight: Number(event.target.value) };
         }
 
         return ability;
