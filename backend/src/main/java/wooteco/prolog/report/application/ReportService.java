@@ -59,7 +59,7 @@ public class ReportService {
             )
         );
 
-        List<HierarchyAbilityResponse> abilities = abilityService.findAbilitiesByMemberId(loginMember.getId());
+        List<HierarchyAbilityResponse> abilities = abilityService.findParentAbilitiesByMemberId(loginMember.getId());
         List<ReportAbility> reportAbilities = reportAbilityRepository.saveAll(abilities.stream()
             .map(it -> new ReportAbility(it.getName(), it.getDescription(), it.getColor(), reportRequest.findWeight(it.getId()), it.getId(), report.getId()))
             .collect(Collectors.toList()));
