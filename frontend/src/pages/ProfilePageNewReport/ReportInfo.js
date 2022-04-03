@@ -9,6 +9,8 @@ const ReportInfo = ({
   setTitle,
   desc,
   setDescription,
+  startDate,
+  endDate,
   setStartDate,
   setEndDate,
   edit,
@@ -36,7 +38,10 @@ const ReportInfo = ({
             }}
             format={dateFormat}
             onChange={onSelectDate}
-            defaultValue={[moment('2019-09-03', dateFormat), moment('2019-11-22', dateFormat)]}
+            defaultValue={[
+              moment(startDate ?? '2022-02-01', dateFormat),
+              moment(endDate ?? '2022-02-01', dateFormat),
+            ]}
             disabled
           />
         ) : (
