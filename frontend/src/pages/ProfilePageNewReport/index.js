@@ -106,7 +106,7 @@ const ProfilePageNewReport = () => {
     /** 리포트 등록 */
     onAddReport.mutate({
       title,
-      description,
+      description: description.getInstance().getMarkdown(),
       startDate,
       endDate,
       reportAbility: abilities.map(({ id, weight }) => ({ abilityId: id, weight })),
@@ -129,7 +129,7 @@ const ProfilePageNewReport = () => {
           title={title}
           setTitle={setTitle}
           desc={description}
-          setDescription={setDescription}
+          editorRef={setDescription}
           setStartDate={setStartDate}
           setEndDate={setEndDate}
         />

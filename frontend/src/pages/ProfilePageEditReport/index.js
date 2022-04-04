@@ -15,7 +15,6 @@ const ProfilePageNewReport = () => {
   const history = useHistory();
 
   const { id, username } = useParams();
-  console.log(id);
   const { user } = useContext(UserContext);
   const { isLoggedIn, accessToken } = user;
   const nickname = user.nickname ?? user.username;
@@ -117,10 +116,8 @@ const ProfilePageNewReport = () => {
           nickname={nickname}
           title={title}
           setTitle={setTitle}
-          desc={description}
-          setDescription={setDescription}
-          startDate={reportData.startDate}
-          endDate={reportData.endDate}
+          desc={reportData.description}
+          editorRef={setDescription}
           edit={true}
         />
 

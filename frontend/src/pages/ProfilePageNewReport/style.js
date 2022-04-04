@@ -18,7 +18,7 @@ export const Form = styled.form`
 
   > section {
     width: 100%;
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.5rem;
   }
 `;
 
