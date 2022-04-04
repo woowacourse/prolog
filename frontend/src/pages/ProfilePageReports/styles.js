@@ -26,7 +26,7 @@ const Container = styled.section`
   padding: 0 2rem;
   margin-bottom: 2rem;
 
-  border: 2px solid ${COLOR.LIGHT_BLUE_200};
+  border: 2px dotted ${COLOR.LIGHT_BLUE_200};
   border-radius: 1rem;
 
   a {
@@ -98,6 +98,17 @@ export const Section = styled.div`
     font-size: 2rem;
     color: ${COLOR.BLACK_900};
     text-align: center;
+  }
+
+  #report-desc {
+    max-height: 48rem;
+    padding: 1rem;
+    margin-top: 0.5rem;
+
+    overflow: auto;
+
+    border: 1px solid ${COLOR.LIGHT_GRAY_500};
+    border-radius: 0.3rem;
   }
 `;
 

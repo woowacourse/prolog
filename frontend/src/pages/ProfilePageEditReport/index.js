@@ -7,12 +7,13 @@ import ReportInfo from '../ProfilePageNewReport/ReportInfo';
 import { COLOR, ERROR_MESSAGE } from '../../constants';
 import { Form, FormButtonWrapper } from '../ProfilePageNewReport/style';
 import AbilityGraph from '../ProfilePageNewReport/AbilityGraph';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { BASE_URL } from '../../configs/environment';
 
 const ProfilePageNewReport = () => {
   const history = useHistory();
+  const queryClient = useQueryClient();
 
   const { id, username } = useParams();
   const { user } = useContext(UserContext);
@@ -47,6 +48,7 @@ const ProfilePageNewReport = () => {
     },
     {
       onSuccess: () => {
+        queryClient.invalidateQueries([`${username}-reports-${id}`]);
         history.push(`/${username}/reports`);
       },
       onError: (errorData) => {
@@ -81,7 +83,6 @@ const ProfilePageNewReport = () => {
     if (isLoading) return;
 
     setTitle(reportData.title);
-    setDescription(reportData.description);
     setAbilities(reportData?.abilities);
   }, [isLoading]);
 
@@ -90,7 +91,7 @@ const ProfilePageNewReport = () => {
 
     const data = {
       title,
-      description,
+      description: description.getInstance().getMarkdown(),
       startDate: reportData.startDate,
       endDate: reportData.endDate,
       reportAbility: abilities.map(({ id, weight }) => ({ abilityId: id, weight })),
