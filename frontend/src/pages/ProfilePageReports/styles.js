@@ -101,14 +101,14 @@ export const Section = styled.div`
   }
 
   #report-desc {
-    max-height: 48rem;
+    /* max-height: 48rem; */
     padding: 1rem;
     margin-top: 0.5rem;
 
-    overflow: auto;
+    /* overflow: auto; */
 
     border: 1px solid ${COLOR.LIGHT_GRAY_500};
-    border-radius: 0.3rem;
+    /* border-radius: 0.3rem; */
   }
 `;
 

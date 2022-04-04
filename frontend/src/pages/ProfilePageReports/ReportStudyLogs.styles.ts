@@ -1,6 +1,15 @@
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
 
+export const Title = styled.span`
+  margin: 0;
+  margin-bottom: 0.2rem;
+  display: block;
+
+  color: ${COLOR.BLACK_900};
+  font-size: 1.6rem;
+`;
+
 /** 테이블 관련 UI */
 export const Thead = styled.thead`
   width: 50%;

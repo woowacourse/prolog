@@ -4,7 +4,7 @@ import { COLOR } from '../../constants';
 
 export const AbilityGraphContainer = styled.div`
   width: 100%;
-  margin: 2rem 0;
+  margin: 2rem 0 -5rem;
   display: flex;
   flex-direction: column;
   align-items: baseline;
