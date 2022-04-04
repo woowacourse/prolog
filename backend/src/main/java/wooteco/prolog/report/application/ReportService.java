@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.ability.application.AbilityService;
 import wooteco.prolog.ability.application.StudylogAbilityService;
 import wooteco.prolog.ability.application.dto.HierarchyAbilityResponse;
+import wooteco.prolog.ability.domain.Ability;
 import wooteco.prolog.ability.domain.StudylogAbility;
 import wooteco.prolog.common.PageableResponse;
 import wooteco.prolog.login.ui.LoginMember;
@@ -59,7 +60,7 @@ public class ReportService {
             )
         );
 
-        List<HierarchyAbilityResponse> abilities = abilityService.findAbilitiesByMemberId(loginMember.getId());
+        List<HierarchyAbilityResponse> abilities = abilityService.findParentAbilitiesByMemberId(loginMember.getId());
         List<ReportAbility> reportAbilities = reportAbilityRepository.saveAll(abilities.stream()
             .map(it -> new ReportAbility(it.getName(), it.getDescription(), it.getColor(), reportRequest.findWeight(it.getId()), it.getId(), report.getId()))
             .collect(Collectors.toList()));
@@ -68,16 +69,15 @@ public class ReportService {
             .findStudylogAbilitiesInPeriod(loginMember.getId(), LocalDate.parse(reportRequest.getStartDate()), LocalDate.parse(reportRequest.getEndDate()));
 
         List<ReportStudylog> reportStudylogs = reportStudylogRepository.saveAll(studylogAbilities.stream()
-            .map(it -> new ReportStudylog(report.getId(), findReportAbilityByAbility(it.getAbility().getId(), reportAbilities), it.getStudylog()))
+            .map(it -> new ReportStudylog(report.getId(), findReportAbilityByAbility(it.getAbility(), reportAbilities), it.getStudylog()))
             .collect(Collectors.toList()));
 
         return ReportResponse.of(report, reportAbilities, reportStudylogs);
-
     }
 
-    private ReportAbility findReportAbilityByAbility(Long abilityId, List<ReportAbility> reportAbilities) {
+    private ReportAbility findReportAbilityByAbility(Ability ability, List<ReportAbility> reportAbilities) {
         return reportAbilities.stream()
-            .filter(it -> it.getId().equals(abilityId))
+            .filter(it -> it.getOriginAbilityId().equals(ability.getParent().getId()))
             .findFirst()
             .orElseThrow(RuntimeException::new);
     }
@@ -110,6 +110,7 @@ public class ReportService {
         report.update(reportUpdateRequest.getTitle(), reportUpdateRequest.getDescription());
     }
 
+    @Transactional
     public void deleteReport(LoginMember loginMember, Long reportId) {
         Report report = reportRepository.findById(reportId).orElseThrow(IllegalArgumentException::new);
         if (!report.isBelongTo(loginMember.getId())) {

@@ -1,6 +1,5 @@
 package wooteco.prolog.report.application.dto;
 
-import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +18,7 @@ public class ReportRequest {
 
     public int findWeight(Long activityId) {
         return reportAbility.stream()
-            .filter(it -> it.getAbilityId() == activityId)
+            .filter(it -> it.getAbilityId().equals(activityId))
             .map(ReportAbilityRequest::getWeight)
             .findAny()
             .orElseThrow(() -> new RuntimeException("찾는 역량이 없습니다."));

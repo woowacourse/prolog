@@ -1,29 +1,28 @@
 import { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import axios from 'axios';
 
-import useRequest from '../../hooks/useRequest';
-import { requestGetAbilities, requestPostReport } from '../../service/requests';
 import { UserContext } from '../../contexts/UserProvider';
-
 import { Button } from '../../components';
-import StudylogModal from './StudylogModal';
-import ReportInfoInput from './ReportInfoInput';
-import ReportStudylogTable from './ReportStudylogTable';
-import AbilityGraph from '../ProfilePageReports/AbilityGraph';
-
-import { COLOR, ERROR_MESSAGE, REPORT_DESCRIPTION } from '../../constants';
-import { limitLetterLength } from '../../utils/validator';
-
-import { Checkbox, Form, FormButtonWrapper } from './style';
+import ReportInfo from './ReportInfo';
+import { COLOR, ERROR_MESSAGE } from '../../constants';
+import { Form, FormButtonWrapper } from './style';
+import { BASE_URL } from '../../configs/environment';
+import useAbility from '../../hooks/Ability/useAbility';
+import AbilityGraph from './AbilityGraph';
 
 const ProfilePageNewReport = () => {
-  const { username } = useParams();
   const history = useHistory();
 
+  const { username } = useParams();
   const { user } = useContext(UserContext);
   const { isLoggedIn, accessToken } = user;
-
   const nickname = user.nickname ?? user.username;
+
+  const { abilities: abilityList, isLoading } = useAbility({
+    username,
+  });
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -37,76 +36,81 @@ const ProfilePageNewReport = () => {
         history.push(`/${username}/reports`);
       }
     }
-  }, [isLoggedIn, username, user.data, history, accessToken]);
+  }, [isLoggedIn, username, user.data, history]);
 
-  const [isMainReport, setIsMainReport] = useState(false);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [abilities, setAbilities] = useState([]);
-  const [Studylogs, setStudylogs] = useState([]);
-  const [StudylogAbilities, setStudylogAbilities] = useState([]);
 
-  const [isModalOpened, setIsModalOpened] = useState(false);
+  useEffect(() => {
+    setAbilities(
+      abilityList?.map(({ id, name, color }) => ({
+        id,
+        name,
+        color,
+        weight: 0,
+      })) ?? []
+    );
+  }, [isLoading]);
 
-  const postNewReport = async (data) => {
-    try {
-      const response = await requestPostReport(data, accessToken);
+  /** 리포트 등록 */
+  const onAddReport = useMutation(
+    async (reportData) => {
+      const { data } = await axios({
+        method: 'post',
+        url: `${BASE_URL}/reports`,
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+        data: {
+          ...reportData,
+        },
+      });
 
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
+      return { ...data };
+    },
+    {
+      onSuccess: () => {
+        history.push(`/${username}/reports`);
+      },
+      onError: (errorData) => {
+        const errorCode = errorData?.code;
 
-      history.push(`/${username}/reports`);
-    } catch (error) {
-      const errorCode = JSON.parse(error.message).code;
-
-      if (ERROR_MESSAGE[errorCode]) {
-        alert(ERROR_MESSAGE[errorCode]);
-      } else {
-        console.error(error);
-      }
+        alert(
+          ERROR_MESSAGE[errorCode] ?? '리포트 등록에 실패하였습니다. 잠시후 다시 시도해주세요.'
+        );
+      },
     }
-  };
-
-  const getCheckedAbility = (StudylogId) => {
-    const targetStudylogAbility = StudylogAbilities.find(
-      (StudylogAbility) => StudylogAbility.id === StudylogId
-    )?.abilities;
-
-    return targetStudylogAbility?.map((ability) => ability.id) ?? [];
-  };
+  );
 
   const onSubmitReport = async (event) => {
     event.preventDefault();
 
-    const currTitle = title.trim();
-
-    if (!limitLetterLength(description, REPORT_DESCRIPTION.MAX_LENGTH)) {
-      alert('리포트 설명은 150글자를 넘을 수 없습니다.');
-
+    if (!startDate || !endDate) {
+      alert('기간을 선택해주세요');
       return;
     }
 
-    if (Studylogs.length === 0) {
-      if (!window.confirm('등록된 학습로그가 없습니다.\n저장하시겠습니까?')) return;
+    if (abilityList.length < 3) {
+      alert('2개 이상의 역량을 등록해주세요.');
+      return;
     }
 
-    const data = {
-      id: null,
-      title:
-        currTitle !== '' ? currTitle : `${new Date().toLocaleDateString()} ${nickname}의 리포트`,
-      description,
-      abilityGraph: {
-        abilities: abilities.map(({ id, weight, isPresent }) => ({ id, weight, isPresent })),
-      },
-      studylogs: Studylogs.map((item) => ({
-        id: item.id,
-        abilities: getCheckedAbility(item.id),
-      })),
-      represent: isMainReport,
-    };
+    if (calculateWeight(abilities) !== 20) {
+      alert('역량의 가중치의 합이 20이 되어야합니다.');
+      return;
+    }
 
-    await postNewReport(data);
+    /** 리포트 등록 */
+    onAddReport.mutate({
+      title,
+      description,
+      startDate,
+      endDate,
+      reportAbility: abilities.map(({ id, weight }) => ({ abilityId: id, weight })),
+    });
   };
 
   const onCancelWriteReport = () => {
@@ -115,67 +119,22 @@ const ProfilePageNewReport = () => {
     }
   };
 
-  useRequest(
-    [],
-    () => requestGetAbilities(username, accessToken),
-    (data) => {
-      const parents = data.filter((item) => item.isParent);
-
-      setAbilities(() =>
-        parents.map(({ id, name, color }) => ({
-          id,
-          name,
-          color,
-          weight: Math.ceil(10 * Number((1 / parents.length).toFixed(2))),
-          percentage: Number((1 / parents.length).toFixed(2)),
-          isPresent: true,
-        }))
-      );
-    }
-  );
-
-  const onRegisterMainReport = () => setIsMainReport((currentState) => !currentState);
-
-  const onModalOpen = () => setIsModalOpened(true);
-
-  const onModalClose = () => setIsModalOpened(false);
-
-  const onChangeAbilities = (data) => {
-    setAbilities(data);
-  };
-
   return (
     <>
       <Form onSubmit={onSubmitReport}>
         <h2>새 리포트 작성하기</h2>
-        <div>
-          <Checkbox
-            type="checkbox"
-            onChange={onRegisterMainReport}
-            checked={isMainReport}
-            id="main_report_checkbox"
-          />
-          <label htmlFor="main_report_checkbox">대표 리포트로 지정하기</label>
-        </div>
 
-        <ReportInfoInput
+        <ReportInfo
           nickname={nickname}
           title={title}
           setTitle={setTitle}
           desc={description}
           setDescription={setDescription}
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
         />
 
-        <AbilityGraph abilities={abilities} setAbilities={onChangeAbilities} mode="NEW" />
-
-        <ReportStudylogTable
-          onModalOpen={onModalOpen}
-          Studylogs={Studylogs}
-          setStudylogs={setStudylogs}
-          abilities={abilities}
-          StudylogAbilities={StudylogAbilities}
-          setStudylogAbilities={setStudylogAbilities}
-        />
+        <AbilityGraph abilities={abilities} setAbilities={setAbilities} />
 
         <FormButtonWrapper>
           <Button
@@ -189,17 +148,12 @@ const ProfilePageNewReport = () => {
           <Button size="X_SMALL">리포트 등록</Button>
         </FormButtonWrapper>
       </Form>
-
-      {isModalOpened && (
-        <StudylogModal
-          onModalClose={onModalClose}
-          username={username}
-          Studylogs={Studylogs}
-          setStudylogs={setStudylogs}
-        />
-      )}
     </>
   );
 };
 
 export default ProfilePageNewReport;
+
+const calculateWeight = (abilities) => {
+  return abilities.reduce((sum, ability) => (sum += Number(ability.weight)), 0);
+};
