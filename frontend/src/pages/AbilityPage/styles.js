@@ -294,6 +294,10 @@ export const AbilityItem = styled.li`
   align-items: center;
 
   border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
+
+  > p {
+    padding-top: 1.2rem;
+  }
 `;
 
 export const SubAbilityList = styled.ul`
@@ -317,6 +321,11 @@ export const SubAbilityList = styled.ul`
 
     span {
       text-align: center;
+    }
+
+    p {
+      padding-top: 1.2rem;
+      margin-right: 3rem;
     }
   }
 
