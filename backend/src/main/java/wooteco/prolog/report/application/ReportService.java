@@ -77,7 +77,7 @@ public class ReportService {
 
     private ReportAbility findReportAbilityByAbility(Ability ability, List<ReportAbility> reportAbilities) {
         return reportAbilities.stream()
-            .filter(it -> it.getId().equals(ability.getParent().getId()))
+            .filter(it -> it.getOriginAbilityId().equals(ability.getParent().getId()))
             .findFirst()
             .orElseThrow(RuntimeException::new);
     }
