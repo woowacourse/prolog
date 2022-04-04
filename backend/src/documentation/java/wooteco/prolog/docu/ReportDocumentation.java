@@ -45,7 +45,7 @@ public class ReportDocumentation extends NewDocumentation {
             .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
             .body(REPORT_REQUEST)
             .when().post("/reports")
-            .then().log().all().apply(document("reports/create")).statusCode(HttpStatus.OK.value());
+            .then().log().all().apply(document("reports/create")).statusCode(HttpStatus.CREATED.value());
     }
 
     @Test

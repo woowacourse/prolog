@@ -29,9 +29,10 @@ public class ReportStepDefinitions extends AcceptanceSteps {
             LocalDate.now().toString(),
             Arrays.asList(
                 new ReportAbilityRequest(1L, 5),
-                new ReportAbilityRequest(2L, 10),
-                new ReportAbilityRequest(3L, 1),
-                new ReportAbilityRequest(4L, 2)
+                new ReportAbilityRequest(3L, 10),
+                new ReportAbilityRequest(5L, 1),
+                new ReportAbilityRequest(7L, 2),
+                new ReportAbilityRequest(9L, 2)
             )
         );
         context.invokeHttpPostWithToken("/reports", reportRequest);
@@ -91,7 +92,7 @@ public class ReportStepDefinitions extends AcceptanceSteps {
     @Then("리포트가 등록된다")
     public void 리포트가등록또는수정된다() {
         int status = context.response.statusCode();
-        assertThat(status).isEqualTo(HttpStatus.OK.value());
+        assertThat(status).isEqualTo(HttpStatus.CREATED.value());
     }
 
     @Then("리포트가 수정된다")

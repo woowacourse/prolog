@@ -130,7 +130,7 @@ class StudylogDocumentation extends Documentation {
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .body(PageRequest.of(1, studylogCount))
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .when().put("/studylogs/popular")
+            .when().get("/studylogs/popular/sync")
             .then().log().all()
             .extract();
     }

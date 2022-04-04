@@ -329,10 +329,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
     @When("인기 있는 스터디로그 목록을 {string}개만큼 갱신하고")
     public void 인기있는스터디로그목록을개만큼갱신하고(String studylogCount) {
-        context.invokeHttpPutWithToken(
-            "/studylogs/popular",
-            PageRequest.of(1, Integer.parseInt(studylogCount))
-        );
+        context.invokeHttpGetWithToken("/studylogs/popular/sync?size=" + studylogCount);
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 

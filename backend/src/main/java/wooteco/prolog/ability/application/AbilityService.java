@@ -110,12 +110,13 @@ public class AbilityService {
     public void updateAbility(Long memberId, Long abilityId, AbilityUpdateRequest request) {
         Ability ability = findAbilityByIdAndMemberId(abilityId, memberId);
         List<Ability> abilities = new ArrayList<>(findByMemberId(memberId));
+        // 수정할 대상은 중복 검증을 하지 않는다.
+        abilities.remove(ability);
 
         request.toEntity().validateDuplicateName(abilities);
 
         if (ability.isParent()) {
-            abilities.remove(ability);
-            request.toEntity().validateColorWithParent(abilities, ability);
+            request.toEntity().validateDuplicateColor(abilities, ability);
         }
 
         ability.update(request.toEntity());

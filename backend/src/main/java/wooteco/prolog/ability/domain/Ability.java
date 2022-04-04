@@ -125,6 +125,13 @@ public class Ability {
         validateDuplicateColor(abilities);
     }
 
+    public void validateDuplicateColor(List<Ability> abilities, Ability ability) {
+        abilities.remove(ability);
+        abilities.removeAll(ability.getChildren());
+
+        validateDuplicateColor(abilities);
+    }
+
     private void validateSameColor(Ability parentAbility) {
         if (isDifferentColor(parentAbility)) {
             throw new AbilityParentChildColorDifferentException();
