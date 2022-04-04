@@ -14,6 +14,7 @@ public class ReportStudylogResponse {
 
     private StudylogResponse studylog;
     private List<ReportAbilityResponse> abilities;
+    private List<ReportStudylogAbilityResponse> studylogAbilities;
 
     public static List<ReportStudylogResponse> listOf(List<ReportStudylog> reportStudylogs) {
         return reportStudylogs.stream()
@@ -28,8 +29,11 @@ public class ReportStudylogResponse {
         List<ReportAbilityResponse> abilityResponses = reportStudylogs.stream()
             .map(it -> ReportAbilityResponse.of(it.getReportAbility()))
             .collect(Collectors.toList());
+        List<ReportStudylogAbilityResponse> studylogAbilityResponses = reportStudylogs.stream()
+            .map(it -> ReportStudylogAbilityResponse.of(it.getStudylogAbility()))
+            .collect(Collectors.toList());
 
-        return new ReportStudylogResponse(studylogResponse, abilityResponses);
+        return new ReportStudylogResponse(studylogResponse, abilityResponses, studylogAbilityResponses);
     }
 
 }
