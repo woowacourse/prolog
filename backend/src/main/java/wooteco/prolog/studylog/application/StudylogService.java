@@ -409,7 +409,7 @@ public class StudylogService {
     }
 
     public List<StudylogRssFeedResponse> readRssFeeds(String url) {
-        List<Studylog> studylogs = studylogRepository.findTop100ByDeletedFalseOrderByCreatedAtDesc();
+        List<Studylog> studylogs = studylogRepository.findTop100ByDeletedFalseOrderByIdDesc();
         return StudylogRssFeedResponse.listOf(studylogs, url);
     }
 
