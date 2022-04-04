@@ -1,1 +1,2 @@
 ALTER TABLE report MODIFY description TEXT;
+ALTER TABLE studylog ADD COLUMN deleted TINYINT(1) DEFAULT 0;
