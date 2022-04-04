@@ -33,7 +33,7 @@ const ReportStudyLogs = ({ studylogs }) => {
       </Styled.Thead>
 
       <Styled.Tbody>
-        {studylogs?.map(({ studylog, abilities }) => (
+        {studylogs?.map(({ studylog, studylogAbilities }) => (
           <Styled.TableRow key={studylog.id}>
             <Styled.StudyLogTitle>
               <a href={`/studylogs/1`} target="_blank" rel="noopener noreferrer">
@@ -42,7 +42,7 @@ const ReportStudyLogs = ({ studylogs }) => {
             </Styled.StudyLogTitle>
 
             <Styled.MappedAbility>
-              <ul id="mapped-abilities-list">{selectedAbilities(abilities)}</ul>
+              <ul id="mapped-abilities-list">{selectedAbilities(studylogAbilities)}</ul>
             </Styled.MappedAbility>
           </Styled.TableRow>
         ))}
