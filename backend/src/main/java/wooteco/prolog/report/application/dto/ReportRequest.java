@@ -21,7 +21,7 @@ public class ReportRequest {
             .filter(it -> it.getAbilityId().equals(activityId))
             .map(ReportAbilityRequest::getWeight)
             .findAny()
-            .orElseThrow(() -> new RuntimeException("찾는 역량이 없습니다."));
+            .orElse(0);
     }
 }
 

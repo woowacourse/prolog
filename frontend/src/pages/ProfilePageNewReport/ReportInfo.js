@@ -2,21 +2,21 @@ import moment from 'moment';
 import { DatePicker } from 'antd';
 
 import * as Styled from './ReportInfo.styles';
+import ReportDescEditor from './ReportDescEditor';
 
 const ReportInfo = ({
   nickname, //
   title,
   setTitle,
   desc,
-  setDescription,
+  editorRef,
   startDate,
-  endDate,
   setStartDate,
+  endDate,
   setEndDate,
   edit,
 }) => {
   const onWriteTitle = ({ target: { value } }) => setTitle(value);
-  const onWriteDesc = ({ target: { value } }) => setDescription(value);
   const onSelectDate = (_, dateStrings) => {
     const [startDate, endDate] = dateStrings;
     setStartDate(startDate);
@@ -73,13 +73,7 @@ const ReportInfo = ({
       <Styled.Label htmlFor="report_desc">
         ✏️ 리포트 설명
         <span>{desc.length}/300</span>
-        <Styled.Desc
-          id="report_desc"
-          placeholder="리포트에 대해서 소개해주세요."
-          value={desc}
-          onChange={onWriteDesc}
-          maxLength={300}
-        />
+        <ReportDescEditor initialContent={desc ?? ''} editorRef={editorRef} />
       </Styled.Label>
     </section>
   );

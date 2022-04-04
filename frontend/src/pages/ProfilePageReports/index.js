@@ -12,6 +12,13 @@ import axios from 'axios';
 import { BASE_URL } from '../../configs/environment';
 import { ERROR_MESSAGE } from '../../constants';
 
+// 마크다운
+import { Viewer } from '@toast-ui/react-editor';
+import '@toast-ui/editor/dist/toastui-editor.css';
+import 'prismjs/themes/prism.css';
+import Prism from 'prismjs';
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
+
 const ProfilePageReports = () => {
   const history = useHistory();
   const { reportId, username } = useParams();
@@ -83,7 +90,13 @@ const ProfilePageReports = () => {
         {reportData.description && (
           <Styled.Section>
             <span>🎯 리포트 설명</span>
-            <p>{reportData.description}</p>
+            <div id="report-desc">
+              <Viewer
+                initialValue={reportData.description}
+                extendedAutolinks={true}
+                plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+              />
+            </div>
           </Styled.Section>
         )}
 

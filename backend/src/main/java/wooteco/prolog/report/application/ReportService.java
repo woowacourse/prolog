@@ -69,7 +69,7 @@ public class ReportService {
             .findStudylogAbilitiesInPeriod(loginMember.getId(), LocalDate.parse(reportRequest.getStartDate()), LocalDate.parse(reportRequest.getEndDate()));
 
         List<ReportStudylog> reportStudylogs = reportStudylogRepository.saveAll(studylogAbilities.stream()
-            .map(it -> new ReportStudylog(report.getId(), findReportAbilityByAbility(it.getAbility(), reportAbilities), it.getStudylog()))
+            .map(it -> new ReportStudylog(report.getId(), findReportAbilityByAbility(it.getAbility(), reportAbilities), it.getStudylog(), it.getAbility().getName(), it.getAbility().getColor()))
             .collect(Collectors.toList()));
 
         return ReportResponse.of(report, reportAbilities, reportStudylogs);

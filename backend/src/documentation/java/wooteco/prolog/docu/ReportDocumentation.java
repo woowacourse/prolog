@@ -24,6 +24,7 @@ import wooteco.prolog.report.application.dto.ReportAbilityRequest;
 import wooteco.prolog.report.application.dto.ReportAbilityResponse;
 import wooteco.prolog.report.application.dto.ReportRequest;
 import wooteco.prolog.report.application.dto.ReportResponse;
+import wooteco.prolog.report.application.dto.ReportStudylogAbilityResponse;
 import wooteco.prolog.report.application.dto.ReportStudylogResponse;
 import wooteco.prolog.report.application.dto.ReportUpdateRequest;
 import wooteco.prolog.report.ui.ReportController;
@@ -138,6 +139,9 @@ public class ReportDocumentation extends NewDocumentation {
                 ),
                 Lists.newArrayList(
                     new ReportAbilityResponse(1L, "역량A", "역량A 설명", "#001122", 5, 54L)
+                ),
+                Lists.newArrayList(
+                    new ReportStudylogAbilityResponse("역량A", "#001122")
                 )
             )
         )

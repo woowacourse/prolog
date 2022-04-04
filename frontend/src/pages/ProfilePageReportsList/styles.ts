@@ -157,9 +157,15 @@ export const ReportDate = styled.span`
 
 /** 리포트 제목 */
 export const ReportTtile = styled.span`
+  display: -webkit-box;
+
   font-size: 1.4rem;
   font-weight: 500;
   color: ${COLOR.BLACK_900};
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 `;
 
 /** 리포트 설명 */
@@ -170,7 +176,6 @@ export const ReportDesc = styled.p`
   font-size: 1.2rem;
   text-overflow: ellipsis;
   color: ${COLOR.DARK_GRAY_600};
-
   overflow: hidden;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
