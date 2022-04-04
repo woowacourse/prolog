@@ -51,7 +51,7 @@ const ReportBody = styled.div`
 const ButtonWrapper = styled.div`
   position: absolute;
   right: 1rem;
-  top: 1.5rem;
+  top: 6.5rem;
 
   display: flex;
   justify-content: space-between;
