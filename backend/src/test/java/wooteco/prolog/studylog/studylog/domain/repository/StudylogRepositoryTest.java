@@ -231,7 +231,7 @@ class StudylogRepositoryTest {
             .collect(toList());
 
         // when
-        List<Studylog> studylogs = studylogRepository.findDeletedFalseAndTop10ByOrderByCreatedAtDesc();
+        List<Studylog> studylogs = studylogRepository.findTop100ByDeletedFalseOrderByCreatedAtDesc();
 
         List<String> targets = studylogs.stream()
             .map(Studylog::getTitle)

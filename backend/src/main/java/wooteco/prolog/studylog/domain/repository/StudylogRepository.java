@@ -1,6 +1,5 @@
 package wooteco.prolog.studylog.domain.repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -23,12 +22,12 @@ public interface StudylogRepository extends JpaRepository<Studylog, Long>, JpaSp
     @Query("select count(p) from Studylog p where p.member = :member")
     int countByMember(Member member);
 
-    List<Studylog> findAllByIdInOrderByIdDesc(List<Long> ids);
+    List<Studylog> findByIdInAndDeletedFalseOrderByIdDesc(List<Long> ids);
 
     @Query("select p from Studylog p where :date <= p.createdAt")
     List<Studylog> findByPastDays(LocalDateTime date);
 
-    List<Studylog> findDeletedFalseAndTop10ByOrderByCreatedAtDesc();
+    List<Studylog> findTop100ByDeletedFalseOrderByCreatedAtDesc();
 
     List<Studylog> findByMemberIdAndCreatedAtBetween(Long memberId, LocalDateTime startDate, LocalDateTime endDate);
 

@@ -20,10 +20,7 @@ public class StudylogRssFeedController {
     @Value("${application.url}")
     private String url;
 
-    public StudylogRssFeedController(
-        StudylogService studylogService,
-        StudylogRssFeedView studylogRssFeedView
-    ) {
+    public StudylogRssFeedController(StudylogService studylogService, StudylogRssFeedView studylogRssFeedView) {
         this.studylogService = studylogService;
         this.studylogRssFeedView = studylogRssFeedView;
     }

@@ -82,6 +82,12 @@ public class StudylogSpecification {
         };
     }
 
+    public static Specification<Studylog> findByDeletedFalse() {
+        return (root, query, builder) -> builder.isFalse(
+            root.get("deleted")
+        );
+    }
+
     public static Specification<Studylog> distinct(boolean distinct) {
         return (root, query, builder) -> {
             query.distinct(distinct);

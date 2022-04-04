@@ -180,7 +180,7 @@ public class StudylogService {
             request.getPageable()
         );
 
-        final List<Studylog> studylogs = studylogRepository.findAllByIdInOrderByIdDesc(response.getStudylogIds());
+        final List<Studylog> studylogs = studylogRepository.findByIdInAndDeletedFalseOrderByIdDesc(response.getStudylogIds());
         return StudylogsResponse.of(
             studylogs,
             response.getTotalSize(),
@@ -205,6 +205,7 @@ public class StudylogService {
             StudylogSpecification.findByLevelIn(levelIds)
                 .and(StudylogSpecification.equalIn("mission", missionIds))
                 .and(StudylogSpecification.findByTagIn(tagIds))
+                .and(StudylogSpecification.findByDeletedFalse())
                 .and(StudylogSpecification.findByUsernameIn(usernames))
                 .and(StudylogSpecification.findByMemberIn(members))
                 .and(StudylogSpecification.findBetweenDate(startDate, endDate))
@@ -408,7 +409,7 @@ public class StudylogService {
     }
 
     public List<StudylogRssFeedResponse> readRssFeeds(String url) {
-        List<Studylog> studylogs = studylogRepository.findDeletedFalseAndTop10ByOrderByCreatedAtDesc();
+        List<Studylog> studylogs = studylogRepository.findTop100ByDeletedFalseOrderByCreatedAtDesc();
         return StudylogRssFeedResponse.listOf(studylogs, url);
     }
 
