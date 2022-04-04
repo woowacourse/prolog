@@ -75,7 +75,7 @@ const ReportStudyLogTable = ({
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([`${user.username}-ability-studylogs`]);
+        queryClient.refetchQueries([`${user.username}-ability-studylogs`]);
       },
     }
   );

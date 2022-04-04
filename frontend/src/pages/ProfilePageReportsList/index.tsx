@@ -64,7 +64,7 @@ const ProfilePageReportsList = () => {
 
   return (
     <Styled.Container>
-      <h2>{user.nickname} 크루의 리포트</h2>
+      <h2>리포트 타임라인</h2>
 
       <Styled.TimelineWrapper>
         {!readOnly && (

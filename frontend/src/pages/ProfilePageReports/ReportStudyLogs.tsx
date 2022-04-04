@@ -24,30 +24,34 @@ const ReportStudyLogs = ({ studylogs }) => {
   if (studylogs?.length === 0) return <></>;
 
   return (
-    <table>
-      <Styled.Thead>
-        <Styled.TableRow>
-          <th scope="col">제목</th>
-          <th scope="col">역량</th>
-        </Styled.TableRow>
-      </Styled.Thead>
+    <>
+      <Styled.Title>📝 학습로그</Styled.Title>
 
-      <Styled.Tbody>
-        {studylogs?.map(({ studylog, studylogAbilities }) => (
-          <Styled.TableRow key={studylog.id}>
-            <Styled.StudyLogTitle>
-              <a href={`/studylogs/1`} target="_blank" rel="noopener noreferrer">
-                {studylog.title}
-              </a>
-            </Styled.StudyLogTitle>
-
-            <Styled.MappedAbility>
-              <ul id="mapped-abilities-list">{selectedAbilities(studylogAbilities)}</ul>
-            </Styled.MappedAbility>
+      <table>
+        <Styled.Thead>
+          <Styled.TableRow>
+            <th scope="col">제목</th>
+            <th scope="col">역량</th>
           </Styled.TableRow>
-        ))}
-      </Styled.Tbody>
-    </table>
+        </Styled.Thead>
+
+        <Styled.Tbody>
+          {studylogs?.map(({ studylog, studylogAbilities }) => (
+            <Styled.TableRow key={studylog.id}>
+              <Styled.StudyLogTitle>
+                <a href={`/studylogs/1`} target="_blank" rel="noopener noreferrer">
+                  {studylog.title}
+                </a>
+              </Styled.StudyLogTitle>
+
+              <Styled.MappedAbility>
+                <ul id="mapped-abilities-list">{selectedAbilities(studylogAbilities)}</ul>
+              </Styled.MappedAbility>
+            </Styled.TableRow>
+          ))}
+        </Styled.Tbody>
+      </table>
+    </>
   );
 };
 
