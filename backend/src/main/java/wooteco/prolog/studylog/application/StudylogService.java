@@ -74,6 +74,7 @@ public class StudylogService {
         return studylogs;
     }
 
+    @Transactional
     public void updatePopularStudylogs(Pageable pageable) {
         deleteAllLegacyPopularStudylogs();
 
