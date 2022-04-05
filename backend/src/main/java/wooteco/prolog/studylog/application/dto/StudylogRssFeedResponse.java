@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.apache.commons.text.StringEscapeUtils;
 import wooteco.prolog.studylog.domain.Studylog;
 
 @AllArgsConstructor
@@ -30,9 +31,9 @@ public class StudylogRssFeedResponse {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
         return new StudylogRssFeedResponse(
-            studylog.getTitle(),
+            StringEscapeUtils.escapeXml10(studylog.getTitle()),
             "",
-            studylog.getNickname(),
+            StringEscapeUtils.escapeXml10(studylog.getNickname()),
             url + "/studylogs/" + studylog.getId(),
             Date.from(Instant.parse(studylog.getCreatedAt().format(formatter)))
         );
