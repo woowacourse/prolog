@@ -3,6 +3,7 @@ package wooteco.prolog.ability.application;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import wooteco.prolog.ability.application.dto.StudylogAbilityRequest;
 import wooteco.prolog.ability.domain.Ability;
 import wooteco.prolog.ability.domain.StudylogAbility;
 import wooteco.prolog.ability.domain.repository.StudylogAbilityRepository;
+import wooteco.prolog.common.PageableResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.StudylogService;
@@ -64,41 +66,38 @@ public class StudylogAbilityService {
             .collect(Collectors.toList());
     }
 
-    public List<AbilityStudylogResponse> findAbilityStudylogsByAbilityIds(String username, List<Long> abilityIds, Pageable pageable) {
+    public PageableResponse<AbilityStudylogResponse> findAbilityStudylogsByAbilityIds(String username, List<Long> abilityIds, Pageable pageable) {
         if (abilityIds != null && !abilityIds.isEmpty()) {
-            return AbilityStudylogResponse.listOf(studylogAbilityRepository.findByAbilityIdIn(abilityIds, pageable));
+
+            Page<StudylogAbility> studylogAbilities = studylogAbilityRepository.findByAbilityIdIn(abilityIds, pageable);
+            List<AbilityStudylogResponse> abilityStudylogResponses = AbilityStudylogResponse.listOf(studylogAbilities.getContent());
+            return PageableResponse.of(abilityStudylogResponses, studylogAbilities);
         }
 
-        List<Studylog> studylogs = studylogService.findStudylogsByUsername(username, pageable);
-        List<Long> studylogIds = studylogs.stream()
+        Page<Studylog> studylogs = studylogService.findStudylogsByUsername(username, pageable);
+        List<Long> studylogIds = studylogs.getContent().stream()
             .map(Studylog::getId)
             .collect(Collectors.toList());
 
         List<StudylogAbility> studylogAbilities = studylogAbilityRepository.findByStudylogIdIn(studylogIds);
 
-        return AbilityStudylogResponse.listOf(studylogs, studylogAbilities);
+        List<AbilityStudylogResponse> abilityStudylogResponses = AbilityStudylogResponse.listOf(studylogs.getContent(), studylogAbilities);
+        return PageableResponse.of(abilityStudylogResponses, studylogs);
     }
 
-    public List<AbilityStudylogResponse> findAbilityStudylogsMappingOnlyByAbilityIds(String username, List<Long> abilityIds, Pageable pageable) {
+    public PageableResponse<AbilityStudylogResponse> findAbilityStudylogsMappingOnlyByAbilityIds(String username, List<Long> abilityIds, Pageable pageable) {
         if (abilityIds != null && !abilityIds.isEmpty()) {
-            return AbilityStudylogResponse.listOf(studylogAbilityRepository.findByAbilityIdIn(abilityIds, pageable));
+            Page<StudylogAbility> studylogAbilities = studylogAbilityRepository.findByAbilityIdIn(abilityIds, pageable);
+            List<AbilityStudylogResponse> abilityStudylogResponses = AbilityStudylogResponse.listOf(studylogAbilities.getContent());
+            return PageableResponse.of(abilityStudylogResponses, studylogAbilities);
         }
 
         Member member = memberService.findByUsername(username);
 
-        List<StudylogAbility> studylogAbilities = studylogAbilityRepository.findByMemberId(member.getId(), pageable);
+        Page<StudylogAbility> studylogAbilities = studylogAbilityRepository.findByMemberId(member.getId(), pageable);
 
-        return AbilityStudylogResponse.listOf(studylogAbilities);
-    }
-
-    public List<StudylogAbility> findAbilityStudylogs(String username, List<Long> abilityIds) {
-        if (abilityIds != null && !abilityIds.isEmpty()) {
-            return studylogAbilityRepository.findByAbilityIdIn(abilityIds);
-        }
-
-        Member member = memberService.findByUsername(username);
-
-        return studylogAbilityRepository.findByMemberId(member.getId());
+        List<AbilityStudylogResponse> abilityStudylogResponses = AbilityStudylogResponse.listOf(studylogAbilities.getContent());
+        return PageableResponse.of(abilityStudylogResponses, studylogAbilities);
     }
 
     public List<StudylogAbility> findStudylogAbilitiesInPeriod(Long memberId, LocalDate startDate, LocalDate endDate) {

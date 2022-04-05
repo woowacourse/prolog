@@ -223,9 +223,9 @@ public class StudylogService {
         );
     }
 
-    public List<Studylog> findStudylogsByUsername(String username, Pageable pageable) {
+    public Page<Studylog> findStudylogsByUsername(String username, Pageable pageable) {
         Member member = memberService.findByUsername(username);
-        return studylogRepository.findByMember(member, pageable).getContent();
+        return studylogRepository.findByMember(member, pageable);
     }
 
     @Transactional
