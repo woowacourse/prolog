@@ -75,6 +75,7 @@ const ReportStudyLogTable = ({
     },
     {
       onSuccess: () => {
+        console.log('here');
         queryClient.refetchQueries([`${user.username}-ability-studylogs`]);
       },
     }
@@ -82,18 +83,18 @@ const ReportStudyLogTable = ({
 
   const toggleAbility = ({ studylogId, abilitieIds, targetAblityId }) => {
     const targetIndex = abilitieIds.findIndex((id) => id === targetAblityId);
+    let updatedAbilities = [];
 
     if (targetIndex === -1) {
-      const newAbilities = [...abilitieIds, targetAblityId];
-      mappingAbility.mutate({ studylogId, abilities: newAbilities });
+      updatedAbilities = [...abilitieIds, targetAblityId];
     } else {
-      const deletedAbilities = [
+      updatedAbilities = [
         ...abilitieIds.slice(0, targetIndex),
         ...abilitieIds.slice(targetIndex + 1),
       ];
-
-      mappingAbility.mutate({ studylogId, abilities: deletedAbilities });
     }
+
+    mappingAbility.mutate({ studylogId, abilities: updatedAbilities });
   };
 
   /** 선택된 역량을 보여준다.*/
