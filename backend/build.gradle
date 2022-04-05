@@ -97,6 +97,7 @@ dependencies {
 
     // rss feed
     implementation 'com.rometools:rome:1.18.0'
+    implementation 'org.commonmark:commonmark:0.18.2'
 
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
