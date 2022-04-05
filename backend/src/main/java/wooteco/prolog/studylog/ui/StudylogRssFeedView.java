@@ -43,7 +43,7 @@ public class StudylogRssFeedView extends AbstractRssFeedView {
     private Item createItem(StudylogRssFeedResponse rssFeedResponse) {
         Item item = new Item();
 
-        item.setTitle(StringEscapeUtils.escapeXml10(rssFeedResponse.getTitle()));
+        item.setTitle(rssFeedResponse.getTitle());
         item.setLink(rssFeedResponse.getLink());
         item.setPubDate(rssFeedResponse.getDate());
         item.setAuthor(rssFeedResponse.getAuthor());
