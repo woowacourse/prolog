@@ -31,7 +31,7 @@ public class StudylogRssFeedResponse {
 
         return new StudylogRssFeedResponse(
             studylog.getTitle(),
-            studylog.getContent(),
+            "",
             studylog.getNickname(),
             url + "/studylogs/" + studylog.getId(),
             Date.from(Instant.parse(studylog.getCreatedAt().format(formatter)))
