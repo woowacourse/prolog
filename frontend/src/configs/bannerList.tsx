@@ -2,49 +2,65 @@ import { BannerType } from '../components/Banner/Banner';
 import { COLOR } from '../constants';
 
 import prologIcon from '../assets/images/prolog-banner-image.png';
-import wootecoIcon from '../assets/images/woteco-logo.png';
+import reportIcon from '../assets/images/report.png';
+import rssIcon from '../assets/images/rss.png';
 
 // TODO: textContents Template Literal로 변경
 const bannerList: BannerType[] = [
   {
-    backgroundColor: COLOR.DARK_BLUE_800,
-    sideImageUrl: prologIcon,
+    backgroundColor: COLOR.RED_200,
+    sideImageUrl: reportIcon,
     textContents: (
-      <>
-        <br />
-        <p>내가 안다고 생각한게 진짜 아는걸까?🧐</p>
-        <p>
-          <strong>학습로그</strong>를 작성하며 메타인지를 경험해보세요!
-        </p>
-        <h2>PROLOG</h2>
-      </>
-    ),
-    reverse: false,
-    sideImagePadding: 0,
-  },
-  {
-    backgroundColor: COLOR.WHITE,
-    sideImageUrl: wootecoIcon,
-    textContents: (
-      <>
-        <p>자기주도 학습 ∙ 현장중심 경험 ∙ 깊이있는 협업</p>
-        <h2>우아한테크코스</h2>
-      </>
+        <>
+          <p>셀프체크시트는 이제 그만!</p>
+          <h2>리포트 기능 오픈 </h2>
+        </>
     ),
     reverse: true,
-    showMoreLink: 'https://woowacourse.github.io/',
-    showMoreLinkText: '알아보러가기',
+    showMoreLink: 'https://dev.prolog.techcourse.co.kr/studylogs/2171',
+    showMoreLinkText: '자세히 알아보기',
+    sideImagePadding: 10,
+  },  {
+    backgroundColor: COLOR.LIGHT_BLUE_300,
+    textContents: (
+        <>
+          <p>인기있는 학습로그에 도전!</p>
+          <h2>인기있는 학습로그 오픈 🎉</h2>
+        </>
+    ),
+    showMoreLink: 'https://dev.prolog.techcourse.co.kr/studylogs/2171',
+    showMoreLinkText: '자세히 알아보기',
     sideImagePadding: 10,
   },
   {
-    backgroundColor: COLOR.RED_600,
+    backgroundColor: COLOR.LIGHT_GRAY_50,
+    sideImageUrl: rssIcon,
     textContents: (
       <>
-        <h2>(환) 우아한테크코스 4기🥳 (영)</h2>
-        <p>4기 크루 드루와 드루와~~</p>
+        <p>학습로그도 슬랙으로 확인하세요~~</p>
+        <h2>RSS 기능 오픈 🎉</h2>
       </>
     ),
     reverse: false,
+    showMoreLink: 'https://dev.prolog.techcourse.co.kr/studylogs/2171',
+    showMoreLinkText: '자세히 알아보기',
+    sideImagePadding: 10,
+  },
+  {
+    backgroundColor: COLOR.DARK_BLUE_800,
+    sideImageUrl: prologIcon,
+    textContents: (
+        <>
+          <br />
+          <p>내가 안다고 생각한게 진짜 아는걸까?🧐</p>
+          <p>
+            <strong>학습로그</strong>를 작성하며 메타인지를 경험해보세요!
+          </p>
+          <h2>PROLOG</h2>
+        </>
+    ),
+    reverse: false,
+    sideImagePadding: 0,
   },
 ];
 
