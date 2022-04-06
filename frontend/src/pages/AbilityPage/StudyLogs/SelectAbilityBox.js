@@ -32,9 +32,6 @@ const SelectAbilityBox = ({
 
   const onMappingAbility = () => {
     mappingAbility.mutate({ studylogId, abilities: updatedAbilites });
-    if (mappingAbility.isSuccess) {
-      refetch();
-    }
 
     setSelectAbilityBox({ id: studylogId, isOpen: false });
   };

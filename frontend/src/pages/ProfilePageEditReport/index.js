@@ -106,36 +106,40 @@ const ProfilePageNewReport = () => {
     }
   };
 
-  if (isLoading) return <></>;
-
   return (
     <>
-      <Form onSubmit={onSubmitReport}>
-        <h2>리포트 수정하기</h2>
+      {isLoading ? (
+        <></>
+      ) : (
+        <Form onSubmit={onSubmitReport}>
+          <h2>리포트 수정하기</h2>
 
-        <ReportInfo
-          nickname={nickname}
-          title={title}
-          setTitle={setTitle}
-          desc={reportData.description}
-          editorRef={setDescription}
-          edit={true}
-        />
+          <ReportInfo
+            nickname={nickname}
+            title={title}
+            setTitle={setTitle}
+            desc={reportData.description}
+            editorRef={setDescription}
+            edit={true}
+            startDate={reportData.startDate}
+            endDate={reportData.endDate}
+          />
 
-        <AbilityGraph abilities={abilities} setAbilities={setAbilities} edit={true} />
+          <AbilityGraph abilities={abilities} setAbilities={setAbilities} edit={true} />
 
-        <FormButtonWrapper>
-          <Button
-            size="X_SMALL"
-            css={{ backgroundColor: `${COLOR.LIGHT_GRAY_400}` }}
-            type="button"
-            onClick={onCancelWriteReport}
-          >
-            취소
-          </Button>
-          <Button size="X_SMALL">리포트 수정</Button>
-        </FormButtonWrapper>
-      </Form>
+          <FormButtonWrapper>
+            <Button
+              size="X_SMALL"
+              css={{ backgroundColor: `${COLOR.LIGHT_GRAY_400}` }}
+              type="button"
+              onClick={onCancelWriteReport}
+            >
+              취소
+            </Button>
+            <Button size="X_SMALL">리포트 수정</Button>
+          </FormButtonWrapper>
+        </Form>
+      )}
     </>
   );
 };

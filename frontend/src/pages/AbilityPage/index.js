@@ -54,7 +54,7 @@ const AbilityPage = () => {
   };
 
   /** 학습로그와 매핑된 역량 가져오기 */
-  const { data, isLoading, refetch } = useQuery(
+  const { data = {}, isLoading, refetch } = useQuery(
     [`${username}-ability-studylogs`, page],
     async () => {
       const { data } = await axios({
@@ -73,28 +73,35 @@ const AbilityPage = () => {
     }
   );
 
-  const studylogs = () => ({
-    data: data.data,
-    totalSize: data.totalSize,
-    totalPage: data.totalPage,
-    currPage: data.currentPage,
-  });
+  const studylogs = {
+    data: data?.data,
+    totalSize: data?.totalSize,
+    totalPage: data?.totalPage,
+    currPage: data?.currentPage,
+  };
 
   /** 역량 업데이트 로직 */
-  const mappingAbility = useMutation(({ studylogId, abilities }) => {
-    const { data } = axios({
-      method: 'put',
-      url: `${BASE_URL}/studylogs/${studylogId}/abilities`,
-      headers: {
-        Authorization: `Bearer ${user.accessToken}`,
-      },
-      data: {
-        abilities,
-      },
-    });
+  const mappingAbility = useMutation(
+    async ({ studylogId, abilities }) => {
+      const { data } = await axios({
+        method: 'put',
+        url: `${BASE_URL}/studylogs/${studylogId}/abilities`,
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+        data: {
+          abilities,
+        },
+      });
 
-    return { ...data };
-  });
+      return { ...data };
+    },
+    {
+      onSuccess: () => {
+        refetch();
+      },
+    }
+  );
 
   return (
     <Container>
@@ -142,11 +149,11 @@ const AbilityPage = () => {
 
       {!isLoading && (
         <StudyLogTable
-          studylogs={studylogs()}
+          studylogs={studylogs}
           abilities={abilities}
           readOnly={readOnly}
           setPage={setPage}
-          totalSize={studylogs().totalSize ?? 0}
+          totalSize={studylogs?.totalSize ?? 0}
           mappingAbility={mappingAbility}
           refetch={refetch}
         />
