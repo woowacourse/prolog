@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import axios from 'axios';
 
 import { UserContext } from '../../contexts/UserProvider';
@@ -17,7 +17,6 @@ import { Container, AbilityList, EditingListItem, ListHeader, AddAbilityButton }
 import { BASE_URL } from '../../configs/environment';
 
 const AbilityPage = () => {
-  const queryClient = useQueryClient();
   const { username } = useParams();
   const { user } = useContext(UserContext);
   const readOnly = username !== user.username;
