@@ -85,13 +85,13 @@ const StudyLogTable = ({
               border={`1px solid ${COLOR.BLACK_OPACITY_300}`}
               fontSize="1.2rem"
               lineHeight="1.5"
-              // onDelete={() => {
-              //   toggleAbility({
-              //     studylogId,
-              //     abilityIds: abilities.map((ability) => ability.id),
-              //     targetAblityId: ability.id,
-              //   });
-              // }}
+              onDelete={() => {
+                toggleAbility({
+                  studylogId,
+                  abilityIds: abilities.map((ability) => ability.id),
+                  targetAblityId: ability.id,
+                });
+              }}
             >
               {ability.name}
             </Chip>
