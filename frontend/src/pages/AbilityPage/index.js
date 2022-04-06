@@ -82,29 +82,20 @@ const AbilityPage = () => {
   });
 
   /** 역량 업데이트 로직 */
-  const mappingAbility = useMutation(
-    ({ studylogId, abilities }) => {
-      const { data } = axios({
-        method: 'put',
-        url: `${BASE_URL}/studylogs/${studylogId}/abilities`,
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-        data: {
-          abilities,
-        },
-      });
-
-      return { ...data };
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries([`${username}-ability-studylogs`, page]);
-        refetch();
-        console.log('refetch중..');
+  const mappingAbility = useMutation(({ studylogId, abilities }) => {
+    const { data } = axios({
+      method: 'put',
+      url: `${BASE_URL}/studylogs/${studylogId}/abilities`,
+      headers: {
+        Authorization: `Bearer ${user.accessToken}`,
       },
-    }
-  );
+      data: {
+        abilities,
+      },
+    });
+
+    return { ...data };
+  });
 
   return (
     <Container>
@@ -158,6 +149,7 @@ const AbilityPage = () => {
           setPage={setPage}
           totalSize={studylogs().totalSize ?? 0}
           mappingAbility={mappingAbility}
+          refetch={refetch}
         />
       )}
     </Container>

@@ -9,7 +9,15 @@ import SelectAbilityBox from './SelectAbilityBox';
 // TODO. 매핑된 역량은 삭제할 수 없다는 예외사항을 추가한다.
 // TODO. prefetch 기능을 사용한다. (20개 정도는 미리 가져와도 될듯..?)
 
-const StudyLogTable = ({ studylogs, abilities, setPage, readOnly, totalSize, mappingAbility }) => {
+const StudyLogTable = ({
+  studylogs,
+  abilities,
+  setPage,
+  readOnly,
+  totalSize,
+  mappingAbility,
+  refetch,
+}) => {
   /** 역량 선택은 자식 역량만 선택할 수 있다. */
   const wholeAbility = abilities?.map((parentAbility) => [...parentAbility.children]).flat();
 
@@ -141,6 +149,7 @@ const StudyLogTable = ({ studylogs, abilities, setPage, readOnly, totalSize, map
                           abilities={abilities}
                           wholeAbility={wholeAbility}
                           setSelectAbilityBox={setSelectAbilityBox}
+                          refetch={refetch}
                         />
                       )}
                     </>

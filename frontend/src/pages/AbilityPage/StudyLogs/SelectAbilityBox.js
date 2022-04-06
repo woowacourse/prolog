@@ -12,6 +12,7 @@ const SelectAbilityBox = ({
   abilities,
   wholeAbility,
   setSelectAbilityBox,
+  refetch,
 }) => {
   const abilityIds = abilities.map((ability) => ability.id);
   const [updatedAbilites, setUpdatedAbilities] = useState(abilityIds);
@@ -31,7 +32,12 @@ const SelectAbilityBox = ({
 
   const onMappingAbility = () => {
     mappingAbility.mutate({ studylogId, abilities: updatedAbilites });
+    if (mappingAbility.isSuccess) {
+      refetch();
+    }
+
     setSelectAbilityBox({ id: studylogId, isOpen: false });
+    alert('역량선택이 반영되지 않았다면, 새로고침을 해주세요.');
   };
 
   const isChecked = (abilityIds, targetAbilityId) => {
