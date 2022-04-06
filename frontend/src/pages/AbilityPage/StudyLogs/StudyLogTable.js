@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 import axios from 'axios';
 
 import { BASE_URL } from '../../../configs/environment';
@@ -13,9 +13,8 @@ import SelectAbilityBox from './SelectAbilityBox';
 // TODO. 매핑된 역량은 삭제할 수 없다는 예외사항을 추가한다.
 // TODO. prefetch 기능을 사용한다. (20개 정도는 미리 가져와도 될듯..?)
 
-const ReportStudyLogTable = ({ studylogs, abilities, setPage, readOnly, totalSize }) => {
+const StudyLogTable = ({ studylogs, abilities, setPage, readOnly, totalSize, refetch }) => {
   const { user } = useContext(UserContext);
-  const queryClient = useQueryClient();
 
   /** 역량 선택은 자식 역량만 선택할 수 있다. */
   const wholeAbility = abilities?.map((parentAbility) => [...parentAbility.children]).flat();
@@ -67,7 +66,7 @@ const ReportStudyLogTable = ({ studylogs, abilities, setPage, readOnly, totalSiz
     },
     {
       onSuccess: () => {
-        queryClient.refetchQueries([`${user.username}-ability-studylogs`]);
+        refetch();
       },
     }
   );
@@ -188,4 +187,4 @@ const ReportStudyLogTable = ({ studylogs, abilities, setPage, readOnly, totalSiz
   );
 };
 
-export default ReportStudyLogTable;
+export default StudyLogTable;
