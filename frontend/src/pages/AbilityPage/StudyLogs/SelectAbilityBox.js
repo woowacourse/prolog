@@ -37,7 +37,6 @@ const SelectAbilityBox = ({
     }
 
     setSelectAbilityBox({ id: studylogId, isOpen: false });
-    alert('역량선택이 반영되지 않았다면, 새로고침을 해주세요.');
   };
 
   const isChecked = (abilityIds, targetAbilityId) => {
