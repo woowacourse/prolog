@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import axios from 'axios';
@@ -10,7 +10,7 @@ import useParentAbilityForm from '../../hooks/Ability/useParentAbilityForm';
 import EmptyAbility from './Ability/EmptyAbility';
 import AbilityListItem from './AbilityListItem';
 import AddAbilityForm from './AddAbilityForm';
-import ReportStudyLogTable from './StudyLogs/StudyLogTable';
+import StudyLogTable from './StudyLogs/StudyLogTable';
 
 import { COLOR } from '../../constants';
 import { Container, AbilityList, EditingListItem, ListHeader, AddAbilityButton } from './styles';
@@ -54,21 +54,24 @@ const AbilityPage = () => {
   };
 
   /** 학습로그와 매핑된 역량 가져오기 */
-  const { data, isLoading } = useQuery([`${username}-ability-studylogs`, page], async () => {
-    const { data } = await axios({
-      method: 'get',
-      url: `${BASE_URL}/members/${username}/ability-studylogs`,
-      headers: {
-        Authorization: `Bearer ${user.accessToken}`,
-      },
-      params: {
-        size: 5,
-        page: page,
-      },
-    });
+  const { data, isLoading, refetch } = useQuery(
+    [`${username}-ability-studylogs`, page],
+    async () => {
+      const { data } = await axios({
+        method: 'get',
+        url: `${BASE_URL}/members/${username}/ability-studylogs`,
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+        params: {
+          size: 5,
+          page: page,
+        },
+      });
 
-    return { ...data };
-  });
+      return { ...data };
+    }
+  );
 
   const studylogs = () => ({
     data: data.data,
@@ -122,12 +125,13 @@ const AbilityPage = () => {
       </AbilityList>
 
       {!isLoading && (
-        <ReportStudyLogTable
+        <StudyLogTable
           studylogs={studylogs()}
           abilities={abilities}
           readOnly={readOnly}
           setPage={setPage}
           totalSize={studylogs().totalSize ?? 0}
+          refetch={refetch}
         />
       )}
     </Container>
