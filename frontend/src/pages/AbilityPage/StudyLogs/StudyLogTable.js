@@ -1,9 +1,5 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import { useMutation } from 'react-query';
-import axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
 
-import { BASE_URL } from '../../../configs/environment';
-import { UserContext } from '../../../contexts/UserProvider';
 import { Button, Chip, Pagination } from '../../../components';
 import * as Styled from './StudyLogTable.styles.js';
 import { COLOR } from '../../../constants';
@@ -13,9 +9,7 @@ import SelectAbilityBox from './SelectAbilityBox';
 // TODO. 매핑된 역량은 삭제할 수 없다는 예외사항을 추가한다.
 // TODO. prefetch 기능을 사용한다. (20개 정도는 미리 가져와도 될듯..?)
 
-const StudyLogTable = ({ studylogs, abilities, setPage, readOnly, totalSize, refetch }) => {
-  const { user } = useContext(UserContext);
-
+const StudyLogTable = ({ studylogs, abilities, setPage, readOnly, totalSize, mappingAbility }) => {
   /** 역량 선택은 자식 역량만 선택할 수 있다. */
   const wholeAbility = abilities?.map((parentAbility) => [...parentAbility.children]).flat();
 
@@ -48,28 +42,6 @@ const StudyLogTable = ({ studylogs, abilities, setPage, readOnly, totalSize, ref
       document.removeEventListener('click', onCloseOptionList);
     };
   }, [selectAbilityBox, selectAbilityBoxRef]);
-
-  const mappingAbility = useMutation(
-    ({ studylogId, abilities }) => {
-      const { data } = axios({
-        method: 'put',
-        url: `${BASE_URL}/studylogs/${studylogId}/abilities`,
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-        data: {
-          abilities,
-        },
-      });
-
-      return { ...data };
-    },
-    {
-      onSuccess: () => {
-        refetch();
-      },
-    }
-  );
 
   const toggleAbility = ({ studylogId, abilityIds, targetAblityId }) => {
     const targetIndex = abilityIds.findIndex((id) => id === targetAblityId);
@@ -105,13 +77,13 @@ const StudyLogTable = ({ studylogs, abilities, setPage, readOnly, totalSize, ref
               border={`1px solid ${COLOR.BLACK_OPACITY_300}`}
               fontSize="1.2rem"
               lineHeight="1.5"
-              onDelete={() => {
-                toggleAbility({
-                  studylogId,
-                  abilityIds: abilities.map((ability) => ability.id),
-                  targetAblityId: ability.id,
-                });
-              }}
+              // onDelete={() => {
+              //   toggleAbility({
+              //     studylogId,
+              //     abilityIds: abilities.map((ability) => ability.id),
+              //     targetAblityId: ability.id,
+              //   });
+              // }}
             >
               {ability.name}
             </Chip>

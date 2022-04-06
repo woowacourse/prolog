@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 
 import { UserContext } from '../../contexts/UserProvider';
@@ -17,6 +17,7 @@ import { Container, AbilityList, EditingListItem, ListHeader, AddAbilityButton }
 import { BASE_URL } from '../../configs/environment';
 
 const AbilityPage = () => {
+  const queryClient = useQueryClient();
   const { username } = useParams();
   const { user } = useContext(UserContext);
   const readOnly = username !== user.username;
@@ -80,6 +81,31 @@ const AbilityPage = () => {
     currPage: data.currentPage,
   });
 
+  /** 역량 업데이트 로직 */
+  const mappingAbility = useMutation(
+    ({ studylogId, abilities }) => {
+      const { data } = axios({
+        method: 'put',
+        url: `${BASE_URL}/studylogs/${studylogId}/abilities`,
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+        data: {
+          abilities,
+        },
+      });
+
+      return { ...data };
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([`${username}-ability-studylogs`, page]);
+        refetch();
+        console.log('refetch중..');
+      },
+    }
+  );
+
   return (
     <Container>
       <ListHeader>
@@ -131,7 +157,7 @@ const AbilityPage = () => {
           readOnly={readOnly}
           setPage={setPage}
           totalSize={studylogs().totalSize ?? 0}
-          refetch={refetch}
+          mappingAbility={mappingAbility}
         />
       )}
     </Container>
