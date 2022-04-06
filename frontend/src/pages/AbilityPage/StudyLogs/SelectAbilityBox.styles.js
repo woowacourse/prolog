@@ -78,6 +78,10 @@ export const Ability = styled.li`
     align-items: center;
     gap: 0.7rem;
   }
+
+  :last-of-type {
+    margin-bottom: 3rem;
+  }
 `;
 
 export const ColorCircle = styled.div`
@@ -103,4 +107,32 @@ export const EmptyAbilityGuide = styled.p`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+export const Footer = styled.div`
+  width: 100%;
+  height: 3.5rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: ${COLOR.WHITE};
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+
+  > button {
+    width: 98%;
+    padding: 0.5rem;
+    font-size: 1.4rem;
+    background-color: ${COLOR.LIGHT_BLUE_600};
+    border-radius: 1rem;
+
+    :hover {
+      color: ${COLOR.WHITE};
+      background-color: ${COLOR.LIGHT_BLUE_900};
+    }
+  }
 `;

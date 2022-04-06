@@ -2,7 +2,6 @@ package wooteco.prolog.docu.ability;
 
 import static org.apache.http.HttpHeaders.AUTHORIZATION;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -21,6 +20,7 @@ import wooteco.prolog.ability.application.dto.AbilityResponse;
 import wooteco.prolog.ability.application.dto.AbilityStudylogResponse;
 import wooteco.prolog.ability.application.dto.StudylogAbilityRequest;
 import wooteco.prolog.ability.ui.StudylogAbilityController;
+import wooteco.prolog.common.PageableResponse;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
@@ -71,24 +71,25 @@ public class StudylogAbilityDocumentation extends NewDocumentation {
         )
     );
 
-    private static final List<AbilityStudylogResponse> ABILITY_STUDYLOG_RESPONSES = Lists.newArrayList(
-        new AbilityStudylogResponse(
-            new StudylogResponse(
-                1L,
-                new MemberResponse(),
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                new MissionResponse(),
-                "제목",
-                "내용내용내용내용내용",
-                Lists.newArrayList(new TagResponse(1L, "태그1"), new TagResponse(2L, "태그2")),
-                false,
-                false,
-                10,
-                false,
-                1
-            ),
-            ABILITY_RESPONSES
-        )
-    );
+    private static final PageableResponse<AbilityStudylogResponse> ABILITY_STUDYLOG_RESPONSES = new PageableResponse(
+        Lists.newArrayList(
+            new AbilityStudylogResponse(
+                new StudylogResponse(
+                    1L,
+                    new MemberResponse(),
+                    LocalDateTime.now(),
+                    LocalDateTime.now(),
+                    new MissionResponse(),
+                    "제목",
+                    "내용내용내용내용내용",
+                    Lists.newArrayList(new TagResponse(1L, "태그1"), new TagResponse(2L, "태그2")),
+                    false,
+                    false,
+                    10,
+                    false,
+                    1
+                ),
+                ABILITY_RESPONSES
+            )
+        ), 1L, 1, 1);
 }

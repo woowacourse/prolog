@@ -13,18 +13,10 @@ import SelectAbilityBox from './SelectAbilityBox';
 // TODO. 매핑된 역량은 삭제할 수 없다는 예외사항을 추가한다.
 // TODO. prefetch 기능을 사용한다. (20개 정도는 미리 가져와도 될듯..?)
 
-const ReportStudyLogTable = ({
-  mappedStudyLogs,
-  abilities,
-  setPage,
-  readOnly,
-  studyLogs,
-  totalSize,
-}) => {
+const ReportStudyLogTable = ({ studylogs, abilities, setPage, readOnly, totalSize }) => {
   const { user } = useContext(UserContext);
   const queryClient = useQueryClient();
 
-  const currStudyLogs = Object.values(mappedStudyLogs);
   /** 역량 선택은 자식 역량만 선택할 수 있다. */
   const wholeAbility = abilities?.map((parentAbility) => [...parentAbility.children]).flat();
 
@@ -75,24 +67,21 @@ const ReportStudyLogTable = ({
     },
     {
       onSuccess: () => {
-        console.log('here');
         queryClient.refetchQueries([`${user.username}-ability-studylogs`]);
       },
     }
   );
 
-  const toggleAbility = ({ studylogId, abilitieIds, targetAblityId }) => {
-    const targetIndex = abilitieIds.findIndex((id) => id === targetAblityId);
-    let updatedAbilities = [];
-
+  const toggleAbility = ({ studylogId, abilityIds, targetAblityId }) => {
+    const targetIndex = abilityIds.findIndex((id) => id === targetAblityId);
     if (targetIndex === -1) {
-      updatedAbilities = [...abilitieIds, targetAblityId];
-    } else {
-      updatedAbilities = [
-        ...abilitieIds.slice(0, targetIndex),
-        ...abilitieIds.slice(targetIndex + 1),
-      ];
+      alert('삭제할 수 없는 역량입니다.');
     }
+
+    const updatedAbilities = [
+      ...abilityIds.slice(0, targetIndex),
+      ...abilityIds.slice(targetIndex + 1),
+    ];
 
     mappingAbility.mutate({ studylogId, abilities: updatedAbilities });
   };
@@ -120,7 +109,7 @@ const ReportStudyLogTable = ({
               onDelete={() => {
                 toggleAbility({
                   studylogId,
-                  abilitieIds: abilities.map((ability) => ability.id),
+                  abilityIds: abilities.map((ability) => ability.id),
                   targetAblityId: ability.id,
                 });
               }}
@@ -148,7 +137,7 @@ const ReportStudyLogTable = ({
           </Styled.Thead>
 
           <Styled.Tbody>
-            {currStudyLogs?.map(({ studylog, abilities }) => (
+            {studylogs?.data?.map(({ studylog, abilities }) => (
               <Styled.TableRow key={studylog.id}>
                 <Styled.StudyLogTitle
                   isSelected={selectAbilityBox.id === studylog.id && selectAbilityBox.isOpen}
@@ -176,10 +165,11 @@ const ReportStudyLogTable = ({
                       {selectAbilityBox.id === studylog.id && selectAbilityBox.isOpen && (
                         <SelectAbilityBox
                           selectAbilityBoxRef={selectAbilityBoxRef}
-                          toggleAbility={toggleAbility}
-                          studylog={studylog}
+                          mappingAbility={mappingAbility}
+                          studylogId={studylog.id}
                           abilities={abilities}
                           wholeAbility={wholeAbility}
+                          setSelectAbilityBox={setSelectAbilityBox}
                         />
                       )}
                     </>
@@ -188,11 +178,11 @@ const ReportStudyLogTable = ({
               </Styled.TableRow>
             ))}
           </Styled.Tbody>
-          {currStudyLogs?.length === 0 && (
+          {totalSize === 0 && (
             <Styled.EmptyTableGuide>등록된 학습로그가 없습니다.</Styled.EmptyTableGuide>
           )}
         </table>
-        <Pagination dataInfo={studyLogs} onSetPage={setPage} />
+        <Pagination dataInfo={studylogs} onSetPage={setPage} />
       </Styled.Section>
     </>
   );
