@@ -28,7 +28,7 @@ public class StudylogOverviewController {
 
     @GetMapping("/{username}/tags")
     public ResponseEntity<MemberDataResponses<MemberTagResponse>> findTagsOfMine(
-            @PathVariable String username) {
+        @PathVariable String username) {
         return ResponseEntity.ok(MemberDataResponses.of(memberTagService.findByMember(username)));
     }
 
@@ -38,14 +38,13 @@ public class StudylogOverviewController {
         CalendarStudylogRequest calendarStudylogRequest, @PathVariable String username) {
         return ResponseEntity.ok(
             MemberDataResponses.of(
-                        studylogService.findCalendarStudylogs(username, calendarStudylogRequest.localDate())
-                )
+                studylogService.findCalendarStudylogs(username, calendarStudylogRequest.localDate())
+            )
         );
     }
 
     @GetMapping("/{username}/calendar-studylogs")
-    public ResponseEntity<MemberDataResponses<CalendarStudylogResponse>> findStudylogsOfMine(
-        CalendarStudylogRequest calendarStudylogRequest, @PathVariable String username) {
+    public ResponseEntity<MemberDataResponses<CalendarStudylogResponse>> findStudylogsOfMine(CalendarStudylogRequest calendarStudylogRequest, @PathVariable String username) {
         return ResponseEntity.ok(
             MemberDataResponses.of(
                 studylogService.findCalendarStudylogs(username, calendarStudylogRequest.localDate())

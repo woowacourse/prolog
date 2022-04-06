@@ -18,10 +18,10 @@ export const requestGetStudylog = ({ id, accessToken }) => {
 export const requestGetStudylogs = ({ query, accessToken }) => {
   const authConfig = accessToken
     ? {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
     : {};
 
   if (query.type === 'searchParams') {
@@ -34,8 +34,8 @@ export const requestGetStudylogs = ({ query, accessToken }) => {
     );
     const filterQuery = query.data.filterQuery.length
       ? query.data.filterQuery.map(
-          ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
-        )
+        ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
+      )
       : '';
 
     return fetch(
@@ -54,7 +54,7 @@ export const requestPostStudylog = ({ accessToken, data }) =>
       'Content-Type': 'application/json; charset=UTF-8',
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify([data]),
+    body: JSON.stringify(data),
   });
 
 export const requestEditStudylog = ({ id, data, accessToken }) =>
@@ -253,14 +253,13 @@ export const requestPostScrap = ({ username, accessToken, id: studylogId }) =>
     body: JSON.stringify({ studylogId }),
   });
 
-export const requestDeleteScrap = ({ username, accessToken, id: studylogId }) =>
-  fetch(`${BASE_URL}/members/${username}/scrap`, {
+export const requestDeleteScrap = ({ username, accessToken, id }) =>
+  fetch(`${BASE_URL}/members/${username}/scrap?studylog=${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify({ studylogId }),
   });
 
 export const requestPostLike = ({ accessToken, id }) =>

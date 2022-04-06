@@ -145,6 +145,10 @@ const StudylogListPage = (): JSX.Element => {
             AlignItemsCenterStyle,
             css`
               margin-bottom: 1rem;
+
+              @media screen and (max-width: 420px) {
+                flex-direction: column;
+              }
             `,
           ]}
         >
@@ -155,14 +159,26 @@ const StudylogListPage = (): JSX.Element => {
           >
             📚 학습로그
           </h1>
+          {/* 타입스크립트 일부 적용 이슈로 인한 css 빈 string 전달 */}
           <SearchBar
+            css={css``}
             onSubmit={onSearch}
             onChange={onSearchKeywordsChange}
             value={searchKeywords}
-            css={css``}
           />
         </div>
-        <FlexBox>
+        <div
+          css={[
+            FlexStyle,
+            css`
+              @media screen and (max-width: 420px) {
+                > button {
+                  display: none;
+                }
+              }
+            `,
+          ]}
+        >
           <FilterListWrapper>
             <FilterList
               filters={filters}
@@ -188,18 +204,22 @@ const StudylogListPage = (): JSX.Element => {
               글쓰기
             </Button>
           )}
-        </FlexBox>
+        </div>
 
         <SelectedFilterList>
           <ul>
             {!!search && (
               <li>
-                <Chip onDelete={onDeleteSearchKeyword}>{`검색어 : ${search}`}</Chip>
+                <Chip
+                  title={`검색어 : ${search}`}
+                  onDelete={onDeleteSearchKeyword}
+                >{`검색어 : ${search}`}</Chip>
               </li>
             )}
             {selectedFilterDetails.map(({ filterType, filterDetailId, name }) => (
               <li key={filterType + filterDetailId + name}>
                 <Chip
+                  title={`${filterType}: ${name}`}
                   onDelete={() => onUnsetFilter({ filterType, filterDetailId })}
                 >{`${filterType}: ${name}`}</Chip>
               </li>

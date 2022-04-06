@@ -8,28 +8,30 @@ const buttonStyle = css`
   height: 3rem;
   margin: 0 0.5rem;
   padding: 0.8rem 2rem;
-
   display: flex;
   align-items: center;
 
   border-radius: 1rem;
 
   font-size: 1.3rem;
+
+  :hover {
+    color: ${COLOR.WHITE};
+  }
 `;
 
 const Container = styled.section`
   width: 100%;
   height: fit-content;
+  padding: 0 2rem;
   margin-bottom: 2rem;
+
+  border: 2px dotted ${COLOR.LIGHT_BLUE_200};
+  border-radius: 1rem;
 
   a {
     ${buttonStyle};
   }
-`;
-
-const ReportHeader = styled.div`
-  display: flex;
-  align-items: center;
 `;
 
 const ReportBody = styled.div`
@@ -38,8 +40,6 @@ const ReportBody = styled.div`
   padding: 2rem 1rem 5rem;
 
   position: relative;
-
-  border-top: 0.1rem solid ${COLOR.LIGHT_GRAY_400};
 
   :hover {
     > div {
@@ -51,7 +51,7 @@ const ReportBody = styled.div`
 const ButtonWrapper = styled.div`
   position: absolute;
   right: 1rem;
-  top: 1.5rem;
+  top: 6.5rem;
 
   display: flex;
   justify-content: space-between;
@@ -81,4 +81,35 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-export { Container, ReportHeader, ReportBody, ButtonWrapper };
+/** ReportInfo */
+export const Section = styled.div`
+  > span {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: ${COLOR.BLACK_700};
+  }
+
+  > p {
+    padding: 0 1rem;
+    font-size: 1.4rem;
+  }
+
+  #report-title {
+    font-size: 2rem;
+    color: ${COLOR.BLACK_900};
+    text-align: center;
+  }
+
+  #report-desc {
+    /* max-height: 48rem; */
+    padding: 1rem;
+    margin-top: 0.5rem;
+
+    /* overflow: auto; */
+
+    border: 1px solid ${COLOR.LIGHT_GRAY_500};
+    /* border-radius: 0.3rem; */
+  }
+`;
+
+export { Container, ReportBody, ButtonWrapper };

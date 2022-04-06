@@ -10,12 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.domain.Studylog;
 
-public interface StudylogRepository extends JpaRepository<Studylog, Long>,
-    JpaSpecificationExecutor<Studylog> {
-
-    List<Studylog> findByIdIn(List<Long> ids);
-
-    Page<Studylog> findByIdInOrderByIdAsc(List<Long> ids, Pageable pageable);
+public interface StudylogRepository extends JpaRepository<Studylog, Long>, JpaSpecificationExecutor<Studylog> {
 
     @Query(value = "select distinct p from Studylog p left join fetch p.studylogTags.values pt left join fetch pt.tag where p.member = :member",
         countQuery = "select count(p) from Studylog p where p.member = :member")
@@ -27,8 +22,14 @@ public interface StudylogRepository extends JpaRepository<Studylog, Long>,
     @Query("select count(p) from Studylog p where p.member = :member")
     int countByMember(Member member);
 
-    List<Studylog> findAllByIdInOrderByIdDesc(List<Long> ids);
+    List<Studylog> findByIdInAndDeletedFalseOrderByIdDesc(List<Long> ids);
 
     @Query("select p from Studylog p where :date <= p.createdAt")
     List<Studylog> findByPastDays(LocalDateTime date);
+
+    List<Studylog> findTop50ByDeletedFalseOrderByIdDesc();
+
+    List<Studylog> findByMemberIdAndCreatedAtBetween(Long memberId, LocalDateTime startDate, LocalDateTime endDate);
+
+    Page<Studylog> findByIdInAndDeletedFalseOrderByIdAsc(List<Long> ids, Pageable pageable);
 }

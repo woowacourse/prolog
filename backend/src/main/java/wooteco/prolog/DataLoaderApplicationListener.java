@@ -1,7 +1,5 @@
 package wooteco.prolog;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,30 +10,20 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.data.domain.PageRequest;
+import wooteco.prolog.ability.application.AbilityService;
+import wooteco.prolog.ability.application.dto.DefaultAbilityCreateRequest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
-import wooteco.prolog.login.ui.LoginMember;
-import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.report.application.AbilityService;
-import wooteco.prolog.report.application.ReportService;
-import wooteco.prolog.report.application.dto.ability.DefaultAbilityCreateRequest;
-import wooteco.prolog.report.application.dto.report.request.ReportRequest;
-import wooteco.prolog.report.application.dto.report.request.abilitigraph.AbilityRequest;
-import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRequest;
-import wooteco.prolog.report.application.dto.report.request.studylog.ReportStudylogRequest;
-import wooteco.prolog.report.domain.ablity.Ability;
-import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
-import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.session.application.LevelService;
 import wooteco.prolog.session.application.MissionService;
-import wooteco.prolog.studylog.application.StudylogService;
-import wooteco.prolog.studylog.application.TagService;
 import wooteco.prolog.session.application.dto.LevelRequest;
 import wooteco.prolog.session.application.dto.LevelResponse;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.studylog.application.DocumentService;
+import wooteco.prolog.studylog.application.StudylogService;
+import wooteco.prolog.studylog.application.TagService;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.update.UpdateContent;
@@ -56,8 +44,6 @@ public class DataLoaderApplicationListener implements
     private DocumentService studylogDocumentService;
     private AbilityService abilityService;
     private UpdatedContentsRepository updatedContentsRepository;
-    private ReportService reportService;
-    private AbilityRepository abilityRepository;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -77,7 +63,7 @@ public class DataLoaderApplicationListener implements
 
         // post init
         studylogService.insertStudylogs(Members.BROWN.value.getId(), StudylogGenerator.generate(20));
-        studylogService.insertStudylogs(Members.JOANNE.value.getId() , StudylogGenerator.generate(20));
+        studylogService.insertStudylogs(Members.JOANNE.value.getId(), StudylogGenerator.generate(20));
         studylogService.insertStudylogs(Members.TYCHE.value.getId(), StudylogGenerator.generate(100));
         studylogService.insertStudylogs(Members.SUNNY.value.getId(), StudylogGenerator.generate(20));
 
@@ -103,7 +89,8 @@ public class DataLoaderApplicationListener implements
         abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Web Architecture Components", "Web Architecture Components 입니다.", "#ccccff", "be", infrastructureId));
         abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Service & Tools", "Service & Tools 입니다.", "#ccccff", "be", infrastructureId));
 
-        Long developmentId = abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Software Development Process & Maintenance", "Software Development Process & Maintenance 입니다.", "#ffcce5", "be"));
+        Long developmentId = abilityService.createDefaultAbility(
+            new DefaultAbilityCreateRequest("Software Development Process & Maintenance", "Software Development Process & Maintenance 입니다.", "#ffcce5", "be"));
         abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Development Process", "Development Process 입니다.", "#ffcce5", "be", developmentId));
         abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Maintenance", "Maintenance 입니다.", "#ffcce5", "be", developmentId));
 
@@ -134,102 +121,11 @@ public class DataLoaderApplicationListener implements
         abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("프로그래밍 테크닉, 개발 프랙티스, 개발 방법론", "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론 입니다.", "#2fff6e", "fe", uiuxId));
 
         // ability init
-        abilityService.addDefaultAbilities(Members.BROWN.value.getId(), "be");
-        abilityService.addDefaultAbilities(Members.JOANNE.value.getId(), "be");
-        abilityService.addDefaultAbilities(Members.TYCHE.value.getId(), "fe");
-        abilityService.addDefaultAbilities(Members.SUNNY.value.getId(), "fe");
+//        abilityService.addDefaultAbilities(Members.BROWN.value.getId(), "be");
+        abilityService.applyDefaultAbilities(Members.JOANNE.value.getId(), "be");
+        abilityService.applyDefaultAbilities(Members.SUNNY.value.getId(), "fe");
 
-        ReportGenerator
-            .generate(3, Members.TYCHE.value, abilityService, studylogService, abilityRepository)
-            .forEach(reportRequest -> reportService.createReport(
-                reportRequest,
-                new LoginMember(Members.TYCHE.value.getId(), Authority.MEMBER)
-            ));
-
-        updatedContentsRepository
-            .save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
-    }
-
-    public static class ReportGenerator {
-
-        private static int cnt = 1;
-
-        public static List<ReportRequest> generate(int size, Member member,
-                                                   AbilityService abilityService,
-                                                   StudylogService studylogService,
-                                                   AbilityRepository abilityRepository) {
-            ArrayList<ReportRequest> result = new ArrayList<>();
-
-            for (int i = 0; i < size; i++) {
-                result.add(create(member, abilityService, studylogService, abilityRepository));
-            }
-
-            return result;
-
-        }
-
-        private static ReportRequest create(Member member,
-                                            AbilityService abilityService,
-                                            StudylogService studylogService,
-                                            AbilityRepository abilityRepository) {
-            GraphRequest graphRequest = createGraphRequest(member, abilityService);
-            return new ReportRequest(
-                null,
-                "타이틀 입니다 " + cnt,
-                "설명 입니다 " + cnt++,
-                graphRequest,
-                createReportStudylogRequest(member, graphRequest, studylogService,
-                    abilityRepository),
-                true
-            );
-        }
-
-        private static List<ReportStudylogRequest> createReportStudylogRequest(Member member,
-                                                                               GraphRequest graphRequest,
-                                                                               StudylogService studylogService,
-                                                                               AbilityRepository abilityRepository) {
-            List<ReportStudylogRequest> studylogs = studylogService
-                .findStudylogsOf(member.getUsername(), PageRequest.of(0, 20))
-                .getData().stream()
-                .map(studylogResponse -> new ReportStudylogRequest(
-                    studylogResponse.getId(),
-                    getRandomAbilitiesOf(graphRequest, abilityRepository)
-                )).collect(toList());
-
-            Collections.shuffle(studylogs);
-            return studylogs.subList(0, new Random().nextInt(studylogs.size()));
-        }
-
-        private static GraphRequest createGraphRequest(Member member,
-                                                       AbilityService abilityService) {
-            return new GraphRequest(getParentAbilitiesOf(member, abilityService));
-        }
-
-        private static List<Long> getRandomAbilitiesOf(GraphRequest graphRequest,
-                                                       AbilityRepository abilityRepository) {
-            List<Long> abilityIds = graphRequest.getAbilities().stream()
-                .map(AbilityRequest::getId)
-                .collect(toList());
-
-            List<Ability> children = abilityRepository
-                .findChildrenAbilitiesByParentId(abilityIds);
-
-            Collections.shuffle(children);
-            return children.subList(0, new Random().nextInt(children.size()))
-                .stream()
-                .map(Ability::getId)
-                .collect(toList());
-        }
-
-        private static List<AbilityRequest> getParentAbilitiesOf(Member member,
-                                                                 AbilityService abilityService) {
-            return abilityService.findParentAbilitiesByMemberId(member.getId()).stream()
-                .map(abilityResponse -> new AbilityRequest(
-                    abilityResponse.getId(),
-                    1L,
-                    true))
-                .collect(toList());
-        }
+        updatedContentsRepository.save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
     }
 
     private enum Levels {
@@ -342,9 +238,9 @@ public class DataLoaderApplicationListener implements
             "https://avatars.githubusercontent.com/u/67677561?v=4"
         )),
         HYEON9MAK(new GithubProfileResponse(
-           "최현구",
-           "hyeon9mak",
-           "37354145",
+            "최현구",
+            "hyeon9mak",
+            "37354145",
             "https://avatars.githubusercontent.com/u/37354145?v=4"
         ));
 

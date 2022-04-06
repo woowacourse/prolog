@@ -37,10 +37,8 @@ public class PostController {
     @MemberOnly
     public ResponseEntity<Void> createStudylog(@AuthMemberPrincipal LoginMember member,
                                                @RequestBody List<StudylogRequest> studylogRequests) {
-        List<StudylogResponse> studylogResponse = studylogService
-            .insertStudylogs(member.getId(), studylogRequests);
-        return ResponseEntity.created(URI.create("/posts/" + studylogResponse.get(0).getId()))
-            .build();
+        List<StudylogResponse> studylogResponses = studylogService.insertStudylogs(member.getId(), studylogRequests);
+        return ResponseEntity.created(URI.create("/posts/" + studylogResponses.get(0).getId())).build();
     }
 
     @GetMapping

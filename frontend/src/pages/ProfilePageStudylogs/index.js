@@ -14,7 +14,6 @@ import Chip from '../../components/Chip/Chip';
 import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
 import { isEmptyObject } from '../../utils/object';
 
-import { SelectedFilterList } from '../MainPage/styles';
 import {
   ButtonList,
   CardStyles,
@@ -25,6 +24,7 @@ import {
   EditButtonStyle,
   FilterListWrapper,
   FilterStyles,
+  SelectedFilterList,
   HeaderContainer,
   Mission,
   NoPost,
@@ -152,7 +152,10 @@ const ProfilePageStudylogs = () => {
           <ul>
             {selectedFilterDetails.map(({ filterType, filterDetailId, name }) => (
               <li key={filterType + filterDetailId + name}>
-                <Chip onDelete={() => onUnsetFilter({ filterType, filterDetailId })}>
+                <Chip
+                  title={`${filterType}: ${name}`}
+                  onDelete={() => onUnsetFilter({ filterType, filterDetailId })}
+                >
                   {`${filterType}: ${name}`}
                 </Chip>
               </li>

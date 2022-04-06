@@ -20,3 +20,13 @@ include::{snippets}/members/calendar-studylogs/http-request.adoc[]
 ==== Response
 
 include::{snippets}/members/calendar-studylogs/http-response.adoc[]
+
+=== 인기있는 스터디로그 조회
+
+==== Request
+
+include::{snippets}/studylogs/popular/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/studylogs/popular/http-response.adoc[]

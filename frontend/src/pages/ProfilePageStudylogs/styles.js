@@ -132,6 +132,19 @@ const FilterStyles = css`
   border-color: ${COLOR.LIGHT_GRAY_200};
 `;
 
+const SelectedFilterList = styled.div`
+  width: 100%;
+  min-height: 3rem;
+  overflow: auto;
+  margin-top: 1rem;
+  padding-bottom: 1rem;
+
+  ul {
+    width: max-content;
+    display: flex;
+  }
+`;
+
 const Heading = styled.h1`
   font-size: 2.4rem;
   margin-bottom: 2rem;
@@ -152,6 +165,7 @@ export {
   FilterListWrapper,
   CardStyles,
   FilterStyles,
+  SelectedFilterList,
   HeaderContainer,
   Heading,
 };

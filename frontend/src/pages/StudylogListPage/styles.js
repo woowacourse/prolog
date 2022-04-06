@@ -4,6 +4,10 @@ const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 1.5rem;
+
+  @media screen and (max-width: 420px) {
+    margin-bottom: 0.8rem;
+  }
 `;
 
 const FilterListWrapper = styled.div`

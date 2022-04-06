@@ -1,0 +1,10 @@
+[[level]]
+== 레벨
+
+=== 레벨 등록
+
+operation::levels/create[snippets='http-request,http-response']
+
+=== 레벨 목록 조회
+
+operation::levels/list[snippets='http-request,http-response']

@@ -58,6 +58,8 @@ dependencies {
     // rest-assured
     acceptanceTestImplementation 'io.rest-assured:rest-assured:3.3.0'
     documentationImplementation 'io.rest-assured:rest-assured:3.3.0'
+    documentationImplementation 'io.rest-assured:spring-mock-mvc:3.3.0'
+
 
     // cucumber
     acceptanceTestImplementation 'io.cucumber:cucumber-java:6.10.4'
@@ -66,7 +68,8 @@ dependencies {
 
     // rest docs
     asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.5.RELEASE'
-    documentationImplementation 'org.springframework.restdocs:spring-restdocs-restassured:2.0.5.RELEASE'
+    documentationImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    documentationImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
 
     //lombok
     compileOnly 'org.projectlombok:lombok:1.18.20'
@@ -83,11 +86,18 @@ dependencies {
     //flyway
     implementation 'org.flywaydb:flyway-core:6.4.2'
 
+    // embedded mysql
+    implementation 'com.wix:wix-embedded-mysql:4.6.2'
+
     // webclient
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     // prometheus
     implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    // rss feed
+    implementation 'com.rometools:rome:1.18.0'
+    implementation 'org.commonmark:commonmark:0.18.2'
 
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'

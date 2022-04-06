@@ -21,15 +21,15 @@ include::{snippets}/studylog/list/http-request.adoc[]
 
 include::{snippets}/studylog/list/http-response.adoc[]
 
-=== 스터디로그 검색
-
-==== Request
-
-include::{snippets}/studylog/filter/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/studylog/filter/http-response.adoc[]
+//=== 스터디로그 검색
+//
+//==== Request
+//
+//include::{snippets}/studylog/filter/http-request.adoc[]
+//
+//==== Response
+//
+//include::{snippets}/studylog/filter/http-response.adoc[]
 
 === 스터디로그 단건 조회
 

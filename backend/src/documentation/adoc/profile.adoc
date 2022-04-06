@@ -11,6 +11,26 @@ include::{snippets}/profile/profile/http-request.adoc[]
 
 include::{snippets}/profile/profile/http-response.adoc[]
 
+=== 프로필 소개 조회
+
+==== Request
+
+include::{snippets}/profile/profile-intro/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/profile/profile-intro/http-response.adoc[]
+
+=== 프로필 소개 수정
+
+==== Request
+
+include::{snippets}/profile/update-profile-intro/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/profile/update-profile-intro/http-response.adoc[]
+
 === 프로필 스터디로그 조회
 
 ==== Request

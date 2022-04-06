@@ -1,33 +1,24 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { useHistory } from 'react-router-dom';
-import { Card, ProfileChip } from '..';
-import { COLOR, PATH } from '../../constants';
-import { AlignItemsEndStyle, FlexColumnStyle, FlexStyle } from '../../styles/flex.styles';
-import ViewCount from '../ViewCount/ViewCount';
 
-import {
-  CardStyle,
-  ContentStyle,
-  DescriptionStyle,
-  MissionStyle,
-  TagListStyle,
-  ProfileChipLocationStyle,
-} from './StudylogList.styles';
+import StudylogItem from '../Items/StudylogItem';
+import { PATH } from '../../enumerations/path';
+import { Studylog } from '../../models/Studylogs';
 
 interface Props {
-  studylogs: Prolog.Studylog[];
+  studylogs: Studylog[];
 }
 
 const StudylogList = ({ studylogs }: Props) => {
   const history = useHistory();
 
   const goTargetPost = (id: number) => {
-    history.push(`${PATH.STUDYLOG}/${id}`);
+    history.push(`${PATH.STUDYLOGS}/${id}`);
   };
 
-  const goProfilePage = (username: string) => (event: MouseEvent) => {
-    event.stopPropagation();
+  const goProfilePage = (username: string) => (event?: MouseEvent) => {
+    event?.stopPropagation();
 
     history.push(`/${username}`);
   };
@@ -41,44 +32,13 @@ const StudylogList = ({ studylogs }: Props) => {
       `}
     >
       {studylogs.map((studylog) => {
-        const { id, author, mission, title, tags, isRead, viewCount } = studylog;
-
         return (
-          <li key={id}>
-            <Card
-              size="SMALL"
-              cssProps={
-                isRead
-                  ? css`
-                      ${CardStyle};
-                      background-color: ${COLOR.LIGHT_GRAY_100};
-                    `
-                  : CardStyle
-              }
-              onClick={() => goTargetPost(id)}
-            >
-              <div css={ContentStyle}>
-                <div css={DescriptionStyle}>
-                  <p css={MissionStyle}>{mission.name}</p>
-                  <h3>{title}</h3>
-                  <ul css={TagListStyle}>
-                    {tags?.map(({ id, name }) => (
-                      <span key={id}>{`#${name} `}</span>
-                    ))}
-                  </ul>
-                </div>
-                <div css={[FlexStyle, FlexColumnStyle, AlignItemsEndStyle]}>
-                  <ProfileChip
-                    imageSrc={author.imageUrl}
-                    cssProps={ProfileChipLocationStyle}
-                    onClick={goProfilePage(author.username)}
-                  >
-                    {author.nickname}
-                  </ProfileChip>
-                  <ViewCount count={viewCount} />
-                </div>
-              </div>
-            </Card>
+          <li key={studylog.id}>
+            <StudylogItem
+              studylog={studylog}
+              onClick={() => goTargetPost(studylog.id)}
+              onProfileClick={goProfilePage(studylog.author.username)}
+            />
           </li>
         );
       })}

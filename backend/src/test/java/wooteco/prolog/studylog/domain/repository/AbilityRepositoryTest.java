@@ -10,15 +10,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import wooteco.prolog.ability.domain.Ability;
+import wooteco.prolog.ability.domain.repository.AbilityRepository;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.report.domain.ablity.Ability;
-import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
+import wooteco.support.utils.RepositoryTest;
 
-@DataJpaTest
+@RepositoryTest
 class AbilityRepositoryTest {
 
     @Autowired

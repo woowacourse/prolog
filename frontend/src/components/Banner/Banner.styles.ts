@@ -27,6 +27,18 @@ export const bannerWrapperStyle = css`
 
     text-align: center;
   }
+
+  @media screen and (max-width: 420px) {
+    height: 180px;
+
+    br {
+      display: none;
+    }
+
+    strong {
+      font-size: 2rem;
+    }
+  }
 `;
 
 export const bannerInnerWrapperStyle = css`
@@ -37,6 +49,10 @@ export const bannerInnerWrapperStyle = css`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 420px) {
+    max-width: calc(100% - 5rem);
+  }
 `;
 
 export const bannerTextAreaStyle = css`
@@ -61,6 +77,19 @@ export const bannerTextAreaStyle = css`
     font-size: 2rem;
     line-height: 1.5;
   }
+
+  @media screen and (max-width: 420px) {
+    padding-right: 0;
+
+    h2 {
+      font-size: 3rem;
+    }
+
+    p {
+      font-size: 1.5rem;
+      line-height: 1.5;
+    }
+  }
 `;
 
 export const getBannerThemeByBgColor = (
@@ -75,6 +104,11 @@ export const getBannerThemeByBgColor = (
     background-size: cover;
   `};
   color: ${getTextColor(backgroundColor)};
+
+  h2,
+  p {
+    color: inherit;
+  }
 
   a {
     margin-top: 1rem;
@@ -100,4 +134,10 @@ export const getBannerSideImageStyle = (sideImageUrl, sideImagePadding, reverse)
   background-size: cover;
 
   ${reverse ? 'margin-left: 3rem;' : 'margin-right: 3rem;'}
+
+  @media screen and (max-width: 420px) {
+    width: 0;
+    height: 0;
+    margin: 0;
+  }
 `;

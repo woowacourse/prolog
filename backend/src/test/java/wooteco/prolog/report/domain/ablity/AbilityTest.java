@@ -14,6 +14,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.ability.domain.Ability;
 import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
 import wooteco.prolog.studylog.exception.AbilityNameDuplicateException;
 import wooteco.prolog.studylog.exception.AbilityParentColorDuplicateException;
@@ -25,19 +26,6 @@ class AbilityTest {
     @BeforeEach
     void setUp() {
         member = mock(Member.class);
-    }
-
-    @DisplayName("자식 역량 생성시 부모 역량과 자동으로 관계를 맺는다.")
-    @Test
-    void addChildAbility() {
-        Ability parentAbility = Ability.parent(1L, "Language", "discription", "red", member);
-        Ability childAbility = Ability.child(2L, "Language", "discription", "red", parentAbility, member);
-
-        assertThat(parentAbility.getChildren())
-            .usingRecursiveComparison()
-            .isEqualTo(Collections.singletonList(childAbility));
-
-        assertThat(childAbility.getParent()).isEqualTo(parentAbility);
     }
 
     @DisplayName("부모 역량인지 확인한다.")
@@ -66,7 +54,7 @@ class AbilityTest {
         Ability updateTarget = new Ability(abilityId, "새로운 역량", "그것은 피카를 사랑하는 힘", "핑크색");
 
         // when
-        ability.updateWithValidation(updateTarget, new ArrayList<>());
+        ability.update(updateTarget);
 
         // then
         assertThat(ability).usingRecursiveComparison()

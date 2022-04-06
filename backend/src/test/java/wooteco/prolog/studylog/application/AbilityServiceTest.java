@@ -9,24 +9,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import wooteco.prolog.ability.application.AbilityService;
+import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
+import wooteco.prolog.ability.application.dto.HierarchyAbilityResponse;
+import wooteco.prolog.ability.application.dto.AbilityUpdateRequest;
+import wooteco.prolog.ability.application.dto.AbilityResponse;
+import wooteco.prolog.ability.domain.Ability;
+import wooteco.prolog.ability.domain.DefaultAbility;
+import wooteco.prolog.ability.domain.repository.AbilityRepository;
+import wooteco.prolog.ability.domain.repository.DefaultAbilityRepository;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.report.application.AbilityService;
-import wooteco.prolog.report.application.dto.ability.AbilityCreateRequest;
-import wooteco.prolog.report.application.dto.ability.AbilityResponse;
-import wooteco.prolog.report.application.dto.ability.AbilityUpdateRequest;
-import wooteco.prolog.report.application.dto.ability.ChildAbilityDto;
-import wooteco.prolog.report.domain.ablity.Ability;
-import wooteco.prolog.report.domain.ablity.DefaultAbility;
-import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
-import wooteco.prolog.report.domain.ablity.repository.DefaultAbilityRepository;
-import wooteco.prolog.report.exception.DefaultAbilityNotFoundException;
 import wooteco.prolog.report.exception.AbilityNotFoundException;
 import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
+import wooteco.prolog.report.exception.DefaultAbilityNotFoundException;
 import wooteco.prolog.studylog.exception.AbilityNameDuplicateException;
 import wooteco.prolog.studylog.exception.AbilityParentColorDuplicateException;
 import wooteco.support.utils.IntegrationTest;
@@ -75,10 +76,11 @@ class AbilityServiceTest {
 
         // when
         AbilityUpdateRequest request = new AbilityUpdateRequest(4L, "자식1_1", "자식설명1", "1");
-        AbilityResponse expectedResponse = new AbilityResponse(request.getId(), request.getName(), request.getDescription(), request.getColor(), false, new ArrayList<>());
+        HierarchyAbilityResponse expectedResponse = new HierarchyAbilityResponse(request.getId(), request.getName(), request.getDescription(), request.getColor(), false, new ArrayList<>());
 
-        List<AbilityResponse> abilityResponses = abilityService.updateAbility(member.getId(), request);
-        AbilityResponse updatedResponse = abilityResponses.stream()
+        abilityService.updateAbility(member.getId(), request.getId(), request);
+        List<HierarchyAbilityResponse> abilityResponses = abilityService.findAbilitiesByMemberId(member.getId());
+            HierarchyAbilityResponse updatedResponse = abilityResponses.stream()
             .filter(response -> response.getId().equals(request.getId()))
             .findAny()
             .orElseThrow(AbilityNotFoundException::new);
@@ -151,17 +153,17 @@ class AbilityServiceTest {
         Ability parentAbility = abilityRepository.save(Ability.parent("메타버스", "폴리곤 덩어리들", "123456", member));
         Ability childAbility = abilityRepository.save(Ability.child("마자용", "마자아아아~용", "123456", parentAbility, member));
 
-        AbilityResponse expectResponse = new AbilityResponse(
+        HierarchyAbilityResponse expectResponse = new HierarchyAbilityResponse(
             parentAbility.getId(),
             parentAbility.getName(),
             parentAbility.getDescription(),
             parentAbility.getColor(),
             parentAbility.isParent(),
-            ChildAbilityDto.of(Collections.singletonList(childAbility))
+            AbilityResponse.listOf(Collections.singletonList(childAbility))
         );
 
         // when
-        List<AbilityResponse> responses = abilityService.findParentAbilitiesByMemberId(member.getId());
+        List<HierarchyAbilityResponse> responses = abilityService.findParentAbilitiesByMemberId(member.getId());
 
         // then
         assertThat(responses).hasSize(1);
@@ -178,14 +180,14 @@ class AbilityServiceTest {
         abilityService.createAbility(member.getId(), createRequest1);
         abilityService.createAbility(member.getId(), createRequest2);
 
-        List<AbilityResponse> abilityResponses = abilityService.findParentAbilitiesByMemberId(member.getId());
-        AbilityResponse createdAbilityResponse1 = abilityResponses.get(0);
-        AbilityResponse createdAbilityResponse2 = abilityResponses.get(1);
+        List<HierarchyAbilityResponse> abilityResponses = abilityService.findParentAbilitiesByMemberId(member.getId());
+        HierarchyAbilityResponse createdAbilityResponse1 = abilityResponses.get(0);
+        HierarchyAbilityResponse createdAbilityResponse2 = abilityResponses.get(1);
 
         AbilityUpdateRequest request = new AbilityUpdateRequest(createdAbilityResponse1.getId(), createdAbilityResponse2.getName(), "완전히 새로운건데요?!", "#222222");
 
         // when, then
-        assertThatThrownBy(() -> abilityService.updateAbility(createdAbilityResponse1.getId(), request))
+        assertThatThrownBy(() -> abilityService.updateAbility(createdAbilityResponse1.getId(), request.getId(), request))
             .isExactlyInstanceOf(AbilityNameDuplicateException.class);
     }
 
@@ -198,14 +200,14 @@ class AbilityServiceTest {
         abilityService.createAbility(member.getId(), createRequest1);
         abilityService.createAbility(member.getId(), createRequest2);
 
-        List<AbilityResponse> abilityResponses = abilityService.findParentAbilitiesByMemberId(member.getId());
-        AbilityResponse createdAbilityResponse1 = abilityResponses.get(0);
-        AbilityResponse createdAbilityResponse2 = abilityResponses.get(1);
+        List<HierarchyAbilityResponse> abilityResponses = abilityService.findParentAbilitiesByMemberId(member.getId());
+        HierarchyAbilityResponse createdAbilityResponse1 = abilityResponses.get(0);
+        HierarchyAbilityResponse createdAbilityResponse2 = abilityResponses.get(1);
 
         AbilityUpdateRequest request = new AbilityUpdateRequest(createdAbilityResponse1.getId(), "완전히 새로운 이름", "완전히 새로운건데요?!", createdAbilityResponse2.getColor());
 
         // when, then
-        assertThatThrownBy(() -> abilityService.updateAbility(createdAbilityResponse1.getId(), request))
+        assertThatThrownBy(() -> abilityService.updateAbility(createdAbilityResponse1.getId(), request.getId(), request))
             .isExactlyInstanceOf(AbilityParentColorDuplicateException.class);
     }
 
@@ -216,7 +218,7 @@ class AbilityServiceTest {
         AbilityCreateRequest createParentRequest = new AbilityCreateRequest("부모 프로그래밍", "프로그래밍 역량입니다.", "#111111", null);
         abilityService.createAbility(member.getId(), createParentRequest);
 
-        AbilityResponse createdParentResponse = abilityService.findParentAbilitiesByMemberId(member.getId()).get(0);
+        HierarchyAbilityResponse createdParentResponse = abilityService.findParentAbilitiesByMemberId(member.getId()).get(0);
 
         AbilityCreateRequest createChildRequest = new AbilityCreateRequest("자식 프로그래밍", "부모 프로그래밍의 자식입니다.", createdParentResponse.getColor(), createdParentResponse.getId());
         abilityService.createAbility(member.getId(), createChildRequest);
@@ -225,15 +227,16 @@ class AbilityServiceTest {
         AbilityUpdateRequest request = new AbilityUpdateRequest(createdParentResponse.getId(), "완전히 새로운 이름", "완전히 새로운건데요?!", newColor);
 
         // when
-        List<AbilityResponse> abilityResponses = abilityService.updateAbility(member.getId(), request);
+        abilityService.updateAbility(member.getId(), request.getId(), request);
 
         // then
-        AbilityResponse updatedParentResponse = abilityResponses.stream()
+        List<HierarchyAbilityResponse> abilityResponses = abilityService.findAbilitiesByMemberId(member.getId());
+        HierarchyAbilityResponse updatedParentResponse = abilityResponses.stream()
             .filter(response -> response.getId().equals(createdParentResponse.getId()))
             .findAny()
             .orElseThrow(AbilityNotFoundException::new);
 
-        ChildAbilityDto updatedChildResponse = updatedParentResponse.getChildren().get(0);
+        AbilityResponse updatedChildResponse = updatedParentResponse.getChildren().get(0);
 
         assertThat(updatedParentResponse.getColor()).isEqualTo(newColor);
         assertThat(updatedChildResponse.getColor()).isEqualTo(newColor);
@@ -247,11 +250,12 @@ class AbilityServiceTest {
         AbilityCreateRequest createParentRequest1 = new AbilityCreateRequest("부모 프로그래밍", "프로그래밍 역량입니다.", legacyColor, null);
         abilityService.createAbility(member.getId(), createParentRequest1);
 
-        AbilityResponse createdParentResponse = abilityService.findParentAbilitiesByMemberId(member.getId()).get(0);
+        HierarchyAbilityResponse createdParentResponse = abilityService.findParentAbilitiesByMemberId(member.getId()).get(0);
 
         AbilityCreateRequest createChildRequest1 = new AbilityCreateRequest("자식 프로그래밍", "부모 프로그래밍의 자식입니다.", createdParentResponse.getColor(), createdParentResponse.getId());
         abilityService.createAbility(member.getId(), createChildRequest1);
-        ChildAbilityDto childAbilityDto = abilityService.findParentAbilitiesByMemberId(member.getId()).get(0).getChildren().get(0);
+
+        AbilityResponse childAbilityDto = abilityService.findParentAbilitiesByMemberId(member.getId()).get(0).getChildren().get(0);
 
         String newColor = "#ffffff";
         String newName = "완전히 새로운 이름";
@@ -259,19 +263,13 @@ class AbilityServiceTest {
         AbilityUpdateRequest request = new AbilityUpdateRequest(childAbilityDto.getId(), newName, newDescription, newColor);
 
         // when
-        List<AbilityResponse> abilityResponses = abilityService.updateAbility(member.getId(), request);
+        abilityService.updateAbility(member.getId(), request.getId(), request);
 
         // then
-        ChildAbilityDto childAbilityResponse = abilityResponses.stream()
-            .filter(response -> response.getId().equals(createdParentResponse.getId()))
-            .map(AbilityResponse::getChildren)
-            .map(list -> list.get(0))
-            .findAny()
-            .orElseThrow(AbilityNotFoundException::new);
-
-        assertThat(childAbilityResponse.getName()).isEqualTo(newName);
-        assertThat(childAbilityResponse.getDescription()).isEqualTo(newDescription);
-        assertThat(childAbilityResponse.getColor()).isEqualTo(legacyColor);
+        Ability ability = abilityService.findAbilityById(childAbilityDto.getId());
+        assertThat(ability.getName()).isEqualTo(newName);
+        assertThat(ability.getDescription()).isEqualTo(newDescription);
+        assertThat(ability.getColor()).isEqualTo(legacyColor);
     }
 
     @DisplayName("부모 역량 삭제에 성공하면 조회되지 않는다.")
@@ -282,7 +280,7 @@ class AbilityServiceTest {
 
         // when
         assertThat(abilityService.findAbilitiesByMemberId(member.getId())).usingRecursiveComparison()
-            .isEqualTo(AbilityResponse.of(Collections.singletonList(ability)));
+            .isEqualTo(HierarchyAbilityResponse.listOf(Collections.singletonList(ability)));
 
         abilityService.deleteAbility(member.getId(), ability.getId());
 
@@ -301,13 +299,15 @@ class AbilityServiceTest {
         assertThat(parentAbility.getChildren()).containsExactly(childAbility);
 
         abilityService.deleteAbility(member.getId(), childAbility.getId());
-        List<AbilityResponse> abilityResponses = abilityService.findAbilitiesByMemberId(member.getId());
-        List<Long> abilityIds = abilityResponses.stream().map(AbilityResponse::getId).collect(Collectors.toList());
+        List<HierarchyAbilityResponse> abilityResponses = abilityService.findAbilitiesByMemberId(member.getId());
+        List<Long> abilityIds = abilityResponses.stream().map(HierarchyAbilityResponse::getId).collect(Collectors.toList());
 
         // then
         assertThat(abilityIds).containsExactly(parentAbility.getId());
     }
 
+    // 스펙이 변경되어 Disabled 처리함
+    @Disabled
     @DisplayName("부모 역량 삭제에 성공하면 부모의 자역 역량도 모두 삭제된다.")
     @Test
     void deleteParentAbilityAndChildrenAbilities() {
@@ -337,11 +337,11 @@ class AbilityServiceTest {
         Ability ability2 = abilityRepository.save(Ability.parent("나는킹갓브라운이다.", "이견은 없겠지?", "무지개 색", member));
 
         // when
-        List<AbilityResponse> abilityResponses = abilityService.findAbilitiesByMemberUsername(member.getUsername());
+        List<HierarchyAbilityResponse> abilityResponses = abilityService.findAbilitiesByMemberUsername(member.getUsername());
 
         // then
         assertThat(abilityResponses).usingRecursiveComparison()
-            .isEqualTo(AbilityResponse.of(Arrays.asList(ability1, ability2)));
+            .isEqualTo(HierarchyAbilityResponse.listOf(Arrays.asList(ability1, ability2)));
     }
 
     @DisplayName("멤버ID와 과정 선택을 통해 기본 역량을 등록한다.")
@@ -352,7 +352,7 @@ class AbilityServiceTest {
         assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isEmpty();
 
         // when
-        abilityService.addDefaultAbilities(member.getId(), "be");
+        abilityService.applyDefaultAbilities(member.getId(), "be");
 
         // then
         assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isNotEmpty();
@@ -362,10 +362,11 @@ class AbilityServiceTest {
     @Test
     void createTemplateAbilitiesException() {
         // given
-        assertThat(abilityService.findAbilitiesByMemberId(member.getId())).isEmpty();
+        Long memberId = member.getId();
+        assertThat(abilityService.findAbilitiesByMemberId(memberId)).isEmpty();
 
         // when, then
-        assertThatThrownBy(() -> abilityService.addDefaultAbilities(member.getId(), "ce"))
+        assertThatThrownBy(() -> abilityService.applyDefaultAbilities(memberId, "ce"))
             .isExactlyInstanceOf(DefaultAbilityNotFoundException.class);
     }
 }

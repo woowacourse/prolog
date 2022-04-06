@@ -1,254 +1,170 @@
 package wooteco.prolog.docu;
 
-import static java.util.stream.Collectors.toList;
-import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
+import static org.apache.http.HttpHeaders.AUTHORIZATION;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
-import io.restassured.RestAssured;
-import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.http.ContentType;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
-import org.apache.http.HttpHeaders;
-import org.junit.jupiter.api.BeforeEach;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
-import wooteco.prolog.DataLoaderApplicationListener;
-import wooteco.prolog.Documentation;
-import wooteco.prolog.GithubResponses;
-import wooteco.prolog.login.application.dto.TokenRequest;
-import wooteco.prolog.login.application.dto.TokenResponse;
-import wooteco.prolog.member.application.MemberService;
-import wooteco.prolog.report.application.AbilityService;
+import wooteco.prolog.NewDocumentation;
+import wooteco.prolog.common.PageableResponse;
+import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.report.application.ReportService;
-import wooteco.prolog.report.application.dto.report.request.ReportRequest;
-import wooteco.prolog.report.application.dto.report.request.abilitigraph.AbilityRequest;
-import wooteco.prolog.report.application.dto.report.request.abilitigraph.GraphRequest;
-import wooteco.prolog.report.application.dto.report.request.studylog.ReportStudylogRequest;
-import wooteco.prolog.report.application.dto.report.response.ReportResponse;
-import wooteco.prolog.report.application.dto.report.response.ability_graph.GraphResponse;
-import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogAbilityResponse;
-import wooteco.prolog.report.application.dto.report.response.studylogs.StudylogResponse;
-import wooteco.prolog.report.domain.ablity.repository.AbilityRepository;
-import wooteco.prolog.studylog.application.DocumentService;
-import wooteco.prolog.session.application.LevelService;
-import wooteco.prolog.session.application.MissionService;
-import wooteco.prolog.studylog.application.StudylogService;
-import wooteco.prolog.studylog.application.TagService;
-import wooteco.prolog.update.UpdatedContentsRepository;
+import wooteco.prolog.report.application.dto.ReportAbilityRequest;
+import wooteco.prolog.report.application.dto.ReportAbilityResponse;
+import wooteco.prolog.report.application.dto.ReportRequest;
+import wooteco.prolog.report.application.dto.ReportResponse;
+import wooteco.prolog.report.application.dto.ReportStudylogAbilityResponse;
+import wooteco.prolog.report.application.dto.ReportStudylogResponse;
+import wooteco.prolog.report.application.dto.ReportUpdateRequest;
+import wooteco.prolog.report.ui.ReportController;
+import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.studylog.application.dto.StudylogResponse;
+import wooteco.prolog.studylog.application.dto.TagResponse;
 
-class ReportDocumentation extends Documentation {
+@WebMvcTest(controllers = ReportController.class)
+public class ReportDocumentation extends NewDocumentation {
 
-    private final LevelService levelService;
-    private final MissionService missionService;
-    private final TagService tagService;
-    private final MemberService memberService;
-    private final StudylogService studylogService;
-    private final DocumentService studylogDocumentService;
-    private final AbilityService abilityService;
-    private final UpdatedContentsRepository updatedContentsRepository;
-    private final ReportService reportService;
-    private final ApplicationContext applicationContext;
-    private final AbilityRepository abilityRepository;
+    @MockBean
+    private ReportService reportService;
 
-    private static boolean flag = false;
+    @Test
+    void 리포트_생성() {
+        when(reportService.createReport(any(), any())).thenReturn(REPORT_RESPONSE);
 
-    @Autowired
-    public ReportDocumentation(LevelService levelService,
-                               MissionService missionService,
-                               TagService tagService,
-                               MemberService memberService,
-                               StudylogService studylogService,
-                               DocumentService studylogDocumentService,
-                               AbilityService abilityService,
-                               UpdatedContentsRepository updatedContentsRepository,
-                               ReportService reportService,
-                               ApplicationContext applicationContext,
-                               AbilityRepository abilityRepository) {
-        this.levelService = levelService;
-        this.missionService = missionService;
-        this.tagService = tagService;
-        this.memberService = memberService;
-        this.studylogService = studylogService;
-        this.studylogDocumentService = studylogDocumentService;
-        this.abilityService = abilityService;
-        this.updatedContentsRepository = updatedContentsRepository;
-        this.reportService = reportService;
-        this.applicationContext = applicationContext;
-        this.abilityRepository = abilityRepository;
-    }
-
-    @Override
-    @BeforeEach
-    public void setUp(RestDocumentationContextProvider restDocumentation) {
-        RestAssured.port = port;
-
-        this.spec = new RequestSpecBuilder()
-            .addFilter(documentationConfiguration(restDocumentation))
-            .build();
-
-        if(!flag) {
-            DataLoaderApplicationListener dataLoaderApplicationListener = new DataLoaderApplicationListener(
-                levelService,
-                missionService,
-                tagService,
-                memberService,
-                studylogService,
-                studylogDocumentService,
-                abilityService,
-                updatedContentsRepository,
-                reportService,
-                abilityRepository
-            );
-            dataLoaderApplicationListener.onApplicationEvent(new ContextRefreshedEvent(applicationContext));
-            flag = true;
-        }
-    }
-
-    private String 로그인(GithubResponses githubResponse) {
-        return RestAssured.given().log().all()
-            .body(new TokenRequest(githubResponse.getCode()))
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .when().post("/login/token")
-            .then().log().all()
-            .extract().body().as(TokenResponse.class)
-            .getAccessToken();
-    }
-
-    private ReportResponse 리포트조회(Long id) {
-        return RestAssured.given().log().all()
-            .contentType(ContentType.JSON)
-            .when()
-            .get("/reports/{reportId}", id)
-            .then()
-            .statusCode(HttpStatus.OK.value())
-            .extract()
-            .as(ReportResponse.class);
+        given.header(AUTHORIZATION, "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+            .body(REPORT_REQUEST)
+            .when().post("/reports")
+            .then().log().all().apply(document("reports/create")).statusCode(HttpStatus.CREATED.value());
     }
 
     @Test
-    void 멤버의리포트를조회한다_simple() {
-        given("reports/read/members/simple")
-            .contentType(ContentType.JSON)
-            .when()
-            .get("/reports?username={username}&type=simple&page=0&size=10",  "devhyun637")
-            .then()
-            .statusCode(HttpStatus.OK.value())
-            .extract();
+    void 리포트_목록_조회() {
+        PageableResponse response = new PageableResponse(REPORT_RESPONSES, 2L, 1, 1);
+        when(reportService.findReportsByUsername(any(), any())).thenReturn(response);
+
+        given
+            .when().get("/members/username/reports")
+            .then().log().all().apply(document("reports/list")).statusCode(HttpStatus.OK.value());
     }
 
     @Test
-    void 멤버의리포트를조회한다_all() {
-        given("reports/read/members/all")
-            .contentType(ContentType.JSON)
-            .when()
-            .get("/reports?username={username}&type=all&page=0&size=10",  "devhyun637")
-            .then()
-            .statusCode(HttpStatus.OK.value())
-            .extract();
+    void 리포트_조회() {
+        when(reportService.findReportById(any())).thenReturn(REPORT_RESPONSE);
+
+        given
+            .when().get("/reports/1")
+            .then().log().all().apply(document("reports/read")).statusCode(HttpStatus.OK.value());
     }
 
     @Test
-    void 레포트를조회한다() {
-        given("reports/read/once")
-            .contentType(ContentType.JSON)
-            .when()
-            .get("/reports/{reportId}", 1)
-            .then()
-            .statusCode(HttpStatus.OK.value())
-            .extract();
+    void 역량_수정() {
+        doNothing().when(reportService).updateReport(any(), any(), any());
+
+        given.header(AUTHORIZATION, "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+            .body(REPORT_UPDATE_REQUEST)
+            .when().put("/reports/1")
+            .then().log().all().apply(document("reports/update")).statusCode(HttpStatus.OK.value());
     }
 
     @Test
-    void 레포트를업데이트한다() {
-        final ReportResponse reportResponse = 리포트조회(1L);
-        final ReportRequest changedReport = 리포트변경(reportResponse);
-        given("reports/update")
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, "Bearer " + 로그인(GithubResponses.티케))
-            .body(changedReport)
-            .when()
-            .put("/reports/{reportId}", 1)
-            .then()
-            .statusCode(HttpStatus.OK.value())
-            .extract();
+    void 역량_제거() {
+        doNothing().when(reportService).deleteReport(any(), any());
+
+        given.header(AUTHORIZATION, "Bearer " + accessToken)
+            .when().delete("/reports/1")
+            .then().log().all().apply(document("reports/delete")).statusCode(HttpStatus.NO_CONTENT.value());
     }
 
-    private ReportRequest 리포트변경(ReportResponse reportResponse) {
-        return new ReportRequest(
-            reportResponse.getId(),
-            "변역된 타이틀",
-            "변경된 설명",
-            toRequest(reportResponse.getAbilityGraph()),
-            toRequest(reportResponse.getStudylogs()),
-            reportResponse.isRepresent()
-        );
-    }
+    private static final ReportRequest REPORT_REQUEST = new ReportRequest(
+        "새로운 리포트",
+        "새로운 리포트 설명",
+        LocalDate.now().minusDays(14).toString(),
+        LocalDate.now().toString(),
+        Lists.newArrayList(
+            new ReportAbilityRequest(1L, 5),
+            new ReportAbilityRequest(2L, 8),
+            new ReportAbilityRequest(3L, 2),
+            new ReportAbilityRequest(4L, 3),
+            new ReportAbilityRequest(5L, 2)
+        )
+    );
 
-    private GraphRequest toRequest(GraphResponse abilityGraph) {
-        final List<AbilityRequest> abilityRequests = abilityGraph.getAbilities().stream()
-            .map(ability -> new AbilityRequest(
-                ability.getId(),
-                ability.getWeight(),
-                ability.getIsPresent())
-            ).collect(toList());
+    private static final ReportUpdateRequest REPORT_UPDATE_REQUEST = new ReportUpdateRequest(
+        "새로운 리포트",
+        "새로운 리포트 설명"
+    );
 
-        return new GraphRequest(abilityRequests);
-    }
+    private static final ReportResponse REPORT_RESPONSE = new ReportResponse(
+        1L,
+        "새로운 리포트",
+        "새로운 리포트 설명",
+        LocalDate.now().minusDays(14),
+        LocalDate.now(),
+        Lists.newArrayList(
+            new ReportAbilityResponse(1L, "역량A", "역량A 설명", "#001122", 5, 54L),
+            new ReportAbilityResponse(2L, "역량B", "역량B 설명", "#002122", 8, 57L),
+            new ReportAbilityResponse(3L, "역량C", "역량C 설명", "#301172", 2, 52L),
+            new ReportAbilityResponse(4L, "역량D", "역량D 설명", "#005122", 3, 32L),
+            new ReportAbilityResponse(5L, "역량E", "역량E 설명", "#081142", 2, 24L)
+        ),
+        Lists.newArrayList(
+            new ReportStudylogResponse(
+                new StudylogResponse(
+                    1L,
+                    new MemberResponse(),
+                    LocalDateTime.now(),
+                    LocalDateTime.now(),
+                    new MissionResponse(),
+                    "제목",
+                    "내용내용내용내용내용",
+                    Lists.newArrayList(new TagResponse(1L, "태그1"), new TagResponse(2L, "태그2")),
+                    false,
+                    false,
+                    10,
+                    false,
+                    1
+                ),
+                Lists.newArrayList(
+                    new ReportAbilityResponse(1L, "역량A", "역량A 설명", "#001122", 5, 54L)
+                ),
+                Lists.newArrayList(
+                    new ReportStudylogAbilityResponse("역량A", "#001122")
+                )
+            )
+        )
+    );
 
-    private List<ReportStudylogRequest> toRequest(List<StudylogResponse> studylogResponses) {
-        return studylogResponses.stream()
-            .map(studylogResponse -> new ReportStudylogRequest(
-                studylogResponse.getId(),
-                toRequest(studylogResponse))
-            ).collect(toList());
-    }
-
-    private List<Long> toRequest(StudylogResponse studylogResponse) {
-        return studylogResponse.getAbilities().stream().map(StudylogAbilityResponse::getId)
-            .collect(toList());
-    }
-
-    @Test
-    void 리포트를생성한다() {
-        ReportResponse reportResponse = 리포트조회(1L);
-        String accessToken = 로그인(GithubResponses.티케);
-        final ReportRequest reportRequest = toNewReportRequest(reportResponse);
-        given("reports/create")
-            .contentType(ContentType.JSON)
-            .body(reportRequest)
-            .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
-            .when()
-            .post("reports")
-            .then()
-            .statusCode(HttpStatus.OK.value())
-            .extract();
-    }
-
-    @Test
-    void 리포트를삭제한다() {
-        String accessToken = 로그인(GithubResponses.티케);
-        given("reports/delete")
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
-            .when()
-            .delete("reports/{reportId}", 2)
-            .then()
-            .statusCode(HttpStatus.OK.value())
-            .extract();
-    }
-
-    private ReportRequest toNewReportRequest(ReportResponse reportResponse) {
-        return new ReportRequest(
-            null,
+    private static final List<ReportResponse> REPORT_RESPONSES = Lists.newArrayList(
+        new ReportResponse(
+            1L,
             "새로운 리포트",
-            reportResponse.getDescription(),
-            toRequest(reportResponse.getAbilityGraph()),
-            toRequest(reportResponse.getStudylogs()),
-            reportResponse.isRepresent()
-        );
-    }
+            "새로운 리포트 설명",
+            LocalDate.now().minusDays(28),
+            LocalDate.now().minusDays(14),
+            Collections.emptyList(),
+            Collections.emptyList()
+        ),
+        new ReportResponse(
+            2L,
+            "두번째 새로운 리포트",
+            "두번째 새로운 리포트 설명",
+            LocalDate.now().minusDays(14),
+            LocalDate.now(),
+            Collections.emptyList(),
+            Collections.emptyList()
+        )
+    );
 }

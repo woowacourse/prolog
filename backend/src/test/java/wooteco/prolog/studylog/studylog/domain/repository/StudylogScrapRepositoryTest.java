@@ -7,20 +7,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.studylog.domain.StudylogScrap;
 import wooteco.prolog.member.domain.Role;
+import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.session.domain.Level;
 import wooteco.prolog.session.domain.Mission;
-import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.session.domain.repository.LevelRepository;
 import wooteco.prolog.session.domain.repository.MissionRepository;
+import wooteco.prolog.studylog.domain.Studylog;
+import wooteco.prolog.studylog.domain.StudylogScrap;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
+import wooteco.support.utils.RepositoryTest;
 
-@DataJpaTest
+@RepositoryTest
 public class StudylogScrapRepositoryTest {
 
     private static final Member 웨지 = new Member("sihyung92", "웨지", Role.CREW, 2222L,

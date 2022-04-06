@@ -19,12 +19,18 @@ const getMenuList = ({ username, isOwner }: { username: string; isOwner: boolean
       path: `/${username}/studylogs`,
       Icon: StudylogIcon,
     },
-    // {
-    //   key: PROFILE_PAGE_MENU.REPORTS,
-    //   title: '리포트',
-    //   path: `/${username}/reports`,
-    //   Icon: ReportIcon,
-    // },
+    {
+      key: PROFILE_PAGE_MENU.ABILITY,
+      title: '역량',
+      path: `/${username}/ability`,
+      Icon: StudylogIcon,
+    },
+    {
+      key: PROFILE_PAGE_MENU.REPORTS,
+      title: '리포트',
+      path: `/${username}/reports`,
+      Icon: ReportIcon,
+    },
   ];
   const privateMenu = [
     {
@@ -33,12 +39,6 @@ const getMenuList = ({ username, isOwner }: { username: string; isOwner: boolean
       path: `/${username}/scraps`,
       Icon: ScrapIcon,
     },
-    // {
-    //   key: PROFILE_PAGE_MENU.ABILITY,
-    //   title: '역량',
-    //   path: `/${username}/ability`,
-    //   Icon: StudylogIcon,
-    // },
   ];
 
   return isOwner ? [...defaultMenu, ...privateMenu] : defaultMenu;

@@ -7,11 +7,11 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.domain.repository.TagRepository;
+import wooteco.support.utils.RepositoryTest;
 
-@DataJpaTest
+@RepositoryTest
 class TagRepositoryTest {
 
     @Autowired

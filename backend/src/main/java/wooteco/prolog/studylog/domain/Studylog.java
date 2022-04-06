@@ -5,20 +5,30 @@ import java.util.stream.Collectors;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.common.BaseEntity;
+import wooteco.prolog.common.AuditingEntity;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.exception.AuthorNotValidException;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Studylog extends BaseEntity {
-
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+public class Studylog extends AuditingEntity {
+    private static final String DELETED_TITLE = "삭제된 학습로그";
+    private static final String DELETED_CONTENT = "삭제된 학습로그입니다.";
     private static final int POPULAR_SCORE = 3;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
@@ -43,19 +53,16 @@ public class Studylog extends BaseEntity {
     @Embedded
     private Likes likes;
 
-    public Studylog(Member member, String title, String content, Mission mission, List<Tag> tags) {
-        this(null, member, title, content, mission, tags);
-    }
+    private boolean deleted;
 
-    public Studylog(Long id, Member member, String title, String content, Mission mission, List<Tag> tags) {
-        super(id);
+    public Studylog(Member member, String title, String content, Mission mission, List<Tag> tags) {
         this.member = member;
         this.title = new Title(title);
         this.content = new Content(content);
         this.mission = mission;
         this.studylogTags = new StudylogTags();
         addTags(new Tags(tags));
-        this.viewCount =  new ViewCount();
+        this.viewCount = new ViewCount();
         this.likes = new Likes();
     }
 
@@ -138,14 +145,36 @@ public class Studylog extends BaseEntity {
     }
 
     public String getTitle() {
+        if (deleted) {
+            return DELETED_TITLE;
+        }
         return title.getTitle();
     }
 
     public String getContent() {
+        if (deleted) {
+            return DELETED_CONTENT;
+        }
         return content.getContent();
     }
 
     public int getViewCount() {
         return viewCount.getViews();
+    }
+
+    public boolean isBelongsTo(Long memberId) {
+        return this.member.getId().equals(memberId);
+    }
+
+    public String getNickname() {
+        return member.getNickname();
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void delete() {
+        this.deleted = true;
     }
 }
