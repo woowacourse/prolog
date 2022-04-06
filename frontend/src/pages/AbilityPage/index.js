@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import axios from 'axios';
@@ -54,30 +54,10 @@ const AbilityPage = () => {
   };
 
   /** 학습로그와 매핑된 역량 가져오기 */
-  const { data: mappedStudyLogs = [] } = useQuery(
-    [`${username}-ability-studylogs`, page],
-    async () => {
-      const { data } = await axios({
-        method: 'get',
-        url: `${BASE_URL}/members/${username}/ability-studylogs`,
-        headers: {
-          Authorization: `Bearer ${user.accessToken}`,
-        },
-        params: {
-          size: 5,
-          page: page,
-        },
-      });
-
-      return { ...data };
-    }
-  );
-
-  /** 학습로그 totalPage 가져오기 */
-  const { data: studyLogs = [] } = useQuery([`${username}-studylogs`, page], async () => {
+  const { data, isLoading } = useQuery([`${username}-ability-studylogs`, page], async () => {
     const { data } = await axios({
       method: 'get',
-      url: `${BASE_URL}/members/${username}/studylogs`,
+      url: `${BASE_URL}/members/${username}/ability-studylogs`,
       headers: {
         Authorization: `Bearer ${user.accessToken}`,
       },
@@ -88,6 +68,13 @@ const AbilityPage = () => {
     });
 
     return { ...data };
+  });
+
+  const studylogs = () => ({
+    data: data.data,
+    totalSize: data.totalSize,
+    totalPage: data.totalPage,
+    currPage: data.currentPage,
   });
 
   return (
@@ -134,15 +121,15 @@ const AbilityPage = () => {
               ))}
       </AbilityList>
 
-      <ReportStudyLogTable
-        mappedStudyLogs={mappedStudyLogs}
-        abilities={abilities}
-        readOnly={readOnly}
-        setPage={setPage}
-        // 페이지네이션을 위한 studylogs
-        studyLogs={studyLogs}
-        totalSize={studyLogs.totalSize ?? 0}
-      />
+      {!isLoading && (
+        <ReportStudyLogTable
+          studylogs={studylogs()}
+          abilities={abilities}
+          readOnly={readOnly}
+          setPage={setPage}
+          totalSize={studylogs().totalSize ?? 0}
+        />
+      )}
     </Container>
   );
 };

@@ -13,18 +13,10 @@ import SelectAbilityBox from './SelectAbilityBox';
 // TODO. 매핑된 역량은 삭제할 수 없다는 예외사항을 추가한다.
 // TODO. prefetch 기능을 사용한다. (20개 정도는 미리 가져와도 될듯..?)
 
-const ReportStudyLogTable = ({
-  mappedStudyLogs,
-  abilities,
-  setPage,
-  readOnly,
-  studyLogs,
-  totalSize,
-}) => {
+const ReportStudyLogTable = ({ studylogs, abilities, setPage, readOnly, totalSize }) => {
   const { user } = useContext(UserContext);
   const queryClient = useQueryClient();
 
-  const currStudyLogs = Object.values(mappedStudyLogs);
   /** 역량 선택은 자식 역량만 선택할 수 있다. */
   const wholeAbility = abilities?.map((parentAbility) => [...parentAbility.children]).flat();
 
@@ -148,7 +140,7 @@ const ReportStudyLogTable = ({
           </Styled.Thead>
 
           <Styled.Tbody>
-            {currStudyLogs?.map(({ studylog, abilities }) => (
+            {studylogs?.data?.map(({ studylog, abilities }) => (
               <Styled.TableRow key={studylog.id}>
                 <Styled.StudyLogTitle
                   isSelected={selectAbilityBox.id === studylog.id && selectAbilityBox.isOpen}
@@ -188,11 +180,11 @@ const ReportStudyLogTable = ({
               </Styled.TableRow>
             ))}
           </Styled.Tbody>
-          {currStudyLogs?.length === 0 && (
+          {totalSize === 0 && (
             <Styled.EmptyTableGuide>등록된 학습로그가 없습니다.</Styled.EmptyTableGuide>
           )}
         </table>
-        <Pagination dataInfo={studyLogs} onSetPage={setPage} />
+        <Pagination dataInfo={studylogs} onSetPage={setPage} />
       </Styled.Section>
     </>
   );
