@@ -17,7 +17,7 @@ const bannerList: BannerType[] = [
         </>
     ),
     reverse: true,
-    showMoreLink: 'https://dev.prolog.techcourse.co.kr/studylogs/2171',
+    showMoreLink: 'https://prolog.techcourse.co.kr/studylogs/2187',
     showMoreLinkText: '자세히 알아보기',
     sideImagePadding: 10,
   },  {
@@ -28,7 +28,7 @@ const bannerList: BannerType[] = [
           <h2>인기있는 학습로그 오픈 🎉</h2>
         </>
     ),
-    showMoreLink: 'https://dev.prolog.techcourse.co.kr/studylogs/2171',
+    showMoreLink: 'https://prolog.techcourse.co.kr/studylogs/2186',
     showMoreLinkText: '자세히 알아보기',
     sideImagePadding: 10,
   },
@@ -42,7 +42,7 @@ const bannerList: BannerType[] = [
       </>
     ),
     reverse: false,
-    showMoreLink: 'https://dev.prolog.techcourse.co.kr/studylogs/2171',
+    showMoreLink: 'https://prolog.techcourse.co.kr/studylogs/2188',
     showMoreLinkText: '자세히 알아보기',
     sideImagePadding: 10,
   },
