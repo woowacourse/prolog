@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import * as Styled from './SelectAbilityBox.styles';
 
 /**
@@ -6,13 +7,35 @@ import * as Styled from './SelectAbilityBox.styles';
  */
 const SelectAbilityBox = ({
   selectAbilityBoxRef,
-  toggleAbility,
-  studylog,
+  mappingAbility,
+  studylogId,
   abilities,
   wholeAbility,
+  setSelectAbilityBox,
 }) => {
-  const isChecked = (abilities, targetAbilityId) => {
-    return abilities.find((ability) => ability.id === targetAbilityId);
+  const abilityIds = abilities.map((ability) => ability.id);
+  const [updatedAbilites, setUpdatedAbilities] = useState(abilityIds);
+
+  const onSelectAbility = (event) => {
+    const targetAbilityId = Number(event.target.id);
+    const currAbilities = new Set(updatedAbilites);
+
+    if (currAbilities.has(targetAbilityId)) {
+      currAbilities.delete(targetAbilityId);
+    } else {
+      currAbilities.add(targetAbilityId);
+    }
+
+    setUpdatedAbilities([...currAbilities]);
+  };
+
+  const onMappingAbility = () => {
+    mappingAbility.mutate({ studylogId, abilities: updatedAbilites });
+    setSelectAbilityBox({ id: studylogId, isOpen: false });
+  };
+
+  const isChecked = (abilityIds, targetAbilityId) => {
+    return abilityIds.find((id) => id === targetAbilityId);
   };
 
   return (
@@ -30,15 +53,10 @@ const SelectAbilityBox = ({
             <Styled.Ability key={ability.id}>
               <label>
                 <input
+                  id={ability.id}
                   type="checkbox"
-                  onChange={() =>
-                    toggleAbility({
-                      studylogId: studylog.id, //
-                      abilitieIds: abilities.map((ability) => ability.id),
-                      targetAblityId: ability.id,
-                    })
-                  }
-                  defaultChecked={isChecked(abilities, ability.id)}
+                  onClick={onSelectAbility}
+                  defaultChecked={isChecked(abilityIds, ability.id)}
                 />
                 <Styled.ColorCircle backgroundColor={ability.color} />
                 <Styled.AbilityName>{ability.name}</Styled.AbilityName>
@@ -47,6 +65,10 @@ const SelectAbilityBox = ({
           ))
         )}
       </Styled.AbilityList>
+
+      <Styled.Footer>
+        <button onClick={onMappingAbility}>역량등록</button>
+      </Styled.Footer>
     </Styled.Wrapper>
   );
 };

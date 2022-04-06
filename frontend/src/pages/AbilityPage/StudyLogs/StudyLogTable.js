@@ -67,24 +67,21 @@ const ReportStudyLogTable = ({ studylogs, abilities, setPage, readOnly, totalSiz
     },
     {
       onSuccess: () => {
-        console.log('here');
         queryClient.refetchQueries([`${user.username}-ability-studylogs`]);
       },
     }
   );
 
-  const toggleAbility = ({ studylogId, abilitieIds, targetAblityId }) => {
-    const targetIndex = abilitieIds.findIndex((id) => id === targetAblityId);
-    let updatedAbilities = [];
-
+  const toggleAbility = ({ studylogId, abilityIds, targetAblityId }) => {
+    const targetIndex = abilityIds.findIndex((id) => id === targetAblityId);
     if (targetIndex === -1) {
-      updatedAbilities = [...abilitieIds, targetAblityId];
-    } else {
-      updatedAbilities = [
-        ...abilitieIds.slice(0, targetIndex),
-        ...abilitieIds.slice(targetIndex + 1),
-      ];
+      alert('삭제할 수 없는 역량입니다.');
     }
+
+    const updatedAbilities = [
+      ...abilityIds.slice(0, targetIndex),
+      ...abilityIds.slice(targetIndex + 1),
+    ];
 
     mappingAbility.mutate({ studylogId, abilities: updatedAbilities });
   };
@@ -112,7 +109,7 @@ const ReportStudyLogTable = ({ studylogs, abilities, setPage, readOnly, totalSiz
               onDelete={() => {
                 toggleAbility({
                   studylogId,
-                  abilitieIds: abilities.map((ability) => ability.id),
+                  abilityIds: abilities.map((ability) => ability.id),
                   targetAblityId: ability.id,
                 });
               }}
@@ -168,10 +165,11 @@ const ReportStudyLogTable = ({ studylogs, abilities, setPage, readOnly, totalSiz
                       {selectAbilityBox.id === studylog.id && selectAbilityBox.isOpen && (
                         <SelectAbilityBox
                           selectAbilityBoxRef={selectAbilityBoxRef}
-                          toggleAbility={toggleAbility}
-                          studylog={studylog}
+                          mappingAbility={mappingAbility}
+                          studylogId={studylog.id}
                           abilities={abilities}
                           wholeAbility={wholeAbility}
+                          setSelectAbilityBox={setSelectAbilityBox}
                         />
                       )}
                     </>

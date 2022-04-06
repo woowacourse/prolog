@@ -3,7 +3,7 @@ import { COLOR } from '../../../constants';
 
 export const Section = styled.section`
   && {
-    margin-top: 5rem;
+    margin: 5rem 0;
   }
 
   > #studylog-table-title {
