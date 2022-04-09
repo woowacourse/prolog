@@ -40,9 +40,7 @@ public class StudylogAbilityService {
     @Transactional
     public List<AbilityResponse> updateStudylogAbilities(Long memberId, Long studylogId, StudylogAbilityRequest studylogAbilityRequest) {
         Studylog studylog = studylogService.findStudylogById(studylogId);
-        if (!studylog.isBelongsTo(memberId)) {
-            throw new IllegalArgumentException("자신의 학습로그의 역량만 수정이 가능합니다.");
-        }
+        studylog.validateBelongTo(memberId);
 
         List<Ability> abilities = abilityService.findByIdIn(memberId, studylogAbilityRequest.getAbilities());
         // 자식 역량이 있는데 부모 역량이 있는 경우 예외처리

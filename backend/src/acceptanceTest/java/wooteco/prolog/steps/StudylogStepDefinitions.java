@@ -5,22 +5,28 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG1;
 import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG2;
 import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG3;
+import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG4;
+import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG1;
+import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG2;
 
 import com.google.common.collect.Iterables;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.messages.internal.com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.StudylogAcceptanceFixture;
+import wooteco.prolog.studylog.application.dto.StudylogMissionRequest;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
+import wooteco.prolog.studylog.application.dto.StudylogSessionRequest;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
+import wooteco.prolog.studylog.application.dto.TagRequest;
 
 public class StudylogStepDefinitions extends AcceptanceSteps {
 
@@ -30,10 +36,50 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         context.invokeHttpPostWithToken("/studylogs", STUDYLOG2.getStudylogRequest());
     }
 
+//    @Given("스터디로그를 작성하고")
+//    @When("스터디로그를 작성하면")
+//    public void 스터디로그를작성하면() {
+//        context.invokeHttpPostWithToken("/studylogs", STUDYLOG1.getStudylogRequest());
+//    }
+
     @Given("스터디로그를 작성하고")
     @When("스터디로그를 작성하면")
-    public void 스터디로그를작성하면() {
-        context.invokeHttpPostWithToken("/studylogs", STUDYLOG1.getStudylogRequest());
+    public void 세션과미션포함한스터디로그를작성하면() {
+        StudylogRequest studylogRequest = new StudylogRequest(
+            "[자바][옵셔널] 학습log 제출합니다.",
+            "옵셔널은 NPE를 배제하기 위해 만들어진 자바8에 추가된 라이브러리입니다. \n " +
+                "다양한 메소드를 호출하여 원하는 대로 활용할 수 있습니다",
+            1L,
+            1L,
+            Lists.newArrayList(
+                new TagRequest(TAG1.getTagName()),
+                new TagRequest(TAG2.getTagName())
+            )
+        );
+        context.invokeHttpPostWithToken("/studylogs", studylogRequest);
+
+        if (context.response.statusCode() == HttpStatus.CREATED.value()) {
+            context.storage.put("studylog", context.response.as(StudylogResponse.class));
+        }
+    }
+
+    @When("세션과 미션 없이 스터디로그를 작성하면")
+    public void 세션과미션없이스터디로그를작성하면() {
+        StudylogRequest studylogRequest = new StudylogRequest(
+            "[자바][옵셔널] 학습log 제출합니다.",
+            "옵셔널은 NPE를 배제하기 위해 만들어진 자바8에 추가된 라이브러리입니다. \n " +
+                "다양한 메소드를 호출하여 원하는 대로 활용할 수 있습니다",
+            null,
+            null,
+            Lists.newArrayList(
+                new TagRequest(TAG1.getTagName()),
+                new TagRequest(TAG2.getTagName())
+            )
+        );
+        context.invokeHttpPostWithToken("/studylogs", studylogRequest);
+        if (context.response.statusCode() == HttpStatus.CREATED.value()) {
+            context.storage.put("studylog", context.response.as(StudylogResponse.class));
+        }
     }
 
     @Given("{string} 스터디로그를 작성하고")
@@ -47,6 +93,13 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     public void 스터디로그가작성된다() {
         int statusCode = context.response.statusCode();
         assertThat(statusCode).isEqualTo(HttpStatus.CREATED.value());
+
+        StudylogResponse studylogResponse = (StudylogResponse) context.storage.get("studylog");
+
+        context.invokeHttpGet("/studylogs/" + studylogResponse.getId());
+
+        StudylogResponse response = context.response.as(StudylogResponse.class);
+        assertThat(response.getId()).isNotNull();
     }
 
     @Given("{long}개의 스터디로그를 작성하고")
@@ -95,16 +148,13 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         }
     }
 
-    @Given("서로 다른 레벨을 가진 스터디로그를 다수 생성하고")
-    public void 서로다른레벨을가진스터디로그를생성() {
+    @Given("서로 다른 세션을 가진 스터디로그를 다수 생성하고")
+    public void 서로다른세션을가진스터디로그를생성() {
         for (int i = 0; i < 2; i++) {
-            context.invokeHttpPostWithToken("/studylogs", STUDYLOG1.getStudylogRequest());
+            context.invokeHttpPostWithToken("/studylogs", STUDYLOG3.getStudylogRequest());
         }
         for (int i = 0; i < 3; i++) {
-            context.invokeHttpPostWithToken("/studylogs", STUDYLOG2.getStudylogRequest());
-        }
-        for (int i = 0; i < 4; i++) {
-            context.invokeHttpPostWithToken("/studylogs", STUDYLOG3.getStudylogRequest());
+            context.invokeHttpPostWithToken("/studylogs", STUDYLOG4.getStudylogRequest());
         }
     }
 
@@ -140,9 +190,9 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         context.invokeHttpGet(path);
     }
 
-    @When("{int}번 레벨의 스터디로그를 조회하면")
-    public void 특정레벨의스터디로그를조회하면(int levelNumber) {
-        String path = String.format("/studylogs?levels=%d", levelNumber);
+    @When("{int}번 세션의 스터디로그를 조회하면")
+    public void 특정세션의스터디로그를조회하면(int sessionNumber) {
+        String path = String.format("/studylogs?sessions=%d", sessionNumber);
         context.invokeHttpGet(path);
     }
 
@@ -345,5 +395,31 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
             Long id = Long.parseLong(ids.get(i));
             assertThat(response.getId()).isEqualTo(id);
         }
+    }
+
+    @When("스터디로그 세션을 {long}로 수정하면")
+    public void 스터디로그세션을L로수정하면(long sessionId) {
+        StudylogResponse studylogResponse = (StudylogResponse) context.storage.get("studylog");
+        context.invokeHttpPutWithToken("/studylogs/" + studylogResponse.getId() + "/sessions", new StudylogSessionRequest(sessionId));
+    }
+
+    @Then("스터디로그 세션이 {long}로 수정된다")
+    public void 스터디로그세션이로수정된다(long sessionId) {
+        StudylogResponse studylogResponse = (StudylogResponse) context.storage.get("studylog");
+        context.invokeHttpGet("/studylogs/" + studylogResponse.getId());
+        assertThat(context.response.as(StudylogResponse.class).getSession().getId()).isEqualTo(sessionId);
+    }
+
+    @When("스터디로그 미션을 {long}로 수정하면")
+    public void 스터디로그미션을로수정하면(long missionId) {
+        StudylogResponse studylogResponse = (StudylogResponse) context.storage.get("studylog");
+        context.invokeHttpPutWithToken("/studylogs/" + studylogResponse.getId() + "/missions", new StudylogMissionRequest(missionId));
+    }
+
+    @Then("스터디로그 미션이 {long}로 수정된다")
+    public void 스터디로그미션이로수정된다(long missionId) {
+        StudylogResponse studylogResponse = (StudylogResponse) context.storage.get("studylog");
+        context.invokeHttpGet("/studylogs/" + studylogResponse.getId());
+        assertThat(context.response.as(StudylogResponse.class).getMission().getId()).isEqualTo(missionId);
     }
 }

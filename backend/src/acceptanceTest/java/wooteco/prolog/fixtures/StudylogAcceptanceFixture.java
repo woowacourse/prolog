@@ -18,6 +18,7 @@ public enum StudylogAcceptanceFixture {
         "[자바][옵셔널] 학습log 제출합니다.",
         "옵셔널은 NPE를 배제하기 위해 만들어진 자바8에 추가된 라이브러리입니다. \n " +
             "다양한 메소드를 호출하여 원하는 대로 활용할 수 있습니다",
+        null,
         1L,
         TAG1,
         TAG2
@@ -26,6 +27,7 @@ public enum StudylogAcceptanceFixture {
         "[자바스크립트][비동기] 학습log 제출합니다.",
         "모던 JS의 fetch문, ajax라이브러리인 axios등을 통해 비동기 요청을 \n " +
             "편하게 할 수 있습니다. 자바 최고",
+        null,
         2L,
         TAG3,
         TAG4
@@ -34,18 +36,35 @@ public enum StudylogAcceptanceFixture {
         "[자료구조] 자료구조는 어려워요",
         "진짜 어려움",
         1L,
+        1L,
         TAG1,
         TAG5
     ),
     STUDYLOG4(
         "[DOM] DOM DOM Dance",
         "덤덤 댄스 아니고",
+        2L,
         2L
     ),
     STUDYLOG5(
         "[알고리즘] 자료구조의 big O에 관하여",
         "big O는 small O보다 크다",
         2L,
+        2L,
+        TAG5,
+        TAG6
+    ),
+    STUDYLOG6(
+        "[DOM] DOM DOM Dance",
+        "덤덤 댄스 아니고",
+        2L,
+        null
+    ),
+    STUDYLOG7(
+        "[알고리즘] 자료구조의 big O에 관하여",
+        "big O는 small O보다 크다",
+        2L,
+        null,
         TAG5,
         TAG6
     );
@@ -56,19 +75,20 @@ public enum StudylogAcceptanceFixture {
     StudylogAcceptanceFixture(
         String title,
         String content,
+        Long sessionId,
         Long missionId,
         TagAcceptanceFixture... tags) {
         this.tags = Arrays.asList(tags);
         List<TagRequest> tagRequests = Arrays.stream(tags)
             .map(TagAcceptanceFixture::getTagRequest)
             .collect(toList());
-        this.studylogRequest = new StudylogRequest(title, content, missionId, tagRequests);
+        this.studylogRequest = new StudylogRequest(title, content, sessionId, missionId, tagRequests);
     }
 
     public static List<StudylogRequest> findByMissionNumber(Long missionId) {
         return Arrays.stream(StudylogAcceptanceFixture.values())
             .map(StudylogAcceptanceFixture::getStudylogRequest)
-            .filter(it -> it.getMissionId().equals(missionId))
+            .filter(it -> it.getMissionId() != null && it.getMissionId().equals(missionId))
             .collect(toList());
     }
 

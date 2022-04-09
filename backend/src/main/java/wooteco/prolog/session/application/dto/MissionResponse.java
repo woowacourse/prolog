@@ -12,10 +12,12 @@ public class MissionResponse {
 
     private Long id;
     private String name;
-    private LevelResponse level;
+    private SessionResponse session;
 
     public static MissionResponse of(Mission mission) {
-        return new MissionResponse(mission.getId(), mission.getName(),
-                                   LevelResponse.of(mission.getLevel()));
+        if (mission == null) {
+            return null;
+        }
+        return new MissionResponse(mission.getId(), mission.getName(), SessionResponse.of(mission.getSession()));
     }
 }

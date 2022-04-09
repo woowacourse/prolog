@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
@@ -75,6 +76,7 @@ public class StudylogsResponse {
 
         return new StudylogResponse(
             studylog,
+            SessionResponse.of(studylog.getSession()),
             MissionResponse.of(studylog.getMission()),
             toResponse(tags),
             studylog.likedByMember(memberId)

@@ -47,22 +47,6 @@ public class StudylogController {
         return ResponseEntity.ok(studylogsResponse);
     }
 
-    /**
-     * 갱신할 스터디로그 개수를 지정해야하기 때문에 pageable 필요
-     * 어드민 페이지를 붙이기 전에 편의상 METHOD 를 GET으로 함
-     */
-    @GetMapping("/popular/sync")
-    public ResponseEntity<Void> updatePopularStudylogs(@PageableDefault Pageable pageable) {
-        studylogService.updatePopularStudylogs(pageable);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/popular")
-    public ResponseEntity<StudylogsResponse> showPopularStudylogs(@AuthMemberPrincipal LoginMember member, @PageableDefault Pageable pageable) {
-        StudylogsResponse studylogsResponse = studylogService.findPopularStudylogs(pageable, member.getId(), member.isAnonymous());
-        return ResponseEntity.ok(studylogsResponse);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<StudylogResponse> showStudylog(@PathVariable String id, @AuthMemberPrincipal LoginMember member) {
         if (!NumberUtils.isNumeric(id)) {
