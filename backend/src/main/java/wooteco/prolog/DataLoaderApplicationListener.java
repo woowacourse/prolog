@@ -15,10 +15,10 @@ import wooteco.prolog.ability.application.dto.DefaultAbilityCreateRequest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.session.application.LevelService;
+import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.MissionService;
-import wooteco.prolog.session.application.dto.LevelRequest;
-import wooteco.prolog.session.application.dto.LevelResponse;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.DocumentService;
@@ -36,7 +36,7 @@ import wooteco.prolog.update.UpdatedContentsRepository;
 public class DataLoaderApplicationListener implements
     ApplicationListener<ContextRefreshedEvent> {
 
-    private LevelService levelService;
+    private SessionService sessionService;
     private MissionService missionService;
     private TagService tagService;
     private MemberService memberService;
@@ -49,8 +49,8 @@ public class DataLoaderApplicationListener implements
     public void onApplicationEvent(ContextRefreshedEvent event) {
         studylogDocumentService.deleteAll();
 
-        // level init
-        Levels.init(levelService);
+        // session init
+        Sessions.init(sessionService);
 
         // mission init
         Missions.init(missionService);
@@ -128,22 +128,22 @@ public class DataLoaderApplicationListener implements
         updatedContentsRepository.save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
     }
 
-    private enum Levels {
-        LEVEL1(new LevelRequest("백엔드Java 레벨1 - 2021")),
-        LEVEL2(new LevelRequest("프론트엔드JS 레벨1 - 2021")),
-        LEVEL3(new LevelRequest("백엔드Java 레벨2 - 2021")),
-        LEVEL4(new LevelRequest("프론트엔드JS 레벨2 - 2021"));
+    private enum Sessions {
+        LEVEL1(new SessionRequest("백엔드Java 세션1 - 2021")),
+        LEVEL2(new SessionRequest("프론트엔드JS 세션1 - 2021")),
+        LEVEL3(new SessionRequest("백엔드Java 세션2 - 2021")),
+        LEVEL4(new SessionRequest("프론트엔드JS 세션2 - 2021"));
 
-        private final LevelRequest request;
-        private LevelResponse response;
+        private final SessionRequest request;
+        private SessionResponse response;
 
-        Levels(LevelRequest levelRequest) {
-            this.request = levelRequest;
+        Sessions(SessionRequest sessionRequest) {
+            this.request = sessionRequest;
         }
 
-        public static void init(LevelService levelService) {
-            for (Levels level : values()) {
-                level.response = levelService.create(level.request);
+        public static void init(SessionService sessionService) {
+            for (Sessions session : values()) {
+                session.response = sessionService.create(session.request);
             }
         }
 
@@ -153,10 +153,10 @@ public class DataLoaderApplicationListener implements
     }
 
     private enum Missions {
-        MISSION1(new MissionRequest("자동차경주", Levels.LEVEL1.getId())),
-        MISSION2(new MissionRequest("로또", Levels.LEVEL2.getId())),
-        MISSION3(new MissionRequest("장바구니", Levels.LEVEL3.getId())),
-        MISSION4(new MissionRequest("지하철", Levels.LEVEL4.getId()));
+        MISSION1(new MissionRequest("자동차경주", Sessions.LEVEL1.getId())),
+        MISSION2(new MissionRequest("로또", Sessions.LEVEL2.getId())),
+        MISSION3(new MissionRequest("장바구니", Sessions.LEVEL3.getId())),
+        MISSION4(new MissionRequest("지하철", Sessions.LEVEL4.getId()));
 
         private final MissionRequest request;
         private MissionResponse response;
@@ -284,6 +284,7 @@ public class DataLoaderApplicationListener implements
             return new StudylogRequest(
                 "페이지네이션 데이터 " + cnt,
                 "좋은 내용",
+                Sessions.values()[cnt++ % Missions.values().length].getId(),
                 Missions.values()[cnt++ % Missions.values().length].getId(),
                 TagRequests.random()
             );

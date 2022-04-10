@@ -1,7 +1,7 @@
 @api
 Feature: 프로필 관련 기능
   Background: 사전 작업
-    Given 레벨 여러개를 생성하고
+    Given 세션 여러개를 생성하고
     And 미션 여러개를 생성하고
 
   Scenario: 멤버 프로필 조회하기
