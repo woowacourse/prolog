@@ -12,12 +12,9 @@ public interface StudylogAbilityRepository extends JpaRepository<StudylogAbility
 
     Page<StudylogAbility> findByMemberId(Long memberId, Pageable pageable);
 
-    List<StudylogAbility> findByAbilityIdIn(List<Long> abilityIds);
-
     Page<StudylogAbility> findByAbilityIdIn(List<Long> abilityIds, Pageable pageable);
 
     List<StudylogAbility> findByStudylogIdIn(List<Long> studylogIds);
 
     void deleteByStudylogId(Long studylogId);
-
 }

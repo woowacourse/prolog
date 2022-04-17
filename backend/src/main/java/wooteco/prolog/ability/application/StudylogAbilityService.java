@@ -3,6 +3,7 @@ package wooteco.prolog.ability.application;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.context.event.EventListener;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.domain.Studylog;
+import wooteco.prolog.studylog.event.StudylogDeleteEvent;
 
 @Service
 @Transactional(readOnly = true)
@@ -103,5 +105,10 @@ public class StudylogAbilityService {
     public List<StudylogAbility> findStudylogAbilitiesInPeriod(Long memberId, LocalDate startDate, LocalDate endDate) {
         List<Studylog> studylogs = studylogService.findStudylogsInPeriod(memberId, startDate, endDate);
         return studylogAbilityRepository.findByStudylogIdIn(studylogs.stream().map(Studylog::getId).collect(Collectors.toList()));
+    }
+
+    @EventListener
+    public void onStudylogDeleteEvent(StudylogDeleteEvent event) {
+        studylogAbilityRepository.deleteByStudylogId(event.getStudylogId());
     }
 }
