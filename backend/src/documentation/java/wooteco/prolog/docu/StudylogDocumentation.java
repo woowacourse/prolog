@@ -15,8 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
-import wooteco.prolog.session.application.dto.LevelRequest;
-import wooteco.prolog.session.application.dto.LevelResponse;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
@@ -89,7 +89,7 @@ class StudylogDocumentation extends Documentation {
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .when().get(
-                "/posts?keyword=joanne&levels=1&missions=1&tags=1&tags=2&usernames=soulG&startDate=20210901&endDate=20211231")
+                "/posts?keyword=joanne&sessions=1&missions=1&tags=1&tags=2&usernames=soulG&startDate=20210901&endDate=20211231")
             .then().log().all().extract();
 
         // given
@@ -144,8 +144,8 @@ class StudylogDocumentation extends Documentation {
         String title = "수정된 제목";
         String content = "수정된 내용";
 
-        Long levelId = 레벨_등록함(new LevelRequest("레벨2"));
-        Long missionId = 미션_등록함(new MissionRequest("수정된 미션", levelId));
+        Long sessionId = 세션_등록함(new SessionRequest("세션2"));
+        Long missionId = 미션_등록함(new MissionRequest("수정된 미션", sessionId));
         List<TagRequest> tags = Arrays.asList(
             new TagRequest("spa"),
             new TagRequest("edit")
@@ -203,8 +203,8 @@ class StudylogDocumentation extends Documentation {
     private StudylogRequest createStudylogRequest1() {
         String title = "나는야 Joanne";
         String content = "SPA 방식으로 앱을 구현하였음.\n" + "router 를 구현 하여 이용함.\n";
-        Long levelId = 레벨_등록함(new LevelRequest("레벨1"));
-        Long missionId = 미션_등록함(new MissionRequest("레벨1 - 지하철 노선도 미션", levelId));
+        Long sessionId = 세션_등록함(new SessionRequest("세션1"));
+        Long missionId = 미션_등록함(new MissionRequest("세션1 - 지하철 노선도 미션", sessionId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("spa"), new TagRequest("router"));
 
         return new StudylogRequest(title, content, missionId, tags);
@@ -213,8 +213,8 @@ class StudylogDocumentation extends Documentation {
     private StudylogRequest createStudylogRequest2() {
         String title = "JAVA";
         String content = "Spring Data JPA를 학습함.";
-        Long levelId = 레벨_등록함(new LevelRequest("레벨3"));
-        Long missionId = 미션_등록함(new MissionRequest("레벨3 - 프로젝트", levelId));
+        Long sessionId = 세션_등록함(new SessionRequest("세션3"));
+        Long missionId = 미션_등록함(new MissionRequest("세션3 - 프로젝트", sessionId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("java"), new TagRequest("jpa"));
 
         return new StudylogRequest(title, content, missionId, tags);
@@ -230,17 +230,17 @@ class StudylogDocumentation extends Documentation {
             .then().log().all().extract();
     }
 
-    private Long 레벨_등록함(LevelRequest request) {
+    private Long 세션_등록함(SessionRequest request) {
         return RestAssured
             .given().log().all()
             .body(request)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when()
-            .post("/levels")
+            .post("/sessions")
             .then()
             .log().all()
             .extract()
-            .as(LevelResponse.class)
+            .as(SessionResponse.class)
             .getId();
     }
 

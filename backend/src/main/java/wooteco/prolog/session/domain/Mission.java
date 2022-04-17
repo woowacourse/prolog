@@ -1,6 +1,5 @@
 package wooteco.prolog.session.domain;
 
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,13 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.studylog.exception.TooLongMissionNameException;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@EqualsAndHashCode(of = "id")
 public class Mission {
 
     public static final int MAX_LENGTH = 45;
@@ -28,44 +29,24 @@ public class Mission {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "level_id")
-    private Level level;
+    @JoinColumn(name = "session_id")
+    private Session session;
 
-    public Mission(String name, Level level) {
-        this(null, name, level);
+    public Mission(String name, Session session) {
+        this(null, name, session);
     }
 
-    public Mission(Long id, String name, Level level) {
-        this.id = id;
+    public Mission(Long id, String name, Session session) {
         validateMaxLength(name);
+
+        this.id = id;
         this.name = name;
-        this.level = level;
+        this.session = session;
     }
 
     private void validateMaxLength(String name) {
         if (name.length() > MAX_LENGTH) {
             throw new TooLongMissionNameException();
         }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Mission)) {
-            return false;
-        }
-        Mission mission = (Mission) o;
-        return Objects.equals(id, mission.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

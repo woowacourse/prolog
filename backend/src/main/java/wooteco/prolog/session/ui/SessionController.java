@@ -21,9 +21,9 @@ public class SessionController {
     private final SessionService sessionService;
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody SessionRequest sessionRequest) {
+    public ResponseEntity<SessionResponse> create(@RequestBody SessionRequest sessionRequest) {
         SessionResponse sessionResponse = sessionService.create(sessionRequest);
-        return ResponseEntity.created(URI.create("/sessions/" + sessionResponse.getId())).build();
+        return ResponseEntity.created(URI.create("/sessions/" + sessionResponse.getId())).body(sessionResponse);
     }
 
     @GetMapping

@@ -23,6 +23,7 @@ import wooteco.prolog.ability.ui.StudylogAbilityController;
 import wooteco.prolog.common.PageableResponse;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.TagResponse;
 
@@ -79,6 +80,7 @@ public class StudylogAbilityDocumentation extends NewDocumentation {
                     new MemberResponse(),
                     LocalDateTime.now(),
                     LocalDateTime.now(),
+                    new SessionResponse(),
                     new MissionResponse(),
                     "제목",
                     "내용내용내용내용내용",
