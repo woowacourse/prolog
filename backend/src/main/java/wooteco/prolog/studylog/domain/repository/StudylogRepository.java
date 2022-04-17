@@ -12,8 +12,8 @@ import wooteco.prolog.studylog.domain.Studylog;
 
 public interface StudylogRepository extends JpaRepository<Studylog, Long>, JpaSpecificationExecutor<Studylog> {
 
-    @Query(value = "select distinct p from Studylog p left join fetch p.studylogTags.values pt left join fetch pt.tag where p.member = :member",
-        countQuery = "select count(p) from Studylog p where p.member = :member")
+    @Query(value = "select distinct p from Studylog p left join fetch p.studylogTags.values pt left join fetch pt.tag where p.member = :member and p.deleted <> true",
+        countQuery = "select count(p) from Studylog p where p.member = :member and p.deleted <> true")
     Page<Studylog> findByMember(Member member, Pageable pageable);
 
     @Query(value = "select p from Studylog p where p.member = :member and p.createdAt between :start and :end")
