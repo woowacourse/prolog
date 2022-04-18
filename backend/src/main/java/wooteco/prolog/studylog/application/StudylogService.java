@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -40,7 +41,7 @@ import wooteco.prolog.studylog.domain.repository.StudylogReadRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
-import wooteco.prolog.studylog.exception.AuthorNotValidException;
+import wooteco.prolog.studylog.event.StudylogDeleteEvent;
 import wooteco.prolog.studylog.exception.StudylogArgumentException;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 import wooteco.prolog.studylog.exception.StudylogReadNotExistException;
@@ -60,6 +61,7 @@ public class StudylogService {
     private final StudylogRepository studylogRepository;
     private final StudylogScrapRepository studylogScrapRepository;
     private final StudylogReadRepository studylogReadRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public List<StudylogResponse> insertStudylogs(Long memberId, List<StudylogRequest> studylogRequests) {
@@ -290,6 +292,8 @@ public class StudylogService {
         checkScrapedOrRead(memberId, studylogId);
         memberTagService.removeMemberTag(tags, foundMember);
         studylog.delete();
+
+        eventPublisher.publishEvent(new StudylogDeleteEvent(studylogId));
     }
 
     private void checkScrapedOrRead(Long memberId, Long studylogId) {
