@@ -12,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 public class StudylogsSearchRequest {
 
     private final String keyword;
-    private final List<Long> levels;
+    private final List<Long> sessions;
     private final List<Long> missions;
     private final List<Long> tags;
     private final List<String> usernames;

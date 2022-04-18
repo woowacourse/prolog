@@ -29,10 +29,10 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
 
     @Override
     public StudylogDocumentResponse findBySearchKeyword(String keyword, List<Long> tags, List<Long> missions,
-                                                        List<Long> levels, List<String> usernames,
+                                                        List<Long> sessions, List<String> usernames,
                                                         LocalDate start, LocalDate end, Pageable pageable) {
         final Page<Studylog> studylogs = studylogRepository.findAll(
-            makeSpecifications(keyword.toLowerCase(), tags, missions, levels, usernames, start, end), pageable);
+            makeSpecifications(keyword.toLowerCase(), tags, missions, sessions, usernames, start, end), pageable);
 
         final List<Long> studylogIds = studylogs.stream()
             .map(Studylog::getId)
@@ -45,7 +45,7 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
     }
 
     private Specification<Studylog> makeSpecifications(String keyword, List<Long> tags, List<Long> missions,
-                                                       List<Long> levels, List<String> usernames,
+                                                       List<Long> sessions, List<String> usernames,
                                                        LocalDate start, LocalDate end
     ) {
         List<String> keywords = new ArrayList<>();
@@ -55,7 +55,7 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
 
         return StudylogSpecification.likeKeyword("title", keywords)
             .or(StudylogSpecification.likeKeyword("content", keywords))
-            .and(StudylogSpecification.findByLevelIn(levels)
+            .and(StudylogSpecification.equalIn("session", sessions)
                 .and(StudylogSpecification.equalIn("mission", missions))
                 .and(StudylogSpecification.findByTagIn(tags))
                 .and(StudylogSpecification.findByUsernameIn(usernames))

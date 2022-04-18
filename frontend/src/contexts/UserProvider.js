@@ -19,10 +19,17 @@ const DEFAULT_USER = {
 export const UserContext = createContext(DEFAULT_USER);
 
 const UserProvider = ({ children }) => {
-  const [state, setState] = useState(DEFAULT_USER);
+  const [state, setState] = useState({
+    ...DEFAULT_USER,
+    accessToken: getLocalStorageItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
+  });
+
+  useEffect(() => {
+    userProfileRequest.fetchData();
+  }, [state.accessToken]);
 
   const userProfileRequest = useRequest(
-    DEFAULT_USER,
+    state,
     () => {
       if (!state.accessToken) {
         return;
@@ -41,10 +48,7 @@ const UserProvider = ({ children }) => {
         isLoggedIn: true,
       }));
     },
-    () => {
-      localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
-      setState(DEFAULT_USER);
-    }
+    onLogout
   );
 
   const { mutate: onLogin } = useMutation(loginRequest, {
@@ -54,22 +58,10 @@ const UserProvider = ({ children }) => {
     },
   });
 
-  const onLogout = () => {
+  function onLogout() {
     localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
     setState(DEFAULT_USER);
-  };
-
-  useEffect(() => {
-    const accessToken = getLocalStorageItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
-
-    if (accessToken) {
-      setState({ ...state, accessToken });
-    }
-  }, []);
-
-  useEffect(() => {
-    userProfileRequest.fetchData();
-  }, [state.accessToken]);
+  }
 
   return (
     <UserContext.Provider value={{ user: state, onLogin, onLogout }}>

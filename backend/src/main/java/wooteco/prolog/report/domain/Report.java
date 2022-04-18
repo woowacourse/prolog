@@ -1,18 +1,14 @@
 package wooteco.prolog.report.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.member.domain.Member;
 
 @Entity
 @NoArgsConstructor
@@ -25,23 +21,25 @@ public class Report {
 
     private String title;
 
+    @Column(nullable = false, columnDefinition = "text")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+    private LocalDate startDate;
 
-    @OneToMany(mappedBy = "report", fetch = FetchType.LAZY)
-    private List<ReportAbility> abilities = new ArrayList<>();
+    private LocalDate endDate;
 
-    public Report(String title, String description, Member member) {
+    private Long memberId;
+
+    public Report(String title, String description, Long memberId, LocalDate startDate, LocalDate endDate) {
         this.title = title;
         this.description = description;
-        this.member = member;
+        this.memberId = memberId;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public boolean isBelongTo(Long memberId) {
-        return member.getId().equals(memberId);
+        return this.memberId.equals(memberId);
     }
 
     public void update(String title, String description) {

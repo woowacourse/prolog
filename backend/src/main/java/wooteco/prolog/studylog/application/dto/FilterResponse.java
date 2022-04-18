@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.member.application.dto.MemberResponse;
-import wooteco.prolog.session.application.dto.LevelResponse;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.application.dto.MissionResponse;
 
 @NoArgsConstructor
@@ -13,7 +13,7 @@ import wooteco.prolog.session.application.dto.MissionResponse;
 @Getter
 public class FilterResponse {
 
-    private List<LevelResponse> levels;
+    private List<SessionResponse> sessions;
     private List<MissionResponse> missions;
     private List<TagResponse> tags;
     private List<MemberResponse> members;

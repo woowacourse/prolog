@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
@@ -24,6 +25,7 @@ import wooteco.prolog.report.exception.DefaultAbilityNotFoundException;
 
 @Service
 @Transactional(readOnly = true)
+@AllArgsConstructor
 public class AbilityService {
 
     private static final String COMMON_TYPE = "common";
@@ -31,16 +33,6 @@ public class AbilityService {
     private final AbilityRepository abilityRepository;
     private final DefaultAbilityRepository defaultAbilityRepository;
     private final MemberService memberService;
-
-    public AbilityService(
-        AbilityRepository abilityRepository,
-        DefaultAbilityRepository defaultAbilityRepository,
-        MemberService memberService
-    ) {
-        this.abilityRepository = abilityRepository;
-        this.defaultAbilityRepository = defaultAbilityRepository;
-        this.memberService = memberService;
-    }
 
     @Transactional
     public AbilityResponse createAbility(Long memberId, AbilityCreateRequest request) {
@@ -65,8 +57,7 @@ public class AbilityService {
         return extractChildAbility(member, abilities, name, description, color, parentId);
     }
 
-    private Ability extractParentAbility(Member member, List<Ability> abilities, String name, String description,
-                                         String color) {
+    private Ability extractParentAbility(Member member, List<Ability> abilities, String name, String description, String color) {
         Ability parentAbility = Ability.parent(name, description, color, member);
 
         parentAbility.validateDuplicateName(abilities);
@@ -75,8 +66,7 @@ public class AbilityService {
         return parentAbility;
     }
 
-    private Ability extractChildAbility(Member member, List<Ability> abilities, String name, String description,
-                                        String color, Long parentId) {
+    private Ability extractChildAbility(Member member, List<Ability> abilities, String name, String description, String color, Long parentId) {
         Ability parentAbility = findAbilityById(parentId);
         Ability childAbility = Ability.child(name, description, color, parentAbility, member);
 
@@ -120,14 +110,14 @@ public class AbilityService {
     public void updateAbility(Long memberId, Long abilityId, AbilityUpdateRequest request) {
         Ability ability = findAbilityByIdAndMemberId(abilityId, memberId);
         List<Ability> abilities = new ArrayList<>(findByMemberId(memberId));
+        // 수정할 대상은 중복 검증을 하지 않는다.
         abilities.remove(ability);
 
-        if (ability.isParent()) {
-            request.toEntity().validateDuplicateName(abilities);
-            request.toEntity().validateDuplicateColor(abilities);
-        }
-
         request.toEntity().validateDuplicateName(abilities);
+
+        if (ability.isParent()) {
+            request.toEntity().validateDuplicateColor(abilities, ability);
+        }
 
         ability.update(request.toEntity());
     }

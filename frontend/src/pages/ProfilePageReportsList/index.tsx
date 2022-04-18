@@ -1,104 +1,39 @@
-import { useContext, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import { css } from '@emotion/react';
 
-import { Ability } from '../ProfilePageReports/AbilityGraph';
-
-import useRequest from '../../hooks/useRequest';
-import { requestGetReportList } from '../../service/requests';
 import { UserContext } from '../../contexts/UserProvider';
+import * as Styled from './styles';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import { BASE_URL } from '../../configs/environment';
 
-import { Chip, Pagination } from '../../components';
-
-import { COLOR, REQUEST_REPORT_TYPE } from '../../constants';
-
-import {
-  Container,
-  AddNewReportLink,
-  ReportList,
-  Card,
-  AbilityList,
-  StudylogCount,
-  Badge,
-} from './styles';
-
-import { ReactComponent as StudylogIcon } from '../../assets/images/post.svg';
-
-type Report = {
-  id: number;
-  title: string;
-  description: string;
-  abilityGraph: {
-    abilities: Ability[];
-  };
-  studylogs: [];
-  represent: boolean;
-  createdAt: string;
-};
-
-const defaultReports = {
-  reports: [],
-  currPage: 1,
-  totalSize: 0,
-  totalPage: 1,
-};
+// type Report = {
+//   id: number;
+//   title: string;
+//   description: string;
+//   startDate: string;
+//   endDate: string;
+// };
 
 const ProfilePageReportsList = () => {
   const { username } = useParams<{ username: string }>();
+  const { user } = useContext(UserContext);
+  const readOnly = username !== user.username;
 
-  const [reports, setReports] = useState(defaultReports);
+  /** 리포트 목록 가져오기 */
+  const { data: ReportList = [] } = useQuery([`${username}-studylogs`], async () => {
+    const { data } = await axios({
+      method: 'get',
+      url: `${BASE_URL}/members/${username}/reports`,
+    });
 
-  const { user: loginUser } = useContext(UserContext);
-  const { username: loginUsername } = loginUser;
+    return [...data.data];
+  });
 
-  const isOwner = username === loginUsername;
-
-  // const { response: reports, fetchData: getReports } = useRequest({}, (page = 1) =>
-  //   requestGetReportList({
-  //     username,
-  //     type: REQUEST_REPORT_TYPE.ALL,
-  //     size: 4,
-  //     page,
-  //   })
-  // );
-
-  // useEffect(() => {
-  //   getReports();
-  // }, [username]);
-
-  const getReports = async (page = 1) => {
-    try {
-      const response = await requestGetReportList({
-        username,
-        type: REQUEST_REPORT_TYPE.ALL,
-        size: 4,
-        page,
-      });
-
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-
-      const fetchReports = await response.json();
-      setReports({ ...fetchReports, currPage: page });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    getReports();
-  }, []);
-
-  const { reports: reportList } = reports;
-
-  const onSetPage = (page: number) => {
-    getReports(page);
-  };
-
-  if (!reportList?.length) {
+  if (!ReportList?.length) {
     return (
-      <Container
+      <Styled.Container
         css={css`
           height: 70vh;
 
@@ -115,70 +50,45 @@ const ProfilePageReportsList = () => {
         `}
       >
         <p>등록된 리포트가 없습니다.</p>
-        {isOwner && (
+        {!readOnly && (
           <>
             <p>리포트를 작성해주세요.</p>
-            <AddNewReportLink to={`/${username}/reports/write`}>새 리포트 등록</AddNewReportLink>
+            <Styled.AddFirstReportLink to={`/${username}/reports/write`}>
+              새 리포트 등록
+            </Styled.AddFirstReportLink>
           </>
         )}
-      </Container>
+      </Styled.Container>
     );
   }
 
   return (
-    <Container>
-      {isOwner && (
-        <AddNewReportLink
-          to={`/${username}/reports/write`}
-          css={css`
-            position: absolute;
-            bottom: 0.5rem;
-            right: 0.5rem;
-          `}
-        >
-          새 리포트 등록
-        </AddNewReportLink>
-      )}
+    <Styled.Container>
+      <h2>리포트 타임라인</h2>
 
-      <ReportList>
-        {reportList?.map(
-          ({ id, title, description, abilityGraph, studylogs, represent, createdAt }: Report) => (
-            <Card key={id}>
-              {represent && (
-                <Badge>
-                  <span>대표 리포트</span>
-                </Badge>
-              )}
-
-              <Link to={`/${username}/reports/${id}`}>
-                <h4>{title}</h4>
-                <p>{description}</p>
-
-                <AbilityList>
-                  {abilityGraph.abilities
-                    .filter(({ isPresent }) => isPresent)
-                    .map(({ id, name }: Ability) => (
-                      <li key={id}>
-                        <Chip title={name} backgroundColor={`${COLOR.LIGHT_BLUE_100}`}>
-                          {name}
-                        </Chip>
-                      </li>
-                    ))}
-                </AbilityList>
-
-                <StudylogCount>
-                  <StudylogIcon />
-                  <p>{studylogs.length}개의 학습로그</p>
-                </StudylogCount>
-
-                <time>{new Date(createdAt).toLocaleDateString()}</time>
-              </Link>
-            </Card>
-          )
+      <Styled.TimelineWrapper>
+        {!readOnly && (
+          <Styled.AddNewReportLink to={`/${username}/reports/write`}>
+            <span>+</span>
+          </Styled.AddNewReportLink>
         )}
-      </ReportList>
-      <Pagination dataInfo={reports} onSetPage={onSetPage} />
-    </Container>
+
+        <ul>
+          {ReportList.map((report) => (
+            <Styled.Report key={report.id} readOnly={readOnly}>
+              <Styled.ReportDate>
+                {report.startDate} ~ {report.endDate}
+              </Styled.ReportDate>
+              <Styled.ReportTtile>{report.title}</Styled.ReportTtile>
+              <Styled.ReportDesc>{report.description}</Styled.ReportDesc>
+              <Styled.GoReportLink to={`/${username}/reports/${report.id}`}>
+                리포트 보러가기 {'>'}
+              </Styled.GoReportLink>
+            </Styled.Report>
+          ))}
+        </ul>
+      </Styled.TimelineWrapper>
+    </Styled.Container>
   );
 };
 

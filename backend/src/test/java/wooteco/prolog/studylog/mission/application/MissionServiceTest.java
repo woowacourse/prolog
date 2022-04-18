@@ -9,13 +9,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import wooteco.prolog.session.application.LevelService;
+import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.MissionService;
-import wooteco.prolog.session.application.dto.LevelRequest;
-import wooteco.prolog.session.application.dto.LevelResponse;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
-import wooteco.prolog.session.domain.Level;
+import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.exception.DuplicateMissionException;
 import wooteco.prolog.studylog.exception.MissionNotFoundException;
@@ -25,43 +25,43 @@ import wooteco.support.utils.IntegrationTest;
 class MissionServiceTest {
 
     @Autowired
-    private LevelService levelService;
+    private SessionService sessionService;
     @Autowired
     private MissionService missionService;
 
-    private Level level1;
-    private Level level2;
-    private Level level3;
+    private Session session1;
+    private Session session2;
+    private Session session3;
 
     @BeforeEach
     void setUp() {
-        LevelResponse levelResponse1 = levelService.create(new LevelRequest("레벨1"));
-        level1 = new Level(levelResponse1.getId(), levelResponse1.getName());
-        LevelResponse levelResponse2 = levelService.create(new LevelRequest("레벨2"));
-        level2 = new Level(levelResponse2.getId(), levelResponse2.getName());
-        LevelResponse levelResponse3 = levelService.create(new LevelRequest("레벨3"));
-        level3 = new Level(levelResponse3.getId(), levelResponse3.getName());
+        SessionResponse sessionResponse1 = sessionService.create(new SessionRequest("세션1"));
+        session1 = new Session(sessionResponse1.getId(), sessionResponse1.getName());
+        SessionResponse sessionResponse2 = sessionService.create(new SessionRequest("세션2"));
+        session2 = new Session(sessionResponse2.getId(), sessionResponse2.getName());
+        SessionResponse sessionResponse3 = sessionService.create(new SessionRequest("세션3"));
+        session3 = new Session(sessionResponse3.getId(), sessionResponse3.getName());
     }
 
     @DisplayName("Mission을 생성한다.")
     @Test
     void createTest() {
         // given
-        MissionRequest request = new MissionRequest("레벨1 - 자동차 경주 미션", level1.getId());
+        MissionRequest request = new MissionRequest("세션1 - 자동차 경주 미션", session1.getId());
 
         // when
         MissionResponse response = missionService.create(request);
 
         // then
         assertThat(response.getName()).isEqualTo(request.getName());
-        assertThat(response.getLevel().getId()).isEqualTo(request.getLevelId());
+        assertThat(response.getSession().getId()).isEqualTo(request.getSessionId());
     }
 
     @DisplayName("이미 존재하는 이름으로 Mission 생성시 지정된 예외가 발생한다.")
     @Test
     void createExceptionTest() {
         // given
-        MissionRequest request = new MissionRequest("레벨1 - 자동차 경주 미션", level1.getId());
+        MissionRequest request = new MissionRequest("세션1 - 자동차 경주 미션", session1.getId());
         missionService.create(request);
 
         // when, then
@@ -73,7 +73,7 @@ class MissionServiceTest {
     @Test
     void findByIdTest() {
         // given
-        MissionRequest request = new MissionRequest("레벨1 - 자동차 경주 미션", level1.getId());
+        MissionRequest request = new MissionRequest("세션1 - 자동차 경주 미션", session1.getId());
         MissionResponse savedMission = missionService.create(request);
 
         // when
@@ -97,11 +97,11 @@ class MissionServiceTest {
     void findByIdsTest() {
         // given
         MissionResponse mission1 = missionService
-            .create(new MissionRequest("레벨1 - 자동차 경주 미션", level1.getId()));
+            .create(new MissionRequest("세션1 - 자동차 경주 미션", session1.getId()));
         MissionResponse mission2 = missionService
-            .create(new MissionRequest("레벨2 - 로또 미션", level2.getId()));
+            .create(new MissionRequest("세션2 - 로또 미션", session2.getId()));
         MissionResponse mission3 = missionService
-            .create(new MissionRequest("레벨3 - 블랙잭 미션", level3.getId()));
+            .create(new MissionRequest("세션3 - 블랙잭 미션", session3.getId()));
 
         List<Long> missionIds = Arrays.asList(mission1.getId(), mission2.getId(), mission3.getId());
 
@@ -130,11 +130,11 @@ class MissionServiceTest {
     void findAllTest() {
         // given
         MissionResponse mission1 = missionService
-            .create(new MissionRequest("레벨1 - 자동차 경주 미션", level1.getId()));
+            .create(new MissionRequest("세션1 - 자동차 경주 미션", session1.getId()));
         MissionResponse mission2 = missionService
-            .create(new MissionRequest("레벨2 - 로또 미션", level2.getId()));
+            .create(new MissionRequest("세션2 - 로또 미션", session2.getId()));
         MissionResponse mission3 = missionService
-            .create(new MissionRequest("레벨3 - 블랙잭 미션", level3.getId()));
+            .create(new MissionRequest("세션3 - 블랙잭 미션", session3.getId()));
 
         // when
         List<MissionResponse> responses = missionService.findAll();

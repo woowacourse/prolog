@@ -5,52 +5,87 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG1;
 import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG2;
 import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG3;
+import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG4;
+import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG1;
+import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG2;
 
 import com.google.common.collect.Iterables;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.messages.internal.com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.StudylogAcceptanceFixture;
+import wooteco.prolog.studylog.application.dto.StudylogMissionRequest;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
+import wooteco.prolog.studylog.application.dto.StudylogSessionRequest;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
+import wooteco.prolog.studylog.application.dto.TagRequest;
 
 public class StudylogStepDefinitions extends AcceptanceSteps {
 
     @Given("스터디로그 여러개를 작성하고")
     public void 스터디로그여러개를작성하고() {
-        List<StudylogRequest> studylogRequests = Arrays.asList(
-            STUDYLOG1.getStudylogRequest(),
-            STUDYLOG2.getStudylogRequest()
-        );
-
-        context.invokeHttpPostWithToken("/studylogs", studylogRequests);
+        context.invokeHttpPostWithToken("/studylogs", STUDYLOG1.getStudylogRequest());
+        context.invokeHttpPostWithToken("/studylogs", STUDYLOG2.getStudylogRequest());
     }
+
+//    @Given("스터디로그를 작성하고")
+//    @When("스터디로그를 작성하면")
+//    public void 스터디로그를작성하면() {
+//        context.invokeHttpPostWithToken("/studylogs", STUDYLOG1.getStudylogRequest());
+//    }
 
     @Given("스터디로그를 작성하고")
     @When("스터디로그를 작성하면")
-    public void 스터디로그를작성하면() {
-        List<StudylogRequest> studylogRequests = Arrays.asList(
-            STUDYLOG1.getStudylogRequest()
+    public void 세션과미션포함한스터디로그를작성하면() {
+        StudylogRequest studylogRequest = new StudylogRequest(
+            "[자바][옵셔널] 학습log 제출합니다.",
+            "옵셔널은 NPE를 배제하기 위해 만들어진 자바8에 추가된 라이브러리입니다. \n " +
+                "다양한 메소드를 호출하여 원하는 대로 활용할 수 있습니다",
+            1L,
+            1L,
+            Lists.newArrayList(
+                new TagRequest(TAG1.getTagName()),
+                new TagRequest(TAG2.getTagName())
+            )
         );
+        context.invokeHttpPostWithToken("/studylogs", studylogRequest);
 
-        context.invokeHttpPostWithToken("/studylogs", studylogRequests);
+        if (context.response.statusCode() == HttpStatus.CREATED.value()) {
+            context.storage.put("studylog", context.response.as(StudylogResponse.class));
+        }
+    }
+
+    @When("세션과 미션 없이 스터디로그를 작성하면")
+    public void 세션과미션없이스터디로그를작성하면() {
+        StudylogRequest studylogRequest = new StudylogRequest(
+            "[자바][옵셔널] 학습log 제출합니다.",
+            "옵셔널은 NPE를 배제하기 위해 만들어진 자바8에 추가된 라이브러리입니다. \n " +
+                "다양한 메소드를 호출하여 원하는 대로 활용할 수 있습니다",
+            null,
+            null,
+            Lists.newArrayList(
+                new TagRequest(TAG1.getTagName()),
+                new TagRequest(TAG2.getTagName())
+            )
+        );
+        context.invokeHttpPostWithToken("/studylogs", studylogRequest);
+        if (context.response.statusCode() == HttpStatus.CREATED.value()) {
+            context.storage.put("studylog", context.response.as(StudylogResponse.class));
+        }
     }
 
     @Given("{string} 스터디로그를 작성하고")
     public void 특정스터디로그를작성하고(String title) {
-        List<StudylogRequest> studylogRequests = Arrays.asList(
-            new StudylogRequest(title, "content", 1L, Collections.emptyList())
-        );
-
-        context.invokeHttpPostWithToken("/studylogs", studylogRequests);
+        StudylogRequest studylogRequest = new StudylogRequest(title, "content", 1L, Collections.emptyList());
+        context.invokeHttpPostWithToken("/studylogs", studylogRequest);
         context.storage.put(title, context.response.as(StudylogResponse.class));
     }
 
@@ -58,87 +93,69 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     public void 스터디로그가작성된다() {
         int statusCode = context.response.statusCode();
         assertThat(statusCode).isEqualTo(HttpStatus.CREATED.value());
+
+        StudylogResponse studylogResponse = (StudylogResponse) context.storage.get("studylog");
+
+        context.invokeHttpGet("/studylogs/" + studylogResponse.getId());
+
+        StudylogResponse response = context.response.as(StudylogResponse.class);
+        assertThat(response.getId()).isNotNull();
     }
 
     @Given("{long}개의 스터디로그를 작성하고")
     public void 다수의스터디로그를작성하면(Long totalSize) {
-        List<StudylogRequest> studylogRequests = new ArrayList<>();
-
         for (int i = 0; i < totalSize; i++) {
-            studylogRequests.add(STUDYLOG1.getStudylogRequest());
+            context.invokeHttpPostWithToken("/studylogs", STUDYLOG1.getStudylogRequest());
         }
-
-        context.invokeHttpPostWithToken("/studylogs", studylogRequests);
     }
 
     @Given("{int}번 미션의 스터디로그를 {long}개 작성하고")
     public void 특정미션스터디로그를다수작성하면(int missionNumber, Long totalSize) {
-        List<StudylogRequest> studylogRequests = new ArrayList<>();
-
-        List<StudylogRequest> requests = StudylogAcceptanceFixture.findByMissionNumber(
-            (long) missionNumber);
+        List<StudylogRequest> requests = StudylogAcceptanceFixture.findByMissionNumber((long) missionNumber);
 
         if (requests.isEmpty()) {
             throw new RuntimeException("해당 미션의 스터디로그는 없습니다.");
         }
 
         for (int i = 0; i < totalSize; i++) {
-            studylogRequests.add(requests.get(0));
+            context.invokeHttpPostWithToken("/studylogs", requests.get(0));
         }
-
-        context.invokeHttpPostWithToken("/studylogs", studylogRequests);
     }
 
     @Given("{int}번 태그의 스터디로그를 {long}개 작성하고")
     public void 특정태그스터디로그를다수작성하면(int tagNumber, Long totalSize) {
-        List<StudylogRequest> studylogRequests = new ArrayList<>();
-
-        List<StudylogRequest> requests = StudylogAcceptanceFixture.findByTagNumber(
-            (long) tagNumber);
+        List<StudylogRequest> requests = StudylogAcceptanceFixture.findByTagNumber((long) tagNumber);
 
         if (requests.isEmpty()) {
             throw new RuntimeException("해당 미션의 스터디로그는 없습니다.");
         }
 
         for (int i = 0; i < totalSize; i++) {
-            studylogRequests.add(requests.get(0));
+            context.invokeHttpPostWithToken("/studylogs", requests.get(0));
         }
-
-        context.invokeHttpPostWithToken("/studylogs", studylogRequests);
     }
 
     @Given("서로 다른 태그와 미션을 가진 스터디로그를 다수 생성하고")
     public void 서로다른태그와미션을가진스터디로그를생성() {
-        List<StudylogRequest> studylogRequests = new ArrayList<>();
-
         for (int i = 0; i < 7; i++) {
-            studylogRequests.add(STUDYLOG1.getStudylogRequest());
+            context.invokeHttpPostWithToken("/studylogs", STUDYLOG1.getStudylogRequest());
         }
         for (int i = 0; i < 5; i++) {
-            studylogRequests.add(STUDYLOG2.getStudylogRequest());
+            context.invokeHttpPostWithToken("/studylogs", STUDYLOG2.getStudylogRequest());
         }
         for (int i = 0; i < 6; i++) {
-            studylogRequests.add(STUDYLOG3.getStudylogRequest());
+            context.invokeHttpPostWithToken("/studylogs", STUDYLOG3.getStudylogRequest());
         }
-
-        context.invokeHttpPostWithToken("/studylogs", studylogRequests);
     }
 
-    @Given("서로 다른 레벨을 가진 스터디로그를 다수 생성하고")
-    public void 서로다른레벨을가진스터디로그를생성() {
-        List<StudylogRequest> studylogRequests = new ArrayList<>();
-
+    @Given("서로 다른 세션을 가진 스터디로그를 다수 생성하고")
+    public void 서로다른세션을가진스터디로그를생성() {
         for (int i = 0; i < 2; i++) {
-            studylogRequests.add(STUDYLOG1.getStudylogRequest());
+            context.invokeHttpPostWithToken("/studylogs", STUDYLOG3.getStudylogRequest());
         }
         for (int i = 0; i < 3; i++) {
-            studylogRequests.add(STUDYLOG2.getStudylogRequest());
+            context.invokeHttpPostWithToken("/studylogs", STUDYLOG4.getStudylogRequest());
         }
-        for (int i = 0; i < 4; i++) {
-            studylogRequests.add(STUDYLOG3.getStudylogRequest());
-        }
-
-        context.invokeHttpPostWithToken("/studylogs", studylogRequests);
     }
 
 
@@ -169,13 +186,13 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     @When("{string}을 검색하고 {int}번 미션과 {int}번 태그로 조회하면")
     public void 을검색하고번미션과번태그로조회하면(String keyword, int missionNumber, int tagId) {
         String path = String.format("/studylogs?keyword=%s&missions=%d&tags=%d", keyword,
-                                    missionNumber, tagId);
+            missionNumber, tagId);
         context.invokeHttpGet(path);
     }
 
-    @When("{int}번 레벨의 스터디로그를 조회하면")
-    public void 특정레벨의스터디로그를조회하면(int levelNumber) {
-        String path = String.format("/studylogs?levels=%d", levelNumber);
+    @When("{int}번 세션의 스터디로그를 조회하면")
+    public void 특정세션의스터디로그를조회하면(int sessionNumber) {
+        String path = String.format("/studylogs?sessions=%d", sessionNumber);
         context.invokeHttpGet(path);
     }
 
@@ -360,9 +377,15 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         assertThat(response.isLiked()).isFalse();
     }
 
+    @When("인기 있는 스터디로그 목록을 {string}개만큼 갱신하고")
+    public void 인기있는스터디로그목록을개만큼갱신하고(String studylogCount) {
+        context.invokeHttpGetWithToken("/studylogs/popular/sync?size=" + studylogCount);
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
     @Then("인기있는 스터디로그 목록 요청시 id {string} 순서로 조회된다")
     public void 스터디로그가Id순서로조회된다(String studylogIds) {
-        context.invokeHttpGet("/studylogs/most-popular");
+        context.invokeHttpGet("/studylogs/popular");
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
         StudylogsResponse studylogsResponse = context.response.as(StudylogsResponse.class);
 
@@ -372,5 +395,31 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
             Long id = Long.parseLong(ids.get(i));
             assertThat(response.getId()).isEqualTo(id);
         }
+    }
+
+    @When("스터디로그 세션을 {long}로 수정하면")
+    public void 스터디로그세션을L로수정하면(long sessionId) {
+        StudylogResponse studylogResponse = (StudylogResponse) context.storage.get("studylog");
+        context.invokeHttpPutWithToken("/studylogs/" + studylogResponse.getId() + "/sessions", new StudylogSessionRequest(sessionId));
+    }
+
+    @Then("스터디로그 세션이 {long}로 수정된다")
+    public void 스터디로그세션이로수정된다(long sessionId) {
+        StudylogResponse studylogResponse = (StudylogResponse) context.storage.get("studylog");
+        context.invokeHttpGet("/studylogs/" + studylogResponse.getId());
+        assertThat(context.response.as(StudylogResponse.class).getSession().getId()).isEqualTo(sessionId);
+    }
+
+    @When("스터디로그 미션을 {long}로 수정하면")
+    public void 스터디로그미션을로수정하면(long missionId) {
+        StudylogResponse studylogResponse = (StudylogResponse) context.storage.get("studylog");
+        context.invokeHttpPutWithToken("/studylogs/" + studylogResponse.getId() + "/missions", new StudylogMissionRequest(missionId));
+    }
+
+    @Then("스터디로그 미션이 {long}로 수정된다")
+    public void 스터디로그미션이로수정된다(long missionId) {
+        StudylogResponse studylogResponse = (StudylogResponse) context.storage.get("studylog");
+        context.invokeHttpGet("/studylogs/" + studylogResponse.getId());
+        assertThat(context.response.as(StudylogResponse.class).getMission().getId()).isEqualTo(missionId);
     }
 }

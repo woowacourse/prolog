@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.session.domain.Level;
+import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.Mission;
-import wooteco.prolog.session.domain.repository.LevelRepository;
+import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogRead;
@@ -42,7 +42,7 @@ class StudylogReadRepositoryTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private LevelRepository levelRepository;
+    private SessionRepository sessionRepository;
 
     @Autowired
     private MissionRepository missionRepository;
@@ -54,8 +54,8 @@ class StudylogReadRepositoryTest {
     void setUp() {
         member = memberRepository.save(웨지);
         bada = memberRepository.save(바다);
-        Level level = levelRepository.save(new Level("레벨1"));
-        Mission mission = missionRepository.save(new Mission("미션", level));
+        Session session = sessionRepository.save(new Session("세션1"));
+        Mission mission = missionRepository.save(new Mission("미션", session));
         studylog = studylogRepository
             .save(new Studylog(member, "제목", "내용", mission, Lists.emptyList()));
     }

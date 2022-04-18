@@ -1,0 +1,1 @@
+ALTER TABLE report MODIFY description TEXT;

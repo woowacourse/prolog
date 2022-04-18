@@ -1,4 +1,3 @@
-import React from 'react';
 import { ModalSection, ModalInner } from './Modal.styles';
 
 const Modal = ({ children, width, height }) => {

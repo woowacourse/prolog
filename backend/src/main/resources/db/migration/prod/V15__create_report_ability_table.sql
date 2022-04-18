@@ -10,9 +10,9 @@ CREATE TABLE report_ability (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
-create table report_ability_studylog (
+create table report_studylog (
     id   BIGINT AUTO_INCREMENT NOT NULL,
-    origin_ability_id BIGINT,
+    report_id BIGINT,
     report_ability_id BIGINT,
     studylog_id BIGINT not null,
     PRIMARY KEY (id)

@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.session.domain.Session;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class SessionResponse {
 
@@ -14,6 +14,9 @@ public class SessionResponse {
     private String name;
 
     public static SessionResponse of(Session session) {
+        if (session == null) {
+            return null;
+        }
         return new SessionResponse(session.getId(), session.getName());
     }
 }

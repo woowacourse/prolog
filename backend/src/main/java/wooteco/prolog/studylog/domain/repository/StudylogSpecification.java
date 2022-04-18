@@ -50,25 +50,13 @@ public class StudylogSpecification {
         };
     }
 
-    public static Specification<Studylog> findByLevelIn(List<Long> values) {
-        return (root, query, builder) -> {
-            if (values == null || values.isEmpty()) {
-                return builder.and();
-            }
-
-            return root.join("mission", JoinType.LEFT).join("level", JoinType.LEFT).get("id")
-                .in(values);
-        };
-    }
-
     public static Specification<Studylog> findByTagIn(List<Long> values) {
         return (root, query, builder) -> {
             if (values == null || values.isEmpty() || values.contains(0L)) {
                 return builder.and();
             }
 
-            return root.join("studylogTags", JoinType.LEFT).join("values", JoinType.LEFT).get("tag")
-                .in(values);
+            return root.join("studylogTags", JoinType.LEFT).join("values", JoinType.LEFT).get("tag").in(values);
         };
     }
 
@@ -80,6 +68,12 @@ public class StudylogSpecification {
 
             return root.join("member", JoinType.LEFT).get("username").in(usernames);
         };
+    }
+
+    public static Specification<Studylog> findByDeletedFalse() {
+        return (root, query, builder) -> builder.isFalse(
+            root.get("deleted")
+        );
     }
 
     public static Specification<Studylog> distinct(boolean distinct) {

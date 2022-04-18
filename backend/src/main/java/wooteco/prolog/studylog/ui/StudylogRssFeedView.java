@@ -3,12 +3,16 @@ package wooteco.prolog.studylog.ui;
 import static java.util.stream.Collectors.toList;
 
 import com.rometools.rome.feed.rss.Channel;
-import com.rometools.rome.feed.rss.Content;
+import com.rometools.rome.feed.rss.Description;
 import com.rometools.rome.feed.rss.Item;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.text.StringEscapeUtils;
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.feed.AbstractRssFeedView;
@@ -43,17 +47,23 @@ public class StudylogRssFeedView extends AbstractRssFeedView {
         item.setLink(rssFeedResponse.getLink());
         item.setPubDate(rssFeedResponse.getDate());
         item.setAuthor(rssFeedResponse.getAuthor());
-        item.setContent(createContent(rssFeedResponse));
+        item.setDescription(new Description());
 
         return item;
     }
 
-    private Content createContent(StudylogRssFeedResponse rssFeedResponse) {
-        Content content = new Content();
+    private Description createDescription(StudylogRssFeedResponse rssFeedResponse) {
+        Description description = new Description();
 
-        content.setValue(rssFeedResponse.getContent());
+//        Parser parser = Parser.builder().build();
+//        Node document = parser.parse(rssFeedResponse.getContent());
+//
+//        HtmlRenderer renderer = HtmlRenderer.builder().build();
+//        String html = renderer.render(document);
+//
+//        description.setValue(StringEscapeUtils.escapeXml10(html));
 
-        return content;
+        return description;
     }
 
     @Override

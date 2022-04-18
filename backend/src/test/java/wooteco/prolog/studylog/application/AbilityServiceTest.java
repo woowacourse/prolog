@@ -254,6 +254,7 @@ class AbilityServiceTest {
 
         AbilityCreateRequest createChildRequest1 = new AbilityCreateRequest("자식 프로그래밍", "부모 프로그래밍의 자식입니다.", createdParentResponse.getColor(), createdParentResponse.getId());
         abilityService.createAbility(member.getId(), createChildRequest1);
+
         AbilityResponse childAbilityDto = abilityService.findParentAbilitiesByMemberId(member.getId()).get(0).getChildren().get(0);
 
         String newColor = "#ffffff";
