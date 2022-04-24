@@ -245,7 +245,7 @@ public class AbilityService {
             .filter(it -> !it.isBelongsTo(memberId))
             .findAny()
             .ifPresent(it -> {
-                throw new RuntimeException(it.getName() + "는 본인의 역량이 아닙니다.");
+                throw new RuntimeException(it.getName() + "는 " + memberId + "의 역량이 아닙니다.");
             });
         return abilities;
     }
