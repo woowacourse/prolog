@@ -128,9 +128,9 @@ class PopularStudylogServiceTest {
     void findPopularStudylogsWithoutLogin() {
         // given
         insertStudylogs(member1, studylog1, studylog2, studylog3);
-        studylogService.retrieveStudylogById(loginMember3, 2L);
+        studylogService.retrieveStudylogById(loginMember3, 2L, false);
         studylogScrapService.registerScrap(member1.getId(), 2L);
-        studylogService.retrieveStudylogById(loginMember3, 3L);
+        studylogService.retrieveStudylogById(loginMember3, 3L, false);
         studylogScrapService.registerScrap(member1.getId(), 3L);
         studylogLikeService.likeStudylog(member1.getId(), 3L, true);
 
@@ -166,8 +166,8 @@ class PopularStudylogServiceTest {
         StudylogResponse studylogResponse3 = insertResponses.get(2);
 
         // 2번째 멤버가 1번째 멤버의 게시글 2번, 3번을 조회
-        studylogService.retrieveStudylogById(loginMember2, studylogResponse2.getId());
-        studylogService.retrieveStudylogById(loginMember2, studylogResponse3.getId());
+        studylogService.retrieveStudylogById(loginMember2, studylogResponse2.getId(), false);
+        studylogService.retrieveStudylogById(loginMember2, studylogResponse3.getId(), false);
 
         // 2번, 3번 글 스크랩
         studylogScrapService.registerScrap(member2.getId(), studylogResponse2.getId());
