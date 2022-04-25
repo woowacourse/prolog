@@ -7,13 +7,11 @@ import static java.util.stream.Collectors.toList;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -40,8 +38,6 @@ import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
 @AllArgsConstructor
 @Transactional(readOnly = true)
 public class StudylogService {
-
-    private static final int A_WEEK = 7;
 
     private final StudylogRepository studylogRepository;
     private final StudylogTempRepository studylogTempRepository;
@@ -110,49 +106,6 @@ public class StudylogService {
             return StudylogTempResponse.from(studylogTemp);
         }
         return StudylogTempResponse.toNull();
-    }
-
-    public StudylogsResponse findMostPopularStudylogs(
-        Pageable pageable,
-        Long memberId,
-        boolean isAnonymousMember
-    ) {
-        List<Studylog> studylogs = findStudylogsByDays(pageable, LocalDateTime.now());
-        PageImpl<Studylog> page = new PageImpl<>(studylogs, pageable, studylogs.size());
-        StudylogsResponse studylogsResponse = StudylogsResponse.of(page, memberId);
-
-        if (isAnonymousMember) {
-            return studylogsResponse;
-        }
-        List<StudylogResponse> data = studylogsResponse.getData();
-        updateScrap(data, findScrapIds(memberId));
-        updateRead(data, findReadIds(memberId));
-        return studylogsResponse;
-    }
-
-    private List<Studylog> findStudylogsByDays(Pageable pageable, LocalDateTime dateTime) {
-        int decreaseDays = 0;
-        int searchFailedCount = 0;
-
-        while (true) {
-            decreaseDays += A_WEEK;
-            List<Studylog> studylogs = studylogRepository.findByPastDays(dateTime.minusDays(decreaseDays));
-
-            if (studylogs.size() >= pageable.getPageSize()) {
-                return studylogs.stream()
-                    .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
-                    .collect(toList())
-                    .subList(0, pageable.getPageSize());
-            }
-
-            if (searchFailedCount >= 2) {
-                return studylogs.stream()
-                    .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
-                    .collect(toList());
-            }
-
-            searchFailedCount += 1;
-        }
     }
 
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Long memberId) {
