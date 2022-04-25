@@ -11,11 +11,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
-import wooteco.prolog.session.application.dto.LevelRequest;
-import wooteco.prolog.session.application.dto.LevelResponse;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
@@ -27,14 +28,10 @@ class StudylogDocumentation extends Documentation {
 
     @Test
     void 스터디로그를_생성한다() {
-        // given
-        StudylogRequest studylog = createStudylogRequest1();
-        List<StudylogRequest> studylogRequest = Arrays.asList(studylog);
-
         // when
         ExtractableResponse<Response> createResponse = given("studylog/create")
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-            .body(studylogRequest)
+            .body(createStudylogRequest1())
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().post("/studylogs")
             .then().log().all().extract();
@@ -47,7 +44,7 @@ class StudylogDocumentation extends Documentation {
     @Test
     void 스터디로그_단건을_조회한다() {
         // given
-        ExtractableResponse<Response> studylogResponse = 스터디로그_등록함(Arrays.asList(createStudylogRequest1()));
+        ExtractableResponse<Response> studylogResponse = 스터디로그_등록함(createStudylogRequest1());
         String location = studylogResponse.header("Location");
 
         given("studylog/read")
@@ -59,8 +56,8 @@ class StudylogDocumentation extends Documentation {
     @Test
     void 스터디로그_목록을_조회한다() {
         // given
-        List<StudylogRequest> studylogRequests = Arrays.asList(createStudylogRequest1(), createStudylogRequest2());
-        스터디로그_등록함(studylogRequests);
+        String title1 = 스터디로그_등록함(createStudylogRequest1()).as(StudylogResponse.class).getTitle();
+        String title2 = 스터디로그_등록함(createStudylogRequest2()).as(StudylogResponse.class).getTitle();
 
         // when
         ExtractableResponse<Response> response = given("studylog/list")
@@ -74,8 +71,7 @@ class StudylogDocumentation extends Documentation {
         List<String> studylogsTitles = studylogsResponse.getData().stream()
             .map(StudylogResponse::getTitle)
             .collect(Collectors.toList());
-        List<String> expectedTitles = studylogRequests.stream()
-            .map(StudylogRequest::getTitle)
+        List<String> expectedTitles = Arrays.asList(title1, title2).stream()
             .sorted()
             .collect(Collectors.toList());
         assertThat(studylogsTitles).usingRecursiveComparison().isEqualTo(expectedTitles);
@@ -85,14 +81,15 @@ class StudylogDocumentation extends Documentation {
     @Test
     void 스터디로그_목록을_검색_및_필터링한다() {
         // given
-        스터디로그_등록함(Arrays.asList(createStudylogRequest1(), createStudylogRequest2()));
+        스터디로그_등록함(createStudylogRequest1());
+        스터디로그_등록함(createStudylogRequest2());
 
         // when
         ExtractableResponse<Response> response = given("studylog/filter")
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .when().get(
-                "/posts?keyword=joanne&levels=1&missions=1&tags=1&tags=2&usernames=soulG&startDate=20210901&endDate=20211231")
+                "/posts?keyword=joanne&sessions=1&missions=1&tags=1&tags=2&usernames=soulG&startDate=20210901&endDate=20211231")
             .then().log().all().extract();
 
         // given
@@ -101,10 +98,10 @@ class StudylogDocumentation extends Documentation {
     }
 
     @Test
-    void 인기있는_스터디로그_목록을_조회한다() {
+    void 인기있는_스터디로그_목록을_갱신하고_조회한다() {
         // given
-        String studylogLocation1 = 스터디로그_등록함(Collections.singletonList(createStudylogRequest1())).header("Location");
-        String studylogLocation2 = 스터디로그_등록함(Collections.singletonList(createStudylogRequest2())).header("Location");
+        String studylogLocation1 = 스터디로그_등록함(createStudylogRequest1()).header("Location");
+        String studylogLocation2 = 스터디로그_등록함(createStudylogRequest2()).header("Location");
         Long studylogId1 = Long.parseLong(studylogLocation1.split("/studylogs/")[1]);
         Long studylogId2 = Long.parseLong(studylogLocation2.split("/studylogs/")[1]);
 
@@ -112,31 +109,43 @@ class StudylogDocumentation extends Documentation {
         스터디로그_단건_조회(studylogId2);
         스터디로그_단건_좋아요(studylogId2);
 
+        인기있는_스터디로그_목록_갱신(2);
+
         // when
-        ExtractableResponse<Response> response = given("studylogs/most-popular")
+        ExtractableResponse<Response> response = given("studylogs/popular")
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-            .when().get("/studylogs/most-popular")
+            .when().get("/studylogs/popular")
             .then().log().all().extract();
 
         // then
         // given
-        StudylogsResponse mostPopularStudylogsResponse = response.as(StudylogsResponse.class);
-        assertThat(mostPopularStudylogsResponse.getData()).hasSize(2);
-        assertThat(mostPopularStudylogsResponse.getData().get(0).getId()).isEqualTo(studylogId2);
-        assertThat(mostPopularStudylogsResponse.getData().get(1).getId()).isEqualTo(studylogId1);
+        StudylogsResponse popularStudylogsResponse = response.as(StudylogsResponse.class);
+        assertThat(popularStudylogsResponse.getData()).hasSize(2);
+        assertThat(popularStudylogsResponse.getData().get(0).getId()).isEqualTo(studylogId2);
+        assertThat(popularStudylogsResponse.getData().get(1).getId()).isEqualTo(studylogId1);
+    }
+
+    private void 인기있는_스터디로그_목록_갱신(int studylogCount) {
+        RestAssured.given()
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(PageRequest.of(1, studylogCount))
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().get("/studylogs/popular/sync")
+            .then().log().all()
+            .extract();
     }
 
     @Test
     void 스터디로그를_수정한다() {
         // given
-        ExtractableResponse<Response> studylogResponses = 스터디로그_등록함(Arrays.asList(createStudylogRequest1()));
-        String location = studylogResponses.header("Location");
+        ExtractableResponse<Response> studylogResponse = 스터디로그_등록함(createStudylogRequest1());
+        String location = studylogResponse.header("Location");
 
         String title = "수정된 제목";
         String content = "수정된 내용";
 
-        Long levelId = 레벨_등록함(new LevelRequest("레벨2"));
-        Long missionId = 미션_등록함(new MissionRequest("수정된 미션", levelId));
+        Long sessionId = 세션_등록함(new SessionRequest("세션2"));
+        Long missionId = 미션_등록함(new MissionRequest("수정된 미션", sessionId));
         List<TagRequest> tags = Arrays.asList(
             new TagRequest("spa"),
             new TagRequest("edit")
@@ -158,8 +167,7 @@ class StudylogDocumentation extends Documentation {
 
     @Test
     void 스터디로그를_삭제한다() {
-        ExtractableResponse<Response> studylogResponse = 스터디로그_등록함(
-            Arrays.asList(createStudylogRequest1()));
+        ExtractableResponse<Response> studylogResponse = 스터디로그_등록함(createStudylogRequest1());
         String location = studylogResponse.header("Location");
 
         given("studylog/delete")
@@ -170,7 +178,7 @@ class StudylogDocumentation extends Documentation {
 
     @Test
     void 스터지로그를_좋아요한다() {
-        ExtractableResponse<Response> response = 스터디로그_등록함(Collections.singletonList(createStudylogRequest1()));
+        ExtractableResponse<Response> response = 스터디로그_등록함(createStudylogRequest1());
         long studylogId = Long.parseLong(response.header("Location").split("/studylogs/")[1]);
 
         given("studylog/like")
@@ -181,7 +189,7 @@ class StudylogDocumentation extends Documentation {
 
     @Test
     void 스터지로그를_좋아요_취소한다() {
-        ExtractableResponse<Response> response = 스터디로그_등록함(Collections.singletonList(createStudylogRequest1()));
+        ExtractableResponse<Response> response = 스터디로그_등록함(createStudylogRequest1());
         long studylogId = Long.parseLong(response.header("Location").split("/studylogs/")[1]);
 
         스터디로그_단건_좋아요(studylogId);
@@ -195,8 +203,8 @@ class StudylogDocumentation extends Documentation {
     private StudylogRequest createStudylogRequest1() {
         String title = "나는야 Joanne";
         String content = "SPA 방식으로 앱을 구현하였음.\n" + "router 를 구현 하여 이용함.\n";
-        Long levelId = 레벨_등록함(new LevelRequest("레벨1"));
-        Long missionId = 미션_등록함(new MissionRequest("레벨1 - 지하철 노선도 미션", levelId));
+        Long sessionId = 세션_등록함(new SessionRequest("세션1"));
+        Long missionId = 미션_등록함(new MissionRequest("세션1 - 지하철 노선도 미션", sessionId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("spa"), new TagRequest("router"));
 
         return new StudylogRequest(title, content, missionId, tags);
@@ -205,14 +213,14 @@ class StudylogDocumentation extends Documentation {
     private StudylogRequest createStudylogRequest2() {
         String title = "JAVA";
         String content = "Spring Data JPA를 학습함.";
-        Long levelId = 레벨_등록함(new LevelRequest("레벨3"));
-        Long missionId = 미션_등록함(new MissionRequest("레벨3 - 프로젝트", levelId));
+        Long sessionId = 세션_등록함(new SessionRequest("세션3"));
+        Long missionId = 미션_등록함(new MissionRequest("세션3 - 프로젝트", sessionId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("java"), new TagRequest("jpa"));
 
         return new StudylogRequest(title, content, missionId, tags);
     }
 
-    private ExtractableResponse<Response> 스터디로그_등록함(List<StudylogRequest> request) {
+    private ExtractableResponse<Response> 스터디로그_등록함(StudylogRequest request) {
         return RestAssured.given().log().all()
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .body(request)
@@ -222,17 +230,17 @@ class StudylogDocumentation extends Documentation {
             .then().log().all().extract();
     }
 
-    private Long 레벨_등록함(LevelRequest request) {
+    private Long 세션_등록함(SessionRequest request) {
         return RestAssured
             .given().log().all()
             .body(request)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when()
-            .post("/levels")
+            .post("/sessions")
             .then()
             .log().all()
             .extract()
-            .as(LevelResponse.class)
+            .as(SessionResponse.class)
             .getId();
     }
 

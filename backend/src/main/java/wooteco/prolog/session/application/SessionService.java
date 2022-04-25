@@ -3,6 +3,7 @@ package wooteco.prolog.session.application;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,8 +36,14 @@ public class SessionService {
     }
 
     public Session findById(Long id) {
-        return sessionRepository.findById(id)
-            .orElseThrow(SessionNotFoundException::new);
+        return sessionRepository.findById(id).orElseThrow(SessionNotFoundException::new);
+    }
+
+    public Optional<Session> findSessionById(Long id) {
+        if (id == null) {
+            return Optional.empty();
+        }
+        return sessionRepository.findById(id);
     }
 
     public List<SessionResponse> findAll() {

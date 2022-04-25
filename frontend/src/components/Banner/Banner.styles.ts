@@ -105,6 +105,11 @@ export const getBannerThemeByBgColor = (
   `};
   color: ${getTextColor(backgroundColor)};
 
+  h2,
+  p {
+    color: inherit;
+  }
+
   a {
     margin-top: 1rem;
 

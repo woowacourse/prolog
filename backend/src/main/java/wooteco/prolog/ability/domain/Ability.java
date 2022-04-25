@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,6 +41,9 @@ public class Ability {
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Ability> children;
+
+    @OneToMany(mappedBy = "ability", orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<StudylogAbility> studylogAbilities;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
@@ -125,6 +129,13 @@ public class Ability {
         validateDuplicateColor(abilities);
     }
 
+    public void validateDuplicateColor(List<Ability> abilities, Ability ability) {
+        abilities.remove(ability);
+        abilities.removeAll(ability.getChildren());
+
+        validateDuplicateColor(abilities);
+    }
+
     private void validateSameColor(Ability parentAbility) {
         if (isDifferentColor(parentAbility)) {
             throw new AbilityParentChildColorDifferentException();
@@ -167,6 +178,10 @@ public class Ability {
 
     public List<Ability> getChildren() {
         return children;
+    }
+
+    public List<StudylogAbility> getStudylogAbilities() {
+        return studylogAbilities;
     }
 
     public boolean isBelongsTo(Long memberId) {

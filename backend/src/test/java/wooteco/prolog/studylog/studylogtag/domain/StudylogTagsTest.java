@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
-import wooteco.prolog.session.domain.Level;
+import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
@@ -24,7 +24,7 @@ public class StudylogTagsTest {
                                                 "https://avatars.githubusercontent.com/u/51393021?v=4");
     private static final Studylog 웨지가_쓴_글 = new Studylog(웨지, "제목", "내용",
                                                          new Mission("[BE] 글쓰기 미션",
-                                                                     new Level("레벨1")),
+                                                                     new Session("세션1")),
                                                          Lists.emptyList());
     private static final Tag 워니_태그 = new Tag("워니");
     private static final StudylogTag 워니_스터디로그태그 = new StudylogTag(1L, 웨지가_쓴_글, 워니_태그);
@@ -41,19 +41,19 @@ public class StudylogTagsTest {
     void addTest() {
         // given
         Tag 워니_태그 = new Tag("워니");
-        Tag 레벨1_태그 = new Tag("레벨1");
+        Tag 세션1_태그 = new Tag("세션1");
 
         StudylogTag 워니_스터디로그태그 = new StudylogTag(2L, 웨지가_쓴_글, 워니_태그);
-        StudylogTag 레벨1_스터디로그태그 = new StudylogTag(3L, 웨지가_쓴_글, 레벨1_태그);
+        StudylogTag 세션1_스터디로그태그 = new StudylogTag(3L, 웨지가_쓴_글, 세션1_태그);
 
-        List<StudylogTag> studylogTags = Arrays.asList(워니_스터디로그태그, 레벨1_스터디로그태그);
+        List<StudylogTag> studylogTags = Arrays.asList(워니_스터디로그태그, 세션1_스터디로그태그);
 
         // when
         this.studylogTags.add(studylogTags);
 
         // then
         assertThat(this.studylogTags.getValues()).containsExactlyInAnyOrder(this.워니_스터디로그태그,
-                                                                            레벨1_스터디로그태그);
+                                                                            세션1_스터디로그태그);
     }
 
     @DisplayName("update로 StudylogTag 리스트를 교체한다.")
@@ -61,18 +61,18 @@ public class StudylogTagsTest {
     void updateTest() {
         // given
         Tag 포비_태그 = new Tag("포비");
-        Tag 레벨1_태그 = new Tag("레벨1");
+        Tag 세션1_태그 = new Tag("세션1");
 
         StudylogTag 포비_스터디로그태그 = new StudylogTag(2L, 웨지가_쓴_글, 포비_태그);
-        StudylogTag 레벨1_스터디로그태그 = new StudylogTag(3L, 웨지가_쓴_글, 레벨1_태그);
+        StudylogTag 세션1_스터디로그태그 = new StudylogTag(3L, 웨지가_쓴_글, 세션1_태그);
 
-        List<StudylogTag> studylogTags = Arrays.asList(포비_스터디로그태그, 레벨1_스터디로그태그);
+        List<StudylogTag> studylogTags = Arrays.asList(포비_스터디로그태그, 세션1_스터디로그태그);
 
         // when
         this.studylogTags.update(studylogTags);
 
         // then
         assertThat(this.studylogTags.getValues()).containsExactlyInAnyOrder(포비_스터디로그태그,
-                                                                            레벨1_스터디로그태그);
+                                                                            세션1_스터디로그태그);
     }
 }

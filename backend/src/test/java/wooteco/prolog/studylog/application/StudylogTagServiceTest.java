@@ -18,10 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.session.application.LevelService;
+import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.MissionService;
-import wooteco.prolog.session.application.dto.LevelRequest;
-import wooteco.prolog.session.application.dto.LevelResponse;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
@@ -40,7 +40,7 @@ class StudylogTagServiceTest {
     @Autowired
     private StudylogService studylogService;
     @Autowired
-    private LevelService levelService;
+    private SessionService sessionService;
     @Autowired
     private MissionService missionService;
     @Autowired
@@ -50,8 +50,8 @@ class StudylogTagServiceTest {
 
     @BeforeEach
     void setUp() {
-        LevelResponse level = levelService.create(new LevelRequest("레벨1"));
-        MissionResponse mission = missionService.create(new MissionRequest("미션 이름", level.getId()));
+        SessionResponse session = sessionService.create(new SessionRequest("세션1"));
+        MissionResponse mission = missionService.create(new MissionRequest("미션 이름", session.getId()));
 
         this.member = memberService
                 .findOrCreateMember(new GithubProfileResponse("이름", "별명", "1", "image"));

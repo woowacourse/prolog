@@ -1,132 +1,119 @@
-import { useContext, useEffect, useState } from 'react';
-import { useHistory, NavLink, useParams } from 'react-router-dom';
+import { useContext } from 'react';
+import { NavLink, useHistory, useParams } from 'react-router-dom';
 
-import useRequest from '../../hooks/useRequest';
-import useMutation from '../../hooks/useMutation';
 import { UserContext } from '../../contexts/UserProvider';
 
-import { Button, SelectBox } from '../../components';
-import Report from './Report';
+import * as Styled from './styles';
+import AbilityGraph from './AbilityGraph';
+import ReportStudyLogs from './ReportStudyLogs';
+import { Button } from '../../components';
+import { useMutation, useQuery } from 'react-query';
+import axios from 'axios';
+import { BASE_URL } from '../../configs/environment';
+import { ERROR_MESSAGE } from '../../constants';
 
-import {
-  requestDeleteReport,
-  requestGetReport,
-  requestGetReportList,
-} from '../../service/requests';
-import { REQUEST_REPORT_TYPE } from '../../constants';
-
-import { Container, ButtonWrapper, ReportHeader, ReportBody } from './styles';
-import { AddNewReportLink } from '../ProfilePageReportsList/styles';
+// 마크다운
+import { Viewer } from '@toast-ui/react-editor';
+import '@toast-ui/editor/dist/toastui-editor.css';
+import 'prismjs/themes/prism.css';
+import Prism from 'prismjs';
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
 
 const ProfilePageReports = () => {
   const history = useHistory();
   const { reportId, username } = useParams();
+  const { user } = useContext(UserContext);
+  const readOnly = username !== user.username;
 
-  const [reportName, setReportName] = useState('');
+  /** 리포트 목록 가져오기 */
+  const { data: reportData = [], isLoading } = useQuery(
+    [`${username}-reports-${reportId}`],
+    async () => {
+      const { data } = await axios({
+        method: 'get',
+        url: `${BASE_URL}/reports/${reportId}`,
+      });
 
-  const { user: loginUser } = useContext(UserContext);
-  const { accessToken, username: loginUsername } = loginUser;
-
-  const isOwner = username === loginUsername;
-
-  const { response: report, fetchData: getReport } = useRequest(
-    {},
-    () => requestGetReport(reportId),
-    (data) => {
-      setReportName(data.title);
-    },
-    () => {
-      alert('존재하지 않는 리포트입니다.');
-      history.push(`/${username}/reports`);
+      return data;
     }
   );
 
-  const { response: reports, fetchData: getReports } = useRequest(
-    [],
-    () => requestGetReportList({ username, type: REQUEST_REPORT_TYPE.SIMPLE }),
-    (data) => {
-      const reportName = data.reports.find((report) => report.id === Number(reportId)).title;
-
-      setReportName(reportName);
-    }
-  );
-
-  const { reports: reportList } = reports;
-
-  const { mutate: onDeleteReport } = useMutation(
-    () => {
-      if (!window.confirm('리포트를 삭제하시겠습니까?')) return;
-
-      return requestDeleteReport(reportId, accessToken);
+  /** 리포트 삭제 */
+  const onDeleteReport = useMutation(
+    async () => {
+      await axios({
+        method: 'delete',
+        url: `${BASE_URL}/reports/${reportId}`,
+        headers: {
+          Authorization: `Bearer ${user.accessToken}`,
+        },
+      });
     },
     {
       onSuccess: () => {
         history.push(`/${username}/reports`);
       },
-      onError: () => {
-        alert('리포트 삭제에 실패하였습니다.');
+      onError: (errorData) => {
+        const errorCode = errorData?.code;
+
+        alert(
+          ERROR_MESSAGE[errorCode] ?? '리포트 수정에 실패하였습니다. 잠시후 다시 시도해주세요.'
+        );
       },
     }
   );
 
-  const makeSelectOptions = (options) => {
-    return options?.map((option) => ({ id: option.id, name: option.title }));
+  const onDelete = () => {
+    if (window.confirm('리포트를 삭제하시겠습니까?')) {
+      onDeleteReport.mutate();
+    }
   };
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
-    if (!reportList || reportList.length === 0) return;
-
-    const searchTargetReportId = reportList.find((report) => report.title === reportName)?.id;
-
-    if (searchTargetReportId) {
-      history.push(`/${username}/reports/${searchTargetReportId}`);
-    }
-  }, [reportName]);
-
-  useEffect(() => {
-    getReport();
-  }, [reportId]);
-
-  useEffect(() => {
-    getReports(username);
-  }, [username]);
+  if (isLoading) {
+    return <></>;
+  }
 
   return (
-    <Container>
-      <ReportHeader>
-        {!!reportName && (
-          <SelectBox
-            options={makeSelectOptions(reportList)}
-            selectedOption={reportName}
-            setSelectedOption={setReportName}
-            title="리포트 목록입니다."
-            name="reports"
-            width="50%"
-            maxHeight="10rem"
-            size="SMALL"
-          />
-        )}
-        {isOwner && (
-          <AddNewReportLink to={`/${username}/reports/write`}>새 리포트 등록</AddNewReportLink>
-        )}
-      </ReportHeader>
+    <Styled.Container>
+      <Styled.ReportBody>
+        <Styled.Section>
+          <h3 id="report-title">{reportData.title}</h3>
+        </Styled.Section>
 
-      <ReportBody>
-        {isOwner && (
-          <ButtonWrapper>
-            <NavLink to={`/${username}/reports/${report?.id}/edit`}>수정</NavLink>
-            <Button onClick={onDeleteReport} size="X_SMALL">
+        <Styled.Section>
+          <span>🎯 기간</span>
+          <p>
+            {reportData.startDate} ~ {reportData.endDate}
+          </p>
+        </Styled.Section>
+
+        {reportData.description && (
+          <Styled.Section>
+            <span>🎯 리포트 설명</span>
+            <div id="report-desc">
+              <Viewer
+                initialValue={reportData.description}
+                extendedAutolinks={true}
+                plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+              />
+            </div>
+          </Styled.Section>
+        )}
+
+        <AbilityGraph abilities={reportData.abilities} />
+
+        <ReportStudyLogs studylogs={reportData.studylogs} />
+
+        {!readOnly && (
+          <Styled.ButtonWrapper>
+            <NavLink to={`/${username}/reports/${reportId}/edit`}>수정</NavLink>
+            <Button onClick={onDelete} size="X_SMALL">
               삭제
             </Button>
-          </ButtonWrapper>
+          </Styled.ButtonWrapper>
         )}
-        <Report report={report} />
-      </ReportBody>
-    </Container>
+      </Styled.ReportBody>
+    </Styled.Container>
   );
 };
 

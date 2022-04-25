@@ -86,6 +86,9 @@ dependencies {
     //flyway
     implementation 'org.flywaydb:flyway-core:6.4.2'
 
+    // embedded mysql
+    implementation 'com.wix:wix-embedded-mysql:4.6.2'
+
     // webclient
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
@@ -94,6 +97,7 @@ dependencies {
 
     // rss feed
     implementation 'com.rometools:rome:1.18.0'
+    implementation 'org.commonmark:commonmark:0.18.2'
 
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'

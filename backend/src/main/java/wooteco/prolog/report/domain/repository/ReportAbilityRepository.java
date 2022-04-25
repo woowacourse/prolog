@@ -7,5 +7,7 @@ import wooteco.prolog.report.domain.ReportAbility;
 public interface ReportAbilityRepository extends JpaRepository<ReportAbility, Long> {
 
     List<ReportAbility> findByReportIdIn(List<Long> reportIds);
+
+    List<ReportAbility> findByReportId(Long reportId);
 }
 

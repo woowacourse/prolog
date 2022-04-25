@@ -37,5 +37,8 @@ operation::abilities/studylog-update[snippets='http-request,http-response']
 
 === 역량 포함 모든 학습로그 조회
 - abilityIds : 필수값 아님
+- 페이지네이션 제공
+** page: 페이지 번호
+** size: 한 페이지 당 갯수
 
 operation::abilities/studylog-list[snippets='http-request,http-response']

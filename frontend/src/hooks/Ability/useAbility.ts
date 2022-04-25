@@ -21,7 +21,7 @@ const useAbility = ({ username, setAddFormStatus, addFormClose }: Props) => {
   const queryClient = useQueryClient();
 
   /** 전체 역량 조회 */
-  const { data: abilities = [] } = useQuery(
+  const { data: abilities = [], isLoading } = useQuery(
     [`${username}-abilities`],
     () => AbilityRequest.getAbilityList({ url: `/members/${username}/abilities` }),
     {
@@ -67,7 +67,7 @@ const useAbility = ({ username, setAddFormStatus, addFormClose }: Props) => {
     }
   );
 
-  return { abilities, onAddAbility, onDeleteAbility };
+  return { abilities, isLoading, onAddAbility, onDeleteAbility };
 };
 
 export default useAbility;

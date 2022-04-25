@@ -6,7 +6,12 @@ import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
 public enum AbilityAcceptanceFixture {
     PROGRAMMING("프로그래밍", "프로그래밍 관련입니다.", "red"),
     LANGUAGE("언어", null, "red"),
-    FRAMEWORK( "프레임워크", null, "red"),
+    FRAMEWORK( "프레임워크", null, "red2"),
+    SPRING( "스프링", "스프링입니다", "red2"),
+    UIUX( "UI/UX", null, "orange2"),
+    UIUXDESIGN( "UI/UX 설계", "UI/UX 설계 입니다", "orange2"),
+    CS( "CS", null, "orange"),
+    NETWORK( "네트워크", "네트워크 입니다", "orange"),
     CREATIVITY("프로그래밍과 색상이 같은 창의력", "창의력입니다.", "red"),
     THINK_POWER("프로그래밍과 색상이 다른 사고력", "사고력입니다.", "black"),
     DESIGN("디자인", "디자인 관련입니다.", "blue"),

@@ -6,21 +6,20 @@ import { COLOR } from '../../constants';
 
 export const Container = styled.section<{ css?: SerializedStyles }>`
   width: 100%;
-  height: fit-content;
-  padding: 2rem;
-  padding-left: 0;
+  height: 100%;
   margin-bottom: 7rem;
-
+  padding: 2rem;
   position: relative;
 
-  border-radius: 1.5rem;
-  border: 0.5px solid ${COLOR.LIGHT_GRAY_200};
-  background-color: ${COLOR.LIGHT_GRAY_100};
-
   ${({ css }) => css};
+
+  > h2 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
 `;
 
-export const AddNewReportLink = styled(NavLink)<{ css?: SerializedStyles }>`
+export const AddFirstReportLink = styled(NavLink)<{ css?: SerializedStyles }>`
   width: fit-content;
   height: 3rem;
   margin: 1rem;
@@ -40,185 +39,159 @@ export const AddNewReportLink = styled(NavLink)<{ css?: SerializedStyles }>`
 
   :hover {
     background-color: ${COLOR.DARK_BLUE_300};
+    color: ${COLOR.WHITE};
   }
 `;
 
-export const ReportList = styled.ol`
-  width: 100%;
-  height: 55rem;
-  margin-left: 2rem;
-  position: relative;
+export const AddNewReportLink = styled(NavLink)`
+  width: 3rem;
+  height: 3rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  align-content: space-between;
-  row-gap: 2rem;
-`;
+  border: 1px solid ${COLOR.DARK_BLUE_900};
+  background-color: ${COLOR.DARK_BLUE_900};
+  color: ${COLOR.WHITE};
+  border-radius: 50%;
+  font-size: 2.5rem;
 
-export const Card = styled.li`
-  width: 38rem;
-  height: 27rem;
-
-  position: relative;
-
-  border-radius: 0.5rem;
-  background-color: ${COLOR.WHITE};
-
-  word-break: break-all;
-  word-wrap: break-word;
-  line-height: 1.25;
+  span {
+    padding-bottom: 0.2rem;
+  }
 
   :hover {
-    box-shadow: 0.5rem 0.5rem 0.5rem ${COLOR.LIGHT_GRAY_200};
-
-    transform: scale(1.02);
-    transition: transform 0.1s;
-
-    cursor: pointer;
-  }
-
-  a {
-    width: 100%;
-    height: 100%;
-    padding: 1.5rem;
-
-    display: block;
-
-    > p {
-      min-height: 3.3rem;
-      margin: 1rem 0;
-
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-
-      font-size: 1.3rem;
-      color: ${COLOR.DARK_GRAY_500};
-    }
-  }
-
-  h4 {
-    margin: 1rem 0;
-
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-
-    font-size: 1.8rem;
-  }
-
-  time {
-    display: block;
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-
-    text-align: right;
-    font-size: 1.2rem;
-    color: ${COLOR.DARK_GRAY_600};
+    border: 1px solid ${COLOR.DARK_BLUE_900};
+    background-color: ${COLOR.LIGHT_BLUE_200};
+    color: ${COLOR.DARK_BLUE_900};
   }
 `;
 
-export const AbilityList = styled.ul`
-  width: 100%;
-  max-height: 6rem;
-  overflow: hidden;
+/** 타임라인 영역 UI */
+export const TimelineWrapper = styled.div`
+  margin-top: 5rem;
 
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-
-  > li {
-    max-width: 100%;
-    margin: 0.5rem 0;
-
-    div {
-      max-width: 100%;
-
-      span {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        font-size: 1.3rem;
-        color: ${COLOR.DARK_GRAY_700};
-      }
-    }
-  }
-`;
-
-export const StudylogCount = styled.div`
-  margin: 0.5rem;
-  margin-top: 1.5rem;
-
-  display: flex;
-  position: absolute;
-  bottom: 2rem;
-
-  svg {
-    width: 2rem;
-  }
-
-  && > p {
-    margin: 0 1rem;
-
-    font-size: 1.4rem;
-    line-height: 2rem;
-    color: ${COLOR.BLACK_900};
-  }
-`;
-
-export const Badge = styled.div`
-  width: 10rem;
-  height: 10rem;
-  overflow: hidden;
-  position: absolute;
-  top: -1rem;
-  right: -1rem;
-
-  ::before,
-  ::after {
+  /** 가운데 선 */
+  :before {
     content: '';
-    display: block;
-
+    height: 90%;
     position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    background-color: ${COLOR.DARK_BLUE_900};
+  }
+`;
 
-    border: 5px solid ${COLOR.DARK_BLUE_500};
+/** 개별 리포트 */
+export const Report = styled.li<{ readOnly?: boolean }>`
+  width: 35rem;
+  height: 11rem;
+  margin-bottom: 5rem;
+  padding: 1rem;
+  position: relative;
+
+  border-radius: 1.5rem;
+  background-color: ${COLOR.LIGHT_BLUE_200};
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+
+  :first-of-type {
+    margin-top: ${({ readOnly }) => !readOnly && '10rem'};
   }
 
-  ::before {
-    z-index: 0;
-    top: 0;
-    left: 0;
+  :nth-of-type(odd) {
+    float: left;
+    clear: right;
+    border-top-right-radius: 0;
+
+    :after {
+      right: 0;
+      transform: translateX(4.6rem);
+    }
   }
 
-  ::after {
-    z-index: 0;
-    bottom: 0;
-    right: 0;
+  :nth-of-type(even) {
+    float: right;
+    clear: left;
+    border-top-left-radius: 0;
+
+    :after {
+      left: 0;
+      transform: translateX(-4.6rem);
+    }
   }
 
-  > span {
-    width: 16rem;
-    display: block;
-    padding: 0.3rem 0;
-
+  /** 타임라인의 점 */
+  :after {
+    content: '';
     position: absolute;
-    left: -2rem;
-    top: 2.3rem;
-    transform: rotate(45deg);
+    top: ${({ readOnly }) => (readOnly ? '0rem' : '2rem')};
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid ${COLOR.DARK_BLUE_900};
+    border-radius: 50%;
+    background-color: ${COLOR.DARK_BLUE_900};
+  }
 
-    background-color: ${COLOR.LIGHT_BLUE_800};
-    box-shadow: 0 0.5rem 1rem ${COLOR.BLACK_OPACITY_200};
-    border: 0.2rem dotted ${COLOR.WHITE};
-    outline: 0.4rem solid ${COLOR.LIGHT_BLUE_800};
+  :hover {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
-    color: ${COLOR.WHITE};
-    font-size: 1.4rem;
-    text-shadow: 0 1px 1px ${COLOR.BLACK_OPACITY_200};
-    text-align: center;
+    :after {
+      border: 1px solid ${COLOR.LIGHT_BLUE_400};
+      background-color: ${COLOR.LIGHT_BLUE_400};
+    }
+  }
+`;
 
-    z-index: 1;
+/** 리포트 날짜 */
+export const ReportDate = styled.span`
+  font-size: 1.2rem;
+  font-weight: 500;
+  position: absolute;
+  top: -2.5rem;
+  left: 0;
+`;
+
+/** 리포트 제목 */
+export const ReportTtile = styled.span`
+  display: -webkit-box;
+
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: ${COLOR.BLACK_900};
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+`;
+
+/** 리포트 설명 */
+export const ReportDesc = styled.p`
+  margin: 0;
+  display: -webkit-box;
+
+  font-size: 1.2rem;
+  text-overflow: ellipsis;
+  color: ${COLOR.DARK_GRAY_600};
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+`;
+
+/** 리포트 보러가는 링크 */
+export const GoReportLink = styled(NavLink)`
+  position: absolute;
+  bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+
+  border: none;
+
+  :hover {
+    font-size: 1.3rem;
+    color: ${COLOR.RED_900};
   }
 `;

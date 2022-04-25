@@ -7,7 +7,6 @@ export const Container = styled.div`
   height: 100%;
 
   font-size: 1.4rem;
-  position: relative;
 
   button:disabled {
     opacity: 0.3;
@@ -247,7 +246,7 @@ export const AbilityList = styled.ul`
     height &&
     `
     min-height: ${height}; 
-    max-height: 64rem;
+    max-height: 65rem;
     `}
 
   background-color: ${COLOR.WHITE};
@@ -295,6 +294,10 @@ export const AbilityItem = styled.li`
   align-items: center;
 
   border-bottom: 1px solid ${COLOR.LIGHT_GRAY_200};
+
+  > p {
+    padding-top: 1.2rem;
+  }
 `;
 
 export const SubAbilityList = styled.ul`
@@ -318,6 +321,11 @@ export const SubAbilityList = styled.ul`
 
     span {
       text-align: center;
+    }
+
+    p {
+      padding-top: 1.2rem;
+      margin-right: 3rem;
     }
   }
 
