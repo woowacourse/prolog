@@ -53,6 +53,8 @@ const GlobalStyles = () => (
         &:visited,
         &:focus {
           text-decoration: none;
+          color: inherit;
+          font-weight: 600;
         }
       }
 

@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { ERROR_MESSAGE } from '../constants';
+import ERROR_CODE from '../constants/errorCode';
 import { getResponseData } from '../utils/response';
 
 const useMutation = (callback, { onSuccess, onError, onFinish }) => {
@@ -18,6 +20,15 @@ const useMutation = (callback, { onSuccess, onError, onFinish }) => {
 
       onSuccess?.(await getResponseData(response));
     } catch (error) {
+      if (error instanceof TypeError) {
+        setError(ERROR_CODE.SERVER_ERROR);
+        onError?.({
+          code: ERROR_CODE.SERVER_ERROR,
+          message: ERROR_MESSAGE[ERROR_CODE.SERVER_ERROR],
+        });
+        return;
+      }
+
       const errorResponse = JSON.parse(error.message);
 
       console.error(errorResponse);

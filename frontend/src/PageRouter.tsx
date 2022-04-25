@@ -9,7 +9,7 @@ import pageRoutes from './routes';
 export const MainContentStyle = css`
   max-width: 112rem;
   margin: 4rem auto;
-  padding: 0 4rem;
+  padding: 0 4rem 8rem;
 
   @media screen and (max-width: 420px) {
     min-width: 280px;

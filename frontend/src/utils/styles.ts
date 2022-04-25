@@ -1,10 +1,29 @@
+type CSSUnit =
+  | 'em'
+  | 'rem'
+  | 'px'
+  | 'vh'
+  | 'vw'
+  | 'cm'
+  | '%'
+  | 'mm'
+  | 'Q'
+  | 'in'
+  | 'pc'
+  | 'pt'
+  | 'ex'
+  | 'ch'
+  | 'lh'
+  | 'vmin'
+  | 'vmax';
+
 /**
  * @description size와 단위를 받아 string으로 반환하는 합수
  * @param size : 크기의 정도를 나타냄.
- * @param unit : 크기의 단위를 나타냄. default 'px'
+ * @param unit : 크기의 단위를 나타냄. default 'rem'
  * @returns 변환된 크기에 대한 string
  */
-export const getSize = (size: number | string, unit = 'px'): string =>
+export const getSize = (size: number | string, unit: CSSUnit = 'rem'): string =>
   typeof size === 'number' ? `${size}${unit}` : size;
 
 /**

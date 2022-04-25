@@ -3,8 +3,6 @@ export { default as NavBar } from './NavBar/NavBar';
 export { default as DropdownMenu } from './DropdownMenu/DropdownMenu';
 export { default as Card } from './Card/Card';
 export { CARD_SIZE } from './Card/Card.styles';
-export { default as NewStudylogCard } from './Card/NewStudylogCard';
-export { default as EditStudylogCard } from './Card/EditStudylogCard';
 export { default as SelectBox } from './SelectBox/SelectBox';
 export { default as Button } from './Button/Button';
 export { BUTTON_SIZE } from './Button/Button.styles';
