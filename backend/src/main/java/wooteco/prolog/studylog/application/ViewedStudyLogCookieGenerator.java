@@ -1,6 +1,5 @@
 package wooteco.prolog.studylog.application;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
