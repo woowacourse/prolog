@@ -227,7 +227,7 @@ public class StudylogService {
                 studylogRequest.getTitle(),
                 studylogRequest.getContent(),
                 mission,
-                tags);
+                tags.getList());
 
         deleteStudylogTemp(memberId);
         StudylogTemp createdStudylogTemp = studylogTempRepository.save(requestedStudylogTemp);
