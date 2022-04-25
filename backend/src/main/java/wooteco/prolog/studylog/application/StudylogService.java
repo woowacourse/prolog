@@ -39,16 +39,16 @@ import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
 @Transactional(readOnly = true)
 public class StudylogService {
 
-    private final StudylogRepository studylogRepository;
-    private final StudylogTempRepository studylogTempRepository;
-    private final StudylogScrapRepository studylogScrapRepository;
-    private final StudylogReadRepository studylogReadRepository;
     private final MemberTagService memberTagService;
     private final DocumentService studylogDocumentService;
     private final MemberService memberService;
     private final TagService tagService;
     private final SessionService sessionService;
     private final MissionService missionService;
+    private final StudylogRepository studylogRepository;
+    private final StudylogScrapRepository studylogScrapRepository;
+    private final StudylogReadRepository studylogReadRepository;
+    private final StudylogTempRepository studylogTempRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
@@ -376,9 +376,9 @@ public class StudylogService {
         List<Studylog> studylogs = studylogRepository.findTop50ByDeletedFalseOrderByIdDesc();
         return StudylogRssFeedResponse.listOf(studylogs, url);
     }
-  
+
     public Studylog save(Studylog studylog) {
-      return studylogRepository.save(studylog);
+        return studylogRepository.save(studylog);
     }
 
     public List<Studylog> findStudylogsInPeriod(Long memberId, LocalDate startDate, LocalDate endDate) {
