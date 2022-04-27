@@ -104,6 +104,7 @@ public class StudylogResponse {
         );
     }
 
+    // todo 정적팩토리메서드 from 사용해야하는데 of 쓰고 있는 부분 확인 후 리팩터링
     public static StudylogResponse of(Studylog studylog) {
         return of(studylog, false, false, null);
     }

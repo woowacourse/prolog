@@ -18,6 +18,7 @@ import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
+import wooteco.prolog.studylog.application.dto.StudylogTempResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.SearchParams;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
@@ -39,6 +40,20 @@ public class StudylogController {
     public ResponseEntity<StudylogResponse> createStudylog(@AuthMemberPrincipal LoginMember member, @RequestBody StudylogRequest studylogRequest) {
         StudylogResponse studylogResponse = studylogService.insertStudylog(member.getId(), studylogRequest);
         return ResponseEntity.created(URI.create("/studylogs/" + studylogResponse.getId())).body(studylogResponse);
+    }
+
+    @PutMapping("/temp")
+    @MemberOnly
+    public ResponseEntity<StudylogTempResponse> createStudylogTemp(@AuthMemberPrincipal LoginMember member, @RequestBody StudylogRequest studylogRequest) {
+        StudylogTempResponse studylogTempResponse = studylogService.insertStudylogTemp(member.getId(), studylogRequest);
+        return ResponseEntity.created(URI.create("/studylogs/temp/" + studylogTempResponse.getId())).body(studylogTempResponse);
+    }
+
+    @GetMapping("/temp")
+    @MemberOnly
+    public ResponseEntity<StudylogTempResponse> showStudylogTemp(@AuthMemberPrincipal LoginMember member) {
+        StudylogTempResponse studylogTempResponse = studylogService.findStudylogTemp(member.getId());
+        return ResponseEntity.ok(studylogTempResponse);
     }
 
     @GetMapping
