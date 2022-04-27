@@ -40,7 +40,7 @@ const NewStudylogPage = () => {
 
     setStudylogContent({
       ...studylogContent,
-      tags: tags.map(({ value }) => ({ name: value })),
+      tags: tags.map(({ value }) => ({ name: value.replace(/#/, '') })),
     });
   };
 

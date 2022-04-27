@@ -71,7 +71,7 @@ const EditStudylogPage = () => {
 
     setStudylogContent({
       ...studylogContent,
-      tags: tags.map(({ value }) => ({ name: value })),
+      tags: tags.map(({ value }) => ({ name: value.replace(/#/, '') })),
     });
   };
 
