@@ -83,10 +83,17 @@ const getAuthConfig = (accessToken: string, config?: AxiosRequestConfig) =>
     : { ...config };
 
 export const requestGetTags = (): Promise<AxiosResponse<Tag[]>> => httpRequester.get('/tags');
-export const requestGetMissions = (): Promise<AxiosResponse<Mission[]>> =>
-  httpRequester.get('/missions');
-export const requestGetSessions = (): Promise<AxiosResponse<Session[]>> =>
-  httpRequester.get('/sessions');
+export const requestGetMissions = ({
+  accessToken,
+}: {
+  accessToken: string;
+}): Promise<AxiosResponse<Mission[]>> => httpRequester.get('/missions/mine', getAuthConfig(accessToken));
+export const requestGetSessions = ({
+  accessToken,
+}: {
+  accessToken: string;
+}): Promise<AxiosResponse<Session[]>> =>
+  httpRequester.get('/sessions/mine', getAuthConfig(accessToken));
 
 export const requestGetStudylog = ({
   id,

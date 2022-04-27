@@ -1,5 +1,6 @@
 package wooteco.prolog.docu;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
@@ -26,7 +27,7 @@ public class FilterDocumentation extends NewDocumentation {
 
     @Test
     void 필터_목록_조회() {
-        when(filterService.showAll()).thenReturn(FILTER_RESPONSE);
+        when(filterService.showAll(any())).thenReturn(FILTER_RESPONSE);
 
         given
             .when().get("/filters")

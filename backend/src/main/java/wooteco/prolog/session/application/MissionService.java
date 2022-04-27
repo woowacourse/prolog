@@ -2,11 +2,14 @@ package wooteco.prolog.session.application;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.domain.Mission;
@@ -38,10 +41,7 @@ public class MissionService {
     }
 
     public List<MissionResponse> findAll() {
-        return missionRepository.findAll()
-            .stream()
-            .map(MissionResponse::of)
-            .collect(toList());
+        return MissionResponse.listOf(missionRepository.findAll());
     }
 
     public Mission findById(Long id) {
@@ -58,5 +58,25 @@ public class MissionService {
 
     public List<Mission> findByIds(List<Long> missionIds) {
         return missionRepository.findAllById(missionIds);
+    }
+
+    public List<MissionResponse> findMyMissions(LoginMember loginMember) {
+        List<Long> mySessionIds = sessionService.findMySessionIds(loginMember.getId());
+        List<Mission> missions = missionRepository.findBySessionIdIn(mySessionIds);
+        return MissionResponse.listOf(missions);
+    }
+
+    public List<MissionResponse> findAllWithMyMissionFirst(LoginMember loginMember) {
+        if (loginMember.isAnonymous()) {
+            return findAll();
+        }
+
+        List<MissionResponse> myMissions = findMyMissions(loginMember);
+        List<MissionResponse> allMissions = findAll();
+        allMissions.removeAll(myMissions);
+
+        return Stream.of(myMissions, allMissions)
+            .flatMap(Collection::stream)
+            .collect(toList());
     }
 }

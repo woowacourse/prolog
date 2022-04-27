@@ -51,7 +51,7 @@ const Sidebar = ({
   const { data: sessions = [] } = useSessions();
 
   const tagOptions = tags.map(({ name }) => ({ value: name, label: `#${name}` }));
-  const missionOptions = missions.map(({ id, name }) => ({ value: `${id}`, label: `${name}` }));
+  const missionOptions = missions.map(({ id, name, session }) => ({ value: `${id}`, label: `[${session?.name}] ${name}` }));
   const sessionOptions = sessions.map(({ id, name }) => ({ value: `${id}`, label: `${name}` }));
 
   const selectedSession = sessions.find(({ id }) => id === selectedSessionId);
@@ -65,7 +65,7 @@ const Sidebar = ({
           <div>
             <SelectBox
               options={sessionOptions}
-              placeholder="+ 세션 추가"
+              placeholder="+ 세션을 선택하세요."
               onChange={onSelectSession}
               value={
                 selectedSession
@@ -80,7 +80,7 @@ const Sidebar = ({
           <div>
             <SelectBox
               options={missionOptions}
-              placeholder="+ 미션 추가"
+              placeholder="+ 미션을 선택하세요."
               onChange={onSelectMission}
               selectedSessionId={selectedSessionId?.toString()}
               value={

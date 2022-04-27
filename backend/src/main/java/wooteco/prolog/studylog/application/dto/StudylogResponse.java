@@ -37,29 +37,6 @@ public class StudylogResponse {
 
     public StudylogResponse(
         Studylog studylog,
-        MissionResponse missionResponse,
-        List<TagResponse> tagResponses,
-        boolean liked) {
-        this(
-            studylog.getId(),
-            MemberResponse.of(studylog.getMember()),
-            studylog.getCreatedAt(),
-            studylog.getUpdatedAt(),
-            null,
-            missionResponse,
-            studylog.getTitle(),
-            studylog.getContent(),
-            tagResponses,
-            false,
-            false,
-            studylog.getViewCount(),
-            liked,
-            studylog.getLikeCount()
-        );
-    }
-
-    public StudylogResponse(
-        Studylog studylog,
         SessionResponse sessionResponse,
         MissionResponse missionResponse,
         List<TagResponse> tagResponses,

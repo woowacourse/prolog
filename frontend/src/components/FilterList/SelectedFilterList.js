@@ -6,6 +6,9 @@ import {
   MemberWrapper,
   Nickname,
   NoContent,
+  SessionInMission,
+  MissionName,
+  MissionWrapper,
 } from './FilterList.styles';
 import checkIcon from '../../assets/images/check.png';
 
@@ -31,7 +34,7 @@ const SelectedFilterList = ({
 
             return regExpKeyword.test(name);
           })
-          .map(({ id, name, username, nickname, imageUrl }) => {
+          .map(({ id, name, username, nickname, imageUrl, session }) => {
             if (Boolean(findFilterItem(type, id)) === !isChecked) return null;
 
             return (
@@ -46,8 +49,13 @@ const SelectedFilterList = ({
                       <span>{username}</span>
                       <Nickname>{nickname}</Nickname>
                     </MemberWrapper>
+                  ) : type === 'missions' ? (
+                      <MissionWrapper>
+                        <SessionInMission>{session?.name}</SessionInMission>
+                        <MissionName>{name}</MissionName>
+                      </MissionWrapper>
                   ) : (
-                    <span>{name}</span>
+                      <span>{name}</span>
                   )}
                   <CheckIcon src={checkIcon} alt="선택된 필터 표시" checked={isChecked} />
                 </FilterDetail>

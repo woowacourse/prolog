@@ -1,4 +1,4 @@
-import { UseQueryOptions, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 
 import {
   requestGetMissions,
@@ -7,6 +7,8 @@ import {
   ResponseError,
 } from '../../apis/studylogs';
 import { Mission, Session, Tag } from '../../models/Studylogs';
+import { useContext } from 'react';
+import { UserContext } from '../../contexts/UserProvider';
 
 export const useTags = () =>
   useQuery<Tag[], ResponseError>(
@@ -18,22 +20,30 @@ export const useTags = () =>
     { initialData: [] }
   );
 
-export const useMissions = () =>
-  useQuery<Mission[], ResponseError>(
+export const useMissions = () => {
+  const { user } = useContext(UserContext);
+  const { accessToken } = user;
+
+  return useQuery<Mission[], ResponseError>(
     ['missions'],
     async () => {
-      const response = await requestGetMissions();
+      const response = await requestGetMissions({ accessToken });
       return response.data;
     },
     { initialData: [] }
   );
+};
 
-export const useSessions = () =>
-  useQuery<Session[], ResponseError>(
+export const useSessions = () => {
+  const { user } = useContext(UserContext);
+  const { accessToken } = user;
+
+  return useQuery<Session[], ResponseError>(
     ['sessions'],
     async () => {
-      const response = await requestGetSessions();
+      const response = await requestGetSessions({ accessToken });
       return response.data;
     },
     { initialData: [] }
   );
+};

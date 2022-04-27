@@ -7,16 +7,12 @@ export interface Author {
   role: Role;
 }
 
-export interface Level {
-  id: number;
-  name: string;
-}
-
 export interface Mission {
   id: number;
   name: string;
-  level?: Level;
+  session?: Session;
 }
+
 export interface Session {
   id: number;
   name: string;
