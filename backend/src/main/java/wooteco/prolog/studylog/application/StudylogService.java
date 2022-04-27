@@ -24,23 +24,10 @@ import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
-import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
-import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
-import wooteco.prolog.studylog.application.dto.StudylogMissionRequest;
-import wooteco.prolog.studylog.application.dto.StudylogRequest;
-import wooteco.prolog.studylog.application.dto.StudylogResponse;
-import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
-import wooteco.prolog.studylog.application.dto.StudylogSessionRequest;
-import wooteco.prolog.studylog.application.dto.StudylogsResponse;
+import wooteco.prolog.studylog.application.dto.*;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
-import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.StudylogRead;
-import wooteco.prolog.studylog.domain.StudylogScrap;
-import wooteco.prolog.studylog.domain.Tags;
-import wooteco.prolog.studylog.domain.repository.StudylogReadRepository;
-import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
-import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
+import wooteco.prolog.studylog.domain.*;
+import wooteco.prolog.studylog.domain.repository.*;
 import wooteco.prolog.studylog.event.StudylogDeleteEvent;
 import wooteco.prolog.studylog.exception.StudylogArgumentException;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
@@ -61,6 +48,7 @@ public class StudylogService {
     private final StudylogRepository studylogRepository;
     private final StudylogScrapRepository studylogScrapRepository;
     private final StudylogReadRepository studylogReadRepository;
+    private final StudylogTempRepository studylogTempRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
@@ -90,6 +78,7 @@ public class StudylogService {
         );
 
         onStudylogCreatedEvent(member, tags, persistStudylog);
+        deleteStudylogTemp(memberId);
 
         return StudylogResponse.of(persistStudylog);
     }
@@ -109,6 +98,14 @@ public class StudylogService {
         updateScrap(data, findScrapIds(memberId));
         updateRead(data, findReadIds(memberId));
         return studylogs;
+    }
+
+    public StudylogTempResponse findStudylogTemp(Long memberId) {
+        if (studylogTempRepository.existsByMemberId(memberId)) {
+            StudylogTemp studylogTemp = studylogTempRepository.findByMemberId(memberId);
+            return StudylogTempResponse.from(studylogTemp);
+        }
+        return StudylogTempResponse.toNull();
     }
 
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Long memberId) {
@@ -189,7 +186,30 @@ public class StudylogService {
     }
 
     @Transactional
+    public StudylogTempResponse insertStudylogTemp(Long memberId, StudylogRequest studylogRequest) {
+        Member member = memberService.findById(memberId);
+        Tags tags = tagService.findOrCreate(studylogRequest.getTags());
+        Mission mission = missionService.findById(studylogRequest.getMissionId());
+        StudylogTemp requestedStudylogTemp = new StudylogTemp(member,
+                studylogRequest.getTitle(),
+                studylogRequest.getContent(),
+                mission,
+                tags.getList());
+
+        deleteStudylogTemp(memberId);
+        StudylogTemp createdStudylogTemp = studylogTempRepository.save(requestedStudylogTemp);
+        return StudylogTempResponse.from(createdStudylogTemp);
+    }
+
+    private void deleteStudylogTemp(Long memberId) {
+        if (studylogTempRepository.existsByMemberId(memberId)) {
+            studylogTempRepository.deleteByMemberId(memberId);
+        }
+    }
+
+    @Transactional
     public StudylogResponse retrieveStudylogById(LoginMember loginMember, Long studylogId, boolean isViewed) {
+
         Studylog studylog = findStudylogById(studylogId);
 
         onStudylogRetrieveEvent(loginMember, studylog, isViewed);
