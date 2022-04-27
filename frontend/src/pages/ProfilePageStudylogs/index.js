@@ -172,7 +172,7 @@ const ProfilePageStudylogs = () => {
               return (
                 <PostItem key={id} size="SMALL" onClick={() => goTargetStudylog(id)}>
                   <Description>
-                    <Mission>{mission.name}</Mission>
+                    <Mission>{mission?.name}</Mission>
                     <Title>{title}</Title>
                     <Content>{content}</Content>
                     <Tags>

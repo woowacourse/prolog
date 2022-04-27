@@ -49,7 +49,7 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
       <Link to={`${PATH.STUDYLOGS}/${id}`}>
         <div css={[TopContainerStyle, getRandomBgColorStyle(id)]}>
           <span>
-            [{mission.level?.name}]&nbsp;{mission.name}
+            [{mission?.level?.name}]&nbsp;{mission?.name}
           </span>
           <h2>{title}</h2>
           <span css={[DateAreaStyle]}>{new Date(createdAt).toLocaleDateString('ko-KR')}</span>

@@ -85,7 +85,7 @@ const Sidebar = ({
               selectedSessionId={selectedSessionId?.toString()}
               value={
                 selectedMission
-                  ? { value: `${selectedMission.id}`, label: selectedMission?.name }
+                  ? { value: `${selectedMission?.id}`, label: selectedMission?.name }
                   : undefined
               }
             />

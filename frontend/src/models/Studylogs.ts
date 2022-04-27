@@ -32,8 +32,8 @@ export interface Studylog {
   id: number;
   author: Author;
   content: string;
-  mission: Mission;
-  session: Session;
+  mission?: Mission;
+  session?: Session;
   title: string;
   tags: Tag[];
   createdAt: Date;
