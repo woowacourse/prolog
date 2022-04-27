@@ -33,7 +33,7 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
         try {
             return new StudylogsSearchRequest(
                 convertToString(webRequest, "keyword"),
-                convertToLongList(webRequest, "levels"),
+                convertToLongList(webRequest, "sessions"),
                 convertToLongList(webRequest, "missions"),
                 convertToLongList(webRequest, "tags"),
                 convertToStringList(webRequest, "usernames"),

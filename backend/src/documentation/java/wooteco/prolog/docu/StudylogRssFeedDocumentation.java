@@ -10,8 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.Documentation;
-import wooteco.prolog.session.application.dto.LevelRequest;
-import wooteco.prolog.session.application.dto.LevelResponse;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
@@ -44,8 +44,8 @@ class StudylogRssFeedDocumentation extends Documentation {
     }
 
     private StudylogRequest studylogRequest1() {
-        Long levelId = 레벨_등록함(new LevelRequest("레벨 1"));
-        Long missionId = 미션_등록함(new MissionRequest("레벨 1 - 어떤 미션", levelId));
+        Long sessionId = 세션_등록함(new SessionRequest("세션 1"));
+        Long missionId = 미션_등록함(new MissionRequest("세션 1 - 어떤 미션", sessionId));
 
         return new StudylogRequest(
             "어떤 타이틀",
@@ -56,8 +56,8 @@ class StudylogRssFeedDocumentation extends Documentation {
     }
 
     private StudylogRequest studylogRequest2() {
-        Long levelId = 레벨_등록함(new LevelRequest("레벨 2"));
-        Long missionId = 미션_등록함(new MissionRequest("레벨 2 - 어쩌구 미션", levelId));
+        Long sessionId = 세션_등록함(new SessionRequest("세션 2"));
+        Long missionId = 미션_등록함(new MissionRequest("세션 2 - 어쩌구 미션", sessionId));
 
         return new StudylogRequest(
             "어쩌구 타이틀",
@@ -67,17 +67,17 @@ class StudylogRssFeedDocumentation extends Documentation {
         );
     }
 
-    private Long 레벨_등록함(LevelRequest request) {
+    private Long 세션_등록함(SessionRequest request) {
         return RestAssured
             .given().log().all()
             .body(request)
             .contentType(APPLICATION_JSON_VALUE)
             .when()
-            .post("/levels")
+            .post("/sessions")
             .then()
             .log().all()
             .extract()
-            .as(LevelResponse.class)
+            .as(SessionResponse.class)
             .getId();
     }
 

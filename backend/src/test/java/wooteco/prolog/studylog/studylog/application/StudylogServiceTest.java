@@ -30,22 +30,21 @@ import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.session.application.LevelService;
 import wooteco.prolog.session.application.MissionService;
-import wooteco.prolog.session.application.dto.LevelRequest;
-import wooteco.prolog.session.application.dto.LevelResponse;
+import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
-import wooteco.prolog.session.domain.Level;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.domain.Mission;
+import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.application.DocumentService;
-import wooteco.prolog.studylog.application.StudylogLikeService;
 import wooteco.prolog.studylog.application.StudylogScrapService;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
-import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
+import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.application.dto.TagResponse;
@@ -57,6 +56,7 @@ import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 import wooteco.support.utils.IntegrationTest;
 
 @IntegrationTest
+@Transactional
 class StudylogServiceTest {
 
     private static final String STUDYLOG1_TITLE = "이것은 제목";
@@ -80,15 +80,13 @@ class StudylogServiceTest {
     @Autowired
     private StudylogScrapService studylogScrapService;
     @Autowired
-    private LevelService levelService;
+    private SessionService sessionService;
     @Autowired
     private MissionService missionService;
     @Autowired
     private MemberService memberService;
     @Autowired
     private DocumentService studylogDocumentService;
-    @Autowired
-    private StudylogLikeService studylogLikeService;
 
     private Member member1;
     private Member member2;
@@ -97,8 +95,8 @@ class StudylogServiceTest {
     private LoginMember loginMember2;
     private LoginMember loginMember3;
 
-    private Level level1;
-    private Level level2;
+    private Session session1;
+    private Session session2;
 
     private Mission mission1;
     private Mission mission2;
@@ -155,19 +153,19 @@ class StudylogServiceTest {
 
     @BeforeEach
     void setUp() {
-        LevelResponse levelResponse1 = levelService.create(new LevelRequest("레벨1"));
-        LevelResponse levelResponse2 = levelService.create(new LevelRequest("레벨2"));
+        SessionResponse sessionResponse1 = sessionService.create(new SessionRequest("세션1"));
+        SessionResponse sessionResponse2 = sessionService.create(new SessionRequest("세션2"));
 
-        this.level1 = new Level(levelResponse1.getId(), levelResponse1.getName());
-        this.level2 = new Level(levelResponse2.getId(), levelResponse2.getName());
+        this.session1 = new Session(sessionResponse1.getId(), sessionResponse1.getName());
+        this.session2 = new Session(sessionResponse2.getId(), sessionResponse2.getName());
 
         MissionResponse missionResponse1 = missionService
-            .create(new MissionRequest("자동차 미션", level1.getId()));
+            .create(new MissionRequest("자동차 미션", session1.getId()));
         MissionResponse missionResponse2 = missionService
-            .create(new MissionRequest("수동차 미션", level2.getId()));
+            .create(new MissionRequest("수동차 미션", session2.getId()));
 
-        this.mission1 = new Mission(missionResponse1.getId(), missionResponse1.getName(), level1);
-        this.mission2 = new Mission(missionResponse2.getId(), missionResponse2.getName(), level1);
+        this.mission1 = new Mission(missionResponse1.getId(), missionResponse1.getName(), session1);
+        this.mission2 = new Mission(missionResponse2.getId(), missionResponse2.getName(), session1);
 
         this.member1 = memberService.findOrCreateMember(new GithubProfileResponse("이름1", "별명1", "1", "image"));
         this.member2 = memberService.findOrCreateMember(new GithubProfileResponse("이름2", "별명2", "2", "image"));
@@ -177,15 +175,15 @@ class StudylogServiceTest {
         this.loginMember3 = new LoginMember(null, Authority.ANONYMOUS);
 
         this.studylog1 = new Studylog(member1,
-                                      STUDYLOG1_TITLE, "피케이와 포모의 스터디로그", mission1,
+                                      STUDYLOG1_TITLE, "피케이와 포모의 스터디로그", session1, mission1,
                                       asList(tag1, tag2));
         this.studylog2 = new Studylog(member1,
-                                      STUDYLOG2_TITLE, "피케이와 포모의 스터디로그 2", mission1,
+                                      STUDYLOG2_TITLE, "피케이와 포모의 스터디로그 2", session1, mission1,
                                       asList(tag2, tag3));
         this.studylog3 = new Studylog(member2,
-                                      STUDYLOG3_TITLE, "피케이 스터디로그", mission2,
+                                      STUDYLOG3_TITLE, "피케이 스터디로그", session1, mission2,
                                       asList(tag3, tag4, tag5));
-        this.studylog4 = new Studylog(member2, STUDYLOG4_TITLE, "포모의 스터디로그", mission2, emptyList());
+        this.studylog4 = new Studylog(member2, STUDYLOG4_TITLE, "포모의 스터디로그", session1, mission2, emptyList());
     }
 
     @DisplayName("스터디로그를 삽입한다. - 삽입 시 studylogDocument도 삽입된다.")
@@ -237,7 +235,7 @@ class StudylogServiceTest {
     @DisplayName("검색 및 필터")
     @ParameterizedTest
     @MethodSource("findWithFilter")
-    void findWithFilter(String keyword, List<Long> levelIds, List<Long> missionIds,
+    void findWithFilter(String keyword, List<Long> sessionIds, List<Long> missionIds,
                         List<Long> tagIds, List<String> usernames,
                         List<String> expectedStudylogTitles) {
         //given
@@ -248,7 +246,7 @@ class StudylogServiceTest {
         StudylogsResponse studylogsResponse = studylogService.findStudylogs(
             new StudylogsSearchRequest(
                 keyword,
-                levelIds,
+                sessionIds,
                 missionIds,
                 tagIds,
                 usernames,
@@ -273,7 +271,7 @@ class StudylogServiceTest {
     @DisplayName("스크랩한 경우 scrap이 true로 응답된다.")
     @ParameterizedTest
     @MethodSource("findWithFilter")
-    void findStudylogsWithScrapData(String keyword, List<Long> levelIds, List<Long> missionIds,
+    void findStudylogsWithScrapData(String keyword, List<Long> sessionIds, List<Long> missionIds,
                                     List<Long> tagIds, List<String> usernames,
                                     List<String> expectedStudylogTitles) {
         //given
@@ -288,7 +286,7 @@ class StudylogServiceTest {
         StudylogsResponse studylogsResponse = studylogService.findStudylogs(
             new StudylogsSearchRequest(
                 keyword,
-                levelIds,
+                sessionIds,
                 missionIds,
                 tagIds,
                 usernames,
@@ -310,78 +308,6 @@ class StudylogServiceTest {
             .collect(toList());
 
         assertThat(scraps).doesNotContain(false);
-    }
-
-    @DisplayName("로그인하지 않은 상태에서 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
-    @Test
-    void findPopularStudylogsWithoutLogin() {
-        // given
-        insertStudylogs(member1, studylog1, studylog2, studylog3);
-        studylogService.retrieveStudylogById(loginMember3, 2L);
-        studylogScrapService.registerScrap(member1.getId(), 2L);
-        studylogService.retrieveStudylogById(loginMember3, 3L);
-        studylogScrapService.registerScrap(member1.getId(), 3L);
-        studylogLikeService.likeStudylog(member1.getId(), 3L, true);
-
-        // when
-        PageRequest pageRequest = PageRequest.of(0, 2);
-        studylogService.updatePopularStudylogs(pageRequest);
-        StudylogsResponse studylogs = studylogService.findPopularStudylogs(
-            pageRequest,
-            null,
-            true
-        );
-
-        // then
-        assertThat(studylogs.getTotalSize()).isEqualTo(2);
-        for (StudylogResponse studylogResponse : studylogs.getData()) {
-            assertThat(studylogResponse.isScrap()).isFalse();
-            assertThat(studylogResponse.isRead()).isFalse();
-        }
-    }
-
-    @DisplayName("로그인한 상태에서 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
-    @Test
-    void findPopularStudylogsWithLogin() {
-        // given
-        List<StudylogResponse> insertResponses = insertStudylogs(
-            member1,
-            studylog1,
-            studylog2,
-            studylog3
-        );
-
-        StudylogResponse studylogResponse2 = insertResponses.get(1);
-        StudylogResponse studylogResponse3 = insertResponses.get(2);
-
-        // 2번째 멤버가 1번째 멤버의 게시글 2번, 3번을 조회
-        studylogService.retrieveStudylogById(loginMember2, studylogResponse2.getId());
-        studylogService.retrieveStudylogById(loginMember2, studylogResponse3.getId());
-
-        // 2번, 3번 글 스크랩
-        studylogScrapService.registerScrap(member2.getId(), studylogResponse2.getId());
-        studylogScrapService.registerScrap(member2.getId(), studylogResponse3.getId());
-
-        // 3번 글 좋아요
-        studylogLikeService.likeStudylog(member2.getId(), studylogResponse3.getId(), true);
-
-        // when
-        PageRequest pageRequest = PageRequest.of(0, 2);
-        studylogService.updatePopularStudylogs(pageRequest);
-        StudylogsResponse popularStudylogs = studylogService.findPopularStudylogs(
-            pageRequest,
-            member2.getId(),
-            member2.isAnonymous()
-        );
-
-        // then
-        assertThat(popularStudylogs.getTotalSize()).isEqualTo(2);
-        assertThat(popularStudylogs.getData().get(0).getId()).isEqualTo(studylogResponse3.getId());
-        assertThat(popularStudylogs.getData().get(1).getId()).isEqualTo(studylogResponse2.getId());
-        for (StudylogResponse studylogResponse : popularStudylogs.getData()) {
-            assertThat(studylogResponse.isScrap()).isTrue();
-            assertThat(studylogResponse.isRead()).isTrue();
-        }
     }
 
     @DisplayName("스터디로그 조회 시 조회수가 오른다.")
@@ -506,28 +432,16 @@ class StudylogServiceTest {
     @DisplayName("스터디로그를 삭제한다.")
     @Test
     void deleteStudylogTest() {
-        //given
-        List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1, studylog2,
-                                                                   studylog3,
-                                                                   studylog4);
+        // given
+        List<StudylogResponse> studylogs = insertStudylogs(member1, studylog1);
+        StudylogResponse studylog = studylogs.get(0);
 
-        //when
-        List<Long> studylogIds = studylogResponses.stream()
-            .map(StudylogResponse::getId)
-            .collect(toList());
-
-        Long removedId = studylogIds.remove(0);
-        studylogService.deleteStudylog(member1.getId(), removedId);
+        // when
+        studylogService.deleteStudylog(member1.getId(), studylog.getId());
 
         //then
-        StudylogsResponse studylogsResponse = studylogService
-            .findStudylogsOf(member1.getUsername(), Pageable.unpaged());
-
-        List<Long> expectedIds = studylogsResponse.getData().stream()
-            .map(StudylogResponse::getId)
-            .collect(toList());
-
-        assertThat(expectedIds).containsExactlyElementsOf(studylogIds);
+        Studylog deletedStudylog = studylogService.findStudylogById(studylog.getId());
+        assertThat(deletedStudylog.isDeleted()).isTrue();
     }
 
     @Test
@@ -596,7 +510,7 @@ class StudylogServiceTest {
             .containsExactlyInAnyOrderElementsOf(studylogLinks);
     }
 
-    private List<StudylogResponse> insertStudylogs(Member member, Studylog... studylogs) {
+    public List<StudylogResponse> insertStudylogs(Member member, Studylog... studylogs) {
         return insertStudylogs(member, asList(studylogs));
     }
 
@@ -606,6 +520,7 @@ class StudylogServiceTest {
                 new StudylogRequest(
                     studylog.getTitle(),
                     studylog.getContent(),
+                    studylog.getSession().getId(),
                     studylog.getMission().getId(),
                     toTagRequests(studylog)
                 )

@@ -7,9 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import wooteco.prolog.session.domain.Level;
+import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.Mission;
-import wooteco.prolog.session.domain.repository.LevelRepository;
+import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.support.utils.RepositoryTest;
 
@@ -17,23 +17,23 @@ import wooteco.support.utils.RepositoryTest;
 class MissionRepositoryTest {
 
     @Autowired
-    LevelRepository levelRepository;
+    SessionRepository sessionRepository;
 
     @Autowired
     MissionRepository missionRepository;
 
-    private Level level;
+    private Session session;
 
     @BeforeEach
     void setUp() {
-        level = levelRepository.save(new Level("레벨1"));
+        session = sessionRepository.save(new Session("세션1"));
     }
 
     @DisplayName("Mission 생성")
     @Test
     void createMission() {
         // given
-        Mission mission = new Mission("[BE] 자동차 미션", level);
+        Mission mission = new Mission("[BE] 자동차 미션", session);
 
         // when
         Mission savedMission = missionRepository.save(mission);
@@ -50,7 +50,7 @@ class MissionRepositoryTest {
     void findByName() {
         //given
         String name = "[BE] 자동차 미션";
-        Mission mission = missionRepository.save(new Mission(name, level));
+        Mission mission = missionRepository.save(new Mission(name, session));
 
         //when
         Optional<Mission> foundMission = missionRepository.findByName(name);

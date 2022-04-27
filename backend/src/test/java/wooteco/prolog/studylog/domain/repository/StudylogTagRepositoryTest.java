@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.session.domain.Level;
+import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.Mission;
-import wooteco.prolog.session.domain.repository.LevelRepository;
+import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
@@ -36,7 +36,7 @@ class StudylogTagRepositoryTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private LevelRepository levelRepository;
+    private SessionRepository sessionRepository;
 
     @Autowired
     private MissionRepository missionRepository;
@@ -49,8 +49,8 @@ class StudylogTagRepositoryTest {
     void createStudylogTag() {
         // given
         Member member = memberRepository.save(웨지);
-        Level level = levelRepository.save(new Level("레벨1"));
-        Mission mission = missionRepository.save(new Mission("미션", level));
+        Session session = sessionRepository.save(new Session("세션1"));
+        Mission mission = missionRepository.save(new Mission("미션", session));
         Tag tag = tagRepository.save(new Tag("태그"));
         Studylog studylog = studylogRepository.save(new Studylog(member, "제목", "내용", mission, Lists.emptyList()));
 
@@ -70,8 +70,8 @@ class StudylogTagRepositoryTest {
     void findByTagIn() {
         // given
         Member member = memberRepository.save(웨지);
-        Level level = levelRepository.save(new Level("레벨1"));
-        Mission mission = missionRepository.save(new Mission("미션", level));
+        Session session = sessionRepository.save(new Session("세션1"));
+        Mission mission = missionRepository.save(new Mission("미션", session));
         Studylog studylog1 = studylogRepository
             .save(new Studylog(member, "제목1", "내용1", mission, Lists.emptyList()));
         Studylog studylog2 = studylogRepository

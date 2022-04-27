@@ -29,6 +29,7 @@ import wooteco.prolog.report.application.dto.ReportStudylogResponse;
 import wooteco.prolog.report.application.dto.ReportUpdateRequest;
 import wooteco.prolog.report.ui.ReportController;
 import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.TagResponse;
 
@@ -127,6 +128,7 @@ public class ReportDocumentation extends NewDocumentation {
                     new MemberResponse(),
                     LocalDateTime.now(),
                     LocalDateTime.now(),
+                    new SessionResponse(),
                     new MissionResponse(),
                     "제목",
                     "내용내용내용내용내용",

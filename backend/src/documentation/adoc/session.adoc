@@ -1,0 +1,10 @@
+[[session]]
+== 세션
+
+=== 세션 등록
+
+operation::sessions/create[snippets='http-request,http-response']
+
+=== 세션 목록 조회
+
+operation::sessions/list[snippets='http-request,http-response']

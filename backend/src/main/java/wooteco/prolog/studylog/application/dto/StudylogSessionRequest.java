@@ -1,14 +1,13 @@
-package wooteco.prolog.session.application.dto;
+package wooteco.prolog.studylog.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
-public class MissionRequest {
+public class StudylogSessionRequest {
 
-    private String name;
     private Long sessionId;
 }
