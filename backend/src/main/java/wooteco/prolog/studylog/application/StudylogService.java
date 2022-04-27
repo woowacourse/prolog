@@ -24,10 +24,26 @@ import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
-import wooteco.prolog.studylog.application.dto.*;
+import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
+import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
+import wooteco.prolog.studylog.application.dto.StudylogMissionRequest;
+import wooteco.prolog.studylog.application.dto.StudylogRequest;
+import wooteco.prolog.studylog.application.dto.StudylogResponse;
+import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
+import wooteco.prolog.studylog.application.dto.StudylogSessionRequest;
+import wooteco.prolog.studylog.application.dto.StudylogTempResponse;
+import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
-import wooteco.prolog.studylog.domain.*;
-import wooteco.prolog.studylog.domain.repository.*;
+import wooteco.prolog.studylog.domain.Studylog;
+import wooteco.prolog.studylog.domain.StudylogRead;
+import wooteco.prolog.studylog.domain.StudylogScrap;
+import wooteco.prolog.studylog.domain.StudylogTemp;
+import wooteco.prolog.studylog.domain.Tags;
+import wooteco.prolog.studylog.domain.repository.StudylogReadRepository;
+import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
+import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
+import wooteco.prolog.studylog.domain.repository.StudylogTempRepository;
 import wooteco.prolog.studylog.event.StudylogDeleteEvent;
 import wooteco.prolog.studylog.exception.StudylogArgumentException;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
@@ -191,10 +207,10 @@ public class StudylogService {
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
         Mission mission = missionService.findById(studylogRequest.getMissionId());
         StudylogTemp requestedStudylogTemp = new StudylogTemp(member,
-                studylogRequest.getTitle(),
-                studylogRequest.getContent(),
-                mission,
-                tags.getList());
+            studylogRequest.getTitle(),
+            studylogRequest.getContent(),
+            mission,
+            tags.getList());
 
         deleteStudylogTemp(memberId);
         StudylogTemp createdStudylogTemp = studylogTempRepository.save(requestedStudylogTemp);
