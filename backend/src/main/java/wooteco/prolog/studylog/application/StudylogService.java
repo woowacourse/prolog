@@ -65,6 +65,7 @@ public class StudylogService {
     private final StudylogScrapRepository studylogScrapRepository;
     private final StudylogReadRepository studylogReadRepository;
     private final StudylogTempRepository studylogTempRepository;
+
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
