@@ -87,7 +87,7 @@ const ProfilePageScraps = () => {
                   <Description>
                     <Mission>{mission?.name}</Mission>
                     <Title>{title}</Title>
-                    <Content>{content}</Content>
+                    <Content>{content.replace(/[#*>\n]/g, '')}</Content>
                     <Tags>
                       {tags.map(({ id, name }) => (
                         <span key={id}>{`#${name} `}</span>

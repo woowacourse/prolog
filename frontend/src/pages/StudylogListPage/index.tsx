@@ -11,7 +11,6 @@ import { requestGetFilters } from '../../service/requests';
 import { UserContext } from '../../contexts/UserProvider';
 
 import { Button, FilterList, Pagination } from '../../components';
-import FlexBox from '../../components/@shared/FlexBox/FlexBox';
 import Chip from '../../components/Chip/Chip';
 import StudylogList from '../../components/Lists/StudylogList';
 import SearchBar from '../../components/SearchBar/SearchBar';

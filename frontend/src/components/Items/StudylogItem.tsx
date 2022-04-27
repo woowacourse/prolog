@@ -25,7 +25,7 @@ const StudylogItem = ({
   onClick: () => void;
   onProfileClick: (event?: MouseEvent) => void;
 }) => {
-  const { author, mission, title, tags, read: isRead, viewCount, session } = studylog;
+  const { author, title, tags, read: isRead, viewCount, session } = studylog;
 
   return (
     <Card
