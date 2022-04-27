@@ -25,7 +25,7 @@ const StudylogItem = ({
   onClick: () => void;
   onProfileClick: (event?: MouseEvent) => void;
 }) => {
-  const { author, mission, title, tags, read: isRead, viewCount } = studylog;
+  const { author, title, tags, read: isRead, viewCount, session } = studylog;
 
   return (
     <Card
@@ -42,7 +42,7 @@ const StudylogItem = ({
     >
       <div css={ContentStyle}>
         <div css={DescriptionStyle}>
-          <p css={MissionStyle}>{mission.name}</p>
+          <p css={MissionStyle}>{session?.name}</p>
           <h3>{title}</h3>
           <ul css={TagListStyle}>
             {tags?.map(({ id, name }) => (

@@ -1,5 +1,12 @@
 import React from 'react';
-import { CheckIcon, FilterDetail, MemberImage, MemberWrapper, Nickname } from './FilterList.styles';
+import {
+  CheckIcon,
+  FilterDetail,
+  MemberImage,
+  MemberWrapper,
+  Nickname,
+  NoContent,
+} from './FilterList.styles';
 import checkIcon from '../../assets/images/check.png';
 
 const sorting = [true, false];
@@ -17,7 +24,7 @@ const SelectedFilterList = ({
     <ul>
       {sorting.map((isChecked) =>
         filterList
-          .filter(({ name, username, nickname }) => {
+          ?.filter(({ name, username, nickname }) => {
             if (type === 'members') {
               return regExpKeyword.test(username) || regExpKeyword.test(nickname);
             }
@@ -48,6 +55,7 @@ const SelectedFilterList = ({
             );
           })
       )}
+      {!filterList && <NoContent>선택할 수 있는 필터가 없습니다.</NoContent>}
     </ul>
   );
 };

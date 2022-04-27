@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 
 import { COLOR } from '../../enumerations/color';
-import { getSize, hexToRgba } from '../../utils/styles';
+import { hexToRgba } from '../../utils/styles';
 
 const RANDOM_COLOR_PALLETS = [
   '#ff9797',
@@ -169,12 +169,6 @@ export const ContentsAreaStyle = css`
     > a {
       text-decoration: underline;
     }
-  }
-`;
-
-export const getHorizontalGapStyle = (gap: number | string) => css`
-  > *:not(:last-child) {
-    margin-right: ${getSize(gap)};
   }
 `;
 

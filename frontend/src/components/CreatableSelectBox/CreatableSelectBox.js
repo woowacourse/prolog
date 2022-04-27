@@ -1,16 +1,20 @@
 import CreatableSelect from 'react-select/creatable';
+
 import COLOR from '../../constants/color';
 
 const selectStyles = {
   container: (styles) => ({
     ...styles,
-    marginTop: '2rem',
+    fontSize: '1.4rem',
   }),
   control: (styles) => ({
     ...styles,
     backgroundColor: 'white',
     outline: 'none',
     border: '0',
+    minHeight: '2.4rem',
+    height: '2.4rem',
+    cursor: 'pointer',
   }),
   indicatorsContainer: (styles) => ({ ...styles, display: 'none' }),
   valueContainer: (styles) => ({ ...styles, padding: '0' }),

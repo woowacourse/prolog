@@ -16,6 +16,8 @@ const ALERT_MESSAGE = {
   OVER_PROFILE_NICKNAME_MAX_LENGTH: '닉네임은 4글자 이하로 입력해주세요.',
 
   CANNOT_EDIT_OTHERS: '본인이 작성하지 않은 글은 수정할 수 없습니다.',
+  NO_CONTENT: '내용을 입력하세요',
+  NO_TITLE: '제목을 입력하세요',
 };
 
 const ERROR_MESSAGE = {
@@ -38,10 +40,15 @@ const ERROR_MESSAGE = {
   4002: '같은 이름의 역량이 존재합니다.',
   4003: '중복된 색상이 존재합니다. 다른 색을 선택해 주세요.',
   4012: '리포트 설명은 150자를 넘을 수 없습니다.',
+
+  [ERROR_CODE.SERVER_ERROR]: '서버가 응답하지 않습니다. 프롤로그 팀에 문의 주세요.',
+
+  FAIL_TO_EDIT_STUDYLOG: '글을 수정할 수 없습니다. 다시 시도해주세요',
 };
 
 const SUCCESS_MESSAGE = {
   CREATE_POST: '글이 작성되었습니다.',
+  EDIT_POST: '글이 수정되었습니다.',
   DELETE_STUDYLOG: '글이 삭제되었습니다.',
   CREATE_ABILITY: '역량을 추가했습니다.',
   EDIT_ABILITY: '역량을 수정했습니다.',
