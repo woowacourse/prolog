@@ -57,4 +57,8 @@ public class SessionMemberService {
             .map(it -> MemberResponse.of(it.getMember()))
             .collect(toList());
     }
+
+    public List<SessionMember> findByMemberId(Long memberId) {
+        return sessionMemberRepository.findByMemberId(memberId);
+    }
 }

@@ -16,8 +16,8 @@ import wooteco.prolog.Documentation;
 import wooteco.prolog.GithubResponses;
 import wooteco.prolog.member.application.dto.MemberScrapRequest;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
-import wooteco.prolog.session.application.dto.LevelRequest;
-import wooteco.prolog.session.application.dto.LevelResponse;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
@@ -137,8 +137,8 @@ public class MemberDocumentation extends Documentation {
         for (int i = 0; i < size; i++) {
             String title = "뭐라도 스터디로그가 있어야하니까";
             String content = "SPA 방식으로 앱을 구현하였음.\n" + "router 를 구현 하여 이용함.\n";
-            Long levelId = 레벨_등록함(new LevelRequest("레벨" + i));
-            Long missionId = 미션_등록함(new MissionRequest(String.format("레벨%d 미션", i), levelId));
+            Long sessionId = 세션_등록함(new SessionRequest("세션" + i));
+            Long missionId = 미션_등록함(new MissionRequest(String.format("세션%d 미션", i), sessionId));
             List<TagRequest> tags = Arrays.asList(new TagRequest(String.format("%d번 태그", i)));
 
             studylogRequests.add(new StudylogRequest(title, content, missionId, tags));
@@ -166,17 +166,17 @@ public class MemberDocumentation extends Documentation {
             .then().log().all().extract();
     }
 
-    private Long 레벨_등록함(LevelRequest request) {
+    private Long 세션_등록함(SessionRequest request) {
         return RestAssured
             .given().log().all()
             .body(request)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when()
-            .post("/levels")
+            .post("/sessions")
             .then()
             .log().all()
             .extract()
-            .as(LevelResponse.class)
+            .as(SessionResponse.class)
             .getId();
     }
 

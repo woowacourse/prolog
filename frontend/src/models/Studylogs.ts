@@ -7,15 +7,15 @@ export interface Author {
   role: Role;
 }
 
-export interface Level {
-  id: number;
-  name: string;
-}
-
 export interface Mission {
   id: number;
   name: string;
-  level?: Level;
+  session?: Session;
+}
+
+export interface Session {
+  id: number;
+  name: string;
 }
 
 export interface Tag {
@@ -28,7 +28,8 @@ export interface Studylog {
   id: number;
   author: Author;
   content: string;
-  mission: Mission;
+  mission?: Mission;
+  session?: Session;
   title: string;
   tags: Tag[];
   createdAt: Date;
@@ -40,9 +41,15 @@ export interface Studylog {
   likesCount: number;
 }
 
-export interface StudyLogsByFilter {
+export interface StudyLogList {
   data: Studylog[];
   totalSize: number;
   totalPage: number;
   currPage: number;
 }
+
+export type StudylogForm = Pick<Studylog, 'title' | 'tags'> & {
+  content: string | null;
+  missionId: number | null;
+  sessionId: number | null;
+};

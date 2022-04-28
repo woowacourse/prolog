@@ -142,7 +142,7 @@ const StudylogOverview = () => {
                   <Description>
                     <Title>{title}</Title>
                     <PostBottomContainer>
-                      <Mission>{mission.name}</Mission>
+                      <Mission>{mission?.name}</Mission>
                       <div>{new Date(createdAt).toLocaleString('ko-KR')}</div>
                       {!!tags.length && (
                         <Tags>

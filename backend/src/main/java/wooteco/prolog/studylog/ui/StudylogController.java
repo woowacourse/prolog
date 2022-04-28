@@ -18,6 +18,7 @@ import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
+import wooteco.prolog.studylog.application.dto.StudylogTempResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.SearchParams;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
@@ -41,25 +42,23 @@ public class StudylogController {
         return ResponseEntity.created(URI.create("/studylogs/" + studylogResponse.getId())).body(studylogResponse);
     }
 
+    @PutMapping("/temp")
+    @MemberOnly
+    public ResponseEntity<StudylogTempResponse> createStudylogTemp(@AuthMemberPrincipal LoginMember member, @RequestBody StudylogRequest studylogRequest) {
+        StudylogTempResponse studylogTempResponse = studylogService.insertStudylogTemp(member.getId(), studylogRequest);
+        return ResponseEntity.created(URI.create("/studylogs/temp/" + studylogTempResponse.getId())).body(studylogTempResponse);
+    }
+
+    @GetMapping("/temp")
+    @MemberOnly
+    public ResponseEntity<StudylogTempResponse> showStudylogTemp(@AuthMemberPrincipal LoginMember member) {
+        StudylogTempResponse studylogTempResponse = studylogService.findStudylogTemp(member.getId());
+        return ResponseEntity.ok(studylogTempResponse);
+    }
+
     @GetMapping
     public ResponseEntity<StudylogsResponse> showAll(@AuthMemberPrincipal LoginMember member, @SearchParams StudylogsSearchRequest searchRequest) {
         StudylogsResponse studylogsResponse = studylogService.findStudylogs(searchRequest, member.getId(), member.isAnonymous());
-        return ResponseEntity.ok(studylogsResponse);
-    }
-
-    /**
-     * 갱신할 스터디로그 개수를 지정해야하기 때문에 pageable 필요
-     * 어드민 페이지를 붙이기 전에 편의상 METHOD 를 GET으로 함
-     */
-    @GetMapping("/popular/sync")
-    public ResponseEntity<Void> updatePopularStudylogs(@PageableDefault Pageable pageable) {
-        studylogService.updatePopularStudylogs(pageable);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/popular")
-    public ResponseEntity<StudylogsResponse> showPopularStudylogs(@AuthMemberPrincipal LoginMember member, @PageableDefault Pageable pageable) {
-        StudylogsResponse studylogsResponse = studylogService.findPopularStudylogs(pageable, member.getId(), member.isAnonymous());
         return ResponseEntity.ok(studylogsResponse);
     }
 

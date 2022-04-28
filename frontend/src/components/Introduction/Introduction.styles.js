@@ -74,6 +74,10 @@ export const EditorStyle = css`
       background-color: ${COLOR.LIGHT_GRAY_100};
     }
   }
+
+  .toastui-editor-main-container {
+    background-color: ${COLOR.WHITE};
+  }
 `;
 
 export const SaveButtonStyle = css`

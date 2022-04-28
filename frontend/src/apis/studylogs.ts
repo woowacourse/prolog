@@ -1,4 +1,6 @@
+import axios, { AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { BASE_URL } from '../configs/environment';
+import { Mission, Session, Studylog, StudylogForm, Tag } from '../models/Studylogs';
 
 export const requestGetPopularStudylogs = ({ accessToken }: { accessToken?: string }) => {
   if (accessToken) {
@@ -65,3 +67,60 @@ export const requestGetStudylogs = ({
     );
   }
 };
+
+export type ResponseError = { code: number; messsage: string };
+
+export const httpRequester = axios.create({
+  baseURL: BASE_URL,
+});
+
+const getAuthConfig = (accessToken: string, config?: AxiosRequestConfig) =>
+  accessToken
+    ? {
+        headers: { Authorization: 'Bearer ' + accessToken },
+        ...config,
+      }
+    : { ...config };
+
+export const requestGetTags = (): Promise<AxiosResponse<Tag[]>> => httpRequester.get('/tags');
+export const requestGetMissions = ({
+  accessToken,
+}: {
+  accessToken: string;
+}): Promise<AxiosResponse<Mission[]>> => httpRequester.get('/missions/mine', getAuthConfig(accessToken));
+export const requestGetSessions = ({
+  accessToken,
+}: {
+  accessToken: string;
+}): Promise<AxiosResponse<Session[]>> =>
+  httpRequester.get('/sessions/mine', getAuthConfig(accessToken));
+
+export const requestGetStudylog = ({
+  id,
+  accessToken,
+}: {
+  id: string;
+  accessToken: string;
+}): AxiosPromise<AxiosResponse<Studylog>> =>
+  httpRequester.get<AxiosResponse<Studylog>>(`/studylogs/${id}`, getAuthConfig(accessToken));
+
+/** 작성 및 수정 **/
+export const requestPostStudylog = ({
+  accessToken,
+  data,
+}: {
+  accessToken: string;
+  data: StudylogForm;
+}): AxiosPromise<AxiosResponse<null>> =>
+  httpRequester.post('/studylogs', data, getAuthConfig(accessToken));
+
+export const requestEditStudylog = ({
+  id,
+  data,
+  accessToken,
+}: {
+  id: string;
+  accessToken: string;
+  data: StudylogForm;
+}): AxiosPromise<AxiosResponse<null>> =>
+  httpRequester.put(`/studylogs/${id}`, data, getAuthConfig(accessToken));

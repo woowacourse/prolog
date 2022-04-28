@@ -24,7 +24,7 @@ public class StudylogTags {
         this(new ArrayList<>());
     }
 
-    public StudylogTags(List<wooteco.prolog.studylog.domain.StudylogTag> values) {
+    public StudylogTags(List<StudylogTag> values) {
         this.values = values;
     }
 
@@ -32,7 +32,7 @@ public class StudylogTags {
         values.addAll(duplicateFilter(studylogTags));
     }
 
-    private List<wooteco.prolog.studylog.domain.StudylogTag> duplicateFilter(
+    private List<StudylogTag> duplicateFilter(
         List<wooteco.prolog.studylog.domain.StudylogTag> studylogTags) {
         return studylogTags.stream()
             .filter(studylogTag -> values.stream()
@@ -41,15 +41,14 @@ public class StudylogTags {
             .collect(Collectors.toList());
     }
 
-    public void update(List<wooteco.prolog.studylog.domain.StudylogTag> studylogTags) {
+    public void update(List<StudylogTag> studylogTags) {
         values.clear();
         values.addAll(studylogTags);
     }
 
     public Map<Tag, Long> groupingWithCounting() {
         return values.stream()
-            .collect(groupingBy(wooteco.prolog.studylog.domain.StudylogTag::getTag,
-                                Collectors.counting()));
+            .collect(groupingBy(StudylogTag::getTag, Collectors.counting()));
     }
 
     public List<Long> getTagIds() {

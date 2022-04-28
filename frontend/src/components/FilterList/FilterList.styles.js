@@ -146,6 +146,35 @@ const Nickname = styled.span`
   font-weight: 400;
 `;
 
+export const NoContent = styled.div`
+  width: 100%;
+  height: 8rem;
+  padding: 1rem;
+  color: ${COLOR.LIGHT_GRAY_600};
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SessionInMission = styled.div`
+    background-color: aliceblue;
+    border-radius: 1rem;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+    font-size: xx-small;
+`;
+
+const MissionName = styled.div`
+    margin-top: 0.2rem;
+    margin-left: 0.5rem;
+`;
+
+const MissionWrapper = styled.div`
+    margin-top: 0.2rem;
+    margin-left: 0.5rem;
+`;
+
 export {
   Container,
   FilterDetail,
@@ -157,4 +186,7 @@ export {
   MemberWrapper,
   MemberImage,
   Nickname,
+  SessionInMission,
+  MissionName,
+  MissionWrapper,
 };

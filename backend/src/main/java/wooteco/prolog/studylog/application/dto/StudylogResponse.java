@@ -9,6 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.session.application.dto.SessionResponse;
+import wooteco.prolog.session.domain.Mission;
+import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
 
@@ -21,6 +24,7 @@ public class StudylogResponse {
     private MemberResponse author;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private SessionResponse session;
     private MissionResponse mission;
     private String title;
     private String content;
@@ -33,6 +37,7 @@ public class StudylogResponse {
 
     public StudylogResponse(
         Studylog studylog,
+        SessionResponse sessionResponse,
         MissionResponse missionResponse,
         List<TagResponse> tagResponses,
         boolean liked) {
@@ -41,6 +46,7 @@ public class StudylogResponse {
             MemberResponse.of(studylog.getMember()),
             studylog.getCreatedAt(),
             studylog.getUpdatedAt(),
+            sessionResponse,
             missionResponse,
             studylog.getTitle(),
             studylog.getContent(),
@@ -62,6 +68,7 @@ public class StudylogResponse {
             MemberResponse.of(studylog.getMember()),
             studylog.getCreatedAt(),
             studylog.getUpdatedAt(),
+            SessionResponse.of(studylog.getSession()),
             MissionResponse.of(studylog.getMission()),
             studylog.getTitle(),
             studylog.getContent(),
@@ -74,6 +81,7 @@ public class StudylogResponse {
         );
     }
 
+    // todo 정적팩토리메서드 from 사용해야하는데 of 쓰고 있는 부분 확인 후 리팩터링
     public static StudylogResponse of(Studylog studylog) {
         return of(studylog, false, false, null);
     }
@@ -91,6 +99,33 @@ public class StudylogResponse {
             .map(StudylogTag::getTag)
             .map(TagResponse::of)
             .collect(toList());
+    }
+
+    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, boolean liked, Session session, Mission mission) {
+        List<StudylogTag> studylogTags = studylog.getStudylogTags();
+        List<TagResponse> tagResponses = toTagResponses(studylogTags);
+
+        return new StudylogResponse(
+            studylog.getId(),
+            MemberResponse.of(studylog.getMember()),
+            studylog.getCreatedAt(),
+            studylog.getUpdatedAt(),
+            SessionResponse.of(session),
+            MissionResponse.of(mission),
+            studylog.getTitle(),
+            studylog.getContent(),
+            tagResponses,
+            scrap,
+            read,
+            studylog.getViewCount(),
+            liked,
+            studylog.getLikeCount()
+        );
+    }
+
+    public static StudylogResponse of(Studylog studylog, Session session, Mission mission) {
+
+        return StudylogResponse.of(studylog, false, false, false, session, mission);
     }
 
     public void setScrap(boolean isScrap) {

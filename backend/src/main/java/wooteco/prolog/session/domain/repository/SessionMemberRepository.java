@@ -7,4 +7,6 @@ import wooteco.prolog.session.domain.SessionMember;
 public interface SessionMemberRepository extends JpaRepository<SessionMember, Long> {
 
     List<SessionMember> findAllBySessionId(Long sessionId);
+
+    List<SessionMember> findByMemberId(Long memberId);
 }

@@ -26,7 +26,7 @@ public class StudylogTag {
     private Tag tag;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "studylog_id", nullable = false)
+    @JoinColumn(name = "studylog_id")
     private Studylog studylog;
 
     public StudylogTag(Studylog studylog, Tag tag) {

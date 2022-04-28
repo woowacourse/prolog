@@ -7,8 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
-import wooteco.prolog.session.domain.Level;
 import wooteco.prolog.session.domain.Mission;
+import wooteco.prolog.session.domain.Session;
 
 class StudylogTest {
 
@@ -17,8 +17,8 @@ class StudylogTest {
     void getPopularScore() {
         // given
         Member member = new Member("최현구", "현구막", Role.CREW, 1L, "image");
-        Level level = new Level("레벨 1");
-        Mission mission = new Mission("자동차 미션", level);
+        Session session = new Session("세션 1");
+        Mission mission = new Mission("자동차 미션", session);
         Tag tag1 = new Tag("Java");
         Tag tag2 = new Tag("Spring");
         Studylog studylog = new Studylog(member, "제목", "내용", mission, Arrays.asList(tag1, tag2));

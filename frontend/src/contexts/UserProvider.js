@@ -56,6 +56,9 @@ const UserProvider = ({ children }) => {
       localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, JSON.stringify(accessToken));
       setState((prev) => ({ ...prev, accessToken }));
     },
+    onError: (error) => {
+      alert(error.message);
+    },
   });
 
   function onLogout() {

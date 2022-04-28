@@ -11,13 +11,13 @@ import {
   FlexStyle,
   JustifyContentSpaceBtwStyle,
 } from '../../styles/flex.styles';
+import { getColumnGapStyle } from '../../styles/layout.styles';
 import {
   ContainerStyle,
   TopContainerStyle,
   ProfileAreaStyle,
   UserReactionIconStyle,
   getRandomBgColorStyle,
-  getHorizontalGapStyle,
   DateAreaStyle,
   BottomContainerStyle,
   ContentsAreaStyle,
@@ -49,7 +49,7 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
       <Link to={`${PATH.STUDYLOGS}/${id}`}>
         <div css={[TopContainerStyle, getRandomBgColorStyle(id)]}>
           <span>
-            [{mission.level?.name}]&nbsp;{mission.name}
+            [{mission?.session?.name}]&nbsp;{mission?.name}
           </span>
           <h2>{title}</h2>
           <span css={[DateAreaStyle]}>{new Date(createdAt).toLocaleDateString('ko-KR')}</span>
@@ -103,7 +103,7 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
             </ul>
 
             {/* 사용자 리액션 영역 */}
-            <div css={[FlexStyle, getHorizontalGapStyle(0.6)]}>
+            <div css={[FlexStyle, getColumnGapStyle(0.6)]}>
               <div css={[UserReactionIconStyle]}>
                 <ViewIcon width="2rem" height="2rem" />
                 <span>{viewCount}</span>

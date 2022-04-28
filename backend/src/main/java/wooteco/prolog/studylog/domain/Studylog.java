@@ -16,12 +16,14 @@ import lombok.NoArgsConstructor;
 import wooteco.prolog.common.AuditingEntity;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.session.domain.Mission;
+import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.exception.AuthorNotValidException;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Studylog extends AuditingEntity {
+
     private static final String DELETED_TITLE = "삭제된 학습로그";
     private static final String DELETED_CONTENT = "삭제된 학습로그입니다.";
     private static final int POPULAR_SCORE = 3;
@@ -40,7 +42,11 @@ public class Studylog extends AuditingEntity {
     @Embedded
     private Content content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "session_id")
+    private Session session;
+
+    @ManyToOne
     @JoinColumn(name = "mission_id")
     private Mission mission;
 
@@ -55,26 +61,42 @@ public class Studylog extends AuditingEntity {
 
     private boolean deleted;
 
-    public Studylog(Member member, String title, String content, Mission mission, List<Tag> tags) {
+    public Studylog(Member member, String title, String content, Session session, Mission mission, List<Tag> tags) {
         this.member = member;
         this.title = new Title(title);
         this.content = new Content(content);
-        this.mission = mission;
         this.studylogTags = new StudylogTags();
+        this.session = session;
+        this.mission = mission;
         addTags(new Tags(tags));
         this.viewCount = new ViewCount();
         this.likes = new Likes();
     }
 
-    public void validateAuthor(Member member) {
-        if (!this.member.equals(member)) {
+    public Studylog(Member member, String title, String content, Mission mission, List<Tag> tags) {
+        this(member, title, content, mission.getSession(), mission, tags);
+    }
+
+    public void validateBelongTo(Long memberId) {
+        if (!isBelongsTo(memberId)) {
             throw new AuthorNotValidException();
         }
     }
 
-    public void update(String title, String content, Mission mission, Tags tags) {
+    public boolean isBelongsTo(Long memberId) {
+        return this.member.getId().equals(memberId);
+    }
+
+    public void update(String title, String content, Tags tags) {
         this.title = new Title(title);
         this.content = new Content(content);
+        this.studylogTags.update(convertToStudylogTags(tags));
+    }
+
+    public void update(String title, String content, Session session, Mission mission, Tags tags) {
+        this.title = new Title(title);
+        this.content = new Content(content);
+        this.session = session;
         this.mission = mission;
         this.studylogTags.update(convertToStudylogTags(tags));
     }
@@ -89,7 +111,7 @@ public class Studylog extends AuditingEntity {
         return new StudylogDocument(
             this.getId(), this.getTitle(),
             this.getContent(), this.studylogTags.getTagIds(),
-            this.mission.getId(), this.mission.getLevel().getId(),
+            null, null,
             this.member.getUsername(), this.getUpdatedAt()
         );
     }
@@ -136,10 +158,6 @@ public class Studylog extends AuditingEntity {
         return member;
     }
 
-    public Mission getMission() {
-        return mission;
-    }
-
     public List<StudylogTag> getStudylogTags() {
         return studylogTags.getValues();
     }
@@ -162,10 +180,6 @@ public class Studylog extends AuditingEntity {
         return viewCount.getViews();
     }
 
-    public boolean isBelongsTo(Long memberId) {
-        return this.member.getId().equals(memberId);
-    }
-
     public String getNickname() {
         return member.getNickname();
     }
@@ -176,5 +190,13 @@ public class Studylog extends AuditingEntity {
 
     public void delete() {
         this.deleted = true;
+    }
+
+    public void updateSession(Session session) {
+        this.session = session;
+    }
+
+    public void updateMission(Mission mission) {
+        this.mission = mission;
     }
 }

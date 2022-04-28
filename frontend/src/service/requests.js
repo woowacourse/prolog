@@ -1,6 +1,6 @@
 import { BASE_URL } from '../configs/environment';
 
-/* Studylog 관련 request */
+/* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
 export const requestGetStudylog = ({ id, accessToken }) => {
   if (accessToken) {
     return fetch(`${BASE_URL}/studylogs/${id}`, {
@@ -15,13 +15,14 @@ export const requestGetStudylog = ({ id, accessToken }) => {
   return fetch(`${BASE_URL}/studylogs/${id}`);
 };
 
+/* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
 export const requestGetStudylogs = ({ query, accessToken }) => {
   const authConfig = accessToken
     ? {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
     : {};
 
   if (query.type === 'searchParams') {
@@ -34,8 +35,8 @@ export const requestGetStudylogs = ({ query, accessToken }) => {
     );
     const filterQuery = query.data.filterQuery.length
       ? query.data.filterQuery.map(
-        ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
-      )
+          ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
+        )
       : '';
 
     return fetch(
@@ -47,6 +48,7 @@ export const requestGetStudylogs = ({ query, accessToken }) => {
   return fetch(`${BASE_URL}/studylogs`, authConfig);
 };
 
+/* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
 export const requestPostStudylog = ({ accessToken, data }) =>
   fetch(`${BASE_URL}/studylogs`, {
     method: 'POST',
@@ -57,6 +59,7 @@ export const requestPostStudylog = ({ accessToken, data }) =>
     body: JSON.stringify(data),
   });
 
+/* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
 export const requestEditStudylog = ({ id, data, accessToken }) =>
   fetch(`${BASE_URL}/studylogs/${id}`, {
     method: 'PUT',
@@ -107,10 +110,13 @@ export const requestGetMyScrap = ({ username, accessToken, postQueryParams }) =>
 };
 
 /* Filter 관련 request */
+/* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
 export const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
 
+/* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
 export const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
 
+/* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
 export const requestGetTags = () => fetch(`${BASE_URL}/tags`);
 
 export const requestGetUserTags = (username) => fetch(`${BASE_URL}/members/${username}/tags`);

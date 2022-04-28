@@ -172,9 +172,9 @@ const ProfilePageStudylogs = () => {
               return (
                 <PostItem key={id} size="SMALL" onClick={() => goTargetStudylog(id)}>
                   <Description>
-                    <Mission>{mission.name}</Mission>
+                    <Mission>{mission?.name}</Mission>
                     <Title>{title}</Title>
-                    <Content>{content}</Content>
+                    <Content>{content.replace(/[#*>\n]/g, '')}</Content>
                     <Tags>
                       {tags.map(({ id, name }) => (
                         <span key={id}>{`#${name} `}</span>
