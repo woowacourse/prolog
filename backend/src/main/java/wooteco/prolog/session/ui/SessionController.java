@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import wooteco.prolog.login.aop.MemberOnly;
+import wooteco.prolog.login.domain.AuthMemberPrincipal;
+import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
@@ -29,6 +32,13 @@ public class SessionController {
     @GetMapping
     public ResponseEntity<List<SessionResponse>> show() {
         List<SessionResponse> responses = sessionService.findAll();
+        return ResponseEntity.ok(responses);
+    }
+
+    @MemberOnly
+    @GetMapping("/mine")
+    public ResponseEntity<List<SessionResponse>> findMySessions(@AuthMemberPrincipal LoginMember member) {
+        List<SessionResponse> responses = sessionService.findMySessions(member);
         return ResponseEntity.ok(responses);
     }
 }

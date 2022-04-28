@@ -10,13 +10,16 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.testcontainers.shaded.com.google.common.collect.Lists;
 import wooteco.prolog.ability.application.AbilityService;
 import wooteco.prolog.ability.application.dto.DefaultAbilityCreateRequest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.session.application.SessionMemberService;
 import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.MissionService;
+import wooteco.prolog.session.application.dto.SessionMemberRequest;
 import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.application.dto.MissionRequest;
@@ -37,6 +40,7 @@ public class DataLoaderApplicationListener implements
     ApplicationListener<ContextRefreshedEvent> {
 
     private SessionService sessionService;
+    private SessionMemberService sessionMemberService;
     private MissionService missionService;
     private TagService tagService;
     private MemberService memberService;
@@ -60,6 +64,8 @@ public class DataLoaderApplicationListener implements
 
         // member init
         Members.init(memberService);
+
+        sessionMemberService.registerMembers(1L, new SessionMemberRequest(Lists.newArrayList(Members.BROWN.value.getId(), Members.SUNNY.value.getId())));
 
         // post init
         studylogService.insertStudylogs(Members.BROWN.value.getId(), StudylogGenerator.generate(20));
