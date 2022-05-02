@@ -6,8 +6,10 @@ import { Studylog } from '../../models/Studylogs';
 import {
   PopularStudylogListRightControlStyle,
   PopularStudylogListStyle,
+  ScrollStyle,
   SectionHeaderGapStyle,
 } from './styles';
+
 import PopularStudylogItem from '../../components/Items/PopularStudylogItem';
 
 const PopularStudyLogList = ({ studylogs }: { studylogs: Studylog[] }): JSX.Element => {
@@ -19,7 +21,7 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: Studylog[] }): JSX.Elem
       `}
     >
       <h2 css={[SectionHeaderGapStyle]}>😎 인기있는 학습로그</h2>
-      <ul css={[PopularStudylogListStyle]}>
+      <ul css={[PopularStudylogListStyle, ScrollStyle]}>
         {studylogs?.map((item: Studylog) => (
           <li key={item.id}>
             <PopularStudylogItem item={item} />

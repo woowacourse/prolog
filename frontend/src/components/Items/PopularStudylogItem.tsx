@@ -28,6 +28,7 @@ import { ReactComponent as LikedIcon } from '../../assets/images/heart-filled.sv
 import { ReactComponent as UnLikeIcon } from '../../assets/images/heart.svg';
 
 import type { Studylog } from '../../models/Studylogs';
+import { ScrollStyle } from '../../pages/MainPage/styles';
 
 const PopularStudylogItem = ({ item }: { item: Studylog }) => {
   const {
@@ -85,14 +86,7 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
 
           <div>
             {/* 태그 영역 */}
-            <ul
-              css={[
-                FlexStyle,
-                css`
-                  overflow: scroll;
-                `,
-              ]}
-            >
+            <ul css={[FlexStyle, ScrollStyle]}>
               {tags.slice(0, 2).map(({ name: tagName, id: tagId }) => (
                 <Link to={`${PATH.STUDYLOGS}?tags=${tagId}`} key={tagId}>
                   <Chip title={tagName} onClick={() => {}}>

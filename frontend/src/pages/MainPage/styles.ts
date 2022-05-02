@@ -67,3 +67,11 @@ export const PopularStudylogListRightControlStyle = css`
     }
   }
 `;
+
+export const ScrollStyle = css`
+  overflow: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+    width: 0;
+  }
+`;
