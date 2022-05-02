@@ -34,7 +34,7 @@ export const ContainerStyle = css`
 
   box-shadow: 1px 1px 2px 0 ${hexToRgba(COLOR.BLACK_900, 0.4)};
 
-  transition: ease-in-out 0.1s;
+  transition: transform ease-in-out 0.1s;
   :hover {
     transform: translateY(-1rem);
   }
