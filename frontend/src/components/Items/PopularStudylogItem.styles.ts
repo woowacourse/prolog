@@ -33,6 +33,14 @@ export const ContainerStyle = css`
   border-radius: 1.6rem;
 
   box-shadow: 1px 1px 2px 0 ${hexToRgba(COLOR.BLACK_900, 0.4)};
+
+  transition: ease-in-out 0.1s;
+  :hover {
+    transform: translateY(-1rem);
+  }
+  *:hover:not(h2) {
+    font-weight: unset;
+  }
 `;
 
 export const TopContainerStyle = css`
@@ -49,17 +57,10 @@ export const TopContainerStyle = css`
 
   overflow: hidden;
 
-  :hover {
-    h2 {
-      text-decoration: underline;
-    }
-  }
-
   h2 {
     font-size: 2rem;
     line-height: 1.4;
     font-weight: bold;
-    color: black;
 
     line-break: anywhere;
 
@@ -115,16 +116,6 @@ export const UserReactionIconStyle = css`
 `;
 
 export const ProfileAreaStyle = css`
-  :hover {
-    span {
-      text-decoration: underline;
-    }
-
-    img {
-      opacity: 0.8;
-    }
-  }
-
   div {
     position: absolute;
     left: 1rem;
@@ -163,12 +154,6 @@ export const ContentsAreaStyle = css`
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  :hover {
-    > a {
-      text-decoration: underline;
-    }
   }
 `;
 
