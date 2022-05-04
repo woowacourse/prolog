@@ -310,7 +310,7 @@ export const SubAbilityList = styled.ul`
   li {
     width: 100%;
     min-height: 6rem;
-    padding-left: 3rem;
+    padding: 0 0.5rem 0 3rem;
 
     display: grid;
     grid-template-columns: 0.2fr 1fr 2fr 0.9fr;
