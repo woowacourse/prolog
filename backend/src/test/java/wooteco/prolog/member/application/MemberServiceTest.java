@@ -2,7 +2,9 @@ package wooteco.prolog.member.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.tuple;
 
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -171,8 +173,25 @@ class MemberServiceTest {
         )).isExactlyInstanceOf(MemberNotFoundException.class);
     }
 
-    private Member Member를_생성한다() {
-        return Member를_생성한다(new Member("gracefulBrown", "zi존브라운", Role.CREW, 1L, "imageUrl"));
+    @Test
+    @DisplayName("Member 정보의 nickname을 기준으로 오름차순 정렬하여 조회한다.")
+    void findAll() {
+        // given
+        Member를_생성한다(new Member("her0807", "다수달", Role.CREW, 3L, "imageUrl"));
+        Member를_생성한다(new Member("wishoon", "나루키", Role.CREW, 2L, "imageUrl"));
+        Member를_생성한다(new Member("gracefulBrown", "가브라운", Role.CREW, 1L, "imageUrl"));
+
+        // when
+        final List<MemberResponse> responses = memberService.findAll();
+
+        // then
+        assertThat(responses).hasSize(3)
+                .extracting("username", "nickname")
+                .containsExactly(
+                        tuple("gracefulBrown", "가브라운"),
+                        tuple("wishoon", "나루키"),
+                        tuple("her0807", "다수달")
+                );
     }
 
     private Member Member를_생성한다(Member member) {

@@ -1,5 +1,6 @@
 package wooteco.prolog.member.application;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -97,8 +98,10 @@ public class MemberService {
 
     public List<MemberResponse> findAll() {
         final List<Member> members = memberRepository.findAll();
-        return members.stream().map(MemberResponse::of)
-            .collect(Collectors.toList());
+        return members.stream()
+                .sorted(Comparator.comparing(Member::getNickname))
+                .map(MemberResponse::of)
+                .collect(Collectors.toList());
     }
 
     public MembersResponse findAll(Pageable pageable) {
