@@ -2,6 +2,8 @@ import styled from '@emotion/styled';
 
 export const Wrapper = styled.div`
   margin-left: 0.5rem;
+  min-width: 17rem;
+  text-align: right;
 
   button {
     margin-left: 0.2rem;
