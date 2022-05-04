@@ -16,6 +16,7 @@ import wooteco.prolog.ability.domain.StudylogAbility;
 import wooteco.prolog.common.PageableResponse;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
+import wooteco.prolog.member.application.dto.MembersResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.application.dto.ReportRequest;
 import wooteco.prolog.report.application.dto.ReportResponse;
@@ -118,5 +119,11 @@ public class ReportService {
         }
 
         reportRepository.deleteById(reportId);
+    }
+
+    public PageableResponse<ReportResponse> findReports(Pageable pageable) {
+        Page<Report> reports = reportRepository.findAll(pageable);
+        List<ReportResponse> reportResponses = ReportResponse.listOf(reports);
+        return PageableResponse.of(reportResponses, reports);
     }
 }

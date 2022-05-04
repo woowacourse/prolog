@@ -63,4 +63,10 @@ public class ReportController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/reports")
+    public ResponseEntity<PageableResponse<ReportResponse>> findReports(@PageableDefault(size = 20, direction = Direction.DESC, sort = "startDate") Pageable pageable) {
+        PageableResponse<ReportResponse> response = reportService.findReports(pageable);
+        return ResponseEntity.ok(response);
+    }
 }
