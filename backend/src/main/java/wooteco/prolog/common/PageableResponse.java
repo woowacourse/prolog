@@ -16,7 +16,7 @@ public class PageableResponse<T> {
     private int totalPage;
     private int currentPage;
 
-    public static PageableResponse of(List data, Page page) {
-        return new PageableResponse(data, page.getTotalElements(), page.getTotalPages(), page.getNumber() + ONE_INDEXED_PARAMETER);
+    public static <T> PageableResponse<T> of(List<T> data, Page<?> page) {
+        return new PageableResponse<>(data, page.getTotalElements(), page.getTotalPages(), page.getNumber() + ONE_INDEXED_PARAMETER);
     }
 }
