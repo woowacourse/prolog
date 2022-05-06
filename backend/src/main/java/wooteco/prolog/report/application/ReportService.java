@@ -16,7 +16,6 @@ import wooteco.prolog.ability.domain.StudylogAbility;
 import wooteco.prolog.common.PageableResponse;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
-import wooteco.prolog.member.application.dto.MembersResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.application.dto.ReportRequest;
 import wooteco.prolog.report.application.dto.ReportResponse;
