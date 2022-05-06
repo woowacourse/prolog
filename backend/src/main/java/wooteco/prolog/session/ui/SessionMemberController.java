@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import wooteco.prolog.login.domain.AuthMemberPrincipal;
+import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.session.application.SessionMemberService;
 import wooteco.prolog.session.application.dto.SessionGroupMemberRequest;
@@ -26,6 +28,12 @@ public class SessionMemberController {
 //        sessionMemberService.registerMembers(sessionId, sessionMemberRequest);
 //        return ResponseEntity.ok().build();
 //    }
+
+    @PostMapping("/me")
+    public ResponseEntity<Void> registerMe(@PathVariable Long sessionId, @AuthMemberPrincipal LoginMember member){
+        sessionMemberService.registerMember(sessionId, member.getId());
+        return ResponseEntity.ok().build();
+    }
 
     // admin only
     @PostMapping

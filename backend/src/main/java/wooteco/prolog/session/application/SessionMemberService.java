@@ -25,6 +25,12 @@ public class SessionMemberService {
     private GroupMemberService groupMemberService;
 
     @Transactional
+    public void registerMember(Long sessionId, Long memberId) {
+        final Member member = memberService.findById(memberId);
+        sessionMemberRepository.save(new SessionMember(sessionId, member));
+    }
+
+    @Transactional
     public void registerMembers(Long sessionId, SessionMemberRequest sessionMemberRequest) {
         List<Member> members = memberService.findByIdIn(sessionMemberRequest.getMemberIds());
         List<SessionMember> sessionMembers = members.stream()
