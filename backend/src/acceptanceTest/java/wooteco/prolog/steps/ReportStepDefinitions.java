@@ -5,8 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.common.PageableResponse;
@@ -41,6 +44,32 @@ public class ReportStepDefinitions extends AcceptanceSteps {
         }
     }
 
+    @When("{string} 일자 리포트를 등록하(면)(고)")
+    public void 리포트를등록(String date) {
+        ReportRequest reportRequest = new ReportRequest(
+            "새로운 리포트" + reportCnt++,
+            "리포트 설명",
+            date,
+            LocalDate.parse(date).plusDays(7).toString(),
+            Arrays.asList(
+                new ReportAbilityRequest(1L, 5),
+                new ReportAbilityRequest(3L, 10),
+                new ReportAbilityRequest(5L, 1),
+                new ReportAbilityRequest(7L, 2),
+                new ReportAbilityRequest(9L, 2)
+            )
+        );
+        context.invokeHttpPostWithToken("/reports", reportRequest);
+        if (context.response.statusCode() == HttpStatus.CREATED.value()) {
+            if (!context.storage.containsKey("reports")) {
+                context.storage.put("reports", new ArrayList<>());
+            }
+
+            List<ReportResponse> reports = (List<ReportResponse>) context.storage.get("reports");
+            reports.add(context.response.as(ReportResponse.class));
+        }
+    }
+
     @When("리포트를 수정하면")
     public void 리포트를수정하면() {
         ReportResponse report = (ReportResponse) context.storage.get("report");
@@ -72,6 +101,11 @@ public class ReportStepDefinitions extends AcceptanceSteps {
         context.invokeHttpGet("/reports/{reportId}", reportId);
     }
 
+    @When("리포트 목록을 조회하면")
+    public void 리포트목록을조회하면() {
+        context.invokeHttpGet("/reports");
+    }
+
     @Then("리포트 목록이 조회된다")
     public void 리포트목록이조회된다() {
         PageableResponse<ReportResponse> reportPageableResponse = context.response.as(PageableResponse.class);
@@ -80,6 +114,19 @@ public class ReportStepDefinitions extends AcceptanceSteps {
         assertThat(reportPageableResponse.getTotalPage()).isOne();
         assertThat(reportPageableResponse.getTotalSize()).isOne();
         assertThat(reportPageableResponse.getData()).hasSize(1);
+    }
+
+    @Then("최신순으로 정렬되어 반환된다")
+    public void 최신순으로정렬되어반환된다() {
+        List<ReportResponse> reports = (List<ReportResponse>) context.storage.get("reports");
+        List<Long> actualIds = reports.stream()
+            .sorted(Comparator.comparing(ReportResponse::getStartDate).reversed())
+            .map(ReportResponse::getId)
+            .collect(Collectors.toList());
+        List<Long> expectedIds = context.response.jsonPath().getList("data.id", Long.class);
+
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(expectedIds).containsExactlyElementsOf(actualIds);
     }
 
     @Then("리포트가 조회된다")
