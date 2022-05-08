@@ -50,31 +50,27 @@ public class MemberStepDefinitions extends AcceptanceSteps {
         assertThat(updatedNickname).isEqualTo(nickname);
     }
 
-    @When("{string}의 닉네임이 {int}번 스터디로그를 스크랩하면")
-    public void studylog를스크랩하면(String member, int studylogId){
-        String username = GithubResponses.findByName(member).getLogin();
-        context.invokeHttpPostWithToken("/members/" + username + "/scrap", new MemberScrapRequest((long)studylogId));
+    @When("{int}번 스터디로그를 스크랩하면")
+    public void studylog를스크랩하면(int studylogId){
+        context.invokeHttpPostWithToken("/members/scrap", new MemberScrapRequest((long)studylogId));
         assertThat(context.response.statusCode()).isEqualTo(201);
     }
 
-    @When("{string}의 닉네임이 {int}번 스터디로그를 스크랩 취소하면")
-    public void studylog를스크랩취소하면(String member, int studylogId){
-        String username = GithubResponses.findByName(member).getLogin();
-        context.invokeHttpDeleteWithToken("/members/" + username + "/scrap?studylog=" + studylogId);
+    @When("{int}번 스터디로그를 스크랩 취소하면")
+    public void studylog를스크랩취소하면(int studylogId){
+        context.invokeHttpDeleteWithToken("/members/scrap?studylog=" + studylogId);
         assertThat(context.response.statusCode()).isEqualTo(204);
     }
 
-    @Then("{string}의 닉네임이 스크랩한 {int}번 스터디로그를 볼 수 있다")
-    public void 스크랩한studylog를볼수있다(String member, int studylogId){
-        String username = GithubResponses.findByName(member).getLogin();
-        context.invokeHttpGetWithToken("/members/" + username + "/scrap");
+    @Then("스크랩한 {int}번 스터디로그를 볼 수 있다")
+    public void 스크랩한studylog를볼수있다(int studylogId){
+        context.invokeHttpGetWithToken("/members/scrap");
         assertThat(checkIfScrap(studylogId)).isTrue();
     }
 
-    @Then("{string}의 닉네임이 스크랩한 {int}번 스터디로그를 볼 수 없다")
-    public void 스크랩한studylog를볼수없다(String member, int studylogId) {
-        String username = GithubResponses.findByName(member).getLogin();
-        context.invokeHttpGetWithToken("/members/" + username + "/scrap");
+    @Then("스크랩한 {int}번 스터디로그를 볼 수 없다")
+    public void 스크랩한studylog를볼수없다(int studylogId) {
+        context.invokeHttpGetWithToken("/members/scrap");
         assertThat(checkIfScrap(studylogId)).isFalse();
     }
 
