@@ -29,7 +29,7 @@ public class MemberReactionController {
 
     private final StudylogScrapService studylogScrapService;
 
-    @GetMapping(value = "/{username}/scrap")
+    @GetMapping(value = "/scrap")
     @MemberOnly
     public ResponseEntity<StudylogsResponse> showScrap(
         @AuthMemberPrincipal LoginMember member,
@@ -40,7 +40,7 @@ public class MemberReactionController {
         return ResponseEntity.ok(studylogsResponse);
     }
 
-    @PostMapping(value = "/{username}/scrap")
+    @PostMapping(value = "/scrap")
     @MemberOnly
     public ResponseEntity<Void> registerScrap(
         @AuthMemberPrincipal LoginMember member,
@@ -53,7 +53,7 @@ public class MemberReactionController {
             .build();
     }
 
-    @DeleteMapping(value = "/{username}/scrap")
+    @DeleteMapping(value = "/scrap")
     @MemberOnly
     public ResponseEntity<Void> unregisterScrap(
         @AuthMemberPrincipal LoginMember member,
