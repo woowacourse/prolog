@@ -46,15 +46,15 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
   return (
     <div css={[ContainerStyle]}>
       {/* 상단 영역 */}
-      <Link to={`${PATH.STUDYLOGS}/${id}`}>
-        <div css={[TopContainerStyle, getRandomBgColorStyle(id)]}>
+      <div css={[TopContainerStyle, getRandomBgColorStyle(id)]}>
+        <Link to={`${PATH.STUDYLOGS}/${id}`}>
           <span>
             [{mission?.session?.name}]&nbsp;{mission?.name}
           </span>
           <h2>{title}</h2>
-          <span css={[DateAreaStyle]}>{new Date(createdAt).toLocaleDateString('ko-KR')}</span>
-        </div>
-      </Link>
+        </Link>
+        <span css={[DateAreaStyle]}>{new Date(createdAt).toLocaleDateString('ko-KR')}</span>
+      </div>
 
       {/* 하단 영역 */}
       <div css={[BottomContainerStyle]}>
