@@ -69,7 +69,7 @@ export const PopularStudylogListRightControlStyle = css`
 `;
 
 export const ScrollStyle = css`
-  overflow: scroll;
+  overflow: auto;
   ::-webkit-scrollbar {
     display: none;
     width: 0;
