@@ -26,7 +26,7 @@ public class FilterService {
         List<SessionResponse> sessionResponses = sessionService.findAllWithMySessionFirst(loginMember); // my session으로 대체
         List<MissionResponse> missionResponses = missionService.findAllWithMyMissionFirst(loginMember);
         List<TagResponse> tagResponses = tagService.findTagsIncludedInStudylogs();
-        List<MemberResponse> memberResponses = memberService.findAll();
+        List<MemberResponse> memberResponses = memberService.findAllOrderByNickNameAsc();
         return new FilterResponse(sessionResponses, missionResponses, tagResponses, memberResponses);
     }
 }

@@ -96,7 +96,7 @@ public class MemberService {
         persistMember.updateProfileIntro(updateRequest.getText());
     }
 
-    public List<MemberResponse> findAll() {
+    public List<MemberResponse> findAllOrderByNickNameAsc() {
         final List<Member> members = memberRepository.findAll();
         return members.stream()
                 .sorted(Comparator.comparing(Member::getNickname))

@@ -175,14 +175,14 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("Member 정보의 nickname을 기준으로 오름차순 정렬하여 조회한다.")
-    void findAll() {
+    void findAllOrderByNickNameAsc() {
         // given
         Member를_생성한다(new Member("her0807", "다수달", Role.CREW, 3L, "imageUrl"));
         Member를_생성한다(new Member("wishoon", "나루키", Role.CREW, 2L, "imageUrl"));
         Member를_생성한다(new Member("gracefulBrown", "가브라운", Role.CREW, 1L, "imageUrl"));
 
         // when
-        final List<MemberResponse> responses = memberService.findAll();
+        final List<MemberResponse> responses = memberService.findAllOrderByNickNameAsc();
 
         // then
         assertThat(responses).hasSize(3)
