@@ -29,7 +29,7 @@ public class SessionMemberService {
 
     @Transactional
     public void registerMember(Long sessionId, Long memberId) {
-        if (sessionRepository.existsById(sessionId)) {
+        if (!sessionRepository.existsById(sessionId)) {
             throw new SessionNotFoundException();
         }
         final Member member = memberService.findById(memberId);
