@@ -119,4 +119,10 @@ public class ReportService {
 
         reportRepository.deleteById(reportId);
     }
+
+    public PageableResponse<ReportResponse> findReports(Pageable pageable) {
+        Page<Report> reports = reportRepository.findAll(pageable);
+        List<ReportResponse> reportResponses = ReportResponse.listOf(reports);
+        return PageableResponse.of(reportResponses, reports);
+    }
 }
