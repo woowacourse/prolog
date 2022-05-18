@@ -7,7 +7,7 @@ const Container = styled.div`
   white-space: nowrap;
   overflow-y: auto;
   background-color: ${COLOR.WHITE};
-  border-radius: 2rem;
+  border-radius: 1.2rem;
   box-shadow: 0px 0px 6px ${COLOR.BLACK_OPACITY_300};
   padding: 1rem 1.2rem;
   position: absolute;
@@ -58,7 +58,7 @@ const Container = styled.div`
   } */
 
   & li {
-    height: 5rem;
+    height: 4rem;
     display: flex;
     align-items: center;
     padding: 0 0.8rem;
@@ -75,7 +75,7 @@ const Container = styled.div`
   }
 
   & li:not(:last-child) {
-    border-bottom: 1px solid ${COLOR.LIGHT_GRAY_700};
+    border-bottom: 0.7px solid ${COLOR.LIGHT_GRAY_700};
   }
 
   /* & li:hover {

@@ -84,7 +84,7 @@ const DropdownStyle = css`
   right: 0px;
   transform: translateX(-24%);
 
-  width: 16rem;
+  width: 13rem;
 
   & * {
     text-align: center;
