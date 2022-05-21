@@ -6,6 +6,8 @@ import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,5 +63,38 @@ public class MemberReactionController {
     ) {
         studylogScrapService.unregisterScrap(member.getId(), studylog);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "/{username}/scrap")
+    @MemberOnly
+    public ResponseEntity<StudylogsResponse> deprecatedShowScrap(
+        @AuthMemberPrincipal LoginMember member,
+        @PageableDefault(direction = DESC) Pageable pageable
+    ) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(URI.create("/members/scrap"));
+        return new ResponseEntity<>(httpHeaders, HttpStatus.MOVED_PERMANENTLY);
+    }
+
+    @PostMapping(value = "/{username}/scrap")
+    @MemberOnly
+    public ResponseEntity<Void> deprecatedRegisterScrap(
+        @AuthMemberPrincipal LoginMember member,
+        @RequestBody MemberScrapRequest studylogIdRequest
+    ) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(URI.create("/members/scrap"));
+        return new ResponseEntity<>(httpHeaders, HttpStatus.PERMANENT_REDIRECT);
+    }
+
+    @DeleteMapping(value = "/{username}/scrap")
+    @MemberOnly
+    public ResponseEntity<Void> deprecatedUnregisterScrap(
+        @AuthMemberPrincipal LoginMember member,
+        @RequestParam Long studylog
+    ) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(URI.create("/members/scrap?studylog=" + studylog));
+        return new ResponseEntity<>(httpHeaders, HttpStatus.PERMANENT_REDIRECT);
     }
 }
