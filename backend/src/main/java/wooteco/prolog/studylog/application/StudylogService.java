@@ -205,10 +205,12 @@ public class StudylogService {
     public StudylogTempResponse insertStudylogTemp(Long memberId, StudylogRequest studylogRequest) {
         Member member = memberService.findById(memberId);
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
+        Session session = sessionService.findById(studylogRequest.getSessionId());
         Mission mission = missionService.findById(studylogRequest.getMissionId());
         StudylogTemp requestedStudylogTemp = new StudylogTemp(member,
             studylogRequest.getTitle(),
             studylogRequest.getContent(),
+            session,
             mission,
             tags.getList());
 
