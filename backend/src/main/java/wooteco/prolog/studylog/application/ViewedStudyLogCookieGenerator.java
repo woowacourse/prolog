@@ -31,8 +31,7 @@ public class ViewedStudyLogCookieGenerator {
         if (isViewed(studyLogIds, studyLogId)) {
             return;
         }
-
-        String cookieValue = studyLogIds.concat("/" + studyLogId);
+        String cookieValue = studyLogIds.concat(studyLogId + "/");
         response.setHeader(HttpHeaders.SET_COOKIE, generateCookie(VIEWED_STUDY_LOG_COOKIE_NAME, cookieValue).toString());
     }
 }
