@@ -72,7 +72,7 @@ public class MemberDocumentation extends Documentation {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(new MemberScrapRequest(Long.valueOf(logId)))
             .when()
-            .post("/members/{nickname}/scrap", GithubResponses.소롱.getLogin())
+            .post("/members/scrap")
             .header("Location");
 
         //then
@@ -97,7 +97,7 @@ public class MemberDocumentation extends Documentation {
         given("members/scrap/delete")
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .when()
-            .delete("/members/{nickname}/scrap?studylog="+ logId, GithubResponses.소롱.getLogin())
+            .delete("/members/scrap?studylog="+ logId)
             .then().log().all()
             .assertThat()
             .statusCode(equalTo(HttpStatus.NO_CONTENT.value()));
@@ -121,7 +121,7 @@ public class MemberDocumentation extends Documentation {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(new MemberScrapRequest(logId))
             .when()
-            .get("/members/{nickname}/scrap", GithubResponses.소롱.getLogin())
+            .get("/members/scrap")
             .then().log().all()
             .extract()
             .as(StudylogsResponse.class)
@@ -152,7 +152,7 @@ public class MemberDocumentation extends Documentation {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(new MemberScrapRequest(logId))
             .when()
-            .post("/members/{nickname}/scrap", GithubResponses.소롱.getLogin())
+            .post("/members/scrap")
             .header("Location");
     }
 
