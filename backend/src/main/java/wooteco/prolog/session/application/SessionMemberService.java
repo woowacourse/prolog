@@ -14,6 +14,8 @@ import wooteco.prolog.session.application.dto.SessionGroupMemberRequest;
 import wooteco.prolog.session.application.dto.SessionMemberRequest;
 import wooteco.prolog.session.domain.SessionMember;
 import wooteco.prolog.session.domain.repository.SessionMemberRepository;
+import wooteco.prolog.session.domain.repository.SessionRepository;
+import wooteco.prolog.session.exception.SessionNotFoundException;
 
 @Service
 @AllArgsConstructor
@@ -21,8 +23,18 @@ import wooteco.prolog.session.domain.repository.SessionMemberRepository;
 public class SessionMemberService {
 
     private SessionMemberRepository sessionMemberRepository;
+    private SessionRepository sessionRepository;
     private MemberService memberService;
     private GroupMemberService groupMemberService;
+
+    @Transactional
+    public void registerMember(Long sessionId, Long memberId) {
+        if (!sessionRepository.existsById(sessionId)) {
+            throw new SessionNotFoundException();
+        }
+        final Member member = memberService.findById(memberId);
+        sessionMemberRepository.save(new SessionMember(sessionId, member));
+    }
 
     @Transactional
     public void registerMembers(Long sessionId, SessionMemberRequest sessionMemberRequest) {
