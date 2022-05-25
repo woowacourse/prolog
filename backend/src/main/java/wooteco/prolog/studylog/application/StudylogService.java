@@ -105,6 +105,7 @@ public class StudylogService {
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
         Session session = sessionService.findSessionById(studylogRequest.getSessionId()).orElse(null);
         Mission mission = missionService.findMissionById(studylogRequest.getMissionId()).orElse(null);
+
         StudylogTemp requestedStudylogTemp = new StudylogTemp(member,
                 studylogRequest.getTitle(),
                 studylogRequest.getContent(),
