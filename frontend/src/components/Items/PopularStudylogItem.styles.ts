@@ -66,7 +66,7 @@ export const TopContainerStyle = css`
     font-weight: bold;
     color: black;
 
-    line-break: anywhere;
+    line-break: auto;
 
     display: -webkit-box;
     -webkit-line-clamp: 3;
