@@ -14,11 +14,10 @@ export const SectionHeaderGapStyle = css`
 // 인기있는 학습로그
 export const PopularStudylogListStyle = css`
   width: 100%;
-  height: 34rem;
+  height: 30rem;
 
   display: grid;
   justify-content: content;
-  align-items: center;
   grid-template-columns: repeat(10, 1fr);
 
   position: relative;
