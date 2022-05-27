@@ -103,6 +103,7 @@ export const UserReactionIconStyle = css`
   flex-shrink: 0;
   color: ${COLOR.LIGHT_GRAY_900};
   font-size: 1.4rem;
+  margin-right: 0.6rem;
 
   & > svg {
     margin-right: 0.25rem;
