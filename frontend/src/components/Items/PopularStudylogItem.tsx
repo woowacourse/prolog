@@ -107,11 +107,11 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
             ]}
           >
             <div css={[FlexStyle, AlignItemsCenterStyle]}>
-              <div css={[UserReactionIconStyle]}>
+              <div css={[FlexStyle, AlignItemsCenterStyle, UserReactionIconStyle]}>
                 <ViewIcon width="2rem" height="2rem" />
                 <span>{viewCount}</span>
               </div>
-              <div css={[UserReactionIconStyle]}>
+              <div css={[FlexStyle, AlignItemsCenterStyle, UserReactionIconStyle]}>
                 {!liked ? (
                   <UnLikeIcon width="2rem" height="2rem" />
                 ) : (
