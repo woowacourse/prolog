@@ -37,7 +37,7 @@ const MainPage = () => {
     const { data } = await axios({
       method: 'get',
       url: `${BASE_URL}/studylogs/popular`,
-      headers: { Authorization: 'Bearer ' + accessToken },
+      headers: accessToken && { Authorization: 'Bearer ' + accessToken },
     });
 
     return data?.data;
