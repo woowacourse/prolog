@@ -1,7 +1,13 @@
 import { css } from '@emotion/react';
+import styled from '@emotion/styled';
+import { Chip } from '../../components';
+import { COLOR } from '../../constants';
 
 // 메인페이지 전체 적용
 export const SectionHeaderGapStyle = css`
+  display: flex;
+  align-items: center;
+  gap: 2.8rem;
   padding-left: 1.2rem;
   margin-bottom: 1.2rem;
 
@@ -66,4 +72,10 @@ export const PopularStudylogListRightControlStyle = css`
       opacity: 1;
     }
   }
+`;
+
+export const StyledChip = styled(Chip)<{ active: boolean }>`
+  cursor: pointer;
+  padding: 7px 22px;
+  background-color: ${({ active }) => active && COLOR.LIGHT_BLUE_300};
 `;
