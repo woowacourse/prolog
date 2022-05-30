@@ -1,0 +1,83 @@
+package wooteco.prolog.studylog.application;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
+import wooteco.prolog.member.domain.repository.MemberRepository;
+import wooteco.prolog.session.domain.Mission;
+import wooteco.prolog.session.domain.Session;
+import wooteco.prolog.session.domain.repository.MissionRepository;
+import wooteco.prolog.session.domain.repository.SessionRepository;
+import wooteco.prolog.studylog.domain.Badge;
+import wooteco.prolog.studylog.domain.Studylog;
+import wooteco.support.utils.IntegrationTest;
+
+@IntegrationTest
+public class BadgeServiceTest {
+
+  @Autowired
+  private StudylogService studylogService;
+  @Autowired
+  private BadgeService badgeService;
+  @Autowired
+  private SessionRepository sessionRepository;
+  @Autowired
+  private MissionRepository missionRepository;
+  @Autowired
+  private MemberRepository memberRepository;
+
+  private Member 브라운;
+  private Member 토미;
+
+  private Session session1;
+  private Session session2;
+
+  @BeforeEach
+  void setUp() {
+    session1 = sessionRepository.save(new Session("세션1"));
+    session2 = sessionRepository.save(new Session("세션2"));
+
+    Mission 체스미션 = missionRepository.save(new Mission("체스미션", session1));
+    Mission 지하철미션 = missionRepository.save(new Mission("지하철미션", session2));
+
+    브라운 = memberRepository.save(new Member("brown", "브라운", Role.CREW, 1L, "imageUrl"));
+    토미 = memberRepository.save(new Member("tommy", "토미", Role.CREW, 2L, "imageUrl"));
+
+    for (int i = 0; i < 3; i++) {
+      studylogService.save(
+          new Studylog(브라운, "체스 title" + i, "체스 content" + i, session1, 체스미션,
+              Collections.emptyList()));
+    }
+
+    for (int i = 0; i < 4; i++) {
+      studylogService.save(
+          new Studylog(브라운, "지하철 title" + i, "지하철 content" + i, session2, 지하철미션,
+              Collections.emptyList()));
+    }
+  }
+
+  @DisplayName("발급 받은 배지가 없는 사용자의 배지를 조회한다.")
+  @Test
+  void findEmptyBadge() {
+    List<Badge> badges = badgeService.findBadges(토미.getUsername(),
+        Arrays.asList(session1.getId(), session2.getId()));
+    assertThat(badges).isEmpty();
+  }
+
+  @DisplayName("열정왕 배지를 발급 받은 사용자의 배지를 조회한다.")
+  @Test
+  void findPassionKingBadge() {
+    List<Badge> badges = badgeService.findBadges(브라운.getUsername(),
+        Arrays.asList(session1.getId(), session2.getId()));
+    assertThat(badges).hasSize(1);
+    assertThat(badges.get(0).getName()).isEqualTo("열정왕");
+  }
+}
