@@ -5,8 +5,8 @@ import lombok.NoArgsConstructor;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionResponse;
-import wooteco.prolog.studylog.domain.StudylogTags;
 import wooteco.prolog.studylog.domain.StudylogTemp;
+import wooteco.prolog.studylog.domain.StudylogTempTags;
 
 import java.util.List;
 
@@ -40,11 +40,11 @@ public class StudylogTempResponse {
                 studylogTemp.getContent(),
                 SessionResponse.of(studylogTemp.getSession()),
                 MissionResponse.of(studylogTemp.getMission()),
-                toTagResponses(studylogTemp.getStudylogTags()));
+                toTagResponses(studylogTemp.getStudylogTempTags()));
     }
 
     //todo TagResponse의 정적팩토리메서드로 리팩터링
-    private static List<TagResponse> toTagResponses(StudylogTags tags) {
+    private static List<TagResponse> toTagResponses(StudylogTempTags tags) {
         return tags.getValues().stream()
                 .map(tag -> TagResponse.of(tag.getTag()))
                 .collect(toList());
