@@ -12,15 +12,16 @@ import wooteco.prolog.fixtures.MissionAcceptanceFixture;
 import wooteco.prolog.fixtures.SessionAcceptanceFixture;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.session.application.dto.SessionRequest;
 
 public class MissionStepDefinitions extends AcceptanceSteps {
 
     @Given("세션 여러개를 생성하고")
     public void 세션여러개를생성하고() {
-        context.invokeHttpPost("/sessions", SessionAcceptanceFixture.session1);
-        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
-        context.invokeHttpPost("/sessions", SessionAcceptanceFixture.session2);
-        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        for (SessionRequest request : SessionAcceptanceFixture.values()) {
+            context.invokeHttpPost("/sessions", request);
+            assertThat(context.response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        }
     }
 
     @Given("미션 여러개를 생성하고")

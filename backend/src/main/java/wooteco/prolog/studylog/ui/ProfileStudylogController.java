@@ -2,8 +2,10 @@ package wooteco.prolog.studylog.ui;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +28,10 @@ import wooteco.prolog.member.application.dto.ProfileIntroResponse;
 import wooteco.prolog.member.exception.MemberNotFoundException;
 import wooteco.prolog.studylog.application.BadgeService;
 import wooteco.prolog.studylog.application.StudylogService;
+import wooteco.prolog.studylog.application.dto.BadgeResponse;
+import wooteco.prolog.studylog.application.dto.BadgesResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
+import wooteco.prolog.studylog.domain.Badge;
 
 @RestController
 @AllArgsConstructor
@@ -96,10 +101,14 @@ public class ProfileStudylogController {
   }
 
   @GetMapping(value = "/{username}/badges", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Void> findMemberBadges(@PathVariable String username) {
-    throw new MemberNotFoundException();
+  public ResponseEntity<BadgesResponse> findMemberBadges(@PathVariable String username) {
+    List<Badge> badges = badgeService.findBadges(username, Arrays.asList(10L, 11L));
+    List<BadgeResponse> badgeResponses = badges.stream()
+        .map(Badge::getName)
+        .map(BadgeResponse::new)
+        .collect(Collectors.toList());
+    return ResponseEntity.ok(new BadgesResponse(badgeResponses));
   }
-
 
   @Data
   public static class StudylogFilterRequest {

@@ -72,7 +72,7 @@ public enum StudylogAcceptanceFixture {
       "[공지] 배지에 관하여",
       "열정왕을 위해 달려라",
       10L,
-      null,
+      2L,
       TAG5,
       TAG6
   ),
@@ -80,7 +80,7 @@ public enum StudylogAcceptanceFixture {
       "[공지] 배지에 관하여2",
       "칭찬왕을 위해서 달려라",
       11L,
-      null,
+      2L,
       TAG5,
       TAG6
   );
