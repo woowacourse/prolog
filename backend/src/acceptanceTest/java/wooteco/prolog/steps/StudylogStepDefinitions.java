@@ -25,6 +25,7 @@ import wooteco.prolog.studylog.application.dto.StudylogMissionRequest;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogSessionRequest;
+import wooteco.prolog.studylog.application.dto.StudylogWithScrapedCountResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 
@@ -98,8 +99,8 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
         context.invokeHttpGet("/studylogs/" + studylogResponse.getId());
 
-        StudylogResponse response = context.response.as(StudylogResponse.class);
-        assertThat(response.getId()).isNotNull();
+        StudylogWithScrapedCountResponse response = context.response.as(StudylogWithScrapedCountResponse.class);
+        assertThat(response.getStudylogResponse().getId()).isNotNull();
     }
 
     @Given("{long}개의 스터디로그를 작성하고")
@@ -267,25 +268,36 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
         String path = "/studylogs/" + studylogId;
         context.invokeHttpGet(path);
-        StudylogResponse studylog = context.response.as(StudylogResponse.class);
+        StudylogWithScrapedCountResponse studylog = context.response.as(StudylogWithScrapedCountResponse.class);
 
-        assertThat(studylog).isNotNull();
+        assertThat(studylog.getScrapedCount()).isNotNull();
+    }
+
+    @Then("{long}번째 스터디로그의 스크랩수가 조회된다.")
+    public void 스터디로그의스크랩수가조회된다(Long studylogId) {
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+
+        String path = "/studylogs/" + studylogId;
+        context.invokeHttpGet(path);
+        StudylogWithScrapedCountResponse studylog = context.response.as(StudylogWithScrapedCountResponse.class);
+
+        assertThat(studylog.getScrapedCount()).isEqualTo(1);
     }
 
     @Then("조회된 스터디로그의 조회수가 증가된다")
     public void 조회된스터디로그의조회수가증가된다() {
-        StudylogResponse studylog = context.response.as(StudylogResponse.class);
+        StudylogWithScrapedCountResponse studylog = context.response.as(StudylogWithScrapedCountResponse.class);
 
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(studylog.getViewCount()).isEqualTo(1);
+        assertThat(studylog.getStudylogResponse().getViewCount()).isEqualTo(1);
     }
 
     @Then("조회된 스터디로그의 조회수가 증가되지 않는다")
     public void 조회된스터디로그의조회수가증가되지않는다() {
-        StudylogResponse studylog = context.response.as(StudylogResponse.class);
+        StudylogWithScrapedCountResponse studylog = context.response.as(StudylogWithScrapedCountResponse.class);
 
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(studylog.getViewCount()).isEqualTo(0);
+        assertThat(studylog.getStudylogResponse().getViewCount()).isEqualTo(0);
     }
 
     @When("{long}번째 스터디로그를 수정하면")
@@ -300,9 +312,9 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
         String path = "/studylogs/" + studylogId;
         context.invokeHttpGet(path);
-        StudylogResponse studylog = context.response.as(StudylogResponse.class);
+        StudylogWithScrapedCountResponse studylog = context.response.as(StudylogWithScrapedCountResponse.class);
 
-        assertThat(studylog.getContent()).isEqualTo(STUDYLOG3.getStudylogRequest().getContent());
+        assertThat(studylog.getStudylogResponse().getContent()).isEqualTo(STUDYLOG3.getStudylogRequest().getContent());
     }
 
     @Then("에러 응답을 받는다")
@@ -355,26 +367,26 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
     @Then("조회된 스터디로그의 좋아요 수가 증가한다")
     public void 조회된스터디로그의좋아요수가증가한다() {
-        StudylogResponse response = context.response.as(StudylogResponse.class);
-        assertThat(response.getLikesCount()).isEqualTo(1);
+        StudylogWithScrapedCountResponse response = context.response.as(StudylogWithScrapedCountResponse.class);
+        assertThat(response.getStudylogResponse().getLikesCount()).isEqualTo(1);
     }
 
     @Then("조회된 스터디로그의 좋아요 수가 증가하지 않는다")
     public void 조회된스터디로그의좋아요수가증가하지않는다() {
-        StudylogResponse response = context.response.as(StudylogResponse.class);
-        assertThat(response.getLikesCount()).isEqualTo(0);
+        StudylogWithScrapedCountResponse response = context.response.as(StudylogWithScrapedCountResponse.class);
+        assertThat(response.getStudylogResponse().getLikesCount()).isEqualTo(0);
     }
 
     @Then("조회된 스터디로그의 좋아요 여부가 참이다")
     public void 조회된스터디로그의좋아요여부가참이다() {
-        StudylogResponse response = context.response.as(StudylogResponse.class);
-        assertThat(response.isLiked()).isTrue();
+        StudylogWithScrapedCountResponse response = context.response.as(StudylogWithScrapedCountResponse.class);
+        assertThat(response.getStudylogResponse().isLiked()).isTrue();
     }
 
     @Then("조회된 스터디로그의 좋아요 여부가 거짓이다")
     public void 조회된스터디로그의좋아요여부가거짓이다() {
-        StudylogResponse response = context.response.as(StudylogResponse.class);
-        assertThat(response.isLiked()).isFalse();
+        StudylogWithScrapedCountResponse response = context.response.as(StudylogWithScrapedCountResponse.class);
+        assertThat(response.getStudylogResponse().isLiked()).isFalse();
     }
 
     @When("인기 있는 스터디로그 목록을 {string}개만큼 갱신하고")

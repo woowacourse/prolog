@@ -1,8 +1,6 @@
 package wooteco.prolog.studylog.ui;
 
 import java.net.URI;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +17,7 @@ import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogTempResponse;
+import wooteco.prolog.studylog.application.dto.StudylogWithScrapedCountResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.SearchParams;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
@@ -63,11 +62,11 @@ public class StudylogController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudylogResponse> showStudylog(@PathVariable String id, @AuthMemberPrincipal LoginMember member) {
+    public ResponseEntity<StudylogWithScrapedCountResponse> showStudylog(@PathVariable String id, @AuthMemberPrincipal LoginMember member) {
         if (!NumberUtils.isNumeric(id)) {
             throw new StudylogNotFoundException();
         }
-        return ResponseEntity.ok(studylogService.retrieveStudylogById(member, Long.parseLong(id)));
+        return ResponseEntity.ok(studylogService.retrieveStudylogByIdWithScrapedCount(member, Long.parseLong(id)));
     }
 
     @PutMapping("/{id}")
