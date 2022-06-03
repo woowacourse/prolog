@@ -15,6 +15,8 @@ public interface StudylogScrapRepository extends JpaRepository<StudylogScrap, Lo
 
     boolean existsByMemberIdAndStudylogId(Long memberId, Long studylogId);
 
+    int countByStudylogId(Long studylogId);
+
     Optional<StudylogScrap> findByMemberIdAndStudylogId(Long memberId, Long studylogId);
 
     Page<StudylogScrap> findByMemberId(Long memberId, Pageable pageable);

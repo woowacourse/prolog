@@ -32,6 +32,7 @@ import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
 import wooteco.prolog.studylog.application.dto.StudylogSessionRequest;
 import wooteco.prolog.studylog.application.dto.StudylogTempResponse;
+import wooteco.prolog.studylog.application.dto.StudylogWithScrapedCountResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.domain.Studylog;
@@ -232,6 +233,15 @@ public class StudylogService {
         return toStudylogResponse(loginMember, studylog);
     }
 
+    @Transactional
+    public StudylogWithScrapedCountResponse retrieveStudylogByIdWithScrapedCount(LoginMember loginMember, Long studylogId) {
+        Studylog studylog = findStudylogById(studylogId);
+
+        onStudylogRetrieveEvent(loginMember, studylog);
+
+        return toStudylogResponseWithScrapedCount(loginMember, studylog);
+    }
+
     private void onStudylogRetrieveEvent(LoginMember loginMember, Studylog studylog) {
         // view 증가
         increaseViewCount(loginMember, studylog);
@@ -251,6 +261,15 @@ public class StudylogService {
         boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId()).isPresent();
 
         return StudylogResponse.of(studylog, scraped, read, liked);
+    }
+
+    private StudylogWithScrapedCountResponse toStudylogResponseWithScrapedCount(LoginMember loginMember, Studylog studylog) {
+        boolean liked = studylog.likedByMember(loginMember.getId());
+        boolean read = studylogReadRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId()).isPresent();
+        boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId()).isPresent();
+        int scrapedCount = studylogScrapRepository.countByStudylogId(studylog.getId());
+
+        return new StudylogWithScrapedCountResponse(StudylogResponse.of(studylog, scraped, read, liked), scrapedCount);
     }
 
     public StudylogResponse findByIdAndReturnStudylogResponse(Long id) {
