@@ -25,11 +25,27 @@ public class BadgeRepository {
   }
 
   public int countStudylogByUsernameDuringSessions(String username, List<Long> sessions) {
-    String sql = "select count(*)\n"
+    String sql = "select count(st.id)\n"
         + "from studylog as st \n"
         + "Join session as s on st.session_id = s.id\n"
         + "Join member as mem on st.member_id = mem.id\n"
         + "where s.id in (:sessions) and mem.username = :username and st.deleted = false";
+
+    Map<String, Object> map = new HashMap<>();
+    map.put("sessions", sessions);
+    map.put("username", username);
+    SqlParameterSource parameters = new MapSqlParameterSource(map);
+
+    return namedParameterJdbcTemplate.query(sql, parameters, COUNT_RESULT_SET_EXTRACTOR);
+  }
+
+  public int countLikesByUsernameDuringSessions(String username, List<Long> sessions) {
+    String sql = "select count(st.id)\n"
+        + "from studylog as st \n"
+        + "Join session as s on st.session_id = s.id\n"
+        + "Join likes as l on l.studylog_id = st.id\n"
+        + "Join member as mem on l.member_id = mem.id\n"
+        + "where s.id in (:sessions) and mem.username = :username";
 
     Map<String, Object> map = new HashMap<>();
     map.put("sessions", sessions);
