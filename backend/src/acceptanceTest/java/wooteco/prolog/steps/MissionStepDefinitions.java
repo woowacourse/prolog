@@ -21,6 +21,10 @@ public class MissionStepDefinitions extends AcceptanceSteps {
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
         context.invokeHttpPost("/sessions", SessionAcceptanceFixture.session2);
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        context.invokeHttpPost("/sessions", SessionAcceptanceFixture.session3);
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        context.invokeHttpPost("/sessions", SessionAcceptanceFixture.session4);
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
 
     @Given("미션 여러개를 생성하고")

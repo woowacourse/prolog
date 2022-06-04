@@ -6,6 +6,8 @@ import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG1;
 import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG2;
 import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG3;
 import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG4;
+import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG8;
+import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG9;
 import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG1;
 import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG2;
 
@@ -21,6 +23,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.StudylogAcceptanceFixture;
+import wooteco.prolog.studylog.application.dto.PopularStudylogsResponse;
 import wooteco.prolog.studylog.application.dto.StudylogMissionRequest;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
@@ -41,6 +44,14 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 //    public void 스터디로그를작성하면() {
 //        context.invokeHttpPostWithToken("/studylogs", STUDYLOG1.getStudylogRequest());
 //    }
+
+    @Given("세션과 미션을 포함한 스터디로그 여러개를 작성하고")
+    public void 세션과미션포함한스터디로그여러개를작성하고() {
+        context.invokeHttpPostWithToken("/studylogs", STUDYLOG8.getStudylogRequest());
+        context.invokeHttpPostWithToken("/studylogs", STUDYLOG9.getStudylogRequest());
+        context.invokeHttpPostWithToken("/studylogs", STUDYLOG8.getStudylogRequest());
+        context.invokeHttpPostWithToken("/studylogs", STUDYLOG9.getStudylogRequest());
+    }
 
     @Given("스터디로그를 작성하고")
     @When("스터디로그를 작성하면")
@@ -387,11 +398,11 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     public void 스터디로그가Id순서로조회된다(String studylogIds) {
         context.invokeHttpGet("/studylogs/popular");
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        StudylogsResponse studylogsResponse = context.response.as(StudylogsResponse.class);
+        PopularStudylogsResponse popularStudylogsResponse = context.response.as(PopularStudylogsResponse.class);
 
         List<String> ids = Arrays.asList(studylogIds.split(", "));
         for (int i = 0; i < ids.size(); i++) {
-            StudylogResponse response = studylogsResponse.getData().get(i);
+            StudylogResponse response = popularStudylogsResponse.getAllResponse().getData().get(i);
             Long id = Long.parseLong(ids.get(i));
             assertThat(response.getId()).isEqualTo(id);
         }
