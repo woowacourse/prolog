@@ -15,14 +15,14 @@ import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.MissionService;
-import wooteco.prolog.session.application.dto.SessionRequest;
-import wooteco.prolog.session.application.dto.SessionResponse;
+import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
-import wooteco.prolog.session.domain.Session;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.domain.Mission;
+import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.application.PopularStudylogService;
 import wooteco.prolog.studylog.application.StudylogLikeService;
 import wooteco.prolog.studylog.application.StudylogScrapService;
@@ -30,7 +30,6 @@ import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.PopularStudylogsResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
-import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.Tag;
@@ -43,7 +42,7 @@ class PopularStudylogServiceTest {
     private static final String STUDYLOG2_TITLE = "이것은 두번째 제목";
     private static final String STUDYLOG3_TITLE = "이것은 3 제목";
     private static final String STUDYLOG4_TITLE = "이것은 네번 제목";
-
+    private static final String URL = "http://localhost:8080";
     private static Tag tag1 = new Tag(1L, "소롱의글쓰기");
     private static Tag tag2 = new Tag(2L, "스프링");
     private static Tag tag3 = new Tag(3L, "감자튀기기");
@@ -52,9 +51,6 @@ class PopularStudylogServiceTest {
     private static List<Tag> tags = asList(
         tag1, tag2, tag3, tag4, tag5
     );
-
-    private static final String URL = "http://localhost:8080";
-
     @Autowired
     private StudylogService studylogService;
     @Autowired
@@ -90,8 +86,10 @@ class PopularStudylogServiceTest {
 
     @BeforeEach
     void setUp() {
-        SessionResponse sessionResponse1 = sessionService.create(new SessionRequest("백엔드Java 레벨1 - 2021"));
-        SessionResponse sessionResponse2 = sessionService.create(new SessionRequest("프론트엔드JS 레벨1 - 2021"));
+        SessionResponse sessionResponse1 = sessionService.create(
+            new SessionRequest("백엔드Java 레벨1 - 2021"));
+        SessionResponse sessionResponse2 = sessionService.create(
+            new SessionRequest("프론트엔드JS 레벨1 - 2021"));
 
         this.session1 = new Session(sessionResponse1.getId(), sessionResponse1.getName());
         this.session2 = new Session(sessionResponse2.getId(), sessionResponse2.getName());
@@ -104,8 +102,10 @@ class PopularStudylogServiceTest {
         this.mission1 = new Mission(missionResponse1.getId(), missionResponse1.getName(), session1);
         this.mission2 = new Mission(missionResponse2.getId(), missionResponse2.getName(), session2);
 
-        this.member1 = memberService.findOrCreateMember(new GithubProfileResponse("이름1", "별명1", "1", "image"));
-        this.member2 = memberService.findOrCreateMember(new GithubProfileResponse("이름2", "별명2", "2", "image"));
+        this.member1 = memberService.findOrCreateMember(
+            new GithubProfileResponse("이름1", "별명1", "1", "image"));
+        this.member2 = memberService.findOrCreateMember(
+            new GithubProfileResponse("이름2", "별명2", "2", "image"));
 
         this.loginMember1 = new LoginMember(member1.getId(), Authority.MEMBER);
         this.loginMember2 = new LoginMember(member2.getId(), Authority.MEMBER);
@@ -120,7 +120,9 @@ class PopularStudylogServiceTest {
         this.studylog3 = new Studylog(member2,
             STUDYLOG3_TITLE, "피케이 스터디로그", mission2,
             asList(tag3, tag4, tag5));
-        this.studylog4 = new Studylog(member2, STUDYLOG4_TITLE, "포모의 스터디로그", mission2, asList(tag3, tag4, tag5));
+        this.studylog4 = new Studylog(member2,
+            STUDYLOG4_TITLE, "포모의 스터디로그", mission2,
+            asList(tag3, tag4, tag5));
     }
 
     @DisplayName("로그인하지 않은 상태에서 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
@@ -160,7 +162,7 @@ class PopularStudylogServiceTest {
             studylog1,
             studylog2,
             studylog3,
-                studylog4
+            studylog4
         );
 
         StudylogResponse studylogResponse1 = insertResponses.get(0);
@@ -186,11 +188,11 @@ class PopularStudylogServiceTest {
         // when
         PageRequest pageRequest = PageRequest.of(0, 2);
         popularStudylogService.updatePopularStudylogs(pageRequest);
-        
+
         PopularStudylogsResponse popularStudylogs = popularStudylogService.findPopularStudylogs(
-                pageRequest,
-                member2.getId(),
-                member2.isAnonymous()
+            pageRequest,
+            member2.getId(),
+            member2.isAnonymous()
         );
 
         // then
@@ -214,7 +216,7 @@ class PopularStudylogServiceTest {
                     studylog.getTitle(),
                     studylog.getContent(),
                     studylog.getSession().getId(),
-                        studylog.getMission().getId(),
+                    studylog.getMission().getId(),
                     toTagRequests(studylog)
                 )
             )

@@ -36,13 +36,14 @@ public class PopularStudylogService {
         deleteAllLegacyPopularStudylogs();
         List<Studylog> studylogs = new ArrayList<>();
         for (Curriculum curriculum : Curriculum.values()) {
-            List<Studylog> studylogsByDays = findStudylogsByDays(pageable, LocalDateTime.now(), curriculum);
+            List<Studylog> studylogsByDays = findStudylogsByDays(pageable, LocalDateTime.now(),
+                curriculum);
             studylogs.addAll(studylogsByDays);
         }
 
         List<PopularStudylog> popularStudylogs = studylogs.stream()
-                .map(it -> new PopularStudylog(it.getId()))
-                .collect(toList());
+            .map(it -> new PopularStudylog(it.getId()))
+            .collect(toList());
 
         popularStudylogRepository.saveAll(popularStudylogs);
     }
@@ -55,14 +56,20 @@ public class PopularStudylogService {
         }
     }
 
-    public PopularStudylogsResponse findPopularStudylogs(Pageable pageable, Long memberId, boolean isAnonymousMember) {
+    public PopularStudylogsResponse findPopularStudylogs(Pageable pageable, Long memberId,
+                                                         boolean isAnonymousMember) {
         List<Studylog> allStudylogs = getSortedPopularStudyLogs();
-        List<Studylog> frontStudylogs = getSortedCurriculumPopularStudylogs(allStudylogs, Curriculum.FRONTEND);
-        List<Studylog> backStudylogs = getSortedCurriculumPopularStudylogs(allStudylogs, Curriculum.BACKEND);
+        List<Studylog> frontStudylogs = getSortedCurriculumPopularStudylogs(allStudylogs,
+            Curriculum.FRONTEND);
+        List<Studylog> backStudylogs = getSortedCurriculumPopularStudylogs(allStudylogs,
+            Curriculum.BACKEND);
 
-        StudylogsResponse allResponse = getPageablePopularStudylogs(allStudylogs, pageable, memberId);
-        StudylogsResponse frontResponse = getPageablePopularStudylogs(frontStudylogs, pageable, memberId);
-        StudylogsResponse backResponse = getPageablePopularStudylogs(backStudylogs, pageable, memberId);
+        StudylogsResponse allResponse = getPageablePopularStudylogs(allStudylogs, pageable,
+            memberId);
+        StudylogsResponse frontResponse = getPageablePopularStudylogs(frontStudylogs, pageable,
+            memberId);
+        StudylogsResponse backResponse = getPageablePopularStudylogs(backStudylogs, pageable,
+            memberId);
 
         if (isAnonymousMember) {
             return new PopularStudylogsResponse(allResponse, frontResponse, backResponse);
@@ -80,16 +87,19 @@ public class PopularStudylogService {
         return new PopularStudylogsResponse(allResponse, frontResponse, backResponse);
     }
 
-    private List<Studylog> getSortedCurriculumPopularStudylogs(List<Studylog> allStudylogs, Curriculum curriculum) {
+    private List<Studylog> getSortedCurriculumPopularStudylogs(List<Studylog> allStudylogs,
+                                                               Curriculum curriculum) {
         return allStudylogs.stream()
-                .filter(studylog -> studylog.getSession().getName().contains(curriculum.getRegexPattern()))
-                .collect(toList());
+            .filter(
+                studylog -> studylog.getSession().getName().contains(curriculum.getRegexPattern()))
+            .collect(toList());
     }
 
-    private StudylogsResponse getPageablePopularStudylogs(List<Studylog> allStudylogs, Pageable pageable, Long memberId) {
+    private StudylogsResponse getPageablePopularStudylogs(List<Studylog> allStudylogs,
+                                                          Pageable pageable, Long memberId) {
         return StudylogsResponse.of(
-                new PageImpl(allStudylogs, pageable, allStudylogs.size()),
-                memberId
+            new PageImpl(allStudylogs, pageable, allStudylogs.size()),
+            memberId
         );
     }
 
@@ -100,39 +110,41 @@ public class PopularStudylogService {
 
     private List<Studylog> getSortedPopularStudyLogs() {
         return studylogRepository.findAllById(getPopularStudylogIds())
-                .stream()
-                .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
-                .collect(toList());
+            .stream()
+            .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
+            .collect(toList());
     }
 
     private List<Long> getPopularStudylogIds() {
         return popularStudylogRepository.findAllByDeletedFalse()
-                .stream()
-                .map(PopularStudylog::getStudylogId)
-                .collect(toList());
+            .stream()
+            .map(PopularStudylog::getStudylogId)
+            .collect(toList());
     }
 
-    private List<Studylog> findStudylogsByDays(Pageable pageable, LocalDateTime dateTime, Curriculum curriculum) {
+    private List<Studylog> findStudylogsByDays(Pageable pageable, LocalDateTime dateTime,
+                                               Curriculum curriculum) {
         int decreaseDays = 0;
         int searchFailedCount = 0;
 
         while (true) {
             decreaseDays += A_WEEK;
-            List<Studylog> studylogs = studylogRepository.findByPastDays(dateTime.minusDays(decreaseDays));
+            List<Studylog> studylogs = studylogRepository.findByPastDays(
+                dateTime.minusDays(decreaseDays));
 
             if (studylogs.size() >= pageable.getPageSize()) {
                 return studylogs.stream()
-                        .filter(it -> it.getSession().isSameAs(curriculum))
-                        .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
-                        .collect(toList())
-                        .subList(0, pageable.getPageSize());
+                    .filter(it -> it.getSession().isSameAs(curriculum))
+                    .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
+                    .collect(toList())
+                    .subList(0, pageable.getPageSize());
             }
 
             if (searchFailedCount >= 2) {
                 return studylogs.stream()
-                        .filter(it -> it.getSession().isSameAs(curriculum))
-                        .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
-                        .collect(toList());
+                    .filter(it -> it.getSession().isSameAs(curriculum))
+                    .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
+                    .collect(toList());
             }
 
             searchFailedCount += 1;

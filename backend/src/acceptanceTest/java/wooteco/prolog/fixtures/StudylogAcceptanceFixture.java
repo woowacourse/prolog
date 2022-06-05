@@ -69,20 +69,20 @@ public enum StudylogAcceptanceFixture {
         TAG6
     ),
     STUDYLOG8(
-            "[자바스크립트] JS JS JS 신나는 노래",
-            "덤덤 노래 아시는 분",
-            3L,
-            3L,
-            TAG5,
-            TAG6
+        "[자바스크립트] JS JS JS 신나는 노래",
+        "덤덤 노래 아시는 분",
+        3L,
+        3L,
+        TAG5,
+        TAG6
     ),
     STUDYLOG9(
-            "[자바] JAVA 주세요",
-            "Java를 잡아라",
-            4L,
-            4L,
-            TAG5,
-            TAG6
+        "[자바] JAVA 주세요",
+        "Java를 잡아라",
+        4L,
+        4L,
+        TAG5,
+        TAG6
     );
 
 
@@ -99,7 +99,8 @@ public enum StudylogAcceptanceFixture {
         List<TagRequest> tagRequests = Arrays.stream(tags)
             .map(TagAcceptanceFixture::getTagRequest)
             .collect(toList());
-        this.studylogRequest = new StudylogRequest(title, content, sessionId, missionId, tagRequests);
+        this.studylogRequest = new StudylogRequest(title, content, sessionId, missionId,
+            tagRequests);
     }
 
     public static List<StudylogRequest> findByMissionNumber(Long missionId) {
