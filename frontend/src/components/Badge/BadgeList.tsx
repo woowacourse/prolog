@@ -28,7 +28,7 @@ const BadgeList = ({ badgeList }: BadgeListProps) => {
         const Badge = BADGE_OBJ[name]['imgSrc'];
 
         return (
-          <BadgeContainer>
+          <BadgeContainer key={name}>
             <Badge alt={name} />
             <TooltipText>{BADGE_OBJ[name].description}</TooltipText>
           </BadgeContainer>
