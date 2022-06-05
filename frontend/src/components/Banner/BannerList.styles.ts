@@ -38,7 +38,7 @@ export const BannerControllerWrapperStyle = css`
   }
 `;
 
-export const getBannerControllerItemStyle = (backgroundColor: string = COLOR.WHITE) => css`
+export const getBannerControllerItemStyle = (backgroundColor = COLOR.WHITE) => css`
   width: 1rem;
   height: 1rem;
 
@@ -73,7 +73,7 @@ export const ControllerButtonStyle = css`
   }
 `;
 
-export const getPauseButtonStyle = (backgroundColor: string = COLOR.WHITE) => {
+export const getPauseButtonStyle = (backgroundColor = COLOR.WHITE) => {
   const iconColor = getTextColor(backgroundColor) === COLOR.WHITE ? COLOR.BLACK_900 : COLOR.WHITE;
 
   return css`
@@ -97,7 +97,7 @@ export const getPauseButtonStyle = (backgroundColor: string = COLOR.WHITE) => {
   `;
 };
 
-export const getPlayButtonsStyle = (backgroundColor: string = COLOR.WHITE) => {
+export const getPlayButtonsStyle = (backgroundColor = COLOR.WHITE) => {
   const iconColor = getTextColor(backgroundColor) === COLOR.WHITE ? COLOR.BLACK_900 : COLOR.WHITE;
 
   return css`
@@ -142,7 +142,7 @@ export const BannerNavigationButton = css`
   }
 `;
 
-export const getPrevButtonStyle = (backgroundColor: string = COLOR.WHITE) => css`
+export const getPrevButtonStyle = (backgroundColor = COLOR.WHITE) => css`
   ${BannerNavigationButton}
 
   left: 0;
@@ -162,7 +162,7 @@ export const getPrevButtonStyle = (backgroundColor: string = COLOR.WHITE) => css
   }
 `;
 
-export const getNextButtonStyle = (backgroundColor: string = COLOR.WHITE) => css`
+export const getNextButtonStyle = (backgroundColor = COLOR.WHITE) => css`
   ${BannerNavigationButton}
   right: 0;
 

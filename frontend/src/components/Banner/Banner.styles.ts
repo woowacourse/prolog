@@ -93,7 +93,7 @@ export const bannerTextAreaStyle = css`
 `;
 
 export const getBannerThemeByBgColor = (
-  backgroundColor: string = COLOR.WHITE,
+  backgroundColor = COLOR.WHITE,
   backgroundImage?: string
 ) => css`
   background-color: ${backgroundColor};

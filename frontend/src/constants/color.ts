@@ -82,6 +82,6 @@ const COLOR = {
   BLACK_OPACITY_700: 'rgba(0, 0, 0, 0.7)',
   BLACK_OPACITY_800: 'rgba(0, 0, 0, 0.8)',
   BLACK_OPACITY_900: 'rgba(0, 0, 0, 0.9)',
-} as const;
+};
 
 export default COLOR;
