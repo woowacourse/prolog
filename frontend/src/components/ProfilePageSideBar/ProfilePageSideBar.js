@@ -25,6 +25,7 @@ import {
   NicknameWrapper,
   NicknameInput,
 } from './ProfilePageSideBar.styles';
+import BadgeList, { dummyBadgeList } from '../Badge/BadgeList';
 
 const ProfilePageSideBar = ({ menu }) => {
   const history = useHistory();
@@ -116,6 +117,7 @@ const ProfilePageSideBar = ({ menu }) => {
           )}
         </NicknameWrapper>
       </Profile>
+      <BadgeList badgeList={dummyBadgeList} />
       <MenuList>
         {getMenuList({ username, isOwner }).map((menuItem) => (
           <MenuItem key={menuItem.key} isSelectedMenu={selectedMenu === menuItem.key}>
