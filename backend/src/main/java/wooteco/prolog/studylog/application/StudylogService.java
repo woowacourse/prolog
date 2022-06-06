@@ -224,17 +224,21 @@ public class StudylogService {
     }
 
     @Transactional
-    public StudylogResponse retrieveStudylogById(LoginMember loginMember, Long studylogId) {
+    public StudylogResponse retrieveStudylogById(LoginMember loginMember, Long studylogId, boolean isViewed) {
+
         Studylog studylog = findStudylogById(studylogId);
 
-        onStudylogRetrieveEvent(loginMember, studylog);
+        onStudylogRetrieveEvent(loginMember, studylog, isViewed);
 
         return toStudylogResponse(loginMember, studylog);
     }
 
-    private void onStudylogRetrieveEvent(LoginMember loginMember, Studylog studylog) {
+    private void onStudylogRetrieveEvent(LoginMember loginMember, Studylog studylog, boolean isViewed) {
         // view 증가
-        increaseViewCount(loginMember, studylog);
+        if (!isViewed) {
+            increaseViewCount(loginMember, studylog);
+        }
+
         if (loginMember.isAnonymous()) {
             return;
         }
