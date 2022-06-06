@@ -86,7 +86,7 @@ public class BadgeServiceTest {
     @DisplayName("발급 받은 배지가 없는 사용자의 배지를 조회한다.")
     @Test
     void findEmptyBadge() {
-        List<BadgeType> badges = badgeService.findBadges(토미.getUsername(),
+        List<BadgeType> badges = badgeService.findBadges(토미.getId(),
             Arrays.asList(session1.getId(), session2.getId()));
         assertThat(badges).isEmpty();
     }
@@ -94,7 +94,7 @@ public class BadgeServiceTest {
     @DisplayName("열정왕 배지를 발급 받은 사용자의 배지를 조회한다.")
     @Test
     void findPassionKingBadge() {
-        List<BadgeType> badges = badgeService.findBadges(브라운.getUsername(),
+        List<BadgeType> badges = badgeService.findBadges(브라운.getId(),
             Arrays.asList(session1.getId(), session2.getId()));
         assertThat(badges).hasSize(1);
         assertThat(badges.get(0).toString()).isEqualTo(BadgeType.PASSION_KING.name());
@@ -103,7 +103,7 @@ public class BadgeServiceTest {
     @DisplayName("칭찬왕 배지를 받급받은 사용자의 배지를 조회한다.")
     @Test
     void findComplimentKingBadge() {
-        List<BadgeType> badges = badgeService.findBadges(수달.getUsername(),
+        List<BadgeType> badges = badgeService.findBadges(수달.getId(),
             Arrays.asList(session1.getId(), session2.getId()));
         assertThat(badges).hasSize(1);
         assertThat(badges.get(0).toString()).isEqualTo(BadgeType.COMPLIMENT_KING.name());
@@ -112,7 +112,7 @@ public class BadgeServiceTest {
     @DisplayName("칭찬왕과 열정왕 배지를 발급받은 사용자의 배지를 조회한다.")
     @Test
     void findAllBadges() {
-        List<BadgeType> badges = badgeService.findBadges(베루스.getUsername(),
+        List<BadgeType> badges = badgeService.findBadges(베루스.getId(),
             Arrays.asList(session1.getId(), session2.getId()));
         assertThat(badges).hasSize(2);
         List<String> badgeNames = badges.stream()

@@ -10,7 +10,6 @@ import io.cucumber.java.en.When;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
-import wooteco.prolog.common.exception.ExceptionDto;
 import wooteco.prolog.studylog.domain.BadgeType;
 
 public class BadgesStepDefinitions extends AcceptanceSteps {
@@ -23,8 +22,7 @@ public class BadgesStepDefinitions extends AcceptanceSteps {
 
     @Then("존재하지 않는 멤버 관련 예외가 발생한다")
     public void 존재하지않는멤버관련예외가발생한다() {
-        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(context.response.as(ExceptionDto.class).getCode()).isEqualTo(1004);
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
     }
 
     @Given("여러개의 스터디로그를 작성하고")
@@ -40,7 +38,7 @@ public class BadgesStepDefinitions extends AcceptanceSteps {
     @When("배지를 조회하면")
     public void 배지를조회하면() {
         String username = String.valueOf(context.storage.get("username"));
-        context.invokeHttpGet("/members/" + username + "/badges");
+        context.invokeHttpGetWithToken("/members/" + username + "/badges");
     }
 
     @Then("열정왕 배지를 부여한다.")
