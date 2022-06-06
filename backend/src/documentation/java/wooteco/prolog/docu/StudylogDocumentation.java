@@ -19,6 +19,7 @@ import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.studylog.application.dto.PopularStudylogsResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
@@ -119,10 +120,10 @@ class StudylogDocumentation extends Documentation {
 
         // then
         // given
-        StudylogsResponse popularStudylogsResponse = response.as(StudylogsResponse.class);
-        assertThat(popularStudylogsResponse.getData()).hasSize(2);
-        assertThat(popularStudylogsResponse.getData().get(0).getId()).isEqualTo(studylogId2);
-        assertThat(popularStudylogsResponse.getData().get(1).getId()).isEqualTo(studylogId1);
+        PopularStudylogsResponse popularStudylogsResponse = response.as(PopularStudylogsResponse.class);
+        assertThat(popularStudylogsResponse.getAllResponse().getData()).hasSize(2);
+        assertThat(popularStudylogsResponse.getAllResponse().getData().get(0).getId()).isEqualTo(studylogId2);
+        assertThat(popularStudylogsResponse.getAllResponse().getData().get(1).getId()).isEqualTo(studylogId1);
     }
 
     private void 인기있는_스터디로그_목록_갱신(int studylogCount) {
@@ -203,21 +204,21 @@ class StudylogDocumentation extends Documentation {
     private StudylogRequest createStudylogRequest1() {
         String title = "나는야 Joanne";
         String content = "SPA 방식으로 앱을 구현하였음.\n" + "router 를 구현 하여 이용함.\n";
-        Long sessionId = 세션_등록함(new SessionRequest("세션1"));
+        Long sessionId = 세션_등록함(new SessionRequest("프론트엔드JS 레벨1 - 2021"));
         Long missionId = 미션_등록함(new MissionRequest("세션1 - 지하철 노선도 미션", sessionId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("spa"), new TagRequest("router"));
 
-        return new StudylogRequest(title, content, missionId, tags);
+        return new StudylogRequest(title, content, sessionId, missionId, tags);
     }
 
     private StudylogRequest createStudylogRequest2() {
         String title = "JAVA";
         String content = "Spring Data JPA를 학습함.";
-        Long sessionId = 세션_등록함(new SessionRequest("세션3"));
+        Long sessionId = 세션_등록함(new SessionRequest("백엔드Java 레벨1 - 2021"));
         Long missionId = 미션_등록함(new MissionRequest("세션3 - 프로젝트", sessionId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("java"), new TagRequest("jpa"));
 
-        return new StudylogRequest(title, content, missionId, tags);
+        return new StudylogRequest(title, content, sessionId, missionId, tags);
     }
 
     private ExtractableResponse<Response> 스터디로그_등록함(StudylogRequest request) {
