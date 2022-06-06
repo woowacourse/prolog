@@ -108,7 +108,8 @@ public class ReportStepDefinitions extends AcceptanceSteps {
 
     @Then("리포트 목록이 조회된다")
     public void 리포트목록이조회된다() {
-        PageableResponse<ReportResponse> reportPageableResponse = context.response.as(PageableResponse.class);
+        PageableResponse<ReportResponse> reportPageableResponse = context.response.as(
+            PageableResponse.class);
 
         assertThat(reportPageableResponse.getCurrentPage()).isOne();
         assertThat(reportPageableResponse.getTotalPage()).isOne();

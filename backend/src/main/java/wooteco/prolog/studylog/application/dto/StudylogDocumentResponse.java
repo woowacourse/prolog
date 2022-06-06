@@ -15,7 +15,8 @@ public class StudylogDocumentResponse {
     private int totalPage;
     private int currPage;
 
-    public static StudylogDocumentResponse of(List<Long> studylogIds, long totalSize, int totalPage, int currPage) {
+    public static StudylogDocumentResponse of(List<Long> studylogIds, long totalSize, int totalPage,
+                                              int currPage) {
         return new StudylogDocumentResponse(studylogIds, totalSize, totalPage, currPage);
     }
 }

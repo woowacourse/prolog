@@ -1,1 +1,2 @@
-ALTER TABLE studylog ADD COLUMN session_id BIGINT;
+ALTER TABLE studylog
+    ADD COLUMN session_id BIGINT;

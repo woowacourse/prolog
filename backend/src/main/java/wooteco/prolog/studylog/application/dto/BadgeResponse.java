@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class BadgeResponse {
 
-  private String name;
+    private String name;
 }

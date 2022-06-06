@@ -4,12 +4,10 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import wooteco.prolog.member.application.dto.MemberScrapRequest;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 @Component
 @Scope(scopeName = "cucumber-glue")

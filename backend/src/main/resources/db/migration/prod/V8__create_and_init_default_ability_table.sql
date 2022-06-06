@@ -50,7 +50,8 @@ INSERT INTO default_ability (name, description, color, template, parent_id) -- 1
 VALUES ("Service & Tools", "Service & Tools 입니다.", "#ccccff", "be", 15);
 
 INSERT INTO default_ability (name, description, color, template) -- 18
-VALUES ("Software Development Process & Maintenance", "Software Development Process & Maintenance 입니다.", "#ffcce5", "be");
+VALUES ("Software Development Process & Maintenance",
+        "Software Development Process & Maintenance 입니다.", "#ffcce5", "be");
 INSERT INTO default_ability (name, description, color, template, parent_id) -- 19
 VALUES ("Development Process", "Development Process 입니다.", "#ffcce5", "be", 18);
 INSERT INTO default_ability (name, description, color, template, parent_id) -- 20

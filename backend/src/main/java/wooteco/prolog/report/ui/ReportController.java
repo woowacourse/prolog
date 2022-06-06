@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import wooteco.prolog.common.PageableResponse;
 import wooteco.prolog.login.aop.MemberOnly;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.report.application.ReportService;
-import wooteco.prolog.common.PageableResponse;
 import wooteco.prolog.report.application.dto.ReportRequest;
 import wooteco.prolog.report.application.dto.ReportResponse;
 import wooteco.prolog.report.application.dto.ReportUpdateRequest;
@@ -30,7 +30,8 @@ public class ReportController {
 
     @MemberOnly
     @PostMapping("/reports")
-    public ResponseEntity<ReportResponse> createReport(@AuthMemberPrincipal LoginMember member, @RequestBody ReportRequest reportRequest) {
+    public ResponseEntity<ReportResponse> createReport(@AuthMemberPrincipal LoginMember member,
+                                                       @RequestBody ReportRequest reportRequest) {
         ReportResponse response = reportService.createReport(member, reportRequest);
         return ResponseEntity.created(URI.create("/reports/" + response.getId())).body(response);
     }
@@ -42,15 +43,19 @@ public class ReportController {
     }
 
     @GetMapping("/members/{username}/reports")
-    public ResponseEntity<PageableResponse<ReportResponse>> findReports(@PathVariable String username,
-                                                                        @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
-        PageableResponse<ReportResponse> response = reportService.findReportsByUsername(username, pageable);
+    public ResponseEntity<PageableResponse<ReportResponse>> findReports(
+        @PathVariable String username,
+        @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
+        PageableResponse<ReportResponse> response = reportService.findReportsByUsername(username,
+            pageable);
         return ResponseEntity.ok(response);
     }
 
     @MemberOnly
     @PutMapping("/reports/{reportId}")
-    public ResponseEntity<Void> updateReport(@AuthMemberPrincipal LoginMember member, @PathVariable Long reportId, @RequestBody ReportUpdateRequest reportUpdateRequest) {
+    public ResponseEntity<Void> updateReport(@AuthMemberPrincipal LoginMember member,
+                                             @PathVariable Long reportId,
+                                             @RequestBody ReportUpdateRequest reportUpdateRequest) {
         reportService.updateReport(member, reportId, reportUpdateRequest);
 
         return ResponseEntity.ok().build();
@@ -58,14 +63,16 @@ public class ReportController {
 
     @MemberOnly
     @DeleteMapping("/reports/{reportId}")
-    public ResponseEntity<Void> deleteReport(@AuthMemberPrincipal LoginMember member, @PathVariable Long reportId) {
+    public ResponseEntity<Void> deleteReport(@AuthMemberPrincipal LoginMember member,
+                                             @PathVariable Long reportId) {
         reportService.deleteReport(member, reportId);
 
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/reports")
-    public ResponseEntity<PageableResponse<ReportResponse>> findReports(@PageableDefault(size = 20, direction = Direction.DESC, sort = "startDate") Pageable pageable) {
+    public ResponseEntity<PageableResponse<ReportResponse>> findReports(
+        @PageableDefault(size = 20, direction = Direction.DESC, sort = "startDate") Pageable pageable) {
         PageableResponse<ReportResponse> response = reportService.findReports(pageable);
         return ResponseEntity.ok(response);
     }

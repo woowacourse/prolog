@@ -28,7 +28,7 @@ public class MemberTagServiceTest {
 
     @Test
     @DisplayName("멤버가 등록된 태그와 등록된 학습로그 수 확인")
-    public void findTagByMember() throws Exception{
+    public void findTagByMember() throws Exception {
         //given
         String tag1 = "자동차";
         String tag2 = "랜덤";

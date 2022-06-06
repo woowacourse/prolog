@@ -16,10 +16,10 @@ import wooteco.prolog.Documentation;
 import wooteco.prolog.GithubResponses;
 import wooteco.prolog.member.application.dto.MemberScrapRequest;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
-import wooteco.prolog.session.application.dto.SessionRequest;
-import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
@@ -97,7 +97,7 @@ public class MemberDocumentation extends Documentation {
         given("members/scrap/delete")
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .when()
-            .delete("/members/scrap?studylog="+ logId)
+            .delete("/members/scrap?studylog=" + logId)
             .then().log().all()
             .assertThat()
             .statusCode(equalTo(HttpStatus.NO_CONTENT.value()));
@@ -107,7 +107,8 @@ public class MemberDocumentation extends Documentation {
     void 스크랩한_스터디로그를_목록을_조회한다() {
         //given
         int scrapSize = 4;
-        ExtractableResponse<Response> studylogResponse = 스터디로그_등록함(createStudylogRequest(scrapSize));
+        ExtractableResponse<Response> studylogResponse = 스터디로그_등록함(
+            createStudylogRequest(scrapSize));
         String location = studylogResponse.header("Location");
         Long logId = Long.valueOf(location.substring(location.lastIndexOf('/') + 1));
 

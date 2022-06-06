@@ -32,7 +32,8 @@ public class MissionController {
 
     @MemberOnly
     @GetMapping("/mine")
-    public ResponseEntity<List<MissionResponse>> findMyMissions(@AuthMemberPrincipal LoginMember loginMember) {
+    public ResponseEntity<List<MissionResponse>> findMyMissions(
+        @AuthMemberPrincipal LoginMember loginMember) {
         List<MissionResponse> responses = missionService.findMyMissions(loginMember);
         return ResponseEntity.ok(responses);
     }

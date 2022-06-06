@@ -34,12 +34,12 @@ public class StudylogDocumentQueryBuilder {
         List<String> keywords = removeSpecialChars(inputKeywords);
         NativeSearchQueryBuilder query = new NativeSearchQueryBuilder();
         makeBoolQuery(query,
-                      makeKeywordsQueryString(keywords),
-                      makeDefaultQueryString(usernames),
-                      makeDefaultQueryString(convertToListString(levels)),
-                      makeDefaultQueryString(convertToListString(missions)),
-                      start,
-                      end);
+            makeKeywordsQueryString(keywords),
+            makeDefaultQueryString(usernames),
+            makeDefaultQueryString(convertToListString(levels)),
+            makeDefaultQueryString(convertToListString(missions)),
+            start,
+            end);
         makeFilterQuery(query, tags);
 
         return query
@@ -62,11 +62,11 @@ public class StudylogDocumentQueryBuilder {
         LocalDate start,
         LocalDate end) {
         query.withQuery(QueryBuilders.boolQuery()
-                            .must(multiField(keyword))
-                            .must(defaultField(username, "username"))
-                            .must(defaultField(levels, "levelId"))
-                            .must(defaultField(missions, "missionId"))
-                            .filter(rangeQuery(start, end))
+            .must(multiField(keyword))
+            .must(defaultField(username, "username"))
+            .must(defaultField(levels, "levelId"))
+            .must(defaultField(missions, "missionId"))
+            .filter(rangeQuery(start, end))
         );
     }
 

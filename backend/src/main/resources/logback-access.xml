@@ -1,11 +1,11 @@
 <configuration>
-    <springProfile name="prod, dev">
-        <include resource="logback/file-access-logger.xml"/>
-        <appender-ref ref="file-access-logger"/>
-    </springProfile>
+  <springProfile name="prod, dev">
+    <include resource="logback/file-access-logger.xml"/>
+    <appender-ref ref="file-access-logger"/>
+  </springProfile>
 
-    <springProfile name="local, test">
-        <include resource="logback/console-access-logger.xml"/>
-        <appender-ref ref="console-access-logger"/>
-    </springProfile>
+  <springProfile name="local, test">
+    <include resource="logback/console-access-logger.xml"/>
+    <appender-ref ref="console-access-logger"/>
+  </springProfile>
 </configuration>

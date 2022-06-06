@@ -23,7 +23,9 @@ public class MemberTags {
     public MemberTags(List<MemberTag> values) {
         final int originalSize = values.size();
         final long count = values.stream().distinct().count();
-        if(originalSize != count) throw new DuplicateMemberTagException();
+        if (originalSize != count) {
+            throw new DuplicateMemberTagException();
+        }
         this.values = values;
     }
 
@@ -50,7 +52,7 @@ public class MemberTags {
 
     private void remove(MemberTag memberTag) {
         final MemberTag foundMemberTag =
-                findMemberTag(memberTag).orElseThrow(NotExistsMemberTag::new);
+            findMemberTag(memberTag).orElseThrow(NotExistsMemberTag::new);
 
         if (foundMemberTag.hasOnlyOne()) {
             values.remove(foundMemberTag);
@@ -61,8 +63,8 @@ public class MemberTags {
 
     private Optional<MemberTag> findMemberTag(MemberTag memberTag) {
         return values.stream()
-                .filter(value -> value.isSame(memberTag))
-                .findAny();
+            .filter(value -> value.isSame(memberTag))
+            .findAny();
     }
 
     public void updateTags(List<MemberTag> originalMemberTag, List<MemberTag> newMemberTag) {

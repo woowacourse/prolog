@@ -35,11 +35,13 @@ public class AbilityDocumentation extends NewDocumentation {
 
         given.header(AUTHORIZATION, "Bearer " + accessToken)
             .when().post("/abilities/templates/be")
-            .then().log().all().apply(document("abilities/create-template-be")).statusCode(HttpStatus.OK.value());
+            .then().log().all().apply(document("abilities/create-template-be"))
+            .statusCode(HttpStatus.OK.value());
 
         given.header(AUTHORIZATION, "Bearer " + accessToken)
             .when().post("/abilities/templates/fe")
-            .then().log().all().apply(document("abilities/create-template-fe")).statusCode(HttpStatus.OK.value());
+            .then().log().all().apply(document("abilities/create-template-fe"))
+            .statusCode(HttpStatus.OK.value());
     }
 
     @Test
@@ -50,7 +52,8 @@ public class AbilityDocumentation extends NewDocumentation {
             .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
             .body(ABILITY_REQUEST)
             .when().post("/abilities")
-            .then().log().all().apply(document("abilities/create")).statusCode(HttpStatus.OK.value());
+            .then().log().all().apply(document("abilities/create"))
+            .statusCode(HttpStatus.OK.value());
     }
 
     @Test
@@ -70,7 +73,8 @@ public class AbilityDocumentation extends NewDocumentation {
             .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
             .body(ABILITY_UPDATE_REQUEST)
             .when().put("/abilities/" + ABILITY_UPDATE_REQUEST.getId())
-            .then().log().all().apply(document("abilities/update")).statusCode(HttpStatus.OK.value());
+            .then().log().all().apply(document("abilities/update"))
+            .statusCode(HttpStatus.OK.value());
     }
 
     @Test
@@ -79,7 +83,8 @@ public class AbilityDocumentation extends NewDocumentation {
 
         given.header(AUTHORIZATION, "Bearer " + accessToken)
             .when().delete("/abilities/1")
-            .then().log().all().apply(document("abilities/delete")).statusCode(HttpStatus.OK.value());
+            .then().log().all().apply(document("abilities/delete"))
+            .statusCode(HttpStatus.OK.value());
     }
 
     private static final AbilityCreateRequest ABILITY_REQUEST = new AbilityCreateRequest(

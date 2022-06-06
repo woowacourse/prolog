@@ -1,8 +1,11 @@
 package wooteco.prolog.studylog.domain;
 
-import lombok.*;
-
 import javax.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -10,6 +13,7 @@ import javax.persistence.Embeddable;
 @ToString
 @Embeddable
 public class ViewCount {
+
     private int views;
 
     public void increase() {

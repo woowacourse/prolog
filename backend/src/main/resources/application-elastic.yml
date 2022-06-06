@@ -11,7 +11,7 @@ spring:
         format_sql: true
         use_sql_comment: false
   flyway:
-      enabled: false
+    enabled: false
 
 security:
   jwt:

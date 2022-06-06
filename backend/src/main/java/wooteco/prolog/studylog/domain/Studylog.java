@@ -61,7 +61,8 @@ public class Studylog extends AuditingEntity {
 
     private boolean deleted;
 
-    public Studylog(Member member, String title, String content, Session session, Mission mission, List<Tag> tags) {
+    public Studylog(Member member, String title, String content, Session session, Mission mission,
+                    List<Tag> tags) {
         this.member = member;
         this.title = new Title(title);
         this.content = new Content(content);

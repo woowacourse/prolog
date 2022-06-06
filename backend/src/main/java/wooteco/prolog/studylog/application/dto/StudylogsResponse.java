@@ -51,14 +51,16 @@ public class StudylogsResponse {
         int currPage,
         Long memberId
     ) {
-        final List<StudylogResponse> studylogResponses = convertToStudylogResponse(studylogs, memberId);
+        final List<StudylogResponse> studylogResponses = convertToStudylogResponse(studylogs,
+            memberId);
         return new StudylogsResponse(studylogResponses,
             totalSize,
             totalPage,
             currPage + ONE_INDEXED_PARAMETER);
     }
 
-    private static List<StudylogResponse> convertToStudylogResponse(List<Studylog> studylogs, Long memberId) {
+    private static List<StudylogResponse> convertToStudylogResponse(List<Studylog> studylogs,
+                                                                    Long memberId) {
         return studylogs.stream()
             .map(studylog -> StudylogResponse.of(studylog, memberId))
             .collect(toList());
@@ -85,8 +87,8 @@ public class StudylogsResponse {
 
     private static List<TagResponse> toResponse(List<Tag> tags) {
         return tags.stream()
-                .map(TagResponse::of)
-                .collect(Collectors.toList());
+            .map(TagResponse::of)
+            .collect(Collectors.toList());
     }
 
 }

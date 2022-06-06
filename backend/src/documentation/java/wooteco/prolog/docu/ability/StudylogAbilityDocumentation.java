@@ -35,25 +35,30 @@ public class StudylogAbilityDocumentation extends NewDocumentation {
 
     @Test
     void 학습로그_역량_갱신() {
-        when(studylogAbilityService.updateStudylogAbilities(any(), any(), any())).thenReturn(ABILITY_RESPONSES);
+        when(studylogAbilityService.updateStudylogAbilities(any(), any(), any())).thenReturn(
+            ABILITY_RESPONSES);
 
         given.header(AUTHORIZATION, "Bearer " + accessToken)
             .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
             .body(STUDYLOG_ABILITY_REQUEST)
             .when().put("/studylogs/" + 1L + "/abilities")
-            .then().log().all().apply(document("abilities/studylog-update")).statusCode(HttpStatus.OK.value());
+            .then().log().all().apply(document("abilities/studylog-update"))
+            .statusCode(HttpStatus.OK.value());
     }
 
     @Test
     void 역량포함_모든_학습로그_조회() {
-        when(studylogAbilityService.findAbilityStudylogsByAbilityIds(anyString(), any(), any())).thenReturn(ABILITY_STUDYLOG_RESPONSES);
+        when(studylogAbilityService.findAbilityStudylogsByAbilityIds(anyString(), any(),
+            any())).thenReturn(ABILITY_STUDYLOG_RESPONSES);
 
         given
             .when().get("/members/username/ability-studylogs?abilityIds=1")
-            .then().log().all().apply(document("abilities/studylog-list")).statusCode(HttpStatus.OK.value());
+            .then().log().all().apply(document("abilities/studylog-list"))
+            .statusCode(HttpStatus.OK.value());
     }
 
-    private static final StudylogAbilityRequest STUDYLOG_ABILITY_REQUEST = new StudylogAbilityRequest(Lists.newArrayList(1L, 4L));
+    private static final StudylogAbilityRequest STUDYLOG_ABILITY_REQUEST = new StudylogAbilityRequest(
+        Lists.newArrayList(1L, 4L));
 
     private static final List<AbilityResponse> ABILITY_RESPONSES = Lists.newArrayList(
         new AbilityResponse(

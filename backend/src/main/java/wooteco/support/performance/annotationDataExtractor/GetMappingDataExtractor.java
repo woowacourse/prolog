@@ -16,10 +16,10 @@ public class GetMappingDataExtractor implements AnnotationDataExtractor {
     public RequestApi extractRequestApi(Method method, String classUrl) {
         final GetMapping getMapping = method.getAnnotation(GetMapping.class);
         final String api = Arrays.stream(getMapping.value())
-                .findAny()
-                .orElseGet(() ->
-                        Arrays.stream(getMapping.path()).findAny().orElse("")
-                );
+            .findAny()
+            .orElseGet(() ->
+                Arrays.stream(getMapping.path()).findAny().orElse("")
+            );
         return new RequestApi(classUrl + api, "GET");
     }
 }

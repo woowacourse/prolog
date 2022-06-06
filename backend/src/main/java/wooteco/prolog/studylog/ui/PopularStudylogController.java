@@ -29,8 +29,10 @@ public class PopularStudylogController {
     }
 
     @GetMapping("/popular")
-    public ResponseEntity<StudylogsResponse> showPopularStudylogs(@AuthMemberPrincipal LoginMember member, @PageableDefault Pageable pageable) {
-        StudylogsResponse studylogsResponse = popularStudylogService.findPopularStudylogs(pageable, member.getId(), member.isAnonymous());
+    public ResponseEntity<StudylogsResponse> showPopularStudylogs(
+        @AuthMemberPrincipal LoginMember member, @PageableDefault Pageable pageable) {
+        StudylogsResponse studylogsResponse = popularStudylogService.findPopularStudylogs(pageable,
+            member.getId(), member.isAnonymous());
         return ResponseEntity.ok(studylogsResponse);
     }
 }

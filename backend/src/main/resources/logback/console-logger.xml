@@ -4,7 +4,8 @@
     <encoder>
       <charset>utf8</charset>
       <Pattern>
-        %cyan(%d{yyyy-MM-dd HH:mm:ss}:%-4relative) %highlight(%-5level) %yellow([%C.%M]:%boldWhite(%L)]) %n    > %msg%n
+        %cyan(%d{yyyy-MM-dd HH:mm:ss}:%-4relative) %highlight(%-5level)
+        %yellow([%C.%M]:%boldWhite(%L)]) %n > %msg%n
       </Pattern>
     </encoder>
   </appender>
@@ -13,7 +14,7 @@
     <encoder>
       <charset>utf8</charset>
       <Pattern>
-        %green(    > %msg%n)
+        %green( > %msg%n)
       </Pattern>
     </encoder>
   </appender>

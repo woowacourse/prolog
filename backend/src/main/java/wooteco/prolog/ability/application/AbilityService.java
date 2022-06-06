@@ -57,7 +57,8 @@ public class AbilityService {
         return extractChildAbility(member, abilities, name, description, color, parentId);
     }
 
-    private Ability extractParentAbility(Member member, List<Ability> abilities, String name, String description, String color) {
+    private Ability extractParentAbility(Member member, List<Ability> abilities, String name,
+                                         String description, String color) {
         Ability parentAbility = Ability.parent(name, description, color, member);
 
         parentAbility.validateDuplicateName(abilities);
@@ -66,7 +67,8 @@ public class AbilityService {
         return parentAbility;
     }
 
-    private Ability extractChildAbility(Member member, List<Ability> abilities, String name, String description, String color, Long parentId) {
+    private Ability extractChildAbility(Member member, List<Ability> abilities, String name,
+                                        String description, String color, Long parentId) {
         Ability parentAbility = findAbilityById(parentId);
         Ability childAbility = Ability.child(name, description, color, parentAbility, member);
 
@@ -94,7 +96,8 @@ public class AbilityService {
 
     public List<HierarchyAbilityResponse> findParentAbilitiesByUsername(String username) {
         Member member = memberService.findByUsername(username);
-        List<Ability> parentAbilities = abilityRepository.findByMemberIdAndParentIsNull(member.getId());
+        List<Ability> parentAbilities = abilityRepository.findByMemberIdAndParentIsNull(
+            member.getId());
 
         return HierarchyAbilityResponse.listOf(parentAbilities);
     }
@@ -151,7 +154,8 @@ public class AbilityService {
     public Long createDefaultAbility(DefaultAbilityCreateRequest request) {
         if (request.hasParent()) {
             DefaultAbility parentDefaultAbility = findDefaultAbilityById(request.getParentId());
-            DefaultAbility childDefaultAbility = createChildDefaultAbility(request, parentDefaultAbility);
+            DefaultAbility childDefaultAbility = createChildDefaultAbility(request,
+                parentDefaultAbility);
             return childDefaultAbility.getId();
         }
 
@@ -159,7 +163,8 @@ public class AbilityService {
         return defaultAbility.getId();
     }
 
-    private DefaultAbility createChildDefaultAbility(DefaultAbilityCreateRequest request, DefaultAbility parentDefaultAbility) {
+    private DefaultAbility createChildDefaultAbility(DefaultAbilityCreateRequest request,
+                                                     DefaultAbility parentDefaultAbility) {
         return defaultAbilityRepository.save(new DefaultAbility(
             request.getName(),
             request.getDescription(),
@@ -201,7 +206,8 @@ public class AbilityService {
     }
 
     private List<DefaultAbility> findDefaultAbilitiesByTemplate(String templateType) {
-        List<DefaultAbility> defaultAbilities = defaultAbilityRepository.findByTemplateOrTemplate(COMMON_TYPE, templateType);
+        List<DefaultAbility> defaultAbilities = defaultAbilityRepository.findByTemplateOrTemplate(
+            COMMON_TYPE, templateType);
 
         if (defaultAbilities.isEmpty()) {
             throw new DefaultAbilityNotFoundException();
@@ -222,7 +228,8 @@ public class AbilityService {
         return abilityRepository.save(parentAbility);
     }
 
-    private Ability mapToChildAbility(Member member, DefaultAbility defaultAbility, Ability parentAbility) {
+    private Ability mapToChildAbility(Member member, DefaultAbility defaultAbility,
+                                      Ability parentAbility) {
         Ability childAbility = extractChildAbility(
             member,
             findByMemberId(member.getId()),

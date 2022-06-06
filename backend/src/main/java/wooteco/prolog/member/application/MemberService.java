@@ -13,13 +13,13 @@ import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
+import wooteco.prolog.member.application.dto.MembersResponse;
 import wooteco.prolog.member.application.dto.ProfileIntroRequest;
 import wooteco.prolog.member.application.dto.ProfileIntroResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.member.exception.MemberNotAllowedException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
-import wooteco.prolog.member.application.dto.MembersResponse;
 
 @Service
 @AllArgsConstructor
@@ -99,9 +99,9 @@ public class MemberService {
     public List<MemberResponse> findAllOrderByNickNameAsc() {
         final List<Member> members = memberRepository.findAll();
         return members.stream()
-                .sorted(Comparator.comparing(Member::getNickname))
-                .map(MemberResponse::of)
-                .collect(Collectors.toList());
+            .sorted(Comparator.comparing(Member::getNickname))
+            .map(MemberResponse::of)
+            .collect(Collectors.toList());
     }
 
     public MembersResponse findAll(Pageable pageable) {

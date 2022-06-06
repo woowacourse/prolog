@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.Mission;
-import wooteco.prolog.session.domain.repository.SessionRepository;
+import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.MissionRepository;
+import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
@@ -52,7 +52,8 @@ class StudylogTagRepositoryTest {
         Session session = sessionRepository.save(new Session("세션1"));
         Mission mission = missionRepository.save(new Mission("미션", session));
         Tag tag = tagRepository.save(new Tag("태그"));
-        Studylog studylog = studylogRepository.save(new Studylog(member, "제목", "내용", mission, Lists.emptyList()));
+        Studylog studylog = studylogRepository.save(
+            new Studylog(member, "제목", "내용", mission, Lists.emptyList()));
 
         // when
         StudylogTag studylogTag = new StudylogTag(studylog, tag);
@@ -85,7 +86,8 @@ class StudylogTagRepositoryTest {
         StudylogTag studylogTag3 = studylogTagRepository.save(new StudylogTag(studylog2, tag2));
 
         // when
-        List<StudylogTag> studylogTags = studylogTagRepository.findByTagIn(Arrays.asList(tag1, tag2));
+        List<StudylogTag> studylogTags = studylogTagRepository.findByTagIn(
+            Arrays.asList(tag1, tag2));
 
         // then
         assertThat(studylogTags).usingFieldByFieldElementComparator()
@@ -100,7 +102,8 @@ class StudylogTagRepositoryTest {
         Tag tag2 = tagRepository.save(new Tag("태그2"));
 
         // when
-        List<StudylogTag> studylogTags = studylogTagRepository.findByTagIn(Arrays.asList(tag1, tag2));
+        List<StudylogTag> studylogTags = studylogTagRepository.findByTagIn(
+            Arrays.asList(tag1, tag2));
 
         // then
         assertThat(studylogTags).isEmpty();

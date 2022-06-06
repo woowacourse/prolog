@@ -26,7 +26,8 @@ public class SessionController {
     @PostMapping
     public ResponseEntity<SessionResponse> create(@RequestBody SessionRequest sessionRequest) {
         SessionResponse sessionResponse = sessionService.create(sessionRequest);
-        return ResponseEntity.created(URI.create("/sessions/" + sessionResponse.getId())).body(sessionResponse);
+        return ResponseEntity.created(URI.create("/sessions/" + sessionResponse.getId()))
+            .body(sessionResponse);
     }
 
     @GetMapping
@@ -37,7 +38,8 @@ public class SessionController {
 
     @MemberOnly
     @GetMapping("/mine")
-    public ResponseEntity<List<SessionResponse>> findMySessions(@AuthMemberPrincipal LoginMember member) {
+    public ResponseEntity<List<SessionResponse>> findMySessions(
+        @AuthMemberPrincipal LoginMember member) {
         List<SessionResponse> responses = sessionService.findMySessions(member);
         return ResponseEntity.ok(responses);
     }

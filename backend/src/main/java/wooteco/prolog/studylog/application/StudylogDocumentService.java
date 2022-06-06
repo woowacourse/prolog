@@ -1,5 +1,9 @@
 package wooteco.prolog.studylog.application;
 
+import static java.util.stream.Collectors.toList;
+
+import java.time.LocalDate;
+import java.util.List;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
@@ -15,11 +19,6 @@ import wooteco.prolog.studylog.domain.StudylogDocumentQueryBuilder;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
-
 @Profile({"elastic", "dev", "prod"})
 @Service
 public class StudylogDocumentService extends AbstractStudylogDocumentService {
@@ -27,43 +26,45 @@ public class StudylogDocumentService extends AbstractStudylogDocumentService {
     private final ElasticsearchRestTemplate elasticsearchRestTemplate;
 
     public StudylogDocumentService(
-            StudylogDocumentRepository studylogDocumentRepository,
-            StudylogRepository studylogRepository,
-            ElasticsearchRestTemplate elasticsearchRestTemplate) {
+        StudylogDocumentRepository studylogDocumentRepository,
+        StudylogRepository studylogRepository,
+        ElasticsearchRestTemplate elasticsearchRestTemplate) {
         super(studylogDocumentRepository, studylogRepository);
         this.elasticsearchRestTemplate = elasticsearchRestTemplate;
     }
 
     @Override
     public StudylogDocumentResponse findBySearchKeyword(
-            String keyword,
-            List<Long> tags,
-            List<Long> missions,
-            List<Long> levels,
-            List<String> usernames,
-            LocalDate start,
-            LocalDate end,
-            Pageable pageable
+        String keyword,
+        List<Long> tags,
+        List<Long> missions,
+        List<Long> levels,
+        List<String> usernames,
+        LocalDate start,
+        LocalDate end,
+        Pageable pageable
     ) {
 
-        final Query query = StudylogDocumentQueryBuilder.makeQuery(preprocess(keyword), tags, missions, levels,
-                usernames, start, end, pageable);
+        final Query query = StudylogDocumentQueryBuilder.makeQuery(preprocess(keyword), tags,
+            missions, levels,
+            usernames, start, end, pageable);
 
         // Query 결과를 ES에서 조회한다.
         final SearchHits<StudylogDocument> searchHits
-                = elasticsearchRestTemplate.search(query, StudylogDocument.class, IndexCoordinates.of("studylog-document"));
+            = elasticsearchRestTemplate.search(query, StudylogDocument.class,
+            IndexCoordinates.of("studylog-document"));
 
         // 조회된 SearchHits를 페이징할 수 있는 SearchPage로 변경한다.
         final SearchPage<StudylogDocument> searchPages
-                = SearchHitSupport.searchPageFor(searchHits, query.getPageable());
+            = SearchHitSupport.searchPageFor(searchHits, query.getPageable());
 
         final List<Long> studylogIds = searchPages.stream()
-                .map(searchPage -> searchPage.getContent().getId())
-                .collect(toList());
+            .map(searchPage -> searchPage.getContent().getId())
+            .collect(toList());
 
         return StudylogDocumentResponse.of(studylogIds,
-                searchPages.getTotalElements(),
-                searchPages.getTotalPages(),
-                searchPages.getNumber());
+            searchPages.getTotalElements(),
+            searchPages.getTotalPages(),
+            searchPages.getNumber());
     }
 }

@@ -1,9 +1,10 @@
-CREATE TABLE studylog_temp (
-    id          BIGINT NOT NULL AUTO_INCREMENT,
-    member_id   BIGINT NOT NULL,
-    title       VARCHAR(255),
-    content     VARCHAR(255),
-    mission_id  BIGINT,
+CREATE TABLE studylog_temp
+(
+    id         BIGINT NOT NULL AUTO_INCREMENT,
+    member_id  BIGINT NOT NULL,
+    title      VARCHAR(255),
+    content    VARCHAR(255),
+    mission_id BIGINT,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 

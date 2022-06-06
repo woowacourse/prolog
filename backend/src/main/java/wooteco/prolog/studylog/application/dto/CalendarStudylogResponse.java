@@ -17,7 +17,8 @@ public class CalendarStudylogResponse {
     private LocalDateTime updatedAt;
 
     public static CalendarStudylogResponse of(Studylog studylog) {
-        return new CalendarStudylogResponse(studylog.getId(), studylog.getTitle(), studylog.getCreatedAt(), studylog
+        return new CalendarStudylogResponse(studylog.getId(), studylog.getTitle(),
+            studylog.getCreatedAt(), studylog
             .getUpdatedAt());
     }
 }

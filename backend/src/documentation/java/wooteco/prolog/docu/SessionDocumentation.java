@@ -33,7 +33,8 @@ public class SessionDocumentation extends NewDocumentation {
             .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
             .body(LEVEL_REQUEST)
             .when().post("/sessions")
-            .then().log().all().apply(document("sessions/create")).statusCode(HttpStatus.CREATED.value());
+            .then().log().all().apply(document("sessions/create"))
+            .statusCode(HttpStatus.CREATED.value());
 
     }
 

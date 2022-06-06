@@ -25,7 +25,6 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.ProfileIntroRequest;
 import wooteco.prolog.member.application.dto.ProfileIntroResponse;
-import wooteco.prolog.member.exception.MemberNotFoundException;
 import wooteco.prolog.studylog.application.BadgeService;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.BadgeResponse;
@@ -38,85 +37,85 @@ import wooteco.prolog.studylog.domain.Badge;
 @RequestMapping("/members")
 public class ProfileStudylogController {
 
-  private StudylogService studylogService;
-  private MemberService memberService;
-  private BadgeService badgeService;
+    private StudylogService studylogService;
+    private MemberService memberService;
+    private BadgeService badgeService;
 
-  @Deprecated
-  @GetMapping(value = "/{username}/posts", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<StudylogsResponse> findAllPostsOfMine(@PathVariable String username,
-                                                              StudylogFilterRequest studylogFilterRequest,
-                                                              @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
-    final StudylogsResponse studylogs = studylogService.findStudylogsWithoutKeyword(
-        studylogFilterRequest.levels,
-        studylogFilterRequest.missions,
-        studylogFilterRequest.tags,
-        Collections.singletonList(username),
-        new ArrayList<>(),
-        studylogFilterRequest.startDate,
-        studylogFilterRequest.endDate,
-        pageable,
-        null
-    );
-    return ResponseEntity.ok().body(studylogs);
-  }
+    @Deprecated
+    @GetMapping(value = "/{username}/posts", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StudylogsResponse> findAllPostsOfMine(@PathVariable String username,
+                                                                StudylogFilterRequest studylogFilterRequest,
+                                                                @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
+        final StudylogsResponse studylogs = studylogService.findStudylogsWithoutKeyword(
+            studylogFilterRequest.levels,
+            studylogFilterRequest.missions,
+            studylogFilterRequest.tags,
+            Collections.singletonList(username),
+            new ArrayList<>(),
+            studylogFilterRequest.startDate,
+            studylogFilterRequest.endDate,
+            pageable,
+            null
+        );
+        return ResponseEntity.ok().body(studylogs);
+    }
 
-  @GetMapping(value = "/{username}/studylogs", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<StudylogsResponse> findAllStudylogsOfMine(@PathVariable String username,
-                                                                  StudylogFilterRequest studylogFilterRequest,
-                                                                  @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
-    final StudylogsResponse studylogs = studylogService.findStudylogsWithoutKeyword(
-        studylogFilterRequest.levels,
-        studylogFilterRequest.missions,
-        studylogFilterRequest.tags,
-        Collections.singletonList(username),
-        new ArrayList<>(),
-        studylogFilterRequest.startDate,
-        studylogFilterRequest.endDate,
-        pageable,
-        null
-    );
-    return ResponseEntity.ok().body(studylogs);
-  }
+    @GetMapping(value = "/{username}/studylogs", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StudylogsResponse> findAllStudylogsOfMine(@PathVariable String username,
+                                                                    StudylogFilterRequest studylogFilterRequest,
+                                                                    @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
+        final StudylogsResponse studylogs = studylogService.findStudylogsWithoutKeyword(
+            studylogFilterRequest.levels,
+            studylogFilterRequest.missions,
+            studylogFilterRequest.tags,
+            Collections.singletonList(username),
+            new ArrayList<>(),
+            studylogFilterRequest.startDate,
+            studylogFilterRequest.endDate,
+            pageable,
+            null
+        );
+        return ResponseEntity.ok().body(studylogs);
+    }
 
-  @GetMapping(value = "/{username}/profile", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<MemberResponse> findMemberProfile(@PathVariable String username) {
-    MemberResponse member = memberService.findMemberResponseByUsername(username);
-    return ResponseEntity.ok().body(member);
-  }
+    @GetMapping(value = "/{username}/profile", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MemberResponse> findMemberProfile(@PathVariable String username) {
+        MemberResponse member = memberService.findMemberResponseByUsername(username);
+        return ResponseEntity.ok().body(member);
+    }
 
-  @GetMapping(value = "/{username}/profile-intro", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<ProfileIntroResponse> findMemberProfileIntro(
-      @PathVariable String username) {
-    ProfileIntroResponse profileIntro = memberService.findProfileIntro(username);
-    return ResponseEntity.ok().body(profileIntro);
-  }
+    @GetMapping(value = "/{username}/profile-intro", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProfileIntroResponse> findMemberProfileIntro(
+        @PathVariable String username) {
+        ProfileIntroResponse profileIntro = memberService.findProfileIntro(username);
+        return ResponseEntity.ok().body(profileIntro);
+    }
 
-  @PutMapping(value = "/{username}/profile-intro", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Void> findMemberProfileIntro(@AuthMemberPrincipal LoginMember member,
-                                                     @PathVariable String username,
-                                                     @RequestBody ProfileIntroRequest updateRequest) {
-    memberService.updateProfileIntro(member, username, updateRequest);
-    return ResponseEntity.ok().build();
-  }
+    @PutMapping(value = "/{username}/profile-intro", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> findMemberProfileIntro(@AuthMemberPrincipal LoginMember member,
+                                                       @PathVariable String username,
+                                                       @RequestBody ProfileIntroRequest updateRequest) {
+        memberService.updateProfileIntro(member, username, updateRequest);
+        return ResponseEntity.ok().build();
+    }
 
-  @GetMapping(value = "/{username}/badges", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<BadgesResponse> findMemberBadges(@PathVariable String username) {
-    List<Badge> badges = badgeService.findBadges(username, Arrays.asList(10L, 11L));
-    List<BadgeResponse> badgeResponses = badges.stream()
-        .map(Badge::getName)
-        .map(BadgeResponse::new)
-        .collect(Collectors.toList());
-    return ResponseEntity.ok(new BadgesResponse(badgeResponses));
-  }
+    @GetMapping(value = "/{username}/badges", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<BadgesResponse> findMemberBadges(@PathVariable String username) {
+        List<Badge> badges = badgeService.findBadges(username, Arrays.asList(10L, 11L));
+        List<BadgeResponse> badgeResponses = badges.stream()
+            .map(Badge::getName)
+            .map(BadgeResponse::new)
+            .collect(Collectors.toList());
+        return ResponseEntity.ok(new BadgesResponse(badgeResponses));
+    }
 
-  @Data
-  public static class StudylogFilterRequest {
+    @Data
+    public static class StudylogFilterRequest {
 
-    private List<Long> levels;
-    private List<Long> missions;
-    private List<Long> tags;
-    private LocalDate startDate;
-    private LocalDate endDate;
-  }
+        private List<Long> levels;
+        private List<Long> missions;
+        private List<Long> tags;
+        private LocalDate startDate;
+        private LocalDate endDate;
+    }
 }

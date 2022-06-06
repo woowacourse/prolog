@@ -56,7 +56,8 @@ public class Ability {
         this.color = color;
     }
 
-    private Ability(Long id, String name, String description, String color, Ability parent, Member member) {
+    private Ability(Long id, String name, String description, String color, Ability parent,
+                    Member member) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -70,15 +71,18 @@ public class Ability {
         return parent(null, name, description, color, member);
     }
 
-    public static Ability parent(Long id, String name, String description, String color, Member member) {
+    public static Ability parent(Long id, String name, String description, String color,
+                                 Member member) {
         return new Ability(id, name, description, color, null, member);
     }
 
-    public static Ability child(String name, String description, String color, Ability parent, Member member) {
+    public static Ability child(String name, String description, String color, Ability parent,
+                                Member member) {
         return child(null, name, description, color, parent, member);
     }
 
-    public static Ability child(Long id, String name, String description, String color, Ability parent, Member member) {
+    public static Ability child(Long id, String name, String description, String color,
+                                Ability parent, Member member) {
         Ability child = new Ability(id, name, description, color, parent, member);
         parent.addChildAbility(child);
 

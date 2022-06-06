@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberScrapResponse;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
 import wooteco.prolog.member.util.MemberFixture;
 import wooteco.prolog.member.util.MemberUtilCRUD;
 import wooteco.prolog.studylog.application.StudylogScrapService;
@@ -24,6 +23,7 @@ import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
 import wooteco.prolog.studylog.studylog.util.StudylogFixture;
 import wooteco.prolog.studylog.studylog.util.StudylogUtilCRUD;
 import wooteco.support.utils.IntegrationTest;
@@ -107,7 +107,8 @@ public class StudylogScrapServiceTest {
         //given
         //when
         //then
-        assertThatThrownBy(() -> studylogScrapService.unregisterScrap(member.getId(), studylog.getId()))
+        assertThatThrownBy(
+            () -> studylogScrapService.unregisterScrap(member.getId(), studylog.getId()))
             .isInstanceOf(StudylogScrapNotExistException.class);
     }
 }

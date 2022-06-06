@@ -33,7 +33,8 @@ public class ReportStudylog {
     @Embedded
     private ReportStudylogAbility studylogAbility;
 
-    public ReportStudylog(Long reportId, ReportAbility reportAbility, Studylog studylog, String originalAbilityName, String originalAbilityColor) {
+    public ReportStudylog(Long reportId, ReportAbility reportAbility, Studylog studylog,
+                          String originalAbilityName, String originalAbilityColor) {
         this.reportId = reportId;
         this.reportAbility = reportAbility;
         this.studylog = studylog;

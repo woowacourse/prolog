@@ -24,7 +24,8 @@ class DefaultAbilityRepositoryTest {
         );
 
         // when
-        List<DefaultAbility> defaultAbilities = defaultAbilityRepository.findByTemplateOrTemplate("common", "be");
+        List<DefaultAbility> defaultAbilities = defaultAbilityRepository.findByTemplateOrTemplate(
+            "common", "be");
 
         // then
         assertThat(defaultAbilities).containsExactly(defaultAbility);

@@ -31,26 +31,32 @@ public class StudylogAbilityController {
 
     @MemberOnly
     @PutMapping("/studylogs/{studylogId}/abilities")
-    public ResponseEntity<List<AbilityResponse>> updateStudylogAbilities(@AuthMemberPrincipal LoginMember member,
-                                                                         @PathVariable Long studylogId,
-                                                                         @RequestBody StudylogAbilityRequest studylogAbilityRequest) {
-        List<AbilityResponse> abilityResponses = studylogAbilityService.updateStudylogAbilities(member.getId(), studylogId, studylogAbilityRequest);
+    public ResponseEntity<List<AbilityResponse>> updateStudylogAbilities(
+        @AuthMemberPrincipal LoginMember member,
+        @PathVariable Long studylogId,
+        @RequestBody StudylogAbilityRequest studylogAbilityRequest) {
+        List<AbilityResponse> abilityResponses = studylogAbilityService.updateStudylogAbilities(
+            member.getId(), studylogId, studylogAbilityRequest);
         return ResponseEntity.ok().body(abilityResponses);
     }
 
     @GetMapping("/members/{username}/ability-studylogs")
-    public ResponseEntity<PageableResponse<AbilityStudylogResponse>> findAbilityStudylogs(@PathVariable String username,
-                                                                                          @RequestParam(required = false) List<Long> abilityIds,
-                                                                                          @PageableDefault(size = 5, direction = Direction.DESC, sort = "id") Pageable pageable) {
-        PageableResponse<AbilityStudylogResponse> studylogs = studylogAbilityService.findAbilityStudylogsByAbilityIds(username, abilityIds, pageable);
+    public ResponseEntity<PageableResponse<AbilityStudylogResponse>> findAbilityStudylogs(
+        @PathVariable String username,
+        @RequestParam(required = false) List<Long> abilityIds,
+        @PageableDefault(size = 5, direction = Direction.DESC, sort = "id") Pageable pageable) {
+        PageableResponse<AbilityStudylogResponse> studylogs = studylogAbilityService.findAbilityStudylogsByAbilityIds(
+            username, abilityIds, pageable);
         return ResponseEntity.ok().body(studylogs);
     }
 
     @GetMapping("/members/{username}/ability-studylogs/mapping-only")
-    public ResponseEntity<PageableResponse<AbilityStudylogResponse>> findAbilityStudylogsMappingOnly(@PathVariable String username,
-                                                                                                     @RequestParam(required = false) List<Long> abilityIds,
-                                                                                                     @PageableDefault(size = 5, direction = Direction.DESC, sort = "id") Pageable pageable) {
-        PageableResponse<AbilityStudylogResponse> studylogs = studylogAbilityService.findAbilityStudylogsMappingOnlyByAbilityIds(username, abilityIds, pageable);
+    public ResponseEntity<PageableResponse<AbilityStudylogResponse>> findAbilityStudylogsMappingOnly(
+        @PathVariable String username,
+        @RequestParam(required = false) List<Long> abilityIds,
+        @PageableDefault(size = 5, direction = Direction.DESC, sort = "id") Pageable pageable) {
+        PageableResponse<AbilityStudylogResponse> studylogs = studylogAbilityService.findAbilityStudylogsMappingOnlyByAbilityIds(
+            username, abilityIds, pageable);
         return ResponseEntity.ok().body(studylogs);
     }
 }

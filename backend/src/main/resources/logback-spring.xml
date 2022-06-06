@@ -63,7 +63,8 @@
       <appender-ref ref="console-db-logger"/>
     </logger>
 
-    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="TRACE" additivity="false">
+    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="TRACE"
+      additivity="false">
       <appender-ref ref="console-db-logger"/>
     </logger>
   </springProfile>

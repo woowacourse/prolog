@@ -23,7 +23,8 @@ public class StudylogSpecification {
             }
 
             for (String keyword : keywords) {
-                predicates.add(builder.like(builder.lower(root.get(key).get(key)), "%" + keyword + "%"));
+                predicates.add(
+                    builder.like(builder.lower(root.get(key).get(key)), "%" + keyword + "%"));
             }
 
             return builder.or(predicates.toArray(new Predicate[0]));
@@ -56,7 +57,8 @@ public class StudylogSpecification {
                 return builder.and();
             }
 
-            return root.join("studylogTags", JoinType.LEFT).join("values", JoinType.LEFT).get("tag").in(values);
+            return root.join("studylogTags", JoinType.LEFT).join("values", JoinType.LEFT).get("tag")
+                .in(values);
         };
     }
 

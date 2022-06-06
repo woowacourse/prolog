@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.Mission;
-import wooteco.prolog.session.domain.repository.SessionRepository;
+import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.MissionRepository;
+import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
@@ -27,7 +27,7 @@ import wooteco.support.utils.RepositoryTest;
 class StudylogTagRepositoryTest {
 
     private static final Member 웨지 = new Member("sihyung92", "웨지", Role.CREW, 2222L,
-                                                "https://avatars.githubusercontent.com/u/51393021?v=4");
+        "https://avatars.githubusercontent.com/u/51393021?v=4");
 
     @Autowired
     private StudylogTagRepository studylogTagRepository;

@@ -14,6 +14,7 @@ public class StudylogFixture {
     }
 
     public static class Builder {
+
         private Member member;
         private String title;
         private String content;

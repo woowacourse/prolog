@@ -24,7 +24,8 @@ public class AbilityStudylogResponse {
             .collect(Collectors.toList());
     }
 
-    public static AbilityStudylogResponse of(Studylog studylog, List<StudylogAbility> studylogAbilities) {
+    public static AbilityStudylogResponse of(Studylog studylog,
+                                             List<StudylogAbility> studylogAbilities) {
         StudylogResponse studylogResponse = StudylogResponse.of(studylog);
         List<AbilityResponse> abilityResponses = studylogAbilities.stream()
             .map(it -> AbilityResponse.of(it.getAbility()))
@@ -33,13 +34,16 @@ public class AbilityStudylogResponse {
         return new AbilityStudylogResponse(studylogResponse, abilityResponses);
     }
 
-    public static List<AbilityStudylogResponse> listOf(List<Studylog> studylogs, List<StudylogAbility> studylogAbilities) {
+    public static List<AbilityStudylogResponse> listOf(List<Studylog> studylogs,
+                                                       List<StudylogAbility> studylogAbilities) {
         return studylogs.stream()
-            .map(studylog -> new AbilityStudylogResponse(StudylogResponse.of(studylog), AbilityResponse.listOf(extractAbilitiesOfStudylog(studylogAbilities, studylog))))
+            .map(studylog -> new AbilityStudylogResponse(StudylogResponse.of(studylog),
+                AbilityResponse.listOf(extractAbilitiesOfStudylog(studylogAbilities, studylog))))
             .collect(Collectors.toList());
     }
 
-    private static List<Ability> extractAbilitiesOfStudylog(List<StudylogAbility> studylogAbilities, Studylog studylog) {
+    private static List<Ability> extractAbilitiesOfStudylog(List<StudylogAbility> studylogAbilities,
+                                                            Studylog studylog) {
         return studylogAbilities.stream()
             .filter(it -> it.getStudylog().equals(studylog))
             .map(StudylogAbility::getAbility)

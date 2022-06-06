@@ -1,1 +1,2 @@
-ALTER TABLE studylog ADD views INT DEFAULT 0;
+ALTER TABLE studylog
+    ADD views INT DEFAULT 0;

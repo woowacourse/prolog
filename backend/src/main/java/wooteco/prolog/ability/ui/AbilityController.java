@@ -30,25 +30,30 @@ public class AbilityController {
 
     @MemberOnly
     @PostMapping("/abilities/templates/{template}")
-    public ResponseEntity<Void> applyDefaultAbilities(@AuthMemberPrincipal LoginMember member, @PathVariable String template) {
+    public ResponseEntity<Void> applyDefaultAbilities(@AuthMemberPrincipal LoginMember member,
+                                                      @PathVariable String template) {
         abilityService.applyDefaultAbilities(member.getId(), template);
         return ResponseEntity.ok().build();
     }
 
     @MemberOnly
     @PostMapping("/abilities")
-    public ResponseEntity<AbilityResponse> createAbility(@AuthMemberPrincipal LoginMember member, @RequestBody AbilityCreateRequest abilityCreateRequest) {
-        AbilityResponse abilityResponse = abilityService.createAbility(member.getId(), abilityCreateRequest);
+    public ResponseEntity<AbilityResponse> createAbility(@AuthMemberPrincipal LoginMember member,
+                                                         @RequestBody AbilityCreateRequest abilityCreateRequest) {
+        AbilityResponse abilityResponse = abilityService.createAbility(member.getId(),
+            abilityCreateRequest);
         return ResponseEntity.ok().body(abilityResponse);
     }
 
     @GetMapping("/members/{username}/abilities")
-    public ResponseEntity<List<HierarchyAbilityResponse>> findAbilitiesByUsername(@PathVariable String username) {
+    public ResponseEntity<List<HierarchyAbilityResponse>> findAbilitiesByUsername(
+        @PathVariable String username) {
         return ResponseEntity.ok(abilityService.findParentAbilitiesByUsername(username));
     }
 
     @GetMapping("/members/{username}/abilities/flat")
-    public ResponseEntity<List<AbilityResponse>> findParentAbilitiesByUsername(@PathVariable String username) {
+    public ResponseEntity<List<AbilityResponse>> findParentAbilitiesByUsername(
+        @PathVariable String username) {
         return ResponseEntity.ok(abilityService.findFlatAbilitiesByMember(username));
     }
 
@@ -63,14 +68,16 @@ public class AbilityController {
 
     @MemberOnly
     @DeleteMapping("/abilities/{abilityId}")
-    public ResponseEntity<Void> deleteAbility(@AuthMemberPrincipal LoginMember member, @PathVariable Long abilityId) {
+    public ResponseEntity<Void> deleteAbility(@AuthMemberPrincipal LoginMember member,
+                                              @PathVariable Long abilityId) {
         abilityService.deleteAbility(member.getId(), abilityId);
         return ResponseEntity.ok().build();
     }
 
     @Deprecated
     @PostMapping("/abilities/default")
-    public ResponseEntity<Void> createDefaultAbilities(@RequestBody DefaultAbilityCreateRequest request) {
+    public ResponseEntity<Void> createDefaultAbilities(
+        @RequestBody DefaultAbilityCreateRequest request) {
         abilityService.createDefaultAbility(request);
 
         return ResponseEntity.ok().build();

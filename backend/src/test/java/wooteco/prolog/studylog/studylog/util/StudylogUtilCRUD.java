@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import wooteco.prolog.login.ui.LoginMember;
-import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.util.MemberFixture;
 import wooteco.prolog.member.util.MemberUtilCRUD;
@@ -29,25 +27,30 @@ public class StudylogUtilCRUD {
             studylogFixture.asRequest()));
     }
 
-    public void 등록(MemberFixture memberFixture, String title, String content, Long missionId, String ... tagNames) {
+    public void 등록(MemberFixture memberFixture, String title, String content, Long missionId,
+                   String... tagNames) {
         final List<TagRequest> tagRequests = Arrays.stream(tagNames)
-                .map(TagRequest::new)
-                .collect(Collectors.toList());
+            .map(TagRequest::new)
+            .collect(Collectors.toList());
 
-        studylogService.insertStudylogs(memberUtilCRUD.등록(memberFixture).getId(), Collections.singletonList(new StudylogRequest(title, content, missionId, tagRequests)));
+        studylogService.insertStudylogs(memberUtilCRUD.등록(memberFixture).getId(),
+            Collections.singletonList(new StudylogRequest(title, content, missionId, tagRequests)));
     }
 
-    public void 등록(StudylogFixture studylogFixture, MemberFixture memberFixture, String ... tagNames) {
+    public void 등록(StudylogFixture studylogFixture, MemberFixture memberFixture,
+                   String... tagNames) {
         final List<TagRequest> tagRequests = Arrays.stream(tagNames)
-                .map(TagRequest::new)
-                .collect(Collectors.toList());
+            .map(TagRequest::new)
+            .collect(Collectors.toList());
 
-        studylogService.insertStudylogs(memberUtilCRUD.등록(memberFixture).getId(), Collections.singletonList(
-            studylogFixture.asRequestWithTags(tagRequests)));
+        studylogService.insertStudylogs(memberUtilCRUD.등록(memberFixture).getId(),
+            Collections.singletonList(
+                studylogFixture.asRequestWithTags(tagRequests)));
     }
 
     public void 다중등록(StudylogFixture studylogFixture, MemberFixture memberFixture) {
-        studylogService.insertStudylogs(memberUtilCRUD.등록(memberFixture).getId(), Collections.singletonList(
-            studylogFixture.asRequest()));
+        studylogService.insertStudylogs(memberUtilCRUD.등록(memberFixture).getId(),
+            Collections.singletonList(
+                studylogFixture.asRequest()));
     }
 }

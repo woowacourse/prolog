@@ -59,7 +59,8 @@ public class StudylogResponse {
         );
     }
 
-    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, boolean liked) {
+    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read,
+                                      boolean liked) {
         List<StudylogTag> studylogTags = studylog.getStudylogTags();
         List<TagResponse> tagResponses = toTagResponses(studylogTags);
 
@@ -90,7 +91,8 @@ public class StudylogResponse {
         return of(studylog, false, false, memberId);
     }
 
-    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, Long memberId) {
+    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read,
+                                      Long memberId) {
         return StudylogResponse.of(studylog, scrap, read, studylog.likedByMember(memberId));
     }
 
@@ -101,7 +103,8 @@ public class StudylogResponse {
             .collect(toList());
     }
 
-    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, boolean liked, Session session, Mission mission) {
+    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, boolean liked,
+                                      Session session, Mission mission) {
         List<StudylogTag> studylogTags = studylog.getStudylogTags();
         List<TagResponse> tagResponses = toTagResponses(studylogTags);
 

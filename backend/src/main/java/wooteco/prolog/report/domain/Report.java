@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,7 +29,8 @@ public class Report {
 
     private Long memberId;
 
-    public Report(String title, String description, Long memberId, LocalDate startDate, LocalDate endDate) {
+    public Report(String title, String description, Long memberId, LocalDate startDate,
+                  LocalDate endDate) {
         this.title = title;
         this.description = description;
         this.memberId = memberId;

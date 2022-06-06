@@ -13,14 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.MissionService;
-import wooteco.prolog.studylog.application.StudylogService;
-import wooteco.prolog.studylog.application.StudylogTagService;
-import wooteco.prolog.session.application.dto.SessionRequest;
-import wooteco.prolog.session.application.dto.SessionResponse;
+import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
+import wooteco.prolog.studylog.application.StudylogService;
+import wooteco.prolog.studylog.application.StudylogTagService;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
@@ -48,7 +48,8 @@ class StudylogTagServiceTest {
     @BeforeEach
     void setUp() {
         SessionResponse session = sessionService.create(new SessionRequest("세션1"));
-        MissionResponse mission = missionService.create(new MissionRequest("미션 이름", session.getId()));
+        MissionResponse mission = missionService.create(
+            new MissionRequest("미션 이름", session.getId()));
 
         this.member = memberService
             .findOrCreateMember(new GithubProfileResponse("이름", "별명", "1", "image"));

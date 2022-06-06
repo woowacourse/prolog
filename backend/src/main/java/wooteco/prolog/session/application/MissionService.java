@@ -31,7 +31,8 @@ public class MissionService {
         validateName(missionRequest.getName());
 
         Session session = sessionService.findById(missionRequest.getSessionId());
-        return MissionResponse.of(missionRepository.save(new Mission(missionRequest.getName(), session)));
+        return MissionResponse.of(
+            missionRepository.save(new Mission(missionRequest.getName(), session)));
     }
 
     private void validateName(String name) {

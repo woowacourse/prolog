@@ -12,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.Mission;
-import wooteco.prolog.session.domain.repository.SessionRepository;
+import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.MissionRepository;
+import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogRead;
 import wooteco.prolog.studylog.domain.repository.StudylogReadRepository;
@@ -67,8 +67,10 @@ class StudylogReadRepositoryTest {
         StudylogRead studylogRead = new StudylogRead(bada, studylog);
         //when
         studylogReadRepository.save(studylogRead);
-        boolean expectTrue = studylogReadRepository.existsByMemberIdAndStudylogId(bada.getId(), studylog.getId());
-        boolean expectFalse = studylogReadRepository.existsByMemberIdAndStudylogId(member.getId(), studylog.getId());
+        boolean expectTrue = studylogReadRepository.existsByMemberIdAndStudylogId(bada.getId(),
+            studylog.getId());
+        boolean expectFalse = studylogReadRepository.existsByMemberIdAndStudylogId(member.getId(),
+            studylog.getId());
         //then
         assertThat(expectTrue).isTrue();
         assertThat(expectFalse).isFalse();

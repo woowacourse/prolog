@@ -47,7 +47,8 @@ public class ReportDocumentation extends NewDocumentation {
             .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
             .body(REPORT_REQUEST)
             .when().post("/reports")
-            .then().log().all().apply(document("reports/create")).statusCode(HttpStatus.CREATED.value());
+            .then().log().all().apply(document("reports/create"))
+            .statusCode(HttpStatus.CREATED.value());
     }
 
     @Test
@@ -86,7 +87,8 @@ public class ReportDocumentation extends NewDocumentation {
 
         given.header(AUTHORIZATION, "Bearer " + accessToken)
             .when().delete("/reports/1")
-            .then().log().all().apply(document("reports/delete")).statusCode(HttpStatus.NO_CONTENT.value());
+            .then().log().all().apply(document("reports/delete"))
+            .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
     private static final ReportRequest REPORT_REQUEST = new ReportRequest(

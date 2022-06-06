@@ -7,9 +7,9 @@ CREATE TABLE session
 
 CREATE TABLE session_member
 (
-    id          BIGINT NOT NULL AUTO_INCREMENT,
-    member_id   BIGINT NOT NULL,
-    session_id  BIGINT NOT NULL,
+    id         BIGINT NOT NULL AUTO_INCREMENT,
+    member_id  BIGINT NOT NULL,
+    session_id BIGINT NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 

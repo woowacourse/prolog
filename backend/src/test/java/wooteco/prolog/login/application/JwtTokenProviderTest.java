@@ -16,6 +16,7 @@ import wooteco.prolog.member.domain.Role;
 @ActiveProfiles("test")
 @SpringBootTest
 class JwtTokenProviderTest {
+
     @Value("${security.jwt.token.secret-key}")
     private String secretKey;
 

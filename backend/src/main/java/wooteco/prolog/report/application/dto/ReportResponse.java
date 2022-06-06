@@ -23,15 +23,20 @@ public class ReportResponse {
     private List<ReportAbilityResponse> abilities;
     private List<ReportStudylogResponse> studylogs;
 
-    public static ReportResponse of(Report report, List<ReportAbility> reportAbilities, List<ReportStudylog> reportStudylogs) {
-        List<ReportAbilityResponse> abilityResponses = ReportAbilityResponse.listOf(reportAbilities);
-        List<ReportStudylogResponse> studylogResponses = ReportStudylogResponse.listOf(reportStudylogs);
+    public static ReportResponse of(Report report, List<ReportAbility> reportAbilities,
+                                    List<ReportStudylog> reportStudylogs) {
+        List<ReportAbilityResponse> abilityResponses = ReportAbilityResponse.listOf(
+            reportAbilities);
+        List<ReportStudylogResponse> studylogResponses = ReportStudylogResponse.listOf(
+            reportStudylogs);
 
-        return new ReportResponse(report.getId(), report.getTitle(), report.getDescription(), report.getStartDate(), report.getEndDate(), abilityResponses, studylogResponses);
+        return new ReportResponse(report.getId(), report.getTitle(), report.getDescription(),
+            report.getStartDate(), report.getEndDate(), abilityResponses, studylogResponses);
     }
 
     public static ReportResponse of(Report report) {
-        return new ReportResponse(report.getId(), report.getTitle(), report.getDescription(), report.getStartDate(), report.getEndDate(), Collections.emptyList(),
+        return new ReportResponse(report.getId(), report.getTitle(), report.getDescription(),
+            report.getStartDate(), report.getEndDate(), Collections.emptyList(),
             Collections.emptyList());
     }
 

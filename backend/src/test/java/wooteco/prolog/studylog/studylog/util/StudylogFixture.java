@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.MissionService;
-import wooteco.prolog.session.application.dto.SessionRequest;
-import wooteco.prolog.session.application.dto.SessionResponse;
+import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.domain.Tags;
@@ -34,7 +34,8 @@ public enum StudylogFixture {
         @PostConstruct
         void init() {
             allOf(StudylogFixture.class)
-                .forEach(container -> container.injectMissionService(missionService, sessionService));
+                .forEach(
+                    container -> container.injectMissionService(missionService, sessionService));
         }
     }
 
@@ -46,7 +47,8 @@ public enum StudylogFixture {
     private MissionService missionService;
     private SessionService sessionService;
 
-    StudylogFixture(String title, String content, String missionName, String sessionName, Tags tags) {
+    StudylogFixture(String title, String content, String missionName, String sessionName,
+                    Tags tags) {
         this.title = title;
         this.content = content;
         this.missionName = missionName;
@@ -54,7 +56,8 @@ public enum StudylogFixture {
         this.tags = tags;
     }
 
-    private void injectMissionService(MissionService missionService, SessionService sessionService) {
+    private void injectMissionService(MissionService missionService,
+                                      SessionService sessionService) {
         this.missionService = missionService;
         this.sessionService = sessionService;
     }

@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.ability.domain.Ability;
+import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
 import wooteco.prolog.studylog.exception.AbilityNameDuplicateException;
 import wooteco.prolog.studylog.exception.AbilityParentColorDuplicateException;
@@ -38,7 +37,7 @@ class AbilityTest {
     private static Stream<Arguments> parametersForIsParent() {
         Member member = mock(Member.class);
         Ability parent = Ability.parent(1L, "Language", "discription", "red", member);
-        
+
         return Stream.of(
             Arguments.of(parent, true),
             Arguments.of(Ability.child(2L, "Language", "discription", "red", parent, member), false)
@@ -72,7 +71,8 @@ class AbilityTest {
         Ability ability2 = Ability.parent(2L, "역량", "아따따뚜겐", "초록색", member);
 
         // when, then
-        assertThatThrownBy(() -> ability1.validateDuplicateName(Collections.singletonList(ability2)))
+        assertThatThrownBy(
+            () -> ability1.validateDuplicateName(Collections.singletonList(ability2)))
             .isExactlyInstanceOf(AbilityNameDuplicateException.class);
     }
 
@@ -86,7 +86,8 @@ class AbilityTest {
         Ability ability2 = Ability.parent(2L, "역량2", "아따따뚜겐", color, member);
 
         // when, then
-        assertThatThrownBy(() -> ability1.validateDuplicateColor(Collections.singletonList(ability2)))
+        assertThatThrownBy(
+            () -> ability1.validateDuplicateColor(Collections.singletonList(ability2)))
             .isExactlyInstanceOf(AbilityParentColorDuplicateException.class);
     }
 
@@ -96,10 +97,12 @@ class AbilityTest {
         // given
         Ability parentAbility = Ability.parent(1L, "역량1", "너잘의 3인칭 역량", "색상1", member);
         Ability anotherParentAbility = Ability.parent(2L, "역량2", "아따따뚜겐", "색상2", member);
-        Ability childAbility = Ability.child(3L, "역량1의 자식역량", "너잘의 3인칭 역량", "색상3", parentAbility, member);
+        Ability childAbility = Ability.child(3L, "역량1의 자식역량", "너잘의 3인칭 역량", "색상3", parentAbility,
+            member);
 
         // when, then
-        assertThatThrownBy(() -> childAbility.validateColorWithParent(Collections.singletonList(anotherParentAbility), parentAbility))
+        assertThatThrownBy(() -> childAbility.validateColorWithParent(
+            Collections.singletonList(anotherParentAbility), parentAbility))
             .isExactlyInstanceOf(AbilityParentChildColorDifferentException.class);
     }
 }

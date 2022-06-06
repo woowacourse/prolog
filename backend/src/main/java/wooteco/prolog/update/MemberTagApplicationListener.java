@@ -35,7 +35,8 @@ public class MemberTagApplicationListener implements ApplicationListener<Context
         }
 
         updateMemberTags();
-        updatedContentsRepository.save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
+        updatedContentsRepository.save(
+            new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
     }
 
     private void updateMemberTags() {
@@ -43,7 +44,8 @@ public class MemberTagApplicationListener implements ApplicationListener<Context
         for (StudylogTag studylogTag : studylogTags) {
             final Tag tag = studylogTag.getTag();
             final Member member = studylogTag.getStudylog().getMember();
-            memberTagRepository.register(new MemberTags(Collections.singletonList(new MemberTag(member, tag))));
+            memberTagRepository.register(
+                new MemberTags(Collections.singletonList(new MemberTag(member, tag))));
         }
     }
 }

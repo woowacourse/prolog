@@ -1,8 +1,9 @@
-create table studylog_read (
-                                id bigint not null auto_increment,
-                                member_id bigint not null,
-                                studylog_id bigint not null,
-                                primary key (id)
+create table studylog_read
+(
+    id          bigint not null auto_increment,
+    member_id   bigint not null,
+    studylog_id bigint not null,
+    primary key (id)
 ) engine=InnoDB;
 
 alter table studylog_read

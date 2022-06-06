@@ -18,21 +18,28 @@ public class StudylogAbilityStepDefinitions extends AcceptanceSteps {
 
     @When("{string} 학습로그에 {string} 역량을 맵핑하(면)(고)")
     public void 역량에학습로그를맵핑하면(String studylogName, String abilityName) {
-        HierarchyAbilityResponse ability = (HierarchyAbilityResponse) context.storage.get(abilityName);
+        HierarchyAbilityResponse ability = (HierarchyAbilityResponse) context.storage.get(
+            abilityName);
         StudylogResponse studylog = (StudylogResponse) context.storage.get(studylogName);
 
-        StudylogAbilityRequest requestBody = new StudylogAbilityRequest(Lists.newArrayList(ability.getId()));
-        context.invokeHttpPutWithToken("/studylogs/" + studylog.getId() + "/abilities", requestBody);
+        StudylogAbilityRequest requestBody = new StudylogAbilityRequest(
+            Lists.newArrayList(ability.getId()));
+        context.invokeHttpPutWithToken("/studylogs/" + studylog.getId() + "/abilities",
+            requestBody);
     }
 
     @When("{string} 학습로그에 {string}, {string} 역량을 맵핑하(면)(고)")
     public void 학습로그에역량을맵핑하면(String studylogName, String abilityName1, String abilityName2) {
-        HierarchyAbilityResponse ability1 = (HierarchyAbilityResponse) context.storage.get(abilityName1);
-        HierarchyAbilityResponse ability2 = (HierarchyAbilityResponse) context.storage.get(abilityName2);
+        HierarchyAbilityResponse ability1 = (HierarchyAbilityResponse) context.storage.get(
+            abilityName1);
+        HierarchyAbilityResponse ability2 = (HierarchyAbilityResponse) context.storage.get(
+            abilityName2);
         StudylogResponse studylog = (StudylogResponse) context.storage.get(studylogName);
 
-        StudylogAbilityRequest requestBody = new StudylogAbilityRequest(Lists.newArrayList(ability1.getId(), ability2.getId()));
-        context.invokeHttpPutWithToken("/studylogs/" + studylog.getId() + "/abilities", requestBody);
+        StudylogAbilityRequest requestBody = new StudylogAbilityRequest(
+            Lists.newArrayList(ability1.getId(), ability2.getId()));
+        context.invokeHttpPutWithToken("/studylogs/" + studylog.getId() + "/abilities",
+            requestBody);
     }
 
     @Then("{string} 학습로그에 {string} 역량이 맵핑된다")
@@ -63,7 +70,8 @@ public class StudylogAbilityStepDefinitions extends AcceptanceSteps {
 
     @Then("{string} 학습로그가 조회된다")
     public void 학습로그가조회된다(String studylogName) {
-        List<AbilityStudylogResponse> abilityStudylogResponses = context.response.jsonPath().getList("data", AbilityStudylogResponse.class);
+        List<AbilityStudylogResponse> abilityStudylogResponses = context.response.jsonPath()
+            .getList("data", AbilityStudylogResponse.class);
         boolean isExist = abilityStudylogResponses.stream()
             .filter(it -> it.getStudylog().getTitle().equals(studylogName))
             .findAny()
@@ -74,7 +82,8 @@ public class StudylogAbilityStepDefinitions extends AcceptanceSteps {
 
     @Then("{string}, {string} 역량이 맵핑된 {string} 학습로그가 조회된다")
     public void 역량이맵핑된학습로그가조회된다(String abilityName1, String abilityName2, String studylogName) {
-        List<AbilityStudylogResponse> abilityStudylogResponses = context.response.jsonPath().getList("data", AbilityStudylogResponse.class);
+        List<AbilityStudylogResponse> abilityStudylogResponses = context.response.jsonPath()
+            .getList("data", AbilityStudylogResponse.class);
         Optional<AbilityStudylogResponse> abilityStudylog = abilityStudylogResponses.stream()
             .filter(it -> it.getStudylog().getTitle().equals(studylogName))
             .findAny();
@@ -88,7 +97,8 @@ public class StudylogAbilityStepDefinitions extends AcceptanceSteps {
 
     @Then("{string}, {string} 역량만 맵핑된 {string} 학습로그가 조회된다")
     public void 역량만맵핑된학습로그가조회된다(String abilityName1, String abilityName2, String studylogName) {
-        List<AbilityStudylogResponse> abilityStudylogResponses = context.response.jsonPath().getList("data", AbilityStudylogResponse.class);
+        List<AbilityStudylogResponse> abilityStudylogResponses = context.response.jsonPath()
+            .getList("data", AbilityStudylogResponse.class);
         Optional<AbilityStudylogResponse> abilityStudylog = abilityStudylogResponses.stream()
             .filter(it -> it.getStudylog().getTitle().equals(studylogName))
             .findAny();
@@ -103,7 +113,8 @@ public class StudylogAbilityStepDefinitions extends AcceptanceSteps {
 
     @Then("역량이 맵핑되지 않은 {string} 학습로그가 조회된다")
     public void 역량이맵핑되지않은학습로그가조회된다(String studylogName) {
-        List<AbilityStudylogResponse> abilityStudylogResponses = context.response.jsonPath().getList("data", AbilityStudylogResponse.class);
+        List<AbilityStudylogResponse> abilityStudylogResponses = context.response.jsonPath()
+            .getList("data", AbilityStudylogResponse.class);
         Optional<AbilityStudylogResponse> abilityStudylog = abilityStudylogResponses.stream()
             .filter(it -> it.getStudylog().getTitle().equals(studylogName))
             .findAny();

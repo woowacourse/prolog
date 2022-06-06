@@ -9,14 +9,14 @@ import wooteco.prolog.member.application.dto.MemberScrapResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.member.exception.MemberNotFoundException;
-import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
-import wooteco.prolog.studylog.domain.StudylogScrap;
-import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
-import wooteco.prolog.studylog.exception.StudylogScrapAlreadyRegisteredException;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.domain.Studylog;
+import wooteco.prolog.studylog.domain.StudylogScrap;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
+import wooteco.prolog.studylog.exception.StudylogScrapAlreadyRegisteredException;
+import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
 
 @RequiredArgsConstructor
 @Service

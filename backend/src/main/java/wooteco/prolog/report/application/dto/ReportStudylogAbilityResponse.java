@@ -13,7 +13,8 @@ public class ReportStudylogAbilityResponse {
     private String name;
     private String color;
 
-    public static List<ReportStudylogAbilityResponse> listOf(List<ReportStudylogAbility> reportStudylogAbilities) {
+    public static List<ReportStudylogAbilityResponse> listOf(
+        List<ReportStudylogAbility> reportStudylogAbilities) {
         return reportStudylogAbilities.stream()
             .map(ReportStudylogAbilityResponse::of)
             .collect(Collectors.toList());

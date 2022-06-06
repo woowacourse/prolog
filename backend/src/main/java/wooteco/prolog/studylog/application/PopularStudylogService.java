@@ -40,7 +40,8 @@ public class PopularStudylogService {
         popularStudylogRepository.saveAll(popularStudylogs);
     }
 
-    public StudylogsResponse findPopularStudylogs(Pageable pageable, Long memberId, boolean isAnonymousMember) {
+    public StudylogsResponse findPopularStudylogs(Pageable pageable, Long memberId,
+                                                  boolean isAnonymousMember) {
         List<Studylog> studylogs = getSortedPopularStudyLogs();
         PageImpl<Studylog> page = new PageImpl<>(studylogs, pageable, studylogs.size());
         StudylogsResponse studylogsResponse = StudylogsResponse.of(page, memberId);
@@ -82,7 +83,8 @@ public class PopularStudylogService {
 
         while (true) {
             decreaseDays += A_WEEK;
-            List<Studylog> studylogs = studylogRepository.findByPastDays(dateTime.minusDays(decreaseDays));
+            List<Studylog> studylogs = studylogRepository.findByPastDays(
+                dateTime.minusDays(decreaseDays));
 
             if (studylogs.size() >= pageable.getPageSize()) {
                 return studylogs.stream()

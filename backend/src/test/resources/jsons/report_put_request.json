@@ -7,20 +7,22 @@
       {
         "id": 1,
         "weight": 2,
-        "isPresent":true
+        "isPresent": true
       },
       {
         "id": 3,
         "weight": 1,
-        "isPresent":true
+        "isPresent": true
       }
     ]
   },
   "studylogs": [
     {
-      "id":1,
-      "abilities": [1]
+      "id": 1,
+      "abilities": [
+        1
+      ]
     }
   ],
-  "represent":false
+  "represent": false
 }

@@ -20,7 +20,7 @@ spring:
         format_sql: true
         use_sql_comment: false
   flyway:
-      enabled: false
+    enabled: false
 
 github:
   client:
@@ -40,5 +40,5 @@ management:
       enabled: false
 
 application:
-#  link: http://localhost:8080/
+  #  link: http://localhost:8080/
   url: http://localhost:8080

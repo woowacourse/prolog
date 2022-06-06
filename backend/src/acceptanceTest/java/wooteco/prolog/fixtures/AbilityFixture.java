@@ -2,13 +2,13 @@ package wooteco.prolog.fixtures;
 
 import java.util.Arrays;
 import java.util.Objects;
-import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.ability.domain.Ability;
+import wooteco.prolog.member.domain.Member;
 
 public enum AbilityFixture {
     PROGRAMMING("프로그래밍", "프로그래밍 관련입니다.", "red"),
     LANGUAGE("언어", null, "red"),
-    FRAMEWORK( "프레임워크", null, "red"),
+    FRAMEWORK("프레임워크", null, "red"),
     DESIGN("디자인", "디자인 관련입니다.", "blue"),
     TDD("TDD", null, "blue"),
     ATDD("ATDD", null, "blue"),
@@ -34,7 +34,7 @@ public enum AbilityFixture {
     }
 
     public Ability toAbility(Long id, Ability parent, Member member) {
-        if(!Objects.isNull(parent)) {
+        if (!Objects.isNull(parent)) {
             return Ability.child(id, name, description, color, parent, member);
         }
         return Ability.parent(id, name, description, color, member);
@@ -42,12 +42,12 @@ public enum AbilityFixture {
 
     public String toJson(Long parent) {
         String format = String.join(System.lineSeparator(), Arrays.asList(
-            "{",
-            "  name: %s",
-            "  description: %s",
-            "  color: %s",
-            "  parent: %d",
-            "}"
+                "{",
+                "  name: %s",
+                "  description: %s",
+                "  color: %s",
+                "  parent: %d",
+                "}"
             )
         );
 

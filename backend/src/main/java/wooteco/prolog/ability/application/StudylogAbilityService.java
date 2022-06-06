@@ -40,11 +40,13 @@ public class StudylogAbilityService {
     }
 
     @Transactional
-    public List<AbilityResponse> updateStudylogAbilities(Long memberId, Long studylogId, StudylogAbilityRequest studylogAbilityRequest) {
+    public List<AbilityResponse> updateStudylogAbilities(Long memberId, Long studylogId,
+                                                         StudylogAbilityRequest studylogAbilityRequest) {
         Studylog studylog = studylogService.findStudylogById(studylogId);
         studylog.validateBelongTo(memberId);
 
-        List<Ability> abilities = abilityService.findByIdIn(memberId, studylogAbilityRequest.getAbilities());
+        List<Ability> abilities = abilityService.findByIdIn(memberId,
+            studylogAbilityRequest.getAbilities());
         // 자식 역량이 있는데 부모 역량이 있는 경우 예외처리
         abilities.stream()
             .filter(it -> !it.isParent())
@@ -59,18 +61,22 @@ public class StudylogAbilityService {
             .collect(Collectors.toList());
 
         studylogAbilityRepository.deleteByStudylogId(studylogId);
-        List<StudylogAbility> persistStudylogAbilities = studylogAbilityRepository.saveAll(studylogAbilities);
+        List<StudylogAbility> persistStudylogAbilities = studylogAbilityRepository.saveAll(
+            studylogAbilities);
 
         return persistStudylogAbilities.stream()
             .map(it -> AbilityResponse.of(it.getAbility()))
             .collect(Collectors.toList());
     }
 
-    public PageableResponse<AbilityStudylogResponse> findAbilityStudylogsByAbilityIds(String username, List<Long> abilityIds, Pageable pageable) {
+    public PageableResponse<AbilityStudylogResponse> findAbilityStudylogsByAbilityIds(
+        String username, List<Long> abilityIds, Pageable pageable) {
         if (abilityIds != null && !abilityIds.isEmpty()) {
 
-            Page<StudylogAbility> studylogAbilities = studylogAbilityRepository.findByAbilityIdIn(abilityIds, pageable);
-            List<AbilityStudylogResponse> abilityStudylogResponses = AbilityStudylogResponse.listOf(studylogAbilities.getContent());
+            Page<StudylogAbility> studylogAbilities = studylogAbilityRepository.findByAbilityIdIn(
+                abilityIds, pageable);
+            List<AbilityStudylogResponse> abilityStudylogResponses = AbilityStudylogResponse.listOf(
+                studylogAbilities.getContent());
             return PageableResponse.of(abilityStudylogResponses, studylogAbilities);
         }
 
@@ -79,30 +85,40 @@ public class StudylogAbilityService {
             .map(Studylog::getId)
             .collect(Collectors.toList());
 
-        List<StudylogAbility> studylogAbilities = studylogAbilityRepository.findByStudylogIdIn(studylogIds);
+        List<StudylogAbility> studylogAbilities = studylogAbilityRepository.findByStudylogIdIn(
+            studylogIds);
 
-        List<AbilityStudylogResponse> abilityStudylogResponses = AbilityStudylogResponse.listOf(studylogs.getContent(), studylogAbilities);
+        List<AbilityStudylogResponse> abilityStudylogResponses = AbilityStudylogResponse.listOf(
+            studylogs.getContent(), studylogAbilities);
         return PageableResponse.of(abilityStudylogResponses, studylogs);
     }
 
-    public PageableResponse<AbilityStudylogResponse> findAbilityStudylogsMappingOnlyByAbilityIds(String username, List<Long> abilityIds, Pageable pageable) {
+    public PageableResponse<AbilityStudylogResponse> findAbilityStudylogsMappingOnlyByAbilityIds(
+        String username, List<Long> abilityIds, Pageable pageable) {
         if (abilityIds != null && !abilityIds.isEmpty()) {
-            Page<StudylogAbility> studylogAbilities = studylogAbilityRepository.findByAbilityIdIn(abilityIds, pageable);
-            List<AbilityStudylogResponse> abilityStudylogResponses = AbilityStudylogResponse.listOf(studylogAbilities.getContent());
+            Page<StudylogAbility> studylogAbilities = studylogAbilityRepository.findByAbilityIdIn(
+                abilityIds, pageable);
+            List<AbilityStudylogResponse> abilityStudylogResponses = AbilityStudylogResponse.listOf(
+                studylogAbilities.getContent());
             return PageableResponse.of(abilityStudylogResponses, studylogAbilities);
         }
 
         Member member = memberService.findByUsername(username);
 
-        Page<StudylogAbility> studylogAbilities = studylogAbilityRepository.findByMemberId(member.getId(), pageable);
+        Page<StudylogAbility> studylogAbilities = studylogAbilityRepository.findByMemberId(
+            member.getId(), pageable);
 
-        List<AbilityStudylogResponse> abilityStudylogResponses = AbilityStudylogResponse.listOf(studylogAbilities.getContent());
+        List<AbilityStudylogResponse> abilityStudylogResponses = AbilityStudylogResponse.listOf(
+            studylogAbilities.getContent());
         return PageableResponse.of(abilityStudylogResponses, studylogAbilities);
     }
 
-    public List<StudylogAbility> findStudylogAbilitiesInPeriod(Long memberId, LocalDate startDate, LocalDate endDate) {
-        List<Studylog> studylogs = studylogService.findStudylogsInPeriod(memberId, startDate, endDate);
-        return studylogAbilityRepository.findByStudylogIdIn(studylogs.stream().map(Studylog::getId).collect(Collectors.toList()));
+    public List<StudylogAbility> findStudylogAbilitiesInPeriod(Long memberId, LocalDate startDate,
+                                                               LocalDate endDate) {
+        List<Studylog> studylogs = studylogService.findStudylogsInPeriod(memberId, startDate,
+            endDate);
+        return studylogAbilityRepository.findByStudylogIdIn(
+            studylogs.stream().map(Studylog::getId).collect(Collectors.toList()));
     }
 
     @EventListener

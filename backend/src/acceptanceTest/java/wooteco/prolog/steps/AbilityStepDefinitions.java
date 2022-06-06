@@ -10,9 +10,9 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
-import wooteco.prolog.ability.application.dto.HierarchyAbilityResponse;
 import wooteco.prolog.ability.application.dto.AbilityUpdateRequest;
 import wooteco.prolog.ability.application.dto.DefaultAbilityCreateRequest;
+import wooteco.prolog.ability.application.dto.HierarchyAbilityResponse;
 import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.ExceptionDto;
 import wooteco.prolog.fixtures.AbilityAcceptanceFixture;
@@ -77,7 +77,8 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
 
     @Then("부모 역량 목록을 받는다.")
     public void 부모역량목록을받는다() {
-        List<HierarchyAbilityResponse> responses = context.response.jsonPath().getList(".", HierarchyAbilityResponse.class);
+        List<HierarchyAbilityResponse> responses = context.response.jsonPath()
+            .getList(".", HierarchyAbilityResponse.class);
         assertThat(responses.stream().allMatch(HierarchyAbilityResponse::getIsParent)).isTrue();
     }
 
@@ -86,7 +87,8 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
     public void 역량을이름설명색상으로수정하고(String abilityName, String name, String description, String color) {
         Long abilityId = getAbilityIdByName(abilityName);
 
-        AbilityUpdateRequest request = new AbilityUpdateRequest(abilityId, name, description, color);
+        AbilityUpdateRequest request = new AbilityUpdateRequest(abilityId, name, description,
+            color);
         context.invokeHttpPutWithToken("/abilities/" + abilityId, request);
     }
 
@@ -139,7 +141,8 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
 
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
         assertThat(exceptionDto.getCode()).isEqualTo(BadRequestCode.ABILITY_HAS_CHILDREN.getCode());
-        assertThat(exceptionDto.getMessage()).isEqualTo(BadRequestCode.ABILITY_HAS_CHILDREN.getMessage());
+        assertThat(exceptionDto.getMessage()).isEqualTo(
+            BadRequestCode.ABILITY_HAS_CHILDREN.getMessage());
     }
 
     @Then("역량 이름 중복 관련 예외가 발생한다.")
@@ -147,8 +150,10 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         ExceptionDto exceptionDto = context.response.as(ExceptionDto.class);
 
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(exceptionDto.getCode()).isEqualTo(BadRequestCode.ABILITY_NAME_DUPLICATE.getCode());
-        assertThat(exceptionDto.getMessage()).isEqualTo(BadRequestCode.ABILITY_NAME_DUPLICATE.getMessage());
+        assertThat(exceptionDto.getCode()).isEqualTo(
+            BadRequestCode.ABILITY_NAME_DUPLICATE.getCode());
+        assertThat(exceptionDto.getMessage()).isEqualTo(
+            BadRequestCode.ABILITY_NAME_DUPLICATE.getMessage());
     }
 
     @Then("부모역량 색상 중복 관련 예외가 발생한다.")
@@ -156,8 +161,10 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         ExceptionDto exceptionDto = context.response.as(ExceptionDto.class);
 
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(exceptionDto.getCode()).isEqualTo(BadRequestCode.ABILITY_PARENT_COLOR_DUPLICATE.getCode());
-        assertThat(exceptionDto.getMessage()).isEqualTo(BadRequestCode.ABILITY_PARENT_COLOR_DUPLICATE.getMessage());
+        assertThat(exceptionDto.getCode()).isEqualTo(
+            BadRequestCode.ABILITY_PARENT_COLOR_DUPLICATE.getCode());
+        assertThat(exceptionDto.getMessage()).isEqualTo(
+            BadRequestCode.ABILITY_PARENT_COLOR_DUPLICATE.getMessage());
     }
 
     @Then("부모역량과 자식역량의 색상 불일치 예외가 발생한다.")
@@ -165,8 +172,10 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         ExceptionDto exceptionDto = context.response.as(ExceptionDto.class);
 
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(exceptionDto.getCode()).isEqualTo(BadRequestCode.ABILITY_PARENT_CHILD_COLOR_DIFFERENT.getCode());
-        assertThat(exceptionDto.getMessage()).isEqualTo(BadRequestCode.ABILITY_PARENT_CHILD_COLOR_DIFFERENT.getMessage());
+        assertThat(exceptionDto.getCode()).isEqualTo(
+            BadRequestCode.ABILITY_PARENT_CHILD_COLOR_DIFFERENT.getCode());
+        assertThat(exceptionDto.getMessage()).isEqualTo(
+            BadRequestCode.ABILITY_PARENT_CHILD_COLOR_DIFFERENT.getMessage());
     }
 
     @Then("자식역량 {string}의 색상은 {string}으로 바뀌지 않는다.")
@@ -195,20 +204,24 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
         ExceptionDto exceptionDto = context.response.as(ExceptionDto.class);
 
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-        assertThat(exceptionDto.getCode()).isEqualTo(BadRequestCode.DEFAULT_ABILITY_NOT_FOUND.getCode());
-        assertThat(exceptionDto.getMessage()).isEqualTo(BadRequestCode.DEFAULT_ABILITY_NOT_FOUND.getMessage());
+        assertThat(exceptionDto.getCode()).isEqualTo(
+            BadRequestCode.DEFAULT_ABILITY_NOT_FOUND.getCode());
+        assertThat(exceptionDto.getMessage()).isEqualTo(
+            BadRequestCode.DEFAULT_ABILITY_NOT_FOUND.getMessage());
     }
 
     @And("관리자가 기본 역량 {string}을 {string} 과정으로 추가하고")
     public void 관리자가기본역량을과정으로추가하고(String defaultAbility, String template) {
-        DefaultAbilityCreateRequest request = new DefaultAbilityCreateRequest(defaultAbility, "defaultAbility 입니다.", "#color", template);
+        DefaultAbilityCreateRequest request = new DefaultAbilityCreateRequest(defaultAbility,
+            "defaultAbility 입니다.", "#color", template);
         context.invokeHttpPostWithToken("/abilities/default", request);
     }
 
     private Long getAbilityIdByName(String abilityName) {
         String username = (String) context.storage.get("username");
         context.invokeHttpGetWithToken("/members/" + username + "/abilities/flat");
-        List<HierarchyAbilityResponse> responses = context.response.jsonPath().getList(".", HierarchyAbilityResponse.class);
+        List<HierarchyAbilityResponse> responses = context.response.jsonPath()
+            .getList(".", HierarchyAbilityResponse.class);
 
         return responses.stream().filter(response -> abilityName.equals(response.getName()))
             .map(HierarchyAbilityResponse::getId)
@@ -217,7 +230,8 @@ public class AbilityStepDefinitions extends AcceptanceSteps {
     }
 
     private HierarchyAbilityResponse parseResponseById(Long id) {
-        List<HierarchyAbilityResponse> responses = context.response.jsonPath().getList(".", HierarchyAbilityResponse.class);
+        List<HierarchyAbilityResponse> responses = context.response.jsonPath()
+            .getList(".", HierarchyAbilityResponse.class);
 
         return responses.stream()
             .filter(response -> response.getId().equals(id))

@@ -16,11 +16,11 @@ public class PutMappingDataExtractor implements AnnotationDataExtractor {
     public RequestApi extractRequestApi(Method method, String classUrl) {
         final PutMapping putMapping = method.getAnnotation(PutMapping.class);
         final String api = Arrays.stream(putMapping.value())
-                .findAny()
-                .orElseGet(() ->
-                        Arrays.stream(putMapping.path()).findAny()
-                                .orElse("")
-                );
+            .findAny()
+            .orElseGet(() ->
+                Arrays.stream(putMapping.path()).findAny()
+                    .orElse("")
+            );
         return new RequestApi(classUrl + api, "PUT");
     }
 }

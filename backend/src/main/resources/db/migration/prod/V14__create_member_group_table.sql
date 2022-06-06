@@ -1,16 +1,16 @@
 CREATE TABLE member_group
 (
-    id   BIGINT AUTO_INCREMENT NOT NULL,
-    name VARCHAR(50) NOT NULL,
+    id          BIGINT AUTO_INCREMENT NOT NULL,
+    name        VARCHAR(50)  NOT NULL,
     description VARCHAR(100) NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE group_member
 (
-    id          BIGINT NOT NULL AUTO_INCREMENT,
-    member_id   BIGINT NOT NULL,
-    group_id    BIGINT NOT NULL,
+    id        BIGINT NOT NULL AUTO_INCREMENT,
+    member_id BIGINT NOT NULL,
+    group_id  BIGINT NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 

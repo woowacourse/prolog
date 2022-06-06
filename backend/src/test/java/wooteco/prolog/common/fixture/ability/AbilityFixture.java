@@ -1,7 +1,7 @@
 package wooteco.prolog.common.fixture.ability;
 
-import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.ability.domain.Ability;
+import wooteco.prolog.member.domain.Member;
 
 public class AbilityFixture {
 
