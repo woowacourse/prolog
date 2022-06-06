@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.common.exception.ExceptionDto;
+import wooteco.prolog.studylog.domain.BadgeType;
 
 public class BadgesStepDefinitions extends AcceptanceSteps {
 
@@ -46,6 +47,6 @@ public class BadgesStepDefinitions extends AcceptanceSteps {
     public void 열정왕배지를부여한다() {
         List<String> badgeNames = context.response.jsonPath().getList("badges.name", String.class);
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(badgeNames).containsExactly("열정왕");
+        assertThat(badgeNames).containsExactly(BadgeType.PASSION_KING.name());
     }
 }

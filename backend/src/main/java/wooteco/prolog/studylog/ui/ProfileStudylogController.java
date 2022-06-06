@@ -30,7 +30,7 @@ import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.BadgeResponse;
 import wooteco.prolog.studylog.application.dto.BadgesResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
-import wooteco.prolog.studylog.domain.Badge;
+import wooteco.prolog.studylog.domain.BadgeType;
 
 @RestController
 @AllArgsConstructor
@@ -101,9 +101,9 @@ public class ProfileStudylogController {
 
     @GetMapping(value = "/{username}/badges", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BadgesResponse> findMemberBadges(@PathVariable String username) {
-        List<Badge> badges = badgeService.findBadges(username, Arrays.asList(10L, 11L));
+        List<BadgeType> badges = badgeService.findBadges(username, Arrays.asList(10L, 11L));
         List<BadgeResponse> badgeResponses = badges.stream()
-            .map(Badge::getName)
+            .map(BadgeType::toString)
             .map(BadgeResponse::new)
             .collect(Collectors.toList());
         return ResponseEntity.ok(new BadgesResponse(badgeResponses));
