@@ -24,32 +24,28 @@ public class BadgeRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    public int countStudylogByUsernameDuringSessions(String username, List<Long> sessions) {
+    public int countLikesByUserIdDuringSessions(Long userId, List<Long> sessions) {
         String sql = "select count(st.id)\n"
             + "from studylog as st \n"
-            + "Join session as s on st.session_id = s.id\n"
-            + "Join member as mem on st.member_id = mem.id\n"
-            + "where s.id in (:sessions) and mem.username = :username and st.deleted = false";
+            + "Join likes as l on l.studylog_id = st.id\n"
+            + "where st.session_id in (:sessions) and st.member_id = :userId";
 
         Map<String, Object> map = new HashMap<>();
         map.put("sessions", sessions);
-        map.put("username", username);
+        map.put("userId", userId);
         SqlParameterSource parameters = new MapSqlParameterSource(map);
 
         return namedParameterJdbcTemplate.query(sql, parameters, COUNT_RESULT_SET_EXTRACTOR);
     }
 
-    public int countLikesByUsernameDuringSessions(String username, List<Long> sessions) {
+    public int countStudylogByUserIdDuringSessions(Long userId, List<Long> sessions) {
         String sql = "select count(st.id)\n"
             + "from studylog as st \n"
-            + "Join session as s on st.session_id = s.id\n"
-            + "Join likes as l on l.studylog_id = st.id\n"
-            + "Join member as mem on l.member_id = mem.id\n"
-            + "where s.id in (:sessions) and mem.username = :username";
+            + "where st.session_id in (:sessions) and st.member_id = :userId and st.deleted = false";
 
         Map<String, Object> map = new HashMap<>();
         map.put("sessions", sessions);
-        map.put("username", username);
+        map.put("userId", userId);
         SqlParameterSource parameters = new MapSqlParameterSource(map);
 
         return namedParameterJdbcTemplate.query(sql, parameters, COUNT_RESULT_SET_EXTRACTOR);
