@@ -20,6 +20,6 @@ public class SessionAcceptanceFixture {
 
     public static List<SessionRequest> values() {
         return Arrays.asList(session1, session2, session3, session4, session5, session6, session7,
-            session8, session9, session10, session11);
+                             session8, session9, session10, session11);
     }
 }

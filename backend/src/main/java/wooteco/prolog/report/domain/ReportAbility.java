@@ -23,7 +23,7 @@ public class ReportAbility {
     private Long reportId;
 
     public ReportAbility(String name, String description, String color, Integer weight,
-                         Long originAbilityId, Long reportId) {
+        Long originAbilityId, Long reportId) {
         this.originAbilityId = originAbilityId;
         this.weight = weight;
         this.name = name;

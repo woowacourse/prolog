@@ -42,20 +42,20 @@ public enum AbilityFixture {
 
     public String toJson(Long parent) {
         String format = String.join(System.lineSeparator(), Arrays.asList(
-                "{",
-                "  name: %s",
-                "  description: %s",
-                "  color: %s",
-                "  parent: %d",
-                "}"
-            )
+                                        "{",
+                                        "  name: %s",
+                                        "  description: %s",
+                                        "  color: %s",
+                                        "  parent: %d",
+                                        "}"
+                                    )
         );
 
         return String.format(format,
-            name,
-            description,
-            color,
-            parent
+                             name,
+                             description,
+                             color,
+                             parent
         );
     }
 }

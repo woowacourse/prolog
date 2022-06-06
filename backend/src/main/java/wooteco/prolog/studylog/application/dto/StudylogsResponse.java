@@ -39,9 +39,9 @@ public class StudylogsResponse {
         );
 
         return new StudylogsResponse(responsePage.getContent(),
-            responsePage.getTotalElements(),
-            responsePage.getTotalPages(),
-            responsePage.getNumber() + ONE_INDEXED_PARAMETER);
+                                     responsePage.getTotalElements(),
+                                     responsePage.getTotalPages(),
+                                     responsePage.getNumber() + ONE_INDEXED_PARAMETER);
     }
 
     public static StudylogsResponse of(
@@ -52,15 +52,15 @@ public class StudylogsResponse {
         Long memberId
     ) {
         final List<StudylogResponse> studylogResponses = convertToStudylogResponse(studylogs,
-            memberId);
+                                                                                   memberId);
         return new StudylogsResponse(studylogResponses,
-            totalSize,
-            totalPage,
-            currPage + ONE_INDEXED_PARAMETER);
+                                     totalSize,
+                                     totalPage,
+                                     currPage + ONE_INDEXED_PARAMETER);
     }
 
     private static List<StudylogResponse> convertToStudylogResponse(List<Studylog> studylogs,
-                                                                    Long memberId) {
+        Long memberId) {
         return studylogs.stream()
             .map(studylog -> StudylogResponse.of(studylog, memberId))
             .collect(toList());

@@ -30,11 +30,11 @@ class ReportServiceTest {
     @Test
     void findAllSortedReports() {
         Report report1 = new Report("title1", "desc1", 1L, LocalDate.of(2022, 3, 5),
-            LocalDate.of(2022, 3, 6));
+                                    LocalDate.of(2022, 3, 6));
         Report report2 = new Report("title2", "desc2", 1L, LocalDate.of(2022, 3, 6),
-            LocalDate.of(2022, 3, 7));
+                                    LocalDate.of(2022, 3, 7));
         Report report3 = new Report("title3", "desc3", 1L, LocalDate.of(2022, 4, 5),
-            LocalDate.of(2022, 4, 10));
+                                    LocalDate.of(2022, 4, 10));
 
         reportRepository.save(report1);
         reportRepository.save(report2);

@@ -15,13 +15,13 @@ public class DefaultAbilityCreateRequest {
     private Long parentId;
 
     public DefaultAbilityCreateRequest(String name, String description, String color,
-                                       String template) {
+        String template) {
         this(name, description, color, template, null);
     }
 
     public DefaultAbilityCreateRequest(String name, String description, String color,
-                                       String template,
-                                       Long parentId) {
+        String template,
+        Long parentId) {
         this.name = name;
         this.description = description;
         this.color = color;

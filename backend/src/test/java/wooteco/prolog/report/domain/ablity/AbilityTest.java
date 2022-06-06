@@ -98,7 +98,7 @@ class AbilityTest {
         Ability parentAbility = Ability.parent(1L, "역량1", "너잘의 3인칭 역량", "색상1", member);
         Ability anotherParentAbility = Ability.parent(2L, "역량2", "아따따뚜겐", "색상2", member);
         Ability childAbility = Ability.child(3L, "역량1의 자식역량", "너잘의 3인칭 역량", "색상3", parentAbility,
-            member);
+                                             member);
 
         // when, then
         assertThatThrownBy(() -> childAbility.validateColorWithParent(

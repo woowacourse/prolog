@@ -22,7 +22,7 @@ public class StudylogRssFeedView extends AbstractRssFeedView {
 
     @Override
     protected void buildFeedMetadata(Map<String, Object> model, Channel feed,
-                                     HttpServletRequest request) {
+        HttpServletRequest request) {
         feed.setTitle("Prolog | 우아한테크코스 학습로그 저장소");
         feed.setDescription("우아한테크코스 크루들이 배운 내용을 기록하는 학습로그 저장소입니다.");
         feed.setLink(url);
@@ -30,7 +30,7 @@ public class StudylogRssFeedView extends AbstractRssFeedView {
 
     @Override
     protected List<Item> buildFeedItems(Map<String, Object> model, HttpServletRequest request,
-                                        HttpServletResponse response) {
+        HttpServletResponse response) {
         List<StudylogRssFeedResponse> rssFeedResponses = (List<StudylogRssFeedResponse>) model.get(
             "rssFeeds");
 
@@ -67,7 +67,7 @@ public class StudylogRssFeedView extends AbstractRssFeedView {
 
     @Override
     protected void setResponseContentType(HttpServletRequest request,
-                                          HttpServletResponse response) {
+        HttpServletResponse response) {
         response.setContentType("application/rss+xml;charset=UTF-8");
     }
 }

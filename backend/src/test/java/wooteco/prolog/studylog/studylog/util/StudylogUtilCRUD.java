@@ -28,29 +28,31 @@ public class StudylogUtilCRUD {
     }
 
     public void 등록(MemberFixture memberFixture, String title, String content, Long missionId,
-                   String... tagNames) {
+        String... tagNames) {
         final List<TagRequest> tagRequests = Arrays.stream(tagNames)
             .map(TagRequest::new)
             .collect(Collectors.toList());
 
         studylogService.insertStudylogs(memberUtilCRUD.등록(memberFixture).getId(),
-            Collections.singletonList(new StudylogRequest(title, content, missionId, tagRequests)));
+                                        Collections.singletonList(
+                                            new StudylogRequest(title, content, missionId,
+                                                                tagRequests)));
     }
 
     public void 등록(StudylogFixture studylogFixture, MemberFixture memberFixture,
-                   String... tagNames) {
+        String... tagNames) {
         final List<TagRequest> tagRequests = Arrays.stream(tagNames)
             .map(TagRequest::new)
             .collect(Collectors.toList());
 
         studylogService.insertStudylogs(memberUtilCRUD.등록(memberFixture).getId(),
-            Collections.singletonList(
-                studylogFixture.asRequestWithTags(tagRequests)));
+                                        Collections.singletonList(
+                                            studylogFixture.asRequestWithTags(tagRequests)));
     }
 
     public void 다중등록(StudylogFixture studylogFixture, MemberFixture memberFixture) {
         studylogService.insertStudylogs(memberUtilCRUD.등록(memberFixture).getId(),
-            Collections.singletonList(
-                studylogFixture.asRequest()));
+                                        Collections.singletonList(
+                                            studylogFixture.asRequest()));
     }
 }

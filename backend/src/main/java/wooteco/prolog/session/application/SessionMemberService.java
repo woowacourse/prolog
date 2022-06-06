@@ -48,7 +48,7 @@ public class SessionMemberService {
 
     @Transactional
     public void registerMembersByGroupId(Long sessionId,
-                                         SessionGroupMemberRequest sessionGroupMemberRequest) {
+        SessionGroupMemberRequest sessionGroupMemberRequest) {
         List<SessionMember> alreadySessionMembers = sessionMemberRepository.findAllBySessionId(
             sessionId);
 

@@ -31,7 +31,7 @@ public class SessionMemberController {
 
     @PostMapping("/me")
     public ResponseEntity<Void> registerMe(@PathVariable Long sessionId,
-                                           @AuthMemberPrincipal LoginMember member) {
+        @AuthMemberPrincipal LoginMember member) {
         sessionMemberService.registerMember(sessionId, member.getId());
         return ResponseEntity.ok().build();
     }
@@ -39,7 +39,7 @@ public class SessionMemberController {
     // admin only
     @PostMapping
     public ResponseEntity<Void> registerByGroupId(@PathVariable Long sessionId,
-                                                  @RequestBody SessionGroupMemberRequest sessionGroupMemberRequest) {
+        @RequestBody SessionGroupMemberRequest sessionGroupMemberRequest) {
         sessionMemberService.registerMembersByGroupId(sessionId, sessionGroupMemberRequest);
         return ResponseEntity.ok().build();
     }

@@ -61,7 +61,7 @@ public class BadgeServiceTest {
         for (int i = 0; i < 3; i++) {
             Studylog studylog = studylogService.save(
                 new Studylog(브라운, "체스 title" + i, "체스 content" + i, session1, 체스미션,
-                    Collections.emptyList()));
+                             Collections.emptyList()));
             likeService.likeStudylog(수달.getId(), studylog.getId(), true);
             likeService.likeStudylog(베루스.getId(), studylog.getId(), true);
         }
@@ -69,7 +69,7 @@ public class BadgeServiceTest {
         for (int i = 0; i < 4; i++) {
             Studylog studylog = studylogService.save(
                 new Studylog(브라운, "지하철 title" + i, "지하철 content" + i, session2, 지하철미션,
-                    Collections.emptyList()));
+                             Collections.emptyList()));
             likeService.likeStudylog(수달.getId(), studylog.getId(), true);
             likeService.likeStudylog(베루스.getId(), studylog.getId(), true);
         }
@@ -77,7 +77,7 @@ public class BadgeServiceTest {
         for (int i = 0; i < 8; i++) {
             Studylog studylog = studylogService.save(
                 new Studylog(베루스, "장바구니 title" + i, "장바구니 content" + i, session2, 지하철미션,
-                    Collections.emptyList()));
+                             Collections.emptyList()));
             likeService.likeStudylog(수달.getId(), studylog.getId(), true);
             likeService.likeStudylog(베루스.getId(), studylog.getId(), true);
         }
@@ -87,7 +87,8 @@ public class BadgeServiceTest {
     @Test
     void findEmptyBadge() {
         List<BadgeType> badges = badgeService.findBadges(토미.getId(),
-            Arrays.asList(session1.getId(), session2.getId()));
+                                                         Arrays.asList(session1.getId(),
+                                                                       session2.getId()));
         assertThat(badges).isEmpty();
     }
 
@@ -95,7 +96,8 @@ public class BadgeServiceTest {
     @Test
     void findPassionKingBadge() {
         List<BadgeType> badges = badgeService.findBadges(브라운.getId(),
-            Arrays.asList(session1.getId(), session2.getId()));
+                                                         Arrays.asList(session1.getId(),
+                                                                       session2.getId()));
         assertThat(badges).hasSize(1);
         assertThat(badges.get(0).toString()).isEqualTo(BadgeType.PASSION_KING.name());
     }
@@ -104,7 +106,8 @@ public class BadgeServiceTest {
     @Test
     void findComplimentKingBadge() {
         List<BadgeType> badges = badgeService.findBadges(수달.getId(),
-            Arrays.asList(session1.getId(), session2.getId()));
+                                                         Arrays.asList(session1.getId(),
+                                                                       session2.getId()));
         assertThat(badges).hasSize(1);
         assertThat(badges.get(0).toString()).isEqualTo(BadgeType.COMPLIMENT_KING.name());
     }
@@ -113,12 +116,13 @@ public class BadgeServiceTest {
     @Test
     void findAllBadges() {
         List<BadgeType> badges = badgeService.findBadges(베루스.getId(),
-            Arrays.asList(session1.getId(), session2.getId()));
+                                                         Arrays.asList(session1.getId(),
+                                                                       session2.getId()));
         assertThat(badges).hasSize(2);
         List<String> badgeNames = badges.stream()
             .map(BadgeType::toString)
             .collect(Collectors.toList());
         assertThat(badgeNames).containsExactlyInAnyOrder(BadgeType.PASSION_KING.name(),
-            BadgeType.COMPLIMENT_KING.name());
+                                                         BadgeType.COMPLIMENT_KING.name());
     }
 }

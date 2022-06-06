@@ -18,7 +18,7 @@ public class GetMappingDataExtractor implements AnnotationDataExtractor {
         final String api = Arrays.stream(getMapping.value())
             .findAny()
             .orElseGet(() ->
-                Arrays.stream(getMapping.path()).findAny().orElse("")
+                           Arrays.stream(getMapping.path()).findAny().orElse("")
             );
         return new RequestApi(classUrl + api, "GET");
     }

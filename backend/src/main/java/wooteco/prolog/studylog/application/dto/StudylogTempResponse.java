@@ -22,7 +22,7 @@ public class StudylogTempResponse {
     private List<TagResponse> tags;
 
     private StudylogTempResponse(MemberResponse author, String title, String content,
-                                 MissionResponse mission, List<TagResponse> tags) {
+        MissionResponse mission, List<TagResponse> tags) {
         this.author = author;
         this.title = title;
         this.content = content;

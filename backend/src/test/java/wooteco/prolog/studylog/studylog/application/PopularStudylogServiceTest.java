@@ -114,14 +114,14 @@ class PopularStudylogServiceTest {
         this.loginMember3 = new LoginMember(null, Authority.ANONYMOUS);
 
         this.studylog1 = new Studylog(member1,
-            STUDYLOG1_TITLE, "피케이와 포모의 스터디로그", mission1,
-            asList(tag1, tag2));
+                                      STUDYLOG1_TITLE, "피케이와 포모의 스터디로그", mission1,
+                                      asList(tag1, tag2));
         this.studylog2 = new Studylog(member1,
-            STUDYLOG2_TITLE, "피케이와 포모의 스터디로그 2", mission1,
-            asList(tag2, tag3));
+                                      STUDYLOG2_TITLE, "피케이와 포모의 스터디로그 2", mission1,
+                                      asList(tag2, tag3));
         this.studylog3 = new Studylog(member2,
-            STUDYLOG3_TITLE, "피케이 스터디로그", mission2,
-            asList(tag3, tag4, tag5));
+                                      STUDYLOG3_TITLE, "피케이 스터디로그", mission2,
+                                      asList(tag3, tag4, tag5));
         this.studylog4 = new Studylog(member2, STUDYLOG4_TITLE, "포모의 스터디로그", mission2, emptyList());
     }
 
@@ -204,12 +204,12 @@ class PopularStudylogServiceTest {
     private List<StudylogResponse> insertStudylogs(Member member, List<Studylog> studylogs) {
         List<StudylogRequest> studylogRequests = studylogs.stream()
             .map(studylog ->
-                new StudylogRequest(
-                    studylog.getTitle(),
-                    studylog.getContent(),
-                    null,
-                    toTagRequests(studylog)
-                )
+                     new StudylogRequest(
+                         studylog.getTitle(),
+                         studylog.getContent(),
+                         null,
+                         toTagRequests(studylog)
+                     )
             )
             .collect(toList());
 

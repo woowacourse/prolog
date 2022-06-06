@@ -117,7 +117,7 @@ public class FakeStudylogDocumentRepository implements StudylogDocumentRepositor
 
     @Override
     public Page<StudylogDocument> searchSimilar(StudylogDocument entity, String[] fields,
-                                                Pageable pageable) {
+        Pageable pageable) {
         return null;
     }
 

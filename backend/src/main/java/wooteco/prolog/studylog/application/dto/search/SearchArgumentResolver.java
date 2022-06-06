@@ -29,7 +29,7 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+        NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         try {
             return new StudylogsSearchRequest(
                 convertToString(webRequest, "keyword"),

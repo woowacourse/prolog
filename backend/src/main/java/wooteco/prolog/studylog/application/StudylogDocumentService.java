@@ -46,13 +46,13 @@ public class StudylogDocumentService extends AbstractStudylogDocumentService {
     ) {
 
         final Query query = StudylogDocumentQueryBuilder.makeQuery(preprocess(keyword), tags,
-            missions, levels,
-            usernames, start, end, pageable);
+                                                                   missions, levels,
+                                                                   usernames, start, end, pageable);
 
         // Query 결과를 ES에서 조회한다.
         final SearchHits<StudylogDocument> searchHits
             = elasticsearchRestTemplate.search(query, StudylogDocument.class,
-            IndexCoordinates.of("studylog-document"));
+                                               IndexCoordinates.of("studylog-document"));
 
         // 조회된 SearchHits를 페이징할 수 있는 SearchPage로 변경한다.
         final SearchPage<StudylogDocument> searchPages
@@ -63,8 +63,8 @@ public class StudylogDocumentService extends AbstractStudylogDocumentService {
             .collect(toList());
 
         return StudylogDocumentResponse.of(studylogIds,
-            searchPages.getTotalElements(),
-            searchPages.getTotalPages(),
-            searchPages.getNumber());
+                                           searchPages.getTotalElements(),
+                                           searchPages.getTotalPages(),
+                                           searchPages.getNumber());
     }
 }

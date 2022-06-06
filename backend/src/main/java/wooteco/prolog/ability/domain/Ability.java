@@ -57,7 +57,7 @@ public class Ability {
     }
 
     private Ability(Long id, String name, String description, String color, Ability parent,
-                    Member member) {
+        Member member) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -72,17 +72,17 @@ public class Ability {
     }
 
     public static Ability parent(Long id, String name, String description, String color,
-                                 Member member) {
+        Member member) {
         return new Ability(id, name, description, color, null, member);
     }
 
     public static Ability child(String name, String description, String color, Ability parent,
-                                Member member) {
+        Member member) {
         return child(null, name, description, color, parent, member);
     }
 
     public static Ability child(Long id, String name, String description, String color,
-                                Ability parent, Member member) {
+        Ability parent, Member member) {
         Ability child = new Ability(id, name, description, color, parent, member);
         parent.addChildAbility(child);
 

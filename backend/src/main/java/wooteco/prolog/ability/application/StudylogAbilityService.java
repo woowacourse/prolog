@@ -31,8 +31,8 @@ public class StudylogAbilityService {
     private MemberService memberService;
 
     public StudylogAbilityService(StudylogAbilityRepository studylogAbilityRepository,
-                                  StudylogService studylogService, AbilityService abilityService,
-                                  MemberService memberService) {
+        StudylogService studylogService, AbilityService abilityService,
+        MemberService memberService) {
         this.studylogAbilityRepository = studylogAbilityRepository;
         this.studylogService = studylogService;
         this.abilityService = abilityService;
@@ -41,12 +41,12 @@ public class StudylogAbilityService {
 
     @Transactional
     public List<AbilityResponse> updateStudylogAbilities(Long memberId, Long studylogId,
-                                                         StudylogAbilityRequest studylogAbilityRequest) {
+        StudylogAbilityRequest studylogAbilityRequest) {
         Studylog studylog = studylogService.findStudylogById(studylogId);
         studylog.validateBelongTo(memberId);
 
         List<Ability> abilities = abilityService.findByIdIn(memberId,
-            studylogAbilityRequest.getAbilities());
+                                                            studylogAbilityRequest.getAbilities());
         // 자식 역량이 있는데 부모 역량이 있는 경우 예외처리
         abilities.stream()
             .filter(it -> !it.isParent())
@@ -114,9 +114,9 @@ public class StudylogAbilityService {
     }
 
     public List<StudylogAbility> findStudylogAbilitiesInPeriod(Long memberId, LocalDate startDate,
-                                                               LocalDate endDate) {
+        LocalDate endDate) {
         List<Studylog> studylogs = studylogService.findStudylogsInPeriod(memberId, startDate,
-            endDate);
+                                                                         endDate);
         return studylogAbilityRepository.findByStudylogIdIn(
             studylogs.stream().map(Studylog::getId).collect(Collectors.toList()));
     }

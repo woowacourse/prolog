@@ -18,7 +18,7 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
     protected final StudylogRepository studylogRepository;
 
     public AbstractStudylogDocumentService(StudylogDocumentRepository studylogDocumentRepository,
-                                           StudylogRepository studylogRepository) {
+        StudylogRepository studylogRepository) {
         this.studylogDocumentRepository = studylogDocumentRepository;
         this.studylogRepository = studylogRepository;
     }

@@ -42,14 +42,14 @@ public class StudylogTemp {
     private StudylogTags studylogTags;
 
     public StudylogTemp(Member member, String title, String content, Mission mission,
-                        List<Tag> tags) {
+        List<Tag> tags) {
         this.member = member;
         this.title = title;
         this.content = content;
         this.mission = mission;
         Tags tags1 = new Tags(tags);
         this.studylogTags = new StudylogTags(tags1.getList().stream()
-            .map(tag -> new StudylogTag(null, tag))
-            .collect(toList()));
+                                                 .map(tag -> new StudylogTag(null, tag))
+                                                 .collect(toList()));
     }
 }

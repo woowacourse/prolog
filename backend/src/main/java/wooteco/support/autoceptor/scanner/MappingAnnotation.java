@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 public enum MappingAnnotation {
     REQUEST_MAPPING(RequestMapping.class,
-        declaration -> Arrays.asList(
-            declaration.getAnnotation(RequestMapping.class).value())),
+                    declaration -> Arrays.asList(
+                        declaration.getAnnotation(RequestMapping.class).value())),
     GET(GetMapping.class,
         declaration -> Arrays.asList(declaration.getAnnotation(GetMapping.class).value())),
     POST(PostMapping.class,
-        declaration -> Arrays.asList(declaration.getAnnotation(PostMapping.class).value())),
+         declaration -> Arrays.asList(declaration.getAnnotation(PostMapping.class).value())),
     DELETE(DeleteMapping.class,
-        declaration -> Arrays.asList(declaration.getAnnotation(DeleteMapping.class).value())),
+           declaration -> Arrays.asList(declaration.getAnnotation(DeleteMapping.class).value())),
     PUT(PutMapping.class,
         declaration -> Arrays.asList(declaration.getAnnotation(PutMapping.class).value()));
 

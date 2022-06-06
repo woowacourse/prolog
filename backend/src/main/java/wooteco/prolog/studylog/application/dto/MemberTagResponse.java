@@ -27,8 +27,8 @@ public class MemberTagResponse {
         final TagResponse allTagResponse = new TagResponse(0L, "ALL");
         memberTagResponses.add(new MemberTagResponse(allTagResponse, stuylogCount));
         memberTagResponses.addAll(memberTags.stream()
-            .map(MemberTagResponse::of)
-            .collect(Collectors.toList()));
+                                      .map(MemberTagResponse::of)
+                                      .collect(Collectors.toList()));
         return memberTagResponses;
     }
 }
