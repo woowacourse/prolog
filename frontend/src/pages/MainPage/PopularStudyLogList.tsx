@@ -7,11 +7,14 @@ import { PopularStudylogListStyle, SectionHeaderGapStyle, StyledChip } from './s
 import PopularStudylogItem from '../../components/Items/PopularStudylogItem';
 import { useState } from 'react';
 import { AlignItemsCenterStyle, FlexStyle } from '../../styles/flex.styles';
+import type { ValueOf } from '../../types/utils';
+import { getKeyByValue } from '../../utils/object';
+import { studyLogCategory, StudyLogResponse } from '.';
 
-type Category = '전체' | '프론트엔드' | '백엔드';
+type Category = ValueOf<typeof studyLogCategory>;
 
-const PopularStudyLogList = ({ studylogs }: { studylogs: Studylog[] }): JSX.Element => {
-  const [selectedCategory, setSelectedCategory] = useState<Category>('전체');
+const PopularStudyLogList = ({ studylogs }: { studylogs: StudyLogResponse }): JSX.Element => {
+  const [selectedCategory, setSelectedCategory] = useState<Category>(studyLogCategory.allResponse);
 
   return (
     <section
@@ -23,24 +26,26 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: Studylog[] }): JSX.Elem
       <div css={[SectionHeaderGapStyle, FlexStyle, AlignItemsCenterStyle]}>
         <h2>😎 인기있는 학습로그</h2>
         <ul css={[FlexStyle]}>
-          <li>
-            {/* onClick 하면 selectedCategory 변경, 서버 데이터 패칭 */}
-            <StyledChip active={selectedCategory === '전체'}>전체</StyledChip>
-          </li>
-          <li>
-            <StyledChip active={selectedCategory === '프론트엔드'}>프론트엔드</StyledChip>
-          </li>
-          <li>
-            <StyledChip active={selectedCategory === '백엔드'}>백엔드</StyledChip>
-          </li>
+          {Object.values(studyLogCategory).map((item) => (
+            <li key={item}>
+              <StyledChip
+                active={selectedCategory === item}
+                onClick={() => setSelectedCategory(item)}
+              >
+                {item}
+              </StyledChip>
+            </li>
+          ))}
         </ul>
       </div>
       <ul css={[PopularStudylogListStyle]}>
-        {studylogs?.map((item: Studylog) => (
-          <li key={item.id}>
-            <PopularStudylogItem item={item} />
-          </li>
-        ))}
+        {studylogs[getKeyByValue(studyLogCategory, selectedCategory) as Category].data.map(
+          (item: Studylog) => (
+            <li key={item.id}>
+              <PopularStudylogItem item={item} />
+            </li>
+          )
+        )}
       </ul>
     </section>
   );

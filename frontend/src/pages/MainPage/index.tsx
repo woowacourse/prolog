@@ -13,10 +13,18 @@ import { requestGetStudylogs } from '../../service/requests';
 import { MainContentStyle } from '../../PageRouter';
 import { getRowGapStyle } from '../../styles/layout.styles';
 
-import type { Studylog } from '../../models/Studylogs';
+import type { Studylog, StudyLogList } from '../../models/Studylogs';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { BASE_URL } from '../../configs/environment';
+
+export const studyLogCategory = {
+  allResponse: '전체',
+  frontResponse: '프론트엔드',
+  backResponse: '백엔드',
+} as const;
+
+export type StudyLogResponse = Record<keyof typeof studyLogCategory, StudyLogList>;
 
 const MainPage = () => {
   const { user } = useContext(UserContext);
@@ -31,16 +39,19 @@ const MainPage = () => {
   );
 
   // @TODO: 로딩 및 에러 처리
-  const { isLoading, error, data: popularStudyLogs, refetch: refetchPopularStudyLogs } = useQuery<
-    Studylog[]
-  >('popularStudyLogs', async () => {
+  const {
+    isLoading,
+    error,
+    data: popularStudyLogs,
+    refetch: refetchPopularStudyLogs,
+  } = useQuery<StudyLogResponse>('popularStudyLogs', async () => {
     const { data } = await axios({
       method: 'get',
       url: `${BASE_URL}/studylogs/popular`,
       headers: accessToken && { Authorization: 'Bearer ' + accessToken },
     });
 
-    return data?.data;
+    return data;
   });
 
   useEffect(() => {
