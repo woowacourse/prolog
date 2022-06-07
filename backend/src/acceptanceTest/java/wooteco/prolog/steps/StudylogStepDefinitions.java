@@ -14,10 +14,9 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.messages.internal.com.google.common.collect.Lists;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+
+import java.util.*;
+
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.StudylogAcceptanceFixture;
@@ -249,6 +248,14 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         context.invokeHttpGetWithToken(path);
     }
 
+    @When("로그인된 사용자가 {long}번째 스터디로그를 이미 조회한 상태로 조회하면")
+    public void 로그인된사용자가스터디로그를이미조회한상태로조회하면(Long studylogId) {
+        String path = "/studylogs/" + studylogId;
+        Map<String, String> cookies = new HashMap<>();
+        cookies.put("viewed", "/" + studylogId + "/");
+        context.invokeHttpGetWithTokenAndCookies(path, cookies);
+    }
+
     @When("id {string} 스터디로그를 조회하면")
     public void 여러개의스터디로그를조회하면(String studylogIds) {
         List<String> ids = Arrays.asList(studylogIds.split(","));
@@ -276,20 +283,20 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         assertThat(studylog).isNotNull();
     }
 
-    @Then("조회된 스터디로그의 조회수가 증가된다")
-    public void 조회된스터디로그의조회수가증가된다() {
+    @Then("조회된 스터디로그의 조회수가 {int}로 증가된다")
+    public void 조회된스터디로그의조회수가증가된다(int viewCount) {
         StudylogResponse studylog = context.response.as(StudylogResponse.class);
 
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(studylog.getViewCount()).isEqualTo(1);
+        assertThat(studylog.getViewCount()).isEqualTo(viewCount);
     }
 
-    @Then("조회된 스터디로그의 조회수가 증가되지 않는다")
-    public void 조회된스터디로그의조회수가증가되지않는다() {
+    @Then("조회된 스터디로그의 조회수가 증가되지 않고 {int}이다")
+    public void 조회된스터디로그의조회수가증가되지않는다(int viewCount) {
         StudylogResponse studylog = context.response.as(StudylogResponse.class);
 
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        assertThat(studylog.getViewCount()).isEqualTo(0);
+        assertThat(studylog.getViewCount()).isEqualTo(viewCount);
     }
 
     @When("{long}번째 스터디로그를 수정하면")
