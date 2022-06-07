@@ -21,17 +21,13 @@ public class BadgeService {
 
     public List<BadgeType> findBadges(Long userId, List<Long> sessions) {
         Member member = memberService.findById(userId);
-//
-//        int studylogCount = badgeRepository.countStudylogByUsernameDuringSessions(
-//            member.getUsername(),
-//            sessions);
 
-        int studylogCount = badgeRepository.countStudylogByUserIdDuringSessions(
-            userId,
+        int studylogCount = badgeRepository.countStudylogByUsernameDuringSessions(
+            member.getUsername(),
             sessions);
 
-        int likeCount = badgeRepository.countLikesByUserIdDuringSessions(
-            userId, sessions);
+        int likeCount = badgeRepository.countLikesByUsernameDuringSessions(
+            member.getUsername(), sessions);
 
         return createBadges(studylogCount, likeCount);
     }
