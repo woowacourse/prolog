@@ -1,25 +1,25 @@
 /** @jsxImportSource @emotion/react */
 
 import { Container, BadgeContainer, TooltipText } from './BadgeList.styles';
-import { ReactComponent as passionBadge } from '../../assets/images/badge-1-level2.svg';
-import { ReactComponent as praiseBadge } from '../../assets/images/badge-2-level2.svg';
-
-interface BadgeListProps {
-  badgeList: string[];
-}
+import { ReactComponent as PassionBadge } from '../../assets/images/badge-1-level2.svg';
+import { ReactComponent as ComplimentBadge } from '../../assets/images/badge-2-level2.svg';
 
 const BADGE_OBJ = {
-  열정왕: {
-    imgSrc: passionBadge,
+  PASSION_KING: {
+    imgSrc: PassionBadge,
     description: '와우!🕺 level2 동안 7개 이상의 글을 작성하신 당신은, 열정왕!🔥',
   },
-  칭찬왕: {
-    imgSrc: praiseBadge,
+  COMPLIMENT_KING: {
+    imgSrc: ComplimentBadge,
     description: '칭찬왕님~🥰 level2 동안 15번 이상이나 좋아요를 눌러주셔서 고마워요.',
   },
 };
 
-export const dummyBadgeList = ['열정왕', '칭찬왕'];
+interface BadgeListProps {
+  badgeList: [keyof typeof BADGE_OBJ];
+}
+
+export const dummyBadgeList = ['PASSION_KING', 'COMPLIMENT_KING'];
 
 const BadgeList = ({ badgeList }: BadgeListProps) => {
   return (
@@ -29,7 +29,7 @@ const BadgeList = ({ badgeList }: BadgeListProps) => {
 
         return (
           <BadgeContainer key={name}>
-            <Badge alt={name} />
+            <Badge aria-label={name} />
             <TooltipText>{BADGE_OBJ[name].description}</TooltipText>
           </BadgeContainer>
         );
