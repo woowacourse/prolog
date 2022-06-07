@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.session.domain.Mission;
+import wooteco.prolog.session.domain.Session;
 
 import javax.persistence.*;
 import java.util.List;
@@ -28,20 +29,25 @@ public class StudylogTemp {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "session_id")
+    private Session session;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id")
     private Mission mission;
 
     @Embedded
-    private StudylogTags studylogTags;
+    private StudylogTempTags studylogTempTags;
 
-    public StudylogTemp(Member member, String title, String content, Mission mission, List<Tag> tags) {
+    public StudylogTemp(Member member, String title, String content, Session session, Mission mission, List<Tag> tagList) {
         this.member = member;
         this.title = title;
         this.content = content;
+        this.session = session;
         this.mission = mission;
-        Tags tags1 = new Tags(tags);
-        this.studylogTags = new StudylogTags(tags1.getList().stream()
-                .map(tag -> new StudylogTag(null, tag))
+        Tags tags = new Tags(tagList);
+        this.studylogTempTags = new StudylogTempTags(tags.getList().stream()
+                .map(tag -> new StudylogTempTag(this, tag))
                 .collect(toList()));
     }
 }

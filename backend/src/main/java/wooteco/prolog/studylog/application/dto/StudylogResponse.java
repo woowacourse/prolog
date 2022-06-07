@@ -124,7 +124,6 @@ public class StudylogResponse {
     }
 
     public static StudylogResponse of(Studylog studylog, Session session, Mission mission) {
-
         return StudylogResponse.of(studylog, false, false, false, session, mission);
     }
 

@@ -99,6 +99,25 @@ public class StudylogService {
         return StudylogResponse.of(persistStudylog);
     }
 
+    @Transactional
+    public StudylogTempResponse insertStudylogTemp(Long memberId, StudylogRequest studylogRequest) {
+        Member member = memberService.findById(memberId);
+        Tags tags = tagService.findOrCreate(studylogRequest.getTags());
+        Session session = sessionService.findSessionById(studylogRequest.getSessionId()).orElse(null);
+        Mission mission = missionService.findMissionById(studylogRequest.getMissionId()).orElse(null);
+
+        StudylogTemp requestedStudylogTemp = new StudylogTemp(member,
+                studylogRequest.getTitle(),
+                studylogRequest.getContent(),
+                session,
+                mission,
+                tags.getList());
+
+        deleteStudylogTemp(memberId);
+        StudylogTemp createdStudylogTemp = studylogTempRepository.save(requestedStudylogTemp);
+        return StudylogTempResponse.from(createdStudylogTemp);
+    }
+
     private void onStudylogCreatedEvent(Member foundMember, Tags tags, Studylog createdStudylog) {
         memberTagService.registerMemberTag(tags, foundMember);
         studylogDocumentService.save(createdStudylog.toStudylogDocument());
@@ -199,22 +218,6 @@ public class StudylogService {
     public Page<Studylog> findStudylogsByUsername(String username, Pageable pageable) {
         Member member = memberService.findByUsername(username);
         return studylogRepository.findByMember(member, pageable);
-    }
-
-    @Transactional
-    public StudylogTempResponse insertStudylogTemp(Long memberId, StudylogRequest studylogRequest) {
-        Member member = memberService.findById(memberId);
-        Tags tags = tagService.findOrCreate(studylogRequest.getTags());
-        Mission mission = missionService.findById(studylogRequest.getMissionId());
-        StudylogTemp requestedStudylogTemp = new StudylogTemp(member,
-            studylogRequest.getTitle(),
-            studylogRequest.getContent(),
-            mission,
-            tags.getList());
-
-        deleteStudylogTemp(memberId);
-        StudylogTemp createdStudylogTemp = studylogTempRepository.save(requestedStudylogTemp);
-        return StudylogTempResponse.from(createdStudylogTemp);
     }
 
     private void deleteStudylogTemp(Long memberId) {

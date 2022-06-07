@@ -42,5 +42,4 @@ class TitleTest {
         assertThat(title2.getTitle()).isEqualTo(expectedText);
         assertThat(title3.getTitle()).isEqualTo(expectedText);
     }
-
 }
