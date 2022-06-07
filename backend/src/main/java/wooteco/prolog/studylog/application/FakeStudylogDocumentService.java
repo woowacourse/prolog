@@ -29,28 +29,28 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
 
     @Override
     public StudylogDocumentResponse findBySearchKeyword(String keyword, List<Long> tags,
-        List<Long> missions,
-        List<Long> sessions, List<String> usernames,
-        LocalDate start, LocalDate end,
-        Pageable pageable) {
+                                                        List<Long> missions,
+                                                        List<Long> sessions, List<String> usernames,
+                                                        LocalDate start, LocalDate end,
+                                                        Pageable pageable) {
         final Page<Studylog> studylogs = studylogRepository.findAll(
             makeSpecifications(keyword.toLowerCase(), tags, missions, sessions, usernames, start,
-                               end), pageable);
+                end), pageable);
 
         final List<Long> studylogIds = studylogs.stream()
             .map(Studylog::getId)
             .collect(Collectors.toList());
 
         return StudylogDocumentResponse.of(studylogIds,
-                                           studylogs.getTotalElements(),
-                                           studylogs.getTotalPages(),
-                                           studylogs.getNumber());
+            studylogs.getTotalElements(),
+            studylogs.getTotalPages(),
+            studylogs.getNumber());
     }
 
     private Specification<Studylog> makeSpecifications(String keyword, List<Long> tags,
-        List<Long> missions,
-        List<Long> sessions, List<String> usernames,
-        LocalDate start, LocalDate end
+                                                       List<Long> missions,
+                                                       List<Long> sessions, List<String> usernames,
+                                                       LocalDate start, LocalDate end
     ) {
         List<String> keywords = new ArrayList<>();
         if (Objects.nonNull(keyword)) {
@@ -60,10 +60,10 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
         return StudylogSpecification.likeKeyword("title", keywords)
             .or(StudylogSpecification.likeKeyword("content", keywords))
             .and(StudylogSpecification.equalIn("session", sessions)
-                     .and(StudylogSpecification.equalIn("mission", missions))
-                     .and(StudylogSpecification.findByTagIn(tags))
-                     .and(StudylogSpecification.findByUsernameIn(usernames))
-                     .and(StudylogSpecification.findBetweenDate(start, end))
-                     .and(StudylogSpecification.distinct(true)));
+                .and(StudylogSpecification.equalIn("mission", missions))
+                .and(StudylogSpecification.findByTagIn(tags))
+                .and(StudylogSpecification.findByUsernameIn(usernames))
+                .and(StudylogSpecification.findBetweenDate(start, end))
+                .and(StudylogSpecification.distinct(true)));
     }
 }

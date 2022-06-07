@@ -48,8 +48,8 @@ public class ProfileStudylogController {
     @Deprecated
     @GetMapping(value = "/{username}/posts", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StudylogsResponse> findAllPostsOfMine(@PathVariable String username,
-        StudylogFilterRequest studylogFilterRequest,
-        @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
+                                                                StudylogFilterRequest studylogFilterRequest,
+                                                                @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
         final StudylogsResponse studylogs = studylogService.findStudylogsWithoutKeyword(
             studylogFilterRequest.levels,
             studylogFilterRequest.missions,
@@ -66,8 +66,8 @@ public class ProfileStudylogController {
 
     @GetMapping(value = "/{username}/studylogs", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StudylogsResponse> findAllStudylogsOfMine(@PathVariable String username,
-        StudylogFilterRequest studylogFilterRequest,
-        @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
+                                                                    StudylogFilterRequest studylogFilterRequest,
+                                                                    @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
         final StudylogsResponse studylogs = studylogService.findStudylogsWithoutKeyword(
             studylogFilterRequest.levels,
             studylogFilterRequest.missions,
@@ -97,21 +97,21 @@ public class ProfileStudylogController {
 
     @PutMapping(value = "/{username}/profile-intro", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> findMemberProfileIntro(@AuthMemberPrincipal LoginMember member,
-        @PathVariable String username,
-        @RequestBody ProfileIntroRequest updateRequest) {
+                                                       @PathVariable String username,
+                                                       @RequestBody ProfileIntroRequest updateRequest) {
         memberService.updateProfileIntro(member, username, updateRequest);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping(value = "/{username}/badges", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BadgesResponse> findMemberBadges(@AuthMemberPrincipal LoginMember member,
-        @PathVariable String username) {
+                                                           @PathVariable String username) {
         if (member.isAnonymous()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         List<BadgeType> badges = badgeService.findBadges(member.getId(),
-                                                         Arrays.asList(FRONT_LEVEL2_ID,
-                                                                       BACKEND_LEVEL2_ID));
+            Arrays.asList(FRONT_LEVEL2_ID,
+                BACKEND_LEVEL2_ID));
 
         List<BadgeResponse> badgeResponses = badges.stream()
             .map(BadgeType::toString)

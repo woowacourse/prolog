@@ -58,7 +58,7 @@ public class AbilityService {
     }
 
     private Ability extractParentAbility(Member member, List<Ability> abilities, String name,
-        String description, String color) {
+                                         String description, String color) {
         Ability parentAbility = Ability.parent(name, description, color, member);
 
         parentAbility.validateDuplicateName(abilities);
@@ -68,7 +68,7 @@ public class AbilityService {
     }
 
     private Ability extractChildAbility(Member member, List<Ability> abilities, String name,
-        String description, String color, Long parentId) {
+                                        String description, String color, Long parentId) {
         Ability parentAbility = findAbilityById(parentId);
         Ability childAbility = Ability.child(name, description, color, parentAbility, member);
 
@@ -155,7 +155,7 @@ public class AbilityService {
         if (request.hasParent()) {
             DefaultAbility parentDefaultAbility = findDefaultAbilityById(request.getParentId());
             DefaultAbility childDefaultAbility = createChildDefaultAbility(request,
-                                                                           parentDefaultAbility);
+                parentDefaultAbility);
             return childDefaultAbility.getId();
         }
 
@@ -164,7 +164,7 @@ public class AbilityService {
     }
 
     private DefaultAbility createChildDefaultAbility(DefaultAbilityCreateRequest request,
-        DefaultAbility parentDefaultAbility) {
+                                                     DefaultAbility parentDefaultAbility) {
         return defaultAbilityRepository.save(new DefaultAbility(
             request.getName(),
             request.getDescription(),
@@ -229,7 +229,7 @@ public class AbilityService {
     }
 
     private Ability mapToChildAbility(Member member, DefaultAbility defaultAbility,
-        Ability parentAbility) {
+                                      Ability parentAbility) {
         Ability childAbility = extractChildAbility(
             member,
             findByMemberId(member.getId()),

@@ -34,7 +34,7 @@ public class ReportStudylog {
     private ReportStudylogAbility studylogAbility;
 
     public ReportStudylog(Long reportId, ReportAbility reportAbility, Studylog studylog,
-        String originalAbilityName, String originalAbilityColor) {
+                          String originalAbilityName, String originalAbilityColor) {
         this.reportId = reportId;
         this.reportAbility = reportAbility;
         this.studylog = studylog;

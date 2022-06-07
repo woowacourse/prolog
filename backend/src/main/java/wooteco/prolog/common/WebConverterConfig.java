@@ -13,10 +13,10 @@ public class WebConverterConfig implements WebMvcConfigurer {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(String.class, Month.class,
-                              source -> Month.of(Integer.parseInt(source))
+            source -> Month.of(Integer.parseInt(source))
         );
         registry.addConverter(String.class, LocalDate.class,
-                              source -> LocalDate.parse(source, DateTimeFormatter.BASIC_ISO_DATE)
+            source -> LocalDate.parse(source, DateTimeFormatter.BASIC_ISO_DATE)
         );
     }
 }

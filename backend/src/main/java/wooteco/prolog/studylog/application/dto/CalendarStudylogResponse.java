@@ -18,7 +18,7 @@ public class CalendarStudylogResponse {
 
     public static CalendarStudylogResponse of(Studylog studylog) {
         return new CalendarStudylogResponse(studylog.getId(), studylog.getTitle(),
-                                            studylog.getCreatedAt(), studylog
-                                                .getUpdatedAt());
+            studylog.getCreatedAt(), studylog
+            .getUpdatedAt());
     }
 }

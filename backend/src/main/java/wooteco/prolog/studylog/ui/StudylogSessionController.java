@@ -27,8 +27,8 @@ public class StudylogSessionController {
     @PutMapping("/{id}/sessions")
     @MemberOnly
     public ResponseEntity<Void> updateStudylogSession(@AuthMemberPrincipal LoginMember member,
-        @PathVariable Long id,
-        @RequestBody StudylogSessionRequest studylogSessionRequest) {
+                                                      @PathVariable Long id,
+                                                      @RequestBody StudylogSessionRequest studylogSessionRequest) {
         studylogService.updateStudylogSession(member.getId(), id, studylogSessionRequest);
         return ResponseEntity.ok().build();
     }
@@ -36,8 +36,8 @@ public class StudylogSessionController {
     @PutMapping("/{id}/missions")
     @MemberOnly
     public ResponseEntity<Void> updateStudylogMissions(@AuthMemberPrincipal LoginMember member,
-        @PathVariable Long id,
-        @RequestBody StudylogMissionRequest studylogMissionRequest) {
+                                                       @PathVariable Long id,
+                                                       @RequestBody StudylogMissionRequest studylogMissionRequest) {
         studylogService.updateStudylogMission(member.getId(), id, studylogMissionRequest);
         return ResponseEntity.ok().build();
     }

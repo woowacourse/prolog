@@ -25,7 +25,7 @@ public class ReportStudylogResponse {
     }
 
     public static ReportStudylogResponse of(Studylog studylog,
-        List<ReportStudylog> reportStudylogs) {
+                                            List<ReportStudylog> reportStudylogs) {
         StudylogResponse studylogResponse = StudylogResponse.of(studylog);
         List<ReportAbilityResponse> abilityResponses = reportStudylogs.stream()
             .map(it -> ReportAbilityResponse.of(it.getReportAbility()))
@@ -35,7 +35,7 @@ public class ReportStudylogResponse {
             .collect(Collectors.toList());
 
         return new ReportStudylogResponse(studylogResponse, abilityResponses,
-                                          studylogAbilityResponses);
+            studylogAbilityResponses);
     }
 
 }

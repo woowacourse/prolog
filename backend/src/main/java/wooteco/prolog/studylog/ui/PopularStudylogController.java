@@ -32,8 +32,7 @@ public class PopularStudylogController {
     public ResponseEntity<StudylogsResponse> showPopularStudylogs(
         @AuthMemberPrincipal LoginMember member, @PageableDefault Pageable pageable) {
         StudylogsResponse studylogsResponse = popularStudylogService.findPopularStudylogs(pageable,
-                                                                                          member.getId(),
-                                                                                          member.isAnonymous());
+            member.getId(), member.isAnonymous());
         return ResponseEntity.ok(studylogsResponse);
     }
 }

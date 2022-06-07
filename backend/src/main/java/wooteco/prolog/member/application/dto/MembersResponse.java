@@ -26,6 +26,6 @@ public class MembersResponse {
             .collect(Collectors.toList());
 
         return new MembersResponse(data, originData.getTotalElements(), originData.getTotalPages(),
-                                   originData.getNumber() + 1);
+            originData.getNumber() + 1);
     }
 }

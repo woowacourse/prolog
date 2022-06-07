@@ -21,7 +21,7 @@ public class MissionResponse {
             return null;
         }
         return new MissionResponse(mission.getId(), mission.getName(),
-                                   SessionResponse.of(mission.getSession()));
+            SessionResponse.of(mission.getSession()));
     }
 
     public static List<MissionResponse> listOf(List<Mission> missions) {

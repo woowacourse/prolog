@@ -47,7 +47,7 @@ public class StudylogOverviewStepDefinitions extends AcceptanceSteps {
     public void 나의스터디로그목록을조회하면(String name, int year, int month) {
         final String memberName = GithubResponses.findByName(name).getLogin();
         String path = String.format("members/%s/calendar-studylogs?year=%d&month=%d", memberName,
-                                    year, month);
+            year, month);
         context.invokeHttpGet(path);
     }
 

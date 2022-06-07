@@ -39,10 +39,10 @@ public class ReportService {
     private StudylogAbilityService studylogAbilityService;
 
     public ReportService(ReportRepository reportRepository,
-        ReportAbilityRepository reportAbilityRepository,
-        ReportStudylogRepository reportStudylogRepository,
-        MemberService memberService, AbilityService abilityService,
-        StudylogAbilityService studylogAbilityService) {
+                         ReportAbilityRepository reportAbilityRepository,
+                         ReportStudylogRepository reportStudylogRepository,
+                         MemberService memberService, AbilityService abilityService,
+                         StudylogAbilityService studylogAbilityService) {
         this.reportRepository = reportRepository;
         this.reportAbilityRepository = reportAbilityRepository;
         this.reportStudylogRepository = reportStudylogRepository;
@@ -66,38 +66,27 @@ public class ReportService {
         List<HierarchyAbilityResponse> abilities = abilityService.findParentAbilitiesByMemberId(
             loginMember.getId());
         List<ReportAbility> reportAbilities = reportAbilityRepository.saveAll(abilities.stream()
-                                                                                  .map(
-                                                                                      it -> new ReportAbility(
-                                                                                          it.getName(),
-                                                                                          it.getDescription(),
-                                                                                          it.getColor(),
-                                                                                          reportRequest.findWeight(
-                                                                                              it.getId()),
-                                                                                          it.getId(),
-                                                                                          report.getId()))
-                                                                                  .collect(
-                                                                                      Collectors.toList()));
+            .map(it -> new ReportAbility(it.getName(), it.getDescription(), it.getColor(),
+                reportRequest.findWeight(it.getId()), it.getId(), report.getId()))
+            .collect(Collectors.toList()));
 
         List<StudylogAbility> studylogAbilities = studylogAbilityService
             .findStudylogAbilitiesInPeriod(loginMember.getId(),
-                                           LocalDate.parse(reportRequest.getStartDate()),
-                                           LocalDate.parse(reportRequest.getEndDate()));
+                LocalDate.parse(reportRequest.getStartDate()),
+                LocalDate.parse(reportRequest.getEndDate()));
 
         List<ReportStudylog> reportStudylogs = reportStudylogRepository.saveAll(
             studylogAbilities.stream()
                 .map(it -> new ReportStudylog(report.getId(),
-                                              findReportAbilityByAbility(it.getAbility(),
-                                                                         reportAbilities),
-                                              it.getStudylog(),
-                                              it.getAbility().getName(),
-                                              it.getAbility().getColor()))
+                    findReportAbilityByAbility(it.getAbility(), reportAbilities), it.getStudylog(),
+                    it.getAbility().getName(), it.getAbility().getColor()))
                 .collect(Collectors.toList()));
 
         return ReportResponse.of(report, reportAbilities, reportStudylogs);
     }
 
     private ReportAbility findReportAbilityByAbility(Ability ability,
-        List<ReportAbility> reportAbilities) {
+                                                     List<ReportAbility> reportAbilities) {
         return reportAbilities.stream()
             .filter(it -> it.getOriginAbilityId().equals(ability.getParent().getId()))
             .findFirst()
@@ -117,7 +106,7 @@ public class ReportService {
     }
 
     public PageableResponse<ReportResponse> findReportsByUsername(String username,
-        Pageable pageable) {
+                                                                  Pageable pageable) {
         Member member = memberService.findByUsername(username);
         Page<Report> reports = reportRepository.findByMemberId(member.getId(), pageable);
 
@@ -128,7 +117,7 @@ public class ReportService {
 
     @Transactional
     public void updateReport(LoginMember loginMember, Long reportId,
-        ReportUpdateRequest reportUpdateRequest) {
+                             ReportUpdateRequest reportUpdateRequest) {
         Report report = reportRepository.findById(reportId)
             .orElseThrow(IllegalArgumentException::new);
         if (!report.isBelongTo(loginMember.getId())) {

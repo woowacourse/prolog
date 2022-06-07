@@ -30,6 +30,6 @@ public class FilterService {
         List<TagResponse> tagResponses = tagService.findTagsIncludedInStudylogs();
         List<MemberResponse> memberResponses = memberService.findAllOrderByNickNameAsc();
         return new FilterResponse(sessionResponses, missionResponses, tagResponses,
-                                  memberResponses);
+            memberResponses);
     }
 }

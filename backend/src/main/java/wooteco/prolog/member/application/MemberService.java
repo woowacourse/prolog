@@ -64,8 +64,8 @@ public class MemberService {
 
     @Transactional
     public void updateMember(LoginMember loginMember,
-        String username,
-        MemberUpdateRequest updateRequest) {
+                             String username,
+                             MemberUpdateRequest updateRequest) {
         loginMember.act().throwIfAnonymous(MemberNotAllowedException::new);
         Member persistMember = loginMember.act().ifMember(memberId -> {
             Member member = findById(memberId);
@@ -81,8 +81,8 @@ public class MemberService {
 
     @Transactional
     public void updateProfileIntro(LoginMember loginMember,
-        String username,
-        ProfileIntroRequest updateRequest) {
+                                   String username,
+                                   ProfileIntroRequest updateRequest) {
         loginMember.act().throwIfAnonymous(MemberNotAllowedException::new);
 
         Member persistMember = loginMember.act().ifMember(memberId -> {

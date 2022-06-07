@@ -31,14 +31,14 @@ class SessionMemberServiceTest {
     void registerMember() {
         //given
         GithubProfileResponse brown = new GithubProfileResponse("브라운", "brown", "1",
-                                                                "image");
+            "image");
 
         memberService.findOrCreateMember(brown);
         final Session session = new Session("백엔드");
         final Session savedSession = sessionRepository.save(session);
         final Member savedBrown = memberService.findByUsername(brown.getLoginName());
         final SessionMember savedSessionMember = new SessionMember(savedSession.getId(),
-                                                                   savedBrown);
+            savedBrown);
 
         //when
         sessionMemberService.registerMember(savedSession.getId(), savedBrown.getId());
@@ -48,11 +48,10 @@ class SessionMemberServiceTest {
 
         assertAll(
             () -> assertThat(sessionMembers.stream()
-                                 .allMatch(it -> it.getMember().equals(savedBrown))).isTrue(),
+                .allMatch(it -> it.getMember().equals(savedBrown))).isTrue(),
             () -> assertThat(sessionMembers.stream()
-                                 .anyMatch(
-                                     it -> it.getSessionId()
-                                         .equals(savedSessionMember.getSessionId()))).isTrue()
+                .anyMatch(
+                    it -> it.getSessionId().equals(savedSessionMember.getSessionId()))).isTrue()
         );
     }
 }

@@ -53,7 +53,7 @@ public class MemberStepDefinitions extends AcceptanceSteps {
     @When("{int}번 스터디로그를 스크랩하면")
     public void studylog를스크랩하면(int studylogId) {
         context.invokeHttpPostWithToken("/members/scrap",
-                                        new MemberScrapRequest((long) studylogId));
+            new MemberScrapRequest((long) studylogId));
         assertThat(context.response.statusCode()).isEqualTo(201);
     }
 

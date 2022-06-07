@@ -31,7 +31,7 @@ public interface StudylogRepository extends JpaRepository<Studylog, Long>,
     List<Studylog> findTop50ByDeletedFalseOrderByIdDesc();
 
     List<Studylog> findByMemberIdAndCreatedAtBetween(Long memberId, LocalDateTime startDate,
-        LocalDateTime endDate);
+                                                     LocalDateTime endDate);
 
     Page<Studylog> findByIdInAndDeletedFalseOrderByIdAsc(List<Long> ids, Pageable pageable);
 }

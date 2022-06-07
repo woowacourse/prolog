@@ -67,7 +67,7 @@ class AbilityServiceTest {
 
         AbilityCreateRequest childRequest1 = new AbilityCreateRequest("자식1", "자식설명1", "1", 1L);
         AbilityCreateRequest childRequest1_2 = new AbilityCreateRequest("자식1_2", "자식설명1_2", "1",
-                                                                        1L);
+            1L);
         AbilityCreateRequest childRequest2 = new AbilityCreateRequest("자식2", "자식설명2", "2", 2L);
         AbilityCreateRequest childRequest3 = new AbilityCreateRequest("자식3", "자식설명3", "3", 3L);
         abilityService.createAbility(member.getId(), childRequest1);
@@ -78,11 +78,8 @@ class AbilityServiceTest {
         // when
         AbilityUpdateRequest request = new AbilityUpdateRequest(4L, "자식1_1", "자식설명1", "1");
         HierarchyAbilityResponse expectedResponse = new HierarchyAbilityResponse(request.getId(),
-                                                                                 request.getName(),
-                                                                                 request.getDescription(),
-                                                                                 request.getColor(),
-                                                                                 false,
-                                                                                 new ArrayList<>());
+            request.getName(), request.getDescription(), request.getColor(), false,
+            new ArrayList<>());
 
         abilityService.updateAbility(member.getId(), request.getId(), request);
         List<HierarchyAbilityResponse> abilityResponses = abilityService.findAbilitiesByMemberId(
@@ -102,9 +99,7 @@ class AbilityServiceTest {
     void createAbilityException() {
         // given
         AbilityCreateRequest abilityCreateRequest = new AbilityCreateRequest("zi존브라운123",
-                                                                             "이견 있습니까?",
-                                                                             "이견을 피로 물들이는 붉은 색",
-                                                                             Long.MAX_VALUE);
+            "이견 있습니까?", "이견을 피로 물들이는 붉은 색", Long.MAX_VALUE);
 
         // when, then
         assertThatThrownBy(() -> abilityService.createAbility(member.getId(), abilityCreateRequest))
@@ -117,7 +112,7 @@ class AbilityServiceTest {
         // given
         String name = "zi존브라운123";
         AbilityCreateRequest request1 = new AbilityCreateRequest(name, "이견 있습니까?",
-                                                                 "이견을 피로 물들이는 붉은 색", null);
+            "이견을 피로 물들이는 붉은 색", null);
 
         abilityService.createAbility(member.getId(), request1);
 
@@ -133,7 +128,7 @@ class AbilityServiceTest {
         // given
         String color = "이견을 피로 물들이는 붉은 색";
         AbilityCreateRequest request1 = new AbilityCreateRequest("zi존브라운123", "이견 있습니까?", color,
-                                                                 null);
+            null);
 
         abilityService.createAbility(member.getId(), request1);
 
@@ -148,9 +143,7 @@ class AbilityServiceTest {
     void createChildAbilityColorDifferentException() {
         // given
         AbilityCreateRequest parentAbilityRequest = new AbilityCreateRequest("zi존브라운123",
-                                                                             "이견 있습니까?",
-                                                                             "이견을 피로 물들이는 붉은 색",
-                                                                             null);
+            "이견 있습니까?", "이견을 피로 물들이는 붉은 색", null);
 
         abilityService.createAbility(member.getId(), parentAbilityRequest);
         Long parentId = abilityService.findAbilitiesByMemberId(member.getId()).iterator().next()
@@ -158,7 +151,7 @@ class AbilityServiceTest {
 
         // when, then
         AbilityCreateRequest childAbilityRequest = new AbilityCreateRequest("그냥막구현해", "없어용",
-                                                                            "검은 색 이에용", parentId);
+            "검은 색 이에용", parentId);
         assertThatThrownBy(() -> abilityService.createAbility(member.getId(), childAbilityRequest))
             .isExactlyInstanceOf(AbilityParentChildColorDifferentException.class);
     }
@@ -196,9 +189,9 @@ class AbilityServiceTest {
     void updateAbilityDuplicateNameException() {
         // given
         AbilityCreateRequest createRequest1 = new AbilityCreateRequest("프로그래밍1", "프로그래밍1 역량입니다.",
-                                                                       "#111111", null);
+            "#111111", null);
         AbilityCreateRequest createRequest2 = new AbilityCreateRequest("프로그래밍2", "프로그래밍2 역량입니다.",
-                                                                       "#222222", null);
+            "#222222", null);
         abilityService.createAbility(member.getId(), createRequest1);
         abilityService.createAbility(member.getId(), createRequest2);
 
@@ -208,13 +201,12 @@ class AbilityServiceTest {
         HierarchyAbilityResponse createdAbilityResponse2 = abilityResponses.get(1);
 
         AbilityUpdateRequest request = new AbilityUpdateRequest(createdAbilityResponse1.getId(),
-                                                                createdAbilityResponse2.getName(),
-                                                                "완전히 새로운건데요?!", "#222222");
+            createdAbilityResponse2.getName(), "완전히 새로운건데요?!", "#222222");
 
         // when, then
         assertThatThrownBy(
             () -> abilityService.updateAbility(createdAbilityResponse1.getId(), request.getId(),
-                                               request))
+                request))
             .isExactlyInstanceOf(AbilityNameDuplicateException.class);
     }
 
@@ -223,9 +215,9 @@ class AbilityServiceTest {
     void updateAbilityDuplicateColorException() {
         // given
         AbilityCreateRequest createRequest1 = new AbilityCreateRequest("프로그래밍1", "프로그래밍1 역량입니다.",
-                                                                       "#111111", null);
+            "#111111", null);
         AbilityCreateRequest createRequest2 = new AbilityCreateRequest("프로그래밍2", "프로그래밍2 역량입니다.",
-                                                                       "#222222", null);
+            "#222222", null);
         abilityService.createAbility(member.getId(), createRequest1);
         abilityService.createAbility(member.getId(), createRequest2);
 
@@ -235,13 +227,12 @@ class AbilityServiceTest {
         HierarchyAbilityResponse createdAbilityResponse2 = abilityResponses.get(1);
 
         AbilityUpdateRequest request = new AbilityUpdateRequest(createdAbilityResponse1.getId(),
-                                                                "완전히 새로운 이름", "완전히 새로운건데요?!",
-                                                                createdAbilityResponse2.getColor());
+            "완전히 새로운 이름", "완전히 새로운건데요?!", createdAbilityResponse2.getColor());
 
         // when, then
         assertThatThrownBy(
             () -> abilityService.updateAbility(createdAbilityResponse1.getId(), request.getId(),
-                                               request))
+                request))
             .isExactlyInstanceOf(AbilityParentColorDuplicateException.class);
     }
 
@@ -250,23 +241,19 @@ class AbilityServiceTest {
     void updateAbilityParentChangeChildrenColors() {
         // given
         AbilityCreateRequest createParentRequest = new AbilityCreateRequest("부모 프로그래밍",
-                                                                            "프로그래밍 역량입니다.",
-                                                                            "#111111", null);
+            "프로그래밍 역량입니다.", "#111111", null);
         abilityService.createAbility(member.getId(), createParentRequest);
 
         HierarchyAbilityResponse createdParentResponse = abilityService.findParentAbilitiesByMemberId(
             member.getId()).get(0);
 
         AbilityCreateRequest createChildRequest = new AbilityCreateRequest("자식 프로그래밍",
-                                                                           "부모 프로그래밍의 자식입니다.",
-                                                                           createdParentResponse.getColor(),
-                                                                           createdParentResponse.getId());
+            "부모 프로그래밍의 자식입니다.", createdParentResponse.getColor(), createdParentResponse.getId());
         abilityService.createAbility(member.getId(), createChildRequest);
 
         String newColor = "#ffffff";
         AbilityUpdateRequest request = new AbilityUpdateRequest(createdParentResponse.getId(),
-                                                                "완전히 새로운 이름", "완전히 새로운건데요?!",
-                                                                newColor);
+            "완전히 새로운 이름", "완전히 새로운건데요?!", newColor);
 
         // when
         abilityService.updateAbility(member.getId(), request.getId(), request);
@@ -291,17 +278,14 @@ class AbilityServiceTest {
         // given
         String legacyColor = "#111111";
         AbilityCreateRequest createParentRequest1 = new AbilityCreateRequest("부모 프로그래밍",
-                                                                             "프로그래밍 역량입니다.",
-                                                                             legacyColor, null);
+            "프로그래밍 역량입니다.", legacyColor, null);
         abilityService.createAbility(member.getId(), createParentRequest1);
 
         HierarchyAbilityResponse createdParentResponse = abilityService.findParentAbilitiesByMemberId(
             member.getId()).get(0);
 
         AbilityCreateRequest createChildRequest1 = new AbilityCreateRequest("자식 프로그래밍",
-                                                                            "부모 프로그래밍의 자식입니다.",
-                                                                            createdParentResponse.getColor(),
-                                                                            createdParentResponse.getId());
+            "부모 프로그래밍의 자식입니다.", createdParentResponse.getColor(), createdParentResponse.getId());
         abilityService.createAbility(member.getId(), createChildRequest1);
 
         AbilityResponse childAbilityDto = abilityService.findParentAbilitiesByMemberId(
@@ -311,7 +295,7 @@ class AbilityServiceTest {
         String newName = "완전히 새로운 이름";
         String newDescription = "완전히 새로운건데요?!";
         AbilityUpdateRequest request = new AbilityUpdateRequest(childAbilityDto.getId(), newName,
-                                                                newDescription, newColor);
+            newDescription, newColor);
 
         // when
         abilityService.updateAbility(member.getId(), request.getId(), request);
@@ -378,7 +362,7 @@ class AbilityServiceTest {
 
         // when
         assertThat(abilityRepository.findAll()).containsExactly(parentAbility, childAbility1,
-                                                                childAbility2);
+            childAbility2);
         assertThat(abilityService.findAbilitiesByMemberId(member.getId())).hasSize(3);
 
         abilityService.deleteAbility(member.getId(), parentAbility.getId());

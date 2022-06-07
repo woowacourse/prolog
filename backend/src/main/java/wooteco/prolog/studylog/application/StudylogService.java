@@ -69,7 +69,7 @@ public class StudylogService {
 
     @Transactional
     public List<StudylogResponse> insertStudylogs(Long memberId,
-        List<StudylogRequest> studylogRequests) {
+                                                  List<StudylogRequest> studylogRequests) {
         if (studylogRequests.isEmpty()) {
             throw new StudylogArgumentException();
         }
@@ -89,11 +89,11 @@ public class StudylogService {
             .orElse(null);
 
         Studylog persistStudylog = studylogRepository.save(new Studylog(member,
-                                                                        studylogRequest.getTitle(),
-                                                                        studylogRequest.getContent(),
-                                                                        session,
-                                                                        mission,
-                                                                        tags.getList())
+            studylogRequest.getTitle(),
+            studylogRequest.getContent(),
+            session,
+            mission,
+            tags.getList())
         );
 
         onStudylogCreatedEvent(member, tags, persistStudylog);
@@ -108,7 +108,7 @@ public class StudylogService {
     }
 
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Long memberId,
-        boolean isAnonymousMember) {
+                                           boolean isAnonymousMember) {
         StudylogsResponse studylogs = findStudylogs(request, memberId);
         if (isAnonymousMember) {
             return studylogs;
@@ -134,18 +134,17 @@ public class StudylogService {
             List<Long> ids = request.getIds();
 
             Page<Studylog> studylogs = studylogRepository.findByIdInAndDeletedFalseOrderByIdAsc(ids,
-                                                                                                pageable);
+                pageable);
 
             return StudylogsResponse.of(studylogs, memberId);
         }
 
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
             return findStudylogsWithoutKeyword(request.getSessions(), request.getMissions(),
-                                               request.getTags(),
-                                               request.getUsernames(), request.getMembers(),
-                                               request.getStartDate(),
-                                               request.getEndDate(),
-                                               request.getPageable(), memberId);
+                request.getTags(),
+                request.getUsernames(), request.getMembers(), request.getStartDate(),
+                request.getEndDate(),
+                request.getPageable(), memberId);
         }
 
         final StudylogDocumentResponse response = studylogDocumentService.findBySearchKeyword(
@@ -214,10 +213,10 @@ public class StudylogService {
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
         Mission mission = missionService.findById(studylogRequest.getMissionId());
         StudylogTemp requestedStudylogTemp = new StudylogTemp(member,
-                                                              studylogRequest.getTitle(),
-                                                              studylogRequest.getContent(),
-                                                              mission,
-                                                              tags.getList());
+            studylogRequest.getTitle(),
+            studylogRequest.getContent(),
+            mission,
+            tags.getList());
 
         deleteStudylogTemp(memberId);
         StudylogTemp createdStudylogTemp = studylogTempRepository.save(requestedStudylogTemp);
@@ -248,7 +247,7 @@ public class StudylogService {
 
         // 읽음 처리
         if (!studylogReadRepository.existsByMemberIdAndStudylogId(loginMember.getId(),
-                                                                  studylog.getId())) {
+            studylog.getId())) {
             insertStudylogRead(studylog.getId(), loginMember.getId());
         }
     }
@@ -256,11 +255,9 @@ public class StudylogService {
     private StudylogResponse toStudylogResponse(LoginMember loginMember, Studylog studylog) {
         boolean liked = studylog.likedByMember(loginMember.getId());
         boolean read = studylogReadRepository.findByMemberIdAndStudylogId(loginMember.getId(),
-                                                                          studylog.getId())
-            .isPresent();
+            studylog.getId()).isPresent();
         boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(),
-                                                                              studylog.getId())
-            .isPresent();
+            studylog.getId()).isPresent();
 
         return StudylogResponse.of(studylog, scraped, read, liked);
     }
@@ -306,7 +303,7 @@ public class StudylogService {
 
         Tags newTags = tagService.findOrCreate(studylogRequest.getTags());
         studylog.update(studylogRequest.getTitle(), studylogRequest.getContent(), session, mission,
-                        newTags);
+            newTags);
         memberTagService.updateMemberTag(originalTags, newTags, foundMember);
 
         studylogDocumentService.update(studylog.toStudylogDocument());
@@ -314,7 +311,7 @@ public class StudylogService {
 
     @Transactional
     public void updateStudylogSession(Long memberId, Long studylogId,
-        StudylogSessionRequest studylogSessionRequest) {
+                                      StudylogSessionRequest studylogSessionRequest) {
         Studylog studylog = studylogRepository.findById(studylogId)
             .orElseThrow(StudylogNotFoundException::new);
         studylog.validateBelongTo(memberId);
@@ -327,7 +324,7 @@ public class StudylogService {
 
     @Transactional
     public void updateStudylogMission(Long memberId, Long studylogId,
-        StudylogMissionRequest studylogMissionRequest) {
+                                      StudylogMissionRequest studylogMissionRequest) {
         Studylog studylog = studylogRepository.findById(studylogId)
             .orElseThrow(StudylogNotFoundException::new);
         studylog.validateBelongTo(memberId);
@@ -364,14 +361,14 @@ public class StudylogService {
 
         if (studylogReadRepository.existsByMemberIdAndStudylogId(memberId, studylogId)) {
             StudylogRead studylogRead = studylogReadRepository.findByMemberIdAndStudylogId(memberId,
-                                                                                           studylogId)
+                    studylogId)
                 .orElseThrow(StudylogReadNotExistException::new);
             studylogReadRepository.delete(studylogRead);
         }
     }
 
     public List<CalendarStudylogResponse> findCalendarStudylogs(String username,
-        LocalDate localDate) {
+                                                                LocalDate localDate) {
         final Member member = memberService.findByUsername(username);
         final LocalDateTime start = localDate.with(firstDayOfMonth()).atStartOfDay();
         final LocalDateTime end = localDate.with(lastDayOfMonth()).atTime(LocalTime.MAX);
@@ -424,11 +421,8 @@ public class StudylogService {
     }
 
     public List<Studylog> findStudylogsInPeriod(Long memberId, LocalDate startDate,
-        LocalDate endDate) {
+                                                LocalDate endDate) {
         return studylogRepository.findByMemberIdAndCreatedAtBetween(memberId,
-                                                                    LocalDateTime.of(startDate,
-                                                                                     LocalTime.MIN),
-                                                                    LocalDateTime.of(endDate,
-                                                                                     LocalTime.MAX));
+            LocalDateTime.of(startDate, LocalTime.MIN), LocalDateTime.of(endDate, LocalTime.MAX));
     }
 }
