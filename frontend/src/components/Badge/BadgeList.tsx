@@ -6,11 +6,11 @@ import { ReactComponent as ComplimentBadge } from '../../assets/images/badge-2-l
 
 const BADGE_OBJ = {
   PASSION_KING: {
-    imgSrc: PassionBadge,
+    svgComponent: PassionBadge,
     description: '와우!🕺 level2 동안 7개 이상의 글을 작성하신 당신은, 열정왕!🔥',
   },
   COMPLIMENT_KING: {
-    imgSrc: ComplimentBadge,
+    svgComponent: ComplimentBadge,
     description: '칭찬왕님~🥰 level2 동안 15번 이상이나 좋아요를 눌러주셔서 고마워요.',
   },
 };
@@ -25,12 +25,12 @@ const BadgeList = ({ badgeList }: BadgeListProps) => {
   return (
     <Container>
       {badgeList.map((name) => {
-        const Badge = BADGE_OBJ[name]['imgSrc'];
+        const { svgComponent: Badge, description } = BADGE_OBJ[name];
 
         return (
           <BadgeContainer key={name}>
             <Badge aria-label={name} />
-            <TooltipText>{BADGE_OBJ[name].description}</TooltipText>
+            <TooltipText>{description}</TooltipText>
           </BadgeContainer>
         );
       })}
