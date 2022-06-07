@@ -51,7 +51,7 @@ export const TopContainerStyle = css`
   width: 100%;
   height: 13rem;
 
-  padding: 1.5rem 1.6rem 1.5rem;
+  padding: 1.5rem 1.6rem 0 1.6rem;
 
   border-radius: 1.6rem;
   border-bottom-right-radius: 0;
