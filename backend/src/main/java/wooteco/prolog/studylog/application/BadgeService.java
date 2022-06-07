@@ -19,8 +19,8 @@ public class BadgeService {
     private final MemberService memberService;
     private final BadgeRepository badgeRepository;
 
-    public List<BadgeType> findBadges(Long userId, List<Long> sessions) {
-        Member member = memberService.findById(userId);
+    public List<BadgeType> findBadges(String username, List<Long> sessions) {
+        Member member = memberService.findByUsername(username);
 
         int studylogCount = badgeRepository.countStudylogByUsernameDuringSessions(
             member.getUsername(),
