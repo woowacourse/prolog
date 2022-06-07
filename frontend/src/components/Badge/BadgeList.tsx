@@ -25,6 +25,8 @@ const BadgeList = ({ badgeList }: BadgeListProps) => {
   return (
     <Container>
       {badgeList.map((name) => {
+        if (!BADGE_OBJ[name]) return false;
+
         const { svgComponent: Badge, description } = BADGE_OBJ[name];
 
         return (
