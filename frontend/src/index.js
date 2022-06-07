@@ -6,8 +6,9 @@ import 'antd/dist/antd.css';
 import App from './App';
 import store from './redux/store';
 import UserProvider from './contexts/UserProvider';
+import { isDev, isLocal } from './configs/environment';
 
-if (process.env.NODE_ENV === 'development') {
+if (isDev || isLocal) {
   const { worker } = require('./mocks/browser');
   worker.start();
 }
