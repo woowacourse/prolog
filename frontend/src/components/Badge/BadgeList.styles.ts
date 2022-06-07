@@ -42,8 +42,7 @@ export const TooltipText = styled.p`
   font-size: 1rem;
   z-index: 1;
   top: 120%;
-  left: 70%;
-  margin-left: -60px;
+  left: 10%;
 
   color: ${COLOR.WHITE};
   background-color: ${COLOR.BLACK_900};
