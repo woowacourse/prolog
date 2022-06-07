@@ -18,6 +18,7 @@ export const PopularStudylogListStyle = css`
 
   display: grid;
   justify-content: content;
+  align-items: center;
   grid-template-columns: repeat(10, 1fr);
 
   position: relative;
