@@ -28,7 +28,6 @@ import { ReactComponent as LikedIcon } from '../../assets/images/heart-filled.sv
 import { ReactComponent as UnLikeIcon } from '../../assets/images/heart.svg';
 
 import type { Studylog } from '../../models/Studylogs';
-import FlexBox from '../@shared/FlexBox/FlexBox';
 
 const PopularStudylogItem = ({ item }: { item: Studylog }) => {
   const {
@@ -55,7 +54,15 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
             <span>{author.nickname}</span>
           </div>
         </Link>
-        <Link to={`${PATH.STUDYLOGS}/${id}`}>
+        {/* 제목 영역 */}
+        <Link
+          to={`${PATH.STUDYLOGS}/${id}`}
+          css={[
+            css`
+              height: 100%;
+            `,
+          ]}
+        >
           <h2>{title}</h2>
         </Link>
       </div>
