@@ -62,7 +62,7 @@ public class DataInitializer implements InitializingBean {
     private void executeQueryWithTable(String tableName) {
         entityManager.createNativeQuery("TRUNCATE TABLE " + tableName).executeUpdate();
         entityManager.createNativeQuery("ALTER TABLE " + tableName + " ALTER COLUMN "
-            + "ID RESTART WITH 1").executeUpdate();
+                                            + "ID RESTART WITH 1").executeUpdate();
     }
 
     private void deleteAllDocuments() {

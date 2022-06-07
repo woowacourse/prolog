@@ -48,7 +48,7 @@ public enum StudylogFixture {
     private SessionService sessionService;
 
     StudylogFixture(String title, String content, String missionName, String sessionName,
-                    Tags tags) {
+        Tags tags) {
         this.title = title;
         this.content = content;
         this.missionName = missionName;
@@ -57,7 +57,7 @@ public enum StudylogFixture {
     }
 
     private void injectMissionService(MissionService missionService,
-                                      SessionService sessionService) {
+        SessionService sessionService) {
         this.missionService = missionService;
         this.sessionService = sessionService;
     }

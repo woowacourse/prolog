@@ -36,9 +36,9 @@ public class StudylogController {
     @PostMapping
     @MemberOnly
     public ResponseEntity<StudylogResponse> createStudylog(@AuthMemberPrincipal LoginMember member,
-                                                           @RequestBody StudylogRequest studylogRequest) {
+        @RequestBody StudylogRequest studylogRequest) {
         StudylogResponse studylogResponse = studylogService.insertStudylog(member.getId(),
-            studylogRequest);
+                                                                           studylogRequest);
         return ResponseEntity.created(URI.create("/studylogs/" + studylogResponse.getId()))
             .body(studylogResponse);
     }
@@ -64,15 +64,16 @@ public class StudylogController {
 
     @GetMapping
     public ResponseEntity<StudylogsResponse> showAll(@AuthMemberPrincipal LoginMember member,
-                                                     @SearchParams StudylogsSearchRequest searchRequest) {
+        @SearchParams StudylogsSearchRequest searchRequest) {
         StudylogsResponse studylogsResponse = studylogService.findStudylogs(searchRequest,
-            member.getId(), member.isAnonymous());
+                                                                            member.getId(),
+                                                                            member.isAnonymous());
         return ResponseEntity.ok(studylogsResponse);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<StudylogResponse> showStudylog(@PathVariable String id,
-                                                         @AuthMemberPrincipal LoginMember member) {
+        @AuthMemberPrincipal LoginMember member) {
         if (!NumberUtils.isNumeric(id)) {
             throw new StudylogNotFoundException();
         }
@@ -82,8 +83,8 @@ public class StudylogController {
     @PutMapping("/{id}")
     @MemberOnly
     public ResponseEntity<Void> updateStudylog(@AuthMemberPrincipal LoginMember member,
-                                               @PathVariable Long id,
-                                               @RequestBody StudylogRequest studylogRequest) {
+        @PathVariable Long id,
+        @RequestBody StudylogRequest studylogRequest) {
         studylogService.updateStudylog(member.getId(), id, studylogRequest);
         return ResponseEntity.ok().build();
     }
@@ -91,7 +92,7 @@ public class StudylogController {
     @DeleteMapping("/{id}")
     @MemberOnly
     public ResponseEntity<Void> deleteStudylog(@AuthMemberPrincipal LoginMember member,
-                                               @PathVariable Long id) {
+        @PathVariable Long id) {
         studylogService.deleteStudylog(member.getId(), id);
         return ResponseEntity.noContent().build();
     }

@@ -99,7 +99,7 @@ public enum StudylogAcceptanceFixture {
             .map(TagAcceptanceFixture::getTagRequest)
             .collect(toList());
         this.studylogRequest = new StudylogRequest(title, content, sessionId, missionId,
-            tagRequests);
+                                                   tagRequests);
     }
 
     public static List<StudylogRequest> findByMissionNumber(Long missionId) {

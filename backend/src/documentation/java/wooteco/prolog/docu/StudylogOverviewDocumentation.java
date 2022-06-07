@@ -21,7 +21,7 @@ public class StudylogOverviewDocumentation extends Documentation {
         given("members/calendar-studylogs")
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().get("/members/{username}/calendar-studylogs?year=2021&month=8",
-                GithubResponses.브라운.getLogin())
+                        GithubResponses.브라운.getLogin())
             .then().log().all()
             .extract();
     }

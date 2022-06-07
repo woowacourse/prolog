@@ -30,7 +30,7 @@ public class Report {
     private Long memberId;
 
     public Report(String title, String description, Long memberId, LocalDate startDate,
-                  LocalDate endDate) {
+        LocalDate endDate) {
         this.title = title;
         this.description = description;
         this.memberId = memberId;

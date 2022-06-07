@@ -31,7 +31,7 @@ public class AbilityController {
     @MemberOnly
     @PostMapping("/abilities/templates/{template}")
     public ResponseEntity<Void> applyDefaultAbilities(@AuthMemberPrincipal LoginMember member,
-                                                      @PathVariable String template) {
+        @PathVariable String template) {
         abilityService.applyDefaultAbilities(member.getId(), template);
         return ResponseEntity.ok().build();
     }
@@ -39,9 +39,9 @@ public class AbilityController {
     @MemberOnly
     @PostMapping("/abilities")
     public ResponseEntity<AbilityResponse> createAbility(@AuthMemberPrincipal LoginMember member,
-                                                         @RequestBody AbilityCreateRequest abilityCreateRequest) {
+        @RequestBody AbilityCreateRequest abilityCreateRequest) {
         AbilityResponse abilityResponse = abilityService.createAbility(member.getId(),
-            abilityCreateRequest);
+                                                                       abilityCreateRequest);
         return ResponseEntity.ok().body(abilityResponse);
     }
 
@@ -60,8 +60,8 @@ public class AbilityController {
     @MemberOnly
     @PutMapping("/abilities/{abilityId}")
     public ResponseEntity<Void> updateAbility(@AuthMemberPrincipal LoginMember member,
-                                              @PathVariable Long abilityId,
-                                              @RequestBody AbilityUpdateRequest abilityUpdateRequest) {
+        @PathVariable Long abilityId,
+        @RequestBody AbilityUpdateRequest abilityUpdateRequest) {
         abilityService.updateAbility(member.getId(), abilityId, abilityUpdateRequest);
         return ResponseEntity.ok().build();
     }
@@ -69,7 +69,7 @@ public class AbilityController {
     @MemberOnly
     @DeleteMapping("/abilities/{abilityId}")
     public ResponseEntity<Void> deleteAbility(@AuthMemberPrincipal LoginMember member,
-                                              @PathVariable Long abilityId) {
+        @PathVariable Long abilityId) {
         abilityService.deleteAbility(member.getId(), abilityId);
         return ResponseEntity.ok().build();
     }

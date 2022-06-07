@@ -26,10 +26,10 @@ import wooteco.support.utils.RepositoryTest;
 class StudylogReadRepositoryTest {
 
     private static final Member 웨지 = new Member("sihyung92", "웨지", Role.CREW, 2222L,
-        "https://avatars.githubusercontent.com/u/51393021?v=4");
+                                                "https://avatars.githubusercontent.com/u/51393021?v=4");
 
     private static final Member 바다 = new Member("xrabcde", "바다", Role.CREW, 1111L,
-        "https://avatars.githubusercontent.com/u/56033755?v=4");
+                                                "https://avatars.githubusercontent.com/u/56033755?v=4");
 
     private Studylog studylog;
     private Member member;
@@ -68,9 +68,9 @@ class StudylogReadRepositoryTest {
         //when
         studylogReadRepository.save(studylogRead);
         boolean expectTrue = studylogReadRepository.existsByMemberIdAndStudylogId(bada.getId(),
-            studylog.getId());
+                                                                                  studylog.getId());
         boolean expectFalse = studylogReadRepository.existsByMemberIdAndStudylogId(member.getId(),
-            studylog.getId());
+                                                                                   studylog.getId());
         //then
         assertThat(expectTrue).isTrue();
         assertThat(expectFalse).isFalse();

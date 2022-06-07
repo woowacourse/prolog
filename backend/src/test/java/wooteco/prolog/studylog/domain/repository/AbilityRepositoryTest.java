@@ -73,7 +73,7 @@ class AbilityRepositoryTest {
         void findByIdAndMemberAbilityIdException() {
             // when
             Optional<Ability> foundAbility = abilityRepository.findByIdAndMemberId(Long.MAX_VALUE,
-                savedMember.getId());
+                                                                                   savedMember.getId());
 
             // then
             assertThat(foundAbility).isNotPresent();

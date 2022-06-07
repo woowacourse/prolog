@@ -18,8 +18,8 @@ public class DeleteMappingDataExtractor implements AnnotationDataExtractor {
         final String api = Arrays.stream(deleteMapping.value())
             .findAny()
             .orElseGet(() ->
-                Arrays.stream(deleteMapping.path()).findAny()
-                    .orElse("")
+                           Arrays.stream(deleteMapping.path()).findAny()
+                               .orElse("")
             );
         return new RequestApi(classUrl + api, "DELETE");
     }

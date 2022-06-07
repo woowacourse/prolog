@@ -21,7 +21,7 @@ public class ServletWrappingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+        FilterChain filterChain) throws ServletException, IOException {
 
         ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(request);
         requestStorage.set(wrappedRequest);

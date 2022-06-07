@@ -35,12 +35,12 @@ public class DefaultAbility {
     }
 
     public DefaultAbility(String name, String description, String color,
-                          String template, DefaultAbility parent) {
+        String template, DefaultAbility parent) {
         this(null, name, description, color, template, parent);
     }
 
     public DefaultAbility(Long id, String name, String description, String color,
-                          String template, DefaultAbility parent) {
+        String template, DefaultAbility parent) {
         this.id = id;
         this.name = name;
         this.description = description;

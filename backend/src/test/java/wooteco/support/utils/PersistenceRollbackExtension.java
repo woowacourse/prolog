@@ -14,8 +14,8 @@ public class PersistenceRollbackExtension implements InvocationInterceptor {
 
     @Override
     public void interceptBeforeEachMethod(Invocation<Void> invocation,
-                                          ReflectiveInvocationContext<Method> invocationContext,
-                                          ExtensionContext extensionContext) throws Throwable {
+        ReflectiveInvocationContext<Method> invocationContext,
+        ExtensionContext extensionContext) throws Throwable {
         invokeInitializer(extensionContext);
 
         invocation.proceed();
@@ -23,8 +23,8 @@ public class PersistenceRollbackExtension implements InvocationInterceptor {
 
     @Override
     public void interceptTestMethod(Invocation<Void> invocation,
-                                    ReflectiveInvocationContext<Method> invocationContext,
-                                    ExtensionContext extensionContext) throws Throwable {
+        ReflectiveInvocationContext<Method> invocationContext,
+        ExtensionContext extensionContext) throws Throwable {
         if (neverBeenInvoked(invocationContext)) {
             invokeInitializer(extensionContext);
         }

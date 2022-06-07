@@ -18,7 +18,7 @@ public class PostMappingDataExtractor implements AnnotationDataExtractor {
         final String api = Arrays.stream(postMapping.value())
             .findAny()
             .orElseGet(() ->
-                Arrays.stream(postMapping.path()).findAny().orElse("")
+                           Arrays.stream(postMapping.path()).findAny().orElse("")
             );
         return new RequestApi(classUrl + api, "POST");
     }
