@@ -11,7 +11,6 @@ import lombok.Data;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,9 +36,6 @@ import wooteco.prolog.studylog.domain.BadgeType;
 @AllArgsConstructor
 @RequestMapping("/members")
 public class ProfileStudylogController {
-
-    private static final long FRONT_LEVEL2_ID = 10L;
-    private static final long BACKEND_LEVEL2_ID = 11L;
 
     private StudylogService studylogService;
     private MemberService memberService;
@@ -104,15 +100,8 @@ public class ProfileStudylogController {
     }
 
     @GetMapping(value = "/{username}/badges", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BadgesResponse> findMemberBadges(@AuthMemberPrincipal LoginMember member,
-                                                           @PathVariable String username) {
-        if (member.isAnonymous()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        List<BadgeType> badges = badgeService.findBadges(member.getId(),
-            Arrays.asList(FRONT_LEVEL2_ID,
-                BACKEND_LEVEL2_ID));
-
+    public ResponseEntity<BadgesResponse> findMemberBadges(@PathVariable String username) {
+        List<BadgeType> badges = badgeService.findBadges(username, Arrays.asList(10L, 11L));
         List<BadgeResponse> badgeResponses = badges.stream()
             .map(BadgeType::toString)
             .map(BadgeResponse::new)
