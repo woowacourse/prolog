@@ -1,5 +1,5 @@
 import { rest } from 'msw';
-import { dummyBadgeList } from '../components/Badge/BadgeList';
+import { dummyBadgeList } from './fixture';
 import { BASE_URL } from '../configs/environment';
 
 export const handlers = [

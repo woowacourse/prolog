@@ -19,8 +19,6 @@ interface BadgeListProps {
   badgeList: [keyof typeof BADGE_OBJ];
 }
 
-export const dummyBadgeList = ['PASSION_KING', 'COMPLIMENT_KING'];
-
 const BadgeList = ({ badgeList }: BadgeListProps) => {
   return (
     <Container>
