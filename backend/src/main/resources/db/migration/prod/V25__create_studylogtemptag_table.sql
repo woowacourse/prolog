@@ -1,8 +1,9 @@
-create table studylog_temp_tag (
-                               id bigint not null auto_increment,
-                               tag_id bigint
-                               studylog_temp_id bigint not null,
-                               primary key (id)
+create table studylog_temp_tag
+(
+    id     bigint not null auto_increment,
+    tag_id bigint
+        studylog_temp_id bigint not null,
+    primary key (id)
 ) engine=InnoDB;
 
 alter table studylog_temp_tag

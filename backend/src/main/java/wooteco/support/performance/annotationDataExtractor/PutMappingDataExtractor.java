@@ -18,8 +18,8 @@ public class PutMappingDataExtractor implements AnnotationDataExtractor {
         final String api = Arrays.stream(putMapping.value())
             .findAny()
             .orElseGet(() ->
-                           Arrays.stream(putMapping.path()).findAny()
-                               .orElse("")
+                Arrays.stream(putMapping.path()).findAny()
+                    .orElse("")
             );
         return new RequestApi(classUrl + api, "PUT");
     }

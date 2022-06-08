@@ -23,8 +23,8 @@ public class ExceptionAppender {
     private final PrologSlack prologSlack;
 
     public ExceptionAppender(RequestStorage requestStorage,
-        SlackMessageGenerator slackMessageGenerator,
-        PrologSlack prologSlack) {
+                             SlackMessageGenerator slackMessageGenerator,
+                             PrologSlack prologSlack) {
         this.requestStorage = requestStorage;
         this.slackMessageGenerator = slackMessageGenerator;
         this.prologSlack = prologSlack;
@@ -62,8 +62,8 @@ public class ExceptionAppender {
     private boolean validateHasOneArgument(Object[] args) {
         if (args.length != 1) {
             log.warn(String
-                         .format(SLACK_ALARM_FORMAT,
-                                 "ambiguous exceptions! require just only one Exception"));
+                .format(SLACK_ALARM_FORMAT,
+                    "ambiguous exceptions! require just only one Exception"));
             return false;
         }
 

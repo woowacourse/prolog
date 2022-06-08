@@ -107,11 +107,11 @@ public class StudylogService {
         Mission mission = missionService.findMissionById(studylogRequest.getMissionId()).orElse(null);
 
         StudylogTemp requestedStudylogTemp = new StudylogTemp(member,
-                studylogRequest.getTitle(),
-                studylogRequest.getContent(),
-                session,
-                mission,
-                tags.getList());
+            studylogRequest.getTitle(),
+            studylogRequest.getContent(),
+            session,
+            mission,
+            tags.getList());
 
         deleteStudylogTemp(memberId);
         StudylogTemp createdStudylogTemp = studylogTempRepository.save(requestedStudylogTemp);

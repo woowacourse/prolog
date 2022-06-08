@@ -31,7 +31,7 @@ public class ReportController {
     @MemberOnly
     @PostMapping("/reports")
     public ResponseEntity<ReportResponse> createReport(@AuthMemberPrincipal LoginMember member,
-        @RequestBody ReportRequest reportRequest) {
+                                                       @RequestBody ReportRequest reportRequest) {
         ReportResponse response = reportService.createReport(member, reportRequest);
         return ResponseEntity.created(URI.create("/reports/" + response.getId())).body(response);
     }
@@ -47,15 +47,15 @@ public class ReportController {
         @PathVariable String username,
         @PageableDefault(size = 20, direction = Direction.DESC, sort = "id") Pageable pageable) {
         PageableResponse<ReportResponse> response = reportService.findReportsByUsername(username,
-                                                                                        pageable);
+            pageable);
         return ResponseEntity.ok(response);
     }
 
     @MemberOnly
     @PutMapping("/reports/{reportId}")
     public ResponseEntity<Void> updateReport(@AuthMemberPrincipal LoginMember member,
-        @PathVariable Long reportId,
-        @RequestBody ReportUpdateRequest reportUpdateRequest) {
+                                             @PathVariable Long reportId,
+                                             @RequestBody ReportUpdateRequest reportUpdateRequest) {
         reportService.updateReport(member, reportId, reportUpdateRequest);
 
         return ResponseEntity.ok().build();
@@ -64,7 +64,7 @@ public class ReportController {
     @MemberOnly
     @DeleteMapping("/reports/{reportId}")
     public ResponseEntity<Void> deleteReport(@AuthMemberPrincipal LoginMember member,
-        @PathVariable Long reportId) {
+                                             @PathVariable Long reportId) {
         reportService.deleteReport(member, reportId);
 
         return ResponseEntity.noContent().build();

@@ -2,12 +2,14 @@
 == 역량
 
 === 기본 역량 등록
+
 - 백엔드는 `be`, 프론트엔드는 `fe`
 - 그 외 값을 입력 시 에러가 발생한다
 
 operation::abilities/create-template-be[snippets='http-request,http-response']
 
 === 역량 생성
+
 - 상위 역량 등록 시 parent값을 null로 둔다
 - 기존에 존재하는 역량 이름을 등록할 수 없다
 - 기존에 존재하는 색상을 등록할 수 없다
@@ -28,6 +30,7 @@ operation::abilities/update[snippets='http-request,http-response']
 operation::abilities/delete[snippets='http-request,http-response']
 
 === 학습로그 역량 갱신
+
 - 역량은 기본적으로 자식역량을 선택하는 것을 권장한다
 - 선택할 자식 역량이 없는 경우 부모 역량을 선택할 수는 있다
 - 부모 역량과 그 부모 역량의 자식 역량을 선택하는 경우는 어색한 상황이라고 볼 수 있다
@@ -36,6 +39,7 @@ operation::abilities/delete[snippets='http-request,http-response']
 operation::abilities/studylog-update[snippets='http-request,http-response']
 
 === 역량 포함 모든 학습로그 조회
+
 - abilityIds : 필수값 아님
 - 페이지네이션 제공
 ** page: 페이지 번호

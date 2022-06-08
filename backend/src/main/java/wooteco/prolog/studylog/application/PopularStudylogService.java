@@ -41,7 +41,7 @@ public class PopularStudylogService {
     }
 
     public StudylogsResponse findPopularStudylogs(Pageable pageable, Long memberId,
-        boolean isAnonymousMember) {
+                                                  boolean isAnonymousMember) {
         List<Studylog> studylogs = getSortedPopularStudyLogs();
         PageImpl<Studylog> page = new PageImpl<>(studylogs, pageable, studylogs.size());
         StudylogsResponse studylogsResponse = StudylogsResponse.of(page, memberId);

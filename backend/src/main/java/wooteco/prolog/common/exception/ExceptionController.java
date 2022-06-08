@@ -38,7 +38,7 @@ public class ExceptionController {
         if (e.getMessage() == null) {
             log.error(e.getClass().toString());
             log.error(Arrays.stream(e.getStackTrace()).map(it -> it.toString())
-                          .collect(Collectors.joining("\n")));
+                .collect(Collectors.joining("\n")));
         } else {
             log.error(e.getMessage());
         }

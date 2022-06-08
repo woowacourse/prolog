@@ -21,7 +21,7 @@ public class StudylogRssFeedController {
     private String url;
 
     public StudylogRssFeedController(StudylogService studylogService,
-        StudylogRssFeedView studylogRssFeedView) {
+                                     StudylogRssFeedView studylogRssFeedView) {
         this.studylogService = studylogService;
         this.studylogRssFeedView = studylogRssFeedView;
     }

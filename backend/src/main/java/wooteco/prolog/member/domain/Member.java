@@ -55,21 +55,21 @@ public class Member {
     }
 
     public Member(Long id,
-        String username,
-        String nickname,
-        Role role,
-        Long githubId,
-        String imageUrl) {
+                  String username,
+                  String nickname,
+                  Role role,
+                  Long githubId,
+                  String imageUrl) {
         this(id, username, nickname, role, githubId, imageUrl, new MemberTags());
     }
 
     public Member(Long id,
-        String username,
-        String nickname,
-        Role role,
-        Long githubId,
-        String imageUrl,
-        MemberTags memberTags) {
+                  String username,
+                  String nickname,
+                  Role role,
+                  Long githubId,
+                  String imageUrl,
+                  MemberTags memberTags) {
         this.id = id;
         this.username = username;
         this.nickname = ifAbsentReplace(nickname, username);

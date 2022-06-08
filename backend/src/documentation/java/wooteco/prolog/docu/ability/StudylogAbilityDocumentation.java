@@ -49,7 +49,7 @@ public class StudylogAbilityDocumentation extends NewDocumentation {
     @Test
     void 역량포함_모든_학습로그_조회() {
         when(studylogAbilityService.findAbilityStudylogsByAbilityIds(anyString(), any(),
-                                                                     any())).thenReturn(
+            any())).thenReturn(
             ABILITY_STUDYLOG_RESPONSES);
 
         given

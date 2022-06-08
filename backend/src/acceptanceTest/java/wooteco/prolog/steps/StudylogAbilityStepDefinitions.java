@@ -25,7 +25,7 @@ public class StudylogAbilityStepDefinitions extends AcceptanceSteps {
         StudylogAbilityRequest requestBody = new StudylogAbilityRequest(
             Lists.newArrayList(ability.getId()));
         context.invokeHttpPutWithToken("/studylogs/" + studylog.getId() + "/abilities",
-                                       requestBody);
+            requestBody);
     }
 
     @When("{string} 학습로그에 {string}, {string} 역량을 맵핑하(면)(고)")
@@ -39,7 +39,7 @@ public class StudylogAbilityStepDefinitions extends AcceptanceSteps {
         StudylogAbilityRequest requestBody = new StudylogAbilityRequest(
             Lists.newArrayList(ability1.getId(), ability2.getId()));
         context.invokeHttpPutWithToken("/studylogs/" + studylog.getId() + "/abilities",
-                                       requestBody);
+            requestBody);
     }
 
     @Then("{string} 학습로그에 {string} 역량이 맵핑된다")

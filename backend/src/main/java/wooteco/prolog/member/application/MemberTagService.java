@@ -36,7 +36,7 @@ public class MemberTagService {
         final List<MemberTag> originalMemberTags = originalTags.toMemberTags(member);
         final List<MemberTag> newMemberTags = newTags.toMemberTags(member);
         memberTagRepository.update(new MemberTags(originalMemberTags),
-                                   new MemberTags(newMemberTags));
+            new MemberTags(newMemberTags));
     }
 
     public void removeMemberTag(Tags tags, Member member) {

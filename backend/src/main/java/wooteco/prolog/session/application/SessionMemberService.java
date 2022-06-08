@@ -48,12 +48,12 @@ public class SessionMemberService {
 
     @Transactional
     public void registerMembersByGroupId(Long sessionId,
-        SessionGroupMemberRequest sessionGroupMemberRequest) {
+                                         SessionGroupMemberRequest sessionGroupMemberRequest) {
         List<SessionMember> alreadySessionMembers = sessionMemberRepository.findAllBySessionId(
             sessionId);
 
         List<Member> members = groupMemberService.findGroupMemberByGroupId(
-                sessionGroupMemberRequest.getGroupId()).stream()
+            sessionGroupMemberRequest.getGroupId()).stream()
             .map(it -> it.getMember())
             .collect(toList());
 

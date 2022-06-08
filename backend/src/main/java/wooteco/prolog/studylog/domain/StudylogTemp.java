@@ -1,5 +1,16 @@
 package wooteco.prolog.studylog.domain;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,15 +18,11 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 
-import javax.persistence.*;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
-
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class StudylogTemp {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -47,7 +54,7 @@ public class StudylogTemp {
         this.mission = mission;
         Tags tags = new Tags(tagList);
         this.studylogTempTags = new StudylogTempTags(tags.getList().stream()
-                .map(tag -> new StudylogTempTag(this, tag))
-                .collect(toList()));
+            .map(tag -> new StudylogTempTag(this, tag))
+            .collect(toList()));
     }
 }

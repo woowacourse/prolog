@@ -9,7 +9,7 @@ public class ProxyPreparedStatementHandler implements InvocationHandler {
     private final PerformanceLoggingForm loggingForm;
 
     public ProxyPreparedStatementHandler(Object preparedStatement,
-        PerformanceLoggingForm loggingForm) {
+                                         PerformanceLoggingForm loggingForm) {
         this.preparedStatement = preparedStatement;
         this.loggingForm = loggingForm;
     }

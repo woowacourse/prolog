@@ -1,4 +1,5 @@
-ALTER TABLE studylog_temp ADD COLUMN session_id BIGINT;
+ALTER TABLE studylog_temp
+    ADD COLUMN session_id BIGINT;
 
 alter table studylog_temp
     add constraint FK_STUDYLOG_TEMP_SESSION
