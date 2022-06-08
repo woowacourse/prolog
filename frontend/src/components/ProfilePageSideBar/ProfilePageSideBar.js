@@ -54,12 +54,14 @@ const ProfilePageSideBar = ({ menu }) => {
   );
 
   const { data: badgeList = [], isLoading } = useQuery([`${username}-badges`], async () => {
-    const { data } = await axios({
+    const {
+      data: { badges },
+    } = await axios({
       method: 'get',
       url: `${BASE_URL}/members/${username}/badges`,
     });
 
-    return data;
+    return badges;
   });
 
   const { mutate: editProfile } = useMutation(
