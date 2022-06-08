@@ -14,9 +14,12 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.messages.internal.com.google.common.collect.Lists;
-
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.StudylogAcceptanceFixture;
@@ -84,7 +87,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     @Given("{string} 스터디로그를 작성하고")
     public void 특정스터디로그를작성하고(String title) {
         StudylogRequest studylogRequest = new StudylogRequest(title, "content", 1L,
-                                                              Collections.emptyList());
+            Collections.emptyList());
         context.invokeHttpPostWithToken("/studylogs", studylogRequest);
         context.storage.put(title, context.response.as(StudylogResponse.class));
     }
@@ -164,7 +167,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     @When("{int}번 미션과 {int}번 태그로 {long}개를 조회하면")
     public void 미션태그필터를사이즈와함께조회한다(int missionNumber, int tagNumber, Long pageSize) {
         String path = String.format("/studylogs?tags=%d&missions=%d&size=%d", tagNumber,
-                                    missionNumber, pageSize);
+            missionNumber, pageSize);
         context.invokeHttpGet(path);
     }
 
@@ -189,7 +192,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     @When("{string}을 검색하고 {int}번 미션과 {int}번 태그로 조회하면")
     public void 을검색하고번미션과번태그로조회하면(String keyword, int missionNumber, int tagId) {
         String path = String.format("/studylogs?keyword=%s&missions=%d&tags=%d", keyword,
-                                    missionNumber, tagId);
+            missionNumber, tagId);
         context.invokeHttpGet(path);
     }
 
@@ -413,7 +416,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     public void 스터디로그세션을L로수정하면(long sessionId) {
         StudylogResponse studylogResponse = (StudylogResponse) context.storage.get("studylog");
         context.invokeHttpPutWithToken("/studylogs/" + studylogResponse.getId() + "/sessions",
-                                       new StudylogSessionRequest(sessionId));
+            new StudylogSessionRequest(sessionId));
     }
 
     @Then("스터디로그 세션이 {long}로 수정된다")
@@ -428,7 +431,7 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     public void 스터디로그미션을로수정하면(long missionId) {
         StudylogResponse studylogResponse = (StudylogResponse) context.storage.get("studylog");
         context.invokeHttpPutWithToken("/studylogs/" + studylogResponse.getId() + "/missions",
-                                       new StudylogMissionRequest(missionId));
+            new StudylogMissionRequest(missionId));
     }
 
     @Then("스터디로그 미션이 {long}로 수정된다")

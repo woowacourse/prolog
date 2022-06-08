@@ -9,8 +9,6 @@ import java.util.Map;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import wooteco.prolog.member.application.dto.MemberScrapRequest;
-
 @Component
 @Scope(scopeName = "cucumber-glue")
 public class AcceptanceContext {
@@ -54,8 +52,8 @@ public class AcceptanceContext {
 
     public void invokeHttpGetWithTokenAndCookies(String path, Map<String, ?> cookies, Object... pathParams) {
         request = RestAssured.given().log().all()
-                .cookies(cookies)
-                .auth().oauth2(accessToken);
+            .cookies(cookies)
+            .auth().oauth2(accessToken);
         response = request.when().get(path, pathParams);
         response.then().log().all();
     }

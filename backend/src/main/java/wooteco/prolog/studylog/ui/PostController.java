@@ -36,9 +36,9 @@ public class PostController {
     @PostMapping
     @MemberOnly
     public ResponseEntity<Void> createStudylog(@AuthMemberPrincipal LoginMember member,
-        @RequestBody List<StudylogRequest> studylogRequests) {
+                                               @RequestBody List<StudylogRequest> studylogRequests) {
         List<StudylogResponse> studylogResponses = studylogService.insertStudylogs(member.getId(),
-                                                                                   studylogRequests);
+            studylogRequests);
         return ResponseEntity.created(URI.create("/posts/" + studylogResponses.get(0).getId()))
             .build();
     }
@@ -48,8 +48,8 @@ public class PostController {
         @AuthMemberPrincipal LoginMember member,
         @SearchParams StudylogsSearchRequest searchRequest) {
         StudylogsResponse studylogsResponse = studylogService.findStudylogs(searchRequest,
-                                                                            member.getId(),
-                                                                            member.isAnonymous());
+            member.getId(),
+            member.isAnonymous());
         return ResponseEntity.ok(studylogsResponse);
     }
 
@@ -78,7 +78,7 @@ public class PostController {
     @DeleteMapping("/{id}")
     @MemberOnly
     public ResponseEntity<Void> deleteStudylog(@AuthMemberPrincipal LoginMember member,
-        @PathVariable Long id) {
+                                               @PathVariable Long id) {
         studylogService.deleteStudylog(member.getId(), id);
         return ResponseEntity.noContent().build();
     }
