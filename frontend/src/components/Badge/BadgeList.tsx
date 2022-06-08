@@ -16,13 +16,13 @@ const BADGE_OBJ = {
 };
 
 interface BadgeListProps {
-  badgeList: [keyof typeof BADGE_OBJ];
+  badgeList: [{ name: keyof typeof BADGE_OBJ }];
 }
 
 const BadgeList = ({ badgeList }: BadgeListProps) => {
   return (
     <Container>
-      {badgeList.map((name) => {
+      {badgeList.map(({ name }) => {
         if (!BADGE_OBJ[name]) return false;
 
         const { svgComponent: Badge, description } = BADGE_OBJ[name];
