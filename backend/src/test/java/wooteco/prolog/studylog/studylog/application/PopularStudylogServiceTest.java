@@ -146,7 +146,7 @@ class PopularStudylogServiceTest {
         );
 
         // then
-        assertThat(popularStudylogs.getAllResponse().getData().size()).isEqualTo(4);
+        assertThat(popularStudylogs.getAllResponse().getData()).hasSize(4);
         for (StudylogResponse studylogResponse : popularStudylogs.getAllResponse().getData()) {
             assertThat(studylogResponse.isScrap()).isFalse();
             assertThat(studylogResponse.isRead()).isFalse();
