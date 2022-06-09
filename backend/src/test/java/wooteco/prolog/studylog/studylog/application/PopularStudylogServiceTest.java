@@ -42,7 +42,7 @@ class PopularStudylogServiceTest {
     private static final String STUDYLOG2_TITLE = "이것은 두번째 제목";
     private static final String STUDYLOG3_TITLE = "이것은 3 제목";
     private static final String STUDYLOG4_TITLE = "이것은 네번 제목";
-    private static final String URL = "http://localhost:8080";
+
     private static Tag tag1 = new Tag(1L, "소롱의글쓰기");
     private static Tag tag2 = new Tag(2L, "스프링");
     private static Tag tag3 = new Tag(3L, "감자튀기기");
