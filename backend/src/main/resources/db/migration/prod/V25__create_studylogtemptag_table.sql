@@ -1,10 +1,9 @@
-create table studylog_temp_tag
-(
-    id               bigint not null auto_increment,
-    tag_id           bigint,
-    studylog_temp_id bigint not null,
-    primary key (id)
-) engine=InnoDB;
+CREATE TABLE studylog_temp_tag(
+    id               BIGINT NOT NULL AUTO_INCREMENT,
+    tag_id           BIGINT NOT NULL,
+    studylog_temp_id BIGINT NOT NULL,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB;
 
 alter table studylog_temp_tag
     add constraint FK_STUDYLOG_TEMP_TAG_TAG
