@@ -197,8 +197,6 @@ class PopularStudylogServiceTest {
 
         // then
         assertThat(popularStudylogs.getAllResponse().getTotalSize()).isEqualTo(4);
-//        assertThat(popularStudylogs.getAllResponse().getData().get(0).getId()).isEqualTo(studylogResponse1.getId());
-//        assertThat(popularStudylogs.getAllResponse().getData().get(1).getId()).isEqualTo(studylogResponse2.getId());
         for (StudylogResponse studylogResponse : popularStudylogs.getAllResponse().getData()) {
             assertThat(studylogResponse.isScrap()).isTrue();
             assertThat(studylogResponse.isRead()).isTrue();
