@@ -98,7 +98,7 @@ public class PopularStudylogService {
     private StudylogsResponse getPageablePopularStudylogs(List<Studylog> allStudylogs,
                                                           Pageable pageable, Long memberId) {
         return StudylogsResponse.of(
-            new PageImpl(allStudylogs, pageable, allStudylogs.size()),
+            new PageImpl<>(allStudylogs, pageable, allStudylogs.size()),
             memberId
         );
     }
