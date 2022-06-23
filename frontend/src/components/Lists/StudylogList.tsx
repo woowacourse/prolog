@@ -23,6 +23,10 @@ const StudylogList = ({ studylogs }: Props) => {
     history.push(`/${username}`);
   };
 
+  if (!studylogs.length) {
+    return <span>작성된 글이 없습니다.</span>;
+  }
+
   return (
     <ul
       css={css`
