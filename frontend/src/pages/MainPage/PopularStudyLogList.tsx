@@ -3,12 +3,9 @@
 import { css } from '@emotion/react';
 
 import { Studylog } from '../../models/Studylogs';
-import {
-  PopularStudylogListRightControlStyle,
-  PopularStudylogListStyle,
-  SectionHeaderGapStyle,
-} from './styles';
+import { PopularStudylogListStyle, SectionHeaderGapStyle } from './styles';
 import PopularStudylogItem from '../../components/Items/PopularStudylogItem';
+import PopularStudyLogListSkeleton from './PopularStudyLogListSkeleton';
 
 const PopularStudyLogList = ({ studylogs }: { studylogs: Studylog[] }): JSX.Element => {
   return (
@@ -19,13 +16,17 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: Studylog[] }): JSX.Elem
       `}
     >
       <h2 css={[SectionHeaderGapStyle]}>😎 인기있는 학습로그</h2>
-      <ul css={[PopularStudylogListStyle]}>
-        {studylogs?.map((item: Studylog) => (
-          <li key={item.id}>
-            <PopularStudylogItem item={item} />
-          </li>
-        ))}
-      </ul>
+      {studylogs.length !== 0 ? (
+        <ul css={[PopularStudylogListStyle]}>
+          {studylogs?.map((item: Studylog) => (
+            <li key={item.id}>
+              <PopularStudylogItem item={item} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <PopularStudyLogListSkeleton />
+      )}
     </section>
   );
 };

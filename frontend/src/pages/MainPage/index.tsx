@@ -42,9 +42,7 @@ const MainPage = () => {
       <BannerList bannerList={bannerList} />
       <main css={[MainContentStyle, getRowGapStyle(5.8)]}>
         {/* TODO: 로딩상태 관리 */}
-        {fetchPopularStudylogsRequest.response.data.length !== 0 && (
-          <PopularStudyLogList studylogs={fetchPopularStudylogsRequest.response.data} />
-        )}
+        <PopularStudyLogList studylogs={fetchPopularStudylogsRequest.response.data} />
         {fetchRecentStudylogsRequest.response.data.length !== 0 && (
           <RecentStudylogList studylogs={fetchRecentStudylogsRequest.response.data} />
         )}
