@@ -1,13 +1,30 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from '@emotion/react';
+import { useContext, useEffect } from 'react';
+import useFetchData from '../../hooks/useFetchData';
 
+import { UserContext } from '../../contexts/UserProvider';
 import { Studylog } from '../../models/Studylogs';
 import { PopularStudylogListStyle, SectionHeaderGapStyle } from './styles';
 import PopularStudylogItem from '../../components/Items/PopularStudylogItem';
 import PopularStudyLogListSkeleton from './PopularStudyLogListSkeleton';
+import { requestGetPopularStudylogs } from '../../apis/studylogs';
 
-const PopularStudyLogList = ({ studylogs }: { studylogs: Studylog[] }): JSX.Element => {
+const PopularStudyLogList = (): JSX.Element => {
+  const { user } = useContext(UserContext);
+  const { accessToken } = user;
+
+  const { response, refetch: fetchPopularStudylogs, isLoading } = useFetchData<{
+    data: Studylog[];
+  }>({ data: [] }, () => requestGetPopularStudylogs({ accessToken }), { initialFetch: false });
+
+  const studylogs = response.data;
+
+  useEffect(() => {
+    fetchPopularStudylogs();
+  }, [accessToken]);
+
   return (
     <section
       css={css`
@@ -16,7 +33,9 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: Studylog[] }): JSX.Elem
       `}
     >
       <h2 css={[SectionHeaderGapStyle]}>😎 인기있는 학습로그</h2>
-      {studylogs.length !== 0 ? (
+      {isLoading ? (
+        <PopularStudyLogListSkeleton />
+      ) : (
         <ul css={[PopularStudylogListStyle]}>
           {studylogs?.map((item: Studylog) => (
             <li key={item.id}>
@@ -24,8 +43,6 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: Studylog[] }): JSX.Elem
             </li>
           ))}
         </ul>
-      ) : (
-        <PopularStudyLogListSkeleton />
       )}
     </section>
   );
