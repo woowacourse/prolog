@@ -20,10 +20,9 @@ export const PopularStudylogListStyle = css`
   height: 30rem;
 >>>>>>> 56746c2 (refactor: 인기있는 학습로그 전체 height 수정하여 한번에 다 보이도록 수정)
 
-  display: grid;
+  display: flex;
   justify-content: content;
   align-items: center;
-  grid-template-columns: repeat(10, 1fr);
 
   position: relative;
 
