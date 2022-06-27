@@ -35,10 +35,11 @@ export interface Studylog {
   createdAt: Date;
   updatedAt?: Date;
   read: boolean;
-  scrap: boolean;
   viewCount: number;
   liked: boolean;
   likesCount: number;
+  scrap: boolean;
+  scrapedCount: number;
 }
 
 export interface StudyLogList {

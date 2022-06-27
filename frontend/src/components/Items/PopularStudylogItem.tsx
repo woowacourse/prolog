@@ -26,13 +26,14 @@ import {
 import { ReactComponent as ViewIcon } from '../../assets/images/view.svg';
 import { ReactComponent as LikedIcon } from '../../assets/images/heart-filled.svg';
 import { ReactComponent as UnLikeIcon } from '../../assets/images/heart.svg';
+import { ReactComponent as ScrapIcon } from '../../assets/images/scrap_filled.svg';
+import { ReactComponent as UnScrapIcon } from '../../assets/images/scrap.svg';
 
 import type { Studylog } from '../../models/Studylogs';
 
 const PopularStudylogItem = ({ item }: { item: Studylog }) => {
   const {
     title,
-    mission,
     content,
     id,
     author,
@@ -41,6 +42,8 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
     viewCount,
     liked,
     likesCount,
+    scrap,
+    scrapedCount,
   } = item;
 
   return (
@@ -125,6 +128,14 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
                   <LikedIcon width="2rem" height="2rem" />
                 )}
                 <span>{likesCount}</span>
+              </div>
+              <div css={[FlexStyle, AlignItemsCenterStyle, UserReactionIconStyle]}>
+                {!scrap ? (
+                  <UnScrapIcon width="1.6rem" height="1.6rem" />
+                ) : (
+                  <ScrapIcon width="1.6rem" height="1.6rem" />
+                )}
+                <span>{scrapedCount}</span>
               </div>
             </div>
             <span>{new Date(createdAt).toLocaleDateString('ko-KR')}</span>
