@@ -7,6 +7,7 @@ import { Chip } from '..';
 import { PATH } from '../../enumerations/path';
 import {
   AlignItemsCenterStyle,
+  AlignItemsEndStyle,
   FlexColumnStyle,
   FlexStyle,
   JustifyContentSpaceBtwStyle,
@@ -18,7 +19,6 @@ import {
   ProfileAreaStyle,
   UserReactionIconStyle,
   getRandomBgColorStyle,
-  DateAreaStyle,
   BottomContainerStyle,
   ContentsAreaStyle,
 } from './PopularStudylogItem.styles';
@@ -28,6 +28,7 @@ import { ReactComponent as LikedIcon } from '../../assets/images/heart-filled.sv
 import { ReactComponent as UnLikeIcon } from '../../assets/images/heart.svg';
 
 import type { Studylog } from '../../models/Studylogs';
+import FlexBox from '../@shared/FlexBox/FlexBox';
 
 const PopularStudylogItem = ({ item }: { item: Studylog }) => {
   const {
@@ -47,17 +48,6 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
     <div css={[ContainerStyle]}>
       {/* 상단 영역 */}
       <div css={[TopContainerStyle, getRandomBgColorStyle(id)]}>
-        <Link to={`${PATH.STUDYLOGS}/${id}`}>
-          <span>
-            [{mission?.session?.name}]&nbsp;{mission?.name}
-          </span>
-          <h2>{title}</h2>
-        </Link>
-        <span css={[DateAreaStyle]}>{new Date(createdAt).toLocaleDateString('ko-KR')}</span>
-      </div>
-
-      {/* 하단 영역 */}
-      <div css={[BottomContainerStyle]}>
         {/* 프로필 영역 */}
         <Link to={`/${author.username}`} css={[ProfileAreaStyle]}>
           <div css={[FlexStyle, AlignItemsCenterStyle]}>
@@ -65,7 +55,13 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
             <span>{author.nickname}</span>
           </div>
         </Link>
+        <Link to={`${PATH.STUDYLOGS}/${id}`}>
+          <h2>{title}</h2>
+        </Link>
+      </div>
 
+      {/* 하단 영역 */}
+      <div css={[BottomContainerStyle]}>
         <div
           css={[
             FlexStyle,
@@ -83,27 +79,34 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
             </Link>
           </div>
 
-          <div>
-            {/* 태그 영역 */}
-            <ul
-              css={[
-                FlexStyle,
-                css`
-                  overflow: scroll;
-                `,
-              ]}
-            >
-              {tags.slice(0, 2).map(({ name: tagName, id: tagId }) => (
-                <Link to={`${PATH.STUDYLOGS}?tags=${tagId}`} key={tagId}>
-                  <Chip title={tagName} onClick={() => {}}>
-                    {tagName}
-                  </Chip>
-                </Link>
-              ))}
-            </ul>
+          {/* 태그 영역 */}
+          <ul
+            css={[
+              FlexStyle,
+              css`
+                overflow: scroll;
+              `,
+            ]}
+          >
+            {tags.slice(0, 2).map(({ name: tagName, id: tagId }) => (
+              <Link to={`${PATH.STUDYLOGS}?tags=${tagId}`} key={tagId}>
+                <Chip title={tagName} onClick={() => {}}>
+                  {tagName}
+                </Chip>
+              </Link>
+            ))}
+          </ul>
 
-            {/* 사용자 리액션 영역 */}
-            <div css={[FlexStyle, getColumnGapStyle(0.6)]}>
+          {/* 사용자 리액션 영역 */}
+          <div
+            css={[
+              FlexStyle,
+              JustifyContentSpaceBtwStyle,
+              AlignItemsCenterStyle,
+              getColumnGapStyle(0.6),
+            ]}
+          >
+            <div css={[FlexStyle, AlignItemsCenterStyle]}>
               <div css={[UserReactionIconStyle]}>
                 <ViewIcon width="2rem" height="2rem" />
                 <span>{viewCount}</span>
@@ -117,6 +120,7 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
                 <span>{likesCount}</span>
               </div>
             </div>
+            <span>{new Date(createdAt).toLocaleDateString('ko-KR')}</span>
           </div>
         </div>
       </div>
