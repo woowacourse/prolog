@@ -3,11 +3,7 @@
 import { css } from '@emotion/react';
 
 import { Studylog } from '../../models/Studylogs';
-import {
-  PopularStudylogListRightControlStyle,
-  PopularStudylogListStyle,
-  SectionHeaderGapStyle,
-} from './styles';
+import { PopularStudylogListStyle, SectionHeaderGapStyle } from './styles';
 import PopularStudylogItem from '../../components/Items/PopularStudylogItem';
 
 const PopularStudyLogList = ({ studylogs }: { studylogs: Studylog[] }): JSX.Element => {
