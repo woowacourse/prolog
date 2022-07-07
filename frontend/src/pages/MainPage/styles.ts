@@ -20,11 +20,7 @@ export const SectionHeaderGapStyle = css`
 // 인기있는 학습로그
 export const PopularStudylogListStyle = css`
   width: 100%;
-<<<<<<< HEAD
-  height: 36rem;
-=======
   height: 30rem;
->>>>>>> 56746c2 (refactor: 인기있는 학습로그 전체 height 수정하여 한번에 다 보이도록 수정)
 
   display: flex;
   justify-content: content;
