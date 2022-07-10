@@ -20,7 +20,7 @@ export const SectionHeaderGapStyle = css`
 // 인기있는 학습로그
 export const PopularStudylogListStyle = css`
   width: 100%;
-  height: 30rem;
+  height: 36rem;
 
   display: flex;
   justify-content: content;
