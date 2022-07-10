@@ -7,8 +7,6 @@ import { Chip } from '..';
 import { PATH } from '../../enumerations/path';
 import {
   AlignItemsCenterStyle,
-  AlignItemsEndStyle,
-  FlexColumnStyle,
   FlexStyle,
   JustifyContentSpaceBtwStyle,
 } from '../../styles/flex.styles';
@@ -21,6 +19,7 @@ import {
   getRandomBgColorStyle,
   BottomContainerStyle,
   ContentsAreaStyle,
+  TagContainerStyle,
 } from './PopularStudylogItem.styles';
 
 import { ReactComponent as ViewIcon } from '../../assets/images/view.svg';
@@ -72,74 +71,56 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
 
       {/* 하단 영역 */}
       <div css={[BottomContainerStyle]}>
+        {/* 컨텐츠 영역 */}
+        <div css={[ContentsAreaStyle]}>
+          <Link to={`${PATH.STUDYLOGS}/${id}`}>
+            <div>{content.replace(/[#*>\n]/g, '')}</div>
+          </Link>
+        </div>
+
+        {/* 태그 영역 */}
+        <ul css={[TagContainerStyle]}>
+          {tags.slice(0, 2).map(({ name: tagName, id: tagId }) => (
+            <Link to={`${PATH.STUDYLOGS}?tags=${tagId}`} key={tagId}>
+              <Chip title={tagName} onClick={() => {}}>
+                {tagName}
+              </Chip>
+            </Link>
+          ))}
+        </ul>
+
+        {/* 사용자 리액션 영역 */}
         <div
           css={[
             FlexStyle,
-            FlexColumnStyle,
             JustifyContentSpaceBtwStyle,
-            css`
-              height: 100%;
-            `,
+            AlignItemsCenterStyle,
+            getColumnGapStyle(0.6),
           ]}
         >
-          {/* 컨텐츠 영역 */}
-          <div css={[ContentsAreaStyle]}>
-            <Link to={`${PATH.STUDYLOGS}/${id}`}>
-              <div>{content.replace(/[#*>\n]/g, '')}</div>
-            </Link>
-          </div>
-
-          {/* 태그 영역 */}
-          <ul
-            css={[
-              FlexStyle,
-              css`
-                overflow: scroll;
-              `,
-            ]}
-          >
-            {tags.slice(0, 2).map(({ name: tagName, id: tagId }) => (
-              <Link to={`${PATH.STUDYLOGS}?tags=${tagId}`} key={tagId}>
-                <Chip title={tagName} onClick={() => {}}>
-                  {tagName}
-                </Chip>
-              </Link>
-            ))}
-          </ul>
-
-          {/* 사용자 리액션 영역 */}
-          <div
-            css={[
-              FlexStyle,
-              JustifyContentSpaceBtwStyle,
-              AlignItemsCenterStyle,
-              getColumnGapStyle(0.6),
-            ]}
-          >
-            <div css={[FlexStyle, AlignItemsCenterStyle]}>
-              <div css={[FlexStyle, AlignItemsCenterStyle, UserReactionIconStyle]}>
-                <ViewIcon width="2rem" height="2rem" />
-                <span>{viewCount}</span>
-              </div>
-              <div css={[FlexStyle, AlignItemsCenterStyle, UserReactionIconStyle]}>
-                {!liked ? (
-                  <UnLikeIcon width="2rem" height="2rem" />
-                ) : (
-                  <LikedIcon width="2rem" height="2rem" />
-                )}
-                <span>{likesCount}</span>
-              </div>
-              <div css={[FlexStyle, AlignItemsCenterStyle, UserReactionIconStyle]}>
-                {!scrap ? (
-                  <UnScrapIcon width="1.6rem" height="1.6rem" />
-                ) : (
-                  <ScrapIcon width="1.6rem" height="1.6rem" />
-                )}
-                <span>{scrapedCount}</span>
-              </div>
+          <div css={[FlexStyle, AlignItemsCenterStyle]}>
+            <div css={[FlexStyle, AlignItemsCenterStyle, UserReactionIconStyle]}>
+              <ViewIcon width="2rem" height="2rem" />
+              <span>{viewCount}</span>
             </div>
-            <span>{new Date(createdAt).toLocaleDateString('ko-KR')}</span>
+            <div css={[FlexStyle, AlignItemsCenterStyle, UserReactionIconStyle]}>
+              {!liked ? (
+                <UnLikeIcon width="2rem" height="2rem" />
+              ) : (
+                <LikedIcon width="2rem" height="2rem" />
+              )}
+              <span>{likesCount}</span>
+            </div>
+            <div css={[FlexStyle, AlignItemsCenterStyle, UserReactionIconStyle]}>
+              {!scrap ? (
+                <UnScrapIcon width="1.6rem" height="1.6rem" />
+              ) : (
+                <ScrapIcon width="1.6rem" height="1.6rem" />
+              )}
+              <span>{scrapedCount}</span>
+            </div>
           </div>
+          <span>{new Date(createdAt).toLocaleDateString('ko-KR')}</span>
         </div>
       </div>
     </div>

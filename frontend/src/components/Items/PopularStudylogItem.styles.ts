@@ -82,6 +82,10 @@ export const TopContainerStyle = css`
 `;
 
 export const BottomContainerStyle = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   width: 100%;
   height: 15rem;
 
@@ -145,6 +149,12 @@ export const ContentsAreaStyle = css`
     overflow: hidden;
     text-overflow: ellipsis;
   }
+`;
+
+export const TagContainerStyle = css`
+  display: flex;
+
+  overflow-x: scroll;
 `;
 
 export const getRandomBgColorStyle = (id: number) =>
