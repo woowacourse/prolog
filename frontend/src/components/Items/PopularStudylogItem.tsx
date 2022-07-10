@@ -20,6 +20,7 @@ import {
   BottomContainerStyle,
   ContentsAreaStyle,
   TagContainerStyle,
+  TitleLink,
 } from './PopularStudylogItem.styles';
 
 import { ReactComponent as ViewIcon } from '../../assets/images/view.svg';
@@ -57,14 +58,7 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
           </div>
         </Link>
         {/* 제목 영역 */}
-        <Link
-          to={`${PATH.STUDYLOGS}/${id}`}
-          css={[
-            css`
-              height: 100%;
-            `,
-          ]}
-        >
+        <Link to={`${PATH.STUDYLOGS}/${id}`} css={[TitleLink]}>
           <h2>{title}</h2>
         </Link>
       </div>

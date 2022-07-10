@@ -81,6 +81,10 @@ export const TopContainerStyle = css`
   }
 `;
 
+export const TitleLink = css`
+  height: 100%;
+`;
+
 export const BottomContainerStyle = css`
   display: flex;
   flex-direction: column;
