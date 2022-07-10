@@ -81,7 +81,7 @@ public class MemberDocumentation extends Documentation {
             .when().get(scrapedLogLocation)
             .then().log().all()
             .assertThat()
-            .body("id", equalTo(Integer.parseInt(logId)));
+            .body("studylogResponse.id", equalTo(Integer.parseInt(logId)));
     }
 
     @Test

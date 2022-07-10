@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wooteco.prolog.studylog.domain.Curriculum;
 import wooteco.prolog.studylog.exception.TooLongLevelNameException;
 
 @Getter
@@ -39,6 +40,10 @@ public class Session {
         if (name.length() > MAX_LENGTH) {
             throw new TooLongLevelNameException();
         }
+    }
+
+    public boolean isSameAs(Curriculum curriculum) {
+        return curriculum.findCurriculum(this.name);
     }
 
     public Long getId() {

@@ -20,12 +20,14 @@ import java.util.*;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.StudylogAcceptanceFixture;
+import wooteco.prolog.studylog.application.dto.PopularStudylogsResponse;
 import wooteco.prolog.studylog.application.dto.StudylogMissionRequest;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogSessionRequest;
 import wooteco.prolog.studylog.application.dto.StudylogWithScrapedCountResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
+import wooteco.prolog.studylog.application.dto.StudylogsWithScrapCountResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 
 public class StudylogStepDefinitions extends AcceptanceSteps {
@@ -408,13 +410,13 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     public void 스터디로그가Id순서로조회된다(String studylogIds) {
         context.invokeHttpGet("/studylogs/popular");
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        StudylogsResponse studylogsResponse = context.response.as(StudylogsResponse.class);
+        PopularStudylogsResponse popularStudylogsResponse = context.response.as(PopularStudylogsResponse.class);
 
         List<String> ids = Arrays.asList(studylogIds.split(", "));
         for (int i = 0; i < ids.size(); i++) {
-            StudylogResponse response = studylogsResponse.getData().get(i);
+            StudylogWithScrapedCountResponse response = popularStudylogsResponse.getAllResponse().getData().get(i);
             Long id = Long.parseLong(ids.get(i));
-            assertThat(response.getId()).isEqualTo(id);
+            assertThat(response.getStudylogResponse().getId()).isEqualTo(id);;
         }
     }
 

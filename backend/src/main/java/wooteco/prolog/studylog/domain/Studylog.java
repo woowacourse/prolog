@@ -199,4 +199,8 @@ public class Studylog extends AuditingEntity {
     public void updateMission(Mission mission) {
         this.mission = mission;
     }
+
+    public boolean isContainsCurriculum(Curriculum curriculum) {
+        return this.session.isSameAs(curriculum);
+    }
 }
