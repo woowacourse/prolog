@@ -32,11 +32,10 @@ public class StudylogTags {
         values.addAll(duplicateFilter(studylogTags));
     }
 
-    private List<StudylogTag> duplicateFilter(
-        List<wooteco.prolog.studylog.domain.StudylogTag> studylogTags) {
+    private List<StudylogTag> duplicateFilter(List<StudylogTag> studylogTags) {
         return studylogTags.stream()
             .filter(studylogTag -> values.stream()
-                .map(wooteco.prolog.studylog.domain.StudylogTag::getTag)
+                .map(StudylogTag::getTag)
                 .noneMatch(newTag -> newTag.isSameName(studylogTag.getTag())))
             .collect(Collectors.toList());
     }

@@ -1,14 +1,19 @@
 import { useState, useEffect, useContext } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import axios from 'axios';
 
 import { requestEditProfile, requestGetProfile } from '../../service/requests';
 import useRequest from '../../hooks/useRequest';
 import useMutation from '../../hooks/useMutation';
 import { UserContext } from '../../contexts/UserProvider';
+
 import { Button, BUTTON_SIZE } from '..';
+import BadgeList from '../Badge/BadgeList';
 
 import getMenuList from './getMenuList';
 
+import { BASE_URL } from '../../configs/environment';
 import { PROFILE } from '../../constants/input';
 import { ALERT_MESSAGE } from '../../constants';
 
@@ -47,6 +52,17 @@ const ProfilePageSideBar = ({ menu }) => {
       setNickname(data.nickname);
     }
   );
+
+  const { data: badgeList = [], isLoading } = useQuery([`${username}-badges`], async () => {
+    const {
+      data: { badges },
+    } = await axios({
+      method: 'get',
+      url: `${BASE_URL}/members/${username}/badges`,
+    });
+
+    return badges;
+  });
 
   const { mutate: editProfile } = useMutation(
     () => {
@@ -116,6 +132,7 @@ const ProfilePageSideBar = ({ menu }) => {
           )}
         </NicknameWrapper>
       </Profile>
+      {isLoading ? <></> : <BadgeList badgeList={badgeList} />}
       <MenuList>
         {getMenuList({ username, isOwner }).map((menuItem) => (
           <MenuItem key={menuItem.key} isSelectedMenu={selectedMenu === menuItem.key}>

@@ -101,12 +101,6 @@ public class Studylog extends AuditingEntity {
         this.studylogTags.update(convertToStudylogTags(tags));
     }
 
-    private List<StudylogTag> convertToStudylogTags(Tags tags) {
-        return tags.getList().stream()
-            .map(tag -> new StudylogTag(this, tag))
-            .collect(Collectors.toList());
-    }
-
     public StudylogDocument toStudylogDocument() {
         return new StudylogDocument(
             this.getId(), this.getTitle(),
@@ -118,6 +112,12 @@ public class Studylog extends AuditingEntity {
 
     public void addTags(Tags tags) {
         studylogTags.add(convertToStudylogTags(tags));
+    }
+
+    private List<StudylogTag> convertToStudylogTags(Tags tags) {
+        return tags.getList().stream()
+                .map(tag -> new StudylogTag(this, tag))
+                .collect(Collectors.toList());
     }
 
     public void increaseViewCount(Member member) {
@@ -198,5 +198,9 @@ public class Studylog extends AuditingEntity {
 
     public void updateMission(Mission mission) {
         this.mission = mission;
+    }
+
+    public boolean isContainsCurriculum(Curriculum curriculum) {
+        return this.session.isSameAs(curriculum);
     }
 }

@@ -316,11 +316,11 @@ class StudylogServiceTest {
         List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1, studylog2);
         StudylogResponse targetStudylog = studylogResponses.get(0);
 
-        StudylogResponse studylogResponse = studylogService.retrieveStudylogById(loginMember2, targetStudylog.getId());
+        StudylogResponse studylogResponse = studylogService.retrieveStudylogById(loginMember2, targetStudylog.getId(), false);
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(1);
 
-        studylogResponse = studylogService.retrieveStudylogById(loginMember3, targetStudylog.getId());
+        studylogResponse = studylogService.retrieveStudylogById(loginMember3, targetStudylog.getId(), false);
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(2);
     }
@@ -331,7 +331,7 @@ class StudylogServiceTest {
         List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1, studylog2);
         StudylogResponse targetStudylog = studylogResponses.get(0);
 
-        StudylogResponse studylogResponse = studylogService.retrieveStudylogById(loginMember1, targetStudylog.getId());
+        StudylogResponse studylogResponse = studylogService.retrieveStudylogById(loginMember1, targetStudylog.getId(), false);
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(0);
     }

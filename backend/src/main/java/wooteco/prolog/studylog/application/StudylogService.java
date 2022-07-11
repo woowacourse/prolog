@@ -32,6 +32,7 @@ import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
 import wooteco.prolog.studylog.application.dto.StudylogSessionRequest;
 import wooteco.prolog.studylog.application.dto.StudylogTempResponse;
+import wooteco.prolog.studylog.application.dto.StudylogWithScrapedCountResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.domain.Studylog;
@@ -97,6 +98,25 @@ public class StudylogService {
         deleteStudylogTemp(memberId);
 
         return StudylogResponse.of(persistStudylog);
+    }
+
+    @Transactional
+    public StudylogTempResponse insertStudylogTemp(Long memberId, StudylogRequest studylogRequest) {
+        Member member = memberService.findById(memberId);
+        Tags tags = tagService.findOrCreate(studylogRequest.getTags());
+        Session session = sessionService.findSessionById(studylogRequest.getSessionId()).orElse(null);
+        Mission mission = missionService.findMissionById(studylogRequest.getMissionId()).orElse(null);
+
+        StudylogTemp requestedStudylogTemp = new StudylogTemp(member,
+                studylogRequest.getTitle(),
+                studylogRequest.getContent(),
+                session,
+                mission,
+                tags.getList());
+
+        deleteStudylogTemp(memberId);
+        StudylogTemp createdStudylogTemp = studylogTempRepository.save(requestedStudylogTemp);
+        return StudylogTempResponse.from(createdStudylogTemp);
     }
 
     private void onStudylogCreatedEvent(Member foundMember, Tags tags, Studylog createdStudylog) {
@@ -201,22 +221,6 @@ public class StudylogService {
         return studylogRepository.findByMember(member, pageable);
     }
 
-    @Transactional
-    public StudylogTempResponse insertStudylogTemp(Long memberId, StudylogRequest studylogRequest) {
-        Member member = memberService.findById(memberId);
-        Tags tags = tagService.findOrCreate(studylogRequest.getTags());
-        Mission mission = missionService.findById(studylogRequest.getMissionId());
-        StudylogTemp requestedStudylogTemp = new StudylogTemp(member,
-            studylogRequest.getTitle(),
-            studylogRequest.getContent(),
-            mission,
-            tags.getList());
-
-        deleteStudylogTemp(memberId);
-        StudylogTemp createdStudylogTemp = studylogTempRepository.save(requestedStudylogTemp);
-        return StudylogTempResponse.from(createdStudylogTemp);
-    }
-
     private void deleteStudylogTemp(Long memberId) {
         if (studylogTempRepository.existsByMemberId(memberId)) {
             studylogTempRepository.deleteByMemberId(memberId);
@@ -224,17 +228,39 @@ public class StudylogService {
     }
 
     @Transactional
-    public StudylogResponse retrieveStudylogById(LoginMember loginMember, Long studylogId) {
+    public StudylogResponse retrieveStudylogById(LoginMember loginMember, Long studylogId, boolean isViewed) {
+
         Studylog studylog = findStudylogById(studylogId);
 
-        onStudylogRetrieveEvent(loginMember, studylog);
+        onStudylogRetrieveEvent(loginMember, studylog, isViewed);
 
         return toStudylogResponse(loginMember, studylog);
     }
 
-    private void onStudylogRetrieveEvent(LoginMember loginMember, Studylog studylog) {
+    @Transactional
+    public StudylogWithScrapedCountResponse retrieveStudylogByIdWithScrapedCount(LoginMember loginMember, Long studylogId, boolean isViewed) {
+        Studylog studylog = findStudylogById(studylogId);
+
+        onStudylogRetrieveEvent(loginMember, studylog, isViewed);
+
+        return toStudylogResponseWithScrapedCount(loginMember, studylog);
+    }
+
+    private StudylogWithScrapedCountResponse toStudylogResponseWithScrapedCount(LoginMember loginMember, Studylog studylog) {
+        boolean liked = studylog.likedByMember(loginMember.getId());
+        boolean read = studylogReadRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId()).isPresent();
+        boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId()).isPresent();
+        int scrapedCount = studylogScrapRepository.countByStudylogId(studylog.getId());
+
+        return new StudylogWithScrapedCountResponse(StudylogResponse.of(studylog, scraped, read, liked), scrapedCount);
+    }
+
+    private void onStudylogRetrieveEvent(LoginMember loginMember, Studylog studylog, boolean isViewed) {
         // view 증가
-        increaseViewCount(loginMember, studylog);
+        if (!isViewed) {
+            increaseViewCount(loginMember, studylog);
+        }
+
         if (loginMember.isAnonymous()) {
             return;
         }
