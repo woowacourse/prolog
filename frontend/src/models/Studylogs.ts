@@ -43,7 +43,7 @@ export interface Studylog {
 }
 
 export interface StudyLogList {
-  data: Studylog[];
+  data: { studylogResponse: Studylog; scrapedCount: number }[];
   totalSize: number;
   totalPage: number;
   currPage: number;

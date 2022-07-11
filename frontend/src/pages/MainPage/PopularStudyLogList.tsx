@@ -39,13 +39,13 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: StudyLogResponse }): JS
         </ul>
       </div>
       <ul css={[PopularStudylogListStyle]}>
-        {studylogs[getKeyByValue(studyLogCategory, selectedCategory) as Category].data.map(
-          ({ studylogResponse, scrapedCount }) => (
-            <li key={studylogResponse.id}>
-              <PopularStudylogItem item={{ ...studylogResponse, scrapedCount }} />
-            </li>
-          )
-        )}
+        {studylogs[
+          getKeyByValue(studyLogCategory, selectedCategory) as keyof typeof studylogs
+        ].data.map(({ studylogResponse, scrapedCount }) => (
+          <li key={studylogResponse.id}>
+            <PopularStudylogItem item={{ ...studylogResponse, scrapedCount }} />
+          </li>
+        ))}
       </ul>
     </section>
   );
