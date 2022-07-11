@@ -13,6 +13,7 @@ import wooteco.prolog.studylog.application.ViewedStudyLogCookieGenerator;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogTempResponse;
+import wooteco.prolog.studylog.application.dto.StudylogWithScrapedCountResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.SearchParams;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
@@ -61,7 +62,7 @@ public class StudylogController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudylogResponse> showStudylog(@PathVariable String id, @AuthMemberPrincipal LoginMember member,
+    public ResponseEntity<StudylogWithScrapedCountResponse> showStudylog(@PathVariable String id, @AuthMemberPrincipal LoginMember member,
                                                          @CookieValue(name = "viewed", required = false, defaultValue = "/")
                                                                  String viewedStudyLogs,
                                                          HttpServletResponse httpServletResponse) {
@@ -70,7 +71,7 @@ public class StudylogController {
         }
 
         viewedStudyLogCookieGenerator.setViewedStudyLogCookie(viewedStudyLogs, id, httpServletResponse);
-        return ResponseEntity.ok(studylogService.retrieveStudylogById(member, Long.parseLong(id),
+        return ResponseEntity.ok(studylogService.retrieveStudylogByIdWithScrapedCount(member, Long.parseLong(id),
                 viewedStudyLogCookieGenerator.isViewed(viewedStudyLogs, id)));
     }
 
