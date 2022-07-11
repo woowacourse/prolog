@@ -1,6 +1,5 @@
 import { rest } from 'msw';
 import { BASE_URL } from '../../configs/environment';
-import type { StudyLogResponse } from '../../pages/MainPage';
 import popularStudyLog from '../db/popularStudyLog.json';
 
 export const popularStudyLogHandler = [
