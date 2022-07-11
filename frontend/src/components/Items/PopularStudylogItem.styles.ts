@@ -28,7 +28,7 @@ const getRandomColor = (id: number): string => {
 
 export const ContainerStyle = css`
   width: 24rem;
-  height: 32rem;
+  height: 28rem;
 
   border-radius: 1.6rem;
 
@@ -44,10 +44,14 @@ export const ContainerStyle = css`
 `;
 
 export const TopContainerStyle = css`
-  width: 100%;
-  height: 17rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
 
-  padding: 1rem 1.6rem 4rem;
+  width: 100%;
+  height: 13rem;
+
+  padding: 1.5rem 1.6rem 0 1.6rem;
 
   border-radius: 1.6rem;
   border-bottom-right-radius: 0;
@@ -58,11 +62,12 @@ export const TopContainerStyle = css`
   overflow: hidden;
 
   h2 {
-    font-size: 2rem;
+    height: 100%;
+    font-size: 1.7rem;
     line-height: 1.4;
     font-weight: bold;
 
-    line-break: anywhere;
+    line-break: auto;
 
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -76,17 +81,19 @@ export const TopContainerStyle = css`
   }
 `;
 
-export const DateAreaStyle = css`
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
+export const TitleLink = css`
+  height: 100%;
 `;
 
 export const BottomContainerStyle = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   width: 100%;
   height: 15rem;
 
-  padding: 1.8rem 1.6rem 1rem;
+  padding: 1rem 1.6rem 1rem;
 
   background-color: white;
   border-radius: inherit;
@@ -104,7 +111,7 @@ export const UserReactionIconStyle = css`
   flex-shrink: 0;
   color: ${COLOR.LIGHT_GRAY_900};
   font-size: 1.4rem;
-  margin-top: 0.5rem;
+  margin-right: 0.6rem;
 
   & > svg {
     margin-right: 0.25rem;
@@ -117,24 +124,17 @@ export const UserReactionIconStyle = css`
 
 export const ProfileAreaStyle = css`
   div {
-    position: absolute;
-    left: 1rem;
-    top: 0;
-
-    transform: translateY(-80%);
-
     span {
-      padding-bottom: 1rem;
       margin-left: 1rem;
 
-      font-size: 1.6rem;
+      font-size: 1.4rem;
     }
 
     img {
-      width: 4.8rem;
-      height: 4.8rem;
+      width: 2.7rem;
+      height: 2.7rem;
 
-      border-radius: 1.6rem;
+      border-radius: 3rem;
 
       z-index: 10;
     }
@@ -142,8 +142,6 @@ export const ProfileAreaStyle = css`
 `;
 
 export const ContentsAreaStyle = css`
-  height: 100%;
-
   > a > div {
     height: calc(1.4rem * 4.5);
 
@@ -155,6 +153,12 @@ export const ContentsAreaStyle = css`
     overflow: hidden;
     text-overflow: ellipsis;
   }
+`;
+
+export const TagContainerStyle = css`
+  display: flex;
+
+  overflow-x: scroll;
 `;
 
 export const getRandomBgColorStyle = (id: number) =>

@@ -1,0 +1,369 @@
+{
+  "allResponse": {
+    "data": [
+      {
+        "studylogResponse": {
+          "id": 2,
+          "author": {
+            "id": 1,
+            "username": "soulG",
+            "nickname": "소롱",
+            "role": "CREW",
+            "imageUrl": "https://avatars.githubusercontent.com/u/52682603?v=4"
+          },
+          "createdAt": "2022-06-25T15:24:26.386593",
+          "updatedAt": "2022-06-25T15:24:26.386593",
+          "session": {
+            "id": 2,
+            "name": "백엔드Java 레벨1 - 2021"
+          },
+          "mission": {
+            "id": 2,
+            "name": "세션3 - 프로젝트",
+            "session": {
+              "id": 2,
+              "name": "백엔드Java 레벨1 - 2021"
+            }
+          },
+          "title": "JAVA",
+          "content": "Spring Data JPA를 학습함.",
+          "tags": [
+            {
+              "id": 3,
+              "name": "java"
+            },
+            {
+              "id": 4,
+              "name": "jpa"
+            }
+          ],
+          "scrap": false,
+          "read": true,
+          "viewCount": 0,
+          "liked": false,
+          "likesCount": 1
+        },
+        "scrapedCount": 0
+      },
+      {
+        "studylogResponse": {
+          "id": 1,
+          "author": {
+            "id": 1,
+            "username": "soulG",
+            "nickname": "소롱",
+            "role": "CREW",
+            "imageUrl": "https://avatars.githubusercontent.com/u/52682603?v=4"
+          },
+          "createdAt": "2022-06-25T15:24:26.335733",
+          "updatedAt": "2022-06-25T15:24:26.335733",
+          "session": {
+            "id": 1,
+            "name": "프론트엔드JS 레벨1 - 2021"
+          },
+          "mission": {
+            "id": 1,
+            "name": "세션1 - 지하철 노선도 미션",
+            "session": {
+              "id": 1,
+              "name": "프론트엔드JS 레벨1 - 2021"
+            }
+          },
+          "title": "나는야 Joanne",
+          "content": "SPA 방식으로 앱을 구현하였음.\nrouter 를 구현 하여 이용함.\n",
+          "tags": [
+            {
+              "id": 1,
+              "name": "spa"
+            },
+            {
+              "id": 2,
+              "name": "router"
+            }
+          ],
+          "scrap": false,
+          "read": true,
+          "viewCount": 0,
+          "liked": false,
+          "likesCount": 0
+        },
+        "scrapedCount": 0
+      }
+    ],
+    "totalSize": 0,
+    "totalPage": 0,
+    "currPage": 0,
+    "studylogResponses": [
+      {
+        "id": 2,
+        "author": {
+          "id": 1,
+          "username": "soulG",
+          "nickname": "소롱",
+          "role": "CREW",
+          "imageUrl": "https://avatars.githubusercontent.com/u/52682603?v=4"
+        },
+        "createdAt": "2022-06-25T15:24:26.386593",
+        "updatedAt": "2022-06-25T15:24:26.386593",
+        "session": {
+          "id": 2,
+          "name": "백엔드Java 레벨1 - 2021"
+        },
+        "mission": {
+          "id": 2,
+          "name": "세션3 - 프로젝트",
+          "session": {
+            "id": 2,
+            "name": "백엔드Java 레벨1 - 2021"
+          }
+        },
+        "title": "JAVA",
+        "content": "Spring Data JPA를 학습함.",
+        "tags": [
+          {
+            "id": 3,
+            "name": "java"
+          },
+          {
+            "id": 4,
+            "name": "jpa"
+          }
+        ],
+        "scrap": false,
+        "read": true,
+        "viewCount": 0,
+        "liked": false,
+        "likesCount": 1
+      },
+      {
+        "id": 1,
+        "author": {
+          "id": 1,
+          "username": "soulG",
+          "nickname": "소롱",
+          "role": "CREW",
+          "imageUrl": "https://avatars.githubusercontent.com/u/52682603?v=4"
+        },
+        "createdAt": "2022-06-25T15:24:26.335733",
+        "updatedAt": "2022-06-25T15:24:26.335733",
+        "session": {
+          "id": 1,
+          "name": "프론트엔드JS 레벨1 - 2021"
+        },
+        "mission": {
+          "id": 1,
+          "name": "세션1 - 지하철 노선도 미션",
+          "session": {
+            "id": 1,
+            "name": "프론트엔드JS 레벨1 - 2021"
+          }
+        },
+        "title": "나는야 Joanne",
+        "content": "SPA 방식으로 앱을 구현하였음.\nrouter 를 구현 하여 이용함.\n",
+        "tags": [
+          {
+            "id": 1,
+            "name": "spa"
+          },
+          {
+            "id": 2,
+            "name": "router"
+          }
+        ],
+        "scrap": false,
+        "read": true,
+        "viewCount": 0,
+        "liked": false,
+        "likesCount": 0
+      }
+    ]
+  },
+  "frontResponse": {
+    "data": [
+      {
+        "studylogResponse": {
+          "id": 1,
+          "author": {
+            "id": 1,
+            "username": "soulG",
+            "nickname": "소롱",
+            "role": "CREW",
+            "imageUrl": "https://avatars.githubusercontent.com/u/52682603?v=4"
+          },
+          "createdAt": "2022-06-25T15:24:26.335733",
+          "updatedAt": "2022-06-25T15:24:26.335733",
+          "session": {
+            "id": 1,
+            "name": "프론트엔드JS 레벨1 - 2021"
+          },
+          "mission": {
+            "id": 1,
+            "name": "세션1 - 지하철 노선도 미션",
+            "session": {
+              "id": 1,
+              "name": "프론트엔드JS 레벨1 - 2021"
+            }
+          },
+          "title": "나는야 Joanne",
+          "content": "SPA 방식으로 앱을 구현하였음.\nrouter 를 구현 하여 이용함.\n",
+          "tags": [
+            {
+              "id": 1,
+              "name": "spa"
+            },
+            {
+              "id": 2,
+              "name": "router"
+            }
+          ],
+          "scrap": false,
+          "read": true,
+          "viewCount": 0,
+          "liked": false,
+          "likesCount": 0
+        },
+        "scrapedCount": 0
+      }
+    ],
+    "totalSize": 0,
+    "totalPage": 0,
+    "currPage": 0,
+    "studylogResponses": [
+      {
+        "id": 1,
+        "author": {
+          "id": 1,
+          "username": "soulG",
+          "nickname": "소롱",
+          "role": "CREW",
+          "imageUrl": "https://avatars.githubusercontent.com/u/52682603?v=4"
+        },
+        "createdAt": "2022-06-25T15:24:26.335733",
+        "updatedAt": "2022-06-25T15:24:26.335733",
+        "session": {
+          "id": 1,
+          "name": "프론트엔드JS 레벨1 - 2021"
+        },
+        "mission": {
+          "id": 1,
+          "name": "세션1 - 지하철 노선도 미션",
+          "session": {
+            "id": 1,
+            "name": "프론트엔드JS 레벨1 - 2021"
+          }
+        },
+        "title": "나는야 Joanne",
+        "content": "SPA 방식으로 앱을 구현하였음.\nrouter 를 구현 하여 이용함.\n",
+        "tags": [
+          {
+            "id": 1,
+            "name": "spa"
+          },
+          {
+            "id": 2,
+            "name": "router"
+          }
+        ],
+        "scrap": false,
+        "read": true,
+        "viewCount": 0,
+        "liked": false,
+        "likesCount": 0
+      }
+    ]
+  },
+  "backResponse": {
+    "data": [
+      {
+        "studylogResponse": {
+          "id": 2,
+          "author": {
+            "id": 1,
+            "username": "soulG",
+            "nickname": "소롱",
+            "role": "CREW",
+            "imageUrl": "https://avatars.githubusercontent.com/u/52682603?v=4"
+          },
+          "createdAt": "2022-06-25T15:24:26.386593",
+          "updatedAt": "2022-06-25T15:24:26.386593",
+          "session": {
+            "id": 2,
+            "name": "백엔드Java 레벨1 - 2021"
+          },
+          "mission": {
+            "id": 2,
+            "name": "세션3 - 프로젝트",
+            "session": {
+              "id": 2,
+              "name": "백엔드Java 레벨1 - 2021"
+            }
+          },
+          "title": "JAVA",
+          "content": "Spring Data JPA를 학습함.",
+          "tags": [
+            {
+              "id": 3,
+              "name": "java"
+            },
+            {
+              "id": 4,
+              "name": "jpa"
+            }
+          ],
+          "scrap": false,
+          "read": true,
+          "viewCount": 0,
+          "liked": false,
+          "likesCount": 1
+        },
+        "scrapedCount": 0
+      }
+    ],
+    "totalSize": 0,
+    "totalPage": 0,
+    "currPage": 0,
+    "studylogResponses": [
+      {
+        "id": 2,
+        "author": {
+          "id": 1,
+          "username": "soulG",
+          "nickname": "소롱",
+          "role": "CREW",
+          "imageUrl": "https://avatars.githubusercontent.com/u/52682603?v=4"
+        },
+        "createdAt": "2022-06-25T15:24:26.386593",
+        "updatedAt": "2022-06-25T15:24:26.386593",
+        "session": {
+          "id": 2,
+          "name": "백엔드Java 레벨1 - 2021"
+        },
+        "mission": {
+          "id": 2,
+          "name": "세션3 - 프로젝트",
+          "session": {
+            "id": 2,
+            "name": "백엔드Java 레벨1 - 2021"
+          }
+        },
+        "title": "JAVA",
+        "content": "Spring Data JPA를 학습함.",
+        "tags": [
+          {
+            "id": 3,
+            "name": "java"
+          },
+          {
+            "id": 4,
+            "name": "jpa"
+          }
+        ],
+        "scrap": false,
+        "read": true,
+        "viewCount": 0,
+        "liked": false,
+        "likesCount": 1
+      }
+    ]
+  }
+}

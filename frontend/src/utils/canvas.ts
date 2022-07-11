@@ -1,6 +1,6 @@
 import { COLOR } from '../constants';
 
-const canvasInit = (canvasElement: HTMLCanvasElement, backgroundColor: string = COLOR.WHITE) => {
+const canvasInit = (canvasElement: HTMLCanvasElement, backgroundColor = COLOR.WHITE) => {
   const context = canvasElement.getContext('2d');
 
   if (!context) {
