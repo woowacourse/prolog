@@ -22,10 +22,9 @@ export const PopularStudylogListStyle = css`
   width: 100%;
   height: 36rem;
 
-  display: grid;
+  display: flex;
   justify-content: content;
   align-items: center;
-  grid-template-columns: repeat(10, 1fr);
 
   position: relative;
 

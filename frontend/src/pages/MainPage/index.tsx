@@ -13,18 +13,10 @@ import { requestGetStudylogs } from '../../service/requests';
 import { MainContentStyle } from '../../PageRouter';
 import { getRowGapStyle } from '../../styles/layout.styles';
 
-import type { Studylog, StudyLogList } from '../../models/Studylogs';
+import type { Studylog, StudyLogResponse } from '../../models/Studylogs';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { BASE_URL } from '../../configs/environment';
-
-export const studyLogCategory = {
-  allResponse: '전체',
-  frontResponse: '프론트엔드',
-  backResponse: '백엔드',
-} as const;
-
-export type StudyLogResponse = Record<keyof typeof studyLogCategory, StudyLogList>;
 
 const MainPage = () => {
   const { user } = useContext(UserContext);

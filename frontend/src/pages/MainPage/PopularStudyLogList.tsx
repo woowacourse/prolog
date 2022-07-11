@@ -2,14 +2,13 @@
 
 import { css } from '@emotion/react';
 
-import { Studylog } from '../../models/Studylogs';
+import { Studylog, studyLogCategory, StudyLogResponse } from '../../models/Studylogs';
 import { PopularStudylogListStyle, SectionHeaderGapStyle, StyledChip } from './styles';
 import PopularStudylogItem from '../../components/Items/PopularStudylogItem';
 import { useState } from 'react';
 import { AlignItemsCenterStyle, FlexStyle } from '../../styles/flex.styles';
 import type { ValueOf } from '../../types/utils';
 import { getKeyByValue } from '../../utils/object';
-import { studyLogCategory, StudyLogResponse } from '.';
 
 type Category = ValueOf<typeof studyLogCategory>;
 
@@ -39,13 +38,13 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: StudyLogResponse }): JS
         </ul>
       </div>
       <ul css={[PopularStudylogListStyle]}>
-        {studylogs[getKeyByValue(studyLogCategory, selectedCategory) as Category].data.map(
-          (item: Studylog) => (
-            <li key={item.id}>
-              <PopularStudylogItem item={item} />
-            </li>
-          )
-        )}
+        {studylogs[
+          getKeyByValue(studyLogCategory, selectedCategory) as keyof typeof studylogs
+        ].data.map(({ studylogResponse, scrapedCount }) => (
+          <li key={studylogResponse.id}>
+            <PopularStudylogItem item={{ ...studylogResponse, scrapedCount }} />
+          </li>
+        ))}
       </ul>
     </section>
   );
