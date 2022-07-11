@@ -7,7 +7,7 @@ import App from './App';
 import store from './redux/store';
 import UserProvider from './contexts/UserProvider';
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'local') {
   const { worker } = require('./mocks/browser');
 
   worker.start();
