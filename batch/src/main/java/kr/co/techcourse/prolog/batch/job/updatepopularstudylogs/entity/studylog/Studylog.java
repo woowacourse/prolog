@@ -24,13 +24,17 @@ public class Studylog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
     @OneToMany(fetch = FetchType.LAZY)
     List<Like> likes;
 
     @Column(name = "views")
     int views;
+
+    public Long getId() {
+        return id;
+    }
 
     public int getPopularScore() {
         return (getLikeCount() * POPULAR_SCORE) + getViewCount();
