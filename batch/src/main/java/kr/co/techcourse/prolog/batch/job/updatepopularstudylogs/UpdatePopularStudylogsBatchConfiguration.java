@@ -1,7 +1,5 @@
 package kr.co.techcourse.prolog.batch.job.updatepopularstudylogs;
 
-import static kr.co.techcourse.prolog.batch.job.updatepopularstudylogs.UpdatePopularStudylogsBatchConfiguration.JOB_NAME;
-
 import kr.co.techcourse.prolog.batch.job.common.RunIdOnlyIncrementer;
 import kr.co.techcourse.prolog.batch.job.updatepopularstudylogs.entity.studylog.PopularStudylog;
 import kr.co.techcourse.prolog.batch.job.updatepopularstudylogs.entity.studylog.Studylog;
@@ -14,12 +12,10 @@ import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnProperty(value = "prolog.batch.job.names", havingValue = JOB_NAME)
 public class UpdatePopularStudylogsBatchConfiguration {
 
     public static final String JOB_NAME = "updatePopularStudylogs";
