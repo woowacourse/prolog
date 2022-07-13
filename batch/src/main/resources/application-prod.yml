@@ -1,2 +1,6 @@
-prolog:
-  host: https://api.prolog.techcourse.co.kr
+spring:
+  batch:
+    job:
+      enabled: false
+
+
