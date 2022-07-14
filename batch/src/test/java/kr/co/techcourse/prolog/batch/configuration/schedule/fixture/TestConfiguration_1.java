@@ -1,6 +1,6 @@
 package kr.co.techcourse.prolog.batch.configuration.schedule.fixture;
 
-import kr.co.techcourse.prolog.batch.job.common.EnableBatchJob;
+import kr.co.techcourse.prolog.batch.configuration.schedule.EnableBatchJob;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersIncrementer;
@@ -16,7 +16,7 @@ public class TestConfiguration_1 {
         return emptyJob();
     }
 
-    @EnableBatchJob(cron = "* * * * * *", jobParameters = {"a:a", "b:b"}, delimiter = ':')
+    @EnableBatchJob(cron = "* * * * * *", jobParameters = {"a:a", "b:b"})
     @Bean("testJob2")
     public Job test2() {
         return emptyJob();

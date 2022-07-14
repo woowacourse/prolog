@@ -5,7 +5,6 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import kr.co.techcourse.prolog.batch.job.common.EnableBatchJob;
 import org.springframework.batch.core.Job;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;

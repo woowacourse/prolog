@@ -1,6 +1,6 @@
 package kr.co.techcourse.prolog.batch.job.updatepopularstudylogs;
 
-import kr.co.techcourse.prolog.batch.job.common.EnableBatchJob;
+import kr.co.techcourse.prolog.batch.configuration.schedule.EnableBatchJob;
 import kr.co.techcourse.prolog.batch.job.common.RunIdOnlyIncrementer;
 import kr.co.techcourse.prolog.batch.job.updatepopularstudylogs.entity.studylog.PopularStudylog;
 import kr.co.techcourse.prolog.batch.job.updatepopularstudylogs.entity.studylog.Studylog;
