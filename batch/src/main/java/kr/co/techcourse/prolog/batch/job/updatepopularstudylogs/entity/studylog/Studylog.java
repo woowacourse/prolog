@@ -1,5 +1,6 @@
 package kr.co.techcourse.prolog.batch.job.updatepopularstudylogs.entity.studylog;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.springframework.data.annotation.CreatedDate;
 
 /**
  * entity는 테이블과 꼭 완전히 맵핑되지 않아도 괜찮습니다. 일부만 일치해도 동작합니다.
@@ -31,6 +33,9 @@ public class Studylog {
 
     @Column(name = "views")
     int views;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
     public Long getId() {
         return id;

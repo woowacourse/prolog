@@ -21,10 +21,14 @@ public class UpdatePopularStudylogsConfiguration {
     }
 
     public JpaCursorItemReader<Studylog> itemReader(int targetSize) {
+        JpaNativeQueryProvider<Studylog> queryProvider = new JpaNativeQueryProvider<>();
+        queryProvider.setSqlQuery("SELECT * FROM studylog ORDER BY created_at desc");
+        queryProvider.setEntityClass(Studylog.class);
+
         return new JpaCursorItemReaderBuilder<Studylog>()
             .name("updatePopularStudylogsItemReader")
-            .queryProvider(new JpaNativeQueryProvider<Studylog>())
-            .queryString("select * from studylog order by createdAt desc")
+            .entityManagerFactory(emf)
+            .queryProvider(queryProvider)
             .maxItemCount(targetSize)
             .build();
     }

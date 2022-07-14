@@ -20,7 +20,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  */
 @Table(name = "popular_studylog")
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 public class PopularStudylog {
 
     @Id
@@ -34,10 +33,9 @@ public class PopularStudylog {
     private boolean deleted;
 
     @Column(nullable = false, updatable = false)
-    @CreatedDate
     private LocalDateTime createdAt;
 
-    @LastModifiedDate
+    @Column
     private LocalDateTime updatedAt;
 
     protected PopularStudylog() {

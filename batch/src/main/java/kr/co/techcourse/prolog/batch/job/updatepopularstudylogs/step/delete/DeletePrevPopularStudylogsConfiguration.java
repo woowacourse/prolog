@@ -22,7 +22,7 @@ public class DeletePrevPopularStudylogsConfiguration {
         return new JpaCursorItemReaderBuilder<PopularStudylog>()
             .name("deletePrevPopularStudylogsItemReader")
             .entityManagerFactory(emf)
-            .queryString("SELECT psl from PopularStudyLog psl where psl.deleted = false")
+            .queryString("SELECT psl FROM PopularStudylog psl where psl.deleted = false")
             .build();
     }
 

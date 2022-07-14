@@ -1,5 +1,6 @@
 package kr.co.techcourse.prolog.batch.job.updatepopularstudylogs;
 
+import kr.co.techcourse.prolog.batch.job.common.EnableBatchJob;
 import kr.co.techcourse.prolog.batch.job.common.RunIdOnlyIncrementer;
 import kr.co.techcourse.prolog.batch.job.updatepopularstudylogs.entity.studylog.PopularStudylog;
 import kr.co.techcourse.prolog.batch.job.updatepopularstudylogs.entity.studylog.Studylog;
@@ -32,6 +33,10 @@ public class UpdatePopularStudylogsBatchConfiguration {
         this.stepBuilderFactory = stepBuilderFactory;
     }
 
+    @EnableBatchJob(
+        cron = "* * * * * MON-FRI",
+        jobParameters = {"targetSize=100"}
+    )
     @Bean(BEAN_PREFIX + "job")
     public Job job(
         @Qualifier(BEAN_PREFIX + "deletePrevPopularStudylogs") Step deletePrevPopularStudylogs,
