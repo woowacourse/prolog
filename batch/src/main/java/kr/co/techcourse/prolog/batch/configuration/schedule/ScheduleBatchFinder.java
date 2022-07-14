@@ -54,9 +54,9 @@ public class ScheduleBatchFinder {
             methodMetaData.getAnnotationAttributes(EnableBatchJob.class.getName());
 
         return new BatchJob(
+            beanName,
             (String) annotationAttributes.get("cron"),
             (String[]) annotationAttributes.get("jobParameters"),
-            (Character) annotationAttributes.get("delimiter"),
             (Job) bean
         );
     }

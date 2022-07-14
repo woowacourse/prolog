@@ -26,18 +26,18 @@ class ScheduleBatchFinderTest {
         // then
         assertThat(batchJob)
             .usingRecursiveComparison()
-            .ignoringFields("jobBean")
+            .ignoringFields("jobBean", "name")
             .isEqualTo(List.of(
                 new BatchJob(
+                    null,
                     "* * * * * *",
                     new String[]{"a:a", "b:b"},
-                    ':',
                     null
                 ),
                 new BatchJob(
+                    null,
                     "* * * * * *",
                     new String[]{},
-                    '=',
                     null
                 )
             ));
