@@ -35,14 +35,15 @@ export interface Studylog {
   createdAt: Date;
   updatedAt?: Date;
   read: boolean;
-  scrap: boolean;
   viewCount: number;
   liked: boolean;
   likesCount: number;
+  scrap: boolean;
+  scrapedCount: number;
 }
 
 export interface StudyLogList {
-  data: Studylog[];
+  data: { studylogResponse: Studylog; scrapedCount: number }[];
   totalSize: number;
   totalPage: number;
   currPage: number;
@@ -53,3 +54,11 @@ export type StudylogForm = Pick<Studylog, 'title' | 'tags'> & {
   missionId: number | null;
   sessionId: number | null;
 };
+
+export const studyLogCategory = {
+  allResponse: '전체',
+  frontResponse: '프론트엔드',
+  backResponse: '백엔드',
+} as const;
+
+export type StudyLogResponse = Record<keyof typeof studyLogCategory, StudyLogList>;
