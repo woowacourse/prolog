@@ -21,7 +21,7 @@ public class ScheduleBatchFinder {
     public ScheduleBatchFinder(ApplicationContext applicationContext) {
         if (!(applicationContext instanceof AnnotationConfigApplicationContext)) {
             throw new IllegalArgumentException(
-                "[ScheduleBatchFinder] applicationContext must can be AnnotationConfigApplicationContext"
+                "[ScheduleBatchFinder] applicationContext must be AnnotationConfigApplicationContext"
             );
         }
 
