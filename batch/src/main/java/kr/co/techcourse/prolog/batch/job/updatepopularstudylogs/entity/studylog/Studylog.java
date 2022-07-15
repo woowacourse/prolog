@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.springframework.data.annotation.CreatedDate;
@@ -29,10 +30,11 @@ public class Studylog {
     private Long id;
 
     @OneToMany(fetch = FetchType.LAZY)
-    List<Like> likes;
+    @JoinColumn(name = "")
+    private List<Like> likes;
 
     @Column(name = "views")
-    int views;
+    private int views;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
