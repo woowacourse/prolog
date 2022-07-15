@@ -7,9 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class BatchApplicationTests {
 
-	@CsvSource()
-	@Test
-	void contextLoads() {
-	}
+    @CsvSource()
+    @Test
+    void contextLoads() {
+    }
 
 }

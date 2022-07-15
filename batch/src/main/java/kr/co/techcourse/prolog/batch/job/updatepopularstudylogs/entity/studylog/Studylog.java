@@ -13,16 +13,16 @@ import javax.persistence.Table;
 import org.springframework.data.annotation.CreatedDate;
 
 /**
- * entity는 테이블과 꼭 완전히 맵핑되지 않아도 괜찮습니다. 일부만 일치해도 동작합니다.
- * 배치에서는 Entity의 모든 비즈니스 로직 및 상태를 필요로 하지 않으므로 최소한의 컬럼과 로직만으로
- * 동작을 수행할 수 있도록 아래와 같이 구현합니다.
+ * entity는 테이블과 꼭 완전히 맵핑되지 않아도 괜찮습니다. 일부만 일치해도 동작합니다. 배치에서는 Entity의 모든 비즈니스 로직 및 상태를 필요로 하지 않으므로
+ * 최소한의 컬럼과 로직만으로 동작을 수행할 수 있도록 아래와 같이 구현합니다.
+ *
  * @author 손너잘
  */
 @Table(name = "studylog")
 @Entity
 public class Studylog {
 
-    private static int POPULAR_SCORE = 3;
+    private static final int POPULAR_SCORE = 3;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

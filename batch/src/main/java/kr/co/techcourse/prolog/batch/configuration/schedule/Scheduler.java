@@ -47,7 +47,7 @@ public class Scheduler implements InitializingBean {
     }
 
     public void doScheduling() {
-        List<BatchJob> batchJobs = scheduleBatchFinder.findBatchJob();
+        List<BatchJob> batchJobs = scheduleBatchFinder.findBatchJobs();
 
         ThreadPoolTaskScheduler threadPoolTaskExecutor = new ThreadPoolTaskScheduler();
         threadPoolTaskExecutor.setPoolSize(batchJobs.size());

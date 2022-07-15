@@ -15,6 +15,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * entity는 테이블과 꼭 완전히 맵핑되지 않아도 괜찮습니다.
+ *
  * @author 손너잘
  * @see Studylog's comment
  */

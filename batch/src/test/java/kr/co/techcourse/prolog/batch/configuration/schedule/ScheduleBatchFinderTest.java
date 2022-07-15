@@ -21,7 +21,7 @@ class ScheduleBatchFinderTest {
 
         // when
         var scheduleBatchFinder = new ScheduleBatchFinder(applicationContext);
-        List<BatchJob> batchJob = scheduleBatchFinder.findBatchJob();
+        List<BatchJob> batchJob = scheduleBatchFinder.findBatchJobs();
 
         // then
         assertThat(batchJob)

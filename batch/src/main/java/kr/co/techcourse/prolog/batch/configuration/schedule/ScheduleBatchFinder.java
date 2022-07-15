@@ -28,7 +28,7 @@ public class ScheduleBatchFinder {
         this.applicationContext = (AnnotationConfigApplicationContext) applicationContext;
     }
 
-    public List<BatchJob> findBatchJob() {
+    public List<BatchJob> findBatchJobs() {
         String[] beanNames = applicationContext.getBeanNamesForAnnotation(EnableBatchJob.class);
 
         return Arrays.stream(beanNames)
