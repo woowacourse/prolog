@@ -6,21 +6,20 @@ import * as Styled from './SelectAbilityBox.styles';
  * 역량은 자식역량만 선택할 수 있다.
  */
 const SelectAbilityBox = ({
-  selectAbilityBoxRef,
-  mappingAbility,
-  studylogId,
-  abilities,
+  setIsSelectAbilityBoxOpen,
+  selectedAbilities,
   wholeAbility,
-  setSelectAbilityBox,
-  refetch,
+  onSelectAbilities,
 }) => {
-  const abilityIds = abilities.map((ability) => ability.id);
+  const abilityIds = wholeAbility.map((ability) => ability.id);
   console.log('abilityIds', abilityIds);
-  const [updatedAbilites, setUpdatedAbilities] = useState(abilityIds);
 
-  const onSelectAbility = (event) => {
+  const [updatedAbilities, setUpdatedAbilities] = useState(selectedAbilities);
+  console.log('updatedAbilities', updatedAbilities);
+
+  const onClickAbility = (event) => {
     const targetAbilityId = Number(event.target.id);
-    const currAbilities = new Set(updatedAbilites);
+    const currAbilities = new Set(updatedAbilities);
 
     if (currAbilities.has(targetAbilityId)) {
       currAbilities.delete(targetAbilityId);
@@ -29,20 +28,21 @@ const SelectAbilityBox = ({
     }
 
     setUpdatedAbilities([...currAbilities]);
+    console.log('onClickAbility - updatedAbilities', updatedAbilities);
   };
 
-  const onMappingAbility = () => {
-    mappingAbility.mutate({ studylogId, abilities: updatedAbilites });
-
-    setSelectAbilityBox({ id: studylogId, isOpen: false });
+  const isChecked = (targetAbilityId) => {
+    return updatedAbilities.find((id) => id === targetAbilityId);
   };
 
-  const isChecked = (abilityIds, targetAbilityId) => {
-    return abilityIds.find((id) => id === targetAbilityId);
+  const onClickSelectButton = () => {
+    onSelectAbilities(updatedAbilities);
+    setIsSelectAbilityBoxOpen(false);
+    console.log('onClickSelectButton', updatedAbilities);
   };
 
   return (
-    <Styled.Wrapper ref={selectAbilityBoxRef}>
+    <Styled.Wrapper>
       <Styled.Header>
         <p id="selectBox-title">학습로그에 매핑될 역량을 선택해주세요.</p>
         <span className="ability-title">📢 역량은 하위역량만 선택가능합니다.</span>
@@ -58,8 +58,8 @@ const SelectAbilityBox = ({
                 <input
                   id={ability.id}
                   type="checkbox"
-                  onClick={onSelectAbility}
-                  defaultChecked={isChecked(abilityIds, ability.id)}
+                  onClick={onClickAbility}
+                  defaultChecked={isChecked(ability.id)}
                 />
                 <Styled.ColorCircle backgroundColor={ability.color} />
                 <Styled.AbilityName>{ability.name}</Styled.AbilityName>
@@ -70,7 +70,7 @@ const SelectAbilityBox = ({
       </Styled.AbilityList>
 
       <Styled.Footer>
-        <button onClick={onMappingAbility}>역량등록</button>
+        <button onClick={onClickSelectButton}>역량등록</button>
       </Styled.Footer>
     </Styled.Wrapper>
   );
