@@ -3,19 +3,28 @@
 import CreatableSelectBox from '../CreatableSelectBox/CreatableSelectBox';
 import { COLOR } from '../../enumerations/color';
 import SelectBox from '../Controls/SelectBox';
-import { PLACEHOLDER } from '../../constants';
+import { ERROR_MESSAGE, PLACEHOLDER } from '../../constants';
 import { Mission, Session, Tag } from '../../models/Studylogs';
 import styled from '@emotion/styled';
 import { useMissions, useSessions, useTags } from '../../hooks/queries/filters';
 import { getRowGapStyle } from '../../styles/layout.styles';
+import SelectAbilityBox from './SideBar/SelectAbilityBox';
+import { useQuery } from 'react-query';
+import AbilityRequest, { ErrorData } from '../../apis/ability';
+import { useContext, useState } from 'react';
+import { UserContext } from '../../contexts/UserProvider';
+import Chip from '../Chip/Chip';
+import { Button } from '../../components';
 
 interface SidebarProps {
   selectedSessionId: Session['id'] | null;
   selectedMissionId: Mission['id'] | null;
   selectedTagList: Tag[];
+  selectedAbilities: number[];
   onSelectSession: (session: { value: string; label: string }) => void;
   onSelectMission: (mission: { value: string; label: string }) => void;
   onSelectTag: (tags: Tag[], actionMeta: { option: { label: string } }) => void;
+  onSelectAbilities: (abilities: number[]) => void;
 }
 
 const SidebarWrapper = styled.aside`
@@ -42,20 +51,75 @@ const Sidebar = ({
   selectedSessionId,
   selectedMissionId,
   selectedTagList,
+  selectedAbilities,
   onSelectMission,
   onSelectSession,
   onSelectTag,
+  onSelectAbilities,
 }: SidebarProps) => {
+  const [isSelectAbilityBoxOpen, setIsSelectAbilityBoxOpen] = useState(false);
   const { data: missions = [] } = useMissions();
   const { data: tags = [] } = useTags();
   const { data: sessions = [] } = useSessions();
+  const {
+    user: { username },
+  } = useContext(UserContext);
 
   const tagOptions = tags.map(({ name }) => ({ value: name, label: `#${name}` }));
-  const missionOptions = missions.map(({ id, name, session }) => ({ value: `${id}`, label: `[${session?.name}] ${name}` }));
+  const missionOptions = missions.map(({ id, name, session }) => ({
+    value: `${id}`,
+    label: `[${session?.name}] ${name}`,
+  }));
   const sessionOptions = sessions.map(({ id, name }) => ({ value: `${id}`, label: `${name}` }));
 
   const selectedSession = sessions.find(({ id }) => id === selectedSessionId);
   const selectedMission = missions.find(({ id }) => id === selectedMissionId);
+
+  /** 전체 역량 조회 */
+  const { data: abilities = [] } = useQuery(
+    [`${username}-abilities`],
+    () => AbilityRequest.getAbilityList({ url: `/members/${username}/abilities` }),
+    {
+      onError: (errorData: ErrorData) => {
+        const errorCode = errorData?.code;
+
+        alert(ERROR_MESSAGE[errorCode] ?? '역량을 가져오는데 실패하였습니다. 다시 시도해주세요.');
+      },
+    }
+  );
+
+  const wholeAbility = abilities?.map((parentAbility) => [...parentAbility.children]).flat();
+
+  console.log('wholeAbility', wholeAbility);
+
+  /** 선택된 역량을 보여준다.*/
+  const SelectedAbilityChips = ({ selectedAbilityIds }) => {
+    const selectedAbilities = wholeAbility.filter(({ id }) => selectedAbilityIds.includes(id));
+    return (
+      <ul id="mapped-abilities-list">
+        {selectedAbilities?.map((ability) => {
+          return (
+            <li key={ability.id}>
+              {
+                <Chip
+                  backgroundColor={ability.color}
+                  border={`1px solid ${COLOR.BLACK_OPACITY_300}`}
+                  fontSize="1.2rem"
+                  lineHeight="1.5"
+                  onDelete={() => {
+                    console.log('ability.id', ability.id);
+                    // TODO: 역량 삭제
+                  }}
+                >
+                  {ability.name}
+                </Chip>
+              }
+            </li>
+          );
+        })}
+      </ul>
+    );
+  };
 
   return (
     <SidebarWrapper>
@@ -99,6 +163,26 @@ const Sidebar = ({
             onChange={onSelectTag}
             value={selectedTagList.map(({ name }) => ({ value: name, label: `#${name}` }))}
           />
+        </li>
+        <li>
+          <FilterTitle>abilities</FilterTitle>
+          <Button
+            size="XX_SMALL"
+            type="button"
+            css={{ backgroundColor: `${COLOR.LIGHT_BLUE_300}` }}
+            onClick={() => setIsSelectAbilityBoxOpen(true)}
+          >
+            +
+          </Button>
+          <SelectedAbilityChips selectedAbilityIds={selectedAbilities} />
+          {isSelectAbilityBoxOpen && (
+            <SelectAbilityBox
+              setIsSelectAbilityBoxOpen={setIsSelectAbilityBoxOpen}
+              selectedAbilities={selectedAbilities}
+              wholeAbility={wholeAbility}
+              onSelectAbilities={onSelectAbilities}
+            ></SelectAbilityBox>
+          )}
         </li>
       </ul>
     </SidebarWrapper>

@@ -25,18 +25,22 @@ import { getLocalStorageItem } from '../../utils/localStorage';
 import LOCAL_STORAGE_KEY from '../../constants/localStorage';
 import { SUCCESS_MESSAGE } from '../../constants/message';
 
+interface NewStudylogForm extends StudylogForm {
+  abilities: number[];
+}
 // 나중에 학습로그 작성 페이지와 같아질 수  있음(임시저장)
 const EditStudylogPage = () => {
   const history = useHistory();
 
   const editorContentRef = useRef<any>(null);
 
-  const [studylogContent, setStudylogContent] = useState<StudylogForm>({
+  const [studylogContent, setStudylogContent] = useState<NewStudylogForm>({
     title: '',
     content: null,
     missionId: null,
     sessionId: null,
     tags: [],
+    abilities: [],
   });
 
   const { user } = useContext(UserContext);
@@ -55,10 +59,15 @@ const EditStudylogPage = () => {
           missionId: data.mission?.id || null,
           sessionId: data.session?.id || null,
           tags: data.tags,
+          abilities: data.abilities,
         });
       },
     }
   );
+
+  const onSelectAbilities = (abilities: number[]) => {
+    setStudylogContent({ ...studylogContent, abilities });
+  };
 
   const onChangeTitle: ChangeEventHandler<HTMLInputElement> = (event) => {
     setStudylogContent({ ...studylogContent, title: event.target.value });
@@ -155,10 +164,12 @@ const EditStudylogPage = () => {
         selectedMissionId={studylogContent.missionId}
         selectedSessionId={studylogContent.sessionId}
         selectedTags={studylogContent.tags}
+        selectedAbilities={studylogContent.abilities}
         onChangeTitle={onChangeTitle}
         onSelectMission={onSelectMission}
         onSelectSession={onSelectSession}
         onSelectTag={onSelectTag}
+        onSelectAbilities={onSelectAbilities}
         onSubmit={onEditStudylog}
       />
     </div>
