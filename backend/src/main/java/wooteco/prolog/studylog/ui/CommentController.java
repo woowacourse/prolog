@@ -2,6 +2,7 @@ package wooteco.prolog.studylog.ui;
 
 import java.net.URI;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,7 @@ import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.studylog.application.CommentService;
 import wooteco.prolog.studylog.application.dto.CommentCreateRequest;
+import wooteco.prolog.studylog.application.dto.CommentsResponse;
 
 @RestController
 @RequestMapping("/studylogs")
@@ -31,5 +33,12 @@ public class CommentController {
 
         return ResponseEntity.created(
             URI.create("/studylogs/" + studylogId + "/comments/" + commentId)).build();
+    }
+
+    @GetMapping("/{studylogId}/comments")
+    public ResponseEntity<CommentsResponse> showComments(@PathVariable Long studylogId) {
+        CommentsResponse commentsResponse = commentService.findComments(studylogId);
+
+        return ResponseEntity.ok(commentsResponse);
     }
 }
