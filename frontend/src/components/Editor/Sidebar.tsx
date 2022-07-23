@@ -15,7 +15,10 @@ import { useContext, useState } from 'react';
 import { UserContext } from '../../contexts/UserProvider';
 import Chip from '../Chip/Chip';
 import { Button } from '../../components';
+<<<<<<< HEAD
 import FlexBox from '../@shared/FlexBox/FlexBox';
+=======
+>>>>>>> 8203dce44b9742a50681cd6e58e46956f8f8730a
 
 interface SidebarProps {
   selectedSessionId: Session['id'] | null;
@@ -166,6 +169,7 @@ const Sidebar = ({
           />
         </li>
         <li>
+
           <FilterTitle>
             <FlexBox>
               abilities
@@ -179,6 +183,7 @@ const Sidebar = ({
               </Button>
             </FlexBox>
           </FilterTitle>
+
 
           <SelectedAbilityChips selectedAbilityIds={selectedAbilities} />
           {isSelectAbilityBoxOpen && (
