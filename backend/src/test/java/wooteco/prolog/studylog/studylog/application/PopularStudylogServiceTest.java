@@ -16,22 +16,20 @@ import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.MissionService;
-import wooteco.prolog.session.application.dto.SessionRequest;
-import wooteco.prolog.session.application.dto.SessionResponse;
+import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
-import wooteco.prolog.session.domain.Session;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.domain.Mission;
+import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.application.PopularStudylogService;
 import wooteco.prolog.studylog.application.StudylogLikeService;
 import wooteco.prolog.studylog.application.StudylogScrapService;
 import wooteco.prolog.studylog.application.StudylogService;
-import wooteco.prolog.studylog.application.dto.PopularStudylogsResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
-import wooteco.prolog.studylog.application.dto.StudylogWithScrapedCountResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.domain.Studylog;
@@ -92,10 +90,8 @@ class PopularStudylogServiceTest {
 
     @BeforeEach
     void setUp() {
-        SessionResponse sessionResponse1 = sessionService.create(
-            new SessionRequest("백엔드Java 레벨1 - 2021"));
-        SessionResponse sessionResponse2 = sessionService.create(
-            new SessionRequest("프론트엔드JS 레벨1 - 2021"));
+        SessionResponse sessionResponse1 = sessionService.create(new SessionRequest("세션1"));
+        SessionResponse sessionResponse2 = sessionService.create(new SessionRequest("세션2"));
 
         this.session1 = new Session(sessionResponse1.getId(), sessionResponse1.getName());
         this.session2 = new Session(sessionResponse2.getId(), sessionResponse2.getName());
@@ -106,12 +102,10 @@ class PopularStudylogServiceTest {
             .create(new MissionRequest("수동차 미션", session2.getId()));
 
         this.mission1 = new Mission(missionResponse1.getId(), missionResponse1.getName(), session1);
-        this.mission2 = new Mission(missionResponse2.getId(), missionResponse2.getName(), session2);
+        this.mission2 = new Mission(missionResponse2.getId(), missionResponse2.getName(), session1);
 
-        this.member1 = memberService.findOrCreateMember(
-            new GithubProfileResponse("이름1", "별명1", "1", "image"));
-        this.member2 = memberService.findOrCreateMember(
-            new GithubProfileResponse("이름2", "별명2", "2", "image"));
+        this.member1 = memberService.findOrCreateMember(new GithubProfileResponse("이름1", "별명1", "1", "image"));
+        this.member2 = memberService.findOrCreateMember(new GithubProfileResponse("이름2", "별명2", "2", "image"));
 
         this.loginMember1 = new LoginMember(member1.getId(), Authority.MEMBER);
         this.loginMember2 = new LoginMember(member2.getId(), Authority.MEMBER);
@@ -126,9 +120,7 @@ class PopularStudylogServiceTest {
         this.studylog3 = new Studylog(member2,
             STUDYLOG3_TITLE, "피케이 스터디로그", mission2,
             asList(tag3, tag4, tag5));
-        this.studylog4 = new Studylog(member2,
-            STUDYLOG4_TITLE, "포모의 스터디로그", mission2,
-            asList(tag3, tag4, tag5));
+        this.studylog4 = new Studylog(member2, STUDYLOG4_TITLE, "포모의 스터디로그", mission2, emptyList());
     }
 
     @DisplayName("로그인하지 않은 상태에서 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
@@ -145,14 +137,18 @@ class PopularStudylogServiceTest {
         // when
         PageRequest pageRequest = PageRequest.of(0, 2);
         popularStudylogService.updatePopularStudylogs(pageRequest);
-        PopularStudylogsResponse studylogs = popularStudylogService.findPopularStudylogs(
+        StudylogsResponse studylogs = popularStudylogService.findPopularStudylogs(
             pageRequest,
             null,
             true
         );
 
         // then
-        assertThat(studylogs.getAllResponse().getStudylogResponses()).hasSize(3);
+        assertThat(studylogs.getTotalSize()).isEqualTo(2);
+        for (StudylogResponse studylogResponse : studylogs.getData()) {
+            assertThat(studylogResponse.isScrap()).isFalse();
+            assertThat(studylogResponse.isRead()).isFalse();
+        }
     }
 
     @DisplayName("로그인한 상태에서 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
@@ -163,26 +159,19 @@ class PopularStudylogServiceTest {
             member1,
             studylog1,
             studylog2,
-            studylog3,
-            studylog4
+            studylog3
         );
 
-        StudylogResponse studylogResponse1 = insertResponses.get(0);
         StudylogResponse studylogResponse2 = insertResponses.get(1);
         StudylogResponse studylogResponse3 = insertResponses.get(2);
-        StudylogResponse studylogResponse4 = insertResponses.get(3);
 
         // 2번째 멤버가 1번째 멤버의 게시글 2번, 3번을 조회
-        studylogService.retrieveStudylogById(loginMember2, studylogResponse1.getId(), false);
         studylogService.retrieveStudylogById(loginMember2, studylogResponse2.getId(), false);
         studylogService.retrieveStudylogById(loginMember2, studylogResponse3.getId(), false);
-        studylogService.retrieveStudylogById(loginMember2, studylogResponse4.getId(), false);
 
         // 2번, 3번 글 스크랩
-        studylogScrapService.registerScrap(member2.getId(), studylogResponse1.getId());
         studylogScrapService.registerScrap(member2.getId(), studylogResponse2.getId());
         studylogScrapService.registerScrap(member2.getId(), studylogResponse3.getId());
-        studylogScrapService.registerScrap(member2.getId(), studylogResponse4.getId());
 
         // 3번 글 좋아요
         studylogLikeService.likeStudylog(member2.getId(), studylogResponse3.getId(), true);
@@ -190,15 +179,20 @@ class PopularStudylogServiceTest {
         // when
         PageRequest pageRequest = PageRequest.of(0, 2);
         popularStudylogService.updatePopularStudylogs(pageRequest);
-
-        PopularStudylogsResponse popularStudylogs = popularStudylogService.findPopularStudylogs(
+        StudylogsResponse popularStudylogs = popularStudylogService.findPopularStudylogs(
             pageRequest,
             member2.getId(),
             member2.isAnonymous()
         );
 
         // then
-        assertThat(popularStudylogs.getAllResponse().getStudylogResponses()).hasSize(4);
+        assertThat(popularStudylogs.getTotalSize()).isEqualTo(2);
+        assertThat(popularStudylogs.getData().get(0).getId()).isEqualTo(studylogResponse3.getId());
+        assertThat(popularStudylogs.getData().get(1).getId()).isEqualTo(studylogResponse2.getId());
+        for (StudylogResponse studylogResponse : popularStudylogs.getData()) {
+            assertThat(studylogResponse.isScrap()).isTrue();
+            assertThat(studylogResponse.isRead()).isTrue();
+        }
     }
 
     public List<StudylogResponse> insertStudylogs(Member member, Studylog... studylogs) {
@@ -211,8 +205,7 @@ class PopularStudylogServiceTest {
                 new StudylogRequest(
                     studylog.getTitle(),
                     studylog.getContent(),
-                    studylog.getSession().getId(),
-                    studylog.getMission().getId(),
+                    null,
                     toTagRequests(studylog)
                 )
             )
