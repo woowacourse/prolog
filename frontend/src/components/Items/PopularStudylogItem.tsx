@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
 import { Link } from 'react-router-dom';
-import { css } from '@emotion/react';
 
 import { Chip } from '..';
 import { PATH } from '../../enumerations/path';
@@ -32,30 +31,16 @@ import { ReactComponent as UnScrapIcon } from '../../assets/images/scrap.svg';
 import type { Studylog } from '../../models/Studylogs';
 
 const PopularStudylogItem = ({ item }: { item: Studylog }) => {
-  const {
-    title,
-    content,
-    id,
-    author,
-    tags,
-    createdAt,
-    viewCount,
-    liked,
-    likesCount,
-    scrap,
-    scrapedCount,
-  } = item;
+  const { title, content, id, author, tags, createdAt, viewCount, liked, likesCount, scrap } = item;
 
   return (
     <div css={[ContainerStyle]}>
       {/* 상단 영역 */}
       <div css={[TopContainerStyle, getRandomBgColorStyle(id)]}>
         {/* 프로필 영역 */}
-        <Link to={`/${author.username}`} css={[ProfileAreaStyle]}>
-          <div css={[FlexStyle, AlignItemsCenterStyle]}>
-            <img src={author.imageUrl} alt="" />
-            <span>{author.nickname}</span>
-          </div>
+        <Link to={`/${author.username}`} css={[ProfileAreaStyle, FlexStyle, AlignItemsCenterStyle]}>
+          <img src={author.imageUrl} alt="" />
+          <span>{author.nickname}</span>
         </Link>
         {/* 제목 영역 */}
         <Link to={`${PATH.STUDYLOGS}/${id}`} css={[TitleLink]}>
@@ -111,7 +96,6 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
               ) : (
                 <ScrapIcon width="1.6rem" height="1.6rem" />
               )}
-              <span>{scrapedCount}</span>
             </div>
           </div>
           <span>{new Date(createdAt).toLocaleDateString('ko-KR')}</span>

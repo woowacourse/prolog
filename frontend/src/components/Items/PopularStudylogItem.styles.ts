@@ -123,21 +123,21 @@ export const UserReactionIconStyle = css`
 `;
 
 export const ProfileAreaStyle = css`
-  div {
-    span {
-      margin-left: 1rem;
+  width: fit-content;
 
-      font-size: 1.4rem;
-    }
+  span {
+    margin-left: 1rem;
 
-    img {
-      width: 2.7rem;
-      height: 2.7rem;
+    font-size: 1.4rem;
+  }
 
-      border-radius: 3rem;
+  img {
+    width: 2.7rem;
+    height: 2.7rem;
 
-      z-index: 10;
-    }
+    border-radius: 3rem;
+
+    z-index: 10;
   }
 `;
 

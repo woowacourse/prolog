@@ -2,7 +2,7 @@
 
 import { css } from '@emotion/react';
 
-import { Studylog, studyLogCategory, StudyLogResponse } from '../../models/Studylogs';
+import { studyLogCategory, StudyLogResponse } from '../../models/Studylogs';
 import { PopularStudylogListStyle, SectionHeaderGapStyle, StyledChip } from './styles';
 import PopularStudylogItem from '../../components/Items/PopularStudylogItem';
 import { useState } from 'react';
@@ -40,9 +40,9 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: StudyLogResponse }): JS
       <ul css={[PopularStudylogListStyle]}>
         {studylogs[
           getKeyByValue(studyLogCategory, selectedCategory) as keyof typeof studylogs
-        ].data.map(({ studylogResponse, scrapedCount }) => (
-          <li key={studylogResponse.id}>
-            <PopularStudylogItem item={{ ...studylogResponse, scrapedCount }} />
+        ].data.map((studylog) => (
+          <li key={studylog.id}>
+            <PopularStudylogItem item={studylog} />
           </li>
         ))}
       </ul>
