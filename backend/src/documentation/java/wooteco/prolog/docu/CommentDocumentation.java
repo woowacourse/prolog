@@ -11,11 +11,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
+import wooteco.prolog.GithubResponses;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.studylog.application.dto.CommentCreateRequest;
+import wooteco.prolog.studylog.application.dto.CommentMemberResponse;
+import wooteco.prolog.studylog.application.dto.CommentResponse;
+import wooteco.prolog.studylog.application.dto.CommentsResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 
@@ -37,6 +41,29 @@ public class CommentDocumentation extends Documentation {
         // then
         assertThat(extract.statusCode()).isEqualTo(HttpStatus.CREATED.value());
         assertThat(extract.header("Location")).isNotNull();
+    }
+
+    @Test
+    void 단일_스터디로그에_대한_댓글을_조회한다() {
+        // given
+        Long studylogId = 스터디로그_등록함(createStudylogRequest());
+        댓글_등록함(studylogId, createCommentRequest());
+
+        // when
+        ExtractableResponse<Response> extract = given("comment/showComment")
+            .body(createCommentRequest())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().get("/studylogs/" + studylogId + "/comments")
+            .then().log().all().extract();
+
+        // then
+        CommentsResponse commentsResponse = extract.as(CommentsResponse.class);
+        assertThat(extract.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(commentsResponse.getData())
+            .usingRecursiveComparison()
+            .ignoringFields("createAt").isEqualTo(org.elasticsearch.common.collect.List.of(
+                new CommentResponse(1L, new CommentMemberResponse(1L, GithubResponses.소롱.getName(), GithubResponses.소롱.getAvatarUrl()), "댓글의 내용입니다.", null)
+            ));
     }
 
     private StudylogRequest createStudylogRequest() {
@@ -63,6 +90,16 @@ public class CommentDocumentation extends Documentation {
             .then().log().all().extract();
 
         return Long.parseLong(extract.header("Location").split("/studylogs/")[1]);
+    }
+
+    private void 댓글_등록함(Long studylogId, CommentCreateRequest request) {
+        RestAssured.given().log().all()
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().log().all()
+            .post("/studylogs/" + studylogId + "/comments")
+            .then().log().all().extract();
     }
 
     private Long 세션_등록함(SessionRequest request) {
