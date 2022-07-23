@@ -15,7 +15,11 @@ import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
+import wooteco.prolog.member.domain.GroupMember;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.MemberGroup;
+import wooteco.prolog.member.domain.repository.GroupMemberRepository;
+import wooteco.prolog.member.domain.repository.MemberGroupRepository;
 import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.dto.MissionRequest;
@@ -69,9 +73,19 @@ class PopularStudylogServiceTest {
     private MemberService memberService;
     @Autowired
     private StudylogLikeService studylogLikeService;
+    @Autowired
+    private MemberGroupRepository memberGroupRepository;
+    @Autowired
+    private GroupMemberRepository groupMemberRepository;
 
     private Member member1;
     private Member member2;
+
+    private MemberGroup frontendMemberGroup;
+    private MemberGroup backendMemberGroup;
+
+    private GroupMember frontendGroupMember;
+    private GroupMember backendGroupMember;
 
     private LoginMember loginMember1;
     private LoginMember loginMember2;
@@ -102,11 +116,23 @@ class PopularStudylogServiceTest {
             .create(new MissionRequest("수동차 미션", session2.getId()));
 
         this.mission1 = new Mission(missionResponse1.getId(), missionResponse1.getName(), session1);
-        this.mission2 = new Mission(missionResponse2.getId(), missionResponse2.getName(), session1);
+        this.mission2 = new Mission(missionResponse2.getId(), missionResponse2.getName(), session2);
 
         this.member1 = memberService.findOrCreateMember(new GithubProfileResponse("이름1", "별명1", "1", "image"));
         this.member2 = memberService.findOrCreateMember(new GithubProfileResponse("이름2", "별명2", "2", "image"));
 
+        this.frontendMemberGroup = memberGroupRepository.save(
+            new MemberGroup(null, "프론트엔드", "프론트엔드 설명")
+        );
+        this.backendMemberGroup = memberGroupRepository.save(
+            new MemberGroup(null, "백엔드", "백엔드 설명")
+        );
+        this.frontendGroupMember = groupMemberRepository.save(
+            new GroupMember(null, member1, frontendMemberGroup)
+        );
+        this.backendGroupMember = groupMemberRepository.save(
+            new GroupMember(null, member2, backendMemberGroup)
+        );
         this.loginMember1 = new LoginMember(member1.getId(), Authority.MEMBER);
         this.loginMember2 = new LoginMember(member2.getId(), Authority.MEMBER);
         this.loginMember3 = new LoginMember(null, Authority.ANONYMOUS);

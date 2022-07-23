@@ -3,13 +3,19 @@ package wooteco.prolog.studylog.application;
 import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Stack;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.member.domain.GroupMember;
+import wooteco.prolog.member.domain.MemberGroup;
+import wooteco.prolog.member.domain.repository.GroupMemberRepository;
+import wooteco.prolog.member.domain.repository.MemberGroupRepository;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.domain.PopularStudylog;
@@ -27,18 +33,33 @@ public class PopularStudylogService {
     private final StudylogService studylogService;
     private final StudylogRepository studylogRepository;
     private final PopularStudylogRepository popularStudylogRepository;
+    private final MemberGroupRepository memberGroupRepository;
+    private final GroupMemberRepository groupMemberRepository;
 
     @Transactional
     public void updatePopularStudylogs(Pageable pageable) {
         deleteAllLegacyPopularStudylogs();
 
-        List<Studylog> studylogs = findStudylogsByDays(pageable, LocalDateTime.now());
-        List<PopularStudylog> popularStudylogs = studylogs.stream()
-            .map(it -> new PopularStudylog(it.getId()))
-            .collect(toList());
+        List<MemberGroup> memberGroups = memberGroupRepository.findAll();
+        List<Studylog> studylogs = new ArrayList<>();
 
-        popularStudylogRepository.saveAll(popularStudylogs);
+        for (MemberGroup memberGroup : memberGroups) {
+            List<Studylog> groupStudylogs = findStudylogsByDays(pageable, LocalDateTime.now(), memberGroup);
+            studylogs.addAll(groupStudylogs);
+        }
     }
+
+//    @Transactional
+//    public void updatePopularStudylogs(Pageable pageable) {
+//        deleteAllLegacyPopularStudylogs();
+//
+//        List<Studylog> studylogs = findStudylogsByDays(pageable, LocalDateTime.now());
+//        List<PopularStudylog> popularStudylogs = studylogs.stream()
+//            .map(it -> new PopularStudylog(it.getId()))
+//            .collect(toList());
+//
+//        popularStudylogRepository.saveAll(popularStudylogs);
+//    }
 
     public StudylogsResponse findPopularStudylogs(Pageable pageable, Long memberId, boolean isAnonymousMember) {
         List<Studylog> studylogs = getSortedPopularStudyLogs();
@@ -76,23 +97,32 @@ public class PopularStudylogService {
             .collect(toList());
     }
 
-    private List<Studylog> findStudylogsByDays(Pageable pageable, LocalDateTime dateTime) {
+    private List<Studylog> findStudylogsByDays(Pageable pageable, LocalDateTime dateTime, MemberGroup memberGroup) {
         int decreaseDays = 0;
         int searchFailedCount = 0;
+
+        // 스터디로그 작성한 사람이 FrontEnd인지, BackEnd인지만 판단해서 studylog를 popularStudylog로 넣어주기
 
         while (true) {
             decreaseDays += A_WEEK;
             List<Studylog> studylogs = studylogRepository.findByPastDays(dateTime.minusDays(decreaseDays));
 
             if (studylogs.size() >= pageable.getPageSize()) {
-                return studylogs.stream()
+                List<Studylog> filteringStudylogs = studylogs.stream()
+                    .filter(it -> isChecking(memberGroup, it))
                     .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
-                    .collect(toList())
+                    .collect(toList());
+
+                if (filteringStudylogs.size() < pageable.getPageSize()) {
+                    return filteringStudylogs;
+                }
+                return filteringStudylogs
                     .subList(0, pageable.getPageSize());
             }
 
             if (searchFailedCount >= 2) {
                 return studylogs.stream()
+                    .filter(it -> groupMemberRepository.existsGroupMemberByMemberAndGroup(it.getMember(), memberGroup))
                     .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
                     .collect(toList());
             }
@@ -100,4 +130,14 @@ public class PopularStudylogService {
             searchFailedCount += 1;
         }
     }
+
+    private boolean isChecking(MemberGroup memberGroup, Studylog it) {
+        boolean tags = groupMemberRepository.existsGroupMemberByMemberAndGroup(
+            it.getMember(), memberGroup);
+        System.out.println("tags = " + tags);
+        return tags;
+    }
+    /**
+     * 전체는 : 그냥 studylog 모든 것들 or 백엔드, 프론트엔드가 아닌 것
+     */
 }
