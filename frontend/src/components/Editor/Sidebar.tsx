@@ -15,6 +15,7 @@ import { useContext, useState } from 'react';
 import { UserContext } from '../../contexts/UserProvider';
 import Chip from '../Chip/Chip';
 import { Button } from '../../components';
+import FlexBox from '../@shared/FlexBox/FlexBox';
 
 interface SidebarProps {
   selectedSessionId: Session['id'] | null;
@@ -165,15 +166,20 @@ const Sidebar = ({
           />
         </li>
         <li>
-          <FilterTitle>abilities</FilterTitle>
-          <Button
-            size="XX_SMALL"
-            type="button"
-            css={{ backgroundColor: `${COLOR.LIGHT_BLUE_300}` }}
-            onClick={() => setIsSelectAbilityBoxOpen(true)}
-          >
-            +
-          </Button>
+          <FilterTitle>
+            <FlexBox>
+              abilities
+              <Button
+                size="XX_SMALL"
+                type="button"
+                css={{ backgroundColor: `${COLOR.LIGHT_BLUE_300}` }}
+                onClick={() => setIsSelectAbilityBoxOpen(true)}
+              >
+                +
+              </Button>
+            </FlexBox>
+          </FilterTitle>
+
           <SelectedAbilityChips selectedAbilityIds={selectedAbilities} />
           {isSelectAbilityBoxOpen && (
             <SelectAbilityBox
