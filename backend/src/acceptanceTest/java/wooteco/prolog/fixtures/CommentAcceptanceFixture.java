@@ -4,7 +4,7 @@ import wooteco.prolog.studylog.application.dto.CommentCreateRequest;
 
 public enum CommentAcceptanceFixture {
 
-    COMMENT1("스터디로그 1번에 대칭되는 댓글 내용입니다.")
+    COMMENT("스터디로그의 댓글 내용입니다.")
     ;
 
     private final String content;
