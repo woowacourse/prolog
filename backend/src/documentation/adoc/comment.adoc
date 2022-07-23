@@ -1,0 +1,12 @@
+[[comment]]
+== 댓글
+
+=== 댓글 등록
+
+==== Request
+
+include::{snippets}/comment/create/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/comment/create/http-response.adoc[]
