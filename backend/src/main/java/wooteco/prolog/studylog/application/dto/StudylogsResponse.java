@@ -88,5 +88,4 @@ public class StudylogsResponse {
                 .map(TagResponse::of)
                 .collect(Collectors.toList());
     }
-
 }
