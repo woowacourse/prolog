@@ -10,23 +10,21 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.data.domain.PageRequest;
 import org.testcontainers.shaded.com.google.common.collect.Lists;
 import wooteco.prolog.ability.application.AbilityService;
 import wooteco.prolog.ability.application.dto.DefaultAbilityCreateRequest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.SessionMemberService;
 import wooteco.prolog.session.application.SessionService;
-import wooteco.prolog.session.application.MissionService;
+import wooteco.prolog.session.application.dto.MissionRequest;
+import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionMemberRequest;
 import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
-import wooteco.prolog.session.application.dto.MissionRequest;
-import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.DocumentService;
-import wooteco.prolog.studylog.application.PopularStudylogService;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.TagService;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
@@ -39,7 +37,7 @@ import wooteco.prolog.update.UpdatedContentsRepository;
 @AllArgsConstructor
 @Configuration
 public class DataLoaderApplicationListener implements
-                                           ApplicationListener<ContextRefreshedEvent> {
+    ApplicationListener<ContextRefreshedEvent> {
 
     private SessionService sessionService;
     private SessionMemberService sessionMemberService;
@@ -50,7 +48,6 @@ public class DataLoaderApplicationListener implements
     private DocumentService studylogDocumentService;
     private AbilityService abilityService;
     private UpdatedContentsRepository updatedContentsRepository;
-    private PopularStudylogService popularStudylogService;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -68,7 +65,8 @@ public class DataLoaderApplicationListener implements
         // member init
         Members.init(memberService);
 
-        sessionMemberService.registerMembers(1L, new SessionMemberRequest(Lists.newArrayList(Members.BROWN.value.getId(), Members.SUNNY.value.getId())));
+        sessionMemberService.registerMembers(1L, new SessionMemberRequest(Lists.newArrayList(
+            Members.BROWN.value.getId(), Members.SUNNY.value.getId())));
 
         // post init
         studylogService.insertStudylogs(Members.BROWN.value.getId(), StudylogGenerator.generate(20));
@@ -135,14 +133,12 @@ public class DataLoaderApplicationListener implements
         abilityService.applyDefaultAbilities(Members.SUNNY.value.getId(), "fe");
 
         updatedContentsRepository.save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
-        PageRequest pageRequest = PageRequest.of(0, 10);
-        popularStudylogService.updatePopularStudylogs(pageRequest);
     }
 
     private enum Sessions {
         LEVEL1(new SessionRequest("백엔드Java 세션1 - 2021")),
-        LEVEL3(new SessionRequest("백엔드Java 세션2 - 2021")),
         LEVEL2(new SessionRequest("프론트엔드JS 세션1 - 2021")),
+        LEVEL3(new SessionRequest("백엔드Java 세션2 - 2021")),
         LEVEL4(new SessionRequest("프론트엔드JS 세션2 - 2021"));
 
         private final SessionRequest request;
@@ -294,7 +290,7 @@ public class DataLoaderApplicationListener implements
         private static StudylogRequest create() {
             return new StudylogRequest(
                 "페이지네이션 데이터 " + cnt,
-                "좋은 내용" + cnt,
+                "좋은 내용",
                 Sessions.values()[cnt++ % Missions.values().length].getId(),
                 Missions.values()[cnt++ % Missions.values().length].getId(),
                 TagRequests.random()

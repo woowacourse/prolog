@@ -11,41 +11,42 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.member.domain.MemberGroup;
+import wooteco.prolog.member.domain.repository.GroupMemberRepository;
+import wooteco.prolog.member.domain.repository.MemberGroupRepository;
 import wooteco.prolog.studylog.application.dto.PopularStudylogsResponse;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
-import wooteco.prolog.studylog.application.dto.StudylogWithScrapedCountResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
-import wooteco.prolog.studylog.application.dto.StudylogsWithScrapCountResponse;
-import wooteco.prolog.studylog.domain.Curriculum;
 import wooteco.prolog.studylog.domain.PopularStudylog;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.PopularStudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 
 @Service
 @AllArgsConstructor
 @Transactional(readOnly = true)
 public class PopularStudylogService {
 
-    private static final int ONE_INDEXED_PARAMETER = 1;
     private static final int A_WEEK = 7;
 
     private final StudylogService studylogService;
     private final StudylogRepository studylogRepository;
     private final PopularStudylogRepository popularStudylogRepository;
-    private final StudylogScrapRepository studylogScrapRepository;
+    private final MemberGroupRepository memberGroupRepository;
+    private final GroupMemberRepository groupMemberRepository;
 
     @Transactional
     public void updatePopularStudylogs(Pageable pageable) {
         deleteAllLegacyPopularStudylogs();
-        List<Studylog> studylogs = new ArrayList<>();
-        for (Curriculum curriculum : Curriculum.values()) {
-            List<Studylog> studylogsByDays = findStudylogsByDays(pageable, LocalDateTime.now(),
-                curriculum);
-            studylogs.addAll(studylogsByDays);
-        }
 
+        List<MemberGroup> memberGroups = memberGroupRepository.findAll();
+        List<Studylog> studylogs = new ArrayList<>();
+
+        for (MemberGroup memberGroup : memberGroups) {
+            List<Studylog> groupStudylogs = findStudylogsByDays(pageable, LocalDateTime.now(),
+                memberGroup);
+            studylogs.addAll(groupStudylogs);
+        }
         List<PopularStudylog> popularStudylogs = studylogs.stream()
             .map(it -> new PopularStudylog(it.getId()))
             .collect(toList());
@@ -53,59 +54,59 @@ public class PopularStudylogService {
         popularStudylogRepository.saveAll(popularStudylogs);
     }
 
-    public PopularStudylogsResponse findPopularStudylogs(Pageable pageable, Long memberId,
-        boolean isAnonymousMember) {
-        List<Studylog> allStudylogs = getSortedPopularStudyLogs();
-        List<Studylog> frontStudylogs = getSortedCurriculumPopularStudylogs(allStudylogs,
-            Curriculum.FRONTEND);
-        List<Studylog> backStudylogs = getSortedCurriculumPopularStudylogs(allStudylogs,
-            Curriculum.BACKEND);
+    public PopularStudylogsResponse findPopularStudylogs(Pageable pageable,
+                                                         Long memberId,
+                                                         boolean isAnonymousMember) {
 
-        StudylogsWithScrapCountResponse allResponse = getPageablePopularStudylogs(allStudylogs, pageable,
-            memberId);
-        StudylogsWithScrapCountResponse frontResponse = getPageablePopularStudylogs(frontStudylogs, pageable,
-            memberId);
-        StudylogsWithScrapCountResponse backResponse = getPageablePopularStudylogs(backStudylogs, pageable,
-            memberId);
+        List<MemberGroup> memberGroups = memberGroupRepository.findAll();
+        List<Studylog> all = getSortedPopularStudyLogs();
+        List<Studylog> frontend = getSortedPopularStudyLogs(memberGroups.get(0));
+        List<Studylog> backend = getSortedPopularStudyLogs(memberGroups.get(1));
+
+        PageImpl<Studylog> allPage = new PageImpl<>(all, pageable, all.size());
+        PageImpl<Studylog> frontendPage = new PageImpl<>(frontend, pageable, frontend.size());
+        PageImpl<Studylog> backendPage = new PageImpl<>(backend, pageable, backend.size());
+
+        StudylogsResponse allStudylogsResponse = StudylogsResponse.of(allPage, memberId);
+        StudylogsResponse frontendStudylogsResponse = StudylogsResponse.of(frontendPage, memberId);
+        StudylogsResponse backendStudylogsResponse = StudylogsResponse.of(backendPage, memberId);
 
         if (isAnonymousMember) {
-            return new PopularStudylogsResponse(allResponse, frontResponse, backResponse);
+            return PopularStudylogsResponse.of(allStudylogsResponse, frontendStudylogsResponse,
+                backendStudylogsResponse);
         }
 
-        List<StudylogResponse> allData = allResponse.getStudylogResponses();
+        List<StudylogResponse> allData = allStudylogsResponse.getData();
+        List<StudylogResponse> frontendData = frontendStudylogsResponse.getData();
+        List<StudylogResponse> backendData = backendStudylogsResponse.getData();
+
         updateScrapAndRead(allData, memberId);
-
-        List<StudylogResponse> frontendData = frontResponse.getStudylogResponses();
         updateScrapAndRead(frontendData, memberId);
-
-        List<StudylogResponse> backendData = backResponse.getStudylogResponses();
         updateScrapAndRead(backendData, memberId);
 
-        return new PopularStudylogsResponse(allResponse, frontResponse, backResponse);
+        return PopularStudylogsResponse.of(allStudylogsResponse, frontendStudylogsResponse,
+            backendStudylogsResponse);
     }
 
-    private List<Studylog> getSortedCurriculumPopularStudylogs(List<Studylog> allStudylogs,
-        Curriculum curriculum) {
-
-        return allStudylogs.stream()
-            .filter(studylog -> studylog.isContainsCurriculum(curriculum))
+    private List<Studylog> getSortedPopularStudyLogs() {
+        return studylogRepository.findAllById(getPopularStudylogIds())
+            .stream()
+            .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
             .collect(toList());
     }
 
-    private StudylogsWithScrapCountResponse getPageablePopularStudylogs(List<Studylog> allStudylogs,
-        Pageable pageable, Long memberId) {
-
-        final List<StudylogWithScrapedCountResponse> studylogsResponse = allStudylogs.stream()
-            .map(studylog -> new StudylogWithScrapedCountResponse(StudylogResponse.of(studylog),
-                studylogScrapRepository.countByStudylogId(studylog.getId())))
+    private List<Studylog> getSortedPopularStudyLogs(MemberGroup memberGroup) {
+        return studylogRepository.findAllById(getPopularStudylogIds())
+            .stream()
+            .filter(it -> groupMemberRepository.existsGroupMemberByMemberAndGroup(
+                it.getMember(), memberGroup))
+            .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
             .collect(toList());
-
-        return new StudylogsWithScrapCountResponse(studylogsResponse, 0L, 0, 0);
     }
 
-    private void updateScrapAndRead(List<StudylogResponse> studylogResponses, Long memberId) {
-        studylogService.updateScrap(studylogResponses, studylogService.findScrapIds(memberId));
-        studylogService.updateRead(studylogResponses, studylogService.findReadIds(memberId));
+    private void updateScrapAndRead(List<StudylogResponse> data, Long memberId) {
+        studylogService.updateScrap(data, studylogService.findScrapIds(memberId));
+        studylogService.updateRead(data, studylogService.findReadIds(memberId));
     }
 
     private void deleteAllLegacyPopularStudylogs() {
@@ -116,13 +117,6 @@ public class PopularStudylogService {
         }
     }
 
-    private List<Studylog> getSortedPopularStudyLogs() {
-        return studylogRepository.findAllById(getPopularStudylogIds())
-            .stream()
-            .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
-            .collect(toList());
-    }
-
     private List<Long> getPopularStudylogIds() {
         return popularStudylogRepository.findAllByDeletedFalse()
             .stream()
@@ -131,7 +125,7 @@ public class PopularStudylogService {
     }
 
     private List<Studylog> findStudylogsByDays(Pageable pageable, LocalDateTime dateTime,
-        Curriculum curriculum) {
+                                               MemberGroup memberGroup) {
         int decreaseDays = 0;
         int searchFailedCount = 0;
 
@@ -141,20 +135,25 @@ public class PopularStudylogService {
                 dateTime.minusDays(decreaseDays));
 
             if (studylogs.size() >= pageable.getPageSize()) {
-                final List<Studylog> filteredStudylogs = studylogs.stream()
-                    .filter(it -> it.getSession().isSameAs(curriculum))
+                List<Studylog> filteringStudylogs = studylogs.stream()
+                    .filter(it -> groupMemberRepository.existsGroupMemberByMemberAndGroup(
+                        it.getMember(),
+                        memberGroup))
                     .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
                     .collect(toList());
-                if (filteredStudylogs.size() < pageable.getPageSize()) {
-                    return filteredStudylogs;
+
+                if (filteringStudylogs.size() < pageable.getPageSize()) {
+                    return filteringStudylogs;
                 }
-                return filteredStudylogs
+                return filteringStudylogs
                     .subList(0, pageable.getPageSize());
             }
 
             if (searchFailedCount >= 2) {
                 return studylogs.stream()
-                    .filter(it -> it.getSession().isSameAs(curriculum))
+                    .filter(it -> groupMemberRepository.existsGroupMemberByMemberAndGroup(
+                        it.getMember(),
+                        memberGroup))
                     .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
                     .collect(toList());
             }

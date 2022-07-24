@@ -20,4 +20,10 @@ public class MemberGroup {
     private String name;
 
     private String description;
+
+    public MemberGroup(Long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
 }

@@ -16,10 +16,10 @@ import wooteco.prolog.Documentation;
 import wooteco.prolog.GithubResponses;
 import wooteco.prolog.member.application.dto.MemberScrapRequest;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
-import wooteco.prolog.session.application.dto.SessionRequest;
-import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
@@ -81,7 +81,7 @@ public class MemberDocumentation extends Documentation {
             .when().get(scrapedLogLocation)
             .then().log().all()
             .assertThat()
-            .body("studylogResponse.id", equalTo(Integer.parseInt(logId)));
+            .body("id", equalTo(Integer.parseInt(logId)));
     }
 
     @Test
