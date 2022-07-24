@@ -9,7 +9,13 @@ import lombok.NoArgsConstructor;
 @Getter
 public class PopularStudylogsResponse {
 
-    private StudylogsWithScrapCountResponse allResponse;
-    private StudylogsWithScrapCountResponse frontResponse;
-    private StudylogsWithScrapCountResponse backResponse;
+    private StudylogsResponse allResponse;
+    private StudylogsResponse frontResponse;
+    private StudylogsResponse backResponse;
+
+    public static PopularStudylogsResponse of(StudylogsResponse all,
+                                              StudylogsResponse frontend,
+                                              StudylogsResponse backend) {
+        return new PopularStudylogsResponse(all, frontend, backend);
+    }
 }
