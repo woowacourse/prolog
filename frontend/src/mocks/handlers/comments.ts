@@ -6,4 +6,25 @@ export const commentsHandler = [
   rest.get(`${BASE_URL}/studylogs/:studylogId/comments`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(comments));
   }),
+  rest.post<{ content: string }>(`${BASE_URL}/studylogs/:studylogId/comments`, (req, res, ctx) => {
+    const { body } = req;
+
+    comments.data = [
+      ...comments.data,
+      {
+        id: comments.data.length + 1,
+        author: {
+          id: 1,
+          username: 'euijinkk',
+          nickname: '시지프',
+          imageUrl: 'https://avatars.githubusercontent.com/u/24906022?v=4',
+          role: 'crew',
+        },
+        content: body.content,
+        createAt: '2022-07-24',
+      },
+    ];
+
+    return res(ctx.status(201));
+  }),
 ];

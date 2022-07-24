@@ -7,3 +7,11 @@ export const getComments = async (studylogId: number): Promise<CommentType[]> =>
 
   return response.data;
 };
+
+export const createCommentRequest = ({
+  studylogId,
+  body,
+}: {
+  studylogId: number;
+  body: { content: string };
+}) => axios.post(`${BASE_URL}/studylogs/${studylogId}/comments`, body);

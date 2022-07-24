@@ -19,7 +19,7 @@ import { MainContentStyle } from '../../PageRouter';
 import { UserContext } from '../../contexts/UserProvider';
 import useSnackBar from '../../hooks/useSnackBar';
 import useStudylog from '../../hooks/useStudylog';
-import useMutation from '../../hooks/useMutation';
+import useCustomMutation from '../../hooks/useMutation';
 import debounce from '../../utils/debounce';
 
 import {
@@ -38,10 +38,9 @@ import {
   SNACKBAR_MESSAGE,
 } from '../../constants';
 import { SUCCESS_MESSAGE } from '../../constants/message';
-import { useFetchComments } from '../../hooks/queries/comment';
+import { useCreateComment, useFetchComments } from '../../hooks/queries/comment';
 import Comment from '../../components/Comment/Comment';
 import Editor from '../../components/Editor/Editor';
-import { css } from '@emotion/react';
 
 const StudylogPage = () => {
   const { id } = useParams();
@@ -68,7 +67,7 @@ const StudylogPage = () => {
 
   const getStudylog = () => getData({ id, accessToken });
 
-  const { mutate: deleteStudylog } = useMutation(
+  const { mutate: deleteStudylog } = useCustomMutation(
     () => {
       if (!window.confirm(CONFIRM_MESSAGE.DELETE_STUDYLOG)) return;
 
@@ -101,7 +100,7 @@ const StudylogPage = () => {
     history.push(`${PATH.STUDYLOG}/${id}/edit`);
   };
 
-  const { mutate: postScrap } = useMutation(
+  const { mutate: postScrap } = useCustomMutation(
     () => {
       if (!isLoggedIn) {
         alert(ALERT_MESSAGE.NEED_TO_LOGIN);
@@ -118,7 +117,7 @@ const StudylogPage = () => {
     }
   );
 
-  const { mutate: deleteScrap } = useMutation(
+  const { mutate: deleteScrap } = useCustomMutation(
     () => {
       if (!window.confirm(CONFIRM_MESSAGE.DELETE_SCRAP)) return;
 
@@ -132,7 +131,7 @@ const StudylogPage = () => {
     }
   );
 
-  const { mutate: postLike } = useMutation(
+  const { mutate: postLike } = useCustomMutation(
     () => {
       if (!isLoggedIn) {
         alert(ALERT_MESSAGE.NEED_TO_LOGIN);
@@ -150,7 +149,7 @@ const StudylogPage = () => {
     }
   );
 
-  const { mutate: deleteLike } = useMutation(
+  const { mutate: deleteLike } = useCustomMutation(
     () => {
       if (!window.confirm(CONFIRM_MESSAGE.DELETE_LIKE)) return;
 
@@ -193,12 +192,15 @@ const StudylogPage = () => {
     };
   }, [accessToken, id]);
 
+  /* 댓글 로직 */
   const { data } = useFetchComments(id);
   const comments = data?.data;
 
   const editorContentRef = useRef(null);
 
-  const createComment = (event) => {
+  const { mutate: createComment } = useCreateComment(id);
+
+  const onSubmitComment = (event) => {
     event.preventDefault();
 
     const content = editorContentRef.current?.getInstance().getMarkdown() || '';
@@ -208,7 +210,7 @@ const StudylogPage = () => {
       return;
     }
 
-    // post
+    createComment({ studylogId: id, body: { content } });
   };
 
   return (
@@ -238,8 +240,10 @@ const StudylogPage = () => {
         goAuthorProfilePage={goAuthorProfilePage}
       />
       <CommentsContainer>
-        {comments && comments.map((comment) => <Comment key={comment.id} {...comment} />)}
-        <EditorForm onSubmit={createComment}>
+        {comments?.map((comment) => (
+          <Comment key={comment.id} {...comment} />
+        ))}
+        <EditorForm onSubmit={onSubmitComment}>
           <Editor height="25rem" hasTitle={false} editorContentRef={editorContentRef} />
           <SubmitButton>작성 완료</SubmitButton>
         </EditorForm>
