@@ -1,12 +1,19 @@
 /** @jsxImportSource @emotion/react */
 
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import TagManager from 'react-gtm-module';
 
 import Content from './Content';
 import { Button, BUTTON_SIZE } from '../../components';
-import { ButtonList, EditButtonStyle, DeleteButtonStyle } from './styles';
+import {
+  ButtonList,
+  EditButtonStyle,
+  DeleteButtonStyle,
+  CommentsContainer,
+  SubmitButton,
+  EditorForm,
+} from './styles';
 
 import { MainContentStyle } from '../../PageRouter';
 import { UserContext } from '../../contexts/UserProvider';
@@ -31,6 +38,10 @@ import {
   SNACKBAR_MESSAGE,
 } from '../../constants';
 import { SUCCESS_MESSAGE } from '../../constants/message';
+import { useFetchComments } from '../../hooks/queries/comment';
+import Comment from '../../components/Comment/Comment';
+import Editor from '../../components/Editor/Editor';
+import { css } from '@emotion/react';
 
 const StudylogPage = () => {
   const { id } = useParams();
@@ -182,6 +193,24 @@ const StudylogPage = () => {
     };
   }, [accessToken, id]);
 
+  const { data } = useFetchComments(id);
+  const comments = data?.data;
+
+  const editorContentRef = useRef(null);
+
+  const createComment = (event) => {
+    event.preventDefault();
+
+    const content = editorContentRef.current?.getInstance().getMarkdown() || '';
+
+    if (content.length === 0) {
+      alert(ALERT_MESSAGE.NO_CONTENT);
+      return;
+    }
+
+    // post
+  };
+
   return (
     <div css={MainContentStyle}>
       {username === author?.username && (
@@ -208,6 +237,13 @@ const StudylogPage = () => {
         toggleScrap={toggleScrap}
         goAuthorProfilePage={goAuthorProfilePage}
       />
+      <CommentsContainer>
+        {comments && comments.map((comment) => <Comment key={comment.id} {...comment} />)}
+        <EditorForm onSubmit={createComment}>
+          <Editor height="25rem" hasTitle={false} editorContentRef={editorContentRef} />
+          <SubmitButton>작성 완료</SubmitButton>
+        </EditorForm>
+      </CommentsContainer>
     </div>
   );
 };
