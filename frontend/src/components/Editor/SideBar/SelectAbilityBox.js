@@ -11,11 +11,7 @@ const SelectAbilityBox = ({
   wholeAbility,
   onSelectAbilities,
 }) => {
-  const abilityIds = wholeAbility.map((ability) => ability.id);
-  console.log('abilityIds', abilityIds);
-
   const [updatedAbilities, setUpdatedAbilities] = useState(selectedAbilities);
-  console.log('updatedAbilities', updatedAbilities);
 
   const onClickAbility = (event) => {
     const targetAbilityId = Number(event.target.id);
@@ -28,7 +24,6 @@ const SelectAbilityBox = ({
     }
 
     setUpdatedAbilities([...currAbilities]);
-    console.log('onClickAbility - updatedAbilities', updatedAbilities);
   };
 
   const isChecked = (targetAbilityId) => {
@@ -38,7 +33,6 @@ const SelectAbilityBox = ({
   const onClickSelectButton = () => {
     onSelectAbilities(updatedAbilities);
     setIsSelectAbilityBoxOpen(false);
-    console.log('onClickSelectButton', updatedAbilities);
   };
 
   return (

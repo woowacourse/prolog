@@ -19,7 +19,6 @@ const StudyLogTable = ({
   refetch,
 }) => {
   /** 역량 선택은 자식 역량만 선택할 수 있다. */
-  console.log('abilities', abilities);
   const wholeAbility = abilities?.map((parentAbility) => [...parentAbility.children]).flat();
 
   const selectAbilityBoxRef = useRef(null);
