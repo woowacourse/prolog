@@ -14,9 +14,12 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.messages.internal.com.google.common.collect.Lists;
-
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.StudylogAcceptanceFixture;
@@ -27,7 +30,6 @@ import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogSessionRequest;
 import wooteco.prolog.studylog.application.dto.StudylogWithScrapedCountResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
-import wooteco.prolog.studylog.application.dto.StudylogsWithScrapCountResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 
 public class StudylogStepDefinitions extends AcceptanceSteps {
@@ -56,7 +58,8 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
             Lists.newArrayList(
                 new TagRequest(TAG1.getTagName()),
                 new TagRequest(TAG2.getTagName())
-            )
+            ),
+            Collections.emptyList()
         );
         context.invokeHttpPostWithToken("/studylogs", studylogRequest);
 
@@ -76,7 +79,8 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
             Lists.newArrayList(
                 new TagRequest(TAG1.getTagName()),
                 new TagRequest(TAG2.getTagName())
-            )
+            ),
+            Collections.emptyList()
         );
         context.invokeHttpPostWithToken("/studylogs", studylogRequest);
         if (context.response.statusCode() == HttpStatus.CREATED.value()) {
@@ -86,7 +90,8 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
     @Given("{string} 스터디로그를 작성하고")
     public void 특정스터디로그를작성하고(String title) {
-        StudylogRequest studylogRequest = new StudylogRequest(title, "content", 1L, Collections.emptyList());
+        StudylogRequest studylogRequest = new StudylogRequest(title, "content", 1L,
+            Collections.emptyList());
         context.invokeHttpPostWithToken("/studylogs", studylogRequest);
         context.storage.put(title, context.response.as(StudylogResponse.class));
     }
@@ -100,7 +105,8 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
         context.invokeHttpGet("/studylogs/" + studylogResponse.getId());
 
-        StudylogWithScrapedCountResponse response = context.response.as(StudylogWithScrapedCountResponse.class);
+        StudylogWithScrapedCountResponse response = context.response
+            .as(StudylogWithScrapedCountResponse.class);
         assertThat(response.getStudylogResponse().getId()).isNotNull();
     }
 
@@ -113,7 +119,8 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
     @Given("{int}번 미션의 스터디로그를 {long}개 작성하고")
     public void 특정미션스터디로그를다수작성하면(int missionNumber, Long totalSize) {
-        List<StudylogRequest> requests = StudylogAcceptanceFixture.findByMissionNumber((long) missionNumber);
+        List<StudylogRequest> requests = StudylogAcceptanceFixture
+            .findByMissionNumber((long) missionNumber);
 
         if (requests.isEmpty()) {
             throw new RuntimeException("해당 미션의 스터디로그는 없습니다.");
@@ -126,7 +133,8 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
     @Given("{int}번 태그의 스터디로그를 {long}개 작성하고")
     public void 특정태그스터디로그를다수작성하면(int tagNumber, Long totalSize) {
-        List<StudylogRequest> requests = StudylogAcceptanceFixture.findByTagNumber((long) tagNumber);
+        List<StudylogRequest> requests = StudylogAcceptanceFixture
+            .findByTagNumber((long) tagNumber);
 
         if (requests.isEmpty()) {
             throw new RuntimeException("해당 미션의 스터디로그는 없습니다.");
@@ -163,7 +171,8 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
     @When("{int}번 미션과 {int}번 태그로 {long}개를 조회하면")
     public void 미션태그필터를사이즈와함께조회한다(int missionNumber, int tagNumber, Long pageSize) {
-        String path = String.format("/studylogs?tags=%d&missions=%d&size=%d", tagNumber, missionNumber, pageSize);
+        String path = String
+            .format("/studylogs?tags=%d&missions=%d&size=%d", tagNumber, missionNumber, pageSize);
         context.invokeHttpGet(path);
     }
 
@@ -277,7 +286,8 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
         String path = "/studylogs/" + studylogId;
         context.invokeHttpGet(path);
-        StudylogWithScrapedCountResponse studylog = context.response.as(StudylogWithScrapedCountResponse.class);
+        StudylogWithScrapedCountResponse studylog = context.response
+            .as(StudylogWithScrapedCountResponse.class);
 
         assertThat(studylog.getScrapedCount()).isNotNull();
     }
@@ -288,14 +298,16 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
         String path = "/studylogs/" + studylogId;
         context.invokeHttpGet(path);
-        StudylogWithScrapedCountResponse studylog = context.response.as(StudylogWithScrapedCountResponse.class);
+        StudylogWithScrapedCountResponse studylog = context.response
+            .as(StudylogWithScrapedCountResponse.class);
 
         assertThat(studylog.getScrapedCount()).isEqualTo(1);
     }
 
     @Then("조회된 스터디로그의 조회수가 {int}로 증가된다")
     public void 조회된스터디로그의조회수가증가된다(int viewCount) {
-        StudylogWithScrapedCountResponse studylog = context.response.as(StudylogWithScrapedCountResponse.class);
+        StudylogWithScrapedCountResponse studylog = context.response
+            .as(StudylogWithScrapedCountResponse.class);
 
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(studylog.getStudylogResponse().getViewCount()).isEqualTo(viewCount);
@@ -303,7 +315,8 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
     @Then("조회된 스터디로그의 조회수가 증가되지 않고 {int}이다")
     public void 조회된스터디로그의조회수가증가되지않는다(int viewCount) {
-        StudylogWithScrapedCountResponse studylog = context.response.as(StudylogWithScrapedCountResponse.class);
+        StudylogWithScrapedCountResponse studylog = context.response
+            .as(StudylogWithScrapedCountResponse.class);
 
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(studylog.getStudylogResponse().getViewCount()).isEqualTo(viewCount);
@@ -322,9 +335,11 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
         String path = "/studylogs/" + studylogId;
         context.invokeHttpGet(path);
-        StudylogWithScrapedCountResponse studylog = context.response.as(StudylogWithScrapedCountResponse.class);
+        StudylogWithScrapedCountResponse studylog = context.response
+            .as(StudylogWithScrapedCountResponse.class);
 
-        assertThat(studylog.getStudylogResponse().getContent()).isEqualTo(STUDYLOG3.getStudylogRequest().getContent());
+        assertThat(studylog.getStudylogResponse().getContent())
+            .isEqualTo(STUDYLOG3.getStudylogRequest().getContent());
     }
 
     @Then("에러 응답을 받는다")
@@ -358,7 +373,8 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         });
 
         assertAll(
-            () -> assertThat(Iterables.elementsEqual(studylogs.getData(), studylogResponses)).isTrue(),
+            () -> assertThat(Iterables.elementsEqual(studylogs.getData(), studylogResponses))
+                .isTrue(),
             () -> assertThat(studylogs.getData().size()).isEqualTo(pageSize)
         );
     }
@@ -377,26 +393,31 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
 
     @Then("조회된 스터디로그의 좋아요 수가 증가한다")
     public void 조회된스터디로그의좋아요수가증가한다() {
-        StudylogWithScrapedCountResponse response = context.response.as(StudylogWithScrapedCountResponse.class);
-        System.out.println("responseLikesCount = " + response.getStudylogResponse().getLikesCount());
+        StudylogWithScrapedCountResponse response = context.response
+            .as(StudylogWithScrapedCountResponse.class);
+        System.out
+            .println("responseLikesCount = " + response.getStudylogResponse().getLikesCount());
         assertThat(response.getStudylogResponse().getLikesCount()).isEqualTo(1);
     }
 
     @Then("조회된 스터디로그의 좋아요 수가 증가하지 않는다")
     public void 조회된스터디로그의좋아요수가증가하지않는다() {
-        StudylogWithScrapedCountResponse response = context.response.as(StudylogWithScrapedCountResponse.class);
+        StudylogWithScrapedCountResponse response = context.response
+            .as(StudylogWithScrapedCountResponse.class);
         assertThat(response.getStudylogResponse().getLikesCount()).isEqualTo(0);
     }
 
     @Then("조회된 스터디로그의 좋아요 여부가 참이다")
     public void 조회된스터디로그의좋아요여부가참이다() {
-        StudylogWithScrapedCountResponse response = context.response.as(StudylogWithScrapedCountResponse.class);
+        StudylogWithScrapedCountResponse response = context.response
+            .as(StudylogWithScrapedCountResponse.class);
         assertThat(response.getStudylogResponse().isLiked()).isTrue();
     }
 
     @Then("조회된 스터디로그의 좋아요 여부가 거짓이다")
     public void 조회된스터디로그의좋아요여부가거짓이다() {
-        StudylogWithScrapedCountResponse response = context.response.as(StudylogWithScrapedCountResponse.class);
+        StudylogWithScrapedCountResponse response = context.response
+            .as(StudylogWithScrapedCountResponse.class);
         assertThat(response.getStudylogResponse().isLiked()).isFalse();
     }
 
@@ -410,39 +431,46 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     public void 스터디로그가Id순서로조회된다(String studylogIds) {
         context.invokeHttpGet("/studylogs/popular");
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
-        PopularStudylogsResponse popularStudylogsResponse = context.response.as(PopularStudylogsResponse.class);
+        PopularStudylogsResponse popularStudylogsResponse = context.response
+            .as(PopularStudylogsResponse.class);
 
         List<String> ids = Arrays.asList(studylogIds.split(", "));
         for (int i = 0; i < ids.size(); i++) {
-            StudylogWithScrapedCountResponse response = popularStudylogsResponse.getAllResponse().getData().get(i);
+            StudylogWithScrapedCountResponse response = popularStudylogsResponse.getAllResponse()
+                .getData().get(i);
             Long id = Long.parseLong(ids.get(i));
-            assertThat(response.getStudylogResponse().getId()).isEqualTo(id);;
+            assertThat(response.getStudylogResponse().getId()).isEqualTo(id);
+            ;
         }
     }
 
     @When("스터디로그 세션을 {long}로 수정하면")
     public void 스터디로그세션을L로수정하면(long sessionId) {
         StudylogResponse studylogResponse = (StudylogResponse) context.storage.get("studylog");
-        context.invokeHttpPutWithToken("/studylogs/" + studylogResponse.getId() + "/sessions", new StudylogSessionRequest(sessionId));
+        context.invokeHttpPutWithToken("/studylogs/" + studylogResponse.getId() + "/sessions",
+            new StudylogSessionRequest(sessionId));
     }
 
     @Then("스터디로그 세션이 {long}로 수정된다")
     public void 스터디로그세션이로수정된다(long sessionId) {
         StudylogResponse studylogResponse = (StudylogResponse) context.storage.get("studylog");
         context.invokeHttpGet("/studylogs/" + studylogResponse.getId());
-        assertThat(context.response.as(StudylogWithScrapedCountResponse.class).getStudylogResponse().getSession().getId()).isEqualTo(sessionId);
+        assertThat(context.response.as(StudylogWithScrapedCountResponse.class).getStudylogResponse()
+            .getSession().getId()).isEqualTo(sessionId);
     }
 
     @When("스터디로그 미션을 {long}로 수정하면")
     public void 스터디로그미션을로수정하면(long missionId) {
         StudylogResponse studylogResponse = (StudylogResponse) context.storage.get("studylog");
-        context.invokeHttpPutWithToken("/studylogs/" + studylogResponse.getId() + "/missions", new StudylogMissionRequest(missionId));
+        context.invokeHttpPutWithToken("/studylogs/" + studylogResponse.getId() + "/missions",
+            new StudylogMissionRequest(missionId));
     }
 
     @Then("스터디로그 미션이 {long}로 수정된다")
     public void 스터디로그미션이로수정된다(long missionId) {
         StudylogResponse studylogResponse = (StudylogResponse) context.storage.get("studylog");
         context.invokeHttpGet("/studylogs/" + studylogResponse.getId());
-        assertThat(context.response.as(StudylogWithScrapedCountResponse.class).getStudylogResponse().getMission().getId()).isEqualTo(missionId);
+        assertThat(context.response.as(StudylogWithScrapedCountResponse.class).getStudylogResponse()
+            .getMission().getId()).isEqualTo(missionId);
     }
 }

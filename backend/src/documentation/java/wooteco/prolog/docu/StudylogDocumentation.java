@@ -6,6 +6,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Disabled;
@@ -210,7 +211,7 @@ class StudylogDocumentation extends Documentation {
         Long missionId = 미션_등록함(new MissionRequest("세션1 - 지하철 노선도 미션", sessionId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("spa"), new TagRequest("router"));
 
-        return new StudylogRequest(title, content, sessionId, missionId, tags);
+        return new StudylogRequest(title, content, sessionId, missionId, tags, Collections.emptyList());
     }
 
     private StudylogRequest createStudylogRequest2() {
@@ -220,7 +221,7 @@ class StudylogDocumentation extends Documentation {
         Long missionId = 미션_등록함(new MissionRequest("세션3 - 프로젝트", sessionId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("java"), new TagRequest("jpa"));
 
-        return new StudylogRequest(title, content, sessionId, missionId, tags);
+        return new StudylogRequest(title, content, sessionId, missionId, tags, Collections.emptyList());
     }
 
     private ExtractableResponse<Response> 스터디로그_등록함(StudylogRequest request) {
