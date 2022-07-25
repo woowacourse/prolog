@@ -16,6 +16,7 @@ import { UserContext } from '../../contexts/UserProvider';
 import Chip from '../Chip/Chip';
 import { Button } from '../../components';
 import FlexBox from '../@shared/FlexBox/FlexBox';
+import { css } from '@emotion/react';
 
 interface SidebarProps {
   selectedSessionId: Session['id'] | null;
@@ -27,6 +28,12 @@ interface SidebarProps {
   onSelectTag: (tags: Tag[], actionMeta: { option: { label: string } }) => void;
   onSelectAbilities: (abilities: number[]) => void;
 }
+
+const AbilityList = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 3px;
+`;
 
 const SidebarWrapper = styled.aside`
   width: 24rem;
@@ -46,6 +53,18 @@ const FilterTitle = styled.h3`
   font-size: 1.8rem;
   font-weight: bold;
   line-height: 1.5;
+`;
+
+const FlexGap = css`
+  gap: 0.5rem;
+`;
+
+const PlusButton = css`
+  background-color: ${COLOR.LIGHT_GRAY_100};
+  font-weight: bold;
+  color: ${COLOR.LIGHT_GRAY_600};
+  width: 22px;
+  height: 22px;
 `;
 
 const Sidebar = ({
@@ -97,7 +116,7 @@ const Sidebar = ({
   const SelectedAbilityChips = ({ selectedAbilityIds }) => {
     const selectedAbilities = wholeAbility.filter(({ id }) => selectedAbilityIds.includes(id));
     return (
-      <ul id="mapped-abilities-list">
+      <AbilityList>
         {selectedAbilities?.map((ability) => {
           return (
             <li key={ability.id}>
@@ -118,13 +137,21 @@ const Sidebar = ({
             </li>
           );
         })}
-      </ul>
+      </AbilityList>
     );
   };
 
   return (
     <SidebarWrapper>
-      <ul css={[getRowGapStyle('1.6rem')]}>
+      <ul
+        css={[
+          getRowGapStyle('1.6rem'),
+          css`
+            display: flex;
+            flex-direction: column;
+          `,
+        ]}
+      >
         <li>
           <FilterTitle>session</FilterTitle>
           <div>
@@ -158,21 +185,23 @@ const Sidebar = ({
         </li>
         <li>
           <FilterTitle>tags</FilterTitle>
-          <CreatableSelectBox
-            options={tagOptions}
-            placeholder={PLACEHOLDER.TAG}
-            onChange={onSelectTag}
-            value={selectedTagList.map(({ name }) => ({ value: name, label: `#${name}` }))}
-          />
+          <div>
+            <CreatableSelectBox
+              options={tagOptions}
+              placeholder={PLACEHOLDER.TAG}
+              onChange={onSelectTag}
+              value={selectedTagList.map(({ name }) => ({ value: name, label: `#${name}` }))}
+            />
+          </div>
         </li>
         <li>
           <FilterTitle>
-            <FlexBox>
+            <FlexBox css={FlexGap} alignItems="center">
               abilities
               <Button
                 size="XX_SMALL"
                 type="button"
-                css={{ backgroundColor: `${COLOR.LIGHT_BLUE_300}` }}
+                cssProps={PlusButton}
                 onClick={() => setIsSelectAbilityBoxOpen(true)}
               >
                 +
