@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.ability.application.AbilityService;
+import wooteco.prolog.ability.application.dto.AbilityResponse;
+import wooteco.prolog.ability.domain.Ability;
+import wooteco.prolog.ability.domain.StudylogAbility;
+import wooteco.prolog.ability.domain.repository.StudylogAbilityRepository;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
@@ -62,10 +68,12 @@ public class StudylogService {
     private final TagService tagService;
     private final SessionService sessionService;
     private final MissionService missionService;
+    private final AbilityService abilityService;
     private final StudylogRepository studylogRepository;
     private final StudylogScrapRepository studylogScrapRepository;
     private final StudylogReadRepository studylogReadRepository;
     private final StudylogTempRepository studylogTempRepository;
+    private final StudylogAbilityRepository studylogAbilityRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
@@ -93,11 +101,31 @@ public class StudylogService {
             mission,
             tags.getList())
         );
+        List<Ability> abilities = abilityService.findByIdIn(memberId, studylogRequest.getAbilities());
+
+        abilities.stream()
+                .filter(it -> !it.isParent())
+                .filter(it -> abilities.contains(it.getParent()))
+                .findFirst()
+                .ifPresent(it -> {
+                    throw new IllegalArgumentException("자식 역량이 존재하는 경우 부모 역량을 선택할 수 없습니다.");
+                });
+
+        List<StudylogAbility> studylogAbilities = abilities.stream()
+                .map(it -> new StudylogAbility(memberId, it, persistStudylog))
+                .collect(Collectors.toList());
+
+        studylogAbilityRepository.deleteByStudylogId(persistStudylog.getId());
+        List<StudylogAbility> persistStudylogAbilities = studylogAbilityRepository.saveAll(studylogAbilities);
+
+        final List<AbilityResponse> abilityResponses = persistStudylogAbilities.stream()
+                .map(it -> AbilityResponse.of(it.getAbility()))
+                .collect(toList());
 
         onStudylogCreatedEvent(member, tags, persistStudylog);
         deleteStudylogTemp(memberId);
 
-        return StudylogResponse.of(persistStudylog);
+        return StudylogResponse.of(persistStudylog, abilityResponses);
     }
 
     @Transactional
