@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   min-height: 20rem;
   max-height: 40rem;
   position: absolute;
-  right: 10%;
+  right: 65%;
   bottom: 30%;
 
   border: 2px solid ${COLOR.LIGHT_GRAY_200};
@@ -134,5 +134,33 @@ export const Footer = styled.div`
       color: ${COLOR.WHITE};
       background-color: ${COLOR.LIGHT_BLUE_900};
     }
+  }
+`;
+
+export const SearchInput = styled.input`
+  border: 1px solid ${COLOR.LIGHT_GRAY_200};
+  border-radius: 10px;
+  :focus {
+    outline: none;
+  }
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  padding: 0.6em 1.2em;
+`;
+
+export const CloseButton = styled.button`
+  background-color: transparent;
+  border-radius: 50%;
+  color: ${COLOR.LIGHT_GRAY_200};
+  border: none;
+  padding: 5px;
+  position: absolute;
+  top: 0;
+  right: 5px;
+  &::before {
+    content: 'x';
+  }
+  &:hover {
+    color: ${COLOR.LIGHT_GRAY_700};
   }
 `;

@@ -28,7 +28,9 @@ interface SidebarProps {
   onSelectTag: (tags: Tag[], actionMeta: { option: { label: string } }) => void;
   onSelectAbilities: (abilities: number[]) => void;
 }
-
+const AbilitySelectList = styled.li`
+  position: relative;
+`;
 const AbilityList = styled.ul`
   display: flex;
   flex-wrap: wrap;
@@ -125,7 +127,7 @@ const Sidebar = ({
                   fontSize="1.2rem"
                   lineHeight="1.5"
                   onDelete={() => {
-                    // TODO: 역량 삭제
+                    onSelectAbilities(selectedAbilityIds.filter((id) => id !== ability.id));
                   }}
                 >
                   {ability.name}
@@ -191,7 +193,7 @@ const Sidebar = ({
             />
           </div>
         </li>
-        <li>
+        <AbilitySelectList>
           <FilterTitle>
             <FlexBox css={FlexGap} alignItems="center">
               abilities
@@ -215,7 +217,7 @@ const Sidebar = ({
               onSelectAbilities={onSelectAbilities}
             ></SelectAbilityBox>
           )}
-        </li>
+        </AbilitySelectList>
       </ul>
     </SidebarWrapper>
   );
