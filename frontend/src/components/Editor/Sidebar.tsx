@@ -110,8 +110,6 @@ const Sidebar = ({
 
   const wholeAbility = abilities?.map((parentAbility) => [...parentAbility.children]).flat();
 
-  console.log('wholeAbility', wholeAbility);
-
   /** 선택된 역량을 보여준다.*/
   const SelectedAbilityChips = ({ selectedAbilityIds }) => {
     const selectedAbilities = wholeAbility.filter(({ id }) => selectedAbilityIds.includes(id));
@@ -127,7 +125,6 @@ const Sidebar = ({
                   fontSize="1.2rem"
                   lineHeight="1.5"
                   onDelete={() => {
-                    console.log('ability.id', ability.id);
                     // TODO: 역량 삭제
                   }}
                 >
