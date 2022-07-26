@@ -53,11 +53,22 @@ public class CommentStepDefinitions extends AcceptanceSteps {
         context.invokeHttpPutWithToken("/studylogs/" + studylogId + "/comments/" + commentId, CommentAcceptanceFixture.UPDATED_COMMENT.getCreateRequest());
     }
 
+    @When("{long}번 스터디로그에 대한 {long}번 댓글을 삭제하면")
+    public void 스터디로그에_대한_댓글을_삭제(Long studylogId,Long commentId) {
+        context.invokeHttpDeleteWithToken("/studylogs/" + studylogId + "/comments/" + commentId);
+    }
+
     @Then("댓글이 수정된다")
-    public void 댓글이_수정된다() {
+    public void 댓글이_수정_된다() {
         int statusCode = context.response.statusCode();
 
         assertThat(statusCode).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
+    @Then("댓글이 삭제된다")
+    public void 댓글이_삭제_된다() {
+        int statusCode = context.response.statusCode();
+
+        assertThat(statusCode).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
 }

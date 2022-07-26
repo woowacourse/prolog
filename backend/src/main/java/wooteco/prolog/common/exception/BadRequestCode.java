@@ -19,6 +19,7 @@ import wooteco.prolog.report.exception.ReportRequestTypeException;
 import wooteco.prolog.report.exception.ReportTitleLengthException;
 import wooteco.prolog.report.exception.ReportUpdateException;
 import wooteco.prolog.report.exception.UnRelatedAbilityExistenceException;
+import wooteco.prolog.studylog.exception.CommentDeleteException;
 import wooteco.prolog.studylog.exception.CommentNotFoundException;
 import wooteco.prolog.studylog.exception.DuplicateReportTitleException;
 import wooteco.prolog.studylog.exception.InvalidLikeRequestException;
@@ -105,7 +106,8 @@ public enum BadRequestCode {
     INVALID_LIKE_REQUEST_EXCEPTION(5001, "스터디로그를 좋아요 할 수 없습니다.", InvalidLikeRequestException.class),
     INVALID_UNLIKE_REQUEST_EXCEPTION(5002, "스터디로그를 좋아요 취소 할 수 없습니다.", InvalidUnlikeRequestException .class),
 
-    COMMENT_NOT_FOUND(6001, "존재하지 않는 댓글입니다.",CommentNotFoundException.class);
+    COMMENT_NOT_FOUND(6001, "존재하지 않는 댓글입니다.",CommentNotFoundException.class),
+    COMMENT_DELETE_EXCEPTION(6002, "댓글을 삭제할 수 없습니다.",CommentDeleteException.class);
 
     private int code;
     private String message;

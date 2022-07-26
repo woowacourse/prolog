@@ -3,6 +3,7 @@ package wooteco.prolog.studylog.ui;
 import java.net.URI;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,6 +54,15 @@ public class CommentController {
                                               @RequestBody CommentChangeRequest request) {
         CommentUpdateRequest commentUpdateRequest = request.toRequest(loginMember.getId(), studylogId, commentId);
         commentService.updateComment(commentUpdateRequest);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/{studylogId}/comments/{commentId}")
+    public ResponseEntity<Void> deleteComment(@AuthMemberPrincipal LoginMember loginMember,
+                                              @PathVariable Long studylogId,
+                                              @PathVariable Long commentId) {
+        commentService.deleteComment(loginMember.getId(), studylogId, commentId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

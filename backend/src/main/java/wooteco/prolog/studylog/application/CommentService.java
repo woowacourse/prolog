@@ -63,4 +63,15 @@ public class CommentService {
         comment.setContent(request.getContent());
         return comment.getId();
     }
+
+    public boolean deleteComment(Long memberId, Long studylogId, Long commentId) {
+        memberRepository.findById(memberId)
+                .orElseThrow(MemberNotFoundException::new);
+        studylogRepository.findById(studylogId)
+                .orElseThrow(StudylogNotFoundException::new);
+        final Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(CommentNotFoundException::new);
+
+        return comment.delete();
+    }
 }

@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.AuditingEntity;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.studylog.exception.CommentDeleteException;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,6 +38,9 @@ public class Comment extends AuditingEntity {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private boolean isDelete;
+
     public Comment(Long id, Member member, Studylog studylog, String content) {
         this.id = id;
         this.member = member;
@@ -46,5 +50,14 @@ public class Comment extends AuditingEntity {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public boolean delete() {
+        if (isDelete) {
+            throw new CommentDeleteException();
+        }
+
+        this.isDelete = true;
+        return true;
     }
 }

@@ -79,10 +79,7 @@ class CommentServiceTest {
     @DisplayName("스터디로그 ID와 Member ID를 통해서 댓글을 등록한다.")
     void create() {
         // given
-        CommentSaveRequest request = new CommentSaveRequest(루키.getId(), 체스_스터디로그.getId(), "댓글의 내용");
-
-        // when
-        Long commentId = commentService.insertComment(request);
+        Long commentId = 루키_댓글_등록함();
 
         // then
         assertThat(commentId).isNotNull();
@@ -126,8 +123,7 @@ class CommentServiceTest {
     @Test
     @DisplayName("스터디로그 Id, Member Id, Comment Id로 댓글을 수정한다.")
     void updateComment() {
-        CommentSaveRequest 루키_요청 = new CommentSaveRequest(루키.getId(), 체스_스터디로그.getId(), "댓글의 내용");
-        Long 루키_댓글_아이디 = commentService.insertComment(루키_요청);
+        Long 루키_댓글_아이디 = 루키_댓글_등록함();
 
         CommentUpdateRequest 루키_수정_요청 = new CommentUpdateRequest(루키.getId(), 체스_스터디로그.getId(), 루키_댓글_아이디, "댓글 수정 내용");
         commentService.updateComment(루키_수정_요청);
@@ -140,13 +136,26 @@ class CommentServiceTest {
     @Test
     @DisplayName("스터디로그 Id, Member Id, Comment Id로 댓글을 수정할 때, CommentId가 잘못됐으면 에러를 발생한다.")
     void updateComment_exception() {
-        CommentSaveRequest 루키_요청 = new CommentSaveRequest(루키.getId(), 체스_스터디로그.getId(), "댓글의 내용");
-        Long 루키_댓글_아이디 = commentService.insertComment(루키_요청);
+        Long 루키_댓글_아이디 = 루키_댓글_등록함();
 
         CommentUpdateRequest 루키_수정_요청 = new CommentUpdateRequest(
                 루키.getId(), 체스_스터디로그.getId(), 루키_댓글_아이디 + 100L, "댓글 수정 내용");
 
         assertThatThrownBy(() -> commentService.updateComment(루키_수정_요청))
                 .isInstanceOf(CommentNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("스터디로그 Id, Member Id, Comment Id로 댓글을 삭제한다.")
+    void deleteComment() {
+        Long 루키_댓글_아이디 = 루키_댓글_등록함();
+        final boolean 삭제됨 = commentService.deleteComment(루키.getId(), 체스_스터디로그.getId(), 루키_댓글_아이디);
+
+        assertThat(삭제됨).isTrue();
+    }
+
+    private Long 루키_댓글_등록함() {
+        CommentSaveRequest 루키_요청 = new CommentSaveRequest(루키.getId(), 체스_스터디로그.getId(), "댓글의 내용");
+        return commentService.insertComment(루키_요청);
     }
 }

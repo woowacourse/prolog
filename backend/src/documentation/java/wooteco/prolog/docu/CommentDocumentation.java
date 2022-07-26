@@ -51,11 +51,7 @@ public class CommentDocumentation extends Documentation {
         댓글_등록함(studylogId, createCommentRequest());
 
         // when
-        ExtractableResponse<Response> extract = given("comment/showComment")
-                .body(createCommentRequest())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/studylogs/" + studylogId + "/comments")
-                .then().log().all().extract();
+        ExtractableResponse<Response> extract = 댓글_조회함(studylogId);
 
         // then
         CommentsResponse commentsResponse = extract.as(CommentsResponse.class);
@@ -86,17 +82,29 @@ public class CommentDocumentation extends Documentation {
         //then
         assertThat(extract.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
 
-        ExtractableResponse<Response> findExtract = given("comment/showComment")
-                .body(createCommentRequest())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/studylogs/" + studylogId + "/comments")
-                .then().log().all().extract();
-
+        ExtractableResponse<Response> findExtract = 댓글_조회함(studylogId);
         CommentsResponse commentsResponse = findExtract.as(CommentsResponse.class);
-
         CommentResponse commentResponse = commentsResponse.getData().get(0);
 
         assertThat(commentResponse.getContent()).isEqualTo(updateCommentRequest().getContent());
+    }
+
+    @Test
+    void 댓글을_삭제한다() {
+        // given
+        Long studylogId = 스터디로그_등록함(createStudylogRequest());
+        Long commentId = 댓글_등록_성공되어_있음(studylogId, createCommentRequest());
+
+        // when
+        ExtractableResponse<Response> extract = given("comment/updateComment")
+                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+                .body(updateCommentRequest())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().delete("/studylogs/" + studylogId + "/comments/" + commentId)
+                .then().log().all().extract();
+
+        //then
+        assertThat(extract.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
     private StudylogRequest createStudylogRequest() {
@@ -136,6 +144,14 @@ public class CommentDocumentation extends Documentation {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when().log().all()
                 .post("/studylogs/" + studylogId + "/comments")
+                .then().log().all().extract();
+    }
+
+    private ExtractableResponse<Response> 댓글_조회함(Long studylogId) {
+        return given("comment/showComment")
+                .body(createCommentRequest())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().get("/studylogs/" + studylogId + "/comments")
                 .then().log().all().extract();
     }
 
