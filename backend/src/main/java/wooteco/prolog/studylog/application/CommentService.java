@@ -10,11 +10,13 @@ import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.member.exception.MemberNotFoundException;
 import wooteco.prolog.studylog.application.dto.CommentResponse;
 import wooteco.prolog.studylog.application.dto.CommentSaveRequest;
+import wooteco.prolog.studylog.application.dto.CommentUpdateRequest;
 import wooteco.prolog.studylog.application.dto.CommentsResponse;
 import wooteco.prolog.studylog.domain.Comment;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.CommentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.prolog.studylog.exception.CommentNotFoundException;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 
 @Transactional
@@ -28,7 +30,7 @@ public class CommentService {
 
     public Long insertComment(CommentSaveRequest request) {
         Member findMember = memberRepository.findById(request.getMemberId())
-            .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(MemberNotFoundException::new);
         Studylog findStudylog = studylogRepository.findById(request.getStudylogId())
                 .orElseThrow(StudylogNotFoundException::new);
 
@@ -40,13 +42,25 @@ public class CommentService {
     @Transactional(readOnly = true)
     public CommentsResponse findComments(Long studylogId) {
         Studylog findStudylog = studylogRepository.findById(studylogId)
-            .orElseThrow(StudylogNotFoundException::new);
+                .orElseThrow(StudylogNotFoundException::new);
 
         List<CommentResponse> commentResponses = commentRepository.findCommentByStudylog(findStudylog)
-            .stream()
-            .map(CommentResponse::of)
-            .collect(Collectors.toList());
+                .stream()
+                .map(CommentResponse::of)
+                .collect(Collectors.toList());
 
         return new CommentsResponse(commentResponses);
+    }
+
+    public Long updateComment(CommentUpdateRequest request) {
+        memberRepository.findById(request.getMemberId())
+                .orElseThrow(MemberNotFoundException::new);
+        studylogRepository.findById(request.getStudylogId())
+                .orElseThrow(StudylogNotFoundException::new);
+        final Comment comment = commentRepository.findById(request.getCommentId())
+                .orElseThrow(CommentNotFoundException::new);
+
+        comment.setContent(request.getContent());
+        return comment.getId();
     }
 }

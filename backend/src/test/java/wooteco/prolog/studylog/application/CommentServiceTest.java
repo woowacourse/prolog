@@ -19,8 +19,10 @@ import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.studylog.application.dto.CommentMemberResponse;
 import wooteco.prolog.studylog.application.dto.CommentResponse;
 import wooteco.prolog.studylog.application.dto.CommentSaveRequest;
+import wooteco.prolog.studylog.application.dto.CommentUpdateRequest;
 import wooteco.prolog.studylog.application.dto.CommentsResponse;
 import wooteco.prolog.studylog.domain.Studylog;
+import wooteco.prolog.studylog.exception.CommentNotFoundException;
 import wooteco.support.utils.IntegrationTest;
 
 @IntegrationTest
@@ -55,22 +57,22 @@ class CommentServiceTest {
         Mission mission_체스미션 = missionRepository.save(new Mission("체스미션", session_백엔드_레벨1));
 
         체스_스터디로그 = studylogService.save(
-            new Studylog(
-                브라운,
-                "체스 title",
-                "체스 content",
-                session_백엔드_레벨1,
-                mission_체스미션,
-                Collections.emptyList()));
+                new Studylog(
+                        브라운,
+                        "체스 title",
+                        "체스 content",
+                        session_백엔드_레벨1,
+                        mission_체스미션,
+                        Collections.emptyList()));
 
         null_스터디로그 = studylogService.save(
-            new Studylog(
-                루키,
-                "null title",
-                "null content",
-                null,
-                null,
-                Collections.emptyList()));
+                new Studylog(
+                        루키,
+                        "null title",
+                        "null content",
+                        null,
+                        null,
+                        Collections.emptyList()));
     }
 
     @Test
@@ -94,7 +96,7 @@ class CommentServiceTest {
 
         // when & then
         assertThatThrownBy(() -> commentService.insertComment(request))
-            .isInstanceOf(NullPointerException.class);
+                .isInstanceOf(NullPointerException.class);
     }
 
     @Test
@@ -110,9 +112,41 @@ class CommentServiceTest {
         CommentsResponse commentsResponse = commentService.findComments(체스_스터디로그.getId());
 
         // then
-        assertThat(commentsResponse.getData()).usingRecursiveComparison().ignoringFields("id", "createAt").isEqualTo(List.of(
-            new CommentResponse(null, new CommentMemberResponse(루키.getId(), 루키.getUsername(), 루키.getNickname(), "imageUrl", 루키.getRole().name()), "댓글의 내용", null),
-            new CommentResponse(null, new CommentMemberResponse(잉.getId(), 잉.getUsername(), 잉.getNickname(), "imageUrl", 잉.getRole().name()), "댓글의 내용", null)
-        ));
+        assertThat(commentsResponse.getData()).usingRecursiveComparison().ignoringFields("id", "createAt")
+                .isEqualTo(List.of(
+                        new CommentResponse(null,
+                                new CommentMemberResponse(루키.getId(), 루키.getUsername(), 루키.getNickname(), "imageUrl",
+                                        루키.getRole().name()), "댓글의 내용", null),
+                        new CommentResponse(null,
+                                new CommentMemberResponse(잉.getId(), 잉.getUsername(), 잉.getNickname(), "imageUrl",
+                                        잉.getRole().name()), "댓글의 내용", null)
+                ));
+    }
+
+    @Test
+    @DisplayName("스터디로그 Id, Member Id, Comment Id로 댓글을 수정한다.")
+    void updateComment() {
+        CommentSaveRequest 루키_요청 = new CommentSaveRequest(루키.getId(), 체스_스터디로그.getId(), "댓글의 내용");
+        Long 루키_댓글_아이디 = commentService.insertComment(루키_요청);
+
+        CommentUpdateRequest 루키_수정_요청 = new CommentUpdateRequest(루키.getId(), 체스_스터디로그.getId(), 루키_댓글_아이디, "댓글 수정 내용");
+        commentService.updateComment(루키_수정_요청);
+
+        CommentsResponse commentsResponse = commentService.findComments(체스_스터디로그.getId());
+
+        assertThat(commentsResponse.getData().get(0).getContent()).isEqualTo("댓글 수정 내용");
+    }
+
+    @Test
+    @DisplayName("스터디로그 Id, Member Id, Comment Id로 댓글을 수정할 때, CommentId가 잘못됐으면 에러를 발생한다.")
+    void updateComment_exception() {
+        CommentSaveRequest 루키_요청 = new CommentSaveRequest(루키.getId(), 체스_스터디로그.getId(), "댓글의 내용");
+        Long 루키_댓글_아이디 = commentService.insertComment(루키_요청);
+
+        CommentUpdateRequest 루키_수정_요청 = new CommentUpdateRequest(
+                루키.getId(), 체스_스터디로그.getId(), 루키_댓글_아이디 + 100L, "댓글 수정 내용");
+
+        assertThatThrownBy(() -> commentService.updateComment(루키_수정_요청))
+                .isInstanceOf(CommentNotFoundException.class);
     }
 }

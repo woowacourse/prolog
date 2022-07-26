@@ -19,7 +19,7 @@ public class CommentStepDefinitions extends AcceptanceSteps {
     @Given("{long}번 스터디로그에 대한 댓글을 작성하고")
     @When("{long}번 스터디로그에 대한 댓글을 작성하면")
     public void 스터디로그에_대한_댓글을_작성하면(Long studylogId) {
-        context.invokeHttpPostWithToken("/studylogs/" + studylogId + "/comments", CommentAcceptanceFixture.COMMENT.getRequest());
+        context.invokeHttpPostWithToken("/studylogs/" + studylogId + "/comments", CommentAcceptanceFixture.COMMENT.getCreateRequest());
     }
 
     @Then("댓글이 작성된다")
@@ -47,4 +47,17 @@ public class CommentStepDefinitions extends AcceptanceSteps {
             new CommentResponse(2L, new CommentMemberResponse(2L, GithubResponses.웨지.getLogin(), GithubResponses.웨지.getName(), GithubResponses.웨지.getAvatarUrl(), "CREW"), "스터디로그의 댓글 내용입니다.", null)
         ));
     }
+
+    @When("{long}번 스터디로그에 대한 {long}번 댓글을 수정하면")
+    public void 스터디로그에_대한_댓글을_수정(Long studylogId,Long commentId) {
+        context.invokeHttpPutWithToken("/studylogs/" + studylogId + "/comments/" + commentId, CommentAcceptanceFixture.UPDATED_COMMENT.getCreateRequest());
+    }
+
+    @Then("댓글이 수정된다")
+    public void 댓글이_수정된다() {
+        int statusCode = context.response.statusCode();
+
+        assertThat(statusCode).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
 }

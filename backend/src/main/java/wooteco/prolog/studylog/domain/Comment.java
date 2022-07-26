@@ -43,4 +43,8 @@ public class Comment extends AuditingEntity {
         this.studylog = studylog;
         this.content = Objects.requireNonNull(content);
     }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }
