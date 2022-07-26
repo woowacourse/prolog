@@ -111,8 +111,8 @@ class CommentServiceTest {
 
         // then
         assertThat(commentsResponse.getData()).usingRecursiveComparison().ignoringFields("id", "createAt").isEqualTo(List.of(
-            new CommentResponse(null, new CommentMemberResponse(루키.getId(), 루키.getNickname(), "imageUrl"), "댓글의 내용", null),
-            new CommentResponse(null, new CommentMemberResponse(잉.getId(), 잉.getNickname(), "imageUrl"), "댓글의 내용", null)
+            new CommentResponse(null, new CommentMemberResponse(루키.getId(), 루키.getUsername(), 루키.getNickname(), "imageUrl", 루키.getRole().name()), "댓글의 내용", null),
+            new CommentResponse(null, new CommentMemberResponse(잉.getId(), 잉.getUsername(), 잉.getNickname(), "imageUrl", 잉.getRole().name()), "댓글의 내용", null)
         ));
     }
 }

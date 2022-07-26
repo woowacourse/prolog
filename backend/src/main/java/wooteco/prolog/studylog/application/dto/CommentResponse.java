@@ -26,8 +26,10 @@ public class CommentResponse {
             comment.getId(),
             new CommentMemberResponse(
                 comment.getMember().getId(),
+                comment.getMember().getUsername(),
                 comment.getMember().getNickname(),
-                comment.getMember().getImageUrl()),
+                comment.getMember().getImageUrl(),
+                comment.getMember().getRole().name()),
             comment.getContent(),
             comment.getCreatedAt().toString());
     }

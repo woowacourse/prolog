@@ -62,7 +62,7 @@ public class CommentDocumentation extends Documentation {
         assertThat(commentsResponse.getData())
             .usingRecursiveComparison()
             .ignoringFields("createAt").isEqualTo(org.elasticsearch.common.collect.List.of(
-                new CommentResponse(1L, new CommentMemberResponse(1L, GithubResponses.소롱.getName(), GithubResponses.소롱.getAvatarUrl()), "댓글의 내용입니다.", null)
+                new CommentResponse(1L, new CommentMemberResponse(1L, GithubResponses.소롱.getLogin(), GithubResponses.소롱.getName(), GithubResponses.소롱.getAvatarUrl(), "CREW"), "댓글의 내용입니다.", null)
             ));
     }
 

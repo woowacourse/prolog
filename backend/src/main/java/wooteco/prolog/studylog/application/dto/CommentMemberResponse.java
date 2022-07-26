@@ -9,12 +9,17 @@ import lombok.NoArgsConstructor;
 public class CommentMemberResponse {
 
     private Long id;
+    private String username;
     private String nickname;
     private String imageUrl;
+    private String role;
 
-    public CommentMemberResponse(Long id, String nickname, String imageUrl) {
+    public CommentMemberResponse(Long id, String username, String nickname, String imageUrl,
+                                 String role) {
         this.id = id;
+        this.username = username;
         this.nickname = nickname;
         this.imageUrl = imageUrl;
+        this.role = role;
     }
 }

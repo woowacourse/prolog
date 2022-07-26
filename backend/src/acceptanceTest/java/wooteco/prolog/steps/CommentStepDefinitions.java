@@ -43,8 +43,8 @@ public class CommentStepDefinitions extends AcceptanceSteps {
         assertThat(commentsResponse.getData())
             .usingRecursiveComparison()
             .ignoringFields("createAt").isEqualTo(List.of(
-            new CommentResponse(1L, new CommentMemberResponse(1L, GithubResponses.브라운.getName(), GithubResponses.브라운.getAvatarUrl()), "스터디로그의 댓글 내용입니다.", null),
-            new CommentResponse(2L, new CommentMemberResponse(2L, GithubResponses.웨지.getName(), GithubResponses.웨지.getAvatarUrl()), "스터디로그의 댓글 내용입니다.", null)
+            new CommentResponse(1L, new CommentMemberResponse(1L, GithubResponses.브라운.getLogin(), GithubResponses.브라운.getName(), GithubResponses.브라운.getAvatarUrl(), "CREW"), "스터디로그의 댓글 내용입니다.", null),
+            new CommentResponse(2L, new CommentMemberResponse(2L, GithubResponses.웨지.getLogin(), GithubResponses.웨지.getName(), GithubResponses.웨지.getAvatarUrl(), "CREW"), "스터디로그의 댓글 내용입니다.", null)
         ));
     }
 }
