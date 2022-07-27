@@ -16,10 +16,10 @@ import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
+import wooteco.prolog.studylog.application.dto.CommentChangeRequest;
 import wooteco.prolog.studylog.application.dto.CommentCreateRequest;
 import wooteco.prolog.studylog.application.dto.CommentMemberResponse;
 import wooteco.prolog.studylog.application.dto.CommentResponse;
-import wooteco.prolog.studylog.application.dto.CommentChangeRequest;
 import wooteco.prolog.studylog.application.dto.CommentsResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.TagRequest;
@@ -33,11 +33,11 @@ public class CommentDocumentation extends Documentation {
 
         // when
         ExtractableResponse<Response> extract = given("comment/create")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .body(createCommentRequest())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/studylogs/" + studylogId + "/comments")
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(createCommentRequest())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().post("/studylogs/" + studylogId + "/comments")
+            .then().log().all().extract();
 
         // then
         assertThat(extract.statusCode()).isEqualTo(HttpStatus.CREATED.value());
@@ -57,12 +57,13 @@ public class CommentDocumentation extends Documentation {
         CommentsResponse commentsResponse = extract.as(CommentsResponse.class);
         assertThat(extract.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(commentsResponse.getData())
-                .usingRecursiveComparison()
-                .ignoringFields("createAt").isEqualTo(org.elasticsearch.common.collect.List.of(
+            .usingRecursiveComparison()
+            .ignoringFields("createAt").isEqualTo(org.elasticsearch.common.collect.List.of(
                 new CommentResponse(1L,
-                        new CommentMemberResponse(1L, GithubResponses.소롱.getLogin(), GithubResponses.소롱.getName(),
-                                GithubResponses.소롱.getAvatarUrl(), "CREW"), "댓글의 내용입니다.", null)
-        ));
+                    new CommentMemberResponse(1L, GithubResponses.소롱.getLogin(),
+                        GithubResponses.소롱.getName(),
+                        GithubResponses.소롱.getAvatarUrl(), "CREW"), "댓글의 내용입니다.", null)
+            ));
     }
 
     @Test
@@ -73,11 +74,11 @@ public class CommentDocumentation extends Documentation {
 
         // when
         ExtractableResponse<Response> extract = given("comment/updateComment")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .body(updateCommentRequest())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().put("/studylogs/" + studylogId + "/comments/" + commentId)
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(updateCommentRequest())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().put("/studylogs/" + studylogId + "/comments/" + commentId)
+            .then().log().all().extract();
 
         //then
         assertThat(extract.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
@@ -97,11 +98,11 @@ public class CommentDocumentation extends Documentation {
 
         // when
         ExtractableResponse<Response> extract = given("comment/updateComment")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .body(updateCommentRequest())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().delete("/studylogs/" + studylogId + "/comments/" + commentId)
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(updateCommentRequest())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().delete("/studylogs/" + studylogId + "/comments/" + commentId)
+            .then().log().all().extract();
 
         //then
         assertThat(extract.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
@@ -127,32 +128,32 @@ public class CommentDocumentation extends Documentation {
 
     private Long 스터디로그_등록함(StudylogRequest request) {
         ExtractableResponse<Response> extract = RestAssured.given().log().all()
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().log().all()
-                .post("/studylogs")
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().log().all()
+            .post("/studylogs")
+            .then().log().all().extract();
 
         return Long.parseLong(extract.header("Location").split("/studylogs/")[1]);
     }
 
     private ExtractableResponse<Response> 댓글_등록함(Long studylogId, CommentCreateRequest request) {
         return RestAssured.given().log().all()
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().log().all()
-                .post("/studylogs/" + studylogId + "/comments")
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().log().all()
+            .post("/studylogs/" + studylogId + "/comments")
+            .then().log().all().extract();
     }
 
     private ExtractableResponse<Response> 댓글_조회함(Long studylogId) {
         return given("comment/showComment")
-                .body(createCommentRequest())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/studylogs/" + studylogId + "/comments")
-                .then().log().all().extract();
+            .body(createCommentRequest())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().get("/studylogs/" + studylogId + "/comments")
+            .then().log().all().extract();
     }
 
     private Long 댓글_등록_성공되어_있음(Long studylogId, CommentCreateRequest request) {
@@ -162,21 +163,21 @@ public class CommentDocumentation extends Documentation {
 
     private Long 세션_등록함(SessionRequest request) {
         return RestAssured.given().log().all()
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/sessions")
-                .then().log().all()
-                .extract().as(SessionResponse.class).getId();
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/sessions")
+            .then().log().all()
+            .extract().as(SessionResponse.class).getId();
     }
 
     private Long 미션_등록함(MissionRequest request) {
         return RestAssured.given()
-                .body(request)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when()
-                .post("/missions")
-                .then().log().all()
-                .extract().as(MissionResponse.class).getId();
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/missions")
+            .then().log().all()
+            .extract().as(MissionResponse.class).getId();
     }
 }

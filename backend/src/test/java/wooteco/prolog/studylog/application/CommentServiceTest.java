@@ -58,22 +58,22 @@ class CommentServiceTest {
         Mission mission_체스미션 = missionRepository.save(new Mission("체스미션", session_백엔드_레벨1));
 
         체스_스터디로그 = studylogService.save(
-                new Studylog(
-                        브라운,
-                        "체스 title",
-                        "체스 content",
-                        session_백엔드_레벨1,
-                        mission_체스미션,
-                        Collections.emptyList()));
+            new Studylog(
+                브라운,
+                "체스 title",
+                "체스 content",
+                session_백엔드_레벨1,
+                mission_체스미션,
+                Collections.emptyList()));
 
         null_스터디로그 = studylogService.save(
-                new Studylog(
-                        루키,
-                        "null title",
-                        "null content",
-                        null,
-                        null,
-                        Collections.emptyList()));
+            new Studylog(
+                루키,
+                "null title",
+                "null content",
+                null,
+                null,
+                Collections.emptyList()));
     }
 
     @Test
@@ -94,7 +94,7 @@ class CommentServiceTest {
 
         // when & then
         assertThatThrownBy(() -> commentService.insertComment(request))
-                .isInstanceOf(NullPointerException.class);
+            .isInstanceOf(NullPointerException.class);
     }
 
     @Test
@@ -110,15 +110,16 @@ class CommentServiceTest {
         CommentsResponse commentsResponse = commentService.findComments(체스_스터디로그.getId());
 
         // then
-        assertThat(commentsResponse.getData()).usingRecursiveComparison().ignoringFields("id", "createAt")
-                .isEqualTo(List.of(
-                        new CommentResponse(null,
-                                new CommentMemberResponse(루키.getId(), 루키.getUsername(), 루키.getNickname(), "imageUrl",
-                                        루키.getRole().name()), "댓글의 내용", null),
-                        new CommentResponse(null,
-                                new CommentMemberResponse(잉.getId(), 잉.getUsername(), 잉.getNickname(), "imageUrl",
-                                        잉.getRole().name()), "댓글의 내용", null)
-                ));
+        assertThat(commentsResponse.getData()).usingRecursiveComparison()
+            .ignoringFields("id", "createAt")
+            .isEqualTo(List.of(
+                new CommentResponse(null,
+                    new CommentMemberResponse(루키.getId(), 루키.getUsername(), 루키.getNickname(),
+                        "imageUrl", 루키.getRole().name()), "댓글의 내용", null),
+                new CommentResponse(null,
+                    new CommentMemberResponse(잉.getId(), 잉.getUsername(), 잉.getNickname(),
+                        "imageUrl", 잉.getRole().name()), "댓글의 내용", null)
+            ));
     }
 
     @Test
@@ -126,7 +127,8 @@ class CommentServiceTest {
     void updateComment() {
         Long 루키_댓글_아이디 = 루키_댓글_등록함();
 
-        CommentUpdateRequest 루키_수정_요청 = new CommentUpdateRequest(루키.getId(), 체스_스터디로그.getId(), 루키_댓글_아이디, "댓글 수정 내용");
+        CommentUpdateRequest 루키_수정_요청 = new CommentUpdateRequest(
+            루키.getId(), 체스_스터디로그.getId(), 루키_댓글_아이디, "댓글 수정 내용");
         commentService.updateComment(루키_수정_요청);
 
         CommentsResponse commentsResponse = commentService.findComments(체스_스터디로그.getId());
@@ -140,10 +142,10 @@ class CommentServiceTest {
         Long 루키_댓글_아이디 = 루키_댓글_등록함();
 
         CommentUpdateRequest 루키_수정_요청 = new CommentUpdateRequest(
-                루키.getId(), 체스_스터디로그.getId(), 루키_댓글_아이디 + 100L, "댓글 수정 내용");
+            루키.getId(), 체스_스터디로그.getId(), 루키_댓글_아이디 + 100L, "댓글 수정 내용");
 
         assertThatThrownBy(() -> commentService.updateComment(루키_수정_요청))
-                .isInstanceOf(CommentNotFoundException.class);
+            .isInstanceOf(CommentNotFoundException.class);
     }
 
     @Test

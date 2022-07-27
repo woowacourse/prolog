@@ -19,7 +19,8 @@ public class CommentStepDefinitions extends AcceptanceSteps {
     @Given("{long}번 스터디로그에 대한 댓글을 작성하고")
     @When("{long}번 스터디로그에 대한 댓글을 작성하면")
     public void 스터디로그에_대한_댓글을_작성하면(Long studylogId) {
-        context.invokeHttpPostWithToken("/studylogs/" + studylogId + "/comments", CommentAcceptanceFixture.COMMENT.getCreateRequest());
+        context.invokeHttpPostWithToken("/studylogs/" + studylogId + "/comments",
+            CommentAcceptanceFixture.COMMENT.getCreateRequest());
     }
 
     @Then("댓글이 작성된다")
@@ -43,18 +44,23 @@ public class CommentStepDefinitions extends AcceptanceSteps {
         assertThat(commentsResponse.getData())
             .usingRecursiveComparison()
             .ignoringFields("createAt").isEqualTo(List.of(
-            new CommentResponse(1L, new CommentMemberResponse(1L, GithubResponses.브라운.getLogin(), GithubResponses.브라운.getName(), GithubResponses.브라운.getAvatarUrl(), "CREW"), "스터디로그의 댓글 내용입니다.", null),
-            new CommentResponse(2L, new CommentMemberResponse(2L, GithubResponses.웨지.getLogin(), GithubResponses.웨지.getName(), GithubResponses.웨지.getAvatarUrl(), "CREW"), "스터디로그의 댓글 내용입니다.", null)
-        ));
+                new CommentResponse(1L, new CommentMemberResponse(1L, GithubResponses.브라운.getLogin(),
+                    GithubResponses.브라운.getName(), GithubResponses.브라운.getAvatarUrl(), "CREW"),
+                    "스터디로그의 댓글 내용입니다.", null),
+                new CommentResponse(2L, new CommentMemberResponse(2L, GithubResponses.웨지.getLogin(),
+                    GithubResponses.웨지.getName(), GithubResponses.웨지.getAvatarUrl(), "CREW"),
+                    "스터디로그의 댓글 내용입니다.", null)
+            ));
     }
 
     @When("{long}번 스터디로그에 대한 {long}번 댓글을 수정하면")
-    public void 스터디로그에_대한_댓글을_수정하면(Long studylogId,Long commentId) {
-        context.invokeHttpPutWithToken("/studylogs/" + studylogId + "/comments/" + commentId, CommentAcceptanceFixture.UPDATED_COMMENT.getCreateRequest());
+    public void 스터디로그에_대한_댓글을_수정하면(Long studylogId, Long commentId) {
+        context.invokeHttpPutWithToken("/studylogs/" + studylogId + "/comments/" + commentId,
+            CommentAcceptanceFixture.UPDATED_COMMENT.getCreateRequest());
     }
 
     @When("{long}번 스터디로그에 대한 {long}번 댓글을 삭제하면")
-    public void 스터디로그에_대한_댓글을_삭제하면(Long studylogId,Long commentId) {
+    public void 스터디로그에_대한_댓글을_삭제하면(Long studylogId, Long commentId) {
         context.invokeHttpDeleteWithToken("/studylogs/" + studylogId + "/comments/" + commentId);
     }
 
