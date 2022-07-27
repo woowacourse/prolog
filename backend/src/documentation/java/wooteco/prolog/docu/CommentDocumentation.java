@@ -48,10 +48,12 @@ public class CommentDocumentation extends Documentation {
     void 단일_스터디로그에_대한_댓글을_조회한다() {
         // given
         Long studylogId = 스터디로그_등록함(createStudylogRequest());
-        댓글_등록함(studylogId, createCommentRequest());
+        댓글_등록_성공되어_있음(studylogId, createCommentRequest());
 
         // when
-        ExtractableResponse<Response> extract = 댓글_조회함(studylogId);
+        ExtractableResponse<Response> extract = given("comment/showAll")
+            .when().get("/studylogs/" + studylogId + "/comments")
+            .then().log().all().extract();
 
         // then
         CommentsResponse commentsResponse = extract.as(CommentsResponse.class);
@@ -73,7 +75,7 @@ public class CommentDocumentation extends Documentation {
         Long commentId = 댓글_등록_성공되어_있음(studylogId, createCommentRequest());
 
         // when
-        ExtractableResponse<Response> extract = given("comment/updateComment")
+        ExtractableResponse<Response> extract = given("comment/update")
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .body(updateCommentRequest())
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -97,10 +99,8 @@ public class CommentDocumentation extends Documentation {
         Long commentId = 댓글_등록_성공되어_있음(studylogId, createCommentRequest());
 
         // when
-        ExtractableResponse<Response> extract = given("comment/updateComment")
+        ExtractableResponse<Response> extract = given("comment/delete")
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-            .body(updateCommentRequest())
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().delete("/studylogs/" + studylogId + "/comments/" + commentId)
             .then().log().all().extract();
 
@@ -148,17 +148,18 @@ public class CommentDocumentation extends Documentation {
             .then().log().all().extract();
     }
 
-    private ExtractableResponse<Response> 댓글_조회함(Long studylogId) {
-        return given("comment/showComment")
-            .body(createCommentRequest())
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .when().get("/studylogs/" + studylogId + "/comments")
-            .then().log().all().extract();
-    }
-
     private Long 댓글_등록_성공되어_있음(Long studylogId, CommentCreateRequest request) {
         ExtractableResponse<Response> response = 댓글_등록함(studylogId, request);
-        return Long.parseLong(response.header("Location").split("/comments/")[1]);
+
+        String commentId = response.header("Location").split("/comments/")[1];
+        assertThat(commentId).isNotNull();
+        return Long.parseLong(commentId);
+    }
+
+    private ExtractableResponse<Response> 댓글_조회함(Long studylogId) {
+        return RestAssured.given().log().all()
+            .when().get("/studylogs/" + studylogId + "/comments")
+            .then().log().all().extract();
     }
 
     private Long 세션_등록함(SessionRequest request) {
