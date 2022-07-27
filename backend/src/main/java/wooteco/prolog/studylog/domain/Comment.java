@@ -52,12 +52,11 @@ public class Comment extends AuditingEntity {
         this.content = content;
     }
 
-    public boolean delete() {
+    public void delete() {
         if (isDelete) {
             throw new CommentDeleteException();
         }
 
         this.isDelete = true;
-        return true;
     }
 }

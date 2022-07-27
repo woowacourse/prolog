@@ -2,6 +2,7 @@ package wooteco.prolog.studylog.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import java.util.Collections;
 import org.elasticsearch.common.collect.List;
@@ -149,9 +150,9 @@ class CommentServiceTest {
     @DisplayName("스터디로그 Id, Member Id, Comment Id로 댓글을 삭제한다.")
     void deleteComment() {
         Long 루키_댓글_아이디 = 루키_댓글_등록함();
-        final boolean 삭제됨 = commentService.deleteComment(루키.getId(), 체스_스터디로그.getId(), 루키_댓글_아이디);
 
-        assertThat(삭제됨).isTrue();
+        assertDoesNotThrow(
+            () -> commentService.deleteComment(루키.getId(), 체스_스터디로그.getId(), 루키_댓글_아이디));
     }
 
     private Long 루키_댓글_등록함() {
