@@ -72,6 +72,6 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
 
-        comment.isDelete();
+        comment.delete();
     }
 }
