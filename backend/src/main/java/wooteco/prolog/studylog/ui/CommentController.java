@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.studylog.application.CommentService;
-import wooteco.prolog.studylog.application.dto.CommentCreateRequest;
 import wooteco.prolog.studylog.application.dto.CommentChangeRequest;
-import wooteco.prolog.studylog.application.dto.CommentUpdateRequest;
+import wooteco.prolog.studylog.application.dto.CommentCreateRequest;
 import wooteco.prolog.studylog.application.dto.CommentsResponse;
 
 @RestController
@@ -52,8 +51,7 @@ public class CommentController {
                                               @PathVariable Long studylogId,
                                               @PathVariable Long commentId,
                                               @RequestBody CommentChangeRequest request) {
-        CommentUpdateRequest commentUpdateRequest = request.toRequest(loginMember.getId(), studylogId, commentId);
-        commentService.updateComment(commentUpdateRequest);
+        commentService.updateComment(request.toRequest(loginMember.getId(), studylogId, commentId));
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

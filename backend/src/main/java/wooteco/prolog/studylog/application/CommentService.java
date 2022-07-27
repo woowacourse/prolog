@@ -57,10 +57,10 @@ public class CommentService {
                 .orElseThrow(MemberNotFoundException::new);
         studylogRepository.findById(request.getStudylogId())
                 .orElseThrow(StudylogNotFoundException::new);
-        final Comment comment = commentRepository.findById(request.getCommentId())
+        Comment comment = commentRepository.findById(request.getCommentId())
                 .orElseThrow(CommentNotFoundException::new);
 
-        comment.setContent(request.getContent());
+        comment.updateContent(request.getContent());
         return comment.getId();
     }
 
