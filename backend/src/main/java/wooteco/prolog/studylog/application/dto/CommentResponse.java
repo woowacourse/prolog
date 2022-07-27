@@ -10,13 +10,13 @@ import wooteco.prolog.studylog.domain.Comment;
 public class CommentResponse {
 
     private Long id;
-    private CommentMemberResponse member;
+    private CommentMemberResponse author;
     private String content;
     private String createAt;
 
-    public CommentResponse(Long id, CommentMemberResponse member, String content, String createAt) {
+    public CommentResponse(Long id, CommentMemberResponse author, String content, String createAt) {
         this.id = id;
-        this.member = member;
+        this.author = author;
         this.content = content;
         this.createAt = createAt;
     }
