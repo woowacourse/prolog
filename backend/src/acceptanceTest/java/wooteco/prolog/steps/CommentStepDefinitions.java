@@ -30,12 +30,12 @@ public class CommentStepDefinitions extends AcceptanceSteps {
     }
 
     @When("{long}번 스터디로그의 댓글을 조회하면")
-    public void test(Long studylogId) {
+    public void 스터디로그의_댓글을_조회하면(Long studylogId) {
         context.invokeHttpGetWithToken("/studylogs/" + studylogId + "/comments");
     }
 
     @Then("해당 스터디로그의 댓글 목록을 조회한다")
-    public void test1() {
+    public void 해당_스터디로그의_댓글_목록을_조회한다() {
         int statusCode = context.response.statusCode();
         CommentsResponse commentsResponse = context.response.as(CommentsResponse.class);
 
@@ -49,12 +49,12 @@ public class CommentStepDefinitions extends AcceptanceSteps {
     }
 
     @When("{long}번 스터디로그에 대한 {long}번 댓글을 수정하면")
-    public void 스터디로그에_대한_댓글을_수정(Long studylogId,Long commentId) {
+    public void 스터디로그에_대한_댓글을_수정하면(Long studylogId,Long commentId) {
         context.invokeHttpPutWithToken("/studylogs/" + studylogId + "/comments/" + commentId, CommentAcceptanceFixture.UPDATED_COMMENT.getCreateRequest());
     }
 
     @When("{long}번 스터디로그에 대한 {long}번 댓글을 삭제하면")
-    public void 스터디로그에_대한_댓글을_삭제(Long studylogId,Long commentId) {
+    public void 스터디로그에_대한_댓글을_삭제하면(Long studylogId,Long commentId) {
         context.invokeHttpDeleteWithToken("/studylogs/" + studylogId + "/comments/" + commentId);
     }
 
