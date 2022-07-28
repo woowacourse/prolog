@@ -33,7 +33,7 @@ public class CommentController {
                                               @PathVariable Long studylogId,
                                               @RequestBody CommentCreateRequest request) {
         Long commentId = commentService.insertComment(
-            request.toRequest(loginMember.getId(), studylogId));
+            request.toSaveRequest(loginMember.getId(), studylogId));
 
         return ResponseEntity.created(
             URI.create("/studylogs/" + studylogId + "/comments/" + commentId)).build();
@@ -51,7 +51,7 @@ public class CommentController {
                                               @PathVariable Long studylogId,
                                               @PathVariable Long commentId,
                                               @RequestBody CommentChangeRequest request) {
-        commentService.updateComment(request.toRequest(loginMember.getId(), studylogId, commentId));
+        commentService.updateComment(request.toUpdateRequest(loginMember.getId(), studylogId, commentId));
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

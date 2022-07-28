@@ -14,7 +14,7 @@ public class CommentCreateRequest {
         this.content = content;
     }
 
-    public CommentSaveRequest toRequest(Long memberId, Long studylogId) {
+    public CommentSaveRequest toSaveRequest(Long memberId, Long studylogId) {
         return new CommentSaveRequest(memberId, studylogId, content);
     }
 }

@@ -14,7 +14,7 @@ public class CommentChangeRequest {
         this.content = content;
     }
 
-    public CommentUpdateRequest toRequest(Long id, Long studylogId, Long commentId) {
+    public CommentUpdateRequest toUpdateRequest(Long id, Long studylogId, Long commentId) {
         return new CommentUpdateRequest(id, studylogId, commentId, content);
     }
 }
