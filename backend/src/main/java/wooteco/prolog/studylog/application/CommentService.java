@@ -53,25 +53,35 @@ public class CommentService {
     }
 
     public Long updateComment(CommentUpdateRequest request) {
-        memberRepository.findById(request.getMemberId())
-                .orElseThrow(MemberNotFoundException::new);
-        studylogRepository.findById(request.getStudylogId())
-                .orElseThrow(StudylogNotFoundException::new);
+        validateExistsMember(request.getMemberId());
+        validateExistsStudylog(request.getStudylogId());
+
         Comment comment = commentRepository.findById(request.getCommentId())
                 .orElseThrow(CommentNotFoundException::new);
-
         comment.updateContent(request.getContent());
+
         return comment.getId();
     }
 
     public void deleteComment(Long memberId, Long studylogId, Long commentId) {
-        memberRepository.findById(memberId)
-                .orElseThrow(MemberNotFoundException::new);
-        studylogRepository.findById(studylogId)
-                .orElseThrow(StudylogNotFoundException::new);
+        validateExistsMember(memberId);
+        validateExistsStudylog(studylogId);
+
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
 
         comment.delete();
+    }
+
+    private void validateExistsMember(Long memberId) {
+        if (!memberRepository.existsById(memberId)) {
+            throw new MemberNotFoundException();
+        }
+    }
+
+    private void validateExistsStudylog(Long studylogId) {
+        if (!studylogRepository.existsById(studylogId)) {
+             throw new StudylogNotFoundException();
+        }
     }
 }
