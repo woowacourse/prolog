@@ -25,12 +25,12 @@ public class CommentResponse {
         return new CommentResponse(
             comment.getId(),
             new CommentMemberResponse(
-                comment.getMember().getId(),
-                comment.getMember().getUsername(),
-                comment.getMember().getNickname(),
-                comment.getMember().getImageUrl(),
-                comment.getMember().getRole().name()),
+                comment.getMemberId(),
+                comment.getMemberUsername(),
+                comment.getMemberNickName(),
+                comment.getMemberImageUrl(),
+                comment.getMemberRole()),
             comment.getContent(),
-            comment.getCreatedAt().toString());
+            comment.getStringCreatedAt());
     }
 }

@@ -59,4 +59,24 @@ public class Comment extends AuditingEntity {
 
         this.isDelete = true;
     }
+
+    public Long getMemberId() {
+        return member.getId();
+    }
+
+    public String getMemberUsername() {
+        return member.getUsername();
+    }
+
+    public String getMemberNickName() {
+        return member.getNickname();
+    }
+
+    public String getMemberImageUrl() {
+        return member.getImageUrl();
+    }
+
+    public String getMemberRole() {
+        return member.getRole().name();
+    }
 }
