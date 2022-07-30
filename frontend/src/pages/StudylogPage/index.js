@@ -44,8 +44,7 @@ import {
   useEditCommentMutation,
   useDeleteCommentMutation,
 } from '../../hooks/queries/comment';
-import Comment from '../../components/Comment/Comment';
-import Editor from '../../components/Editor/Editor';
+import CommentList from '../../components/Comment/CommentList';
 
 const StudylogPage = () => {
   const { id } = useParams();
@@ -220,6 +219,10 @@ const StudylogPage = () => {
     createComment({ studylogId: id, body: { content } });
   };
 
+  const deleteComment = (commentId) => {
+    deleteCommentMutation.mutate(commentId);
+  };
+
   const editComment = (commentId, body) => {
     editCommentMutation.mutate({ commentId, body });
   };
@@ -250,20 +253,13 @@ const StudylogPage = () => {
         toggleScrap={toggleScrap}
         goAuthorProfilePage={goAuthorProfilePage}
       />
-      <CommentsContainer>
-        {comments?.map((comment) => (
-          <Comment
-            key={comment.id}
-            editComment={editComment}
-            deleteComment={deleteCommentMutation.mutate}
-            {...comment}
-          />
-        ))}
-        <EditorForm onSubmit={onSubmitComment}>
-          <Editor height="25rem" hasTitle={false} editorContentRef={editorContentRef} />
-          <SubmitButton>작성 완료</SubmitButton>
-        </EditorForm>
-      </CommentsContainer>
+      <CommentList
+        comments={comments}
+        editComment={editComment}
+        deleteComment={deleteComment}
+        onSubmit={onSubmitComment}
+        editorContentRef={editorContentRef}
+      />
     </div>
   );
 };

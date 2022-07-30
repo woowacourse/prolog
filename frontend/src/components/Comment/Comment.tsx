@@ -17,8 +17,8 @@ import { useRef, useState } from 'react';
 import { COLOR } from '../../enumerations/color';
 
 export interface CommentProps extends CommentType {
-  deleteComment: any;
   editComment: (commentId: number, body: { content: string }) => void;
+  deleteComment: (commentId: number) => void;
 }
 
 const Comment = ({ id, member, content, createAt, editComment, deleteComment }: CommentProps) => {
