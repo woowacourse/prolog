@@ -38,13 +38,8 @@ import {
   SNACKBAR_MESSAGE,
 } from '../../constants';
 import { SUCCESS_MESSAGE } from '../../constants/message';
-import {
-  useCreateComment,
-  useFetchComments,
-  useEditCommentMutation,
-  useDeleteCommentMutation,
-} from '../../hooks/queries/comment';
 import CommentList from '../../components/Comment/CommentList';
+import useStudylogComment from '../../hooks/Comment/useStudylogComment';
 
 const StudylogPage = () => {
   const { id } = useParams();
@@ -197,14 +192,9 @@ const StudylogPage = () => {
   }, [accessToken, id]);
 
   /* 댓글 로직 */
-  const { data } = useFetchComments(id);
-  const comments = data?.data;
+  const { comments, createComment, editComment, deleteComment } = useStudylogComment(id);
 
   const editorContentRef = useRef(null);
-
-  const { mutate: createComment } = useCreateComment(id);
-  const editCommentMutation = useEditCommentMutation(id);
-  const deleteCommentMutation = useDeleteCommentMutation(id);
 
   const onSubmitComment = (event) => {
     event.preventDefault();
@@ -216,15 +206,7 @@ const StudylogPage = () => {
       return;
     }
 
-    createComment({ studylogId: id, body: { content } });
-  };
-
-  const deleteComment = (commentId) => {
-    deleteCommentMutation.mutate(commentId);
-  };
-
-  const editComment = (commentId, body) => {
-    editCommentMutation.mutate({ commentId, body });
+    createComment({ content });
   };
 
   return (
@@ -253,13 +235,15 @@ const StudylogPage = () => {
         toggleScrap={toggleScrap}
         goAuthorProfilePage={goAuthorProfilePage}
       />
-      <CommentList
-        comments={comments}
-        editComment={editComment}
-        deleteComment={deleteComment}
-        onSubmit={onSubmitComment}
-        editorContentRef={editorContentRef}
-      />
+      {comments && (
+        <CommentList
+          comments={comments}
+          editComment={editComment}
+          deleteComment={deleteComment}
+          onSubmit={onSubmitComment}
+          editorContentRef={editorContentRef}
+        />
+      )}
     </div>
   );
 };

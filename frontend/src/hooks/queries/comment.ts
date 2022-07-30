@@ -7,7 +7,7 @@ export const useFetchComments = (studylogId: number) =>
 export const useCreateComment = (studylogId: number) => {
   const queryClient = useQueryClient();
 
-  return useMutation(createCommentRequest, {
+  return useMutation((body: { content: string }) => createCommentRequest({ studylogId, body }), {
     onSuccess() {
       queryClient.invalidateQueries(['comments', studylogId]);
     },

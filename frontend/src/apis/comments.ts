@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { BASE_URL } from '../configs/environment';
-import { CommentType } from '../models/Comments';
+import { CommentListResponse } from '../models/Comments';
 
-export const getComments = async (studylogId: number): Promise<CommentType[]> => {
+export const getComments = async (studylogId: number): Promise<CommentListResponse> => {
   const response = await axios.get(`${BASE_URL}/studylogs/${studylogId}/comments`);
 
   return response.data;

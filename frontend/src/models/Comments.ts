@@ -6,3 +6,11 @@ export interface CommentType {
   content: string;
   createAt: string;
 }
+
+export interface CommentListResponse {
+  data: CommentType[];
+}
+
+export interface CommentRequest {
+  content: string;
+}
