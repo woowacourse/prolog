@@ -1,12 +1,13 @@
 import { rest } from 'msw';
 import { BASE_URL } from '../../configs/environment';
+import { CommentRequest } from '../../models/Comments';
 import comments from '../db/comments.json';
 
 export const commentsHandler = [
   rest.get(`${BASE_URL}/studylogs/:studylogId/comments`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(comments));
   }),
-  rest.post<{ content: string }>(`${BASE_URL}/studylogs/:studylogId/comments`, (req, res, ctx) => {
+  rest.post<CommentRequest>(`${BASE_URL}/studylogs/:studylogId/comments`, (req, res, ctx) => {
     const { body } = req;
 
     comments.data = [
@@ -27,7 +28,7 @@ export const commentsHandler = [
 
     return res(ctx.status(201));
   }),
-  rest.patch<{ content: string }>(
+  rest.patch<CommentRequest>(
     `${BASE_URL}/studylogs/:studylogId/comments/:commentId`,
     (req, res, ctx) => {
       const {

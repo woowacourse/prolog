@@ -1,4 +1,4 @@
-import { CommentType } from '../../models/Comments';
+import { CommentRequest, CommentType } from '../../models/Comments';
 import Editor from '../Editor/Editor';
 import Comment from './Comment';
 import * as Styled from './CommentList.style';
@@ -7,7 +7,7 @@ import { Editor as ToastEditor } from '@toast-ui/react-editor';
 
 interface CommentListProps {
   comments: CommentType[];
-  editComment: (commentId: number, body: { content: string }) => void;
+  editComment: (commentId: number, body: CommentRequest) => void;
   deleteComment: (commentId: number) => void;
   onSubmit: FormEventHandler<HTMLFormElement>;
   editorContentRef: MutableRefObject<ToastEditor>;

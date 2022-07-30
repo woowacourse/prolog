@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { BASE_URL } from '../configs/environment';
-import { CommentListResponse } from '../models/Comments';
+import { CommentListResponse, CommentRequest } from '../models/Comments';
 
 export const getComments = async (studylogId: number): Promise<CommentListResponse> => {
   const response = await axios.get(`${BASE_URL}/studylogs/${studylogId}/comments`);
@@ -13,7 +13,7 @@ export const createCommentRequest = ({
   body,
 }: {
   studylogId: number;
-  body: { content: string };
+  body: CommentRequest;
 }) => axios.post(`${BASE_URL}/studylogs/${studylogId}/comments`, body);
 
 export const editComment = ({
@@ -23,7 +23,7 @@ export const editComment = ({
 }: {
   studylogId: number;
   commentId: number;
-  body: { content: string };
+  body: CommentRequest;
 }) => axios.patch(`${BASE_URL}/studylogs/${studylogId}/comments/${commentId}`, body);
 
 export const deleteComment = ({

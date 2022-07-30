@@ -9,7 +9,7 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import 'prismjs/themes/prism.css';
 import Prism from 'prismjs';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
-import { CommentType } from '../../models/Comments';
+import { CommentRequest, CommentType } from '../../models/Comments';
 import { EditorForm, SubmitButton, ViewerWrapper } from '../../pages/StudylogPage/styles';
 import { css } from '@emotion/react';
 import Editor from '../Editor/Editor';
@@ -17,7 +17,7 @@ import { useRef, useState } from 'react';
 import { COLOR } from '../../enumerations/color';
 
 export interface CommentProps extends CommentType {
-  editComment: (commentId: number, body: { content: string }) => void;
+  editComment: (commentId: number, body: CommentRequest) => void;
   deleteComment: (commentId: number) => void;
 }
 
