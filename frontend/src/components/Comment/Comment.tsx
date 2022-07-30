@@ -27,12 +27,10 @@ const Comment = ({ id, member, content, createAt, editComment, deleteComment }: 
   const [isEditMode, setIsEditMode] = useState(false);
   const editorContentRef = useRef<ToastEditor>(null);
 
-  const onSubmitEditedComment = (e) => {
-    e.preventDefault();
-
-    const content = editorContentRef.current?.getInstance().getMarkdown() || '';
-
+  const onSubmitEditedComment = () => {
     if (window.confirm('댓글을 수정하시겠아요?')) {
+      const content = editorContentRef.current?.getInstance().getMarkdown() || '';
+
       editComment(id, { content });
       setIsEditMode(false);
     }
