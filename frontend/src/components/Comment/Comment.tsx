@@ -32,8 +32,6 @@ const Comment = ({ id, member, content, createAt, editComment, deleteComment }: 
 
     const content = editorContentRef.current?.getInstance().getMarkdown() || '';
 
-    console.log('content', content);
-
     if (window.confirm('댓글을 수정하시겠아요?')) {
       editComment(id, { content });
       setIsEditMode(false);
