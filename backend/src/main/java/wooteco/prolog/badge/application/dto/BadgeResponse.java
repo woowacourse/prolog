@@ -1,4 +1,4 @@
-package wooteco.prolog.studylog.application.dto;
+package wooteco.prolog.badge.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class BadgeResponse {
 
-  private String name;
+    private String name;
 }
