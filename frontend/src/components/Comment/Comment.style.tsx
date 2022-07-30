@@ -44,3 +44,8 @@ export const Right = styled.div`
   display: flex;
   gap: 10px;
 `;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  gap: 20px;
+`;

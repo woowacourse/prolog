@@ -38,7 +38,12 @@ import {
   SNACKBAR_MESSAGE,
 } from '../../constants';
 import { SUCCESS_MESSAGE } from '../../constants/message';
-import { useCreateComment, useFetchComments } from '../../hooks/queries/comment';
+import {
+  useCreateComment,
+  useFetchComments,
+  useEditCommentMutation,
+  useDeleteCommentMutation,
+} from '../../hooks/queries/comment';
 import Comment from '../../components/Comment/Comment';
 import Editor from '../../components/Editor/Editor';
 
@@ -199,6 +204,8 @@ const StudylogPage = () => {
   const editorContentRef = useRef(null);
 
   const { mutate: createComment } = useCreateComment(id);
+  const editCommentMutation = useEditCommentMutation(id);
+  const deleteCommentMutation = useDeleteCommentMutation(id);
 
   const onSubmitComment = (event) => {
     event.preventDefault();
@@ -211,6 +218,10 @@ const StudylogPage = () => {
     }
 
     createComment({ studylogId: id, body: { content } });
+  };
+
+  const editComment = (commentId, body) => {
+    editCommentMutation.mutate({ commentId, body });
   };
 
   return (
@@ -241,7 +252,12 @@ const StudylogPage = () => {
       />
       <CommentsContainer>
         {comments?.map((comment) => (
-          <Comment key={comment.id} {...comment} />
+          <Comment
+            key={comment.id}
+            editComment={editComment}
+            deleteComment={deleteCommentMutation.mutate}
+            {...comment}
+          />
         ))}
         <EditorForm onSubmit={onSubmitComment}>
           <Editor height="25rem" hasTitle={false} editorContentRef={editorContentRef} />

@@ -15,3 +15,21 @@ export const createCommentRequest = ({
   studylogId: number;
   body: { content: string };
 }) => axios.post(`${BASE_URL}/studylogs/${studylogId}/comments`, body);
+
+export const editComment = ({
+  studylogId,
+  commentId,
+  body,
+}: {
+  studylogId: number;
+  commentId: number;
+  body: { content: string };
+}) => axios.patch(`${BASE_URL}/studylogs/${studylogId}/comments/${commentId}`, body);
+
+export const deleteComment = ({
+  studylogId,
+  commentId,
+}: {
+  studylogId: number;
+  commentId: number;
+}) => axios.delete(`${BASE_URL}/studylogs/${studylogId}/comments/${commentId}`);

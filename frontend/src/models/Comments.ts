@@ -2,7 +2,7 @@ import { Author } from './Studylogs';
 
 export interface CommentType {
   id: number;
-  author: Author;
+  member: Author;
   content: string;
   createAt: string;
 }

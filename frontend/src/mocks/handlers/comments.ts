@@ -13,7 +13,7 @@ export const commentsHandler = [
       ...comments.data,
       {
         id: comments.data.length + 1,
-        author: {
+        member: {
           id: 1,
           username: 'euijinkk',
           nickname: '시지프',
@@ -26,5 +26,41 @@ export const commentsHandler = [
     ];
 
     return res(ctx.status(201));
+  }),
+  rest.patch<{ content: string }>(
+    `${BASE_URL}/studylogs/:studylogId/comments/:commentId`,
+    (req, res, ctx) => {
+      const {
+        body: { content },
+        params: { commentId },
+      } = req;
+
+      if (typeof Number(commentId) !== 'number' || typeof commentId !== 'string') {
+        return res(ctx.status(400));
+      }
+
+      const editedComments = comments.data.map((comment) =>
+        comment.id === Number(commentId) ? { ...comment, content } : comment
+      );
+
+      comments.data = editedComments;
+
+      return res(ctx.status(204));
+    }
+  ),
+  rest.delete(`${BASE_URL}/studylogs/:studylogId/comments/:commentId`, (req, res, ctx) => {
+    const {
+      params: { commentId },
+    } = req;
+
+    if (typeof Number(commentId) !== 'number' || typeof commentId !== 'string') {
+      return res(ctx.status(400));
+    }
+
+    const omittedComments = comments.data.filter((comment) => comment.id !== Number(commentId));
+
+    comments.data = omittedComments;
+
+    return res(ctx.status(204));
   }),
 ];
