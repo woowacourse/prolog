@@ -1,4 +1,4 @@
-import { CommentRequest } from '../../models/Comments';
+import { CommentRequest } from '../../models/Comment';
 import {
   useCreateComment,
   useDeleteCommentMutation,

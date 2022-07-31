@@ -1,5 +1,5 @@
 import { client } from '.';
-import { CommentListResponse, CommentRequest } from '../models/Comments';
+import { CommentListResponse, CommentRequest } from '../models/Comment';
 
 export const getComments = async (studylogId: number): Promise<CommentListResponse> => {
   const response = await client.get(`/studylogs/${studylogId}/comments`);

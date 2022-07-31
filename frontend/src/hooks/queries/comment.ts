@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { createCommentRequest, deleteComment, editComment, getComments } from '../../apis/comments';
-import { CommentRequest } from '../../models/Comments';
+import { createCommentRequest, deleteComment, editComment, getComments } from '../../apis/comment';
+import { CommentRequest } from '../../models/Comment';
 
 export const useFetchComments = (studylogId: number) =>
   useQuery(['comments', studylogId], () => getComments(studylogId));

@@ -9,7 +9,7 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import 'prismjs/themes/prism.css';
 import Prism from 'prismjs';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
-import { CommentRequest, CommentType } from '../../models/Comments';
+import { CommentRequest, CommentType } from '../../models/Comment';
 import { ViewerWrapper } from '../../pages/StudylogPage/styles';
 import { css } from '@emotion/react';
 import Editor from '../Editor/Editor';

@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 import { BASE_URL } from '../../configs/environment';
-import { CommentRequest } from '../../models/Comments';
+import { CommentRequest } from '../../models/Comment';
 import comments from '../db/comments.json';
 
 export const commentsHandler = [
