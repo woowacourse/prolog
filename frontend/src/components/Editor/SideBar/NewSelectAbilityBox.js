@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import * as Styled from './SelectAbilityBox.styles';
+import * as Styled from './NewSelectAbilityBox.styles';
 
 /**
  * 역량을 선택할 수 있다.
  * 역량은 자식역량만 선택할 수 있다.
  */
-const SelectAbilityBox = ({
+const NewSelectAbilityBox = ({
   setIsSelectAbilityBoxOpen,
   selectedAbilities,
   wholeAbility,
@@ -90,4 +90,4 @@ const SelectAbilityBox = ({
   );
 };
 
-export default SelectAbilityBox;
+export default NewSelectAbilityBox;
