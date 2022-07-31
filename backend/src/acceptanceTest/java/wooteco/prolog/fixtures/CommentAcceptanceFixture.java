@@ -9,16 +9,16 @@ public enum CommentAcceptanceFixture {
     UPDATED_COMMENT("수정된 스터디로그의 댓글 내용입니다.");
 
     private final String content;
-    private final CommentCreateRequest createRequest;
-    private final CommentChangeRequest changeRequest;
 
     CommentAcceptanceFixture(String content) {
         this.content = content;
-        this.createRequest = new CommentCreateRequest(content);
-        this.changeRequest = new CommentChangeRequest(content);
     }
 
     public CommentCreateRequest getCreateRequest() {
-        return createRequest;
+        return new CommentCreateRequest(COMMENT.content);
+    }
+
+    public CommentChangeRequest getUpdateRequest() {
+        return new CommentChangeRequest(UPDATED_COMMENT.content);
     }
 }

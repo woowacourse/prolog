@@ -1,6 +1,8 @@
 package wooteco.prolog.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static wooteco.prolog.fixtures.CommentAcceptanceFixture.COMMENT;
+import static wooteco.prolog.fixtures.CommentAcceptanceFixture.UPDATED_COMMENT;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -8,7 +10,6 @@ import io.cucumber.java.en.When;
 import org.elasticsearch.common.collect.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
-import wooteco.prolog.fixtures.CommentAcceptanceFixture;
 import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.studylog.application.dto.CommentMemberResponse;
 import wooteco.prolog.studylog.application.dto.CommentResponse;
@@ -20,7 +21,7 @@ public class CommentStepDefinitions extends AcceptanceSteps {
     @When("{long}번 스터디로그에 대한 댓글을 작성하면")
     public void 스터디로그에_대한_댓글을_작성하면(Long studylogId) {
         context.invokeHttpPostWithToken("/studylogs/" + studylogId + "/comments",
-            CommentAcceptanceFixture.COMMENT.getCreateRequest());
+            COMMENT.getCreateRequest());
     }
 
     @Then("댓글이 작성된다")
@@ -56,7 +57,7 @@ public class CommentStepDefinitions extends AcceptanceSteps {
     @When("{long}번 스터디로그에 대한 {long}번 댓글을 수정하면")
     public void 스터디로그에_대한_댓글을_수정하면(Long studylogId, Long commentId) {
         context.invokeHttpPutWithToken("/studylogs/" + studylogId + "/comments/" + commentId,
-            CommentAcceptanceFixture.UPDATED_COMMENT.getCreateRequest());
+            UPDATED_COMMENT.getUpdateRequest());
     }
 
     @When("{long}번 스터디로그에 대한 {long}번 댓글을 삭제하면")
