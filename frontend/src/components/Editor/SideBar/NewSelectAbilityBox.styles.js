@@ -99,6 +99,7 @@ export const AbilityName = styled.span`
   width: 25rem;
   padding: 1rem 0;
   font-size: 1.2rem;
+  cursor: pointer;
 `;
 
 export const EmptyAbilityGuide = styled.p`

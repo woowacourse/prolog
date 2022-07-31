@@ -28,6 +28,10 @@ export type ContainerProps = {
    */
   lineHeight?: string;
   /**
+   * @default 1.4rem
+   */
+  marginRight?: string;
+  /**
    * @default none
    */
   onClick?: () => void;
@@ -36,7 +40,7 @@ export type ContainerProps = {
 const Container = styled.div<ContainerProps>`
   width: ${({ width }) => (width ? getSize(width) : 'fit-content')};
   ${({ maxWidth }) => maxWidth && `max-width: ${getSize(maxWidth)}`};
-  margin-right: 1.4rem;
+  margin-right: ${({ marginRight }) => marginRight ?? '1.4rem'};
   padding: 0.2rem 0.8rem;
 
   display: flex;
