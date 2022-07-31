@@ -6,14 +6,7 @@ import TagManager from 'react-gtm-module';
 
 import Content from './Content';
 import { Button, BUTTON_SIZE } from '../../components';
-import {
-  ButtonList,
-  EditButtonStyle,
-  DeleteButtonStyle,
-  CommentsContainer,
-  SubmitButton,
-  EditorForm,
-} from './styles';
+import { ButtonList, EditButtonStyle, DeleteButtonStyle } from './styles';
 
 import { MainContentStyle } from '../../PageRouter';
 import { UserContext } from '../../contexts/UserProvider';

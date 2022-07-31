@@ -146,34 +146,6 @@ const BottomContainer = styled.div`
   margin-top: auto;
 `;
 
-const CommentsContainer = styled.div`
-  padding: 28px 12px 0;
-
-  & > div + div {
-    padding-top: 18px;
-    border-top: 1px solid ${COLOR.LIGHT_GRAY_200};
-  }
-`;
-
-const EditorForm = styled.form`
-  & .toastui-editor-toolbar {
-    border-radius: 10px 10px 0 0;
-  }
-`;
-
-const SubmitButton = styled.button`
-  width: 100%;
-  padding: 1rem 0;
-  border-radius: 1.6rem;
-
-  margin-top: 12px;
-
-  background-color: ${COLOR.LIGHT_BLUE_300};
-  :hover {
-    background-color: ${COLOR.LIGHT_BLUE_500};
-  }
-`;
-
 export {
   ButtonList,
   EditButtonStyle,
@@ -188,7 +160,4 @@ export {
   ProfileChipStyle,
   BottomContainer,
   ViewerWrapper,
-  CommentsContainer,
-  EditorForm,
-  SubmitButton,
 };

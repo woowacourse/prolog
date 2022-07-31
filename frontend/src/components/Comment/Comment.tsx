@@ -10,11 +10,12 @@ import 'prismjs/themes/prism.css';
 import Prism from 'prismjs';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
 import { CommentRequest, CommentType } from '../../models/Comments';
-import { EditorForm, SubmitButton, ViewerWrapper } from '../../pages/StudylogPage/styles';
+import { ViewerWrapper } from '../../pages/StudylogPage/styles';
 import { css } from '@emotion/react';
 import Editor from '../Editor/Editor';
 import { useRef, useState } from 'react';
 import { COLOR } from '../../enumerations/color';
+import { EditorForm, SubmitButton } from './CommentList.style';
 
 export interface CommentProps extends CommentType {
   editComment: (commentId: number, body: CommentRequest) => void;
