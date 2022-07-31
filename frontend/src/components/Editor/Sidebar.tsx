@@ -126,6 +126,8 @@ const Sidebar = ({
                   border={`1px solid ${COLOR.BLACK_OPACITY_300}`}
                   fontSize="1.2rem"
                   lineHeight="1.5"
+                  marginRight="0"
+                  maxWidth="21.9rem"
                   onDelete={() => {
                     onSelectAbilities(selectedAbilityIds.filter((id) => id !== ability.id));
                   }}
