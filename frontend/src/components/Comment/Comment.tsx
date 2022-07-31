@@ -13,9 +13,10 @@ import { CommentRequest, CommentType } from '../../models/Comment';
 import { ViewerWrapper } from '../../pages/StudylogPage/styles';
 import { css } from '@emotion/react';
 import Editor from '../Editor/Editor';
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { COLOR } from '../../enumerations/color';
 import { EditorForm, SubmitButton } from './CommentList.style';
+import { UserContext } from '../../contexts/UserProvider';
 
 export interface CommentProps extends CommentType {
   editComment: (commentId: number, body: CommentRequest) => void;
@@ -23,6 +24,7 @@ export interface CommentProps extends CommentType {
 }
 
 const Comment = ({ id, member, content, createAt, editComment, deleteComment }: CommentProps) => {
+  const { user } = useContext(UserContext);
   const { username, nickname, imageUrl } = member;
 
   const [isEditMode, setIsEditMode] = useState(false);
@@ -71,14 +73,16 @@ const Comment = ({ id, member, content, createAt, editComment, deleteComment }: 
             </Link>
             <Styled.CreatedDate>{createAt}</Styled.CreatedDate>
           </Styled.Left>
-          <Styled.Right>
-            <button type="button" onClick={onClickEditButton}>
-              수정
-            </button>
-            <button type="button" onClick={onClickDeleteButton}>
-              삭제
-            </button>
-          </Styled.Right>
+          {user.userId === member.id && (
+            <Styled.Right>
+              <button type="button" onClick={onClickEditButton}>
+                수정
+              </button>
+              <button type="button" onClick={onClickDeleteButton}>
+                삭제
+              </button>
+            </Styled.Right>
+          )}
         </Styled.Top>
         <ViewerWrapper
           css={css`
