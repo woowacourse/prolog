@@ -23,7 +23,7 @@ export const editComment = ({
   studylogId: number;
   commentId: number;
   body: CommentRequest;
-}) => client.patch(`/studylogs/${studylogId}/comments/${commentId}`, body);
+}) => client.put(`/studylogs/${studylogId}/comments/${commentId}`, body);
 
 export const deleteComment = ({
   studylogId,
