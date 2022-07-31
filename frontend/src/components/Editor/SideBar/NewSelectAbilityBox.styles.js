@@ -43,6 +43,15 @@ export const Header = styled.div`
     font-size: 1.2rem;
     overflow: auto;
   }
+
+  > .ability-link {
+    display: block;
+    font-size: 1.2rem;
+    color: ${COLOR.LIGHT_BLUE_500};
+    &:hover {
+      color: ${COLOR.LIGHT_BLUE_900};
+    }
+  }
 `;
 
 export const AbilityList = styled.ul`

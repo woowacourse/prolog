@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { UserContext } from '../../../contexts/UserProvider';
 import * as Styled from './NewSelectAbilityBox.styles';
 
 /**
@@ -11,6 +13,10 @@ const NewSelectAbilityBox = ({
   wholeAbility,
   onSelectAbilities,
 }) => {
+  const {
+    user: { username },
+  } = useContext(UserContext);
+
   const [updatedAbilities, setUpdatedAbilities] = useState(selectedAbilities);
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -52,6 +58,9 @@ const NewSelectAbilityBox = ({
       <Styled.Header>
         <p id="selectBox-title">학습로그에 매핑될 역량을 선택해주세요.</p>
         <span className="ability-title">📢 역량은 하위역량만 선택가능합니다.</span>
+        <span className="ability-link">
+          <Link to={`/${username}/ability`}>역량 관리 페이지</Link>
+        </span>
         <Styled.CloseButton onClick={() => setIsSelectAbilityBoxOpen(false)}></Styled.CloseButton>
       </Styled.Header>
 
