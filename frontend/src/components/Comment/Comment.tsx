@@ -31,6 +31,14 @@ const Comment = ({ id, member, content, createAt, editComment, deleteComment }: 
   const editorContentRef = useRef<ToastEditor>(null);
 
   const onSubmitEditedComment = () => {
+    const contentOnEdit = editorContentRef.current?.getInstance().getMarkdown() || '';
+
+    if (content === contentOnEdit) {
+      setIsEditMode(false);
+
+      return;
+    }
+
     if (window.confirm('댓글을 수정하시겠아요?')) {
       const content = editorContentRef.current?.getInstance().getMarkdown() || '';
 
