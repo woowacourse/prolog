@@ -4,10 +4,10 @@ import { COLOR } from '../../../constants';
 export const Wrapper = styled.div`
   width: 35rem;
   min-height: 20rem;
-  max-height: 40rem;
+  max-height: 45rem;
   position: absolute;
   right: 65%;
-  bottom: 30%;
+  top: 0px;
 
   border: 2px solid ${COLOR.LIGHT_GRAY_200};
   background-color: ${COLOR.WHITE};
@@ -20,7 +20,7 @@ export const Wrapper = styled.div`
 export const Header = styled.div`
   width: 100%;
   min-height: 7rem;
-  max-height: 8rem;
+  max-height: 12rem;
   padding: 1.2rem;
 
   text-align: center;
@@ -156,6 +156,7 @@ export const SearchInput = styled.input`
   font-size: 1.2rem;
   margin-bottom: 1rem;
   padding: 0.6em 1.2em;
+  width: 100%;
 `;
 
 export const CloseButton = styled.button`
