@@ -91,6 +91,7 @@ const Comment = ({ id, member, content, createAt, editComment, deleteComment }: 
           />
           <Styled.ButtonContainer>
             <SubmitButton
+              type="button"
               css={css`
                 background-color: ${COLOR.RED_300};
                 :hover {
@@ -101,7 +102,9 @@ const Comment = ({ id, member, content, createAt, editComment, deleteComment }: 
             >
               취소
             </SubmitButton>
-            <SubmitButton onClick={onSubmitEditedComment}>수정</SubmitButton>
+            <SubmitButton type="button" onClick={onSubmitEditedComment}>
+              수정
+            </SubmitButton>
           </Styled.ButtonContainer>
         </EditorForm>
       )}
