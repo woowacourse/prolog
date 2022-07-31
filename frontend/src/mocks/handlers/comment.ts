@@ -28,7 +28,7 @@ export const commentsHandler = [
 
     return res(ctx.status(201));
   }),
-  rest.patch<CommentRequest>(
+  rest.put<CommentRequest>(
     `${BASE_URL}/studylogs/:studylogId/comments/:commentId`,
     (req, res, ctx) => {
       const {
