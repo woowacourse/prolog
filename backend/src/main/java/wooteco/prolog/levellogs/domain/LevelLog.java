@@ -10,11 +10,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import wooteco.prolog.common.AuditingEntity;
 import wooteco.prolog.member.domain.Member;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LevelLog {
+public class LevelLog extends AuditingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
