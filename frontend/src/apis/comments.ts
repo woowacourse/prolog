@@ -1,9 +1,8 @@
-import axios from 'axios';
-import { BASE_URL } from '../configs/environment';
+import { client } from '.';
 import { CommentListResponse, CommentRequest } from '../models/Comments';
 
 export const getComments = async (studylogId: number): Promise<CommentListResponse> => {
-  const response = await axios.get(`${BASE_URL}/studylogs/${studylogId}/comments`);
+  const response = await client.get(`/studylogs/${studylogId}/comments`);
 
   return response.data;
 };
@@ -14,7 +13,7 @@ export const createCommentRequest = ({
 }: {
   studylogId: number;
   body: CommentRequest;
-}) => axios.post(`${BASE_URL}/studylogs/${studylogId}/comments`, body);
+}) => client.post(`/studylogs/${studylogId}/comments`, body);
 
 export const editComment = ({
   studylogId,
@@ -24,7 +23,7 @@ export const editComment = ({
   studylogId: number;
   commentId: number;
   body: CommentRequest;
-}) => axios.patch(`${BASE_URL}/studylogs/${studylogId}/comments/${commentId}`, body);
+}) => client.patch(`/studylogs/${studylogId}/comments/${commentId}`, body);
 
 export const deleteComment = ({
   studylogId,
@@ -32,4 +31,4 @@ export const deleteComment = ({
 }: {
   studylogId: number;
   commentId: number;
-}) => axios.delete(`${BASE_URL}/studylogs/${studylogId}/comments/${commentId}`);
+}) => client.delete(`/studylogs/${studylogId}/comments/${commentId}`);
