@@ -41,6 +41,19 @@ const Comment = ({ id, member, content, createAt, editComment, deleteComment }: 
     setIsEditMode(true);
   };
 
+  const onClickCancelButton = () => {
+    const contentOnEdit = editorContentRef.current?.getInstance().getMarkdown() || '';
+
+    if (content !== contentOnEdit) {
+      if (window.confirm('수정 중인 댓글이 사라집니다. 댓글 수정을 취소하시겠어요?')) {
+        setIsEditMode(false);
+
+        return;
+      }
+    }
+    setIsEditMode(false);
+  };
+
   const onClickDeleteButton = () => {
     if (window.confirm('댓글을 삭제하시겠아요?')) {
       deleteComment(id);
@@ -59,8 +72,12 @@ const Comment = ({ id, member, content, createAt, editComment, deleteComment }: 
             <Styled.CreatedDate>{createAt}</Styled.CreatedDate>
           </Styled.Left>
           <Styled.Right>
-            <button onClick={onClickEditButton}>수정</button>
-            <button onClick={onClickDeleteButton}>삭제</button>
+            <button type="button" onClick={onClickEditButton}>
+              수정
+            </button>
+            <button type="button" onClick={onClickDeleteButton}>
+              삭제
+            </button>
           </Styled.Right>
         </Styled.Top>
         <ViewerWrapper
@@ -98,7 +115,7 @@ const Comment = ({ id, member, content, createAt, editComment, deleteComment }: 
                   background-color: ${COLOR.RED_500};
                 }
               `}
-              onClick={() => setIsEditMode(false)}
+              onClick={onClickCancelButton}
             >
               취소
             </SubmitButton>
