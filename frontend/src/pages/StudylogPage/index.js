@@ -201,6 +201,7 @@ const StudylogPage = () => {
     }
 
     createComment({ content });
+    editorContentRef.current?.getInstance().setMarkdown('');
   };
 
   useBeforeunload(editorContentRef);
