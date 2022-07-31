@@ -33,6 +33,7 @@ import {
 import { SUCCESS_MESSAGE } from '../../constants/message';
 import CommentList from '../../components/Comment/CommentList';
 import useStudylogComment from '../../hooks/Comment/useStudylogComment';
+import useBeforeunload from '../../hooks/useBeforeunload';
 
 const StudylogPage = () => {
   const { id } = useParams();
@@ -201,6 +202,8 @@ const StudylogPage = () => {
 
     createComment({ content });
   };
+
+  useBeforeunload(editorContentRef);
 
   return (
     <div css={MainContentStyle}>

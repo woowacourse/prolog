@@ -15,6 +15,7 @@ import { SUCCESS_MESSAGE } from '../../constants/message';
 import { useHistory } from 'react-router-dom';
 import { requestPostStudylog } from '../../apis/studylogs';
 import StudylogEditor from '../../components/Editor/StudylogEditor';
+import useBeforeunload from '../../hooks/useBeforeunload';
 
 interface NewStudylogForm extends StudylogForm {
   abilities: number[];
@@ -24,6 +25,8 @@ const NewStudylogPage = () => {
   const history = useHistory();
 
   const editorContentRef = useRef<any>(null);
+
+  useBeforeunload(editorContentRef);
 
   const [studylogContent, setStudylogContent] = useState<NewStudylogForm>({
     title: '',
