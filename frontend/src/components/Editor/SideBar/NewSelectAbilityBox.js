@@ -59,12 +59,9 @@ const NewSelectAbilityBox = ({
         <p id="selectBox-title">학습로그에 매핑될 역량을 선택해주세요.</p>
         <span className="ability-title">📢 역량은 하위역량만 선택가능합니다.</span>
         <span className="ability-link">
-          <Link to={`/${username}/ability`}>역량 관리 페이지</Link>
+          <Link to={`/${username}/ability`}>역량 관리 페이지 이동</Link>
         </span>
         <Styled.CloseButton onClick={() => setIsSelectAbilityBoxOpen(false)}></Styled.CloseButton>
-      </Styled.Header>
-
-      <Styled.AbilityList>
         <Styled.SearchInput
           type="search"
           placeholder="역량 검색"
@@ -72,6 +69,9 @@ const NewSelectAbilityBox = ({
           onChange={handleChange}
           autoFocus
         />
+      </Styled.Header>
+
+      <Styled.AbilityList>
         {wholeAbility.length === 0 ? (
           <Styled.EmptyAbilityGuide>등록된 역량이 없습니다.</Styled.EmptyAbilityGuide>
         ) : (
