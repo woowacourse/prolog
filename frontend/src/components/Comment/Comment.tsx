@@ -54,14 +54,15 @@ const Comment = ({ id, member, content, createAt, editComment, deleteComment }: 
   const onClickCancelButton = () => {
     const contentOnEdit = editorContentRef.current?.getInstance().getMarkdown() || '';
 
-    if (content !== contentOnEdit) {
-      if (window.confirm('수정 중인 댓글이 사라집니다. 댓글 수정을 취소하시겠어요?')) {
-        setIsEditMode(false);
+    if (content === contentOnEdit) {
+      setIsEditMode(false);
 
-        return;
-      }
+      return;
     }
-    setIsEditMode(false);
+
+    if (window.confirm('수정 중인 댓글이 사라집니다. 댓글 수정을 취소하시겠어요?')) {
+      setIsEditMode(false);
+    }
   };
 
   const onClickDeleteButton = () => {
