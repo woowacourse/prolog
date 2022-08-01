@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="65a3141a-37c1-4816-8238-0a70eb4edf67" name="Changes" comment="refactor: trim 검증 순서 변경">
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/common/exception/BadRequestCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/common/exception/BadRequestCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -275,7 +279,7 @@
       <option name="presentableId" value="Default" />
       <updated>1659163298297</updated>
       <workItem from="1659163303212" duration="3504000" />
-      <workItem from="1661043692416" duration="4604000" />
+      <workItem from="1661043692416" duration="4729000" />
     </task>
     <task id="LOCAL-00001" summary="feat: levellog 더미 데이터 추가">
       <created>1661055096089</created>
