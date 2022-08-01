@@ -12,7 +12,7 @@ import { MainContentStyle } from '../../PageRouter';
 import { UserContext } from '../../contexts/UserProvider';
 import useSnackBar from '../../hooks/useSnackBar';
 import useStudylog from '../../hooks/useStudylog';
-import useCustomMutation from '../../hooks/useMutation';
+import useMutation from '../../hooks/useMutation';
 import debounce from '../../utils/debounce';
 
 import {
@@ -60,7 +60,7 @@ const StudylogPage = () => {
 
   const getStudylog = () => getData({ id, accessToken });
 
-  const { mutate: deleteStudylog } = useCustomMutation(
+  const { mutate: deleteStudylog } = useMutation(
     () => {
       if (!window.confirm(CONFIRM_MESSAGE.DELETE_STUDYLOG)) return;
 
@@ -93,7 +93,7 @@ const StudylogPage = () => {
     history.push(`${PATH.STUDYLOG}/${id}/edit`);
   };
 
-  const { mutate: postScrap } = useCustomMutation(
+  const { mutate: postScrap } = useMutation(
     () => {
       if (!isLoggedIn) {
         alert(ALERT_MESSAGE.NEED_TO_LOGIN);
@@ -110,7 +110,7 @@ const StudylogPage = () => {
     }
   );
 
-  const { mutate: deleteScrap } = useCustomMutation(
+  const { mutate: deleteScrap } = useMutation(
     () => {
       if (!window.confirm(CONFIRM_MESSAGE.DELETE_SCRAP)) return;
 
@@ -124,7 +124,7 @@ const StudylogPage = () => {
     }
   );
 
-  const { mutate: postLike } = useCustomMutation(
+  const { mutate: postLike } = useMutation(
     () => {
       if (!isLoggedIn) {
         alert(ALERT_MESSAGE.NEED_TO_LOGIN);
@@ -142,7 +142,7 @@ const StudylogPage = () => {
     }
   );
 
-  const { mutate: deleteLike } = useCustomMutation(
+  const { mutate: deleteLike } = useMutation(
     () => {
       if (!window.confirm(CONFIRM_MESSAGE.DELETE_LIKE)) return;
 
