@@ -24,6 +24,7 @@ import {
   Title,
   Heading,
 } from './styles';
+import { useDeleteScrapMutation, useFetchMyScrap } from '../../hooks/queries/profile';
 
 const initialPostQueryParams = {
   page: 1,
@@ -45,19 +46,13 @@ const ProfilePageScraps = () => {
     history.push(`${PATH.STUDYLOG}/${id}`);
   };
 
-  const { response: studylogs, fetchData: getMyScrap } = useRequest([], () =>
-    requestGetMyScrap({ username, accessToken, postQueryParams })
-  );
+  const { data: studylogs } = useFetchMyScrap({ username, accessToken, postQueryParams });
 
   const onSetPage = (page) => {
     setPostQueryParams({ ...postQueryParams, page });
   };
 
-  const { mutate: deleteScrap } = useMutation(requestDeleteScrap, {
-    onSuccess: () => {
-      getMyScrap();
-    },
-  });
+  const deleteScrapMutation = useDeleteScrapMutation();
 
   const onDeleteScrap = async (event, id) => {
     event.stopPropagation();
@@ -66,12 +61,8 @@ const ProfilePageScraps = () => {
       return;
     }
 
-    deleteScrap({ username, accessToken, id });
+    deleteScrapMutation.mutate({ username, accessToken, id });
   };
-
-  useEffect(() => {
-    getMyScrap();
-  }, [postQueryParams]);
 
   return (
     <Container>
