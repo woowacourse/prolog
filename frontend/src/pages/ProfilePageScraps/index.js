@@ -1,9 +1,6 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
-import useRequest from '../../hooks/useRequest';
-import useMutation from '../../hooks/useMutation';
-import { requestDeleteScrap, requestGetMyScrap } from '../../service/requests';
 import { UserContext } from '../../contexts/UserProvider';
 
 import { Button, BUTTON_SIZE, Card, Pagination } from '../../components';
@@ -24,7 +21,7 @@ import {
   Title,
   Heading,
 } from './styles';
-import { useDeleteScrapMutation, useFetchMyScrap } from '../../hooks/queries/profile';
+import { useDeleteScrapMutation, useGetMyScrapQuery } from '../../hooks/queries/profile';
 
 const initialPostQueryParams = {
   page: 1,
@@ -46,7 +43,7 @@ const ProfilePageScraps = () => {
     history.push(`${PATH.STUDYLOG}/${id}`);
   };
 
-  const { data: studylogs } = useFetchMyScrap({ username, accessToken, postQueryParams });
+  const { data: studylogs } = useGetMyScrapQuery({ username, accessToken, postQueryParams });
 
   const onSetPage = (page) => {
     setPostQueryParams({ ...postQueryParams, page });

@@ -1,8 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { requestDeleteScrap, requestGetMyScrap } from '../../service/requests';
+import {
+  requestDeleteScrap,
+  requestEditProfile,
+  requestGetMyScrap,
+  requestGetProfile,
+} from '../../service/requests';
 
 const QUERY_KEY = {
   scrap: 'scrap',
+  profile: 'profile',
 };
 
 export const useGetMyScrapQuery = ({ username, accessToken, postQueryParams }) => {
@@ -15,7 +21,7 @@ export const useGetMyScrapQuery = ({ username, accessToken, postQueryParams }) =
   );
 };
 
-export const useDeleteScrapMutation = (options) => {
+export const useDeleteScrapMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation(requestDeleteScrap, {
@@ -23,4 +29,33 @@ export const useDeleteScrapMutation = (options) => {
       queryClient.invalidateQueries([QUERY_KEY.scrap]);
     },
   });
+};
+
+export const useGetProfileQuery = ({ username }, { onSuccess }) => {
+  return useQuery(QUERY_KEY.profile, () => requestGetProfile(username).then((res) => res.json()), {
+    onSuccess: (data) => {
+      onSuccess(data);
+    },
+  });
+};
+
+export const usePutProfileMutation = ({ user, nickname, accessToken }, { onSuccess }) => {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    () =>
+      requestEditProfile(
+        { username: user.username, nickname: nickname, imageUrl: user.imageUrl },
+        accessToken
+      ),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([QUERY_KEY.profile]);
+        onSuccess();
+      },
+      onError: () => {
+        alert('회원 정보 수정에 실패했습니다.');
+      },
+    }
+  );
 };
