@@ -2,13 +2,16 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
   requestDeleteScrap,
   requestEditProfile,
-  requestGetMyScrap,
   requestGetProfile,
+  requestEditProfileIntroduction,
+  requestGetMyScrap,
+  requestGetProfileIntroduction,
 } from '../../service/requests';
 
 const QUERY_KEY = {
   scrap: 'scrap',
   profile: 'profile',
+  introduction: 'introduction',
 };
 
 export const useGetMyScrapQuery = ({ username, accessToken, postQueryParams }) => {
@@ -59,3 +62,22 @@ export const usePutProfileMutation = ({ user, nickname, accessToken }, { onSucce
     }
   );
 };
+export const usePutProfileIntroductionMutation = (
+  { username, editorContentRef, accessToken },
+  options
+) => {
+  return useMutation(
+    () =>
+      requestEditProfileIntroduction(
+        username,
+        editorContentRef.current.getInstance().getMarkdown(),
+        accessToken
+      ),
+    options
+  );
+};
+
+export const useGetProfileIntroduction = ({ username }) =>
+  useQuery(QUERY_KEY.introduction, () =>
+    requestGetProfileIntroduction(username).then((res) => res.json())
+  );
