@@ -2,9 +2,23 @@ import { css, SerializedStyles } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const FlexBox = styled.div<{
-  flexDirection?: string;
-  justifyContent?: string;
-  alignItems?: string;
+  flexDirection?: 'row' | 'column';
+  justifyContent?:
+    | 'flex-start'
+    | 'flex-end'
+    | 'center'
+    | 'space-between'
+    | 'space-around'
+    | 'initial'
+    | 'inherit';
+  alignItems?:
+    | 'stretch'
+    | 'center'
+    | 'flex-start'
+    | 'flex-end'
+    | 'baseline'
+    | 'initial'
+    | 'inherit';
   css?: SerializedStyles;
 }>`
   display: flex;
