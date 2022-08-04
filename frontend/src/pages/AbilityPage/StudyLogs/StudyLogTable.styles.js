@@ -107,7 +107,7 @@ export const MappedAbility = styled.td`
   }
 
   button {
-    width: 10%;
+    width: 100%;
     margin-top: 0.1rem;
     color: ${COLOR.DARK_GRAY_900};
     font-size: 2rem;
