@@ -1,26 +1,12 @@
 import { css, SerializedStyles } from '@emotion/react';
 import styled from '@emotion/styled';
+import { CSSProperties } from 'react';
 
-const FlexBox = styled.div<{
-  flexDirection?: 'row' | 'column';
-  justifyContent?:
-    | 'flex-start'
-    | 'flex-end'
-    | 'center'
-    | 'space-between'
-    | 'space-around'
-    | 'initial'
-    | 'inherit';
-  alignItems?:
-    | 'stretch'
-    | 'center'
-    | 'flex-start'
-    | 'flex-end'
-    | 'baseline'
-    | 'initial'
-    | 'inherit';
-  css?: SerializedStyles;
-}>`
+const FlexBox = styled.div<
+  Pick<CSSProperties, 'justifyContent' | 'flexDirection' | 'alignItems'> & {
+    css?: SerializedStyles;
+  }
+>`
   display: flex;
   ${({ flexDirection, justifyContent, alignItems }) => css`
     flex-direction: ${flexDirection};
