@@ -21,7 +21,7 @@ const StudyLogSelectAbilityBox = ({
 
   const [searchTerm, setSearchTerm] = useState('');
 
-  const handleSearchInputChange = (e) => {
+  const onChangeSearchInput = (e) => {
     setSearchTerm(e.target.value);
   };
 
@@ -53,6 +53,10 @@ const StudyLogSelectAbilityBox = ({
     setIsSelectAbilityBoxOpen(false);
   };
 
+  const onClickCloseButton = () => {
+    setIsSelectAbilityBoxOpen(false);
+  }
+
   return (
     <Styled.Wrapper>
       <Styled.Header>
@@ -61,12 +65,12 @@ const StudyLogSelectAbilityBox = ({
         <span className="ability-link">
           <Link to={`/${username}/ability`}>역량 관리 페이지 이동</Link>
         </span>
-        <Styled.CloseButton onClick={() => setIsSelectAbilityBoxOpen(false)}></Styled.CloseButton>
+        <Styled.CloseButton onClick={onClickCloseButton}></Styled.CloseButton>
         <Styled.SearchInput
           type="search"
           placeholder="역량 검색"
           value={searchTerm}
-          onChange={handleSearchInputChange}
+          onChange={onChangeSearchInput}
           autoFocus
         />
       </Styled.Header>
