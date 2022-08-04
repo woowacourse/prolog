@@ -34,7 +34,7 @@ interface StudylogEditorProps {
   onSelectMission: (mission: SelectOption) => void;
   onSelectSession: (session: SelectOption) => void;
   onSelectTag: (tags: Tag[], actionMeta: { option: { label: string } }) => void;
-  onSelectAbilities: (abilities: number[]) => void;
+  onSelectAbilities?: (abilities: number[]) => void;
   onSubmit?: FormEventHandler<HTMLFormElement>;
 }
 

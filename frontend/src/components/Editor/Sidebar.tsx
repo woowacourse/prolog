@@ -22,11 +22,11 @@ interface SidebarProps {
   selectedSessionId: Session['id'] | null;
   selectedMissionId: Mission['id'] | null;
   selectedTagList: Tag[];
-  selectedAbilities: number[];
+  selectedAbilities?: number[];
   onSelectSession: (session: { value: string; label: string }) => void;
   onSelectMission: (mission: { value: string; label: string }) => void;
   onSelectTag: (tags: Tag[], actionMeta: { option: { label: string } }) => void;
-  onSelectAbilities: (abilities: number[]) => void;
+  onSelectAbilities?: (abilities: number[]) => void;
 }
 const AbilitySelectList = styled.li`
   position: relative;
@@ -86,7 +86,6 @@ const Sidebar = ({
   const {
     user: { username },
   } = useContext(UserContext);
-
   const tagOptions = tags.map(({ name }) => ({ value: name, label: `#${name}` }));
   const missionOptions = missions.map(({ id, name, session }) => ({
     value: `${id}`,
@@ -115,6 +114,10 @@ const Sidebar = ({
   /** 선택된 역량을 보여준다.*/
   const SelectedAbilityChips = ({ selectedAbilityIds }) => {
     const selectedAbilities = wholeAbility.filter(({ id }) => selectedAbilityIds.includes(id));
+    if (!onSelectAbilities) {
+      return null;
+    }
+
     return (
       <AbilityList>
         {selectedAbilities?.map((ability) => {
@@ -195,31 +198,33 @@ const Sidebar = ({
             />
           </div>
         </li>
-        <AbilitySelectList>
-          <FilterTitle>
-            <FlexBox css={FlexGap} alignItems="center">
-              abilities
-              <Button
-                size="XX_SMALL"
-                type="button"
-                cssProps={PlusButton}
-                onClick={() => setIsSelectAbilityBoxOpen(true)}
-              >
-                +
-              </Button>
-            </FlexBox>
-          </FilterTitle>
+        {onSelectAbilities && (
+          <AbilitySelectList>
+            <FilterTitle>
+              <FlexBox css={FlexGap} alignItems="center">
+                abilities
+                <Button
+                  size="XX_SMALL"
+                  type="button"
+                  cssProps={PlusButton}
+                  onClick={() => setIsSelectAbilityBoxOpen(true)}
+                >
+                  +
+                </Button>
+              </FlexBox>
+            </FilterTitle>
 
-          <SelectedAbilityChips selectedAbilityIds={selectedAbilities} />
-          {isSelectAbilityBoxOpen && (
-            <StudyLogSelectAbilityBox
-              setIsSelectAbilityBoxOpen={setIsSelectAbilityBoxOpen}
-              selectedAbilities={selectedAbilities}
-              wholeAbility={wholeAbility}
-              onSelectAbilities={onSelectAbilities}
-            />
-          )}
-        </AbilitySelectList>
+            <SelectedAbilityChips selectedAbilityIds={selectedAbilities} />
+            {isSelectAbilityBoxOpen && (
+              <StudyLogSelectAbilityBox
+                setIsSelectAbilityBoxOpen={setIsSelectAbilityBoxOpen}
+                selectedAbilities={selectedAbilities}
+                wholeAbility={wholeAbility}
+                onSelectAbilities={onSelectAbilities}
+              />
+            )}
+          </AbilitySelectList>
+        )}
       </ul>
     </SidebarWrapper>
   );
