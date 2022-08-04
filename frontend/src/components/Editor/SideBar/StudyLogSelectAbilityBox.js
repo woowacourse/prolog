@@ -21,13 +21,13 @@ const StudyLogSelectAbilityBox = ({
 
   const [searchTerm, setSearchTerm] = useState('');
 
-  const handleChange = (e) => {
+  const handleSearchInputChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
   const filteredAbilities = wholeAbility.filter((abilityObj) => {
-    const abilityName = abilityObj.name.replace(/(\s*)/g, '').toLowerCase();
-    const refinedSearchTerm = searchTerm.replace(/(\s*)/g, '').toLowerCase();
+    const abilityName = abilityObj.name.trim().toLowerCase();
+    const refinedSearchTerm = searchTerm.trim().toLowerCase();
     return abilityName.includes(refinedSearchTerm);
   });
 
@@ -66,7 +66,7 @@ const StudyLogSelectAbilityBox = ({
           type="search"
           placeholder="역량 검색"
           value={searchTerm}
-          onChange={handleChange}
+          onChange={handleSearchInputChange}
           autoFocus
         />
       </Styled.Header>
