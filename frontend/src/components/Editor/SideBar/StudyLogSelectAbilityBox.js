@@ -45,7 +45,7 @@ const StudyLogSelectAbilityBox = ({
   };
 
   const isChecked = (targetAbilityId) => {
-    return updatedAbilities.find((id) => id === targetAbilityId);
+    return updatedAbilities.includes((id) => id === targetAbilityId);
   };
 
   const onClickSelectButton = () => {
