@@ -93,7 +93,9 @@ const StudyLogSelectAbilityBox = ({
       </Styled.AbilityList>
 
       <Styled.Footer>
-        <button onClick={onClickSelectButton}>역량등록</button>
+        <button onClick={onClickSelectButton} type="button">
+          역량등록
+        </button>
       </Styled.Footer>
     </Styled.Wrapper>
   );
