@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   max-height: 45rem;
   position: absolute;
   right: 65%;
-  top: 0px;
+  top: 0;
 
   border: 2px solid ${COLOR.LIGHT_GRAY_200};
   background-color: ${COLOR.WHITE};
@@ -150,13 +150,13 @@ export const Footer = styled.div`
 export const SearchInput = styled.input`
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
   border-radius: 1rem;
-  :focus {
-    outline: none;
-  }
   font-size: 1.2rem;
   margin-bottom: 1rem;
   padding: 0.6em 1.2em;
   width: 100%;
+  :focus {
+    outline: none;
+  }
 `;
 
 export const CloseButton = styled.button`
