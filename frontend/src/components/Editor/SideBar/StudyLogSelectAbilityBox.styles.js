@@ -95,13 +95,13 @@ export const Ability = styled.li`
 
 export const ColorCircle = styled.div`
   display: inline-block;
-  width: 14px;
-  height: 14px;
+  width: 1.4rem;
+  height: 1.4rem;
   margin-top: 2px;
 
   background-color: ${({ backgroundColor }) => backgroundColor ?? 'transparent'};
   border: 1px solid ${COLOR.BLACK_OPACITY_100};
-  border-radius: 7px;
+  border-radius: 0.7rem;
 `;
 
 export const AbilityName = styled.span`
@@ -149,7 +149,7 @@ export const Footer = styled.div`
 
 export const SearchInput = styled.input`
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
-  border-radius: 10px;
+  border-radius: 1rem;
   :focus {
     outline: none;
   }
