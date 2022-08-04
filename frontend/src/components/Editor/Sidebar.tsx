@@ -8,7 +8,7 @@ import { Mission, Session, Tag } from '../../models/Studylogs';
 import styled from '@emotion/styled';
 import { useMissions, useSessions, useTags } from '../../hooks/queries/filters';
 import { getRowGapStyle } from '../../styles/layout.styles';
-import NewSelectAbilityBox from './SideBar/NewSelectAbilityBox';
+import StudyLogSelectAbilityBox from './SideBar/StudyLogSelectAbilityBox';
 import { useQuery } from 'react-query';
 import AbilityRequest, { ErrorData } from '../../apis/ability';
 import { useContext, useState } from 'react';
@@ -212,12 +212,12 @@ const Sidebar = ({
 
           <SelectedAbilityChips selectedAbilityIds={selectedAbilities} />
           {isSelectAbilityBoxOpen && (
-            <NewSelectAbilityBox
+            <StudyLogSelectAbilityBox
               setIsSelectAbilityBoxOpen={setIsSelectAbilityBoxOpen}
               selectedAbilities={selectedAbilities}
               wholeAbility={wholeAbility}
               onSelectAbilities={onSelectAbilities}
-            ></NewSelectAbilityBox>
+            ></StudyLogSelectAbilityBox>
           )}
         </AbilitySelectList>
       </ul>

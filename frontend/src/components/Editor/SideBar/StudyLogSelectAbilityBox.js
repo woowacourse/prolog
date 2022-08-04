@@ -1,13 +1,13 @@
 import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../../contexts/UserProvider';
-import * as Styled from './NewSelectAbilityBox.styles';
+import * as Styled from './StudyLogSelectAbilityBox.styles';
 
 /**
  * 역량을 선택할 수 있다.
  * 역량은 자식역량만 선택할 수 있다.
  */
-const NewSelectAbilityBox = ({
+const StudyLogSelectAbilityBox = ({
   setIsSelectAbilityBoxOpen,
   selectedAbilities,
   wholeAbility,
@@ -99,4 +99,4 @@ const NewSelectAbilityBox = ({
   );
 };
 
-export default NewSelectAbilityBox;
+export default StudyLogSelectAbilityBox;
