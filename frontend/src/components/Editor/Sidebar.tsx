@@ -217,7 +217,7 @@ const Sidebar = ({
               selectedAbilities={selectedAbilities}
               wholeAbility={wholeAbility}
               onSelectAbilities={onSelectAbilities}
-            ></StudyLogSelectAbilityBox>
+            />
           )}
         </AbilitySelectList>
       </ul>
