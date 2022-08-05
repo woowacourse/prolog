@@ -185,6 +185,6 @@ public class Ability {
     }
 
     public boolean isBelongsTo(Long memberId) {
-        return this.member.getId() == memberId;
+        return this.member.getId().equals(memberId);
     }
 }
