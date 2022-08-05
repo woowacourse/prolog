@@ -5,7 +5,6 @@ import static java.util.stream.Collectors.*;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.persistence.EntityManagerFactory;
 import kr.co.techcourse.prolog.batch.job.sample.chunk.entity.Crew;
@@ -18,10 +17,7 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
-import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
-import org.springframework.batch.item.database.orm.JpaNativeQueryProvider;
-import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -39,8 +35,7 @@ public class SampleChunkBatchJob implements InitializingBean {
     public SampleChunkBatchJob(
         JobBuilderFactory jobBuilderFactory,
         StepBuilderFactory stepBuilderFactory,
-        MemberRepository memberRepository,
-        EntityManagerFactory emf
+        MemberRepository memberRepository, EntityManagerFactory emf
     ) {
         this.jobBuilderFactory = jobBuilderFactory;
         this.stepBuilderFactory = stepBuilderFactory;
@@ -66,22 +61,18 @@ public class SampleChunkBatchJob implements InitializingBean {
     }
 
     @Bean
-    public ListItemReader<Integer> itemReader() {
-        List<Integer> collect = IntStream.rangeClosed(1, 1000)
-            .boxed()
-            .collect(toList());
-
-        return new ListItemReader<>(collect);
+    public JpaPagingItemReader<Member> itemReader() {
+        return new JpaPagingItemReaderBuilder<Member>()
+            .name("itemReader")
+            .entityManagerFactory(emf)
+            .pageSize(100)
+            .queryString("SELECT m FROM Member m")
+            .build();
     }
 
     @Bean
     public ItemProcessor<Member, Crew> itemProcessor() {
-        return new ItemProcessor<Member, Crew>() {
-            @Override
-            public Crew process(Member item) throws Exception {
-                return new Crew(null, item.getName());
-            }
-        };
+        return item -> new Crew(null, item.getName());
     }
 
     @Bean
@@ -89,12 +80,17 @@ public class SampleChunkBatchJob implements InitializingBean {
         return new ItemWriter<Crew>() {
             @Override
             public void write(List<? extends Crew> items) throws Exception {
-                items.forEach(item -> System.out.println(item.getName()));
+                items.forEach(System.out::println);
             }
         };
     }
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        List<Member> members = Stream.generate(() -> new Member(null, UUID.randomUUID().toString()))
+            .limit(1000)
+            .collect(toList());
+
+        memberRepository.saveAll(members);
     }
 }
