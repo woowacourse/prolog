@@ -1,17 +1,16 @@
 package kr.co.techcourse.prolog.batch.job.sample.tasklet;
 
-import java.util.concurrent.atomic.AtomicInteger;
-import kr.co.techcourse.prolog.batch.member.Member;
-import kr.co.techcourse.prolog.batch.member.MemberRepository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ConditionalOnProperty(name = "spring.batch.job.names", havingValue = "sampleJob")
 public class SampleBatchJob {
 
     private final JobBuilderFactory jobBuilderFactory;
@@ -24,39 +23,19 @@ public class SampleBatchJob {
     }
 
     @Bean
-    public Job sampleJob(MemberRepository memberRepository) {
+    public Job sampleJob() {
         return jobBuilderFactory.get("sampleJob")
-                .start(step1(memberRepository))
-                .next(step2(memberRepository))
-                .build();
+            .start(step1())
+            .build();
     }
 
     @Bean
-    public Step step1(MemberRepository memberRepository) {
-        return stepBuilderFactory.get("verus1")
-                .tasklet((contribution, chunkContext) -> {
-                    memberRepository.save(new Member("verus"));
-                    return RepeatStatus.FINISHED;
-                })
-                .build();
-    }
-
-    @Bean
-    public Step step2(MemberRepository memberRepository) {
-        AtomicInteger counter = new AtomicInteger(0);
-
-        return stepBuilderFactory.get("verus2")
-                .tasklet((contribution, chunkContext) -> {
-                    Member verus = memberRepository.findByName("verus");
-
-                    System.out.println(verus.getName() + "#" + counter.get() + " hello!");
-
-                    if (counter.addAndGet(1) == 10) {
-                        counter.set(0);
-                        return RepeatStatus.FINISHED;
-                    }
-                    return RepeatStatus.CONTINUABLE;
-                })
-                .build();
+    public Step step1() {
+        return stepBuilderFactory.get("step1")
+            .tasklet((contribution, chunkContext) -> {
+                System.out.println("hello batch!");
+                return RepeatStatus.FINISHED;
+            })
+            .build();
     }
 }

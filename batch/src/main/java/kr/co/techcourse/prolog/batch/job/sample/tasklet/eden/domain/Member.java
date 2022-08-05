@@ -1,4 +1,4 @@
-package kr.co.techcourse.prolog.batch.member;
+package kr.co.techcourse.prolog.batch.job.sample.tasklet.eden.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,12 +17,9 @@ public class Member {
     public Member() {
     }
 
-    public Member(final String name) {
+    public Member(Long id, String name) {
+        this.id = id;
         this.name = name;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getName() {

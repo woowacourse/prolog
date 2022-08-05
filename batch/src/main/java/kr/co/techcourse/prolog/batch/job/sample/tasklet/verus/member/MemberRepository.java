@@ -1,8 +1,8 @@
-package kr.co.techcourse.prolog.batch.job.eve.domain;
+package kr.co.techcourse.prolog.batch.job.sample.tasklet.verus.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    Member findByNickname(String nickname);
+    Member findByName(String name);
 }

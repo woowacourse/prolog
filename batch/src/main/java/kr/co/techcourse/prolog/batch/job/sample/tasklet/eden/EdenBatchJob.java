@@ -1,7 +1,7 @@
-package kr.co.techcourse.prolog.batch.job.sample.tasklet;
+package kr.co.techcourse.prolog.batch.job.sample.tasklet.eden;
 
 import javax.persistence.EntityManagerFactory;
-import kr.co.techcourse.prolog.batch.application.MemberService;
+import kr.co.techcourse.prolog.batch.job.sample.tasklet.eden.application.MemberService;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;

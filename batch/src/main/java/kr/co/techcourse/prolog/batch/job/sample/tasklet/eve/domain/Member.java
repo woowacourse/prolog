@@ -1,4 +1,4 @@
-package kr.co.techcourse.prolog.batch.domain;
+package kr.co.techcourse.prolog.batch.job.sample.tasklet.eve.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,17 +12,16 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String nickname;
 
-    public Member() {
+    protected Member() {
     }
 
-    public Member(Long id, String name) {
-        this.id = id;
-        this.name = name;
+    public Member(String nickname) {
+        this.nickname = nickname;
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 }

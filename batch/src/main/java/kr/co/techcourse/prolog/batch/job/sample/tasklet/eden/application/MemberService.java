@@ -1,7 +1,7 @@
-package kr.co.techcourse.prolog.batch.application;
+package kr.co.techcourse.prolog.batch.job.sample.tasklet.eden.application;
 
-import kr.co.techcourse.prolog.batch.domain.Member;
-import kr.co.techcourse.prolog.batch.domain.MemberRepository;
+import kr.co.techcourse.prolog.batch.job.sample.tasklet.eden.domain.Member;
+import kr.co.techcourse.prolog.batch.job.sample.tasklet.eden.domain.MemberRepository;
 import org.springframework.stereotype.Service;
 
 @Service

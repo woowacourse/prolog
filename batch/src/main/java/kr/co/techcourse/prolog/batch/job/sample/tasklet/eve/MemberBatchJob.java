@@ -1,7 +1,7 @@
-package kr.co.techcourse.prolog.batch.job.eve;
+package kr.co.techcourse.prolog.batch.job.sample.tasklet.eve;
 
-import kr.co.techcourse.prolog.batch.job.eve.domain.Member;
-import kr.co.techcourse.prolog.batch.job.eve.domain.MemberRepository;
+import kr.co.techcourse.prolog.batch.job.sample.tasklet.eve.domain.Member;
+import kr.co.techcourse.prolog.batch.job.sample.tasklet.eve.domain.MemberRepository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
