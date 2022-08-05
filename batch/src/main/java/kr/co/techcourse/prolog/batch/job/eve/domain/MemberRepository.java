@@ -1,4 +1,4 @@
-package kr.co.techcourse.prolog.batch.domain;
+package kr.co.techcourse.prolog.batch.job.eve.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
