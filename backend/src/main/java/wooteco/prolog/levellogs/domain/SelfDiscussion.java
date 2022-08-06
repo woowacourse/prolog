@@ -33,4 +33,20 @@ public class SelfDiscussion {
         this.question = question;
         this.answer = answer;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public LevelLog getLevelLog() {
+        return levelLog;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
 }
