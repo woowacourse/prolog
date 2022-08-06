@@ -1,6 +1,7 @@
 package wooteco.prolog.member.application.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.member.domain.Member;
@@ -8,6 +9,7 @@ import wooteco.prolog.member.domain.Role;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @Getter
 public class MemberResponse {
 
