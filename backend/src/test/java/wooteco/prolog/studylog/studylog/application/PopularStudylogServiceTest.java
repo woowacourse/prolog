@@ -4,11 +4,13 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
@@ -150,8 +152,9 @@ class PopularStudylogServiceTest {
     }
 
     @DisplayName("로그인하지 않은 상태에서 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
-    @Test
-    void findPopularStudylogsWithoutLogin() {
+    @ParameterizedTest
+    @CsvSource(value = {"0, 3, 3, 3", "0, 2, 2, 2"})
+    void findPopularStudylogsWithoutLogin(int page, int size, int totalSize, int dataSize) {
         // given
         insertStudylogs(member1, studylog1, studylog2);
         insertStudylogs(member2, studylog3);
@@ -162,7 +165,7 @@ class PopularStudylogServiceTest {
         studylogLikeService.likeStudylog(member1.getId(), 3L, true);
 
         // when
-        PageRequest pageRequest = PageRequest.of(0, 2);
+        PageRequest pageRequest = PageRequest.of(page, size);
         popularStudylogService.updatePopularStudylogs(pageRequest);
         PopularStudylogsResponse studylogs = popularStudylogService.findPopularStudylogs(
             pageRequest,
@@ -171,26 +174,32 @@ class PopularStudylogServiceTest {
         );
 
         // then
-        assertThat(studylogs.getAllResponse().getTotalSize()).isEqualTo(3);
-        assertThat(studylogs.getFrontResponse().getTotalSize()).isEqualTo(2);
-        assertThat(studylogs.getBackResponse().getTotalSize()).isEqualTo(1);
+        assertAll(
+            () -> assertThat(studylogs.getAllResponse().getTotalSize()).isEqualTo(totalSize),
+            () -> assertThat(studylogs.getAllResponse().getData()).hasSize(dataSize)
+        );
         for (StudylogResponse response : studylogs.getAllResponse().getData()) {
-            assertThat(response.isScrap()).isFalse();
-            assertThat(response.isRead()).isFalse();
+            assertAll(
+                () -> assertThat(response.isScrap()).isFalse(),
+                () -> assertThat(response.isRead()).isFalse()
+            );
         }
     }
 
     @DisplayName("로그인한 상태에서 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
-    @Test
-    void findPopularStudylogsWithLogin() {
+    @ParameterizedTest
+    @CsvSource(value = {"0, 3, 3, 3", "0, 2, 2, 2"})
+    void findPopularStudylogsWithLogin(int page, int size, int totalSize, int dataSize) {
         // given
         insertStudylogs(member1, studylog1, studylog2, studylog3);
 
         // 2번째 멤버가 1번째 멤버의 게시글 2번, 3번을 조회
+        studylogService.retrieveStudylogById(loginMember2, 1L, false);
         studylogService.retrieveStudylogById(loginMember2, 2L, false);
         studylogService.retrieveStudylogById(loginMember2, 3L, false);
 
         // 2번, 3번 글 스크랩
+        studylogScrapService.registerScrap(member2.getId(), 1L);
         studylogScrapService.registerScrap(member2.getId(), 2L);
         studylogScrapService.registerScrap(member2.getId(), 3L);
 
@@ -198,7 +207,7 @@ class PopularStudylogServiceTest {
         studylogLikeService.likeStudylog(member2.getId(), 3L, true);
 
         // when
-        PageRequest pageRequest = PageRequest.of(0, 2);
+        PageRequest pageRequest = PageRequest.of(page, size);
         popularStudylogService.updatePopularStudylogs(pageRequest);
         PopularStudylogsResponse studylogs = popularStudylogService.findPopularStudylogs(
             pageRequest,
@@ -207,10 +216,15 @@ class PopularStudylogServiceTest {
         );
 
         // then
-        assertThat(studylogs.getAllResponse().getTotalSize()).isEqualTo(2);
+        assertAll(
+            () -> assertThat(studylogs.getAllResponse().getTotalSize()).isEqualTo(totalSize),
+            () -> assertThat(studylogs.getAllResponse().getData()).hasSize(dataSize)
+        );
         for (StudylogResponse response : studylogs.getAllResponse().getData()) {
-            assertThat(response.isScrap()).isTrue();
-            assertThat(response.isRead()).isTrue();
+            assertAll(
+                () -> assertThat(response.isScrap()).isTrue(),
+                () -> assertThat(response.isRead()).isTrue()
+            );
         }
     }
 
