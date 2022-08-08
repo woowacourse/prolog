@@ -1,0 +1,28 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "member": {
+        "id": 1,
+        "username": "euijinkk",
+        "nickname": "잉",
+        "imageUrl": "https://avatars.githubusercontent.com/u/24906022?v=4",
+        "role": "crew"
+      },
+      "content": "내용1",
+      "createAt": "2022-07-24"
+    },
+    {
+      "id": 2,
+      "member": {
+        "id": 2,
+        "username": "euijinkk",
+        "nickname": "루키",
+        "imageUrl": "https://avatars.githubusercontent.com/u/24906022?v=4",
+        "role": "crew"
+      },
+      "content": "내용2",
+      "createAt": "2022-07-24"
+    }
+  ]
+}

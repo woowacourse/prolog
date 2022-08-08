@@ -87,7 +87,8 @@ export const requestGetMissions = ({
   accessToken,
 }: {
   accessToken: string;
-}): Promise<AxiosResponse<Mission[]>> => httpRequester.get('/missions/mine', getAuthConfig(accessToken));
+}): Promise<AxiosResponse<Mission[]>> =>
+  httpRequester.get('/missions/mine', getAuthConfig(accessToken));
 export const requestGetSessions = ({
   accessToken,
 }: {
