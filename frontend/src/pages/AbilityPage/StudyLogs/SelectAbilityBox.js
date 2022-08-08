@@ -15,11 +15,12 @@ const SelectAbilityBox = ({
   refetch,
 }) => {
   const abilityIds = abilities.map((ability) => ability.id);
-  const [updatedAbilites, setUpdatedAbilities] = useState(abilityIds);
+
+  const [updatedAbilities, setUpdatedAbilities] = useState(abilityIds);
 
   const onSelectAbility = (event) => {
     const targetAbilityId = Number(event.target.id);
-    const currAbilities = new Set(updatedAbilites);
+    const currAbilities = new Set(updatedAbilities);
 
     if (currAbilities.has(targetAbilityId)) {
       currAbilities.delete(targetAbilityId);
@@ -31,7 +32,7 @@ const SelectAbilityBox = ({
   };
 
   const onMappingAbility = () => {
-    mappingAbility.mutate({ studylogId, abilities: updatedAbilites });
+    mappingAbility.mutate({ studylogId, abilities: updatedAbilities });
 
     setSelectAbilityBox({ id: studylogId, isOpen: false });
   };
