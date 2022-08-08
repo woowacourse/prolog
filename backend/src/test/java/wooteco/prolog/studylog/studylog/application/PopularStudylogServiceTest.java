@@ -1,10 +1,10 @@
 package wooteco.prolog.studylog.studylog.application;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,14 +16,14 @@ import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.MissionService;
-import wooteco.prolog.session.application.dto.SessionRequest;
-import wooteco.prolog.session.application.dto.SessionResponse;
+import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
-import wooteco.prolog.session.domain.Session;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.domain.Mission;
+import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.application.PopularStudylogService;
 import wooteco.prolog.studylog.application.StudylogLikeService;
 import wooteco.prolog.studylog.application.StudylogScrapService;
@@ -31,8 +31,6 @@ import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.PopularStudylogsResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
-import wooteco.prolog.studylog.application.dto.StudylogWithScrapedCountResponse;
-import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.Tag;
@@ -213,7 +211,8 @@ class PopularStudylogServiceTest {
                     studylog.getContent(),
                     studylog.getSession().getId(),
                     studylog.getMission().getId(),
-                    toTagRequests(studylog)
+                    toTagRequests(studylog),
+                    Collections.emptyList()
                 )
             )
             .collect(toList());
