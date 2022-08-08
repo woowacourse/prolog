@@ -10,20 +10,35 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
+import wooteco.prolog.member.domain.GroupMember;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.MemberGroup;
+import wooteco.prolog.member.domain.repository.GroupMemberRepository;
+import wooteco.prolog.member.domain.repository.MemberGroupRepository;
+import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
+import wooteco.prolog.studylog.application.dto.PopularStudylogsResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 
 class StudylogDocumentation extends Documentation {
+
+    @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
+    private MemberGroupRepository memberGroupRepository;
+    @Autowired
+    private GroupMemberRepository groupMemberRepository;
 
     @Test
     void 스터디로그를_생성한다() {
@@ -96,33 +111,34 @@ class StudylogDocumentation extends Documentation {
         assertThat(studylogsResponse.getData()).hasSize(1);
     }
 
-//    @Test
-//    void 인기있는_스터디로그_목록을_갱신하고_조회한다() {
-//        // given
-//        String studylogLocation1 = 스터디로그_등록함(createStudylogRequest1()).header("Location");
-//        String studylogLocation2 = 스터디로그_등록함(createStudylogRequest2()).header("Location");
-//        Long studylogId1 = Long.parseLong(studylogLocation1.split("/studylogs/")[1]);
-//        Long studylogId2 = Long.parseLong(studylogLocation2.split("/studylogs/")[1]);
-//
-//        스터디로그_단건_조회(studylogId1);
-//        스터디로그_단건_조회(studylogId2);
-//        스터디로그_단건_좋아요(studylogId2);
-//
-//        인기있는_스터디로그_목록_갱신(2);
-//
-//        // when
-//        ExtractableResponse<Response> response = given("studylogs/popular")
-//            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-//            .when().get("/studylogs/popular")
-//            .then().log().all().extract();
-//
-//        // then
-//        // given
-//        StudylogsResponse popularStudylogsResponse = response.as(StudylogsResponse.class);
-//        assertThat(popularStudylogsResponse.getData()).hasSize(2);
-//        assertThat(popularStudylogsResponse.getData().get(0).getId()).isEqualTo(studylogId2);
-//        assertThat(popularStudylogsResponse.getData().get(1).getId()).isEqualTo(studylogId1);
-//    }
+    @Test
+    void 인기있는_스터디로그_목록을_갱신하고_조회한다() {
+        // given
+        회원과_멤버그룹_그룹멤버를_등록함();
+        String studylogLocation1 = 스터디로그_등록함(createStudylogRequest1()).header("Location");
+        String studylogLocation2 = 스터디로그_등록함(createStudylogRequest2()).header("Location");
+        Long studylogId1 = Long.parseLong(studylogLocation1.split("/studylogs/")[1]);
+        Long studylogId2 = Long.parseLong(studylogLocation2.split("/studylogs/")[1]);
+
+        스터디로그_단건_조회(studylogId1);
+        스터디로그_단건_조회(studylogId2);
+        스터디로그_단건_좋아요(studylogId2);
+
+        인기있는_스터디로그_목록_갱신(2);
+
+        // when
+        ExtractableResponse<Response> response = given("studylogs/popular")
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .when().get("/studylogs/popular")
+            .then().log().all().extract();
+
+        // then
+        PopularStudylogsResponse popularStudylogsResponse = response.as(PopularStudylogsResponse.class);
+        assertThat(popularStudylogsResponse.getAllResponse().getData()).hasSize(2);
+        assertThat(popularStudylogsResponse.getFrontResponse().getData()).hasSize(2);
+        assertThat(popularStudylogsResponse.getBackResponse().getData()).hasSize(2);
+
+    }
 
     private void 인기있는_스터디로그_목록_갱신(int studylogCount) {
         RestAssured.given()
@@ -241,6 +257,15 @@ class StudylogDocumentation extends Documentation {
             .extract()
             .as(SessionResponse.class)
             .getId();
+    }
+
+    private void 회원과_멤버그룹_그룹멤버를_등록함() {
+        Member member = memberRepository.findById(1L).get();
+        MemberGroup 프론트엔드 = memberGroupRepository.save(
+            new MemberGroup(null, "4기 프론트엔드", "4기 프론트엔드 설명"));
+        MemberGroup 백엔드 = memberGroupRepository.save(new MemberGroup(null, "4기 백엔드", "4기 백엔드 설명"));
+        groupMemberRepository.save(new GroupMember(null, member, 백엔드));
+        groupMemberRepository.save(new GroupMember(null, member, 프론트엔드));
     }
 
     private Long 미션_등록함(MissionRequest request) {
