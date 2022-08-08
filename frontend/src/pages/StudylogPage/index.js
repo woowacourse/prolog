@@ -6,7 +6,7 @@ import TagManager from 'react-gtm-module';
 
 import Content from './Content';
 import { Button, BUTTON_SIZE } from '../../components';
-import { ButtonList, EditButtonStyle, DeleteButtonStyle } from './styles';
+import { ButtonList, EditButtonStyle, DeleteButtonStyle, EditorForm, SubmitButton } from './styles';
 
 import { MainContentStyle } from '../../PageRouter';
 import { UserContext } from '../../contexts/UserProvider';
@@ -34,6 +34,7 @@ import { SUCCESS_MESSAGE } from '../../constants/message';
 import CommentList from '../../components/Comment/CommentList';
 import useStudylogComment from '../../hooks/Comment/useStudylogComment';
 import useBeforeunload from '../../hooks/useBeforeunload';
+import Editor from '../../components/Editor/Editor';
 
 const StudylogPage = () => {
   const { id } = useParams();
@@ -233,14 +234,12 @@ const StudylogPage = () => {
         goAuthorProfilePage={goAuthorProfilePage}
       />
       {comments && (
-        <CommentList
-          comments={comments}
-          editComment={editComment}
-          deleteComment={deleteComment}
-          onSubmit={onSubmitComment}
-          editorContentRef={editorContentRef}
-        />
+        <CommentList comments={comments} editComment={editComment} deleteComment={deleteComment} />
       )}
+      <EditorForm onSubmit={onSubmitComment}>
+        <Editor height="25rem" hasTitle={false} editorContentRef={editorContentRef} />
+        <SubmitButton>작성 완료</SubmitButton>
+      </EditorForm>
     </div>
   );
 };

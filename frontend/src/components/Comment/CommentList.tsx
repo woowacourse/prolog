@@ -30,10 +30,6 @@ const CommentList = ({
           {...comment}
         />
       ))}
-      <Styled.EditorForm onSubmit={onSubmit}>
-        <Editor height="25rem" hasTitle={false} editorContentRef={editorContentRef} />
-        <Styled.SubmitButton>작성 완료</Styled.SubmitButton>
-      </Styled.EditorForm>
     </Styled.CommentsContainer>
   );
 };
