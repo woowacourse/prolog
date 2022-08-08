@@ -1,5 +1,4 @@
 import { CommentRequest, CommentType } from '../../models/Comment';
-import Editor from '../Editor/Editor';
 import Comment from './Comment';
 import * as Styled from './CommentList.style';
 import { FormEventHandler, MutableRefObject } from 'react';
