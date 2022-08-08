@@ -236,10 +236,12 @@ const StudylogPage = () => {
       {comments && (
         <CommentList comments={comments} editComment={editComment} deleteComment={deleteComment} />
       )}
-      <EditorForm onSubmit={onSubmitComment}>
-        <Editor height="25rem" hasTitle={false} editorContentRef={editorContentRef} />
-        <SubmitButton>작성 완료</SubmitButton>
-      </EditorForm>
+      {isLoggedIn && (
+        <EditorForm onSubmit={onSubmitComment}>
+          <Editor height="25rem" hasTitle={false} editorContentRef={editorContentRef} />
+          <SubmitButton>작성 완료</SubmitButton>
+        </EditorForm>
+      )}
     </div>
   );
 };
