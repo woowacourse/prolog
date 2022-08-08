@@ -8,9 +8,9 @@ import lombok.Getter;
 @Getter
 public class MemberGroups {
 
-    private List<MemberGroup> memberGroups;
+    private List<MemberGroup> values;
 
     public boolean isContainsMemberGroups(GroupMember groupMember) {
-        return memberGroups.contains(groupMember.getGroup());
+        return values.contains(groupMember.getGroup());
     }
 }
