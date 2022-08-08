@@ -32,4 +32,6 @@ public interface StudylogRepository extends JpaRepository<Studylog, Long>, JpaSp
     List<Studylog> findByMemberIdAndCreatedAtBetween(Long memberId, LocalDateTime startDate, LocalDateTime endDate);
 
     Page<Studylog> findByIdInAndDeletedFalseOrderByIdAsc(List<Long> ids, Pageable pageable);
+
+    Page<Studylog> findAllByIdIn(List<Long> ids, Pageable pageable);
 }
