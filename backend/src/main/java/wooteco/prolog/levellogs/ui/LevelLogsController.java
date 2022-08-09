@@ -2,8 +2,10 @@ package wooteco.prolog.levellogs.ui;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.levellogs.application.LevelLogService;
+import wooteco.prolog.levellogs.application.dto.LevelLogRequest;
 import wooteco.prolog.levellogs.application.dto.LevelLogResponse;
 import wooteco.prolog.levellogs.application.dto.LevelLogSummariesResponse;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
@@ -16,6 +18,12 @@ public class LevelLogsController {
 
     public LevelLogsController(LevelLogService levelLogService) {
         this.levelLogService = levelLogService;
+    }
+
+    public ResponseEntity<Void> create(@AuthMemberPrincipal LoginMember member,
+                                       @RequestBody LevelLogRequest levelLogRequest) {
+        levelLogService.insertLevellogs(member.getId(), levelLogRequest);
+        return ResponseEntity.noContent().build();
     }
 
     public ResponseEntity<LevelLogResponse> findById(Long id) {

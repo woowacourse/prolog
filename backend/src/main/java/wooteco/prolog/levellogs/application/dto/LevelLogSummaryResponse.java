@@ -22,6 +22,6 @@ public class LevelLogSummaryResponse {
 
     public LevelLogSummaryResponse(LevelLog levelLog) {
         this(levelLog.getId(), levelLog.getTitle(), MemberResponse.of(levelLog.getMember()),
-                levelLog.getCreatedAt(), levelLog.getUpdatedAt());
+            levelLog.getCreatedAt(), levelLog.getUpdatedAt());
     }
 }

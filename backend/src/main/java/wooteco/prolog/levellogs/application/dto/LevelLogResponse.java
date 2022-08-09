@@ -31,8 +31,8 @@ public class LevelLogResponse {
         this.content = levelLog.getContent();
         this.author = MemberResponse.of(levelLog.getMember());
         this.levelLogs = selfDiscussions.stream()
-                .map(SelfDiscussionResponse::new)
-                .collect(Collectors.toList());
+            .map(SelfDiscussionResponse::new)
+            .collect(Collectors.toList());
         this.createdAt = levelLog.getCreatedAt();
         this.updatedAt = levelLog.getUpdatedAt();
     }
