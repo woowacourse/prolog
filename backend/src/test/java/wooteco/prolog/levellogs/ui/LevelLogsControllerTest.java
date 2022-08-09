@@ -19,9 +19,11 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import wooteco.prolog.levellogs.application.LevelLogService;
+import wooteco.prolog.levellogs.application.dto.LevelLogRequest;
 import wooteco.prolog.levellogs.application.dto.LevelLogResponse;
 import wooteco.prolog.levellogs.application.dto.LevelLogSummariesResponse;
 import wooteco.prolog.levellogs.application.dto.LevelLogSummaryResponse;
+import wooteco.prolog.levellogs.application.dto.SelfDiscussionRequest;
 import wooteco.prolog.levellogs.domain.LevelLog;
 import wooteco.prolog.levellogs.domain.SelfDiscussion;
 import wooteco.prolog.levellogs.domain.repository.LevelLogRepository;
@@ -52,7 +54,33 @@ public class LevelLogsControllerTest {
 
     @BeforeEach
     void setUp() {
-        sut = new LevelLogsController(new LevelLogService(memberRepository, levelLogRepository, selfDiscussionRepository));
+        sut = new LevelLogsController(
+            new LevelLogService(memberRepository, levelLogRepository, selfDiscussionRepository));
+    }
+
+    @Test
+    @DisplayName("레벨 로그를 작성한다.")
+    void createLevelLog() {
+        // arrange
+        Member author = memberRepository.save(new Member("sudal", "sudal", Role.CREW, 1L, "image"));
+
+        final SelfDiscussionRequest selfDiscussionRequest1 = new SelfDiscussionRequest("질문2",
+            "응답2");
+        final SelfDiscussionRequest selfDiscussionRequest2 = new SelfDiscussionRequest("질문1",
+            "응답1");
+        final SelfDiscussionRequest selfDiscussionRequest3 = new SelfDiscussionRequest("질문3",
+            "응답3");
+
+        final LevelLogRequest levelLogRequest = new LevelLogRequest("제목", "내용",
+            Arrays.asList(selfDiscussionRequest1, selfDiscussionRequest2, selfDiscussionRequest3));
+
+        // act
+        final ResponseEntity<Void> response = sut.create(
+            new LoginMember(author.getId(), Authority.MEMBER),
+            levelLogRequest);
+
+        // assert
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
 
     @Test
@@ -61,19 +89,22 @@ public class LevelLogsControllerTest {
         // arrange
         Member author = memberRepository.save(new Member("verus", "verus", Role.CREW, 1L, "image"));
         LevelLog levelLog = levelLogRepository.save(new LevelLog("제목", "내용", author));
-        SelfDiscussion discussion1 = selfDiscussionRepository.save(new SelfDiscussion(levelLog, "질문1", "응답1"));
-        SelfDiscussion discussion2 = selfDiscussionRepository.save(new SelfDiscussion(levelLog, "질문2", "응답2"));
-        SelfDiscussion discussion3 = selfDiscussionRepository.save(new SelfDiscussion(levelLog, "질문3", "응답3"));
+        SelfDiscussion discussion2 = selfDiscussionRepository.save(
+            new SelfDiscussion(levelLog, "질문2", "응답2"));
+        SelfDiscussion discussion1 = selfDiscussionRepository.save(
+            new SelfDiscussion(levelLog, "질문1", "응답1"));
+        SelfDiscussion discussion3 = selfDiscussionRepository.save(
+            new SelfDiscussion(levelLog, "질문3", "응답3"));
 
         // act
         ResponseEntity<LevelLogResponse> response = sut.findById(levelLog.getId());
 
         // assert
         assertAll(
-                () -> assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK),
-                () -> assertThat(response.getBody()).isEqualTo(
-                        new LevelLogResponse(levelLog, Arrays.asList(discussion1, discussion2, discussion3))
-                )
+            () -> assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK),
+            () -> assertThat(response.getBody()).isEqualTo(
+                new LevelLogResponse(levelLog, Arrays.asList(discussion1, discussion2, discussion3))
+            )
         );
     }
 
@@ -81,36 +112,38 @@ public class LevelLogsControllerTest {
     @DisplayName("존재하지 않는 레벨 로그 ID로 상세 정보 조회 시 예외를 반환한다.")
     void findByNotFoundLevelLogId() {
         assertThatThrownBy(() -> sut.findById(1L))
-                .isInstanceOf(LevelLogNotFoundException.class);
+            .isInstanceOf(LevelLogNotFoundException.class);
     }
 
     @DisplayName("레벨 로그 목록을 조회한다.")
     @Test
     void findLevelLogs() {
         // arrange
-        Member verus = memberRepository.save(new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
-        Member sudal = memberRepository.save(new Member("sudal", "sudal", Role.CREW, 2L, "sudal-image"));
+        Member verus = memberRepository.save(
+            new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
+        Member sudal = memberRepository.save(
+            new Member("sudal", "sudal", Role.CREW, 2L, "sudal-image"));
 
         List<LevelLogSummaryResponse> verusLevelLogs = saveLevelLog(verus, 3);
         List<LevelLogSummaryResponse> sudalLevelLogs = saveLevelLog(sudal, 2);
 
         // act
         ResponseEntity<LevelLogSummariesResponse> response = sut
-                .findAll(PageRequest.of(0, 3, Sort.by(Order.desc("createdAt"))));
+            .findAll(PageRequest.of(0, 3, Sort.by(Order.desc("createdAt"))));
 
         // assert
         List<LevelLogSummaryResponse> totalLevelLogs = new ArrayList<>(verusLevelLogs);
         totalLevelLogs.addAll(sudalLevelLogs);
 
         List<LevelLogSummaryResponse> expectedResponse = totalLevelLogs.stream()
-                .sorted(comparing(LevelLogSummaryResponse::getCreatedAt).reversed())
-                .collect(Collectors.toList());
+            .sorted(comparing(LevelLogSummaryResponse::getCreatedAt).reversed())
+            .collect(Collectors.toList());
 
         assertAll(
-                () -> assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK),
-                () -> assertThat(response.getBody()).isEqualTo(
-                        new LevelLogSummariesResponse(expectedResponse.subList(0, 3), 5L, 2, 1)
-                )
+            () -> assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK),
+            () -> assertThat(response.getBody()).isEqualTo(
+                new LevelLogSummariesResponse(expectedResponse.subList(0, 3), 5L, 2, 1)
+            )
         );
     }
 
@@ -127,13 +160,15 @@ public class LevelLogsControllerTest {
     @Test
     void deleteLevelLog() {
         // arrange
-        Member author = memberRepository.save(new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
+        Member author = memberRepository.save(
+            new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
         LevelLog levelLog = levelLogRepository.save(new LevelLog("제목", "내용", author));
-        SelfDiscussion discussion = selfDiscussionRepository.save(new SelfDiscussion(levelLog, "질문1", "응답1"));
+        SelfDiscussion discussion = selfDiscussionRepository.save(
+            new SelfDiscussion(levelLog, "질문1", "응답1"));
 
         // act
         ResponseEntity<Void> response = sut
-                .deleteById(new LoginMember(author.getId(), Authority.MEMBER), levelLog.getId());
+            .deleteById(new LoginMember(author.getId(), Authority.MEMBER), levelLog.getId());
 
         // assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
@@ -145,26 +180,32 @@ public class LevelLogsControllerTest {
     @Test
     void deleteNotFoundLevelLog() {
         // arrange
-        Member author = memberRepository.save(new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
+        Member author = memberRepository.save(
+            new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
 
         // act & assert
-        assertThatThrownBy(() -> sut.deleteById(new LoginMember(author.getId(), Authority.MEMBER), 1L))
-                .isInstanceOf(LevelLogNotFoundException.class);
+        assertThatThrownBy(
+            () -> sut.deleteById(new LoginMember(author.getId(), Authority.MEMBER), 1L))
+            .isInstanceOf(LevelLogNotFoundException.class);
     }
 
     @DisplayName("작성자 외의 사용자가 레벨 로그 삭제 시 예외가 발생한다.")
     @Test
     void deleteByAnotherMember() {
         // arrange
-        Member another = memberRepository.save(new Member("sudal", "sudal", Role.CREW, 2L, "sudal-image"));
+        Member another = memberRepository.save(
+            new Member("sudal", "sudal", Role.CREW, 2L, "sudal-image"));
 
-        Member author = memberRepository.save(new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
+        Member author = memberRepository.save(
+            new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
         LevelLog levelLog = levelLogRepository.save(new LevelLog("제목", "내용", author));
-        SelfDiscussion discussion = selfDiscussionRepository.save(new SelfDiscussion(levelLog, "질문1", "응답1"));
+        SelfDiscussion discussion = selfDiscussionRepository.save(
+            new SelfDiscussion(levelLog, "질문1", "응답1"));
 
         // act & assert
-        assertThatThrownBy(() -> sut.deleteById(new LoginMember(another.getId(), Authority.MEMBER), levelLog.getId()))
-                .isInstanceOf(InvalidLevelLogAuthorException.class);
+        assertThatThrownBy(() -> sut.deleteById(new LoginMember(another.getId(), Authority.MEMBER),
+            levelLog.getId()))
+            .isInstanceOf(InvalidLevelLogAuthorException.class);
         assertThat(levelLogRepository.existsById(levelLog.getId())).isTrue();
         assertThat(selfDiscussionRepository.existsById(discussion.getId())).isTrue();
     }
@@ -173,13 +214,16 @@ public class LevelLogsControllerTest {
     @Test
     void deleteByNotFoundMember() {
         // arrange
-        Member author = memberRepository.save(new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
+        Member author = memberRepository.save(
+            new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
         LevelLog levelLog = levelLogRepository.save(new LevelLog("제목", "내용", author));
-        SelfDiscussion discussion = selfDiscussionRepository.save(new SelfDiscussion(levelLog, "질문1", "응답1"));
+        SelfDiscussion discussion = selfDiscussionRepository.save(
+            new SelfDiscussion(levelLog, "질문1", "응답1"));
 
         // act & assert
-        assertThatThrownBy(() -> sut.deleteById(new LoginMember(2L, Authority.MEMBER), levelLog.getId()))
-                .isInstanceOf(MemberNotFoundException.class);
+        assertThatThrownBy(
+            () -> sut.deleteById(new LoginMember(2L, Authority.MEMBER), levelLog.getId()))
+            .isInstanceOf(MemberNotFoundException.class);
         assertThat(levelLogRepository.existsById(levelLog.getId())).isTrue();
         assertThat(selfDiscussionRepository.existsById(discussion.getId())).isTrue();
     }
