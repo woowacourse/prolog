@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,29 +20,40 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import wooteco.prolog.levellogs.application.LevelLogService;
 import wooteco.prolog.levellogs.application.dto.LevelLogResponse;
-import wooteco.prolog.levellogs.application.dto.LevelLogSummaryResponse;
 import wooteco.prolog.levellogs.application.dto.LevelLogSummariesResponse;
+import wooteco.prolog.levellogs.application.dto.LevelLogSummaryResponse;
 import wooteco.prolog.levellogs.domain.LevelLog;
 import wooteco.prolog.levellogs.domain.SelfDiscussion;
 import wooteco.prolog.levellogs.domain.repository.LevelLogRepository;
 import wooteco.prolog.levellogs.domain.repository.SelfDiscussionRepository;
+import wooteco.prolog.levellogs.exception.InvalidLevelLogAuthorException;
 import wooteco.prolog.levellogs.exception.LevelLogNotFoundException;
+import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
+import wooteco.prolog.member.exception.MemberNotFoundException;
 import wooteco.support.utils.RepositoryTest;
 
 @RepositoryTest
 public class LevelLogsControllerTest {
 
     @Autowired
-    LevelLogRepository levelLogRepository;
+    private LevelLogRepository levelLogRepository;
 
     @Autowired
-    SelfDiscussionRepository selfDiscussionRepository;
+    private SelfDiscussionRepository selfDiscussionRepository;
 
     @Autowired
-    MemberRepository memberRepository;
+    private MemberRepository memberRepository;
+
+    private LevelLogsController sut;
+
+    @BeforeEach
+    void setUp() {
+        sut = new LevelLogsController(new LevelLogService(memberRepository, levelLogRepository, selfDiscussionRepository));
+    }
 
     @Test
     @DisplayName("레벨 로그 ID로 상세 정보를 조회한다.")
@@ -52,9 +64,6 @@ public class LevelLogsControllerTest {
         SelfDiscussion discussion1 = selfDiscussionRepository.save(new SelfDiscussion(levelLog, "질문1", "응답1"));
         SelfDiscussion discussion2 = selfDiscussionRepository.save(new SelfDiscussion(levelLog, "질문2", "응답2"));
         SelfDiscussion discussion3 = selfDiscussionRepository.save(new SelfDiscussion(levelLog, "질문3", "응답3"));
-
-        LevelLogsController sut = new LevelLogsController(
-                new LevelLogService(levelLogRepository, selfDiscussionRepository));
 
         // act
         ResponseEntity<LevelLogResponse> response = sut.findById(levelLog.getId());
@@ -71,9 +80,6 @@ public class LevelLogsControllerTest {
     @Test
     @DisplayName("존재하지 않는 레벨 로그 ID로 상세 정보 조회 시 예외를 반환한다.")
     void findByNotFoundLevelLogId() {
-        LevelLogsController sut = new LevelLogsController(
-                new LevelLogService(levelLogRepository, selfDiscussionRepository));
-
         assertThatThrownBy(() -> sut.findById(1L))
                 .isInstanceOf(LevelLogNotFoundException.class);
     }
@@ -87,9 +93,6 @@ public class LevelLogsControllerTest {
 
         List<LevelLogSummaryResponse> verusLevelLogs = saveLevelLog(verus, 3);
         List<LevelLogSummaryResponse> sudalLevelLogs = saveLevelLog(sudal, 2);
-
-        LevelLogsController sut = new LevelLogsController(
-                new LevelLogService(levelLogRepository, selfDiscussionRepository));
 
         // act
         ResponseEntity<LevelLogSummariesResponse> response = sut
@@ -118,5 +121,66 @@ public class LevelLogsControllerTest {
             responses.add(new LevelLogSummaryResponse(levelLog));
         }
         return responses;
+    }
+
+    @DisplayName("본인이 작성한 레벨 로그를 삭제한다.")
+    @Test
+    void deleteLevelLog() {
+        // arrange
+        Member author = memberRepository.save(new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
+        LevelLog levelLog = levelLogRepository.save(new LevelLog("제목", "내용", author));
+        SelfDiscussion discussion = selfDiscussionRepository.save(new SelfDiscussion(levelLog, "질문1", "응답1"));
+
+        // act
+        ResponseEntity<Void> response = sut
+                .deleteById(new LoginMember(author.getId(), Authority.MEMBER), levelLog.getId());
+
+        // assert
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+        assertThat(levelLogRepository.existsById(levelLog.getId())).isFalse();
+        assertThat(selfDiscussionRepository.existsById(discussion.getId())).isFalse();
+    }
+
+    @DisplayName("존재하지 않는 레벨 로그 삭제 시 예외가 발생한다.")
+    @Test
+    void deleteNotFoundLevelLog() {
+        // arrange
+        Member author = memberRepository.save(new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
+
+        // act & assert
+        assertThatThrownBy(() -> sut.deleteById(new LoginMember(author.getId(), Authority.MEMBER), 1L))
+                .isInstanceOf(LevelLogNotFoundException.class);
+    }
+
+    @DisplayName("작성자 외의 사용자가 레벨 로그 삭제 시 예외가 발생한다.")
+    @Test
+    void deleteByAnotherMember() {
+        // arrange
+        Member another = memberRepository.save(new Member("sudal", "sudal", Role.CREW, 2L, "sudal-image"));
+
+        Member author = memberRepository.save(new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
+        LevelLog levelLog = levelLogRepository.save(new LevelLog("제목", "내용", author));
+        SelfDiscussion discussion = selfDiscussionRepository.save(new SelfDiscussion(levelLog, "질문1", "응답1"));
+
+        // act & assert
+        assertThatThrownBy(() -> sut.deleteById(new LoginMember(another.getId(), Authority.MEMBER), levelLog.getId()))
+                .isInstanceOf(InvalidLevelLogAuthorException.class);
+        assertThat(levelLogRepository.existsById(levelLog.getId())).isTrue();
+        assertThat(selfDiscussionRepository.existsById(discussion.getId())).isTrue();
+    }
+
+    @DisplayName("존재하지 않는 사용자가 레벨 로그 삭제 시 예외가 발생한다.")
+    @Test
+    void deleteByNotFoundMember() {
+        // arrange
+        Member author = memberRepository.save(new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
+        LevelLog levelLog = levelLogRepository.save(new LevelLog("제목", "내용", author));
+        SelfDiscussion discussion = selfDiscussionRepository.save(new SelfDiscussion(levelLog, "질문1", "응답1"));
+
+        // act & assert
+        assertThatThrownBy(() -> sut.deleteById(new LoginMember(2L, Authority.MEMBER), levelLog.getId()))
+                .isInstanceOf(MemberNotFoundException.class);
+        assertThat(levelLogRepository.existsById(levelLog.getId())).isTrue();
+        assertThat(selfDiscussionRepository.existsById(discussion.getId())).isTrue();
     }
 }

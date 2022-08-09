@@ -35,6 +35,11 @@ public class LevelLog extends AuditingEntity {
     private Member member;
 
     public LevelLog(final String title, final String content, final Member member) {
+        this(null, title, content, member);
+    }
+
+    public LevelLog(final Long id, final String title, final String content, final Member member) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.member = member;
@@ -54,5 +59,9 @@ public class LevelLog extends AuditingEntity {
 
     public Member getMember() {
         return member;
+    }
+
+    public boolean isAuthor(Member member) {
+        return this.member.equals(member);
     }
 }

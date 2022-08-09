@@ -10,4 +10,6 @@ public interface SelfDiscussionRepository extends JpaRepository<SelfDiscussion, 
     List<SelfDiscussion> findByLevelLog(LevelLog levelLog);
 
     List<SelfDiscussion> findAllByLevelLogIn(List<LevelLog> levelLogs);
+
+    void deleteByLevelLog(LevelLog levelLog);
 }
