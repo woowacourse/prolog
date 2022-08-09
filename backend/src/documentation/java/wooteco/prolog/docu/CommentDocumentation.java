@@ -6,6 +6,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -115,7 +116,8 @@ public class CommentDocumentation extends Documentation {
         Long missionId = 미션_등록함(new MissionRequest("[BE] 레벨1 - 미션이름", sessionId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("tag"));
 
-        return new StudylogRequest(title, content, sessionId, missionId, tags);
+        return new StudylogRequest(title, content, sessionId, missionId, tags,
+            Collections.emptyList());
     }
 
     private CommentCreateRequest createCommentRequest() {
