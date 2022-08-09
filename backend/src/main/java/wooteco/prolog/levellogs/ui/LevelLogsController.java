@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.levellogs.application.LevelLogService;
 import wooteco.prolog.levellogs.application.dto.LevelLogResponse;
 import wooteco.prolog.levellogs.application.dto.LevelLogSummariesResponse;
+import wooteco.prolog.login.domain.AuthMemberPrincipal;
+import wooteco.prolog.login.ui.LoginMember;
 
 @RestController
 public class LevelLogsController {
@@ -24,5 +26,10 @@ public class LevelLogsController {
     public ResponseEntity<LevelLogSummariesResponse> findAll(Pageable pageable) {
         final LevelLogSummariesResponse response = levelLogService.findAll(pageable);
         return ResponseEntity.ok(response);
+    }
+
+    public ResponseEntity<Void> deleteById(@AuthMemberPrincipal LoginMember member, Long id) {
+        levelLogService.deleteById(member.getId(), id);
+        return ResponseEntity.noContent().build();
     }
 }
