@@ -1,9 +1,11 @@
 package wooteco.prolog.levellogs.application.dto;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 import wooteco.prolog.levellogs.domain.SelfDiscussion;
 
+@Getter
 @EqualsAndHashCode
 @ToString
 public class SelfDiscussionResponse {
@@ -16,17 +18,5 @@ public class SelfDiscussionResponse {
         this.id = selfDiscussion.getId();
         this.question = selfDiscussion.getQuestion();
         this.answer = selfDiscussion.getAnswer();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public String getAnswer() {
-        return answer;
     }
 }

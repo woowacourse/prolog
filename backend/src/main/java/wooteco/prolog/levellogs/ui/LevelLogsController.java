@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.levellogs.application.LevelLogService;
 import wooteco.prolog.levellogs.application.dto.LevelLogResponse;
-import wooteco.prolog.levellogs.application.dto.LevelLogsResponse;
+import wooteco.prolog.levellogs.application.dto.LevelLogSummariesResponse;
 
 @RestController
 public class LevelLogsController {
@@ -21,8 +21,8 @@ public class LevelLogsController {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<LevelLogsResponse> findAll(Pageable pageable) {
-        final LevelLogsResponse response = levelLogService.findAll(pageable);
+    public ResponseEntity<LevelLogSummariesResponse> findAll(Pageable pageable) {
+        final LevelLogSummariesResponse response = levelLogService.findAll(pageable);
         return ResponseEntity.ok(response);
     }
 }
