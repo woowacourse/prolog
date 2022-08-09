@@ -100,14 +100,11 @@ const Navigation = styled.nav`
 
   display: flex;
   align-items: center;
+  gap: 1rem;
 
   > a {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-  }
-
-  > *:not(:last-child) {
-    margin-right: 2rem;
   }
 `;
 
