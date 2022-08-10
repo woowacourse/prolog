@@ -17,6 +17,7 @@ import wooteco.prolog.levellogs.domain.repository.LevelLogRepository;
 import wooteco.prolog.levellogs.domain.repository.SelfDiscussionRepository;
 import wooteco.prolog.levellogs.exception.InvalidLevelLogAuthorException;
 import wooteco.prolog.levellogs.exception.LevelLogNotFoundException;
+import wooteco.prolog.levellogs.exception.SelfDiscussionNotFoundException;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.member.exception.MemberNotFoundException;
@@ -58,13 +59,6 @@ public class LevelLogService {
                 selfDiscussionRequest.getQuestion()));
     }
 
-    public LevelLogResponse findById(Long id) {
-        final LevelLog levelLog = levelLogRepository.findById(id)
-            .orElseThrow(LevelLogNotFoundException::new);
-        final List<SelfDiscussion> discussions = selfDiscussionRepository.findByLevelLog(levelLog);
-        return new LevelLogResponse(levelLog, discussions);
-    }
-
     public LevelLogSummariesResponse findAll(Pageable pageable) {
         Page<LevelLog> page = levelLogRepository.findAll(pageable);
 
@@ -80,8 +74,7 @@ public class LevelLogService {
     public void deleteById(Long memberId, Long levelLogId) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(MemberNotFoundException::new);
-        LevelLog levelLog = levelLogRepository.findById(levelLogId)
-            .orElseThrow(LevelLogNotFoundException::new);
+        LevelLog levelLog = findById(levelLogId);
 
         if (!levelLog.isAuthor(member)) {
             throw new InvalidLevelLogAuthorException();
@@ -89,5 +82,37 @@ public class LevelLogService {
 
         selfDiscussionRepository.deleteByLevelLog(levelLog);
         levelLogRepository.delete(levelLog);
+    }
+
+    @Transactional
+    public void updateLevelLog(Long memberId, Long levelLogId, LevelLogRequest levelLogRequest) {
+        final LevelLog levelLog = findById(levelLogId);
+        levelLog.validateBelongTo(memberId);
+
+        final List<SelfDiscussion> selfDiscussions = selfDiscussionRepository.findByLevelLog(
+            levelLog);
+
+        if (selfDiscussions.isEmpty()) {
+            throw new SelfDiscussionNotFoundException();
+        }
+
+        levelLog.update(levelLogRequest.getTitle(), levelLogRequest.getContent());
+        final List<SelfDiscussionRequest> selfDiscussionRequests = levelLogRequest.getLevelLogs();
+
+        for (int i = 0; i < selfDiscussionRequests.size(); i++) {
+            final SelfDiscussionRequest updateData = selfDiscussionRequests.get(i);
+            selfDiscussions.get(i).update(updateData.getAnswer(), updateData.getQuestion());
+        }
+    }
+
+    public LevelLogResponse findLevelLogResponseById(Long id) {
+        final LevelLog levelLog = findById(id);
+        final List<SelfDiscussion> discussions = selfDiscussionRepository.findByLevelLog(levelLog);
+        return new LevelLogResponse(levelLog, discussions);
+    }
+
+    public LevelLog findById(Long levelLogId) {
+        return levelLogRepository.findById(levelLogId)
+            .orElseThrow(LevelLogNotFoundException::new);
     }
 }

@@ -12,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.AuditingEntity;
+import wooteco.prolog.levellogs.exception.InvalidLevelLogAuthorException;
 import wooteco.prolog.member.domain.Member;
 
 @Entity
@@ -60,7 +61,23 @@ public class LevelLog extends AuditingEntity {
         return member;
     }
 
+
+    public void validateBelongTo(Long memberId) {
+        if (!isBelongsTo(memberId)) {
+            throw new InvalidLevelLogAuthorException();
+        }
+    }
+
+    public boolean isBelongsTo(Long memberId) {
+        return this.member.getId().equals(memberId);
+    }
+
     public boolean isAuthor(Member member) {
         return this.member.equals(member);
+    }
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 }
