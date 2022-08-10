@@ -26,7 +26,6 @@ public class LevelLogsController {
         this.levelLogService = levelLogService;
     }
 
-
     @PostMapping
     @MemberOnly
     public ResponseEntity<Void> create(@AuthMemberPrincipal LoginMember member,
