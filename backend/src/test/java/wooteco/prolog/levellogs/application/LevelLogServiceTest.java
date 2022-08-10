@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import wooteco.prolog.levellogs.application.dto.LevelLogRequest;
+import wooteco.prolog.levellogs.application.dto.LevelLogResponse;
 import wooteco.prolog.levellogs.application.dto.SelfDiscussionRequest;
 import wooteco.prolog.levellogs.domain.LevelLog;
 import wooteco.prolog.levellogs.domain.SelfDiscussion;
@@ -50,9 +51,12 @@ class LevelLogServiceTest {
         final LevelLogRequest levelLogRequest = new LevelLogRequest("제목", "내용",
             Arrays.asList(selfDiscussionRequest1, selfDiscussionRequest2, selfDiscussionRequest3));
 
+        final LevelLogResponse response = levelLogService.insertLevellogs(author.getId(),
+            levelLogRequest);
+
         // act & assert
-        Assertions.assertDoesNotThrow(
-            () -> levelLogService.insertLevellogs(author.getId(), levelLogRequest));
+//        Assertions.assertDoesNotThrow(
+//            () -> ;
     }
 
     @Test

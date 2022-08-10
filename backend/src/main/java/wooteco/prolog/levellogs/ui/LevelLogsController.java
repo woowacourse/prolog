@@ -40,7 +40,7 @@ public class LevelLogsController {
                                                @PathVariable Long id,
                                                @RequestBody LevelLogRequest levelLogRequest) {
         levelLogService.updateLevelLog(member.getId(), id, levelLogRequest);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     public ResponseEntity<LevelLogResponse> findById(Long id) {

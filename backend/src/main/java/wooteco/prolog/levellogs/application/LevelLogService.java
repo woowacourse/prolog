@@ -39,7 +39,7 @@ public class LevelLogService {
     }
 
     @Transactional
-    public void insertLevellogs(Long memberId, LevelLogRequest levelLogRequest) {
+    public LevelLogResponse insertLevellogs(Long memberId, LevelLogRequest levelLogRequest) {
         final Member member = memberRepository.findById(memberId)
             .orElseThrow(MemberNotFoundException::new);
 
@@ -47,6 +47,8 @@ public class LevelLogService {
             new LevelLog(levelLogRequest.getTitle(), levelLogRequest.getContent(), member));
 
         insertSelfDiscussions(levelLogRequest, levelLog);
+
+        return findLevelLogResponseById(levelLog.getId());
     }
 
     private void insertSelfDiscussions(LevelLogRequest levelLogRequest, LevelLog levelLog) {
@@ -89,7 +91,8 @@ public class LevelLogService {
     }
 
     @Transactional
-    public void updateLevelLog(Long memberId, Long levelLogId, LevelLogRequest levelLogRequest) {
+    public LevelLogResponse updateLevelLog(Long memberId, Long levelLogId,
+                                           LevelLogRequest levelLogRequest) {
         final LevelLog levelLog = findById(levelLogId);
         levelLog.validateBelongTo(memberId);
 
@@ -102,6 +105,8 @@ public class LevelLogService {
 
         levelLog.update(levelLogRequest.getTitle(), levelLogRequest.getContent());
         updateSelfDiscussion(levelLogRequest, selfDiscussions);
+
+        return findLevelLogResponseById(levelLogId);
     }
 
     private void updateSelfDiscussion(LevelLogRequest levelLogRequest,
@@ -114,8 +119,8 @@ public class LevelLogService {
         }
     }
 
-    public LevelLogResponse findLevelLogResponseById(Long id) {
-        final LevelLog levelLog = findById(id);
+    public LevelLogResponse findLevelLogResponseById(Long levelLogId) {
+        final LevelLog levelLog = findById(levelLogId);
         final List<SelfDiscussion> discussions = selfDiscussionRepository.findByLevelLog(levelLog);
         return new LevelLogResponse(levelLog, discussions);
     }

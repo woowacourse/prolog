@@ -4,6 +4,8 @@ import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import wooteco.prolog.levellogs.application.LevelLogService;
 import wooteco.prolog.levellogs.application.dto.LevelLogRequest;
@@ -80,7 +81,45 @@ public class LevelLogsControllerTest {
             levelLogRequest);
 
         // assert
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+        assertThat(response.getStatusCode()).isEqualTo(NO_CONTENT);
+    }
+
+    @Test
+    @DisplayName("레벨 로그를 수정한다.")
+    void updateLevelLog() {
+        // arrange
+        Member author = memberRepository.save(new Member("verus", "verus", Role.CREW, 1L, "image"));
+        LevelLog levelLog = levelLogRepository.save(new LevelLog("제목", "내용", author));
+        selfDiscussionRepository.save(
+            new SelfDiscussion(levelLog, "질문2", "응답2"));
+        selfDiscussionRepository.save(
+            new SelfDiscussion(levelLog, "질문1", "응답1"));
+        selfDiscussionRepository.save(
+            new SelfDiscussion(levelLog, "질문3", "응답3"));
+
+        final SelfDiscussionRequest selfDiscussionRequest1 = new SelfDiscussionRequest("수정 질문2",
+            "수정 응답2");
+        final SelfDiscussionRequest selfDiscussionRequest2 = new SelfDiscussionRequest("수정 질문1",
+            "수정 응답1");
+        final SelfDiscussionRequest selfDiscussionRequest3 = new SelfDiscussionRequest("수정 질문3",
+            "수정 응답3");
+
+        final LevelLogRequest levelLogRequest = new LevelLogRequest("수정 제목", "수정 내용",
+            Arrays.asList(selfDiscussionRequest1, selfDiscussionRequest2, selfDiscussionRequest3));
+
+        // act
+        final ResponseEntity<Void> response = sut.updateLovellog(
+            new LoginMember(author.getId(), Authority.MEMBER), levelLog.getId(), levelLogRequest);
+
+        final LevelLogResponse levelLogResponse = sut.findById(levelLog.getId()).getBody();
+
+        // assert
+
+        assertAll(
+            () -> assertThat(response.getStatusCode()).isEqualTo(NO_CONTENT),
+            () -> assertThat(levelLogResponse.getContent()).isEqualTo(levelLogRequest.getContent()),
+            () -> assertThat(levelLogResponse.getTitle()).isEqualTo(levelLogRequest.getTitle())
+        );
     }
 
     @Test
@@ -101,9 +140,9 @@ public class LevelLogsControllerTest {
 
         // assert
         assertAll(
-            () -> assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK),
+            () -> assertThat(response.getStatusCode()).isEqualTo(OK),
             () -> assertThat(response.getBody()).isEqualTo(
-                new LevelLogResponse(levelLog, Arrays.asList(discussion1, discussion2, discussion3))
+                new LevelLogResponse(levelLog, Arrays.asList(discussion2, discussion1, discussion3))
             )
         );
     }
@@ -140,7 +179,7 @@ public class LevelLogsControllerTest {
             .collect(Collectors.toList());
 
         assertAll(
-            () -> assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK),
+            () -> assertThat(response.getStatusCode()).isEqualTo(OK),
             () -> assertThat(response.getBody()).isEqualTo(
                 new LevelLogSummariesResponse(expectedResponse.subList(0, 3), 5L, 2, 1)
             )
@@ -171,7 +210,7 @@ public class LevelLogsControllerTest {
             .deleteById(new LoginMember(author.getId(), Authority.MEMBER), levelLog.getId());
 
         // assert
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+        assertThat(response.getStatusCode()).isEqualTo(NO_CONTENT);
         assertThat(levelLogRepository.existsById(levelLog.getId())).isFalse();
         assertThat(selfDiscussionRepository.existsById(discussion.getId())).isFalse();
     }
