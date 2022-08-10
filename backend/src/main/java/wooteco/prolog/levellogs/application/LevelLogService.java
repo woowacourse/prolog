@@ -46,14 +46,17 @@ public class LevelLogService {
         final LevelLog levelLog = levelLogRepository.save(
             new LevelLog(levelLogRequest.getTitle(), levelLogRequest.getContent(), member));
 
+        insertSelfDiscussions(levelLogRequest, levelLog);
+    }
+
+    private void insertSelfDiscussions(LevelLogRequest levelLogRequest, LevelLog levelLog) {
         for (SelfDiscussionRequest selfDiscussionRequest : levelLogRequest.getLevelLogs()) {
             insertSelfDiscussion(levelLog, selfDiscussionRequest);
         }
     }
 
-    @Transactional
-    public void insertSelfDiscussion(LevelLog levelLog,
-                                     SelfDiscussionRequest selfDiscussionRequest) {
+    private void insertSelfDiscussion(LevelLog levelLog,
+                                      SelfDiscussionRequest selfDiscussionRequest) {
         selfDiscussionRepository.save(
             new SelfDiscussion(levelLog, selfDiscussionRequest.getAnswer(),
                 selfDiscussionRequest.getQuestion()));
@@ -71,6 +74,7 @@ public class LevelLogService {
             page.getNumber() + 1);
     }
 
+    @Transactional
     public void deleteById(Long memberId, Long levelLogId) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(MemberNotFoundException::new);
@@ -97,6 +101,11 @@ public class LevelLogService {
         }
 
         levelLog.update(levelLogRequest.getTitle(), levelLogRequest.getContent());
+        updateSelfDiscussion(levelLogRequest, selfDiscussions);
+    }
+
+    private void updateSelfDiscussion(LevelLogRequest levelLogRequest,
+                                      List<SelfDiscussion> selfDiscussions) {
         final List<SelfDiscussionRequest> selfDiscussionRequests = levelLogRequest.getLevelLogs();
 
         for (int i = 0; i < selfDiscussionRequests.size(); i++) {
