@@ -34,6 +34,11 @@ public class SelfDiscussion {
         this.answer = answer;
     }
 
+    public void update(String question, String answer) {
+        this.question = question;
+        this.answer = answer;
+    }
+
     public Long getId() {
         return id;
     }

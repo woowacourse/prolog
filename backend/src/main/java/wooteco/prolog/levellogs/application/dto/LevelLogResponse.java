@@ -3,6 +3,7 @@ package wooteco.prolog.levellogs.application.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import wooteco.prolog.levellogs.domain.LevelLog;
 import wooteco.prolog.levellogs.domain.SelfDiscussion;
 import wooteco.prolog.member.application.dto.MemberResponse;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @EqualsAndHashCode
