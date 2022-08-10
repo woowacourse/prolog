@@ -1,5 +1,6 @@
 package wooteco.prolog.levellogs.application.dto;
 
+import com.sun.istack.NotNull;
 import java.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,8 +13,11 @@ import lombok.ToString;
 @ToString
 public class LevelLogRequest {
 
+    @NotNull
     private String title;
+    @NotNull
     private String content;
+    @NotNull
     private List<SelfDiscussionRequest> levelLogs;
 
     public LevelLogRequest(String title, String content,
