@@ -1,6 +1,6 @@
 package wooteco.prolog.levellogs.domain;
 
-import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,25 +24,25 @@ public class LevelLog extends AuditingEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String title;
+    @Embedded
+    private Title title;
 
-    @Column(nullable = false, columnDefinition = "text")
-    private String content;
+    @Embedded
+    private Content content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public LevelLog(final String title, final String content, final Member member) {
-        this(null, title, content, member);
-    }
-
     public LevelLog(final Long id, final String title, final String content, final Member member) {
         this.id = id;
-        this.title = title;
-        this.content = content;
+        this.title = new Title(title);
+        this.content = new Content(content);
         this.member = member;
+    }
+
+    public LevelLog(final String title, final String content, final Member member) {
+        this(null, title, content, member);
     }
 
     public Long getId() {
@@ -50,17 +50,16 @@ public class LevelLog extends AuditingEntity {
     }
 
     public String getTitle() {
-        return title;
+        return title.getTitle();
     }
 
     public String getContent() {
-        return content;
+        return content.getContent();
     }
 
     public Member getMember() {
         return member;
     }
-
 
     public void validateBelongTo(Long memberId) {
         if (!isBelongsTo(memberId)) {
@@ -77,7 +76,7 @@ public class LevelLog extends AuditingEntity {
     }
 
     public void update(String title, String content) {
-        this.title = title;
-        this.content = content;
+        this.title = new Title(title);
+        this.content = new Content(content);
     }
 }
