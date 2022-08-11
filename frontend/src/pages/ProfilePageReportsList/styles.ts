@@ -156,7 +156,7 @@ export const ReportDate = styled.span`
 `;
 
 /** 리포트 제목 */
-export const ReportTtile = styled.span`
+export const ReportTitle = styled.span`
   display: -webkit-box;
 
   font-size: 1.4rem;
