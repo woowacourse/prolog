@@ -2,7 +2,7 @@
   "data": [
     {
       "id": 1,
-      "member": {
+      "author": {
         "id": 1,
         "username": "euijinkk",
         "nickname": "잉",
@@ -14,7 +14,7 @@
     },
     {
       "id": 2,
-      "member": {
+      "author": {
         "id": 2,
         "username": "euijinkk",
         "nickname": "루키",
