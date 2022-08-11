@@ -1,7 +1,6 @@
 import TagManager from 'react-gtm-module';
 
 import useSnackBar from './hooks/useSnackBar';
-import GlobalStyles from './GlobalStyles';
 import PageRouter from './PageRouter';
 
 const tagManagerArgs = {
