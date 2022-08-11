@@ -11,6 +11,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("SELECT c FROM Comment c"
         + " JOIN FETCH c.studylog s"
         + " JOIN FETCH c.member m"
-        + " WHERE s = :studylog")
+        + " WHERE s = :studylog"
+        + " AND c.isDelete = false")
     List<Comment> findCommentByStudylog(Studylog studylog);
 }
