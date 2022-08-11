@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,12 @@ import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
 import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
 import wooteco.prolog.ability.application.dto.AbilityResponse;
+import wooteco.prolog.member.domain.GroupMember;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.MemberGroup;
+import wooteco.prolog.member.domain.repository.GroupMemberRepository;
+import wooteco.prolog.member.domain.repository.MemberGroupRepository;
+import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionRequest;
@@ -29,13 +36,18 @@ import wooteco.prolog.studylog.application.dto.TagRequest;
 
 class StudylogDocumentation extends Documentation {
 
-    private static final String TOKEN_TYPE = "Bearer ";
+    @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
+    private MemberGroupRepository memberGroupRepository;
+    @Autowired
+    private GroupMemberRepository groupMemberRepository;
 
     @Test
     void 스터디로그를_생성한다() {
         // when
         ExtractableResponse<Response> createResponse = given("studylog/create")
-            .header(HttpHeaders.AUTHORIZATION, TOKEN_TYPE + 로그인_사용자.getAccessToken())
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .body(createStudylogRequest1())
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().post("/studylogs")
@@ -53,7 +65,7 @@ class StudylogDocumentation extends Documentation {
         String location = studylogResponse.header("Location");
 
         given("studylog/read")
-            .header(HttpHeaders.AUTHORIZATION, TOKEN_TYPE + 로그인_사용자.getAccessToken())
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .when().get(location)
             .then().log().all().extract();
     }
@@ -66,7 +78,7 @@ class StudylogDocumentation extends Documentation {
 
         // when
         ExtractableResponse<Response> response = given("studylog/list")
-            .header(HttpHeaders.AUTHORIZATION, TOKEN_TYPE + 로그인_사용자.getAccessToken())
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .when().get("/studylogs")
             .then().log().all().extract();
@@ -91,7 +103,7 @@ class StudylogDocumentation extends Documentation {
 
         // when
         ExtractableResponse<Response> response = given("studylog/filter")
-            .header(HttpHeaders.AUTHORIZATION, TOKEN_TYPE + 로그인_사용자.getAccessToken())
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .when().get(
                 "/posts?keyword=joanne&sessions=1&missions=1&tags=1&tags=2&usernames=soulG&startDate=20210901&endDate=20211231")
@@ -105,6 +117,7 @@ class StudylogDocumentation extends Documentation {
     @Test
     void 인기있는_스터디로그_목록을_갱신하고_조회한다() {
         // given
+        회원과_멤버그룹_그룹멤버를_등록함();
         String studylogLocation1 = 스터디로그_등록함(createStudylogRequest1()).header("Location");
         String studylogLocation2 = 스터디로그_등록함(createStudylogRequest2()).header("Location");
         Long studylogId1 = Long.parseLong(studylogLocation1.split("/studylogs/")[1]);
@@ -118,24 +131,21 @@ class StudylogDocumentation extends Documentation {
 
         // when
         ExtractableResponse<Response> response = given("studylogs/popular")
-            .header(HttpHeaders.AUTHORIZATION, TOKEN_TYPE + 로그인_사용자.getAccessToken())
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .when().get("/studylogs/popular")
             .then().log().all().extract();
 
         // then
-        PopularStudylogsResponse popularStudylogsResponse = response.as(
-            PopularStudylogsResponse.class);
+        PopularStudylogsResponse popularStudylogsResponse = response.as(PopularStudylogsResponse.class);
         assertThat(popularStudylogsResponse.getAllResponse().getData()).hasSize(2);
-        assertThat(popularStudylogsResponse.getAllResponse().getData().get(0).getStudylogResponse()
-            .getId()).isEqualTo(studylogId2);
-        assertThat(popularStudylogsResponse.getAllResponse().getData().get(1).getStudylogResponse()
-            .getId()).isEqualTo(studylogId1);
-    }
+        assertThat(popularStudylogsResponse.getFrontResponse().getData()).hasSize(2);
+        assertThat(popularStudylogsResponse.getBackResponse().getData()).hasSize(2);
 
+    }
 
     private void 인기있는_스터디로그_목록_갱신(int studylogCount) {
         RestAssured.given()
-            .header(HttpHeaders.AUTHORIZATION, TOKEN_TYPE + 로그인_사용자.getAccessToken())
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .body(PageRequest.of(1, studylogCount))
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().get("/studylogs/popular/sync")
@@ -162,7 +172,7 @@ class StudylogDocumentation extends Documentation {
 
         // when
         ExtractableResponse<Response> editResponse = given("studylog/edit")
-            .header(HttpHeaders.AUTHORIZATION, TOKEN_TYPE + 로그인_사용자.getAccessToken())
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .body(editStudylogRequest)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().put(location)
@@ -179,7 +189,7 @@ class StudylogDocumentation extends Documentation {
         String location = studylogResponse.header("Location");
 
         given("studylog/delete")
-            .header(HttpHeaders.AUTHORIZATION, TOKEN_TYPE + 로그인_사용자.getAccessToken())
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .accept(MediaType.APPLICATION_JSON_VALUE)
             .when().delete(location);
     }
@@ -190,7 +200,7 @@ class StudylogDocumentation extends Documentation {
         long studylogId = Long.parseLong(response.header("Location").split("/studylogs/")[1]);
 
         given("studylog/like")
-            .header(HttpHeaders.AUTHORIZATION, TOKEN_TYPE + 로그인_사용자.getAccessToken())
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .when().post("/studylogs/" + studylogId + "/likes")
             .then().log().all();
     }
@@ -203,7 +213,7 @@ class StudylogDocumentation extends Documentation {
         스터디로그_단건_좋아요(studylogId);
 
         given("studylog/unlike")
-            .header(HttpHeaders.AUTHORIZATION, TOKEN_TYPE + 로그인_사용자.getAccessToken())
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .when().delete("/studylogs/" + studylogId + "/likes")
             .then().log().all();
     }
@@ -252,7 +262,7 @@ class StudylogDocumentation extends Documentation {
 
     private Long 역량_등록함(AbilityCreateRequest request) {
         return RestAssured.given().log().all()
-            .header(HttpHeaders.AUTHORIZATION, TOKEN_TYPE + 로그인_사용자.getAccessToken())
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .body(request)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when()
@@ -266,7 +276,7 @@ class StudylogDocumentation extends Documentation {
 
     private ExtractableResponse<Response> 스터디로그_등록함(StudylogRequest request) {
         return RestAssured.given().log().all()
-            .header(HttpHeaders.AUTHORIZATION, TOKEN_TYPE + 로그인_사용자.getAccessToken())
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .body(request)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().log().all()
@@ -288,6 +298,15 @@ class StudylogDocumentation extends Documentation {
             .getId();
     }
 
+    private void 회원과_멤버그룹_그룹멤버를_등록함() {
+        Member member = memberRepository.findById(1L).get();
+        MemberGroup 프론트엔드 = memberGroupRepository.save(
+            new MemberGroup(null, "4기 프론트엔드", "4기 프론트엔드 설명"));
+        MemberGroup 백엔드 = memberGroupRepository.save(new MemberGroup(null, "4기 백엔드", "4기 백엔드 설명"));
+        groupMemberRepository.save(new GroupMember(null, member, 백엔드));
+        groupMemberRepository.save(new GroupMember(null, member, 프론트엔드));
+    }
+
     private Long 미션_등록함(MissionRequest request) {
         return RestAssured.given()
             .body(request)
@@ -303,14 +322,14 @@ class StudylogDocumentation extends Documentation {
 
     private void 스터디로그_단건_좋아요(Long studylogId) {
         RestAssured.given()
-            .header(HttpHeaders.AUTHORIZATION, TOKEN_TYPE + 로그인_사용자.getAccessToken())
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .when().post("/studylogs/" + studylogId + "/likes")
             .then().log().all().extract();
     }
 
     private void 스터디로그_단건_조회(Long studylogId) {
         RestAssured.given()
-            .header(HttpHeaders.AUTHORIZATION, TOKEN_TYPE + 로그인_사용자.getAccessToken())
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .when().get("/studylogs/" + studylogId)
             .then().log().all().extract();
     }

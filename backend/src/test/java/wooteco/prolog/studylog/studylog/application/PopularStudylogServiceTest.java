@@ -1,21 +1,28 @@
 package wooteco.prolog.studylog.studylog.application;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.MemberService;
+import wooteco.prolog.member.domain.GroupMember;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.MemberGroup;
+import wooteco.prolog.member.domain.repository.GroupMemberRepository;
+import wooteco.prolog.member.domain.repository.MemberGroupRepository;
 import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.dto.MissionRequest;
@@ -31,6 +38,8 @@ import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.PopularStudylogsResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
+import wooteco.prolog.studylog.application.dto.StudylogWithScrapedCountResponse;
+import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.Tag;
@@ -69,9 +78,19 @@ class PopularStudylogServiceTest {
     private MemberService memberService;
     @Autowired
     private StudylogLikeService studylogLikeService;
+    @Autowired
+    private MemberGroupRepository memberGroupRepository;
+    @Autowired
+    private GroupMemberRepository groupMemberRepository;
 
     private Member member1;
     private Member member2;
+
+    private MemberGroup frontendMemberGroup;
+    private MemberGroup backendMemberGroup;
+
+    private GroupMember frontendGroupMember;
+    private GroupMember backendGroupMember;
 
     private LoginMember loginMember1;
     private LoginMember loginMember2;
@@ -111,6 +130,18 @@ class PopularStudylogServiceTest {
         this.member2 = memberService.findOrCreateMember(
             new GithubProfileResponse("이름2", "별명2", "2", "image"));
 
+        this.frontendMemberGroup = memberGroupRepository.save(
+            new MemberGroup(null, "프론트엔드", "프론트엔드 설명")
+        );
+        this.backendMemberGroup = memberGroupRepository.save(
+            new MemberGroup(null, "백엔드", "백엔드 설명")
+        );
+        this.frontendGroupMember = groupMemberRepository.save(
+            new GroupMember(null, member1, frontendMemberGroup)
+        );
+        this.backendGroupMember = groupMemberRepository.save(
+            new GroupMember(null, member2, backendMemberGroup)
+        );
         this.loginMember1 = new LoginMember(member1.getId(), Authority.MEMBER);
         this.loginMember2 = new LoginMember(member2.getId(), Authority.MEMBER);
         this.loginMember3 = new LoginMember(null, Authority.ANONYMOUS);
@@ -130,10 +161,12 @@ class PopularStudylogServiceTest {
     }
 
     @DisplayName("로그인하지 않은 상태에서 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
-    @Test
-    void findPopularStudylogsWithoutLogin() {
+    @ParameterizedTest
+    @CsvSource(value = {"0, 3, 3, 3", "0, 2, 2, 2"})
+    void findPopularStudylogsWithoutLogin(int page, int size, int totalSize, int dataSize) {
         // given
-        insertStudylogs(member1, studylog1, studylog2, studylog3);
+        insertStudylogs(member1, studylog1, studylog2);
+        insertStudylogs(member2, studylog3);
         studylogService.retrieveStudylogById(loginMember3, 2L, false);
         studylogScrapService.registerScrap(member1.getId(), 2L);
         studylogService.retrieveStudylogById(loginMember3, 3L, false);
@@ -141,7 +174,7 @@ class PopularStudylogServiceTest {
         studylogLikeService.likeStudylog(member1.getId(), 3L, true);
 
         // when
-        PageRequest pageRequest = PageRequest.of(0, 2);
+        PageRequest pageRequest = PageRequest.of(page, size);
         popularStudylogService.updatePopularStudylogs(pageRequest);
         PopularStudylogsResponse studylogs = popularStudylogService.findPopularStudylogs(
             pageRequest,
@@ -150,53 +183,58 @@ class PopularStudylogServiceTest {
         );
 
         // then
-        assertThat(studylogs.getAllResponse().getStudylogResponses()).hasSize(3);
+        assertAll(
+            () -> assertThat(studylogs.getAllResponse().getTotalSize()).isEqualTo(totalSize),
+            () -> assertThat(studylogs.getAllResponse().getData()).hasSize(dataSize)
+        );
+        for (StudylogResponse response : studylogs.getAllResponse().getData()) {
+            assertAll(
+                () -> assertThat(response.isScrap()).isFalse(),
+                () -> assertThat(response.isRead()).isFalse()
+            );
+        }
     }
 
     @DisplayName("로그인한 상태에서 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
-    @Test
-    void findPopularStudylogsWithLogin() {
+    @ParameterizedTest
+    @CsvSource(value = {"0, 3, 3, 3", "0, 2, 2, 2"})
+    void findPopularStudylogsWithLogin(int page, int size, int totalSize, int dataSize) {
         // given
-        List<StudylogResponse> insertResponses = insertStudylogs(
-            member1,
-            studylog1,
-            studylog2,
-            studylog3,
-            studylog4
-        );
-
-        StudylogResponse studylogResponse1 = insertResponses.get(0);
-        StudylogResponse studylogResponse2 = insertResponses.get(1);
-        StudylogResponse studylogResponse3 = insertResponses.get(2);
-        StudylogResponse studylogResponse4 = insertResponses.get(3);
+        insertStudylogs(member1, studylog1, studylog2, studylog3);
 
         // 2번째 멤버가 1번째 멤버의 게시글 2번, 3번을 조회
-        studylogService.retrieveStudylogById(loginMember2, studylogResponse1.getId(), false);
-        studylogService.retrieveStudylogById(loginMember2, studylogResponse2.getId(), false);
-        studylogService.retrieveStudylogById(loginMember2, studylogResponse3.getId(), false);
-        studylogService.retrieveStudylogById(loginMember2, studylogResponse4.getId(), false);
+        studylogService.retrieveStudylogById(loginMember2, 1L, false);
+        studylogService.retrieveStudylogById(loginMember2, 2L, false);
+        studylogService.retrieveStudylogById(loginMember2, 3L, false);
 
         // 2번, 3번 글 스크랩
-        studylogScrapService.registerScrap(member2.getId(), studylogResponse1.getId());
-        studylogScrapService.registerScrap(member2.getId(), studylogResponse2.getId());
-        studylogScrapService.registerScrap(member2.getId(), studylogResponse3.getId());
-        studylogScrapService.registerScrap(member2.getId(), studylogResponse4.getId());
+        studylogScrapService.registerScrap(member2.getId(), 1L);
+        studylogScrapService.registerScrap(member2.getId(), 2L);
+        studylogScrapService.registerScrap(member2.getId(), 3L);
 
         // 3번 글 좋아요
-        studylogLikeService.likeStudylog(member2.getId(), studylogResponse3.getId(), true);
+        studylogLikeService.likeStudylog(member2.getId(), 3L, true);
 
         // when
-        PageRequest pageRequest = PageRequest.of(0, 2);
+        PageRequest pageRequest = PageRequest.of(page, size);
         popularStudylogService.updatePopularStudylogs(pageRequest);
-
-        PopularStudylogsResponse popularStudylogs = popularStudylogService.findPopularStudylogs(
+        PopularStudylogsResponse studylogs = popularStudylogService.findPopularStudylogs(
             pageRequest,
             member2.getId(),
             member2.isAnonymous()
         );
 
         // then
-        assertThat(popularStudylogs.getAllResponse().getStudylogResponses()).hasSize(4);
+        assertAll(
+            () -> assertThat(studylogs.getAllResponse().getTotalSize()).isEqualTo(totalSize),
+            () -> assertThat(studylogs.getAllResponse().getData()).hasSize(dataSize)
+        );
+        for (StudylogResponse response : studylogs.getAllResponse().getData()) {
+            assertAll(
+                () -> assertThat(response.isScrap()).isTrue(),
+                () -> assertThat(response.isRead()).isTrue()
+            );
+        }
     }
 
     public List<StudylogResponse> insertStudylogs(Member member, Studylog... studylogs) {

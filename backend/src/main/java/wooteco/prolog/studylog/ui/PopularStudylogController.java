@@ -11,7 +11,6 @@ import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.studylog.application.PopularStudylogService;
 import wooteco.prolog.studylog.application.dto.PopularStudylogsResponse;
-import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 
 @RestController
 @RequestMapping("/studylogs")
@@ -31,8 +30,7 @@ public class PopularStudylogController {
 
     @GetMapping("/popular")
     public ResponseEntity<PopularStudylogsResponse> showPopularStudylogs(@AuthMemberPrincipal LoginMember member, @PageableDefault Pageable pageable) {
-        final PopularStudylogsResponse popularStudylogs = popularStudylogService
-            .findPopularStudylogs(pageable, member.getId(), member.isAnonymous());
-        return ResponseEntity.ok(popularStudylogs);
+        PopularStudylogsResponse studylogsResponse = popularStudylogService.findPopularStudylogs(pageable, member.getId(), member.isAnonymous());
+        return ResponseEntity.ok(studylogsResponse);
     }
 }

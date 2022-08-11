@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class MemberGroup {
 
+    private static final String BACKEND = "백엔드";
+    private static final String FRONTEND = "프론트엔드";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,4 +22,21 @@ public class MemberGroup {
     private String name;
 
     private String description;
+
+    public MemberGroup(Long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
+    public String getGroupName() {
+        if (this.name.contains(BACKEND)) {
+            return BACKEND;
+        }
+        if (this.name.contains(FRONTEND)) {
+            return FRONTEND;
+        }
+
+        return null;
+    }
 }

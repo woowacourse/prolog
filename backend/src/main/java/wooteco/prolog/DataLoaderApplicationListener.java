@@ -17,14 +17,14 @@ import wooteco.prolog.ability.application.dto.DefaultAbilityCreateRequest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.SessionMemberService;
 import wooteco.prolog.session.application.SessionService;
-import wooteco.prolog.session.application.dto.MissionRequest;
-import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.dto.SessionMemberRequest;
 import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
+import wooteco.prolog.session.application.dto.MissionRequest;
+import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.PopularStudylogService;
 import wooteco.prolog.studylog.application.StudylogService;
@@ -39,7 +39,7 @@ import wooteco.prolog.update.UpdatedContentsRepository;
 @AllArgsConstructor
 @Configuration
 public class DataLoaderApplicationListener implements
-    ApplicationListener<ContextRefreshedEvent> {
+                                           ApplicationListener<ContextRefreshedEvent> {
 
     private SessionService sessionService;
     private SessionMemberService sessionMemberService;
@@ -68,141 +68,66 @@ public class DataLoaderApplicationListener implements
         // member init
         Members.init(memberService);
 
-        sessionMemberService.registerMembers(1L, new SessionMemberRequest(
-            Lists.newArrayList(Members.BROWN.value.getId(), Members.SUNNY.value.getId())));
+        sessionMemberService.registerMembers(1L, new SessionMemberRequest(Lists.newArrayList(Members.BROWN.value.getId(), Members.SUNNY.value.getId())));
 
         // post init
-        studylogService
-            .insertStudylogs(Members.BROWN.value.getId(), StudylogGenerator.generate(20));
-        studylogService
-            .insertStudylogs(Members.JOANNE.value.getId(), StudylogGenerator.generate(20));
-        studylogService
-            .insertStudylogs(Members.TYCHE.value.getId(), StudylogGenerator.generate(100));
-        studylogService
-            .insertStudylogs(Members.SUNNY.value.getId(), StudylogGenerator.generate(20));
+        studylogService.insertStudylogs(Members.BROWN.value.getId(), StudylogGenerator.generate(20));
+        studylogService.insertStudylogs(Members.JOANNE.value.getId(), StudylogGenerator.generate(20));
+        studylogService.insertStudylogs(Members.TYCHE.value.getId(), StudylogGenerator.generate(100));
+        studylogService.insertStudylogs(Members.SUNNY.value.getId(), StudylogGenerator.generate(20));
 
         // defaultAbility init
-        Long csId = abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("CS", "CS 입니다.", "#9100ff", "common"));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Database", "Database 입니다.", "#9100ff", "common",
-                csId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("네트워크", "네트워크 입니다.", "#9100ff", "common", csId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("OS", "OS 입니다.", "#9100ff", "common", csId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("알고리즘", "알고리즘 입니다.", "#9100ff", "common", csId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("자료구조", "자료구조 입니다.", "#9100ff", "common", csId));
+        Long csId = abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("CS", "CS 입니다.", "#9100ff", "common"));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Database", "Database 입니다.", "#9100ff", "common", csId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("네트워크", "네트워크 입니다.", "#9100ff", "common", csId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("OS", "OS 입니다.", "#9100ff", "common", csId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("알고리즘", "알고리즘 입니다.", "#9100ff", "common", csId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("자료구조", "자료구조 입니다.", "#9100ff", "common", csId));
 
-        Long programmingId = abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Programming", "Programming 입니다.", "#ff9100", "be"));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Language", "Language 입니다.", "#ff9100", "be",
-                programmingId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Framework", "Framework 입니다.", "#ff9100", "be",
-                programmingId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Testing", "Testing 입니다.", "#ff9100", "be",
-                programmingId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Web Programming", "Web Programming 입니다.", "#ff9100",
-                "be", programmingId));
+        Long programmingId = abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Programming", "Programming 입니다.", "#ff9100", "be"));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Language", "Language 입니다.", "#ff9100", "be", programmingId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Framework", "Framework 입니다.", "#ff9100", "be", programmingId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Testing", "Testing 입니다.", "#ff9100", "be", programmingId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Web Programming", "Web Programming 입니다.", "#ff9100", "be", programmingId));
 
-        Long designId = abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Design", "Design 입니다.", "#00cccc", "be"));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Development Driven", "Development Driven 입니다.",
-                "#00cccc", "be", designId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Programming Principle", "Programming Principle 입니다.",
-                "#00cccc", "be", designId));
+        Long designId = abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Design", "Design 입니다.", "#00cccc", "be"));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Development Driven", "Development Driven 입니다.", "#00cccc", "be", designId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Programming Principle", "Programming Principle 입니다.", "#00cccc", "be", designId));
 
-        Long infrastructureId = abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Infrastructure", "Infrastructure 입니다.", "#ccccff",
-                "be"));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Web Architecture Components",
-                "Web Architecture Components 입니다.", "#ccccff", "be", infrastructureId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Service & Tools", "Service & Tools 입니다.", "#ccccff",
-                "be", infrastructureId));
+        Long infrastructureId = abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Infrastructure", "Infrastructure 입니다.", "#ccccff", "be"));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Web Architecture Components", "Web Architecture Components 입니다.", "#ccccff", "be", infrastructureId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Service & Tools", "Service & Tools 입니다.", "#ccccff", "be", infrastructureId));
 
         Long developmentId = abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Software Development Process & Maintenance",
-                "Software Development Process & Maintenance 입니다.", "#ffcce5", "be"));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Development Process", "Development Process 입니다.",
-                "#ffcce5", "be", developmentId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Maintenance", "Maintenance 입니다.", "#ffcce5", "be",
-                developmentId));
+            new DefaultAbilityCreateRequest("Software Development Process & Maintenance", "Software Development Process & Maintenance 입니다.", "#ffcce5", "be"));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Development Process", "Development Process 입니다.", "#ffcce5", "be", developmentId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Maintenance", "Maintenance 입니다.", "#ffcce5", "be", developmentId));
 
-        Long jsHtmlId = abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("JavaScript & HTML", "JavaScript & HTML 입니다.",
-                "#ff009a", "fe"));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("기초 언어 시스템", "기초 언어 시스템 입니다.", "#ff009a", "fe",
-                jsHtmlId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("고급 언어 시스템", "고급 언어 시스템 입니다.", "#ff009a", "fe",
-                jsHtmlId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("브라우저", "브라우저 입니다.", "#ff009a", "fe", jsHtmlId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("비동기&데이터 처리", "비동기&데이터 처리 입니다.", "#ff009a", "fe",
-                jsHtmlId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("성능", "성능 입니다.", "#ff009a", "fe", jsHtmlId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("HTML", "HTML 입니다.", "#ff009a", "fe", jsHtmlId));
+        Long jsHtmlId = abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("JavaScript & HTML", "JavaScript & HTML 입니다.", "#ff009a", "fe"));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("기초 언어 시스템", "기초 언어 시스템 입니다.", "#ff009a", "fe", jsHtmlId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("고급 언어 시스템", "고급 언어 시스템 입니다.", "#ff009a", "fe", jsHtmlId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("브라우저", "브라우저 입니다.", "#ff009a", "fe", jsHtmlId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("비동기&데이터 처리", "비동기&데이터 처리 입니다.", "#ff009a", "fe", jsHtmlId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("성능", "성능 입니다.", "#ff009a", "fe", jsHtmlId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("HTML", "HTML 입니다.", "#ff009a", "fe", jsHtmlId));
 
-        Long graphicsId = abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Graphics", "Graphics 입니다.", "#2f8aff", "fe"));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("CSS 스타일링: 레이아웃과 포지셔닝", "CSS 스타일링: 레이아웃과 포지셔닝 입니다.",
-                "#2f8aff", "fe", graphicsId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("트랜지션, 애니메이션", "트랜지션, 애니메이션 입니다.", "#2f8aff", "fe",
-                graphicsId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("2D 그래픽스", "2D 그래픽스 입니다.", "#2f8aff", "fe",
-                graphicsId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("3D 그래픽스", "3D 그래픽스 입니다.", "#2f8aff", "fe",
-                graphicsId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Vector 그래픽스", "Vector 그래픽스 입니다.", "#2f8aff", "fe",
-                graphicsId));
+        Long graphicsId = abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Graphics", "Graphics 입니다.", "#2f8aff", "fe"));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("CSS 스타일링: 레이아웃과 포지셔닝", "CSS 스타일링: 레이아웃과 포지셔닝 입니다.", "#2f8aff", "fe", graphicsId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("트랜지션, 애니메이션", "트랜지션, 애니메이션 입니다.", "#2f8aff", "fe", graphicsId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("2D 그래픽스", "2D 그래픽스 입니다.", "#2f8aff", "fe", graphicsId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("3D 그래픽스", "3D 그래픽스 입니다.", "#2f8aff", "fe", graphicsId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Vector 그래픽스", "Vector 그래픽스 입니다.", "#2f8aff", "fe", graphicsId));
 
-        Long architectureId = abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("Architecture", "Architecture 입니다.", "#e5ffcc", "fe"));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("인터랙션 디자인 이론", "인터랙션 디자인 이론 입니다.", "#e5ffcc", "fe",
-                architectureId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("UI/UX 설계", "UI/UX 설계 입니다.", "#e5ffcc", "fe",
-                architectureId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("UX 일반 이론", "UX 일반 이론 입니다.", "#e5ffcc", "fe",
-                architectureId));
+        Long architectureId = abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("Architecture", "Architecture 입니다.", "#e5ffcc", "fe"));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("인터랙션 디자인 이론", "인터랙션 디자인 이론 입니다.", "#e5ffcc", "fe", architectureId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("UI/UX 설계", "UI/UX 설계 입니다.", "#e5ffcc", "fe", architectureId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("UX 일반 이론", "UX 일반 이론 입니다.", "#e5ffcc", "fe", architectureId));
 
-        Long uiuxId = abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("UI/UX", "UI/UX 입니다.", "#2fff6e", "fe"));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("웹애플리케이션 구현 시 고려해야 하는 설계",
-                "웹애플리케이션 구현 시 고려해야 하는 설계 입니다.", "#2fff6e", "fe", uiuxId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("프로젝트 개발 환경 설계", "프로젝트 개발 환경 설계 입니다.", "#2fff6e", "fe",
-                uiuxId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("테스트와 프로젝트 배포", "테스트와 프로젝트 배포 입니다.", "#2fff6e", "fe",
-                uiuxId));
-        abilityService.createDefaultAbility(
-            new DefaultAbilityCreateRequest("프로그래밍 테크닉, 개발 프랙티스, 개발 방법론",
-                "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론 입니다.", "#2fff6e", "fe", uiuxId));
+        Long uiuxId = abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("UI/UX", "UI/UX 입니다.", "#2fff6e", "fe"));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("웹애플리케이션 구현 시 고려해야 하는 설계", "웹애플리케이션 구현 시 고려해야 하는 설계 입니다.", "#2fff6e", "fe", uiuxId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("프로젝트 개발 환경 설계", "프로젝트 개발 환경 설계 입니다.", "#2fff6e", "fe", uiuxId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("테스트와 프로젝트 배포", "테스트와 프로젝트 배포 입니다.", "#2fff6e", "fe", uiuxId));
+        abilityService.createDefaultAbility(new DefaultAbilityCreateRequest("프로그래밍 테크닉, 개발 프랙티스, 개발 방법론", "프로그래밍 테크닉, 개발 프랙티스, 개발 방법론 입니다.", "#2fff6e", "fe", uiuxId));
 
         // ability init
 //        abilityService.addDefaultAbilities(Members.BROWN.value.getId(), "be");
