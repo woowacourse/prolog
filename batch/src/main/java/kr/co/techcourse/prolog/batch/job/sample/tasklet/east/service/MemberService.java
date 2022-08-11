@@ -5,7 +5,7 @@ import kr.co.techcourse.prolog.batch.job.sample.tasklet.east.repository.MemberRe
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Service("east.MemberService")
 public class MemberService {
 
     private final MemberRepository memberRepository;
