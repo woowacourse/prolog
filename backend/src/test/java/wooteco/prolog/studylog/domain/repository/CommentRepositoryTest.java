@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +25,9 @@ import wooteco.support.utils.RepositoryTest;
 
 @RepositoryTest
 class CommentRepositoryTest {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     private CommentRepository commentRepository;
@@ -63,5 +68,22 @@ class CommentRepositoryTest {
 
         // then
         assertThat(findComments).hasSize(2);
+    }
+
+    @Test
+    @DisplayName("스터디로그에 등록된 댓글 리스트 중 isDelete가 false인 댓글만 조회할 수 있다.")
+    void findCommentOfIsDeleteFalseByStudylog() {
+        // given
+        Comment comment = commentRepository.save(
+            new Comment(null, 루키, 루키_스터디로그, "루키 스터디로그의 내용"));
+        commentRepository.save(new Comment(null, 잉, 루키_스터디로그, "루키 스터디로그의 내용"));
+
+        // when
+        comment.delete();
+        entityManager.flush();
+        List<Comment> findComments = commentRepository.findCommentByStudylog(루키_스터디로그);
+
+        // then
+        assertThat(findComments).hasSize(1);
     }
 }
