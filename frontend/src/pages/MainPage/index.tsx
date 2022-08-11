@@ -3,51 +3,32 @@
 import { useContext, useEffect } from 'react';
 
 import { UserContext } from '../../contexts/UserProvider';
-import useFetchData from '../../hooks/useFetchData';
 import bannerList from '../../configs/bannerList';
 import BannerList from '../../components/Banner/BannerList';
 import RecentStudylogList from './RecentStudylogList';
 import PopularStudyLogList from './PopularStudyLogList';
-import { requestGetStudylogs } from '../../service/requests';
 
 import { MainContentStyle } from '../../PageRouter';
 import { getRowGapStyle } from '../../styles/layout.styles';
 
-import type { Studylog, StudyLogResponse } from '../../models/Studylogs';
-import { useQuery } from 'react-query';
-import axios from 'axios';
-import { BASE_URL } from '../../configs/environment';
+import {
+  useGetPopularStudylogsQuery,
+  useGetRecentStudylogsQuery,
+} from '../../hooks/queries/studylog';
 
 const MainPage = () => {
   const { user } = useContext(UserContext);
   const { accessToken } = user;
 
-  const fetchRecentStudylogsRequest = useFetchData<{
-    data: Studylog[];
-  }>(
-    { data: [] },
-    () => requestGetStudylogs({ query: { type: 'searchParams', data: 'size=3' }, accessToken }),
-    { initialFetch: false }
-  );
+  const { data: recentStudylogs, refetch: refetchRecentStudylogs } = useGetRecentStudylogsQuery();
 
-  // @TODO: 로딩 및 에러 처리
   const {
-    isLoading,
-    error,
     data: popularStudyLogs,
     refetch: refetchPopularStudyLogs,
-  } = useQuery<StudyLogResponse>('popularStudyLogs', async () => {
-    const { data } = await axios({
-      method: 'get',
-      url: `${BASE_URL}/studylogs/popular`,
-      headers: accessToken && { Authorization: 'Bearer ' + accessToken },
-    });
-
-    return data;
-  });
+  } = useGetPopularStudylogsQuery();
 
   useEffect(() => {
-    fetchRecentStudylogsRequest.refetch();
+    refetchRecentStudylogs();
     refetchPopularStudyLogs();
   }, [accessToken]);
 
@@ -55,11 +36,8 @@ const MainPage = () => {
     <>
       <BannerList bannerList={bannerList} />
       <main css={[MainContentStyle, getRowGapStyle(5.8)]}>
-        {/* TODO: 로딩상태 관리 */}
         {popularStudyLogs && <PopularStudyLogList studylogs={popularStudyLogs} />}
-        {fetchRecentStudylogsRequest.response.data.length !== 0 && (
-          <RecentStudylogList studylogs={fetchRecentStudylogsRequest.response.data} />
-        )}
+        {recentStudylogs && <RecentStudylogList studylogs={recentStudylogs} />}
       </main>
     </>
   );

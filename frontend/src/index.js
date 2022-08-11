@@ -8,6 +8,7 @@ import store from './redux/store';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import UserProvider from './contexts/UserProvider';
+import GlobalStyles from './GlobalStyles';
 
 const queryClient = new QueryClient();
 
