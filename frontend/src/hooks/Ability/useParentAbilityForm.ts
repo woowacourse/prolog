@@ -5,7 +5,7 @@ export const DEFAULT_ABILITY_FORM = {
   name: '',
   description: '',
   color: '#000000',
-  isParent: null,
+  isParent: false,
 };
 
 const useParentAbilityForm = () => {

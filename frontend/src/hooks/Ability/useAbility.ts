@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import AbilityRequest, { ErrorData } from '../../apis/ability';
 import { ERROR_MESSAGE } from '../../constants';
@@ -8,12 +9,12 @@ interface AbilityForm {
   name: string;
   description: string;
   color: string;
-  isParent: boolean | null;
+  isParent: boolean;
 }
 
 interface Props {
   username: string;
-  setAddFormStatus: (data: AbilityForm) => void;
+  setAddFormStatus: Dispatch<SetStateAction<AbilityForm>>;
   addFormClose: () => void;
 }
 
