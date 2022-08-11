@@ -12,9 +12,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
+import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
+import wooteco.prolog.ability.application.dto.AbilityResponse;
 import wooteco.prolog.member.domain.GroupMember;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.MemberGroup;
@@ -218,21 +221,57 @@ class StudylogDocumentation extends Documentation {
     private StudylogRequest createStudylogRequest1() {
         String title = "나는야 Joanne";
         String content = "SPA 방식으로 앱을 구현하였음.\n" + "router 를 구현 하여 이용함.\n";
-        Long sessionId = 세션_등록함(new SessionRequest("세션1"));
+        Long sessionId = 세션_등록함(new SessionRequest("프론트엔드JS 레벨1 - 2021"));
         Long missionId = 미션_등록함(new MissionRequest("세션1 - 지하철 노선도 미션", sessionId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("spa"), new TagRequest("router"));
+        Long parentAbilityId = 역량_등록함(new AbilityCreateRequest(
+            "부모 역량1",
+            "부모 역량1입니다",
+            "#ffffff",
+            null));
+        Long abilityId = 역량_등록함(new AbilityCreateRequest(
+            "자식 역량1",
+            "자식 역량1입니다",
+            "#ffffff",
+            parentAbilityId));
 
-        return new StudylogRequest(title, content, missionId, tags);
+        return new StudylogRequest(title, content, sessionId, missionId, tags,
+            Arrays.asList(abilityId));
     }
 
     private StudylogRequest createStudylogRequest2() {
         String title = "JAVA";
         String content = "Spring Data JPA를 학습함.";
-        Long sessionId = 세션_등록함(new SessionRequest("세션3"));
+        Long sessionId = 세션_등록함(new SessionRequest("백엔드Java 레벨1 - 2021"));
         Long missionId = 미션_등록함(new MissionRequest("세션3 - 프로젝트", sessionId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("java"), new TagRequest("jpa"));
+        Long parentAbilityId = 역량_등록함(new AbilityCreateRequest(
+            "부모 역량2",
+            "부모 역량2입니다",
+            "#000000",
+            null));
+        Long abilityId = 역량_등록함(new AbilityCreateRequest(
+            "자식 역량2",
+            "자식 역량2입니다",
+            "#000000",
+            parentAbilityId));
 
-        return new StudylogRequest(title, content, missionId, tags);
+        return new StudylogRequest(title, content, sessionId, missionId, tags,
+            Arrays.asList(abilityId));
+    }
+
+    private Long 역량_등록함(AbilityCreateRequest request) {
+        return RestAssured.given().log().all()
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/abilities")
+            .then()
+            .log().all()
+            .extract()
+            .as(AbilityResponse.class)
+            .getId();
     }
 
     private ExtractableResponse<Response> 스터디로그_등록함(StudylogRequest request) {

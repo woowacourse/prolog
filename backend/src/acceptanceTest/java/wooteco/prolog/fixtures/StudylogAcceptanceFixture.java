@@ -9,6 +9,7 @@ import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG5;
 import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG6;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.TagRequest;
@@ -18,7 +19,7 @@ public enum StudylogAcceptanceFixture {
       "[자바][옵셔널] 학습log 제출합니다.",
       "옵셔널은 NPE를 배제하기 위해 만들어진 자바8에 추가된 라이브러리입니다. \n " +
           "다양한 메소드를 호출하여 원하는 대로 활용할 수 있습니다",
-      null,
+      1L,
       1L,
       TAG1,
       TAG2
@@ -27,7 +28,7 @@ public enum StudylogAcceptanceFixture {
       "[자바스크립트][비동기] 학습log 제출합니다.",
       "모던 JS의 fetch문, ajax라이브러리인 axios등을 통해 비동기 요청을 \n " +
           "편하게 할 수 있습니다. 자바 최고",
-      null,
+      2L,
       2L,
       TAG3,
       TAG4
@@ -88,18 +89,20 @@ public enum StudylogAcceptanceFixture {
   private final StudylogRequest studylogRequest;
   private final List<TagAcceptanceFixture> tags;
 
-  StudylogAcceptanceFixture(
-      String title,
-      String content,
-      Long sessionId,
-      Long missionId,
-      TagAcceptanceFixture... tags) {
-    this.tags = Arrays.asList(tags);
-    List<TagRequest> tagRequests = Arrays.stream(tags)
-        .map(TagAcceptanceFixture::getTagRequest)
-        .collect(toList());
-    this.studylogRequest = new StudylogRequest(title, content, sessionId, missionId, tagRequests);
-  }
+    StudylogAcceptanceFixture(
+        String title,
+        String content,
+        Long sessionId,
+        Long missionId,
+        TagAcceptanceFixture... tags) {
+        this.tags = Arrays.asList(tags);
+        List<TagRequest> tagRequests = Arrays.stream(tags)
+            .map(TagAcceptanceFixture::getTagRequest)
+            .collect(toList());
+        this.studylogRequest = new StudylogRequest(title, content, sessionId, missionId,
+            tagRequests,
+            Collections.emptyList());
+    }
 
   public static List<StudylogRequest> findByMissionNumber(Long missionId) {
     return Arrays.stream(StudylogAcceptanceFixture.values())

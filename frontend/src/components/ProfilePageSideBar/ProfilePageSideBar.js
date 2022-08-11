@@ -1,11 +1,8 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 
-import { requestEditProfile, requestGetProfile } from '../../service/requests';
-import useRequest from '../../hooks/useRequest';
-import useMutation from '../../hooks/useMutation';
 import { UserContext } from '../../contexts/UserProvider';
 
 import { Button, BUTTON_SIZE } from '..';
@@ -14,8 +11,6 @@ import BadgeList from '../Badge/BadgeList';
 import getMenuList from './getMenuList';
 
 import { BASE_URL } from '../../configs/environment';
-import { PROFILE } from '../../constants/input';
-import { ALERT_MESSAGE } from '../../constants';
 
 import {
   Profile,
@@ -30,6 +25,7 @@ import {
   NicknameWrapper,
   NicknameInput,
 } from './ProfilePageSideBar.styles';
+import { useGetProfileQuery, usePutProfileMutation } from '../../hooks/queries/profile';
 
 const ProfilePageSideBar = ({ menu }) => {
   const history = useHistory();
@@ -40,16 +36,17 @@ const ProfilePageSideBar = ({ menu }) => {
 
   const isOwner = username === loginUsername;
 
-  const [selectedMenu, setSelectedMenu] = useState('');
+  const [selectedMenu, setSelectedMenu] = useState(menu);
 
   const [isProfileEditing, setIsProfileEditing] = useState(false);
   const [nickname, setNickname] = useState('');
 
-  const { response: user, fetchData: getProfile } = useRequest(
-    {},
-    () => requestGetProfile(username),
-    (data) => {
-      setNickname(data.nickname);
+  const { data: user } = useGetProfileQuery(
+    { username },
+    {
+      onSuccess: (data) => {
+        setNickname(data.nickname);
+      },
     }
   );
 
@@ -64,30 +61,15 @@ const ProfilePageSideBar = ({ menu }) => {
     return badges;
   });
 
-  const { mutate: editProfile } = useMutation(
-    () => {
-      if (!isOwner) {
-        setIsProfileEditing(false);
-
-        return;
-      }
-
-      if (nickname.length > PROFILE.NICKNAME.MAX_LENGTH) {
-        alert(ALERT_MESSAGE.OVER_PROFILE_NICKNAME_MAX_LENGTH);
-
-        return;
-      }
-
-      return requestEditProfile({ username, nickname, imageUrl: user.imageUrl }, accessToken);
+  const { mutate: editProfile } = usePutProfileMutation(
+    {
+      user,
+      nickname,
+      accessToken,
     },
     {
       onSuccess: () => {
-        // TODO: 중앙 상태 닉네임 변경해주기
-        setNickname(nickname);
         setIsProfileEditing(false);
-      },
-      onError: () => {
-        alert('회원 정보 수정에 실패했습니다.');
       },
     }
   );
@@ -96,12 +78,6 @@ const ProfilePageSideBar = ({ menu }) => {
     setSelectedMenu(key);
     history.push(path);
   };
-
-  useEffect(() => {
-    setNickname(nickname);
-    getProfile();
-    setSelectedMenu(menu);
-  }, [username]);
 
   return (
     <Container>

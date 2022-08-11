@@ -6,6 +6,7 @@ import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,6 +38,8 @@ import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.PopularStudylogsResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
+import wooteco.prolog.studylog.application.dto.StudylogWithScrapedCountResponse;
+import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.Tag;
@@ -106,8 +109,10 @@ class PopularStudylogServiceTest {
 
     @BeforeEach
     void setUp() {
-        SessionResponse sessionResponse1 = sessionService.create(new SessionRequest("세션1"));
-        SessionResponse sessionResponse2 = sessionService.create(new SessionRequest("세션2"));
+        SessionResponse sessionResponse1 = sessionService.create(
+            new SessionRequest("백엔드Java 레벨1 - 2021"));
+        SessionResponse sessionResponse2 = sessionService.create(
+            new SessionRequest("프론트엔드JS 레벨1 - 2021"));
 
         this.session1 = new Session(sessionResponse1.getId(), sessionResponse1.getName());
         this.session2 = new Session(sessionResponse2.getId(), sessionResponse2.getName());
@@ -120,8 +125,10 @@ class PopularStudylogServiceTest {
         this.mission1 = new Mission(missionResponse1.getId(), missionResponse1.getName(), session1);
         this.mission2 = new Mission(missionResponse2.getId(), missionResponse2.getName(), session2);
 
-        this.member1 = memberService.findOrCreateMember(new GithubProfileResponse("이름1", "별명1", "1", "image"));
-        this.member2 = memberService.findOrCreateMember(new GithubProfileResponse("이름2", "별명2", "2", "image"));
+        this.member1 = memberService.findOrCreateMember(
+            new GithubProfileResponse("이름1", "별명1", "1", "image"));
+        this.member2 = memberService.findOrCreateMember(
+            new GithubProfileResponse("이름2", "별명2", "2", "image"));
 
         this.frontendMemberGroup = memberGroupRepository.save(
             new MemberGroup(null, "프론트엔드", "프론트엔드 설명")
@@ -148,7 +155,9 @@ class PopularStudylogServiceTest {
         this.studylog3 = new Studylog(member2,
             STUDYLOG3_TITLE, "피케이 스터디로그", mission2,
             asList(tag3, tag4, tag5));
-        this.studylog4 = new Studylog(member2, STUDYLOG4_TITLE, "포모의 스터디로그", mission2, emptyList());
+        this.studylog4 = new Studylog(member2,
+            STUDYLOG4_TITLE, "포모의 스터디로그", mission2,
+            asList(tag3, tag4, tag5));
     }
 
     @DisplayName("로그인하지 않은 상태에서 제시된 개수만큼 인기있는 스터디로그를 조회한다.")
@@ -238,8 +247,10 @@ class PopularStudylogServiceTest {
                 new StudylogRequest(
                     studylog.getTitle(),
                     studylog.getContent(),
-                    null,
-                    toTagRequests(studylog)
+                    studylog.getSession().getId(),
+                    studylog.getMission().getId(),
+                    toTagRequests(studylog),
+                    Collections.emptyList()
                 )
             )
             .collect(toList());

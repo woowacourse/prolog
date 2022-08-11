@@ -135,7 +135,10 @@ const StudyLogTable = ({
                         id="add-ability-button"
                         size="XX_SMALL"
                         type="button"
-                        css={{ backgroundColor: `${COLOR.LIGHT_BLUE_300}` }}
+                        css={{
+                          backgroundColor: `${COLOR.LIGHT_BLUE_300}`,
+                          color: `${COLOR.DARK_GRAY_900}`,
+                        }}
                         onClick={(event) => onOpenAbilityBox(event, studylog.id)}
                       >
                         +

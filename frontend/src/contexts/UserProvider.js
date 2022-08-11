@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
+import { client } from '../apis';
 
 import LOCAL_STORAGE_KEY from '../constants/localStorage';
 import useMutation from '../hooks/useMutation';
@@ -54,6 +55,7 @@ const UserProvider = ({ children }) => {
   const { mutate: onLogin } = useMutation(loginRequest, {
     onSuccess: ({ accessToken }) => {
       localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, JSON.stringify(accessToken));
+      client.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
       setState((prev) => ({ ...prev, accessToken }));
     },
     onError: (error) => {
@@ -63,6 +65,7 @@ const UserProvider = ({ children }) => {
 
   function onLogout() {
     localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+    client.defaults.headers['Authorization'] = '';
     setState(DEFAULT_USER);
   }
 

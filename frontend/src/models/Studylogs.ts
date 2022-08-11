@@ -39,11 +39,11 @@ export interface Studylog {
   liked: boolean;
   likesCount: number;
   scrap: boolean;
-  scrapedCount: number;
+  abilities: number[];
 }
 
 export interface StudyLogList {
-  data: { studylogResponse: Studylog; scrapedCount: number }[];
+  data: Studylog[];
   totalSize: number;
   totalPage: number;
   currPage: number;

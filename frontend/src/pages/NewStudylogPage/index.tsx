@@ -15,19 +15,31 @@ import { SUCCESS_MESSAGE } from '../../constants/message';
 import { useHistory } from 'react-router-dom';
 import { requestPostStudylog } from '../../apis/studylogs';
 import StudylogEditor from '../../components/Editor/StudylogEditor';
+import useBeforeunload from '../../hooks/useBeforeunload';
+
+interface NewStudylogForm extends StudylogForm {
+  abilities: number[];
+}
 
 const NewStudylogPage = () => {
   const history = useHistory();
 
   const editorContentRef = useRef<any>(null);
 
-  const [studylogContent, setStudylogContent] = useState<StudylogForm>({
+  useBeforeunload(editorContentRef);
+
+  const [studylogContent, setStudylogContent] = useState<NewStudylogForm>({
     title: '',
     content: '',
     missionId: null,
     sessionId: null,
     tags: [],
+    abilities: [],
   });
+
+  const onSelectAbilities = (abilities: number[]) => {
+    setStudylogContent({ ...studylogContent, abilities });
+  };
 
   const onChangeTitle: ChangeEventHandler<HTMLInputElement> = (event) => {
     setStudylogContent({ ...studylogContent, title: event.target.value });
@@ -107,10 +119,12 @@ const NewStudylogPage = () => {
         selectedMissionId={studylogContent.missionId}
         selectedSessionId={studylogContent.sessionId}
         selectedTags={studylogContent.tags}
+        selectedAbilities={studylogContent.abilities}
         onChangeTitle={onChangeTitle}
         onSelectMission={onSelectMission}
         onSelectSession={onSelectSession}
         onSelectTag={onSelectTag}
+        onSelectAbilities={onSelectAbilities}
         onSubmit={onCreateStudylog}
       />
     </div>

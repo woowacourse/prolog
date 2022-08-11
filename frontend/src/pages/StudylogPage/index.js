@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
 
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import TagManager from 'react-gtm-module';
 
 import Content from './Content';
 import { Button, BUTTON_SIZE } from '../../components';
-import { ButtonList, EditButtonStyle, DeleteButtonStyle } from './styles';
+import { ButtonList, EditButtonStyle, DeleteButtonStyle, EditorForm, SubmitButton } from './styles';
 
 import { MainContentStyle } from '../../PageRouter';
 import { UserContext } from '../../contexts/UserProvider';
@@ -31,6 +31,10 @@ import {
   SNACKBAR_MESSAGE,
 } from '../../constants';
 import { SUCCESS_MESSAGE } from '../../constants/message';
+import CommentList from '../../components/Comment/CommentList';
+import useStudylogComment from '../../hooks/Comment/useStudylogComment';
+import useBeforeunload from '../../hooks/useBeforeunload';
+import Editor from '../../components/Editor/Editor';
 
 const StudylogPage = () => {
   const { id } = useParams();
@@ -182,6 +186,27 @@ const StudylogPage = () => {
     };
   }, [accessToken, id]);
 
+  /* 댓글 로직 */
+  const { comments, createComment, editComment, deleteComment } = useStudylogComment(id);
+
+  const editorContentRef = useRef(null);
+
+  const onSubmitComment = (event) => {
+    event.preventDefault();
+
+    const content = editorContentRef.current?.getInstance().getMarkdown() || '';
+
+    if (content.length === 0) {
+      alert(ALERT_MESSAGE.NO_CONTENT);
+      return;
+    }
+
+    createComment({ content });
+    editorContentRef.current?.getInstance().setMarkdown('');
+  };
+
+  useBeforeunload(editorContentRef);
+
   return (
     <div css={MainContentStyle}>
       {username === author?.username && (
@@ -203,11 +228,20 @@ const StudylogPage = () => {
         </ButtonList>
       )}
       <Content
-        studylog={studylog}
+        studylog={{ ...studylog.studylogResponse, scrapedCount: studylog.scrapedCount }}
         toggleLike={toggleLike}
         toggleScrap={toggleScrap}
         goAuthorProfilePage={goAuthorProfilePage}
       />
+      {comments && (
+        <CommentList comments={comments} editComment={editComment} deleteComment={deleteComment} />
+      )}
+      {isLoggedIn && (
+        <EditorForm onSubmit={onSubmitComment}>
+          <Editor height="25rem" hasTitle={false} editorContentRef={editorContentRef} />
+          <SubmitButton>작성 완료</SubmitButton>
+        </EditorForm>
+      )}
     </div>
   );
 };

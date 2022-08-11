@@ -1,15 +1,9 @@
 /** @jsxImportSource @emotion/react */
 
-import { useContext, useState } from 'react';
+import { useContext, useState, useRef } from 'react';
 import { css } from '@emotion/react';
 import { useParams } from 'react-router-dom';
 
-import useMutation from '../../hooks/useMutation';
-import useRequest from '../../hooks/useRequest';
-import {
-  requestEditProfileIntroduction,
-  requestGetProfileIntroduction,
-} from '../../service/requests';
 import EditIntroduction from './EditIntroduction';
 import { Button } from '..';
 import { ERROR_MESSAGE } from '../../constants';
@@ -29,31 +23,29 @@ import {
 import { markdownStyle } from '../../styles/markdown.styles';
 import { EditButtonStyle, WrapperStyle } from './Introduction.styles';
 import { UserContext } from '../../contexts/UserProvider';
+import {
+  useGetProfileIntroduction,
+  usePutProfileIntroductionMutation,
+} from '../../hooks/queries/profile';
 
 const Introduction = () => {
   const { username } = useParams();
   const [isEditing, setIsEditing] = useState(false);
-  const [editorContentRef, setEditorContentRef] = useState('');
+  const editorContentRef = useRef('');
 
   const { user } = useContext(UserContext);
   const { accessToken, username: loginName } = user;
 
-  const { response, fetchData } = useRequest({ text: '' }, () =>
-    requestGetProfileIntroduction(username)
-  );
+  const { data: response, refetch: fetchData } = useGetProfileIntroduction({ username });
+
   const data = response?.text ?? '';
 
   const isOwner = username === loginName;
 
   const hasIntro = !!data.length;
 
-  const { mutate: editProfileIntro } = useMutation(
-    () =>
-      requestEditProfileIntroduction(
-        username,
-        { text: editorContentRef.getInstance().getMarkdown() },
-        accessToken
-      ),
+  const { mutate: editProfileIntro } = usePutProfileIntroductionMutation(
+    { username, editorContentRef, accessToken },
     {
       onSuccess: async () => {
         await fetchData();
@@ -141,7 +133,7 @@ const Introduction = () => {
         <EditIntroduction
           initialContent={data}
           onEdit={editProfileIntro}
-          editorRef={setEditorContentRef}
+          editorRef={editorContentRef}
           onCancel={() => setIsEditing(false)}
         />
       )}

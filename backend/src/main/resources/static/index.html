@@ -471,6 +471,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_스터디로그_삭제">스터디로그 삭제</a></li>
 </ul>
 </li>
+<li><a href="#comment">댓글</a>
+<ul class="sectlevel2">
+<li><a href="#_댓글_등록">댓글 등록</a></li>
+<li><a href="#_댓글_전체_조회">댓글 전체 조회</a></li>
+<li><a href="#_댓글_수정">댓글 수정</a></li>
+<li><a href="#_댓글_삭제">댓글 삭제</a></li>
+</ul>
+</li>
 <li><a href="#mission">미션</a>
 <ul class="sectlevel2">
 <li><a href="#_미션_생성_성공">미션 생성 성공</a></li>
@@ -558,13 +566,13 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:50 GMT
+Date: Tue, 09 Aug 2022 12:15:21 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 168
 
 {
-  "accessToken" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3NDYyMDExLCJleHAiOjE2NTc0NjU2MTEsInJvbGUiOiJDUkVXIn0.52VaLgNnZBOclcYJIZWwKJ88_pmkryaNjkPtUKos0vI"
+  "accessToken" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzIyLCJleHAiOjE2NjAwNTA5MjIsInJvbGUiOiJDUkVXIn0.3vzzST78x7snMfFZ-oK123jFrfvReqgACVfmmkgDAS4"
 }</code></pre>
 </div>
 </div>
@@ -577,7 +585,7 @@ Content-Length: 168
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/me HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3NDYyMDExLCJleHAiOjE2NTc0NjU2MTEsInJvbGUiOiJDUkVXIn0.52VaLgNnZBOclcYJIZWwKJ88_pmkryaNjkPtUKos0vI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzIyLCJleHAiOjE2NjAwNTA5MjIsInJvbGUiOiJDUkVXIn0.3vzzST78x7snMfFZ-oK123jFrfvReqgACVfmmkgDAS4
 Host: localhost:4000</code></pre>
 </div>
 </div>
@@ -592,7 +600,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:50 GMT
+Date: Tue, 09 Aug 2022 12:15:21 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 153
@@ -615,7 +623,7 @@ Content-Length: 153
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/soulG HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3NDYyMDExLCJleHAiOjE2NTc0NjU2MTEsInJvbGUiOiJDUkVXIn0.52VaLgNnZBOclcYJIZWwKJ88_pmkryaNjkPtUKos0vI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzIxLCJleHAiOjE2NjAwNTA5MjEsInJvbGUiOiJDUkVXIn0.RvlLLGiTjZDPUZMN8I1ZqNdI5uJQa6-TNZ69MrYQnbE
 Host: localhost:4000</code></pre>
 </div>
 </div>
@@ -630,7 +638,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:50 GMT
+Date: Tue, 09 Aug 2022 12:15:21 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 153
@@ -653,7 +661,7 @@ Content-Length: 153
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /members/soulG HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3NDYyMDEwLCJleHAiOjE2NTc0NjU2MTAsInJvbGUiOiJDUkVXIn0.Yre5XZ1efV_m0X9NNeahhRKRdsl2wwpegJO2Ffqooe8
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzIxLCJleHAiOjE2NjAwNTA5MjEsInJvbGUiOiJDUkVXIn0.RvlLLGiTjZDPUZMN8I1ZqNdI5uJQa6-TNZ69MrYQnbE
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
 Content-Length: 104
@@ -673,7 +681,7 @@ Content-Length: 104
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 10 Jul 2022 14:06:50 GMT
+Date: Tue, 09 Aug 2022 12:15:21 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -706,7 +714,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:47 GMT
+Date: Tue, 09 Aug 2022 12:15:18 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 153
@@ -743,7 +751,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:47 GMT
+Date: Tue, 09 Aug 2022 12:15:18 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 19
@@ -762,7 +770,7 @@ Content-Length: 19
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /members/soulG/profile-intro HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3NDYyMDA4LCJleHAiOjE2NTc0NjU2MDgsInJvbGUiOiJDUkVXIn0.Kh9ZEChq5o689qJ--qw5bv0ycoR73EtnKBefrs9uP90
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzE5LCJleHAiOjE2NjAwNTA5MTksInJvbGUiOiJDUkVXIn0.zf-sPFNHjAX_a62ONDbxD0ro7uycHZTH9-Sklis77TM
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
 Content-Length: 47
@@ -781,7 +789,7 @@ Content-Length: 47
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 10 Jul 2022 14:06:47 GMT
+Date: Tue, 09 Aug 2022 12:15:18 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -810,10 +818,10 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:47 GMT
+Date: Tue, 09 Aug 2022 12:15:18 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 1684
+Content-Length: 1730
 
 {
   "data" : [ {
@@ -825,8 +833,8 @@ Content-Length: 1684
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2022-07-10T23:06:47.892927",
-    "updatedAt" : "2022-07-10T23:06:47.892927",
+    "createdAt" : "2022-08-09T21:15:18.860043",
+    "updatedAt" : "2022-08-09T21:15:18.860043",
     "session" : null,
     "mission" : {
       "id" : 2,
@@ -845,6 +853,7 @@ Content-Length: 1684
       "id" : 4,
       "name" : "jpa"
     } ],
+    "abilities" : [ ],
     "scrap" : false,
     "read" : false,
     "viewCount" : 0,
@@ -859,8 +868,8 @@ Content-Length: 1684
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2022-07-10T23:06:47.848131",
-    "updatedAt" : "2022-07-10T23:06:47.848131",
+    "createdAt" : "2022-08-09T21:15:18.803121",
+    "updatedAt" : "2022-08-09T21:15:18.803121",
     "session" : null,
     "mission" : {
       "id" : 1,
@@ -879,6 +888,7 @@ Content-Length: 1684
       "id" : 2,
       "name" : "router"
     } ],
+    "abilities" : [ ],
     "scrap" : false,
     "read" : false,
     "viewCount" : 0,
@@ -985,10 +995,10 @@ Content-Length: 146
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /studylogs HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3NDYyMDA1LCJleHAiOjE2NTc0NjU2MDUsInJvbGUiOiJDUkVXIn0.IgrgpkJHnhhW87DzIpQ3_n9rq5D5-HNQhmgqn1v_tR0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzE2LCJleHAiOjE2NjAwNTA5MTYsInJvbGUiOiJDUkVXIn0.qntz1P1V744SHGkOe0GCw-pWYmKUpFxcwVi6FGgOIXw
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
-Content-Length: 239
+Content-Length: 262
 
 {
   "title" : "나는야 Joanne",
@@ -999,7 +1009,8 @@ Content-Length: 239
     "name" : "spa"
   }, {
     "name" : "router"
-  } ]
+  } ],
+  "abilities" : [ 2 ]
 }</code></pre>
 </div>
 </div>
@@ -1015,10 +1026,10 @@ Vary: Access-Control-Request-Headers
 Location: /studylogs/1
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:45 GMT
+Date: Tue, 09 Aug 2022 12:15:16 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 867
+Content-Length: 1036
 
 {
   "id" : 1,
@@ -1029,8 +1040,8 @@ Content-Length: 867
     "role" : "CREW",
     "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
   },
-  "createdAt" : "2022-07-10T23:06:45.71584",
-  "updatedAt" : "2022-07-10T23:06:45.71584",
+  "createdAt" : "2022-08-09T21:15:16.418338",
+  "updatedAt" : "2022-08-09T21:15:16.418338",
   "session" : {
     "id" : 1,
     "name" : "프론트엔드JS 레벨1 - 2021"
@@ -1052,6 +1063,13 @@ Content-Length: 867
     "id" : 2,
     "name" : "router"
   } ],
+  "abilities" : [ {
+    "id" : 2,
+    "name" : "자식 역량1",
+    "description" : "자식 역량1입니다",
+    "color" : "#ffffff",
+    "isParent" : false
+  } ],
   "scrap" : false,
   "read" : false,
   "viewCount" : 0,
@@ -1069,7 +1087,7 @@ Content-Length: 867
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /studylogs HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3NDYyMDA1LCJleHAiOjE2NTc0NjU2MDUsInJvbGUiOiJDUkVXIn0.IgrgpkJHnhhW87DzIpQ3_n9rq5D5-HNQhmgqn1v_tR0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzE1LCJleHAiOjE2NjAwNTA5MTUsInJvbGUiOiJDUkVXIn0.1i7yjwv7GtTO7wxH3fnfWwlfLQOfLESTU_idRT5MPcI
 Accept: application/json
 Host: localhost:4000</code></pre>
 </div>
@@ -1085,10 +1103,10 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:45 GMT
+Date: Tue, 09 Aug 2022 12:15:16 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 1877
+Content-Length: 1923
 
 {
   "data" : [ {
@@ -1100,8 +1118,8 @@ Content-Length: 1877
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2022-07-10T23:06:45.395224",
-    "updatedAt" : "2022-07-10T23:06:45.395224",
+    "createdAt" : "2022-08-09T21:15:16.059832",
+    "updatedAt" : "2022-08-09T21:15:16.059832",
     "session" : {
       "id" : 2,
       "name" : "백엔드Java 레벨1 - 2021"
@@ -1123,6 +1141,7 @@ Content-Length: 1877
       "id" : 4,
       "name" : "jpa"
     } ],
+    "abilities" : [ ],
     "scrap" : false,
     "read" : false,
     "viewCount" : 0,
@@ -1137,8 +1156,8 @@ Content-Length: 1877
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2022-07-10T23:06:45.318991",
-    "updatedAt" : "2022-07-10T23:06:45.318991",
+    "createdAt" : "2022-08-09T21:15:15.908938",
+    "updatedAt" : "2022-08-09T21:15:15.908938",
     "session" : {
       "id" : 1,
       "name" : "프론트엔드JS 레벨1 - 2021"
@@ -1160,6 +1179,7 @@ Content-Length: 1877
       "id" : 2,
       "name" : "router"
     } ],
+    "abilities" : [ ],
     "scrap" : false,
     "read" : false,
     "viewCount" : 0,
@@ -1181,7 +1201,7 @@ Content-Length: 1877
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /studylogs/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3NDYyMDA0LCJleHAiOjE2NTc0NjU2MDQsInJvbGUiOiJDUkVXIn0.Vq5Nfd2MxehYc_pI9tDn7x4rap-DJWwFr9we8PAA_SQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzE1LCJleHAiOjE2NjAwNTA5MTUsInJvbGUiOiJDUkVXIn0.1i7yjwv7GtTO7wxH3fnfWwlfLQOfLESTU_idRT5MPcI
 Host: localhost:4000</code></pre>
 </div>
 </div>
@@ -1194,13 +1214,13 @@ Host: localhost:4000</code></pre>
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Set-Cookie: viewed=/1/; Max-Age=3194; Expires=Sun, 10 Jul 2022 14:59:59 GMT; Secure; HttpOnly; SameSite=None
+Set-Cookie: viewed=/1/; Max-Age=9884; Expires=Tue, 09 Aug 2022 14:59:59 GMT; Secure; HttpOnly; SameSite=None
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:44 GMT
+Date: Tue, 09 Aug 2022 12:15:15 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 991
+Content-Length: 1014
 
 {
   "studylogResponse" : {
@@ -1212,8 +1232,8 @@ Content-Length: 991
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2022-07-10T23:06:44.881723",
-    "updatedAt" : "2022-07-10T23:06:44.881723",
+    "createdAt" : "2022-08-09T21:15:15.491451",
+    "updatedAt" : "2022-08-09T21:15:15.491451",
     "session" : {
       "id" : 1,
       "name" : "프론트엔드JS 레벨1 - 2021"
@@ -1235,6 +1255,7 @@ Content-Length: 991
       "id" : 2,
       "name" : "router"
     } ],
+    "abilities" : [ ],
     "scrap" : false,
     "read" : true,
     "viewCount" : 0,
@@ -1254,10 +1275,10 @@ Content-Length: 991
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /studylogs/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3NDYyMDA2LCJleHAiOjE2NTc0NjU2MDYsInJvbGUiOiJDUkVXIn0.Fd4QAud6Oj6RvzrUtOOgmOrZMFbKmiPlJjoKtj7DrMc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzE2LCJleHAiOjE2NjAwNTA5MTYsInJvbGUiOiJDUkVXIn0.qntz1P1V744SHGkOe0GCw-pWYmKUpFxcwVi6FGgOIXw
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
-Content-Length: 177
+Content-Length: 198
 
 {
   "title" : "수정된 제목",
@@ -1268,7 +1289,8 @@ Content-Length: 177
     "name" : "spa"
   }, {
     "name" : "edit"
-  } ]
+  } ],
+  "abilities" : [ ]
 }</code></pre>
 </div>
 </div>
@@ -1281,7 +1303,7 @@ Content-Length: 177
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 10 Jul 2022 14:06:45 GMT
+Date: Tue, 09 Aug 2022 12:15:16 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -1295,7 +1317,7 @@ Connection: keep-alive</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /studylogs/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3NDYyMDA1LCJleHAiOjE2NTc0NjU2MDUsInJvbGUiOiJDUkVXIn0.IgrgpkJHnhhW87DzIpQ3_n9rq5D5-HNQhmgqn1v_tR0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzE2LCJleHAiOjE2NjAwNTA5MTYsInJvbGUiOiJDUkVXIn0.qntz1P1V744SHGkOe0GCw-pWYmKUpFxcwVi6FGgOIXw
 Accept: application/json
 Host: localhost:4000</code></pre>
 </div>
@@ -1309,7 +1331,150 @@ Host: localhost:4000</code></pre>
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 10 Jul 2022 14:06:45 GMT
+Date: Tue, 09 Aug 2022 12:15:16 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="comment"><a class="link" href="#comment">댓글</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_댓글_등록"><a class="link" href="#_댓글_등록">댓글 등록</a></h3>
+<div class="sect3">
+<h4 id="_request_14"><a class="link" href="#_request_14">Request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /studylogs/1/comments HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzIzLCJleHAiOjE2NjAwNTA5MjMsInJvbGUiOiJDUkVXIn0.ObBUtSNGrwZPcxCREd-3H1BObQP8kPcaDx8ccGWY5Mc
+Content-Type: application/json; charset=UTF-8
+Host: localhost:4000
+Content-Length: 46
+
+{
+  "content" : "댓글의 내용입니다."
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_14"><a class="link" href="#_response_14">Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Location: /studylogs/1/comments/1
+Date: Tue, 09 Aug 2022 12:15:22 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_댓글_전체_조회"><a class="link" href="#_댓글_전체_조회">댓글 전체 조회</a></h3>
+<div class="sect3">
+<h4 id="_request_15"><a class="link" href="#_request_15">Request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /studylogs/1/comments HTTP/1.1
+Host: localhost:4000</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_15"><a class="link" href="#_response_15">Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Tue, 09 Aug 2022 12:15:23 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 324
+
+{
+  "data" : [ {
+    "id" : 1,
+    "author" : {
+      "id" : 1,
+      "username" : "soulG",
+      "nickname" : "소롱",
+      "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4",
+      "role" : "CREW"
+    },
+    "content" : "댓글의 내용입니다.",
+    "createAt" : "2022-08-09T21:15:23.658752"
+  } ]
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_댓글_수정"><a class="link" href="#_댓글_수정">댓글 수정</a></h3>
+<div class="sect3">
+<h4 id="_request_16"><a class="link" href="#_request_16">Request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /studylogs/1/comments/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzIzLCJleHAiOjE2NjAwNTA5MjMsInJvbGUiOiJDUkVXIn0.ObBUtSNGrwZPcxCREd-3H1BObQP8kPcaDx8ccGWY5Mc
+Content-Type: application/json; charset=UTF-8
+Host: localhost:4000
+Content-Length: 56
+
+{
+  "content" : "수정된 댓글의 내용입니다."
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_16"><a class="link" href="#_response_16">Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Date: Tue, 09 Aug 2022 12:15:22 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_댓글_삭제"><a class="link" href="#_댓글_삭제">댓글 삭제</a></h3>
+<div class="sect3">
+<h4 id="_request_17"><a class="link" href="#_request_17">Request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /studylogs/1/comments/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzIzLCJleHAiOjE2NjAwNTA5MjMsInJvbGUiOiJDUkVXIn0.ObBUtSNGrwZPcxCREd-3H1BObQP8kPcaDx8ccGWY5Mc
+Host: localhost:4000</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_response_17"><a class="link" href="#_response_17">Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Date: Tue, 09 Aug 2022 12:15:22 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -1324,7 +1489,7 @@ Connection: keep-alive</code></pre>
 <div class="sect2">
 <h3 id="_미션_생성_성공"><a class="link" href="#_미션_생성_성공">미션 생성 성공</a></h3>
 <div class="sect3">
-<h4 id="_request_14"><a class="link" href="#_request_14">Request</a></h4>
+<h4 id="_request_18"><a class="link" href="#_request_18">Request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /missions HTTP/1.1
@@ -1340,7 +1505,7 @@ Content-Length: 62
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_14"><a class="link" href="#_response_14">Response</a></h4>
+<h4 id="_response_18"><a class="link" href="#_response_18">Response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -1349,7 +1514,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:47 GMT
+Date: Tue, 09 Aug 2022 12:15:18 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 113
@@ -1369,7 +1534,7 @@ Content-Length: 113
 <div class="sect2">
 <h3 id="_미션_중복_생성_시_실패"><a class="link" href="#_미션_중복_생성_시_실패">미션 중복 생성 시 실패</a></h3>
 <div class="sect3">
-<h4 id="_request_15"><a class="link" href="#_request_15">Request</a></h4>
+<h4 id="_request_19"><a class="link" href="#_request_19">Request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /missions HTTP/1.1
@@ -1385,7 +1550,7 @@ Content-Length: 62
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_15"><a class="link" href="#_response_15">Response</a></h4>
+<h4 id="_response_19"><a class="link" href="#_response_19">Response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
@@ -1394,7 +1559,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:46 GMT
+Date: Tue, 09 Aug 2022 12:15:17 GMT
 Connection: close
 Content-Length: 63
 
@@ -1409,7 +1574,7 @@ Content-Length: 63
 <div class="sect2">
 <h3 id="_미션_목록_조회"><a class="link" href="#_미션_목록_조회">미션 목록 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_16"><a class="link" href="#_request_16">Request</a></h4>
+<h4 id="_request_20"><a class="link" href="#_request_20">Request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /missions HTTP/1.1
@@ -1418,7 +1583,7 @@ Host: localhost:4000</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_16"><a class="link" href="#_response_16">Response</a></h4>
+<h4 id="_response_20"><a class="link" href="#_response_20">Response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -1427,7 +1592,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:46 GMT
+Date: Tue, 09 Aug 2022 12:15:18 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 209
@@ -1459,7 +1624,7 @@ Content-Length: 209
 <div class="sect2">
 <h3 id="_태그_목록_조회"><a class="link" href="#_태그_목록_조회">태그 목록 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_17"><a class="link" href="#_request_17">Request</a></h4>
+<h4 id="_request_21"><a class="link" href="#_request_21">Request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /tags HTTP/1.1
@@ -1468,7 +1633,7 @@ Host: localhost:4000</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_17"><a class="link" href="#_response_17">Response</a></h4>
+<h4 id="_response_21"><a class="link" href="#_response_21">Response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -1477,7 +1642,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:47 GMT
+Date: Tue, 09 Aug 2022 12:15:19 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 79
@@ -1585,7 +1750,7 @@ Content-Length: 951
 <div class="sect2">
 <h3 id="_멤버_태그_조회"><a class="link" href="#_멤버_태그_조회">멤버 태그 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_18"><a class="link" href="#_request_18">Request</a></h4>
+<h4 id="_request_22"><a class="link" href="#_request_22">Request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/gracefulBrown/tags HTTP/1.1
@@ -1595,7 +1760,7 @@ Host: localhost:4000</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_18"><a class="link" href="#_response_18">Response</a></h4>
+<h4 id="_response_22"><a class="link" href="#_response_22">Response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
@@ -1604,7 +1769,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:47 GMT
+Date: Tue, 09 Aug 2022 12:15:18 GMT
 Connection: close
 Content-Length: 80
 
@@ -1619,7 +1784,7 @@ Content-Length: 80
 <div class="sect2">
 <h3 id="_멤버_달력_스터디로그_조회"><a class="link" href="#_멤버_달력_스터디로그_조회">멤버 달력 스터디로그 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_19"><a class="link" href="#_request_19">Request</a></h4>
+<h4 id="_request_23"><a class="link" href="#_request_23">Request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/gracefulBrown/calendar-studylogs?year=2021&amp;month=8 HTTP/1.1
@@ -1629,7 +1794,7 @@ Host: localhost:4000</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_19"><a class="link" href="#_response_19">Response</a></h4>
+<h4 id="_response_23"><a class="link" href="#_response_23">Response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
@@ -1638,7 +1803,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:47 GMT
+Date: Tue, 09 Aug 2022 12:15:18 GMT
 Connection: close
 Content-Length: 80
 
@@ -1653,17 +1818,17 @@ Content-Length: 80
 <div class="sect2">
 <h3 id="_인기있는_스터디로그_조회"><a class="link" href="#_인기있는_스터디로그_조회">인기있는 스터디로그 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_20"><a class="link" href="#_request_20">Request</a></h4>
+<h4 id="_request_24"><a class="link" href="#_request_24">Request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /studylogs/popular HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3NDYyMDA2LCJleHAiOjE2NTc0NjU2MDYsInJvbGUiOiJDUkVXIn0.Fd4QAud6Oj6RvzrUtOOgmOrZMFbKmiPlJjoKtj7DrMc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzE3LCJleHAiOjE2NjAwNTA5MTcsInJvbGUiOiJDUkVXIn0.oqT4LUjghG3Q-3knLGh05c3D_zyV1jusEXAY2uax6Es
 Host: localhost:4000</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_20"><a class="link" href="#_response_20">Response</a></h4>
+<h4 id="_response_24"><a class="link" href="#_response_24">Response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -1672,10 +1837,10 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:46 GMT
+Date: Tue, 09 Aug 2022 12:15:17 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 8744
+Content-Length: 8952
 
 {
   "allResponse" : {
@@ -1689,8 +1854,8 @@ Content-Length: 8744
           "role" : "CREW",
           "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
         },
-        "createdAt" : "2022-07-10T23:06:46.533399",
-        "updatedAt" : "2022-07-10T23:06:46.533399",
+        "createdAt" : "2022-08-09T21:15:17.460016",
+        "updatedAt" : "2022-08-09T21:15:17.460016",
         "session" : {
           "id" : 2,
           "name" : "백엔드Java 레벨1 - 2021"
@@ -1712,6 +1877,7 @@ Content-Length: 8744
           "id" : 4,
           "name" : "jpa"
         } ],
+        "abilities" : [ ],
         "scrap" : false,
         "read" : true,
         "viewCount" : 0,
@@ -1729,8 +1895,8 @@ Content-Length: 8744
           "role" : "CREW",
           "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
         },
-        "createdAt" : "2022-07-10T23:06:46.486704",
-        "updatedAt" : "2022-07-10T23:06:46.486704",
+        "createdAt" : "2022-08-09T21:15:17.376997",
+        "updatedAt" : "2022-08-09T21:15:17.376997",
         "session" : {
           "id" : 1,
           "name" : "프론트엔드JS 레벨1 - 2021"
@@ -1752,6 +1918,7 @@ Content-Length: 8744
           "id" : 2,
           "name" : "router"
         } ],
+        "abilities" : [ ],
         "scrap" : false,
         "read" : true,
         "viewCount" : 0,
@@ -1772,8 +1939,8 @@ Content-Length: 8744
         "role" : "CREW",
         "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
       },
-      "createdAt" : "2022-07-10T23:06:46.533399",
-      "updatedAt" : "2022-07-10T23:06:46.533399",
+      "createdAt" : "2022-08-09T21:15:17.460016",
+      "updatedAt" : "2022-08-09T21:15:17.460016",
       "session" : {
         "id" : 2,
         "name" : "백엔드Java 레벨1 - 2021"
@@ -1795,6 +1962,7 @@ Content-Length: 8744
         "id" : 4,
         "name" : "jpa"
       } ],
+      "abilities" : [ ],
       "scrap" : false,
       "read" : true,
       "viewCount" : 0,
@@ -1809,8 +1977,8 @@ Content-Length: 8744
         "role" : "CREW",
         "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
       },
-      "createdAt" : "2022-07-10T23:06:46.486704",
-      "updatedAt" : "2022-07-10T23:06:46.486704",
+      "createdAt" : "2022-08-09T21:15:17.376997",
+      "updatedAt" : "2022-08-09T21:15:17.376997",
       "session" : {
         "id" : 1,
         "name" : "프론트엔드JS 레벨1 - 2021"
@@ -1832,6 +2000,7 @@ Content-Length: 8744
         "id" : 2,
         "name" : "router"
       } ],
+      "abilities" : [ ],
       "scrap" : false,
       "read" : true,
       "viewCount" : 0,
@@ -1850,8 +2019,8 @@ Content-Length: 8744
           "role" : "CREW",
           "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
         },
-        "createdAt" : "2022-07-10T23:06:46.486704",
-        "updatedAt" : "2022-07-10T23:06:46.486704",
+        "createdAt" : "2022-08-09T21:15:17.376997",
+        "updatedAt" : "2022-08-09T21:15:17.376997",
         "session" : {
           "id" : 1,
           "name" : "프론트엔드JS 레벨1 - 2021"
@@ -1873,6 +2042,7 @@ Content-Length: 8744
           "id" : 2,
           "name" : "router"
         } ],
+        "abilities" : [ ],
         "scrap" : false,
         "read" : true,
         "viewCount" : 0,
@@ -1893,8 +2063,8 @@ Content-Length: 8744
         "role" : "CREW",
         "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
       },
-      "createdAt" : "2022-07-10T23:06:46.486704",
-      "updatedAt" : "2022-07-10T23:06:46.486704",
+      "createdAt" : "2022-08-09T21:15:17.376997",
+      "updatedAt" : "2022-08-09T21:15:17.376997",
       "session" : {
         "id" : 1,
         "name" : "프론트엔드JS 레벨1 - 2021"
@@ -1916,6 +2086,7 @@ Content-Length: 8744
         "id" : 2,
         "name" : "router"
       } ],
+      "abilities" : [ ],
       "scrap" : false,
       "read" : true,
       "viewCount" : 0,
@@ -1934,8 +2105,8 @@ Content-Length: 8744
           "role" : "CREW",
           "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
         },
-        "createdAt" : "2022-07-10T23:06:46.533399",
-        "updatedAt" : "2022-07-10T23:06:46.533399",
+        "createdAt" : "2022-08-09T21:15:17.460016",
+        "updatedAt" : "2022-08-09T21:15:17.460016",
         "session" : {
           "id" : 2,
           "name" : "백엔드Java 레벨1 - 2021"
@@ -1957,6 +2128,7 @@ Content-Length: 8744
           "id" : 4,
           "name" : "jpa"
         } ],
+        "abilities" : [ ],
         "scrap" : false,
         "read" : true,
         "viewCount" : 0,
@@ -1977,8 +2149,8 @@ Content-Length: 8744
         "role" : "CREW",
         "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
       },
-      "createdAt" : "2022-07-10T23:06:46.533399",
-      "updatedAt" : "2022-07-10T23:06:46.533399",
+      "createdAt" : "2022-08-09T21:15:17.460016",
+      "updatedAt" : "2022-08-09T21:15:17.460016",
       "session" : {
         "id" : 2,
         "name" : "백엔드Java 레벨1 - 2021"
@@ -2000,6 +2172,7 @@ Content-Length: 8744
         "id" : 4,
         "name" : "jpa"
       } ],
+      "abilities" : [ ],
       "scrap" : false,
       "read" : true,
       "viewCount" : 0,
@@ -2033,8 +2206,8 @@ Host: localhost:8080
 {
   "title" : "새로운 리포트",
   "description" : "새로운 리포트 설명",
-  "startDate" : "2022-06-26",
-  "endDate" : "2022-07-10",
+  "startDate" : "2022-07-26",
+  "endDate" : "2022-08-09",
   "reportAbility" : [ {
     "abilityId" : 1,
     "weight" : 5
@@ -2065,14 +2238,14 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Location: /reports/1
 Content-Type: application/json
-Content-Length: 2034
+Content-Length: 2057
 
 {
   "id" : 1,
   "title" : "새로운 리포트",
   "description" : "새로운 리포트 설명",
-  "startDate" : "2022-06-26",
-  "endDate" : "2022-07-10",
+  "startDate" : "2022-07-26",
+  "endDate" : "2022-08-09",
   "abilities" : [ {
     "id" : 1,
     "name" : "역량A",
@@ -2119,8 +2292,8 @@ Content-Length: 2034
         "role" : null,
         "imageUrl" : null
       },
-      "createdAt" : "2022-07-10T23:06:48.477099",
-      "updatedAt" : "2022-07-10T23:06:48.477108",
+      "createdAt" : "2022-08-09T21:15:19.34875",
+      "updatedAt" : "2022-08-09T21:15:19.34876",
       "session" : {
         "id" : null,
         "name" : null
@@ -2139,6 +2312,7 @@ Content-Length: 2034
         "id" : 2,
         "name" : "태그2"
       } ],
+      "abilities" : [ ],
       "scrap" : false,
       "read" : false,
       "viewCount" : 10,
@@ -2190,16 +2364,16 @@ Content-Length: 526
     "id" : 1,
     "title" : "새로운 리포트",
     "description" : "새로운 리포트 설명",
-    "startDate" : "2022-06-12",
-    "endDate" : "2022-06-26",
+    "startDate" : "2022-07-12",
+    "endDate" : "2022-07-26",
     "abilities" : [ ],
     "studylogs" : [ ]
   }, {
     "id" : 2,
     "title" : "두번째 새로운 리포트",
     "description" : "두번째 새로운 리포트 설명",
-    "startDate" : "2022-06-26",
-    "endDate" : "2022-07-10",
+    "startDate" : "2022-07-26",
+    "endDate" : "2022-08-09",
     "abilities" : [ ],
     "studylogs" : [ ]
   } ],
@@ -2231,14 +2405,14 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 2034
+Content-Length: 2057
 
 {
   "id" : 1,
   "title" : "새로운 리포트",
   "description" : "새로운 리포트 설명",
-  "startDate" : "2022-06-26",
-  "endDate" : "2022-07-10",
+  "startDate" : "2022-07-26",
+  "endDate" : "2022-08-09",
   "abilities" : [ {
     "id" : 1,
     "name" : "역량A",
@@ -2285,8 +2459,8 @@ Content-Length: 2034
         "role" : null,
         "imageUrl" : null
       },
-      "createdAt" : "2022-07-10T23:06:48.477099",
-      "updatedAt" : "2022-07-10T23:06:48.477108",
+      "createdAt" : "2022-08-09T21:15:19.34875",
+      "updatedAt" : "2022-08-09T21:15:19.34876",
       "session" : {
         "id" : null,
         "name" : null
@@ -2305,6 +2479,7 @@ Content-Length: 2034
         "id" : 2,
         "name" : "태그2"
       } ],
+      "abilities" : [ ],
       "scrap" : false,
       "read" : false,
       "viewCount" : 10,
@@ -2698,7 +2873,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 1217
+Content-Length: 1242
 
 {
   "data" : [ {
@@ -2711,8 +2886,8 @@ Content-Length: 1217
         "role" : null,
         "imageUrl" : null
       },
-      "createdAt" : "2022-07-10T23:06:49.442437",
-      "updatedAt" : "2022-07-10T23:06:49.442464",
+      "createdAt" : "2022-08-09T21:15:20.197109",
+      "updatedAt" : "2022-08-09T21:15:20.197126",
       "session" : {
         "id" : null,
         "name" : null
@@ -2731,6 +2906,7 @@ Content-Length: 1217
         "id" : 2,
         "name" : "태그2"
       } ],
+      "abilities" : [ ],
       "scrap" : false,
       "read" : false,
       "viewCount" : 10,
@@ -2767,11 +2943,11 @@ Content-Length: 1217
 <div class="sect2">
 <h3 id="_사용자_스크랩_등록"><a class="link" href="#_사용자_스크랩_등록">사용자 스크랩 등록</a></h3>
 <div class="sect3">
-<h4 id="_request_21"><a class="link" href="#_request_21">Request</a></h4>
+<h4 id="_request_25"><a class="link" href="#_request_25">Request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /members/scrap HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3NDYyMDExLCJleHAiOjE2NTc0NjU2MTEsInJvbGUiOiJDUkVXIn0.52VaLgNnZBOclcYJIZWwKJ88_pmkryaNjkPtUKos0vI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzIyLCJleHAiOjE2NjAwNTA5MjIsInJvbGUiOiJDUkVXIn0.3vzzST78x7snMfFZ-oK123jFrfvReqgACVfmmkgDAS4
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
 Content-Length: 22
@@ -2783,7 +2959,7 @@ Content-Length: 22
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_21"><a class="link" href="#_response_21">Response</a></h4>
+<h4 id="_response_25"><a class="link" href="#_response_25">Response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
@@ -2791,7 +2967,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Location: /studylogs/1
-Date: Sun, 10 Jul 2022 14:06:50 GMT
+Date: Tue, 09 Aug 2022 12:15:21 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -2801,24 +2977,24 @@ Connection: keep-alive</code></pre>
 <div class="sect2">
 <h3 id="_사용자_스크랩_삭제"><a class="link" href="#_사용자_스크랩_삭제">사용자 스크랩 삭제</a></h3>
 <div class="sect3">
-<h4 id="_request_22"><a class="link" href="#_request_22">Request</a></h4>
+<h4 id="_request_26"><a class="link" href="#_request_26">Request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /members/scrap?studylog=1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3NDYyMDExLCJleHAiOjE2NTc0NjU2MTEsInJvbGUiOiJDUkVXIn0.52VaLgNnZBOclcYJIZWwKJ88_pmkryaNjkPtUKos0vI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzIyLCJleHAiOjE2NjAwNTA5MjIsInJvbGUiOiJDUkVXIn0.3vzzST78x7snMfFZ-oK123jFrfvReqgACVfmmkgDAS4
 Host: localhost:4000</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_22"><a class="link" href="#_response_22">Response</a></h4>
+<h4 id="_response_26"><a class="link" href="#_response_26">Response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 10 Jul 2022 14:06:50 GMT
+Date: Tue, 09 Aug 2022 12:15:21 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -2828,11 +3004,11 @@ Connection: keep-alive</code></pre>
 <div class="sect2">
 <h3 id="_사용자_스크랩_조회"><a class="link" href="#_사용자_스크랩_조회">사용자 스크랩 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_23"><a class="link" href="#_request_23">Request</a></h4>
+<h4 id="_request_27"><a class="link" href="#_request_27">Request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/scrap HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3NDYyMDEwLCJleHAiOjE2NTc0NjU2MTAsInJvbGUiOiJDUkVXIn0.Yre5XZ1efV_m0X9NNeahhRKRdsl2wwpegJO2Ffqooe8
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzIxLCJleHAiOjE2NjAwNTA5MjEsInJvbGUiOiJDUkVXIn0.RvlLLGiTjZDPUZMN8I1ZqNdI5uJQa6-TNZ69MrYQnbE
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
 Content-Length: 22
@@ -2844,7 +3020,7 @@ Content-Length: 22
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_23"><a class="link" href="#_response_23">Response</a></h4>
+<h4 id="_response_27"><a class="link" href="#_response_27">Response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -2853,10 +3029,10 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:50 GMT
+Date: Tue, 09 Aug 2022 12:15:21 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 3349
+Content-Length: 3441
 
 {
   "data" : [ {
@@ -2868,8 +3044,8 @@ Content-Length: 3349
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2022-07-10T23:06:51.000547",
-    "updatedAt" : "2022-07-10T23:06:51.000547",
+    "createdAt" : "2022-08-09T21:15:21.754035",
+    "updatedAt" : "2022-08-09T21:15:21.754035",
     "session" : null,
     "mission" : {
       "id" : 1,
@@ -2885,6 +3061,7 @@ Content-Length: 3349
       "id" : 1,
       "name" : "0번 태그"
     } ],
+    "abilities" : [ ],
     "scrap" : false,
     "read" : false,
     "viewCount" : 0,
@@ -2899,8 +3076,8 @@ Content-Length: 3349
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2022-07-10T23:06:51.010388",
-    "updatedAt" : "2022-07-10T23:06:51.010388",
+    "createdAt" : "2022-08-09T21:15:21.763511",
+    "updatedAt" : "2022-08-09T21:15:21.763511",
     "session" : null,
     "mission" : {
       "id" : 2,
@@ -2916,6 +3093,7 @@ Content-Length: 3349
       "id" : 2,
       "name" : "1번 태그"
     } ],
+    "abilities" : [ ],
     "scrap" : false,
     "read" : false,
     "viewCount" : 0,
@@ -2930,8 +3108,8 @@ Content-Length: 3349
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2022-07-10T23:06:51.016538",
-    "updatedAt" : "2022-07-10T23:06:51.016538",
+    "createdAt" : "2022-08-09T21:15:21.773402",
+    "updatedAt" : "2022-08-09T21:15:21.773402",
     "session" : null,
     "mission" : {
       "id" : 3,
@@ -2947,6 +3125,7 @@ Content-Length: 3349
       "id" : 3,
       "name" : "2번 태그"
     } ],
+    "abilities" : [ ],
     "scrap" : false,
     "read" : false,
     "viewCount" : 0,
@@ -2961,8 +3140,8 @@ Content-Length: 3349
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2022-07-10T23:06:51.022768",
-    "updatedAt" : "2022-07-10T23:06:51.022768",
+    "createdAt" : "2022-08-09T21:15:21.785876",
+    "updatedAt" : "2022-08-09T21:15:21.785876",
     "session" : null,
     "mission" : {
       "id" : 4,
@@ -2978,6 +3157,7 @@ Content-Length: 3349
       "id" : 4,
       "name" : "3번 태그"
     } ],
+    "abilities" : [ ],
     "scrap" : false,
     "read" : false,
     "viewCount" : 0,
@@ -2995,18 +3175,18 @@ Content-Length: 3349
 <div class="sect2">
 <h3 id="_사용자_스터디로그_좋아요"><a class="link" href="#_사용자_스터디로그_좋아요">사용자 스터디로그 좋아요</a></h3>
 <div class="sect3">
-<h4 id="_request_24"><a class="link" href="#_request_24">Request</a></h4>
+<h4 id="_request_28"><a class="link" href="#_request_28">Request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /studylogs/1/likes HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3NDYyMDA2LCJleHAiOjE2NTc0NjU2MDYsInJvbGUiOiJDUkVXIn0.Fd4QAud6Oj6RvzrUtOOgmOrZMFbKmiPlJjoKtj7DrMc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzE3LCJleHAiOjE2NjAwNTA5MTcsInJvbGUiOiJDUkVXIn0.oqT4LUjghG3Q-3knLGh05c3D_zyV1jusEXAY2uax6Es
 Content-Type: application/x-www-form-urlencoded; charset=ISO-8859-1
 Host: localhost:4000</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_24"><a class="link" href="#_response_24">Response</a></h4>
+<h4 id="_response_28"><a class="link" href="#_response_28">Response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -3015,7 +3195,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:45 GMT
+Date: Tue, 09 Aug 2022 12:15:17 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 40
@@ -3031,17 +3211,17 @@ Content-Length: 40
 <div class="sect2">
 <h3 id="_사용자_스터디로그_좋아요_취소"><a class="link" href="#_사용자_스터디로그_좋아요_취소">사용자 스터디로그 좋아요 취소</a></h3>
 <div class="sect3">
-<h4 id="_request_25"><a class="link" href="#_request_25">Request</a></h4>
+<h4 id="_request_29"><a class="link" href="#_request_29">Request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /studylogs/1/likes HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjU3NDYyMDA2LCJleHAiOjE2NTc0NjU2MDYsInJvbGUiOiJDUkVXIn0.Fd4QAud6Oj6RvzrUtOOgmOrZMFbKmiPlJjoKtj7DrMc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYwMDQ3MzE3LCJleHAiOjE2NjAwNTA5MTcsInJvbGUiOiJDUkVXIn0.oqT4LUjghG3Q-3knLGh05c3D_zyV1jusEXAY2uax6Es
 Host: localhost:4000</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_25"><a class="link" href="#_response_25">Response</a></h4>
+<h4 id="_response_29"><a class="link" href="#_response_29">Response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -3050,7 +3230,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 10 Jul 2022 14:06:46 GMT
+Date: Tue, 09 Aug 2022 12:15:17 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 41
@@ -3069,7 +3249,7 @@ Content-Length: 41
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-07-10 22:49:23 +0900
+Last updated 2022-08-09 21:06:00 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">

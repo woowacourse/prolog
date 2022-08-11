@@ -13,7 +13,6 @@ const selectStyles = {
     outline: 'none',
     border: '0',
     minHeight: '2.4rem',
-    height: '2.4rem',
     cursor: 'pointer',
   }),
   indicatorsContainer: (styles) => ({ ...styles, display: 'none' }),
