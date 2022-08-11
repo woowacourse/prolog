@@ -22,9 +22,9 @@ export interface CommentProps extends CommentType {
   deleteComment: (commentId: number) => void;
 }
 
-const Comment = ({ id, member, content, createAt, editComment, deleteComment }: CommentProps) => {
+const Comment = ({ id, author, content, createAt, editComment, deleteComment }: CommentProps) => {
   const { user } = useContext(UserContext);
-  const { username, nickname, imageUrl } = member;
+  const { username, nickname, imageUrl } = author;
 
   const [isEditMode, setIsEditMode] = useState(false);
   const editorContentRef = useRef<ToastEditor>(null);
@@ -81,7 +81,7 @@ const Comment = ({ id, member, content, createAt, editComment, deleteComment }: 
             </Link>
             <Styled.CreatedDate>{createAt}</Styled.CreatedDate>
           </Styled.Left>
-          {user.userId === member.id && (
+          {user.userId === author.id && (
             <Styled.Right>
               <button type="button" onClick={onClickEditButton}>
                 수정

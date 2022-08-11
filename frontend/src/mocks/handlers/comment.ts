@@ -14,7 +14,7 @@ export const commentsHandler = [
       ...comments.data,
       {
         id: comments.data.length + 1,
-        member: {
+        author: {
           id: 1,
           username: 'euijinkk',
           nickname: '시지프',
