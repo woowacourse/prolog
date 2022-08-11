@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import axios from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
 import { UserContext } from '../../contexts/UserProvider';
 import { Button } from '../../components';
@@ -11,19 +11,35 @@ import { Form, FormButtonWrapper } from './style';
 import { BASE_URL } from '../../configs/environment';
 import useAbility from '../../hooks/Ability/useAbility';
 import AbilityGraph from './AbilityGraph';
+<<<<<<< HEAD:frontend/src/pages/ProfilePageNewReport/index.js
 import ReportStudyLogs from '../../components/ReportStudyLogs/ReportStudyLogs';
 import { useGetMatchedStudylogs } from '../../hooks/queries/report';
+=======
+import useParentAbilityForm from '../../hooks/Ability/useParentAbilityForm';
+import { Editor } from '@toast-ui/react-editor';
+
+type reportDataType = {
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  reportAbility: { abilityId: number; weight: number }[];
+};
+>>>>>>> 723f1b08 (refactor: ProfilePageNew Report typescript 마이그레이션):frontend/src/pages/ProfilePageNewReport/index.tsx
 
 const ProfilePageNewReport = () => {
   const history = useHistory();
 
-  const { username } = useParams();
+  const { username } = useParams<{ username: string }>();
   const { user } = useContext(UserContext);
   const { isLoggedIn, accessToken } = user;
   const nickname = user.nickname ?? user.username;
+  const { setAddFormStatus, addFormClose } = useParentAbilityForm();
 
   const { abilities: abilityList, isLoading } = useAbility({
     username,
+    setAddFormStatus,
+    addFormClose,
   });
 
   useEffect(() => {
@@ -43,7 +59,7 @@ const ProfilePageNewReport = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState<Editor | string>('');
   const [abilities, setAbilities] = useState([]);
 
   const { data: studylogsData, refetch: getMatchedStudylogs } = useGetMatchedStudylogs({
@@ -70,7 +86,7 @@ const ProfilePageNewReport = () => {
   }, [isLoading]);
 
   /** 리포트 등록 */
-  const onAddReport = useMutation(
+  const onAddReport = useMutation<AxiosResponse<never>, AxiosError<Error>, reportDataType>(
     async (reportData) => {
       const { data } = await axios({
         method: 'post',
@@ -117,14 +133,16 @@ const ProfilePageNewReport = () => {
       return;
     }
 
-    /** 리포트 등록 */
-    onAddReport.mutate({
-      title,
-      description: description.getInstance().getMarkdown(),
-      startDate,
-      endDate,
-      reportAbility: abilities.map(({ id, weight }) => ({ abilityId: id, weight })),
-    });
+    if (description instanceof Editor) {
+      /** 리포트 등록 */
+      onAddReport.mutate({
+        title,
+        description: description.getInstance().getMarkdown(),
+        startDate,
+        endDate,
+        reportAbility: abilities.map(({ id, weight }) => ({ abilityId: id, weight })),
+      });
+    }
   };
 
   const onCancelWriteReport = () => {
@@ -150,6 +168,9 @@ const ProfilePageNewReport = () => {
           editorRef={setDescription}
           setStartDate={setStartDate}
           setEndDate={setEndDate}
+          startDate={undefined}
+          endDate={undefined}
+          edit={undefined}
         />
         <ReportStudyLogs studylogs={studylogsMappingData} />
         <AbilityGraph abilities={abilities} setAbilities={setAbilities} />

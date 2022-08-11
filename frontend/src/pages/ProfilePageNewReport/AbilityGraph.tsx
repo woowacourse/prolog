@@ -2,9 +2,34 @@ import Chart from 'react-apexcharts';
 
 import * as Styled from './AbilityGraph.styles';
 import { COLOR } from '../../constants';
+import { ApexOptions } from 'apexcharts';
+
+interface Props {
+  type?:
+    | 'line'
+    | 'area'
+    | 'bar'
+    | 'histogram'
+    | 'pie'
+    | 'donut'
+    | 'radialBar'
+    | 'scatter'
+    | 'bubble'
+    | 'heatmap'
+    | 'treemap'
+    | 'boxPlot'
+    | 'candlestick'
+    | 'radar'
+    | 'polarArea'
+    | 'rangeBar';
+  series?: ApexOptions['series'];
+  width?: string | number;
+  options?: ApexOptions;
+  [key: string]: any;
+}
 
 const AbilityGraph = ({ abilities, setAbilities, edit }) => {
-  const options = {
+  const options: Props = {
     series: [
       {
         name: '역량 가중치',
