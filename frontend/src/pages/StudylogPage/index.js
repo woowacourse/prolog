@@ -228,7 +228,7 @@ const StudylogPage = () => {
         </ButtonList>
       )}
       <Content
-        studylog={{ ...studylog.studylogResponse, scrapedCount: studylog.scrapedCount }}
+        studylog={studylog}
         toggleLike={toggleLike}
         toggleScrap={toggleScrap}
         goAuthorProfilePage={goAuthorProfilePage}

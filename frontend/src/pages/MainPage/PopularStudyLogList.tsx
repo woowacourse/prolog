@@ -41,7 +41,9 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: StudyLogResponse }): JS
         {studylogs[
           getKeyByValue(studyLogCategory, selectedCategory) as keyof typeof studylogs
         ].data.map((studylog) => (
-          <li key={studylog.id}>{/* <PopularStudylogItem item={studylog} /> */}</li>
+          <li key={studylog.id}>
+            <PopularStudylogItem item={studylog} />
+          </li>
         ))}
       </ul>
     </section>
