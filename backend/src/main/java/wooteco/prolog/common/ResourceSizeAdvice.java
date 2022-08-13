@@ -22,6 +22,7 @@ public class ResourceSizeAdvice implements ResponseBodyAdvice<Object> {
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         if (body instanceof Collection) {
+            response.getHeaders().add("Access-Control-Expose-Headers", "X-Total-Count");
             response.getHeaders().add("X-Total-Count", String.valueOf(((Collection<?>) body).size()));
         }
         return body;
