@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { useContext, useEffect } from 'react';
+import { MouseEvent, useContext, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import TagManager from 'react-gtm-module';
 
@@ -33,7 +33,7 @@ import {
 import { SUCCESS_MESSAGE } from '../../constants/message';
 
 const StudylogPage = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
   const { user } = useContext(UserContext);
@@ -71,12 +71,13 @@ const StudylogPage = () => {
       onError: (error) => {
         alert(ERROR_MESSAGE[error.code] ?? ALERT_MESSAGE.FAIL_TO_DELETE_STUDYLOG);
       },
+      onFinish: () => {},
     }
   );
 
   const { author = null, liked = false, scrap = false } = studylog;
 
-  const goAuthorProfilePage = (event) => {
+  const goAuthorProfilePage = (event: MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
 
     if (!author) {
@@ -104,6 +105,8 @@ const StudylogPage = () => {
         await getStudylog();
         openSnackBar(SNACKBAR_MESSAGE.SUCCESS_TO_SCRAP);
       },
+      onError: () => {},
+      onFinish: () => {},
     }
   );
 
@@ -118,6 +121,8 @@ const StudylogPage = () => {
         await getStudylog();
         openSnackBar(SNACKBAR_MESSAGE.DELETE_SCRAP);
       },
+      onError: () => {},
+      onFinish: () => {},
     }
   );
 
@@ -136,6 +141,7 @@ const StudylogPage = () => {
         openSnackBar(SNACKBAR_MESSAGE.SET_LIKE);
       },
       onError: () => openSnackBar(SNACKBAR_MESSAGE.ERROR_SET_LIKE),
+      onFinish: () => {},
     }
   );
 
@@ -151,6 +157,7 @@ const StudylogPage = () => {
         openSnackBar(SNACKBAR_MESSAGE.UNSET_LIKE);
       },
       onError: () => openSnackBar(SNACKBAR_MESSAGE.ERROR_UNSET_LIKE),
+      onFinish: () => {},
     }
   );
 

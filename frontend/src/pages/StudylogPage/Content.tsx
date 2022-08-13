@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
+import { MouseEventHandler } from 'react';
 import { Card, ProfileChip } from '../../components';
 import ViewCount from '../../components/ViewCount/ViewCount';
 import {
@@ -19,7 +20,7 @@ import {
   Title,
   ViewerWrapper,
 } from './styles';
-
+import { Studylog } from '../../models/Studylogs';
 import defaultProfileImage from '../../assets/images/no-profile-image.png';
 import { css } from '@emotion/react';
 import Like from '../../components/Reaction/Like';
@@ -32,19 +33,17 @@ import 'prismjs/themes/prism.css';
 import Prism from 'prismjs';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
 
-const Content = ({ studylog, toggleLike, toggleScrap, goAuthorProfilePage }) => {
-  const {
-    author = null,
-    mission = {},
-    title = '',
-    content = '',
-    tags = [],
-    createdAt = null,
-    viewCount = 0,
-    liked = false,
-    likesCount = 0,
-    scrap = false,
-  } = studylog;
+interface Props {
+  studylog: Studylog;
+  toggleLike: MouseEventHandler<HTMLButtonElement>;
+  toggleScrap: MouseEventHandler<HTMLButtonElement>;
+  // ProfileChip 내부 타이핑 불가로인하여 any로 단언
+  goAuthorProfilePage: any;
+}
+
+const Content = ({ studylog, toggleLike, toggleScrap, goAuthorProfilePage }: Props) => {
+  const { author, mission, title, content, tags, createdAt, viewCount, liked, likesCount, scrap } =
+    studylog;
 
   return (
     <Card size="LARGE">
