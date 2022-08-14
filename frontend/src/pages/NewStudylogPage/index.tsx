@@ -15,6 +15,9 @@ import { SUCCESS_MESSAGE } from '../../constants/message';
 import { useHistory } from 'react-router-dom';
 import { requestPostStudylog } from '../../apis/studylogs';
 import StudylogEditor from '../../components/Editor/StudylogEditor';
+import { ResponseError } from '../../apis/studylogs';
+
+type SelectOption = { value: string; label: string };
 
 const NewStudylogPage = () => {
   const history = useHistory();
@@ -44,10 +47,10 @@ const NewStudylogPage = () => {
     });
   };
 
-  const onSelectMission = (mission: { value: string; label: string }) =>
+  const onSelectMission = (mission: SelectOption) =>
     setStudylogContent({ ...studylogContent, missionId: Number(mission.value) });
 
-  const onSelectSession = (session: { value: string; label: string }) => {
+  const onSelectSession = (session: SelectOption) => {
     setStudylogContent({ ...studylogContent, sessionId: Number(session.value) });
   };
 
@@ -80,11 +83,11 @@ const NewStudylogPage = () => {
         data,
       }),
     {
-      onSuccess: async (data) => {
+      onSuccess: async () => {
         alert(SUCCESS_MESSAGE.CREATE_POST);
         history.push(PATH.STUDYLOG);
       },
-      onError: (error: { code: number; message: string }) => {
+      onError: (error: ResponseError) => {
         console.log(error);
         alert(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
       },
