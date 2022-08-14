@@ -24,6 +24,9 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { getLocalStorageItem } from '../../utils/localStorage';
 import LOCAL_STORAGE_KEY from '../../constants/localStorage';
 import { SUCCESS_MESSAGE } from '../../constants/message';
+import { ResponseError } from '../../apis/studylogs';
+
+type SelectOption = { value: string; label: string };
 
 // 나중에 학습로그 작성 페이지와 같아질 수  있음(임시저장)
 const EditStudylogPage = () => {
@@ -75,7 +78,7 @@ const EditStudylogPage = () => {
     });
   };
 
-  const onSelectMission = (mission: { value: string; label: string } | null) => {
+  const onSelectMission = (mission: SelectOption | null) => {
     if (!mission) {
       setStudylogContent({ ...studylogContent, missionId: null });
       return;
@@ -84,7 +87,7 @@ const EditStudylogPage = () => {
     setStudylogContent({ ...studylogContent, missionId: Number(mission.value) });
   };
 
-  const onSelectSession = (session: { value: string; label: string } | null) => {
+  const onSelectSession = (session: SelectOption | null) => {
     if (!session) {
       setStudylogContent({ ...studylogContent, sessionId: null });
       return;
@@ -126,8 +129,8 @@ const EditStudylogPage = () => {
         alert(SUCCESS_MESSAGE.EDIT_POST);
         history.push(`${PATH.STUDYLOG}/${id}`);
       },
-      onError: (error: { code: number; message: string }) => {
-        console.log(error);
+
+      onError: (error: ResponseError) => {
         alert(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.FAIL_TO_EDIT_STUDYLOG);
       },
     }
