@@ -42,8 +42,19 @@ interface Props {
 }
 
 const Content = ({ studylog, toggleLike, toggleScrap, goAuthorProfilePage }: Props) => {
-  const { author, mission, title, content, tags, createdAt, viewCount, liked, likesCount, scrap } =
-    studylog;
+  const {
+    author,
+    mission,
+    title,
+    content,
+    tags,
+    createdAt,
+    viewCount,
+    liked,
+    likesCount,
+    scrap,
+    scrapedCount,
+  } = studylog;
 
   return (
     <Card size="LARGE">
@@ -98,7 +109,7 @@ const Content = ({ studylog, toggleLike, toggleScrap, goAuthorProfilePage }: Pro
             ]}
           >
             <Like liked={liked} likesCount={likesCount} onClick={toggleLike} />
-            <Scrap scrap={scrap} onClick={toggleScrap} />
+            <Scrap scrap={scrap} scrapedCount={scrapedCount} onClick={toggleScrap} />
           </div>
         </BottomContainer>
       </CardInner>
