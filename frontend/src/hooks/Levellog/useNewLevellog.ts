@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { ALERT_MESSAGE } from '../../constants';
 import { QnAType } from '../../models/Levellogs';
 import { useCreateNewLevellog } from '../queries/levellog';
 import useBeforeunload from '../useBeforeunload';
@@ -19,6 +20,21 @@ const useNewLevellog = () => {
   const createNewLevellog = (e) => {
     e.preventDefault();
     const content = editorContentRef.current?.getInstance().getMarkdown() || '';
+
+    if (title.length === 0) {
+      alert(ALERT_MESSAGE.NO_TITLE);
+      return;
+    }
+
+    if (content.length === 0) {
+      alert(ALERT_MESSAGE.NO_CONTENT);
+      return;
+    }
+
+    if (QnAList.some((QnA) => QnA.answer.length < 1 || QnA.question.length < 1)) {
+      alert(ALERT_MESSAGE.NO_QUESTION_AND_ANSWER);
+      return;
+    }
 
     createNewLevellogRequest({
       title,
