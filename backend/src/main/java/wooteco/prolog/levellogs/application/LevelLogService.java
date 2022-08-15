@@ -60,8 +60,8 @@ public class LevelLogService {
     private void insertSelfDiscussion(LevelLog levelLog,
                                       SelfDiscussionRequest selfDiscussionRequest) {
         selfDiscussionRepository.save(
-            new SelfDiscussion(levelLog, selfDiscussionRequest.getAnswer(),
-                selfDiscussionRequest.getQuestion()));
+            new SelfDiscussion(levelLog, selfDiscussionRequest.getQuestion(),
+                selfDiscussionRequest.getAnswer()));
     }
 
     public LevelLogSummariesResponse findAll(Pageable pageable) {
@@ -115,7 +115,7 @@ public class LevelLogService {
 
         for (int i = 0; i < selfDiscussionRequests.size(); i++) {
             final SelfDiscussionRequest updateData = selfDiscussionRequests.get(i);
-            selfDiscussions.get(i).update(updateData.getAnswer(), updateData.getQuestion());
+            selfDiscussions.get(i).update(updateData.getQuestion(), updateData.getAnswer());
         }
     }
 

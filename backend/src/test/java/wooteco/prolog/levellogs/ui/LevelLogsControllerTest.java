@@ -4,6 +4,7 @@ import static java.util.Comparator.comparing;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -81,7 +82,7 @@ public class LevelLogsControllerTest {
             levelLogRequest);
 
         // assert
-        assertThat(response.getStatusCode()).isEqualTo(NO_CONTENT);
+        assertThat(response.getStatusCode()).isEqualTo(CREATED);
     }
 
     @Test

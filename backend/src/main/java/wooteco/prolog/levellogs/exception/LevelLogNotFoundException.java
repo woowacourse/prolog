@@ -1,5 +1,7 @@
 package wooteco.prolog.levellogs.exception;
 
-public class LevelLogNotFoundException extends RuntimeException {
+import wooteco.prolog.common.exception.BadRequestException;
+
+public class LevelLogNotFoundException extends BadRequestException {
 
 }

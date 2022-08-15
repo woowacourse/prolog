@@ -1,7 +1,12 @@
 package wooteco.prolog.levellogs.ui;
 
+import java.net.URI;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -30,8 +35,9 @@ public class LevelLogsController {
     @MemberOnly
     public ResponseEntity<Void> create(@AuthMemberPrincipal LoginMember member,
                                        @RequestBody LevelLogRequest levelLogRequest) {
-        levelLogService.insertLevellogs(member.getId(), levelLogRequest);
-        return ResponseEntity.noContent().build();
+        final LevelLogResponse response = levelLogService.insertLevellogs(
+            member.getId(), levelLogRequest);
+        return ResponseEntity.created(URI.create("/levellogs/" + response.getId())).build();
     }
 
     @PutMapping("/{id}")
@@ -43,17 +49,23 @@ public class LevelLogsController {
         return ResponseEntity.noContent().build();
     }
 
-    public ResponseEntity<LevelLogResponse> findById(Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<LevelLogResponse> findById(@PathVariable Long id) {
         final LevelLogResponse response = levelLogService.findLevelLogResponseById(id);
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<LevelLogSummariesResponse> findAll(Pageable pageable) {
+    @GetMapping
+    public ResponseEntity<LevelLogSummariesResponse> findAll(
+        @PageableDefault(sort = {"createdAt"}, direction = Direction.DESC) Pageable pageable) {
         final LevelLogSummariesResponse response = levelLogService.findAll(pageable);
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<Void> deleteById(@AuthMemberPrincipal LoginMember member, Long id) {
+    @DeleteMapping("/{id}")
+    @MemberOnly
+    public ResponseEntity<Void> deleteById(@AuthMemberPrincipal LoginMember member,
+                                           @PathVariable Long id) {
         levelLogService.deleteById(member.getId(), id);
         return ResponseEntity.noContent().build();
     }
