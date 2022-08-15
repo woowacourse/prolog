@@ -1,6 +1,6 @@
 import LevellogQnAItem from '../Items/LevellogQnAItem';
 
-import * as S from './LevellogQnaList.styles';
+import * as S from './LevellogQnAList.styles';
 
 const LevellogQnAList = ({ QnAListProps }) => {
   const { QnAList, onAddQnA, onDeleteQnA, onChangeQuestion, onChangeAnswer } = QnAListProps;

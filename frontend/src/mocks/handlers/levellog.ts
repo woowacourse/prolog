@@ -7,6 +7,7 @@ export const levellogHandler = [
   rest.get(`${BASE_URL}/levellogs`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(levellogs));
   }),
+
   rest.post<LevellogRequest>(`${BASE_URL}/levellogs`, (req, res, ctx) => {
     const { body } = req;
 
