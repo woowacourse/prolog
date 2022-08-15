@@ -38,7 +38,9 @@ const NewLevellogPage = () => {
         editorContentRef={editorContentRef}
       />
       <LevellogQnAList QnAListProps={QnAListProps} />
-      <SubmitButton>제출하기</SubmitButton>
+      <SubmitButton type="submit" onClick={createNewLevellog}>
+        제출하기
+      </SubmitButton>
     </div>
   );
 };

@@ -16,7 +16,8 @@ const useNewLevellog = () => {
 
   const [QnAList, setQnAList] = useState<QnAType[]>([{ question: '', answer: '' }]);
 
-  const createNewLevellog = () => {
+  const createNewLevellog = (e) => {
+    e.preventDefault();
     const content = editorContentRef.current?.getInstance().getMarkdown() || '';
 
     createNewLevellogRequest({
