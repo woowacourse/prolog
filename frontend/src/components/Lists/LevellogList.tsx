@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Link } from 'react-router-dom';
 import { PATH } from '../../constants';
 
 import LevellogItem from '../Items/LevellogItem';
+import { NoDefaultHoverLink } from './LevellogList.styles';
 
 const LevellogList = ({ levellogs }) => {
   return (
@@ -16,9 +16,9 @@ const LevellogList = ({ levellogs }) => {
     >
       {levellogs.map((levellog) => (
         <li key={levellog.id}>
-          <Link to={`${PATH.LEVELLOG}/${levellog.id}`}>
+          <NoDefaultHoverLink to={`${PATH.LEVELLOG}/${levellog.id}`}>
             <LevellogItem levellog={levellog} />
-          </Link>
+          </NoDefaultHoverLink>
         </li>
       ))}
     </ul>

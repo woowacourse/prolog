@@ -1,4 +1,6 @@
 import { css } from '@emotion/react';
+import styled from '@emotion/styled';
+import { Link } from 'react-router-dom';
 import { COLOR } from '../../enumerations/color';
 
 export const CardStyle = css`
@@ -7,7 +9,7 @@ export const CardStyle = css`
   padding: 3rem;
   height: 20rem;
 
-  &:hover {
+  :hover {
     transform: scale(1.005);
   }
 `;
@@ -50,5 +52,11 @@ export const ProfileChipLocationStyle = css`
 
   &:hover {
     background-color: ${COLOR.LIGHT_BLUE_100};
+  }
+`;
+
+export const NoDefaultHoverLink = styled(Link)`
+  :hover {
+    font-weight: unset;
   }
 `;
