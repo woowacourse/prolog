@@ -14,6 +14,7 @@ export const levellogHandler = [
     levellogs.data = [
       ...levellogs.data,
       {
+        id: levellogs.data.length + 1,
         title: body.title,
         author: {
           id: 1,
@@ -32,6 +33,10 @@ export const levellogHandler = [
         })),
       },
     ];
+
+    levellogs.data.sort(
+      (log1, log2) => Number(new Date(log2.createdAt)) - Number(new Date(log1.createdAt))
+    );
 
     return res(ctx.status(200), ctx.json(levellogs));
   }),
