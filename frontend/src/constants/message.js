@@ -19,6 +19,7 @@ const ALERT_MESSAGE = {
   NO_CONTENT: '내용을 입력하세요',
   NO_TITLE: '제목을 입력하세요',
   NO_QUESTION_AND_ANSWER: '질답을 완성해주세요',
+  NO_QNA: '적어도 하나의 질답을 작성해주세요.',
 };
 
 const ERROR_MESSAGE = {

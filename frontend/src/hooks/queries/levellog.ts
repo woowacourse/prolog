@@ -8,5 +8,9 @@ const QUERY_KEY = {
 
 export const useGetLevellogs = () => useQuery(QUERY_KEY.levellogs, requestGetLevellogs);
 
-export const useCreateNewLevellog = () =>
-  useMutation((body: LevellogRequest) => createNewLevellogRequest(body));
+export const useCreateNewLevellog = ({ onSuccess = () => {} } = {}) =>
+  useMutation((body: LevellogRequest) => createNewLevellogRequest(body), {
+    onSuccess: () => {
+      onSuccess?.();
+    },
+  });
