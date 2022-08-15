@@ -48,11 +48,11 @@ const pageRoutes = [
     render: () => <NewLevellogPage />,
   },
   {
-    path: [`${PATH.LEVELLOG}:id`],
+    path: [`${PATH.LEVELLOG}/:id`],
     render: () => <LevellogPage />,
   },
   {
-    path: [`${PATH.LEVELLOG}:id/edit`],
+    path: [`${PATH.LEVELLOG}/:id/edit`],
     render: () => <LevellogPage />,
   },
   {
