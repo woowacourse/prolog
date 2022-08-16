@@ -4,6 +4,8 @@ import { ALERT_MESSAGE, PATH } from '../../constants';
 import { QnAType } from '../../models/Levellogs';
 import { useCreateNewLevellog } from '../queries/levellog';
 import useBeforeunload from '../useBeforeunload';
+import { Editor as ToastEditor } from '@toast-ui/react-editor';
+import { SUCCESS_MESSAGE } from '../../constants/message';
 
 const useNewLevellog = () => {
   const history = useHistory();
@@ -18,6 +20,7 @@ const useNewLevellog = () => {
   const { mutate: createNewLevellogRequest } = useCreateNewLevellog({
     onSuccess: () => {
       history.push(PATH.LEVELLOG);
+      alert(SUCCESS_MESSAGE.CREATE_POST);
     },
   });
 
@@ -45,10 +48,6 @@ const useNewLevellog = () => {
 
     if (QnAList.some((QnA) => QnA.answer.length < 1 || QnA.question.length < 1)) {
       alert(ALERT_MESSAGE.NO_QUESTION_AND_ANSWER);
-      return;
-    }
-
-    if (!window.confirm('레벨로그를 작성하시겠습니까?')) {
       return;
     }
 
