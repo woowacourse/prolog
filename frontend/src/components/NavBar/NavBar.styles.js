@@ -95,6 +95,22 @@ const DropdownStyle = css`
   }
 `;
 
+const WritingDropdownStyle = css`
+  top: 4.6rem;
+  right: 5rem;
+  transform: translateX(-24%);
+
+  width: 13rem;
+
+  & * {
+    text-align: center;
+  }
+
+  @media screen and (max-width: 420px) {
+    transform: translateX(-10%);
+  }
+`;
+
 const Navigation = styled.nav`
   margin-right: 1rem;
 
@@ -162,6 +178,7 @@ export {
   Menu,
   Navigation,
   DropdownStyle,
+  WritingDropdownStyle,
   whiteBackgroundStyle,
   pencilButtonStyle,
   profileButtonStyle,
