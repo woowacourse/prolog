@@ -1,7 +1,7 @@
 import { useHistory, useParams } from 'react-router-dom';
 import TagManager from 'react-gtm-module';
 
-import { useDeleteLevellog, useGetLevellog } from '../queries/levellog';
+import { useDeleteLevellogMutation, useGetLevellog } from '../queries/levellog';
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserProvider';
 import { PATH, ERROR_MESSAGE, ALERT_MESSAGE } from '../../constants';
@@ -33,7 +33,7 @@ const useLevellog = () => {
   );
   const isCurrentUserAuthor = levellog?.author.username === username;
 
-  const { mutate: deleteLevellog } = useDeleteLevellog(
+  const { mutate: deleteLevellog } = useDeleteLevellogMutation(
     { id },
     {
       onSuccess: () => {

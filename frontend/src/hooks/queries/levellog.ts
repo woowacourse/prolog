@@ -15,7 +15,7 @@ const QUERY_KEY = {
 
 export const useGetLevellogs = () => useQuery(QUERY_KEY.levellogs, requestGetLevellogs);
 
-export const useCreateNewLevellog = ({ onSuccess = () => {} } = {}) =>
+export const useCreateNewLevellogMutation = ({ onSuccess = () => {} } = {}) =>
   useMutation((body: LevellogRequest) => createNewLevellogRequest(body), {
     onSuccess: () => {
       onSuccess?.();
@@ -29,7 +29,7 @@ export const useGetLevellog = ({ id }, { onSuccess = (levellog: LevellogResponse
     },
   });
 
-export const useDeleteLevellog = (
+export const useDeleteLevellogMutation = (
   { id },
   { onSuccess = () => {}, onError = (error: { code: number }) => {} } = {}
 ) =>
@@ -42,7 +42,7 @@ export const useDeleteLevellog = (
     },
   });
 
-export const usePutLevellog = ({ id, body }, { onSuccess = () => {} } = {}) =>
+export const usePutLevellogMutation = ({ id, body }, { onSuccess = () => {} } = {}) =>
   useMutation(() => requestPutLevellog(id, body), {
     onSuccess: () => {
       onSuccess?.();

@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ALERT_MESSAGE, PATH } from '../../constants';
 import { QnAType } from '../../models/Levellogs';
-import { useCreateNewLevellog } from '../queries/levellog';
+import { useCreateNewLevellogMutation } from '../queries/levellog';
 import useBeforeunload from '../useBeforeunload';
 import { Editor as ToastEditor } from '@toast-ui/react-editor';
 import { SUCCESS_MESSAGE } from '../../constants/message';
@@ -17,7 +17,7 @@ const useNewLevellog = () => {
 
   useBeforeunload(editorContentRef);
 
-  const { mutate: createNewLevellogRequest } = useCreateNewLevellog({
+  const { mutate: createNewLevellogRequest } = useCreateNewLevellogMutation({
     onSuccess: () => {
       history.push(PATH.LEVELLOG);
       alert(SUCCESS_MESSAGE.CREATE_POST);
