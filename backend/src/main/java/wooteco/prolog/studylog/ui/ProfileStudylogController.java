@@ -2,10 +2,8 @@ package wooteco.prolog.studylog.ui;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.domain.Pageable;
@@ -25,12 +23,8 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.ProfileIntroRequest;
 import wooteco.prolog.member.application.dto.ProfileIntroResponse;
-import wooteco.prolog.studylog.application.BadgeService;
 import wooteco.prolog.studylog.application.StudylogService;
-import wooteco.prolog.studylog.application.dto.BadgeResponse;
-import wooteco.prolog.studylog.application.dto.BadgesResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
-import wooteco.prolog.studylog.domain.BadgeType;
 
 @RestController
 @AllArgsConstructor
@@ -39,7 +33,6 @@ public class ProfileStudylogController {
 
     private StudylogService studylogService;
     private MemberService memberService;
-    private BadgeService badgeService;
 
     @Deprecated
     @GetMapping(value = "/{username}/posts", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -97,16 +90,6 @@ public class ProfileStudylogController {
                                                        @RequestBody ProfileIntroRequest updateRequest) {
         memberService.updateProfileIntro(member, username, updateRequest);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping(value = "/{username}/badges", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BadgesResponse> findMemberBadges(@PathVariable String username) {
-        List<BadgeType> badges = badgeService.findBadges(username, Arrays.asList(10L, 11L));
-        List<BadgeResponse> badgeResponses = badges.stream()
-            .map(BadgeType::toString)
-            .map(BadgeResponse::new)
-            .collect(Collectors.toList());
-        return ResponseEntity.ok(new BadgesResponse(badgeResponses));
     }
 
     @Data

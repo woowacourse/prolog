@@ -1,8 +1,7 @@
-package wooteco.prolog.studylog.application;
+package wooteco.prolog.badge.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import wooteco.prolog.badge.domain.BadgeType;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
@@ -17,7 +17,8 @@ import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-import wooteco.prolog.studylog.domain.BadgeType;
+import wooteco.prolog.studylog.application.StudylogLikeService;
+import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.support.utils.IntegrationTest;
 
@@ -47,8 +48,12 @@ public class BadgeServiceTest {
 
     @BeforeEach
     void setUp() {
-        session1 = sessionRepository.save(new Session("세션1"));
-        session2 = sessionRepository.save(new Session("세션2"));
+        for (int i = 0; i < 9; i++) {
+            sessionRepository.save(new Session("세션" + i));
+        }
+
+        session1 = sessionRepository.save(new Session(10L, "세션10"));
+        session2 = sessionRepository.save(new Session(11L, "세션11"));
 
         Mission 체스미션 = missionRepository.save(new Mission("체스미션", session1));
         Mission 지하철미션 = missionRepository.save(new Mission("지하철미션", session2));
@@ -60,24 +65,24 @@ public class BadgeServiceTest {
 
         for (int i = 0; i < 3; i++) {
             Studylog studylog = studylogService.save(
-                new Studylog(브라운, "체스 title" + i, "체스 content" + i, session1, 체스미션,
-                    Collections.emptyList()));
+                    new Studylog(브라운, "체스 title" + i, "체스 content" + i, session1, 체스미션,
+                            Collections.emptyList()));
             likeService.likeStudylog(수달.getId(), studylog.getId(), true);
             likeService.likeStudylog(베루스.getId(), studylog.getId(), true);
         }
 
         for (int i = 0; i < 4; i++) {
             Studylog studylog = studylogService.save(
-                new Studylog(브라운, "지하철 title" + i, "지하철 content" + i, session2, 지하철미션,
-                    Collections.emptyList()));
+                    new Studylog(브라운, "지하철 title" + i, "지하철 content" + i, session2, 지하철미션,
+                            Collections.emptyList()));
             likeService.likeStudylog(수달.getId(), studylog.getId(), true);
             likeService.likeStudylog(베루스.getId(), studylog.getId(), true);
         }
 
         for (int i = 0; i < 8; i++) {
             Studylog studylog = studylogService.save(
-                new Studylog(베루스, "장바구니 title" + i, "장바구니 content" + i, session2, 지하철미션,
-                    Collections.emptyList()));
+                    new Studylog(베루스, "장바구니 title" + i, "장바구니 content" + i, session2, 지하철미션,
+                            Collections.emptyList()));
             likeService.likeStudylog(수달.getId(), studylog.getId(), true);
             likeService.likeStudylog(베루스.getId(), studylog.getId(), true);
         }
@@ -86,39 +91,37 @@ public class BadgeServiceTest {
     @DisplayName("발급 받은 배지가 없는 사용자의 배지를 조회한다.")
     @Test
     void findEmptyBadge() {
-        List<BadgeType> badges = badgeService.findBadges(토미.getUsername(),
-            Arrays.asList(session1.getId(), session2.getId()));
+        List<BadgeType> badges = badgeService.getBadges(토미.getUsername()
+        );
         assertThat(badges).isEmpty();
     }
 
     @DisplayName("열정왕 배지를 발급 받은 사용자의 배지를 조회한다.")
     @Test
     void findPassionKingBadge() {
-        List<BadgeType> badges = badgeService.findBadges(브라운.getUsername(),
-            Arrays.asList(session1.getId(), session2.getId()));
-        assertThat(badges).hasSize(1);
-        assertThat(badges.get(0).toString()).isEqualTo(BadgeType.PASSION_KING.name());
+        List<BadgeType> badges = badgeService.getBadges(브라운.getUsername()
+        );
+        assertThat(badges).containsExactly(BadgeType.PASSION_KING);
     }
 
     @DisplayName("칭찬왕 배지를 받급받은 사용자의 배지를 조회한다.")
     @Test
     void findComplimentKingBadge() {
-        List<BadgeType> badges = badgeService.findBadges(수달.getUsername(),
-            Arrays.asList(session1.getId(), session2.getId()));
-        assertThat(badges).hasSize(1);
-        assertThat(badges.get(0).toString()).isEqualTo(BadgeType.COMPLIMENT_KING.name());
+        List<BadgeType> badges = badgeService.getBadges(수달.getUsername()
+        );
+        assertThat(badges).containsExactly(BadgeType.COMPLIMENT_KING);
     }
 
     @DisplayName("칭찬왕과 열정왕 배지를 발급받은 사용자의 배지를 조회한다.")
     @Test
     void findAllBadges() {
-        List<BadgeType> badges = badgeService.findBadges(베루스.getUsername(),
-            Arrays.asList(session1.getId(), session2.getId()));
+        List<BadgeType> badges = badgeService.getBadges(베루스.getUsername()
+        );
         assertThat(badges).hasSize(2);
         List<String> badgeNames = badges.stream()
-            .map(BadgeType::toString)
-            .collect(Collectors.toList());
+                .map(BadgeType::toString)
+                .collect(Collectors.toList());
         assertThat(badgeNames).containsExactlyInAnyOrder(BadgeType.PASSION_KING.name(),
-            BadgeType.COMPLIMENT_KING.name());
+                BadgeType.COMPLIMENT_KING.name());
     }
 }
