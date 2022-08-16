@@ -13,21 +13,21 @@ public class BadgeCreatorConfig {
 
     @Bean
     public BadgeCreator levelTwoPassionKingBadgeCreator(BadgeRepository badgeRepository) {
-        return new PassionKingBadgeCreator(badgeRepository, FourthCrewSessions.LEVEL_TWO.getSessions());
+        return new PassionKingBadgeCreator(badgeRepository, FourthCrewSessions.LEVEL_TWO.getSessionIds());
     }
 
     @Bean
     public BadgeCreator levelTwoComplimentKingBadgeCreator(BadgeRepository badgeRepository) {
-        return new ComplimentKingBadgeCreator(badgeRepository, FourthCrewSessions.LEVEL_TWO.getSessions());
+        return new ComplimentKingBadgeCreator(badgeRepository, FourthCrewSessions.LEVEL_TWO.getSessionIds());
     }
 
     @Bean
     public BadgeCreator levelThreePassionKingBadgeCreator(BadgeRepository badgeRepository) {
-        return new PassionKingBadgeCreator(badgeRepository, FourthCrewSessions.LEVEL_THREE.getSessions());
+        return new PassionKingBadgeCreator(badgeRepository, FourthCrewSessions.LEVEL_THREE.getSessionIds());
     }
 
     @Bean
     public BadgeCreator levelThreeComplimentKingBadgeCreator(BadgeRepository badgeRepository) {
-        return new ComplimentKingBadgeCreator(badgeRepository, FourthCrewSessions.LEVEL_THREE.getSessions());
+        return new ComplimentKingBadgeCreator(badgeRepository, FourthCrewSessions.LEVEL_THREE.getSessionIds());
     }
 }

@@ -9,11 +9,11 @@ public enum FourthCrewSessions {
     LEVEL_TWO(10L, 11L),
     LEVEL_THREE(12L);
 
-    private final List<Long> sessions;
+    private final List<Long> sessionIds;
 
-    FourthCrewSessions(Long... sessions) {
-        validateSessionCount(sessions);
-        this.sessions = Arrays.asList(sessions);
+    FourthCrewSessions(Long... sessionIds) {
+        validateSessionCount(sessionIds);
+        this.sessionIds = Arrays.asList(sessionIds);
     }
 
     private void validateSessionCount(Long[] sessions) {
@@ -26,7 +26,7 @@ public enum FourthCrewSessions {
         return sessions.length < 1;
     }
 
-    public List<Long> getSessions() {
-        return sessions;
+    public List<Long> getSessionIds() {
+        return sessionIds;
     }
 }
