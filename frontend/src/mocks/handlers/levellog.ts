@@ -18,10 +18,10 @@ export const levellogHandler = [
         title: body.title,
         author: {
           id: 1,
-          username: 'hui',
+          username: 'kwannee',
           nickname: '후이',
           role: 'CREW',
-          imageUrl: 'https://avatars.githubusercontent.com/u/52682603?v=4',
+          imageUrl: 'https://avatars.githubusercontent.com/u/41886825?v=4',
         },
         content: body.content,
         createdAt: new Date().toISOString(),
@@ -39,5 +39,30 @@ export const levellogHandler = [
     );
 
     return res(ctx.status(200), ctx.json(levellogs));
+  }),
+
+  rest.get(`${BASE_URL}/levellogs/:id`, (req, res, ctx) => {
+    const {
+      params: { id },
+    } = req;
+
+    const numberId = Number(id);
+
+    return res(
+      ctx.status(200),
+      ctx.json(levellogs.data.find((levellog) => levellog.id === numberId))
+    );
+  }),
+
+  rest.delete(`${BASE_URL}/levellogs/:id`, (req, res, ctx) => {
+    const {
+      params: { id },
+    } = req;
+
+    const numberId = Number(id);
+
+    levellogs.data = levellogs.data.filter((levellog) => levellog.id !== numberId);
+
+    return res(ctx.status(200));
   }),
 ];

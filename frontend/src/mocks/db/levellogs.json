@@ -14,8 +14,18 @@
       "levelLogs": [
         {
           "id": 1,
-          "question": "question",
-          "answer": "answer"
+          "question": "레벨 인터뷰 예상 질문1",
+          "answer": "질문에 대한 답변1"
+        },
+        {
+          "id": 2,
+          "question": "레벨 인터뷰 예상 질문2",
+          "answer": "질문에 대한 답변2"
+        },
+        {
+          "id": 3,
+          "question": "레벨 인터뷰 예상 질문3",
+          "answer": "질문에 대한 답변3"
         }
       ],
       "createdAt": "2022-07-10T23:06:45.395224",
