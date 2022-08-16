@@ -57,16 +57,6 @@ const NavBar = () => {
     history.push(PATH.ROOT);
   };
 
-  const goNewStudylog = async () => {
-    if (!accessToken) {
-      alert(ERROR_MESSAGE.LOGIN_DEFAULT);
-
-      return;
-    }
-
-    history.push(PATH.NEW_STUDYLOG);
-  };
-
   const showDropdownMenu = () => {
     setDropdownToggled(true);
   };
@@ -125,7 +115,7 @@ const NavBar = () => {
                 icon={PencilIcon}
                 type="button"
                 onClick={(e) => {
-                  setWritingDropdownToggled((prev) => !prev);
+                  setWritingDropdownToggled(true);
                   hideDropdownMenu(e);
                 }}
                 cssProps={pencilButtonStyle}
