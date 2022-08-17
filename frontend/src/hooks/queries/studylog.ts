@@ -24,9 +24,6 @@ import { useHistory } from 'react-router-dom';
 import { PATH } from '../../constants';
 
 const QUERY_KEY = {
-  scrap: 'scrap',
-  profile: 'profile',
-  introduction: 'introduction',
   recentStudylogs: 'recentStudylogs',
   popularStudylogs: 'popularStudylogs',
 };
