@@ -4,7 +4,7 @@ import * as Styled from './AbilityGraph.styles';
 import { COLOR } from '../../constants';
 import { ApexOptions } from 'apexcharts';
 
-interface Props {
+interface ChartOption {
   type?:
     | 'line'
     | 'area'
@@ -29,7 +29,7 @@ interface Props {
 }
 
 const AbilityGraph = ({ abilities }: typeof AbilityGraph) => {
-  const options: Props = {
+  const options: ChartOption = {
     series: [
       {
         name: '역량 가중치',
