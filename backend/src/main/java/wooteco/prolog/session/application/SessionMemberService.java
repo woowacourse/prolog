@@ -71,6 +71,7 @@ public class SessionMemberService {
     }
 
     public List<SessionMember> findByMemberId(Long memberId) {
-        return sessionMemberRepository.findByMemberId(memberId);
+        Member member = memberService.findById(memberId);
+        return sessionMemberRepository.findByMember(member);
     }
 }
