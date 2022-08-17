@@ -22,7 +22,7 @@ import ReportStudyLogs from '../../components/ReportStudyLogs/ReportStudyLogs';
 
 const ProfilePageReports = () => {
   const history = useHistory();
-  const { reportId, username } = useParams<{ reportId; username }>();
+  const { reportId, username } = useParams<{ reportId: string; username: string }>();
   const { user } = useContext(UserContext);
   const readOnly = username !== user.username;
 

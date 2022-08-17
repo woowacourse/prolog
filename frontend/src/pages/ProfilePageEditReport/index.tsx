@@ -25,7 +25,7 @@ const ProfilePageNewReport = () => {
   const history = useHistory();
   const queryClient = useQueryClient();
 
-  const { id, username } = useParams<{ id; username }>();
+  const { id, username } = useParams<{ id: string; username: string }>();
   const { user } = useContext(UserContext);
   const { isLoggedIn, accessToken } = user;
   const nickname = user.nickname ?? user.username;
@@ -72,7 +72,7 @@ const ProfilePageNewReport = () => {
   );
 
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState<Editor | string>('');
+  const [description, setDescription] = useState<Editor>();
   const [abilities, setAbilities] = useState([]);
 
   useEffect(() => {

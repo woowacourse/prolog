@@ -10,7 +10,7 @@ interface ReportInfoPros {
   nickname: string;
   title: string;
   desc: Editor | string;
-  editorRef: Dispatch<SetStateAction<Editor | string>>;
+  editorRef?: Dispatch<SetStateAction<Editor | undefined>>;
   startDate?: string;
   setStartDate?: Dispatch<SetStateAction<string>>;
   setTitle: Dispatch<SetStateAction<string>>;
@@ -87,7 +87,7 @@ const ReportInfo = ({
 
       <Styled.Label htmlFor="report_desc">
         ✏️ 리포트 설명
-        <span>{desc instanceof String ? desc.length : null}/300</span>
+        {/* <span>{desc instanceof String ? desc.length : desc.getInstance()}/300</span> */}
         <ReportDescEditor initialContent={desc ?? ''} editorRef={editorRef} />
       </Styled.Label>
     </section>
