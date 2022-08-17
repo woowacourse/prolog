@@ -87,7 +87,6 @@ const ReportInfo = ({
 
       <Styled.Label htmlFor="report_desc">
         ✏️ 리포트 설명
-        {/* <span>{desc instanceof String ? desc.length : desc.getInstance()}/300</span> */}
         <ReportDescEditor initialContent={desc ?? ''} editorRef={editorRef} />
       </Styled.Label>
     </section>

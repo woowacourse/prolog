@@ -20,7 +20,7 @@ import { Editor } from '@toast-ui/react-editor';
 
 type reportDataType = {
   title: string;
-  description: string | Editor;
+  description: string;
   startDate: string;
   endDate: string;
   reportAbility: { abilityId: number; weight: number }[];
