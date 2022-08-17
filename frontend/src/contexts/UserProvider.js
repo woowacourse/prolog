@@ -3,7 +3,7 @@ import { client } from '../apis';
 
 import LOCAL_STORAGE_KEY from '../constants/localStorage';
 import useRequest from '../hooks/useRequest';
-import { getUserProfileRequest, loginRequest } from '../service/requests';
+import { getUserProfileRequest } from '../service/requests';
 import { getLocalStorageItem } from '../utils/localStorage';
 import { useLogin } from '../hooks/queries/auth';
 
@@ -54,6 +54,8 @@ const UserProvider = ({ children }) => {
 
   const { mutate: onLogin } = useLogin({
     onSuccess: (accessToken) => {
+      localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, JSON.stringify(accessToken));
+      client.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
       setState((prev) => ({ ...prev, accessToken }));
     },
   });

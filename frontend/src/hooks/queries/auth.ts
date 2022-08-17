@@ -1,6 +1,4 @@
 import { useMutation } from 'react-query';
-import { client } from '../../apis';
-import LOCAL_STORAGE_KEY from '../../constants/localStorage';
 import { loginRequest } from '../../service/requests';
 
 export const useLogin = ({ onSuccess }) =>
@@ -12,9 +10,6 @@ export const useLogin = ({ onSuccess }) =>
     },
     {
       onSuccess: ({ accessToken }) => {
-        localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, JSON.stringify(accessToken));
-        client.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
-
         onSuccess(accessToken);
       },
       onError: (error) => {
