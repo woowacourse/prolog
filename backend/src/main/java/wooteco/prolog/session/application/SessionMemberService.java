@@ -74,4 +74,20 @@ public class SessionMemberService {
         Member member = memberService.findById(memberId);
         return sessionMemberRepository.findByMember(member);
     }
+
+    @Transactional
+    public void deleteRegistedSession(Long sessionId, Long memberId) {
+        Member member = memberService.findById(memberId);
+        SessionMember sessionMember = findSessionMemberBySessionIdAndMemberId(
+            sessionId,
+            member
+        );
+
+        sessionMemberRepository.delete(sessionMember);
+    }
+
+    private SessionMember findSessionMemberBySessionIdAndMemberId(Long sessionId, Member member) {
+        return sessionMemberRepository.findBySessionIdAndMember(sessionId, member)
+            .orElseThrow(SessionNotFoundException::new);
+    }
 }
