@@ -25,7 +25,7 @@ const ProfilePageNewReport = () => {
   const history = useHistory();
   const queryClient = useQueryClient();
 
-  const { id, username } = useParams<{ id: string; username: string }>();
+  const { id, username } = useParams<{ id; username }>();
   const { user } = useContext(UserContext);
   const { isLoggedIn, accessToken } = user;
   const nickname = user.nickname ?? user.username;
@@ -134,8 +134,6 @@ const ProfilePageNewReport = () => {
             edit={true}
             startDate={reportData.startDate}
             endDate={reportData.endDate}
-            setStartDate={undefined}
-            setEndDate={undefined}
           />
 
           <AbilityGraph abilities={abilities} setAbilities={setAbilities} edit={true} />

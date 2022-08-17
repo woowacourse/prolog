@@ -16,7 +16,7 @@ interface ReportInfoPros {
   setTitle: Dispatch<SetStateAction<string>>;
   endDate?: string;
   setEndDate?: Dispatch<SetStateAction<string>>;
-  edit;
+  edit?: boolean;
 }
 
 const ReportInfo = ({

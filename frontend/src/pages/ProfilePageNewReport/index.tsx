@@ -30,7 +30,7 @@ type reportDataType = {
 const ProfilePageNewReport = () => {
   const history = useHistory();
 
-  const { username } = useParams<{ username: string }>();
+  const { username } = useParams<{ username }>();
   const { user } = useContext(UserContext);
   const { isLoggedIn, accessToken } = user;
   const nickname = user.nickname ?? user.username;
@@ -168,9 +168,6 @@ const ProfilePageNewReport = () => {
           editorRef={setDescription}
           setStartDate={setStartDate}
           setEndDate={setEndDate}
-          startDate={undefined}
-          endDate={undefined}
-          edit={undefined}
         />
         <ReportStudyLogs studylogs={studylogsMappingData} />
         <AbilityGraph abilities={abilities} setAbilities={setAbilities} />
