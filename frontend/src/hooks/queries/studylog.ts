@@ -32,10 +32,11 @@ export const useGetRecentStudylogsQuery = () => {
   const { accessToken } = user;
 
   return useQuery<Studylog[]>([QUERY_KEY.recentStudylogs], async () => {
-    const { data } = await requestGetStudylogs({
+    const response = await requestGetStudylogs({
       query: { type: 'searchParams', data: 'size=3' },
       accessToken,
-    }).then((res) => res.json());
+    });
+    const { data } = await response.json();
 
     return data;
   });
