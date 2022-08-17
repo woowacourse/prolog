@@ -11,6 +11,9 @@ import { Form, FormButtonWrapper } from './style';
 import { BASE_URL } from '../../configs/environment';
 import useAbility from '../../hooks/Ability/useAbility';
 import AbilityGraph from './AbilityGraph';
+import ReportStudyLogs from '../../components/ReportStudyLogs/ReportStudyLogs';
+import { response } from 'msw';
+import { useGetMatchedStudylogs } from '../../hooks/queries/report';
 
 const ProfilePageNewReport = () => {
   const history = useHistory();
@@ -43,6 +46,45 @@ const ProfilePageNewReport = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [abilities, setAbilities] = useState([]);
+
+  const { data: studylogsData, refetch: getMatchedStudylogs } = useGetMatchedStudylogs({
+    accessToken,
+    startDate,
+    endDate,
+  });
+
+  // // request body message
+  // const req = {
+  //   startDate,
+  //   endDate,
+  // };
+
+  // console.log(req);
+
+  // // response data
+  // const defaultStudylogs = [
+  //   {
+  //     studylog: { id: 161, title: '글 제목' },
+  //     studylogAbilities: [
+  //       { name: '성능', color: '#ff009a' },
+  //       { name: '기초 언어 시스템', color: '#ff009a' },
+  //     ],
+  //   },
+  // ];
+
+  // // const [studylogs, setStudylogs] = useState(defaultStudylogs);
+
+  // // useEffect(() => {
+  // //   // TODO : get api 요청
+  // //   // const response =
+  // //   setStudylogs(response.data.studylogs);
+  // // }, [req]);
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      getMatchedStudylogs();
+    }
+  }, [startDate, endDate]);
 
   useEffect(() => {
     setAbilities(
@@ -133,6 +175,8 @@ const ProfilePageNewReport = () => {
           setStartDate={setStartDate}
           setEndDate={setEndDate}
         />
+
+        <ReportStudyLogs studylogs={studylogsData} />
 
         <AbilityGraph abilities={abilities} setAbilities={setAbilities} />
 

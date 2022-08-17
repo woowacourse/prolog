@@ -72,6 +72,7 @@ export const StudyLogTitle = styled.td`
   font-size: 1.6rem;
 
   a {
+    padding: 0.84rem 2rem;
     :hover {
       text-decoration: underline;
     }

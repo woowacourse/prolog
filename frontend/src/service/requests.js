@@ -283,3 +283,11 @@ export const requestDeleteLike = ({ accessToken, id }) =>
       Authorization: `Bearer ${accessToken}`,
     },
   });
+
+export const requestGetMatchedStudylogs = ({ accessToken, startDate, endDate }) =>
+  fetch(`${BASE_URL}/studylogs/me?startDate=${startDate}&endDate=${endDate}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
