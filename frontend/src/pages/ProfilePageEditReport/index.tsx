@@ -10,7 +10,7 @@ import AbilityGraph from '../ProfilePageNewReport/AbilityGraph';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { BASE_URL } from '../../configs/environment';
-import { Editor } from '@toast-ui/react-editor/index';
+import { Editor } from '@toast-ui/react-editor';
 import { ErrorData } from '../../apis/ability';
 
 type reportDataType = {
