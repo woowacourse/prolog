@@ -19,6 +19,7 @@ import wooteco.prolog.common.PageableResponse;
 import wooteco.prolog.login.aop.MemberOnly;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.report.application.dto.StudylogPeriodRequest;
 
 @RestController
 public class StudylogAbilityController {
@@ -52,5 +53,14 @@ public class StudylogAbilityController {
                                                                                                      @PageableDefault(size = 5, direction = Direction.DESC, sort = "id") Pageable pageable) {
         PageableResponse<AbilityStudylogResponse> studylogs = studylogAbilityService.findAbilityStudylogsMappingOnlyByAbilityIds(username, abilityIds, pageable);
         return ResponseEntity.ok().body(studylogs);
+    }
+
+    @MemberOnly
+    @GetMapping("/studylogs/me")
+    public ResponseEntity<List<AbilityStudylogResponse>> getStudylogsByDate(@AuthMemberPrincipal LoginMember member,
+                                                                            StudylogPeriodRequest studylogPeriodRequest) {
+        return (ResponseEntity.ok(
+                studylogAbilityService.getStudylogsByDate(member.getId(), studylogPeriodRequest))
+        );
     }
 }
