@@ -20,7 +20,7 @@ import { Editor } from '@toast-ui/react-editor';
 
 type reportDataType = {
   title: string;
-  description: string;
+  description: string | Editor;
   startDate: string;
   endDate: string;
   reportAbility: { abilityId: number; weight: number }[];
@@ -56,8 +56,8 @@ const ProfilePageNewReport = () => {
     }
   }, [isLoggedIn, username, user.data, history]);
 
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState<Editor | string>('');
   const [abilities, setAbilities] = useState([]);
@@ -164,7 +164,7 @@ const ProfilePageNewReport = () => {
           nickname={nickname}
           title={title}
           setTitle={setTitle}
-          desc={description}
+          desc={description!}
           editorRef={setDescription}
           setStartDate={setStartDate}
           setEndDate={setEndDate}
