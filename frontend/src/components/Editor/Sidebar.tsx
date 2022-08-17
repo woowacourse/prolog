@@ -22,11 +22,11 @@ interface SidebarProps {
   selectedSessionId: Session['id'] | null;
   selectedMissionId: Mission['id'] | null;
   selectedTagList: Tag[];
-  selectedAbilities?: number[];
+  selectedAbilities: number[];
   onSelectSession: (session: { value: string; label: string }) => void;
   onSelectMission: (mission: { value: string; label: string }) => void;
   onSelectTag: (tags: Tag[], actionMeta: { option: { label: string } }) => void;
-  onSelectAbilities?: (abilities: number[]) => void;
+  onSelectAbilities: (abilities: number[]) => void;
 }
 const AbilitySelectList = styled.li`
   position: relative;
@@ -114,9 +114,6 @@ const Sidebar = ({
   /** 선택된 역량을 보여준다.*/
   const SelectedAbilityChips = ({ selectedAbilityIds }) => {
     const selectedAbilities = wholeAbility.filter(({ id }) => selectedAbilityIds.includes(id));
-    if (!onSelectAbilities) {
-      return null;
-    }
 
     return (
       <AbilityList>
@@ -198,7 +195,7 @@ const Sidebar = ({
             />
           </div>
         </li>
-        {onSelectAbilities && (
+
           <AbilitySelectList>
             <FilterTitle>
               <FlexBox css={FlexGap} alignItems="center">
@@ -224,7 +221,7 @@ const Sidebar = ({
               />
             )}
           </AbilitySelectList>
-        )}
+      
       </ul>
     </SidebarWrapper>
   );
