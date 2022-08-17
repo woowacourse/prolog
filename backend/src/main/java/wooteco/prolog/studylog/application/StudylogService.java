@@ -349,6 +349,13 @@ public class StudylogService {
 
     @Transactional
     public void updateStudylog(Long memberId, Long studylogId, StudylogRequest studylogRequest) {
+        Set<Ability> abilities = abilityService.findByIdIn(memberId,
+                studylogRequest.getAbilities());
+
+        if (hasChildAndParentAbility(abilities)) {
+            throw new IllegalArgumentException("자식 역량이 존재하는 경우 부모 역량을 선택할 수 없습니다.");
+        }
+
         Studylog studylog = studylogRepository.findById(studylogId).orElseThrow(StudylogNotFoundException::new);
         studylog.validateBelongTo(memberId);
 
@@ -361,6 +368,13 @@ public class StudylogService {
         Tags newTags = tagService.findOrCreate(studylogRequest.getTags());
         studylog.update(studylogRequest.getTitle(), studylogRequest.getContent(), session, mission, newTags);
         memberTagService.updateMemberTag(originalTags, newTags, foundMember);
+
+        List<StudylogAbility> studylogAbilities = abilities.stream()
+                .map(it -> new StudylogAbility(memberId, it, studylog))
+                .collect(Collectors.toList());
+
+        studylogAbilityRepository.deleteByStudylogId(studylog.getId());
+        studylogAbilityRepository.saveAll(studylogAbilities);
 
         studylogDocumentService.update(studylog.toStudylogDocument());
     }
