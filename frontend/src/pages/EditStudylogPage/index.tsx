@@ -24,10 +24,16 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { getLocalStorageItem } from '../../utils/localStorage';
 import LOCAL_STORAGE_KEY from '../../constants/localStorage';
 import { SUCCESS_MESSAGE } from '../../constants/message';
+import { ParentAbility } from '../../models/Ability';
 
 interface NewStudylogForm extends StudylogForm {
   abilities: number[];
 }
+
+interface EditStudylog extends Omit<Studylog, 'abilities'> {
+  abilities: ParentAbility[];
+}
+
 // 나중에 학습로그 작성 페이지와 같아질 수  있음(임시저장)
 const EditStudylogPage = () => {
   const history = useHistory();
@@ -48,7 +54,7 @@ const EditStudylogPage = () => {
 
   const { id } = useParams<{ id: string }>();
 
-  const fetchStudylogRequest: UseQueryResult<AxiosResponse<Studylog>, AxiosError> = useQuery(
+  const fetchStudylogRequest: UseQueryResult<AxiosResponse<EditStudylog>, AxiosError> = useQuery(
     [REACT_QUERY_KEY.STUDYLOG, id],
     () => requestGetStudylog({ id, accessToken }),
     {
@@ -59,7 +65,7 @@ const EditStudylogPage = () => {
           missionId: data.mission?.id || null,
           sessionId: data.session?.id || null,
           tags: data.tags,
-          abilities: data.abilities,
+          abilities: data.abilities.map(({ id }) => id),
         });
       },
     }
@@ -164,7 +170,6 @@ const EditStudylogPage = () => {
         selectedMissionId={studylogContent.missionId}
         selectedSessionId={studylogContent.sessionId}
         selectedTags={studylogContent.tags}
-        selectedAbilities={studylogContent.abilities}
         onChangeTitle={onChangeTitle}
         onSelectMission={onSelectMission}
         onSelectSession={onSelectSession}
