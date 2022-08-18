@@ -17,4 +17,6 @@ public interface StudylogAbilityRepository extends JpaRepository<StudylogAbility
     List<StudylogAbility> findByStudylogIdIn(List<Long> studylogIds);
 
     void deleteByStudylogId(Long studylogId);
+
+    List<StudylogAbility> findAllByStudylogId(Long studylogId);
 }
