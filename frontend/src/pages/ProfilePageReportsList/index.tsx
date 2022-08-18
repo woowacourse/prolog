@@ -8,14 +8,6 @@ import { useQuery } from 'react-query';
 import axios from 'axios';
 import { BASE_URL } from '../../configs/environment';
 
-// type Report = {
-//   id: number;
-//   title: string;
-//   description: string;
-//   startDate: string;
-//   endDate: string;
-// };
-
 const ProfilePageReportsList = () => {
   const { username } = useParams<{ username: string }>();
   const { user } = useContext(UserContext);

@@ -12,7 +12,6 @@ import { BASE_URL } from '../../configs/environment';
 import useAbility from '../../hooks/Ability/useAbility';
 import AbilityGraph from './AbilityGraph';
 import ReportStudyLogs from '../../components/ReportStudyLogs/ReportStudyLogs';
-import { response } from 'msw';
 import { useGetMatchedStudylogs } from '../../hooks/queries/report';
 
 const ProfilePageNewReport = () => {
@@ -52,33 +51,6 @@ const ProfilePageNewReport = () => {
     startDate,
     endDate,
   });
-
-  // // request body message
-  // const req = {
-  //   startDate,
-  //   endDate,
-  // };
-
-  // console.log(req);
-
-  // // response data
-  // const defaultStudylogs = [
-  //   {
-  //     studylog: { id: 161, title: '글 제목' },
-  //     studylogAbilities: [
-  //       { name: '성능', color: '#ff009a' },
-  //       { name: '기초 언어 시스템', color: '#ff009a' },
-  //     ],
-  //   },
-  // ];
-
-  // // const [studylogs, setStudylogs] = useState(defaultStudylogs);
-
-  // // useEffect(() => {
-  // //   // TODO : get api 요청
-  // //   // const response =
-  // //   setStudylogs(response.data.studylogs);
-  // // }, [req]);
 
   useEffect(() => {
     if (startDate && endDate) {
@@ -161,6 +133,10 @@ const ProfilePageNewReport = () => {
     }
   };
 
+  const studylogsMappingData = studylogsData?.map(({ studylog, abilities }) => {
+    return { studylog, studylogAbilities: abilities };
+  });
+
   return (
     <>
       <Form onSubmit={onSubmitReport}>
@@ -175,9 +151,7 @@ const ProfilePageNewReport = () => {
           setStartDate={setStartDate}
           setEndDate={setEndDate}
         />
-
-        <ReportStudyLogs studylogs={studylogsData} />
-
+        <ReportStudyLogs studylogs={studylogsMappingData} />
         <AbilityGraph abilities={abilities} setAbilities={setAbilities} />
 
         <FormButtonWrapper>
