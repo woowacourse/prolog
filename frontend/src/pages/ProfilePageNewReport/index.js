@@ -11,6 +11,8 @@ import { Form, FormButtonWrapper } from './style';
 import { BASE_URL } from '../../configs/environment';
 import useAbility from '../../hooks/Ability/useAbility';
 import AbilityGraph from './AbilityGraph';
+import ReportStudyLogs from '../../components/ReportStudyLogs/ReportStudyLogs';
+import { useGetMatchedStudylogs } from '../../hooks/queries/report';
 
 const ProfilePageNewReport = () => {
   const history = useHistory();
@@ -43,6 +45,18 @@ const ProfilePageNewReport = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [abilities, setAbilities] = useState([]);
+
+  const { data: studylogsData, refetch: getMatchedStudylogs } = useGetMatchedStudylogs({
+    accessToken,
+    startDate,
+    endDate,
+  });
+
+  useEffect(() => {
+    if (startDate && endDate) {
+      getMatchedStudylogs();
+    }
+  }, [startDate, endDate]);
 
   useEffect(() => {
     setAbilities(
@@ -119,6 +133,10 @@ const ProfilePageNewReport = () => {
     }
   };
 
+  const studylogsMappingData = studylogsData?.map(({ studylog, abilities }) => {
+    return { studylog, studylogAbilities: abilities };
+  });
+
   return (
     <>
       <Form onSubmit={onSubmitReport}>
@@ -133,7 +151,7 @@ const ProfilePageNewReport = () => {
           setStartDate={setStartDate}
           setEndDate={setEndDate}
         />
-
+        <ReportStudyLogs studylogs={studylogsMappingData} />
         <AbilityGraph abilities={abilities} setAbilities={setAbilities} />
 
         <FormButtonWrapper>

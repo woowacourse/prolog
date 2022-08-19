@@ -21,8 +21,6 @@ const ReportStudyLogs = ({ studylogs }) => {
     });
   };
 
-  if (studylogs?.length === 0) return <></>;
-
   return (
     <>
       <Styled.Title>📝 학습로그</Styled.Title>
