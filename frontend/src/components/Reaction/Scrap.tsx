@@ -6,11 +6,10 @@ import { ScrapButtonStyle } from './Scrap.styles';
 
 interface Props {
   scrap: boolean;
-  scrapedCount: number;
   onClick: () => void;
 }
 
-const Scrap = ({ scrap, scrapedCount, onClick }: Props) => {
+const Scrap = ({ scrap, onClick }: Props) => {
   const scrapIcon = scrap ? scrappedIcon : unScrapIcon;
   const scrapIconAlt = scrap ? '스크랩 취소' : '스크랩';
 
@@ -22,9 +21,7 @@ const Scrap = ({ scrap, scrapedCount, onClick }: Props) => {
       alt={scrapIconAlt}
       cssProps={ScrapButtonStyle}
       onClick={onClick}
-    >
-      {scrapedCount ?? '0'}
-    </Button>
+    />
   );
 };
 
