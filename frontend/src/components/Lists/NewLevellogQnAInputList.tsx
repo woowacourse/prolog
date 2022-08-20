@@ -1,8 +1,8 @@
-import LevellogQnAItem from '../Items/LevellogQnAItem';
+import NewLevellogQnAInputItem from '../Items/NewLevellogQnAInputItem';
 
-import * as S from './LevellogQnAList.styles';
+import * as S from './NewLevellogQnAInputList.styles';
 
-const LevellogQnAList = ({ QnAListProps }) => {
+const NewLevellogQnAList = ({ QnAListProps }) => {
   const { QnAList, onAddQnA, onDeleteQnA, onChangeQuestion, onChangeAnswer } = QnAListProps;
 
   return (
@@ -10,7 +10,7 @@ const LevellogQnAList = ({ QnAListProps }) => {
       <S.Label>Questions</S.Label>
       <S.QnAItemsWrapper>
         {QnAList.map(({ question, answer }, idx) => (
-          <LevellogQnAItem
+          <NewLevellogQnAInputItem
             key={idx}
             idx={idx}
             question={question}
@@ -32,4 +32,4 @@ const LevellogQnAList = ({ QnAListProps }) => {
   );
 };
 
-export default LevellogQnAList;
+export default NewLevellogQnAList;

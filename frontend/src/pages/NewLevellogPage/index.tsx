@@ -7,9 +7,9 @@ import { MainContentStyle } from '../../PageRouter';
 import Editor from '../../components/Editor/Editor';
 import useNewLevellog from '../../hooks/Levellog/useNewLevellog';
 import { FlexColumnStyle, FlexStyle } from '../../styles/flex.styles';
-import LevellogQnAList from '../../components/Lists/LevellogQnAList';
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
+import NewLevellogQnAList from '../../components/Lists/NewLevellogQnAInputList';
 
 const NewLevellogPage = () => {
   const {
@@ -37,7 +37,7 @@ const NewLevellogPage = () => {
         height="40vh"
         editorContentRef={editorContentRef}
       />
-      <LevellogQnAList QnAListProps={QnAListProps} />
+      <NewLevellogQnAList QnAListProps={QnAListProps} />
       <SubmitButton type="submit" onClick={createNewLevellog}>
         제출하기
       </SubmitButton>

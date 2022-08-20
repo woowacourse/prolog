@@ -1,6 +1,6 @@
-import * as S from './LevellogQnaItem.styles';
+import * as S from './NewLevellogQnAInputItem.styles';
 
-const LevellogQnAItem = ({
+const NewLevellogQnAInputItem = ({
   question,
   onChangeQuestion,
   answer,
@@ -32,4 +32,4 @@ const LevellogQnAItem = ({
   );
 };
 
-export default LevellogQnAItem;
+export default NewLevellogQnAInputItem;
