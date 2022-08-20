@@ -1,11 +1,18 @@
 import { rest } from 'msw';
 import { BASE_URL } from '../../configs/environment';
 import { LevellogRequest } from '../../models/Levellogs';
-import levellogs from '../db/levellogs.json';
+import levellogs, { LEVELLOG_ITEM_PER_PAGE } from '../db/levellogs';
 
 export const levellogHandler = [
   rest.get(`${BASE_URL}/levellogs`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(levellogs));
+    const page = Number(req.url.searchParams.get('page')) || 1;
+
+    const rangedLevellogs = levellogs.data.slice(
+      (page - 1) * LEVELLOG_ITEM_PER_PAGE,
+      page * LEVELLOG_ITEM_PER_PAGE
+    );
+
+    return res(ctx.status(200), ctx.json({ ...levellogs, data: rangedLevellogs, currPage: page }));
   }),
 
   rest.post<LevellogRequest>(`${BASE_URL}/levellogs`, (req, res, ctx) => {
