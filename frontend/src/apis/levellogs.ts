@@ -2,8 +2,10 @@ import { client } from '.';
 import { CONFIRM_MESSAGE } from '../constants';
 import { LevellogRequest } from '../models/Levellogs';
 
-export const requestGetLevellogs = async () => {
-  const { data } = await client.get(`/levellogs`);
+export const requestGetLevellogs = async (currPage: number) => {
+  const params = currPage !== 1 ? `?page=${currPage}` : '';
+
+  const { data } = await client.get(`/levellogs${params}`);
 
   return data;
 };

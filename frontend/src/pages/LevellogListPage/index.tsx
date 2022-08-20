@@ -22,7 +22,7 @@ import { Link } from 'react-router-dom';
 import { PATH } from '../../constants';
 
 const LevellogListPage = () => {
-  const { levellogs } = useLevellogList();
+  const { levellogs, isLoading, onChangeCurrentPage } = useLevellogList();
 
   const { user } = useContext(UserContext);
   const { isLoggedIn } = user;
@@ -82,11 +82,15 @@ const LevellogListPage = () => {
           )}
         </div>
       </HeaderContainer>
-      <PostListContainer>
-        {levellogs?.data?.length === 0 && '작성된 글이 없습니다.'}
-        {levellogs && levellogs.data && <LevellogList levellogs={levellogs.data} />}
-      </PostListContainer>
-      {/* <Pagination dataInfo={levellogs} onSetPage={() => {}}></Pagination> */}
+      {!isLoading && (
+        <>
+          <PostListContainer>
+            {levellogs.data.length === 0 && '작성된 글이 없습니다.'}
+            {levellogs.data && <LevellogList levellogs={levellogs.data} />}
+          </PostListContainer>
+          <Pagination dataInfo={levellogs} onSetPage={onChangeCurrentPage}></Pagination>
+        </>
+      )}
     </div>
   );
 };

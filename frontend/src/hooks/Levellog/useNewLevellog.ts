@@ -1,15 +1,18 @@
 import { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { ALERT_MESSAGE, PATH } from '../../constants';
+import { ALERT_MESSAGE, PATH, ERROR_MESSAGE } from '../../constants';
 import { QnAType } from '../../models/Levellogs';
 import { useCreateNewLevellogMutation } from '../queries/levellog';
 import useBeforeunload from '../useBeforeunload';
 import { Editor as ToastEditor } from '@toast-ui/react-editor';
 import { SUCCESS_MESSAGE } from '../../constants/message';
+import useSnackBar from '../useSnackBar';
 
 const useNewLevellog = () => {
   const history = useHistory();
   const editorContentRef = useRef<any>(null);
+  const { openSnackBar } = useSnackBar();
+
   const [title, setTitle] = useState('');
   const onChangeTitle = (e) => {
     setTitle(e.target.value);
@@ -21,6 +24,9 @@ const useNewLevellog = () => {
     onSuccess: () => {
       history.push(PATH.LEVELLOG);
       alert(SUCCESS_MESSAGE.CREATE_POST);
+    },
+    onError: (error: { code: number }) => {
+      openSnackBar(ERROR_MESSAGE[error.code] ?? ALERT_MESSAGE.FAIL_TO_DELETE_STUDYLOG);
     },
   });
 

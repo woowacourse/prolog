@@ -12,6 +12,7 @@ const ALERT_MESSAGE = {
   ACCESS_DENIED: '잘못된 접근입니다.',
   FAIL_TO_DELETE_STUDYLOG: '글을 삭제할 수 없습니다.',
   FAIL_TO_UPLOAD_IMAGE: '이미지 업로드를 할 수 없습니다.',
+  FAIL_TO_POST_LEVELLOG: '레벨로그 작성에 실패했습니다.',
   NEED_TO_LOGIN: '로그인 후 이용 가능합니다',
   OVER_PROFILE_NICKNAME_MAX_LENGTH: '닉네임은 4글자 이하로 입력해주세요.',
 

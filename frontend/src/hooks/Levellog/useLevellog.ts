@@ -41,7 +41,7 @@ const useLevellog = () => {
         history.push(PATH.LEVELLOG);
       },
       onError: (error: { code: number }) => {
-        alert(ERROR_MESSAGE[error.code] ?? ALERT_MESSAGE.FAIL_TO_DELETE_STUDYLOG);
+        alert(ERROR_MESSAGE[error.code] ?? ALERT_MESSAGE.FAIL_TO_POST_LEVELLOG);
       },
     }
   );

@@ -1,4 +1,5 @@
-import { useMutation, useQuery } from 'react-query';
+import { useEffect } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
   createNewLevellogRequest,
   requestDeleteLevellog,
@@ -13,12 +14,28 @@ const QUERY_KEY = {
   levellog: 'levellog',
 };
 
-export const useGetLevellogs = () => useQuery(QUERY_KEY.levellogs, requestGetLevellogs);
+export const useGetLevellogs = (currPage: number) => {
+  const queryClient = useQueryClient();
 
-export const useCreateNewLevellogMutation = ({ onSuccess = () => {} } = {}) =>
+  useEffect(() => {
+    queryClient.prefetchQuery([QUERY_KEY.levellogs, currPage + 1], () =>
+      requestGetLevellogs(currPage + 1)
+    );
+  }, [currPage]);
+
+  return useQuery([QUERY_KEY.levellogs, currPage], () => requestGetLevellogs(currPage));
+};
+
+export const useCreateNewLevellogMutation = ({
+  onSuccess = () => {},
+  onError = (error: { code: number }) => {},
+} = {}) =>
   useMutation((body: LevellogRequest) => createNewLevellogRequest(body), {
     onSuccess: () => {
       onSuccess?.();
+    },
+    onError: (error: { code: number }) => {
+      onError?.(error);
     },
   });
 
