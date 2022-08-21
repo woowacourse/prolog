@@ -1,5 +1,7 @@
+import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useHistory } from 'react-router-dom';
 import {
   createNewLevellogRequest,
   requestDeleteLevellog,
@@ -7,7 +9,10 @@ import {
   requestGetLevellog,
   requestGetLevellogs,
 } from '../../apis/levellogs';
+import { ALERT_MESSAGE, PATH } from '../../constants';
+import ERROR_CODE from '../../constants/errorCode';
 import { LevellogRequest, LevellogResponse } from '../../models/Levellogs';
+import useSnackBar from '../useSnackBar';
 
 const QUERY_KEY = {
   levellogs: 'levellogs',
@@ -39,13 +44,28 @@ export const useCreateNewLevellogMutation = ({
     },
   });
 
-export const useGetLevellog = ({ id }, { onSuccess = (levellog: LevellogResponse) => {} } = {}) =>
-  useQuery<LevellogResponse>([QUERY_KEY.levellog, id], () => requestGetLevellog(id), {
+export const useGetLevellog = (
+  { id },
+  { onSuccess = (levellog: LevellogResponse) => {}, onError = () => {} } = {}
+) => {
+  const history = useHistory();
+  const { openSnackBar } = useSnackBar();
+  return useQuery<LevellogResponse>([QUERY_KEY.levellog, id], () => requestGetLevellog(id), {
     onSuccess: (levellog: LevellogResponse) => {
       onSuccess?.(levellog);
     },
+    onError: (error) => {
+      const { response } = (error as unknown) as AxiosError;
+
+      if (response?.data.code === ERROR_CODE.NOT_EXIST_LEVELLOG) {
+        openSnackBar(ALERT_MESSAGE.NO_EXIST_POST);
+        history.push(PATH.LEVELLOG);
+      }
+    },
     refetchOnWindowFocus: false,
+    retry: false,
   });
+};
 
 export const useDeleteLevellogMutation = (
   { id },

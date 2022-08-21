@@ -1,4 +1,4 @@
-import { MouseEvent, useRef } from 'react';
+import { MouseEvent, useContext, useRef } from 'react';
 import { ChangeEvent, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { PATH } from '../../constants';
@@ -9,9 +9,14 @@ import useSnackBar from '../useSnackBar';
 import useQnAInputList from './useQnAInputList';
 import useBeforeunload from '../useBeforeunload';
 import { NewLevellogQnAListProps } from './useNewLevellog';
+import { UserContext } from '../../contexts/UserProvider';
 
 const useEditLevellog = () => {
   const { id } = useParams<{ id: string }>();
+  const {
+    user: { userId },
+  } = useContext(UserContext);
+
   const history = useHistory();
   const { openSnackBar } = useSnackBar();
   const editorContentRef = useRef<any>(null);
@@ -43,6 +48,11 @@ const useEditLevellog = () => {
     { id },
     {
       onSuccess: (levellog) => {
+        if (levellog.author.id !== userId) {
+          openSnackBar(ALERT_MESSAGE.CANNOT_EDIT_OTHERS);
+          history.push(`${PATH.LEVELLOG}/${id}`);
+        }
+
         setTitle(levellog.title);
         setQnAList(
           levellog.levelLogs.map((log) => ({ question: log.question, answer: log.answer }))
