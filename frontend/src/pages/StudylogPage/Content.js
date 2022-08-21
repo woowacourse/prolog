@@ -34,16 +34,16 @@ import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/d
 
 const Content = ({ studylog, toggleLike, toggleScrap, goAuthorProfilePage }) => {
   const {
-    author = null,
-    mission = {},
-    title = '',
-    content = '',
-    tags = [],
-    createdAt = null,
-    viewCount = 0,
-    liked = false,
-    likesCount = 0,
-    scrap = false,
+    author,
+    mission,
+    title,
+    content,
+    tags,
+    createdAt,
+    viewCount,
+    liked,
+    likesCount,
+    scrap,
   } = studylog;
 
   return (

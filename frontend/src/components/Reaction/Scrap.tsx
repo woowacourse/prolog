@@ -1,3 +1,4 @@
+import { MouseEventHandler } from 'react';
 import { Button, BUTTON_SIZE } from '..';
 
 import scrappedIcon from '../../assets/images/scrap_filled.svg';
@@ -6,7 +7,7 @@ import { ScrapButtonStyle } from './Scrap.styles';
 
 interface Props {
   scrap: boolean;
-  onClick: () => void;
+  onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
 const Scrap = ({ scrap, onClick }: Props) => {
