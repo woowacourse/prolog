@@ -1,10 +1,16 @@
+import { ChangeEvent, FormEvent } from 'react';
+import { NewLevellogQnAListProps } from '../../hooks/Levellog/useNewLevellog';
 import NewLevellogQnAInputItem from '../Items/NewLevellogQnAInputItem';
 
 import * as S from './NewLevellogQnAInputList.styles';
 
-const NewLevellogQnAList = ({ QnAListProps }) => {
-  const { QnAList, onAddQnA, onDeleteQnA, onChangeQuestion, onChangeAnswer } = QnAListProps;
-
+const NewLevellogQnAList = ({
+  QnAList,
+  onAddQnA,
+  onDeleteQnA,
+  onChangeQuestion,
+  onChangeAnswer,
+}: NewLevellogQnAListProps) => {
   return (
     <S.Container>
       <S.Label>Questions</S.Label>
@@ -14,12 +20,12 @@ const NewLevellogQnAList = ({ QnAListProps }) => {
             key={idx}
             idx={idx}
             question={question}
-            onChangeQuestion={(e) => {
-              onChangeQuestion(e, idx);
+            onChangeQuestion={(e: ChangeEvent<HTMLInputElement>) => {
+              onChangeQuestion(e.target.value, idx);
             }}
             answer={answer}
-            onChangeAnswer={(e) => {
-              onChangeAnswer(e, idx);
+            onChangeAnswer={(e: ChangeEvent<HTMLInputElement>) => {
+              onChangeAnswer(e.target.value, idx);
             }}
             onDeleteQnA={() => {
               onDeleteQnA(idx);

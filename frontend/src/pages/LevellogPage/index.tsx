@@ -10,14 +10,20 @@ import useLevellog from '../../hooks/Levellog/useLevellog';
 import QnAList from './QnAList';
 
 const StudylogPage = () => {
-  const { levellog, deleteLevellog, isCurrentUserAuthor, isLoading } = useLevellog();
+  const {
+    levellog,
+    deleteLevellog,
+    isCurrentUserAuthor,
+    isLoading,
+    goEditTargetPost,
+  } = useLevellog();
 
   return (
     <div css={MainContentStyle}>
       {isCurrentUserAuthor && (
         <ButtonList>
           {[
-            // { title: '수정', cssProps: EditButtonStyle, onClick: goEditTargetPost },
+            { title: '수정', cssProps: EditButtonStyle, onClick: goEditTargetPost },
             { title: '삭제', cssProps: DeleteButtonStyle, onClick: deleteLevellog },
           ].map(({ title, cssProps, onClick }) => (
             <Button

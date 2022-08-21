@@ -17,7 +17,7 @@ const NewLevellogPage = () => {
     editorContentRef,
     onChangeTitle,
     title,
-    QnAListProps,
+    NewLevellogQnAListProps,
   } = useNewLevellog();
 
   return (
@@ -37,7 +37,7 @@ const NewLevellogPage = () => {
         height="40vh"
         editorContentRef={editorContentRef}
       />
-      <NewLevellogQnAList QnAListProps={QnAListProps} />
+      <NewLevellogQnAList {...NewLevellogQnAListProps} />
       <SubmitButton type="submit" onClick={createNewLevellog}>
         제출하기
       </SubmitButton>

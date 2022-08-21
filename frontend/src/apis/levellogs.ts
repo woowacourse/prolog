@@ -24,4 +24,5 @@ export const requestDeleteLevellog = async (id) => {
   client.delete(`/levellogs/${id}`);
 };
 
-export const requestPutLevellog = async (id, body) => client.put(`/levellogs/${id}`, body);
+export const requestEditLevellog = (id, body: LevellogRequest) =>
+  client.put(`/levellogs/${id}`, body);

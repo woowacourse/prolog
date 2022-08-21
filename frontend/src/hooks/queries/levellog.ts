@@ -3,9 +3,9 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
   createNewLevellogRequest,
   requestDeleteLevellog,
+  requestEditLevellog,
   requestGetLevellog,
   requestGetLevellogs,
-  requestPutLevellog,
 } from '../../apis/levellogs';
 import { LevellogRequest, LevellogResponse } from '../../models/Levellogs';
 
@@ -41,9 +41,10 @@ export const useCreateNewLevellogMutation = ({
 
 export const useGetLevellog = ({ id }, { onSuccess = (levellog: LevellogResponse) => {} } = {}) =>
   useQuery<LevellogResponse>([QUERY_KEY.levellog, id], () => requestGetLevellog(id), {
-    onSuccess: (levellog: any) => {
+    onSuccess: (levellog: LevellogResponse) => {
       onSuccess?.(levellog);
     },
+    refetchOnWindowFocus: false,
   });
 
 export const useDeleteLevellogMutation = (
@@ -59,8 +60,8 @@ export const useDeleteLevellogMutation = (
     },
   });
 
-export const usePutLevellogMutation = ({ id, body }, { onSuccess = () => {} } = {}) =>
-  useMutation(() => requestPutLevellog(id, body), {
+export const useEditLevellogMutation = ({ id }, { onSuccess = () => {} } = {}) =>
+  useMutation((body: LevellogRequest) => requestEditLevellog(id, body), {
     onSuccess: () => {
       onSuccess?.();
     },

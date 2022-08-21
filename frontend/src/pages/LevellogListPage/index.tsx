@@ -1,10 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from '@emotion/react';
-import { useContext } from 'react';
-
-import { UserContext } from '../../contexts/UserProvider';
-import { useLevellogList } from '../../hooks/Levellog/useLevelLogList';
 
 import { Button, Pagination } from '../../components';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
@@ -20,12 +16,10 @@ import { HeaderContainer, PostListContainer } from './styles';
 import LevellogList from '../../components/Lists/LevellogList';
 import { Link } from 'react-router-dom';
 import { PATH } from '../../constants';
+import { useLevellogList } from '../../hooks/Levellog/useLevellogList';
 
 const LevellogListPage = () => {
-  const { levellogs, isLoading, onChangeCurrentPage } = useLevellogList();
-
-  const { user } = useContext(UserContext);
-  const { isLoggedIn } = user;
+  const { levellogs, isLoading, onChangeCurrentPage, isLoggedIn } = useLevellogList();
 
   return (
     <div css={[MainContentStyle]}>

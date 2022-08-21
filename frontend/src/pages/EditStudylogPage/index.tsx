@@ -142,7 +142,6 @@ const EditStudylogPage = () => {
         history.push(`${PATH.STUDYLOG}/${id}`);
       },
       onError: (error: { code: number; message: string }) => {
-        console.log(error);
         alert(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.FAIL_TO_EDIT_STUDYLOG);
       },
     }

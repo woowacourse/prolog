@@ -72,4 +72,21 @@ export const levellogHandler = [
 
     return res(ctx.status(200));
   }),
+
+  rest.put(`${BASE_URL}/levellogs/:id`, (req, res, ctx) => {
+    const {
+      params: { id },
+    } = req;
+
+    const editedLevellog = req.body as any;
+
+    levellogs.data[Number(id) - 1] = {
+      ...levellogs.data[Number(id) - 1],
+      title: editedLevellog.title,
+      content: editedLevellog.content,
+      levelLogs: editedLevellog.levelLogs,
+    };
+
+    return res(ctx.status(200), ctx.json(levellogs.data));
+  }),
 ];
