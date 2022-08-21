@@ -100,7 +100,6 @@ const NewStudylogPage = () => {
         history.push(PATH.STUDYLOG);
       },
       onError: (error: ResponseError) => {
-        console.log(error);
         alert(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
       },
     }
