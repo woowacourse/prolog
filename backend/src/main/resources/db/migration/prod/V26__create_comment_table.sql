@@ -7,10 +7,10 @@ CREATE TABLE comment(
     PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
-ALTER TABLE member
+ALTER TABLE comment
     ADD CONSTRAINT FK_COMMENT_MEMBER
         FOREIGN KEY (member_id) REFERENCES member (id);
 
-ALTER TABLE studylog
+ALTER TABLE comment
     ADD CONSTRAINT FK_COMMENT_STUDYLOG
         FOREIGN KEY (studylog_id) REFERENCES studylog (id);
