@@ -1,10 +1,9 @@
-CREATE TABLE comment
-(
+CREATE TABLE comment(
     id          BIGINT NOT NULL AUTO_INCREMENT,
     member_id   BIGINT NOT NULL,
     studylog_id BIGINT NOT NULL,
     content     TEXT(255) NOT NULL,
-    is_delete   TINYINT(1) DEFAULT 0 NOT NULL
+    is_delete   TINYINT(1) DEFAULT 0 NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB;
 
