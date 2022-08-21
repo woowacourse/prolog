@@ -45,7 +45,7 @@ const StudyLogSelectAbilityBox = ({
   };
 
   const isChecked = (targetAbilityId) => {
-    return updatedAbilities.includes((id) => id === targetAbilityId);
+    return updatedAbilities.includes(targetAbilityId);
   };
 
   const onClickSelectButton = () => {
@@ -55,7 +55,7 @@ const StudyLogSelectAbilityBox = ({
 
   const onClickCloseButton = () => {
     setIsSelectAbilityBoxOpen(false);
-  }
+  };
 
   return (
     <Styled.Wrapper>

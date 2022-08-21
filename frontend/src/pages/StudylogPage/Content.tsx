@@ -43,17 +43,17 @@ interface Props {
 
 const Content = ({ studylog, toggleLike, toggleScrap, goAuthorProfilePage }: Props) => {
   const {
-    author = null,
-    mission = {},
-    title = '',
-    content = '',
-    tags = [],
-    createdAt = null,
-    viewCount = 0,
-    liked = false,
-    likesCount = 0,
-    scrap = false,
-    scrapedCount = 0,
+    author,
+    mission,
+    title,
+    content,
+    tags,
+    createdAt,
+    viewCount,
+    liked,
+    likesCount,
+    scrap,
+    scrapedCount,
   } = studylog;
 
   return (

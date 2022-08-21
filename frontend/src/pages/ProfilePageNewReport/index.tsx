@@ -11,10 +11,8 @@ import { Form, FormButtonWrapper } from './style';
 import { BASE_URL } from '../../configs/environment';
 import useAbility from '../../hooks/Ability/useAbility';
 import AbilityGraph from './AbilityGraph';
-<<<<<<< HEAD:frontend/src/pages/ProfilePageNewReport/index.js
 import ReportStudyLogs from '../../components/ReportStudyLogs/ReportStudyLogs';
 import { useGetMatchedStudylogs } from '../../hooks/queries/report';
-=======
 import useParentAbilityForm from '../../hooks/Ability/useParentAbilityForm';
 import { Editor } from '@toast-ui/react-editor';
 
@@ -25,7 +23,6 @@ type reportDataType = {
   endDate: string;
   reportAbility: { abilityId: number; weight: number }[];
 };
->>>>>>> 723f1b08 (refactor: ProfilePageNew Report typescript 마이그레이션):frontend/src/pages/ProfilePageNewReport/index.tsx
 
 const ProfilePageNewReport = () => {
   const history = useHistory();
@@ -170,7 +167,7 @@ const ProfilePageNewReport = () => {
           setEndDate={setEndDate}
         />
         <ReportStudyLogs studylogs={studylogsMappingData} />
-        <AbilityGraph abilities={abilities} setAbilities={setAbilities} />
+        <AbilityGraph abilities={abilities} setAbilities={setAbilities} edit={undefined} />
 
         <FormButtonWrapper>
           <Button
