@@ -1,16 +1,38 @@
-import { MouseEvent } from 'react';
+import { MouseEvent, useRef } from 'react';
 import { ChangeEvent, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { PATH } from '../../constants';
 import { SUCCESS_MESSAGE } from '../../constants/message';
 import { useEditLevellogMutation, useGetLevellog } from '../queries/levellog';
-import useNewLevellog from './useNewLevellog';
+import { ALERT_MESSAGE } from '../../constants';
+import useSnackBar from '../useSnackBar';
+import useQnAInputList from './useQnAInputList';
+import { QnAType } from '../../models/Levellogs';
+import useBeforeunload from '../useBeforeunload';
+
+interface EditLevellogQnAListProps {
+  QnAList: QnAType[];
+  onDeleteQnA: (index: number) => void;
+  onChangeQuestion: (value: string, index: number) => void;
+  onChangeAnswer: (value: string, index: number) => void;
+}
 
 const useEditLevellog = () => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
+  const { openSnackBar } = useSnackBar();
+  const editorContentRef = useRef<any>(null);
 
-  const { NewLevellogQnAListProps, editorContentRef, setQnAList } = useNewLevellog();
+  useBeforeunload(editorContentRef);
+
+  const { QnAList, setQnAList, onChangeAnswer, onChangeQuestion, onDeleteQnA } = useQnAInputList();
+  const EditLevellogQnAListProps: EditLevellogQnAListProps = {
+    QnAList,
+    onChangeAnswer,
+    onChangeQuestion,
+    onDeleteQnA,
+  };
+
   const [title, setTitle] = useState('');
   const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -27,23 +49,45 @@ const useEditLevellog = () => {
       },
     }
   );
-  const { mutate: editLevellog } = useEditLevellogMutation(
+  const { mutate: editLevellogRequest } = useEditLevellogMutation(
     { id },
     {
       onSuccess: () => {
-        alert(SUCCESS_MESSAGE.EDIT_POST);
+        openSnackBar(SUCCESS_MESSAGE.EDIT_POST);
         history.push(`${PATH.LEVELLOG}/${id}`);
       },
     }
   );
 
-  const onEditLevellog = (e: MouseEvent<HTMLButtonElement>) => {
+  const editLevellog = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    editLevellog({
+    const content = editorContentRef.current?.getInstance().getMarkdown() || '';
+
+    if (title.length === 0) {
+      alert(ALERT_MESSAGE.NO_TITLE);
+      return;
+    }
+
+    if (content.length === 0) {
+      alert(ALERT_MESSAGE.NO_CONTENT);
+      return;
+    }
+
+    if (QnAList.length < 1) {
+      alert(ALERT_MESSAGE.NO_QNA);
+      return;
+    }
+
+    if (QnAList.some((QnA) => QnA.answer.length < 1 || QnA.question.length < 1)) {
+      alert(ALERT_MESSAGE.NO_QUESTION_AND_ANSWER);
+      return;
+    }
+
+    editLevellogRequest({
       title,
       content: editorContentRef.current.getInstance().getMarkdown(),
-      levelLogs: NewLevellogQnAListProps.QnAList,
+      levelLogs: QnAList,
     });
   };
 
@@ -52,10 +96,9 @@ const useEditLevellog = () => {
     title,
     onChangeTitle,
     content: levellog?.content,
-    NewLevellogQnAListProps,
+    EditLevellogQnAListProps,
     isLoading,
-    onEditLevellog,
-    id,
+    editLevellog,
   };
 };
 

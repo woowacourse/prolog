@@ -2,21 +2,20 @@
 
 import styled from '@emotion/styled';
 import Editor from '../../components/Editor/Editor';
-import NewLevellogQnAList from '../../components/Lists/NewLevellogQnAInputList';
+import EditLevellogQnAList from '../../components/Lists/NewLevellogQnAInputList';
 import { COLOR } from '../../constants';
 import useEditLevellog from '../../hooks/Levellog/useEditLevellog';
 import { MainContentStyle } from '../../PageRouter';
 
 const EditLevellogPage = () => {
   const {
-    NewLevellogQnAListProps,
     title,
     onChangeTitle,
     content,
     editorContentRef,
     isLoading,
-    onEditLevellog,
-    id,
+    editLevellog,
+    EditLevellogQnAListProps,
   } = useEditLevellog();
 
   return (
@@ -30,8 +29,8 @@ const EditLevellogPage = () => {
             height="40vh"
             editorContentRef={editorContentRef}
           />
-          <NewLevellogQnAList {...NewLevellogQnAListProps} />
-          <SubmitButton type="submit" onClick={onEditLevellog}>
+          <EditLevellogQnAList {...EditLevellogQnAListProps} />
+          <SubmitButton type="submit" onClick={editLevellog}>
             수정하기
           </SubmitButton>
         </>

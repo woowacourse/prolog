@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent } from 'react';
+import { ChangeEvent } from 'react';
 import { NewLevellogQnAListProps } from '../../hooks/Levellog/useNewLevellog';
 import NewLevellogQnAInputItem from '../Items/NewLevellogQnAInputItem';
 
@@ -33,7 +33,7 @@ const NewLevellogQnAList = ({
           />
         ))}
       </S.QnAItemsWrapper>
-      <S.AddQnAButton onClick={onAddQnA} />
+      {onAddQnA && <S.AddQnAButton onClick={onAddQnA} />}
     </S.Container>
   );
 };

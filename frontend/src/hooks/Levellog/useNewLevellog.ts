@@ -4,13 +4,13 @@ import { ALERT_MESSAGE, PATH, ERROR_MESSAGE } from '../../constants';
 import { QnAType } from '../../models/Levellogs';
 import { useCreateNewLevellogMutation } from '../queries/levellog';
 import useBeforeunload from '../useBeforeunload';
-import { Editor as ToastEditor } from '@toast-ui/react-editor';
 import { SUCCESS_MESSAGE } from '../../constants/message';
 import useSnackBar from '../useSnackBar';
+import useQnAInputList from './useQnAInputList';
 
 export interface NewLevellogQnAListProps {
   QnAList: QnAType[];
-  onAddQnA: () => void;
+  onAddQnA?: () => void;
   onDeleteQnA: (index: number) => void;
   onChangeQuestion: (value: string, index: number) => void;
   onChangeAnswer: (value: string, index: number) => void;
@@ -38,7 +38,14 @@ const useNewLevellog = () => {
     },
   });
 
-  const [QnAList, setQnAList] = useState<QnAType[]>([{ question: '', answer: '' }]);
+  const { QnAList, onAddQnA, onChangeAnswer, onChangeQuestion, onDeleteQnA } = useQnAInputList();
+  const NewLevellogQnAListProps: NewLevellogQnAListProps = {
+    QnAList,
+    onAddQnA,
+    onChangeQuestion,
+    onChangeAnswer,
+    onDeleteQnA,
+  };
 
   const createNewLevellog = (e) => {
     e.preventDefault();
@@ -72,45 +79,12 @@ const useNewLevellog = () => {
     });
   };
 
-  const onAddQnA: () => void = () => {
-    setQnAList((prev) => [...prev, { question: '', answer: '' }]);
-
-    setTimeout(() => {
-      window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: 'smooth' });
-    }, 100);
-  };
-
-  const onDeleteQnA: (index: number) => void = (index) => {
-    setQnAList((prev) => prev.filter((_, idx) => idx !== index));
-  };
-
-  const onChangeQuestion: (value: string, index: number) => void = (value, index) => {
-    const changedQnAList = [...QnAList];
-    changedQnAList[index].question = value;
-    setQnAList(changedQnAList);
-  };
-
-  const onChangeAnswer: (value: string, index: number) => void = (value, index) => {
-    const changedQnAList = [...QnAList];
-    changedQnAList[index].answer = value;
-    setQnAList(changedQnAList);
-  };
-
-  const NewLevellogQnAListProps: NewLevellogQnAListProps = {
-    QnAList,
-    onAddQnA,
-    onChangeQuestion,
-    onChangeAnswer,
-    onDeleteQnA,
-  };
-
   return {
     createNewLevellog,
     editorContentRef,
     onChangeTitle,
     title,
     NewLevellogQnAListProps,
-    setQnAList,
   };
 };
 
