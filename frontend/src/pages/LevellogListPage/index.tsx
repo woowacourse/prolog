@@ -19,7 +19,7 @@ import { PATH } from '../../constants';
 import { useLevellogList } from '../../hooks/Levellog/useLevellogList';
 
 const LevellogListPage = () => {
-  const { levellogs, isLoading, onChangeCurrentPage, isLoggedIn } = useLevellogList();
+  const { levellogs, isLoading, isLoggedIn, onChangeCurrentPage } = useLevellogList();
 
   return (
     <div css={[MainContentStyle]}>
