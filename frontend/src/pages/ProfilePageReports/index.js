@@ -5,7 +5,7 @@ import { UserContext } from '../../contexts/UserProvider';
 
 import * as Styled from './styles';
 import AbilityGraph from './AbilityGraph';
-import ReportStudyLogs from './ReportStudyLogs';
+
 import { Button } from '../../components';
 import { useMutation, useQuery } from 'react-query';
 import axios from 'axios';
@@ -18,6 +18,7 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import 'prismjs/themes/prism.css';
 import Prism from 'prismjs';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
+import ReportStudyLogs from '../../components/ReportStudyLogs/ReportStudyLogs';
 
 const ProfilePageReports = () => {
   const history = useHistory();

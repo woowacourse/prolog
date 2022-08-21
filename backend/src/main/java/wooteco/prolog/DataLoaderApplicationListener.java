@@ -134,7 +134,8 @@ public class DataLoaderApplicationListener implements
         abilityService.applyDefaultAbilities(Members.JOANNE.value.getId(), "be");
         abilityService.applyDefaultAbilities(Members.SUNNY.value.getId(), "fe");
 
-        updatedContentsRepository.save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
+        updatedContentsRepository
+            .save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
         PageRequest pageRequest = PageRequest.of(0, 10);
         popularStudylogService.updatePopularStudylogs(pageRequest);
     }
@@ -297,7 +298,8 @@ public class DataLoaderApplicationListener implements
                 "좋은 내용" + cnt,
                 Sessions.values()[cnt++ % Missions.values().length].getId(),
                 Missions.values()[cnt++ % Missions.values().length].getId(),
-                TagRequests.random()
+                TagRequests.random(),
+                Collections.emptyList()
             );
         }
     }

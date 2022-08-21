@@ -1,3 +1,4 @@
 import { popularStudyLogHandler } from './popularStudyLog';
+import { commentsHandler } from './comment';
 
-export const handlers = [...popularStudyLogHandler];
+export const handlers = [...popularStudyLogHandler, ...commentsHandler];

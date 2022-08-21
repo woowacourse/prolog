@@ -1,10 +1,11 @@
 import { createContext, useState, useEffect } from 'react';
+import { client } from '../apis';
 
 import LOCAL_STORAGE_KEY from '../constants/localStorage';
-import useMutation from '../hooks/useMutation';
 import useRequest from '../hooks/useRequest';
-import { getUserProfileRequest, loginRequest } from '../service/requests';
+import { getUserProfileRequest } from '../service/requests';
 import { getLocalStorageItem } from '../utils/localStorage';
+import { useLogin } from '../hooks/queries/auth';
 
 const DEFAULT_USER = {
   userId: null,
@@ -51,18 +52,17 @@ const UserProvider = ({ children }) => {
     onLogout
   );
 
-  const { mutate: onLogin } = useMutation(loginRequest, {
-    onSuccess: ({ accessToken }) => {
+  const { mutate: onLogin } = useLogin({
+    onSuccess: (accessToken) => {
       localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, JSON.stringify(accessToken));
+      client.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
       setState((prev) => ({ ...prev, accessToken }));
-    },
-    onError: (error) => {
-      alert(error.message);
     },
   });
 
   function onLogout() {
     localStorage.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
+    client.defaults.headers['Authorization'] = '';
     setState(DEFAULT_USER);
   }
 

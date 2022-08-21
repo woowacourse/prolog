@@ -1,12 +1,9 @@
-package wooteco.prolog.studylog.application.dto;
+package wooteco.prolog.badge.application.dto;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import wooteco.prolog.studylog.domain.Badge;
 
 
 @NoArgsConstructor
