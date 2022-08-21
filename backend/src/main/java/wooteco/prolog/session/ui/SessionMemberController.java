@@ -3,6 +3,7 @@ package wooteco.prolog.session.ui;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +33,15 @@ public class SessionMemberController {
     @PostMapping("/me")
     public ResponseEntity<Void> registerMe(@PathVariable Long sessionId, @AuthMemberPrincipal LoginMember member){
         sessionMemberService.registerMember(sessionId, member.getId());
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> deleteRegistedSession(
+        @PathVariable Long sessionId,
+        @AuthMemberPrincipal LoginMember member
+    ){
+        sessionMemberService.deleteRegistedSession(sessionId, member.getId());
         return ResponseEntity.ok().build();
     }
 
