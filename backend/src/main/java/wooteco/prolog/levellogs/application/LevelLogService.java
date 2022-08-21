@@ -91,31 +91,27 @@ public class LevelLogService {
     }
 
     @Transactional
-    public LevelLogResponse updateLevelLog(Long memberId, Long levelLogId,
-                                           LevelLogRequest levelLogRequest) {
+    public LevelLogResponse updateLevelLog(Long memberId, Long levelLogId, LevelLogRequest levelLogRequest) {
         final LevelLog levelLog = findById(levelLogId);
         levelLog.validateBelongTo(memberId);
 
-        final List<SelfDiscussion> selfDiscussions = selfDiscussionRepository.findByLevelLog(
-            levelLog);
+        final List<SelfDiscussion> selfDiscussions = selfDiscussionRepository.findByLevelLog(levelLog);
 
         if (selfDiscussions.isEmpty()) {
             throw new SelfDiscussionNotFoundException();
         }
 
-        levelLog.update(levelLogRequest.getTitle(), levelLogRequest.getContent());
-        updateSelfDiscussion(levelLogRequest, selfDiscussions);
+        updateLevelLog(levelLog, levelLogRequest);
 
         return findLevelLogResponseById(levelLogId);
     }
 
-    private void updateSelfDiscussion(LevelLogRequest levelLogRequest,
-                                      List<SelfDiscussion> selfDiscussions) {
-        final List<SelfDiscussionRequest> selfDiscussionRequests = levelLogRequest.getLevelLogs();
+    private void updateLevelLog(LevelLog levelLog, LevelLogRequest levelLogRequest) {
+        selfDiscussionRepository.deleteByLevelLog(levelLog);
 
-        for (int i = 0; i < selfDiscussionRequests.size(); i++) {
-            final SelfDiscussionRequest updateData = selfDiscussionRequests.get(i);
-            selfDiscussions.get(i).update(updateData.getQuestion(), updateData.getAnswer());
+        levelLog.update(levelLogRequest.getTitle(), levelLogRequest.getContent());
+        for (SelfDiscussionRequest request : levelLogRequest.getLevelLogs()) {
+            selfDiscussionRepository.save(new SelfDiscussion(levelLog, request.getQuestion(), request.getAnswer()));
         }
     }
 
