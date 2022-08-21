@@ -3,6 +3,21 @@ import { DatePicker } from 'antd';
 
 import * as Styled from './ReportInfo.styles';
 import ReportDescEditor from './ReportDescEditor';
+import { Editor } from '@toast-ui/react-editor';
+import { Dispatch, SetStateAction } from 'react';
+
+interface ReportInfoPros {
+  nickname: string;
+  title: string;
+  desc: Editor | string;
+  editorRef?: Dispatch<SetStateAction<Editor | undefined>>;
+  startDate?: string;
+  setStartDate?: Dispatch<SetStateAction<string>>;
+  setTitle: Dispatch<SetStateAction<string>>;
+  endDate?: string;
+  setEndDate?: Dispatch<SetStateAction<string>>;
+  edit?: boolean;
+}
 
 const ReportInfo = ({
   nickname, //
@@ -15,12 +30,12 @@ const ReportInfo = ({
   endDate,
   setEndDate,
   edit,
-}) => {
+}: ReportInfoPros) => {
   const onWriteTitle = ({ target: { value } }) => setTitle(value);
   const onSelectDate = (_, dateStrings) => {
     const [startDate, endDate] = dateStrings;
-    setStartDate(startDate);
-    setEndDate(endDate);
+    if (setStartDate) setStartDate(startDate);
+    if (setEndDate) setEndDate(endDate);
   };
 
   const dateFormat = 'YYYY-MM-DD';
@@ -72,7 +87,6 @@ const ReportInfo = ({
 
       <Styled.Label htmlFor="report_desc">
         ✏️ 리포트 설명
-        <span>{desc.length}/300</span>
         <ReportDescEditor initialContent={desc ?? ''} editorRef={editorRef} />
       </Styled.Label>
     </section>

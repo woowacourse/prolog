@@ -71,7 +71,7 @@ const ProfilePageReportsList = () => {
               <Styled.ReportDate>
                 {report.startDate} ~ {report.endDate}
               </Styled.ReportDate>
-              <Styled.ReportTtile>{report.title}</Styled.ReportTtile>
+              <Styled.ReportTitle>{report.title}</Styled.ReportTitle>
               <Styled.ReportDesc>{report.description}</Styled.ReportDesc>
               <Styled.GoReportLink to={`/${username}/reports/${report.id}`}>
                 리포트 보러가기 {'>'}

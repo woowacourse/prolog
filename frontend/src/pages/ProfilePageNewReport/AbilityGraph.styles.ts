@@ -81,7 +81,13 @@ export const Tbody = styled.tbody`
   }
 `;
 
-export const AbilityName = styled.td`
+type RGB = `rgb(${number}, ${number}, ${number})`;
+type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
+type HEX = `#${string}`;
+
+type Color = RGB | RGBA | HEX;
+
+export const AbilityName = styled.td<{ abilityColor: Color }>`
   height: 100%;
   width: 80%;
   padding: 0 1rem;
