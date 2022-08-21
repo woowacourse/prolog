@@ -32,13 +32,23 @@ public class SessionMemberStepDefinitions extends AcceptanceSteps {
         context.storage.put("session", sessionName);
     }
 
-    @When("{long} 강의에 자신을 등록하면")
+    @When("{long} 강의에 자신을 등록하(면/고)")
     public void 강의에자신을등록(Long sessionId) {
         context.invokeHttpPostWithToken("sessions/" + sessionId + "/members/me");
     }
 
     @Then("강의에 내가 추가된다.")
     public void 강의에내가추가된다() {
+        assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @When("{long} 강의에서 자신을 제거하면")
+    public void 강의에서자신을제거하면(Long sessionId) {
+        context.invokeHttpDeleteWithToken("/sessions/" + sessionId + "/members/me");
+    }
+
+    @Then("강의에서 내가 제거된다.")
+    public void 강의에서내가제거된다() {
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 }
