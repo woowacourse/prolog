@@ -54,7 +54,6 @@ const StudylogPage = () => {
   const { mutate: deleteScrap } = useDeleteScrapMutation({ getStudylog });
   const { mutate: postLike } = usePostLikeMutation({ getStudylog });
   const { mutate: deleteLike } = useDeleteLikeMutation({ getStudylog });
-
   const { author = null, liked = false, scrap = false } = studylog;
 
   const goAuthorProfilePage = (event: MouseEvent<HTMLDivElement>) => {
@@ -105,9 +104,9 @@ const StudylogPage = () => {
   }, [accessToken, id]);
 
   /* 댓글 로직 */
-  const { comments, createComment, editComment, deleteComment } = useStudylogComment(id);
+  const { comments, createComment, editComment, deleteComment } = useStudylogComment(Number(id));
 
-  const editorContentRef = useRef(null);
+  const editorContentRef = useRef<any>(null);
 
   const onSubmitComment = (event) => {
     event.preventDefault();
@@ -153,7 +152,7 @@ const StudylogPage = () => {
         </ButtonList>
       )}
       <Content
-        studylog={{ ...studylog.studylogResponse, scrapedCount: studylog.scrapedCount }}
+        studylog={studylog}
         toggleLike={toggleLike}
         toggleScrap={toggleScrap}
         goAuthorProfilePage={goAuthorProfilePage}

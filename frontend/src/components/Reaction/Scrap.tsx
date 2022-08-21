@@ -11,7 +11,7 @@ interface Props {
   onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
-const Scrap = ({ scrap, scrapedCount, scrapedCount, onClick }: Props) => {
+const Scrap = ({ scrap, scrapedCount, onClick }: Props) => {
   const scrapIcon = scrap ? scrappedIcon : unScrapIcon;
   const scrapIconAlt = scrap ? '스크랩 취소' : '스크랩';
 

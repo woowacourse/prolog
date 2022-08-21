@@ -39,6 +39,7 @@ export interface Studylog {
   liked: boolean;
   likesCount: number;
   scrap: boolean;
+  scrapedCount: number;
   abilities: number[];
 }
 
