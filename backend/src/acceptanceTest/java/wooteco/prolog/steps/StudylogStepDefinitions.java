@@ -3,6 +3,7 @@ package wooteco.prolog.steps;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG1;
+import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG10;
 import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG2;
 import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG3;
 import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG4;
@@ -16,7 +17,6 @@ import io.cucumber.java.en.When;
 import io.cucumber.messages.internal.com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -308,6 +308,12 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
         context.invokeHttpPutWithToken(path, STUDYLOG3.getStudylogRequest());
     }
 
+    @When("{long}번째 스터디로그의 역량을 수정하면")
+    public void 스터디로그의역량을수정하면(Long studylogId) {
+        String path = "/studylogs/" + studylogId;
+        context.invokeHttpPutWithToken(path, STUDYLOG10.getStudylogRequest());
+    }
+
     @Then("{long}번째 스터디로그가 수정된다")
     public void 스터디로그가수정된다(Long studylogId) {
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -441,6 +447,14 @@ public class StudylogStepDefinitions extends AcceptanceSteps {
     public void 역량을맵핑한스터디로그를작성하고(long abilityId1, long abilityId2, String studylogName) {
         StudylogRequest studylogRequest = new StudylogRequest(studylogName, "content", null, 1L,
             Collections.emptyList(), Arrays.asList(abilityId1, abilityId2));
+        context.invokeHttpPostWithToken("/studylogs", studylogRequest);
+        context.storage.put(studylogName, context.response.as(StudylogResponse.class));
+    }
+
+    @Given("{long} 역량 한개를 맵핑한 {string} 스터디로그를 작성하고")
+    public void 역량한개를맵핑한스터디로그를작성하고(long abilityId1, String studylogName) {
+        StudylogRequest studylogRequest = new StudylogRequest(studylogName, "content", null, 1L,
+            Collections.emptyList(), Arrays.asList(abilityId1));
         context.invokeHttpPostWithToken("/studylogs", studylogRequest);
         context.storage.put(studylogName, context.response.as(StudylogResponse.class));
     }
