@@ -21,7 +21,9 @@ const useEditLevellog = () => {
     {
       onSuccess: (levellog) => {
         setTitle(levellog.title);
-        setQnAList(levellog.levelLogs);
+        setQnAList(
+          levellog.levelLogs.map((log) => ({ question: log.question, answer: log.answer }))
+        );
       },
     }
   );

@@ -52,6 +52,7 @@ const Content = ({ levellog }) => {
         <ViewerWrapper>
           {content && (
             <Viewer
+              key={content}
               initialValue={content}
               extendedAutolinks={true}
               plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}

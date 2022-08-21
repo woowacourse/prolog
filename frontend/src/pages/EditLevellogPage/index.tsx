@@ -24,7 +24,6 @@ const EditLevellogPage = () => {
       {!isLoading && (
         <>
           <Editor
-            key={id}
             title={title}
             content={content}
             onChangeTitle={onChangeTitle}
