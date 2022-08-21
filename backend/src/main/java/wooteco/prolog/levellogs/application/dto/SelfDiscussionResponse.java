@@ -1,14 +1,14 @@
 package wooteco.prolog.levellogs.application.dto;
 
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import wooteco.prolog.levellogs.domain.SelfDiscussion;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@EqualsAndHashCode
 @ToString
 public class SelfDiscussionResponse {
 

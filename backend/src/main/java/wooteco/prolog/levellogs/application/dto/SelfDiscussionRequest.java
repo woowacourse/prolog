@@ -1,6 +1,8 @@
 package wooteco.prolog.levellogs.application.dto;
 
 import com.sun.istack.NotNull;
+
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,7 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode
 @ToString
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SelfDiscussionRequest {
 
     @NotNull
