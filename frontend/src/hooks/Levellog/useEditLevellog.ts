@@ -7,15 +7,8 @@ import { useEditLevellogMutation, useGetLevellog } from '../queries/levellog';
 import { ALERT_MESSAGE } from '../../constants';
 import useSnackBar from '../useSnackBar';
 import useQnAInputList from './useQnAInputList';
-import { QnAType } from '../../models/Levellogs';
 import useBeforeunload from '../useBeforeunload';
-
-interface EditLevellogQnAListProps {
-  QnAList: QnAType[];
-  onDeleteQnA: (index: number) => void;
-  onChangeQuestion: (value: string, index: number) => void;
-  onChangeAnswer: (value: string, index: number) => void;
-}
+import { NewLevellogQnAListProps } from './useNewLevellog';
 
 const useEditLevellog = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,12 +18,20 @@ const useEditLevellog = () => {
 
   useBeforeunload(editorContentRef);
 
-  const { QnAList, setQnAList, onChangeAnswer, onChangeQuestion, onDeleteQnA } = useQnAInputList();
-  const EditLevellogQnAListProps: EditLevellogQnAListProps = {
+  const {
+    QnAList,
+    setQnAList,
+    onChangeAnswer,
+    onChangeQuestion,
+    onDeleteQnA,
+    onAddQnA,
+  } = useQnAInputList();
+  const EditLevellogQnAListProps: NewLevellogQnAListProps = {
     QnAList,
     onChangeAnswer,
     onChangeQuestion,
     onDeleteQnA,
+    onAddQnA,
   };
 
   const [title, setTitle] = useState('');
