@@ -1,14 +1,19 @@
 package kr.co.techcourse.prolog.batch.job.popularstudylog.domain;
 
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Table(name = "popular_studylog")
 @Entity
-public class PopularStudyLog {
+public class PopularStudyLog extends AuditingEntity {
 
     @Id
-    @Column(updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, updatable = false)
@@ -20,8 +25,13 @@ public class PopularStudyLog {
     protected PopularStudyLog() { }
 
     public PopularStudyLog(Long studylogId) {
+        this(null, studylogId, false);
+    }
+
+    private PopularStudyLog(Long id, Long studylogId, boolean deleted) {
+        this.id = id;
         this.studylogId = studylogId;
-        this.deleted = false;
+        this.deleted = deleted;
     }
 
     public void delete() {

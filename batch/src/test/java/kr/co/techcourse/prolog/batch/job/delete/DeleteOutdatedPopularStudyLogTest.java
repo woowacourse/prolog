@@ -2,22 +2,17 @@ package kr.co.techcourse.prolog.batch.job.delete;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import kr.co.techcourse.prolog.batch.job.popularstudylog.PopularStudylogBatchJob;
+import kr.co.techcourse.prolog.batch.job.popularstudylog.delete.DeleteOutdatedPopularStudylogStepBuilder;
 import kr.co.techcourse.prolog.batch.job.popularstudylog.domain.PopularStudyLog;
 import kr.co.techcourse.prolog.batch.job.popularstudylog.domain.repository.PopularStudyLogRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.batch.core.ExitStatus;
-import org.springframework.batch.core.JobExecution;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBatchTest
-@RunWith(SpringRunner.class)
-@ContextConfiguration(classes = PopularStudylogBatchJob.class)
+@SpringBootTest(properties = "spring.batch.job.names=popuarStudylogJob")
 public class DeleteOutdatedPopularStudyLogTest {
 
     @Autowired
@@ -27,13 +22,16 @@ public class DeleteOutdatedPopularStudyLogTest {
     private PopularStudyLogRepository popularStudyLogRepository;
 
     @Test
-    public void updatePopularStudyLog() throws Exception {
-        for (Long studyLogId = 1L; studyLogId <= 10L; studyLogId++) {
-            popularStudyLogRepository.save(new PopularStudyLog(1L));
+    void updatePopularStudyLog() {
+        // arrange
+        for (long id = 1L; id <= 10L; id++) {
+            popularStudyLogRepository.save(new PopularStudyLog(id));
         }
 
-        jobLauncherTestUtils.launchStep("deleteOutdatedPopularStudyLog");
+        // act
+        jobLauncherTestUtils.launchStep(DeleteOutdatedPopularStudylogStepBuilder.STEP_NAME);
 
+        // assert
         assertThat(popularStudyLogRepository.findAll()).isEmpty();
     }
 }
