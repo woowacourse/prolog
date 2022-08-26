@@ -7,9 +7,11 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableBatchProcessing
+@EnableJpaAuditing
 @SpringBootApplication
 @ComponentScan(excludeFilters = {
 		@Filter(type = FilterType.REGEX, pattern = "kr.co.techcourse.prolog.batch.job.sample.tasklet.*")

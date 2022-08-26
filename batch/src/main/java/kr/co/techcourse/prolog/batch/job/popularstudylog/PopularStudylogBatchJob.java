@@ -1,5 +1,7 @@
 package kr.co.techcourse.prolog.batch.job.popularstudylog;
 
+import javax.persistence.EntityManagerFactory;
+import kr.co.techcourse.prolog.batch.job.popularstudylog.update.UpdatePopulartStudylogStepBuilder;
 import kr.co.techcourse.prolog.batch.job.sample.chunk.entity.Crew;
 import kr.co.techcourse.prolog.batch.job.sample.chunk.entity.Member;
 import org.springframework.batch.core.Job;
@@ -16,13 +18,15 @@ public class PopularStudylogBatchJob {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
+    private final EntityManagerFactory emf;
 
     public PopularStudylogBatchJob(
         JobBuilderFactory jobBuilderFactory,
-        StepBuilderFactory stepBuilderFactory
-    ) {
+        StepBuilderFactory stepBuilderFactory,
+        EntityManagerFactory emf) {
         this.jobBuilderFactory = jobBuilderFactory;
         this.stepBuilderFactory = stepBuilderFactory;
+        this.emf = emf;
     }
 
     @Bean
@@ -44,9 +48,8 @@ public class PopularStudylogBatchJob {
     }
 
     @Bean
-    public Step updatePopularStudylog(
-
-    ) {
-        return null;
+    public Step updatePopularStudylog() {
+        return new UpdatePopulartStudylogStepBuilder(emf, stepBuilderFactory)
+            .build();
     }
 }
