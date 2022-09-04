@@ -13,7 +13,7 @@ const NewLevellogQnAInputItem = ({
       <S.DeleteQnAButton onClick={onDeleteQnA}>-</S.DeleteQnAButton>
       <S.QnAForm>
         <S.QnAQuestionWrapper>
-          <S.QnAQuestionIndex>Q{idx + 1}</S.QnAQuestionIndex>
+          <S.QnAQuestionIndex>Q{idx}</S.QnAQuestionIndex>
           <S.QnAQuestionInput
             type="text"
             value={question}

@@ -15,20 +15,20 @@ const NewLevellogQnAList = ({
     <S.Container>
       <S.Label>Questions</S.Label>
       <S.QnAItemsWrapper>
-        {QnAList.map(({ question, answer }, idx) => (
+        {QnAList.map(({ question, answer }, questionNumber) => (
           <NewLevellogQnAInputItem
-            key={idx}
-            idx={idx}
+            key={questionNumber}
+            idx={questionNumber + 1}
             question={question}
             onChangeQuestion={(e: ChangeEvent<HTMLInputElement>) => {
-              onChangeQuestion(e.target.value, idx);
+              onChangeQuestion(e.target.value, questionNumber);
             }}
             answer={answer}
             onChangeAnswer={(e: ChangeEvent<HTMLInputElement>) => {
-              onChangeAnswer(e.target.value, idx);
+              onChangeAnswer(e.target.value, questionNumber);
             }}
             onDeleteQnA={() => {
-              onDeleteQnA(idx);
+              onDeleteQnA(questionNumber);
             }}
           />
         ))}
