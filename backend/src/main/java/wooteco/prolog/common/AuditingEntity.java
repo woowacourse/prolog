@@ -20,8 +20,4 @@ public abstract class AuditingEntity {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
-
-    public String getStringCreatedAt() {
-        return createdAt.toString();
-    }
 }
