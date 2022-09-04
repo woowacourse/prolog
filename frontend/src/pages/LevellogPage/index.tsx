@@ -10,7 +10,7 @@ import useLevellog from '../../hooks/Levellog/useLevellog';
 import QnAList from './QnAList';
 import { CONFIRM_MESSAGE } from '../../constants';
 
-const StudylogPage = () => {
+const LevellogPage = () => {
   const {
     levellog,
     deleteLevellog,
@@ -58,4 +58,4 @@ const StudylogPage = () => {
   );
 };
 
-export default StudylogPage;
+export default LevellogPage;
