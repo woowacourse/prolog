@@ -8,14 +8,24 @@ import { COLOR, ERROR_MESSAGE } from '../../constants';
 import { Form, FormButtonWrapper } from '../ProfilePageNewReport/style';
 import AbilityGraph from '../ProfilePageNewReport/AbilityGraph';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import axios from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { BASE_URL } from '../../configs/environment';
+import { Editor } from '@toast-ui/react-editor';
+import { ErrorData } from '../../apis/ability';
+
+type reportDataType = {
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  reportAbility: { abilityId: number; weight: number }[];
+};
 
 const ProfilePageNewReport = () => {
   const history = useHistory();
   const queryClient = useQueryClient();
 
-  const { id, username } = useParams();
+  const { id, username } = useParams<{ id: string; username: string }>();
   const { user } = useContext(UserContext);
   const { isLoggedIn, accessToken } = user;
   const nickname = user.nickname ?? user.username;
@@ -31,8 +41,8 @@ const ProfilePageNewReport = () => {
   });
 
   /** 리포트 수정 */
-  const onEditReport = useMutation(
-    async (reportData) => {
+  const onEditReport = useMutation<AxiosResponse<null>, AxiosError<ErrorData>, reportDataType>(
+    async (reportData: reportDataType) => {
       const { data } = await axios({
         method: 'put',
         url: `${BASE_URL}/reports/${id}`,
@@ -62,7 +72,7 @@ const ProfilePageNewReport = () => {
   );
 
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState<Editor>();
   const [abilities, setAbilities] = useState([]);
 
   useEffect(() => {
@@ -89,15 +99,16 @@ const ProfilePageNewReport = () => {
   const onSubmitReport = async (event) => {
     event.preventDefault();
 
-    const data = {
-      title,
-      description: description.getInstance().getMarkdown(),
-      startDate: reportData.startDate,
-      endDate: reportData.endDate,
-      reportAbility: abilities.map(({ id, weight }) => ({ abilityId: id, weight })),
-    };
-
-    onEditReport.mutate(data);
+    if (description instanceof Editor) {
+      const data = {
+        title,
+        description: description.getInstance().getMarkdown(),
+        startDate: reportData.startDate,
+        endDate: reportData.endDate,
+        reportAbility: abilities.map(({ id, weight }) => ({ abilityId: id, weight })),
+      };
+      onEditReport.mutate(data);
+    }
   };
 
   const onCancelWriteReport = () => {

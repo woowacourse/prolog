@@ -8,7 +8,7 @@ import AbilityGraph from './AbilityGraph';
 
 import { Button } from '../../components';
 import { useMutation, useQuery } from 'react-query';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { BASE_URL } from '../../configs/environment';
 import { ERROR_MESSAGE } from '../../constants';
 
@@ -22,7 +22,7 @@ import ReportStudyLogs from '../../components/ReportStudyLogs/ReportStudyLogs';
 
 const ProfilePageReports = () => {
   const history = useHistory();
-  const { reportId, username } = useParams();
+  const { reportId, username } = useParams<{ reportId: string; username: string }>();
   const { user } = useContext(UserContext);
   const readOnly = username !== user.username;
 
@@ -40,7 +40,7 @@ const ProfilePageReports = () => {
   );
 
   /** 리포트 삭제 */
-  const onDeleteReport = useMutation(
+  const onDeleteReport = useMutation<void, AxiosError<Error>>(
     async () => {
       await axios({
         method: 'delete',

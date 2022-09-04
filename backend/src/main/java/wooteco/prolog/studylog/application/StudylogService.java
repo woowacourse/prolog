@@ -318,8 +318,17 @@ public class StudylogService {
         boolean liked = studylog.likedByMember(loginMember.getId());
         boolean read = studylogReadRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId()).isPresent();
         boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId()).isPresent();
+        List<AbilityResponse> abilityResponses = findAbilityByStudylogId(studylog.getId());
 
-        return StudylogResponse.of(studylog, scraped, read, liked);
+        return StudylogResponse.of(studylog, abilityResponses, scraped, read, liked);
+    }
+
+    private List<AbilityResponse> findAbilityByStudylogId(Long studylogId) {
+        List<StudylogAbility> studylogAbilities = studylogAbilityRepository.findAllByStudylogId(studylogId);
+        List<Ability> abilities = studylogAbilities.stream()
+            .map(StudylogAbility::getAbility)
+            .collect(Collectors.toList());
+        return AbilityResponse.listOf(abilities);
     }
 
     public StudylogResponse findByIdAndReturnStudylogResponse(Long id) {
@@ -349,6 +358,13 @@ public class StudylogService {
 
     @Transactional
     public void updateStudylog(Long memberId, Long studylogId, StudylogRequest studylogRequest) {
+        Set<Ability> abilities = abilityService.findByIdIn(memberId,
+                studylogRequest.getAbilities());
+
+        if (hasChildAndParentAbility(abilities)) {
+            throw new IllegalArgumentException("자식 역량이 존재하는 경우 부모 역량을 선택할 수 없습니다.");
+        }
+
         Studylog studylog = studylogRepository.findById(studylogId).orElseThrow(StudylogNotFoundException::new);
         studylog.validateBelongTo(memberId);
 
@@ -361,6 +377,13 @@ public class StudylogService {
         Tags newTags = tagService.findOrCreate(studylogRequest.getTags());
         studylog.update(studylogRequest.getTitle(), studylogRequest.getContent(), session, mission, newTags);
         memberTagService.updateMemberTag(originalTags, newTags, foundMember);
+
+        List<StudylogAbility> studylogAbilities = abilities.stream()
+                .map(it -> new StudylogAbility(memberId, it, studylog))
+                .collect(Collectors.toList());
+
+        studylogAbilityRepository.deleteByStudylogId(studylog.getId());
+        studylogAbilityRepository.saveAll(studylogAbilities);
 
         studylogDocumentService.update(studylog.toStudylogDocument());
     }

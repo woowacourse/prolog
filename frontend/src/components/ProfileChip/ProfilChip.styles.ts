@@ -1,7 +1,8 @@
+import { SerializedStyles } from '@emotion/serialize';
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
 
-const Container = styled.div`
+const Container = styled.div<{ css?: SerializedStyles }>`
   height: 4.8rem;
   border: 1px solid ${COLOR.LIGHT_GRAY_400};
   border-radius: 1.6rem;

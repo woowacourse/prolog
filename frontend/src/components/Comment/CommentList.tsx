@@ -8,8 +8,8 @@ interface CommentListProps {
   comments: CommentType[];
   editComment: (commentId: number, body: CommentRequest) => void;
   deleteComment: (commentId: number) => void;
-  onSubmit: FormEventHandler<HTMLFormElement>;
-  editorContentRef: MutableRefObject<ToastEditor>;
+  onSubmit?: FormEventHandler<HTMLFormElement>;
+  editorContentRef?: MutableRefObject<ToastEditor>;
 }
 
 const CommentList = ({

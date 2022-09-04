@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { useContext, useEffect, useRef } from 'react';
+import { MouseEvent, useContext, useEffect, useRef } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import TagManager from 'react-gtm-module';
 
@@ -28,7 +28,7 @@ import {
 } from '../../hooks/queries/studylog';
 
 const StudylogPage = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
   const { user } = useContext(UserContext);
@@ -54,10 +54,9 @@ const StudylogPage = () => {
   const { mutate: deleteScrap } = useDeleteScrapMutation({ getStudylog });
   const { mutate: postLike } = usePostLikeMutation({ getStudylog });
   const { mutate: deleteLike } = useDeleteLikeMutation({ getStudylog });
-
   const { author = null, liked = false, scrap = false } = studylog;
 
-  const goAuthorProfilePage = (event) => {
+  const goAuthorProfilePage = (event: MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
 
     if (!author) {
@@ -105,9 +104,9 @@ const StudylogPage = () => {
   }, [accessToken, id]);
 
   /* 댓글 로직 */
-  const { comments, createComment, editComment, deleteComment } = useStudylogComment(id);
+  const { comments, createComment, editComment, deleteComment } = useStudylogComment(Number(id));
 
-  const editorContentRef = useRef(null);
+  const editorContentRef = useRef<any>(null);
 
   const onSubmitComment = (event) => {
     event.preventDefault();
