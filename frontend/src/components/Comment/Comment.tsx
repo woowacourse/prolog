@@ -79,7 +79,7 @@ const Comment = ({ id, author, content, createAt, editComment, deleteComment }: 
               <Styled.Logo src={imageUrl} alt="프로필" />
               <span>{nickname}</span>
             </Link>
-            <Styled.CreatedDate>{createAt}</Styled.CreatedDate>
+            <Styled.CreatedDate>{new Date(createAt).toLocaleString('ko-KR')}</Styled.CreatedDate>
           </Styled.Left>
           {user.userId === author.id && (
             <Styled.Right>
