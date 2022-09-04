@@ -1,5 +1,4 @@
 import { client } from '.';
-import { CONFIRM_MESSAGE } from '../constants';
 import { LevellogRequest } from '../models/Levellogs';
 
 export const requestGetLevellogs = async (currPage: number) => {
@@ -19,8 +18,6 @@ export const requestGetLevellog = async (id) => {
 };
 
 export const requestDeleteLevellog = async (id) => {
-  if (!window.confirm(CONFIRM_MESSAGE.DELETE_STUDYLOG)) return;
-
   client.delete(`/levellogs/${id}`);
 };
 
