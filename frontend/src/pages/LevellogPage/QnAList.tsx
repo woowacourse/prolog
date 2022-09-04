@@ -5,7 +5,7 @@ const QnAList = ({ QnAList }) => {
     <S.Container>
       <S.SubTitle>Q &amp; A</S.SubTitle>
       <S.QnAsWrapper>
-        {QnAList.map((QnA, idx) => (
+        {QnAList.map((QnA) => (
           <S.QnA key={QnA.id}>
             <S.Question>{QnA.question}</S.Question>
             <S.Answer>{QnA.answer}</S.Answer>
