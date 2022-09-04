@@ -53,7 +53,6 @@ const Content = ({ studylog, toggleLike, toggleScrap, goAuthorProfilePage }: Pro
     liked,
     likesCount,
     scrap,
-    scrapedCount,
   } = studylog;
 
   return (
@@ -109,7 +108,7 @@ const Content = ({ studylog, toggleLike, toggleScrap, goAuthorProfilePage }: Pro
             ]}
           >
             <Like liked={liked} likesCount={likesCount} onClick={toggleLike} />
-            <Scrap scrap={scrap} scrapedCount={scrapedCount} onClick={toggleScrap} />
+            <Scrap scrap={scrap} onClick={toggleScrap} />
           </div>
         </BottomContainer>
       </CardInner>

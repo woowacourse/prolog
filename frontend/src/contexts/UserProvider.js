@@ -54,7 +54,7 @@ const UserProvider = ({ children }) => {
 
   const { mutate: onLogin } = useLogin({
     onSuccess: (accessToken) => {
-      localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, JSON.stringify(accessToken));
+      localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, accessToken);
       client.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
       setState((prev) => ({ ...prev, accessToken }));
     },

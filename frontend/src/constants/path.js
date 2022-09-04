@@ -8,9 +8,11 @@ const PATH = {
   PROFILE_REPORT: '/:username/reports/:reportId',
   PROFILE_NEW_REPORT: '/:username/reports/write',
   LOGIN_CALLBACK: '/login/callback',
-  NEW_STUDYLOG: '/studylog/write',
-  ABILITY: '/:username/ability',
   STUDYLOG: '/studylogs',
+  NEW_STUDYLOG: '/studylog/write',
+  LEVELLOG: '/levellogs',
+  NEW_LEVELLOG: '/levellog/write',
+  ABILITY: '/:username/ability',
 };
 
 export default PATH;
