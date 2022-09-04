@@ -8,7 +8,6 @@ import { ALERT_MESSAGE } from '../../constants';
 import useSnackBar from '../useSnackBar';
 import useQnAInputList from './useQnAInputList';
 import useBeforeunload from '../useBeforeunload';
-import { NewLevellogQnAListProps } from './useNewLevellog';
 import { UserContext } from '../../contexts/UserProvider';
 
 const useEditLevellog = () => {
@@ -31,7 +30,7 @@ const useEditLevellog = () => {
     onDeleteQnA,
     onAddQnA,
   } = useQnAInputList();
-  const EditLevellogQnAListProps: NewLevellogQnAListProps = {
+  const EditLevellogQnAListProps = {
     QnAList,
     onChangeAnswer,
     onChangeQuestion,

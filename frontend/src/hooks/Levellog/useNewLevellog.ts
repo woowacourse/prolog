@@ -8,14 +8,6 @@ import { SUCCESS_MESSAGE } from '../../constants/message';
 import useSnackBar from '../useSnackBar';
 import useQnAInputList from './useQnAInputList';
 
-export interface NewLevellogQnAListProps {
-  QnAList: QnAType[];
-  onAddQnA?: () => void;
-  onDeleteQnA: (index: number) => void;
-  onChangeQuestion: (value: string, index: number) => void;
-  onChangeAnswer: (value: string, index: number) => void;
-}
-
 const useNewLevellog = () => {
   const history = useHistory();
   const editorContentRef = useRef<any>(null);
@@ -39,7 +31,7 @@ const useNewLevellog = () => {
   });
 
   const { QnAList, onAddQnA, onChangeAnswer, onChangeQuestion, onDeleteQnA } = useQnAInputList();
-  const NewLevellogQnAListProps: NewLevellogQnAListProps = {
+  const NewLevellogQnAListProps = {
     QnAList,
     onAddQnA,
     onChangeQuestion,

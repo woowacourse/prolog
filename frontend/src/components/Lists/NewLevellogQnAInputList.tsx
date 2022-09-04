@@ -1,8 +1,16 @@
 import { ChangeEvent } from 'react';
-import { NewLevellogQnAListProps } from '../../hooks/Levellog/useNewLevellog';
+import { QnAType } from '../../models/Levellogs';
 import NewLevellogQnAInputItem from '../Items/NewLevellogQnAInputItem';
 
 import * as S from './NewLevellogQnAInputList.styles';
+
+export interface NewLevellogQnAListProps {
+  QnAList: QnAType[];
+  onAddQnA?: () => void;
+  onDeleteQnA: (index: number) => void;
+  onChangeQuestion: (value: string, index: number) => void;
+  onChangeAnswer: (value: string, index: number) => void;
+}
 
 const NewLevellogQnAList = ({
   QnAList,
