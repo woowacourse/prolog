@@ -5,8 +5,6 @@ import LOCAL_STORAGE_KEY from '../constants/localStorage';
 export const client = axios.create({
   baseURL: BASE_URL,
   headers: {
-    Authorization: `Bearer ${localStorage
-      .getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN)
-      ?.replaceAll(`"`, '')}`,
+    Authorization: `Bearer ${localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN)}`,
   },
 });
