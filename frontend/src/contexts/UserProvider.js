@@ -4,7 +4,6 @@ import { client } from '../apis';
 import LOCAL_STORAGE_KEY from '../constants/localStorage';
 import useRequest from '../hooks/useRequest';
 import { getUserProfileRequest } from '../service/requests';
-import { getLocalStorageItem } from '../utils/localStorage';
 import { useLogin } from '../hooks/queries/auth';
 
 const DEFAULT_USER = {

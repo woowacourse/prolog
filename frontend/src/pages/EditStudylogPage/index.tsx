@@ -21,7 +21,6 @@ import { useMutation, useQuery, UseQueryResult } from 'react-query';
 import REACT_QUERY_KEY from '../../constants/reactQueryKey';
 import { requestEditStudylog, requestGetStudylog } from '../../apis/studylogs';
 import { AxiosError, AxiosResponse } from 'axios';
-import { getLocalStorageItem } from '../../utils/localStorage';
 import LOCAL_STORAGE_KEY from '../../constants/localStorage';
 import { SUCCESS_MESSAGE } from '../../constants/message';
 import { ResponseError } from '../../apis/studylogs';
@@ -136,7 +135,7 @@ const EditStudylogPage = () => {
     (data: StudylogForm) =>
       requestEditStudylog({
         id,
-        accessToken: getLocalStorageItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
+        accessToken: localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN) as string,
         data,
       }),
     {
