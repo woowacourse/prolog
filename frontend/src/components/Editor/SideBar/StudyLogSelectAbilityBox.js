@@ -63,7 +63,9 @@ const StudyLogSelectAbilityBox = ({
         <p id="selectBox-title">학습로그에 매핑될 역량을 선택해주세요.</p>
         <span className="ability-title">📢 역량은 하위역량만 선택가능합니다.</span>
         <span className="ability-link">
-          <Link to={`/${username}/ability`}>역량 관리 페이지 이동</Link>
+          <Link to={`/${username}/ability`} target="_blank">
+            역량 관리 페이지 이동
+          </Link>
         </span>
         <Styled.CloseButton onClick={onClickCloseButton}></Styled.CloseButton>
         <Styled.SearchInput
