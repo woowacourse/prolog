@@ -9,7 +9,6 @@ import { ERROR_MESSAGE, ALERT_MESSAGE, PATH } from '../../constants';
 
 import { StudylogForm } from '../../models/Studylogs';
 import { useMutation } from 'react-query';
-import { getLocalStorageItem } from '../../utils/localStorage';
 import LOCAL_STORAGE_KEY from '../../constants/localStorage';
 import { SUCCESS_MESSAGE } from '../../constants/message';
 import { useHistory } from 'react-router-dom';
@@ -91,7 +90,7 @@ const NewStudylogPage = () => {
   const { mutate: createStudylogRequest } = useMutation(
     (data: StudylogForm) =>
       requestPostStudylog({
-        accessToken: getLocalStorageItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
+        accessToken: localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN) as string,
         data,
       }),
     {
