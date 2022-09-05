@@ -18,6 +18,7 @@ import wooteco.prolog.ability.domain.repository.StudylogAbilityRepository;
 import wooteco.prolog.common.PageableResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.report.application.dto.StudylogPeriodRequest;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.event.StudylogDeleteEvent;
@@ -128,5 +129,13 @@ public class StudylogAbilityService {
     @EventListener
     public void onStudylogDeleteEvent(StudylogDeleteEvent event) {
         studylogAbilityRepository.deleteByStudylogId(event.getStudylogId());
+    }
+
+    public List<AbilityStudylogResponse> getStudylogsByDate(Long memberId,
+                                                            StudylogPeriodRequest studylogPeriodRequest) {
+        List<StudylogAbility> studylogAbilities = findStudylogAbilitiesInPeriod(memberId, LocalDate.parse(studylogPeriodRequest.getStartDate()),
+                        LocalDate.parse(studylogPeriodRequest.getEndDate()));
+
+        return AbilityStudylogResponse.listOf(studylogAbilities);
     }
 }

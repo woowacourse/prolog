@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -12,12 +13,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
+import wooteco.prolog.ability.application.dto.AbilityStudylogResponse;
 import wooteco.prolog.common.PageableResponse;
 import wooteco.prolog.fixtures.GithubResponses;
+import wooteco.prolog.fixtures.PostAcceptanceFixture;
 import wooteco.prolog.report.application.dto.ReportAbilityRequest;
 import wooteco.prolog.report.application.dto.ReportRequest;
 import wooteco.prolog.report.application.dto.ReportResponse;
 import wooteco.prolog.report.application.dto.ReportUpdateRequest;
+import wooteco.prolog.report.application.dto.StudylogPeriodRequest;
+import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 
 public class ReportStepDefinitions extends AcceptanceSteps {
 
@@ -162,5 +167,27 @@ public class ReportStepDefinitions extends AcceptanceSteps {
         List<Long> reportIds = context.response.jsonPath().getList("id");
 
         assertThat(reportIds).isNull();
+    }
+
+    @When("지난 일주일부터 오늘까지의 학습로그를 조회하면")
+    public void 지난일주일부터오늘까지의학습로그를조회하면() {
+        LocalDate start = LocalDate.now().minusDays(7);
+        LocalDate end = LocalDate.now();
+
+        String path = String.format("studylogs/me/?startDate=%s&endDate=%s", start, end);
+        context.invokeHttpGetWithToken(path);
+    }
+
+    @Then("해당 유저의 해당 기간 스터디로그 목록이 조회된다")
+    public void 해당유저의해당기간스터디로그목록이조회된다() {
+        final List<AbilityStudylogResponse> data = context.response.then().extract()
+                .body()
+                .jsonPath()
+                .getList(".", AbilityStudylogResponse.class);
+
+        assertThat(data).extracting(abilityStudylogResponse -> abilityStudylogResponse.getStudylog().getTitle())
+                .containsExactlyInAnyOrder(
+                        PostAcceptanceFixture.POST6.getPostRequest().getTitle()
+                );
     }
 }
