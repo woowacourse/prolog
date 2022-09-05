@@ -22,7 +22,7 @@ export const UserContext = createContext(DEFAULT_USER);
 const UserProvider = ({ children }) => {
   const [state, setState] = useState({
     ...DEFAULT_USER,
-    accessToken: getLocalStorageItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
+    accessToken: localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
   });
 
   useEffect(() => {
