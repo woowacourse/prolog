@@ -14,6 +14,10 @@ import {
   StudylogListPage,
 } from './pages';
 import AbilityPage from './pages/AbilityPage';
+import EditLevellogPage from './pages/EditLevellogPage';
+import LevellogListPage from './pages/LevellogListPage';
+import LevellogPage from './pages/LevellogPage';
+import NewLevellogPage from './pages/NewLevellogPage';
 import ProfilePageReportsList from './pages/ProfilePageReportsList';
 
 const pageRoutes = [
@@ -35,6 +39,22 @@ const pageRoutes = [
   {
     path: `${PATH.STUDYLOG}/:id/edit`,
     render: () => <EditStudylogPage />,
+  },
+  {
+    path: [PATH.LEVELLOG],
+    render: () => <LevellogListPage />,
+  },
+  {
+    path: [PATH.NEW_LEVELLOG],
+    render: () => <NewLevellogPage />,
+  },
+  {
+    path: [`${PATH.LEVELLOG}/:id`],
+    render: () => <LevellogPage />,
+  },
+  {
+    path: [`${PATH.LEVELLOG}/:id/edit`],
+    render: () => <EditLevellogPage />,
   },
   {
     path: [PATH.PROFILE],

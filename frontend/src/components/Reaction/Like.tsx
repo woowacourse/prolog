@@ -1,3 +1,4 @@
+import { MouseEventHandler } from 'react';
 import { Button, BUTTON_SIZE } from '..';
 
 import likedIcon from '../../assets/images/heart-filled.svg';
@@ -7,7 +8,7 @@ import { LikeIconStyle } from './Like.styles';
 interface Props {
   liked: boolean;
   likesCount: number;
-  onClick: () => void;
+  onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
 const Like = ({ liked, likesCount, onClick }: Props) => {

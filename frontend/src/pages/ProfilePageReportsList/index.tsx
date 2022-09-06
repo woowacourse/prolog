@@ -8,14 +8,6 @@ import { useQuery } from 'react-query';
 import axios from 'axios';
 import { BASE_URL } from '../../configs/environment';
 
-// type Report = {
-//   id: number;
-//   title: string;
-//   description: string;
-//   startDate: string;
-//   endDate: string;
-// };
-
 const ProfilePageReportsList = () => {
   const { username } = useParams<{ username: string }>();
   const { user } = useContext(UserContext);
@@ -79,7 +71,7 @@ const ProfilePageReportsList = () => {
               <Styled.ReportDate>
                 {report.startDate} ~ {report.endDate}
               </Styled.ReportDate>
-              <Styled.ReportTtile>{report.title}</Styled.ReportTtile>
+              <Styled.ReportTitle>{report.title}</Styled.ReportTitle>
               <Styled.ReportDesc>{report.description}</Styled.ReportDesc>
               <Styled.GoReportLink to={`/${username}/reports/${report.id}`}>
                 리포트 보러가기 {'>'}

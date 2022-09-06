@@ -12,12 +12,16 @@ const ALERT_MESSAGE = {
   ACCESS_DENIED: '잘못된 접근입니다.',
   FAIL_TO_DELETE_STUDYLOG: '글을 삭제할 수 없습니다.',
   FAIL_TO_UPLOAD_IMAGE: '이미지 업로드를 할 수 없습니다.',
+  FAIL_TO_POST_LEVELLOG: '레벨로그 작성에 실패했습니다.',
   NEED_TO_LOGIN: '로그인 후 이용 가능합니다',
   OVER_PROFILE_NICKNAME_MAX_LENGTH: '닉네임은 4글자 이하로 입력해주세요.',
+  NO_EXIST_POST: '존재하지 않는 글입니다.',
 
   CANNOT_EDIT_OTHERS: '본인이 작성하지 않은 글은 수정할 수 없습니다.',
   NO_CONTENT: '내용을 입력하세요',
   NO_TITLE: '제목을 입력하세요',
+  NO_QUESTION_AND_ANSWER: '질답을 완성해주세요',
+  NO_QNA: '적어도 하나의 질답을 작성해주세요.',
 };
 
 const ERROR_MESSAGE = {

@@ -44,6 +44,14 @@ public enum PostAcceptanceFixture {
             2L,
             TAG5,
             TAG6
+    ),
+    POST6(
+            "새로운 스터디로그",
+            "옵셔널은 NPE를 배제하기 위해 만들어진 자바8에 추가된 라이브러리입니다. \n " +
+                    "다양한 메소드를 호출하여 원하는 대로 활용할 수 있습니다",
+            1L,
+            TAG1,
+            TAG2
     );
 
     PostAcceptanceFixture(

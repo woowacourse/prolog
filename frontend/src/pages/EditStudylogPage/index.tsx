@@ -21,9 +21,20 @@ import { useMutation, useQuery, UseQueryResult } from 'react-query';
 import REACT_QUERY_KEY from '../../constants/reactQueryKey';
 import { requestEditStudylog, requestGetStudylog } from '../../apis/studylogs';
 import { AxiosError, AxiosResponse } from 'axios';
-import { getLocalStorageItem } from '../../utils/localStorage';
 import LOCAL_STORAGE_KEY from '../../constants/localStorage';
 import { SUCCESS_MESSAGE } from '../../constants/message';
+import { ResponseError } from '../../apis/studylogs';
+import { ParentAbility } from '../../models/Ability';
+
+type SelectOption = { value: string; label: string };
+
+interface NewStudylogForm extends StudylogForm {
+  abilities: number[];
+}
+
+interface EditStudylog extends Omit<Studylog, 'abilities'> {
+  abilities: ParentAbility[];
+}
 
 // 나중에 학습로그 작성 페이지와 같아질 수  있음(임시저장)
 const EditStudylogPage = () => {
@@ -31,12 +42,13 @@ const EditStudylogPage = () => {
 
   const editorContentRef = useRef<any>(null);
 
-  const [studylogContent, setStudylogContent] = useState<StudylogForm>({
+  const [studylogContent, setStudylogContent] = useState<NewStudylogForm>({
     title: '',
     content: null,
     missionId: null,
     sessionId: null,
     tags: [],
+    abilities: [],
   });
 
   const { user } = useContext(UserContext);
@@ -44,7 +56,7 @@ const EditStudylogPage = () => {
 
   const { id } = useParams<{ id: string }>();
 
-  const fetchStudylogRequest: UseQueryResult<AxiosResponse<Studylog>, AxiosError> = useQuery(
+  const fetchStudylogRequest: UseQueryResult<AxiosResponse<EditStudylog>, AxiosError> = useQuery(
     [REACT_QUERY_KEY.STUDYLOG, id],
     () => requestGetStudylog({ id, accessToken }),
     {
@@ -55,10 +67,15 @@ const EditStudylogPage = () => {
           missionId: data.mission?.id || null,
           sessionId: data.session?.id || null,
           tags: data.tags,
+          abilities: data.abilities.map(({ id }) => id),
         });
       },
     }
   );
+
+  const onSelectAbilities = (abilities: number[]) => {
+    setStudylogContent({ ...studylogContent, abilities });
+  };
 
   const onChangeTitle: ChangeEventHandler<HTMLInputElement> = (event) => {
     setStudylogContent({ ...studylogContent, title: event.target.value });
@@ -75,7 +92,7 @@ const EditStudylogPage = () => {
     });
   };
 
-  const onSelectMission = (mission: { value: string; label: string } | null) => {
+  const onSelectMission = (mission: SelectOption | null) => {
     if (!mission) {
       setStudylogContent({ ...studylogContent, missionId: null });
       return;
@@ -84,7 +101,7 @@ const EditStudylogPage = () => {
     setStudylogContent({ ...studylogContent, missionId: Number(mission.value) });
   };
 
-  const onSelectSession = (session: { value: string; label: string } | null) => {
+  const onSelectSession = (session: SelectOption | null) => {
     if (!session) {
       setStudylogContent({ ...studylogContent, sessionId: null });
       return;
@@ -118,7 +135,7 @@ const EditStudylogPage = () => {
     (data: StudylogForm) =>
       requestEditStudylog({
         id,
-        accessToken: getLocalStorageItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
+        accessToken: localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN) as string,
         data,
       }),
     {
@@ -126,8 +143,8 @@ const EditStudylogPage = () => {
         alert(SUCCESS_MESSAGE.EDIT_POST);
         history.push(`${PATH.STUDYLOG}/${id}`);
       },
-      onError: (error: { code: number; message: string }) => {
-        console.log(error);
+
+      onError: (error: ResponseError) => {
         alert(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.FAIL_TO_EDIT_STUDYLOG);
       },
     }
@@ -155,10 +172,12 @@ const EditStudylogPage = () => {
         selectedMissionId={studylogContent.missionId}
         selectedSessionId={studylogContent.sessionId}
         selectedTags={studylogContent.tags}
+        selectedAbilities={studylogContent.abilities}
         onChangeTitle={onChangeTitle}
         onSelectMission={onSelectMission}
         onSelectSession={onSelectSession}
         onSelectTag={onSelectTag}
+        onSelectAbilities={onSelectAbilities}
         onSubmit={onEditStudylog}
       />
     </div>

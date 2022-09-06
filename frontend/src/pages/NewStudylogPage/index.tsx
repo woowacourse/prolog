@@ -9,25 +9,39 @@ import { ERROR_MESSAGE, ALERT_MESSAGE, PATH } from '../../constants';
 
 import { StudylogForm } from '../../models/Studylogs';
 import { useMutation } from 'react-query';
-import { getLocalStorageItem } from '../../utils/localStorage';
 import LOCAL_STORAGE_KEY from '../../constants/localStorage';
 import { SUCCESS_MESSAGE } from '../../constants/message';
 import { useHistory } from 'react-router-dom';
 import { requestPostStudylog } from '../../apis/studylogs';
 import StudylogEditor from '../../components/Editor/StudylogEditor';
+import useBeforeunload from '../../hooks/useBeforeunload';
+import { ResponseError } from '../../apis/studylogs';
+
+interface NewStudylogForm extends StudylogForm {
+  abilities: number[];
+}
+
+type SelectOption = { value: string; label: string };
 
 const NewStudylogPage = () => {
   const history = useHistory();
 
   const editorContentRef = useRef<any>(null);
 
-  const [studylogContent, setStudylogContent] = useState<StudylogForm>({
+  useBeforeunload(editorContentRef);
+
+  const [studylogContent, setStudylogContent] = useState<NewStudylogForm>({
     title: '',
     content: '',
     missionId: null,
     sessionId: null,
     tags: [],
+    abilities: [],
   });
+
+  const onSelectAbilities = (abilities: number[]) => {
+    setStudylogContent({ ...studylogContent, abilities });
+  };
 
   const onChangeTitle: ChangeEventHandler<HTMLInputElement> = (event) => {
     setStudylogContent({ ...studylogContent, title: event.target.value });
@@ -44,10 +58,10 @@ const NewStudylogPage = () => {
     });
   };
 
-  const onSelectMission = (mission: { value: string; label: string }) =>
+  const onSelectMission = (mission: SelectOption) =>
     setStudylogContent({ ...studylogContent, missionId: Number(mission.value) });
 
-  const onSelectSession = (session: { value: string; label: string }) => {
+  const onSelectSession = (session: SelectOption) => {
     setStudylogContent({ ...studylogContent, sessionId: Number(session.value) });
   };
 
@@ -76,16 +90,15 @@ const NewStudylogPage = () => {
   const { mutate: createStudylogRequest } = useMutation(
     (data: StudylogForm) =>
       requestPostStudylog({
-        accessToken: getLocalStorageItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
+        accessToken: localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN) as string,
         data,
       }),
     {
-      onSuccess: async (data) => {
+      onSuccess: async () => {
         alert(SUCCESS_MESSAGE.CREATE_POST);
         history.push(PATH.STUDYLOG);
       },
-      onError: (error: { code: number; message: string }) => {
-        console.log(error);
+      onError: (error: ResponseError) => {
         alert(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.DEFAULT);
       },
     }
@@ -107,10 +120,12 @@ const NewStudylogPage = () => {
         selectedMissionId={studylogContent.missionId}
         selectedSessionId={studylogContent.sessionId}
         selectedTags={studylogContent.tags}
+        selectedAbilities={studylogContent.abilities}
         onChangeTitle={onChangeTitle}
         onSelectMission={onSelectMission}
         onSelectSession={onSelectSession}
         onSelectTag={onSelectTag}
+        onSelectAbilities={onSelectAbilities}
         onSubmit={onCreateStudylog}
       />
     </div>

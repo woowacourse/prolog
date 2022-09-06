@@ -2,7 +2,6 @@ import axios, { AxiosError, Method } from 'axios';
 
 import { BASE_URL } from '../configs/environment';
 import LOCAL_STORAGE_KEY from '../constants/localStorage';
-import { getLocalStorageItem } from '../utils/localStorage';
 
 export interface ErrorData {
   code: number;
@@ -58,7 +57,7 @@ export class API {
 }
 
 const AbilityAPI = new API({
-  accessToken: getLocalStorageItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
+  accessToken: localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN),
   baseUrl: BASE_URL,
 });
 

@@ -102,4 +102,15 @@ class AbilityTest {
         assertThatThrownBy(() -> childAbility.validateColorWithParent(Collections.singletonList(anotherParentAbility), parentAbility))
             .isExactlyInstanceOf(AbilityParentChildColorDifferentException.class);
     }
+
+    @DisplayName("역량이 멤버에게 속하는지 확인한다.")
+    @Test
+    void isBelongsToMember() {
+        Long abilityId = 1L;
+        Long memberId = 100_000L;
+        Member member = new Member(100_000L, null, null, null, null, null);
+
+        Ability ability = Ability.parent(abilityId, "역량", "역량 매핑", "파란색", member);
+        assertThat(ability.isBelongsTo(memberId)).isTrue();
+    }
 }

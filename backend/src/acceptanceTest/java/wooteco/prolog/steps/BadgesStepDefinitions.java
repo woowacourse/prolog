@@ -11,7 +11,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.common.exception.ExceptionDto;
-import wooteco.prolog.studylog.domain.BadgeType;
+import wooteco.prolog.badge.domain.BadgeType;
 
 public class BadgesStepDefinitions extends AcceptanceSteps {
 

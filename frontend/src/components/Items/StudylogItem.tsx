@@ -16,15 +16,13 @@ import {
 } from './StudylogItem.styles';
 import { AlignItemsEndStyle, FlexColumnStyle, FlexStyle } from '../../styles/flex.styles';
 
-const StudylogItem = ({
-  studylog,
-  onClick,
-  onProfileClick,
-}: {
+interface Props {
   studylog: Studylog;
   onClick: () => void;
   onProfileClick: (event?: MouseEvent) => void;
-}) => {
+}
+
+const StudylogItem = ({ studylog, onClick, onProfileClick }: Props) => {
   const { author, title, tags, read: isRead, viewCount, session } = studylog;
 
   return (
