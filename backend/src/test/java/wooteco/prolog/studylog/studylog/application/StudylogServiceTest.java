@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -522,7 +523,8 @@ class StudylogServiceTest {
                     studylog.getContent(),
                     studylog.getSession().getId(),
                     studylog.getMission().getId(),
-                    toTagRequests(studylog)
+                    toTagRequests(studylog),
+                    Collections.emptyList()
                 )
             )
             .collect(toList());

@@ -1,9 +1,6 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
-import useRequest from '../../hooks/useRequest';
-import useMutation from '../../hooks/useMutation';
-import { requestDeleteScrap, requestGetMyScrap } from '../../service/requests';
 import { UserContext } from '../../contexts/UserProvider';
 
 import { Button, BUTTON_SIZE, Card, Pagination } from '../../components';
@@ -24,6 +21,7 @@ import {
   Title,
   Heading,
 } from './styles';
+import { useDeleteScrapMutation, useGetMyScrapQuery } from '../../hooks/queries/profile';
 
 const initialPostQueryParams = {
   page: 1,
@@ -45,19 +43,13 @@ const ProfilePageScraps = () => {
     history.push(`${PATH.STUDYLOG}/${id}`);
   };
 
-  const { response: studylogs, fetchData: getMyScrap } = useRequest([], () =>
-    requestGetMyScrap({ username, accessToken, postQueryParams })
-  );
+  const { data: studylogs } = useGetMyScrapQuery({ username, accessToken, postQueryParams });
 
   const onSetPage = (page) => {
     setPostQueryParams({ ...postQueryParams, page });
   };
 
-  const { mutate: deleteScrap } = useMutation(requestDeleteScrap, {
-    onSuccess: () => {
-      getMyScrap();
-    },
-  });
+  const deleteScrapMutation = useDeleteScrapMutation();
 
   const onDeleteScrap = async (event, id) => {
     event.stopPropagation();
@@ -66,12 +58,8 @@ const ProfilePageScraps = () => {
       return;
     }
 
-    deleteScrap({ username, accessToken, id });
+    deleteScrapMutation.mutate({ username, accessToken, id });
   };
-
-  useEffect(() => {
-    getMyScrap();
-  }, [postQueryParams]);
 
   return (
     <Container>

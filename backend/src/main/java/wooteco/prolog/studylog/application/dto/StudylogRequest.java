@@ -1,5 +1,6 @@
 package wooteco.prolog.studylog.application.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,11 +16,13 @@ public class StudylogRequest {
     private Long sessionId;
     private Long missionId;
     private List<TagRequest> tags;
+    private List<Long> abilities;
 
     public StudylogRequest(String title, String content, Long missionId, List<TagRequest> tags) {
         this.title = title;
         this.content = content;
         this.missionId = missionId;
         this.tags = tags;
+        this.abilities = new ArrayList<>();
     }
 }

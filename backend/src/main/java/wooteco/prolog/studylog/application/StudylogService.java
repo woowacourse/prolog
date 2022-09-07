@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.ability.application.AbilityService;
+import wooteco.prolog.ability.application.dto.AbilityResponse;
+import wooteco.prolog.ability.domain.Ability;
+import wooteco.prolog.ability.domain.StudylogAbility;
+import wooteco.prolog.ability.domain.repository.StudylogAbilityRepository;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
@@ -62,14 +69,17 @@ public class StudylogService {
     private final TagService tagService;
     private final SessionService sessionService;
     private final MissionService missionService;
+    private final AbilityService abilityService;
     private final StudylogRepository studylogRepository;
     private final StudylogScrapRepository studylogScrapRepository;
     private final StudylogReadRepository studylogReadRepository;
     private final StudylogTempRepository studylogTempRepository;
+    private final StudylogAbilityRepository studylogAbilityRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
-    public List<StudylogResponse> insertStudylogs(Long memberId, List<StudylogRequest> studylogRequests) {
+    public List<StudylogResponse> insertStudylogs(Long memberId,
+                                                  List<StudylogRequest> studylogRequests) {
         if (studylogRequests.isEmpty()) {
             throw new StudylogArgumentException();
         }
@@ -81,10 +91,19 @@ public class StudylogService {
 
     @Transactional
     public StudylogResponse insertStudylog(Long memberId, StudylogRequest studylogRequest) {
+        Set<Ability> abilities = abilityService.findByIdIn(memberId,
+            studylogRequest.getAbilities());
+
+        if (hasChildAndParentAbility(abilities)) {
+            throw new IllegalArgumentException("자식 역량이 존재하는 경우 부모 역량을 선택할 수 없습니다.");
+        }
+
         Member member = memberService.findById(memberId);
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
-        Session session = sessionService.findSessionById(studylogRequest.getSessionId()).orElse(null);
-        Mission mission = missionService.findMissionById(studylogRequest.getMissionId()).orElse(null);
+        Session session = sessionService.findSessionById(studylogRequest.getSessionId())
+            .orElse(null);
+        Mission mission = missionService.findMissionById(studylogRequest.getMissionId())
+            .orElse(null);
 
         Studylog persistStudylog = studylogRepository.save(new Studylog(member,
             studylogRequest.getTitle(),
@@ -94,25 +113,45 @@ public class StudylogService {
             tags.getList())
         );
 
+        List<StudylogAbility> studylogAbilities = abilities.stream()
+            .map(it -> new StudylogAbility(memberId, it, persistStudylog))
+            .collect(Collectors.toList());
+
+        studylogAbilityRepository.deleteByStudylogId(persistStudylog.getId());
+        List<StudylogAbility> persistStudylogAbilities = studylogAbilityRepository.saveAll(
+            studylogAbilities);
+
+        final List<AbilityResponse> abilityResponses = persistStudylogAbilities.stream()
+            .map(it -> AbilityResponse.of(it.getAbility()))
+            .collect(toList());
+
         onStudylogCreatedEvent(member, tags, persistStudylog);
         deleteStudylogTemp(memberId);
 
-        return StudylogResponse.of(persistStudylog);
+        return StudylogResponse.of(persistStudylog, abilityResponses);
+    }
+
+    private boolean hasChildAndParentAbility(Set<Ability> abilities) {
+        return abilities.stream()
+            .anyMatch(ability -> !ability.isParent() &&
+                abilities.contains(ability.getParent()));
     }
 
     @Transactional
     public StudylogTempResponse insertStudylogTemp(Long memberId, StudylogRequest studylogRequest) {
         Member member = memberService.findById(memberId);
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
-        Session session = sessionService.findSessionById(studylogRequest.getSessionId()).orElse(null);
-        Mission mission = missionService.findMissionById(studylogRequest.getMissionId()).orElse(null);
+        Session session = sessionService.findSessionById(studylogRequest.getSessionId())
+            .orElse(null);
+        Mission mission = missionService.findMissionById(studylogRequest.getMissionId())
+            .orElse(null);
 
         StudylogTemp requestedStudylogTemp = new StudylogTemp(member,
-                studylogRequest.getTitle(),
-                studylogRequest.getContent(),
-                session,
-                mission,
-                tags.getList());
+            studylogRequest.getTitle(),
+            studylogRequest.getContent(),
+            session,
+            mission,
+            tags.getList());
 
         deleteStudylogTemp(memberId);
         StudylogTemp createdStudylogTemp = studylogTempRepository.save(requestedStudylogTemp);
@@ -124,7 +163,8 @@ public class StudylogService {
         studylogDocumentService.save(createdStudylog.toStudylogDocument());
     }
 
-    public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Long memberId, boolean isAnonymousMember) {
+    public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Long memberId,
+                                           boolean isAnonymousMember) {
         StudylogsResponse studylogs = findStudylogs(request, memberId);
         if (isAnonymousMember) {
             return studylogs;
@@ -149,7 +189,8 @@ public class StudylogService {
             Pageable pageable = request.getPageable();
             List<Long> ids = request.getIds();
 
-            Page<Studylog> studylogs = studylogRepository.findByIdInAndDeletedFalseOrderByIdAsc(ids, pageable);
+            Page<Studylog> studylogs = studylogRepository.findByIdInAndDeletedFalseOrderByIdAsc(ids,
+                pageable);
 
             return StudylogsResponse.of(studylogs, memberId);
         }
@@ -173,7 +214,8 @@ public class StudylogService {
             request.getPageable()
         );
 
-        final List<Studylog> studylogs = studylogRepository.findByIdInAndDeletedFalseOrderByIdDesc(response.getStudylogIds());
+        final List<Studylog> studylogs = studylogRepository.findByIdInAndDeletedFalseOrderByIdDesc(
+            response.getStudylogIds());
         return StudylogsResponse.of(
             studylogs,
             response.getTotalSize(),
@@ -228,7 +270,8 @@ public class StudylogService {
     }
 
     @Transactional
-    public StudylogResponse retrieveStudylogById(LoginMember loginMember, Long studylogId, boolean isViewed) {
+    public StudylogResponse retrieveStudylogById(LoginMember loginMember, Long studylogId,
+                                                 boolean isViewed) {
 
         Studylog studylog = findStudylogById(studylogId);
 
@@ -275,8 +318,17 @@ public class StudylogService {
         boolean liked = studylog.likedByMember(loginMember.getId());
         boolean read = studylogReadRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId()).isPresent();
         boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId()).isPresent();
+        List<AbilityResponse> abilityResponses = findAbilityByStudylogId(studylog.getId());
 
-        return StudylogResponse.of(studylog, scraped, read, liked);
+        return StudylogResponse.of(studylog, abilityResponses, scraped, read, liked);
+    }
+
+    private List<AbilityResponse> findAbilityByStudylogId(Long studylogId) {
+        List<StudylogAbility> studylogAbilities = studylogAbilityRepository.findAllByStudylogId(studylogId);
+        List<Ability> abilities = studylogAbilities.stream()
+            .map(StudylogAbility::getAbility)
+            .collect(Collectors.toList());
+        return AbilityResponse.listOf(abilities);
     }
 
     public StudylogResponse findByIdAndReturnStudylogResponse(Long id) {
@@ -306,6 +358,13 @@ public class StudylogService {
 
     @Transactional
     public void updateStudylog(Long memberId, Long studylogId, StudylogRequest studylogRequest) {
+        Set<Ability> abilities = abilityService.findByIdIn(memberId,
+                studylogRequest.getAbilities());
+
+        if (hasChildAndParentAbility(abilities)) {
+            throw new IllegalArgumentException("자식 역량이 존재하는 경우 부모 역량을 선택할 수 없습니다.");
+        }
+
         Studylog studylog = studylogRepository.findById(studylogId).orElseThrow(StudylogNotFoundException::new);
         studylog.validateBelongTo(memberId);
 
@@ -318,6 +377,13 @@ public class StudylogService {
         Tags newTags = tagService.findOrCreate(studylogRequest.getTags());
         studylog.update(studylogRequest.getTitle(), studylogRequest.getContent(), session, mission, newTags);
         memberTagService.updateMemberTag(originalTags, newTags, foundMember);
+
+        List<StudylogAbility> studylogAbilities = abilities.stream()
+                .map(it -> new StudylogAbility(memberId, it, studylog))
+                .collect(Collectors.toList());
+
+        studylogAbilityRepository.deleteByStudylogId(studylog.getId());
+        studylogAbilityRepository.saveAll(studylogAbilities);
 
         studylogDocumentService.update(studylog.toStudylogDocument());
     }

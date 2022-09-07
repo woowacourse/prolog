@@ -10,10 +10,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
+import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
+import wooteco.prolog.ability.application.dto.AbilityResponse;
+import wooteco.prolog.member.domain.GroupMember;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.MemberGroup;
+import wooteco.prolog.member.domain.repository.GroupMemberRepository;
+import wooteco.prolog.member.domain.repository.MemberGroupRepository;
+import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionRequest;
@@ -25,6 +35,13 @@ import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 
 class StudylogDocumentation extends Documentation {
+
+    @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
+    private MemberGroupRepository memberGroupRepository;
+    @Autowired
+    private GroupMemberRepository groupMemberRepository;
 
     @Test
     void 스터디로그를_생성한다() {
@@ -100,6 +117,7 @@ class StudylogDocumentation extends Documentation {
     @Test
     void 인기있는_스터디로그_목록을_갱신하고_조회한다() {
         // given
+        회원과_멤버그룹_그룹멤버를_등록함();
         String studylogLocation1 = 스터디로그_등록함(createStudylogRequest1()).header("Location");
         String studylogLocation2 = 스터디로그_등록함(createStudylogRequest2()).header("Location");
         Long studylogId1 = Long.parseLong(studylogLocation1.split("/studylogs/")[1]);
@@ -118,15 +136,12 @@ class StudylogDocumentation extends Documentation {
             .then().log().all().extract();
 
         // then
-        PopularStudylogsResponse popularStudylogsResponse = response.as(
-            PopularStudylogsResponse.class);
+        PopularStudylogsResponse popularStudylogsResponse = response.as(PopularStudylogsResponse.class);
         assertThat(popularStudylogsResponse.getAllResponse().getData()).hasSize(2);
-        assertThat(popularStudylogsResponse.getAllResponse().getData().get(0).getStudylogResponse()
-            .getId()).isEqualTo(studylogId2);
-        assertThat(popularStudylogsResponse.getAllResponse().getData().get(1).getStudylogResponse()
-            .getId()).isEqualTo(studylogId1);
-    }
+        assertThat(popularStudylogsResponse.getFrontResponse().getData()).hasSize(2);
+        assertThat(popularStudylogsResponse.getBackResponse().getData()).hasSize(2);
 
+    }
 
     private void 인기있는_스터디로그_목록_갱신(int studylogCount) {
         RestAssured.given()
@@ -209,8 +224,19 @@ class StudylogDocumentation extends Documentation {
         Long sessionId = 세션_등록함(new SessionRequest("프론트엔드JS 레벨1 - 2021"));
         Long missionId = 미션_등록함(new MissionRequest("세션1 - 지하철 노선도 미션", sessionId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("spa"), new TagRequest("router"));
+        Long parentAbilityId = 역량_등록함(new AbilityCreateRequest(
+            "부모 역량1",
+            "부모 역량1입니다",
+            "#ffffff",
+            null));
+        Long abilityId = 역량_등록함(new AbilityCreateRequest(
+            "자식 역량1",
+            "자식 역량1입니다",
+            "#ffffff",
+            parentAbilityId));
 
-        return new StudylogRequest(title, content, sessionId, missionId, tags);
+        return new StudylogRequest(title, content, sessionId, missionId, tags,
+            Arrays.asList(abilityId));
     }
 
     private StudylogRequest createStudylogRequest2() {
@@ -219,8 +245,33 @@ class StudylogDocumentation extends Documentation {
         Long sessionId = 세션_등록함(new SessionRequest("백엔드Java 레벨1 - 2021"));
         Long missionId = 미션_등록함(new MissionRequest("세션3 - 프로젝트", sessionId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("java"), new TagRequest("jpa"));
+        Long parentAbilityId = 역량_등록함(new AbilityCreateRequest(
+            "부모 역량2",
+            "부모 역량2입니다",
+            "#000000",
+            null));
+        Long abilityId = 역량_등록함(new AbilityCreateRequest(
+            "자식 역량2",
+            "자식 역량2입니다",
+            "#000000",
+            parentAbilityId));
 
-        return new StudylogRequest(title, content, sessionId, missionId, tags);
+        return new StudylogRequest(title, content, sessionId, missionId, tags,
+            Arrays.asList(abilityId));
+    }
+
+    private Long 역량_등록함(AbilityCreateRequest request) {
+        return RestAssured.given().log().all()
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/abilities")
+            .then()
+            .log().all()
+            .extract()
+            .as(AbilityResponse.class)
+            .getId();
     }
 
     private ExtractableResponse<Response> 스터디로그_등록함(StudylogRequest request) {
@@ -245,6 +296,15 @@ class StudylogDocumentation extends Documentation {
             .extract()
             .as(SessionResponse.class)
             .getId();
+    }
+
+    private void 회원과_멤버그룹_그룹멤버를_등록함() {
+        Member member = memberRepository.findById(1L).get();
+        MemberGroup 프론트엔드 = memberGroupRepository.save(
+            new MemberGroup(null, "4기 프론트엔드", "4기 프론트엔드 설명"));
+        MemberGroup 백엔드 = memberGroupRepository.save(new MemberGroup(null, "4기 백엔드", "4기 백엔드 설명"));
+        groupMemberRepository.save(new GroupMember(null, member, 백엔드));
+        groupMemberRepository.save(new GroupMember(null, member, 프론트엔드));
     }
 
     private Long 미션_등록함(MissionRequest request) {

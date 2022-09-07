@@ -3,6 +3,8 @@ package wooteco.prolog.common.exception;
 import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import wooteco.prolog.levellogs.exception.InvalidLevelLogAuthorException;
+import wooteco.prolog.levellogs.exception.LevelLogNotFoundException;
 import wooteco.prolog.login.excetpion.GithubApiFailException;
 import wooteco.prolog.login.excetpion.GithubConnectionException;
 import wooteco.prolog.login.excetpion.RoleNameNotFoundException;
@@ -19,6 +21,8 @@ import wooteco.prolog.report.exception.ReportRequestTypeException;
 import wooteco.prolog.report.exception.ReportTitleLengthException;
 import wooteco.prolog.report.exception.ReportUpdateException;
 import wooteco.prolog.report.exception.UnRelatedAbilityExistenceException;
+import wooteco.prolog.studylog.exception.CommentDeleteException;
+import wooteco.prolog.studylog.exception.CommentNotFoundException;
 import wooteco.prolog.studylog.exception.DuplicateReportTitleException;
 import wooteco.prolog.studylog.exception.InvalidLikeRequestException;
 import wooteco.prolog.studylog.exception.InvalidUnlikeRequestException;
@@ -102,7 +106,14 @@ public enum BadRequestCode {
     REPORT_TITLE_LENGTH_EXCEPTION(4013, "리포트 제목은 15자를 넘을 수 없습니다.", ReportTitleLengthException.class),
 
     INVALID_LIKE_REQUEST_EXCEPTION(5001, "스터디로그를 좋아요 할 수 없습니다.", InvalidLikeRequestException.class),
-    INVALID_UNLIKE_REQUEST_EXCEPTION(5002, "스터디로그를 좋아요 취소 할 수 없습니다.", InvalidUnlikeRequestException .class);
+    INVALID_UNLIKE_REQUEST_EXCEPTION(5002, "스터디로그를 좋아요 취소 할 수 없습니다.", InvalidUnlikeRequestException .class),
+
+
+    COMMENT_NOT_FOUND(6001, "존재하지 않는 댓글입니다.",CommentNotFoundException.class),
+    COMMENT_DELETE_EXCEPTION(6002, "댓글을 삭제할 수 없습니다.",CommentDeleteException.class),
+
+    INVALID_LEVEL_LOG_AUTHOR_EXCEPTION(7001, "레벨 로그 작성자가 아닙니다.",InvalidLevelLogAuthorException.class),
+    LEVEL_LOG_NOT_FOUND_EXCEPTION(7002, "레벨 로그를 찾을 수 없습니다.",LevelLogNotFoundException.class);
 
     private int code;
     private String message;

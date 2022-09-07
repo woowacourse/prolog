@@ -105,13 +105,6 @@ export const MappedAbility = styled.td`
       margin: 0.2rem 0;
     }
   }
-
-  button {
-    width: 10%;
-    margin-top: 0.1rem;
-    color: ${COLOR.DARK_GRAY_900};
-    font-size: 2rem;
-  }
 `;
 
 export const EmptyTableGuide = styled.span`

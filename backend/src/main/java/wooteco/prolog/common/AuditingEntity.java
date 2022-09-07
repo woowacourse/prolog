@@ -20,5 +20,4 @@ public abstract class AuditingEntity {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
-
 }

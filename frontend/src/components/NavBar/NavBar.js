@@ -21,10 +21,11 @@ import {
   profileButtonStyle,
   Navigation,
   loginButtonStyle,
+  WritingDropdownStyle,
 } from './NavBar.styles';
 import { ERROR_MESSAGE } from '../../constants/message';
 import { UserContext } from '../../contexts/UserProvider';
-import { APP_MODE, isProd } from '../../configs/environment';
+import { APP_MODE, BASE_URL, isProd } from '../../configs/environment';
 
 const navigationConfig = [
   {
@@ -35,6 +36,10 @@ const navigationConfig = [
     path: PATH.STUDYLOG,
     title: '학습로그',
   },
+  // {
+  //   path: PATH.LEVELLOG,
+  //   title: '레벨로그',
+  // },
 ];
 
 const NavBar = () => {
@@ -46,25 +51,21 @@ const NavBar = () => {
   const { username, imageUrl: userImage = NoProfileImage, accessToken, isLoggedIn } = user;
 
   const [isDropdownToggled, setDropdownToggled] = useState(false);
+  const [isWritingDropdownToggled, setWritingDropdownToggled] = useState(false);
 
   const goMain = () => {
     history.push(PATH.ROOT);
-  };
-
-  const goNewStudylog = async () => {
-    if (!accessToken) {
-      alert(ERROR_MESSAGE.LOGIN_DEFAULT);
-
-      return;
-    }
-
-    history.push(PATH.NEW_STUDYLOG);
   };
 
   const showDropdownMenu = () => {
     setDropdownToggled(true);
   };
 
+  const hideWritingDropdownMenu = (event) => {
+    if (event.currentTarget === event.target) {
+      setWritingDropdownToggled(false);
+    }
+  };
   const hideDropdownMenu = (event) => {
     if (event.currentTarget === event.target) {
       setDropdownToggled(false);
@@ -74,11 +75,18 @@ const NavBar = () => {
   const onSelectMenu = (event) => {
     if (event.target.tagName === 'A') {
       setDropdownToggled(false);
+      setWritingDropdownToggled(false);
     }
   };
 
   return (
-    <Container isDropdownToggled={isDropdownToggled} onClick={hideDropdownMenu}>
+    <Container
+      isDropdownToggled={isDropdownToggled || isWritingDropdownToggled}
+      onClick={(e) => {
+        hideDropdownMenu(e);
+        hideWritingDropdownMenu(e);
+      }}
+    >
       <Wrapper>
         <Logo onClick={goMain} role="link" aria-label="프롤로그 홈으로 이동하기">
           <img src={LogoImage} alt="" />
@@ -102,13 +110,38 @@ const NavBar = () => {
           </Navigation>
           {isLoggedIn ? (
             <>
-              <Button
-                size="XX_SMALL"
-                icon={PencilIcon}
-                type="button"
-                onClick={goNewStudylog}
-                cssProps={pencilButtonStyle}
-              />
+              <Link to={PATH.NEW_STUDYLOG}>
+                <Button
+                  size="XX_SMALL"
+                  icon={PencilIcon}
+                  type="button"
+                  onClick={(e) => {
+                    setWritingDropdownToggled(true);
+                    hideDropdownMenu(e);
+                  }}
+                  cssProps={pencilButtonStyle}
+                />
+              </Link>
+              {/* {isWritingDropdownToggled && (
+                <DropdownMenu cssProps={WritingDropdownStyle}>
+                  <ul onClick={onSelectMenu}>
+                    {[
+                      {
+                        menu: '학습로그',
+                        path: PATH.NEW_STUDYLOG,
+                      },
+                      {
+                        menu: '레벨로그',
+                        path: PATH.NEW_LEVELLOG,
+                      },
+                    ].map(({ menu, path }) => (
+                      <li key={menu}>
+                        <Link to={path}>{menu}</Link>
+                      </li>
+                    ))}
+                  </ul>
+                </DropdownMenu>
+              )} */}
               <Button
                 size="XX_SMALL"
                 type="button"

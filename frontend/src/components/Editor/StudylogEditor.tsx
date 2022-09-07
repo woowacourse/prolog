@@ -26,6 +26,7 @@ interface StudylogEditorProps {
   contentRef: MutableRefObject<unknown>;
   selectedMissionId?: number | null;
   selectedSessionId?: number | null;
+  selectedAbilities?: number[];
   selectedTags?: Tag[];
   content?: string | null;
 
@@ -33,6 +34,7 @@ interface StudylogEditorProps {
   onSelectMission: (mission: SelectOption) => void;
   onSelectSession: (session: SelectOption) => void;
   onSelectTag: (tags: Tag[], actionMeta: { option: { label: string } }) => void;
+  onSelectAbilities: (abilities: number[]) => void;
   onSubmit?: FormEventHandler<HTMLFormElement>;
 }
 
@@ -41,12 +43,14 @@ const StudylogEditor = ({
   selectedMissionId = null,
   selectedSessionId = null,
   selectedTags = [],
+  selectedAbilities = [],
   contentRef,
   content,
   onChangeTitle,
   onSelectMission,
   onSelectSession,
   onSelectTag,
+  onSelectAbilities,
   onSubmit,
 }: StudylogEditorProps): JSX.Element => {
   return (
@@ -75,9 +79,11 @@ const StudylogEditor = ({
           selectedMissionId={selectedMissionId}
           selectedSessionId={selectedSessionId}
           selectedTagList={selectedTags}
+          selectedAbilities={selectedAbilities}
           onSelectTag={onSelectTag}
           onSelectMission={onSelectMission}
           onSelectSession={onSelectSession}
+          onSelectAbilities={onSelectAbilities}
         />
       </div>
     </form>
