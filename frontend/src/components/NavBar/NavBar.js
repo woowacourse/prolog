@@ -36,10 +36,10 @@ const navigationConfig = [
     path: PATH.STUDYLOG,
     title: '학습로그',
   },
-  {
-    path: PATH.LEVELLOG,
-    title: '레벨로그',
-  },
+  // {
+  //   path: PATH.LEVELLOG,
+  //   title: '레벨로그',
+  // },
 ];
 
 const NavBar = () => {
@@ -110,17 +110,19 @@ const NavBar = () => {
           </Navigation>
           {isLoggedIn ? (
             <>
-              <Button
-                size="XX_SMALL"
-                icon={PencilIcon}
-                type="button"
-                onClick={(e) => {
-                  setWritingDropdownToggled(true);
-                  hideDropdownMenu(e);
-                }}
-                cssProps={pencilButtonStyle}
-              />
-              {isWritingDropdownToggled && (
+              <Link to={PATH.NEW_STUDYLOG}>
+                <Button
+                  size="XX_SMALL"
+                  icon={PencilIcon}
+                  type="button"
+                  onClick={(e) => {
+                    setWritingDropdownToggled(true);
+                    hideDropdownMenu(e);
+                  }}
+                  cssProps={pencilButtonStyle}
+                />
+              </Link>
+              {/* {isWritingDropdownToggled && (
                 <DropdownMenu cssProps={WritingDropdownStyle}>
                   <ul onClick={onSelectMenu}>
                     {[
@@ -139,7 +141,7 @@ const NavBar = () => {
                     ))}
                   </ul>
                 </DropdownMenu>
-              )}
+              )} */}
               <Button
                 size="XX_SMALL"
                 type="button"
