@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios';
+import { response } from 'msw';
 import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useHistory } from 'react-router-dom';
@@ -8,6 +9,7 @@ import {
   requestEditLevellog,
   requestGetLevellog,
   requestGetLevellogs,
+  requestGetRecentLevellogs,
 } from '../../apis/levellogs';
 import { ALERT_MESSAGE, PATH } from '../../constants';
 import ERROR_CODE from '../../constants/errorCode';
@@ -17,6 +19,7 @@ import useSnackBar from '../useSnackBar';
 const QUERY_KEY = {
   levellogs: 'levellogs',
   levellog: 'levellog',
+  recentLevellogs: 'recentLevellogs',
 };
 
 export const useGetLevellogs = (currPage: number) => {
@@ -29,6 +32,14 @@ export const useGetLevellogs = (currPage: number) => {
   }, [currPage]);
 
   return useQuery([QUERY_KEY.levellogs, currPage], () => requestGetLevellogs(currPage));
+};
+
+export const useGetRecentLevellogs = () => {
+  return useQuery([QUERY_KEY.recentLevellogs], async () => {
+    const response = await requestGetRecentLevellogs(3);
+
+    return response.data;
+  });
 };
 
 export const useCreateNewLevellogMutation = ({

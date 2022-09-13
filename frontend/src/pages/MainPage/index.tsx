@@ -15,6 +15,9 @@ import {
   useGetPopularStudylogsQuery,
   useGetRecentStudylogsQuery,
 } from '../../hooks/queries/studylog';
+import { useGetRecentLevellogs } from '../../hooks/queries/levellog';
+import RecentLevellogList from './RecentLevellogList';
+import { FlexColumnStyle, FlexStyle } from '../../styles/flex.styles';
 
 const MainPage = () => {
   const { user } = useContext(UserContext);
@@ -26,18 +29,23 @@ const MainPage = () => {
     data: popularStudyLogs,
     refetch: refetchPopularStudyLogs,
   } = useGetPopularStudylogsQuery();
+    
+   const { data: recentLevellogs, refetch: refetchRecentLevellogs } = useGetRecentLevellogs();
+
 
   useEffect(() => {
     refetchRecentStudylogs();
     refetchPopularStudyLogs();
+    refetchRecentLevellogs();
   }, [accessToken]);
 
   return (
     <>
       <BannerList bannerList={bannerList} />
-      <main css={[MainContentStyle, getRowGapStyle(5.8)]}>
+      <main css={[MainContentStyle, FlexStyle, FlexColumnStyle, getRowGapStyle(3)]}>
         {popularStudyLogs && <PopularStudyLogList studylogs={popularStudyLogs} />}
         {recentStudylogs && <RecentStudylogList studylogs={recentStudylogs} />}
+        {recentLevellogs && <RecentLevellogList levellogs={recentLevellogs} />}
       </main>
     </>
   );

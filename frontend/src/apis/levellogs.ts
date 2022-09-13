@@ -9,6 +9,12 @@ export const requestGetLevellogs = async (currPage: number) => {
   return data;
 };
 
+export const requestGetRecentLevellogs = async (size: number) => {
+  const { data } = await client.get(`/levellogs?size=${size}`);
+
+  return data;
+};
+
 export const createNewLevellogRequest = (body: LevellogRequest) => client.post(`/levellogs`, body);
 
 export const requestGetLevellog = async (id) => {
