@@ -104,23 +104,13 @@ const StudylogPage = () => {
   }, [accessToken, id]);
 
   /* 댓글 로직 */
-  const { comments, createComment, editComment, deleteComment } = useStudylogComment(Number(id));
-
-  const editorContentRef = useRef<any>(null);
-
-  const onSubmitComment = (event) => {
-    event.preventDefault();
-
-    const content = editorContentRef.current?.getInstance().getMarkdown() || '';
-
-    if (content.length === 0) {
-      alert(ALERT_MESSAGE.NO_CONTENT);
-      return;
-    }
-
-    createComment({ content });
-    editorContentRef.current?.getInstance().setMarkdown('');
-  };
+  const {
+    comments,
+    editorContentRef,
+    editComment,
+    deleteComment,
+    onSubmitComment,
+  } = useStudylogComment(Number(id));
 
   useBeforeunload(editorContentRef);
 
