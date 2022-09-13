@@ -40,22 +40,22 @@ const pageRoutes = [
     path: `${PATH.STUDYLOG}/:id/edit`,
     render: () => <EditStudylogPage />,
   },
-  // {
-  //   path: [PATH.LEVELLOG],
-  //   render: () => <LevellogListPage />,
-  // },
-  // {
-  //   path: [PATH.NEW_LEVELLOG],
-  //   render: () => <NewLevellogPage />,
-  // },
-  // {
-  //   path: [`${PATH.LEVELLOG}/:id`],
-  //   render: () => <LevellogPage />,
-  // },
-  // {
-  //   path: [`${PATH.LEVELLOG}/:id/edit`],
-  //   render: () => <EditLevellogPage />,
-  // },
+  {
+    path: [PATH.LEVELLOG],
+    render: () => <LevellogListPage />,
+  },
+  {
+    path: [PATH.NEW_LEVELLOG],
+    render: () => <NewLevellogPage />,
+  },
+  {
+    path: [`${PATH.LEVELLOG}/:id`],
+    render: () => <LevellogPage />,
+  },
+  {
+    path: [`${PATH.LEVELLOG}/:id/edit`],
+    render: () => <EditLevellogPage />,
+  },
   {
     path: [PATH.PROFILE],
     render: () => <ProfilePage menu={PROFILE_PAGE_MENU.OVERVIEW} />,

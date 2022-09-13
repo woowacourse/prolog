@@ -36,10 +36,10 @@ const navigationConfig = [
     path: PATH.STUDYLOG,
     title: '학습로그',
   },
-  // {
-  //   path: PATH.LEVELLOG,
-  //   title: '레벨로그',
-  // },
+  {
+    path: PATH.LEVELLOG,
+    title: '레벨로그',
+  },
 ];
 
 const NavBar = () => {
