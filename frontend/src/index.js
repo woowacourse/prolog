@@ -9,10 +9,11 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import UserProvider from './contexts/UserProvider';
 import GlobalStyles from './GlobalStyles';
+import { isDev } from './configs/environment';
 
 const queryClient = new QueryClient();
 
-if (process.env.NODE_ENV === 'development') {
+if (isDev) {
   const { worker } = require('./mocks/browser');
 
   worker.start();
