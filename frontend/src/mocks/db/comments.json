@@ -10,7 +10,7 @@
         "role": "crew"
       },
       "content": "내용1",
-      "createAt": "2022-07-24"
+      "createdAt": "2022-07-24"
     },
     {
       "id": 2,
@@ -22,7 +22,7 @@
         "role": "crew"
       },
       "content": "내용2",
-      "createAt": "2022-07-24"
+      "createdAt": "2022-07-24"
     }
   ]
 }

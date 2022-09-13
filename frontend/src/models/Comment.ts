@@ -4,7 +4,7 @@ export interface CommentType {
   id: number;
   author: Author;
   content: string;
-  createAt: string;
+  createdAt: string;
 }
 
 export interface CommentListResponse {

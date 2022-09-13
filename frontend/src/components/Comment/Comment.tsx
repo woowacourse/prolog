@@ -22,7 +22,7 @@ export interface CommentProps extends CommentType {
   deleteComment: (commentId: number) => void;
 }
 
-const Comment = ({ id, author, content, createAt, editComment, deleteComment }: CommentProps) => {
+const Comment = ({ id, author, content, createdAt, editComment, deleteComment }: CommentProps) => {
   const { user } = useContext(UserContext);
   const { username, nickname, imageUrl } = author;
 
@@ -79,7 +79,7 @@ const Comment = ({ id, author, content, createAt, editComment, deleteComment }: 
               <Styled.Logo src={imageUrl} alt="프로필" />
               <span>{nickname}</span>
             </Link>
-            <Styled.CreatedDate>{new Date(createAt).toLocaleString('ko-KR')}</Styled.CreatedDate>
+            <Styled.CreatedDate>{new Date(createdAt).toLocaleString('ko-KR')}</Styled.CreatedDate>
           </Styled.Left>
           {user.userId === author.id && (
             <Styled.Right>

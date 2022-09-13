@@ -22,7 +22,7 @@ export const commentsHandler = [
           role: 'crew',
         },
         content: body.content,
-        createAt: '2022-07-24',
+        createdAt: '2022-07-24',
       },
     ];
 
