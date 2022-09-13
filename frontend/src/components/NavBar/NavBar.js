@@ -110,19 +110,17 @@ const NavBar = () => {
           </Navigation>
           {isLoggedIn ? (
             <>
-              <Link to={PATH.NEW_STUDYLOG}>
-                <Button
-                  size="XX_SMALL"
-                  icon={PencilIcon}
-                  type="button"
-                  onClick={(e) => {
-                    setWritingDropdownToggled(true);
-                    hideDropdownMenu(e);
-                  }}
-                  cssProps={pencilButtonStyle}
-                />
-              </Link>
-              {/* {isWritingDropdownToggled && (
+              <Button
+                size="XX_SMALL"
+                icon={PencilIcon}
+                type="button"
+                onClick={(e) => {
+                  setWritingDropdownToggled(true);
+                  hideDropdownMenu(e);
+                }}
+                cssProps={pencilButtonStyle}
+              />
+              {isWritingDropdownToggled && (
                 <DropdownMenu cssProps={WritingDropdownStyle}>
                   <ul onClick={onSelectMenu}>
                     {[
@@ -141,7 +139,7 @@ const NavBar = () => {
                     ))}
                   </ul>
                 </DropdownMenu>
-              )} */}
+              )}
               <Button
                 size="XX_SMALL"
                 type="button"
