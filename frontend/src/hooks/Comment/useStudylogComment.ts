@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { FormEventHandler, useRef } from 'react';
 import { Editor as ToastEditor } from '@toast-ui/react-editor';
 
 import { ALERT_MESSAGE } from '../../constants';
@@ -32,7 +32,7 @@ const useStudylogComment = (studylogId: number) => {
     deleteCommentMutation.mutate(commentId);
   };
 
-  const onSubmitComment = (event) => {
+  const onSubmitComment: FormEventHandler = (event) => {
     event.preventDefault();
 
     const content = editorContentRef.current?.getInstance().getMarkdown() || '';

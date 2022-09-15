@@ -18,7 +18,6 @@ import { ALERT_MESSAGE, CONFIRM_MESSAGE, PATH } from '../../constants';
 import CommentList from '../../components/Comment/CommentList';
 import useStudylogComment from '../../hooks/Comment/useStudylogComment';
 import useBeforeunload from '../../hooks/useBeforeunload';
-import Editor from '../../components/Editor/Editor';
 import {
   useDeleteLikeMutation,
   useDeleteScrapMutation,
@@ -26,6 +25,7 @@ import {
   usePostLikeMutation,
   usePostScrapMutation,
 } from '../../hooks/queries/studylog';
+import CommentEditorForm from '../../components/Comment/CommentEditorForm';
 
 const StudylogPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -150,12 +150,7 @@ const StudylogPage = () => {
       {comments && (
         <CommentList comments={comments} editComment={editComment} deleteComment={deleteComment} />
       )}
-      {isLoggedIn && (
-        <EditorForm onSubmit={onSubmitComment}>
-          <Editor height="25rem" hasTitle={false} editorContentRef={editorContentRef} />
-          <SubmitButton>작성 완료</SubmitButton>
-        </EditorForm>
-      )}
+      <CommentEditorForm onSubmit={onSubmitComment} editorContentRef={editorContentRef} />
     </div>
   );
 };

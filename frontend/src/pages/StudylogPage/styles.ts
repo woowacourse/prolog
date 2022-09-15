@@ -163,6 +163,10 @@ const SubmitButton = styled.button`
   :hover {
     background-color: ${COLOR.LIGHT_BLUE_500};
   }
+
+  :disabled {
+    background-color: ${COLOR.LIGHT_GRAY_300};
+  }
 `;
 
 export {

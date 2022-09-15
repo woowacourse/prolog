@@ -16,6 +16,7 @@ import { EditorForm, SubmitButton } from '../StudylogPage/styles';
 import CommentList from '../../components/Comment/CommentList';
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserProvider';
+import CommentEditorForm from '../../components/Comment/CommentEditorForm';
 
 const LevellogPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -80,12 +81,7 @@ const LevellogPage = () => {
           deleteComment={deleteLevellogComment}
         />
       )}
-      {isLoggedIn && (
-        <EditorForm onSubmit={onSubmitLevellogComment}>
-          <Editor height="25rem" hasTitle={false} editorContentRef={editorContentRef} />
-          <SubmitButton>작성 완료</SubmitButton>
-        </EditorForm>
-      )}
+      <CommentEditorForm onSubmit={onSubmitLevellogComment} editorContentRef={editorContentRef} />
     </div>
   );
 };
