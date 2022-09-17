@@ -12,7 +12,9 @@ public class CommentLevellogSaveRequest {
     private Long levelogId;
     private String content;
 
-    public CommentLevellogSaveRequest(Long memberId, Long levelogId, String content) {
+    public CommentLevellogSaveRequest(final Long memberId,
+                                      final Long levelogId,
+                                      final String content) {
         this.memberId = memberId;
         this.levelogId = levelogId;
         this.content = content;

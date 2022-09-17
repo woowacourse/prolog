@@ -1,6 +1,7 @@
 package wooteco.prolog.comment.domain;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -28,8 +29,8 @@ public class Comment extends AuditingEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(nullable = false, columnDefinition = "text")
-    private String content;
+    @Embedded
+    private Content content;
 
     @Column(nullable = false)
     private boolean isDelete;
@@ -39,11 +40,11 @@ public class Comment extends AuditingEntity {
                    final String content) {
         this.id = id;
         this.member = member;
-        this.content = content;
+        this.content = new Content(content);
     }
 
     public void update(final String content) {
-        this.content = content;
+        this.content = new Content(content);
     }
 
     public void delete() {
@@ -54,6 +55,10 @@ public class Comment extends AuditingEntity {
         this.isDelete = true;
     }
 
+    public String getContent() {
+        return content.getContent();
+    }
+    
     public Long getMemberId() {
         return member.getId();
     }

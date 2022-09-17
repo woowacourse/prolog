@@ -3,6 +3,8 @@ package wooteco.prolog.common.exception;
 import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import wooteco.prolog.comment.exception.CommentLevellogNotFoundException;
+import wooteco.prolog.comment.exception.CommentNullOrEmptyException;
 import wooteco.prolog.comment.exception.CommentStudylogNotFoundException;
 import wooteco.prolog.levellogs.exception.InvalidLevelLogAuthorException;
 import wooteco.prolog.levellogs.exception.LevelLogNotFoundException;
@@ -112,7 +114,9 @@ public enum BadRequestCode {
 
     COMMENT_NOT_FOUND(6001, "존재하지 않는 댓글입니다.",CommentNotFoundException.class),
     COMMENT_DELETE_EXCEPTION(6002, "댓글을 삭제할 수 없습니다.",CommentDeleteException.class),
-    COMMENT_STUDY_LOG_NOT_FOUND(6003, "존재하지 않는 학습로그 댓글입니다.", CommentStudylogNotFoundException.class),
+    COMMENT_CONTENT_NULL_OR_EMPTY(6003, "댓글의 내용은 공백일 수 없습니다", CommentNullOrEmptyException.class),
+    COMMENT_STUDY_LOG_NOT_FOUND(6004, "존재하지 않는 학습로그 댓글입니다.", CommentStudylogNotFoundException.class),
+    COMMENT_LEVEL_LOG_NOT_FOUND(6005, "존재하지 않는 레벨로그 댓글입니다.", CommentLevellogNotFoundException.class),
 
     INVALID_LEVEL_LOG_AUTHOR_EXCEPTION(7001, "레벨 로그 작성자가 아닙니다.",InvalidLevelLogAuthorException.class),
     LEVEL_LOG_NOT_FOUND_EXCEPTION(7002, "레벨 로그를 찾을 수 없습니다.",LevelLogNotFoundException.class);
