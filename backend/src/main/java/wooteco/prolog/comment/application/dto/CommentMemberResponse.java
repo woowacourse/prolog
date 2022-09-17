@@ -1,4 +1,4 @@
-package wooteco.prolog.studylog.application.dto;
+package wooteco.prolog.comment.application.dto;
 
 import lombok.AccessLevel;
 import lombok.Getter;

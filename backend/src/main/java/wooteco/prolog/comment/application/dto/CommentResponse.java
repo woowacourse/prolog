@@ -1,11 +1,10 @@
-package wooteco.prolog.studylog.application.dto;
+package wooteco.prolog.comment.application.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.studylog.domain.Comment;
+import wooteco.prolog.comment.domain.Comment;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -14,14 +13,16 @@ public class CommentResponse {
     private Long id;
     private CommentMemberResponse author;
     private String content;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
-    public CommentResponse(Long id, CommentMemberResponse author, String content, LocalDateTime localDateTime) {
+    public CommentResponse(final Long id,
+                           final CommentMemberResponse author,
+                           final String content,
+                           final LocalDateTime createdAt) {
         this.id = id;
         this.author = author;
         this.content = content;
-        this.createAt = localDateTime;
+        this.createdAt = createdAt;
     }
 
     public static CommentResponse of(Comment comment) {

@@ -1,4 +1,4 @@
-package wooteco.prolog.studylog.application.dto;
+package wooteco.prolog.comment.application.dto;
 
 import java.util.List;
 import lombok.AccessLevel;
@@ -11,7 +11,7 @@ public class CommentsResponse {
 
     private List<CommentResponse> data;
 
-    public CommentsResponse(List<CommentResponse> data) {
+    public CommentsResponse(final List<CommentResponse> data) {
         this.data = data;
     }
 }
