@@ -14,8 +14,11 @@ public class CommentMemberResponse {
     private String imageUrl;
     private String role;
 
-    public CommentMemberResponse(Long id, String username, String nickname, String imageUrl,
-                                 String role) {
+    public CommentMemberResponse(final Long id,
+                                 final String username,
+                                 final String nickname,
+                                 final String imageUrl,
+                                 final String role) {
         this.id = id;
         this.username = username;
         this.nickname = nickname;

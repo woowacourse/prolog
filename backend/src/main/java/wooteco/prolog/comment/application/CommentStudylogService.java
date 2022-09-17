@@ -21,14 +21,14 @@ import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 @Service
 public class CommentStudylogService {
 
-    private final CommentStudylogRepository studylogCommentRepository;
+    private final CommentStudylogRepository commentStudylogRepository;
     private final MemberRepository memberRepository;
     private final StudylogRepository studylogRepository;
 
-    public CommentStudylogService(final CommentStudylogRepository studylogCommentRepository,
+    public CommentStudylogService(final CommentStudylogRepository commentStudylogRepository,
                                   final MemberRepository memberRepository,
                                   final StudylogRepository studylogRepository) {
-        this.studylogCommentRepository = studylogCommentRepository;
+        this.commentStudylogRepository = commentStudylogRepository;
         this.memberRepository = memberRepository;
         this.studylogRepository = studylogRepository;
     }
@@ -43,14 +43,14 @@ public class CommentStudylogService {
             request.getStudylogId(),
             new Comment(null, member, request.getContent()));
 
-        return studylogCommentRepository.save(comment).getId();
+        return commentStudylogRepository.save(comment).getId();
     }
 
     @Transactional(readOnly = true)
     public CommentsResponse findComments(final Long studylogId) {
         validateExistsStudylog(studylogId);
 
-        List<CommentResponse> comments = studylogCommentRepository
+        List<CommentResponse> comments = commentStudylogRepository
             .findAllByStudylogId(studylogId)
             .stream()
             .map(comment -> CommentResponse.of(comment.getComment()))
@@ -63,19 +63,19 @@ public class CommentStudylogService {
         validateExistsMember(request.getMemberId());
         validateExistsStudylog(request.getStudylogId());
 
-        CommentStudylog studylogComment = studylogCommentRepository
-            .findByCommentId(request.getStudylogCommentId())
+        CommentStudylog studylogComment = commentStudylogRepository
+            .findByCommentId(request.getCommentStudylogId())
             .orElseThrow(StudylogNotFoundException::new);
 
         studylogComment.updateContent(request.getContent());
     }
 
-    public void deleteComment(final Long memberId, final Long studylogId, final Long studylogCommentId) {
+    public void deleteComment(final Long memberId, final Long studylogId, final Long commentStudylogId) {
         validateExistsMember(memberId);
         validateExistsStudylog(studylogId);
 
-        CommentStudylog studylogComment = studylogCommentRepository
-            .findByCommentId(studylogCommentId)
+        CommentStudylog studylogComment = commentStudylogRepository
+            .findByCommentId(commentStudylogId)
             .orElseThrow(StudylogNotFoundException::new);
 
         studylogComment.deleteComment();

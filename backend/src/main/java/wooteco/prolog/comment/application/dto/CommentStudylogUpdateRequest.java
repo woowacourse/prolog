@@ -10,16 +10,16 @@ public class CommentStudylogUpdateRequest {
 
     private Long memberId;
     private Long studylogId;
-    private Long studylogCommentId;
+    private Long commentStudylogId;
     private String content;
 
-    public CommentStudylogUpdateRequest(Long memberId,
-                                Long studylogId,
-                                Long studylogCommentId,
-                                String content) {
+    public CommentStudylogUpdateRequest(final Long memberId,
+                                        final Long studylogId,
+                                        final Long commentStudylogId,
+                                        final String content) {
         this.memberId = memberId;
         this.studylogId = studylogId;
-        this.studylogCommentId = studylogCommentId;
+        this.commentStudylogId = commentStudylogId;
         this.content = content;
     }
 }

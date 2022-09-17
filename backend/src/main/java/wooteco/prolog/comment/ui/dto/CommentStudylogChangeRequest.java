@@ -17,7 +17,7 @@ public class CommentStudylogChangeRequest {
 
     public CommentStudylogUpdateRequest toUpdateRequest(Long id,
                                                         Long studylogId,
-                                                        Long studylogCommentId) {
-        return new CommentStudylogUpdateRequest(id, studylogId, studylogCommentId, content);
+                                                        Long commentStudylogId) {
+        return new CommentStudylogUpdateRequest(id, studylogId, commentStudylogId, content);
     }
 }

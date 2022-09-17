@@ -13,10 +13,10 @@ public class CommentLevellogUpdateReqeust {
     private Long commentLevellogId;
     private String content;
 
-    public CommentLevellogUpdateReqeust(Long memberId,
-                                        Long levellogId,
-                                        Long commentLevellogId,
-                                        String content) {
+    public CommentLevellogUpdateReqeust(final Long memberId,
+                                        final Long levellogId,
+                                        final Long commentLevellogId,
+                                        final String content) {
         this.memberId = memberId;
         this.levellogId = levellogId;
         this.commentLevellogId = commentLevellogId;

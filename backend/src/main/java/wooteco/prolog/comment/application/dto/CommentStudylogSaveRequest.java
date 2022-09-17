@@ -12,7 +12,9 @@ public class CommentStudylogSaveRequest {
     private Long studylogId;
     private String content;
 
-    public CommentStudylogSaveRequest(Long memberId, Long studylogId, String content) {
+    public CommentStudylogSaveRequest(final Long memberId,
+                                      final Long studylogId,
+                                      final String content) {
         this.memberId = memberId;
         this.studylogId = studylogId;
         this.content = content;
