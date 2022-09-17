@@ -1,7 +1,7 @@
 package wooteco.prolog.fixtures;
 
-import wooteco.prolog.studylog.application.dto.CommentChangeRequest;
-import wooteco.prolog.studylog.application.dto.CommentCreateRequest;
+import wooteco.prolog.comment.ui.dto.CommentStudylogChangeRequest;
+import wooteco.prolog.comment.ui.dto.CommentStudylogCreateRequest;
 
 public enum CommentAcceptanceFixture {
 
@@ -14,11 +14,11 @@ public enum CommentAcceptanceFixture {
         this.content = content;
     }
 
-    public CommentCreateRequest getCreateRequest() {
-        return new CommentCreateRequest(COMMENT.content);
+    public CommentStudylogCreateRequest getCreateRequest() {
+        return new CommentStudylogCreateRequest(COMMENT.content);
     }
 
-    public CommentChangeRequest getUpdateRequest() {
-        return new CommentChangeRequest(UPDATED_COMMENT.content);
+    public CommentStudylogChangeRequest getUpdateRequest() {
+        return new CommentStudylogChangeRequest(UPDATED_COMMENT.content);
     }
 }

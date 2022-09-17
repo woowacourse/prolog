@@ -10,10 +10,10 @@ import io.cucumber.java.en.When;
 import org.elasticsearch.common.collect.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
+import wooteco.prolog.comment.application.dto.CommentResponse;
+import wooteco.prolog.comment.application.dto.CommentsResponse;
 import wooteco.prolog.fixtures.GithubResponses;
-import wooteco.prolog.studylog.application.dto.CommentMemberResponse;
-import wooteco.prolog.studylog.application.dto.CommentResponse;
-import wooteco.prolog.studylog.application.dto.CommentsResponse;
+import wooteco.prolog.comment.application.dto.CommentMemberResponse;
 
 public class CommentStepDefinitions extends AcceptanceSteps {
 
@@ -44,7 +44,7 @@ public class CommentStepDefinitions extends AcceptanceSteps {
         assertThat(statusCode).isEqualTo(HttpStatus.OK.value());
         assertThat(commentsResponse.getData())
             .usingRecursiveComparison()
-            .ignoringFields("createAt").isEqualTo(List.of(
+            .ignoringFields("createdAt").isEqualTo(List.of(
                 new CommentResponse(1L, new CommentMemberResponse(1L, GithubResponses.브라운.getLogin(),
                     GithubResponses.브라운.getName(), GithubResponses.브라운.getAvatarUrl(), "CREW"),
                     "스터디로그의 댓글 내용입니다.", null),
