@@ -1,6 +1,5 @@
-package wooteco.prolog.studylog.domain;
+package wooteco.prolog.comment.domain;
 
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,9 +15,9 @@ import wooteco.prolog.common.AuditingEntity;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.exception.CommentDeleteException;
 
-@Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 public class Comment extends AuditingEntity {
 
     @Id
@@ -29,24 +28,21 @@ public class Comment extends AuditingEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "studylog_id")
-    private Studylog studylog;
-
     @Column(nullable = false, columnDefinition = "text")
     private String content;
 
     @Column(nullable = false)
     private boolean isDelete;
 
-    public Comment(Long id, Member member, Studylog studylog, String content) {
+    public Comment(final Long id,
+                   final Member member,
+                   final String content) {
         this.id = id;
         this.member = member;
-        this.studylog = studylog;
-        this.content = Objects.requireNonNull(content);
+        this.content = content;
     }
 
-    public void updateContent(String content) {
+    public void update(final String content) {
         this.content = content;
     }
 
