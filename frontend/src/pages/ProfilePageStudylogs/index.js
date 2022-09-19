@@ -54,6 +54,7 @@ const ProfilePageStudylogs = () => {
   const { accessToken, username: myName } = user;
 
   const { username } = useParams();
+
   const { state } = useLocation();
 
   const [shouldInitialLoad, setShouldInitialLoad] = useState(!state);
@@ -101,8 +102,11 @@ const ProfilePageStudylogs = () => {
 
   useEffect(() => {
     const params = getFullParams();
+    const path = `${PATH.ROOT}${username}/studylogs${params && '?' + params}`;
 
-    history.push(`${PATH.ROOT}${username}/studylogs${params && '?' + params}`);
+    if (history.location.pathname !== path) {
+      history.push(path);
+    }
   }, [postQueryParams, selectedFilterDetails, username]);
 
   useEffect(() => {
