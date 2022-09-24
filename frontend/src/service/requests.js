@@ -291,3 +291,9 @@ export const requestGetMatchedStudylogs = ({ accessToken, startDate, endDate }) 
       Authorization: `Bearer ${accessToken}`,
     },
   });
+
+export const requestImageUpload = (formData) =>
+  fetch(`${BASE_URL}/image`, {
+    method: 'POST',
+    body: formData,
+  });
