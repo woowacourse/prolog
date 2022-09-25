@@ -19,6 +19,17 @@ const SubmitButtonStyle = css`
   }
 `;
 
+const SaveButtonStyle = css`
+  width: 100%;
+  background-color: ${COLOR.LIGHT_GRAY_400};
+  padding: 1rem 0;
+  border-radius: 1.6rem;
+
+  :hover {
+    background-color: ${COLOR.LIGHT_GRAY_600};
+  }
+`;
+
 type SelectOption = { value: string; label: string };
 
 interface StudylogEditorProps {
@@ -66,12 +77,13 @@ const StudylogEditor = ({
           />
           <div
             css={[
-              getFlexStyle({ justifyContent: 'flex-end' }),
+              getFlexStyle({ justifyContent: 'flex-end', columnGap: '2rem' }),
               css`
                 margin-top: 1rem;
               `,
             ]}
           >
+            <button css={[SaveButtonStyle]}>임시 저장</button>
             <button css={[SubmitButtonStyle]}>작성 완료</button>
           </div>
         </div>
