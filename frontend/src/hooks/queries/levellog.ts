@@ -1,5 +1,4 @@
 import { AxiosError } from 'axios';
-import { response } from 'msw';
 import { useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useHistory } from 'react-router-dom';
@@ -21,7 +20,6 @@ const QUERY_KEY = {
   levellog: 'levellog',
   recentLevellogs: 'recentLevellogs',
 };
-
 export const useGetLevellogs = (currPage: number) => {
   const queryClient = useQueryClient();
 
@@ -34,9 +32,9 @@ export const useGetLevellogs = (currPage: number) => {
   return useQuery([QUERY_KEY.levellogs, currPage], () => requestGetLevellogs(currPage));
 };
 
-export const useGetRecentLevellogs = () => {
+export const useGetRecentLevellogs = (size: number) => {
   return useQuery([QUERY_KEY.recentLevellogs], async () => {
-    const response = await requestGetRecentLevellogs(3);
+    const response = await requestGetRecentLevellogs(size);
 
     return response.data;
   });

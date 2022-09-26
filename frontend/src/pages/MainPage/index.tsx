@@ -19,6 +19,8 @@ import { useGetRecentLevellogs } from '../../hooks/queries/levellog';
 import RecentLevellogList from './RecentLevellogList';
 import { FlexColumnStyle, FlexStyle } from '../../styles/flex.styles';
 
+const FETCH_SIZE = 3;
+
 const MainPage = () => {
   const { user } = useContext(UserContext);
   const { accessToken } = user;
@@ -30,7 +32,7 @@ const MainPage = () => {
     refetch: refetchPopularStudyLogs,
   } = useGetPopularStudylogsQuery();
     
-   const { data: recentLevellogs, refetch: refetchRecentLevellogs } = useGetRecentLevellogs();
+   const { data: recentLevellogs, refetch: refetchRecentLevellogs } = useGetRecentLevellogs(FETCH_SIZE);
 
 
   useEffect(() => {
