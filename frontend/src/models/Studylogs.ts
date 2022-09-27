@@ -41,6 +41,7 @@ export interface Studylog {
   scrap: boolean;
   scrapedCount: number;
   abilities: number[];
+  commentCount: number;
 }
 
 export interface StudyLogList {
