@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  db:
+    image: library/mysql:8.0.28
+    container_name: prolog-local-db
+    restart: always
+    ports:
+      - 13306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: prolog
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      TZ: Asia/Seoul
+    command: ["mysqld", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_general_ci"]
