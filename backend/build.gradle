@@ -109,6 +109,10 @@ ext {
 
 test {
     useJUnitPlatform()
+
+    testLogging {
+        exceptionFormat = 'full'
+    }
 }
 
 idea {
