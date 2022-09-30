@@ -65,12 +65,3 @@ export const ProfileChipLocationStyle = css`
     background-color: ${COLOR.LIGHT_BLUE_100};
   }
 `;
-
-export const CommentContainerStyle = css`
-  display: flex;
-  align-items: center;
-  color: ${COLOR.LIGHT_GRAY_900};
-  font-size: 1.4rem;
-  gap: 0.2em;
-  margin-top: 0.5em;
-`;

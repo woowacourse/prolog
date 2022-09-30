@@ -5,7 +5,6 @@ import { Card, ProfileChip } from '..';
 import ViewCount from '../ViewCount/ViewCount';
 import { Studylog } from '../../models/Studylogs';
 import { COLOR } from '../../enumerations/color';
-import { ReactComponent as CommentIcon } from '../../assets/images/comment.svg';
 
 import {
   CardStyle,
@@ -14,9 +13,9 @@ import {
   MissionStyle,
   TagListStyle,
   ProfileChipLocationStyle,
-  CommentContainerStyle,
 } from './StudylogItem.styles';
 import { AlignItemsEndStyle, FlexColumnStyle, FlexStyle } from '../../styles/flex.styles';
+import CommentCount from '../CommentCount/CommentCount';
 
 interface Props {
   studylog: Studylog;
@@ -58,10 +57,7 @@ const StudylogItem = ({ studylog, onClick, onProfileClick }: Props) => {
           >
             {author.nickname}
           </ProfileChip>
-          <div css={[CommentContainerStyle]}>
-            <CommentIcon width={'20px'} height={'20px'} />
-            {commentCount}
-          </div>
+          <CommentCount count={commentCount} />
           <ViewCount count={viewCount} />
         </div>
       </div>
