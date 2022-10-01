@@ -43,6 +43,15 @@ export interface Studylog {
   abilities: number[];
 }
 
+export type SavedStudyLog = Pick<
+  Studylog,
+  'id' | 'author' | 'title' | 'content' | 'session' | 'mission' | 'tags'
+>;
+
+export type SavedStudyLogForm = Pick<SavedStudyLog, 'title' | 'content' | 'tags'> & {
+  missionId: number | null;
+};
+
 export interface StudyLogList {
   data: Studylog[];
   totalSize: number;

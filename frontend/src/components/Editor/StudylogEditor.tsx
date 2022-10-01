@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from '@emotion/react';
-import { ChangeEventHandler, FormEventHandler, MutableRefObject } from 'react';
+import { ChangeEventHandler, FormEventHandler, MouseEventHandler, MutableRefObject } from 'react';
 import { COLOR } from '../../constants';
 import { Tag } from '../../models/Studylogs';
 import { getFlexStyle } from '../../styles/flex.styles';
@@ -19,7 +19,7 @@ const SubmitButtonStyle = css`
   }
 `;
 
-const SaveButtonStyle = css`
+const TempSaveButtonStyle = css`
   width: 100%;
   background-color: ${COLOR.LIGHT_GRAY_400};
   padding: 1rem 0;
@@ -47,6 +47,7 @@ interface StudylogEditorProps {
   onSelectTag: (tags: Tag[], actionMeta: { option: { label: string } }) => void;
   onSelectAbilities: (abilities: number[]) => void;
   onSubmit?: FormEventHandler<HTMLFormElement>;
+  onTempSave?: MouseEventHandler<HTMLButtonElement>;
 }
 
 const StudylogEditor = ({
@@ -63,6 +64,7 @@ const StudylogEditor = ({
   onSelectTag,
   onSelectAbilities,
   onSubmit,
+  onTempSave,
 }: StudylogEditorProps): JSX.Element => {
   return (
     <form onSubmit={onSubmit}>
@@ -83,8 +85,14 @@ const StudylogEditor = ({
               `,
             ]}
           >
-            <button css={[SaveButtonStyle]}>임시 저장</button>
-            <button css={[SubmitButtonStyle]}>작성 완료</button>
+            {onTempSave && (
+              <button type="button" css={[TempSaveButtonStyle]} onClick={onTempSave}>
+                임시 저장
+              </button>
+            )}
+            <button type="submit" css={[SubmitButtonStyle]}>
+              작성 완료
+            </button>
           </div>
         </div>
         <Sidebar
