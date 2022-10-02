@@ -5,6 +5,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -45,11 +46,13 @@ import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
+import wooteco.prolog.studylog.application.CommentService;
 import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.StudylogScrapService;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.TagService;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
+import wooteco.prolog.studylog.application.dto.CommentSaveRequest;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
@@ -117,6 +120,9 @@ class StudylogServiceTest {
 
     @Autowired
     private TagService tagService;
+
+    @Autowired
+    private CommentService commentService;
 
     @DisplayName("스터디로그를 삽입한다. - 삽입 시 studylogDocument도 삽입된다.")
     @Test
@@ -485,6 +491,89 @@ class StudylogServiceTest {
         assertThat(actual)
                 .extracting(StudylogRssFeedResponse::getLink)
                 .containsExactlyInAnyOrderElementsOf(expectedLinkUrl);
+    }
+
+    @DisplayName("학습로그 목록조회 시 댓글 갯수도 같이 조회한다.")
+    @ParameterizedTest
+    @MethodSource("provideFilterForGetCommentCount")
+    void getCommentCount(final String keyword) {
+        // arrange
+        final Member member1 = createMember(1);
+        final Member member2 = createMember(2);
+        final MissionResponse mission = createMission(SESSION1, MISSION1);
+
+        final StudylogResponse studyLog1 = createStudyLog(member1.getId(), mission, TITLE1, CONTENT1, emptyList());
+        commentService.insertComment(new CommentSaveRequest(member1.getId(), studyLog1.getId(), "내용"));
+        commentService.insertComment(new CommentSaveRequest(member2.getId(), studyLog1.getId(), "내용"));
+        commentService.insertComment(new CommentSaveRequest(member2.getId(), studyLog1.getId(), "내용"));
+
+        final StudylogResponse studyLog2 = createStudyLog(member1.getId(), mission, TITLE2, CONTENT2, emptyList());
+        commentService.insertComment(new CommentSaveRequest(member1.getId(), studyLog2.getId(), "내용"));
+        commentService.insertComment(new CommentSaveRequest(member2.getId(), studyLog2.getId(), "내용"));
+
+        createStudyLog(member1.getId(), mission, TITLE3, CONTENT3, emptyList());
+
+        // act
+        StudylogsResponse studylogsResponse = studylogService.findStudylogs(
+                new StudylogsSearchRequest(
+                        keyword, emptyList(), emptyList(),
+                        emptyList(), emptyList(), emptyList(),
+                        LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
+                        LocalDate.parse("99991231", DateTimeFormatter.BASIC_ISO_DATE),
+                        null, PageRequest.of(0, 10)
+                ), null
+        );
+
+        // assert
+        List<Long> commentCounts = studylogsResponse.getData().stream()
+                .map(StudylogResponse::getCommentCount)
+                .collect(toList());
+        assertThat(commentCounts).containsExactly(0L, 2L, 3L);
+    }
+
+    private static Stream<Arguments> provideFilterForGetCommentCount() {
+        return Stream.of(
+                Arguments.of(""),
+                Arguments.of("제목")
+        );
+    }
+
+    @DisplayName("학습로그 Id로 목록조회 시 댓글 갯수도 같이 조회한다.")
+    @Test
+    void getCommentCountByStudylogIds() {
+        // arrange
+        final Member member1 = createMember(1);
+        final Member member2 = createMember(2);
+        final MissionResponse mission = createMission(SESSION1, MISSION1);
+
+        final StudylogResponse studyLog1 = createStudyLog(member1.getId(), mission, TITLE1, CONTENT1, emptyList());
+        commentService.insertComment(new CommentSaveRequest(member1.getId(), studyLog1.getId(), "내용"));
+        commentService.insertComment(new CommentSaveRequest(member2.getId(), studyLog1.getId(), "내용"));
+        commentService.insertComment(new CommentSaveRequest(member2.getId(), studyLog1.getId(), "내용"));
+
+        final StudylogResponse studyLog2 = createStudyLog(member1.getId(), mission, TITLE2, CONTENT2, emptyList());
+        commentService.insertComment(new CommentSaveRequest(member1.getId(), studyLog2.getId(), "내용"));
+        commentService.insertComment(new CommentSaveRequest(member2.getId(), studyLog2.getId(), "내용"));
+
+        final StudylogResponse studyLog3 = createStudyLog(member1.getId(), mission, TITLE3, CONTENT3, emptyList());
+
+        // act
+        final List<Long> studyLogIds = asList(studyLog1.getId(), studyLog2.getId(), studyLog3.getId());
+        StudylogsResponse studylogsResponse = studylogService.findStudylogs(
+                new StudylogsSearchRequest(
+                        "", emptyList(), emptyList(),
+                        emptyList(), emptyList(), emptyList(),
+                        LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
+                        LocalDate.parse("99991231", DateTimeFormatter.BASIC_ISO_DATE),
+                        studyLogIds, PageRequest.of(0, 10)
+                ), null
+        );
+
+        // assert
+        List<Long> commentCounts = studylogsResponse.getData().stream()
+                .map(StudylogResponse::getCommentCount)
+                .collect(toList());
+        assertThat(commentCounts).containsExactly(0L, 2L, 3L);
     }
 
     private void assertStudylog(final StudylogResponse studylog, final Member member, final MissionResponse mission,

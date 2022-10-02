@@ -3,6 +3,7 @@ package wooteco.prolog.studylog.studylog.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import javax.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import wooteco.prolog.studylog.studylog.util.StudylogUtilCRUD;
 import wooteco.support.utils.IntegrationTest;
 
 @IntegrationTest
+@Transactional
 public class StudylogLikeServiceTest {
 
     @Autowired
