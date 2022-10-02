@@ -1,8 +1,7 @@
 package wooteco.prolog.fixtures;
 
-import wooteco.prolog.comment.ui.dto.CommentLevellogCreateRequest;
-import wooteco.prolog.comment.ui.dto.CommentStudylogChangeRequest;
-import wooteco.prolog.comment.ui.dto.CommentStudylogCreateRequest;
+import wooteco.prolog.comment.ui.dto.CommentChangeRequest;
+import wooteco.prolog.comment.ui.dto.CommentCreateRequest;
 
 public enum CommentAcceptanceFixture {
 
@@ -17,19 +16,19 @@ public enum CommentAcceptanceFixture {
         this.content = content;
     }
 
-    public CommentStudylogCreateRequest getCreateStudylogRequest() {
-        return new CommentStudylogCreateRequest(STUDY_LOG_COMMENT.content);
+    public CommentCreateRequest getCreateStudylogRequest() {
+        return new CommentCreateRequest(STUDY_LOG_COMMENT.content);
     }
 
-    public CommentStudylogChangeRequest getUpdateStudylogRequest() {
-        return new CommentStudylogChangeRequest(STUDY_LOG_UPDATE_COMMENT.content);
+    public CommentChangeRequest getUpdateStudylogRequest() {
+        return new CommentChangeRequest(STUDY_LOG_UPDATE_COMMENT.content);
     }
 
-    public CommentLevellogCreateRequest getCreateLevellogRequest() {
-        return new CommentLevellogCreateRequest(STUDY_LOG_COMMENT.content);
+    public CommentCreateRequest getCreateLevellogRequest() {
+        return new CommentCreateRequest(STUDY_LOG_COMMENT.content);
     }
 
-    public CommentLevellogCreateRequest getUpdateLevellogRequest() {
-        return new CommentLevellogCreateRequest(STUDY_LOG_UPDATE_COMMENT.content);
+    public CommentChangeRequest getUpdateLevellogRequest() {
+        return new CommentChangeRequest(STUDY_LOG_UPDATE_COMMENT.content);
     }
 }

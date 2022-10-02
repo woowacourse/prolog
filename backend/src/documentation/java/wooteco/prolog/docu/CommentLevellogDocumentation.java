@@ -15,8 +15,8 @@ import wooteco.prolog.GithubResponses;
 import wooteco.prolog.comment.application.dto.CommentMemberResponse;
 import wooteco.prolog.comment.application.dto.CommentResponse;
 import wooteco.prolog.comment.application.dto.CommentsResponse;
-import wooteco.prolog.comment.ui.dto.CommentLevellogChangeRequest;
-import wooteco.prolog.comment.ui.dto.CommentLevellogCreateRequest;
+import wooteco.prolog.comment.ui.dto.CommentChangeRequest;
+import wooteco.prolog.comment.ui.dto.CommentCreateRequest;
 import wooteco.prolog.levellogs.application.dto.LevelLogRequest;
 import wooteco.prolog.levellogs.application.dto.SelfDiscussionRequest;
 
@@ -73,7 +73,7 @@ public class CommentLevellogDocumentation extends Documentation {
         // when
         ExtractableResponse<Response> extract = given("comment-levellog/update")
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-            .body(updateCommentRequest())
+            .body(changeCommentRequest())
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().put("/levellogs/" + levellogId + "/comments/" + levellogCommentId)
             .then().log().all().extract();
@@ -85,7 +85,7 @@ public class CommentLevellogDocumentation extends Documentation {
         CommentsResponse commentsResponse = findExtract.as(CommentsResponse.class);
         CommentResponse commentResponse = commentsResponse.getData().get(0);
 
-        assertThat(commentResponse.getContent()).isEqualTo(updateCommentRequest().getContent());
+        assertThat(commentResponse.getContent()).isEqualTo(changeCommentRequest().getContent());
     }
 
     @Test
@@ -117,15 +117,15 @@ public class CommentLevellogDocumentation extends Documentation {
         return new LevelLogRequest(title, content, selfDiscussions);
     }
 
-    private CommentLevellogCreateRequest createCommentRequest() {
-        return new CommentLevellogCreateRequest("댓글의 내용입니다.");
+    private CommentCreateRequest createCommentRequest() {
+        return new CommentCreateRequest("댓글의 내용입니다.");
     }
 
-    private CommentLevellogChangeRequest updateCommentRequest() {
-        return new CommentLevellogChangeRequest("수정된 댓글의 내용입니다.");
+    private CommentChangeRequest changeCommentRequest() {
+        return new CommentChangeRequest("수정된 댓글의 내용입니다.");
     }
 
-    private Long 댓글_등록_성공되어_있음(Long levellogId, CommentLevellogCreateRequest request) {
+    private Long 댓글_등록_성공되어_있음(Long levellogId, CommentCreateRequest request) {
         ExtractableResponse<Response> response = 댓글_등록함(levellogId, request);
 
         String commentId = response.header("Location").split("/comments/")[1];
@@ -134,7 +134,7 @@ public class CommentLevellogDocumentation extends Documentation {
     }
 
     private ExtractableResponse<Response> 댓글_등록함(Long levellogId,
-                                                 CommentLevellogCreateRequest request) {
+                                                 CommentCreateRequest request) {
         return RestAssured.given().log().all()
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .body(request)

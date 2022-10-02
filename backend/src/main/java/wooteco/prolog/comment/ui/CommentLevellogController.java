@@ -1,5 +1,7 @@
 package wooteco.prolog.comment.ui;
 
+import static wooteco.prolog.comment.domain.CommentType.LEVEL_LOG;
+
 import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,10 +12,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.comment.application.CommentLevellogService;
+import wooteco.prolog.comment.application.CommentService;
+import wooteco.prolog.comment.application.dto.CommentDeleteRequest;
+import wooteco.prolog.comment.application.dto.CommentSearchRequest;
 import wooteco.prolog.comment.application.dto.CommentsResponse;
-import wooteco.prolog.comment.ui.dto.CommentLevellogChangeRequest;
-import wooteco.prolog.comment.ui.dto.CommentLevellogCreateRequest;
+import wooteco.prolog.comment.ui.dto.CommentChangeRequest;
+import wooteco.prolog.comment.ui.dto.CommentCreateRequest;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
 
@@ -21,19 +25,19 @@ import wooteco.prolog.login.ui.LoginMember;
 @RequestMapping("/levellogs")
 public class CommentLevellogController {
 
-    private final CommentLevellogService commentLevellogService;
+    private final CommentService commentService;
 
-    public CommentLevellogController(final CommentLevellogService commentLevellogService) {
-        this.commentLevellogService = commentLevellogService;
+    public CommentLevellogController(final CommentService commentService) {
+        this.commentService = commentService;
     }
 
     @PostMapping("/{levellogId}/comments")
     public ResponseEntity<Void> createComment(@AuthMemberPrincipal LoginMember loginMember,
                                               @PathVariable Long levellogId,
-                                              @RequestBody CommentLevellogCreateRequest request) {
+                                              @RequestBody CommentCreateRequest request) {
 
-        Long commentId = commentLevellogService.insertComment(
-            request.toSaveRequest(loginMember.getId(), levellogId));
+        Long commentId = commentService.insertComment(
+            request.toSaveRequest(levellogId, loginMember.getId(), LEVEL_LOG));
 
         return ResponseEntity.created(
             URI.create("/levellogs/" + levellogId + "/comments/" + commentId)).build();
@@ -41,27 +45,28 @@ public class CommentLevellogController {
 
     @GetMapping("/{levellogId}/comments")
     public ResponseEntity<CommentsResponse> showComments(@PathVariable Long levellogId) {
-        CommentsResponse commentsResponse = commentLevellogService.findComments(levellogId);
+        CommentsResponse commentsResponse = commentService.findComments(
+            new CommentSearchRequest(levellogId, LEVEL_LOG));
 
         return ResponseEntity.ok(commentsResponse);
     }
 
-    @PutMapping("/{levellogId}/comments/{commentLevellogId}")
+    @PutMapping("/{levellogId}/comments/{commentId}")
     public ResponseEntity<Void> changeComment(@AuthMemberPrincipal LoginMember loginMember,
                                               @PathVariable Long levellogId,
-                                              @PathVariable Long commentLevellogId,
-                                              @RequestBody CommentLevellogChangeRequest request) {
-        commentLevellogService.updateComment(request.toUpdateRequest(
-            loginMember.getId(), levellogId, commentLevellogId));
+                                              @PathVariable Long commentId,
+                                              @RequestBody CommentChangeRequest request) {
+        commentService.updateComment(request.toUpdateRequest(
+            loginMember.getId(), commentId));
 
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{levellogId}/comments/{commentLevellogId}")
+    @DeleteMapping("/{levellogId}/comments/{commentId}")
     public ResponseEntity<Void> deleteComment(@AuthMemberPrincipal LoginMember loginMember,
                                               @PathVariable Long levellogId,
-                                              @PathVariable Long commentLevellogId) {
-        commentLevellogService.deleteComment(loginMember.getId(), levellogId, commentLevellogId);
+                                              @PathVariable Long commentId) {
+        commentService.deleteComment(new CommentDeleteRequest(loginMember.getId(), commentId));
 
         return ResponseEntity.noContent().build();
     }

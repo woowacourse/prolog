@@ -13,15 +13,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
 import wooteco.prolog.GithubResponses;
+import wooteco.prolog.comment.application.dto.CommentMemberResponse;
 import wooteco.prolog.comment.application.dto.CommentResponse;
 import wooteco.prolog.comment.application.dto.CommentsResponse;
-import wooteco.prolog.comment.ui.dto.CommentStudylogChangeRequest;
-import wooteco.prolog.comment.ui.dto.CommentStudylogCreateRequest;
+import wooteco.prolog.comment.ui.dto.CommentChangeRequest;
+import wooteco.prolog.comment.ui.dto.CommentCreateRequest;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
-import wooteco.prolog.comment.application.dto.CommentMemberResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 
@@ -78,7 +78,7 @@ public class CommentStudylogDocumentation extends Documentation {
         // when
         ExtractableResponse<Response> extract = given("comment-studylog/update")
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-            .body(updateCommentRequest())
+            .body(changeCommentRequest())
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().put("/studylogs/" + studylogId + "/comments/" + studylogCommentId)
             .then().log().all().extract();
@@ -90,7 +90,7 @@ public class CommentStudylogDocumentation extends Documentation {
         CommentsResponse commentsResponse = findExtract.as(CommentsResponse.class);
         CommentResponse commentResponse = commentsResponse.getData().get(0);
 
-        assertThat(commentResponse.getContent()).isEqualTo(updateCommentRequest().getContent());
+        assertThat(commentResponse.getContent()).isEqualTo(changeCommentRequest().getContent());
     }
 
     @Test
@@ -123,12 +123,12 @@ public class CommentStudylogDocumentation extends Documentation {
             Collections.emptyList());
     }
 
-    private CommentStudylogCreateRequest createCommentRequest() {
-        return new CommentStudylogCreateRequest("댓글의 내용입니다.");
+    private CommentCreateRequest createCommentRequest() {
+        return new CommentCreateRequest("댓글의 내용입니다.");
     }
 
-    private CommentStudylogChangeRequest updateCommentRequest() {
-        return new CommentStudylogChangeRequest("수정된 댓글의 내용입니다.");
+    private CommentChangeRequest changeCommentRequest() {
+        return new CommentChangeRequest("수정된 댓글의 내용입니다.");
     }
 
     /**
@@ -166,7 +166,7 @@ public class CommentStudylogDocumentation extends Documentation {
         return Long.parseLong(extract.header("Location").split("/studylogs/")[1]);
     }
 
-    private Long 댓글_등록_성공되어_있음(Long studylogId, CommentStudylogCreateRequest request) {
+    private Long 댓글_등록_성공되어_있음(Long studylogId, CommentCreateRequest request) {
         ExtractableResponse<Response> response = 댓글_등록함(studylogId, request);
 
         String commentId = response.header("Location").split("/comments/")[1];
@@ -175,7 +175,7 @@ public class CommentStudylogDocumentation extends Documentation {
     }
 
     private ExtractableResponse<Response> 댓글_등록함(Long studylogId,
-                                                 CommentStudylogCreateRequest request) {
+                                                 CommentCreateRequest request) {
         return RestAssured.given().log().all()
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .body(request)
