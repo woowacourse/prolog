@@ -3,10 +3,18 @@ package wooteco.prolog.studylog.domain.repository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
+import org.hibernate.query.criteria.internal.OrderImpl;
 import org.springframework.data.jpa.domain.Specification;
 import wooteco.prolog.studylog.domain.Studylog;
 
@@ -71,9 +79,7 @@ public class StudylogSpecification {
     }
 
     public static Specification<Studylog> findByDeletedFalse() {
-        return (root, query, builder) -> builder.isFalse(
-            root.get("deleted")
-        );
+        return (root, query, builder) -> builder.isFalse(root.get("deleted"));
     }
 
     public static Specification<Studylog> distinct(boolean distinct) {
@@ -113,6 +119,13 @@ public class StudylogSpecification {
             }
 
             return root.join("member", JoinType.LEFT).get("id").in(members);
+        };
+    }
+
+    public static Specification<Studylog> orderByIdDesc() {
+        return (root, query, builder) -> {
+            query.orderBy(builder.desc(root.get("id")));
+            return null;
         };
     }
 }

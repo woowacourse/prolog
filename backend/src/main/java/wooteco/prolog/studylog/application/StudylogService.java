@@ -189,8 +189,7 @@ public class StudylogService {
             Pageable pageable = request.getPageable();
             List<Long> ids = request.getIds();
 
-            Page<Studylog> studylogs = studylogRepository.findByIdInAndDeletedFalseOrderByIdAsc(ids,
-                pageable);
+            Page<Studylog> studylogs = studylogRepository.findByIdInAndDeletedFalseOrderByIdDesc(ids, pageable);
 
             return StudylogsResponse.of(studylogs, memberId);
         }
@@ -244,7 +243,8 @@ public class StudylogService {
                 .and(StudylogSpecification.findByUsernameIn(usernames))
                 .and(StudylogSpecification.findByMemberIn(members))
                 .and(StudylogSpecification.findBetweenDate(startDate, endDate))
-                .and(StudylogSpecification.distinct(true));
+                .and(StudylogSpecification.distinct(true))
+                .and(StudylogSpecification.orderByIdDesc());
 
         Page<Studylog> studylogs = studylogRepository.findAll(specs, pageable);
         return StudylogsResponse.of(studylogs, memberId);

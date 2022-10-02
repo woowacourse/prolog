@@ -4,9 +4,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.lang.Nullable;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.domain.Studylog;
 
@@ -31,7 +33,7 @@ public interface StudylogRepository extends JpaRepository<Studylog, Long>, JpaSp
 
     List<Studylog> findByMemberIdAndCreatedAtBetween(Long memberId, LocalDateTime startDate, LocalDateTime endDate);
 
-    Page<Studylog> findByIdInAndDeletedFalseOrderByIdAsc(List<Long> ids, Pageable pageable);
+    Page<Studylog> findByIdInAndDeletedFalseOrderByIdDesc(List<Long> ids, Pageable pageable);
 
     Page<Studylog> findAllByIdIn(List<Long> ids, Pageable pageable);
 }
