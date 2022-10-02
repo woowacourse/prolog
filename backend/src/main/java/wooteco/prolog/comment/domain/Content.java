@@ -20,9 +20,9 @@ public class Content {
         this.content = content;
     }
 
-    private int length(final String title) {
-        if (title != null) {
-            return title.trim().length();
+    private int length(final String value) {
+        if (value != null) {
+            return value.trim().length();
         }
         return 0;
     }
