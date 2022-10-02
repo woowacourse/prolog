@@ -4,6 +4,7 @@ import static java.util.EnumSet.allOf;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,10 @@ import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.session.domain.Mission;
+import wooteco.prolog.session.domain.Session;
+import wooteco.prolog.session.domain.repository.MissionRepository;
+import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.domain.Tags;
@@ -31,10 +36,13 @@ public enum StudylogFixture {
         @Autowired
         private SessionService sessionService;
 
+        @Autowired
+        private MissionRepository missionRepository;
+
         @PostConstruct
         void init() {
             allOf(StudylogFixture.class)
-                .forEach(container -> container.injectMissionService(missionService, sessionService));
+                .forEach(container -> container.injectMissionService(missionService, sessionService, missionRepository));
         }
     }
 
@@ -45,6 +53,7 @@ public enum StudylogFixture {
     private Tags tags;
     private MissionService missionService;
     private SessionService sessionService;
+    private MissionRepository missionRepository;
 
     StudylogFixture(String title, String content, String missionName, String sessionName, Tags tags) {
         this.title = title;
@@ -54,9 +63,10 @@ public enum StudylogFixture {
         this.tags = tags;
     }
 
-    private void injectMissionService(MissionService missionService, SessionService sessionService) {
+    private void injectMissionService(MissionService missionService, SessionService sessionService, MissionRepository missionRepository) {
         this.missionService = missionService;
         this.sessionService = sessionService;
+        this.missionRepository = missionRepository;
     }
 
     public StudylogRequest asRequestWithTags(List<TagRequest> tagRequests) {
@@ -73,6 +83,14 @@ public enum StudylogFixture {
     }
 
     private MissionResponse createMission(String missionName, String sessionName) {
+        final Optional<Mission> missionOptional = missionRepository.findByName(missionName);
+
+        if (missionOptional.isPresent()) {
+            final Mission mission = missionOptional.get();
+            return new MissionResponse(mission.getId(), mission.getName(),
+                    new SessionResponse(mission.getSession().getId(), mission.getSession().getName()));
+        }
+
         final SessionResponse sessionResponse = sessionService.findAll().stream()
             .filter(lr -> lr.getName().equals(sessionName))
             .findAny().orElseGet(() -> sessionService.create(new SessionRequest(sessionName)));
