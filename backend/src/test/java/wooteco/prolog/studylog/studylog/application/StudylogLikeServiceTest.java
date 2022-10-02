@@ -2,6 +2,8 @@ package wooteco.prolog.studylog.studylog.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static wooteco.prolog.common.fixture.misstion.MissionFixture.로또_미션;
+import static wooteco.prolog.common.fixture.misstion.SessionFixture.임파시블_세션;
 import static wooteco.prolog.member.util.MemberFixture.웨지;
 import static wooteco.prolog.studylog.studylog.util.StudylogFixture.로또_미션_정리;
 
@@ -11,9 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.member.util.MemberFixture;
+import wooteco.prolog.session.application.MissionService;
+import wooteco.prolog.session.application.SessionService;
+import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.studylog.application.StudylogLikeService;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.StudylogLikeResponse;
+import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.exception.InvalidLikeRequestException;
 import wooteco.prolog.studylog.exception.InvalidUnlikeRequestException;
 import wooteco.prolog.studylog.studylog.util.StudylogFixture;
@@ -25,6 +32,12 @@ public class StudylogLikeServiceTest {
 
     @Autowired
     private StudylogLikeService sut;
+
+    @Autowired
+    private SessionService sessionService;
+
+    @Autowired
+    private MissionService missionService;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -119,7 +132,10 @@ public class StudylogLikeServiceTest {
         return memberRepository.save(memberFixture.asDomain()).getId();
     }
 
-    private Long saveStudyLog(final Long memberId, StudylogFixture studylogFixture) {
-        return studylogService.insertStudylog(memberId, studylogFixture.asRequest()).getId();
+    private Long saveStudyLog(Long memberId, StudylogFixture studylogFixture) {
+        final SessionResponse sessionResponse = sessionService.create(임파시블_세션.asRequest());
+        final MissionResponse missionResponse = missionService.create(로또_미션.asRequest(sessionResponse.getId()));
+        final StudylogRequest studylogRequest = studylogFixture.asRequest(missionResponse.getId());
+        return studylogService.insertStudylog(memberId, studylogRequest).getId();
     }
 }

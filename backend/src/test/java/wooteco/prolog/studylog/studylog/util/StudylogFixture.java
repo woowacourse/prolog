@@ -74,6 +74,14 @@ public enum StudylogFixture {
         return new StudylogRequest(title, content, missionResponse.getId(), tagRequests);
     }
 
+    public StudylogRequest asRequest(long missionId) {
+        final List<TagRequest> tagRequests = tags.getList().stream()
+                .map(tag -> new TagRequest(tag.getName()))
+                .collect(Collectors.toList());
+
+        return new StudylogRequest(title, content, missionId, tagRequests);
+    }
+
     public StudylogRequest asRequest() {
         final List<TagRequest> tagRequests = tags.getList().stream()
                 .map(tag -> new TagRequest(tag.getName()))
