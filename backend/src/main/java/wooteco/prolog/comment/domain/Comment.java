@@ -3,6 +3,8 @@ package wooteco.prolog.comment.domain;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,6 +27,9 @@ public class Comment extends AuditingEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "post_id")
+    private Long postId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -35,12 +40,36 @@ public class Comment extends AuditingEntity {
     @Column(nullable = false)
     private boolean isDelete;
 
+    @Enumerated(EnumType.STRING)
+    private CommentType commentType;
+
     public Comment(final Long id,
                    final Member member,
                    final String content) {
         this.id = id;
         this.member = member;
         this.content = new Content(content);
+    }
+
+    public Comment(final Long id,
+                   final Long postId,
+                   final Member member,
+                   final Content content,
+                   final boolean isDelete,
+                   final CommentType commentType) {
+        this.id = id;
+        this.postId = postId;
+        this.member = member;
+        this.content = content;
+        this.isDelete = isDelete;
+        this.commentType = commentType;
+    }
+
+    public static Comment createComment(final Long postId,
+                                        final Member member,
+                                        final Content content,
+                                        final CommentType commentType) {
+        return new Comment(null, postId, member, content, false, commentType);
     }
 
     public void update(final String content) {
