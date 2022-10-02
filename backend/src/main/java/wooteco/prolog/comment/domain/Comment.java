@@ -72,6 +72,10 @@ public class Comment extends AuditingEntity {
         return new Comment(null, postId, member, content, false, commentType);
     }
 
+    public void update(final Content content) {
+        this.content = content;
+    }
+
     public void update(final String content) {
         this.content = new Content(content);
     }
