@@ -5,6 +5,8 @@ import static wooteco.prolog.member.domain.Role.CREW;
 import java.time.LocalDateTime;
 import java.util.List;
 import wooteco.prolog.member.application.dto.MemberResponse;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.studylog.application.dto.CommentMemberResponse;
@@ -33,7 +35,7 @@ public class ResponseFixture {
             "https://avatars.githubusercontent.com/u/52682603?v=4"
     );
 
-    private static final StudylogResponse STUDY_LOG_RESPONSE1 = new StudylogResponse(
+    public static final StudylogResponse STUDY_LOG_RESPONSE1 = new StudylogResponse(
             1L,
             MEMBER_RESPONSE,
             LocalDateTime.now(),
@@ -82,4 +84,7 @@ public class ResponseFixture {
                     , COMMENT,
                     LocalDateTime.now())
     ));
+
+    public static final Member MEMBER
+            = new Member("yboy", "잉", Role.CREW, 1L, GithubResponses.소롱.getAvatarUrl());
 }

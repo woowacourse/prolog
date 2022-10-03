@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.8">
-<title>Prolog API Document</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
-<style>
+    <meta charset="UTF-8">
+    <!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Asciidoctor 1.5.8">
+    <title>Prolog API Document</title>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+    <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
 /* Uncomment @import statement below to use as custom stylesheet */
 /*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700";*/
@@ -428,179 +430,171 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer{background:none}
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
-</style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
-<h1>Prolog API Document</h1>
-<div class="details">
-<span id="revnumber">version 0.0.1-SNAPSHOT</span>
-</div>
-<div id="toc" class="toc2">
-<div id="toctitle">Table of Contents</div>
-<ul class="sectlevel1">
-<li><a href="#login">로그인</a>
-<ul class="sectlevel2">
-<li><a href="#_깃허브_로그인">깃허브 로그인</a></li>
-<li><a href="#_본인_정보_요청">본인 정보 요청</a></li>
-<li><a href="#_멤버_정보_요청">멤버 정보 요청</a></li>
-<li><a href="#_멤버_정보_수정">멤버 정보 수정</a></li>
-</ul>
-</li>
-<li><a href="#profile">프로필</a>
-<ul class="sectlevel2">
-<li><a href="#_프로필_조회">프로필 조회</a></li>
-<li><a href="#_프로필_소개_조회">프로필 소개 조회</a></li>
-<li><a href="#_프로필_소개_수정">프로필 소개 수정</a></li>
-<li><a href="#_프로필_스터디로그_조회">프로필 스터디로그 조회</a></li>
-</ul>
-</li>
-<li><a href="#session">세션</a>
-<ul class="sectlevel2">
-<li><a href="#_세션_등록">세션 등록</a></li>
-<li><a href="#_세션_목록_조회">세션 목록 조회</a></li>
-</ul>
-</li>
-<li><a href="#studylog">스터디로그</a>
-<ul class="sectlevel2">
-<li><a href="#_스터디로그_작성">스터디로그 작성</a></li>
-<li><a href="#_스터디로그_목록_조회">스터디로그 목록 조회</a></li>
-<li><a href="#_스터디로그_단건_조회">스터디로그 단건 조회</a></li>
-<li><a href="#_스터디로그_수정">스터디로그 수정</a></li>
-<li><a href="#_스터디로그_삭제">스터디로그 삭제</a></li>
-</ul>
-</li>
-<li><a href="#comment">댓글</a>
-<ul class="sectlevel2">
-<li><a href="#_댓글_등록">댓글 등록</a></li>
-<li><a href="#_댓글_전체_조회">댓글 전체 조회</a></li>
-<li><a href="#_댓글_수정">댓글 수정</a></li>
-<li><a href="#_댓글_삭제">댓글 삭제</a></li>
-</ul>
-</li>
-<li><a href="#mission">미션</a>
-<ul class="sectlevel2">
-<li><a href="#_미션_생성_성공">미션 생성 성공</a></li>
-<li><a href="#_미션_중복_생성_시_실패">미션 중복 생성 시 실패</a></li>
-<li><a href="#_미션_목록_조회">미션 목록 조회</a></li>
-</ul>
-</li>
-<li><a href="#tag">태그</a>
-<ul class="sectlevel2">
-<li><a href="#_태그_목록_조회">태그 목록 조회</a></li>
-</ul>
-</li>
-<li><a href="#filter">필터</a>
-<ul class="sectlevel2">
-<li><a href="#_필터_목록_조회">필터 목록 조회</a></li>
-</ul>
-</li>
-<li><a href="#studylogOverview">스터디로그 오버뷰</a>
-<ul class="sectlevel2">
-<li><a href="#_멤버_태그_조회">멤버 태그 조회</a></li>
-<li><a href="#_멤버_달력_스터디로그_조회">멤버 달력 스터디로그 조회</a></li>
-<li><a href="#_인기있는_스터디로그_조회">인기있는 스터디로그 조회</a></li>
-</ul>
-</li>
-<li><a href="#Report">리포트</a>
-<ul class="sectlevel2">
-<li><a href="#_리포트_생성">리포트 생성</a></li>
-<li><a href="#_리포트_목록_조회">리포트 목록 조회</a></li>
-<li><a href="#_리포트_조회">리포트 조회</a></li>
-<li><a href="#_리포트_수정">리포트 수정</a></li>
-<li><a href="#_리포트_삭제">리포트 삭제</a></li>
-</ul>
-</li>
-<li><a href="#Ability">역량</a>
-<ul class="sectlevel2">
-<li><a href="#_기본_역량_등록">기본 역량 등록</a></li>
-<li><a href="#_역량_생성">역량 생성</a></li>
-<li><a href="#_역량_목록_조회">역량 목록 조회</a></li>
-<li><a href="#_역량_수정">역량 수정</a></li>
-<li><a href="#_역량_제거">역량 제거</a></li>
-<li><a href="#_학습로그_역량_갱신">학습로그 역량 갱신</a></li>
-<li><a href="#_역량_포함_모든_학습로그_조회">역량 포함 모든 학습로그 조회</a></li>
-</ul>
-</li>
-<li><a href="#MemberReaction">사용자 리액션</a>
-<ul class="sectlevel2">
-<li><a href="#_사용자_스크랩_등록">사용자 스크랩 등록</a></li>
-<li><a href="#_사용자_스크랩_삭제">사용자 스크랩 삭제</a></li>
-<li><a href="#_사용자_스크랩_조회">사용자 스크랩 조회</a></li>
-<li><a href="#_사용자_스터디로그_좋아요">사용자 스터디로그 좋아요</a></li>
-<li><a href="#_사용자_스터디로그_좋아요_취소">사용자 스터디로그 좋아요 취소</a></li>
-</ul>
-</li>
-</ul>
-</div>
+    <h1>Prolog API Document</h1>
+    <div class="details">
+        <span id="revnumber">version 0.0.1-SNAPSHOT</span>
+    </div>
+    <div id="toc" class="toc2">
+        <div id="toctitle">Table of Contents</div>
+        <ul class="sectlevel1">
+            <li><a href="#login">로그인</a>
+                <ul class="sectlevel2">
+                    <li><a href="#_깃허브_로그인">깃허브 로그인</a></li>
+                    <li><a href="#_본인_정보_요청">본인 정보 요청</a></li>
+                    <li><a href="#_멤버_정보_요청">멤버 정보 요청</a></li>
+                    <li><a href="#_멤버_정보_수정">멤버 정보 수정</a></li>
+                </ul>
+            </li>
+            <li><a href="#profile">프로필</a>
+                <ul class="sectlevel2">
+                    <li><a href="#_프로필_조회">프로필 조회</a></li>
+                    <li><a href="#_프로필_소개_조회">프로필 소개 조회</a></li>
+                    <li><a href="#_프로필_소개_수정">프로필 소개 수정</a></li>
+                    <li><a href="#_프로필_스터디로그_조회">프로필 스터디로그 조회</a></li>
+                </ul>
+            </li>
+            <li><a href="#session">세션</a>
+                <ul class="sectlevel2">
+                    <li><a href="#_세션_등록">세션 등록</a></li>
+                    <li><a href="#_세션_목록_조회">세션 목록 조회</a></li>
+                </ul>
+            </li>
+            <li><a href="#studylog">스터디로그</a>
+                <ul class="sectlevel2">
+                    <li><a href="#_스터디로그_작성">스터디로그 작성</a></li>
+                    <li><a href="#_스터디로그_목록_조회">스터디로그 목록 조회</a></li>
+                    <li><a href="#_스터디로그_단건_조회">스터디로그 단건 조회</a></li>
+                    <li><a href="#_스터디로그_수정">스터디로그 수정</a></li>
+                    <li><a href="#_스터디로그_삭제">스터디로그 삭제</a></li>
+                </ul>
+            </li>
+            <li><a href="#comment">댓글</a>
+                <ul class="sectlevel2">
+                    <li><a href="#_댓글_등록">댓글 등록</a></li>
+                    <li><a href="#_댓글_전체_조회">댓글 전체 조회</a></li>
+                    <li><a href="#_댓글_수정">댓글 수정</a></li>
+                    <li><a href="#_댓글_삭제">댓글 삭제</a></li>
+                </ul>
+            </li>
+            <li><a href="#mission">미션</a>
+                <ul class="sectlevel2">
+                    <li><a href="#_미션_생성_성공">미션 생성 성공</a></li>
+                    <li><a href="#_미션_중복_생성_시_실패">미션 중복 생성 시 실패</a></li>
+                    <li><a href="#_미션_목록_조회">미션 목록 조회</a></li>
+                </ul>
+            </li>
+            <li><a href="#tag">태그</a>
+                <ul class="sectlevel2">
+                    <li><a href="#_태그_목록_조회">태그 목록 조회</a></li>
+                </ul>
+            </li>
+            <li><a href="#filter">필터</a>
+                <ul class="sectlevel2">
+                    <li><a href="#_필터_목록_조회">필터 목록 조회</a></li>
+                </ul>
+            </li>
+            <li><a href="#studylogOverview">스터디로그 오버뷰</a>
+                <ul class="sectlevel2">
+                    <li><a href="#_멤버_태그_조회">멤버 태그 조회</a></li>
+                    <li><a href="#_멤버_달력_스터디로그_조회">멤버 달력 스터디로그 조회</a></li>
+                    <li><a href="#_인기있는_스터디로그_조회">인기있는 스터디로그 조회</a></li>
+                </ul>
+            </li>
+            <li><a href="#Report">리포트</a>
+                <ul class="sectlevel2">
+                    <li><a href="#_리포트_생성">리포트 생성</a></li>
+                    <li><a href="#_리포트_목록_조회">리포트 목록 조회</a></li>
+                    <li><a href="#_리포트_조회">리포트 조회</a></li>
+                    <li><a href="#_리포트_수정">리포트 수정</a></li>
+                    <li><a href="#_리포트_삭제">리포트 삭제</a></li>
+                </ul>
+            </li>
+            <li><a href="#Ability">역량</a>
+                <ul class="sectlevel2">
+                    <li><a href="#_기본_역량_등록">기본 역량 등록</a></li>
+                    <li><a href="#_역량_생성">역량 생성</a></li>
+                    <li><a href="#_역량_목록_조회">역량 목록 조회</a></li>
+                    <li><a href="#_역량_수정">역량 수정</a></li>
+                    <li><a href="#_역량_제거">역량 제거</a></li>
+                    <li><a href="#_학습로그_역량_갱신">학습로그 역량 갱신</a></li>
+                    <li><a href="#_역량_포함_모든_학습로그_조회">역량 포함 모든 학습로그 조회</a></li>
+                </ul>
+            </li>
+            <li><a href="#MemberReaction">사용자 리액션</a>
+                <ul class="sectlevel2">
+                    <li><a href="#_사용자_스크랩_등록">사용자 스크랩 등록</a></li>
+                    <li><a href="#_사용자_스크랩_삭제">사용자 스크랩 삭제</a></li>
+                    <li><a href="#_사용자_스크랩_조회">사용자 스크랩 조회</a></li>
+                    <li><a href="#_사용자_스터디로그_좋아요">사용자 스터디로그 좋아요</a></li>
+                    <li><a href="#_사용자_스터디로그_좋아요_취소">사용자 스터디로그 좋아요 취소</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="login"><a class="link" href="#login">로그인</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_깃허브_로그인"><a class="link" href="#_깃허브_로그인">깃허브 로그인</a></h3>
-<div class="sect3">
-<h4 id="_request"><a class="link" href="#_request">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+    <div class="sect1">
+        <h2 id="login"><a class="link" href="#login">로그인</a></h2>
+        <div class="sectionbody">
+            <div class="sect2">
+                <h3 id="_깃허브_로그인"><a class="link" href="#_깃허브_로그인">깃허브 로그인</a></h3>
+                <div class="sect3">
+                    <h4 id="_request"><a class="link" href="#_request">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /login/token HTTP/1.1
-Content-Type: application/json; charset=UTF-8
-Host: localhost:4000
+Content-Type: application/json;charset=ISO-8859-1
+Content-Type: application/json
 Content-Length: 18
+Host: localhost:8080
 
 {
   "code" : "1"
 }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response"><a class="link" href="#_response">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response"><a class="link" href="#_response">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:36:13 GMT
-Keep-Alive: timeout=60
-Connection: keep-alive
-Content-Length: 168
-
-{
-  "accessToken" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzc0LCJleHAiOjE2NjEwODUzNzQsInJvbGUiOiJDUkVXIn0.SgjmnG2Cdl62iIYiOPOZUTUbI6bi6FXWZ-XzewCTIV8"
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_본인_정보_요청"><a class="link" href="#_본인_정보_요청">본인 정보 요청</a></h3>
-<div class="sect3">
-<h4 id="_request_2"><a class="link" href="#_request_2">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+Vary: Access-Control-Request-Headers</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_본인_정보_요청"><a class="link" href="#_본인_정보_요청">본인 정보 요청</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_2"><a class="link" href="#_request_2">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/me HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzczLCJleHAiOjE2NjEwODUzNzMsInJvbGUiOiJDUkVXIn0.jJRo5GQjiRBOqzTJIGiKq3rCaKcNOMpR5YEJlILzv5w
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTU0LCJleHAiOjE2NjQwOTI1NTQsInJvbGUiOiJDUkVXIn0.Os1TCNFZatm8FM2_6gWFqkjBKeNqT84daM-2xvSKVCU
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_2"><a class="link" href="#_response_2">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_2"><a class="link" href="#_response_2">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:36:12 GMT
+Date: Sun, 25 Sep 2022 06:55:53 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 153
@@ -612,33 +606,33 @@ Content-Length: 153
   "role" : "CREW",
   "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_멤버_정보_요청"><a class="link" href="#_멤버_정보_요청">멤버 정보 요청</a></h3>
-<div class="sect3">
-<h4 id="_request_3"><a class="link" href="#_request_3">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_멤버_정보_요청"><a class="link" href="#_멤버_정보_요청">멤버 정보 요청</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_3"><a class="link" href="#_request_3">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/soulG HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzczLCJleHAiOjE2NjEwODUzNzMsInJvbGUiOiJDUkVXIn0.jJRo5GQjiRBOqzTJIGiKq3rCaKcNOMpR5YEJlILzv5w
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTU0LCJleHAiOjE2NjQwOTI1NTQsInJvbGUiOiJDUkVXIn0.Os1TCNFZatm8FM2_6gWFqkjBKeNqT84daM-2xvSKVCU
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_3"><a class="link" href="#_response_3">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_3"><a class="link" href="#_response_3">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:36:12 GMT
+Date: Sun, 25 Sep 2022 06:55:53 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 153
@@ -650,18 +644,18 @@ Content-Length: 153
   "role" : "CREW",
   "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_멤버_정보_수정"><a class="link" href="#_멤버_정보_수정">멤버 정보 수정</a></h3>
-<div class="sect3">
-<h4 id="_request_4"><a class="link" href="#_request_4">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_멤버_정보_수정"><a class="link" href="#_멤버_정보_수정">멤버 정보 수정</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_4"><a class="link" href="#_request_4">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /members/soulG HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzcyLCJleHAiOjE2NjEwODUzNzIsInJvbGUiOiJDUkVXIn0.QSXQLyRfqaz29gbtmkD78SoLVwY6Fe27eHHCaKTScPg
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTUzLCJleHAiOjE2NjQwOTI1NTMsInJvbGUiOiJDUkVXIn0.hQVnMZMLiJx6tB-imi4v4wk5m1nenkA-uT7_I1oTvGs
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
 Content-Length: 104
@@ -670,51 +664,51 @@ Content-Length: 104
   "nickname" : "다른이름",
   "imageUrl" : "https://avatars.githubusercontent.com/u/51393021?v=4"
 }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_4"><a class="link" href="#_response_4">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_4"><a class="link" href="#_response_4">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 21 Aug 2022 11:36:12 GMT
+Date: Sun, 25 Sep 2022 06:55:53 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="profile"><a class="link" href="#profile">프로필</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_프로필_조회"><a class="link" href="#_프로필_조회">프로필 조회</a></h3>
-<div class="sect3">
-<h4 id="_request_5"><a class="link" href="#_request_5">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sect1">
+        <h2 id="profile"><a class="link" href="#profile">프로필</a></h2>
+        <div class="sectionbody">
+            <div class="sect2">
+                <h3 id="_프로필_조회"><a class="link" href="#_프로필_조회">프로필 조회</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_5"><a class="link" href="#_request_5">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/soulG/profile HTTP/1.1
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_5"><a class="link" href="#_response_5">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_5"><a class="link" href="#_response_5">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:36:02 GMT
+Date: Sun, 25 Sep 2022 06:55:51 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 153
@@ -726,32 +720,32 @@ Content-Length: 153
   "role" : "CREW",
   "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_프로필_소개_조회"><a class="link" href="#_프로필_소개_조회">프로필 소개 조회</a></h3>
-<div class="sect3">
-<h4 id="_request_6"><a class="link" href="#_request_6">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_프로필_소개_조회"><a class="link" href="#_프로필_소개_조회">프로필 소개 조회</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_6"><a class="link" href="#_request_6">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/soulG/profile-intro HTTP/1.1
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_6"><a class="link" href="#_response_6">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_6"><a class="link" href="#_response_6">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:36:02 GMT
+Date: Sun, 25 Sep 2022 06:55:51 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 19
@@ -759,18 +753,18 @@ Content-Length: 19
 {
   "text" : null
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_프로필_소개_수정"><a class="link" href="#_프로필_소개_수정">프로필 소개 수정</a></h3>
-<div class="sect3">
-<h4 id="_request_7"><a class="link" href="#_request_7">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_프로필_소개_수정"><a class="link" href="#_프로필_소개_수정">프로필 소개 수정</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_7"><a class="link" href="#_request_7">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /members/soulG/profile-intro HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzYyLCJleHAiOjE2NjEwODUzNjIsInJvbGUiOiJDUkVXIn0.6vMTWPeBDGhsPW2iANPJsy-lZGsKl7y970JhBEL6GYc
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTUyLCJleHAiOjE2NjQwOTI1NTIsInJvbGUiOiJDUkVXIn0.QvSKf_XZJrD_gfMt535ypG5LPADvXWJUf31VfCqrawM
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
 Content-Length: 47
@@ -778,47 +772,47 @@ Content-Length: 47
 {
   "text" : "수정된 소개글 입니다."
 }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_7"><a class="link" href="#_response_7">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_7"><a class="link" href="#_response_7">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 21 Aug 2022 11:36:02 GMT
+Date: Sun, 25 Sep 2022 06:55:51 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_프로필_스터디로그_조회"><a class="link" href="#_프로필_스터디로그_조회">프로필 스터디로그 조회</a></h3>
-<div class="sect3">
-<h4 id="_request_8"><a class="link" href="#_request_8">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_프로필_스터디로그_조회"><a class="link" href="#_프로필_스터디로그_조회">프로필 스터디로그 조회</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_8"><a class="link" href="#_request_8">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/soulG/studylogs HTTP/1.1
 Accept: application/json
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_8"><a class="link" href="#_response_8">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_8"><a class="link" href="#_response_8">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:36:01 GMT
+Date: Sun, 25 Sep 2022 06:55:51 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 1730
@@ -833,8 +827,8 @@ Content-Length: 1730
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2022-08-21T20:36:01.753888",
-    "updatedAt" : "2022-08-21T20:36:01.753888",
+    "createdAt" : "2022-09-25T15:55:51.867395",
+    "updatedAt" : "2022-09-25T15:55:51.867395",
     "session" : null,
     "mission" : {
       "id" : 2,
@@ -868,8 +862,8 @@ Content-Length: 1730
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2022-08-21T20:36:01.481996",
-    "updatedAt" : "2022-08-21T20:36:01.481996",
+    "createdAt" : "2022-09-25T15:55:51.826048",
+    "updatedAt" : "2022-09-25T15:55:51.826048",
     "session" : null,
     "mission" : {
       "id" : 1,
@@ -899,21 +893,21 @@ Content-Length: 1730
   "totalPage" : 1,
   "currPage" : 1
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="session"><a class="link" href="#session">세션</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_세션_등록"><a class="link" href="#_세션_등록">세션 등록</a></h3>
-<div class="sect3">
-<h4 id="_세션_등록_http_request"><a class="link" href="#_세션_등록_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sect1">
+        <h2 id="session"><a class="link" href="#session">세션</a></h2>
+        <div class="sectionbody">
+            <div class="sect2">
+                <h3 id="_세션_등록"><a class="link" href="#_세션_등록">세션 등록</a></h3>
+                <div class="sect3">
+                    <h4 id="_세션_등록_http_request"><a class="link" href="#_세션_등록_http_request">HTTP request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /sessions HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Type: application/json;charset=UTF-8
@@ -924,13 +918,13 @@ Host: localhost:8080
 {
   "name" : "새로운 세션"
 }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_세션_등록_http_response"><a class="link" href="#_세션_등록_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_세션_등록_http_response"><a class="link" href="#_세션_등록_http_response">HTTP response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
 Vary: Origin
 Vary: Access-Control-Request-Method
@@ -943,25 +937,26 @@ Content-Length: 46
   "id" : 1,
   "name" : "새로운 세션1"
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_세션_목록_조회"><a class="link" href="#_세션_목록_조회">세션 목록 조회</a></h3>
-<div class="sect3">
-<h4 id="_세션_목록_조회_http_request"><a class="link" href="#_세션_목록_조회_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_세션_목록_조회"><a class="link" href="#_세션_목록_조회">세션 목록 조회</a></h3>
+                <div class="sect3">
+                    <h4 id="_세션_목록_조회_http_request"><a class="link" href="#_세션_목록_조회_http_request">HTTP request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /sessions HTTP/1.1
 Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_세션_목록_조회_http_response"><a class="link" href="#_세션_목록_조회_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_세션_목록_조회_http_response"><a class="link" href="#_세션_목록_조회_http_response">HTTP response</a>
+                    </h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
@@ -981,23 +976,23 @@ Content-Length: 146
   "id" : 3,
   "name" : "새로운 세션3"
 } ]</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="studylog"><a class="link" href="#studylog">스터디로그</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_스터디로그_작성"><a class="link" href="#_스터디로그_작성">스터디로그 작성</a></h3>
-<div class="sect3">
-<h4 id="_request_9"><a class="link" href="#_request_9">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sect1">
+        <h2 id="studylog"><a class="link" href="#studylog">스터디로그</a></h2>
+        <div class="sectionbody">
+            <div class="sect2">
+                <h3 id="_스터디로그_작성"><a class="link" href="#_스터디로그_작성">스터디로그 작성</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_9"><a class="link" href="#_request_9">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /studylogs HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzU1LCJleHAiOjE2NjEwODUzNTUsInJvbGUiOiJDUkVXIn0.wAT90N-llfRVWLlihou9jk95lH4XwSFK7XsKW5lw2zY
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTQ5LCJleHAiOjE2NjQwOTI1NDksInJvbGUiOiJDUkVXIn0.EbBCgwgoGKzCCjNq-aL8kPcAHKcGD9nkiZCzEX1xpLw
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
 Content-Length: 262
@@ -1014,13 +1009,13 @@ Content-Length: 262
   } ],
   "abilities" : [ 2 ]
 }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_9"><a class="link" href="#_response_9">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_9"><a class="link" href="#_response_9">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
 Vary: Origin
 Vary: Access-Control-Request-Method
@@ -1028,7 +1023,7 @@ Vary: Access-Control-Request-Headers
 Location: /studylogs/1
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:35:55 GMT
+Date: Sun, 25 Sep 2022 06:55:49 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 1036
@@ -1042,8 +1037,8 @@ Content-Length: 1036
     "role" : "CREW",
     "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
   },
-  "createdAt" : "2022-08-21T20:35:55.583786",
-  "updatedAt" : "2022-08-21T20:35:55.583786",
+  "createdAt" : "2022-09-25T15:55:49.924581",
+  "updatedAt" : "2022-09-25T15:55:49.924581",
   "session" : {
     "id" : 1,
     "name" : "프론트엔드JS 레벨1 - 2021"
@@ -1078,34 +1073,34 @@ Content-Length: 1036
   "liked" : false,
   "likesCount" : 0
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_스터디로그_목록_조회"><a class="link" href="#_스터디로그_목록_조회">스터디로그 목록 조회</a></h3>
-<div class="sect3">
-<h4 id="_request_10"><a class="link" href="#_request_10">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_스터디로그_목록_조회"><a class="link" href="#_스터디로그_목록_조회">스터디로그 목록 조회</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_10"><a class="link" href="#_request_10">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /studylogs HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzUzLCJleHAiOjE2NjEwODUzNTMsInJvbGUiOiJDUkVXIn0.-VU-cLBxh1MfePFnt4Ymi-2lzAgxiI8SsdR42wPBjLI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTQ5LCJleHAiOjE2NjQwOTI1NDksInJvbGUiOiJDUkVXIn0.EbBCgwgoGKzCCjNq-aL8kPcAHKcGD9nkiZCzEX1xpLw
 Accept: application/json
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_10"><a class="link" href="#_response_10">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_10"><a class="link" href="#_response_10">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:35:53 GMT
+Date: Sun, 25 Sep 2022 06:55:48 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 1923
@@ -1120,8 +1115,8 @@ Content-Length: 1923
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2022-08-21T20:35:54.402948",
-    "updatedAt" : "2022-08-21T20:35:54.402948",
+    "createdAt" : "2022-09-25T15:55:49.663588",
+    "updatedAt" : "2022-09-25T15:55:49.663588",
     "session" : {
       "id" : 2,
       "name" : "백엔드Java 레벨1 - 2021"
@@ -1158,8 +1153,8 @@ Content-Length: 1923
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2022-08-21T20:35:53.949548",
-    "updatedAt" : "2022-08-21T20:35:53.949548",
+    "createdAt" : "2022-09-25T15:55:49.523332",
+    "updatedAt" : "2022-09-25T15:55:49.523332",
     "session" : {
       "id" : 1,
       "name" : "프론트엔드JS 레벨1 - 2021"
@@ -1192,37 +1187,37 @@ Content-Length: 1923
   "totalPage" : 1,
   "currPage" : 1
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_스터디로그_단건_조회"><a class="link" href="#_스터디로그_단건_조회">스터디로그 단건 조회</a></h3>
-<div class="sect3">
-<h4 id="_request_11"><a class="link" href="#_request_11">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_스터디로그_단건_조회"><a class="link" href="#_스터디로그_단건_조회">스터디로그 단건 조회</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_11"><a class="link" href="#_request_11">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /studylogs/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzUyLCJleHAiOjE2NjEwODUzNTIsInJvbGUiOiJDUkVXIn0.UtcQAetiRDK9604Oe4Ycj9eX0_WSyYjhulq9uK-IQ4U
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTQ4LCJleHAiOjE2NjQwOTI1NDgsInJvbGUiOiJDUkVXIn0.vlAyfMvzww2WpF96fSPDgrWgGLqX_x9PhgYXWWEsoO0
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_11"><a class="link" href="#_response_11">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_11"><a class="link" href="#_response_11">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Set-Cookie: viewed=/1/; Max-Age=12246; Expires=Sun, 21 Aug 2022 14:59:59 GMT; Secure; HttpOnly; SameSite=None
+Set-Cookie: viewed=/1/; Max-Age=29050; Expires=Sun, 25 Sep 2022 14:59:59 GMT; Secure; HttpOnly; SameSite=None
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:35:53 GMT
+Date: Sun, 25 Sep 2022 06:55:48 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 889
+Content-Length: 1035
 
 {
   "id" : 1,
@@ -1233,8 +1228,8 @@ Content-Length: 889
     "role" : "CREW",
     "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
   },
-  "createdAt" : "2022-08-21T20:35:53.097346",
-  "updatedAt" : "2022-08-21T20:35:53.097346",
+  "createdAt" : "2022-09-25T15:55:49.161878",
+  "updatedAt" : "2022-09-25T15:55:49.161878",
   "session" : {
     "id" : 1,
     "name" : "프론트엔드JS 레벨1 - 2021"
@@ -1256,25 +1251,31 @@ Content-Length: 889
     "id" : 2,
     "name" : "router"
   } ],
-  "abilities" : [ ],
+  "abilities" : [ {
+    "id" : 2,
+    "name" : "자식 역량1",
+    "description" : "자식 역량1입니다",
+    "color" : "#ffffff",
+    "isParent" : false
+  } ],
   "scrap" : false,
   "read" : true,
   "viewCount" : 0,
   "liked" : false,
   "likesCount" : 0
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_스터디로그_수정"><a class="link" href="#_스터디로그_수정">스터디로그 수정</a></h3>
-<div class="sect3">
-<h4 id="_request_12"><a class="link" href="#_request_12">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_스터디로그_수정"><a class="link" href="#_스터디로그_수정">스터디로그 수정</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_12"><a class="link" href="#_request_12">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /studylogs/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzU2LCJleHAiOjE2NjEwODUzNTYsInJvbGUiOiJDUkVXIn0.wBsVhKhJXbhTHxLfI8ELX8sZg1QxaqjivEDHlHohdac
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTUwLCJleHAiOjE2NjQwOTI1NTAsInJvbGUiOiJDUkVXIn0.swJkTKBWoQmc51jqx1dFouTU3sddw92yKG8Nkzt5tfc
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
 Content-Length: 198
@@ -1291,65 +1292,65 @@ Content-Length: 198
   } ],
   "abilities" : [ ]
 }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_12"><a class="link" href="#_response_12">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_12"><a class="link" href="#_response_12">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 21 Aug 2022 11:35:56 GMT
+Date: Sun, 25 Sep 2022 06:55:49 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_스터디로그_삭제"><a class="link" href="#_스터디로그_삭제">스터디로그 삭제</a></h3>
-<div class="sect3">
-<h4 id="_request_13"><a class="link" href="#_request_13">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_스터디로그_삭제"><a class="link" href="#_스터디로그_삭제">스터디로그 삭제</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_13"><a class="link" href="#_request_13">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /studylogs/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzU2LCJleHAiOjE2NjEwODUzNTYsInJvbGUiOiJDUkVXIn0.wBsVhKhJXbhTHxLfI8ELX8sZg1QxaqjivEDHlHohdac
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTQ5LCJleHAiOjE2NjQwOTI1NDksInJvbGUiOiJDUkVXIn0.EbBCgwgoGKzCCjNq-aL8kPcAHKcGD9nkiZCzEX1xpLw
 Accept: application/json
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_13"><a class="link" href="#_response_13">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_13"><a class="link" href="#_response_13">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 21 Aug 2022 11:35:56 GMT
+Date: Sun, 25 Sep 2022 06:55:49 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="comment"><a class="link" href="#comment">댓글</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_댓글_등록"><a class="link" href="#_댓글_등록">댓글 등록</a></h3>
-<div class="sect3">
-<h4 id="_request_14"><a class="link" href="#_request_14">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sect1">
+        <h2 id="comment"><a class="link" href="#comment">댓글</a></h2>
+        <div class="sectionbody">
+            <div class="sect2">
+                <h3 id="_댓글_등록"><a class="link" href="#_댓글_등록">댓글 등록</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_14"><a class="link" href="#_request_14">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /studylogs/1/comments HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzc1LCJleHAiOjE2NjEwODUzNzUsInJvbGUiOiJDUkVXIn0.svRMBX_1cjCcCzrGJ5uLiDkaWKFPjENojD7bYNaYrHU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTU1LCJleHAiOjE2NjQwOTI1NTUsInJvbGUiOiJDUkVXIn0.i3rXV9OuCEtF-l6t_mWP-Nd9qT19mIuC0o6aawrRBR4
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
 Content-Length: 46
@@ -1357,50 +1358,50 @@ Content-Length: 46
 {
   "content" : "댓글의 내용입니다."
 }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_14"><a class="link" href="#_response_14">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_14"><a class="link" href="#_response_14">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Location: /studylogs/1/comments/1
-Date: Sun, 21 Aug 2022 11:36:15 GMT
+Date: Sun, 25 Sep 2022 06:55:54 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_댓글_전체_조회"><a class="link" href="#_댓글_전체_조회">댓글 전체 조회</a></h3>
-<div class="sect3">
-<h4 id="_request_15"><a class="link" href="#_request_15">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_댓글_전체_조회"><a class="link" href="#_댓글_전체_조회">댓글 전체 조회</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_15"><a class="link" href="#_request_15">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /studylogs/1/comments HTTP/1.1
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_15"><a class="link" href="#_response_15">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_15"><a class="link" href="#_response_15">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:36:15 GMT
+Date: Sun, 25 Sep 2022 06:55:54 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 324
+Content-Length: 317
 
 {
   "data" : [ {
@@ -1413,21 +1414,21 @@ Content-Length: 324
       "role" : "CREW"
     },
     "content" : "댓글의 내용입니다.",
-    "createAt" : "2022-08-21T20:36:15.916395"
+    "createAt" : "2022-09-25 15:55:55"
   } ]
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_댓글_수정"><a class="link" href="#_댓글_수정">댓글 수정</a></h3>
-<div class="sect3">
-<h4 id="_request_16"><a class="link" href="#_request_16">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_댓글_수정"><a class="link" href="#_댓글_수정">댓글 수정</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_16"><a class="link" href="#_request_16">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /studylogs/1/comments/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzc1LCJleHAiOjE2NjEwODUzNzUsInJvbGUiOiJDUkVXIn0.svRMBX_1cjCcCzrGJ5uLiDkaWKFPjENojD7bYNaYrHU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTU1LCJleHAiOjE2NjQwOTI1NTUsInJvbGUiOiJDUkVXIn0.i3rXV9OuCEtF-l6t_mWP-Nd9qT19mIuC0o6aawrRBR4
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
 Content-Length: 56
@@ -1435,62 +1436,62 @@ Content-Length: 56
 {
   "content" : "수정된 댓글의 내용입니다."
 }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_16"><a class="link" href="#_response_16">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_16"><a class="link" href="#_response_16">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 21 Aug 2022 11:36:15 GMT
+Date: Sun, 25 Sep 2022 06:55:54 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_댓글_삭제"><a class="link" href="#_댓글_삭제">댓글 삭제</a></h3>
-<div class="sect3">
-<h4 id="_request_17"><a class="link" href="#_request_17">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_댓글_삭제"><a class="link" href="#_댓글_삭제">댓글 삭제</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_17"><a class="link" href="#_request_17">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /studylogs/1/comments/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzc1LCJleHAiOjE2NjEwODUzNzUsInJvbGUiOiJDUkVXIn0.svRMBX_1cjCcCzrGJ5uLiDkaWKFPjENojD7bYNaYrHU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTU1LCJleHAiOjE2NjQwOTI1NTUsInJvbGUiOiJDUkVXIn0.i3rXV9OuCEtF-l6t_mWP-Nd9qT19mIuC0o6aawrRBR4
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_17"><a class="link" href="#_response_17">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_17"><a class="link" href="#_response_17">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 21 Aug 2022 11:36:15 GMT
+Date: Sun, 25 Sep 2022 06:55:54 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="mission"><a class="link" href="#mission">미션</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_미션_생성_성공"><a class="link" href="#_미션_생성_성공">미션 생성 성공</a></h3>
-<div class="sect3">
-<h4 id="_request_18"><a class="link" href="#_request_18">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sect1">
+        <h2 id="mission"><a class="link" href="#mission">미션</a></h2>
+        <div class="sectionbody">
+            <div class="sect2">
+                <h3 id="_미션_생성_성공"><a class="link" href="#_미션_생성_성공">미션 생성 성공</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_18"><a class="link" href="#_request_18">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /missions HTTP/1.1
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
@@ -1500,20 +1501,20 @@ Content-Length: 62
   "name" : "지하철 노선도 미션",
   "sessionId" : 1
 }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_18"><a class="link" href="#_response_18">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_18"><a class="link" href="#_response_18">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:36:00 GMT
+Date: Sun, 25 Sep 2022 06:55:50 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 113
@@ -1526,16 +1527,16 @@ Content-Length: 113
     "name" : "세션1"
   }
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_미션_중복_생성_시_실패"><a class="link" href="#_미션_중복_생성_시_실패">미션 중복 생성 시 실패</a></h3>
-<div class="sect3">
-<h4 id="_request_19"><a class="link" href="#_request_19">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_미션_중복_생성_시_실패"><a class="link" href="#_미션_중복_생성_시_실패">미션 중복 생성 시 실패</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_19"><a class="link" href="#_request_19">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /missions HTTP/1.1
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
@@ -1545,20 +1546,20 @@ Content-Length: 62
   "name" : "지하철 노선도 미션",
   "sessionId" : 1
 }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_19"><a class="link" href="#_response_19">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_19"><a class="link" href="#_response_19">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:35:58 GMT
+Date: Sun, 25 Sep 2022 06:55:50 GMT
 Connection: close
 Content-Length: 63
 
@@ -1566,25 +1567,25 @@ Content-Length: 63
   "code" : 3001,
   "message" : "미션이 중복됩니다."
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_미션_목록_조회"><a class="link" href="#_미션_목록_조회">미션 목록 조회</a></h3>
-<div class="sect3">
-<h4 id="_request_20"><a class="link" href="#_request_20">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_미션_목록_조회"><a class="link" href="#_미션_목록_조회">미션 목록 조회</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_20"><a class="link" href="#_request_20">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /missions HTTP/1.1
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_20"><a class="link" href="#_response_20">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_20"><a class="link" href="#_response_20">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
@@ -1593,7 +1594,7 @@ Access-Control-Expose-Headers: X-Total-Count
 X-Total-Count: 2
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:36:00 GMT
+Date: Sun, 25 Sep 2022 06:55:50 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 209
@@ -1613,30 +1614,30 @@ Content-Length: 209
     "name" : "세션1"
   }
 } ]</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="tag"><a class="link" href="#tag">태그</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_태그_목록_조회"><a class="link" href="#_태그_목록_조회">태그 목록 조회</a></h3>
-<div class="sect3">
-<h4 id="_request_21"><a class="link" href="#_request_21">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sect1">
+        <h2 id="tag"><a class="link" href="#tag">태그</a></h2>
+        <div class="sectionbody">
+            <div class="sect2">
+                <h3 id="_태그_목록_조회"><a class="link" href="#_태그_목록_조회">태그 목록 조회</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_21"><a class="link" href="#_request_21">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /tags HTTP/1.1
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_21"><a class="link" href="#_response_21">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_21"><a class="link" href="#_response_21">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
@@ -1645,7 +1646,7 @@ Access-Control-Expose-Headers: X-Total-Count
 X-Total-Count: 2
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:36:03 GMT
+Date: Sun, 25 Sep 2022 06:55:51 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 79
@@ -1657,30 +1658,31 @@ Content-Length: 79
   "id" : 2,
   "name" : "파이썬"
 } ]</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="filter"><a class="link" href="#filter">필터</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_필터_목록_조회"><a class="link" href="#_필터_목록_조회">필터 목록 조회</a></h3>
-<div class="sect3">
-<h4 id="_필터_목록_조회_http_request"><a class="link" href="#_필터_목록_조회_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sect1">
+        <h2 id="filter"><a class="link" href="#filter">필터</a></h2>
+        <div class="sectionbody">
+            <div class="sect2">
+                <h3 id="_필터_목록_조회"><a class="link" href="#_필터_목록_조회">필터 목록 조회</a></h3>
+                <div class="sect3">
+                    <h4 id="_필터_목록_조회_http_request"><a class="link" href="#_필터_목록_조회_http_request">HTTP request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /filters HTTP/1.1
 Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_필터_목록_조회_http_response"><a class="link" href="#_필터_목록_조회_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_필터_목록_조회_http_response"><a class="link" href="#_필터_목록_조회_http_response">HTTP response</a>
+                    </h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
@@ -1741,38 +1743,38 @@ Content-Length: 951
     "imageUrl" : "imageUrl"
   } ]
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="studylogOverview"><a class="link" href="#studylogOverview">스터디로그 오버뷰</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_멤버_태그_조회"><a class="link" href="#_멤버_태그_조회">멤버 태그 조회</a></h3>
-<div class="sect3">
-<h4 id="_request_22"><a class="link" href="#_request_22">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sect1">
+        <h2 id="studylogOverview"><a class="link" href="#studylogOverview">스터디로그 오버뷰</a></h2>
+        <div class="sectionbody">
+            <div class="sect2">
+                <h3 id="_멤버_태그_조회"><a class="link" href="#_멤버_태그_조회">멤버 태그 조회</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_22"><a class="link" href="#_request_22">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/gracefulBrown/tags HTTP/1.1
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_22"><a class="link" href="#_response_22">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_22"><a class="link" href="#_response_22">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:36:00 GMT
+Date: Sun, 25 Sep 2022 06:55:50 GMT
 Connection: close
 Content-Length: 80
 
@@ -1780,33 +1782,33 @@ Content-Length: 80
   "code" : 1004,
   "message" : "해당 ID를 가진 멤버가 없습니다."
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_멤버_달력_스터디로그_조회"><a class="link" href="#_멤버_달력_스터디로그_조회">멤버 달력 스터디로그 조회</a></h3>
-<div class="sect3">
-<h4 id="_request_23"><a class="link" href="#_request_23">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_멤버_달력_스터디로그_조회"><a class="link" href="#_멤버_달력_스터디로그_조회">멤버 달력 스터디로그 조회</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_23"><a class="link" href="#_request_23">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/gracefulBrown/calendar-studylogs?year=2021&amp;month=8 HTTP/1.1
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_23"><a class="link" href="#_response_23">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_23"><a class="link" href="#_response_23">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 400 Bad Request
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:36:01 GMT
+Date: Sun, 25 Sep 2022 06:55:50 GMT
 Connection: close
 Content-Length: 80
 
@@ -1814,33 +1816,33 @@ Content-Length: 80
   "code" : 1004,
   "message" : "해당 ID를 가진 멤버가 없습니다."
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_인기있는_스터디로그_조회"><a class="link" href="#_인기있는_스터디로그_조회">인기있는 스터디로그 조회</a></h3>
-<div class="sect3">
-<h4 id="_request_24"><a class="link" href="#_request_24">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_인기있는_스터디로그_조회"><a class="link" href="#_인기있는_스터디로그_조회">인기있는 스터디로그 조회</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_24"><a class="link" href="#_request_24">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /studylogs/popular HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzU3LCJleHAiOjE2NjEwODUzNTcsInJvbGUiOiJDUkVXIn0.SqpFnRMnaiNJbLyTkWXqhZABAPoVz2DeOAqfT2iTxmM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTUwLCJleHAiOjE2NjQwOTI1NTAsInJvbGUiOiJDUkVXIn0.swJkTKBWoQmc51jqx1dFouTU3sddw92yKG8Nkzt5tfc
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_24"><a class="link" href="#_response_24">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_24"><a class="link" href="#_response_24">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:35:58 GMT
+Date: Sun, 25 Sep 2022 06:55:50 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 6311
@@ -1856,8 +1858,8 @@ Content-Length: 6311
         "role" : "CREW",
         "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
       },
-      "createdAt" : "2022-08-21T20:35:58.443709",
-      "updatedAt" : "2022-08-21T20:35:58.443709",
+      "createdAt" : "2022-09-25T15:55:50.740622",
+      "updatedAt" : "2022-09-25T15:55:50.740622",
       "session" : {
         "id" : 2,
         "name" : "백엔드Java 레벨1 - 2021"
@@ -1894,8 +1896,8 @@ Content-Length: 6311
         "role" : "CREW",
         "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
       },
-      "createdAt" : "2022-08-21T20:35:58.286017",
-      "updatedAt" : "2022-08-21T20:35:58.286017",
+      "createdAt" : "2022-09-25T15:55:50.648674",
+      "updatedAt" : "2022-09-25T15:55:50.648674",
       "session" : {
         "id" : 1,
         "name" : "프론트엔드JS 레벨1 - 2021"
@@ -1938,8 +1940,8 @@ Content-Length: 6311
         "role" : "CREW",
         "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
       },
-      "createdAt" : "2022-08-21T20:35:58.443709",
-      "updatedAt" : "2022-08-21T20:35:58.443709",
+      "createdAt" : "2022-09-25T15:55:50.740622",
+      "updatedAt" : "2022-09-25T15:55:50.740622",
       "session" : {
         "id" : 2,
         "name" : "백엔드Java 레벨1 - 2021"
@@ -1976,8 +1978,8 @@ Content-Length: 6311
         "role" : "CREW",
         "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
       },
-      "createdAt" : "2022-08-21T20:35:58.286017",
-      "updatedAt" : "2022-08-21T20:35:58.286017",
+      "createdAt" : "2022-09-25T15:55:50.648674",
+      "updatedAt" : "2022-09-25T15:55:50.648674",
       "session" : {
         "id" : 1,
         "name" : "프론트엔드JS 레벨1 - 2021"
@@ -2020,8 +2022,8 @@ Content-Length: 6311
         "role" : "CREW",
         "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
       },
-      "createdAt" : "2022-08-21T20:35:58.443709",
-      "updatedAt" : "2022-08-21T20:35:58.443709",
+      "createdAt" : "2022-09-25T15:55:50.740622",
+      "updatedAt" : "2022-09-25T15:55:50.740622",
       "session" : {
         "id" : 2,
         "name" : "백엔드Java 레벨1 - 2021"
@@ -2058,8 +2060,8 @@ Content-Length: 6311
         "role" : "CREW",
         "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
       },
-      "createdAt" : "2022-08-21T20:35:58.286017",
-      "updatedAt" : "2022-08-21T20:35:58.286017",
+      "createdAt" : "2022-09-25T15:55:50.648674",
+      "updatedAt" : "2022-09-25T15:55:50.648674",
       "session" : {
         "id" : 1,
         "name" : "프론트엔드JS 레벨1 - 2021"
@@ -2093,21 +2095,21 @@ Content-Length: 6311
     "currPage" : 1
   }
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="Report"><a class="link" href="#Report">리포트</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_리포트_생성"><a class="link" href="#_리포트_생성">리포트 생성</a></h3>
-<div class="sect3">
-<h4 id="_리포트_생성_http_request"><a class="link" href="#_리포트_생성_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sect1">
+        <h2 id="Report"><a class="link" href="#Report">리포트</a></h2>
+        <div class="sectionbody">
+            <div class="sect2">
+                <h3 id="_리포트_생성"><a class="link" href="#_리포트_생성">리포트 생성</a></h3>
+                <div class="sect3">
+                    <h4 id="_리포트_생성_http_request"><a class="link" href="#_리포트_생성_http_request">HTTP request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /reports HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Type: application/json;charset=UTF-8
@@ -2118,8 +2120,8 @@ Host: localhost:8080
 {
   "title" : "새로운 리포트",
   "description" : "새로운 리포트 설명",
-  "startDate" : "2022-08-07",
-  "endDate" : "2022-08-21",
+  "startDate" : "2022-09-11",
+  "endDate" : "2022-09-25",
   "reportAbility" : [ {
     "abilityId" : 1,
     "weight" : 5
@@ -2137,13 +2139,13 @@ Host: localhost:8080
     "weight" : 2
   } ]
 }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_리포트_생성_http_response"><a class="link" href="#_리포트_생성_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_리포트_생성_http_response"><a class="link" href="#_리포트_생성_http_response">HTTP response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
 Vary: Origin
 Vary: Access-Control-Request-Method
@@ -2156,8 +2158,8 @@ Content-Length: 2059
   "id" : 1,
   "title" : "새로운 리포트",
   "description" : "새로운 리포트 설명",
-  "startDate" : "2022-08-07",
-  "endDate" : "2022-08-21",
+  "startDate" : "2022-09-11",
+  "endDate" : "2022-09-25",
   "abilities" : [ {
     "id" : 1,
     "name" : "역량A",
@@ -2204,8 +2206,8 @@ Content-Length: 2059
         "role" : null,
         "imageUrl" : null
       },
-      "createdAt" : "2022-08-21T20:36:03.316243",
-      "updatedAt" : "2022-08-21T20:36:03.316255",
+      "createdAt" : "2022-09-25T15:55:52.197275",
+      "updatedAt" : "2022-09-25T15:55:52.197295",
       "session" : {
         "id" : null,
         "name" : null
@@ -2245,25 +2247,27 @@ Content-Length: 2059
     } ]
   } ]
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_리포트_목록_조회"><a class="link" href="#_리포트_목록_조회">리포트 목록 조회</a></h3>
-<div class="sect3">
-<h4 id="_리포트_목록_조회_http_request"><a class="link" href="#_리포트_목록_조회_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_리포트_목록_조회"><a class="link" href="#_리포트_목록_조회">리포트 목록 조회</a></h3>
+                <div class="sect3">
+                    <h4 id="_리포트_목록_조회_http_request"><a class="link" href="#_리포트_목록_조회_http_request">HTTP request</a>
+                    </h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/username/reports HTTP/1.1
 Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_리포트_목록_조회_http_response"><a class="link" href="#_리포트_목록_조회_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_리포트_목록_조회_http_response"><a class="link" href="#_리포트_목록_조회_http_response">HTTP response</a>
+                    </h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
@@ -2276,16 +2280,16 @@ Content-Length: 526
     "id" : 1,
     "title" : "새로운 리포트",
     "description" : "새로운 리포트 설명",
-    "startDate" : "2022-07-24",
-    "endDate" : "2022-08-07",
+    "startDate" : "2022-08-28",
+    "endDate" : "2022-09-11",
     "abilities" : [ ],
     "studylogs" : [ ]
   }, {
     "id" : 2,
     "title" : "두번째 새로운 리포트",
     "description" : "두번째 새로운 리포트 설명",
-    "startDate" : "2022-08-07",
-    "endDate" : "2022-08-21",
+    "startDate" : "2022-09-11",
+    "endDate" : "2022-09-25",
     "abilities" : [ ],
     "studylogs" : [ ]
   } ],
@@ -2293,25 +2297,25 @@ Content-Length: 526
   "totalPage" : 1,
   "currentPage" : 1
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_리포트_조회"><a class="link" href="#_리포트_조회">리포트 조회</a></h3>
-<div class="sect3">
-<h4 id="_리포트_조회_http_request"><a class="link" href="#_리포트_조회_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_리포트_조회"><a class="link" href="#_리포트_조회">리포트 조회</a></h3>
+                <div class="sect3">
+                    <h4 id="_리포트_조회_http_request"><a class="link" href="#_리포트_조회_http_request">HTTP request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /reports/1 HTTP/1.1
 Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_리포트_조회_http_response"><a class="link" href="#_리포트_조회_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_리포트_조회_http_response"><a class="link" href="#_리포트_조회_http_response">HTTP response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
@@ -2323,8 +2327,8 @@ Content-Length: 2059
   "id" : 1,
   "title" : "새로운 리포트",
   "description" : "새로운 리포트 설명",
-  "startDate" : "2022-08-07",
-  "endDate" : "2022-08-21",
+  "startDate" : "2022-09-11",
+  "endDate" : "2022-09-25",
   "abilities" : [ {
     "id" : 1,
     "name" : "역량A",
@@ -2371,8 +2375,8 @@ Content-Length: 2059
         "role" : null,
         "imageUrl" : null
       },
-      "createdAt" : "2022-08-21T20:36:03.316243",
-      "updatedAt" : "2022-08-21T20:36:03.316255",
+      "createdAt" : "2022-09-25T15:55:52.197275",
+      "updatedAt" : "2022-09-25T15:55:52.197295",
       "session" : {
         "id" : null,
         "name" : null
@@ -2412,16 +2416,16 @@ Content-Length: 2059
     } ]
   } ]
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_리포트_수정"><a class="link" href="#_리포트_수정">리포트 수정</a></h3>
-<div class="sect3">
-<h4 id="_리포트_수정_http_request"><a class="link" href="#_리포트_수정_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_리포트_수정"><a class="link" href="#_리포트_수정">리포트 수정</a></h3>
+                <div class="sect3">
+                    <h4 id="_리포트_수정_http_request"><a class="link" href="#_리포트_수정_http_request">HTTP request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /reports/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Type: application/json;charset=UTF-8
@@ -2433,106 +2437,107 @@ Host: localhost:8080
   "title" : "새로운 리포트",
   "description" : "새로운 리포트 설명"
 }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_리포트_수정_http_response"><a class="link" href="#_리포트_수정_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_리포트_수정_http_response"><a class="link" href="#_리포트_수정_http_response">HTTP response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_리포트_삭제"><a class="link" href="#_리포트_삭제">리포트 삭제</a></h3>
-<div class="sect3">
-<h4 id="_리포트_삭제_http_request"><a class="link" href="#_리포트_삭제_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_리포트_삭제"><a class="link" href="#_리포트_삭제">리포트 삭제</a></h3>
+                <div class="sect3">
+                    <h4 id="_리포트_삭제_http_request"><a class="link" href="#_리포트_삭제_http_request">HTTP request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /reports/1 HTTP/1.1
 Authorization: Bearer accessToken
 Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_리포트_삭제_http_response"><a class="link" href="#_리포트_삭제_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_리포트_삭제_http_response"><a class="link" href="#_리포트_삭제_http_response">HTTP response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="Ability"><a class="link" href="#Ability">역량</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_기본_역량_등록"><a class="link" href="#_기본_역량_등록">기본 역량 등록</a></h3>
-<div class="ulist">
-<ul>
-<li>
-<p>백엔드는 <code>be</code>, 프론트엔드는 <code>fe</code></p>
-</li>
-<li>
-<p>그 외 값을 입력 시 에러가 발생한다</p>
-</li>
-</ul>
-</div>
-<div class="sect3">
-<h4 id="_기본_역량_등록_http_request"><a class="link" href="#_기본_역량_등록_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sect1">
+        <h2 id="Ability"><a class="link" href="#Ability">역량</a></h2>
+        <div class="sectionbody">
+            <div class="sect2">
+                <h3 id="_기본_역량_등록"><a class="link" href="#_기본_역량_등록">기본 역량 등록</a></h3>
+                <div class="ulist">
+                    <ul>
+                        <li>
+                            <p>백엔드는 <code>be</code>, 프론트엔드는 <code>fe</code></p>
+                        </li>
+                        <li>
+                            <p>그 외 값을 입력 시 에러가 발생한다</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sect3">
+                    <h4 id="_기본_역량_등록_http_request"><a class="link" href="#_기본_역량_등록_http_request">HTTP request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /abilities/templates/be HTTP/1.1
 Authorization: Bearer accessToken
 Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_기본_역량_등록_http_response"><a class="link" href="#_기본_역량_등록_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_기본_역량_등록_http_response"><a class="link" href="#_기본_역량_등록_http_response">HTTP response</a>
+                    </h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_역량_생성"><a class="link" href="#_역량_생성">역량 생성</a></h3>
-<div class="ulist">
-<ul>
-<li>
-<p>상위 역량 등록 시 parent값을 null로 둔다</p>
-</li>
-<li>
-<p>기존에 존재하는 역량 이름을 등록할 수 없다</p>
-</li>
-<li>
-<p>기존에 존재하는 색상을 등록할 수 없다</p>
-</li>
-<li>
-<p>하위 역량 등록 시 상위 역량의 색상과 다른 경우 등록할 수 없다</p>
-</li>
-</ul>
-</div>
-<div class="sect3">
-<h4 id="_역량_생성_http_request"><a class="link" href="#_역량_생성_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_역량_생성"><a class="link" href="#_역량_생성">역량 생성</a></h3>
+                <div class="ulist">
+                    <ul>
+                        <li>
+                            <p>상위 역량 등록 시 parent값을 null로 둔다</p>
+                        </li>
+                        <li>
+                            <p>기존에 존재하는 역량 이름을 등록할 수 없다</p>
+                        </li>
+                        <li>
+                            <p>기존에 존재하는 색상을 등록할 수 없다</p>
+                        </li>
+                        <li>
+                            <p>하위 역량 등록 시 상위 역량의 색상과 다른 경우 등록할 수 없다</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sect3">
+                    <h4 id="_역량_생성_http_request"><a class="link" href="#_역량_생성_http_request">HTTP request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /abilities HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Type: application/json;charset=UTF-8
@@ -2546,13 +2551,13 @@ Host: localhost:8080
   "color" : "#ffffff",
   "parent" : 1
 }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_역량_생성_http_response"><a class="link" href="#_역량_생성_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_역량_생성_http_response"><a class="link" href="#_역량_생성_http_response">HTTP response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
@@ -2567,25 +2572,26 @@ Content-Length: 122
   "color" : "#001122",
   "isParent" : false
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_역량_목록_조회"><a class="link" href="#_역량_목록_조회">역량 목록 조회</a></h3>
-<div class="sect3">
-<h4 id="_역량_목록_조회_http_request"><a class="link" href="#_역량_목록_조회_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_역량_목록_조회"><a class="link" href="#_역량_목록_조회">역량 목록 조회</a></h3>
+                <div class="sect3">
+                    <h4 id="_역량_목록_조회_http_request"><a class="link" href="#_역량_목록_조회_http_request">HTTP request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/username/abilities HTTP/1.1
 Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_역량_목록_조회_http_response"><a class="link" href="#_역량_목록_조회_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_역량_목록_조회_http_response"><a class="link" href="#_역량_목록_조회_http_response">HTTP response</a>
+                    </h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
@@ -2622,16 +2628,16 @@ Content-Length: 618
     "isParent" : false
   } ]
 } ]</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_역량_수정"><a class="link" href="#_역량_수정">역량 수정</a></h3>
-<div class="sect3">
-<h4 id="_역량_수정_http_request"><a class="link" href="#_역량_수정_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_역량_수정"><a class="link" href="#_역량_수정">역량 수정</a></h3>
+                <div class="sect3">
+                    <h4 id="_역량_수정_http_request"><a class="link" href="#_역량_수정_http_request">HTTP request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /abilities/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Type: application/json;charset=UTF-8
@@ -2645,67 +2651,68 @@ Host: localhost:8080
   "description" : "역량 설명",
   "color" : "#ffffff"
 }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_역량_수정_http_response"><a class="link" href="#_역량_수정_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_역량_수정_http_response"><a class="link" href="#_역량_수정_http_response">HTTP response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_역량_제거"><a class="link" href="#_역량_제거">역량 제거</a></h3>
-<div class="sect3">
-<h4 id="_역량_제거_http_request"><a class="link" href="#_역량_제거_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_역량_제거"><a class="link" href="#_역량_제거">역량 제거</a></h3>
+                <div class="sect3">
+                    <h4 id="_역량_제거_http_request"><a class="link" href="#_역량_제거_http_request">HTTP request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /abilities/1 HTTP/1.1
 Authorization: Bearer accessToken
 Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_역량_제거_http_response"><a class="link" href="#_역량_제거_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_역량_제거_http_response"><a class="link" href="#_역량_제거_http_response">HTTP response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_학습로그_역량_갱신"><a class="link" href="#_학습로그_역량_갱신">학습로그 역량 갱신</a></h3>
-<div class="ulist">
-<ul>
-<li>
-<p>역량은 기본적으로 자식역량을 선택하는 것을 권장한다</p>
-</li>
-<li>
-<p>선택할 자식 역량이 없는 경우 부모 역량을 선택할 수는 있다</p>
-</li>
-<li>
-<p>부모 역량과 그 부모 역량의 자식 역량을 선택하는 경우는 어색한 상황이라고 볼 수 있다</p>
-</li>
-<li>
-<p>자식 역량을 선택한 상황에서 부모 역량을 함께 등록할 수 없다</p>
-</li>
-</ul>
-</div>
-<div class="sect3">
-<h4 id="_학습로그_역량_갱신_http_request"><a class="link" href="#_학습로그_역량_갱신_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_학습로그_역량_갱신"><a class="link" href="#_학습로그_역량_갱신">학습로그 역량 갱신</a></h3>
+                <div class="ulist">
+                    <ul>
+                        <li>
+                            <p>역량은 기본적으로 자식역량을 선택하는 것을 권장한다</p>
+                        </li>
+                        <li>
+                            <p>선택할 자식 역량이 없는 경우 부모 역량을 선택할 수는 있다</p>
+                        </li>
+                        <li>
+                            <p>부모 역량과 그 부모 역량의 자식 역량을 선택하는 경우는 어색한 상황이라고 볼 수 있다</p>
+                        </li>
+                        <li>
+                            <p>자식 역량을 선택한 상황에서 부모 역량을 함께 등록할 수 없다</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sect3">
+                    <h4 id="_학습로그_역량_갱신_http_request"><a class="link" href="#_학습로그_역량_갱신_http_request">HTTP request</a>
+                    </h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /studylogs/1/abilities HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Type: application/json;charset=UTF-8
@@ -2716,13 +2723,14 @@ Host: localhost:8080
 {
   "abilities" : [ 1, 4 ]
 }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_학습로그_역량_갱신_http_response"><a class="link" href="#_학습로그_역량_갱신_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_학습로그_역량_갱신_http_response"><a class="link" href="#_학습로그_역량_갱신_http_response">HTTP
+                        response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
@@ -2745,45 +2753,47 @@ Content-Length: 279
   "color" : "#001122",
   "isParent" : false
 } ]</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_역량_포함_모든_학습로그_조회"><a class="link" href="#_역량_포함_모든_학습로그_조회">역량 포함 모든 학습로그 조회</a></h3>
-<div class="ulist">
-<ul>
-<li>
-<p>abilityIds : 필수값 아님</p>
-</li>
-<li>
-<p>페이지네이션 제공</p>
-<div class="ulist">
-<ul>
-<li>
-<p>page: 페이지 번호</p>
-</li>
-<li>
-<p>size: 한 페이지 당 갯수</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="sect3">
-<h4 id="_역량_포함_모든_학습로그_조회_http_request"><a class="link" href="#_역량_포함_모든_학습로그_조회_http_request">HTTP request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_역량_포함_모든_학습로그_조회"><a class="link" href="#_역량_포함_모든_학습로그_조회">역량 포함 모든 학습로그 조회</a></h3>
+                <div class="ulist">
+                    <ul>
+                        <li>
+                            <p>abilityIds : 필수값 아님</p>
+                        </li>
+                        <li>
+                            <p>페이지네이션 제공</p>
+                            <div class="ulist">
+                                <ul>
+                                    <li>
+                                        <p>page: 페이지 번호</p>
+                                    </li>
+                                    <li>
+                                        <p>size: 한 페이지 당 갯수</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sect3">
+                    <h4 id="_역량_포함_모든_학습로그_조회_http_request"><a class="link" href="#_역량_포함_모든_학습로그_조회_http_request">HTTP
+                        request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/username/ability-studylogs?abilityIds=1 HTTP/1.1
 Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_역량_포함_모든_학습로그_조회_http_response"><a class="link" href="#_역량_포함_모든_학습로그_조회_http_response">HTTP response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_역량_포함_모든_학습로그_조회_http_response"><a class="link" href="#_역량_포함_모든_학습로그_조회_http_response">HTTP
+                        response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
@@ -2802,8 +2812,8 @@ Content-Length: 1241
         "role" : null,
         "imageUrl" : null
       },
-      "createdAt" : "2022-08-21T20:36:08.898496",
-      "updatedAt" : "2022-08-21T20:36:08.89852",
+      "createdAt" : "2022-09-25T15:55:52.809547",
+      "updatedAt" : "2022-09-25T15:55:52.80957",
       "session" : {
         "id" : null,
         "name" : null
@@ -2847,23 +2857,23 @@ Content-Length: 1241
   "totalPage" : 1,
   "currentPage" : 1
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="MemberReaction"><a class="link" href="#MemberReaction">사용자 리액션</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_사용자_스크랩_등록"><a class="link" href="#_사용자_스크랩_등록">사용자 스크랩 등록</a></h3>
-<div class="sect3">
-<h4 id="_request_25"><a class="link" href="#_request_25">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sect1">
+        <h2 id="MemberReaction"><a class="link" href="#MemberReaction">사용자 리액션</a></h2>
+        <div class="sectionbody">
+            <div class="sect2">
+                <h3 id="_사용자_스크랩_등록"><a class="link" href="#_사용자_스크랩_등록">사용자 스크랩 등록</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_25"><a class="link" href="#_request_25">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /members/scrap HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzczLCJleHAiOjE2NjEwODUzNzMsInJvbGUiOiJDUkVXIn0.jJRo5GQjiRBOqzTJIGiKq3rCaKcNOMpR5YEJlILzv5w
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTU0LCJleHAiOjE2NjQwOTI1NTQsInJvbGUiOiJDUkVXIn0.Os1TCNFZatm8FM2_6gWFqkjBKeNqT84daM-2xvSKVCU
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
 Content-Length: 22
@@ -2871,60 +2881,60 @@ Content-Length: 22
 {
   "studylogId" : 1
 }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_25"><a class="link" href="#_response_25">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_25"><a class="link" href="#_response_25">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Location: /studylogs/1
-Date: Sun, 21 Aug 2022 11:36:13 GMT
+Date: Sun, 25 Sep 2022 06:55:53 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_사용자_스크랩_삭제"><a class="link" href="#_사용자_스크랩_삭제">사용자 스크랩 삭제</a></h3>
-<div class="sect3">
-<h4 id="_request_26"><a class="link" href="#_request_26">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_사용자_스크랩_삭제"><a class="link" href="#_사용자_스크랩_삭제">사용자 스크랩 삭제</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_26"><a class="link" href="#_request_26">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /members/scrap?studylog=1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzczLCJleHAiOjE2NjEwODUzNzMsInJvbGUiOiJDUkVXIn0.jJRo5GQjiRBOqzTJIGiKq3rCaKcNOMpR5YEJlILzv5w
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTU0LCJleHAiOjE2NjQwOTI1NTQsInJvbGUiOiJDUkVXIn0.Os1TCNFZatm8FM2_6gWFqkjBKeNqT84daM-2xvSKVCU
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_26"><a class="link" href="#_response_26">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_26"><a class="link" href="#_response_26">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Sun, 21 Aug 2022 11:36:13 GMT
+Date: Sun, 25 Sep 2022 06:55:53 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_사용자_스크랩_조회"><a class="link" href="#_사용자_스크랩_조회">사용자 스크랩 조회</a></h3>
-<div class="sect3">
-<h4 id="_request_27"><a class="link" href="#_request_27">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_사용자_스크랩_조회"><a class="link" href="#_사용자_스크랩_조회">사용자 스크랩 조회</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_27"><a class="link" href="#_request_27">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /members/scrap HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzczLCJleHAiOjE2NjEwODUzNzMsInJvbGUiOiJDUkVXIn0.jJRo5GQjiRBOqzTJIGiKq3rCaKcNOMpR5YEJlILzv5w
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTUzLCJleHAiOjE2NjQwOTI1NTMsInJvbGUiOiJDUkVXIn0.hQVnMZMLiJx6tB-imi4v4wk5m1nenkA-uT7_I1oTvGs
 Content-Type: application/json; charset=UTF-8
 Host: localhost:4000
 Content-Length: 22
@@ -2932,20 +2942,20 @@ Content-Length: 22
 {
   "studylogId" : 1
 }</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_27"><a class="link" href="#_response_27">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_27"><a class="link" href="#_response_27">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:36:12 GMT
+Date: Sun, 25 Sep 2022 06:55:53 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 3441
@@ -2960,8 +2970,8 @@ Content-Length: 3441
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2022-08-21T20:36:13.240641",
-    "updatedAt" : "2022-08-21T20:36:13.240641",
+    "createdAt" : "2022-09-25T15:55:53.884361",
+    "updatedAt" : "2022-09-25T15:55:53.884361",
     "session" : null,
     "mission" : {
       "id" : 1,
@@ -2992,8 +3002,8 @@ Content-Length: 3441
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2022-08-21T20:36:13.252062",
-    "updatedAt" : "2022-08-21T20:36:13.252062",
+    "createdAt" : "2022-09-25T15:55:53.892318",
+    "updatedAt" : "2022-09-25T15:55:53.892318",
     "session" : null,
     "mission" : {
       "id" : 2,
@@ -3024,8 +3034,8 @@ Content-Length: 3441
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2022-08-21T20:36:13.263809",
-    "updatedAt" : "2022-08-21T20:36:13.263809",
+    "createdAt" : "2022-09-25T15:55:53.901543",
+    "updatedAt" : "2022-09-25T15:55:53.901543",
     "session" : null,
     "mission" : {
       "id" : 3,
@@ -3056,8 +3066,8 @@ Content-Length: 3441
       "role" : "CREW",
       "imageUrl" : "https://avatars.githubusercontent.com/u/52682603?v=4"
     },
-    "createdAt" : "2022-08-21T20:36:13.277085",
-    "updatedAt" : "2022-08-21T20:36:13.277085",
+    "createdAt" : "2022-09-25T15:55:53.912068",
+    "updatedAt" : "2022-09-25T15:55:53.912068",
     "session" : null,
     "mission" : {
       "id" : 4,
@@ -3084,34 +3094,34 @@ Content-Length: 3441
   "totalPage" : 1,
   "currPage" : 1
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_사용자_스터디로그_좋아요"><a class="link" href="#_사용자_스터디로그_좋아요">사용자 스터디로그 좋아요</a></h3>
-<div class="sect3">
-<h4 id="_request_28"><a class="link" href="#_request_28">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_사용자_스터디로그_좋아요"><a class="link" href="#_사용자_스터디로그_좋아요">사용자 스터디로그 좋아요</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_28"><a class="link" href="#_request_28">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /studylogs/1/likes HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzU3LCJleHAiOjE2NjEwODUzNTcsInJvbGUiOiJDUkVXIn0.SqpFnRMnaiNJbLyTkWXqhZABAPoVz2DeOAqfT2iTxmM
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTUwLCJleHAiOjE2NjQwOTI1NTAsInJvbGUiOiJDUkVXIn0.swJkTKBWoQmc51jqx1dFouTU3sddw92yKG8Nkzt5tfc
 Content-Type: application/x-www-form-urlencoded; charset=ISO-8859-1
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_28"><a class="link" href="#_response_28">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_28"><a class="link" href="#_response_28">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:35:57 GMT
+Date: Sun, 25 Sep 2022 06:55:49 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 40
@@ -3120,33 +3130,33 @@ Content-Length: 40
   "liked" : true,
   "likesCount" : 1
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_사용자_스터디로그_좋아요_취소"><a class="link" href="#_사용자_스터디로그_좋아요_취소">사용자 스터디로그 좋아요 취소</a></h3>
-<div class="sect3">
-<h4 id="_request_29"><a class="link" href="#_request_29">Request</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect2">
+                <h3 id="_사용자_스터디로그_좋아요_취소"><a class="link" href="#_사용자_스터디로그_좋아요_취소">사용자 스터디로그 좋아요 취소</a></h3>
+                <div class="sect3">
+                    <h4 id="_request_29"><a class="link" href="#_request_29">Request</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /studylogs/1/likes HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjYxMDgxNzU4LCJleHAiOjE2NjEwODUzNTgsInJvbGUiOiJDUkVXIn0.U3_iv1k7ehMOROob1rchV7zkYIhGBuiQIw6-wOd-AO0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjY0MDg4OTUwLCJleHAiOjE2NjQwOTI1NTAsInJvbGUiOiJDUkVXIn0.swJkTKBWoQmc51jqx1dFouTU3sddw92yKG8Nkzt5tfc
 Host: localhost:4000</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_response_29"><a class="link" href="#_response_29">Response</a></h4>
-<div class="listingblock">
-<div class="content">
+                        </div>
+                    </div>
+                </div>
+                <div class="sect3">
+                    <h4 id="_response_29"><a class="link" href="#_response_29">Response</a></h4>
+                    <div class="listingblock">
+                        <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 21 Aug 2022 11:35:58 GMT
+Date: Sun, 25 Sep 2022 06:55:50 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 41
@@ -3155,18 +3165,18 @@ Content-Length: 41
   "liked" : false,
   "likesCount" : 0
 }</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div id="footer">
-<div id="footer-text">
-Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-08-21 20:15:45 +0900
-</div>
+    <div id="footer-text">
+        Version 0.0.1-SNAPSHOT<br>
+        Last updated 2022-09-19 01:12:41 +0900
+    </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>

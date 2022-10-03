@@ -97,7 +97,7 @@ public class ProfileDocumentation extends NewDocumentation {
         ProfileIntroRequest params = new ProfileIntroRequest("수정된 소개글 입니다.");
         ValidatableMockMvcResponse response = given
                 .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .body(params)
                 .when().put("/members/{username}/profile-intro", GithubResponses.소롱.getLogin())
                 .then().log().all();
