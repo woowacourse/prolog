@@ -87,4 +87,9 @@ public class ResponseFixture {
 
     public static final Member MEMBER
             = new Member("yboy", "잉", Role.CREW, 1L, GithubResponses.소롱.getAvatarUrl());
+
+    public static final List<TagResponse> TAG_RESPONSES = List.of(
+            new TagResponse(1L, "자바"),
+            new TagResponse(2L, "코틀린")
+    );
 }
