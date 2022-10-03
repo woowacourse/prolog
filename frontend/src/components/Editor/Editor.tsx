@@ -18,6 +18,7 @@ interface EditorProps {
   title?: string;
   hasTitle?: boolean;
   titlePlaceholder?: string;
+  placeholder?: string;
   editorContentRef: MutableRefObject<unknown>;
   content?: string | null;
   onChangeTitle?: ChangeEventHandler<HTMLInputElement>;
@@ -38,6 +39,7 @@ const Editor = (props: EditorProps): JSX.Element => {
     hasTitle = true,
     title = '',
     titlePlaceholder = '제목을 입력하세요',
+    placeholder,
     content,
     onChangeTitle,
     editorContentRef,
@@ -62,6 +64,7 @@ const Editor = (props: EditorProps): JSX.Element => {
           initialEditType="markdown"
           toolbarItems={toolbarItems}
           extendedAutolinks={true}
+          placeholder={placeholder}
           plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
         />
       )}

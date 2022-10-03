@@ -15,10 +15,13 @@ const CommentEditorForm = ({ onSubmit, editorContentRef }: CommentEditorFormProp
 
   return (
     <Styled.EditorForm onSubmit={onSubmit}>
-      <Editor height="25rem" hasTitle={false} editorContentRef={editorContentRef} />
-      <Styled.SubmitButton disabled={!isLoggedIn}>
-        {isLoggedIn ? '작성 완료' : '로그인 후 작성해주세요.'}
-      </Styled.SubmitButton>
+      <Editor
+        height="25rem"
+        hasTitle={false}
+        editorContentRef={editorContentRef}
+        placeholder={isLoggedIn || '로그인 후 작성해주세요.'}
+      />
+      {isLoggedIn && <Styled.SubmitButton disabled={!isLoggedIn}>작성 완료</Styled.SubmitButton>}
     </Styled.EditorForm>
   );
 };
