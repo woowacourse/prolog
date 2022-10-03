@@ -5,7 +5,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static wooteco.prolog.ResponseFixture.MEMBER_RESPONSE;
-import static wooteco.prolog.ResponseFixture.STUDY_LOGS_RESPONSE;
+import static wooteco.prolog.ResponseFixture.STUDYLOGS_RESPONSE;
 
 import io.restassured.module.mockmvc.response.ValidatableMockMvcResponse;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ public class ProfileDocumentation extends NewDocumentation {
         //given
         given(studylogService
                 .findStudylogsWithoutKeyword(any(), any(), any(), any(), any(), any(), any(), any(), any()))
-                .willReturn(STUDY_LOGS_RESPONSE);
+                .willReturn(STUDYLOGS_RESPONSE);
 
         //when
         ValidatableMockMvcResponse response = given

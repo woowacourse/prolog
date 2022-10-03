@@ -9,9 +9,11 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionResponse;
+import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.studylog.application.dto.CommentMemberResponse;
 import wooteco.prolog.studylog.application.dto.CommentResponse;
 import wooteco.prolog.studylog.application.dto.CommentsResponse;
+import wooteco.prolog.studylog.application.dto.MemberTagResponse;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagResponse;
@@ -35,7 +37,7 @@ public class ResponseFixture {
             "https://avatars.githubusercontent.com/u/52682603?v=4"
     );
 
-    public static final StudylogResponse STUDY_LOG_RESPONSE1 = new StudylogResponse(
+    public static final StudylogResponse STUDYLOG_RESPONSE1 = new StudylogResponse(
             1L,
             MEMBER_RESPONSE,
             LocalDateTime.now(),
@@ -53,7 +55,7 @@ public class ResponseFixture {
             0
     );
 
-    private static final StudylogResponse STUDY_LOG_RESPONSE2 = new StudylogResponse(
+    private static final StudylogResponse STUDYLOG_RESPONSE2 = new StudylogResponse(
             2L,
             MEMBER_RESPONSE,
             LocalDateTime.now(),
@@ -71,9 +73,9 @@ public class ResponseFixture {
             0
     );
 
-    public static final StudylogsResponse STUDY_LOGS_RESPONSE = new StudylogsResponse(List.of(
-            STUDY_LOG_RESPONSE1,
-            STUDY_LOG_RESPONSE2
+    public static final StudylogsResponse STUDYLOGS_RESPONSE = new StudylogsResponse(List.of(
+            STUDYLOG_RESPONSE1,
+            STUDYLOG_RESPONSE2
     ), 2L, 1, 1);
 
     public static final String COMMENT = "댓글의 내용입니다.";
@@ -88,8 +90,23 @@ public class ResponseFixture {
     public static final Member MEMBER
             = new Member("yboy", "잉", Role.CREW, 1L, GithubResponses.소롱.getAvatarUrl());
 
+    public static final TagResponse TAG_RESPONSE1 = new TagResponse(1L, "자바");
+    public static final TagResponse TAG_RESPONSE2 = new TagResponse(2L, "코틀린");
+
     public static final List<TagResponse> TAG_RESPONSES = List.of(
-            new TagResponse(1L, "자바"),
-            new TagResponse(2L, "코틀린")
+            TAG_RESPONSE1,
+            TAG_RESPONSE2
+    );
+
+    public static final List<MemberTagResponse> MEMBER_TAB_RESPONSES = List.of(
+            new MemberTagResponse(TAG_RESPONSE1, 2),
+            new MemberTagResponse(TAG_RESPONSE2, 2)
+    );
+
+    public static final List<CalendarStudylogResponse> CALENDER_STUDYLOG_RESPONSES = List.of(
+            new CalendarStudylogResponse(1L, "instanceOf()를 지양하자", LocalDateTime.now().minusMonths(2),
+                    LocalDateTime.now()),
+            new CalendarStudylogResponse(2L, "JPA 쿼리 개선기", LocalDateTime.now().minusMonths(1),
+                    LocalDateTime.now())
     );
 }

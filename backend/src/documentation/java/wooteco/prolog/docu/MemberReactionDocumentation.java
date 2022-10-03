@@ -6,8 +6,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static wooteco.prolog.ResponseFixture.MEMBER_RESPONSE;
-import static wooteco.prolog.ResponseFixture.STUDY_LOGS_RESPONSE;
-import static wooteco.prolog.ResponseFixture.STUDY_LOG_RESPONSE1;
+import static wooteco.prolog.ResponseFixture.STUDYLOGS_RESPONSE;
+import static wooteco.prolog.ResponseFixture.STUDYLOG_RESPONSE1;
 
 import io.restassured.module.mockmvc.response.ValidatableMockMvcResponse;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ public class MemberReactionDocumentation extends NewDocumentation {
     void 스터디로그를_스크랩한다() {
         //given
         given(studylogScrapService.registerScrap(any(), any()))
-                .willReturn(new MemberScrapResponse(MEMBER_RESPONSE, STUDY_LOG_RESPONSE1));
+                .willReturn(new MemberScrapResponse(MEMBER_RESPONSE, STUDYLOG_RESPONSE1));
 
         //when
         MemberScrapRequest params = new MemberScrapRequest(1L);
@@ -72,7 +72,7 @@ public class MemberReactionDocumentation extends NewDocumentation {
     void 스크랩한_스터디로그를_목록을_조회한다() {
         //given
         given(studylogScrapService.showScrap(any(), any()))
-                .willReturn(STUDY_LOGS_RESPONSE);
+                .willReturn(STUDYLOGS_RESPONSE);
 
         //when
         MemberScrapRequest params = new MemberScrapRequest(1L);
