@@ -7,6 +7,9 @@ import java.util.List;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionResponse;
+import wooteco.prolog.studylog.application.dto.CommentMemberResponse;
+import wooteco.prolog.studylog.application.dto.CommentResponse;
+import wooteco.prolog.studylog.application.dto.CommentsResponse;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagResponse;
@@ -70,4 +73,13 @@ public class ResponseFixture {
             STUDY_LOG_RESPONSE1,
             STUDY_LOG_RESPONSE2
     ), 2L, 1, 1);
+
+    public static final String COMMENT = "댓글의 내용입니다.";
+    public static final CommentsResponse COMMENTS_RESPONSE = new CommentsResponse(List.of(
+            new CommentResponse(1L,
+                    new CommentMemberResponse(1L, "yboy", "잉",
+                            "https://avatars.githubusercontent.com/u/52682603?v=4", "CREW")
+                    , COMMENT,
+                    LocalDateTime.now())
+    ));
 }
