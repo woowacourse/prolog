@@ -18,7 +18,12 @@ const ResponsiveButton = ({
   height,
 }: ResponsiveButtonProps) => {
   return (
-    <StyledResponsiveButton color={color} backgroundColor={backgroundColor} height={height}>
+    <StyledResponsiveButton
+      fontSize={fontSize}
+      color={color}
+      backgroundColor={backgroundColor}
+      height={height}
+    >
       {text}
     </StyledResponsiveButton>
   );
