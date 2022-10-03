@@ -37,7 +37,7 @@ public class SessionMemberController {
     }
 
     @DeleteMapping("/me")
-    public ResponseEntity<Void> deleteRegistedSession(
+    public ResponseEntity<Void> deleteRegisteredSession(
         @PathVariable Long sessionId,
         @AuthMemberPrincipal LoginMember member
     ){
