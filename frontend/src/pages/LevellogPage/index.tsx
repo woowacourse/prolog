@@ -11,17 +11,11 @@ import QnAList from './QnAList';
 import { CONFIRM_MESSAGE } from '../../constants';
 import { useParams } from 'react-router-dom';
 import useLevellogComment from '../../hooks/Levellog/useLevellogComment';
-import Editor from '../../components/Editor/Editor';
-import { EditorForm, SubmitButton } from '../StudylogPage/styles';
 import CommentList from '../../components/Comment/CommentList';
-import { useContext } from 'react';
-import { UserContext } from '../../contexts/UserProvider';
 import CommentEditorForm from '../../components/Comment/CommentEditorForm';
 
 const LevellogPage = () => {
   const { id } = useParams<{ id: string }>();
-  const { user } = useContext(UserContext);
-  const { isLoggedIn } = user;
 
   const {
     levellog,
