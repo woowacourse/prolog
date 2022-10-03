@@ -26,7 +26,9 @@ const ResponsiveButton = ({
 
 export default ResponsiveButton;
 
-const StyledResponsiveButton = styled.button<Omit<ResponsiveButtonProps, 'text'>>`
+const StyledResponsiveButton = styled.button<
+  Pick<ResponsiveButtonProps, 'fontSize' | 'color' | 'backgroundColor' | 'height'>
+>`
   width: 100%;
   border-radius: 12px;
   text-align: center;
