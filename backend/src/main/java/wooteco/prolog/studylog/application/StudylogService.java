@@ -15,6 +15,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -67,6 +69,8 @@ import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
 @AllArgsConstructor
 @Transactional(readOnly = true)
 public class StudylogService {
+
+    private static Logger logger = LoggerFactory.getLogger(StudylogService.class);
 
     private final MemberTagService memberTagService;
     private final DocumentService studylogDocumentService;
@@ -236,6 +240,9 @@ public class StudylogService {
     private Map<Long, Long> commentCounts(List<Studylog> studylogs) {
         final Map<Long, Long> commentCounts = commentRepository.countByStudylogIn(studylogs).stream()
                 .collect(toMap(CommentCount::getStudylogId, CommentCount::getCount));
+
+        logger.debug("studylogs: {}", studylogs);
+        logger.debug("commentCounts: {}", commentCounts);
 
         return studylogs.stream()
                 .map(Studylog::getId)
