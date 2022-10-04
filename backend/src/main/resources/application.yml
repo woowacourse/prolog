@@ -14,3 +14,16 @@ management:
   metrics:
     tags:
       application: prolog
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+application:
+  url: https://dev.prolog.techcourse.co.kr
+  bucket:
+    name: gongseek-image
+  cloudfront:
+    url: https://dknikgq2g8qtc.cloudfront.net/
