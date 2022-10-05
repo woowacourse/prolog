@@ -2,60 +2,59 @@ package wooteco.prolog.studylog.studylog.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static wooteco.prolog.common.fixture.misstion.MissionFixture.로또_미션;
+import static wooteco.prolog.common.fixture.misstion.SessionFixture.임파시블_세션;
+import static wooteco.prolog.member.util.MemberFixture.웨지;
+import static wooteco.prolog.studylog.studylog.util.StudylogFixture.로또_미션_정리;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import wooteco.prolog.member.domain.Member;
+import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.member.util.MemberFixture;
-import wooteco.prolog.member.util.MemberUtilCRUD;
+import wooteco.prolog.session.application.MissionService;
+import wooteco.prolog.session.application.SessionService;
+import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.studylog.application.StudylogLikeService;
+import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.StudylogLikeResponse;
-import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.exception.InvalidLikeRequestException;
 import wooteco.prolog.studylog.exception.InvalidUnlikeRequestException;
 import wooteco.prolog.studylog.studylog.util.StudylogFixture;
-import wooteco.prolog.studylog.studylog.util.StudylogUtilCRUD;
 import wooteco.support.utils.IntegrationTest;
 
 @IntegrationTest
+@Transactional
 public class StudylogLikeServiceTest {
 
     @Autowired
-    private StudylogLikeService studylogLikeService;
+    private StudylogLikeService sut;
 
     @Autowired
-    private StudylogRepository studylogRepository;
+    private SessionService sessionService;
 
     @Autowired
-    private MemberUtilCRUD memberUtilCRUD;
+    private MissionService missionService;
 
     @Autowired
-    private StudylogUtilCRUD studylogUtilCRUD;
+    private MemberRepository memberRepository;
 
-    private Member member;
-
-    private Studylog studylog;
-
-    @BeforeEach
-    void setUp() {
-        this.member = this.memberUtilCRUD.등록(MemberFixture.웨지);
-        this.studylogUtilCRUD.등록(StudylogFixture.로또_미션_정리, MemberFixture.웨지);
-        this.studylog = studylogRepository.findAll().get(0);
-    }
+    @Autowired
+    private StudylogService studylogService;
 
     @DisplayName("로그인한 사용자가 스터디로그를 좋아요 한다 - 성공")
     @Test
     void like_loginMember_Success() {
         // given
-        Long memberId = member.getId();
-        Long studylogId = this.studylog.getId();
+        long memberId = saveMember(웨지);
+        long studylogId = saveStudyLog(memberId, 로또_미션_정리);
         boolean isMember = true;
 
         // when
-        StudylogLikeResponse studylogLikeResponse = studylogLikeService
+        StudylogLikeResponse studylogLikeResponse = sut
             .likeStudylog(memberId, studylogId, isMember);
 
         // then
@@ -67,14 +66,15 @@ public class StudylogLikeServiceTest {
     @Test
     void like_Anonymous_InvalidLikeRequestException() {
         // given
-        Long memberId = null;
-        Long studylogId = this.studylog.getId();
+        long memberId = saveMember(웨지);
+        long studylogId = saveStudyLog(memberId, 로또_미션_정리);
+        Long anonymousMemberId = null;
         boolean isMember = false;
 
         // when
         // then
-        assertThatThrownBy(() -> studylogLikeService
-            .likeStudylog(memberId, studylogId, isMember))
+        assertThatThrownBy(() -> sut
+            .likeStudylog(anonymousMemberId, studylogId, isMember))
             .isInstanceOf(InvalidLikeRequestException.class);
     }
 
@@ -82,15 +82,15 @@ public class StudylogLikeServiceTest {
     @Test
     void like_DuplicatedLike_InvalidLikeRequestException() {
         // given
-        Long memberId = member.getId();
-        Long studylogId = this.studylog.getId();
+        long memberId = saveMember(웨지);
+        long studylogId = saveStudyLog(memberId, 로또_미션_정리);
         boolean isMember = true;
 
-        studylogLikeService.likeStudylog(memberId, studylogId, isMember);
+        sut.likeStudylog(memberId, studylogId, isMember);
 
         // when
         // then
-        assertThatThrownBy(() -> studylogLikeService
+        assertThatThrownBy(() -> sut
             .likeStudylog(memberId, studylogId, isMember))
             .isInstanceOf(InvalidLikeRequestException.class);
     }
@@ -99,14 +99,14 @@ public class StudylogLikeServiceTest {
     @Test
     void unlike_loginMember_Success() {
         // given
-        Long memberId = member.getId();
-        Long studylogId = this.studylog.getId();
+        long memberId = saveMember(웨지);
+        long studylogId = saveStudyLog(memberId, 로또_미션_정리);
         boolean isMember = true;
 
-        studylogLikeService.likeStudylog(memberId, studylogId, isMember);
+        sut.likeStudylog(memberId, studylogId, isMember);
 
         // when
-        StudylogLikeResponse studylogLikeResponse = studylogLikeService
+        StudylogLikeResponse studylogLikeResponse = sut
             .unlikeStudylog(memberId, studylogId, isMember);
 
         // then
@@ -118,14 +118,24 @@ public class StudylogLikeServiceTest {
     @Test
     void unlike_noPreviousLike_InvalidUnlikeRequestException() {
         // given
-        Long memberId = member.getId();
-        Long studylogId = this.studylog.getId();
+        long memberId = saveMember(웨지);
+        long studylogId = saveStudyLog(memberId, 로또_미션_정리);
         boolean isMember = true;
 
-        // when
-        // then
-        assertThatThrownBy(() -> studylogLikeService
+        // when & then
+        assertThatThrownBy(() -> sut
             .unlikeStudylog(memberId, studylogId, isMember))
             .isInstanceOf(InvalidUnlikeRequestException.class);
+    }
+
+    private Long saveMember(MemberFixture memberFixture) {
+        return memberRepository.save(memberFixture.asDomain()).getId();
+    }
+
+    private Long saveStudyLog(Long memberId, StudylogFixture studylogFixture) {
+        final SessionResponse sessionResponse = sessionService.create(임파시블_세션.asRequest());
+        final MissionResponse missionResponse = missionService.create(로또_미션.asRequest(sessionResponse.getId()));
+        final StudylogRequest studylogRequest = studylogFixture.asRequest(missionResponse.getId());
+        return studylogService.insertStudylog(memberId, studylogRequest).getId();
     }
 }

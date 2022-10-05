@@ -1,20 +1,20 @@
 package wooteco.prolog.common.fixture.misstion;
 
+import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 
-public class MissionFixture {
+public enum MissionFixture {
 
-    public static Mission mission1(Session session) {
-        return new Mission("mission1", session);
+    로또_미션("로또 미션"), 자동차_미션("자동차 미션");
+
+    private final String missionName;
+
+    MissionFixture(final String missionName) {
+        this.missionName = missionName;
     }
 
-    public static Mission mission2(Session session) {
-        return new Mission("mission2", session);
+    public MissionRequest asRequest(long sessionId) {
+        return new MissionRequest(missionName, sessionId);
     }
-
-    public static Mission mission3(Session session) {
-        return new Mission("mission3", session);
-    }
-
 }
