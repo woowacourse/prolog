@@ -39,6 +39,7 @@ import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
+import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.StudylogScrapService;
 import wooteco.prolog.studylog.application.StudylogService;
@@ -46,6 +47,7 @@ import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
+import wooteco.prolog.studylog.application.dto.StudylogTempResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.application.dto.TagResponse;
@@ -71,7 +73,7 @@ class StudylogServiceTest {
     private static Tag tag4 = new Tag(4L, "집필왕웨지");
     private static Tag tag5 = new Tag(5L, "피케이");
     private static List<Tag> tags = asList(
-        tag1, tag2, tag3, tag4, tag5
+            tag1, tag2, tag3, tag4, tag5
     );
 
     private static final String URL = "http://localhost:8080";
@@ -88,6 +90,9 @@ class StudylogServiceTest {
     private MemberService memberService;
     @Autowired
     private DocumentService studylogDocumentService;
+
+    @Autowired
+    private MissionRepository missionRepository;
 
     private Member member1;
     private Member member2;
@@ -109,46 +114,46 @@ class StudylogServiceTest {
 
     private static Stream<Arguments> findWithFilter() {
         return Stream.of(
-            Arguments.of(null, emptyList(), emptyList(),
-                         asList(tag1.getId(), tag2.getId(), tag3.getId()), asList(),
-                         asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE, STUDYLOG3_TITLE)),
-            Arguments.of(null, emptyList(), emptyList(), singletonList(tag2.getId()), emptyList(),
-                         asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE)),
-            Arguments.of("", emptyList(), emptyList(), singletonList(tag3.getId()), emptyList(),
-                         asList(STUDYLOG2_TITLE, STUDYLOG3_TITLE)),
-            Arguments.of("", emptyList(), singletonList(1L), emptyList(), emptyList(),
-                         asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE)),
-            Arguments.of("", emptyList(), singletonList(2L), emptyList(), asList(),
-                         asList(STUDYLOG3_TITLE, STUDYLOG4_TITLE)),
-            Arguments.of("", emptyList(), singletonList(1L), singletonList(tag1.getId()),
-                         emptyList(),
-                         singletonList(STUDYLOG1_TITLE)),
-            Arguments.of("", singletonList(1L), singletonList(1L),
-                         asList(tag1.getId(), tag2.getId(), tag3.getId()), emptyList(),
-                         asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE)),
-            Arguments.of("", emptyList(), singletonList(1L), singletonList(tag2.getId()),
-                         emptyList(),
-                         asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE)),
-            Arguments.of("", emptyList(), asList(1L, 2L), singletonList(tag3.getId()), emptyList(),
-                         asList(STUDYLOG2_TITLE, STUDYLOG3_TITLE)),
-            Arguments.of("", emptyList(), emptyList(), emptyList(), emptyList(),
-                         asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE, STUDYLOG3_TITLE,
+                Arguments.of(null, emptyList(), emptyList(),
+                        asList(tag1.getId(), tag2.getId(), tag3.getId()), asList(),
+                        asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE, STUDYLOG3_TITLE)),
+                Arguments.of(null, emptyList(), emptyList(), singletonList(tag2.getId()), emptyList(),
+                        asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE)),
+                Arguments.of("", emptyList(), emptyList(), singletonList(tag3.getId()), emptyList(),
+                        asList(STUDYLOG2_TITLE, STUDYLOG3_TITLE)),
+                Arguments.of("", emptyList(), singletonList(1L), emptyList(), emptyList(),
+                        asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE)),
+                Arguments.of("", emptyList(), singletonList(2L), emptyList(), asList(),
+                        asList(STUDYLOG3_TITLE, STUDYLOG4_TITLE)),
+                Arguments.of("", emptyList(), singletonList(1L), singletonList(tag1.getId()),
+                        emptyList(),
+                        singletonList(STUDYLOG1_TITLE)),
+                Arguments.of("", singletonList(1L), singletonList(1L),
+                        asList(tag1.getId(), tag2.getId(), tag3.getId()), emptyList(),
+                        asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE)),
+                Arguments.of("", emptyList(), singletonList(1L), singletonList(tag2.getId()),
+                        emptyList(),
+                        asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE)),
+                Arguments.of("", emptyList(), asList(1L, 2L), singletonList(tag3.getId()), emptyList(),
+                        asList(STUDYLOG2_TITLE, STUDYLOG3_TITLE)),
+                Arguments.of("", emptyList(), emptyList(), emptyList(), emptyList(),
+                        asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE, STUDYLOG3_TITLE,
                                 STUDYLOG4_TITLE)),
-            Arguments.of("이것은 제목", emptyList(), emptyList(), emptyList(), emptyList(),
-                         asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE, STUDYLOG3_TITLE,
+                Arguments.of("이것은 제목", emptyList(), emptyList(), emptyList(), emptyList(),
+                        asList(STUDYLOG1_TITLE, STUDYLOG2_TITLE, STUDYLOG3_TITLE,
                                 STUDYLOG4_TITLE)),
-            Arguments.of("궁둥이", emptyList(), emptyList(), emptyList(), emptyList(), emptyList())
+                Arguments.of("궁둥이", emptyList(), emptyList(), emptyList(), emptyList(), emptyList())
         );
     }
 
     private static Stream<Arguments> findStudylogsOfPagingTest() {
         return Stream.of(
-            Arguments.of(PageRequest.of(0, 10), 10),
-            Arguments.of(PageRequest.of(0, 20), 20),
-            Arguments.of(PageRequest.of(0, 60), 50),
-            Arguments.of(PageRequest.of(3, 15), 5),
-            Arguments.of(PageRequest.of(1, 50), 0),
-            Arguments.of(PageRequest.of(4, 11), 6)
+                Arguments.of(PageRequest.of(0, 10), 10),
+                Arguments.of(PageRequest.of(0, 20), 20),
+                Arguments.of(PageRequest.of(0, 60), 50),
+                Arguments.of(PageRequest.of(3, 15), 5),
+                Arguments.of(PageRequest.of(1, 50), 0),
+                Arguments.of(PageRequest.of(4, 11), 6)
         );
     }
 
@@ -161,9 +166,9 @@ class StudylogServiceTest {
         this.session2 = new Session(sessionResponse2.getId(), sessionResponse2.getName());
 
         MissionResponse missionResponse1 = missionService
-            .create(new MissionRequest("자동차 미션", session1.getId()));
+                .create(new MissionRequest("자동차 미션", session1.getId()));
         MissionResponse missionResponse2 = missionService
-            .create(new MissionRequest("수동차 미션", session2.getId()));
+                .create(new MissionRequest("수동차 미션", session2.getId()));
 
         this.mission1 = new Mission(missionResponse1.getId(), missionResponse1.getName(), session1);
         this.mission2 = new Mission(missionResponse2.getId(), missionResponse2.getName(), session1);
@@ -176,14 +181,14 @@ class StudylogServiceTest {
         this.loginMember3 = new LoginMember(null, Authority.ANONYMOUS);
 
         this.studylog1 = new Studylog(member1,
-                                      STUDYLOG1_TITLE, "피케이와 포모의 스터디로그", session1, mission1,
-                                      asList(tag1, tag2));
+                STUDYLOG1_TITLE, "피케이와 포모의 스터디로그", session1, mission1,
+                asList(tag1, tag2));
         this.studylog2 = new Studylog(member1,
-                                      STUDYLOG2_TITLE, "피케이와 포모의 스터디로그 2", session1, mission1,
-                                      asList(tag2, tag3));
+                STUDYLOG2_TITLE, "피케이와 포모의 스터디로그 2", session1, mission1,
+                asList(tag2, tag3));
         this.studylog3 = new Studylog(member2,
-                                      STUDYLOG3_TITLE, "피케이 스터디로그", session1, mission2,
-                                      asList(tag3, tag4, tag5));
+                STUDYLOG3_TITLE, "피케이 스터디로그", session1, mission2,
+                asList(tag3, tag4, tag5));
         this.studylog4 = new Studylog(member2, STUDYLOG4_TITLE, "포모의 스터디로그", session1, mission2, emptyList());
     }
 
@@ -198,9 +203,9 @@ class StudylogServiceTest {
         StudylogDocument studylogDocument = studylogDocumentService.findById(id);
         // then
         assertAll(
-            () -> assertThat(studylogDocument.getId()).isEqualTo(id),
-            () -> assertThat(studylogDocument.getTitle()).isEqualTo(studylog1.getTitle()),
-            () -> assertThat(studylogDocument.getContent()).isEqualTo(studylog1.getContent())
+                () -> assertThat(studylogDocument.getId()).isEqualTo(id),
+                () -> assertThat(studylogDocument.getTitle()).isEqualTo(studylog1.getTitle()),
+                () -> assertThat(studylogDocument.getContent()).isEqualTo(studylog1.getContent())
         );
     }
 
@@ -213,22 +218,22 @@ class StudylogServiceTest {
         //when
         //then
         List<String> titles = Stream
-            .concat(studylogsOfMember1.stream(), studylogsOfMember2.stream())
-            .map(StudylogResponse::getTitle)
-            .collect(toList());
+                .concat(studylogsOfMember1.stream(), studylogsOfMember2.stream())
+                .map(StudylogResponse::getTitle)
+                .collect(toList());
 
         assertThat(titles).contains(
-            studylog1.getTitle(),
-            studylog2.getTitle(),
-            studylog3.getTitle(),
-            studylog4.getTitle()
+                studylog1.getTitle(),
+                studylog2.getTitle(),
+                studylog3.getTitle(),
+                studylog4.getTitle()
         );
 
         List<String> members = Stream
-            .concat(studylogsOfMember1.stream(), studylogsOfMember2.stream())
-            .map(StudylogResponse::getAuthor)
-            .map(MemberResponse::getNickname)
-            .collect(toList());
+                .concat(studylogsOfMember1.stream(), studylogsOfMember2.stream())
+                .map(StudylogResponse::getAuthor)
+                .map(MemberResponse::getNickname)
+                .collect(toList());
 
         assertThat(members).contains(member1.getNickname(), member2.getNickname());
     }
@@ -245,27 +250,27 @@ class StudylogServiceTest {
 
         // document 초기화 어떻게...
         StudylogsResponse studylogsResponse = studylogService.findStudylogs(
-            new StudylogsSearchRequest(
-                keyword,
-                sessionIds,
-                missionIds,
-                tagIds,
-                usernames,
-                new ArrayList<>(),
-                LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
-                LocalDate.parse("99991231", DateTimeFormatter.BASIC_ISO_DATE),
-                null,
-                PageRequest.of(0, 10)
-            ), null
+                new StudylogsSearchRequest(
+                        keyword,
+                        sessionIds,
+                        missionIds,
+                        tagIds,
+                        usernames,
+                        new ArrayList<>(),
+                        LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
+                        LocalDate.parse("99991231", DateTimeFormatter.BASIC_ISO_DATE),
+                        null,
+                        PageRequest.of(0, 10)
+                ), null
         );
 
         //then
         List<String> titles = studylogsResponse.getData().stream()
-            .map(StudylogResponse::getTitle)
-            .collect(toList());
+                .map(StudylogResponse::getTitle)
+                .collect(toList());
 
         assertThat(titles).containsExactlyInAnyOrderElementsOf(
-            expectedStudylogTitles
+                expectedStudylogTitles
         );
     }
 
@@ -285,28 +290,28 @@ class StudylogServiceTest {
         studylogScrapService.registerScrap(member1.getId(), studylog4Response.getId());
 
         StudylogsResponse studylogsResponse = studylogService.findStudylogs(
-            new StudylogsSearchRequest(
-                keyword,
-                sessionIds,
-                missionIds,
-                tagIds,
-                usernames,
-                new ArrayList<>(),
-                LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
-                LocalDate.parse("99991231", DateTimeFormatter.BASIC_ISO_DATE),
-                null,
-                PageRequest.of(0, 10)
-            ), member1.getId(), member1.isAnonymous()
+                new StudylogsSearchRequest(
+                        keyword,
+                        sessionIds,
+                        missionIds,
+                        tagIds,
+                        usernames,
+                        new ArrayList<>(),
+                        LocalDate.parse("19990106", DateTimeFormatter.BASIC_ISO_DATE),
+                        LocalDate.parse("99991231", DateTimeFormatter.BASIC_ISO_DATE),
+                        null,
+                        PageRequest.of(0, 10)
+                ), member1.getId(), member1.isAnonymous()
         );
 
         //then
         List<Boolean> scraps = studylogsResponse.getData().stream()
-            .filter(studylogResponse ->
-                studylogResponse.getId().equals(studylog3Response.getId()) ||
-                studylogResponse.getId().equals(studylog4Response.getId())
-            )
-            .map(StudylogResponse::isScrap)
-            .collect(toList());
+                .filter(studylogResponse ->
+                        studylogResponse.getId().equals(studylog3Response.getId()) ||
+                                studylogResponse.getId().equals(studylog4Response.getId())
+                )
+                .map(StudylogResponse::isScrap)
+                .collect(toList());
 
         assertThat(scraps).doesNotContain(false);
     }
@@ -317,7 +322,8 @@ class StudylogServiceTest {
         List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1, studylog2);
         StudylogResponse targetStudylog = studylogResponses.get(0);
 
-        StudylogResponse studylogResponse = studylogService.retrieveStudylogById(loginMember2, targetStudylog.getId(), false);
+        StudylogResponse studylogResponse = studylogService.retrieveStudylogById(loginMember2, targetStudylog.getId(),
+                false);
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(1);
 
@@ -332,7 +338,8 @@ class StudylogServiceTest {
         List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1, studylog2);
         StudylogResponse targetStudylog = studylogResponses.get(0);
 
-        StudylogResponse studylogResponse = studylogService.retrieveStudylogById(loginMember1, targetStudylog.getId(), false);
+        StudylogResponse studylogResponse = studylogService.retrieveStudylogById(loginMember1, targetStudylog.getId(),
+                false);
 
         assertThat(studylogResponse.getViewCount()).isEqualTo(0);
     }
@@ -344,21 +351,21 @@ class StudylogServiceTest {
         insertStudylogs(member2, studylog3, studylog4);
 
         StudylogsResponse studylogsResponseOfMember1 = studylogService
-            .findStudylogsOf(member1.getUsername(), Pageable.unpaged());
+                .findStudylogsOf(member1.getUsername(), Pageable.unpaged());
         StudylogsResponse studylogsResponseOfMember2 = studylogService
-            .findStudylogsOf(member2.getUsername(), Pageable.unpaged());
+                .findStudylogsOf(member2.getUsername(), Pageable.unpaged());
 
         List<String> expectedResultOfMember1 = studylogsResponseOfMember1.getData().stream()
-            .map(StudylogResponse::getTitle)
-            .collect(toList());
+                .map(StudylogResponse::getTitle)
+                .collect(toList());
         List<String> expectedResultOfMember2 = studylogsResponseOfMember2.getData().stream()
-            .map(StudylogResponse::getTitle)
-            .collect(toList());
+                .map(StudylogResponse::getTitle)
+                .collect(toList());
 
         assertThat(expectedResultOfMember1)
-            .containsExactly(studylog1.getTitle(), studylog2.getTitle());
+                .containsExactly(studylog1.getTitle(), studylog2.getTitle());
         assertThat(expectedResultOfMember2)
-            .containsExactly(studylog3.getTitle(), studylog4.getTitle());
+                .containsExactly(studylog3.getTitle(), studylog4.getTitle());
     }
 
     @DisplayName("유저 이름으로 스터디로그를 조회한다 - 페이징")
@@ -366,13 +373,13 @@ class StudylogServiceTest {
     @MethodSource("findStudylogsOfPagingTest")
     void findStudylogsOfPagingTest(PageRequest pageRequest, int expectedSize) {
         List<Studylog> largeStudylogs = IntStream.range(0, 50)
-            .mapToObj(it -> studylog1)
-            .collect(toList());
+                .mapToObj(it -> studylog1)
+                .collect(toList());
 
         insertStudylogs(member1, largeStudylogs);
 
         StudylogsResponse studylogsResponseOfMember1 = studylogService
-            .findStudylogsOf(member1.getUsername(), pageRequest);
+                .findStudylogsOf(member1.getUsername(), pageRequest);
 
         assertThat(studylogsResponseOfMember1.getData().size()).isEqualTo(expectedSize);
     }
@@ -384,8 +391,8 @@ class StudylogServiceTest {
         List<StudylogResponse> studylogRespons = insertStudylogs(member1, studylog1);
         StudylogResponse targetStudylog = studylogRespons.get(0);
         StudylogRequest updateStudylogRequest = new StudylogRequest("updateTitle", "updateContent",
-                                                                    2L,
-                                                                    toTagRequests(tags));
+                2L,
+                toTagRequests(tags));
 
         //when
         studylogService.updateStudylog(member1.getId(), targetStudylog.getId(), updateStudylogRequest);
@@ -393,17 +400,17 @@ class StudylogServiceTest {
         //then
         StudylogResponse expectedResult = studylogService.findByIdAndReturnStudylogResponse(targetStudylog.getId());
         List<String> updateTagNames = tags.stream()
-            .map(Tag::getName)
-            .collect(toList());
+                .map(Tag::getName)
+                .collect(toList());
 
         List<String> expectedTagNames = expectedResult.getTags().stream()
-            .map(TagResponse::getName)
-            .collect(toList());
+                .map(TagResponse::getName)
+                .collect(toList());
 
         assertThat(expectedResult.getTitle()).isEqualTo(updateStudylogRequest.getTitle());
         assertThat(expectedResult.getContent()).isEqualTo(updateStudylogRequest.getContent());
         assertThat(expectedResult.getMission().getId())
-            .isEqualTo(updateStudylogRequest.getMissionId());
+                .isEqualTo(updateStudylogRequest.getMissionId());
         assertThat(expectedTagNames).isEqualTo(updateTagNames);
     }
 
@@ -414,8 +421,8 @@ class StudylogServiceTest {
         List<StudylogResponse> studylogResponses = insertStudylogs(member1, studylog1);
         Long id = studylogResponses.get(0).getId();
         StudylogRequest updateStudylogRequest = new StudylogRequest("updateTitle", "updateContent",
-                                                                    2L,
-                                                                    toTagRequests(tags));
+                2L,
+                toTagRequests(tags));
 
         studylogService.updateStudylog(member1.getId(), id, updateStudylogRequest);
 
@@ -424,9 +431,9 @@ class StudylogServiceTest {
 
         // then
         assertAll(
-            () -> assertThat(studylogDocument.getId()).isEqualTo(id),
-            () -> assertThat(studylogDocument.getTitle()).isEqualTo(updateStudylogRequest.getTitle()),
-            () -> assertThat(studylogDocument.getContent()).isEqualTo(updateStudylogRequest.getContent())
+                () -> assertThat(studylogDocument.getId()).isEqualTo(id),
+                () -> assertThat(studylogDocument.getTitle()).isEqualTo(updateStudylogRequest.getTitle()),
+                () -> assertThat(studylogDocument.getContent()).isEqualTo(updateStudylogRequest.getContent())
         );
     }
 
@@ -454,12 +461,12 @@ class StudylogServiceTest {
 
         //when
         final List<CalendarStudylogResponse> calendarPosts =
-            studylogService.findCalendarStudylogs(member1.getUsername(), LocalDate.now());
+                studylogService.findCalendarStudylogs(member1.getUsername(), LocalDate.now());
 
         //then
         assertThat(calendarPosts)
-            .extracting(CalendarStudylogResponse::getTitle)
-            .containsExactlyInAnyOrder(studylog1.getTitle(), studylog2.getTitle(), studylog3.getTitle());
+                .extracting(CalendarStudylogResponse::getTitle)
+                .containsExactlyInAnyOrder(studylog1.getTitle(), studylog2.getTitle(), studylog3.getTitle());
     }
 
     @DisplayName("스터디로그를 삭제한다. - 삭제 시 studylogDocument도 삭제된다.")
@@ -473,7 +480,7 @@ class StudylogServiceTest {
 
         // when - then
         assertThatThrownBy(() -> studylogDocumentService.findById(id))
-            .isInstanceOf(StudylogDocumentNotFoundException.class);
+                .isInstanceOf(StudylogDocumentNotFoundException.class);
     }
 
     @DisplayName("RSS 피드를 조회한다.")
@@ -484,22 +491,22 @@ class StudylogServiceTest {
         insertStudylogs(member2, studylog3);
 
         StudylogsResponse studylogs1 = studylogService
-            .findStudylogsOf(member1.getUsername(), Pageable.unpaged());
+                .findStudylogsOf(member1.getUsername(), Pageable.unpaged());
         StudylogsResponse studylogs2 = studylogService
-            .findStudylogsOf(member2.getUsername(), Pageable.unpaged());
+                .findStudylogsOf(member2.getUsername(), Pageable.unpaged());
 
         List<Long> studylogIds1 = studylogs1.getData().stream()
-            .map(StudylogResponse::getId)
-            .collect(toList());
+                .map(StudylogResponse::getId)
+                .collect(toList());
         List<Long> studylogIds2 = studylogs2.getData().stream()
-            .map(StudylogResponse::getId)
-            .collect(toList());
+                .map(StudylogResponse::getId)
+                .collect(toList());
 
         studylogIds1.addAll(studylogIds2);
 
         List<String> studylogLinks = studylogIds1.stream()
-            .map(studylogId -> URL + "/studylogs/" + studylogId)
-            .collect(toList());
+                .map(studylogId -> URL + "/studylogs/" + studylogId)
+                .collect(toList());
 
         // when
         List<StudylogRssFeedResponse> responses = studylogService.readRssFeeds(URL);
@@ -507,8 +514,49 @@ class StudylogServiceTest {
         // then
         assertThat(responses).hasSize(3);
         assertThat(responses)
-            .extracting(StudylogRssFeedResponse::getLink)
-            .containsExactlyInAnyOrderElementsOf(studylogLinks);
+                .extracting(StudylogRssFeedResponse::getLink)
+                .containsExactlyInAnyOrderElementsOf(studylogLinks);
+    }
+
+    @DisplayName("스터디로그를 임시저장한다.")
+    @Test
+    void insertstudylogTemp() {
+        //given, when
+        Mission mission = missionRepository.save(mission1);
+        String title = "임시저장 제목";
+        String content = "임시저장 내용";
+        StudylogRequest studylogRequest = new StudylogRequest(title, content,
+                mission.getId(),
+                toTagRequests(tags));
+        final StudylogTempResponse studylogTempResponse = studylogService.insertStudylogTemp(member1.getId(),
+                studylogRequest);
+
+        //then
+        assertThat(studylogTempResponse.getTitle()).isEqualTo(title);
+        assertThat(studylogTempResponse.getContent()).isEqualTo(content);
+        assertThat(studylogTempResponse.getAbilities()).isEmpty();
+    }
+
+    @DisplayName("임시저장된 스터디로그를 조회한다.")
+    @Test
+    void findStudylogTemp() {
+        //given
+        Mission mission = missionRepository.save(mission1);
+        String title = "임시저장 제목";
+        String content = "임시저장 내용";
+        StudylogRequest studylogRequest = new StudylogRequest(title, content,
+                mission.getId(),
+                toTagRequests(tags));
+        studylogService.insertStudylogTemp(member1.getId(),
+                studylogRequest);
+
+        //when
+        final StudylogTempResponse studylogTempResponse = studylogService.findStudylogTemp(member1.getId());
+
+        //then
+        assertThat(studylogTempResponse.getTitle()).isEqualTo(title);
+        assertThat(studylogTempResponse.getContent()).isEqualTo(content);
+        assertThat(studylogTempResponse.getAbilities()).isEmpty();
     }
 
     public List<StudylogResponse> insertStudylogs(Member member, Studylog... studylogs) {
@@ -517,30 +565,30 @@ class StudylogServiceTest {
 
     private List<StudylogResponse> insertStudylogs(Member member, List<Studylog> studylogs) {
         List<StudylogRequest> studylogRequests = studylogs.stream()
-            .map(studylog ->
-                new StudylogRequest(
-                    studylog.getTitle(),
-                    studylog.getContent(),
-                    studylog.getSession().getId(),
-                    studylog.getMission().getId(),
-                    toTagRequests(studylog),
-                    Collections.emptyList()
+                .map(studylog ->
+                        new StudylogRequest(
+                                studylog.getTitle(),
+                                studylog.getContent(),
+                                studylog.getSession().getId(),
+                                studylog.getMission().getId(),
+                                toTagRequests(studylog),
+                                Collections.emptyList()
+                        )
                 )
-            )
-            .collect(toList());
+                .collect(toList());
 
         return studylogService.insertStudylogs(member.getId(), studylogRequests);
     }
 
     private List<TagRequest> toTagRequests(List<Tag> tags) {
         return tags.stream()
-            .map(tag -> new TagRequest(tag.getName()))
-            .collect(toList());
+                .map(tag -> new TagRequest(tag.getName()))
+                .collect(toList());
     }
 
     private List<TagRequest> toTagRequests(Studylog studylog) {
         return studylog.getStudylogTags().stream()
-            .map(studylogTag -> new TagRequest(studylogTag.getTag().getName()))
-            .collect(toList());
+                .map(studylogTag -> new TagRequest(studylogTag.getTag().getName()))
+                .collect(toList());
     }
 }
