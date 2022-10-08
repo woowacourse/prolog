@@ -293,7 +293,7 @@ export const requestGetMatchedStudylogs = ({ accessToken, startDate, endDate }) 
   });
 
 export const requestImageUpload = (formData) =>
-  fetch(`${BASE_URL}/image`, {
+  fetch(`${BASE_URL}/images`, {
     method: 'POST',
     body: formData,
   });

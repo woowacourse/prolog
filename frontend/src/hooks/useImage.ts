@@ -9,7 +9,7 @@ const useImage = () => {
 
     try {
       const imageData = new FormData();
-      imageData.append('image', blob);
+      imageData.append('file', blob);
 
       const response = await requestImageUpload(imageData);
 
