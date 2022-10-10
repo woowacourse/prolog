@@ -25,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.ability.application.AbilityService;
+import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.login.ui.LoginMember.Authority;
@@ -90,6 +92,8 @@ class StudylogServiceTest {
     private MemberService memberService;
     @Autowired
     private DocumentService studylogDocumentService;
+    @Autowired
+    private AbilityService abilityService;
 
     @Autowired
     private MissionRepository missionRepository;
@@ -537,6 +541,58 @@ class StudylogServiceTest {
         assertThat(studylogTempResponse.getAbilities()).isEmpty();
     }
 
+    @DisplayName("스터디로그를 임시저장하고 다시 수정후, 다시 임시 저장한다.")
+    @Test
+    void insertstudylogTemp_oneMore() {
+        //given
+        Mission mission = missionRepository.save(mission1);
+        String title = "임시저장 제목";
+        String content = "임시저장 내용";
+        List<Long> abilityIds = 역량을_저장한다();
+        StudylogRequest studylogRequest = new StudylogRequest(title, content, session1.getId(),
+                mission.getId(), toTagRequests(tags), abilityIds);
+        studylogService.insertStudylogTemp(member1.getId(), studylogRequest);
+
+        //when
+        String newTitle = "새로운 임시저장 제목";
+        String newContent = "새로운 임시저장 내용";
+        StudylogRequest newStudylogRequest = new StudylogRequest(newTitle, newContent, session1.getId(),
+                mission.getId(), toTagRequests(tags), abilityIds);
+        StudylogTempResponse studylogTempResponse =
+                studylogService.insertStudylogTemp(member1.getId(), newStudylogRequest);
+
+        //then
+        assertThat(studylogTempResponse.getTitle()).isEqualTo(newTitle);
+        assertThat(studylogTempResponse.getContent()).isEqualTo(newContent);
+        assertThat(studylogTempResponse.getAbilities()).isNotEmpty();
+    }
+
+    @DisplayName("스터디로그를 임시저장하고 제출한다.")
+    @Test
+    void insertstudylogTemp_andSubmit() {
+        //given
+        Mission mission = missionRepository.save(mission1);
+        String title = "임시저장 제목";
+        String content = "임시저장 내용";
+        List<Long> abilityIds = 역량을_저장한다();
+        StudylogRequest studylogRequest = new StudylogRequest(title, content, session1.getId(),
+                mission.getId(), toTagRequests(tags), abilityIds);
+        studylogService.insertStudylogTemp(member1.getId(), studylogRequest);
+
+        //when
+        String newTitle = "최종 제출할 제목";
+        String newContent = "최종 제출할 내용";
+        StudylogRequest newStudylogRequest = new StudylogRequest(newTitle, newContent, session1.getId(),
+                mission.getId(), toTagRequests(tags), abilityIds);
+        StudylogResponse studylogResponse =
+                studylogService.insertStudylog(member1.getId(), newStudylogRequest);
+
+        //then
+        assertThat(studylogResponse.getTitle()).isEqualTo(newTitle);
+        assertThat(studylogResponse.getContent()).isEqualTo(newContent);
+        assertThat(studylogResponse.getAbilities()).isNotEmpty();
+    }
+
     @DisplayName("임시저장된 스터디로그를 조회한다.")
     @Test
     void findStudylogTemp() {
@@ -590,5 +646,13 @@ class StudylogServiceTest {
         return studylog.getStudylogTags().stream()
                 .map(studylogTag -> new TagRequest(studylogTag.getTag().getName()))
                 .collect(toList());
+    }
+
+    private List<Long> 역량을_저장한다() {
+        AbilityCreateRequest parentRequest1 = new AbilityCreateRequest("부모1", "부모설명1", "1", null);
+        AbilityCreateRequest parentRequest2 = new AbilityCreateRequest("부모2", "부모설명2", "2", null);
+        Long abilityId1 = abilityService.createAbility(member1.getId(), parentRequest1).getId();
+        Long abilityId2 = abilityService.createAbility(member1.getId(), parentRequest2).getId();
+        return asList(abilityId1, abilityId2);
     }
 }

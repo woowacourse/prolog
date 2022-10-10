@@ -138,19 +138,16 @@ public class StudylogService {
 
     @Transactional
     public StudylogTempResponse insertStudylogTemp(Long memberId, StudylogRequest studylogRequest) {
+        Set<Ability> abilities = findAbility(memberId, studylogRequest);
         StudylogTemp createdStudylogTemp = creteStudylogTemp(memberId, studylogRequest);
 
-        Set<Ability> abilities = findAbility(memberId, studylogRequest);
         List<StudylogTempAbility> studylogTempAbilities = abilities.stream()
                 .map(it -> new StudylogTempAbility(memberId, it, createdStudylogTemp))
                 .collect(Collectors.toList());
-
-        studylogTempAbilityRepository.deleteByStudylogTempId(createdStudylogTemp.getId());
         List<StudylogTempAbility> createdStudylogAbilities = studylogTempAbilityRepository.saveAll(
                 studylogTempAbilities);
 
         List<AbilityResponse> abilityResponses = getAbilityTempResponses(createdStudylogAbilities);
-
         return StudylogTempResponse.from(createdStudylogTemp, abilityResponses);
     }
 
