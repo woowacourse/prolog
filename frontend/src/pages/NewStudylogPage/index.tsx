@@ -2,26 +2,27 @@
 
 import { css } from '@emotion/react';
 
-import { useState, ChangeEventHandler, FormEventHandler, useRef, useEffect } from 'react';
+import { useState, ChangeEventHandler, FormEventHandler, useRef, useContext } from 'react';
 import { MainContentStyle } from '../../PageRouter';
 
 import { ERROR_MESSAGE, ALERT_MESSAGE, PATH } from '../../constants';
 
-import { StudylogForm, SavedStudyLogForm, SavedStudyLog } from '../../models/Studylogs';
+import { StudylogForm, TempSavedStudyLogForm, TempSavedStudyLog } from '../../models/Studylogs';
 import { useMutation, useQuery, UseQueryResult } from 'react-query';
 import LOCAL_STORAGE_KEY from '../../constants/localStorage';
 import { SUCCESS_MESSAGE } from '../../constants/message';
 import { useHistory } from 'react-router-dom';
 import {
-  requestPostSavedStudylog,
+  requestPostTempSavedStudylog,
   requestPostStudylog,
-  requestGetSavedStudylog,
+  requestGetTempSavedStudylog,
 } from '../../apis/studylogs';
 import StudylogEditor from '../../components/Editor/StudylogEditor';
 import useBeforeunload from '../../hooks/useBeforeunload';
 import { ResponseError } from '../../apis/studylogs';
 import { AxiosError, AxiosResponse } from 'axios';
 import REACT_QUERY_KEY from '../../constants/reactQueryKey';
+import { UserContext } from '../../contexts/UserProvider';
 
 interface NewStudylogForm extends StudylogForm {
   abilities: number[];
@@ -32,12 +33,14 @@ type SelectOption = { value: string; label: string };
 const NewStudylogPage = () => {
   const history = useHistory();
   const editorContentRef = useRef<any>(null);
+  const { user } = useContext(UserContext);
+  const { username } = user;
 
   useBeforeunload(editorContentRef);
 
   const [studylogContent, setStudylogContent] = useState<NewStudylogForm>({
     title: '',
-    content: '',
+    content: null,
     missionId: null,
     sessionId: null,
     tags: [],
@@ -45,24 +48,28 @@ const NewStudylogPage = () => {
   });
 
   const fetchTempSavedStudylogRequest: UseQueryResult<
-    AxiosResponse<SavedStudyLog>,
+    AxiosResponse<TempSavedStudyLog>,
     AxiosError
   > = useQuery(
-    [REACT_QUERY_KEY.TEMP_STUDYLOG],
+    [REACT_QUERY_KEY.TEMP_STUDYLOG, username],
     () =>
-      requestGetSavedStudylog({
+      requestGetTempSavedStudylog({
         accessToken: localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN) as string,
       }),
     {
+      refetchOnWindowFocus: false,
       onSuccess: ({ data }) => {
-        setStudylogContent({
-          title: data.title,
-          content: data.content,
-          missionId: data.mission?.id || null,
-          sessionId: data.session?.id || null,
-          tags: data.tags,
-          abilities: [],
-        });
+        const isTempSavedStudylogExist = Object.keys(data).some((key) => data[key] !== null);
+        if (isTempSavedStudylogExist) {
+          setStudylogContent({
+            title: data.title,
+            content: data.content,
+            missionId: data.mission?.id || null,
+            sessionId: data.session?.id || null,
+            tags: data.tags,
+            abilities: data.abilities.map(({ id }) => id),
+          });
+        }
       },
     }
   );
@@ -135,9 +142,7 @@ const NewStudylogPage = () => {
     // TODO: 변수명
     if (window.confirm('저장하시겠습니까?')) {
       tempSaveStudylogRequest({
-        title: studylogContent.title,
-        missionId: studylogContent.missionId,
-        tags: studylogContent.tags,
+        ...studylogContent,
         content,
       });
     }
@@ -161,19 +166,21 @@ const NewStudylogPage = () => {
   );
 
   const { mutate: tempSaveStudylogRequest } = useMutation(
-    (data: SavedStudyLogForm) =>
-      requestPostSavedStudylog({
+    (data: TempSavedStudyLogForm) =>
+      requestPostTempSavedStudylog({
         accessToken: localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN) as string,
         data,
       }),
     {
       onSuccess: () => {
+        alert('글이 임시저장되었습니다.');
         console.log('success');
+      },
+      onError: () => {
+        alert('현재 글을 임시 저장할 수 없습니다.');
       },
     }
   );
-
-  console.log(fetchTempSavedStudylogRequest);
 
   return (
     <div
@@ -186,8 +193,8 @@ const NewStudylogPage = () => {
     >
       <StudylogEditor
         title={studylogContent.title}
-        contentRef={editorContentRef}
         content={studylogContent.content}
+        contentRef={editorContentRef}
         selectedMissionId={studylogContent.missionId}
         selectedSessionId={studylogContent.sessionId}
         selectedTags={studylogContent.tags}

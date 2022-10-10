@@ -2,12 +2,12 @@ import axios, { AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { BASE_URL } from '../configs/environment';
 import {
   Mission,
-  SavedStudyLog,
+  TempSavedStudyLog,
   Session,
   Studylog,
   StudylogForm,
   Tag,
-  SavedStudyLogForm,
+  TempSavedStudyLogForm,
 } from '../models/Studylogs';
 
 export const requestGetPopularStudylogs = ({ accessToken }: { accessToken?: string }) => {
@@ -135,17 +135,18 @@ export const requestEditStudylog = ({
   httpRequester.put(`/studylogs/${id}`, data, getAuthConfig(accessToken));
 
 /** 임시 저장 **/
-export const requestGetSavedStudylog = ({
+export const requestGetTempSavedStudylog = ({
   accessToken,
 }: {
   accessToken: string;
-}): AxiosPromise<SavedStudyLog> => httpRequester.get('/studylogs/temp', getAuthConfig(accessToken));
+}): AxiosPromise<TempSavedStudyLog> =>
+  httpRequester.get('/studylogs/temp', getAuthConfig(accessToken));
 
-export const requestPostSavedStudylog = ({
+export const requestPostTempSavedStudylog = ({
   accessToken,
   data,
 }: {
   accessToken: string;
-  data: SavedStudyLogForm;
+  data: TempSavedStudyLogForm;
 }): AxiosPromise<AxiosResponse<null>> =>
   httpRequester.put('/studylogs/temp', data, getAuthConfig(accessToken));
