@@ -144,6 +144,7 @@ public class StudylogService {
         List<StudylogTempAbility> studylogTempAbilities = abilities.stream()
                 .map(it -> new StudylogTempAbility(memberId, it, createdStudylogTemp))
                 .collect(Collectors.toList());
+
         List<StudylogTempAbility> createdStudylogAbilities = studylogTempAbilityRepository.saveAll(
                 studylogTempAbilities);
 

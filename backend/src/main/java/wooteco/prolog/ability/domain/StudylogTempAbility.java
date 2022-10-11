@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import wooteco.prolog.studylog.domain.StudylogTemp;
 
 @Getter
@@ -25,10 +27,12 @@ public class StudylogTempAbility {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ability_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Ability ability;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "studylog_temp_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private StudylogTemp studylogTemp;
 
     public StudylogTempAbility(Long memberId, Ability ability, StudylogTemp studylogTemp) {
