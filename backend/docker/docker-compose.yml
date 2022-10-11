@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   db:
+    platform: linux/x86_64
     image: library/mysql:8.0.28
     container_name: prolog-local-db
     restart: always
