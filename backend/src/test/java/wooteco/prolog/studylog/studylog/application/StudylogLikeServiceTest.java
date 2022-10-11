@@ -7,10 +7,10 @@ import static wooteco.prolog.common.fixture.misstion.SessionFixture.임파시블
 import static wooteco.prolog.member.util.MemberFixture.웨지;
 import static wooteco.prolog.studylog.studylog.util.StudylogFixture.로또_미션_정리;
 
+import javax.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.member.util.MemberFixture;
 import wooteco.prolog.session.application.MissionService;

@@ -199,4 +199,11 @@ public class Studylog extends AuditingEntity {
     public void updateMission(Mission mission) {
         this.mission = mission;
     }
+
+    @Override
+    public String toString() {
+        return "Studylog{" +
+                "id=" + id +
+                '}';
+    }
 }
