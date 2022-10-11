@@ -12,6 +12,7 @@ import { EditorStyle } from '../Introduction/Introduction.styles';
 import { EditorTitleStyle, EditorWrapperStyle } from './Editor.styles';
 import { ChangeEventHandler, MutableRefObject } from 'react';
 import { getSize } from '../../utils/styles';
+import useImage from '../../hooks/useImage';
 
 interface EditorProps {
   height: number | string;
@@ -44,6 +45,8 @@ const Editor = (props: EditorProps): JSX.Element => {
     toolbarItems = DEFAULT_TOOLBAR_ITEMS,
   } = props;
 
+  const { uploadImage } = useImage();
+
   return (
     <div css={[EditorStyle, markdownStyle, EditorWrapperStyle]}>
       {hasTitle && (
@@ -63,6 +66,9 @@ const Editor = (props: EditorProps): JSX.Element => {
           toolbarItems={toolbarItems}
           extendedAutolinks={true}
           plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+          hooks={{
+            addImageBlobHook: uploadImage,
+          }}
         />
       )}
     </div>
