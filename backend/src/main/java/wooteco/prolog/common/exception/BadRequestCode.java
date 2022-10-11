@@ -3,9 +3,6 @@ package wooteco.prolog.common.exception;
 import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import wooteco.prolog.image.exception.FileNameEmptyException;
-import wooteco.prolog.image.exception.FileUploadFailException;
-import wooteco.prolog.image.exception.UnsupportedFilExtensionException;
 import wooteco.prolog.levellogs.exception.InvalidLevelLogAuthorException;
 import wooteco.prolog.levellogs.exception.LevelLogNotFoundException;
 import wooteco.prolog.login.excetpion.GithubApiFailException;
@@ -120,7 +117,9 @@ public enum BadRequestCode {
 
     UNSUPPORTED_FILE_EXTENSION_EXCEPTION(8001, "지원하지 않는 확장자 입니다.", UnsupportedFilExtensionException.class),
     FILE_NAME_EMPTY_EXCEPTION(8002, "파일 이름은 비어있을 수 없습니다.", FileNameEmptyException.class),
-    FILE_UPLOAD_FAIL_EXCEPTION(8003, "파일 업로드에 실패했습니다.", FileUploadFailException.class);
+    FILE_UPLOAD_FAIL_EXCEPTION(8003, "파일 업로드에 실패했습니다.", FileUploadFailException.class),
+
+    ROADMAP_KEYWORD_ORDER_EXCEPTION(9001, "키워드의 순서는 1 이상이여야 합니다.",KeywordOrderException.class);
 
     private int code;
     private String message;
