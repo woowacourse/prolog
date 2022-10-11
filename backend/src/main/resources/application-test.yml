@@ -48,6 +48,6 @@ cloud:
 application:
   url: http://localhost:8080
   bucket:
-    name: gongseek-image
+    name: prolog-image
   cloudfront:
-    url: https://dknikgq2g8qtc.cloudfront.net/
+    url: https://d36rfsjtlhxac1.cloudfront.net

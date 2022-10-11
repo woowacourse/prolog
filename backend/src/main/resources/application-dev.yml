@@ -37,6 +37,6 @@ cloud:
 application:
   url: https://dev.prolog.techcourse.co.kr
   bucket:
-    name: gongseek-image
+    name: prolog-image
   cloudfront:
-    url: https://dknikgq2g8qtc.cloudfront.net/
+    url: https://d36rfsjtlhxac1.cloudfront.net
