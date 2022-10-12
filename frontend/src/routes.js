@@ -19,8 +19,13 @@ import LevellogListPage from './pages/LevellogListPage';
 import LevellogPage from './pages/LevellogPage';
 import NewLevellogPage from './pages/NewLevellogPage';
 import ProfilePageReportsList from './pages/ProfilePageReportsList';
+import RoadmapPage from './pages/RoadmapPage';
 
 const pageRoutes = [
+  {
+    path: ['/roadmap'],
+    render: () => <RoadmapPage />,
+  },
   {
     path: [PATH.ROOT],
     render: () => <MainPage />,

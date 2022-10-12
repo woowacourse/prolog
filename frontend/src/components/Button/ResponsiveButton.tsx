@@ -37,6 +37,7 @@ const StyledResponsiveButton = styled.button<
   width: 100%;
   border-radius: 12px;
   text-align: center;
+  padding: 0 10px;
 
   ${({ fontSize, color, backgroundColor, height }) => css`
     font-size: ${fontSize || '16px'};
