@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from '@emotion/react';
+import { useState } from 'react';
 import { SideSheet } from '../../components/@shared/SideSheet/SideSheet';
 import ResponsiveButton from '../../components/Button/ResponsiveButton';
 import KeywordSection from '../../components/KeywordSection/KeywordSection';
@@ -10,103 +11,120 @@ const Size = css`
   width: 700px;
 `;
 
-const ButtonWidth = css`
+const ButtonStyle = css`
   width: fit-content;
+  margin: 8px 0;
 `;
 
 const RoadmapPage = () => {
+  const [isSideSheetOpen, setIsSideSheetOpen] = useState(false);
+
+  const handleOpenSideSheet = () => {
+    setIsSideSheetOpen(true);
+  };
+
+  const handleCloseSideSheet = () => {
+    setIsSideSheetOpen(false);
+  };
   return (
-    <main
-      css={[
-        getFlexStyle({
-          justifyContent: 'center',
-        }),
-        { marginTop: '25px' },
-      ]}
-    >
-      <article
+    <>
+      <main
         css={[
-          [
-            Size,
-            getFlexStyle({
-              flexDirection: 'column',
-              rowGap: '30px',
-            }),
-          ],
+          getFlexStyle({
+            justifyContent: 'center',
+          }),
+          { marginTop: '25px' },
         ]}
       >
-        <section>
-          <h2>세션</h2>
-          <div css={[ButtonWidth]}>
-            <ResponsiveButton
-              text="프론트엔드 세션1"
-              color="#fff"
-              backgroundColor="#4490c4"
-              height="36px"
-            />
-          </div>
-        </section>
-        <section>
-          <h2>키워드</h2>
-          <KeywordSection />
-        </section>
-        <section
+        <article
           css={[
-            getFlexStyle({
-              flexDirection: 'column',
-              rowGap: '16px',
-            }),
+            [
+              Size,
+              getFlexStyle({
+                flexDirection: 'column',
+                rowGap: '30px',
+              }),
+            ],
           ]}
         >
-          <ResponsiveButton
-            text="JavaScript"
-            color="#fff"
-            backgroundColor="#579bca"
-            height="50px"
-          />
-          <div
+          <section>
+            <h2>세션</h2>
+            <div css={[ButtonStyle]}>
+              <ResponsiveButton
+                onClick={handleOpenSideSheet}
+                text="프론트엔드 세션1"
+                color="#fff"
+                backgroundColor="#4490c4"
+                height="36px"
+              />
+            </div>
+          </section>
+          <section>
+            <h2>키워드</h2>
+            <KeywordSection />
+          </section>
+          <section
             css={[
               getFlexStyle({
-                flexDirection: 'row',
-                columnGap: '30px',
+                flexDirection: 'column',
+                rowGap: '16px',
               }),
             ]}
           >
+            <ResponsiveButton
+              onClick={handleOpenSideSheet}
+              text="JavaScript"
+              color="#fff"
+              backgroundColor="#579bca"
+              height="50px"
+            />
             <div
               css={[
                 getFlexStyle({
-                  flexGrow: 1,
                   flexDirection: 'row',
+                  columnGap: '30px',
                 }),
               ]}
             >
-              <ResponsiveButton
-                text="비동기"
-                color="#fff"
-                backgroundColor="#8DBFE9"
-                height="50px"
-              />
+              <div
+                css={[
+                  getFlexStyle({
+                    flexGrow: 1,
+                    flexDirection: 'row',
+                  }),
+                ]}
+              >
+                <ResponsiveButton
+                  onClick={handleOpenSideSheet}
+                  text="비동기"
+                  color="#fff"
+                  backgroundColor="#8DBFE9"
+                  height="50px"
+                />
+              </div>
+              <div
+                css={[
+                  getFlexStyle({
+                    flexGrow: 1,
+                    flexDirection: 'row',
+                    rowGap: '30px',
+                  }),
+                ]}
+              >
+                <ResponsiveButton
+                  onClick={handleOpenSideSheet}
+                  text="Callback"
+                  color="#fff"
+                  backgroundColor="#B8D8EA"
+                  height="50px"
+                />
+              </div>
             </div>
-            <div
-              css={[
-                getFlexStyle({
-                  flexGrow: 1,
-                  flexDirection: 'row',
-                  rowGap: '30px',
-                }),
-              ]}
-            >
-              <ResponsiveButton
-                text="Callback"
-                color="#fff"
-                backgroundColor="#B8D8EA"
-                height="50px"
-              />
-            </div>
-          </div>
-        </section>
-      </article>
-    </main>
+          </section>
+        </article>
+      </main>
+      {isSideSheetOpen && <SideSheet handleCloseSideSheet={handleCloseSideSheet}>hello</SideSheet>}
+    </>
   );
 };
 

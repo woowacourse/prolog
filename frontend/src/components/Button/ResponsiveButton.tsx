@@ -8,6 +8,7 @@ interface ResponsiveButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> 
   color?: string;
   backgroundColor?: string;
   height?: string;
+  onClick: () => void;
 }
 
 const ResponsiveButton = ({
@@ -16,9 +17,11 @@ const ResponsiveButton = ({
   color,
   backgroundColor,
   height,
+  onClick,
 }: ResponsiveButtonProps) => {
   return (
     <StyledResponsiveButton
+      onClick={onClick}
       fontSize={fontSize}
       color={color}
       backgroundColor={backgroundColor}
