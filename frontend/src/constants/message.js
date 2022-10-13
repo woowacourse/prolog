@@ -5,6 +5,7 @@ const CONFIRM_MESSAGE = {
   DELETE_SCRAP: '스크랩을 취소하시겠습니까?',
   DELETE_ABILITY: '역량을 삭제하시겠습니까?',
   DELETE_LIKE: '좋아요를 취소하시겠습니까?',
+  TEMP_SAVE_STUDYLOG: '글을 저장하시겠습니까?',
   SET_DEFAULT_ABILITIES: '기본 역량 등록에 실패했습니다.',
 };
 
@@ -53,6 +54,7 @@ const ERROR_MESSAGE = {
 const SUCCESS_MESSAGE = {
   CREATE_POST: '글이 작성되었습니다.',
   EDIT_POST: '글이 수정되었습니다.',
+  TEMP_SAVE_POST: '글이 임시저장되었습니다.',
   DELETE_STUDYLOG: '글이 삭제되었습니다.',
   CREATE_ABILITY: '역량을 추가했습니다.',
   EDIT_ABILITY: '역량을 수정했습니다.',
