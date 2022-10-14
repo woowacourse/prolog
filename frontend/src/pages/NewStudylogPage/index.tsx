@@ -10,7 +10,7 @@ import { ERROR_MESSAGE, ALERT_MESSAGE, PATH } from '../../constants';
 import { StudylogForm, TempSavedStudyLogForm, TempSavedStudyLog } from '../../models/Studylogs';
 import { useMutation, useQuery, UseQueryResult } from 'react-query';
 import LOCAL_STORAGE_KEY from '../../constants/localStorage';
-import { SUCCESS_MESSAGE } from '../../constants/message';
+import { CONFIRM_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
 import { useHistory } from 'react-router-dom';
 import {
   requestPostTempSavedStudylog,
@@ -69,7 +69,11 @@ const NewStudylogPage = () => {
             tags: data.tags,
             abilities: data.abilities.map(({ id }) => id),
           });
+
+          return;
         }
+
+        setStudylogContent({ ...studylogContent, content: '' });
       },
     }
   );
@@ -139,8 +143,7 @@ const NewStudylogPage = () => {
       return;
     }
 
-    // TODO: 변수명
-    if (window.confirm('저장하시겠습니까?')) {
+    if (window.confirm(CONFIRM_MESSAGE.TEMP_SAVE_STUDYLOG)) {
       tempSaveStudylogRequest({
         ...studylogContent,
         content,
@@ -173,11 +176,10 @@ const NewStudylogPage = () => {
       }),
     {
       onSuccess: () => {
-        alert('글이 임시저장되었습니다.');
-        console.log('success');
+        alert(SUCCESS_MESSAGE.TEMP_SAVE_POST);
       },
       onError: () => {
-        alert('현재 글을 임시 저장할 수 없습니다.');
+        alert(ERROR_MESSAGE.DEFAULT);
       },
     }
   );
