@@ -5,8 +5,11 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static wooteco.prolog.ResponseFixture.MEMBER;
+import static wooteco.prolog.ResponseFixture.STUDYLOG_RSS_FEED_RESPONSES;
 
 import io.restassured.module.mockmvc.response.ValidatableMockMvcResponse;
+import java.sql.Date;
+import java.time.Instant;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -35,12 +38,7 @@ class StudylogRssFeedDocumentation extends NewDocumentation {
     void RSS_피드를_조회한다() {
         //given
         given(studylogService.readRssFeeds(any()))
-                .willReturn(List.of(
-                        StudylogRssFeedResponse.of(
-                                new Studylog(MEMBER, "Prolog | 우아한테크코스 학습로그 저장소","dd",new Session(1L, "세션1"),
-                                        new Mission("자동차미션", new Session(1L, "레벨1")), List.of(new Tag(1L, "자바")))
-                                ,"http://localhost:8080"))
-                );
+                .willReturn(STUDYLOG_RSS_FEED_RESPONSES);
 
         //when
         ValidatableMockMvcResponse response = given

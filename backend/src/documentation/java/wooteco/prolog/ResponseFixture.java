@@ -2,6 +2,8 @@ package wooteco.prolog;
 
 import static wooteco.prolog.member.domain.Role.CREW;
 
+import java.sql.Date;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import wooteco.prolog.member.application.dto.MemberResponse;
@@ -15,6 +17,7 @@ import wooteco.prolog.studylog.application.dto.CommentResponse;
 import wooteco.prolog.studylog.application.dto.CommentsResponse;
 import wooteco.prolog.studylog.application.dto.MemberTagResponse;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
+import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagResponse;
 
@@ -109,4 +112,8 @@ public class ResponseFixture {
             new CalendarStudylogResponse(2L, "JPA 쿼리 개선기", LocalDateTime.now().minusMonths(1),
                     LocalDateTime.now())
     );
+
+    public static final List<StudylogRssFeedResponse> STUDYLOG_RSS_FEED_RESPONSES = List.of(
+            new StudylogRssFeedResponse("Prolog | 우아한테크코스 학습로그 저장소", "자바", "잉", "http://localhost:8080",
+                    Date.from(Instant.now())));
 }
