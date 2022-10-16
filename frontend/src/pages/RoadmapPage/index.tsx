@@ -5,7 +5,9 @@ import { useState } from 'react';
 import { SideSheet } from '../../components/@shared/SideSheet/SideSheet';
 import ResponsiveButton from '../../components/Button/ResponsiveButton';
 import KeywordSection from '../../components/KeywordSection/KeywordSection';
+import { useGetSessions } from '../../hooks/queries/session';
 import { getFlexStyle } from '../../styles/flex.styles';
+import COLOR from '../../constants/color';
 
 const Size = css`
   width: 700px;
@@ -16,8 +18,19 @@ const ButtonStyle = css`
   margin: 8px 0;
 `;
 
+const SessionButtonStyle = css`
+  width: fit-content;
+  margin: 4px 0;
+`;
+
 const RoadmapPage = () => {
   const [isSideSheetOpen, setIsSideSheetOpen] = useState(false);
+  const [selectedSessionId, setSelectedSessionId] = useState(1);
+  const { data: sessions = [] } = useGetSessions();
+
+  const handleClickSession = (id: number) => {
+    setSelectedSessionId(id);
+  };
 
   const handleOpenSideSheet = () => {
     setIsSideSheetOpen(true);
@@ -49,14 +62,22 @@ const RoadmapPage = () => {
         >
           <section>
             <h2>세션</h2>
-            <div css={[ButtonStyle]}>
-              <ResponsiveButton
-                onClick={handleOpenSideSheet}
-                text="프론트엔드 세션1"
-                color="#fff"
-                backgroundColor="#4490c4"
-                height="36px"
-              />
+            <div css={[getFlexStyle({ flexWrap: 'wrap', columnGap: '8px' })]}>
+              {sessions.map(({ id, name }) => {
+                return (
+                  <div key={id} css={[SessionButtonStyle]}>
+                    <ResponsiveButton
+                      onClick={() => handleClickSession(id)}
+                      text={name}
+                      color={selectedSessionId === id ? COLOR.WHITE : COLOR.BLACK_600}
+                      backgroundColor={
+                        selectedSessionId === id ? COLOR.LIGHT_BLUE_900 : COLOR.LIGHT_GRAY_400
+                      }
+                      height="36px"
+                    />
+                  </div>
+                );
+              })}
             </div>
           </section>
           <section>
