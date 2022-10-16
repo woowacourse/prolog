@@ -15,6 +15,7 @@ import {
   ProfileChipLocationStyle,
 } from './StudylogItem.styles';
 import { AlignItemsEndStyle, FlexColumnStyle, FlexStyle } from '../../styles/flex.styles';
+import CommentCount from '../CommentCount/CommentCount';
 
 interface Props {
   studylog: Studylog;
@@ -23,7 +24,7 @@ interface Props {
 }
 
 const StudylogItem = ({ studylog, onClick, onProfileClick }: Props) => {
-  const { author, title, tags, read: isRead, viewCount, session } = studylog;
+  const { author, title, tags, read: isRead, viewCount, session, commentCount } = studylog;
 
   return (
     <Card
@@ -56,6 +57,7 @@ const StudylogItem = ({ studylog, onClick, onProfileClick }: Props) => {
           >
             {author.nickname}
           </ProfileChip>
+          <CommentCount count={commentCount} />
           <ViewCount count={viewCount} />
         </div>
       </div>

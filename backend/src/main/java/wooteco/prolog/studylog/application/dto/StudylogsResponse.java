@@ -3,6 +3,7 @@ package wooteco.prolog.studylog.application.dto;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +32,19 @@ public class StudylogsResponse {
         return of(page, null);
     }
 
+    public static StudylogsResponse of(Page<Studylog> page, Long memberId, Map<Long, Long> commentCounts) {
+        Page<StudylogResponse> responsePage = new PageImpl<>(
+                toResponses(page.getContent(), memberId, commentCounts),
+                page.getPageable(),
+                page.getTotalElements()
+        );
+
+        return new StudylogsResponse(responsePage.getContent(),
+                responsePage.getTotalElements(),
+                responsePage.getTotalPages(),
+                responsePage.getNumber() + ONE_INDEXED_PARAMETER);
+    }
+
     public static StudylogsResponse of(Page<Studylog> page, Long memberId) {
         Page<StudylogResponse> responsePage = new PageImpl<>(
             toResponses(page.getContent(), memberId),
@@ -49,23 +63,43 @@ public class StudylogsResponse {
         long totalSize,
         int totalPage,
         int currPage,
-        Long memberId
+        Long memberId,
+        Map<Long, Long> commentCounts
     ) {
-        final List<StudylogResponse> studylogResponses = convertToStudylogResponse(studylogs, memberId);
+        final List<StudylogResponse> studylogResponses = convertToStudylogResponse(studylogs, memberId, commentCounts);
         return new StudylogsResponse(studylogResponses,
             totalSize,
             totalPage,
             currPage + ONE_INDEXED_PARAMETER);
     }
 
-    private static List<StudylogResponse> convertToStudylogResponse(List<Studylog> studylogs, Long memberId) {
+    private static List<StudylogResponse> convertToStudylogResponse(List<Studylog> studylogs, Long memberId, Map<Long, Long> commentCounts) {
         return studylogs.stream()
-            .map(studylog -> StudylogResponse.of(studylog, memberId))
+            .map(studylog -> StudylogResponse.of(studylog, memberId, commentCounts.get(studylog.getId())))
             .collect(toList());
+    }
+
+    private static List<StudylogResponse> toResponses(List<Studylog> studylogs, Long memberId, Map<Long, Long> commentCounts) {
+        return studylogs.stream().map(studylog -> toResponse(studylog, memberId, commentCounts.get(studylog.getId()))).collect(toList());
     }
 
     private static List<StudylogResponse> toResponses(List<Studylog> studylogs, Long memberId) {
         return studylogs.stream().map(studylog -> toResponse(studylog, memberId)).collect(toList());
+    }
+
+    private static StudylogResponse toResponse(Studylog studylog, Long memberId, long commentCount) {
+        List<StudylogTag> studylogTags = studylog.getStudylogTags();
+        final List<Tag> tags = studylogTags.stream()
+                .map(StudylogTag::getTag)
+                .collect(toList());
+
+        return new StudylogResponse(
+                studylog,
+                SessionResponse.of(studylog.getSession()),
+                MissionResponse.of(studylog.getMission()),
+                toResponse(tags),
+                studylog.likedByMember(memberId), commentCount
+        );
     }
 
     private static StudylogResponse toResponse(Studylog studylog, Long memberId) {
@@ -79,7 +113,7 @@ public class StudylogsResponse {
             SessionResponse.of(studylog.getSession()),
             MissionResponse.of(studylog.getMission()),
             toResponse(tags),
-            studylog.likedByMember(memberId)
+            studylog.likedByMember(memberId), 0
         );
     }
 

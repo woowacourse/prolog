@@ -3,15 +3,20 @@ package wooteco.prolog.studylog.application;
 import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,11 +55,13 @@ import wooteco.prolog.studylog.domain.StudylogRead;
 import wooteco.prolog.studylog.domain.StudylogScrap;
 import wooteco.prolog.studylog.domain.StudylogTemp;
 import wooteco.prolog.studylog.domain.Tags;
+import wooteco.prolog.studylog.domain.repository.CommentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogReadRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
 import wooteco.prolog.studylog.domain.repository.StudylogTempRepository;
+import wooteco.prolog.studylog.domain.repository.dto.CommentCount;
 import wooteco.prolog.studylog.event.StudylogDeleteEvent;
 import wooteco.prolog.studylog.exception.StudylogArgumentException;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
@@ -65,6 +72,8 @@ import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
 @AllArgsConstructor
 @Transactional(readOnly = true)
 public class StudylogService {
+
+    private static Logger logger = LoggerFactory.getLogger(StudylogService.class);
 
     private final MemberTagService memberTagService;
     private final DocumentService studylogDocumentService;
@@ -78,6 +87,7 @@ public class StudylogService {
     private final StudylogReadRepository studylogReadRepository;
     private final StudylogTempRepository studylogTempRepository;
     private final StudylogAbilityRepository studylogAbilityRepository;
+    private final CommentRepository commentRepository;
     private final StudylogTempAbilityRepository studylogTempAbilityRepository;
     private final ApplicationEventPublisher eventPublisher;
 
@@ -221,10 +231,9 @@ public class StudylogService {
             Pageable pageable = request.getPageable();
             List<Long> ids = request.getIds();
 
-            Page<Studylog> studylogs = studylogRepository.findByIdInAndDeletedFalseOrderByIdAsc(ids,
-                    pageable);
-
-            return StudylogsResponse.of(studylogs, memberId);
+            Page<Studylog> studylogs = studylogRepository.findByIdInAndDeletedFalseOrderByIdDesc(ids, pageable);
+            Map<Long, Long> commentCounts = commentCounts(studylogs.getContent());
+            return StudylogsResponse.of(studylogs, memberId, commentCounts);
         }
 
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
@@ -247,14 +256,29 @@ public class StudylogService {
         );
 
         final List<Studylog> studylogs = studylogRepository.findByIdInAndDeletedFalseOrderByIdDesc(
-                response.getStudylogIds());
+                response.getStudylogIds()
+        );
+        Map<Long, Long> commentCounts = commentCounts(studylogs);
         return StudylogsResponse.of(
                 studylogs,
                 response.getTotalSize(),
                 response.getTotalPage(),
                 response.getCurrPage(),
-                memberId
+                memberId,
+                commentCounts
         );
+    }
+
+    private Map<Long, Long> commentCounts(List<Studylog> studylogs) {
+        final Map<Long, Long> commentCounts = commentRepository.countByStudylogIn(studylogs).stream()
+                .collect(toMap(CommentCount::getStudylogId, CommentCount::getCount));
+
+        logger.debug("studylogs: {}", studylogs);
+        logger.debug("commentCounts: {}", commentCounts);
+
+        return studylogs.stream()
+                .map(Studylog::getId)
+                .collect(toMap(id -> id, id -> commentCounts.getOrDefault(id, 0L)));
     }
 
     public StudylogsResponse findStudylogsWithoutKeyword(
@@ -276,10 +300,12 @@ public class StudylogService {
                         .and(StudylogSpecification.findByUsernameIn(usernames))
                         .and(StudylogSpecification.findByMemberIn(members))
                         .and(StudylogSpecification.findBetweenDate(startDate, endDate))
-                        .and(StudylogSpecification.distinct(true));
+                        .and(StudylogSpecification.distinct(true))
+                        .and(StudylogSpecification.orderByIdDesc());
 
         Page<Studylog> studylogs = studylogRepository.findAll(specs, pageable);
-        return StudylogsResponse.of(studylogs, memberId);
+        Map<Long, Long> commentCounts = commentCounts(studylogs.getContent());
+        return StudylogsResponse.of(studylogs, memberId, commentCounts);
     }
 
     public StudylogsResponse findStudylogsOf(String username, Pageable pageable) {
@@ -523,7 +549,8 @@ public class StudylogService {
     }
 
     public List<Studylog> findStudylogsInPeriod(Long memberId, LocalDate startDate, LocalDate endDate) {
-        return studylogRepository.findByMemberIdAndCreatedAtBetween(memberId,
-                LocalDateTime.of(startDate, LocalTime.MIN), LocalDateTime.of(endDate, LocalTime.MAX));
+        return studylogRepository
+                .findByMemberIdAndCreatedAtBetween(memberId, LocalDateTime.of(startDate, LocalTime.MIN),
+                        LocalDateTime.of(endDate, LocalTime.MAX));
     }
 }

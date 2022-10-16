@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id "org.asciidoctor.convert" version "1.5.10"
+    id "jacoco"
     id "org.sonarqube" version "3.3"
     id 'java'
     id 'idea'
@@ -109,6 +110,16 @@ ext {
 
 test {
     useJUnitPlatform()
+
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
 }
 
 idea {
