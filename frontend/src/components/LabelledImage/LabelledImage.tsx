@@ -8,10 +8,10 @@ interface LabelledImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   isSelected?: boolean;
 }
 
-const LabelledImage = ({ src, alt, text, isSelected }: LabelledImageProps) => {
+const LabelledImage = ({ text, isSelected, ...props }: LabelledImageProps) => {
   return (
     <StyledRoot isSelected={isSelected}>
-      <img src={src} alt={alt} width="100px" height="100px" />
+      <img width="100px" height="100px" {...props} />
       <h3>{text}</h3>
     </StyledRoot>
   );
@@ -22,6 +22,7 @@ export default LabelledImage;
 const StyledRoot = styled.div<Pick<LabelledImageProps, 'isSelected'>>`
   text-align: center;
   opacity: ${({ isSelected }) => (isSelected ? 1 : 0.6)};
+  cursor: pointer;
 
   & > img {
     border-radius: 50%;

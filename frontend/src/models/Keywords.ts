@@ -1,4 +1,5 @@
 export interface KeywordResponse {
+  name: string;
   keywordId: number;
   order: number;
   importance: number;

@@ -271,6 +271,7 @@ export default {
   ],
   // 5
   filterKeywordsBySession(sessionId: any) {
+    console.log('sessionId', sessionId);
     return {
       data: this.data.map(({ keywordId, name, importance, description, parentKeywordId }) => ({
         keywordId,

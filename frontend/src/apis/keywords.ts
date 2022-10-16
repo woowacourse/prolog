@@ -16,6 +16,7 @@ export const getKeyword = async ({
 };
 
 export const getTopKeywordList = async (sessionId: number) => {
+  console.log('sessionId', sessionId);
   const response = await client.get<KeywordListResponse>(`/sessions/${sessionId}/keywords`);
 
   return response.data;

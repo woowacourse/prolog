@@ -29,7 +29,11 @@ export const useGetKeyword = ({
 };
 
 export const useGetTopKeywordList = (sessionId: number) => {
-  return useQuery([QUERY_KEY.topKeywordList], () => getTopKeywordList(sessionId));
+  const { data } = useQuery([QUERY_KEY.topKeywordList], () => getTopKeywordList(sessionId));
+
+  return {
+    topKeywordList: data?.data,
+  };
 };
 
 export const useGetChildKeywordList = ({

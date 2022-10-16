@@ -2,37 +2,33 @@ import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import SomeImage from '../../assets/images/background-image.png';
 import { COLOR } from '../../enumerations/color';
+import { useGetTopKeywordList } from '../../hooks/queries/keywords';
 import LabelledImage from '../LabelledImage/LabelledImage';
 
-interface Keyword {
-  src: string;
-  alt: string;
-  text: string;
+interface KeywordSectionProps {
+  sessionId: number;
 }
 
-const keywords: Keyword[] = [
-  { src: SomeImage, alt: 'JavaScript', text: 'JavaScript' },
-  { src: SomeImage, alt: 'JavaScript', text: 'JavaScript' },
-  { src: SomeImage, alt: 'JavaScript', text: 'JavaScript' },
-  { src: SomeImage, alt: 'JavaScript', text: 'JavaScript' },
-];
+const KeywordSection = ({ sessionId }: KeywordSectionProps) => {
+  const [selectedKeywordId, setSelectedKeywordId] = useState(1);
+  const { topKeywordList } = useGetTopKeywordList(sessionId);
 
-const KeywordSection = () => {
-  const [keywordOrder, setKeywordOrder] = useState(0);
-
-  const handleClickKeyword = (order: number) => {
-    setKeywordOrder(order);
+  const handleClickKeyword = (keywordId: number) => {
+    setSelectedKeywordId(keywordId);
   };
+
   return (
     <StyledRoot>
-      {keywords.map((keyword, index) => (
+      {topKeywordList?.map(({ name, keywordId }, index) => (
         <StyledWrapper>
           <LabelledImage
-            {...keyword}
-            isSelected={keywordOrder === index}
-            onClick={() => setKeywordOrder(index)}
+            src={SomeImage}
+            alt=""
+            text={name}
+            isSelected={selectedKeywordId === keywordId}
+            onClick={() => handleClickKeyword(keywordId)}
           />
-          {index + 1 !== keywords.length && <StyledArrow />}
+          {index + 1 !== topKeywordList?.length && <StyledArrow />}
         </StyledWrapper>
       ))}
     </StyledRoot>

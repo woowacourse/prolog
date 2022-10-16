@@ -26,7 +26,7 @@ const SessionButtonStyle = css`
 const RoadmapPage = () => {
   const [isSideSheetOpen, setIsSideSheetOpen] = useState(false);
   const [selectedSessionId, setSelectedSessionId] = useState(1);
-  const { data: sessions = [] } = useGetSessions();
+  const { data: sessions } = useGetSessions();
 
   const handleClickSession = (id: number) => {
     setSelectedSessionId(id);
@@ -63,7 +63,7 @@ const RoadmapPage = () => {
           <section>
             <h2>세션</h2>
             <div css={[getFlexStyle({ flexWrap: 'wrap', columnGap: '8px' })]}>
-              {sessions.map(({ id, name }) => {
+              {sessions?.map(({ id, name }) => {
                 return (
                   <div key={id} css={[SessionButtonStyle]}>
                     <ResponsiveButton
@@ -82,7 +82,7 @@ const RoadmapPage = () => {
           </section>
           <section>
             <h2>키워드</h2>
-            <KeywordSection />
+            <KeywordSection sessionId={selectedSessionId} />
           </section>
           <section
             css={[
