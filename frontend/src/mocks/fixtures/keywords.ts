@@ -1,5 +1,8 @@
+import { KeywordResponse } from '../../models/Keywords';
+
 export default {
   data: [
+    // 1
     {
       keywordId: 1,
       sessionId: 1, // for mock
@@ -24,65 +27,123 @@ export default {
           },
         ],
       },
+      childrenKeywords: [
+        {
+          keywordId: 2,
+          sessionId: 1, // for mock
+          name: 'let, const, var',
+          // order: 1,
+          importance: 5,
+          parentKeywordId: 1,
+          description: 'let, const, var',
+          quizs: {
+            data: [
+              {
+                quizId: 1,
+                question: 'let, const, var',
+              },
+              {
+                quizId: 2,
+                question: 'let, const, var2',
+              },
+              {
+                quizId: 3,
+                question: 'let, const, var3',
+              },
+            ],
+          },
+          childrenKeywords: [
+            {
+              keywordId: 3,
+              sessionId: 1, // for mock
+              name: 'let',
+              // order: 1,
+              importance: 5,
+              parentKeywordId: 2,
+              description: 'let',
+              quizs: {
+                data: [
+                  {
+                    quizId: 1,
+                    question: 'let',
+                  },
+                  {
+                    quizId: 2,
+                    question: 'let2',
+                  },
+                  {
+                    quizId: 3,
+                    question: 'let3',
+                  },
+                ],
+              },
+              childrenKeywords: {},
+            },
+            {
+              keywordId: 4,
+              sessionId: 1, // for mock
+              name: 'const',
+              // order: 1,
+              importance: 5,
+              parentKeywordId: 2,
+              description: 'const',
+              quizs: {
+                data: [
+                  {
+                    quizId: 1,
+                    question: 'const',
+                  },
+                  {
+                    quizId: 2,
+                    question: 'const2',
+                  },
+                  {
+                    quizId: 3,
+                    question: 'const3',
+                  },
+                ],
+              },
+              childrenKeywords: {},
+            },
+            {
+              keywordId: 5,
+              sessionId: 1, // for mock
+              name: 'var',
+              // order: 1,
+              importance: 5,
+              parentKeywordId: 2,
+              description: 'var',
+              quizs: {
+                data: [
+                  {
+                    quizId: 1,
+                    question: 'var',
+                  },
+                  {
+                    quizId: 2,
+                    question: 'var2',
+                  },
+                  {
+                    quizId: 3,
+                    question: 'var3',
+                  },
+                ],
+              },
+              childrenKeywords: {},
+            },
+          ],
+        },
+      ],
     },
+    // 2
     {
-      keywordId: 2,
+      keywordId: 6,
       sessionId: 1, // for mock
-      name: 'JavaScript2',
-      // order: 2,
-      importance: 5,
-      parentKeywordId: null,
-      description: '동적 타이핑, 스크립트 언어입니다.2',
-      quizs: {
-        data: [
-          {
-            quizId: 1,
-            question: '무엇이 궁금하시나요?',
-          },
-          {
-            quizId: 2,
-            question: '무엇이 궁금하시나요?2',
-          },
-          {
-            quizId: 3,
-            question: '무엇이 궁금하시나요?3',
-          },
-        ],
-      },
-    },
-    {
-      keywordId: 3,
-      sessionId: 1, // for mock
-      name: '변수 선언 방법',
-      // order: 2,
-      importance: 5,
-      parentKeywordId: null,
-      description: '동적 타이핑, 스크립트 언어입니다.2',
-      quizs: {
-        data: [
-          {
-            quizId: 1,
-            question: '무엇이 궁금하시나요?',
-          },
-          {
-            quizId: 2,
-            question: '무엇이 궁금하시나요?2',
-          },
-          {
-            quizId: 3,
-            question: '무엇이 궁금하시나요?3',
-          },
-        ],
-      },
-    },
-    {
-      keywordId: 1,
-      sessionId: 2, // for mock
-      name: 'TypeScript',
+      name: 'React',
       // order: 1,
       importance: 5,
       parentKeywordId: null,
-      description: '정적 타이핑, 컴파일러입니다.',
+      description: 'React입니다.',
       quizs: {
         data: [
           {
@@ -99,97 +160,199 @@ export default {
           },
         ],
       },
-    },
-    {
-      keywordId: 2,
-      sessionId: 1, // for mock
-      name: 'TypeScript2',
-      // order: 2,
-      importance: 5,
-      parentKeywordId: null,
-      description: '정적 타이핑, 컴파일러입니다.2',
-      quizs: {
-        data: [
-          {
-            quizId: 1,
-            question: '무엇이 궁금하시나요?',
+      childrenKeywords: [
+        {
+          keywordId: 7,
+          sessionId: 1, // for mock
+          name: 'lifecycle',
+          // order: 1,
+          importance: 5,
+          parentKeywordId: 6,
+          description: 'lifecycle 설명',
+          quizs: {
+            data: [
+              {
+                quizId: 1,
+                question: 'lifecycle 퀴즈',
+              },
+              {
+                quizId: 2,
+                question: 'lifecycle2 퀴즈',
+              },
+              {
+                quizId: 3,
+                question: 'lifecycle3 퀴즈',
+              },
+            ],
           },
-          {
-            quizId: 2,
-            question: '무엇이 궁금하시나요?2',
-          },
-          {
-            quizId: 3,
-            question: '무엇이 궁금하시나요?3',
-          },
-        ],
-      },
-    },
-    {
-      keywordId: 1,
-      sessionId: 3, // for mock
-      name: 'Java',
-      // order: 1,
-      importance: 5,
-      parentKeywordId: null,
-      description: '정적 타이핑 입니다.',
-      quizs: {
-        data: [
-          {
-            quizId: 1,
-            question: '무엇이 궁금하시나요?',
-          },
-          {
-            quizId: 2,
-            question: '무엇이 궁금하시나요?2',
-          },
-          {
-            quizId: 3,
-            question: '무엇이 궁금하시나요?3',
-          },
-        ],
-      },
-    },
-    {
-      keywordId: 2,
-      sessionId: 3, // for mock
-      name: 'Java2',
-      // order: 2,
-      importance: 5,
-      parentKeywordId: null,
-      description: '정적 타이핑 입니다.2',
-      quizs: {
-        data: [
-          {
-            quizId: 1,
-            question: '무엇이 궁금하시나요?',
-          },
-          {
-            quizId: 2,
-            question: '무엇이 궁금하시나요?2',
-          },
-          {
-            quizId: 3,
-            question: '무엇이 궁금하시나요?3',
-          },
-        ],
-      },
+          childrenKeywords: [
+            {
+              keywordId: 8,
+              sessionId: 1, // for mock
+              name: 'mount',
+              // order: 1,
+              importance: 5,
+              parentKeywordId: 7,
+              description: 'mount 설명',
+              quizs: {
+                data: [
+                  {
+                    quizId: 1,
+                    question: 'mount 퀴즈',
+                  },
+                  {
+                    quizId: 2,
+                    question: 'mount2 퀴즈',
+                  },
+                  {
+                    quizId: 3,
+                    question: 'mount3 퀴즈',
+                  },
+                ],
+              },
+              childrenKeywords: {},
+            },
+            {
+              keywordId: 9,
+              sessionId: 1, // for mock
+              name: 'unmount',
+              // order: 1,
+              importance: 5,
+              parentKeywordId: 7,
+              description: 'unmount 설명',
+              quizs: {
+                data: [
+                  {
+                    quizId: 1,
+                    question: 'unmount 퀴즈',
+                  },
+                  {
+                    quizId: 2,
+                    question: 'unmount 퀴즈2',
+                  },
+                  {
+                    quizId: 3,
+                    question: 'unmount 퀴즈3',
+                  },
+                ],
+              },
+              childrenKeywords: {},
+            },
+            {
+              keywordId: 10,
+              sessionId: 1, // for mock
+              name: 'update',
+              // order: 1,
+              importance: 5,
+              parentKeywordId: 7,
+              description: 'update 설명',
+              quizs: {
+                data: [
+                  {
+                    quizId: 1,
+                    question: 'update 퀴즈',
+                  },
+                  {
+                    quizId: 2,
+                    question: 'update 퀴즈2',
+                  },
+                  {
+                    quizId: 3,
+                    question: 'update 퀴즈3',
+                  },
+                ],
+              },
+              childrenKeywords: {},
+            },
+          ],
+        },
+      ],
     },
   ],
+  // 5
   filterKeywordsBySession(sessionId: any) {
     return {
-      data: this.data.filter((el) => el.sessionId === sessionId && el.parentKeywordId === null),
+      data: this.data.map(({ keywordId, name, importance, description, parentKeywordId }) => ({
+        keywordId,
+        name,
+        importance,
+        description,
+        parentKeywordId,
+      })),
     };
   },
+  // 4
   findKeyword(keywordId: any) {
-    return this.data.find((el) => el.sessionId === keywordId);
+    // data를 순회하면서, childrenKeywords를 순회하면서 해당 keyword가 있는지 확인한다.
+    const data = this.data
+      .map((depth1Item) => {
+        // 1뎁스 순회
+        if (depth1Item.keywordId === keywordId) {
+          return depth1Item;
+        }
+
+        return depth1Item.childrenKeywords.map((depth2Item) => {
+          // 2뎁스 순회
+          if (depth2Item.keywordId === keywordId) {
+            return depth2Item;
+          }
+
+          return depth2Item.childrenKeywords.map((depth3Item) => {
+            // 3뎁스 순회
+            if (depth3Item.keywordId === keywordId) {
+              return depth3Item;
+            }
+
+            return undefined;
+          });
+        });
+      })
+      .find((item) => item !== undefined);
+
+    return data;
   },
-  filterChildKeywords(parentKeywordId: any) {
+  // 6-1
+  filterChildKeywords(keywordId: any) {
+    // keywordId를 1뎁스에서 찾아서, 하위 childrenKeywords를 모두 반환한다. []
+    const data = this.data.find((depth1Item) => {
+      return depth1Item.keywordId === keywordId;
+    })?.childrenKeywords;
+
     return {
-      data: this.data.filter((el) => el.parentKeywordId === parentKeywordId),
+      data,
     };
   },
+  // 10
   findQuizs(keywordId: any) {
-    return this.findKeyword(keywordId)?.quizs;
+    const data = this.data
+      .map((depth1Item) => {
+        // 1뎁스 순회
+        if (depth1Item.keywordId === keywordId) {
+          return depth1Item.quizs.data;
+        }
+
+        return depth1Item.childrenKeywords.map((depth2Item) => {
+          // 2뎁스 순회
+          if (depth2Item.keywordId === keywordId) {
+            return depth2Item.quizs.data;
+          }
+
+          return depth2Item.childrenKeywords.map((depth3Item) => {
+            // 3뎁스 순회
+            if (depth3Item.keywordId === keywordId) {
+              return depth3Item.quizs.data;
+            }
+
+            return undefined;
+          });
+        });
+      })
+      .find((item) => item !== undefined);
+
+    return { keywordId, data };
   },
 };
+
+interface Mock {
+  data: KeywordResponse[];
+}

@@ -4,6 +4,7 @@ export interface KeywordResponse {
   importance: number;
   parentKeywordId: number;
   description: string;
+  childrenKeywords: KeywordResponse[] | null;
 }
 
 export interface KeywordListResponse {

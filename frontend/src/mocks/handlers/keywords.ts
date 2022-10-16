@@ -3,7 +3,7 @@ import { rest } from 'msw';
 import keywordsMock from '../fixtures/keywords';
 
 export const roadmapHandler = [
-  /** 세션별 키워드 목록 조회. 1 depth */
+  /** 5. 세션별 키워드 목록 조회. 1 depth */
   rest.get(`${BASE_URL}/sessions/:sessionId/keywords`, (req, res, ctx) => {
     const {
       params: { sessionId },
@@ -14,7 +14,7 @@ export const roadmapHandler = [
     return res(ctx.status(200), ctx.json({ ...keywordsList }));
   }),
 
-  /** 키워드 단건 조회. 2, 3 depth */
+  /** 4. 키워드 단건 조회. 2, 3 depth */
   rest.get(`${BASE_URL}/sessions/:sessionId/keywords/:keywordId`, (req, res, ctx) => {
     const {
       params: { sessionId, keywordId },
