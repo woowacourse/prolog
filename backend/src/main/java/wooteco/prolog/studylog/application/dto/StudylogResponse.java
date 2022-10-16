@@ -3,7 +3,6 @@ package wooteco.prolog.studylog.application.dto;
 import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -38,13 +37,14 @@ public class StudylogResponse {
     private int viewCount;
     private boolean liked;
     private int likesCount;
+    private long commentCount;
 
     public StudylogResponse(
             Studylog studylog,
             SessionResponse sessionResponse,
             MissionResponse missionResponse,
             List<TagResponse> tagResponses,
-            boolean liked) {
+            boolean liked, long commentCount) {
         this(
                 studylog.getId(),
                 MemberResponse.of(studylog.getMember()),
@@ -60,34 +60,34 @@ public class StudylogResponse {
                 false,
                 studylog.getViewCount(),
                 liked,
-                studylog.getLikeCount()
+                studylog.getLikeCount(),
+                commentCount
         );
     }
 
-    public StudylogResponse(
-            Studylog studylog,
-            SessionResponse sessionResponse,
-            MissionResponse missionResponse,
-            List<TagResponse> tagResponses,
-            List<AbilityResponse> abilityResponses,
-            boolean liked) {
-        this(
-                studylog.getId(),
-                MemberResponse.of(studylog.getMember()),
-                studylog.getCreatedAt(),
-                studylog.getUpdatedAt(),
-                sessionResponse,
-                missionResponse,
-                studylog.getTitle(),
-                studylog.getContent(),
-                tagResponses,
-                abilityResponses,
-                false,
-                false,
-                studylog.getViewCount(),
-                liked,
-                studylog.getLikeCount()
-        );
+    public StudylogResponse(final Long id, final MemberResponse author, final LocalDateTime createdAt,
+                            final LocalDateTime updatedAt,
+                            final SessionResponse session, final MissionResponse mission, final String title,
+                            final String content,
+                            final List<TagResponse> tags,
+                            final List<AbilityResponse> abilities, final boolean scrap, final boolean read,
+                            final int viewCount, final boolean liked,
+                            final int likesCount) {
+        this.id = id;
+        this.author = author;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.session = session;
+        this.mission = mission;
+        this.title = title;
+        this.content = content;
+        this.tags = tags;
+        this.abilities = abilities;
+        this.scrap = scrap;
+        this.read = read;
+        this.viewCount = viewCount;
+        this.liked = liked;
+        this.likesCount = likesCount;
     }
 
     public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, boolean liked) {
@@ -109,7 +109,33 @@ public class StudylogResponse {
                 read,
                 studylog.getViewCount(),
                 liked,
-                studylog.getLikeCount()
+                studylog.getLikeCount(),
+                0
+        );
+    }
+
+    public static StudylogResponse of(Studylog studylog, List<AbilityResponse> abilityResponses, boolean scrap,
+                                      boolean read, boolean liked, long commentCount) {
+        List<StudylogTag> studylogTags = studylog.getStudylogTags();
+        List<TagResponse> tagResponses = toTagResponses(studylogTags);
+
+        return new StudylogResponse(
+                studylog.getId(),
+                MemberResponse.of(studylog.getMember()),
+                studylog.getCreatedAt(),
+                studylog.getUpdatedAt(),
+                SessionResponse.of(studylog.getSession()),
+                MissionResponse.of(studylog.getMission()),
+                studylog.getTitle(),
+                studylog.getContent(),
+                tagResponses,
+                abilityResponses,
+                scrap,
+                read,
+                studylog.getViewCount(),
+                liked,
+                studylog.getLikeCount(),
+                commentCount
         );
     }
 
@@ -132,7 +158,8 @@ public class StudylogResponse {
                 read,
                 studylog.getViewCount(),
                 liked,
-                studylog.getLikeCount()
+                studylog.getLikeCount(),
+                0
         );
     }
 
@@ -149,8 +176,12 @@ public class StudylogResponse {
         return StudylogResponse.of(studylog, abilityResponses, scrap, read, studylog.likedByMember(memberId));
     }
 
-    public static StudylogResponse of(Studylog studylog, Long memberId) {
-        return of(studylog, false, false, memberId);
+    public static StudylogResponse of(Studylog studylog, Long memberId, long commentCount) {
+        return of(studylog, false, false, memberId, commentCount);
+    }
+
+    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, Long memberId, long commentCount) {
+        return StudylogResponse.of(studylog, Collections.emptyList(), scrap, read, studylog.likedByMember(memberId), commentCount);
     }
 
     public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, Long memberId) {
@@ -184,12 +215,9 @@ public class StudylogResponse {
                 read,
                 studylog.getViewCount(),
                 liked,
-                studylog.getLikeCount()
+                studylog.getLikeCount(),
+                0
         );
-    }
-
-    public static StudylogResponse of(Studylog studylog, Session session, Mission mission) {
-        return StudylogResponse.of(studylog, false, false, false, session, mission);
     }
 
     public void setScrap(boolean isScrap) {
