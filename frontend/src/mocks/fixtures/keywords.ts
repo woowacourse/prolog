@@ -312,7 +312,7 @@ export default {
     return data;
   },
   // 6-1
-  filterChildKeywords(keywordId: any) {
+  filterChildrenKeywords(keywordId: any) {
     // keywordId를 1뎁스에서 찾아서, 하위 childrenKeywords를 모두 반환한다. []
     const data = this.data.find((depth1Item) => {
       return depth1Item.keywordId === keywordId;

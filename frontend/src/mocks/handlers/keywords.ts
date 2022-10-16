@@ -14,7 +14,7 @@ export const roadmapHandler = [
     return res(ctx.status(200), ctx.json({ ...keywordsList }));
   }),
 
-  /** 4. 키워드 단건 조회. 2, 3 depth */
+  /** 4. 키워드 단건 조회. 1, 2, 3 depth */
   rest.get(`${BASE_URL}/sessions/:sessionId/keywords/:keywordId`, (req, res, ctx) => {
     const {
       params: { sessionId, keywordId },
@@ -25,26 +25,18 @@ export const roadmapHandler = [
     return res(ctx.status(200), ctx.json({ ...keywordData }));
   }),
 
-  /** 직계 하위 키워드 조회 */
+  /** 6-1. 1 -> 2,3 키워드 조회 */
   rest.get(`${BASE_URL}/sessions/:sessionId/keywords/:keywordId/children`, (req, res, ctx) => {
     const {
       params: { sessionId, keywordId },
     } = req;
 
-    const keywordData = keywordsMock.findKeyword(keywordId);
+    const childrenKeywords = keywordsMock.filterChildrenKeywords(keywordId);
 
-    if (!keywordData) {
-      return res(ctx.status(400), ctx.json({ message: '해당 keyword가 없습니다.' }));
-    }
-
-    const { parentKeywordId } = keywordData;
-
-    const childKeywords = keywordsMock.filterChildKeywords(parentKeywordId);
-
-    return res(ctx.status(200), ctx.json({ ...childKeywords }));
+    return res(ctx.status(200), ctx.json({ ...childrenKeywords }));
   }),
 
-  /** 키워드별 Quiz 조회 */
+  /** 10. 키워드별 Quiz 조회 */
   rest.get(`${BASE_URL}/sessions/:sessionId/keywords/:keywordId/quizs`, (req, res, ctx) => {
     const {
       params: { sessionId, keywordId },
