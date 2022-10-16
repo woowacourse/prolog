@@ -34,7 +34,7 @@ export const useMissions = () => {
   );
 };
 
-export const useSessions = () => {
+export const useGetMySessions = () => {
   const { user } = useContext(UserContext);
   const { accessToken } = user;
 

@@ -6,7 +6,7 @@ import SelectBox from '../Controls/SelectBox';
 import { ERROR_MESSAGE, PLACEHOLDER } from '../../constants';
 import { Mission, Session, Tag } from '../../models/Studylogs';
 import styled from '@emotion/styled';
-import { useMissions, useSessions, useTags } from '../../hooks/queries/filters';
+import { useMissions, useGetMySessions, useTags } from '../../hooks/queries/filters';
 import { getRowGapStyle } from '../../styles/layout.styles';
 import StudyLogSelectAbilityBox from './SideBar/StudyLogSelectAbilityBox';
 import { useQuery } from 'react-query';
@@ -82,7 +82,7 @@ const Sidebar = ({
   const [isSelectAbilityBoxOpen, setIsSelectAbilityBoxOpen] = useState(false);
   const { data: missions = [] } = useMissions();
   const { data: tags = [] } = useTags();
-  const { data: sessions = [] } = useSessions();
+  const { data: sessions = [] } = useGetMySessions();
   const {
     user: { username },
   } = useContext(UserContext);
@@ -196,32 +196,31 @@ const Sidebar = ({
           </div>
         </li>
 
-          <AbilitySelectList>
-            <FilterTitle>
-              <FlexBox css={FlexGap} alignItems="center">
-                abilities
-                <Button
-                  size="XX_SMALL"
-                  type="button"
-                  cssProps={PlusButton}
-                  onClick={() => setIsSelectAbilityBoxOpen(true)}
-                >
-                  +
-                </Button>
-              </FlexBox>
-            </FilterTitle>
+        <AbilitySelectList>
+          <FilterTitle>
+            <FlexBox css={FlexGap} alignItems="center">
+              abilities
+              <Button
+                size="XX_SMALL"
+                type="button"
+                cssProps={PlusButton}
+                onClick={() => setIsSelectAbilityBoxOpen(true)}
+              >
+                +
+              </Button>
+            </FlexBox>
+          </FilterTitle>
 
-            <SelectedAbilityChips selectedAbilityIds={selectedAbilities} />
-            {isSelectAbilityBoxOpen && (
-              <StudyLogSelectAbilityBox
-                setIsSelectAbilityBoxOpen={setIsSelectAbilityBoxOpen}
-                selectedAbilities={selectedAbilities}
-                wholeAbility={wholeAbility}
-                onSelectAbilities={onSelectAbilities}
-              />
-            )}
-          </AbilitySelectList>
-      
+          <SelectedAbilityChips selectedAbilityIds={selectedAbilities} />
+          {isSelectAbilityBoxOpen && (
+            <StudyLogSelectAbilityBox
+              setIsSelectAbilityBoxOpen={setIsSelectAbilityBoxOpen}
+              selectedAbilities={selectedAbilities}
+              wholeAbility={wholeAbility}
+              onSelectAbilities={onSelectAbilities}
+            />
+          )}
+        </AbilitySelectList>
       </ul>
     </SidebarWrapper>
   );
