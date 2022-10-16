@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import React, { ButtonHTMLAttributes } from 'react';
 
 interface ResponsiveButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  text: string;
+  text?: string;
   fontSize?: string;
   color?: string;
   backgroundColor?: string;

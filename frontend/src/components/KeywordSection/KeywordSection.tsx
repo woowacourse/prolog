@@ -1,32 +1,40 @@
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React from 'react';
 import SomeImage from '../../assets/images/background-image.png';
 import { COLOR } from '../../enumerations/color';
 import { useGetTopKeywordList } from '../../hooks/queries/keywords';
+import { KeywordResponse } from '../../models/Keywords';
 import LabelledImage from '../LabelledImage/LabelledImage';
 
 interface KeywordSectionProps {
   sessionId: number;
+  selectedTopKeyword: KeywordResponse | null;
+  handleClickTopKeyword: (keyword: KeywordResponse) => void;
+  updateSelectedTopKeyword: (keyword: KeywordResponse) => void;
 }
 
-const KeywordSection = ({ sessionId }: KeywordSectionProps) => {
-  const [selectedKeywordId, setSelectedKeywordId] = useState(1);
-  const { topKeywordList } = useGetTopKeywordList(sessionId);
-
-  const handleClickKeyword = (keywordId: number) => {
-    setSelectedKeywordId(keywordId);
-  };
+const KeywordSection = ({
+  sessionId,
+  selectedTopKeyword,
+  handleClickTopKeyword,
+  updateSelectedTopKeyword,
+}: KeywordSectionProps) => {
+  const { topKeywordList } = useGetTopKeywordList(sessionId, {
+    onSuccessCallback(data) {
+      updateSelectedTopKeyword(data.data[0]); // 초기값 설정
+    },
+  });
 
   return (
     <StyledRoot>
-      {topKeywordList?.map(({ name, keywordId }, index) => (
+      {topKeywordList?.map((keyword, index) => (
         <StyledWrapper>
           <LabelledImage
             src={SomeImage}
             alt=""
-            text={name}
-            isSelected={selectedKeywordId === keywordId}
-            onClick={() => handleClickKeyword(keywordId)}
+            text={keyword.name}
+            isSelected={selectedTopKeyword?.keywordId === keyword.keywordId}
+            onClick={() => handleClickTopKeyword(keyword)}
           />
           {index + 1 !== topKeywordList?.length && <StyledArrow />}
         </StyledWrapper>

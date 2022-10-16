@@ -270,8 +270,7 @@ export default {
     },
   ],
   // 5
-  filterKeywordsBySession(sessionId: any) {
-    console.log('sessionId', sessionId);
+  filterKeywordsBySession(sessionId: string | readonly string[]) {
     return {
       data: this.data.map(({ keywordId, name, importance, description, parentKeywordId }) => ({
         keywordId,
@@ -283,24 +282,24 @@ export default {
     };
   },
   // 4
-  findKeyword(keywordId: any) {
+  findKeyword(keywordId: string | readonly string[]) {
     // data를 순회하면서, childrenKeywords를 순회하면서 해당 keyword가 있는지 확인한다.
     const data = this.data
       .map((depth1Item) => {
         // 1뎁스 순회
-        if (depth1Item.keywordId === keywordId) {
+        if (depth1Item.keywordId === Number(keywordId)) {
           return depth1Item;
         }
 
         return depth1Item.childrenKeywords.map((depth2Item) => {
           // 2뎁스 순회
-          if (depth2Item.keywordId === keywordId) {
+          if (depth2Item.keywordId === Number(keywordId)) {
             return depth2Item;
           }
 
           return depth2Item.childrenKeywords.map((depth3Item) => {
             // 3뎁스 순회
-            if (depth3Item.keywordId === keywordId) {
+            if (depth3Item.keywordId === Number(keywordId)) {
               return depth3Item;
             }
 
@@ -313,10 +312,9 @@ export default {
     return data;
   },
   // 6-1
-  filterChildrenKeywords(keywordId: any) {
-    // keywordId를 1뎁스에서 찾아서, 하위 childrenKeywords를 모두 반환한다. []
+  filterChildrenKeywords(keywordId: string | readonly string[]) {
     const data = this.data.find((depth1Item) => {
-      return depth1Item.keywordId === keywordId;
+      return depth1Item.keywordId === Number(keywordId);
     })?.childrenKeywords;
 
     return {
@@ -324,23 +322,23 @@ export default {
     };
   },
   // 10
-  findQuizs(keywordId: any) {
+  findQuizs(keywordId: string | readonly string[]) {
     const data = this.data
       .map((depth1Item) => {
         // 1뎁스 순회
-        if (depth1Item.keywordId === keywordId) {
+        if (depth1Item.keywordId === Number(keywordId)) {
           return depth1Item.quizs.data;
         }
 
         return depth1Item.childrenKeywords.map((depth2Item) => {
           // 2뎁스 순회
-          if (depth2Item.keywordId === keywordId) {
+          if (depth2Item.keywordId === Number(keywordId)) {
             return depth2Item.quizs.data;
           }
 
           return depth2Item.childrenKeywords.map((depth3Item) => {
             // 3뎁스 순회
-            if (depth3Item.keywordId === keywordId) {
+            if (depth3Item.keywordId === Number(keywordId)) {
               return depth3Item.quizs.data;
             }
 

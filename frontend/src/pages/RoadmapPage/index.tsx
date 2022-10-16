@@ -1,13 +1,15 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from '@emotion/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SideSheet } from '../../components/@shared/SideSheet/SideSheet';
 import ResponsiveButton from '../../components/Button/ResponsiveButton';
 import KeywordSection from '../../components/KeywordSection/KeywordSection';
 import { useGetSessions } from '../../hooks/queries/session';
 import { getFlexStyle } from '../../styles/flex.styles';
 import COLOR from '../../constants/color';
+import { useGetChildrenKeywordList } from '../../hooks/queries/keywords';
+import { KeywordResponse } from '../../models/Keywords';
 
 const Size = css`
   width: 700px;
@@ -27,12 +29,30 @@ const RoadmapPage = () => {
   const [isSideSheetOpen, setIsSideSheetOpen] = useState(false);
   const [selectedSessionId, setSelectedSessionId] = useState(1);
   const { data: sessions } = useGetSessions();
+  const [selectedTopKeyword, setSelectedTopKeyword] = useState<KeywordResponse | null>(null);
+
+  const { childrenKeywordList, refetchChildrenKeywordList } = useGetChildrenKeywordList({
+    sessionId: selectedSessionId,
+    keywordId: selectedTopKeyword?.keywordId || 1,
+  });
+
+  const updateSelectedTopKeyword = (keyword: KeywordResponse) => {
+    setSelectedTopKeyword(keyword);
+  };
+
+  const handleClickTopKeyword = (keyword: KeywordResponse) => {
+    setSelectedTopKeyword(keyword);
+  };
+
+  useEffect(() => {
+    refetchChildrenKeywordList();
+  }, [selectedTopKeyword?.keywordId]);
 
   const handleClickSession = (id: number) => {
     setSelectedSessionId(id);
   };
 
-  const handleOpenSideSheet = () => {
+  const handleOpenSideSheet = (keyword?: KeywordResponse | null) => {
     setIsSideSheetOpen(true);
   };
 
@@ -82,8 +102,14 @@ const RoadmapPage = () => {
           </section>
           <section>
             <h2>키워드</h2>
-            <KeywordSection sessionId={selectedSessionId} />
+            <KeywordSection
+              sessionId={selectedSessionId}
+              selectedTopKeyword={selectedTopKeyword}
+              handleClickTopKeyword={handleClickTopKeyword}
+              updateSelectedTopKeyword={updateSelectedTopKeyword}
+            />
           </section>
+
           <section
             css={[
               getFlexStyle({
@@ -93,8 +119,8 @@ const RoadmapPage = () => {
             ]}
           >
             <ResponsiveButton
-              onClick={handleOpenSideSheet}
-              text="JavaScript"
+              onClick={() => handleOpenSideSheet(selectedTopKeyword)}
+              text={selectedTopKeyword?.name}
               color="#fff"
               backgroundColor="#579bca"
               height="50px"
@@ -107,39 +133,49 @@ const RoadmapPage = () => {
                 }),
               ]}
             >
-              <div
-                css={[
-                  getFlexStyle({
-                    flexGrow: 1,
-                    flexDirection: 'row',
-                  }),
-                ]}
-              >
-                <ResponsiveButton
-                  onClick={handleOpenSideSheet}
-                  text="비동기"
-                  color="#fff"
-                  backgroundColor="#8DBFE9"
-                  height="50px"
-                />
-              </div>
-              <div
-                css={[
-                  getFlexStyle({
-                    flexGrow: 1,
-                    flexDirection: 'row',
-                    rowGap: '30px',
-                  }),
-                ]}
-              >
-                <ResponsiveButton
-                  onClick={handleOpenSideSheet}
-                  text="Callback"
-                  color="#fff"
-                  backgroundColor="#B8D8EA"
-                  height="50px"
-                />
-              </div>
+              {childrenKeywordList?.map((keyword) => {
+                return (
+                  <>
+                    <div
+                      css={[
+                        getFlexStyle({
+                          flexGrow: 1,
+                          flexDirection: 'row',
+                        }),
+                      ]}
+                    >
+                      <ResponsiveButton
+                        onClick={() => handleOpenSideSheet(keyword)}
+                        text={keyword.name}
+                        color="#fff"
+                        backgroundColor="#8DBFE9"
+                        height="50px"
+                      />
+                    </div>
+                    <div
+                      css={[
+                        getFlexStyle({
+                          flexGrow: 1,
+                          flexDirection: 'column',
+                          rowGap: '10px',
+                        }),
+                      ]}
+                    >
+                      {keyword.childrenKeywords?.map((keyword) => {
+                        return (
+                          <ResponsiveButton
+                            onClick={() => handleOpenSideSheet(keyword)}
+                            text={keyword.name}
+                            color="#fff"
+                            backgroundColor="#B8D8EA"
+                            height="50px"
+                          />
+                        );
+                      })}
+                    </div>
+                  </>
+                );
+              })}
             </div>
           </section>
         </article>

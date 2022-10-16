@@ -28,27 +28,39 @@ export const useGetKeyword = ({
   );
 };
 
-export const useGetTopKeywordList = (sessionId: number) => {
-  const { data } = useQuery([QUERY_KEY.topKeywordList], () => getTopKeywordList(sessionId));
+export const useGetTopKeywordList = (
+  sessionId: number,
+  { onSuccessCallback }: { onSuccessCallback?: any }
+) => {
+  const { data } = useQuery([QUERY_KEY.topKeywordList], () => getTopKeywordList(sessionId), {
+    onSuccess(data) {
+      onSuccessCallback?.(data);
+    },
+  });
 
   return {
     topKeywordList: data?.data,
   };
 };
 
-export const useGetChildKeywordList = ({
+export const useGetChildrenKeywordList = ({
   sessionId,
   keywordId,
 }: {
   sessionId: number;
   keywordId: number;
 }) => {
-  return useQuery([QUERY_KEY.childKeywordList], () =>
+  const { data, refetch } = useQuery([QUERY_KEY.childKeywordList], () =>
     getChildKeywordList({
       sessionId,
       keywordId,
     })
   );
+
+  return {
+    childrenKeywordList: data?.data,
+    refetchChildrenKeywordList: refetch,
+  };
 };
 
 export const useGetQuizListByKeyword = ({

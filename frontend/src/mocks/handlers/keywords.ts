@@ -11,8 +11,6 @@ export const roadmapHandler = [
 
     const keywordsList = keywordsMock.filterKeywordsBySession(sessionId);
 
-    console.log('keywordsList', keywordsList);
-
     return res(ctx.status(200), ctx.json({ ...keywordsList }));
   }),
 
