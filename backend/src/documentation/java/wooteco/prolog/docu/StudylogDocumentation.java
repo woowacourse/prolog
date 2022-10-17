@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
@@ -67,41 +68,6 @@ class StudylogDocumentation extends Documentation {
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
             .when().get(location)
             .then().log().all().extract();
-    }
-
-    @Test
-    void 스터디로그_임시저장_한다() {
-        //given, when
-        ExtractableResponse<Response> createResponse = given("studylog/create/temp")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .body(createStudylogRequest1())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().put("/studylogs/temp")
-                .then().log().all().extract();
-
-        //then
-        assertThat(createResponse.statusCode()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(createResponse.header("Location")).isNotNull();
-    }
-
-    @Test
-    void 임시저장_스터디로그_조회한다() {
-        //given
-        given("studylog/create/temp")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .body(createStudylogRequest1())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().put("/studylogs/temp")
-                .then().log().all().extract();
-        //when
-        ExtractableResponse<Response> createResponse = given("studylog/create/temp")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/studylogs/temp")
-                .then().log().all().extract();
-
-        // then
-        assertThat(createResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
     @Test
