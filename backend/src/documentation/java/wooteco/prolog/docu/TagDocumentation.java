@@ -1,42 +1,91 @@
 package wooteco.prolog.docu;
 
-import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static wooteco.prolog.ResponseFixture.TAG_RESPONSES;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import io.restassured.module.mockmvc.response.ValidatableMockMvcResponse;
+import io.restassured.RestAssured;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import wooteco.prolog.NewDocumentation;
-import wooteco.prolog.studylog.application.StudylogTagService;
-import wooteco.prolog.studylog.ui.TagController;
+import wooteco.prolog.Documentation;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
+import wooteco.prolog.session.application.dto.MissionRequest;
+import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.studylog.application.dto.StudylogRequest;
+import wooteco.prolog.studylog.application.dto.TagRequest;
+import wooteco.prolog.studylog.application.dto.TagResponse;
 
-@WebMvcTest(controllers = TagController.class)
-public class TagDocumentation extends NewDocumentation {
-
-    @MockBean
-    private StudylogTagService studylogTagService;
+public class TagDocumentation extends Documentation {
 
     @Test
     void 태그_목록을_조회한다() {
-        //given
-        given(studylogTagService.findTagsIncludedInStudylogs())
-                .willReturn(TAG_RESPONSES);
+        // given
+        String title = "SPA";
+        String content = "SPA 방식으로 앱을 구현하였음.\n" + "router 를 구현 하여 이용함.\n";
+        Long sessionId = 세션_등록함(new SessionRequest("세션1"));
+        Long missionId = 미션_등록함(new MissionRequest("세션1 - 지하철 노선도 미션", sessionId));
+        List<TagRequest> tags = Arrays.asList(new TagRequest("자바"), new TagRequest("파이썬"));
 
-        //when
-        ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/tags")
-                .then().log().all();
+        StudylogRequest studylogRequest = new StudylogRequest(title, content, missionId, tags);
+        List<StudylogRequest> params = Arrays.asList(studylogRequest);
 
-        //then
-        response.expect(status().isOk());
+        RestAssured.given()
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(params)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/posts")
+            .then()
+            .log().all();
 
-        //docs
-        response.apply(document("tag/list"));
+        // when
+        ExtractableResponse<Response> response = given("tag/list")
+            .when()
+            .get("/tags")
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        List<TagResponse> tagResponses = response.jsonPath().getList(".", TagResponse.class);
+        List<String> tagNames = tagResponses.stream()
+            .map(TagResponse::getName)
+            .collect(Collectors.toList());
+        List<String> expectedNames = tags.stream()
+            .map(TagRequest::getName)
+            .collect(Collectors.toList());
+        assertThat(tagNames).usingRecursiveComparison().isEqualTo(expectedNames);
     }
+
+    private Long 미션_등록함(MissionRequest request) {
+        return RestAssured.given()
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/missions")
+            .then()
+            .log().all()
+            .extract()
+            .as(MissionResponse.class)
+            .getId();
+    }
+
+    private Long 세션_등록함(SessionRequest request) {
+        return RestAssured
+            .given().log().all()
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/sessions")
+            .then()
+            .log().all()
+            .extract()
+            .as(SessionResponse.class)
+            .getId();
+    }
+
 }
