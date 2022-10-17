@@ -10,7 +10,7 @@ plugins {
 
 group = 'wooteco'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = "1.9"
+sourceCompatibility = '1.8'
 
 repositories {
     mavenCentral()
@@ -174,4 +174,3 @@ sonarqube {
         property "sonar.host.url", "https://sonarcloud.io"
     }
 }
-targetCompatibility = JavaVersion.VERSION_1_9
