@@ -1,56 +1,96 @@
 package wooteco.prolog.docu;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static wooteco.prolog.ResponseFixture.MEMBER;
-import static wooteco.prolog.ResponseFixture.STUDYLOG_RSS_FEED_RESPONSES;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import io.restassured.module.mockmvc.response.ValidatableMockMvcResponse;
-import java.sql.Date;
-import java.time.Instant;
+import io.restassured.RestAssured;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import wooteco.prolog.NewDocumentation;
-import wooteco.prolog.session.domain.Mission;
-import wooteco.prolog.session.domain.Session;
-import wooteco.prolog.studylog.application.StudylogService;
-import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
-import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.Tag;
-import wooteco.prolog.studylog.ui.StudylogRssFeedController;
-import wooteco.prolog.studylog.ui.StudylogRssFeedView;
+import wooteco.prolog.Documentation;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
+import wooteco.prolog.session.application.dto.MissionRequest;
+import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.studylog.application.dto.StudylogRequest;
+import wooteco.prolog.studylog.application.dto.TagRequest;
 
-@WebMvcTest(controllers = StudylogRssFeedController.class)
-class StudylogRssFeedDocumentation extends NewDocumentation {
-
-    @MockBean
-    private StudylogService studylogService;
-
-    @MockBean
-    private StudylogRssFeedView studylogRssFeedView;
+class StudylogRssFeedDocumentation extends Documentation {
 
     @Test
     void RSS_피드를_조회한다() {
-        //given
-        given(studylogService.readRssFeeds(any()))
-                .willReturn(STUDYLOG_RSS_FEED_RESPONSES);
+        // given
+        스터디로그_등록함(Arrays.asList(studylogRequest1(), studylogRequest2()));
 
-        //when
-        ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_RSS_XML_VALUE)
-                .when().get("/rss")
-                .then().log().all();
+        // when
+        ExtractableResponse<Response> response = given("rss-feed/read")
+            .when().get("/rss")
+            .then().log().all().extract();
 
-        //then
-        response.expect(status().isOk());
+        // then
+        assertThat(response.contentType()).isEqualTo("application/rss+xml;charset=UTF-8");
+    }
 
-        //docs
-        response.apply(document("rss-feed/read"));
+    private ExtractableResponse<Response> 스터디로그_등록함(List<StudylogRequest> request) {
+        return RestAssured.given().log().all()
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(request)
+            .contentType(APPLICATION_JSON_VALUE)
+            .when().log().all()
+            .post("/studylogs")
+            .then().log().all().extract();
+    }
+
+    private StudylogRequest studylogRequest1() {
+        Long sessionId = 세션_등록함(new SessionRequest("세션 1"));
+        Long missionId = 미션_등록함(new MissionRequest("세션 1 - 어떤 미션", sessionId));
+
+        return new StudylogRequest(
+            "어떤 타이틀",
+            "어떤 내용",
+            missionId,
+            Arrays.asList(new TagRequest("어떤 태그 1"), new TagRequest("어떤 태그 2"))
+        );
+    }
+
+    private StudylogRequest studylogRequest2() {
+        Long sessionId = 세션_등록함(new SessionRequest("세션 2"));
+        Long missionId = 미션_등록함(new MissionRequest("세션 2 - 어쩌구 미션", sessionId));
+
+        return new StudylogRequest(
+            "어쩌구 타이틀",
+            "어쩌구 내용",
+            missionId,
+            Arrays.asList(new TagRequest("어쩌구 태그 1"), new TagRequest("어쩌구 태그 2"))
+        );
+    }
+
+    private Long 세션_등록함(SessionRequest request) {
+        return RestAssured
+            .given().log().all()
+            .body(request)
+            .contentType(APPLICATION_JSON_VALUE)
+            .when()
+            .post("/sessions")
+            .then()
+            .log().all()
+            .extract()
+            .as(SessionResponse.class)
+            .getId();
+    }
+
+    private Long 미션_등록함(MissionRequest request) {
+        return RestAssured.given()
+            .body(request)
+            .contentType(APPLICATION_JSON_VALUE)
+            .when()
+            .post("/missions")
+            .then()
+            .log().all()
+            .extract()
+            .as(MissionResponse.class)
+            .getId();
     }
 }
