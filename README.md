@@ -26,6 +26,7 @@ https://img.shields.io/github/forks/woowacourse/prolog"/>
 ## Documentation
 
 - [백엔드](https://github.com/woowacourse/prolog/tree/main/docs/backend)
+  - [인가과정 소개](./docs/backend/인가과정.md)
 - [프론트엔드](https://github.com/woowacourse/prolog/tree/main/docs/frontend)
 
 <br/>
