@@ -2,9 +2,11 @@ package wooteco.prolog.image.infrastructure;
 
 import java.util.UUID;
 import org.apache.commons.compress.utils.FileNameUtils;
+import org.springframework.stereotype.Component;
 import wooteco.prolog.image.domain.FileExtension;
 import wooteco.prolog.image.exception.UnsupportedFilExtensionException;
 
+@Component
 public class FileNameGenerator {
 
     public String generate(final String originalFilename) {
