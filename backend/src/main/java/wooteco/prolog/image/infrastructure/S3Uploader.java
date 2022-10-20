@@ -4,12 +4,11 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import java.io.IOException;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.compress.utils.FileNameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import wooteco.prolog.image.exception.FileUploadFailException;
 
 @RequiredArgsConstructor
 @Component
@@ -23,27 +22,24 @@ public class S3Uploader {
     @Value("${application.cloudfront.url}")
     private String cloudFrontUrl;
 
-    public String upload(final MultipartFile uploadImageFile) {
-        amazonS3.putObject(createPutObjectRequest(uploadImageFile));
-        final String newFileName = createNewFileName(uploadImageFile.getOriginalFilename());
-        return cloudFrontUrl + newFileName;
+    public String upload(final MultipartFile uploadImageFile, final String fileName) {
+        putImageFileToS3(uploadImageFile, fileName);
+        return createUploadUrl(fileName);
     }
 
-    private PutObjectRequest createPutObjectRequest(final MultipartFile uploadImageFile) {
+    private void putImageFileToS3(final MultipartFile uploadImageFile, final String fileName) {
         try {
-            return new PutObjectRequest(bucket,
-                    uploadImageFile.getOriginalFilename(),
+            amazonS3.putObject(new PutObjectRequest(bucket,
+                    fileName,
                     uploadImageFile.getInputStream(),
-                    createObjectMetaData(uploadImageFile));
+                    createObjectMetaData(uploadImageFile)));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new FileUploadFailException();
         }
     }
 
-    private String createNewFileName(final String originalFilename) {
-        final String fileName = UUID.randomUUID().toString();
-        final String extension = FileNameUtils.getExtension(originalFilename);
-        return fileName + "." + extension;
+    private String createUploadUrl(final String fileName) {
+        return cloudFrontUrl.concat(fileName);
     }
 
     private ObjectMetadata createObjectMetaData(final MultipartFile uploadImageFile) {
