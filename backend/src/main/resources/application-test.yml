@@ -39,15 +39,6 @@ management:
     elasticsearch:
       enabled: false
 
-cloud:
-  aws:
-    region:
-      static: ap-northeast-2
-    stack:
-      auto: false
 application:
+#  link: http://localhost:8080/
   url: http://localhost:8080
-  bucket:
-    name: prolog-image
-  cloudfront:
-    url: https://d36rfsjtlhxac1.cloudfront.net
