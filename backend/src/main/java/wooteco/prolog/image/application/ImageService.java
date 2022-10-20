@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import wooteco.prolog.image.application.dto.ImageUrlResponse;
+import wooteco.prolog.image.infrastructure.S3Uploader;
 
 @RequiredArgsConstructor
 @Service

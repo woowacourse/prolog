@@ -1,4 +1,4 @@
-package wooteco.prolog.image.application;
+package wooteco.prolog.image.infrastructure;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
