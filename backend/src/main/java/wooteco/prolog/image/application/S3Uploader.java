@@ -1,21 +1,19 @@
 package wooteco.prolog.image.application;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetUrlRequest;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @RequiredArgsConstructor
 @Component
 public class S3Uploader {
 
-    private final S3Client s3Client;
+    private final AmazonS3 amazonS3;
 
     @Value("${application.bucket.name}")
     private String bucket;
@@ -24,37 +22,25 @@ public class S3Uploader {
     private String cloudFrontUrl;
 
     public String upload(final MultipartFile uploadImageFile) {
+        amazonS3.putObject(createPutObjectRequest(uploadImageFile));
+        return cloudFrontUrl + uploadImageFile.getOriginalFilename();
+    }
+
+    private PutObjectRequest createPutObjectRequest(final MultipartFile uploadImageFile) {
         try {
-            s3Client.putObject(getPutObjectRequest(uploadImageFile), getRequestBody(uploadImageFile));
-            return cloudFrontUrl + getUrl(uploadImageFile);
+            return new PutObjectRequest(bucket,
+                    uploadImageFile.getOriginalFilename(),
+                    uploadImageFile.getInputStream(),
+                    createObjectMetaData(uploadImageFile));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private PutObjectRequest getPutObjectRequest(final MultipartFile uploadImageFile) {
-        return PutObjectRequest.builder()
-                .bucket(bucket)
-                .key(uploadImageFile.getOriginalFilename())
-                .contentType(uploadImageFile.getContentType())
-                .contentLength(uploadImageFile.getSize())
-                .build();
-    }
-
-    private static RequestBody getRequestBody(final MultipartFile uploadImageFile) throws IOException {
-        return RequestBody.fromByteBuffer(ByteBuffer.wrap(uploadImageFile.getBytes()));
-    }
-
-    private String getUrl(final MultipartFile uploadImageFile) {
-        return s3Client.utilities()
-                .getUrl(getUrlRequest(uploadImageFile))
-                .getPath();
-    }
-
-    private GetUrlRequest getUrlRequest(final MultipartFile uploadImageFile) {
-        return GetUrlRequest.builder()
-                .bucket(bucket)
-                .key(uploadImageFile.getOriginalFilename())
-                .build();
+    private ObjectMetadata createObjectMetaData(final MultipartFile uploadImageFile) {
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType(uploadImageFile.getContentType());
+        objectMetadata.setContentLength(uploadImageFile.getSize());
+        return objectMetadata;
     }
 }
