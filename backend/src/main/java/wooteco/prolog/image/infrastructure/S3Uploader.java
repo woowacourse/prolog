@@ -39,7 +39,7 @@ public class S3Uploader {
     }
 
     private String createUploadUrl(final String fileName) {
-        return cloudFrontUrl.concat(fileName);
+        return cloudFrontUrl + fileName;
     }
 
     private ObjectMetadata createObjectMetaData(final MultipartFile uploadImageFile) {
