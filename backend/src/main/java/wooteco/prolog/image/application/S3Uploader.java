@@ -4,7 +4,9 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import java.io.IOException;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.compress.utils.FileNameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +25,8 @@ public class S3Uploader {
 
     public String upload(final MultipartFile uploadImageFile) {
         amazonS3.putObject(createPutObjectRequest(uploadImageFile));
-        return cloudFrontUrl + uploadImageFile.getOriginalFilename();
+        final String newFileName = createNewFileName(uploadImageFile.getOriginalFilename());
+        return cloudFrontUrl + newFileName;
     }
 
     private PutObjectRequest createPutObjectRequest(final MultipartFile uploadImageFile) {
@@ -35,6 +38,12 @@ public class S3Uploader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String createNewFileName(final String originalFilename) {
+        final String fileName = UUID.randomUUID().toString();
+        final String extension = FileNameUtils.getExtension(originalFilename);
+        return fileName + "." + extension;
     }
 
     private ObjectMetadata createObjectMetaData(final MultipartFile uploadImageFile) {
