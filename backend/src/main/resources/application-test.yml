@@ -50,4 +50,4 @@ application:
   bucket:
     name: prolog-image
   cloudfront:
-    url: https://d36rfsjtlhxac1.cloudfront.net
+    url: https://d36rfsjtlhxac1.cloudfront.net/
