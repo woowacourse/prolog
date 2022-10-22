@@ -64,6 +64,13 @@ public class KeywordService {
             request.getName(), request.getDescription(), request.getOrder(), request.getImportance(), keywordParent);
     }
 
+    public void deleteKeyword(final Long sessionId, final Long keywordId) {
+        existSession(sessionId);
+        Keyword keyword = keywordRepository.findFetchById(keywordId);
+
+        keywordRepository.delete(keyword);
+    }
+
     private void existSession(final Long sessionId) {
         boolean exists = sessionRepository.existsById(sessionId);
         if (!exists) {

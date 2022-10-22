@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestConstructor;
@@ -24,7 +25,6 @@ class KeywordServiceTest {
 
     private final KeywordService keywordService;
     private final SessionRepository sessionRepository;
-
     private final KeywordRepository keywordRepository;
     private final EntityManager em;
 
@@ -161,6 +161,28 @@ class KeywordServiceTest {
         KeywordUpdateRequest keywordUpdateRequest = new KeywordUpdateRequest("자바스크립트", "자바스크립트에 대한 설명", 1, 2, keywordChildId);
         assertThatThrownBy(() -> keywordService.updateKeyword(sessionId, keywordChildId, keywordUpdateRequest))
             .isInstanceOf(KeywordAndKeywordParentSameException.class);
+    }
+
+    @Test
+    void 키워드를_삭제할_수_있다() {
+        // given
+        Session session = createAndSaveSession(new Session("2022 백엔드 레벨 1"));
+        Keyword parent = createKeywordParent(Keyword.createKeyword("자바", "자바에 대한 설명", 1, 1, 1L, null));
+        Keyword child = createKeywordChildren(Keyword.createKeyword("List", "List에 대한 설명", 1, 1, 1L, parent));
+
+        Long sessionId = session.getId();
+        Long keywordParentId = parent.getId();
+        Long keywordChildId = child.getId();
+        em.clear();
+
+        // when
+        keywordService.deleteKeyword(sessionId, keywordParentId);
+        keywordRepository.flush();
+        em.clear();
+
+        // then
+        Optional<Keyword> extract = keywordRepository.findById(keywordChildId);
+        assertThat(extract).isNotPresent();
     }
 
     private Keyword createKeywordParent(final Keyword keyword) {
