@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
@@ -33,7 +34,7 @@ public class Keyword {
     private String description;
 
     @Column(nullable = false)
-    private int order;
+    private int ordinal;
 
     @Column(nullable = false)
     private int importance;
@@ -46,38 +47,55 @@ public class Keyword {
     private Keyword parent;
 
     @BatchSize(size = 1000)
-    @OneToMany(mappedBy = "keyword", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Keyword> children = new ArrayList<>();
 
+    @Builder
     public Keyword(final Long id,
                    final String name,
                    final String description,
-                   final int order,
+                   final int ordinal,
                    final int importance,
                    final Long sessionId,
                    final Keyword parent) {
-        validateOrder(order);
+        validateOrdinal(ordinal);
         this.id = id;
         this.name = name;
         this.description = description;
-        this.order = order;
+        this.ordinal = ordinal;
         this.importance = importance;
         this.sessionId = sessionId;
         this.parent = parent;
     }
 
-    private void validateOrder(final int order) {
-        if (order <= 0) {
+    private void validateOrdinal(final int ordinal) {
+        if (ordinal <= 0) {
             throw new KeywordOrderException();
         }
     }
 
     public Keyword(final String name,
                    final String description,
-                   final int order,
+                   final int ordinal,
                    final int importance,
                    final Long sessionId,
                    final Keyword parent) {
-        this(null, name, description, order, importance, sessionId, parent);
+        this(null, name, description, ordinal, importance, sessionId, parent);
+    }
+
+    public static Keyword createKeyword(final String name,
+                                        final String description,
+                                        final int ordinal,
+                                        final int importance,
+                                        final Long sessionId,
+                                        final Keyword parent) {
+        return Keyword.builder()
+            .name(name)
+            .description(description)
+            .ordinal(ordinal)
+            .importance(importance)
+            .sessionId(sessionId)
+            .parent(parent)
+            .build();
     }
 }
