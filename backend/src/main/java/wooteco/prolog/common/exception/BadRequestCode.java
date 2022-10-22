@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import wooteco.prolog.levellogs.exception.InvalidLevelLogAuthorException;
 import wooteco.prolog.levellogs.exception.LevelLogNotFoundException;
+import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
 import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
 import wooteco.prolog.roadmap.exception.KeywordOrderException;
 import wooteco.prolog.login.excetpion.GithubApiFailException;
@@ -118,7 +119,8 @@ public enum BadRequestCode {
     LEVEL_LOG_NOT_FOUND_EXCEPTION(7002, "레벨 로그를 찾을 수 없습니다.",LevelLogNotFoundException.class),
 
     ROADMAP_KEYWORD_ORDER_EXCEPTION(8001, "키워드의 순서는 1 이상이여야 합니다.",KeywordOrderException.class),
-    ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION(8002, "키워드를 찾을 수 없습니다.",KeywordNotFoundException.class);
+    ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION(8002, "키워드를 찾을 수 없습니다.",KeywordNotFoundException.class),
+    ROADMAP_KEYWORD_AND_PARENT_KEYWORD_SAME_EXCEPTION(8003, "키워드와 부모 키워드는 같을 수 없습니다.", KeywordAndKeywordParentSameException.class);
 
     private int code;
     private String message;

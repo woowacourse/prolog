@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
+import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
 import wooteco.prolog.roadmap.exception.KeywordOrderException;
 
 @Getter
@@ -99,10 +100,26 @@ public class Keyword {
             .build();
     }
 
+    public void validateKeywordParent() {
+        if (parent != null && id.equals(parent.getId())) {
+            throw new KeywordAndKeywordParentSameException();
+        }
+    }
+
     public Long getParentIdOrNull() {
         if (parent == null) {
             return null;
         }
         return parent.getId();
+    }
+
+    public void update(final String name, final String description, final int order,
+                       final int importance, final Keyword keywordParent) {
+        this.name = name;
+        this.description = description;
+        this.ordinal = order;
+        this.importance = importance;
+        this.parent = keywordParent;
+        validateKeywordParent();
     }
 }

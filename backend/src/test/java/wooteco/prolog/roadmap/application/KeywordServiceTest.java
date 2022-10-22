@@ -10,6 +10,8 @@ import org.springframework.test.context.TestConstructor;
 import wooteco.prolog.roadmap.Keyword;
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordResponse;
+import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
+import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
 import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
 import wooteco.prolog.roadmap.repository.KeywordRepository;
 import wooteco.prolog.session.domain.Session;
@@ -122,6 +124,43 @@ class KeywordServiceTest {
             () -> assertThat(extract.getChildrenKeywords().get(0).getChildrenKeywords()).hasSize(1),
             () -> assertThat(extract.getChildrenKeywords().get(1).getChildrenKeywords()).hasSize(1)
         );
+    }
+
+    @Test
+    void 키워드의_내용을_수정할_수_있다() {
+        // given
+        Session session = createAndSaveSession(new Session("2022 백엔드 레벨 1"));
+        Keyword keyword = createKeywordParent(Keyword.createKeyword("자바", "자바에 대한 설명", 1, 1, 1L, null));
+
+        Long sessionId = session.getId();
+        Long keywordId = keyword.getId();
+        em.clear();
+
+        // when
+        KeywordUpdateRequest keywordUpdateRequest = new KeywordUpdateRequest("자바스크립트", "자바스크립트에 대한 설명", 1, 2, null);
+        keywordService.updateKeyword(sessionId, keywordId, keywordUpdateRequest);
+        em.clear();
+
+        // then
+        Keyword extract = keywordRepository.findById(keywordId).get();
+        assertThat(extract.getName()).isEqualTo("자바스크립트");
+    }
+
+    @Test
+    void 키워드의_ID가_부모의_ID와_같은경우_예외가_발생한다() {
+        // given
+        Session session = createAndSaveSession(new Session("2022 백엔드 레벨 1"));
+        Keyword parent = createKeywordParent(Keyword.createKeyword("자바", "자바에 대한 설명", 1, 1, 1L, null));
+        Keyword child = createKeywordChildren(Keyword.createKeyword("List", "List에 대한 설명", 1, 1, 1L, parent));
+
+        Long sessionId = session.getId();
+        Long keywordChildId = child.getId();
+        em.clear();
+
+        // when & then
+        KeywordUpdateRequest keywordUpdateRequest = new KeywordUpdateRequest("자바스크립트", "자바스크립트에 대한 설명", 1, 2, keywordChildId);
+        assertThatThrownBy(() -> keywordService.updateKeyword(sessionId, keywordChildId, keywordUpdateRequest))
+            .isInstanceOf(KeywordAndKeywordParentSameException.class);
     }
 
     private Keyword createKeywordParent(final Keyword keyword) {

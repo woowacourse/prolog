@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.roadmap.Keyword;
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordResponse;
+import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
 import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
 import wooteco.prolog.roadmap.repository.KeywordRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
@@ -26,9 +27,12 @@ public class KeywordService {
     public Long createKeyword(final Long sessionId, final KeywordCreateRequest request) {
         existSession(sessionId);
         Keyword keywordParent = findKeywordParentOrNull(request.getParentKeywordId());
-        Keyword keyword = createKeyword(sessionId, request, keywordParent);
 
-        return keywordRepository.save(keyword).getId();
+        Keyword keyword = createKeyword(sessionId, request, keywordParent);
+        keywordRepository.save(keyword);
+        keyword.validateKeywordParent();
+
+        return keyword.getId();
     }
 
     @Transactional(readOnly = true)
@@ -48,6 +52,16 @@ public class KeywordService {
         Keyword keyword = keywordRepository.findFetchById(keywordId);
 
         return KeywordResponse.createWithAllChildResponse(keyword);
+    }
+
+    public void updateKeyword(final Long sessionId, final Long keywordId, final KeywordUpdateRequest request) {
+        existSession(sessionId);
+        Keyword keyword = keywordRepository.findById(keywordId)
+            .orElseThrow(KeywordNotFoundException::new);
+        Keyword keywordParent = findKeywordParentOrNull(request.getParentKeywordId());
+
+        keyword.update(
+            request.getName(), request.getDescription(), request.getOrder(), request.getImportance(), keywordParent);
     }
 
     private void existSession(final Long sessionId) {
