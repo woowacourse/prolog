@@ -1,5 +1,6 @@
 package wooteco.prolog.roadmap.application;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,6 +8,7 @@ import wooteco.prolog.roadmap.Keyword;
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordResponse;
 import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
+import wooteco.prolog.roadmap.application.dto.KeywordsResponse;
 import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
 import wooteco.prolog.roadmap.repository.KeywordRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
@@ -52,6 +54,15 @@ public class KeywordService {
         Keyword keyword = keywordRepository.findFetchById(keywordId);
 
         return KeywordResponse.createWithAllChildResponse(keyword);
+    }
+
+    @Transactional(readOnly = true)
+    public KeywordsResponse findSessionIncludeRootKeywords(final Long sessionId) {
+        existSession(sessionId);
+
+        List<Keyword> keywords = keywordRepository.findBySessionId(sessionId);
+
+        return KeywordsResponse.createResponse(keywords);
     }
 
     public void updateKeyword(final Long sessionId, final Long keywordId, final KeywordUpdateRequest request) {

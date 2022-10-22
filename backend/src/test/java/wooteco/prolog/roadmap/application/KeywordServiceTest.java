@@ -12,6 +12,7 @@ import wooteco.prolog.roadmap.Keyword;
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordResponse;
 import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
+import wooteco.prolog.roadmap.application.dto.KeywordsResponse;
 import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
 import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
 import wooteco.prolog.roadmap.repository.KeywordRepository;
@@ -124,6 +125,24 @@ class KeywordServiceTest {
             () -> assertThat(extract.getChildrenKeywords().get(0).getChildrenKeywords()).hasSize(1),
             () -> assertThat(extract.getChildrenKeywords().get(1).getChildrenKeywords()).hasSize(1)
         );
+    }
+
+    @Test
+    void 세션에_속한_최상위_키워드들을_조회할_수_있다() {
+        // given
+        Session session = createAndSaveSession(new Session("2022 백엔드 레벨 1"));
+        createKeywordParent(Keyword.createKeyword("자바", "자바에 대한 설명", 1, 1, 1L, null));
+        createKeywordParent(Keyword.createKeyword("스프링", "스프링에 대한 설명", 2, 1, 1L, null));
+
+        Long sessionId = session.getId();
+
+        em.clear();
+
+        // when
+        KeywordsResponse extract = keywordService.findSessionIncludeRootKeywords(sessionId);
+
+        // then
+        assertThat(extract.getData()).hasSize(2);
     }
 
     @Test
