@@ -1,10 +1,13 @@
 package wooteco.prolog.roadmap.application;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.roadmap.Keyword;
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
+import wooteco.prolog.roadmap.application.dto.KeywordResponse;
+import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
 import wooteco.prolog.roadmap.repository.KeywordRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.session.exception.SessionNotFoundException;
@@ -29,10 +32,26 @@ public class KeywordService {
         return keywordRepository.save(keyword).getId();
     }
 
+    public KeywordResponse findKeywordWithAllChild(final Long sessionId, final Long keywordId) {
+        existSession(sessionId);
+        existKeyword(keywordId);
+
+        Keyword keyword = keywordRepository.findFetchById(keywordId);
+
+        return KeywordResponse.createResponse(keyword);
+    }
+
     private void existSession(final Long sessionId) {
         boolean exists = sessionRepository.existsById(sessionId);
         if (!exists) {
             throw new SessionNotFoundException();
+        }
+    }
+
+    private void existKeyword(final Long keywordId) {
+        boolean exists = keywordRepository.existsById(keywordId);
+        if (!exists) {
+            throw new KeywordNotFoundException();
         }
     }
 

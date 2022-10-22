@@ -1,12 +1,14 @@
 package wooteco.prolog.roadmap.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestConstructor;
 import wooteco.prolog.roadmap.Keyword;
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
+import wooteco.prolog.roadmap.application.dto.KeywordResponse;
 import wooteco.prolog.roadmap.repository.KeywordRepository;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
@@ -38,6 +40,8 @@ class KeywordServiceTest {
         createAndSaveSession(new Session("2022 백엔드 레벨 1"));
         KeywordCreateRequest createRequest = new KeywordCreateRequest("자바", "자바에 대한 설명", 1, 1, null);
 
+        em.clear();
+
         // when
         Long extract = keywordService.createKeyword(1L, createRequest);
 
@@ -49,8 +53,10 @@ class KeywordServiceTest {
     void 자식_키워드를_생성할_수_있다() {
         // given
         createAndSaveSession(new Session("2022 백엔드 레벨 1"));
-        createKeyword(Keyword.createKeyword("자바", "자바에 대한 설명", 1, 1, 1L, null));
+        createKeywordParent(Keyword.createKeyword("자바", "자바에 대한 설명", 1, 1, 1L, null));
         KeywordCreateRequest createRequest = new KeywordCreateRequest("List", "List에 대한 설명", 1, 1, 1L);
+
+        em.clear();
 
         // when
         Long extract = keywordService.createKeyword(1L, createRequest);
@@ -59,13 +65,42 @@ class KeywordServiceTest {
         assertThat(extract).isNotNull();
     }
 
-    private void createKeyword(final Keyword keyword) {
-        keywordRepository.save(keyword);
+    @Test
+    void 부모_키워드를_조회하면_소속된_자식_키워드도_함께_조회된다() {
+        // given
+        Session session = createAndSaveSession(new Session("2022 백엔드 레벨 1"));
+        Keyword parent = createKeywordParent(Keyword.createKeyword("자바", "자바에 대한 설명", 1, 1, 1L, null));
+
+        Keyword children1 = createKeywordChildren(Keyword.createKeyword("List", "List에 대한 설명", 1, 1, 1L, parent));
+        Keyword children2 = createKeywordChildren(Keyword.createKeyword("Set", "Set에 대한 설명", 2, 1, 1L, parent));
+
+        createKeywordChildren(Keyword.createKeyword("List.of()", "List.of()에 대한 설명", 1, 1, 1L, children1));
+        createKeywordChildren(Keyword.createKeyword("Set.of()", "Set.of()에 대한 설명", 1, 1, 1L, children2));
+
+        Long sessionId = session.getId();
+        Long keywordParentId = parent.getId();
         em.clear();
+
+        // when
+        KeywordResponse extract = keywordService.findKeywordWithAllChild(sessionId, keywordParentId);
+
+        // then
+        assertAll(
+            () -> assertThat(extract.getChildrenKeywords()).hasSize(2),
+            () -> assertThat(extract.getChildrenKeywords().get(0).getChildrenKeywords()).hasSize(1),
+            () -> assertThat(extract.getChildrenKeywords().get(1).getChildrenKeywords()).hasSize(1)
+        );
     }
 
-    private void createAndSaveSession(final Session session) {
-        sessionRepository.save(session);
-        em.clear();
+    private Keyword createKeywordParent(final Keyword keyword) {
+        return keywordRepository.save(keyword);
+    }
+
+    private Keyword createKeywordChildren(final Keyword keyword) {
+        return keywordRepository.save(keyword);
+    }
+
+    private Session createAndSaveSession(final Session session) {
+        return sessionRepository.save(session);
     }
 }

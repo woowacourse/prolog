@@ -98,4 +98,11 @@ public class Keyword {
             .parent(parent)
             .build();
     }
+
+    public Long getParentIdOrNull() {
+        if (parent == null) {
+            return null;
+        }
+        return parent.getId();
+    }
 }
