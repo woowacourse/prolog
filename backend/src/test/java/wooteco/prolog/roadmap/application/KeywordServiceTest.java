@@ -1,6 +1,7 @@
 package wooteco.prolog.roadmap.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import javax.persistence.EntityManager;
@@ -9,6 +10,7 @@ import org.springframework.test.context.TestConstructor;
 import wooteco.prolog.roadmap.Keyword;
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordResponse;
+import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
 import wooteco.prolog.roadmap.repository.KeywordRepository;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
@@ -63,6 +65,36 @@ class KeywordServiceTest {
 
         // then
         assertThat(extract).isNotNull();
+    }
+
+    @Test
+    void 키워드를_조회할_수_있다() {
+        // given
+        Session session = createAndSaveSession(new Session("2022 백엔드 레벨 1"));
+        Keyword keyword = createKeywordParent(Keyword.createKeyword("자바", "자바에 대한 설명", 1, 1, 1L, null));
+
+        Long sessionId = session.getId();
+        Long keywordId = keyword.getId();
+        em.clear();
+
+        // when
+        KeywordResponse extract = keywordService.findKeyword(sessionId, keywordId);
+
+        // then
+        assertThat(extract.getKeywordId()).isEqualTo(1);
+    }
+
+    @Test
+    void 키워드를_조회할때_값이_없는경우_예외가_발생한다() {
+        // given
+        Session session = createAndSaveSession(new Session("2022 백엔드 레벨 1"));
+        Long sessionId = session.getId();
+
+        em.clear();
+
+        // when & then
+        assertThatThrownBy(() -> keywordService.findKeyword(sessionId, 1L))
+            .isInstanceOf(KeywordNotFoundException.class);
     }
 
     @Test

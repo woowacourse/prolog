@@ -29,22 +29,29 @@ public class KeywordResponse {
     }
 
     public static KeywordResponse createResponse(final Keyword keyword) {
-        if (keyword == null) {
-            return null;
-        }
         return new KeywordResponse(
             keyword.getId(),
             keyword.getName(),
             keyword.getOrdinal(),
             keyword.getParentIdOrNull(),
             keyword.getDescription(),
-            createKeywordChildren(keyword.getChildren()));
+            null);
     }
 
-    private static List<KeywordResponse> createKeywordChildren(final List<Keyword> children) {
+    public static KeywordResponse createWithAllChildResponse(final Keyword keyword) {
+        return new KeywordResponse(
+            keyword.getId(),
+            keyword.getName(),
+            keyword.getOrdinal(),
+            keyword.getParentIdOrNull(),
+            keyword.getDescription(),
+            createKeywordChild(keyword.getChildren()));
+    }
+
+    private static List<KeywordResponse> createKeywordChild(final List<Keyword> children) {
         List<KeywordResponse> keywords = new ArrayList<>();
         for (Keyword keyword : children) {
-            keywords.add(createResponse(keyword));
+            keywords.add(createWithAllChildResponse(keyword));
         }
         return keywords;
     }
