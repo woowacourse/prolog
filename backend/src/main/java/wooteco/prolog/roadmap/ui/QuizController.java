@@ -20,7 +20,7 @@ public class QuizController {
 
     //: todo admin login 생기면 검증 추가
     @PostMapping("/{sessionId}/keywords/{keywordId}/quizs")
-    public ResponseEntity<Void> applyDefaultAbilities(@PathVariable Long sessionId,
+    public ResponseEntity<Void> create(@PathVariable Long sessionId,
                                                       @PathVariable Long keywordId,
                                                       @RequestBody QuizRequest quizRequest) {
         final Long quizId = quizService.createQuiz(keywordId, quizRequest);
