@@ -9,6 +9,7 @@ import wooteco.prolog.roadmap.application.dto.QuizzesResponse;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.Quiz;
 import wooteco.prolog.roadmap.exception.KeywordOrderException;
+import wooteco.prolog.roadmap.exception.QuizNotFoundException;
 import wooteco.prolog.roadmap.repository.KeywordRepository;
 import wooteco.prolog.roadmap.repository.QuizRepository;
 
@@ -31,5 +32,13 @@ public class QuizService {
     public QuizzesResponse findQuizzes(Long keywordId) {
         final List<Quiz> quizzes = quizRepository.findQuizByKeywordId(keywordId);
         return QuizzesResponse.of(keywordId, quizzes);
+    }
+
+    @Transactional
+    public void deleteQuiz(Long quizId) {
+        if (!quizRepository.existsById(quizId)) {
+            throw new QuizNotFoundException();
+        }
+        quizRepository.deleteById(quizId);
     }
 }

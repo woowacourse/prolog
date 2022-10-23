@@ -35,6 +35,8 @@ class QuizServiceTest {
     private Quiz 자바_질문2;
     private Quiz 깃_질문1;
 
+    private QuizRequest 퀴즈_요청 = new QuizRequest("자바를 자바바~");
+
     @BeforeEach
     void setUp() {
         session_백엔드_레벨1 = sessionRepository.save(new Session("백엔드Java 레벨1"));
@@ -56,16 +58,24 @@ class QuizServiceTest {
     @DisplayName("없는 키워드에 퀴즈를 생성하면 예외를 반환한다")
     void create_false_not_found_keyword() {
         final Long 없는_세션_ID = 1000L;
-        final QuizRequest 퀴즈_요청 = new QuizRequest("자바를 자바바~");
         Assertions.assertThatThrownBy(() -> quizService.createQuiz(없는_세션_ID, 퀴즈_요청));
     }
 
     @Test
     @DisplayName("퀴즈를 생성한다.")
     void create() {
-        final QuizRequest 퀴즈_요청 = new QuizRequest("자바를 자바바~");
         final Long quizId = quizService.createQuiz(자바.getId(), 퀴즈_요청);
 
         Assertions.assertThat(quizId).isNotNull();
+    }
+
+    @Test
+    @DisplayName("퀴즈를 삭제한다.")
+    void delete() {
+        final Long quizId = quizService.createQuiz(자바.getId(), 퀴즈_요청);
+
+        quizService.deleteQuiz(quizId);
+
+        Assertions.assertThat(quizRepository.existsById(quizId)).isFalse();
     }
 }
