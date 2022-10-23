@@ -28,5 +28,15 @@ github:
     access-token: https://github.com/login/oauth/access_token
     profile: https://api.github.com/user
 
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
 application:
   url: https://dev.prolog.techcourse.co.kr
+  bucket:
+    name: prolog-image
+  cloudfront:
+    url: https://d36rfsjtlhxac1.cloudfront.net
