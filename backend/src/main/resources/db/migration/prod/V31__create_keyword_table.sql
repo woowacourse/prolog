@@ -14,3 +14,8 @@ CREATE TABLE keyword
 ALTER TABLE keyword
     ADD CONSTRAINT FK_keyword_session_id
         FOREIGN KEY (session_id) REFERENCES session (id);
+
+
+ALTER TABLE keyword
+    ADD CONSTRAINT FK_keyword_parent_id
+        FOREIGN KEY (parent_id) REFERENCES keyword (id);
