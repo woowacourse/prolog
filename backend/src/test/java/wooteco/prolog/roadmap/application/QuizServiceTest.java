@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import wooteco.prolog.roadmap.application.dto.QuizRequest;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.Quiz;
+import wooteco.prolog.roadmap.exception.QuizNotFoundException;
 import wooteco.prolog.roadmap.repository.KeywordRepository;
 import wooteco.prolog.roadmap.repository.QuizRepository;
 import wooteco.prolog.session.domain.Session;
@@ -77,5 +78,14 @@ class QuizServiceTest {
         quizService.deleteQuiz(quizId);
 
         Assertions.assertThat(quizRepository.existsById(quizId)).isFalse();
+    }
+
+    @Test
+    @DisplayName("없는 퀴즈를 삭제하면 예외가 발생한다.")
+    void delete_false() {
+        final Long 없는_퀴즈_id = 10000L;
+
+        Assertions.assertThatThrownBy(() -> quizService.deleteQuiz(없는_퀴즈_id))
+            .isInstanceOf(QuizNotFoundException.class);
     }
 }
