@@ -6,6 +6,7 @@ import {
   requestEditProfileIntroduction,
   requestGetMyScrap,
   requestGetProfileIntroduction,
+  requestPostRolePromotion,
 } from '../../service/requests';
 
 const QUERY_KEY = {
@@ -81,3 +82,6 @@ export const useGetProfileIntroduction = ({ username }) =>
   useQuery(QUERY_KEY.introduction, () =>
     requestGetProfileIntroduction(username).then((res) => res.json())
   );
+
+export const usePostRolePromotion = ({ accessToken }, options) =>
+  useMutation(() => requestPostRolePromotion(accessToken).then((res) => res.json()), options);

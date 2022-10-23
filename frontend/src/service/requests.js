@@ -164,6 +164,15 @@ export const requestEditProfileIntroduction = (username, data, accessToken) =>
     body: JSON.stringify(data),
   });
 
+export const requestPostRolePromotion = (accessToken) =>
+  fetch(`${BASE_URL}/members/promote`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
 /* Report 관련 requests */
 export const requestGetReportList = ({ username, type, size = 10, page = 1 }) =>
   fetch(`${BASE_URL}/${username}/reports?type=${type}&page=${page}&size=${size}`, {

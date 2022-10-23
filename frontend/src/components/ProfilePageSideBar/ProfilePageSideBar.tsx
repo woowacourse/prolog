@@ -27,7 +27,11 @@ import {
   RoleContainer,
   PromoteRoleButton,
 } from './ProfilePageSideBar.styles';
-import { useGetProfileQuery, usePutProfileMutation } from '../../hooks/queries/profile';
+import {
+  useGetProfileQuery,
+  usePostRolePromotion,
+  usePutProfileMutation,
+} from '../../hooks/queries/profile';
 
 const ProfilePageSideBar = ({ menu }) => {
   const history = useHistory();
@@ -76,9 +80,22 @@ const ProfilePageSideBar = ({ menu }) => {
     }
   );
 
+  const { mutate: promoteRole } = usePostRolePromotion(
+    { accessToken },
+    {
+      onSuccess: () => {
+        alert('등업 신청이 완료되었습니다🎉 등업은 최대 2~3주 소요될 수 있습니다.');
+      },
+    }
+  );
+
   const onSelectMenu = ({ key, path }) => () => {
     setSelectedMenu(key);
     history.push(path);
+  };
+
+  const onPromoteRoleButton = () => {
+    promoteRole();
   };
 
   return (
@@ -87,7 +104,11 @@ const ProfilePageSideBar = ({ menu }) => {
         <Image src={user?.imageUrl} alt="프로필 이미지" />
         <RoleContainer>
           <Role>{user?.role}</Role>
-          {isOwner ? <PromoteRoleButton>등업 신청</PromoteRoleButton> : <div></div>}
+          {isOwner ? (
+            <PromoteRoleButton onClick={onPromoteRoleButton}>등업 신청</PromoteRoleButton>
+          ) : (
+            <div></div>
+          )}
         </RoleContainer>
         <NicknameWrapper>
           {isProfileEditing ? (
