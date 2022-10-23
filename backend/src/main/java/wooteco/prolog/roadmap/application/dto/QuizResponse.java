@@ -1,13 +1,24 @@
 package wooteco.prolog.roadmap.application.dto;
 
 
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import wooteco.prolog.roadmap.domain.Quiz;
 
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class QuizResponse {
 
-    private final String question;
+    private Long quizId;
+    private String question;
 
+    public QuizResponse(Long quizId, String question) {
+        this.quizId = quizId;
+        this.question = question;
+    }
+
+    public static QuizResponse of(Quiz quiz) {
+        return new QuizResponse(quiz.getId(), quiz.getQuestion());
+    }
 }

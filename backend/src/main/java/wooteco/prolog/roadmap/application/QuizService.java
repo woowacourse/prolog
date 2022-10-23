@@ -1,9 +1,11 @@
 package wooteco.prolog.roadmap.application;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.roadmap.application.dto.QuizRequest;
+import wooteco.prolog.roadmap.application.dto.QuizzesResponse;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.Quiz;
 import wooteco.prolog.roadmap.exception.KeywordOrderException;
@@ -24,5 +26,10 @@ public class QuizService {
             .orElseThrow(KeywordOrderException::new);
 
         return quizRepository.save(new Quiz(keyword, quizRequest.getQuestion())).getId();
+    }
+
+    public QuizzesResponse findQuizzes(Long keywordId) {
+        final List<Quiz> quizzes = quizRepository.findQuizByKeywordId(keywordId);
+        return QuizzesResponse.of(keywordId, quizzes);
     }
 }
