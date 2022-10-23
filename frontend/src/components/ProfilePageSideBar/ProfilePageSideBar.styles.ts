@@ -34,11 +34,29 @@ const Nickname = styled.div`
   padding-left: 1.2rem;
 `;
 
-const Role = styled.div`
+const RoleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 1rem;
-  padding-left: 1.2rem;
+  padding: 0 1.2rem;
+`;
+
+const Role = styled.div`
   font-size: 1.2rem;
   color: ${COLOR.LIGHT_GRAY_900};
+`;
+
+const PromoteRoleButton = styled.button`
+  background-color: transparent;
+  font-size: 1rem;
+  color: ${COLOR.LIGHT_GRAY_800};
+  border-bottom: 1px solid ${COLOR.LIGHT_GRAY_600};
+  padding: 0 0.1em;
+  :hover {
+    color: ${COLOR.LIGHT_BLUE_800};
+    border-color: ${COLOR.LIGHT_BLUE_800};
+  }
 `;
 
 const MenuList = styled.ul`
@@ -132,6 +150,8 @@ export {
   Profile,
   Image,
   Nickname,
+  RoleContainer,
+  PromoteRoleButton,
   Role,
   MenuList,
   MenuItem,

@@ -24,6 +24,8 @@ import {
   EditButtonStyle,
   NicknameWrapper,
   NicknameInput,
+  RoleContainer,
+  PromoteRoleButton,
 } from './ProfilePageSideBar.styles';
 import { useGetProfileQuery, usePutProfileMutation } from '../../hooks/queries/profile';
 
@@ -82,7 +84,11 @@ const ProfilePageSideBar = ({ menu }) => {
   return (
     <Container>
       <Profile>
-        <Image src={user?.imageUrl} alt="프로필 이미지" /> <Role>{user?.role}</Role>
+        <Image src={user?.imageUrl} alt="프로필 이미지" />
+        <RoleContainer>
+          <Role>{user?.role}</Role>
+          {isOwner ? <PromoteRoleButton>등업 신청</PromoteRoleButton> : <div></div>}
+        </RoleContainer>
         <NicknameWrapper>
           {isProfileEditing ? (
             <NicknameInput
