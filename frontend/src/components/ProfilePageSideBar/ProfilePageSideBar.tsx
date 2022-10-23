@@ -29,7 +29,7 @@ import { useGetProfileQuery, usePutProfileMutation } from '../../hooks/queries/p
 
 const ProfilePageSideBar = ({ menu }) => {
   const history = useHistory();
-  const { username } = useParams();
+  const { username } = useParams() as { username: string };
 
   const { user: loginUser } = useContext(UserContext);
   const { accessToken, username: loginUsername } = loginUser;

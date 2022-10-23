@@ -51,7 +51,7 @@ const MenuList = styled.ul`
   padding: 1.6rem 0;
 `;
 
-const MenuItem = styled.li`
+const MenuItem = styled.li<{ isSelectedMenu: boolean }>`
   height: 4rem;
   display: flex;
   align-items: center;
