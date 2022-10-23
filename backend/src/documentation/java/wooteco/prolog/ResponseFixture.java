@@ -5,6 +5,8 @@ import static wooteco.prolog.member.domain.Role.CREW;
 import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
@@ -49,8 +51,8 @@ public class ResponseFixture {
             MISSION_RESPONSE1,
             "JAVA",
             "Spring Data JPA를 학습함.",
-            List.of(new TagResponse(3L, "java"), new TagResponse(4L, "jpa")),
-            List.of(),
+            Arrays.asList(new TagResponse(3L, "java"), new TagResponse(4L, "jpa")),
+            Collections.emptyList(),
             false,
             false,
             0,
@@ -67,8 +69,8 @@ public class ResponseFixture {
             MISSION_RESPONSE2,
             "SPA",
             "SPA 방식으로 앱을 구현하였음.\nrouter 를 구현 하여 이용함.\n",
-            List.of(new TagResponse(1L, "spa"), new TagResponse(2L, "router")),
-            List.of(),
+            Arrays.asList(new TagResponse(1L, "spa"), new TagResponse(2L, "router")),
+            Collections.emptyList(),
             false,
             false,
             0,
@@ -76,13 +78,13 @@ public class ResponseFixture {
             0
     );
 
-    public static final StudylogsResponse STUDYLOGS_RESPONSE = new StudylogsResponse(List.of(
+    public static final StudylogsResponse STUDYLOGS_RESPONSE = new StudylogsResponse(Arrays.asList(
             STUDYLOG_RESPONSE1,
             STUDYLOG_RESPONSE2
     ), 2L, 1, 1);
 
     public static final String COMMENT = "댓글의 내용입니다.";
-    public static final CommentsResponse COMMENTS_RESPONSE = new CommentsResponse(List.of(
+    public static final CommentsResponse COMMENTS_RESPONSE = new CommentsResponse(Arrays.asList(
             new CommentResponse(1L,
                     new CommentMemberResponse(1L, "yboy", "잉",
                             "https://avatars.githubusercontent.com/u/52682603?v=4", "CREW")
@@ -96,24 +98,24 @@ public class ResponseFixture {
     public static final TagResponse TAG_RESPONSE1 = new TagResponse(1L, "자바");
     public static final TagResponse TAG_RESPONSE2 = new TagResponse(2L, "코틀린");
 
-    public static final List<TagResponse> TAG_RESPONSES = List.of(
+    public static final List<TagResponse> TAG_RESPONSES = Arrays.asList(
             TAG_RESPONSE1,
             TAG_RESPONSE2
     );
 
-    public static final List<MemberTagResponse> MEMBER_TAB_RESPONSES = List.of(
+    public static final List<MemberTagResponse> MEMBER_TAB_RESPONSES = Arrays.asList(
             new MemberTagResponse(TAG_RESPONSE1, 2),
             new MemberTagResponse(TAG_RESPONSE2, 2)
     );
 
-    public static final List<CalendarStudylogResponse> CALENDER_STUDYLOG_RESPONSES = List.of(
+    public static final List<CalendarStudylogResponse> CALENDER_STUDYLOG_RESPONSES = Arrays.asList(
             new CalendarStudylogResponse(1L, "instanceOf()를 지양하자", LocalDateTime.now().minusMonths(2),
                     LocalDateTime.now()),
             new CalendarStudylogResponse(2L, "JPA 쿼리 개선기", LocalDateTime.now().minusMonths(1),
                     LocalDateTime.now())
     );
 
-    public static final List<StudylogRssFeedResponse> STUDYLOG_RSS_FEED_RESPONSES = List.of(
+    public static final List<StudylogRssFeedResponse> STUDYLOG_RSS_FEED_RESPONSES = Arrays.asList(
             new StudylogRssFeedResponse("Prolog | 우아한테크코스 학습로그 저장소", "자바", "잉", "http://localhost:8080",
                     Date.from(Instant.now())));
 }
