@@ -20,12 +20,16 @@ export const useGetKeyword = ({
   sessionId: number;
   keywordId: number;
 }) => {
-  return useQuery([QUERY_KEY.keyword], () =>
+  const { data } = useQuery([QUERY_KEY.keyword], () =>
     getKeyword({
       sessionId,
       keywordId,
     })
   );
+
+  return {
+    keyword: data,
+  };
 };
 
 export const useGetTopKeywordList = (sessionId: number) => {
