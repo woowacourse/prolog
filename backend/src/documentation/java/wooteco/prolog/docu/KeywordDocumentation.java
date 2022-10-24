@@ -74,7 +74,7 @@ public class KeywordDocumentation extends NewDocumentation {
         given(keywordService.findSessionIncludeRootKeywords(any())).willReturn(KEYWORD_SESSION_INCLUDE_MULTI_RESPONSE);
 
         given
-            .when().get("/session/1/keywords")
+            .when().get("/sessions/1/keywords")
             .then().log().all().apply(document("keywords/find-childAll"))
             .statusCode(HttpStatus.OK.value());
     }
