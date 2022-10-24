@@ -51,6 +51,13 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
         );
     }
 
+    @When("{int}번 세션에 대해서 최상위 키워드들을 조회하면")
+    public void 세션에_대해서_키워드들을_조회하면(int sessionId) {
+        context.invokeHttpGet(
+            "/sessions/" + sessionId + "/keywords"
+        );
+    }
+
     @Then("키워드가 생성된다")
     public void 키워드가_생성된다() {
         int statusCode = context.response.statusCode();
@@ -77,5 +84,12 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
         int statusCode = context.response.statusCode();
 
         assertThat(statusCode).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Then("키워드 목록이 조회된다")
+    public void 키워드_목록이_조회된다() {
+        int statusCode = context.response.statusCode();
+
+        assertThat(statusCode).isEqualTo(HttpStatus.OK.value());
     }
 }
