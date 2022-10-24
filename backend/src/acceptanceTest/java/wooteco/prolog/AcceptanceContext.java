@@ -52,6 +52,12 @@ public class AcceptanceContext {
         response.then().log().all();
     }
 
+    public void invokeHttpDelete(final String path, Object... pathParams) {
+        request = RestAssured.given().log().all();
+        response = request.when().delete(path, pathParams);
+        response.then().log().all();
+    }
+
     public void invokeHttpGetWithToken(String path, Object... pathParams) {
         request = RestAssured.given().log().all()
             .auth().oauth2(accessToken);

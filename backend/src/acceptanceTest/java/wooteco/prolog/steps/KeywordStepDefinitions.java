@@ -44,6 +44,13 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
             KEYWORD_OF_ROOT.getUpdateRequest(keywordName, seq, importance));
     }
 
+    @When("{int}번 세션에 대한 {int}번 키워드를 삭제하면")
+    public void 키워드를_삭제하면(int sessionId, int keywordId) {
+        context.invokeHttpDelete(
+            "/sessions/" + sessionId + "/keywords/" + keywordId
+        );
+    }
+
     @Then("키워드가 생성된다")
     public void 키워드가_생성된다() {
         int statusCode = context.response.statusCode();
@@ -60,6 +67,13 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
 
     @Then("키워드가 수정된다")
     public void 키워드가_수정된다() {
+        int statusCode = context.response.statusCode();
+
+        assertThat(statusCode).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Then("키워드가 삭제된다")
+    public void 키워드가_삭제된다() {
         int statusCode = context.response.statusCode();
 
         assertThat(statusCode).isEqualTo(HttpStatus.NO_CONTENT.value());
