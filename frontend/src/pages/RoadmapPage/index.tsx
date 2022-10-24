@@ -34,36 +34,34 @@ const RoadmapPage = () => {
   };
 
   return (
-    <>
-      <Styled.Root>
-        <Styled.Main>
-          <section>
-            <h2>세션</h2>
-            <SessionList
-              selectedSessionId={selectedSessionId}
-              handleClickSession={handleClickSession}
-            />
-          </section>
+    <Styled.Root>
+      <Styled.Main>
+        <section>
+          <h2>세션</h2>
+          <SessionList
+            selectedSessionId={selectedSessionId}
+            handleClickSession={handleClickSession}
+          />
+        </section>
 
-          <section>
-            <h2>키워드</h2>
-            <TopKeywordList
-              sessionId={selectedSessionId}
-              selectedTopKeyword={selectedTopKeyword}
-              handleClickTopKeyword={handleClickTopKeyword}
-              updateSelectedTopKeyword={updateSelectedTopKeyword}
-            />
-          </section>
+        <section>
+          <h2>키워드</h2>
+          <TopKeywordList
+            sessionId={selectedSessionId}
+            selectedTopKeyword={selectedTopKeyword}
+            handleClickTopKeyword={handleClickTopKeyword}
+            updateSelectedTopKeyword={updateSelectedTopKeyword}
+          />
+        </section>
 
-          {selectedTopKeyword && (
-            <KeywordList
-              handleClickKeyword={handleClickKeyword}
-              selectedTopKeyword={selectedTopKeyword}
-              sessionId={selectedSessionId}
-            />
-          )}
-        </Styled.Main>
-      </Styled.Root>
+        {selectedTopKeyword && (
+          <KeywordList
+            handleClickKeyword={handleClickKeyword}
+            selectedTopKeyword={selectedTopKeyword}
+            sessionId={selectedSessionId}
+          />
+        )}
+      </Styled.Main>
 
       {isSideSheetOpen && keywordDetail && (
         <KeywordDetailSideSheet
@@ -72,7 +70,7 @@ const RoadmapPage = () => {
           handleCloseSideSheet={handleCloseSideSheet}
         />
       )}
-    </>
+    </Styled.Root>
   );
 };
 
