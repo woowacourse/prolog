@@ -17,6 +17,10 @@ public enum KeywordAcceptanceFixture {
     }
 
     public KeywordCreateRequest getSaveRequest(final String keywordName, final int seq, final int importance) {
+        return new KeywordCreateRequest(keywordName, this.description, seq, importance, null);
+    }
+
+    public KeywordCreateRequest getChildSaveRequest(final String keywordName, final int seq, final int importance, final Long parentKeywordId) {
         return new KeywordCreateRequest(keywordName, this.description, seq, importance, parentKeywordId);
     }
 

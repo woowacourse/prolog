@@ -30,6 +30,13 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
             KEYWORD_OF_ROOT.getSaveRequest(keywordName, seq, importance));
     }
 
+    @When("{int}번 세션에 {string}라는 키워드를 순서 {int}, 중요도 {int}, 부모 키워드 {long}로 작성하고")
+    public void 키워드를_부모_키워드와_함께_작성하고(int sessionId, String keywordName, int seq, int importance, long parentId) {
+        context.invokeHttpPost(
+            "/sessions/" + sessionId + "/keywords",
+            KEYWORD_OF_ROOT.getChildSaveRequest(keywordName, seq, importance, parentId));
+    }
+
     @When("{int}번 세션과 {int}번 키워드를 조회하면")
     public void 키워드를_조회하면(int sessionId, int keywordId) {
         context.invokeHttpGet(
@@ -55,6 +62,13 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
     public void 세션에_대해서_키워드들을_조회하면(int sessionId) {
         context.invokeHttpGet(
             "/sessions/" + sessionId + "/keywords"
+        );
+    }
+
+    @When("{int}번 세션에 대한 {int}번 키워드와 자식 키워드를 함께 조회하면")
+    public void 키워드와_자식_키워드를_함께_조회하면(int sessionId, int keywordId) {
+        context.invokeHttpGet(
+            "/sessions/" + sessionId + "/keywords/" + keywordId + "/children"
         );
     }
 
