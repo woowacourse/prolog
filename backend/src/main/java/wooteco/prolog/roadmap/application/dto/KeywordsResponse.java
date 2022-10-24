@@ -13,7 +13,7 @@ public class KeywordsResponse {
 
     private List<KeywordResponse> data;
 
-    private KeywordsResponse(final List<KeywordResponse> data) {
+    public KeywordsResponse(final List<KeywordResponse> data) {
         this.data = data;
     }
 

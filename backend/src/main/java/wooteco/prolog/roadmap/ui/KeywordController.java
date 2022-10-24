@@ -14,6 +14,7 @@ import wooteco.prolog.roadmap.application.KeywordService;
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordResponse;
 import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
+import wooteco.prolog.roadmap.application.dto.KeywordsResponse;
 
 @RestController
 @RequestMapping("/sessions")
@@ -53,5 +54,11 @@ public class KeywordController {
                                               @PathVariable Long keywordId) {
         keywordService.deleteKeyword(sessionId, keywordId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{sessionId}/keywords")
+    public ResponseEntity<KeywordsResponse> findSessionIncludeRootKeywords(@PathVariable Long sessionId) {
+        KeywordsResponse response = keywordService.findSessionIncludeRootKeywords(sessionId);
+        return ResponseEntity.ok(response);
     }
 }

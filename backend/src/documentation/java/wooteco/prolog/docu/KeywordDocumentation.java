@@ -6,6 +6,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
+import org.elasticsearch.common.collect.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -16,6 +17,7 @@ import wooteco.prolog.roadmap.application.KeywordService;
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordResponse;
 import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
+import wooteco.prolog.roadmap.application.dto.KeywordsResponse;
 import wooteco.prolog.roadmap.ui.KeywordController;
 
 @WebMvcTest(controllers = KeywordController.class)
@@ -68,6 +70,16 @@ public class KeywordDocumentation extends NewDocumentation {
             .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
+    @Test
+    void 세션별_키워드_목록_조회() {
+        given(keywordService.findSessionIncludeRootKeywords(any())).willReturn(KEYWORD_SESSION_INCLUDE_MULTI_RESPONSE);
+
+        given
+            .when().get()
+            .then().log().all().apply(document("keywords/find-childAll"))
+            .statusCode(HttpStatus.OK.value());
+    }
+
     private static final KeywordCreateRequest KEYWORD_CREATE_REQUEST = new KeywordCreateRequest(
         "자바",
         "자바에 대한 설명을 작성했습니다.",
@@ -92,5 +104,12 @@ public class KeywordDocumentation extends NewDocumentation {
         1,
         1,
         null
+    );
+
+    private static final KeywordsResponse KEYWORD_SESSION_INCLUDE_MULTI_RESPONSE = new KeywordsResponse(
+        List.of(
+            KEYWORD_SINGLE_RESPONSE,
+            KEYWORD_SINGLE_RESPONSE
+        )
     );
 }
