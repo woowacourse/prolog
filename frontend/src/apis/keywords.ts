@@ -1,5 +1,5 @@
 import { client } from '.';
-import { KeywordListResponse, KeywordResponse } from '../models/Keywords';
+import { KeywordListResponse, KeywordResponse, QuizListResponse } from '../models/Keywords';
 
 export const getKeyword = async ({
   sessionId,
@@ -42,7 +42,7 @@ export const getQuizListByKeyword = async ({
   sessionId: number;
   keywordId: number;
 }) => {
-  const response = await client.get<KeywordListResponse>(
+  const response = await client.get<QuizListResponse>(
     `/sessions/${sessionId}/keywords/${keywordId}/quizs`
   );
 

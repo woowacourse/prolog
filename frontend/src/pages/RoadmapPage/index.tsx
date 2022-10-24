@@ -10,6 +10,7 @@ import { getFlexStyle } from '../../styles/flex.styles';
 import COLOR from '../../constants/color';
 import { useGetChildrenKeywordList } from '../../hooks/queries/keywords';
 import { KeywordResponse } from '../../models/Keywords';
+import KeywordDetailSideSheet from '../../components/KeywordDetailSideSheet/KeywordDetailSideSheet';
 
 const Size = css`
   width: 700px;
@@ -25,11 +26,14 @@ const SessionButtonStyle = css`
   margin: 4px 0;
 `;
 
+// 키워드 눌렀을 때  사이드바 뜨도록 하기
+
 const RoadmapPage = () => {
   const [isSideSheetOpen, setIsSideSheetOpen] = useState(false);
   const [selectedSessionId, setSelectedSessionId] = useState(1);
   const { data: sessions } = useGetSessions();
   const [selectedTopKeyword, setSelectedTopKeyword] = useState<KeywordResponse | null>(null);
+  const [keywordDetail, setKeywordDetail] = useState<KeywordResponse | null>(null);
 
   const { childrenKeywordList, refetchChildrenKeywordList } = useGetChildrenKeywordList({
     sessionId: selectedSessionId,
@@ -52,13 +56,16 @@ const RoadmapPage = () => {
     setSelectedSessionId(id);
   };
 
-  const handleOpenSideSheet = (keyword?: KeywordResponse | null) => {
+  const handleOpenSideSheet = (keyword: KeywordResponse | null) => {
+    setKeywordDetail(keyword);
     setIsSideSheetOpen(true);
+    console.log('@keywordDetail', keyword, keywordDetail);
   };
 
   const handleCloseSideSheet = () => {
     setIsSideSheetOpen(false);
   };
+
   return (
     <>
       <main
@@ -180,7 +187,13 @@ const RoadmapPage = () => {
           </section>
         </article>
       </main>
-      {isSideSheetOpen && <SideSheet handleCloseSideSheet={handleCloseSideSheet}>hello</SideSheet>}
+      {isSideSheetOpen && keywordDetail && (
+        <KeywordDetailSideSheet
+          keywordDetail={keywordDetail}
+          sessionId={selectedSessionId}
+          handleCloseSideSheet={handleCloseSideSheet}
+        />
+      )}
     </>
   );
 };

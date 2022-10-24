@@ -70,10 +70,14 @@ export const useGetQuizListByKeyword = ({
   sessionId: number;
   keywordId: number;
 }) => {
-  return useQuery([QUERY_KEY.quizListByKeyword], () =>
+  const { data } = useQuery([QUERY_KEY.quizListByKeyword], () =>
     getQuizListByKeyword({
       sessionId,
       keywordId,
     })
   );
+
+  return {
+    quizList: data?.data,
+  };
 };
