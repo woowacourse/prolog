@@ -6,5 +6,9 @@ const QUERY_KEY = {
 };
 
 export const useGetSessions = () => {
-  return useQuery([QUERY_KEY.sessions], () => getSessions());
+  const { data } = useQuery([QUERY_KEY.sessions], () => getSessions());
+
+  return {
+    sessions: data,
+  };
 };
