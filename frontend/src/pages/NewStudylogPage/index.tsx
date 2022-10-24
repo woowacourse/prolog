@@ -64,8 +64,8 @@ const NewStudylogPage = () => {
           setStudylogContent({
             title: data.title,
             content: data.content,
-            missionId: data.mission?.id || null,
-            sessionId: data.session?.id || null,
+            missionId: data.mission?.id ?? null,
+            sessionId: data.session?.id ?? null,
             tags: data.tags,
             abilities: data.abilities.map(({ id }) => id),
           });
