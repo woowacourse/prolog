@@ -21,6 +21,7 @@ const ALERT_MESSAGE = {
   CANNOT_EDIT_OTHERS: '본인이 작성하지 않은 글은 수정할 수 없습니다.',
   NO_CONTENT: '내용을 입력하세요',
   NO_TITLE: '제목을 입력하세요',
+  NO_TITLE_OR_CONTENT: '제목이나 내용을 입력하세요',
   NO_QUESTION_AND_ANSWER: '질답을 완성해주세요',
   NO_QNA: '적어도 하나의 질답을 작성해주세요.',
 };

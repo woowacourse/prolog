@@ -131,14 +131,8 @@ const NewStudylogPage = () => {
   const onTempSaveStudylog = () => {
     const content = editorContentRef.current?.getInstance().getMarkdown() || '';
 
-    if (studylogContent.title.length === 0) {
-      alert(ALERT_MESSAGE.NO_TITLE);
-
-      return;
-    }
-
-    if (content.length === 0) {
-      alert(ALERT_MESSAGE.NO_CONTENT);
+    if (studylogContent.title.length === 0 && content.length === 0) {
+      alert(ALERT_MESSAGE.NO_TITLE_OR_CONTENT);
 
       return;
     }
