@@ -5,12 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.roadmap.application.KeywordService;
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordResponse;
+import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
 
 @RestController
 @RequestMapping("/sessions")
@@ -35,5 +37,13 @@ public class KeywordController {
                                             @PathVariable Long keywordId) {
         KeywordResponse response = keywordService.findKeyword(sessionId, keywordId);
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{sessionId}/keywords/{keywordId}")
+    public ResponseEntity<Void> updateKeyword(@PathVariable Long sessionId,
+                                              @PathVariable Long keywordId,
+                                              @RequestBody KeywordUpdateRequest updateRequest) {
+        keywordService.updateKeyword(sessionId, keywordId, updateRequest);
+        return ResponseEntity.noContent().build();
     }
 }

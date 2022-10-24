@@ -15,6 +15,7 @@ import wooteco.prolog.NewDocumentation;
 import wooteco.prolog.roadmap.application.KeywordService;
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordResponse;
+import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
 import wooteco.prolog.roadmap.ui.KeywordController;
 
 @WebMvcTest(controllers = KeywordController.class)
@@ -45,6 +46,18 @@ public class KeywordDocumentation extends NewDocumentation {
             .statusCode(HttpStatus.OK.value());
     }
 
+    @Test
+    void 키워드_단일_수정() {
+        doNothing().when(keywordService).updateKeyword(any(), any(), any());
+
+        given
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(KEYWORD_UPDATE_REQUEST)
+            .when().put("/sessions/1/keywords/1")
+            .then().log().all().apply(document("keywords/update"))
+            .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
     private static final KeywordCreateRequest KEYWORD_CREATE_REQUEST = new KeywordCreateRequest(
         "자바",
         "자바에 대한 설명을 작성했습니다.",
@@ -60,6 +73,14 @@ public class KeywordDocumentation extends NewDocumentation {
         1,
         1,
         null,
+        null
+    );
+
+    private static final KeywordUpdateRequest KEYWORD_UPDATE_REQUEST = new KeywordUpdateRequest(
+        "자바",
+        "자바에 대한 설명을 작성했습니다.",
+        1,
+        1,
         null
     );
 }
