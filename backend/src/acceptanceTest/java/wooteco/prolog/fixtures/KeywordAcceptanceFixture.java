@@ -1,6 +1,7 @@
 package wooteco.prolog.fixtures;
 
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
+import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
 
 public enum KeywordAcceptanceFixture {
 
@@ -15,7 +16,11 @@ public enum KeywordAcceptanceFixture {
         this.parentKeywordId = parentKeywordId;
     }
 
-    public KeywordCreateRequest getRequest(final String keywordName, final int seq, final int importance) {
+    public KeywordCreateRequest getSaveRequest(final String keywordName, final int seq, final int importance) {
         return new KeywordCreateRequest(keywordName, this.description, seq, importance, parentKeywordId);
+    }
+
+    public KeywordUpdateRequest getUpdateRequest(final String keywordName, final int seq, final int importance) {
+        return new KeywordUpdateRequest(keywordName, this.description, seq, importance, parentKeywordId);
     }
 }

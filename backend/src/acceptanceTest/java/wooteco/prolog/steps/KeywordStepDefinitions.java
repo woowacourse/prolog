@@ -1,7 +1,6 @@
 package wooteco.prolog.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.in;
 import static wooteco.prolog.fixtures.KeywordAcceptanceFixture.KEYWORD_OF_ROOT;
 
 import io.cucumber.java.en.Given;
@@ -28,7 +27,7 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
     public void 키워드를_작성하고(int sessionId, String keywordName, int seq, int importance) {
         context.invokeHttpPost(
             "/sessions/" + sessionId + "/keywords",
-            KEYWORD_OF_ROOT.getRequest(keywordName, seq, importance));
+            KEYWORD_OF_ROOT.getSaveRequest(keywordName, seq, importance));
     }
 
     @When("{int}번 세션과 {int}번 키워드를 조회하면")
@@ -36,6 +35,13 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
         context.invokeHttpGet(
             "/sessions/" + sessionId + "/keywords/" + keywordId
         );
+    }
+
+    @When("{int}번 세션과 {int}번 키워드를 키워드 {string}, 순서 {int}, 중요도 {int}로 수정하면")
+    public void 키워드를_수정하면(int sessionId, int keywordId, String keywordName, int seq, int importance) {
+        context.invokeHttpPut(
+            "/sessions/" + sessionId + "/keywords/" + keywordId,
+            KEYWORD_OF_ROOT.getUpdateRequest(keywordName, seq, importance));
     }
 
     @Then("키워드가 생성된다")
@@ -50,5 +56,12 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
         int statusCode = context.response.statusCode();
 
         assertThat(statusCode).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @Then("키워드가 수정된다")
+    public void 키워드가_수정된다() {
+        int statusCode = context.response.statusCode();
+
+        assertThat(statusCode).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 }
