@@ -28,15 +28,8 @@ export const useGetKeyword = ({
   );
 };
 
-export const useGetTopKeywordList = (
-  sessionId: number,
-  { onSuccessCallback }: { onSuccessCallback?: any }
-) => {
-  const { data } = useQuery([QUERY_KEY.topKeywordList], () => getTopKeywordList(sessionId), {
-    onSuccess(data) {
-      onSuccessCallback?.(data);
-    },
-  });
+export const useGetTopKeywordList = (sessionId: number) => {
+  const { data } = useQuery([QUERY_KEY.topKeywordList], () => getTopKeywordList(sessionId));
 
   return {
     topKeywordList: data?.data,

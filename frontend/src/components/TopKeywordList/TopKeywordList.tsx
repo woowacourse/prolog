@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useEffect } from 'react';
 import SomeImage from '../../assets/images/background-image.png';
 import { COLOR } from '../../enumerations/color';
 import { useGetTopKeywordList } from '../../hooks/queries/keywords';
@@ -19,11 +19,13 @@ const TopKeywordList = ({
   handleClickTopKeyword,
   updateSelectedTopKeyword,
 }: TopKeywordListProps) => {
-  const { topKeywordList } = useGetTopKeywordList(sessionId, {
-    onSuccessCallback(data) {
-      updateSelectedTopKeyword(data.data[0]); // 초기값 설정
-    },
-  });
+  const { topKeywordList } = useGetTopKeywordList(sessionId);
+
+  useEffect(() => {
+    if (topKeywordList) {
+      updateSelectedTopKeyword(topKeywordList[0]);
+    }
+  }, [topKeywordList]);
 
   return (
     <StyledRoot>
