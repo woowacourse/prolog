@@ -1,7 +1,7 @@
 package wooteco.prolog.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static wooteco.prolog.fixtures.KeywordAcceptanceFixture.KEYWORD_OF_ROOT;
+import static wooteco.prolog.fixtures.KeywordAcceptanceFixture.KEYWORD_REQUEST;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -27,14 +27,14 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
     public void 키워드를_작성하고(int sessionId, String keywordName, int seq, int importance) {
         context.invokeHttpPost(
             "/sessions/" + sessionId + "/keywords",
-            KEYWORD_OF_ROOT.getSaveRequest(keywordName, seq, importance));
+            KEYWORD_REQUEST.getSaveParent(keywordName, seq, importance));
     }
 
     @When("{int}번 세션에 {string}라는 키워드를 순서 {int}, 중요도 {int}, 부모 키워드 {long}로 작성하고")
     public void 키워드를_부모_키워드와_함께_작성하고(int sessionId, String keywordName, int seq, int importance, long parentId) {
         context.invokeHttpPost(
             "/sessions/" + sessionId + "/keywords",
-            KEYWORD_OF_ROOT.getChildSaveRequest(keywordName, seq, importance, parentId));
+            KEYWORD_REQUEST.getSaveChild(keywordName, seq, importance, parentId));
     }
 
     @When("{int}번 세션과 {int}번 키워드를 조회하면")
@@ -48,7 +48,7 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
     public void 키워드를_수정하면(int sessionId, int keywordId, String keywordName, int seq, int importance) {
         context.invokeHttpPut(
             "/sessions/" + sessionId + "/keywords/" + keywordId,
-            KEYWORD_OF_ROOT.getUpdateRequest(keywordName, seq, importance));
+            KEYWORD_REQUEST.getUpdateParent(keywordName, seq, importance));
     }
 
     @When("{int}번 세션에 대한 {int}번 키워드를 삭제하면")

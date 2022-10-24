@@ -5,26 +5,24 @@ import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
 
 public enum KeywordAcceptanceFixture {
 
-    KEYWORD_OF_ROOT("키워드에 대한 설명입니다.", null)
+    KEYWORD_REQUEST("키워드에 대한 설명입니다.")
     ;
 
     private final String description;
-    private final Long parentKeywordId;
 
-    KeywordAcceptanceFixture(final String description, final Long parentKeywordId) {
+    KeywordAcceptanceFixture(final String description) {
         this.description = description;
-        this.parentKeywordId = parentKeywordId;
     }
 
-    public KeywordCreateRequest getSaveRequest(final String keywordName, final int seq, final int importance) {
+    public KeywordCreateRequest getSaveParent(final String keywordName, final int seq, final int importance) {
         return new KeywordCreateRequest(keywordName, this.description, seq, importance, null);
     }
 
-    public KeywordCreateRequest getChildSaveRequest(final String keywordName, final int seq, final int importance, final Long parentKeywordId) {
+    public KeywordCreateRequest getSaveChild(final String keywordName, final int seq, final int importance, final Long parentKeywordId) {
         return new KeywordCreateRequest(keywordName, this.description, seq, importance, parentKeywordId);
     }
 
-    public KeywordUpdateRequest getUpdateRequest(final String keywordName, final int seq, final int importance) {
-        return new KeywordUpdateRequest(keywordName, this.description, seq, importance, parentKeywordId);
+    public KeywordUpdateRequest getUpdateParent(final String keywordName, final int seq, final int importance) {
+        return new KeywordUpdateRequest(keywordName, this.description, seq, importance, null);
     }
 }
