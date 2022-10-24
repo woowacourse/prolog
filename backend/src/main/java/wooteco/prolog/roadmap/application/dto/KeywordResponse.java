@@ -32,7 +32,7 @@ public class KeywordResponse {
         return new KeywordResponse(
             keyword.getId(),
             keyword.getName(),
-            keyword.getOrdinal(),
+            keyword.getSeq(),
             keyword.getParentIdOrNull(),
             keyword.getDescription(),
             null);
@@ -42,7 +42,7 @@ public class KeywordResponse {
         return new KeywordResponse(
             keyword.getId(),
             keyword.getName(),
-            keyword.getOrdinal(),
+            keyword.getSeq(),
             keyword.getParentIdOrNull(),
             keyword.getDescription(),
             createKeywordChild(keyword.getChildren()));

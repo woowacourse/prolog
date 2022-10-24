@@ -2,6 +2,6 @@ package wooteco.prolog.roadmap.exception;
 
 import wooteco.prolog.common.exception.BadRequestException;
 
-public class KeywordOrderException extends BadRequestException {
+public class KeywordSeqException extends BadRequestException {
 
 }

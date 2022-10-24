@@ -18,7 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
 import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
-import wooteco.prolog.roadmap.exception.KeywordOrderException;
+import wooteco.prolog.roadmap.exception.KeywordSeqException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,7 +35,7 @@ public class Keyword {
     private String description;
 
     @Column(nullable = false)
-    private int ordinal;
+    private int seq;
 
     @Column(nullable = false)
     private int importance;
@@ -55,45 +55,45 @@ public class Keyword {
     public Keyword(final Long id,
                    final String name,
                    final String description,
-                   final int ordinal,
+                   final int seq,
                    final int importance,
                    final Long sessionId,
                    final Keyword parent) {
-        validateOrdinal(ordinal);
+        validateSeq(seq);
         this.id = id;
         this.name = name;
         this.description = description;
-        this.ordinal = ordinal;
+        this.seq = seq;
         this.importance = importance;
         this.sessionId = sessionId;
         this.parent = parent;
     }
 
-    private void validateOrdinal(final int ordinal) {
-        if (ordinal <= 0) {
-            throw new KeywordOrderException();
+    private void validateSeq(final int seq) {
+        if (seq <= 0) {
+            throw new KeywordSeqException();
         }
     }
 
     public Keyword(final String name,
                    final String description,
-                   final int ordinal,
+                   final int seq,
                    final int importance,
                    final Long sessionId,
                    final Keyword parent) {
-        this(null, name, description, ordinal, importance, sessionId, parent);
+        this(null, name, description, seq, importance, sessionId, parent);
     }
 
     public static Keyword createKeyword(final String name,
                                         final String description,
-                                        final int ordinal,
+                                        final int seq,
                                         final int importance,
                                         final Long sessionId,
                                         final Keyword parent) {
         return Keyword.builder()
             .name(name)
             .description(description)
-            .ordinal(ordinal)
+            .seq(seq)
             .importance(importance)
             .sessionId(sessionId)
             .parent(parent)
@@ -113,11 +113,11 @@ public class Keyword {
         return parent.getId();
     }
 
-    public void update(final String name, final String description, final int order,
+    public void update(final String name, final String description, final int seq,
                        final int importance, final Keyword keywordParent) {
         this.name = name;
         this.description = description;
-        this.ordinal = order;
+        this.seq = seq;
         this.importance = importance;
         this.parent = keywordParent;
         validateKeywordParent();
