@@ -2,6 +2,7 @@ package wooteco.prolog.roadmap.ui;
 
 import java.net.URI;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +45,13 @@ public class KeywordController {
                                               @PathVariable Long keywordId,
                                               @RequestBody KeywordUpdateRequest updateRequest) {
         keywordService.updateKeyword(sessionId, keywordId, updateRequest);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{sessionId}/keywords/{keywordId}")
+    public ResponseEntity<Void> deleteKeyword(@PathVariable Long sessionId,
+                                              @PathVariable Long keywordId) {
+        keywordService.deleteKeyword(sessionId, keywordId);
         return ResponseEntity.noContent().build();
     }
 }

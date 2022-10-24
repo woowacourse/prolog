@@ -58,6 +58,16 @@ public class KeywordDocumentation extends NewDocumentation {
             .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
+    @Test
+    void 키워드_단일_삭제() {
+        doNothing().when(keywordService).deleteKeyword(any(), any());
+
+        given
+            .when().delete("/sessions/1/keywords/1")
+            .then().log().all().apply(document("keywords/delete"))
+            .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
     private static final KeywordCreateRequest KEYWORD_CREATE_REQUEST = new KeywordCreateRequest(
         "자바",
         "자바에 대한 설명을 작성했습니다.",
