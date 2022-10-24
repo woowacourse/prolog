@@ -191,7 +191,6 @@ class KeywordServiceTest {
 
         Long sessionId = session.getId();
         Long keywordParentId = parent.getId();
-        Long keywordChildId = child.getId();
         em.clear();
 
         // when
@@ -200,7 +199,7 @@ class KeywordServiceTest {
         em.clear();
 
         // then
-        Optional<Keyword> extract = keywordRepository.findById(keywordChildId);
+        Optional<Keyword> extract = keywordRepository.findById(keywordParentId);
         assertThat(extract).isNotPresent();
     }
 
