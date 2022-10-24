@@ -3,7 +3,6 @@ package wooteco.prolog.docu;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 import org.elasticsearch.common.collect.List;
@@ -75,8 +74,18 @@ public class KeywordDocumentation extends NewDocumentation {
         given(keywordService.findSessionIncludeRootKeywords(any())).willReturn(KEYWORD_SESSION_INCLUDE_MULTI_RESPONSE);
 
         given
-            .when().get()
+            .when().get("/session/1/keywords")
             .then().log().all().apply(document("keywords/find-childAll"))
+            .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void 최상위_키워드의_모든_자식_키워드들의_목록_조회() {
+        given(keywordService.findKeywordWithAllChild(any(), any())).willReturn(KEYWORD_WITH_ALL_CHILD_MULTI_RESPONSE);
+
+        given
+            .when().get()
+            .then().log().all().apply(document("keywords/find-with-childAll"))
             .statusCode(HttpStatus.OK.value());
     }
 
@@ -111,5 +120,33 @@ public class KeywordDocumentation extends NewDocumentation {
             KEYWORD_SINGLE_RESPONSE,
             KEYWORD_SINGLE_RESPONSE
         )
+    );
+
+    private static final KeywordResponse KEYWORD_WITH_ALL_CHILD_MULTI_RESPONSE = new KeywordResponse(
+        1L,
+        "자바",
+        "자바에 대한 설명을 작성했습니다.",
+        1,
+        1,
+        null,
+        List.of(
+            new KeywordResponse(
+                2L,
+                "List",
+                "자바의 자료구조인 List에 대한 설명을 작성했습니다.",
+                1,
+                1,
+                1L,
+                null
+            ),
+            new KeywordResponse(
+                1L,
+                "Set",
+                "자바의 자료구조인 Set에 대한 설명을 작성했습니다.",
+                2,
+                1,
+                1L,
+                null
+            ))
     );
 }
