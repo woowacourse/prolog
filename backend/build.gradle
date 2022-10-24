@@ -102,7 +102,8 @@ dependencies {
 
     // aws s3
     implementation platform('software.amazon.awssdk:bom:2.5.29')
-    implementation 'software.amazon.awssdk:s3'
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.319'
+
 
     // IO
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'

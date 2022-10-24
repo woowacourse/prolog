@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ImageUrlResponse {
 
-    private String url;
+    private String imageUrl;
 
-    public ImageUrlResponse(final String url) {
-        this.url = url;
+    public ImageUrlResponse(final String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

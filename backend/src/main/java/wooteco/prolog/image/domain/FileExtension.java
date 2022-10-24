@@ -1,8 +1,6 @@
 package wooteco.prolog.image.domain;
 
 import java.util.stream.Stream;
-import org.apache.commons.io.FilenameUtils;
-import wooteco.prolog.image.exception.UnsupportedFilExtensionException;
 
 public enum FileExtension {
 
@@ -17,11 +15,8 @@ public enum FileExtension {
         this.value = value;
     }
 
-    public static FileExtension from(final String fileName) {
-        final String extension = FilenameUtils.getExtension(fileName);
+    public static boolean isSupport(final String extension) {
         return Stream.of(values())
-                .filter(it -> it.value.equalsIgnoreCase(extension))
-                .findFirst()
-                .orElseThrow(UnsupportedFilExtensionException::new);
+                .anyMatch(it -> it.value.equalsIgnoreCase(extension));
     }
 }
