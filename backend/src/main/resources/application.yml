@@ -14,3 +14,16 @@ management:
   metrics:
     tags:
       application: prolog
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+application:
+  url: https://dev.prolog.techcourse.co.kr
+  bucket:
+    name: prolog-image
+  cloudfront:
+    url: https://d36rfsjtlhxac1.cloudfront.net/
