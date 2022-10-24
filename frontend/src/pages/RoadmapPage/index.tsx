@@ -2,15 +2,16 @@
 
 import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
-import { SideSheet } from '../../components/@shared/SideSheet/SideSheet';
 import ResponsiveButton from '../../components/Button/ResponsiveButton';
-import KeywordSection from '../../components/KeywordSection/KeywordSection';
+import TopKeywordList from '../../components/TopKeywordList/TopKeywordList';
 import { useGetSessions } from '../../hooks/queries/session';
 import { getFlexStyle } from '../../styles/flex.styles';
 import COLOR from '../../constants/color';
 import { useGetChildrenKeywordList } from '../../hooks/queries/keywords';
 import { KeywordResponse } from '../../models/Keywords';
 import KeywordDetailSideSheet from '../../components/KeywordDetailSideSheet/KeywordDetailSideSheet';
+import KeywordList from '../../components/KeywordList/KeywordList';
+// import * as Styled from './KeywordDetailSideSheet.styles';
 
 const Size = css`
   width: 700px;
@@ -35,11 +36,6 @@ const RoadmapPage = () => {
   const [selectedTopKeyword, setSelectedTopKeyword] = useState<KeywordResponse | null>(null);
   const [keywordDetail, setKeywordDetail] = useState<KeywordResponse | null>(null);
 
-  const { childrenKeywordList, refetchChildrenKeywordList } = useGetChildrenKeywordList({
-    sessionId: selectedSessionId,
-    keywordId: selectedTopKeyword?.keywordId || 1,
-  });
-
   const updateSelectedTopKeyword = (keyword: KeywordResponse) => {
     setSelectedTopKeyword(keyword);
   };
@@ -48,18 +44,13 @@ const RoadmapPage = () => {
     setSelectedTopKeyword(keyword);
   };
 
-  useEffect(() => {
-    refetchChildrenKeywordList();
-  }, [selectedTopKeyword?.keywordId]);
-
   const handleClickSession = (id: number) => {
     setSelectedSessionId(id);
   };
 
-  const handleOpenSideSheet = (keyword: KeywordResponse | null) => {
+  const handleClickKeyword = (keyword: KeywordResponse | null) => {
     setKeywordDetail(keyword);
     setIsSideSheetOpen(true);
-    console.log('@keywordDetail', keyword, keywordDetail);
   };
 
   const handleCloseSideSheet = () => {
@@ -109,7 +100,7 @@ const RoadmapPage = () => {
           </section>
           <section>
             <h2>키워드</h2>
-            <KeywordSection
+            <TopKeywordList
               sessionId={selectedSessionId}
               selectedTopKeyword={selectedTopKeyword}
               handleClickTopKeyword={handleClickTopKeyword}
@@ -117,74 +108,13 @@ const RoadmapPage = () => {
             />
           </section>
 
-          <section
-            css={[
-              getFlexStyle({
-                flexDirection: 'column',
-                rowGap: '16px',
-              }),
-            ]}
-          >
-            <ResponsiveButton
-              onClick={() => handleOpenSideSheet(selectedTopKeyword)}
-              text={selectedTopKeyword?.name}
-              color="#fff"
-              backgroundColor="#579bca"
-              height="50px"
+          {selectedTopKeyword && (
+            <KeywordList
+              handleClickKeyword={handleClickKeyword}
+              selectedTopKeyword={selectedTopKeyword}
+              sessionId={selectedSessionId}
             />
-            <div
-              css={[
-                getFlexStyle({
-                  flexDirection: 'row',
-                  columnGap: '30px',
-                }),
-              ]}
-            >
-              {childrenKeywordList?.map((keyword) => {
-                return (
-                  <>
-                    <div
-                      css={[
-                        getFlexStyle({
-                          flexGrow: 1,
-                          flexDirection: 'row',
-                        }),
-                      ]}
-                    >
-                      <ResponsiveButton
-                        onClick={() => handleOpenSideSheet(keyword)}
-                        text={keyword.name}
-                        color="#fff"
-                        backgroundColor="#8DBFE9"
-                        height="50px"
-                      />
-                    </div>
-                    <div
-                      css={[
-                        getFlexStyle({
-                          flexGrow: 1,
-                          flexDirection: 'column',
-                          rowGap: '10px',
-                        }),
-                      ]}
-                    >
-                      {keyword.childrenKeywords?.map((keyword) => {
-                        return (
-                          <ResponsiveButton
-                            onClick={() => handleOpenSideSheet(keyword)}
-                            text={keyword.name}
-                            color="#fff"
-                            backgroundColor="#B8D8EA"
-                            height="50px"
-                          />
-                        );
-                      })}
-                    </div>
-                  </>
-                );
-              })}
-            </div>
-          </section>
+          )}
         </article>
       </main>
       {isSideSheetOpen && keywordDetail && (

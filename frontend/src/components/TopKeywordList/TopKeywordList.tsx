@@ -6,19 +6,19 @@ import { useGetTopKeywordList } from '../../hooks/queries/keywords';
 import { KeywordResponse } from '../../models/Keywords';
 import LabelledImage from '../LabelledImage/LabelledImage';
 
-interface KeywordSectionProps {
+interface TopKeywordListProps {
   sessionId: number;
   selectedTopKeyword: KeywordResponse | null;
   handleClickTopKeyword: (keyword: KeywordResponse) => void;
   updateSelectedTopKeyword: (keyword: KeywordResponse) => void;
 }
 
-const KeywordSection = ({
+const TopKeywordList = ({
   sessionId,
   selectedTopKeyword,
   handleClickTopKeyword,
   updateSelectedTopKeyword,
-}: KeywordSectionProps) => {
+}: TopKeywordListProps) => {
   const { topKeywordList } = useGetTopKeywordList(sessionId, {
     onSuccessCallback(data) {
       updateSelectedTopKeyword(data.data[0]); // 초기값 설정
@@ -43,7 +43,7 @@ const KeywordSection = ({
   );
 };
 
-export default KeywordSection;
+export default TopKeywordList;
 
 const StyledRoot = styled.div`
   display: flex;
