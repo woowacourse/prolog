@@ -13,18 +13,21 @@ public class KeywordResponse {
 
     private Long keywordId;
     private String name;
-    private int order;
-    private Long parentKeywordId;
     private String description;
+    private int order;
+    private int importance;
+    private Long parentKeywordId;
     private List<KeywordResponse> childrenKeywords;
 
-    public KeywordResponse(final Long keywordId, final String name, final int order, final Long parentKeywordId,
-                           final String description, final List<KeywordResponse> childrenKeywords) {
+    public KeywordResponse(final Long keywordId, final String name, final String description, final int order,
+                           final int importance, final Long parentKeywordId,
+                           final List<KeywordResponse> childrenKeywords) {
         this.keywordId = keywordId;
         this.name = name;
-        this.order = order;
-        this.parentKeywordId = parentKeywordId;
         this.description = description;
+        this.order = order;
+        this.importance = importance;
+        this.parentKeywordId = parentKeywordId;
         this.childrenKeywords = childrenKeywords;
     }
 
@@ -32,9 +35,10 @@ public class KeywordResponse {
         return new KeywordResponse(
             keyword.getId(),
             keyword.getName(),
-            keyword.getSeq(),
-            keyword.getParentIdOrNull(),
             keyword.getDescription(),
+            keyword.getSeq(),
+            keyword.getImportance(),
+            keyword.getParentIdOrNull(),
             null);
     }
 
@@ -42,9 +46,10 @@ public class KeywordResponse {
         return new KeywordResponse(
             keyword.getId(),
             keyword.getName(),
-            keyword.getSeq(),
-            keyword.getParentIdOrNull(),
             keyword.getDescription(),
+            keyword.getSeq(),
+            keyword.getImportance(),
+            keyword.getParentIdOrNull(),
             createKeywordChild(keyword.getChildren()));
     }
 
