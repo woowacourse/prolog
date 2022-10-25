@@ -2,8 +2,10 @@ import { TempSavedStudyLogForm } from '../../models/Studylogs';
 import { useCreateTempSavedStudylog, useFetchTempSavedStudylog } from './../queries/studylog';
 
 export default function useTempSavedStudylog() {
-  const { data } = useFetchTempSavedStudylog();
-  const tempSavedStudylog = data;
+  const {
+    data: tempSavedStudylog,
+    remove: removeCachedTempSavedStudylog,
+  } = useFetchTempSavedStudylog();
 
   const createTempSavedStudylogMutation = useCreateTempSavedStudylog();
 
@@ -14,5 +16,6 @@ export default function useTempSavedStudylog() {
   return {
     tempSavedStudylog,
     createTempSavedStudylog,
+    removeCachedTempSavedStudylog,
   };
 }

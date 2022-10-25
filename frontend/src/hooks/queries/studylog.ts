@@ -82,7 +82,6 @@ export const useFetchTempSavedStudylog = () => {
 
   return useQuery([QUERY_KEY.tempSavedStudylog, username], requestGetTempSavedStudylog, {
     refetchOnWindowFocus: false,
-    cacheTime: 0,
   });
 };
 

@@ -27,7 +27,11 @@ type SelectOption = { value: string; label: string };
 const NewStudylogPage = () => {
   const history = useHistory();
   const editorContentRef = useRef<any>(null);
-  const { tempSavedStudylog, createTempSavedStudylog } = useTempSavedStudylog();
+  const {
+    tempSavedStudylog,
+    createTempSavedStudylog,
+    removeCachedTempSavedStudylog,
+  } = useTempSavedStudylog();
 
   useBeforeunload(editorContentRef);
 
@@ -115,6 +119,7 @@ const NewStudylogPage = () => {
       }),
     {
       onSuccess: async () => {
+        removeCachedTempSavedStudylog();
         alert(SUCCESS_MESSAGE.CREATE_POST);
         history.push(PATH.STUDYLOG);
       },
