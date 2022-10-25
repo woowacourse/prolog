@@ -1,6 +1,7 @@
+import { TempSavedStudyLogForm } from './../../models/Studylogs';
 import axios from 'axios';
 import { useContext } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { BASE_URL } from '../../configs/environment';
 import { UserContext } from '../../contexts/UserProvider';
 import { Studylog, StudyLogResponse } from '../../models/Studylogs';
@@ -22,10 +23,12 @@ import {
 } from '../../constants/message';
 import { useHistory } from 'react-router-dom';
 import { PATH } from '../../constants';
+import { requestGetTempSavedStudylog, requestPostTempSavedStudylog } from '../../apis/studylogs';
 
 const QUERY_KEY = {
   recentStudylogs: 'recentStudylogs',
   popularStudylogs: 'popularStudylogs',
+  tempSavedStudylog: 'tempSavedStudylog',
 };
 
 export const useGetRecentStudylogsQuery = () => {
@@ -69,6 +72,32 @@ export const useDeleteStudylogMutation = () => {
     },
     onError: (error: { code: number }) => {
       alert(ERROR_MESSAGE[error.code] ?? ALERT_MESSAGE.FAIL_TO_DELETE_STUDYLOG);
+    },
+  });
+};
+
+export const useFetchTempSavedStudylog = () => {
+  const { user } = useContext(UserContext);
+  const { username } = user;
+
+  return useQuery([QUERY_KEY.tempSavedStudylog, username], () => requestGetTempSavedStudylog(), {
+    refetchOnWindowFocus: false,
+    cacheTime: 0,
+  });
+};
+
+export const useCreateTempSavedStudylog = () => {
+  const queryClient = useQueryClient();
+  const { user } = useContext(UserContext);
+  const { username } = user;
+
+  return useMutation((body: TempSavedStudyLogForm) => requestPostTempSavedStudylog(body), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([QUERY_KEY.tempSavedStudylog, username]);
+      alert(SUCCESS_MESSAGE.TEMP_SAVE_POST);
+    },
+    onError: () => {
+      alert(ERROR_MESSAGE.DEFAULT);
     },
   });
 };

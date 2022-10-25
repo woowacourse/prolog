@@ -2,27 +2,21 @@
 
 import { css } from '@emotion/react';
 
-import { useState, ChangeEventHandler, FormEventHandler, useRef, useContext } from 'react';
+import { useState, ChangeEventHandler, FormEventHandler, useRef, useEffect } from 'react';
 import { MainContentStyle } from '../../PageRouter';
 
 import { ERROR_MESSAGE, ALERT_MESSAGE, PATH } from '../../constants';
 
-import { StudylogForm, TempSavedStudyLogForm, TempSavedStudyLog } from '../../models/Studylogs';
-import { useMutation, useQuery, UseQueryResult } from 'react-query';
+import { StudylogForm } from '../../models/Studylogs';
+import { useMutation } from 'react-query';
 import LOCAL_STORAGE_KEY from '../../constants/localStorage';
 import { CONFIRM_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
 import { useHistory } from 'react-router-dom';
-import {
-  requestPostTempSavedStudylog,
-  requestPostStudylog,
-  requestGetTempSavedStudylog,
-} from '../../apis/studylogs';
+import { requestPostStudylog } from '../../apis/studylogs';
 import StudylogEditor from '../../components/Editor/StudylogEditor';
 import useBeforeunload from '../../hooks/useBeforeunload';
 import { ResponseError } from '../../apis/studylogs';
-import { AxiosError, AxiosResponse } from 'axios';
-import REACT_QUERY_KEY from '../../constants/reactQueryKey';
-import { UserContext } from '../../contexts/UserProvider';
+import useTempSavedStudylog from '../../hooks/Studylog/useTempSavedStudylog';
 
 interface NewStudylogForm extends StudylogForm {
   abilities: number[];
@@ -33,8 +27,7 @@ type SelectOption = { value: string; label: string };
 const NewStudylogPage = () => {
   const history = useHistory();
   const editorContentRef = useRef<any>(null);
-  const { user } = useContext(UserContext);
-  const { username } = user;
+  const { tempSavedStudylog, createTempSavedStudylog } = useTempSavedStudylog();
 
   useBeforeunload(editorContentRef);
 
@@ -46,37 +39,6 @@ const NewStudylogPage = () => {
     tags: [],
     abilities: [],
   });
-
-  const fetchTempSavedStudylogRequest: UseQueryResult<
-    AxiosResponse<TempSavedStudyLog>,
-    AxiosError
-  > = useQuery(
-    [REACT_QUERY_KEY.TEMP_STUDYLOG, username],
-    () =>
-      requestGetTempSavedStudylog({
-        accessToken: localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN) as string,
-      }),
-    {
-      refetchOnWindowFocus: false,
-      onSuccess: ({ data }) => {
-        const isTempSavedStudylogExist = Object.keys(data).some((key) => data[key] !== null);
-        if (isTempSavedStudylogExist) {
-          setStudylogContent({
-            title: data.title,
-            content: data.content,
-            missionId: data.mission?.id ?? null,
-            sessionId: data.session?.id ?? null,
-            tags: data.tags,
-            abilities: data.abilities.map(({ id }) => id),
-          });
-
-          return;
-        }
-
-        setStudylogContent({ ...studylogContent, content: '' });
-      },
-    }
-  );
 
   const onSelectAbilities = (abilities: number[]) => {
     setStudylogContent({ ...studylogContent, abilities });
@@ -138,7 +100,7 @@ const NewStudylogPage = () => {
     }
 
     if (window.confirm(CONFIRM_MESSAGE.TEMP_SAVE_STUDYLOG)) {
-      tempSaveStudylogRequest({
+      createTempSavedStudylog({
         ...studylogContent,
         content,
       });
@@ -162,21 +124,28 @@ const NewStudylogPage = () => {
     }
   );
 
-  const { mutate: tempSaveStudylogRequest } = useMutation(
-    (data: TempSavedStudyLogForm) =>
-      requestPostTempSavedStudylog({
-        accessToken: localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN) as string,
-        data,
-      }),
-    {
-      onSuccess: () => {
-        alert(SUCCESS_MESSAGE.TEMP_SAVE_POST);
-      },
-      onError: () => {
-        alert(ERROR_MESSAGE.DEFAULT);
-      },
+  useEffect(() => {
+    if (tempSavedStudylog) {
+      const isTempSavedStudylogExist = Object.entries(tempSavedStudylog).some(
+        ([_, value]) => value !== null
+      );
+
+      if (isTempSavedStudylogExist) {
+        setStudylogContent({
+          title: tempSavedStudylog.title ?? '',
+          content: tempSavedStudylog.content,
+          missionId: tempSavedStudylog.mission?.id ?? null,
+          sessionId: tempSavedStudylog.session?.id ?? null,
+          tags: tempSavedStudylog.tags ?? [],
+          abilities: tempSavedStudylog.abilities?.map(({ id }) => id) ?? [],
+        });
+
+        return;
+      }
+
+      setStudylogContent({ ...studylogContent, content: '' });
     }
-  );
+  }, [tempSavedStudylog]);
 
   return (
     <div
