@@ -1,4 +1,5 @@
 import axios, { AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { Nullable } from '../types/utils';
 import { client } from '.';
 import { BASE_URL } from '../configs/environment';
 import {
@@ -137,16 +138,10 @@ export const requestEditStudylog = ({
 
 /** 임시 저장 **/
 export const requestGetTempSavedStudylog = async () => {
-  const { data } = await client.get<TempSavedStudyLog>('/studylogs/temp');
+  const { data } = await client.get<Nullable<TempSavedStudyLog>>('/studylogs/temp');
 
   return data;
 };
 
-export const requestPostTempSavedStudylog = ({
-  accessToken,
-  data,
-}: {
-  accessToken: string;
-  data: TempSavedStudyLogForm;
-}): AxiosPromise<AxiosResponse<null>> =>
-  httpRequester.put('/studylogs/temp', data, getAuthConfig(accessToken));
+export const requestPostTempSavedStudylog = (data: TempSavedStudyLogForm) =>
+  client.put('/studylogs/temp', data);
