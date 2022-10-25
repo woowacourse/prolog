@@ -137,10 +137,9 @@ export const requestEditStudylog = ({
 
 /** 임시 저장 **/
 export const requestGetTempSavedStudylog = async () => {
-  const res = await client.get<TempSavedStudyLog>('/studylogs/temp');
-  console.log(res, 'api');
+  const { data } = await client.get<TempSavedStudyLog>('/studylogs/temp');
 
-  return res.data;
+  return data;
 };
 
 export const requestPostTempSavedStudylog = ({
