@@ -80,7 +80,7 @@ export const useFetchTempSavedStudylog = () => {
   const { user } = useContext(UserContext);
   const { username } = user;
 
-  return useQuery([QUERY_KEY.tempSavedStudylog, username], () => requestGetTempSavedStudylog(), {
+  return useQuery([QUERY_KEY.tempSavedStudylog, username], requestGetTempSavedStudylog, {
     refetchOnWindowFocus: false,
     cacheTime: 0,
   });
@@ -91,7 +91,7 @@ export const useCreateTempSavedStudylog = () => {
   const { user } = useContext(UserContext);
   const { username } = user;
 
-  return useMutation((body: TempSavedStudyLogForm) => requestPostTempSavedStudylog(body), {
+  return useMutation(requestPostTempSavedStudylog, {
     onSuccess: () => {
       queryClient.invalidateQueries([QUERY_KEY.tempSavedStudylog, username]);
       alert(SUCCESS_MESSAGE.TEMP_SAVE_POST);
