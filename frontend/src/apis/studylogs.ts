@@ -1,4 +1,5 @@
 import axios, { AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { client } from '.';
 import { BASE_URL } from '../configs/environment';
 import {
   Mission,
@@ -135,12 +136,12 @@ export const requestEditStudylog = ({
   httpRequester.put(`/studylogs/${id}`, data, getAuthConfig(accessToken));
 
 /** 임시 저장 **/
-export const requestGetTempSavedStudylog = ({
-  accessToken,
-}: {
-  accessToken: string;
-}): AxiosPromise<TempSavedStudyLog> =>
-  httpRequester.get('/studylogs/temp', getAuthConfig(accessToken));
+export const requestGetTempSavedStudylog = async () => {
+  const res = await client.get<TempSavedStudyLog>('/studylogs/temp');
+  console.log(res, 'api');
+
+  return res.data;
+};
 
 export const requestPostTempSavedStudylog = ({
   accessToken,
