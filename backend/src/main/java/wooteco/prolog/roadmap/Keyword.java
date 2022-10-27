@@ -1,7 +1,7 @@
 package wooteco.prolog.roadmap;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,16 +49,10 @@ public class Keyword {
 
     @BatchSize(size = 1000)
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Keyword> children = new ArrayList<>();
+    private Set<Keyword> children = new HashSet<>();
 
-    @Builder
-    public Keyword(final Long id,
-                   final String name,
-                   final String description,
-                   final int seq,
-                   final int importance,
-                   final Long sessionId,
-                   final Keyword parent) {
+    public Keyword(final Long id, final String name, final String description, final int seq, final int importance,
+                   final Long sessionId, final Keyword parent, final Set<Keyword> children) {
         validateSeq(seq);
         this.id = id;
         this.name = name;
@@ -67,6 +61,7 @@ public class Keyword {
         this.importance = importance;
         this.sessionId = sessionId;
         this.parent = parent;
+        this.children = children;
     }
 
     private void validateSeq(final int seq) {
@@ -75,29 +70,13 @@ public class Keyword {
         }
     }
 
-    public Keyword(final String name,
-                   final String description,
-                   final int seq,
-                   final int importance,
-                   final Long sessionId,
-                   final Keyword parent) {
-        this(null, name, description, seq, importance, sessionId, parent);
-    }
-
     public static Keyword createKeyword(final String name,
                                         final String description,
                                         final int seq,
                                         final int importance,
                                         final Long sessionId,
                                         final Keyword parent) {
-        return Keyword.builder()
-            .name(name)
-            .description(description)
-            .seq(seq)
-            .importance(importance)
-            .sessionId(sessionId)
-            .parent(parent)
-            .build();
+        return new Keyword(null, name, description, seq, importance, sessionId, parent, null);
     }
 
     public void validateKeywordParent() {

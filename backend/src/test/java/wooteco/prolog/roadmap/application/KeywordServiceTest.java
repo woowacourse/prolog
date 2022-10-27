@@ -122,8 +122,8 @@ class KeywordServiceTest {
         // then
         assertAll(
             () -> assertThat(extract.getChildrenKeywords()).hasSize(2),
-            () -> assertThat(extract.getChildrenKeywords().get(0).getChildrenKeywords()).hasSize(1),
-            () -> assertThat(extract.getChildrenKeywords().get(1).getChildrenKeywords()).hasSize(1)
+            () -> assertThat(extract.getChildrenKeywords().iterator().next()
+                .getChildrenKeywords()).hasSize(1)
         );
     }
 
@@ -191,6 +191,7 @@ class KeywordServiceTest {
 
         Long sessionId = session.getId();
         Long keywordParentId = parent.getId();
+        Long keywordChildId = child.getId();
         em.clear();
 
         // when
@@ -199,8 +200,12 @@ class KeywordServiceTest {
         em.clear();
 
         // then
-        Optional<Keyword> extract = keywordRepository.findById(keywordParentId);
-        assertThat(extract).isNotPresent();
+        Optional<Keyword> extractParent = keywordRepository.findById(keywordParentId);
+        Optional<Keyword> extractChild = keywordRepository.findById(keywordChildId);
+        assertAll(
+            () -> assertThat(extractParent).isNotPresent(),
+            () -> assertThat(extractChild).isNotPresent()
+        );
     }
 
     private Keyword createKeywordParent(final Keyword keyword) {

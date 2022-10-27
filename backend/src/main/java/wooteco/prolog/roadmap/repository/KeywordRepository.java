@@ -8,8 +8,9 @@ import wooteco.prolog.roadmap.Keyword;
 public interface KeywordRepository extends JpaRepository<Keyword, Long> {
 
     @Query("SELECT k FROM Keyword k "
+        + "LEFT JOIN FETCH k.children c "
         + "LEFT JOIN FETCH k.parent p "
-        + "LEFT JOIN FETCH k.children c WHERE k.id = :keywordId ")
+        + "LEFT JOIN FETCH c.children lc WHERE k.id = :keywordId ORDER BY k.seq")
     Keyword findFetchById(Long keywordId);
 
     List<Keyword> findBySessionId(Long sessionId);
