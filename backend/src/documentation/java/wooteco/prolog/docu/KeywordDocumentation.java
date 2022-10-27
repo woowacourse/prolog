@@ -5,6 +5,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import org.elasticsearch.common.collect.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -84,7 +86,7 @@ public class KeywordDocumentation extends NewDocumentation {
         given(keywordService.findKeywordWithAllChild(any(), any())).willReturn(KEYWORD_WITH_ALL_CHILD_MULTI_RESPONSE);
 
         given
-            .when().get()
+            .when().get("/sessions/1/keywords/1/children")
             .then().log().all().apply(document("keywords/find-with-childAll"))
             .statusCode(HttpStatus.OK.value());
     }
@@ -129,24 +131,45 @@ public class KeywordDocumentation extends NewDocumentation {
         1,
         1,
         null,
-        List.of(
-            new KeywordResponse(
-                2L,
-                "List",
-                "자바의 자료구조인 List에 대한 설명을 작성했습니다.",
-                1,
-                1,
-                1L,
-                null
-            ),
-            new KeywordResponse(
-                1L,
-                "Set",
-                "자바의 자료구조인 Set에 대한 설명을 작성했습니다.",
-                2,
-                1,
-                1L,
-                null
-            ))
+        new HashSet<>(
+            Arrays.asList(
+                new KeywordResponse(
+                    2L,
+                    "List",
+                    "자바의 자료구조인 List에 대한 설명을 작성했습니다.",
+                    1,
+                    1,
+                    1L,
+                    null
+                ),
+                new KeywordResponse(
+                    1L,
+                    "Set",
+                    "자바의 자료구조인 Set에 대한 설명을 작성했습니다.",
+                    2,
+                    1,
+                    1L,
+                    null
+                ))
+        )
+//        Arrays.asList(
+//            new KeywordResponse(
+//                2L,
+//                "List",
+//                "자바의 자료구조인 List에 대한 설명을 작성했습니다.",
+//                1,
+//                1,
+//                1L,
+//                null
+//            ),
+//            new KeywordResponse(
+//                1L,
+//                "Set",
+//                "자바의 자료구조인 Set에 대한 설명을 작성했습니다.",
+//                2,
+//                1,
+//                1L,
+//                null
+//            ))
     );
 }
