@@ -30,7 +30,7 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
             KEYWORD_REQUEST.getSaveParent(keywordName, seq, importance));
     }
 
-    @When("{int}번 세션에 {string}라는 키워드를 순서 {int}, 중요도 {int}, 부모 키워드 {long}로 작성하고")
+    @Given("{int}번 세션에 {string}라는 키워드를 순서 {int}, 중요도 {int}, 부모 키워드 {long}로 작성하고")
     public void 키워드를_부모_키워드와_함께_작성하고(int sessionId, String keywordName, int seq, int importance, long parentId) {
         context.invokeHttpPost(
             "/sessions/" + sessionId + "/keywords",
