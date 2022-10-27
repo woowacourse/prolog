@@ -1,7 +1,6 @@
 package wooteco.prolog.roadmap.application;
 
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.roadmap.Keyword;
@@ -30,7 +29,7 @@ public class KeywordService {
         existSession(sessionId);
         Keyword keywordParent = findKeywordParentOrNull(request.getParentKeywordId());
 
-        Keyword keyword = createKeyword(sessionId, request, keywordParent);
+        Keyword keyword = request.toEntity(sessionId, keywordParent);
         keywordRepository.save(keyword);
 
         return keyword.getId();
@@ -101,12 +100,5 @@ public class KeywordService {
         }
         return keywordRepository.findById(keywordId)
             .orElseThrow(KeywordNotFoundException::new);
-    }
-
-    private Keyword createKeyword(final Long sessionId, final KeywordCreateRequest request, final Keyword keywordParent) {
-        return Keyword.createKeyword(
-            request.getName(), request.getDescription(), request.getOrder(),
-            request.getImportance(), sessionId, keywordParent
-        );
     }
 }
