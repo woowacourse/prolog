@@ -32,7 +32,6 @@ public class KeywordService {
 
         Keyword keyword = createKeyword(sessionId, request, keywordParent);
         keywordRepository.save(keyword);
-        keyword.validateKeywordParent();
 
         return keyword.getId();
     }
