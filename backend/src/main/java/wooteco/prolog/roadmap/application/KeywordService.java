@@ -100,8 +100,8 @@ public class KeywordService {
         if (keywordId == null) {
             return null;
         }
-        Optional<Keyword> findKeyword = keywordRepository.findById(keywordId);
-        return findKeyword.orElse(null);
+        return keywordRepository.findById(keywordId)
+            .orElseThrow(KeywordNotFoundException::new);
     }
 
     private Keyword createKeyword(final Long sessionId, final KeywordCreateRequest request, final Keyword keywordParent) {
