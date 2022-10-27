@@ -29,14 +29,13 @@ public class KeywordController {
     @PostMapping("/{sessionId}/keywords")
     public ResponseEntity<Void> createKeyword(@PathVariable Long sessionId,
                                               @RequestBody KeywordCreateRequest createRequest) {
-
         Long keywordId = keywordService.createKeyword(sessionId, createRequest);
         return ResponseEntity.created(URI.create("/sessions/" + sessionId + "/keywords/" + keywordId)).build();
     }
 
     @GetMapping("/{sessionId}/keywords/{keywordId}")
     public ResponseEntity<KeywordResponse> findKeyword(@PathVariable Long sessionId,
-                                            @PathVariable Long keywordId) {
+                                                       @PathVariable Long keywordId) {
         KeywordResponse response = keywordService.findKeyword(sessionId, keywordId);
         return ResponseEntity.ok(response);
     }
