@@ -98,6 +98,7 @@ public class Keyword {
         this.seq = seq;
         this.importance = importance;
         this.parent = keywordParent;
+        validateSeq(seq);
         validateKeywordParent();
     }
 }
