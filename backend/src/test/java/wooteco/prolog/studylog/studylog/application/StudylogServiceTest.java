@@ -31,6 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.ability.application.AbilityService;
+import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.login.ui.LoginMember.Authority;
@@ -47,6 +49,7 @@ import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.studylog.application.CommentService;
+import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.StudylogScrapService;
 import wooteco.prolog.studylog.application.StudylogService;
@@ -56,6 +59,7 @@ import wooteco.prolog.studylog.application.dto.CommentSaveRequest;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
+import wooteco.prolog.studylog.application.dto.StudylogTempResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
 import wooteco.prolog.studylog.application.dto.TagResponse;
@@ -80,6 +84,14 @@ class StudylogServiceTest {
     private static final String CONTENT3 = "피케이 스터디로그";
     private static final String CONTENT4 = "포모의 스터디로그";
 
+    private static Tag tag1 = new Tag(1L, "소롱의글쓰기");
+    private static Tag tag2 = new Tag(2L, "스프링");
+    private static Tag tag3 = new Tag(3L, "감자튀기기");
+    private static Tag tag4 = new Tag(4L, "집필왕웨지");
+    private static Tag tag5 = new Tag(5L, "피케이");
+    private static List<Tag> tags = asList(
+            tag1, tag2, tag3, tag4, tag5
+    );
     private static final String TAG1 = "소롱의글쓰리";
     private static final String TAG2 = "스프링";
     private static final String TAG3 = "감자튀기기";
@@ -93,6 +105,24 @@ class StudylogServiceTest {
     private static final String MISSION2 = "미션-2";
 
     private static final String URL = "http://localhost:8080";
+
+    private Member member1;
+    private Member member2;
+
+    private LoginMember loginMember1;
+    private LoginMember loginMember2;
+    private LoginMember loginMember3;
+
+    private Session session1;
+    private Session session2;
+
+    private Mission mission1;
+    private Mission mission2;
+
+    private Studylog studylog1;
+    private Studylog studylog2;
+    private Studylog studylog3;
+    private Studylog studylog4;
 
     @Autowired
     private StudylogService studylogService;
@@ -111,6 +141,8 @@ class StudylogServiceTest {
 
     @Autowired
     private DocumentService studylogDocumentService;
+    @Autowired
+    private AbilityService abilityService;
 
     @Autowired
     private MissionRepository missionRepository;
@@ -123,6 +155,41 @@ class StudylogServiceTest {
 
     @Autowired
     private CommentService commentService;
+
+    @BeforeEach
+    void setUp() {
+        SessionResponse sessionResponse1 = sessionService.create(new SessionRequest("세션1"));
+        SessionResponse sessionResponse2 = sessionService.create(new SessionRequest("세션2"));
+
+        this.session1 = new Session(sessionResponse1.getId(), sessionResponse1.getName());
+        this.session2 = new Session(sessionResponse2.getId(), sessionResponse2.getName());
+
+        MissionResponse missionResponse1 = missionService
+                .create(new MissionRequest("자동차 미션", session1.getId()));
+        MissionResponse missionResponse2 = missionService
+                .create(new MissionRequest("수동차 미션", session2.getId()));
+
+        this.mission1 = new Mission(missionResponse1.getId(), missionResponse1.getName(), session1);
+        this.mission2 = new Mission(missionResponse2.getId(), missionResponse2.getName(), session1);
+
+        this.member1 = memberService.findOrCreateMember(new GithubProfileResponse("이름1", "별명1", "1", "image"));
+        this.member2 = memberService.findOrCreateMember(new GithubProfileResponse("이름2", "별명2", "2", "image"));
+
+        this.loginMember1 = new LoginMember(member1.getId(), Authority.MEMBER);
+        this.loginMember2 = new LoginMember(member2.getId(), Authority.MEMBER);
+        this.loginMember3 = new LoginMember(null, Authority.ANONYMOUS);
+
+        this.studylog1 = new Studylog(member1,
+                TITLE1, "피케이와 포모의 스터디로그", session1, mission1,
+                asList(tag1, tag2));
+        this.studylog2 = new Studylog(member1,
+                TITLE2, "피케이와 포모의 스터디로그 2", session1, mission1,
+                asList(tag2, tag3));
+        this.studylog3 = new Studylog(member2,
+                TITLE3, "피케이 스터디로그", session1, mission2,
+                asList(tag3, tag4, tag5));
+        this.studylog4 = new Studylog(member2, TITLE4, "포모의 스터디로그", session1, mission2, emptyList());
+    }
 
     @DisplayName("스터디로그를 삽입한다. - 삽입 시 studylogDocument도 삽입된다.")
     @Test
@@ -493,6 +560,80 @@ class StudylogServiceTest {
                 .containsExactlyInAnyOrderElementsOf(expectedLinkUrl);
     }
 
+    @DisplayName("임시저장된 스터디로그를 조회한다.")
+    @Test
+    void findStudylogTemp() {
+        //given
+        Mission mission = missionRepository.save(mission1);
+        String title = "임시저장 제목";
+        String content = "임시저장 내용";
+        StudylogRequest studylogRequest = new StudylogRequest(title, content,
+                mission.getId(),
+                toTagRequests(tags));
+        studylogService.insertStudylogTemp(member1.getId(),
+                studylogRequest);
+
+        //when
+        final StudylogTempResponse studylogTempResponse = studylogService.findStudylogTemp(member1.getId());
+
+        //then
+        assertThat(studylogTempResponse.getTitle()).isEqualTo(title);
+        assertThat(studylogTempResponse.getContent()).isEqualTo(content);
+        assertThat(studylogTempResponse.getAbilities()).isEmpty();
+    }
+
+    @DisplayName("스터디로그를 임시저장하고 다시 수정후, 다시 임시 저장한다.")
+    @Test
+    void insertstudylogTemp_oneMore() {
+        //given
+        Mission mission = missionRepository.save(mission1);
+        String title = "임시저장 제목";
+        String content = "임시저장 내용";
+        List<Long> abilityIds = 역량을_저장한다();
+        StudylogRequest studylogRequest = new StudylogRequest(title, content, session1.getId(),
+                mission.getId(), toTagRequests(tags), abilityIds);
+        studylogService.insertStudylogTemp(member1.getId(), studylogRequest);
+
+        //when
+        String newTitle = "새로운 임시저장 제목";
+        String newContent = "새로운 임시저장 내용";
+        StudylogRequest newStudylogRequest = new StudylogRequest(newTitle, newContent, session1.getId(),
+                mission.getId(), toTagRequests(tags), abilityIds);
+        StudylogTempResponse studylogTempResponse =
+                studylogService.insertStudylogTemp(member1.getId(), newStudylogRequest);
+
+        //then
+        assertThat(studylogTempResponse.getTitle()).isEqualTo(newTitle);
+        assertThat(studylogTempResponse.getContent()).isEqualTo(newContent);
+        assertThat(studylogTempResponse.getAbilities()).isNotEmpty();
+    }
+
+    @DisplayName("스터디로그를 임시저장하고 제출한다.")
+    @Test
+    void insertstudylogTemp_andSubmit() {
+        //given
+        Mission mission = missionRepository.save(mission1);
+        String title = "임시저장 제목";
+        String content = "임시저장 내용";
+        List<Long> abilityIds = 역량을_저장한다();
+        StudylogRequest studylogRequest = new StudylogRequest(title, content, session1.getId(),
+                mission.getId(), toTagRequests(tags), abilityIds);
+        studylogService.insertStudylogTemp(member1.getId(), studylogRequest);
+
+        //when
+        String newTitle = "최종 제출할 제목";
+        String newContent = "최종 제출할 내용";
+        StudylogRequest newStudylogRequest = new StudylogRequest(newTitle, newContent, session1.getId(),
+                mission.getId(), toTagRequests(tags), abilityIds);
+        StudylogResponse studylogResponse =
+                studylogService.insertStudylog(member1.getId(), newStudylogRequest);
+
+        //then
+        assertThat(studylogResponse.getTitle()).isEqualTo(newTitle);
+        assertThat(studylogResponse.getContent()).isEqualTo(newContent);
+        assertThat(studylogResponse.getAbilities()).isNotEmpty();
+    }
+
     @DisplayName("학습로그 목록조회 시 댓글 갯수도 같이 조회한다.")
     @ParameterizedTest
     @MethodSource("provideFilterForGetCommentCount")
@@ -610,5 +751,46 @@ class StudylogServiceTest {
     private MissionResponse createMission(String sessionName, String missionName) {
         SessionResponse session = sessionService.create(new SessionRequest(sessionName));
         return missionService.create(new MissionRequest(missionName, session.getId()));
+    }
+
+    public List<StudylogResponse> insertStudylogs(Member member, Studylog... studylogs) {
+        return insertStudylogs(member, asList(studylogs));
+    }
+
+    private List<StudylogResponse> insertStudylogs(Member member, List<Studylog> studylogs) {
+        List<StudylogRequest> studylogRequests = studylogs.stream()
+                .map(studylog ->
+                        new StudylogRequest(
+                                studylog.getTitle(),
+                                studylog.getContent(),
+                                studylog.getSession().getId(),
+                                studylog.getMission().getId(),
+                                toTagRequests(studylog),
+                                Collections.emptyList()
+                        )
+                )
+                .collect(toList());
+
+        return studylogService.insertStudylogs(member.getId(), studylogRequests);
+    }
+
+    private List<TagRequest> toTagRequests(List<Tag> tags) {
+        return tags.stream()
+                .map(tag -> new TagRequest(tag.getName()))
+                .collect(toList());
+    }
+
+    private List<TagRequest> toTagRequests(Studylog studylog) {
+        return studylog.getStudylogTags().stream()
+                .map(studylogTag -> new TagRequest(studylogTag.getTag().getName()))
+                .collect(toList());
+    }
+
+    private List<Long> 역량을_저장한다() {
+        AbilityCreateRequest parentRequest1 = new AbilityCreateRequest("부모1", "부모설명1", "1", null);
+        AbilityCreateRequest parentRequest2 = new AbilityCreateRequest("부모2", "부모설명2", "2", null);
+        Long abilityId1 = abilityService.createAbility(member1.getId(), parentRequest1).getId();
+        Long abilityId2 = abilityService.createAbility(member1.getId(), parentRequest2).getId();
+        return asList(abilityId1, abilityId2);
     }
 }
