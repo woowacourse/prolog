@@ -10,6 +10,7 @@ import static wooteco.prolog.ResponseFixture.MISSION_RESPONSE1;
 import static wooteco.prolog.ResponseFixture.MISSION_RESPONSE2;
 
 import io.restassured.module.mockmvc.response.ValidatableMockMvcResponse;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -31,7 +32,7 @@ public class MissionDocumentation extends NewDocumentation {
     void 미션_목록을_조회한다() {
         //given
         given(missionService.findAll())
-                .willReturn(List.of(MISSION_RESPONSE1, MISSION_RESPONSE2));
+                .willReturn(Arrays.asList(MISSION_RESPONSE1, MISSION_RESPONSE2));
 
         //when
         ValidatableMockMvcResponse response = given
