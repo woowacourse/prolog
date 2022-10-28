@@ -3,6 +3,9 @@ package wooteco.prolog.common.exception;
 import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import wooteco.prolog.image.exception.FileNameEmptyException;
+import wooteco.prolog.image.exception.FileUploadFailException;
+import wooteco.prolog.image.exception.UnsupportedFilExtensionException;
 import wooteco.prolog.levellogs.exception.InvalidLevelLogAuthorException;
 import wooteco.prolog.levellogs.exception.LevelLogNotFoundException;
 import wooteco.prolog.login.excetpion.GithubApiFailException;
@@ -113,7 +116,11 @@ public enum BadRequestCode {
     COMMENT_DELETE_EXCEPTION(6002, "댓글을 삭제할 수 없습니다.",CommentDeleteException.class),
 
     INVALID_LEVEL_LOG_AUTHOR_EXCEPTION(7001, "레벨 로그 작성자가 아닙니다.",InvalidLevelLogAuthorException.class),
-    LEVEL_LOG_NOT_FOUND_EXCEPTION(7002, "레벨 로그를 찾을 수 없습니다.",LevelLogNotFoundException.class);
+    LEVEL_LOG_NOT_FOUND_EXCEPTION(7002, "레벨 로그를 찾을 수 없습니다.",LevelLogNotFoundException.class),
+
+    UNSUPPORTED_FILE_EXTENSION_EXCEPTION(8001, "지원하지 않는 확장자 입니다.", UnsupportedFilExtensionException.class),
+    FILE_NAME_EMPTY_EXCEPTION(8002, "파일 이름은 비어있을 수 없습니다.", FileNameEmptyException.class),
+    FILE_UPLOAD_FAIL_EXCEPTION(8003, "파일 업로드에 실패했습니다.", FileUploadFailException.class);
 
     private int code;
     private String message;
