@@ -25,12 +25,11 @@ public class NewDocumentation {
     @BeforeEach
     public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
         given = RestAssuredMockMvc.given().mockMvc(MockMvcBuilders.webAppContextSetup(webApplicationContext)
-            .apply(documentationConfiguration(restDocumentation).operationPreprocessors()
-            .withRequestDefaults(prettyPrint())
-            .withResponseDefaults(prettyPrint()))
-            .build()).log().all();
+                .apply(documentationConfiguration(restDocumentation).operationPreprocessors()
+                        .withRequestDefaults(prettyPrint())
+                        .withResponseDefaults(prettyPrint()))
+                .build()).log().all();
 
         accessToken = "accessToken";
     }
-
 }
