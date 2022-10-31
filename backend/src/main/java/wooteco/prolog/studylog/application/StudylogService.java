@@ -27,11 +27,14 @@ import wooteco.prolog.ability.application.AbilityService;
 import wooteco.prolog.ability.application.dto.AbilityResponse;
 import wooteco.prolog.ability.domain.Ability;
 import wooteco.prolog.ability.domain.StudylogAbility;
+import wooteco.prolog.ability.domain.StudylogTempAbility;
 import wooteco.prolog.ability.domain.repository.StudylogAbilityRepository;
+import wooteco.prolog.ability.domain.repository.StudylogTempAbilityRepository;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.report.exception.AbilityHasChildrenException;
 import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.domain.Mission;
@@ -85,6 +88,7 @@ public class StudylogService {
     private final StudylogTempRepository studylogTempRepository;
     private final StudylogAbilityRepository studylogAbilityRepository;
     private final CommentRepository commentRepository;
+    private final StudylogTempAbilityRepository studylogTempAbilityRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
@@ -101,12 +105,7 @@ public class StudylogService {
 
     @Transactional
     public StudylogResponse insertStudylog(Long memberId, StudylogRequest studylogRequest) {
-        Set<Ability> abilities = abilityService.findByIdIn(memberId,
-                studylogRequest.getAbilities());
-
-        if (hasChildAndParentAbility(abilities)) {
-            throw new IllegalArgumentException("자식 역량이 존재하는 경우 부모 역량을 선택할 수 없습니다.");
-        }
+        Set<Ability> abilities = findAbility(memberId, studylogRequest);
 
         Member member = memberService.findById(memberId);
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
@@ -149,6 +148,21 @@ public class StudylogService {
 
     @Transactional
     public StudylogTempResponse insertStudylogTemp(Long memberId, StudylogRequest studylogRequest) {
+        Set<Ability> abilities = findAbility(memberId, studylogRequest);
+        StudylogTemp createdStudylogTemp = creteStudylogTemp(memberId, studylogRequest);
+
+        List<StudylogTempAbility> studylogTempAbilities = abilities.stream()
+                .map(it -> new StudylogTempAbility(memberId, it, createdStudylogTemp))
+                .collect(Collectors.toList());
+
+        List<StudylogTempAbility> createdStudylogAbilities = studylogTempAbilityRepository.saveAll(
+                studylogTempAbilities);
+
+        List<AbilityResponse> abilityResponses = getAbilityTempResponses(createdStudylogAbilities);
+        return StudylogTempResponse.from(createdStudylogTemp, abilityResponses);
+    }
+
+    private StudylogTemp creteStudylogTemp(Long memberId, StudylogRequest studylogRequest) {
         Member member = memberService.findById(memberId);
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
         Session session = sessionService.findSessionById(studylogRequest.getSessionId())
@@ -165,7 +179,22 @@ public class StudylogService {
 
         deleteStudylogTemp(memberId);
         StudylogTemp createdStudylogTemp = studylogTempRepository.save(requestedStudylogTemp);
-        return StudylogTempResponse.from(createdStudylogTemp);
+        return createdStudylogTemp;
+    }
+
+    private List<AbilityResponse> getAbilityTempResponses(List<StudylogTempAbility> createdStudylogAbilities) {
+        return createdStudylogAbilities.stream()
+                .map(it -> AbilityResponse.of(it.getAbility()))
+                .collect(toList());
+    }
+
+    private Set<Ability> findAbility(Long memberId, StudylogRequest studylogRequest) {
+        Set<Ability> abilities = abilityService.findByIdIn(memberId,
+                studylogRequest.getAbilities());
+        if (hasChildAndParentAbility(abilities)) {
+            throw new AbilityHasChildrenException();
+        }
+        return abilities;
     }
 
     private void onStudylogCreatedEvent(Member foundMember, Tags tags, Studylog createdStudylog) {
@@ -189,7 +218,10 @@ public class StudylogService {
     public StudylogTempResponse findStudylogTemp(Long memberId) {
         if (studylogTempRepository.existsByMemberId(memberId)) {
             StudylogTemp studylogTemp = studylogTempRepository.findByMemberId(memberId);
-            return StudylogTempResponse.from(studylogTemp);
+            List<StudylogTempAbility> studylogTempAbilities = studylogTempAbilityRepository.findByStudylogTempId(
+                    studylogTemp.getId());
+            List<AbilityResponse> abilitiesResponse = getAbilityTempResponses(studylogTempAbilities);
+            return StudylogTempResponse.from(studylogTemp, abilitiesResponse);
         }
         return StudylogTempResponse.toNull();
     }
@@ -390,12 +422,7 @@ public class StudylogService {
 
     @Transactional
     public void updateStudylog(Long memberId, Long studylogId, StudylogRequest studylogRequest) {
-        Set<Ability> abilities = abilityService.findByIdIn(memberId,
-                studylogRequest.getAbilities());
-
-        if (hasChildAndParentAbility(abilities)) {
-            throw new IllegalArgumentException("자식 역량이 존재하는 경우 부모 역량을 선택할 수 없습니다.");
-        }
+        Set<Ability> abilities = findAbility(memberId, studylogRequest);
 
         Studylog studylog = studylogRepository.findById(studylogId).orElseThrow(StudylogNotFoundException::new);
         studylog.validateBelongTo(memberId);

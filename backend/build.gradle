@@ -100,6 +100,14 @@ dependencies {
     implementation 'com.rometools:rome:1.18.0'
     implementation 'org.commonmark:commonmark:0.18.2'
 
+    // aws s3
+    implementation platform('software.amazon.awssdk:bom:2.5.29')
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.319'
+
+
+    // IO
+    implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
+
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
 }
@@ -167,3 +175,4 @@ sonarqube {
         property "sonar.host.url", "https://sonarcloud.io"
     }
 }
+targetCompatibility = JavaVersion.VERSION_1_8

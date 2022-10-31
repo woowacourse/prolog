@@ -1,3 +1,5 @@
+import { Ability } from '../models/Ability';
+
 type Role = 'UNVALIDATED' | 'CREW' | 'COACH' | 'ADMIN';
 export interface Author {
   id: number;
@@ -43,6 +45,19 @@ export interface Studylog {
   abilities: number[];
   commentCount: number;
 }
+
+export type TempSavedStudyLog = Pick<
+  Studylog,
+  'id' | 'author' | 'title' | 'content' | 'session' | 'mission' | 'tags'
+> & {
+  abilities: Ability[];
+};
+
+export type TempSavedStudyLogForm = Pick<TempSavedStudyLog, 'title' | 'content' | 'tags'> & {
+  missionId: number | null;
+  sessionId: number | null;
+  abilities: number[];
+};
 
 export interface StudyLogList {
   data: Studylog[];
