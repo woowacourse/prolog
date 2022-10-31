@@ -29,18 +29,22 @@ const TopKeywordList = ({
 
   return (
     <StyledRoot>
-      {topKeywordList?.map((keyword, index) => (
-        <StyledWrapper>
-          <LabelledImage
-            src={SomeImage}
-            alt=""
-            text={keyword.name}
-            isSelected={selectedTopKeyword?.keywordId === keyword.keywordId}
-            onClick={() => handleClickTopKeyword(keyword)}
-          />
-          {index + 1 !== topKeywordList?.length && <StyledArrow />}
-        </StyledWrapper>
-      ))}
+      {topKeywordList?.map((keyword, index) => {
+        const isNotLast = index + 1 !== topKeywordList?.length;
+
+        return (
+          <StyledWrapper>
+            <LabelledImage
+              src={SomeImage}
+              alt=""
+              text={keyword.name}
+              isSelected={selectedTopKeyword?.keywordId === keyword.keywordId}
+              onClick={() => handleClickTopKeyword(keyword)}
+            />
+            {isNotLast && <StyledArrow />}
+          </StyledWrapper>
+        );
+      })}
     </StyledRoot>
   );
 };
