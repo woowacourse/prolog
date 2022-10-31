@@ -12,8 +12,8 @@ public class LevelLogTest {
     @DisplayName("작성자인지 확인한다.")
     @Test
     void isAuthor() {
-        Member another = new Member(2L, "another", "another", Role.CREW, 2L, "iamgeUrl");
-        Member author = new Member(1L, "username", "nickname", Role.CREW, 1L, "iamgeUrl");
+        Member another = new Member(2L, "another", "another", Role.NORMAL, 2L, "iamgeUrl");
+        Member author = new Member(1L, "username", "nickname", Role.NORMAL, 1L, "iamgeUrl");
         LevelLog levelLog = new LevelLog(1L, "제목", "내용", author);
 
         assertThat(levelLog.isAuthor(author)).isTrue();

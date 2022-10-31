@@ -39,7 +39,7 @@ public class GithubProfileResponse {
         return new Member(
             getLoginName(),
             getNickname(),
-            Role.CREW,
+            Role.NORMAL,
             getGithubId(),
             getImageUrl()
         );

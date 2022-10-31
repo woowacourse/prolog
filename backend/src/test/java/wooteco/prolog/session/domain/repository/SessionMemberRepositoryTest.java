@@ -53,7 +53,7 @@ class SessionMemberRepositoryTest {
             new Member(
                 username,
                 nickname,
-                Role.CREW,
+                Role.NORMAL,
                 9L,
                 "기가막힌 URL"
             )

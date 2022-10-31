@@ -26,7 +26,7 @@ class GroupMemberRepositoryTest {
     void existsGroupMemberByMemberAndMemberGroup() {
         // given
         Member saveMember = memberRepository.save(
-            new Member("username", "nickname", Role.CREW, 1L, "imageUrl"));
+            new Member("username", "nickname", Role.NORMAL, 1L, "imageUrl"));
         MemberGroup saveMemberGroup = memberGroupRepository.save(
             new MemberGroup(null, "프론트엔드", "프론트엔드 설명")
         );

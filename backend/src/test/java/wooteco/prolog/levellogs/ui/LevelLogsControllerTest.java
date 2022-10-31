@@ -64,7 +64,7 @@ public class LevelLogsControllerTest {
     @DisplayName("레벨 로그를 작성한다.")
     void createLevelLog() {
         // arrange
-        Member author = memberRepository.save(new Member("sudal", "sudal", Role.CREW, 1L, "image"));
+        Member author = memberRepository.save(new Member("sudal", "sudal", Role.NORMAL, 1L, "image"));
 
         final SelfDiscussionRequest selfDiscussionRequest1 = new SelfDiscussionRequest("질문2",
             "응답2");
@@ -89,7 +89,7 @@ public class LevelLogsControllerTest {
     @DisplayName("레벨 로그를 수정한다.")
     void updateLevelLog() {
         // arrange
-        Member author = memberRepository.save(new Member("verus", "verus", Role.CREW, 1L, "image"));
+        Member author = memberRepository.save(new Member("verus", "verus", Role.NORMAL, 1L, "image"));
         LevelLog levelLog = levelLogRepository.save(new LevelLog("제목", "내용", author));
         selfDiscussionRepository.save(
             new SelfDiscussion(levelLog, "질문2", "응답2"));
@@ -127,7 +127,7 @@ public class LevelLogsControllerTest {
     @DisplayName("레벨 로그 ID로 상세 정보를 조회한다.")
     void findByLevelLogId() {
         // arrange
-        Member author = memberRepository.save(new Member("verus", "verus", Role.CREW, 1L, "image"));
+        Member author = memberRepository.save(new Member("verus", "verus", Role.NORMAL, 1L, "image"));
         LevelLog levelLog = levelLogRepository.save(new LevelLog("제목", "내용", author));
         SelfDiscussion discussion2 = selfDiscussionRepository.save(
             new SelfDiscussion(levelLog, "질문2", "응답2"));
@@ -160,9 +160,9 @@ public class LevelLogsControllerTest {
     void findLevelLogs() {
         // arrange
         Member verus = memberRepository.save(
-            new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
+            new Member("verus", "verus", Role.NORMAL, 1L, "verus-image"));
         Member sudal = memberRepository.save(
-            new Member("sudal", "sudal", Role.CREW, 2L, "sudal-image"));
+            new Member("sudal", "sudal", Role.NORMAL, 2L, "sudal-image"));
 
         List<LevelLogSummaryResponse> verusLevelLogs = saveLevelLog(verus, 3);
         List<LevelLogSummaryResponse> sudalLevelLogs = saveLevelLog(sudal, 2);
@@ -201,7 +201,7 @@ public class LevelLogsControllerTest {
     void deleteLevelLog() {
         // arrange
         Member author = memberRepository.save(
-            new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
+            new Member("verus", "verus", Role.NORMAL, 1L, "verus-image"));
         LevelLog levelLog = levelLogRepository.save(new LevelLog("제목", "내용", author));
         SelfDiscussion discussion = selfDiscussionRepository.save(
             new SelfDiscussion(levelLog, "질문1", "응답1"));
@@ -221,7 +221,7 @@ public class LevelLogsControllerTest {
     void deleteNotFoundLevelLog() {
         // arrange
         Member author = memberRepository.save(
-            new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
+            new Member("verus", "verus", Role.NORMAL, 1L, "verus-image"));
 
         // act & assert
         assertThatThrownBy(
@@ -234,10 +234,10 @@ public class LevelLogsControllerTest {
     void deleteByAnotherMember() {
         // arrange
         Member another = memberRepository.save(
-            new Member("sudal", "sudal", Role.CREW, 2L, "sudal-image"));
+            new Member("sudal", "sudal", Role.NORMAL, 2L, "sudal-image"));
 
         Member author = memberRepository.save(
-            new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
+            new Member("verus", "verus", Role.NORMAL, 1L, "verus-image"));
         LevelLog levelLog = levelLogRepository.save(new LevelLog("제목", "내용", author));
         SelfDiscussion discussion = selfDiscussionRepository.save(
             new SelfDiscussion(levelLog, "질문1", "응답1"));
@@ -255,7 +255,7 @@ public class LevelLogsControllerTest {
     void deleteByNotFoundMember() {
         // arrange
         Member author = memberRepository.save(
-            new Member("verus", "verus", Role.CREW, 1L, "verus-image"));
+            new Member("verus", "verus", Role.NORMAL, 1L, "verus-image"));
         LevelLog levelLog = levelLogRepository.save(new LevelLog("제목", "내용", author));
         SelfDiscussion discussion = selfDiscussionRepository.save(
             new SelfDiscussion(levelLog, "질문1", "응답1"));

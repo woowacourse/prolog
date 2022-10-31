@@ -16,7 +16,7 @@ class MemberTest {
 
     @BeforeEach
     void setUp() {
-        member = new Member(1L, "saminching", "손너잘", Role.CREW, 1234L, "imageUrl");
+        member = new Member(1L, "saminching", "손너잘", Role.NORMAL, 1234L, "imageUrl");
     }
 
     @DisplayName("nickname이 없을 때 loginName으로 대체되는지 확인")
@@ -29,9 +29,9 @@ class MemberTest {
         String existName = "nickname";
 
         //when
-        Member member1 = new Member(1L, "soulg", nullName, Role.CREW, 1234L, "imageUrl");
-        Member member = new Member(2L, "soulg", emptyName, Role.CREW, 1234L, "imageUrl");
-        Member member3 = new Member(3L, "soulg", existName, Role.CREW, 1234L, "imageUrl");
+        Member member1 = new Member(1L, "soulg", nullName, Role.NORMAL, 1234L, "imageUrl");
+        Member member = new Member(2L, "soulg", emptyName, Role.NORMAL, 1234L, "imageUrl");
+        Member member3 = new Member(3L, "soulg", existName, Role.NORMAL, 1234L, "imageUrl");
 
         //then
         assertThat(member1.getNickname()).isEqualTo(loginName);

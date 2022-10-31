@@ -38,7 +38,7 @@ class LevelLogServiceTest {
     @DisplayName("레벨 로그를 작성한다.")
     void createLevelLog() {
         // arrange
-        Member author = memberRepository.save(new Member("sudal", "sudal", Role.CREW, 1L, "image"));
+        Member author = memberRepository.save(new Member("sudal", "sudal", Role.NORMAL, 1L, "image"));
 
         final SelfDiscussionRequest selfDiscussionRequest1 = new SelfDiscussionRequest("질문2",
             "응답2");
@@ -62,7 +62,7 @@ class LevelLogServiceTest {
     @DisplayName("레벨 로그를 수정한다.")
     void updateLevelLog() {
         // arrange
-        Member author = memberRepository.save(new Member("sudal", "sudal", Role.CREW, 1L, "image"));
+        Member author = memberRepository.save(new Member("sudal", "sudal", Role.NORMAL, 1L, "image"));
         final LevelLog levelLog = levelLogRepository.save(new LevelLog("title", "content", author));
 
         selfDiscussionRepository.save(new SelfDiscussion(levelLog, "질문1",

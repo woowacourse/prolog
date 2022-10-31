@@ -25,10 +25,10 @@ import wooteco.support.utils.RepositoryTest;
 @RepositoryTest
 class StudylogReadRepositoryTest {
 
-    private static final Member 웨지 = new Member("sihyung92", "웨지", Role.CREW, 2222L,
+    private static final Member 웨지 = new Member("sihyung92", "웨지", Role.NORMAL, 2222L,
         "https://avatars.githubusercontent.com/u/51393021?v=4");
 
-    private static final Member 바다 = new Member("xrabcde", "바다", Role.CREW, 1111L,
+    private static final Member 바다 = new Member("xrabcde", "바다", Role.NORMAL, 1111L,
         "https://avatars.githubusercontent.com/u/56033755?v=4");
 
     private Studylog studylog;

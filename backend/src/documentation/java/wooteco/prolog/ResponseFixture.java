@@ -1,6 +1,6 @@
 package wooteco.prolog;
 
-import static wooteco.prolog.member.domain.Role.CREW;
+import static wooteco.prolog.member.domain.Role.NORMAL;
 
 import java.sql.Date;
 import java.time.Instant;
@@ -38,7 +38,7 @@ public class ResponseFixture {
             1L,
             "soulG",
             "잉",
-            CREW,
+            NORMAL,
             "https://avatars.githubusercontent.com/u/52682603?v=4"
     );
 
@@ -93,7 +93,7 @@ public class ResponseFixture {
     ));
 
     public static final Member MEMBER
-            = new Member("yboy", "잉", Role.CREW, 1L, GithubResponses.소롱.getAvatarUrl());
+            = new Member("yboy", "잉", Role.NORMAL, 1L, GithubResponses.소롱.getAvatarUrl());
 
     public static final TagResponse TAG_RESPONSE1 = new TagResponse(1L, "자바");
     public static final TagResponse TAG_RESPONSE2 = new TagResponse(2L, "코틀린");

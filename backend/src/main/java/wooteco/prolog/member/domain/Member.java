@@ -1,5 +1,6 @@
 package wooteco.prolog.member.domain;
 
+import static wooteco.prolog.member.domain.Role.NORMAL;
 import static wooteco.prolog.member.domain.Role.UNVALIDATED;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
+import wooteco.prolog.member.exception.MemberNotAllowedException;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.domain.Tags;
 
@@ -43,6 +45,8 @@ public class Member {
     @Embedded
     private MemberTags memberTags;
 
+    private boolean isPromotionRequest;
+
     public Member(String username, String nickname, Role role, Long githubId, String imageUrl) {
         this(null, username, nickname, role, githubId, imageUrl);
     }
@@ -53,7 +57,7 @@ public class Member {
                   Role role,
                   Long githubId,
                   String imageUrl) {
-        this(id, username, nickname, role, githubId, imageUrl, new MemberTags());
+        this(id, username, nickname, role, githubId, imageUrl, new MemberTags(), false);
     }
 
     public Member(Long id,
@@ -62,7 +66,8 @@ public class Member {
                   Role role,
                   Long githubId,
                   String imageUrl,
-                  MemberTags memberTags) {
+                  MemberTags memberTags,
+                  boolean isPromotionRequest) {
         this.id = id;
         this.username = username;
         this.nickname = ifAbsentReplace(nickname, username);
@@ -70,6 +75,7 @@ public class Member {
         this.githubId = githubId;
         this.imageUrl = imageUrl;
         this.memberTags = memberTags;
+        this.isPromotionRequest = isPromotionRequest;
     }
 
     private String ifAbsentReplace(String nickname, String username) {
@@ -149,5 +155,13 @@ public class Member {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public void requestPromote() {
+        if (role != NORMAL) {
+            throw new MemberNotAllowedException();
+        }
+
+        isPromotionRequest = true;
     }
 }

@@ -112,4 +112,19 @@ public class MemberService {
     public List<Member> findByIdIn(List<Long> memberIds) {
         return memberRepository.findByIdIn(memberIds);
     }
+
+    @Transactional
+    public void requestPromote(final LoginMember loginMember) {
+        if (loginMember.isAnonymous()) {
+            throw new MemberNotAllowedException();
+        }
+
+        Member member = findById(loginMember.getId());
+        member.requestPromote();
+    }
+
+    public MembersResponse findAllByIsPromotionRequestTrue(final Pageable pageable) {
+        Page<Member> members = memberRepository.findAllByIsPromotionRequestTrue(pageable);
+        return MembersResponse.of(members);
+    }
 }

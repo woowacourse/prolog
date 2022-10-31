@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
@@ -48,8 +47,8 @@ class CommentRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        루키 = memberRepository.save(new Member("wishoon", "루키", Role.CREW, 1L, "https://image.url"));
-        잉 = memberRepository.save(new Member("iilo", "잉", Role.CREW, 2L, "https://image.url"));
+        루키 = memberRepository.save(new Member("wishoon", "루키", Role.NORMAL, 1L, "https://image.url"));
+        잉 = memberRepository.save(new Member("iilo", "잉", Role.NORMAL, 2L, "https://image.url"));
         session_백엔드_레벨1 = sessionRepository.save(new Session("백엔드Java 레벨1"));
         mission_백엔드_체스 = missionRepository.save(new Mission("체스미션", session_백엔드_레벨1));
         루키_스터디로그 = studylogRepository.save(

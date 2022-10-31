@@ -50,9 +50,9 @@ class CommentServiceTest {
 
     @BeforeEach
     void setUp() {
-        브라운 = memberRepository.save(new Member("brown", "브라운", Role.CREW, 1L, "imageUrl"));
-        루키 = memberRepository.save(new Member("rookie", "루키", Role.CREW, 2L, "imageUrl"));
-        잉 = memberRepository.save(new Member(" ", "잉", Role.CREW, 3L, "imageUrl"));
+        브라운 = memberRepository.save(new Member("brown", "브라운", Role.NORMAL, 1L, "imageUrl"));
+        루키 = memberRepository.save(new Member("rookie", "루키", Role.NORMAL, 2L, "imageUrl"));
+        잉 = memberRepository.save(new Member(" ", "잉", Role.NORMAL, 3L, "imageUrl"));
 
         session_백엔드_레벨1 = sessionRepository.save(new Session("백엔드Java 레벨1"));
         Mission mission_체스미션 = missionRepository.save(new Mission("체스미션", session_백엔드_레벨1));

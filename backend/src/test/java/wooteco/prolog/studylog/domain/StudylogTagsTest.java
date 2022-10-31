@@ -16,7 +16,7 @@ import wooteco.prolog.session.domain.Mission;
 
 public class StudylogTagsTest {
 
-    private static final Member 웨지 = new Member("sihyung92", "웨지", Role.CREW, 2222L,
+    private static final Member 웨지 = new Member("sihyung92", "웨지", Role.NORMAL, 2222L,
         "https://avatars.githubusercontent.com/u/51393021?v=4");
     private static final Studylog 웨지가_쓴_글 = new Studylog(웨지, "제목", "내용", new Mission("[BE] 글쓰기 미션", new Session("세션1")), Lists.emptyList());
     private static final Tag 워니_태그 = new Tag("워니");

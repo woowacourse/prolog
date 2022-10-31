@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +24,6 @@ import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-import wooteco.prolog.studylog.application.dto.TagResponse;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
@@ -56,8 +54,8 @@ class StudylogRepositoryTest {
     @Autowired
     private StudylogTagRepository studylogTagRepository;
 
-    private final Member member1 = new Member("이름1", "별명1", Role.CREW, 1L, "image");
-    private final Member member2 = new Member("이름2", "별명2", Role.CREW, 2L, "image");
+    private final Member member1 = new Member("이름1", "별명1", Role.NORMAL, 1L, "image");
+    private final Member member2 = new Member("이름2", "별명2", Role.NORMAL, 2L, "image");
 
     private final Session session1 = new Session("세션1");
     private final Session session2 = new Session("세션2");

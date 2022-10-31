@@ -16,7 +16,7 @@ class StudylogTest {
     @Test
     void getPopularScore() {
         // given
-        Member member = new Member("최현구", "현구막", Role.CREW, 1L, "image");
+        Member member = new Member("최현구", "현구막", Role.NORMAL, 1L, "image");
         Session session = new Session("세션 1");
         Mission mission = new Mission("자동차 미션", session);
         Tag tag1 = new Tag("Java");

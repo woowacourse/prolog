@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +42,20 @@ public class MemberController {
     ) {
         memberService.updateMember(member, username, updateRequest);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/promote")
+    public ResponseEntity<Void> requestPromotion(
+            @AuthMemberPrincipal LoginMember member
+    ) {
+        memberService.requestPromote(member);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/promote")
+    public ResponseEntity<MembersResponse> showRequestPromotion(@PageableDefault(direction = DESC, sort = "id") Pageable pageable) {
+        MembersResponse response = memberService.findAllByIsPromotionRequestTrue(pageable);
+        return ResponseEntity.ok(response);
     }
 
     // admin only

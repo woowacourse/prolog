@@ -51,7 +51,7 @@ class AbilityServiceTest {
 
     @BeforeEach
     void setUp() {
-        member = memberRepository.save(new Member("brown", "브라운", Role.CREW, 1L, "imageUrl"));
+        member = memberRepository.save(new Member("brown", "브라운", Role.NORMAL, 1L, "imageUrl"));
     }
 
     @DisplayName("자식역량 정보 수정이 정상적으로 수행되는지 확인한다.")

@@ -31,7 +31,7 @@ class JwtTokenProviderTest {
             .setSubject("1")
             .setIssuedAt(now)
             .setExpiration(expiredDate)
-            .claim("role", Role.CREW)
+            .claim("role", Role.NORMAL)
             .signWith(SignatureAlgorithm.HS256, secretKey)
             .compact();
 

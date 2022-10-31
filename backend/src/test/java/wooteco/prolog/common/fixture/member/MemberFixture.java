@@ -6,17 +6,17 @@ import wooteco.prolog.member.domain.Role;
 public class MemberFixture {
 
     public static Member crewMember1() {
-        return new Member("crew member1", "crew member1", Role.CREW, 1L,
+        return new Member("crew member1", "crew member1", Role.NORMAL, 1L,
             "https://avatars.githubusercontent.com/u/51393021?v=4");
     }
 
     public static Member crewMember2() {
-        return new Member("crew member2", "crew member2", Role.CREW, 2L,
+        return new Member("crew member2", "crew member2", Role.NORMAL, 2L,
             "https://avatars.githubusercontent.com/u/51393021?v=4");
     }
 
     public static Member crewMember3() {
-        return new Member("crew member3", "crew member3", Role.CREW, 3L,
+        return new Member("crew member3", "crew member3", Role.NORMAL, 3L,
             "https://avatars.githubusercontent.com/u/51393021?v=4");
     }
 

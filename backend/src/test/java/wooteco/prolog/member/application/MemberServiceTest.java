@@ -7,18 +7,22 @@ import static org.assertj.core.api.Assertions.tuple;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
+import wooteco.prolog.member.application.dto.MembersResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
+import wooteco.prolog.member.exception.MemberNotAllowedException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
-import wooteco.prolog.ability.domain.repository.AbilityRepository;
 import wooteco.support.utils.IntegrationTest;
 
 @IntegrationTest
@@ -29,9 +33,6 @@ class MemberServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;
-
-    @Autowired
-    private AbilityRepository abilityRepository;
 
     @DisplayName("Member 조회 성공시 정보를 가져오고, 실패시 Member를 생성한다.")
     @Test
@@ -59,7 +60,7 @@ class MemberServiceTest {
     void findByIdTest() {
         // given
         Member savedMember = Member를_생성한다(
-                new Member("gracefulBrown", "브라운", Role.CREW, 1L, "imageUrl"));
+                new Member("gracefulBrown", "브라운", Role.NORMAL, 1L, "imageUrl"));
 
         // when
         Member foundMember = memberService.findById(savedMember.getId());
@@ -83,7 +84,7 @@ class MemberServiceTest {
     void findByUsernameTest() {
         // given
         Member savedMember = Member를_생성한다(
-                new Member("gracefulBrown", "브라운", Role.CREW, 1L, "imageUrl"));
+                new Member("gracefulBrown", "브라운", Role.NORMAL, 1L, "imageUrl"));
 
         // when
         Member foundMember = memberService.findByUsername(savedMember.getUsername());
@@ -106,7 +107,7 @@ class MemberServiceTest {
     void findMemberResponseByUsernameTest() {
         // given
         Member savedMember = Member를_생성한다(
-                new Member("gracefulBrown", "브라운", Role.CREW, 1L, "imageUrl"));
+                new Member("gracefulBrown", "브라운", Role.NORMAL, 1L, "imageUrl"));
         MemberResponse expectMemberResponse = MemberResponse.of(savedMember);
 
         // when
@@ -136,7 +137,7 @@ class MemberServiceTest {
         String 새로운_이미지 = "superPowerImageUrl";
 
         Member savedMember = Member를_생성한다(
-                new Member("gracefulBrown", 기존_닉네임, Role.CREW, 1L, 기존_이미지));
+                new Member("gracefulBrown", 기존_닉네임, Role.NORMAL, 1L, 기존_이미지));
         MemberUpdateRequest updateRequest = new MemberUpdateRequest(새로운_닉네임, 새로운_이미지);
 
         // when
@@ -162,7 +163,7 @@ class MemberServiceTest {
         String 새로운_닉네임 = "브라운2세";
         String 새로운_이미지 = "superPowerImageUrl";
 
-        Member member = new Member(Long.MIN_VALUE, "gracefulBrown", 기존_닉네임, Role.CREW, 1L, 기존_이미지);
+        Member member = new Member(Long.MIN_VALUE, "gracefulBrown", 기존_닉네임, Role.NORMAL, 1L, 기존_이미지);
         MemberUpdateRequest updateRequest = new MemberUpdateRequest(새로운_닉네임, 새로운_이미지);
 
         // when, then
@@ -177,9 +178,9 @@ class MemberServiceTest {
     @DisplayName("Member 정보의 nickname을 기준으로 오름차순 정렬하여 조회한다.")
     void findAllOrderByNickNameAsc() {
         // given
-        Member를_생성한다(new Member("her0807", "다수달", Role.CREW, 3L, "imageUrl"));
-        Member를_생성한다(new Member("wishoon", "나루키", Role.CREW, 2L, "imageUrl"));
-        Member를_생성한다(new Member("gracefulBrown", "가브라운", Role.CREW, 1L, "imageUrl"));
+        Member를_생성한다(new Member("her0807", "다수달", Role.NORMAL, 3L, "imageUrl"));
+        Member를_생성한다(new Member("wishoon", "나루키", Role.NORMAL, 2L, "imageUrl"));
+        Member를_생성한다(new Member("gracefulBrown", "가브라운", Role.NORMAL, 1L, "imageUrl"));
 
         // when
         final List<MemberResponse> responses = memberService.findAllOrderByNickNameAsc();
@@ -192,6 +193,76 @@ class MemberServiceTest {
                         tuple("wishoon", "나루키"),
                         tuple("her0807", "다수달")
                 );
+    }
+
+    @DisplayName("존재하지 않는 사용자는 승급을 요청할 수 없다.")
+    @Test
+    void requestPromotionByNotFoundMember() {
+        assertThatThrownBy(() -> memberService.requestPromote(new LoginMember(-1L, Authority.MEMBER)))
+                .isInstanceOf(MemberNotFoundException.class);
+    }
+
+    @DisplayName("익명의 사용자는 승급을 요청할 수 없다.")
+    @Test
+    void requestPromotionByAnonymousMember() {
+        assertThatThrownBy(() -> memberService.requestPromote(new LoginMember(Authority.ANONYMOUS)))
+                .isInstanceOf(MemberNotAllowedException.class);
+    }
+
+    @DisplayName("일반 사용자가 승급을 요청한다.")
+    @Test
+    void requestPromotion() {
+        Member member = Member를_생성한다(new Member("her0807", "다수달", Role.NORMAL, 3L, "imageUrl"));
+
+        memberService.requestPromote(new LoginMember(member.getId(), Authority.MEMBER));
+
+        Member requestMember = memberRepository.findById(member.getId()).get();
+        assertThat(requestMember.isPromotionRequest()).isTrue();
+    }
+
+    @DisplayName("승급을 요청한 목록을 조회한다.")
+    @Test
+    void requestPromotionAndGetList() {
+        // given
+        Member member1 = Member를_생성한다(new Member("her0807", "다수달", Role.NORMAL, 3L, "imageUrl"));
+        Member member2 = Member를_생성한다(new Member("wishoon", "나루키", Role.NORMAL, 2L, "imageUrl"));
+        Member를_생성한다(new Member("gracefulBrown", "가브라운", Role.NORMAL, 1L, "imageUrl"));
+
+        memberService.requestPromote(new LoginMember(member1.getId(), Authority.MEMBER));
+        memberService.requestPromote(new LoginMember(member2.getId(), Authority.MEMBER));
+
+        // when
+        MembersResponse response = memberService
+                .findAllByIsPromotionRequestTrue(PageRequest.of(0, 3));
+
+        // then
+        assertThat(response.getData()).hasSize(2)
+                .extracting(MemberResponse::getId)
+                .containsExactlyInAnyOrder(member1.getId(), member2.getId());
+    }
+
+    @DisplayName("크루 사용자는 승급을 신청할 수 없다.")
+    @Test
+    void requestPromotionByCrewRoleMember() {
+        Member member = Member를_생성한다(new Member("her0807", "다수달", Role.CREW, 3L, "imageUrl"));
+
+        assertThatThrownBy(() -> memberService.requestPromote(new LoginMember(member.getId(), Authority.MEMBER)))
+            .isInstanceOf(MemberNotAllowedException.class);
+
+        Member requestMember = memberRepository.findById(member.getId()).get();
+        assertThat(requestMember.isPromotionRequest()).isFalse();
+    }
+
+    @DisplayName("코치 사용자는 승급을 신청할 수 없다.")
+    @Test
+    void requestPromotionByCoachRoleMember() {
+        Member member = Member를_생성한다(new Member("her0807", "다수달", Role.COACH, 3L, "imageUrl"));
+
+        assertThatThrownBy(() -> memberService.requestPromote(new LoginMember(member.getId(), Authority.MEMBER)))
+                .isInstanceOf(MemberNotAllowedException.class);
+
+        Member requestMember = memberRepository.findById(member.getId()).get();
+        assertThat(requestMember.isPromotionRequest()).isFalse();
     }
 
     private Member Member를_생성한다(Member member) {

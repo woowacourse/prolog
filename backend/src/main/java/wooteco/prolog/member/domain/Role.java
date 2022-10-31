@@ -4,6 +4,7 @@ public enum Role {
 
     UNVALIDATED,
     CREW,
+    NORMAL,
     COACH,
     ADMIN;
 }

@@ -13,7 +13,7 @@ import wooteco.support.utils.RepositoryTest;
 @RepositoryTest
 class MemberRepositoryTest {
 
-    private static final Member 웨지 = new Member("sihyung92", "웨지", Role.CREW, 2222L,
+    private static final Member 웨지 = new Member("sihyung92", "웨지", Role.NORMAL, 2222L,
         "https://avatars.githubusercontent.com/u/51393021?v=4");
 
     @Autowired
