@@ -1,3 +1,16 @@
+// Request
+
+type SessionAndKeywordId = {
+  sessionId: number;
+  keywordId: number;
+};
+
+export type KeywordRequest = SessionAndKeywordId;
+export type ChildKeywordListRequest = SessionAndKeywordId;
+export type QuizListByKeywordRequest = SessionAndKeywordId;
+
+// Response
+
 export interface KeywordResponse {
   name: string;
   keywordId: number;

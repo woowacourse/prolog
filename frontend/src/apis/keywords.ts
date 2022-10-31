@@ -1,13 +1,12 @@
 import { client } from '.';
 import { KeywordListResponse, KeywordResponse, QuizListResponse } from '../models/Keywords';
+import {
+  KeywordRequest,
+  ChildKeywordListRequest,
+  QuizListByKeywordRequest,
+} from '../models/Keywords';
 
-export const getKeyword = async ({
-  sessionId,
-  keywordId,
-}: {
-  sessionId: number;
-  keywordId: number;
-}) => {
+export const getKeyword = async ({ sessionId, keywordId }: KeywordRequest) => {
   const response = await client.get<KeywordResponse>(
     `/sessions/${sessionId}/keywords/${keywordId}`
   );
@@ -21,13 +20,7 @@ export const getTopKeywordList = async (sessionId: number) => {
   return response.data;
 };
 
-export const getChildKeywordList = async ({
-  sessionId,
-  keywordId,
-}: {
-  sessionId: number;
-  keywordId: number;
-}) => {
+export const getChildKeywordList = async ({ sessionId, keywordId }: ChildKeywordListRequest) => {
   const response = await client.get<KeywordListResponse>(
     `/sessions/${sessionId}/keywords/${keywordId}/children`
   );
@@ -35,13 +28,7 @@ export const getChildKeywordList = async ({
   return response.data;
 };
 
-export const getQuizListByKeyword = async ({
-  sessionId,
-  keywordId,
-}: {
-  sessionId: number;
-  keywordId: number;
-}) => {
+export const getQuizListByKeyword = async ({ sessionId, keywordId }: QuizListByKeywordRequest) => {
   const response = await client.get<QuizListResponse>(
     `/sessions/${sessionId}/keywords/${keywordId}/quizs`
   );
