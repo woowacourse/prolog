@@ -1,9 +1,7 @@
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
-import React, { ButtonHTMLAttributes } from 'react';
-import { COLOR } from '../../enumerations/color';
+import * as Styled from './ResponsiveButton.styles';
+import { ButtonHTMLAttributes } from 'react';
 
-interface ResponsiveButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ResponsiveButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   text?: string;
   fontSize?: string;
   color?: string;
@@ -20,7 +18,7 @@ const ResponsiveButton = ({
   ...props
 }: ResponsiveButtonProps) => {
   return (
-    <StyledResponsiveButton
+    <Styled.Root
       fontSize={fontSize}
       color={color}
       backgroundColor={backgroundColor}
@@ -28,27 +26,8 @@ const ResponsiveButton = ({
       {...props}
     >
       {text}
-    </StyledResponsiveButton>
+    </Styled.Root>
   );
 };
 
 export default ResponsiveButton;
-
-export const StyledResponsiveButton = styled.button<
-  Pick<ResponsiveButtonProps, 'fontSize' | 'color' | 'backgroundColor' | 'height'>
->`
-  width: 100%;
-  border-radius: 12px;
-  text-align: center;
-  padding: 0 10px;
-  color: #fff;
-  background-color: ${COLOR.LIGHT_BLUE_900};
-  height: 50px;
-
-  ${({ fontSize, color, backgroundColor, height }) => css`
-    font-size: ${fontSize};
-    color: ${color};
-    background-color: ${backgroundColor};
-    height: ${height};
-  `};
-`;
