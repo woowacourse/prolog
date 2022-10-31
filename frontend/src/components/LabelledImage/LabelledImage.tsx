@@ -1,6 +1,5 @@
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import React, { ImgHTMLAttributes } from 'react';
+import { ImgHTMLAttributes } from 'react';
 import { COLOR } from '../../enumerations/color';
 
 interface LabelledImageProps extends ImgHTMLAttributes<HTMLImageElement> {
