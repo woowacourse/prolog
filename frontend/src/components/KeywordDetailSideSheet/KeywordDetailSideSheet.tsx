@@ -20,7 +20,7 @@ const KeywordDetailSideSheet = ({
   const { quizList } = useGetQuizListByKeyword({ sessionId, keywordId });
 
   return (
-    <SideSheet handleCloseSideSheet={handleCloseSideSheet}>
+    <SideSheet onClickBackdrop={handleCloseSideSheet}>
       <Styled.Root>
         <Styled.DescriptionSection>
           <h2>{name}</h2>
