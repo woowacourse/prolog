@@ -1,6 +1,16 @@
 import axios, { AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { Nullable } from '../types/utils';
+import { client } from '.';
 import { BASE_URL } from '../configs/environment';
-import { Mission, Session, Studylog, StudylogForm, Tag } from '../models/Studylogs';
+import {
+  Mission,
+  TempSavedStudyLog,
+  Session,
+  Studylog,
+  StudylogForm,
+  Tag,
+  TempSavedStudyLogForm,
+} from '../models/Studylogs';
 
 export const requestGetPopularStudylogs = ({ accessToken }: { accessToken?: string }) => {
   if (accessToken) {
@@ -125,3 +135,13 @@ export const requestEditStudylog = ({
   data: StudylogForm;
 }): AxiosPromise<AxiosResponse<null>> =>
   httpRequester.put(`/studylogs/${id}`, data, getAuthConfig(accessToken));
+
+/** 임시 저장 **/
+export const requestGetTempSavedStudylog = async () => {
+  const { data } = await client.get<Nullable<TempSavedStudyLog>>('/studylogs/temp');
+
+  return data;
+};
+
+export const requestPostTempSavedStudylog = (data: TempSavedStudyLogForm) =>
+  client.put('/studylogs/temp', data);
