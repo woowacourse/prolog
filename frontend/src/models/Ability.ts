@@ -1,4 +1,4 @@
-export interface Ability {
+interface Ability {
   id: number;
   name: string;
   description: string;

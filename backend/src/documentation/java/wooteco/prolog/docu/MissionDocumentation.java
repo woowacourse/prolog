@@ -1,93 +1,118 @@
 package wooteco.prolog.docu;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doThrow;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static wooteco.prolog.ResponseFixture.MISSION_RESPONSE1;
-import static wooteco.prolog.ResponseFixture.MISSION_RESPONSE2;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import io.restassured.module.mockmvc.response.ValidatableMockMvcResponse;
+import io.restassured.RestAssured;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
 import java.util.Arrays;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import wooteco.prolog.NewDocumentation;
-import wooteco.prolog.session.application.MissionService;
+import wooteco.prolog.Documentation;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.application.dto.MissionRequest;
-import wooteco.prolog.session.ui.MissionController;
-import wooteco.prolog.studylog.exception.DuplicateMissionException;
+import wooteco.prolog.session.application.dto.MissionResponse;
 
-@WebMvcTest(controllers = MissionController.class)
-public class MissionDocumentation extends NewDocumentation {
+public class MissionDocumentation extends Documentation {
 
-    @MockBean
-    private MissionService missionService;
+    private Long sessionId;
+
+    @BeforeEach
+    void setUp() {
+        sessionId = 세션_등록함(new SessionRequest("세션1"));
+    }
 
     @Test
     void 미션_목록을_조회한다() {
-        //given
-        given(missionService.findAll())
-                .willReturn(Arrays.asList(MISSION_RESPONSE1, MISSION_RESPONSE2));
+        // given
+        MissionRequest request1 = new MissionRequest("로또 미션", sessionId);
+        ExtractableResponse<Response> mission1 = 미션_등록함(request1);
+        MissionRequest request2 = new MissionRequest("블랙잭 미션", sessionId);
+        ExtractableResponse<Response> mission2 = 미션_등록함(request2);
 
-        //when
-        ValidatableMockMvcResponse response = given
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/missions")
-                .then().log().all();
+        // when
+        ExtractableResponse<Response> response = given("mission/list")
+            .when()
+            .get("/missions")
+            .then()
+            .log().all()
+            .extract();
 
-        //then
-        response.expect(status().isOk());
-
-        //docs
-        response.apply(document("mission/list"));
+        // then
+        List<MissionResponse> categories = response.jsonPath().getList(".", MissionResponse.class);
+        assertThat(categories).usingRecursiveComparison().isEqualTo(
+            Arrays.asList(
+                mission1.as(MissionResponse.class),
+                mission2.as(MissionResponse.class)));
     }
 
     @Test
     void 미션을_저장한다() {
-        //given
-        given(missionService.create(any()))
-                .willReturn(MISSION_RESPONSE1);
+        // given
+        MissionRequest request = new MissionRequest("지하철 노선도 미션", sessionId);
 
-        //when
-        MissionRequest params = new MissionRequest("지하철 노선도 미션", 1L);
-        ValidatableMockMvcResponse response = given
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .body(params)
-                .when().post("/missions")
-                .then().log().all();
+        // when
+        ExtractableResponse<Response> response = given("mission/create/success")
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/missions")
+            .then()
+            .log().all()
+            .extract();
 
-        //then
-        response.expect(status().isOk());
-
-        //docs
-        response.apply(document("mission/create/success"));
+        // then
+        MissionResponse missionResponse = response.as(MissionResponse.class);
+        assertThat(missionResponse.getName()).isEqualTo(request.getName());
     }
 
     @Test
     void 미션_이름이_중복될_경우_예외처리한다() {
-        //given
-        doThrow(new DuplicateMissionException()).when(missionService)
-                .create(any());
+        // given
+        MissionRequest request = new MissionRequest("지하철 노선도 미션", sessionId);
+        미션_등록함(request);
 
-        //when
-        MissionRequest params = new MissionRequest("지하철 노선도 미션", 1L);
-        ValidatableMockMvcResponse response = given
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .body(params)
-                .when().post("/missions")
-                .then().log().all();
+        // when
+        ExtractableResponse<Response> response = given("mission/create/fail")
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/missions")
+            .then()
+            .log().all()
+            .extract();
 
-        //then
-        response.expect(status().isBadRequest());
-        response.expect(jsonPath("code").value(3001));
-        response.expect(jsonPath("message").value("미션이 중복됩니다."));
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat((String) response.jsonPath().get("message")).isEqualTo("미션이 중복됩니다.");
+    }
 
-        //docs
-        response.apply(document("mission/create/fail"));
+    private ExtractableResponse<Response> 미션_등록함(MissionRequest request) {
+        return RestAssured.given()
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/missions")
+            .then()
+            .log().all()
+            .extract();
+    }
+
+    private Long 세션_등록함(SessionRequest request) {
+        return RestAssured
+            .given().log().all()
+            .body(request)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when()
+            .post("/sessions")
+            .then()
+            .log().all()
+            .extract()
+            .as(SessionResponse.class)
+            .getId();
     }
 }
