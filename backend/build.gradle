@@ -175,4 +175,3 @@ sonarqube {
         property "sonar.host.url", "https://sonarcloud.io"
     }
 }
-targetCompatibility = JavaVersion.VERSION_1_8
