@@ -1,52 +1,75 @@
 package wooteco.prolog.docu;
 
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import io.restassured.module.mockmvc.response.ValidatableMockMvcResponse;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import wooteco.prolog.NewDocumentation;
-import wooteco.prolog.session.application.SessionMemberService;
-import wooteco.prolog.session.ui.SessionMemberController;
+import wooteco.prolog.Documentation;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
 
-@WebMvcTest(controllers = SessionMemberController.class)
-public class SessionMemberDocumentation extends NewDocumentation {
-
-    @MockBean
-    private SessionMemberService sessionMemberService;
+public class SessionMemberDocumentation extends Documentation {
 
     @Test
     void 강의에_자신을_등록한다() {
-        //given, when
-        ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
+        //given
+        final SessionRequest sessionRequest = new SessionRequest("새강의");
+        ExtractableResponse<Response> createResponse = given("session")
+                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/sessions/{sessionId}/members/me", 1L)
-                .then().log().all();
-
+                .body(sessionRequest)
+                .when().post("/sessions")
+                .then().log().all().extract();
+        Map<String, Object> values = createResponse.jsonPath().get();
+        //when
+        ExtractableResponse<Response> createResponse2 = given("session")
+                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when().post("/sessions/" + values.get("id") + "/members/me")
+                .then().log().all().extract();
         //then
-        response.expect(status().isOk());
-
-        //docs
-        response.apply(document("sessions/register/me"));
+        assertThat(createResponse2.statusCode()).isEqualTo(HttpStatus.OK.value());
     }
 
     @Test
     void 강의에서_자신을_제거한다() {
-        //given, when
-        ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().delete("/sessions/{sessionId}/members/me", 1L)
-                .then().log().all();
+        // given
+        SessionResponse sessionResponse = createSessionWithToken();
+        createSessionMemberWithToken(sessionResponse.getId());
 
-        //then
-        response.expect(status().isOk());
+        // when
+        ExtractableResponse<Response> response = given("session")
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().delete("/sessions/" + sessionResponse.getId() + "/members/me")
+            .then().log().all().extract();
 
-        //docs
-        response.apply(document("sessions/delete/me"));
+        // then
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    private SessionResponse createSessionWithToken() {
+        SessionRequest sessionRequest = new SessionRequest("새강의");
+
+        ExtractableResponse<Response> createResponse = given("session")
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(sessionRequest)
+            .when().post("/sessions")
+            .then().log().all().extract();
+
+        return createResponse.as(SessionResponse.class);
+    }
+
+    private void createSessionMemberWithToken(Long sessionId) {
+        given("session")
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().post("/sessions/" + sessionId + "/members/me")
+            .then().log().all().extract();
     }
 }

@@ -102,8 +102,7 @@ dependencies {
 
     // aws s3
     implementation platform('software.amazon.awssdk:bom:2.5.29')
-    implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.319'
-
+    implementation 'software.amazon.awssdk:s3'
 
     // IO
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
@@ -175,4 +174,3 @@ sonarqube {
         property "sonar.host.url", "https://sonarcloud.io"
     }
 }
-targetCompatibility = JavaVersion.VERSION_1_8
