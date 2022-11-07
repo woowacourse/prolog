@@ -1,5 +1,6 @@
 package wooteco.prolog.member.domain;
 
+import static wooteco.prolog.member.domain.Role.CREW;
 import static wooteco.prolog.member.domain.Role.NORMAL;
 import static wooteco.prolog.member.domain.Role.UNVALIDATED;
 
@@ -163,5 +164,12 @@ public class Member {
         }
 
         isPromotionRequest = true;
+    }
+
+    public void applyPromote() {
+        if (role == NORMAL) {
+            role = CREW;
+            isPromotionRequest = false;
+        }
     }
 }

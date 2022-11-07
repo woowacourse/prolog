@@ -127,4 +127,10 @@ public class MemberService {
         Page<Member> members = memberRepository.findAllByIsPromotionRequestTrue(pageable);
         return MembersResponse.of(members);
     }
+
+    @Transactional
+    public void applyPromote(final Long memberId) {
+        Member member = findById(memberId);
+        member.applyPromote();
+    }
 }

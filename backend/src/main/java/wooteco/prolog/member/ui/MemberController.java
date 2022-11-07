@@ -58,6 +58,12 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/{memberId}/promote/approve")
+    public ResponseEntity<Void> applyPromotion(@PathVariable Long memberId) {
+        memberService.applyPromote(memberId);
+        return ResponseEntity.noContent().build();
+    }
+
     // admin only
     @GetMapping
     public ResponseEntity<MembersResponse> show(@PageableDefault(direction = DESC, sort = "id") Pageable pageable) {

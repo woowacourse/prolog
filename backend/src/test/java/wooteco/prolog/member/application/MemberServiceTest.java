@@ -1,5 +1,6 @@
 package wooteco.prolog.member.application;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.tuple;
@@ -7,8 +8,6 @@ import static org.assertj.core.api.Assertions.tuple;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
@@ -263,6 +262,22 @@ class MemberServiceTest {
 
         Member requestMember = memberRepository.findById(member.getId()).get();
         assertThat(requestMember.isPromotionRequest()).isFalse();
+    }
+
+    @DisplayName("승급을 승인한다.")
+    @Test
+    void applyPromotion() {
+        // arrange
+        Member member = Member를_생성한다(new Member("her0807", "다수달", Role.NORMAL, 3L, "imageUrl"));
+        memberService.requestPromote(new LoginMember(member.getId(), Authority.MEMBER));
+
+        // act
+        memberService.applyPromote(member.getId());
+
+        // assert
+        Member promotedMember = memberRepository.findById(member.getId()).get();
+        assertThat(promotedMember.getRole()).isEqualTo(Role.CREW);
+        assertThat(promotedMember.isPromotionRequest()).isFalse();
     }
 
     private Member Member를_생성한다(Member member) {
