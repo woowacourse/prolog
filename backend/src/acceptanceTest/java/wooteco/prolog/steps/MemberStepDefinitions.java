@@ -2,13 +2,19 @@ package wooteco.prolog.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberScrapRequest;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
+import wooteco.prolog.member.application.dto.MembersResponse;
+import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 
 public class MemberStepDefinitions extends AcceptanceSteps {
@@ -77,5 +83,47 @@ public class MemberStepDefinitions extends AcceptanceSteps {
     private boolean checkIfScrap(int studylogId) {
         return context.response.as(StudylogsResponse.class).getData().stream()
             .anyMatch(studylog -> studylog.getId() == studylogId);
+    }
+
+    @And("등업을 요청하고")
+    public void 등업을요청하고() {
+        context.invokeHttpPostWithToken("/members/promote");
+    }
+
+    @When("등업 요청 목록을 조회하면")
+    public void 등업요청목록을조회하면() {
+        context.invokeHttpGet("/members/promote?page=0&size=3");
+        MembersResponse response = context.response.as(MembersResponse.class);
+        context.storage.put("response", response);
+    }
+
+    @Then("등업 요청 목록을 조회한다")
+    public void 등업요청목록을조회한다(List<String> names) {
+        List<String> userNames = names.stream()
+                .map(name -> GithubResponses.findByName(name).getLogin())
+                .collect(Collectors.toList());
+
+        MembersResponse response = (MembersResponse) context.storage.get("response");
+        assertThat(response.getData())
+                .extracting(MemberResponse::getUsername)
+                .containsExactlyInAnyOrderElementsOf(userNames);
+    }
+
+    @And("{string}의 등업을 승인하면")
+    public void 의등업을승인하면(String name) {
+        String username = GithubResponses.findByName(name).getLogin();
+        context.invokeHttpGet("/members/" + username);
+        MemberResponse member = context.response.as(MemberResponse.class);
+
+        context.invokeHttpPost("/members/" + member.getId() + "/promote/approve");
+    }
+
+    @Then("{string}의 등업을 확인한다")
+    public void 의등업을확인한다(String name) {
+        String username = GithubResponses.findByName(name).getLogin();
+        context.invokeHttpGet("/members/" + username);
+        MemberResponse member = context.response.as(MemberResponse.class);
+
+        assertThat(member.getRole()).isEqualTo(Role.CREW);
     }
 }

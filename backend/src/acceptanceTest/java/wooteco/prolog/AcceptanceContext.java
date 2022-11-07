@@ -44,6 +44,13 @@ public class AcceptanceContext {
         response.then().log().all();
     }
 
+    public void invokeHttpPost(String path) {
+        request = RestAssured
+                .given().log().all();
+        response = request.post(path);
+        response.then().log().all();
+    }
+
     public void invokeHttpGetWithToken(String path, Object... pathParams) {
         request = RestAssured.given().log().all()
             .auth().oauth2(accessToken);
