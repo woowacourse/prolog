@@ -39,4 +39,5 @@ jobs:
           aws s3 cp --recursive --region ap-northeast-2 frontend/build s3://prolog-deploy
       
       - name: Invalidate CloudFront Cache
-        run: aws cloudfront create-invalidation --distribution-id ${{secrets.AWS_CLOUDFRONT_DISTRIBUTION_PROD}} --paths "/*"
+        run: |
+         aws cloudfront create-invalidation --distribution-id ${{secrets.AWS_CLOUDFRONT_DISTRIBUTION_PROD}} --paths "/*"
