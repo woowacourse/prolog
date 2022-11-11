@@ -88,13 +88,14 @@ public class KeywordController {
     }
 
     @GetMapping("/{sessionId}/keywords/{keywordId}/children")
-    public ResponseEntity<KeywordResponse> find(@PathVariable Long sessionId,
+    public ResponseEntity<KeywordsResponse> find(@PathVariable Long sessionId,
                                                 @PathVariable Long keywordId) {
         return ResponseEntity.ok(keywordResponseJava());
     }
 
-    private KeywordResponse keywordResponseJava() {
-        return new KeywordResponse(
+    private KeywordsResponse keywordResponseJava() {
+        return new KeywordsResponse(Arrays.asList(
+            new KeywordResponse(
                 1L,
                 "자바",
                 "자바입니다.",
@@ -102,25 +103,25 @@ public class KeywordController {
                 5,
                 null,
                 new HashSet<>(Arrays.asList(
-                                new KeywordResponse(
-                                        2L,
-                                        "List",
-                                        "자바의 자료구조인 List입니다.",
-                                        1,
-                                        3,
-                                        1L,
-                                        keywordResponseList()
-                                ),
-                                new KeywordResponse(
-                                        3L,
-                                        "Set",
-                                        "자바의 자료구조인 Set입니다.",
-                                        2,
-                                        3,
-                                        1L,
-                                        keywordResponseSet()
-                                )
-                ))
+                    new KeywordResponse(
+                        2L,
+                        "List",
+                        "자바의 자료구조인 List입니다.",
+                        1,
+                        3,
+                        1L,
+                        keywordResponseList()
+                    ),
+                    new KeywordResponse(
+                        3L,
+                        "Set",
+                        "자바의 자료구조인 Set입니다.",
+                        2,
+                        3,
+                        1L,
+                        keywordResponseSet()
+                    )
+                ))))
         );
     }
 
