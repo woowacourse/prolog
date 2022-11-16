@@ -63,12 +63,6 @@ public class Keyword {
         this.children = children;
     }
 
-    private void validateSeq(final int seq) {
-        if (seq <= 0) {
-            throw new KeywordSeqException();
-        }
-    }
-
     public static Keyword createKeyword(final String name,
                                         final String description,
                                         final int seq,
@@ -78,8 +72,25 @@ public class Keyword {
         return new Keyword(null, name, description, seq, importance, sessionId, parent, null);
     }
 
-    public void validateKeywordParent() {
-        if (parent != null && id.equals(parent.getId())) {
+    public void update(final String name, final String description, final int seq,
+                       final int importance, final Keyword keywordParent) {
+        validateSeq(seq);
+        validateKeywordParent(keywordParent);
+        this.name = name;
+        this.description = description;
+        this.seq = seq;
+        this.importance = importance;
+        this.parent = keywordParent;
+    }
+
+    private void validateSeq(final int seq) {
+        if (seq <= 0) {
+            throw new KeywordSeqException();
+        }
+    }
+
+    private void validateKeywordParent(final Keyword parentKeyword) {
+        if (this.parent != null && this.id.equals(parentKeyword.getId())) {
             throw new KeywordAndKeywordParentSameException();
         }
     }
@@ -89,16 +100,5 @@ public class Keyword {
             return null;
         }
         return parent.getId();
-    }
-
-    public void update(final String name, final String description, final int seq,
-                       final int importance, final Keyword keywordParent) {
-        this.name = name;
-        this.description = description;
-        this.seq = seq;
-        this.importance = importance;
-        this.parent = keywordParent;
-        validateSeq(seq);
-        validateKeywordParent();
     }
 }
