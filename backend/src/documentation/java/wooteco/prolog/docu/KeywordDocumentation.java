@@ -152,24 +152,5 @@ public class KeywordDocumentation extends NewDocumentation {
                     null
                 ))
         )
-//        Arrays.asList(
-//            new KeywordResponse(
-//                2L,
-//                "List",
-//                "자바의 자료구조인 List에 대한 설명을 작성했습니다.",
-//                1,
-//                1,
-//                1L,
-//                null
-//            ),
-//            new KeywordResponse(
-//                1L,
-//                "Set",
-//                "자바의 자료구조인 Set에 대한 설명을 작성했습니다.",
-//                2,
-//                1,
-//                1L,
-//                null
-//            ))
     );
 }
