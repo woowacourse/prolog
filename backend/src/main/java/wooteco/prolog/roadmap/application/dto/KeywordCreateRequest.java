@@ -3,7 +3,7 @@ package wooteco.prolog.roadmap.application.dto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.roadmap.Keyword;
+import wooteco.prolog.roadmap.domain.Keyword;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter

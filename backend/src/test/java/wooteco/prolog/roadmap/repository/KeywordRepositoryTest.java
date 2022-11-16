@@ -6,7 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestConstructor;
-import wooteco.prolog.roadmap.Keyword;
+import wooteco.prolog.roadmap.domain.Keyword;
+import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.support.utils.RepositoryTest;
 
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)

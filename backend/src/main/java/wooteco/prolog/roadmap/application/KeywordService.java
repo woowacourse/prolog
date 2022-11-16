@@ -3,13 +3,13 @@ package wooteco.prolog.roadmap.application;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.roadmap.Keyword;
+import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordResponse;
 import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordsResponse;
 import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
-import wooteco.prolog.roadmap.repository.KeywordRepository;
+import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.session.exception.SessionNotFoundException;
 
