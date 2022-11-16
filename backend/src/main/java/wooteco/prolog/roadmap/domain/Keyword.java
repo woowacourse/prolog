@@ -1,6 +1,7 @@
 package wooteco.prolog.roadmap.domain;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -100,5 +101,22 @@ public class Keyword {
             return null;
         }
         return parent.getId();
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Keyword)) {
+            return false;
+        }
+        Keyword keyword = (Keyword) o;
+        return Objects.equals(id, keyword.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
