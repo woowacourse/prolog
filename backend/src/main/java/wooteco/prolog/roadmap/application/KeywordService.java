@@ -25,6 +25,9 @@ public class KeywordService {
         this.keywordRepository = keywordRepository;
     }
 
+    /**
+     * 최상위 키워드를 만드는 경우, 키워드의 부모 값에 null을 넣어줌
+     */
     public Long createKeyword(final Long sessionId, final KeywordCreateRequest request) {
         existSession(sessionId);
         Keyword keywordParent = findKeywordParentOrNull(request.getParentKeywordId());
