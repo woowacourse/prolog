@@ -24,6 +24,7 @@ import wooteco.prolog.report.exception.ReportRequestTypeException;
 import wooteco.prolog.report.exception.ReportTitleLengthException;
 import wooteco.prolog.report.exception.ReportUpdateException;
 import wooteco.prolog.report.exception.UnRelatedAbilityExistenceException;
+import wooteco.prolog.session.exception.SessionNotFoundException;
 import wooteco.prolog.studylog.exception.CommentDeleteException;
 import wooteco.prolog.studylog.exception.CommentNotFoundException;
 import wooteco.prolog.studylog.exception.DuplicateReportTitleException;
@@ -119,8 +120,11 @@ public enum BadRequestCode {
     LEVEL_LOG_NOT_FOUND_EXCEPTION(7002, "레벨 로그를 찾을 수 없습니다.",LevelLogNotFoundException.class),
 
     ROADMAP_KEYWORD_ORDER_EXCEPTION(8001, "키워드의 순서는 1 이상이여야 합니다.", KeywordSeqException.class),
-    ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION(8002, "키워드를 찾을 수 없습니다.",KeywordNotFoundException.class),
-    ROADMAP_KEYWORD_AND_PARENT_KEYWORD_SAME_EXCEPTION(8003, "키워드와 부모 키워드는 같을 수 없습니다.", KeywordAndKeywordParentSameException.class);
+    ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION(8002, "키워드를 찾을 수 없습니다.", KeywordNotFoundException.class),
+    ROADMAP_KEYWORD_AND_PARENT_KEYWORD_SAME_EXCEPTION(8003, "키워드와 부모 키워드는 같을 수 없습니다.", KeywordAndKeywordParentSameException.class),
+
+    SESSION_NOT_FOUND_EXCEPTION(9001, "세션을 찾을 수 없습니다", SessionNotFoundException.class),
+    ;
 
     private int code;
     private String message;
