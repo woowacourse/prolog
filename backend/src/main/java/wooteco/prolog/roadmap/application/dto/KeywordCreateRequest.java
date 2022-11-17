@@ -3,6 +3,7 @@ package wooteco.prolog.roadmap.application.dto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wooteco.prolog.roadmap.domain.Keyword;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -21,5 +22,12 @@ public class KeywordCreateRequest {
         this.order = order;
         this.importance = importance;
         this.parentKeywordId = parentKeywordId;
+    }
+
+    public Keyword toEntity(final Long sessionId, final Keyword keywordParent) {
+        return Keyword.createKeyword(
+            this.getName(), this.getDescription(), this.getOrder(),
+            this.getImportance(), sessionId, keywordParent
+        );
     }
 }

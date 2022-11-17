@@ -5,6 +5,7 @@ import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wooteco.prolog.roadmap.domain.Keyword;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -28,5 +29,35 @@ public class KeywordResponse {
         this.importance = importance;
         this.parentKeywordId = parentKeywordId;
         this.childrenKeywords = childrenKeywords;
+    }
+
+    public static KeywordResponse createResponse(final Keyword keyword) {
+        return new KeywordResponse(
+            keyword.getId(),
+            keyword.getName(),
+            keyword.getDescription(),
+            keyword.getSeq(),
+            keyword.getImportance(),
+            keyword.getParentIdOrNull(),
+            null);
+    }
+
+    public static KeywordResponse createWithAllChildResponse(final Keyword keyword) {
+        return new KeywordResponse(
+            keyword.getId(),
+            keyword.getName(),
+            keyword.getDescription(),
+            keyword.getSeq(),
+            keyword.getImportance(),
+            keyword.getParentIdOrNull(),
+            createKeywordChild(keyword.getChildren()));
+    }
+
+    private static Set<KeywordResponse> createKeywordChild(final Set<Keyword> children) {
+        Set<KeywordResponse> keywords = new HashSet<>();
+        for (Keyword keyword : children) {
+            keywords.add(createWithAllChildResponse(keyword));
+        }
+        return keywords;
     }
 }

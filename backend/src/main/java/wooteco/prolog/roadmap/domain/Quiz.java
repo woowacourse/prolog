@@ -1,4 +1,4 @@
-package wooteco.prolog.roadmap;
+package wooteco.prolog.roadmap.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
