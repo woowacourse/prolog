@@ -17,7 +17,7 @@ import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordsResponse;
 
 @RestController
-@RequestMapping("/sessions")
+@RequestMapping("/sessions/{sessionId}/keywords")
 public class KeywordController {
 
     private final KeywordService keywordService;
@@ -26,21 +26,21 @@ public class KeywordController {
         this.keywordService = keywordService;
     }
 
-    @PostMapping("/{sessionId}/keywords")
+    @PostMapping
     public ResponseEntity<Void> createKeyword(@PathVariable Long sessionId,
                                               @RequestBody KeywordCreateRequest createRequest) {
         Long keywordId = keywordService.createKeyword(sessionId, createRequest);
         return ResponseEntity.created(URI.create("/sessions/" + sessionId + "/keywords/" + keywordId)).build();
     }
 
-    @GetMapping("/{sessionId}/keywords/{keywordId}")
+    @GetMapping("/{keywordId}")
     public ResponseEntity<KeywordResponse> findKeyword(@PathVariable Long sessionId,
                                                        @PathVariable Long keywordId) {
         KeywordResponse response = keywordService.findKeyword(sessionId, keywordId);
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{sessionId}/keywords/{keywordId}")
+    @PutMapping("/{keywordId}")
     public ResponseEntity<Void> updateKeyword(@PathVariable Long sessionId,
                                               @PathVariable Long keywordId,
                                               @RequestBody KeywordUpdateRequest updateRequest) {
@@ -48,20 +48,20 @@ public class KeywordController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{sessionId}/keywords/{keywordId}")
+    @DeleteMapping("/{keywordId}")
     public ResponseEntity<Void> deleteKeyword(@PathVariable Long sessionId,
                                               @PathVariable Long keywordId) {
         keywordService.deleteKeyword(sessionId, keywordId);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{sessionId}/keywords")
+    @GetMapping
     public ResponseEntity<KeywordsResponse> findSessionIncludeRootKeywords(@PathVariable Long sessionId) {
         KeywordsResponse response = keywordService.findSessionIncludeRootKeywords(sessionId);
         return ResponseEntity.ok(response);
     }
     
-    @GetMapping("/{sessionId}/keywords/{keywordId}/children")
+    @GetMapping("/children")
     public ResponseEntity<KeywordResponse> find(@PathVariable Long sessionId,
                                                 @PathVariable Long keywordId) {
         KeywordResponse response = keywordService.findKeywordWithAllChild(sessionId, keywordId);
