@@ -59,7 +59,7 @@ class QuizRepositoryTest {
     void findQuizzesByKeyword() {
         //given
         final List<Quiz> expect = Arrays.asList(자바_질문1, 자바_질문2);
-        final List<Quiz> actual = quizRepository.findQuizByKeywordId(자바.getId());
+        final List<Quiz> actual = quizRepository.findFetchQuizByKeywordId(자바.getId());
 
         Assertions.assertThat(actual).containsExactlyElementsOf(expect);
     }

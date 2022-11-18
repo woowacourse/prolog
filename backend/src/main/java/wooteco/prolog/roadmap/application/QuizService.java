@@ -30,7 +30,7 @@ public class QuizService {
     }
 
     public QuizzesResponse findQuizzes(Long keywordId) {
-        final List<Quiz> quizzes = quizRepository.findQuizByKeywordId(keywordId);
+        final List<Quiz> quizzes = quizRepository.findFetchQuizByKeywordId(keywordId);
         return QuizzesResponse.of(keywordId, quizzes);
     }
 
