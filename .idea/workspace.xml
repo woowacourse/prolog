@@ -4,7 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7703966e-6d07-452d-852a-23bb9f8e0ffe" name="Changes" comment="feat: 퀴즈 update 구현" />
+    <list default="true" id="7703966e-6d07-452d-852a-23bb9f8e0ffe" name="Changes" comment="feat: 퀴즈 update 구현">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/exception/KeywordOrderException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/common/exception/BadRequestCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/common/exception/BadRequestCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/application/KeywordService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/application/KeywordService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/application/QuizService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/application/QuizService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/Keyword.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/Keyword.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/repository/QuizRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/repository/QuizRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/repository/KeywordRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/repository/QuizRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/wooteco/prolog/roadmap/application/KeywordServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/wooteco/prolog/roadmap/application/KeywordServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/wooteco/prolog/roadmap/application/QuizServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/wooteco/prolog/roadmap/application/QuizServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/wooteco/prolog/roadmap/repository/QuizRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/wooteco/prolog/roadmap/repository/QuizRepositoryTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -74,12 +87,12 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="feature/1056-roadmap" />
-                    <option name="lastUsedInstant" value="1668674657" />
+                    <option name="branchName" value="feature/roadmap-quiz" />
+                    <option name="lastUsedInstant" value="1668734393" />
                   </RecentBranch>
                   <RecentBranch>
-                    <option name="branchName" value="feature/roadmap-quiz" />
-                    <option name="lastUsedInstant" value="1668674229" />
+                    <option name="branchName" value="feature/1056-roadmap" />
+                    <option name="lastUsedInstant" value="1668674657" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="develop" />
@@ -169,7 +182,7 @@
       <recent name="wooteco.prolog.levellogs.application" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.PrologApplication">
+  <component name="RunManager" selected="Gradle.수정한_키워드의_ID가_부모의_ID와_같은경우">
     <configuration name="QuizDocumentation.퀴즈를_생성한다" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -184,6 +197,29 @@
             <option value=":backend:documentationTest" />
             <option value="--tests" />
             <option value="&quot;wooteco.prolog.docu.QuizDocumentation.퀴즈를_생성한다&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="QuizRepositoryTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":backend:test" />
+            <option value="--tests" />
+            <option value="&quot;wooteco.prolog.roadmap.repository.QuizRepositoryTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -216,7 +252,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="QuizServiceTest.delete" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="Tests in 'prolog.backend.test'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -228,8 +264,6 @@
         <option name="taskNames">
           <list>
             <option value=":backend:test" />
-            <option value="--tests" />
-            <option value="&quot;wooteco.prolog.roadmap.application.QuizServiceTest.delete&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -239,7 +273,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="QuizServiceTest.delete_false" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="수정한_키워드의_ID가_부모의_ID와_같은경우" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -252,7 +286,7 @@
           <list>
             <option value=":backend:test" />
             <option value="--tests" />
-            <option value="&quot;wooteco.prolog.roadmap.application.QuizServiceTest.delete_false&quot;" />
+            <option value="&quot;wooteco.prolog.roadmap.application.KeywordServiceTest$키워드_수정_요청_시$수정한_키워드의_ID가_부모의_ID와_같은경우&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -262,7 +296,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="QuizServiceTest.update_false" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="수정한_키워드의_ID가_부모의_ID와_같은경우.예외가_발생한다" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -275,30 +309,7 @@
           <list>
             <option value=":backend:test" />
             <option value="--tests" />
-            <option value="&quot;wooteco.prolog.roadmap.application.QuizServiceTest.update_false&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="Tests in 'wooteco.prolog.roadmap'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":backend:test" />
-            <option value="--tests" />
-            <option value="&quot;wooteco.prolog.roadmap.*&quot;" />
+            <option value="&quot;wooteco.prolog.roadmap.application.KeywordServiceTest$키워드_수정_요청_시$수정한_키워드의_ID가_부모의_ID와_같은경우.예외가_발생한다&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -332,20 +343,20 @@
     </configuration>
     <list>
       <item itemvalue="Gradle.QuizDocumentation.퀴즈를_생성한다" />
-      <item itemvalue="Gradle.QuizServiceTest.delete" />
-      <item itemvalue="Gradle.Tests in 'wooteco.prolog.roadmap'" />
-      <item itemvalue="Gradle.QuizServiceTest.delete_false" />
       <item itemvalue="Gradle.QuizServiceTest" />
-      <item itemvalue="Gradle.QuizServiceTest.update_false" />
       <item itemvalue="Spring Boot.PrologApplication" />
+      <item itemvalue="Gradle.Tests in 'prolog.backend.test'" />
+      <item itemvalue="Gradle.QuizRepositoryTest" />
+      <item itemvalue="Gradle.수정한_키워드의_ID가_부모의_ID와_같은경우.예외가_발생한다" />
+      <item itemvalue="Gradle.수정한_키워드의_ID가_부모의_ID와_같은경우" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.QuizServiceTest.update_false" />
+        <item itemvalue="Gradle.수정한_키워드의_ID가_부모의_ID와_같은경우" />
+        <item itemvalue="Gradle.수정한_키워드의_ID가_부모의_ID와_같은경우.예외가_발생한다" />
+        <item itemvalue="Gradle.Tests in 'prolog.backend.test'" />
+        <item itemvalue="Gradle.QuizRepositoryTest" />
         <item itemvalue="Gradle.QuizServiceTest" />
-        <item itemvalue="Gradle.QuizServiceTest.delete_false" />
-        <item itemvalue="Gradle.Tests in 'wooteco.prolog.roadmap'" />
-        <item itemvalue="Gradle.QuizServiceTest.delete" />
       </list>
     </recent_temporary>
   </component>
@@ -390,7 +401,7 @@
       <workItem from="1666994118811" duration="625000" />
       <workItem from="1667202667775" duration="1361000" />
       <workItem from="1668173670659" duration="1823000" />
-      <workItem from="1668674192198" duration="642000" />
+      <workItem from="1668674192198" duration="4202000" />
     </task>
     <task id="LOCAL-00001" summary="feat: levelLog 생성 로직 추가">
       <created>1660087776085</created>
@@ -581,6 +592,57 @@
     <MESSAGE value="test: quiz 삭제 로직에 대한 테스트 보강" />
     <MESSAGE value="feat: 퀴즈 update 구현" />
     <option name="LAST_COMMIT_MESSAGE" value="feat: 퀴즈 update 구현" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/application/KeywordService.java</url>
+          <line>73</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/application/KeywordService.java</url>
+          <line>76</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/Keyword.java</url>
+          <line>77</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/Keyword.java</url>
+          <line>78</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/Keyword.java</url>
+          <line>80</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/Keyword.java</url>
+          <line>79</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/Keyword.java</url>
+          <line>89</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/Keyword.java</url>
+          <line>95</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/test/java/wooteco/prolog/roadmap/application/KeywordServiceTest.java</url>
+          <line>180</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import wooteco.prolog.roadmap.application.dto.QuizRequest;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.Quiz;
+import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
+import wooteco.prolog.roadmap.domain.repository.QuizRepository;
 import wooteco.prolog.roadmap.exception.QuizNotFoundException;
-import wooteco.prolog.roadmap.repository.KeywordRepository;
-import wooteco.prolog.roadmap.repository.QuizRepository;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.support.utils.IntegrationTest;
@@ -43,10 +43,11 @@ class QuizServiceTest {
         session_백엔드_레벨1 = sessionRepository.save(new Session("백엔드Java 레벨1"));
 
         자바 = keywordRepository.save(
-            new Keyword("자바", "자바입니다", 1, 1, session_백엔드_레벨1.getId(), null));
+            new Keyword(null, "자바", "자바입니다", 1, 1, session_백엔드_레벨1.getId(), null, null));
         session_백엔드_레벨1 = sessionRepository.save(new Session("백엔드Java 레벨1"));
 
-        깃 = keywordRepository.save(new Keyword("깃", "깃입니다", 2, 2, session_백엔드_레벨1.getId(), null));
+        깃 = keywordRepository.save(
+            new Keyword(null, "깃", "깃입니다", 2, 2, session_백엔드_레벨1.getId(), null, null));
         session_백엔드_레벨1 = sessionRepository.save(new Session("백엔드Java 레벨1"));
 
         자바_질문1 = quizRepository.save(new Quiz(자바, "자바의 아버지는 제임스 고슬링일까요 ? 제이슨일까요 ?"));

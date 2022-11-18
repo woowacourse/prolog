@@ -75,8 +75,9 @@ public class Keyword {
 
     public void update(final String name, final String description, final int seq,
                        final int importance, final Keyword keywordParent) {
-        validateSeq(seq);
-        validateKeywordParent(keywordParent);
+        System.out.println("ㅎㅎㅎ");
+        validateSeq(seq); // seq 가 0 보다 작으면 예외를 발생 시킨다.
+        validateKeywordParent(keywordParent); //
         this.name = name;
         this.description = description;
         this.seq = seq;

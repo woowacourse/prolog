@@ -3,13 +3,13 @@ package wooteco.prolog.roadmap.application;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordResponse;
 import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordsResponse;
-import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
+import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
+import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
 import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.session.exception.SessionNotFoundException;
 
@@ -20,7 +20,8 @@ public class KeywordService {
     private final SessionRepository sessionRepository;
     private final KeywordRepository keywordRepository;
 
-    public KeywordService(final SessionRepository sessionRepository, final KeywordRepository keywordRepository) {
+    public KeywordService(final SessionRepository sessionRepository,
+                          final KeywordRepository keywordRepository) {
         this.sessionRepository = sessionRepository;
         this.keywordRepository = keywordRepository;
     }
@@ -66,14 +67,15 @@ public class KeywordService {
         return KeywordsResponse.createResponse(keywords);
     }
 
-    public void updateKeyword(final Long sessionId, final Long keywordId, final KeywordUpdateRequest request) {
-        existSession(sessionId);
+    public void updateKeyword(final Long sessionId, final Long keywordId,
+                              final KeywordUpdateRequest request) {
+        existSession(sessionId); // 세션이 없다면 예외가 발생
         Keyword keyword = keywordRepository.findById(keywordId)
-            .orElseThrow(KeywordNotFoundException::new);
+            .orElseThrow(KeywordNotFoundException::new); // keyword 가 없다면 예외를 발생
         Keyword keywordParent = findKeywordParentOrNull(request.getParentKeywordId());
 
-        keyword.update(
-            request.getName(), request.getDescription(), request.getOrder(), request.getImportance(), keywordParent);
+        keyword.update(request.getName(), request.getDescription(), request.getOrder(),
+            request.getImportance(), keywordParent);
     }
 
     public void deleteKeyword(final Long sessionId, final Long keywordId) {
@@ -101,7 +103,6 @@ public class KeywordService {
         if (keywordId == null) {
             return null;
         }
-        return keywordRepository.findById(keywordId)
-            .orElseThrow(KeywordNotFoundException::new);
+        return keywordRepository.findById(keywordId).orElseThrow(KeywordNotFoundException::new);
     }
 }

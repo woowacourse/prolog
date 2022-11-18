@@ -8,10 +8,10 @@ import wooteco.prolog.roadmap.application.dto.QuizRequest;
 import wooteco.prolog.roadmap.application.dto.QuizzesResponse;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.Quiz;
+import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
+import wooteco.prolog.roadmap.domain.repository.QuizRepository;
 import wooteco.prolog.roadmap.exception.KeywordOrderException;
 import wooteco.prolog.roadmap.exception.QuizNotFoundException;
-import wooteco.prolog.roadmap.repository.KeywordRepository;
-import wooteco.prolog.roadmap.repository.QuizRepository;
 
 @Service
 @Transactional(readOnly = true)

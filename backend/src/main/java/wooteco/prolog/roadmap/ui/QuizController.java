@@ -40,7 +40,7 @@ public class QuizController {
     public ResponseEntity<Void> deleteQuiz(@PathVariable Long sessionId,
                                            @PathVariable Long keywordId,
                                            @PathVariable Long quizId) {
-        quizService.deleteQuiz(keywordId);
+        quizService.deleteQuiz(quizId);
         return ResponseEntity.noContent().build();
     }
 }

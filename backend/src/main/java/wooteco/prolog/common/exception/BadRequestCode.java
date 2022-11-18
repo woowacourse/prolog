@@ -24,6 +24,10 @@ import wooteco.prolog.report.exception.ReportRequestTypeException;
 import wooteco.prolog.report.exception.ReportTitleLengthException;
 import wooteco.prolog.report.exception.ReportUpdateException;
 import wooteco.prolog.report.exception.UnRelatedAbilityExistenceException;
+import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
+import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
+import wooteco.prolog.roadmap.exception.KeywordOrderException;
+import wooteco.prolog.roadmap.exception.QuizNotFoundException;
 import wooteco.prolog.session.exception.SessionNotFoundException;
 import wooteco.prolog.studylog.exception.CommentDeleteException;
 import wooteco.prolog.studylog.exception.CommentNotFoundException;
@@ -119,11 +123,12 @@ public enum BadRequestCode {
     INVALID_LEVEL_LOG_AUTHOR_EXCEPTION(7001, "레벨 로그 작성자가 아닙니다.",InvalidLevelLogAuthorException.class),
     LEVEL_LOG_NOT_FOUND_EXCEPTION(7002, "레벨 로그를 찾을 수 없습니다.",LevelLogNotFoundException.class),
 
-    UNSUPPORTED_FILE_EXTENSION_EXCEPTION(8001, "지원하지 않는 확장자 입니다.", UnsupportedFilExtensionException.class),
-    FILE_NAME_EMPTY_EXCEPTION(8002, "파일 이름은 비어있을 수 없습니다.", FileNameEmptyException.class),
-    FILE_UPLOAD_FAIL_EXCEPTION(8003, "파일 업로드에 실패했습니다.", FileUploadFailException.class),
+    ROADMAP_KEYWORD_ORDER_EXCEPTION(8001, "키워드의 순서는 1 이상이여야 합니다.", KeywordOrderException.class),
+    ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION(8002, "키워드를 찾을 수 없습니다.", KeywordNotFoundException.class),
+    ROADMAP_QUIZ_NOT_FOUND_EXCEPTION(8003, " 퀴즈를 찾을 수 없습니다.", QuizNotFoundException.class),
 
-    ROADMAP_KEYWORD_ORDER_EXCEPTION(9001, "키워드의 순서는 1 이상이여야 합니다.",KeywordOrderException.class);
+    ROADMAP_KEYWORD_SAME_PARENT_EXCEPTION(8004, "부모의 키워드를 수정할 수 없습니다",
+        KeywordAndKeywordParentSameException.class);
 
     private int code;
     private String message;
