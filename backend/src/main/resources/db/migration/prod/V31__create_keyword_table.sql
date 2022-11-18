@@ -6,7 +6,7 @@ CREATE TABLE keyword
     seq         BIGINT       NOT NULL,
     importance  BIGINT       NOT NULL,
     session_id  BIGINT       NOT NULL,
-    parent_id   BIGINT       NOT NULL,
+    parent_id   BIGINT,
     CONSTRAINT pk_keyword PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 
