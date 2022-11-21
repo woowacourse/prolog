@@ -9,10 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wooteco.prolog.roadmap.exception.QuizNotFoundException;
 
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Quiz {
@@ -36,5 +35,24 @@ public class Quiz {
 
     public Quiz(final Keyword keyword, final String question) {
         this(null, keyword, question);
+    }
+
+    public void update(String question) {
+        if (question.isEmpty()) {
+            throw new QuizNotFoundException();
+        }
+        this.question = question;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Keyword getKeyword() {
+        return keyword;
+    }
+
+    public String getQuestion() {
+        return question;
     }
 }

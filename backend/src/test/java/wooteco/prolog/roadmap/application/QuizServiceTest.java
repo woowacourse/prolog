@@ -1,11 +1,13 @@
 package wooteco.prolog.roadmap.application;
 
+import javax.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import wooteco.prolog.roadmap.application.dto.QuizRequest;
+import wooteco.prolog.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.Quiz;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
@@ -26,6 +28,8 @@ class QuizServiceTest {
     private QuizRepository quizRepository;
     @Autowired
     private SessionRepository sessionRepository;
+    @Autowired
+    private EntityManager em;
 
     private Session session_백엔드_레벨1;
 
@@ -37,6 +41,7 @@ class QuizServiceTest {
     private Quiz 깃_질문1;
 
     private QuizRequest 퀴즈_요청 = new QuizRequest("자바를 자바바~");
+    private QuizRequest 퀴즈_수정_요청 = new QuizRequest("수달 천재 자바왕~");
 
     @BeforeEach
     void setUp() {
@@ -69,6 +74,19 @@ class QuizServiceTest {
         final Long quizId = quizService.createQuiz(자바.getId(), 퀴즈_요청);
 
         Assertions.assertThat(quizId).isNotNull();
+    }
+
+    @Test
+    @DisplayName("퀴즈를 수정한다.")
+    void update() {
+        final Long quizId = quizService.createQuiz(자바.getId(), 퀴즈_요청);
+
+        quizService.updateQuiz(quizId, 퀴즈_수정_요청);
+        quizRepository.flush();
+        em.clear();
+
+        final QuizResponse response = quizService.findById(quizId);
+        Assertions.assertThat(response.getQuestion()).isEqualTo(퀴즈_수정_요청.getQuestion());
     }
 
     @Test
