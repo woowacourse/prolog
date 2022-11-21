@@ -61,7 +61,7 @@ public class KeywordController {
         return ResponseEntity.ok(response);
     }
     
-    @GetMapping("/children")
+    @GetMapping("/{keywordId}/children")
     public ResponseEntity<KeywordResponse> find(@PathVariable Long sessionId,
                                                 @PathVariable Long keywordId) {
         KeywordResponse response = keywordService.findKeywordWithAllChild(sessionId, keywordId);
