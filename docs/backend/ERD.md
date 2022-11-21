@@ -3,6 +3,7 @@
 ## ERD
 
 ![prolog_table](https://user-images.githubusercontent.com/64204666/196094763-215c5a4a-1a67-461a-b836-742474638d00.png)
+[ERD 간략 설명](https://github.com/woowacourse/prolog/wiki/ERD-%EA%B0%84%EB%9E%B5-%EC%84%A4%EB%AA%85)
 
 ## 최신화
 
