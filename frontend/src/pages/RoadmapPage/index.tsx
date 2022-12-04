@@ -37,7 +37,7 @@ const RoadmapPage = () => {
     <Styled.Root>
       <Styled.Main>
         <section>
-          <h2>세션</h2>
+          <Styled.Title>세션</Styled.Title>
           <SessionList
             selectedSessionId={selectedSessionId}
             handleClickSession={handleClickSession}
@@ -45,7 +45,7 @@ const RoadmapPage = () => {
         </section>
 
         <section>
-          <h2>키워드</h2>
+          <Styled.Title>상위 키워드 선택</Styled.Title>
           <TopKeywordList
             sessionId={selectedSessionId}
             selectedTopKeyword={selectedTopKeyword}
@@ -54,13 +54,16 @@ const RoadmapPage = () => {
           />
         </section>
 
-        {selectedTopKeyword && (
-          <KeywordList
-            handleClickKeyword={handleClickKeyword}
-            selectedTopKeyword={selectedTopKeyword}
-            sessionId={selectedSessionId}
-          />
-        )}
+        <section>
+          <Styled.Title>하위 키워드 보기</Styled.Title>
+          {selectedTopKeyword && (
+            <KeywordList
+              handleClickKeyword={handleClickKeyword}
+              selectedTopKeyword={selectedTopKeyword}
+              sessionId={selectedSessionId}
+            />
+          )}
+        </section>
       </Styled.Main>
 
       {isSideSheetOpen && keywordDetail && (

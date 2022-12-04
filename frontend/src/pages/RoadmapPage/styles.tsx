@@ -12,3 +12,7 @@ export const Main = styled.main`
   flex-direction: column;
   gap: 30px;
 `;
+
+export const Title = styled.h2`
+  margin-bottom: 10px;
+`;
