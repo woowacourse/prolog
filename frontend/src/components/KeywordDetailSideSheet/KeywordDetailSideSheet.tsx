@@ -1,4 +1,3 @@
-import React from 'react';
 import { useGetQuizListByKeyword } from '../../hooks/queries/keywords';
 import { KeywordResponse } from '../../models/Keywords';
 import { SideSheet } from '../@shared/SideSheet/SideSheet';
