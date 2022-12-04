@@ -4,18 +4,18 @@ import { Backdrop, SideSheetContent } from './SideSheet.style';
 
 export type SideSheetProps = {
   width?: string;
-  handleCloseSideSheet(): void;
+  onClickBackdrop(): void;
 };
 
 export const SideSheet = ({
   children,
   width,
-  handleCloseSideSheet,
+  onClickBackdrop,
 }: PropsWithChildren<SideSheetProps>) => {
   return (
     <>
       {ReactDOM.createPortal(
-        <Backdrop onClick={handleCloseSideSheet} />,
+        <Backdrop onClick={onClickBackdrop} />,
         document.getElementById('backdrop-root') as HTMLElement
       )}
       {ReactDOM.createPortal(

@@ -1,13 +1,13 @@
-import KeywordSection from './KeywordSection';
+import TopKeywordList from './TopKeywordList';
 import SomeImage from '../../assets/images/background-image.png';
 
 export default {
-  title: 'Component/KeywordSection',
-  component: KeywordSection,
+  title: 'Component/TopKeywordList',
+  component: TopKeywordList,
   argTypes: {},
 };
 
-const Template = (args) => <KeywordSection {...args} />;
+const Template = (args) => <TopKeywordList {...args} />;
 
 export const Selected = Template.bind({});
 
