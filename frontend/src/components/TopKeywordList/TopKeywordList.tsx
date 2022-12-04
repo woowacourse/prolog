@@ -1,10 +1,9 @@
 import styled from '@emotion/styled';
 import { useEffect } from 'react';
-import SomeImage from '../../assets/images/background-image.png';
 import { COLOR } from '../../enumerations/color';
 import { useGetTopKeywordList } from '../../hooks/queries/keywords';
 import { KeywordResponse } from '../../models/Keywords';
-import LabelledImage from '../LabelledImage/LabelledImage';
+import ResponsiveButton from '../Button/ResponsiveButton';
 
 interface TopKeywordListProps {
   sessionId: number;
@@ -31,16 +30,22 @@ const TopKeywordList = ({
     <StyledRoot>
       {topKeywordList?.map((keyword, index) => {
         const isNotLast = index + 1 !== topKeywordList?.length;
+        const isSelected = selectedTopKeyword?.keywordId === keyword.keywordId;
 
         return (
           <StyledWrapper>
-            <LabelledImage
+            {/* <LabelledImage
               src={SomeImage}
               alt=""
               text={keyword.name}
               isSelected={selectedTopKeyword?.keywordId === keyword.keywordId}
               onClick={() => handleClickTopKeyword(keyword)}
-            />
+            /> */}
+            <ResponsiveButton
+              text={keyword.name}
+              backgroundColor={isSelected ? COLOR.LIGHT_BLUE_900 : COLOR.LIGHT_GRAY_400}
+              onClick={() => handleClickTopKeyword(keyword)}
+            ></ResponsiveButton>
             {isNotLast && <StyledArrow />}
           </StyledWrapper>
         );
