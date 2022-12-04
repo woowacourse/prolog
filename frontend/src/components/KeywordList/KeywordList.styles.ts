@@ -27,12 +27,12 @@ export const ChildrenKeywordListContainer = styled.div`
 
 export const SecondButtonWrapper = styled.div`
   display: flex;
-  flex-grow: 1;
+  width: 50%;
 `;
 
 export const ThirdButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  width: 50%;
   gap: 10px;
 `;
