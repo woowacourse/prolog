@@ -45,15 +45,6 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public FlywayMigrationStrategy cleanMigrationStrategy() {
-        return flyway -> {
-            flyway.clean();
-            flyway.repair();
-            flyway.migrate();
-        };
-    }
-
-    @Bean
     @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
     public RequestStorage requestStorage() {
         return new RequestStorage();
