@@ -1,7 +1,7 @@
 CREATE TABLE studylog_temp_ability(
     id               BIGINT NOT NULL AUTO_INCREMENT,
     member_id        BIGINT NOT NULL,
-    ability_id      BIGINT NOT NULL,
+    ability_id       BIGINT NOT NULL,
     studylog_temp_id BIGINT NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB;

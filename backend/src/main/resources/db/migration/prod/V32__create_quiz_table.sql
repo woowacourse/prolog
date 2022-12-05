@@ -1,8 +1,8 @@
 CREATE TABLE quiz
 (
-    id         BIGINT NOT NULL AUTO_INCREMENT,
-    keyword_id BIGINT NOT NULL,
-    question   TEXT   NOT NULL,
+    id         BIGINT       NOT NULL AUTO_INCREMENT,
+    keyword_id BIGINT       NOT NULL,
+    question   VARCHAR(255) NOT NULL,
 
     CONSTRAINT pk_quiz PRIMARY KEY (id)
 ) ENGINE = InnoDB;
