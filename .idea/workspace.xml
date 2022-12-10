@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7703966e-6d07-452d-852a-23bb9f8e0ffe" name="Changes" comment="feat: 퀴즈 update 구현">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/exception/KeywordOrderException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/common/exception/BadRequestCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/common/exception/BadRequestCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/application/KeywordService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/application/KeywordService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/application/QuizService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/application/QuizService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/Keyword.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/Keyword.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/repository/QuizRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/repository/QuizRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/repository/KeywordRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/repository/QuizRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/wooteco/prolog/roadmap/application/KeywordServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/wooteco/prolog/roadmap/application/KeywordServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/wooteco/prolog/roadmap/application/QuizServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/wooteco/prolog/roadmap/application/QuizServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/wooteco/prolog/roadmap/repository/QuizRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/wooteco/prolog/roadmap/repository/QuizRepositoryTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="prolog" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="prolog" type="f1a62948:ProjectNode" />
+                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JUnit5 Test Class" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feat/1046-roadmap-page" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="GitToolBoxStore">
+    <option name="projectConfigVersion" value="5" />
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="feature/roadmap-quiz" />
+                    <option name="lastUsedInstant" value="1668734393" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="feature/1056-roadmap" />
+                    <option name="lastUsedInstant" value="1668674657" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="develop" />
+                    <option name="lastUsedInstant" value="1668173885" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="feature/1056-loadmap" />
+                    <option name="lastUsedInstant" value="1666516454" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="feat/1046-roadmap-page" />
+                    <option name="lastUsedInstant" value="1666516403" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="myId2FirstActivated">
+      <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="true" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="true" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
+      </map>
+    </option>
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="false" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="false" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="false" />
+      </map>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2ChPFs7kxfyjSO2m20oByHas6HQ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/application" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/backend/src/main/resources/db/migration/prod" />
+    <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="project.structure.last.edited" value="Problems" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="wooteco.prolog.roadmap.application.dto" />
+      <recent name="wooteco.prolog.roadmap.application" />
+      <recent name="wooteco.prolog.levellogs.exception" />
+      <recent name="wooteco.prolog.levellogs.application.dto" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend/src/main/resources/db/migration/prod" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="wooteco.prolog.roadmap.repository" />
+      <recent name="wooteco.prolog.roadmap.application" />
+      <recent name="wooteco.prolog.levellogs.application" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.수정한_키워드의_ID가_부모의_ID와_같은경우">
+    <configuration name="QuizDocumentation.퀴즈를_생성한다" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":backend:documentationTest" />
+            <option value="--tests" />
+            <option value="&quot;wooteco.prolog.docu.QuizDocumentation.퀴즈를_생성한다&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="QuizRepositoryTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":backend:test" />
+            <option value="--tests" />
+            <option value="&quot;wooteco.prolog.roadmap.repository.QuizRepositoryTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="QuizServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":backend:test" />
+            <option value="--tests" />
+            <option value="&quot;wooteco.prolog.roadmap.application.QuizServiceTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="Tests in 'prolog.backend.test'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":backend:test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="수정한_키워드의_ID가_부모의_ID와_같은경우" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":backend:test" />
+            <option value="--tests" />
+            <option value="&quot;wooteco.prolog.roadmap.application.KeywordServiceTest$키워드_수정_요청_시$수정한_키워드의_ID가_부모의_ID와_같은경우&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="수정한_키워드의_ID가_부모의_ID와_같은경우.예외가_발생한다" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":backend:test" />
+            <option value="--tests" />
+            <option value="&quot;wooteco.prolog.roadmap.application.KeywordServiceTest$키워드_수정_요청_시$수정한_키워드의_ID가_부모의_ID와_같은경우.예외가_발생한다&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="prolog" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="prolog" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PrologApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="prolog.backend.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="wooteco.prolog.PrologApplication" />
+      <option name="ACTIVE_PROFILES" value="local" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Gradle.QuizDocumentation.퀴즈를_생성한다" />
+      <item itemvalue="Gradle.QuizServiceTest" />
+      <item itemvalue="Spring Boot.PrologApplication" />
+      <item itemvalue="Gradle.Tests in 'prolog.backend.test'" />
+      <item itemvalue="Gradle.QuizRepositoryTest" />
+      <item itemvalue="Gradle.수정한_키워드의_ID가_부모의_ID와_같은경우.예외가_발생한다" />
+      <item itemvalue="Gradle.수정한_키워드의_ID가_부모의_ID와_같은경우" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.수정한_키워드의_ID가_부모의_ID와_같은경우" />
+        <item itemvalue="Gradle.수정한_키워드의_ID가_부모의_ID와_같은경우.예외가_발생한다" />
+        <item itemvalue="Gradle.Tests in 'prolog.backend.test'" />
+        <item itemvalue="Gradle.QuizRepositoryTest" />
+        <item itemvalue="Gradle.QuizServiceTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7703966e-6d07-452d-852a-23bb9f8e0ffe" name="Changes" comment="" />
+      <created>1659251743629</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1659251743629</updated>
+      <workItem from="1659251745310" duration="1463000" />
+      <workItem from="1659254559885" duration="65000" />
+      <workItem from="1659320913291" duration="446000" />
+      <workItem from="1659921155835" duration="810000" />
+      <workItem from="1660083776923" duration="4629000" />
+      <workItem from="1660088553182" duration="1729000" />
+      <workItem from="1660094104957" duration="2233000" />
+      <workItem from="1660098382847" duration="792000" />
+      <workItem from="1660120135555" duration="580000" />
+      <workItem from="1660126862334" duration="7489000" />
+      <workItem from="1660264331879" duration="54000" />
+      <workItem from="1660462099211" duration="1230000" />
+      <workItem from="1660463623021" duration="3772000" />
+      <workItem from="1660482262352" duration="6000" />
+      <workItem from="1660482284869" duration="3000" />
+      <workItem from="1660482318622" duration="1480000" />
+      <workItem from="1660546056009" duration="5317000" />
+      <workItem from="1660616657623" duration="121000" />
+      <workItem from="1661041687576" duration="920000" />
+      <workItem from="1661772983451" duration="1240000" />
+      <workItem from="1662352740825" duration="2711000" />
+      <workItem from="1662435936072" duration="1000" />
+      <workItem from="1663052699273" duration="777000" />
+      <workItem from="1663465079406" duration="826000" />
+      <workItem from="1663465943681" duration="2104000" />
+      <workItem from="1663566134864" duration="266000" />
+      <workItem from="1665455033039" duration="2224000" />
+      <workItem from="1666505104798" duration="1479000" />
+      <workItem from="1666515070874" duration="15744000" />
+      <workItem from="1666531704492" duration="784000" />
+      <workItem from="1666994118811" duration="625000" />
+      <workItem from="1667202667775" duration="1361000" />
+      <workItem from="1668173670659" duration="1823000" />
+      <workItem from="1668674192198" duration="4202000" />
+    </task>
+    <task id="LOCAL-00001" summary="feat: levelLog 생성 로직 추가">
+      <created>1660087776085</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1660087776085</updated>
+    </task>
+    <task id="LOCAL-00002" summary="feat: levelLog 수정 로직 추가">
+      <created>1660090264907</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1660090264907</updated>
+    </task>
+    <task id="LOCAL-00003" summary="feat: levelLog 수정 로직 추가">
+      <created>1660097180207</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1660097180207</updated>
+    </task>
+    <task id="LOCAL-00004" summary="feat: LevelLog 관련 검증 추가">
+      <created>1660130201055</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1660130201055</updated>
+    </task>
+    <task id="LOCAL-00005" summary="refactor: 메서드 추출">
+      <created>1660130224405</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1660130224405</updated>
+    </task>
+    <task id="LOCAL-00006" summary="refactor: dto validate 추가">
+      <created>1660130246523</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1660130246523</updated>
+    </task>
+    <task id="LOCAL-00007" summary="refactor: 불필요한 중복 제거">
+      <created>1660130262740</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1660130262740</updated>
+    </task>
+    <task id="LOCAL-00008" summary="test: test code 수정">
+      <created>1660138377271</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1660138377271</updated>
+    </task>
+    <task id="LOCAL-00009" summary="test: 레벨로그에 관한 인수 테스트 추가">
+      <created>1660550957422</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1660550957422</updated>
+    </task>
+    <task id="LOCAL-00010" summary="fix: keyword 내에 잘못 설정된 mappedBy 수정">
+      <created>1666517556946</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1666517556946</updated>
+    </task>
+    <task id="LOCAL-00011" summary="chore: keyword db migration">
+      <created>1666517592202</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1666517592202</updated>
+    </task>
+    <task id="LOCAL-00012" summary="chore: quiz db migration">
+      <created>1666517603272</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1666517603272</updated>
+    </task>
+    <task id="LOCAL-00013" summary="chore: keyword 에 누락된 외래키 설정 추가">
+      <created>1666520329709</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1666520329709</updated>
+    </task>
+    <task id="LOCAL-00014" summary="feat: quiz create 추가">
+      <created>1666522091573</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1666522091573</updated>
+    </task>
+    <task id="LOCAL-00015" summary="test: 퀴즈 생성 인수 테스트 틀 추가">
+      <created>1666522594058</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1666522594058</updated>
+    </task>
+    <task id="LOCAL-00016" summary="refactor: method 네이밍 변경 및 restDocs 틀 추가">
+      <created>1666525266656</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1666525266656</updated>
+    </task>
+    <task id="LOCAL-00017" summary="feat: keyword 별 quizzes 조회 로직 구현">
+      <created>1666528206643</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1666528206643</updated>
+    </task>
+    <task id="LOCAL-00018" summary="feat: quiz 삭제 로직 구현">
+      <created>1666529757193</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1666529757193</updated>
+    </task>
+    <task id="LOCAL-00019" summary="test: quiz 삭제 로직에 대한 테스트 보강">
+      <created>1666530358943</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1666530358943</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/frontend/src/mocks/browser.js" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="upstream/feature/1056-loadmap" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="feat: levelLog 생성 로직 추가" />
+    <MESSAGE value="feat: levelLog 수정 로직 추가" />
+    <MESSAGE value="feat: LevelLog 관련 검증 추가" />
+    <MESSAGE value="refactor: 메서드 추출" />
+    <MESSAGE value="refactor: dto validate 추가" />
+    <MESSAGE value="refactor: 불필요한 중복 제거" />
+    <MESSAGE value="test: test code 수정" />
+    <MESSAGE value="test: 레벨로그에 관한 인수 테스트 추가" />
+    <MESSAGE value="fix: keyword 내에 잘못 설정된 mappedBy 수정" />
+    <MESSAGE value="chore: keyword db migration" />
+    <MESSAGE value="chore: quiz db migration" />
+    <MESSAGE value="chore: keyword 에 누락된 외래키 설정 추가" />
+    <MESSAGE value="feat: quiz create 추가" />
+    <MESSAGE value="test: 퀴즈 생성 인수 테스트 틀 추가" />
+    <MESSAGE value="refactor: method 네이밍 변경 및 restDocs 틀 추가" />
+    <MESSAGE value="feat: keyword 별 quizzes 조회 로직 구현" />
+    <MESSAGE value="feat: quiz 삭제 로직 구현" />
+    <MESSAGE value="test: quiz 삭제 로직에 대한 테스트 보강" />
+    <MESSAGE value="feat: 퀴즈 update 구현" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 퀴즈 update 구현" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/application/KeywordService.java</url>
+          <line>73</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/application/KeywordService.java</url>
+          <line>76</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/Keyword.java</url>
+          <line>77</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/Keyword.java</url>
+          <line>78</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/Keyword.java</url>
+          <line>80</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/Keyword.java</url>
+          <line>79</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/Keyword.java</url>
+          <line>89</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/main/java/wooteco/prolog/roadmap/domain/Keyword.java</url>
+          <line>95</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/test/java/wooteco/prolog/roadmap/application/KeywordServiceTest.java</url>
+          <line>180</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
