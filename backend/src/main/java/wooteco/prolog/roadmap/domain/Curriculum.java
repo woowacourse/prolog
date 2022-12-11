@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wooteco.prolog.roadmap.exception.CurriculumInvalidException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,4 +21,20 @@ public class Curriculum {
 
     @Column(nullable = false)
     private String name;
+
+    public Curriculum(Long id, String name) {
+        this.id = id;
+        this.name = name;
+        validateName(name);
+    }
+
+    public Curriculum(String name) {
+        this(null, name);
+    }
+
+    private void validateName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new CurriculumInvalidException();
+        }
+    }
 }
