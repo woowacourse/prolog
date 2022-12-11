@@ -14,5 +14,5 @@ public interface KeywordRepository extends JpaRepository<Keyword, Long> {
         + "LEFT JOIN FETCH c.children lc WHERE k.id = :keywordId ORDER BY k.seq")
     Keyword findFetchById(@Param("keywordId") Long keywordId);
 
-    List<Keyword> findBySessionId(Long sessionId);
+    List<Keyword> findBySessionIdAndParentIsNull(Long sessionId);
 }

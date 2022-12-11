@@ -62,7 +62,7 @@ public class KeywordService {
     public KeywordsResponse findSessionIncludeRootKeywords(final Long sessionId) {
         existSession(sessionId);
 
-        List<Keyword> keywords = keywordRepository.findBySessionId(sessionId);
+        List<Keyword> keywords = keywordRepository.findBySessionIdAndParentIsNull(sessionId);
 
         return KeywordsResponse.createResponse(keywords);
     }
