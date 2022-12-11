@@ -4,8 +4,10 @@ import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.roadmap.application.CurriculumService;
 import wooteco.prolog.roadmap.application.dto.CurriculumRequest;
@@ -31,4 +33,12 @@ public class CurriculumController {
     public ResponseEntity<CurriculumResponses> findAll() {
         return ResponseEntity.ok(curriculumService.findCurriculums());
     }
+
+    @PutMapping("/{curriculumId}")
+    public ResponseEntity<Void> updateCurriculum(@RequestParam Long curriculumId,
+                                                 @RequestBody CurriculumRequest createRequest) {
+         curriculumService.update(curriculumId, createRequest);
+        return ResponseEntity.noContent().build();
+    }
+
 }

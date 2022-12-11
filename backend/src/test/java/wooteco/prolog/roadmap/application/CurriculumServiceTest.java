@@ -3,6 +3,7 @@ package wooteco.prolog.roadmap.application;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestConstructor;
@@ -19,11 +20,14 @@ class CurriculumServiceTest {
 
     private final CurriculumService curriculumService;
     private final CurriculumRepository curriculumRepository;
+    private final EntityManager em;
 
     CurriculumServiceTest(CurriculumService curriculumService,
-                          CurriculumRepository curriculumRepository) {
+                          CurriculumRepository curriculumRepository,
+                          EntityManager em) {
         this.curriculumService = curriculumService;
         this.curriculumRepository = curriculumRepository;
+        this.em = em;
     }
 
 
@@ -81,4 +85,58 @@ class CurriculumServiceTest {
                 .map(Curriculum::getName)
                 .collect(Collectors.toList()));
     }
+
+
+    @Test
+    void 커리쿨럼이_수정된다() {
+        final Curriculum 커리큘럼1 = curriculumRepository.save(new Curriculum("커리큘럼1"));
+        final String 수정된_이름 = "수정된 커리큘럼";
+        final CurriculumRequest request = new CurriculumRequest(수정된_이름);
+
+        curriculumService.update(커리큘럼1.getId(), request);
+        curriculumRepository.flush();
+        em.clear();
+
+        final Curriculum 수정된_커리큘럼 = curriculumRepository.findById(커리큘럼1.getId()).get();
+
+        Assertions.assertThat(수정된_커리큘럼.getName()).isEqualTo(수정된_이름);
+    }
+
+
+    @Test
+    void 커리큘림_수정시_이름에_null_이_들어올경우_예외가_발생한다() {
+        // given
+        final Curriculum 커리큘럼1 = curriculumRepository.save(new Curriculum("커리큘럼1"));
+        final String 수정된_이름 = null;
+        final CurriculumRequest request = new CurriculumRequest(수정된_이름);
+
+        // when&then
+        Assertions.assertThatThrownBy(() -> curriculumService.update(커리큘럼1.getId(), request))
+            .isInstanceOf(CurriculumInvalidException.class);
+    }
+
+    @Test
+    void 커리큘림_수정시_이름에_빈공백이_들어올경우_예외가_발생한다() {
+        // given
+        final Curriculum 커리큘럼1 = curriculumRepository.save(new Curriculum("커리큘럼1"));
+        final String 수정된_이름 = " ";
+        final CurriculumRequest request = new CurriculumRequest(수정된_이름);
+
+        // when&then
+        Assertions.assertThatThrownBy(() -> curriculumService.update(커리큘럼1.getId(), request))
+            .isInstanceOf(CurriculumInvalidException.class);
+    }
+
+    @Test
+    void 커리큘림_수정시_이름에_공백이_들어올경우_예외가_발생한다() {
+        // given
+        final Curriculum 커리큘럼1 = curriculumRepository.save(new Curriculum("커리큘럼1"));
+        final String 수정된_이름 = "";
+        final CurriculumRequest request = new CurriculumRequest(수정된_이름);
+
+        // when&then
+        Assertions.assertThatThrownBy(() -> curriculumService.update(커리큘럼1.getId(), request))
+            .isInstanceOf(CurriculumInvalidException.class);
+    }
+
 }

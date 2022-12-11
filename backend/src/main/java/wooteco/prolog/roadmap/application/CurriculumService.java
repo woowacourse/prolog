@@ -7,6 +7,7 @@ import wooteco.prolog.roadmap.application.dto.CurriculumRequest;
 import wooteco.prolog.roadmap.application.dto.CurriculumResponses;
 import wooteco.prolog.roadmap.domain.Curriculum;
 import wooteco.prolog.roadmap.domain.repository.CurriculumRepository;
+import wooteco.prolog.roadmap.exception.CurriculumNotFoundException;
 
 @Transactional
 @Service
@@ -23,9 +24,17 @@ public class CurriculumService {
         return savedCurriculum.getId();
     }
 
+    @Transactional(readOnly = true)
     public CurriculumResponses findCurriculums() {
         final List<Curriculum> curriculums = curriculumRepository.findAll();
         return CurriculumResponses.createResponse(curriculums);
     }
 
+
+    public void update(Long curriculumId, CurriculumRequest createRequest) {
+        final Curriculum curriculum = curriculumRepository.findById(curriculumId)
+            .orElseThrow(CurriculumNotFoundException::new);
+
+        curriculum.updateName(createRequest.getName());
+    }
 }

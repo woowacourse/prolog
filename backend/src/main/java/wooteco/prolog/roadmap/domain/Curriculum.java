@@ -37,4 +37,9 @@ public class Curriculum {
             throw new CurriculumInvalidException();
         }
     }
+
+    public void updateName(String name) {
+        validateName(name);
+        this.name = name;
+    }
 }

@@ -25,6 +25,7 @@ import wooteco.prolog.report.exception.ReportTitleLengthException;
 import wooteco.prolog.report.exception.ReportUpdateException;
 import wooteco.prolog.report.exception.UnRelatedAbilityExistenceException;
 import wooteco.prolog.roadmap.exception.CurriculumInvalidException;
+import wooteco.prolog.roadmap.exception.CurriculumNotFoundException;
 import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
 import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
 import wooteco.prolog.roadmap.exception.KeywordOrderException;
@@ -140,7 +141,8 @@ public enum BadRequestCode {
     ROADMAP_KEYWORD_SAME_PARENT_EXCEPTION(8005, "부모의 키워드를 수정할 수 없습니다",
         KeywordAndKeywordParentSameException.class),
 
-    CURRICULUM_NAME_RANGE_EXCEPTION(8006, "커리큘럼 이름은 공백일 수 없습니다", CurriculumInvalidException.class);
+    CURRICULUM_NAME_RANGE_EXCEPTION(8006, "커리큘럼 이름은 공백일 수 없습니다", CurriculumInvalidException.class),
+    CURRICULUM_NOT_FOUND_EXCEPTION(8007, "해당하는 커리큘럼을 찾을 수 없습니다", CurriculumNotFoundException.class);
 
     private int code;
     private String message;
