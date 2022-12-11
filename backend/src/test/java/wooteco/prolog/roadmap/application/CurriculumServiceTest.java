@@ -2,6 +2,7 @@ package wooteco.prolog.roadmap.application;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
@@ -11,7 +12,7 @@ import wooteco.prolog.roadmap.application.dto.CurriculumRequest;
 import wooteco.prolog.roadmap.application.dto.CurriculumResponses;
 import wooteco.prolog.roadmap.domain.Curriculum;
 import wooteco.prolog.roadmap.domain.repository.CurriculumRepository;
-import wooteco.prolog.roadmap.exception.CurriculumInvalidException;
+import wooteco.prolog.roadmap.exception.CurriculumNotFoundException;
 import wooteco.support.utils.IntegrationTest;
 
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
@@ -40,36 +41,6 @@ class CurriculumServiceTest {
         final Long savedId = curriculumService.create(request);
 
         Assertions.assertThat(savedId).isNotNull();
-    }
-
-    @Test
-    void 커리큘림_생성시_이름에_null_이_들어올경우_예외가_발생한다() {
-        // given
-        final CurriculumRequest request = new CurriculumRequest(null);
-
-        // when&then
-        Assertions.assertThatThrownBy(() -> curriculumService.create(request))
-            .isInstanceOf(CurriculumInvalidException.class);
-    }
-
-    @Test
-    void 커리큘림_생성시_이름에_빈공백이_들어올경우_예외가_발생한다() {
-        // given
-        final CurriculumRequest request = new CurriculumRequest(" ");
-
-        // when&then
-        Assertions.assertThatThrownBy(() -> curriculumService.create(request))
-            .isInstanceOf(CurriculumInvalidException.class);
-    }
-
-    @Test
-    void 커리큘림_생성시_이름에_공백이_들어올경우_예외가_발생한다() {
-        // given
-        final CurriculumRequest request = new CurriculumRequest("");
-
-        // when&then
-        Assertions.assertThatThrownBy(() -> curriculumService.create(request))
-            .isInstanceOf(CurriculumInvalidException.class);
     }
 
     @Test
@@ -104,39 +75,24 @@ class CurriculumServiceTest {
 
 
     @Test
-    void 커리큘림_수정시_이름에_null_이_들어올경우_예외가_발생한다() {
+    void 커리큘림_삭제시_없는_커리큘럼일_경우_예외가_발생한다() {
         // given
-        final Curriculum 커리큘럼1 = curriculumRepository.save(new Curriculum("커리큘럼1"));
-        final String 수정된_이름 = null;
-        final CurriculumRequest request = new CurriculumRequest(수정된_이름);
+        final Long 없는_ID = 1000L;
 
         // when&then
-        Assertions.assertThatThrownBy(() -> curriculumService.update(커리큘럼1.getId(), request))
-            .isInstanceOf(CurriculumInvalidException.class);
+        Assertions.assertThatThrownBy(() -> curriculumService.delete(없는_ID))
+            .isInstanceOf(CurriculumNotFoundException.class);
     }
 
     @Test
-    void 커리큘림_수정시_이름에_빈공백이_들어올경우_예외가_발생한다() {
+    void 커리큘림이_삭제된다() {
         // given
         final Curriculum 커리큘럼1 = curriculumRepository.save(new Curriculum("커리큘럼1"));
-        final String 수정된_이름 = " ";
-        final CurriculumRequest request = new CurriculumRequest(수정된_이름);
+
+        curriculumService.delete(커리큘럼1.getId());
 
         // when&then
-        Assertions.assertThatThrownBy(() -> curriculumService.update(커리큘럼1.getId(), request))
-            .isInstanceOf(CurriculumInvalidException.class);
+        Assertions.assertThatThrownBy(() -> curriculumRepository.findById(커리큘럼1.getId()).get())
+            .isInstanceOf(NoSuchElementException.class);
     }
-
-    @Test
-    void 커리큘림_수정시_이름에_공백이_들어올경우_예외가_발생한다() {
-        // given
-        final Curriculum 커리큘럼1 = curriculumRepository.save(new Curriculum("커리큘럼1"));
-        final String 수정된_이름 = "";
-        final CurriculumRequest request = new CurriculumRequest(수정된_이름);
-
-        // when&then
-        Assertions.assertThatThrownBy(() -> curriculumService.update(커리큘럼1.getId(), request))
-            .isInstanceOf(CurriculumInvalidException.class);
-    }
-
 }

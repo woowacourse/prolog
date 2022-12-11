@@ -32,9 +32,18 @@ public class CurriculumService {
 
 
     public void update(Long curriculumId, CurriculumRequest createRequest) {
-        final Curriculum curriculum = curriculumRepository.findById(curriculumId)
-            .orElseThrow(CurriculumNotFoundException::new);
+        final Curriculum curriculum = getCurriculum(curriculumId);
 
         curriculum.updateName(createRequest.getName());
+    }
+
+    public void delete(Long curriculumId) {
+        final Curriculum curriculum = getCurriculum(curriculumId);
+        curriculumRepository.delete(curriculum);
+    }
+
+    private Curriculum getCurriculum(Long curriculumId) {
+        return curriculumRepository.findById(curriculumId)
+            .orElseThrow(CurriculumNotFoundException::new);
     }
 }

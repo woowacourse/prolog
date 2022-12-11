@@ -2,6 +2,7 @@ package wooteco.prolog.roadmap.ui;
 
 import java.net.URI;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -38,6 +39,12 @@ public class CurriculumController {
     public ResponseEntity<Void> updateCurriculum(@RequestParam Long curriculumId,
                                                  @RequestBody CurriculumRequest createRequest) {
          curriculumService.update(curriculumId, createRequest);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{curriculumId}")
+    public ResponseEntity<Void> deleteCurriculum(@RequestParam Long curriculumId) {
+        curriculumService.delete(curriculumId);
         return ResponseEntity.noContent().build();
     }
 
