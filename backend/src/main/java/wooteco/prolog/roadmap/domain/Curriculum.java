@@ -22,10 +22,10 @@ public class Curriculum {
     @Column(nullable = false)
     private String name;
 
-    public Curriculum(Long id, String name) {
+    public Curriculum(final Long id, final String name) {
+        validateName(name);
         this.id = id;
         this.name = name;
-        validateName(name);
     }
 
     public Curriculum(String name) {
