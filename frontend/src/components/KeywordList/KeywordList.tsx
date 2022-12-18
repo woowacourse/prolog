@@ -32,7 +32,7 @@ const KeywordList = ({ handleClickKeyword, selectedTopKeyword, sessionId }: Keyw
 
       <Styled.ChildrenKeywordListContainer>
         {childrenKeywordList?.map((keyword) => (
-          <>
+          <Styled.ContentsWrapper key={keyword.keywordId}>
             <Styled.SecondButtonWrapper>
               <ResponsiveButton
                 css={Styled.SecondKeywordButton}
@@ -44,13 +44,14 @@ const KeywordList = ({ handleClickKeyword, selectedTopKeyword, sessionId }: Keyw
             <Styled.ThirdButtonContainer>
               {keyword.childrenKeywords?.map((keyword) => (
                 <ResponsiveButton
+                  key={keyword.keywordId}
                   css={Styled.ThirdKeywordButton}
                   text={keyword.name}
                   onClick={() => handleClickKeyword(keyword)}
                 />
               ))}
             </Styled.ThirdButtonContainer>
-          </>
+          </Styled.ContentsWrapper>
         ))}
       </Styled.ChildrenKeywordListContainer>
     </Styled.Root>
