@@ -5,12 +5,19 @@ import KeywordDetailSideSheet from '../../components/KeywordDetailSideSheet/Keyw
 import KeywordList from '../../components/KeywordList/KeywordList';
 import * as Styled from './styles';
 import SessionList from '../../components/SessionList/SessionList';
+import CurriculumList from '../../components/CurriculumList/CurriculumList';
 
 const RoadmapPage = () => {
   const [isSideSheetOpen, setIsSideSheetOpen] = useState(false);
-  const [selectedSessionId, setSelectedSessionId] = useState(1);
+  const [selectedCurriculumId, setSelectedCurriculumId] = useState(0);
+  const [selectedSessionId, setSelectedSessionId] = useState(0);
   const [selectedTopKeyword, setSelectedTopKeyword] = useState<KeywordResponse | null>(null);
   const [keywordDetail, setKeywordDetail] = useState<KeywordResponse | null>(null);
+
+  const handleClickCurriculum = (id: number) => {
+    setSelectedCurriculumId(id);
+    setSelectedSessionId(0);
+  };
 
   const updateSelectedTopKeyword = (keyword: KeywordResponse) => {
     setSelectedTopKeyword(keyword);
@@ -37,8 +44,17 @@ const RoadmapPage = () => {
     <Styled.Root>
       <Styled.Main>
         <section>
+          <Styled.Title>커리큘럼</Styled.Title>
+          <CurriculumList
+            selectedCurriculumId={selectedCurriculumId}
+            handleClickCurriculum={handleClickCurriculum}
+          />
+        </section>
+
+        <section>
           <Styled.Title>세션</Styled.Title>
           <SessionList
+            curriculumId={selectedCurriculumId}
             selectedSessionId={selectedSessionId}
             handleClickSession={handleClickSession}
           />
