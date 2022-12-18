@@ -33,14 +33,7 @@ const TopKeywordList = ({
         const isSelected = selectedTopKeyword?.keywordId === keyword.keywordId;
 
         return (
-          <StyledWrapper>
-            {/* <LabelledImage
-              src={SomeImage}
-              alt=""
-              text={keyword.name}
-              isSelected={selectedTopKeyword?.keywordId === keyword.keywordId}
-              onClick={() => handleClickTopKeyword(keyword)}
-            /> */}
+          <StyledWrapper key={keyword.keywordId}>
             <ResponsiveButton
               text={keyword.name}
               backgroundColor={isSelected ? COLOR.LIGHT_BLUE_900 : COLOR.LIGHT_GRAY_400}
