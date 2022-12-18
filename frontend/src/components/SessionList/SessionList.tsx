@@ -4,12 +4,13 @@ import * as Styled from './SessionList.styles';
 import { useGetSessions } from '../../hooks/queries/session';
 
 interface SessionListProps {
+  curriculumId: number;
   selectedSessionId: number;
   handleClickSession: (id: number) => void;
 }
 
-const SessionList = ({ selectedSessionId, handleClickSession }: SessionListProps) => {
-  const { sessions } = useGetSessions();
+const SessionList = ({ curriculumId, selectedSessionId, handleClickSession }: SessionListProps) => {
+  const { sessions } = useGetSessions(curriculumId);
 
   return (
     <Styled.Root>

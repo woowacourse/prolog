@@ -1,8 +1,13 @@
 import { Session } from '../models/Studylogs';
 import { client } from './index';
 
-export const getSessions = async () => {
-  const response = await client.get<Session[]>('/sessions');
+export interface SessionResponse {
+  name: string;
+  sessions: Session[];
+}
 
-  return response.data;
+export const getSessionsByCurriculum = async (curriculumId: number) => {
+  const response = await client.get<SessionResponse>(`/curriculums/${curriculumId}/sessions`);
+
+  return response.data.sessions;
 };
