@@ -1,8 +1,27 @@
 import { BASE_URL } from '../../configs/environment';
 import { rest } from 'msw';
 import keywordsMock from '../fixtures/keywords';
+import curriculums from '../fixtures/curriculums';
+import sessionsMock from '../fixtures/sessions';
+import { quizMock } from '../fixtures/quizs';
 
 export const roadmapHandler = [
+  // 커리큘럼 목록 조회
+  rest.get(`${BASE_URL}/curriculums`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(curriculums));
+  }),
+
+  // 커리큘럼별 Session 목록 조회
+  rest.get(`${BASE_URL}/curriculums/:curriculumId/sessions`, (req, res, ctx) => {
+    const {
+      params: { curriculumId },
+    } = req;
+
+    const sessions = sessionsMock.findSessionByCurriculum(curriculumId);
+
+    return res(ctx.status(200), ctx.json(sessions));
+  }),
+
   /** 5. 세션별 키워드 목록 조회. 1 depth */
   rest.get(`${BASE_URL}/sessions/:sessionId/keywords`, (req, res, ctx) => {
     const {
@@ -42,8 +61,6 @@ export const roadmapHandler = [
       params: { sessionId, keywordId },
     } = req;
 
-    const quizs = keywordsMock.findQuizs(keywordId);
-
-    return res(ctx.status(200), ctx.json({ ...quizs }));
+    return res(ctx.status(200), ctx.json(quizMock[Number(keywordId)]));
   }),
 ];
