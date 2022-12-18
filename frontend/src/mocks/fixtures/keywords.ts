@@ -2,7 +2,7 @@ import { KeywordResponse } from '../../models/Keywords';
 
 export default {
   data: [
-    // 1
+    // 세션 1
     {
       keywordId: 1,
       sessionId: 1, // for mock
@@ -135,10 +135,10 @@ export default {
         },
       ],
     },
-    // 2
+    // 세션 2
     {
       keywordId: 6,
-      sessionId: 1, // for mock
+      sessionId: 2, // for mock
       name: 'React',
       // order: 1,
       importance: 5,
@@ -163,7 +163,7 @@ export default {
       childrenKeywords: [
         {
           keywordId: 7,
-          sessionId: 1, // for mock
+          sessionId: 2, // for mock
           name: 'lifecycle',
           // order: 1,
           importance: 5,
@@ -188,7 +188,7 @@ export default {
           childrenKeywords: [
             {
               keywordId: 8,
-              sessionId: 1, // for mock
+              sessionId: 2, // for mock
               name: 'mount',
               // order: 1,
               importance: 5,
@@ -214,7 +214,7 @@ export default {
             },
             {
               keywordId: 9,
-              sessionId: 1, // for mock
+              sessionId: 2, // for mock
               name: 'unmount',
               // order: 1,
               importance: 5,
@@ -240,7 +240,7 @@ export default {
             },
             {
               keywordId: 10,
-              sessionId: 1, // for mock
+              sessionId: 2, // for mock
               name: 'update',
               // order: 1,
               importance: 5,
@@ -271,8 +271,10 @@ export default {
   ],
   // 5
   filterKeywordsBySession(sessionId: string | readonly string[]) {
+    const filteredData = this.data.filter((item) => item.sessionId === Number(sessionId));
+
     return {
-      data: this.data.map(({ keywordId, name, importance, description, parentKeywordId }) => ({
+      data: filteredData.map(({ keywordId, name, importance, description, parentKeywordId }) => ({
         keywordId,
         name,
         importance,
