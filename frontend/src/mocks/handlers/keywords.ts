@@ -2,8 +2,9 @@ import { BASE_URL } from '../../configs/environment';
 import { rest } from 'msw';
 import keywordsMock from '../fixtures/keywords';
 import curriculums from '../fixtures/curriculums';
-import sessionsMock from '../fixtures/sessions';
+
 import { quizMock } from '../fixtures/quizs';
+import { sessionsMock } from '../fixtures/sessions';
 
 export const roadmapHandler = [
   // 커리큘럼 목록 조회
@@ -17,7 +18,7 @@ export const roadmapHandler = [
       params: { curriculumId },
     } = req;
 
-    const sessions = sessionsMock.findSessionByCurriculum(curriculumId);
+    const sessions = sessionsMock[Number(curriculumId)];
 
     return res(ctx.status(200), ctx.json(sessions));
   }),
