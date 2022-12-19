@@ -9,20 +9,18 @@ interface TopKeywordListProps {
   sessionId: number;
   selectedTopKeyword: KeywordResponse | null;
   handleClickTopKeyword: (keyword: KeywordResponse) => void;
-  updateSelectedTopKeyword: (keyword: KeywordResponse) => void;
 }
 
 const TopKeywordList = ({
   sessionId,
   selectedTopKeyword,
   handleClickTopKeyword,
-  updateSelectedTopKeyword,
 }: TopKeywordListProps) => {
   const { topKeywordList } = useGetTopKeywordList(sessionId);
 
   useEffect(() => {
     if (topKeywordList) {
-      updateSelectedTopKeyword(topKeywordList[0]);
+      handleClickTopKeyword(topKeywordList[0]);
     }
   }, [topKeywordList]);
 

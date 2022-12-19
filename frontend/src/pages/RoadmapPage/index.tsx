@@ -14,21 +14,16 @@ const RoadmapPage = () => {
   const [selectedTopKeyword, setSelectedTopKeyword] = useState<KeywordResponse | null>(null);
   const [keywordDetail, setKeywordDetail] = useState<KeywordResponse | null>(null);
 
-  const handleClickCurriculum = (id: number) => {
-    setSelectedCurriculumId(id);
-    setSelectedSessionId(0);
+  const handleClickCurriculum = (curriculumId: number) => {
+    setSelectedCurriculumId(curriculumId);
   };
 
-  const updateSelectedTopKeyword = (keyword: KeywordResponse) => {
-    setSelectedTopKeyword(keyword);
+  const handleClickSession = (sessionId: number) => {
+    setSelectedSessionId(sessionId);
   };
 
   const handleClickTopKeyword = (keyword: KeywordResponse) => {
     setSelectedTopKeyword(keyword);
-  };
-
-  const handleClickSession = (id: number) => {
-    setSelectedSessionId(id);
   };
 
   const handleClickKeyword = (keyword: KeywordResponse | null) => {
@@ -66,7 +61,6 @@ const RoadmapPage = () => {
             sessionId={selectedSessionId}
             selectedTopKeyword={selectedTopKeyword}
             handleClickTopKeyword={handleClickTopKeyword}
-            updateSelectedTopKeyword={updateSelectedTopKeyword}
           />
         </section>
 
