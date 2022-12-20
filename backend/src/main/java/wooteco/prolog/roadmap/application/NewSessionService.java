@@ -41,4 +41,15 @@ public class NewSessionService {
         session.update(request.getName());
     }
 
+    @Transactional
+    public void deleteSession(final Long sessionId) {
+        validateExistSession(sessionId);
+        sessionRepository.deleteById(sessionId);
+    }
+
+    private void validateExistSession(final Long sessionId) {
+        if (!sessionRepository.existsById(sessionId)) {
+            throw new SessionNotFoundException();
+        }
+    }
 }

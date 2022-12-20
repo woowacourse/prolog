@@ -58,6 +58,16 @@ public class NewSessionDocumentation extends NewDocumentation {
             .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
+    @Test
+    void 세션_삭제() {
+        doNothing().when(sessionService).deleteSession(any());
+
+        given
+            .when().delete("/curriculums/1/sessions/1")
+            .then().log().all().apply(document("sessions-new/delete"))
+            .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
     private static final SessionRequest SESSION_CREATE_REQUEST = new SessionRequest(
         "백엔드 레벨1"
     );

@@ -52,4 +52,12 @@ class NewSessionServiceTest {
             .isEqualTo(new Session(1L, "백엔드 레벨2"));
     }
 
+    @Test
+    void 세션의_정보를_삭제할_수_있다() {
+        Session session = sessionRepository.save(new Session(1L, "백엔드 레벨1"));
+
+        sessionService.deleteSession(session.getId());
+
+        assertThat(sessionRepository.findById(1L)).isNotPresent();
+    }
 }
