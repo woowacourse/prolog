@@ -10,6 +10,7 @@ import wooteco.prolog.roadmap.application.dto.SessionResponse;
 import wooteco.prolog.roadmap.application.dto.SessionsResponse;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
+import wooteco.prolog.session.exception.SessionNotFoundException;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -31,4 +32,13 @@ public class NewSessionService {
             .map(SessionResponse::createResponse)
             .collect(Collectors.toList()));
     }
+
+    @Transactional
+    public void updateSession(final Long sessionId, final SessionRequest request) {
+        Session session = sessionRepository.findById(sessionId)
+            .orElseThrow(SessionNotFoundException::new);
+
+        session.update(request.getName());
+    }
+
 }

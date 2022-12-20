@@ -40,4 +40,16 @@ class NewSessionServiceTest {
 
         assertThat(actual.getSessions().size()).isEqualTo(2);
     }
+
+    @Test
+    void 세션의_정보를_수정할_수_있다() {
+        Session session = sessionRepository.save(new Session(1L, "백엔드 레벨1"));
+
+        sessionService.updateSession(session.getId(), new SessionRequest("백엔드 레벨2"));
+
+        assertThat(sessionRepository.findById(1L).get()).usingRecursiveComparison()
+            .ignoringFields("id")
+            .isEqualTo(new Session(1L, "백엔드 레벨2"));
+    }
+
 }

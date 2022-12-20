@@ -2,6 +2,7 @@ package wooteco.prolog.docu;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 import java.util.Arrays;
@@ -45,6 +46,18 @@ public class NewSessionDocumentation extends NewDocumentation {
             .statusCode(HttpStatus.OK.value());
     }
 
+    @Test
+    void 세션_수정() {
+        doNothing().when(sessionService).updateSession(any(), any());
+
+        given
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(SESSION_UPDATE_REQUEST)
+            .when().put("/curriculums/1/sessions/1")
+            .then().log().all().apply(document("sessions-new/update"))
+            .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
     private static final SessionRequest SESSION_CREATE_REQUEST = new SessionRequest(
         "백엔드 레벨1"
     );
@@ -54,5 +67,9 @@ public class NewSessionDocumentation extends NewDocumentation {
             new SessionResponse(1L, "백엔드 레벨1"),
             new SessionResponse(2L, "백엔드 레벨2")
         )
+    );
+
+    private static final SessionRequest SESSION_UPDATE_REQUEST = new SessionRequest(
+        "백엔드 레벨2"
     );
 }

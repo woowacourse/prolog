@@ -44,6 +44,11 @@ public class Session {
         this.name = name;
     }
 
+    public void update(final String name) {
+        validateMaxLength(name);
+        this.name = name;
+    }
+
     private void validateMaxLength(String name) {
         if (name.length() > MAX_LENGTH) {
             throw new TooLongLevelNameException();
