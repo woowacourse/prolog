@@ -9,7 +9,7 @@ public class SessionRequest {
     public SessionRequest() {
     }
 
-    public SessionRequest(String name) {
+    public SessionRequest(final String name) {
         this.name = name;
     }
 
@@ -18,6 +18,6 @@ public class SessionRequest {
     }
 
     public Session toEntity() {
-        return new Session(this.name);
+        return new Session(null, this.name);
     }
 }

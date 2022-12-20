@@ -36,11 +36,11 @@ class MissionServiceTest {
     @BeforeEach
     void setUp() {
         SessionResponse sessionResponse1 = sessionService.create(new SessionRequest("세션1"));
-        session1 = new Session(sessionResponse1.getId(), sessionResponse1.getName());
+        session1 = new Session(sessionResponse1.getId(), null, sessionResponse1.getName());
         SessionResponse sessionResponse2 = sessionService.create(new SessionRequest("세션2"));
-        session2 = new Session(sessionResponse2.getId(), sessionResponse2.getName());
+        session2 = new Session(sessionResponse2.getId(), null, sessionResponse2.getName());
         SessionResponse sessionResponse3 = sessionService.create(new SessionRequest("세션3"));
-        session3 = new Session(sessionResponse3.getId(), sessionResponse3.getName());
+        session3 = new Session(sessionResponse3.getId(), null, sessionResponse3.getName());
     }
 
     @DisplayName("Mission을 생성한다.")
@@ -81,6 +81,7 @@ class MissionServiceTest {
 
         // then
         assertThat(foundMission).usingRecursiveComparison()
+            .ignoringFields("session")
             .isEqualTo(savedMission);
     }
 

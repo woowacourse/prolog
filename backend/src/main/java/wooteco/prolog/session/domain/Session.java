@@ -23,16 +23,24 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private Long curriculumId;
+
     @Column(nullable = false, length = MAX_LENGTH)
     private String name;
 
     public Session(String name) {
-        this(null, name);
+        this(null, null, name);
     }
 
-    public Session(Long id, String name) {
-        this.id = id;
+    public Session(final Long curriculumId, final String name) {
+        this(null, curriculumId, name);
+    }
+
+    public Session(final Long id, final Long curriculumId, final String name) {
         validateMaxLength(name);
+        this.id = id;
+        this.curriculumId = curriculumId;
         this.name = name;
     }
 
