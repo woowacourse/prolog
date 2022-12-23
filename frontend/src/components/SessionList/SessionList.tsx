@@ -14,7 +14,7 @@ const SessionList = ({ curriculumId, selectedSessionId, handleClickSession }: Se
   const { sessions } = useGetSessions(curriculumId);
 
   useEffect(() => {
-    if (sessions) {
+    if (sessions?.length) {
       handleClickSession(sessions[0].id);
     }
   }, [sessions]);
