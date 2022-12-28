@@ -9,20 +9,18 @@ interface TopKeywordListProps {
   sessionId: number;
   selectedTopKeyword: KeywordResponse | null;
   handleClickTopKeyword: (keyword: KeywordResponse) => void;
-  updateSelectedTopKeyword: (keyword: KeywordResponse) => void;
 }
 
 const TopKeywordList = ({
   sessionId,
   selectedTopKeyword,
   handleClickTopKeyword,
-  updateSelectedTopKeyword,
 }: TopKeywordListProps) => {
   const { topKeywordList } = useGetTopKeywordList(sessionId);
 
   useEffect(() => {
     if (topKeywordList) {
-      updateSelectedTopKeyword(topKeywordList[0]);
+      handleClickTopKeyword(topKeywordList[0]);
     }
   }, [topKeywordList]);
 
@@ -33,14 +31,7 @@ const TopKeywordList = ({
         const isSelected = selectedTopKeyword?.keywordId === keyword.keywordId;
 
         return (
-          <StyledWrapper>
-            {/* <LabelledImage
-              src={SomeImage}
-              alt=""
-              text={keyword.name}
-              isSelected={selectedTopKeyword?.keywordId === keyword.keywordId}
-              onClick={() => handleClickTopKeyword(keyword)}
-            /> */}
+          <StyledWrapper key={keyword.keywordId}>
             <ResponsiveButton
               text={keyword.name}
               backgroundColor={isSelected ? COLOR.LIGHT_BLUE_900 : COLOR.LIGHT_GRAY_400}

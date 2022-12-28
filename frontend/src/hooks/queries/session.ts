@@ -1,12 +1,14 @@
 import { useQuery } from 'react-query';
-import { getSessions } from '../../apis/session';
+import { getSessionsByCurriculum } from '../../apis/session';
 
 const QUERY_KEY = {
   sessions: 'sessions',
 };
 
-export const useGetSessions = () => {
-  const { data } = useQuery([QUERY_KEY.sessions], () => getSessions());
+export const useGetSessions = (curriculumId: number) => {
+  const { data } = useQuery([QUERY_KEY.sessions, curriculumId], () =>
+    getSessionsByCurriculum(curriculumId)
+  );
 
   return {
     sessions: data,

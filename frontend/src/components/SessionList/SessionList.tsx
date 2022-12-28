@@ -2,14 +2,22 @@ import ResponsiveButton from '../../components/Button/ResponsiveButton';
 import COLOR from '../../constants/color';
 import * as Styled from './SessionList.styles';
 import { useGetSessions } from '../../hooks/queries/session';
+import { useEffect } from 'react';
 
 interface SessionListProps {
+  curriculumId: number;
   selectedSessionId: number;
   handleClickSession: (id: number) => void;
 }
 
-const SessionList = ({ selectedSessionId, handleClickSession }: SessionListProps) => {
-  const { sessions } = useGetSessions();
+const SessionList = ({ curriculumId, selectedSessionId, handleClickSession }: SessionListProps) => {
+  const { sessions } = useGetSessions(curriculumId);
+
+  useEffect(() => {
+    if (sessions?.length) {
+      handleClickSession(sessions[0].id);
+    }
+  }, [sessions]);
 
   return (
     <Styled.Root>
