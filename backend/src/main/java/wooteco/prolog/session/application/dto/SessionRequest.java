@@ -18,6 +18,6 @@ public class SessionRequest {
     }
 
     public Session toEntity() {
-        return new Session(null, this.name);
+        return new Session(this.name);
     }
 }
