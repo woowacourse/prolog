@@ -26,7 +26,7 @@ public class NewSessionService {
     }
 
     public SessionsResponse findSessions(final Long curriculumId) {
-        List<Session> sessions = sessionRepository.findByCurriculumId(curriculumId);
+        List<Session> sessions = sessionRepository.findAllByCurriculumId(curriculumId);
 
         return new SessionsResponse(sessions.stream()
             .map(SessionResponse::createResponse)

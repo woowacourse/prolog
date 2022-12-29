@@ -9,5 +9,5 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
 
     Optional<Session> findByName(String name);
 
-    List<Session> findByCurriculumId(Long curriculumId);
+    List<Session> findAllByCurriculumId(Long curriculumId);
 }
