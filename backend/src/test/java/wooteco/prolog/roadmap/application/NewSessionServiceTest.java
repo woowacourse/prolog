@@ -1,7 +1,8 @@
 package wooteco.prolog.roadmap.application;
 
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestConstructor;
@@ -38,7 +39,7 @@ class NewSessionServiceTest {
 
         SessionsResponse actual = sessionService.findSessions(1L);
 
-        assertThat(actual.getSessions().size()).isEqualTo(2);
+        assertThat(actual.getSessions()).hasSize(2);
     }
 
     @Test
