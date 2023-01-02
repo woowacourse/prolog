@@ -9,7 +9,7 @@ public class SessionRequest {
     public SessionRequest() {
     }
 
-    public SessionRequest(String name) {
+    public SessionRequest(final String name) {
         this.name = name;
     }
 

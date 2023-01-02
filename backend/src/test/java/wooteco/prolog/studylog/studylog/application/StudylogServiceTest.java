@@ -161,8 +161,8 @@ class StudylogServiceTest {
         SessionResponse sessionResponse1 = sessionService.create(new SessionRequest("세션1"));
         SessionResponse sessionResponse2 = sessionService.create(new SessionRequest("세션2"));
 
-        this.session1 = new Session(sessionResponse1.getId(), sessionResponse1.getName());
-        this.session2 = new Session(sessionResponse2.getId(), sessionResponse2.getName());
+        this.session1 = new Session(sessionResponse1.getId(), null, sessionResponse1.getName());
+        this.session2 = new Session(sessionResponse2.getId(), null, sessionResponse2.getName());
 
         MissionResponse missionResponse1 = missionService
                 .create(new MissionRequest("자동차 미션", session1.getId()));

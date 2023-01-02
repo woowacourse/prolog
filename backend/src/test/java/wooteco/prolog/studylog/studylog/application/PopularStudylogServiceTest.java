@@ -114,8 +114,8 @@ class PopularStudylogServiceTest {
         SessionResponse sessionResponse2 = sessionService.create(
             new SessionRequest("프론트엔드JS 레벨1 - 2021"));
 
-        this.session1 = new Session(sessionResponse1.getId(), sessionResponse1.getName());
-        this.session2 = new Session(sessionResponse2.getId(), sessionResponse2.getName());
+        this.session1 = new Session(sessionResponse1.getId(), null, sessionResponse1.getName());
+        this.session2 = new Session(sessionResponse2.getId(), null, sessionResponse2.getName());
 
         MissionResponse missionResponse1 = missionService
             .create(new MissionRequest("자동차 미션", session1.getId()));
