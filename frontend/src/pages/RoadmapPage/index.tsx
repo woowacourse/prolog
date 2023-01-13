@@ -5,23 +5,25 @@ import KeywordDetailSideSheet from '../../components/KeywordDetailSideSheet/Keyw
 import KeywordList from '../../components/KeywordList/KeywordList';
 import * as Styled from './styles';
 import SessionList from '../../components/SessionList/SessionList';
+import CurriculumList from '../../components/CurriculumList/CurriculumList';
 
 const RoadmapPage = () => {
   const [isSideSheetOpen, setIsSideSheetOpen] = useState(false);
+  const [selectedCurriculumId, setSelectedCurriculumId] = useState(1);
   const [selectedSessionId, setSelectedSessionId] = useState(1);
   const [selectedTopKeyword, setSelectedTopKeyword] = useState<KeywordResponse | null>(null);
   const [keywordDetail, setKeywordDetail] = useState<KeywordResponse | null>(null);
 
-  const updateSelectedTopKeyword = (keyword: KeywordResponse) => {
-    setSelectedTopKeyword(keyword);
+  const handleClickCurriculum = (curriculumId: number) => {
+    setSelectedCurriculumId(curriculumId);
+  };
+
+  const handleClickSession = (sessionId: number) => {
+    setSelectedSessionId(sessionId);
   };
 
   const handleClickTopKeyword = (keyword: KeywordResponse) => {
     setSelectedTopKeyword(keyword);
-  };
-
-  const handleClickSession = (id: number) => {
-    setSelectedSessionId(id);
   };
 
   const handleClickKeyword = (keyword: KeywordResponse | null) => {
@@ -37,8 +39,17 @@ const RoadmapPage = () => {
     <Styled.Root>
       <Styled.Main>
         <section>
+          <Styled.Title>커리큘럼</Styled.Title>
+          <CurriculumList
+            selectedCurriculumId={selectedCurriculumId}
+            handleClickCurriculum={handleClickCurriculum}
+          />
+        </section>
+
+        <section>
           <Styled.Title>세션</Styled.Title>
           <SessionList
+            curriculumId={selectedCurriculumId}
             selectedSessionId={selectedSessionId}
             handleClickSession={handleClickSession}
           />
@@ -50,7 +61,6 @@ const RoadmapPage = () => {
             sessionId={selectedSessionId}
             selectedTopKeyword={selectedTopKeyword}
             handleClickTopKeyword={handleClickTopKeyword}
-            updateSelectedTopKeyword={updateSelectedTopKeyword}
           />
         </section>
 

@@ -10,6 +10,13 @@ export type ChildKeywordListRequest = SessionAndKeywordId;
 export type QuizListByKeywordRequest = SessionAndKeywordId;
 
 // Response
+export interface CurriculumResponse {
+  curriculumId: number;
+  name: string;
+}
+export interface CurriculumListResponse {
+  data: CurriculumResponse[];
+}
 
 export interface KeywordResponse {
   name: string;

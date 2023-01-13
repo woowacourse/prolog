@@ -1,8 +1,9 @@
 import { KeywordResponse } from '../../models/Keywords';
+import { quizMock } from './quizs';
 
 export default {
   data: [
-    // 1
+    // 세션 1
     {
       keywordId: 1,
       sessionId: 1, // for mock
@@ -12,20 +13,7 @@ export default {
       parentKeywordId: null,
       description: '동적 타이핑, 스크립트 언어입니다.',
       quizs: {
-        data: [
-          {
-            quizId: 1,
-            question: '무엇이 궁금하시나요?',
-          },
-          {
-            quizId: 2,
-            question: '무엇이 궁금하시나요?2',
-          },
-          {
-            quizId: 3,
-            question: '무엇이 궁금하시나요?3',
-          },
-        ],
+        data: quizMock[1].data,
       },
       childrenKeywords: [
         {
@@ -37,20 +25,7 @@ export default {
           parentKeywordId: 1,
           description: 'let, const, var',
           quizs: {
-            data: [
-              {
-                quizId: 1,
-                question: 'let, const, var',
-              },
-              {
-                quizId: 2,
-                question: 'let, const, var2',
-              },
-              {
-                quizId: 3,
-                question: 'let, const, var3',
-              },
-            ],
+            data: quizMock[2].data,
           },
           childrenKeywords: [
             {
@@ -62,20 +37,7 @@ export default {
               parentKeywordId: 2,
               description: 'let',
               quizs: {
-                data: [
-                  {
-                    quizId: 1,
-                    question: 'let',
-                  },
-                  {
-                    quizId: 2,
-                    question: 'let2',
-                  },
-                  {
-                    quizId: 3,
-                    question: 'let3',
-                  },
-                ],
+                data: quizMock[3].data,
               },
               childrenKeywords: {},
             },
@@ -88,20 +50,7 @@ export default {
               parentKeywordId: 2,
               description: 'const',
               quizs: {
-                data: [
-                  {
-                    quizId: 1,
-                    question: 'const',
-                  },
-                  {
-                    quizId: 2,
-                    question: 'const2',
-                  },
-                  {
-                    quizId: 3,
-                    question: 'const3',
-                  },
-                ],
+                data: quizMock[4].data,
               },
               childrenKeywords: {},
             },
@@ -114,20 +63,7 @@ export default {
               parentKeywordId: 2,
               description: 'var',
               quizs: {
-                data: [
-                  {
-                    quizId: 1,
-                    question: 'var',
-                  },
-                  {
-                    quizId: 2,
-                    question: 'var2',
-                  },
-                  {
-                    quizId: 3,
-                    question: 'var3',
-                  },
-                ],
+                data: quizMock[5].data,
               },
               childrenKeywords: {},
             },
@@ -135,7 +71,7 @@ export default {
         },
       ],
     },
-    // 2
+    // 세션 1 - React 키워드
     {
       keywordId: 6,
       sessionId: 1, // for mock
@@ -145,20 +81,7 @@ export default {
       parentKeywordId: null,
       description: 'React입니다.',
       quizs: {
-        data: [
-          {
-            quizId: 1,
-            question: '무엇이 궁금하시나요?',
-          },
-          {
-            quizId: 2,
-            question: '무엇이 궁금하시나요?2',
-          },
-          {
-            quizId: 3,
-            question: '무엇이 궁금하시나요?3',
-          },
-        ],
+        data: quizMock[6].data,
       },
       childrenKeywords: [
         {
@@ -170,20 +93,7 @@ export default {
           parentKeywordId: 6,
           description: 'lifecycle 설명',
           quizs: {
-            data: [
-              {
-                quizId: 1,
-                question: 'lifecycle 퀴즈',
-              },
-              {
-                quizId: 2,
-                question: 'lifecycle2 퀴즈',
-              },
-              {
-                quizId: 3,
-                question: 'lifecycle3 퀴즈',
-              },
-            ],
+            data: quizMock[7].data,
           },
           childrenKeywords: [
             {
@@ -195,20 +105,7 @@ export default {
               parentKeywordId: 7,
               description: 'mount 설명',
               quizs: {
-                data: [
-                  {
-                    quizId: 1,
-                    question: 'mount 퀴즈',
-                  },
-                  {
-                    quizId: 2,
-                    question: 'mount2 퀴즈',
-                  },
-                  {
-                    quizId: 3,
-                    question: 'mount3 퀴즈',
-                  },
-                ],
+                data: quizMock[8].data,
               },
               childrenKeywords: {},
             },
@@ -221,20 +118,7 @@ export default {
               parentKeywordId: 7,
               description: 'unmount 설명',
               quizs: {
-                data: [
-                  {
-                    quizId: 1,
-                    question: 'unmount 퀴즈',
-                  },
-                  {
-                    quizId: 2,
-                    question: 'unmount 퀴즈2',
-                  },
-                  {
-                    quizId: 3,
-                    question: 'unmount 퀴즈3',
-                  },
-                ],
+                data: quizMock[9].data,
               },
               childrenKeywords: {},
             },
@@ -247,20 +131,49 @@ export default {
               parentKeywordId: 7,
               description: 'update 설명',
               quizs: {
-                data: [
-                  {
-                    quizId: 1,
-                    question: 'update 퀴즈',
-                  },
-                  {
-                    quizId: 2,
-                    question: 'update 퀴즈2',
-                  },
-                  {
-                    quizId: 3,
-                    question: 'update 퀴즈3',
-                  },
-                ],
+                data: quizMock[10].data,
+              },
+              childrenKeywords: {},
+            },
+          ],
+        },
+      ],
+    },
+    // 세션 2 - Test
+    {
+      keywordId: 11,
+      sessionId: 2, // for mock
+      name: 'Test',
+      // order: 1,
+      importance: 5,
+      parentKeywordId: null,
+      description: 'Test입니다.',
+      quizs: {
+        data: quizMock[11].data,
+      },
+      childrenKeywords: [
+        {
+          keywordId: 12,
+          sessionId: 2, // for mock
+          name: 'Jest',
+          // order: 1,
+          importance: 5,
+          parentKeywordId: 11,
+          description: 'Jest 설명',
+          quizs: {
+            data: quizMock[12].data,
+          },
+          childrenKeywords: [
+            {
+              keywordId: 13,
+              sessionId: 2, // for mock
+              name: 'ReactTestingLibrary',
+              // order: 1,
+              importance: 5,
+              parentKeywordId: 12,
+              description: 'ReactTestingLibrary 설명',
+              quizs: {
+                data: quizMock[13].data,
               },
               childrenKeywords: {},
             },
@@ -271,14 +184,10 @@ export default {
   ],
   // 5
   filterKeywordsBySession(sessionId: string | readonly string[]) {
+    const filteredData = this.data.filter((item) => item.sessionId === Number(sessionId));
+
     return {
-      data: this.data.map(({ keywordId, name, importance, description, parentKeywordId }) => ({
-        keywordId,
-        name,
-        importance,
-        description,
-        parentKeywordId,
-      })),
+      data: filteredData,
     };
   },
   // 4
@@ -321,37 +230,4 @@ export default {
       data,
     };
   },
-  // 10
-  findQuizs(keywordId: string | readonly string[]) {
-    const data = this.data
-      .map((depth1Item) => {
-        // 1뎁스 순회
-        if (depth1Item.keywordId === Number(keywordId)) {
-          return depth1Item.quizs.data;
-        }
-
-        return depth1Item.childrenKeywords.map((depth2Item) => {
-          // 2뎁스 순회
-          if (depth2Item.keywordId === Number(keywordId)) {
-            return depth2Item.quizs.data;
-          }
-
-          return depth2Item.childrenKeywords.map((depth3Item) => {
-            // 3뎁스 순회
-            if (depth3Item.keywordId === Number(keywordId)) {
-              return depth3Item.quizs.data;
-            }
-
-            return undefined;
-          });
-        });
-      })
-      .find((item) => item !== undefined);
-
-    return { keywordId, data };
-  },
 };
-
-interface Mock {
-  data: KeywordResponse[];
-}

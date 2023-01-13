@@ -20,7 +20,7 @@ export const useGetKeyword = ({
   sessionId: number;
   keywordId: number;
 }) => {
-  const { data } = useQuery([QUERY_KEY.keyword], () =>
+  const { data } = useQuery([QUERY_KEY.keyword, sessionId, keywordId], () =>
     getKeyword({
       sessionId,
       keywordId,
@@ -32,8 +32,11 @@ export const useGetKeyword = ({
   };
 };
 
+/** 5. 세션별 키워드 목록 조회. 1 depth */
 export const useGetTopKeywordList = (sessionId: number) => {
-  const { data } = useQuery([QUERY_KEY.topKeywordList], () => getTopKeywordList(sessionId));
+  const { data } = useQuery([QUERY_KEY.topKeywordList, sessionId], () =>
+    getTopKeywordList(sessionId)
+  );
 
   return {
     topKeywordList: data?.data,
@@ -47,7 +50,7 @@ export const useGetChildrenKeywordList = ({
   sessionId: number;
   keywordId: number;
 }) => {
-  const { data, refetch } = useQuery([QUERY_KEY.childKeywordList], () =>
+  const { data, refetch } = useQuery([QUERY_KEY.childKeywordList, sessionId, keywordId], () =>
     getChildKeywordList({
       sessionId,
       keywordId,
@@ -67,7 +70,7 @@ export const useGetQuizListByKeyword = ({
   sessionId: number;
   keywordId: number;
 }) => {
-  const { data } = useQuery([QUERY_KEY.quizListByKeyword], () =>
+  const { data } = useQuery([QUERY_KEY.quizListByKeyword, sessionId, keywordId], () =>
     getQuizListByKeyword({
       sessionId,
       keywordId,
