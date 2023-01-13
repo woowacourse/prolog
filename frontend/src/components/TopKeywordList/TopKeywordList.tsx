@@ -11,6 +11,8 @@ interface TopKeywordListProps {
   handleClickTopKeyword: (keyword: KeywordResponse) => void;
 }
 
+const compareFn = (a: KeywordResponse, b: KeywordResponse) => a.order - b.order;
+
 const TopKeywordList = ({
   sessionId,
   selectedTopKeyword,
@@ -26,7 +28,7 @@ const TopKeywordList = ({
 
   return (
     <StyledRoot>
-      {topKeywordList?.map((keyword, index) => {
+      {topKeywordList?.sort(compareFn).map((keyword, index) => {
         const isNotLast = index + 1 !== topKeywordList?.length;
         const isSelected = selectedTopKeyword?.keywordId === keyword.keywordId;
 
