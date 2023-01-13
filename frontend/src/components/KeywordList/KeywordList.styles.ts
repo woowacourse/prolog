@@ -29,7 +29,6 @@ export const ChildrenKeywordListContainer = styled.div`
 export const ContentsWrapper = styled.div`
   display: flex;
   gap: 30px;
-  width: 100vw;
 `;
 
 export const SecondButtonWrapper = styled.div`
