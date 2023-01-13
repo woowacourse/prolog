@@ -5,7 +5,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestConstructor;
 import wooteco.prolog.roadmap.application.dto.QuizRequest;
 import wooteco.prolog.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.roadmap.domain.Keyword;
@@ -15,21 +15,28 @@ import wooteco.prolog.roadmap.domain.repository.QuizRepository;
 import wooteco.prolog.roadmap.exception.QuizNotFoundException;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-import wooteco.support.utils.IntegrationTest;
+import wooteco.support.utils.NewIntegrationTest;
 
-@IntegrationTest
+@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+@NewIntegrationTest
 class QuizServiceTest {
 
-    @Autowired
-    private QuizService quizService;
-    @Autowired
-    private KeywordRepository keywordRepository;
-    @Autowired
-    private QuizRepository quizRepository;
-    @Autowired
-    private SessionRepository sessionRepository;
-    @Autowired
-    private EntityManager em;
+    private final KeywordRepository keywordRepository;
+    private final QuizRepository quizRepository;
+    private final SessionRepository sessionRepository;
+    private final QuizService quizService;
+    private final EntityManager em;
+
+    public QuizServiceTest(KeywordRepository keywordRepository,
+                           QuizRepository quizRepository,
+                           SessionRepository sessionRepository,
+                           QuizService quizService, EntityManager em) {
+        this.keywordRepository = keywordRepository;
+        this.quizRepository = quizRepository;
+        this.sessionRepository = sessionRepository;
+        this.quizService = quizService;
+        this.em = em;
+    }
 
     private Session session_백엔드_레벨1;
 
