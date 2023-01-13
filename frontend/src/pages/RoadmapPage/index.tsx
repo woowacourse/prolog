@@ -7,15 +7,18 @@ import * as Styled from './styles';
 import SessionList from '../../components/SessionList/SessionList';
 import CurriculumList from '../../components/CurriculumList/CurriculumList';
 
+const lastSeenCurriculumId = Number(localStorage.getItem('curriculumId'));
+
 const RoadmapPage = () => {
   const [isSideSheetOpen, setIsSideSheetOpen] = useState(false);
-  const [selectedCurriculumId, setSelectedCurriculumId] = useState(1);
-  const [selectedSessionId, setSelectedSessionId] = useState(1);
+  const [selectedCurriculumId, setSelectedCurriculumId] = useState(lastSeenCurriculumId ?? 1);
+  const [selectedSessionId, setSelectedSessionId] = useState(-1);
   const [selectedTopKeyword, setSelectedTopKeyword] = useState<KeywordResponse | null>(null);
   const [keywordDetail, setKeywordDetail] = useState<KeywordResponse | null>(null);
 
   const handleClickCurriculum = (id: number) => {
     setSelectedCurriculumId(id);
+    localStorage.setItem('curriculumId', String(id));
   };
 
   const handleClickSession = (sessionId: number) => {
