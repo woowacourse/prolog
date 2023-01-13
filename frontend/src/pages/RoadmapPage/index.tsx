@@ -57,22 +57,24 @@ const RoadmapPage = () => {
 
         <section>
           <Styled.Title>상위 키워드 선택</Styled.Title>
-          <TopKeywordList
-            sessionId={selectedSessionId}
-            selectedTopKeyword={selectedTopKeyword}
-            handleClickTopKeyword={handleClickTopKeyword}
-          />
+          {selectedSessionId !== -1 ? (
+            <TopKeywordList
+              sessionId={selectedSessionId}
+              selectedTopKeyword={selectedTopKeyword}
+              handleClickTopKeyword={handleClickTopKeyword}
+            />
+          ) : null}
         </section>
 
         <section>
           <Styled.Title>하위 키워드 보기</Styled.Title>
-          {selectedTopKeyword && (
+          {selectedSessionId !== -1 && selectedTopKeyword ? (
             <KeywordList
-              handleClickKeyword={handleClickKeyword}
-              selectedTopKeyword={selectedTopKeyword}
               sessionId={selectedSessionId}
+              selectedTopKeyword={selectedTopKeyword}
+              handleClickKeyword={handleClickKeyword}
             />
-          )}
+          ) : null}
         </section>
       </Styled.Main>
 

@@ -16,6 +16,8 @@ const SessionList = ({ curriculumId, selectedSessionId, handleClickSession }: Se
   useEffect(() => {
     if (sessions?.length) {
       handleClickSession(sessions[0].sessionId);
+    } else {
+      handleClickSession(-1);
     }
   }, [sessions]);
 
