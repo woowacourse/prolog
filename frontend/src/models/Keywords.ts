@@ -28,8 +28,11 @@ export interface KeywordResponse {
   childrenKeywords: KeywordResponse[] | null;
 }
 
-export interface KeywordListResponse {
+export interface TopKeywordListResponse {
   data: KeywordResponse[];
+}
+export interface SubKeywordListResponse {
+  childrenKeywords: KeywordResponse[];
 }
 
 export interface Quiz {
