@@ -14,8 +14,8 @@ const RoadmapPage = () => {
   const [selectedTopKeyword, setSelectedTopKeyword] = useState<KeywordResponse | null>(null);
   const [keywordDetail, setKeywordDetail] = useState<KeywordResponse | null>(null);
 
-  const handleClickCurriculum = (curriculumId: number) => {
-    setSelectedCurriculumId(curriculumId);
+  const handleClickCurriculum = (id: number) => {
+    setSelectedCurriculumId(id);
   };
 
   const handleClickSession = (sessionId: number) => {

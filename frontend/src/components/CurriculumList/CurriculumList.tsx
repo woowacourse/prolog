@@ -9,23 +9,28 @@ interface CurriculumListProps {
 }
 
 const CurriculumList = ({ selectedCurriculumId, handleClickCurriculum }: CurriculumListProps) => {
-  const { curriculums } = useGetCurriculums();
+  const { isLoading, curriculums } = useGetCurriculums();
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <Styled.Root>
-      {curriculums?.map(({ curriculumId, name }) => (
-        <Styled.SessionButtonWrapper key={curriculumId}>
-          <ResponsiveButton
-            onClick={() => handleClickCurriculum(curriculumId)}
-            text={name}
-            color={selectedCurriculumId === curriculumId ? COLOR.WHITE : COLOR.BLACK_600}
-            backgroundColor={
-              selectedCurriculumId === curriculumId ? COLOR.LIGHT_BLUE_900 : COLOR.LIGHT_GRAY_400
-            }
-            height="36px"
-          />
-        </Styled.SessionButtonWrapper>
-      ))}
+      {curriculums?.map(({ id, name }) => {
+        return (
+          <Styled.SessionButtonWrapper key={id}>
+            <ResponsiveButton
+              onClick={() => handleClickCurriculum(id)}
+              text={name}
+              color={selectedCurriculumId === id ? COLOR.WHITE : COLOR.BLACK_600}
+              backgroundColor={
+                selectedCurriculumId === id ? COLOR.LIGHT_BLUE_900 : COLOR.LIGHT_GRAY_400
+              }
+              height="36px"
+            />
+          </Styled.SessionButtonWrapper>
+        );
+      })}
     </Styled.Root>
   );
 };

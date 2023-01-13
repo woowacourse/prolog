@@ -11,7 +11,7 @@ export type QuizListByKeywordRequest = SessionAndKeywordId;
 
 // Response
 export interface CurriculumResponse {
-  curriculumId: number;
+  id: number;
   name: string;
 }
 export interface CurriculumListResponse {
