@@ -58,7 +58,7 @@ export const useGetChildrenKeywordList = ({
   );
 
   return {
-    childrenKeywordList: data?.data,
+    childrenKeywordList: data?.childrenKeywords,
     refetchChildrenKeywordList: refetch,
   };
 };

@@ -65,7 +65,7 @@ const EditStudylogPage = () => {
           title: data.title,
           content: data.content,
           missionId: data.mission?.id || null,
-          sessionId: data.session?.id || null,
+          sessionId: data.session?.sessionId || null,
           tags: data.tags,
           abilities: data.abilities.map(({ id }) => id),
         });
