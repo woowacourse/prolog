@@ -7,15 +7,18 @@ import * as Styled from './styles';
 import SessionList from '../../components/SessionList/SessionList';
 import CurriculumList from '../../components/CurriculumList/CurriculumList';
 
+const lastSeenCurriculumId = Number(localStorage.getItem('curriculumId') ?? 1);
+
 const RoadmapPage = () => {
   const [isSideSheetOpen, setIsSideSheetOpen] = useState(false);
-  const [selectedCurriculumId, setSelectedCurriculumId] = useState(1);
-  const [selectedSessionId, setSelectedSessionId] = useState(1);
+  const [selectedCurriculumId, setSelectedCurriculumId] = useState(lastSeenCurriculumId);
+  const [selectedSessionId, setSelectedSessionId] = useState(-1);
   const [selectedTopKeyword, setSelectedTopKeyword] = useState<KeywordResponse | null>(null);
   const [keywordDetail, setKeywordDetail] = useState<KeywordResponse | null>(null);
 
-  const handleClickCurriculum = (curriculumId: number) => {
-    setSelectedCurriculumId(curriculumId);
+  const handleClickCurriculum = (id: number) => {
+    setSelectedCurriculumId(id);
+    localStorage.setItem('curriculumId', String(id));
   };
 
   const handleClickSession = (sessionId: number) => {
@@ -57,22 +60,24 @@ const RoadmapPage = () => {
 
         <section>
           <Styled.Title>상위 키워드 선택</Styled.Title>
-          <TopKeywordList
-            sessionId={selectedSessionId}
-            selectedTopKeyword={selectedTopKeyword}
-            handleClickTopKeyword={handleClickTopKeyword}
-          />
+          {selectedSessionId !== -1 ? (
+            <TopKeywordList
+              sessionId={selectedSessionId}
+              selectedTopKeyword={selectedTopKeyword}
+              handleClickTopKeyword={handleClickTopKeyword}
+            />
+          ) : null}
         </section>
 
         <section>
           <Styled.Title>하위 키워드 보기</Styled.Title>
-          {selectedTopKeyword && (
+          {selectedSessionId !== -1 && selectedTopKeyword ? (
             <KeywordList
-              handleClickKeyword={handleClickKeyword}
-              selectedTopKeyword={selectedTopKeyword}
               sessionId={selectedSessionId}
+              selectedTopKeyword={selectedTopKeyword}
+              handleClickKeyword={handleClickKeyword}
             />
-          )}
+          ) : null}
         </section>
       </Styled.Main>
 

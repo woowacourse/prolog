@@ -22,6 +22,12 @@ export const ThirdKeywordButton = css`
 
 export const ChildrenKeywordListContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  gap: 30px;
+`;
+
+export const ContentsWrapper = styled.div`
+  display: flex;
   gap: 30px;
 `;
 

@@ -15,23 +15,29 @@ const SessionList = ({ curriculumId, selectedSessionId, handleClickSession }: Se
 
   useEffect(() => {
     if (sessions?.length) {
-      handleClickSession(sessions[0].id);
+      handleClickSession(sessions[0].sessionId);
+    } else {
+      handleClickSession(-1);
     }
   }, [sessions]);
 
   return (
     <Styled.Root>
-      {sessions?.map(({ id, name }) => (
-        <Styled.SessionButtonWrapper key={id}>
-          <ResponsiveButton
-            onClick={() => handleClickSession(id)}
-            text={name}
-            color={selectedSessionId === id ? COLOR.WHITE : COLOR.BLACK_600}
-            backgroundColor={selectedSessionId === id ? COLOR.LIGHT_BLUE_900 : COLOR.LIGHT_GRAY_400}
-            height="36px"
-          />
-        </Styled.SessionButtonWrapper>
-      ))}
+      {sessions?.map(({ sessionId, name }) => {
+        return (
+          <Styled.SessionButtonWrapper key={sessionId}>
+            <ResponsiveButton
+              onClick={() => handleClickSession(sessionId)}
+              text={name}
+              color={selectedSessionId === sessionId ? COLOR.WHITE : COLOR.BLACK_600}
+              backgroundColor={
+                selectedSessionId === sessionId ? COLOR.LIGHT_BLUE_900 : COLOR.LIGHT_GRAY_400
+              }
+              height="36px"
+            />
+          </Styled.SessionButtonWrapper>
+        );
+      })}
     </Styled.Root>
   );
 };

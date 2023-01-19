@@ -19,7 +19,7 @@ import FlexBox from '../@shared/FlexBox/FlexBox';
 import { css } from '@emotion/react';
 
 interface SidebarProps {
-  selectedSessionId: Session['id'] | null;
+  selectedSessionId: Session['sessionId'] | null;
   selectedMissionId: Mission['id'] | null;
   selectedTagList: Tag[];
   selectedAbilities: number[];
@@ -40,7 +40,6 @@ const AbilityList = styled.ul`
 const SidebarWrapper = styled.aside`
   width: 24rem;
   padding: 1rem;
-
   background-color: white;
   border: 1px solid ${COLOR.LIGHT_GRAY_100};
   border-radius: 2rem;
@@ -49,9 +48,7 @@ const SidebarWrapper = styled.aside`
 const FilterTitle = styled.h3`
   margin-bottom: 10px;
   padding-bottom: 2px;
-
   border-bottom: 1px solid ${COLOR.DARK_GRAY_500};
-
   font-size: 1.8rem;
   font-weight: bold;
   line-height: 1.5;
@@ -91,9 +88,12 @@ const Sidebar = ({
     value: `${id}`,
     label: `[${session?.name}] ${name}`,
   }));
-  const sessionOptions = sessions.map(({ id, name }) => ({ value: `${id}`, label: `${name}` }));
+  const sessionOptions = sessions.map(({ sessionId, name }) => ({
+    value: `${sessionId}`,
+    label: `${name}`,
+  }));
 
-  const selectedSession = sessions.find(({ id }) => id === selectedSessionId);
+  const selectedSession = sessions.find(({ sessionId }) => sessionId === selectedSessionId);
   const selectedMission = missions.find(({ id }) => id === selectedMissionId);
 
   /** 전체 역량 조회 */
@@ -162,7 +162,7 @@ const Sidebar = ({
               onChange={onSelectSession}
               value={
                 selectedSession
-                  ? { value: `${selectedSession.id}`, label: selectedSession?.name }
+                  ? { value: `${selectedSession.sessionId}`, label: selectedSession?.name }
                   : undefined
               }
             />

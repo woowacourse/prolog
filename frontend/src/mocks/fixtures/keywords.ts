@@ -1,4 +1,3 @@
-import { KeywordResponse } from '../../models/Keywords';
 import { quizMock } from './quizs';
 
 export default {
@@ -222,12 +221,12 @@ export default {
   },
   // 6-1
   filterChildrenKeywords(keywordId: string | readonly string[]) {
-    const data = this.data.find((depth1Item) => {
+    const childrenKeywords = this.data.find((depth1Item) => {
       return depth1Item.keywordId === Number(keywordId);
     })?.childrenKeywords;
 
     return {
-      data,
+      childrenKeywords,
     };
   },
 };

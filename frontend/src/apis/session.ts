@@ -6,8 +6,8 @@ export interface SessionResponse {
   sessions: Session[];
 }
 
-export const getSessionsByCurriculum = async (curriculumId: number) => {
-  const response = await client.get<SessionResponse>(`/curriculums/${curriculumId}/sessions`);
+export const getSessionsByCurriculum = async (id: number) => {
+  const response = await client.get<SessionResponse>(`/curriculums/${id}/sessions`);
 
   return response.data.sessions;
 };

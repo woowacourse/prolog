@@ -6,9 +6,10 @@ const QUERY_KEY = {
 };
 
 export const useGetCurriculums = () => {
-  const { data } = useQuery([QUERY_KEY.curriculum], () => getCurriculums());
+  const { data, isLoading } = useQuery([QUERY_KEY.curriculum], () => getCurriculums());
 
   return {
     curriculums: data?.data,
+    isLoading,
   };
 };

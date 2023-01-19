@@ -140,7 +140,7 @@ const NewStudylogPage = () => {
           title: tempSavedStudylog.title ?? '',
           content: tempSavedStudylog.content,
           missionId: tempSavedStudylog.mission?.id ?? null,
-          sessionId: tempSavedStudylog.session?.id ?? null,
+          sessionId: tempSavedStudylog.session?.sessionId ?? null,
           tags: tempSavedStudylog.tags ?? [],
           abilities: tempSavedStudylog.abilities?.map(({ id }) => id) ?? [],
         });

@@ -12,6 +12,8 @@ interface KeywordListProps {
   sessionId: number;
 }
 
+const compareFn = (a: KeywordResponse, b: KeywordResponse): number => a.keywordId - b.keywordId;
+
 const KeywordList = ({ handleClickKeyword, selectedTopKeyword, sessionId }: KeywordListProps) => {
   const { childrenKeywordList, refetchChildrenKeywordList } = useGetChildrenKeywordList({
     sessionId,
@@ -31,7 +33,7 @@ const KeywordList = ({ handleClickKeyword, selectedTopKeyword, sessionId }: Keyw
       />
 
       <Styled.ChildrenKeywordListContainer>
-        {childrenKeywordList?.map((keyword) => (
+        {childrenKeywordList?.sort(compareFn).map((keyword) => (
           <Styled.ContentsWrapper key={keyword.keywordId}>
             <Styled.SecondButtonWrapper>
               <ResponsiveButton
@@ -42,7 +44,7 @@ const KeywordList = ({ handleClickKeyword, selectedTopKeyword, sessionId }: Keyw
             </Styled.SecondButtonWrapper>
 
             <Styled.ThirdButtonContainer>
-              {keyword.childrenKeywords?.map((keyword) => (
+              {keyword.childrenKeywords?.sort(compareFn).map((keyword) => (
                 <ResponsiveButton
                   key={keyword.keywordId}
                   css={Styled.ThirdKeywordButton}
