@@ -36,4 +36,9 @@ out/
 ### VS Code ###
 .vscode/
 
+
+### direnv ###
+.envrc
+
+### log ###
 logs
