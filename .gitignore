@@ -5,3 +5,12 @@
 
 # Mac
 .DS_Store
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### direnv ###
+.envrc
