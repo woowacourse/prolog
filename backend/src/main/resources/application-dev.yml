@@ -10,9 +10,10 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
   flyway:
-    baselineOnMigrate: true
-    locations: classpath:db/migration/prod
     enabled: true
+    baseline-on-migrate: true
+    out-of-order: true
+    locations: classpath:db/migration/prod
 
 security:
   jwt:
