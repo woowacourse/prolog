@@ -1,22 +1,28 @@
 spring:
   jpa:
-    generate-ddl: true
-    database: h2
-    database-platform: org.hibernate.dialect.H2Dialect
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     properties:
       hibernate:
-        show_sql: false
+        show_sql: true
         format_sql: true
         use_sql_comment: false
   flyway:
-      enabled: false
+      enabled: true
+      baseline-on-migrate: true
+      baseline-version: 0
+      out-of-order: true
+      locations: classpath:db/migration/prod
   h2:
     console:
       enabled: true
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:mysql://localhost:13306/prolog?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 security:
   jwt:

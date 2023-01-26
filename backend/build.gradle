@@ -6,6 +6,7 @@ plugins {
     id "org.sonarqube" version "3.3"
     id 'java'
     id 'idea'
+    id 'org.flywaydb.flyway' version "6.4.2"
 }
 
 group = 'wooteco'
@@ -137,6 +138,27 @@ idea {
         testSourceDirs += file('src/acceptanceTest/java')
         testSourceDirs += file('src/documentation/java')
     }
+}
+
+/**
+ * 서버를 띄우지 않고 flyway 스크립트만 실행하고 싶은 경우 아래 방법을 통해 실행할 수 있다.
+ *
+ * 최초로 실행하는 경우 또는 첫 버전 스크립트부터 모두 실행하고 싶은 경우 아래 스크립트를 실행한다.
+ * 데이터가 초기화되므로 주의해야 한다.
+ * ./gradlew flywayClean flywayBaseline flywayMigrate
+ *
+ * 이전 버전에서 마이그레이션만 원하는 경우
+ * ./gradlew flywayMigrate
+ */
+flyway {
+    url = "jdbc:mysql://localhost:13306/prolog"
+    user = "root"
+    password = "root"
+    locations = ["filesystem:${file("src/main/resources/db/migration/prod").absolutePath}"]
+    encoding = "UTF-8"
+    outOfOrder = true // 여러브랜치에서 서로 다른 날짜로 만들어도 작동하도록
+    validateOnMigrate = true
+    baselineVersion = 0 // 기본값이 1이라서 0으로 변경한다. 기본값을 사용하는 경우 V1 스크립트가 실행되지 않는다.
 }
 
 task documentationTest(type: Test) {
