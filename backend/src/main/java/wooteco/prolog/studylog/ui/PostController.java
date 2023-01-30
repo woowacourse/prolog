@@ -2,6 +2,7 @@ package wooteco.prolog.studylog.ui;
 
 import java.net.URI;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,6 @@ import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.SearchParams;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
-import wooteco.support.number.NumberUtils;
 
 @RestController
 @RequestMapping("/posts")
@@ -54,7 +54,7 @@ public class PostController {
         @PathVariable String id,
         @AuthMemberPrincipal LoginMember member
     ) {
-        if (!NumberUtils.isNumeric(id)) {
+        if (!StringUtils.isNumeric(id)) {
             throw new StudylogNotFoundException();
         }
         return ResponseEntity.ok(studylogService.retrieveStudylogById(member, Long.parseLong(id), false));

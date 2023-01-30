@@ -2,6 +2,7 @@ package wooteco.prolog.studylog.ui;
 
 import java.net.URI;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,7 +25,6 @@ import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.SearchParams;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
-import wooteco.support.number.NumberUtils;
 
 @RestController
 @RequestMapping("/studylogs")
@@ -70,7 +70,7 @@ public class StudylogController {
                                                          @CookieValue(name = "viewed", required = false, defaultValue = "/")
                                                                  String viewedStudyLogs,
                                                          HttpServletResponse httpServletResponse) {
-        if (!NumberUtils.isNumeric(id)) {
+        if (!StringUtils.isNumeric(id)) {
             throw new StudylogNotFoundException();
         }
 
