@@ -1,5 +1,6 @@
 package wooteco.prolog.roadmap.application;
 
+import java.util.List;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,5 +68,16 @@ public class EssayAnswerService {
         Hibernate.initialize(essayAnswer.getMember());
 
         return essayAnswer;
+    }
+
+    @Transactional(readOnly = true)
+    public List<EssayAnswer> findByQuizId(Long quizId) {
+        List<EssayAnswer> essayAnswers = essayAnswerRepository.findByQuizId(quizId);
+        essayAnswers.forEach(it -> {
+            Hibernate.initialize(it.getQuiz());
+            Hibernate.initialize(it.getMember());
+        });
+
+        return essayAnswers;
     }
 }

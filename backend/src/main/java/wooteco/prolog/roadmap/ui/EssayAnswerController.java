@@ -1,5 +1,8 @@
 package wooteco.prolog.roadmap.ui;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +19,7 @@ import wooteco.prolog.roadmap.application.dto.EssayAnswerResponse;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
 
 @RestController
-@RequestMapping("/essay-answers")
+@RequestMapping
 public class EssayAnswerController {
 
     private final EssayAnswerService essayAnswerService;
@@ -26,18 +29,29 @@ public class EssayAnswerController {
         this.essayAnswerService = essayAnswerService;
     }
 
-    @PostMapping
+    @PostMapping("/essay-answers")
     public ResponseEntity<Long> create(@RequestBody EssayAnswerRequest request,
                                        @AuthMemberPrincipal LoginMember member) {
 
         return ResponseEntity.ok(essayAnswerService.createEssayAnswer(request, member.getId()));
     }
 
-    @GetMapping("/{essayAnswerId}")
+    @GetMapping("/essay-answers/{essayAnswerId}")
     public ResponseEntity<EssayAnswerResponse> findById(@PathVariable Long essayAnswerId) {
         EssayAnswer essayAnswer = essayAnswerService.getById(essayAnswerId);
         EssayAnswerResponse response = EssayAnswerResponse.of(essayAnswer);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/quizzes/{quizId}/essay-answers")
+    public ResponseEntity<List<EssayAnswerResponse>> findAnswersByQuizId(
+        @PathVariable Long quizId) {
+
+        List<EssayAnswer> essayAnswers = essayAnswerService.findByQuizId(quizId);
+        List<EssayAnswerResponse> responses = essayAnswers.stream().map(EssayAnswerResponse::of)
+            .collect(toList());
+
+        return ResponseEntity.ok(responses);
     }
 
 }
