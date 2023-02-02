@@ -12,6 +12,7 @@ import org.springframework.test.context.TestConstructor.AutowireMode;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
+import wooteco.prolog.roadmap.application.dto.EssayAnswerRequest;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.Quiz;
@@ -67,8 +68,8 @@ class EssayAnswerServiceTest {
     @Test
     @DisplayName("질문에 대한 답변을 작성한다.")
     void create() {
-        Long essayAnswerId = essayAnswerService.createEssayAnswer(자바_질문.getId(), "객체 지향 언어",
-            회원.getId());
+        EssayAnswerRequest request = new EssayAnswerRequest(자바_질문.getId(), "객체 지향 언어");
+        Long essayAnswerId = essayAnswerService.createEssayAnswer(request, 회원.getId());
 
         assertThat(essayAnswerId).isNotNull();
     }
@@ -76,8 +77,8 @@ class EssayAnswerServiceTest {
     @Test
     @DisplayName("답변을 수정한다.")
     void update() {
-        Long essayAnswerId = essayAnswerService.createEssayAnswer(자바_질문.getId(), "객체 지향 언어",
-            회원.getId());
+        EssayAnswerRequest request = new EssayAnswerRequest(자바_질문.getId(), "객체 지향 언어");
+        Long essayAnswerId = essayAnswerService.createEssayAnswer(request, 회원.getId());
         String updatedAnswer = "OOP";
 
         essayAnswerService.updateEssayAnswer(essayAnswerId, updatedAnswer, 회원.getId());
@@ -91,8 +92,8 @@ class EssayAnswerServiceTest {
     @Test
     @DisplayName("답변을 삭제한다.")
     void delete() {
-        Long essayAnswerId = essayAnswerService.createEssayAnswer(자바_질문.getId(), "객체 지향 언어",
-            회원.getId());
+        EssayAnswerRequest request = new EssayAnswerRequest(자바_질문.getId(), "객체 지향 언어");
+        Long essayAnswerId = essayAnswerService.createEssayAnswer(request, 회원.getId());
 
         essayAnswerService.deleteEssayAnswer(essayAnswerId, 회원.getId());
 

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.roadmap.application.dto.EssayAnswerRequest;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
 import wooteco.prolog.roadmap.domain.Quiz;
 import wooteco.prolog.roadmap.domain.repository.EssayAnswerRepository;
@@ -28,12 +29,13 @@ public class EssayAnswerService {
     }
 
     @Transactional
-    public Long createEssayAnswer(Long quizId, String answer, Long memberId) {
+    public Long createEssayAnswer(EssayAnswerRequest essayAnswerRequest, Long memberId) {
+        Long quizId = essayAnswerRequest.getQuizId();
         Quiz quiz = quizRepository.findById(quizId)
             .orElseThrow(() -> new IllegalArgumentException("퀴즈가 존재하지 않습니다. quizId=" + quizId));
-        Member member = memberService.findById(memberId);
 
-        EssayAnswer essayAnswer = new EssayAnswer(quiz, answer, member);
+        Member member = memberService.findById(memberId);
+        EssayAnswer essayAnswer = new EssayAnswer(quiz, essayAnswerRequest.getAnswer(), member);
         essayAnswerRepository.save(essayAnswer);
 
         return essayAnswer.getId();
