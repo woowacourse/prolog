@@ -15,3 +15,4 @@ export { default as EditStudylogPage } from './EditStudylogPage';
 export { default as StudylogListPage } from './StudylogListPage';
 export { default as RoadmapPage } from './RoadmapPage';
 export { default as NewEssayAnswerPage } from './NewEssayAnswerPage';
+export { default as EssayAnswerPage } from './EssayAnswerPage';
