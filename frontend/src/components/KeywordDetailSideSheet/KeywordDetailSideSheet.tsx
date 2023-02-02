@@ -31,7 +31,7 @@ const KeywordDetailSideSheet = ({
           <ol>
             {quizList?.map(({ quizId, question }, index) => (
               <li key={quizId}>
-                {index + 1}. {question}
+                <a href={`/quizzes/${quizId}/essay-answers`}>{index + 1}. {question}</a>
               </li>
             ))}
           </ol>
