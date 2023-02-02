@@ -1,5 +1,6 @@
 import { PATH, PROFILE_PAGE_MENU } from './constants';
 import {
+  AbilityPage,
   EditStudylogPage,
   LoginCallbackPage,
   MainPage,
@@ -10,20 +11,16 @@ import {
   ProfilePageNewReport,
   ProfilePageStudylogs,
   ProfilePageReports,
+  ProfilePageReportsList,
   ProfilePageScraps,
   StudylogListPage,
+  RoadmapPage,
+  NewEssayAnswerPage,
 } from './pages';
-import AbilityPage from './pages/AbilityPage';
-import EditLevellogPage from './pages/EditLevellogPage';
-import LevellogListPage from './pages/LevellogListPage';
-import LevellogPage from './pages/LevellogPage';
-import NewLevellogPage from './pages/NewLevellogPage';
-import ProfilePageReportsList from './pages/ProfilePageReportsList';
-import RoadmapPage from './pages/RoadmapPage';
 
 const pageRoutes = [
   {
-    path: ['/roadmap'],
+    path: [PATH.ROADMAP],
     render: () => <RoadmapPage />,
   },
   {
@@ -45,22 +42,6 @@ const pageRoutes = [
     path: `${PATH.STUDYLOG}/:id/edit`,
     render: () => <EditStudylogPage />,
   },
-  // {
-  //   path: [PATH.LEVELLOG],
-  //   render: () => <LevellogListPage />,
-  // },
-  // {
-  //   path: [PATH.NEW_LEVELLOG],
-  //   render: () => <NewLevellogPage />,
-  // },
-  // {
-  //   path: [`${PATH.LEVELLOG}/:id`],
-  //   render: () => <LevellogPage />,
-  // },
-  // {
-  //   path: [`${PATH.LEVELLOG}/:id/edit`],
-  //   render: () => <EditLevellogPage />,
-  // },
   {
     path: [PATH.PROFILE],
     render: () => <ProfilePage menu={PROFILE_PAGE_MENU.OVERVIEW} />,
@@ -121,6 +102,10 @@ const pageRoutes = [
       </ProfilePage>
     ),
   },
+  {
+    path: [PATH.NEW_ESSAY_ANSWER],
+    render: () => <NewEssayAnswerPage />,
+  }
 ];
 
 export default pageRoutes;
