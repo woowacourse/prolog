@@ -21,9 +21,7 @@ import {
   profileButtonStyle,
   Navigation,
   loginButtonStyle,
-  WritingDropdownStyle,
 } from './NavBar.styles';
-import { ERROR_MESSAGE } from '../../constants/message';
 import { UserContext } from '../../contexts/UserProvider';
 import { APP_MODE, BASE_URL, isProd } from '../../configs/environment';
 
@@ -36,10 +34,10 @@ const navigationConfig = [
     path: PATH.STUDYLOG,
     title: '학습로그',
   },
-  // {
-  //   path: PATH.LEVELLOG,
-  //   title: '레벨로그',
-  // },
+  {
+    path: PATH.ROADMAP,
+    title: '로드맵',
+  },
 ];
 
 const NavBar = () => {
@@ -48,7 +46,7 @@ const NavBar = () => {
 
   const { user, onLogout } = useContext(UserContext);
 
-  const { username, imageUrl: userImage = NoProfileImage, accessToken, isLoggedIn } = user;
+  const { username, imageUrl: userImage = NoProfileImage, isLoggedIn } = user;
 
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const [isWritingDropdownToggled, setWritingDropdownToggled] = useState(false);
