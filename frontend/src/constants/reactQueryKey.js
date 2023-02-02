@@ -1,6 +1,7 @@
 const REACT_QUERY_KEY = {
   STUDYLOG: 'STUDYLOG',
   QUIZ: "QUIZ",
+  ESSAY_ANSWER: "ESSAY_ANSWER",
 };
 
 export default REACT_QUERY_KEY;

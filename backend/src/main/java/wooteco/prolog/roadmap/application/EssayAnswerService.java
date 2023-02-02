@@ -1,5 +1,6 @@
 package wooteco.prolog.roadmap.application;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +61,11 @@ public class EssayAnswerService {
 
     @Transactional(readOnly = true)
     public EssayAnswer getById(Long answerId) {
-        return essayAnswerRepository.findById(answerId)
+        EssayAnswer essayAnswer = essayAnswerRepository.findById(answerId)
             .orElseThrow(() -> new IllegalArgumentException("답변이 존재하지 않습니다. answerId=" + answerId));
+        Hibernate.initialize(essayAnswer.getQuiz());
+        Hibernate.initialize(essayAnswer.getMember());
+
+        return essayAnswer;
     }
 }

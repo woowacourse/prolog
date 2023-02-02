@@ -14,7 +14,8 @@ const PATH = {
   NEW_LEVELLOG: '/levellog/write',
   ABILITY: '/:username/ability',
   ROADMAP: '/roadmap',
-  NEW_ESSAY_ANSWER: '/quizzes/:quizId/essay-answers'
+  NEW_ESSAY_ANSWER: '/quizzes/:quizId/essay-answers',
+  ESSAY_ANSWER: '/essay-answers/:essayAnswerId',
 };
 
 export default PATH;
