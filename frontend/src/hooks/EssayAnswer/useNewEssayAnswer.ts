@@ -18,7 +18,7 @@ const useNewEssayAnswer = () => {
 
   const {mutate: createNewEssayAnswerRequest} = useCreateNewEssayAnswerMutation({
     onSuccess: () => {
-      history.push(PATH.ROADMAP);
+      history.push(`/quizzes/${quizId}/essay-answers`);
       alert(SUCCESS_MESSAGE.CREATE_POST);
     },
     onError: (error: { code: number }) => {
