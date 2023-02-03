@@ -1,6 +1,7 @@
 import {useMutation, useQuery} from "react-query";
 import {
   createNewEssayAnswerRequest,
+  requestDeleteEssayAnswer,
   requestGetEssayAnswer,
   requestGetEssayAnswerList,
   requestGetQuizAsync
@@ -53,6 +54,19 @@ export const useGetEssayAnswer = (
     retry: false,
   });
 };
+
+export const useDeleteEssayAnswerMutation = ({
+  onSuccess = () => {},
+  onError = (error: { code: number }) => {},
+} = {}) =>
+  useMutation((essayAnswerId: number) => requestDeleteEssayAnswer(essayAnswerId), {
+    onSuccess: () => {
+      onSuccess?.();
+    },
+    onError: (error: { code: number }) => {
+      onError?.(error);
+    },
+  });
 
 export const useGetEssayAnswerList = (
   { quizId },
