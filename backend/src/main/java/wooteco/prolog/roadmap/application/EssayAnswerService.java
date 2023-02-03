@@ -72,7 +72,7 @@ public class EssayAnswerService {
 
     @Transactional(readOnly = true)
     public List<EssayAnswer> findByQuizId(Long quizId) {
-        List<EssayAnswer> essayAnswers = essayAnswerRepository.findByQuizId(quizId);
+        List<EssayAnswer> essayAnswers = essayAnswerRepository.findByQuizIdOrderByIdDesc(quizId);
         essayAnswers.forEach(it -> {
             Hibernate.initialize(it.getQuiz());
             Hibernate.initialize(it.getMember());

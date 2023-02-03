@@ -9,5 +9,5 @@ public interface EssayAnswerRepository extends JpaRepository<EssayAnswer, Long> 
 
     Optional<EssayAnswer> findByIdAndMemberId(Long id, Long memberId);
 
-    List<EssayAnswer> findByQuizId(Long quizId);
+    List<EssayAnswer> findByQuizIdOrderByIdDesc(Long quizId);
 }
