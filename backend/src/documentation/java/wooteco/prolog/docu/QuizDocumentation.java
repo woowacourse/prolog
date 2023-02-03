@@ -17,10 +17,10 @@ import wooteco.prolog.roadmap.application.QuizService;
 import wooteco.prolog.roadmap.application.dto.QuizRequest;
 import wooteco.prolog.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.roadmap.application.dto.QuizzesResponse;
-import wooteco.prolog.roadmap.ui.AdminQuizController;
+import wooteco.prolog.roadmap.ui.QuizController;
 
-@WebMvcTest(controllers = AdminQuizController.class)
-public class AdminQuizDocumentation extends NewDocumentation {
+@WebMvcTest(controllers = QuizController.class)
+public class QuizDocumentation extends NewDocumentation {
 
     @MockBean
     private QuizService quizService;

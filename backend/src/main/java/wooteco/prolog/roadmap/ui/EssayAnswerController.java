@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.roadmap.application.EssayAnswerService;
+import wooteco.prolog.roadmap.application.QuizService;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerRequest;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerResponse;
+import wooteco.prolog.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
 
 @RestController
@@ -23,10 +25,13 @@ import wooteco.prolog.roadmap.domain.EssayAnswer;
 public class EssayAnswerController {
 
     private final EssayAnswerService essayAnswerService;
+    private final QuizService quizService;
 
     @Autowired
-    public EssayAnswerController(EssayAnswerService essayAnswerService) {
+    public EssayAnswerController(EssayAnswerService essayAnswerService,
+                                 QuizService quizService) {
         this.essayAnswerService = essayAnswerService;
+        this.quizService = quizService;
     }
 
     @PostMapping("/essay-answers")
@@ -41,6 +46,11 @@ public class EssayAnswerController {
         EssayAnswer essayAnswer = essayAnswerService.getById(essayAnswerId);
         EssayAnswerResponse response = EssayAnswerResponse.of(essayAnswer);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/quizzes/{quizId}")
+    public ResponseEntity<QuizResponse> findQuizById(@PathVariable Long quizId) {
+        return ResponseEntity.ok(quizService.findById(quizId));
     }
 
     @GetMapping("/quizzes/{quizId}/essay-answers")
