@@ -1,7 +1,9 @@
-import { useGetQuizListByKeyword } from '../../hooks/queries/keywords';
-import { KeywordResponse } from '../../models/Keywords';
-import { SideSheet } from '../@shared/SideSheet/SideSheet';
+import {useGetQuizListByKeyword} from '../../hooks/queries/keywords';
+import {KeywordResponse} from '../../models/Keywords';
+import {SideSheet} from '../@shared/SideSheet/SideSheet';
 import * as Styled from './KeywordDetailSideSheet.styles';
+import {useContext} from "react";
+import {UserContext} from "../../contexts/UserProvider";
 
 interface KeywordDetailSideSheetProps {
   keywordDetail: KeywordResponse;
@@ -16,6 +18,7 @@ const KeywordDetailSideSheet = ({
 }: KeywordDetailSideSheetProps) => {
   const { name, keywordId, order, importance, description } = keywordDetail;
 
+  const { user: { isLoggedIn } } = useContext(UserContext);
   const { quizList } = useGetQuizListByKeyword({ sessionId, keywordId });
 
   return (
@@ -31,7 +34,12 @@ const KeywordDetailSideSheet = ({
           <ol>
             {quizList?.map(({ quizId, question }, index) => (
               <li key={quizId}>
-                <a href={`/quizzes/${quizId}/essay-answers/form`}>{index + 1}. {question}</a>
+                {isLoggedIn && (
+                  <a href={`/quizzes/${quizId}/essay-answers/form`}>{index + 1}. {question}</a>
+                )}
+                {!isLoggedIn && (
+                  <>{index + 1}. {question}</>
+                )}
                 &nbsp;/&nbsp;
                 <a href={`/quizzes/${quizId}/essay-answers`}>답변 보러가기</a>
               </li>
