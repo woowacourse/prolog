@@ -6,21 +6,33 @@ import {ButtonList} from './styles';
 
 import {MainContentStyle} from '../../PageRouter';
 import useEssayAnswer from "../../hooks/EssayAnswer/useEssayAnswer";
+import {DeleteButtonStyle} from "../LevellogPage/styles";
+import {CONFIRM_MESSAGE} from "../../constants";
 
 const EssayAnswerPage = () => {
   const {
     essayAnswer,
+    deleteEssayAnswer,
     isCurrentUserAuthor,
     isLoading,
   } = useEssayAnswer();
-
-  console.log(essayAnswer);
 
   return (
     <div css={MainContentStyle}>
       {isCurrentUserAuthor && (
         <ButtonList>
-          {[].map(({ title, cssProps, onClick }) => (
+          {[
+            {
+              title: '삭제',
+              cssProps: DeleteButtonStyle,
+              onClick: (e) => {
+                if (!essayAnswer) return;
+                if (!window.confirm(CONFIRM_MESSAGE.DELETE_STUDYLOG)) return;
+
+                deleteEssayAnswer(essayAnswer.id, e);
+              },
+            },
+          ].map(({ title, cssProps, onClick }) => (
             <Button
               key={title}
               size={BUTTON_SIZE.X_SMALL}

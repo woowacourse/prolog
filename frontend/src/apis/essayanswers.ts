@@ -12,6 +12,10 @@ export const requestGetEssayAnswer = async (essayAnswerId) => {
   return data;
 };
 
+export const requestDeleteEssayAnswer = async (essayAnswerId) => {
+  await client.delete(`/essay-answers/${essayAnswerId}`);
+};
+
 export const requestGetEssayAnswerList = async (quizId) => {
   const { data } = await client.get(`/quizzes/${quizId}/essay-answers`);
 
