@@ -6,9 +6,7 @@ import {useGetEssayAnswer} from "../queries/essayanswer";
 
 const useEssayAnswer = () => {
   const { essayAnswerId } = useParams<{ essayAnswerId: string }>();
-  // const history = useHistory();
   const { user } = useContext(UserContext);
-  // const { openSnackBar } = useSnackBar();
   const { username, userId } = user;
 
   const { data: essayAnswer, isLoading } = useGetEssayAnswer(
