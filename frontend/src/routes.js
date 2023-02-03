@@ -17,6 +17,7 @@ import {
   RoadmapPage,
   NewEssayAnswerPage,
   EssayAnswerPage,
+  EssayAnswerListPage,
 } from './pages';
 
 const pageRoutes = [
@@ -110,7 +111,11 @@ const pageRoutes = [
   {
     path: [PATH.ESSAY_ANSWER],
     render: () => <EssayAnswerPage />,
-  }
+  },
+  {
+    path: [PATH.ESSAY_ANSWER_LIST],
+    render: () => <EssayAnswerListPage />,
+  },
 ];
 
 export default pageRoutes;

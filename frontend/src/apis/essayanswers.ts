@@ -12,4 +12,16 @@ export const requestGetEssayAnswer = async (essayAnswerId) => {
   return data;
 };
 
+export const requestGetEssayAnswerList = async (quizId) => {
+  const { data } = await client.get(`/quizzes/${quizId}/essay-answers`);
+
+  return data;
+};
+
+export const requestGetQuizAsync = async (quizId) => {
+  const { data } = await client.get(`/quizzes/${quizId}`);
+
+  return data;
+};
+
 export const requestGetQuiz = (quizId: Number): AxiosPromise<AxiosResponse<Quiz>> => httpRequester.get<AxiosResponse<Quiz>>(`/quizzes/${quizId}`);
