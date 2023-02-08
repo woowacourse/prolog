@@ -19,6 +19,7 @@ interface EditorProps {
   title?: string;
   hasTitle?: boolean;
   titlePlaceholder?: string;
+  titleReadOnly?: boolean;
   editorContentRef: MutableRefObject<unknown>;
   content?: string | null;
   onChangeTitle?: ChangeEventHandler<HTMLInputElement>;
@@ -39,6 +40,7 @@ const Editor = (props: EditorProps): JSX.Element => {
     hasTitle = true,
     title = '',
     titlePlaceholder = '제목을 입력하세요',
+    titleReadOnly = false,
     content,
     onChangeTitle,
     editorContentRef,
@@ -51,7 +53,7 @@ const Editor = (props: EditorProps): JSX.Element => {
     <div css={[EditorStyle, markdownStyle, EditorWrapperStyle]}>
       {hasTitle && (
         <div css={[EditorTitleStyle]}>
-          <input placeholder={titlePlaceholder} value={title} onChange={onChangeTitle} />
+          <input placeholder={titlePlaceholder} value={title} readOnly={titleReadOnly} onChange={onChangeTitle} />
         </div>
       )}
       {/* FIXME: 임시방편 editor에 상태 값을 초기값으로 넣는 법 찾기 */}

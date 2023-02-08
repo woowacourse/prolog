@@ -2,11 +2,16 @@ import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
 
 const CARD_SIZE = {
+  EXTRA_SMALL: 'EXTRA_SMALL',
   SMALL: 'SMALL',
   LARGE: 'LARGE',
 };
 
 const sizeStyle = {
+  EXTRA_SMALL: {
+    padding: '3.3rem 3.3rem 2rem',
+    minHeight: '10rem',
+  },
   SMALL: {
     padding: '3.3rem 3.3rem 2rem',
     minHeight: '20rem',
