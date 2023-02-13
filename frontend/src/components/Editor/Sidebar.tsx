@@ -6,16 +6,12 @@ import SelectBox from '../Controls/SelectBox';
 import { ERROR_MESSAGE, PLACEHOLDER } from '../../constants';
 import { Mission, Session, Tag } from '../../models/Studylogs';
 import styled from '@emotion/styled';
-import { useMissions, useGetMySessions, useTags } from '../../hooks/queries/filters';
+import { useGetMySessions, useMissions, useTags } from '../../hooks/queries/filters';
 import { getRowGapStyle } from '../../styles/layout.styles';
-import StudyLogSelectAbilityBox from './SideBar/StudyLogSelectAbilityBox';
 import { useQuery } from 'react-query';
 import AbilityRequest, { ErrorData } from '../../apis/ability';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserProvider';
-import Chip from '../Chip/Chip';
-import { Button } from '../../components';
-import FlexBox from '../@shared/FlexBox/FlexBox';
 import { css } from '@emotion/react';
 
 interface SidebarProps {
@@ -28,14 +24,6 @@ interface SidebarProps {
   onSelectTag: (tags: Tag[], actionMeta: { option: { label: string } }) => void;
   onSelectAbilities: (abilities: number[]) => void;
 }
-const AbilitySelectList = styled.li`
-  position: relative;
-`;
-const AbilityList = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 3px;
-`;
 
 const SidebarWrapper = styled.aside`
   width: 24rem;
@@ -54,29 +42,14 @@ const FilterTitle = styled.h3`
   line-height: 1.5;
 `;
 
-const FlexGap = css`
-  gap: 0.5rem;
-`;
-
-const PlusButton = css`
-  background-color: ${COLOR.LIGHT_GRAY_100};
-  font-weight: bold;
-  color: ${COLOR.LIGHT_GRAY_600};
-  width: 22px;
-  height: 22px;
-`;
-
 const Sidebar = ({
-  selectedSessionId,
-  selectedMissionId,
-  selectedTagList,
-  selectedAbilities,
-  onSelectMission,
-  onSelectSession,
-  onSelectTag,
-  onSelectAbilities,
-}: SidebarProps) => {
-  const [isSelectAbilityBoxOpen, setIsSelectAbilityBoxOpen] = useState(false);
+                   selectedSessionId,
+                   selectedMissionId,
+                   selectedTagList,
+                   onSelectMission,
+                   onSelectSession,
+                   onSelectTag,
+                 }: SidebarProps) => {
   const { data: missions = [] } = useMissions();
   const { data: tags = [] } = useTags();
   const { data: sessions = [] } = useGetMySessions();
@@ -108,39 +81,6 @@ const Sidebar = ({
       },
     }
   );
-
-  const wholeAbility = abilities?.map((parentAbility) => [...parentAbility.children]).flat();
-
-  /** 선택된 역량을 보여준다.*/
-  const SelectedAbilityChips = ({ selectedAbilityIds }) => {
-    const selectedAbilities = wholeAbility.filter(({ id }) => selectedAbilityIds.includes(id));
-
-    return (
-      <AbilityList>
-        {selectedAbilities?.map((ability) => {
-          return (
-            <li key={ability.id}>
-              {
-                <Chip
-                  backgroundColor={ability.color}
-                  border={`1px solid ${COLOR.BLACK_OPACITY_300}`}
-                  fontSize="1.2rem"
-                  lineHeight="1.5"
-                  marginRight="0"
-                  maxWidth="21.9rem"
-                  onDelete={() => {
-                    onSelectAbilities(selectedAbilityIds.filter((id) => id !== ability.id));
-                  }}
-                >
-                  {ability.name}
-                </Chip>
-              }
-            </li>
-          );
-        })}
-      </AbilityList>
-    );
-  };
 
   return (
     <SidebarWrapper>
@@ -195,32 +135,6 @@ const Sidebar = ({
             />
           </div>
         </li>
-
-        <AbilitySelectList>
-          <FilterTitle>
-            <FlexBox css={FlexGap} alignItems="center">
-              abilities
-              <Button
-                size="XX_SMALL"
-                type="button"
-                cssProps={PlusButton}
-                onClick={() => setIsSelectAbilityBoxOpen(true)}
-              >
-                +
-              </Button>
-            </FlexBox>
-          </FilterTitle>
-
-          <SelectedAbilityChips selectedAbilityIds={selectedAbilities} />
-          {isSelectAbilityBoxOpen && (
-            <StudyLogSelectAbilityBox
-              setIsSelectAbilityBoxOpen={setIsSelectAbilityBoxOpen}
-              selectedAbilities={selectedAbilities}
-              wholeAbility={wholeAbility}
-              onSelectAbilities={onSelectAbilities}
-            />
-          )}
-        </AbilitySelectList>
       </ul>
     </SidebarWrapper>
   );
