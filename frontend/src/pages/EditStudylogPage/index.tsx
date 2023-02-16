@@ -28,10 +28,6 @@ import { ParentAbility } from '../../models/Ability';
 
 type SelectOption = { value: string; label: string };
 
-interface NewStudylogForm extends StudylogForm {
-  abilities: number[];
-}
-
 interface EditStudylog extends Omit<Studylog, 'abilities'> {
   abilities: ParentAbility[];
 }
@@ -42,13 +38,12 @@ const EditStudylogPage = () => {
 
   const editorContentRef = useRef<any>(null);
 
-  const [studylogContent, setStudylogContent] = useState<NewStudylogForm>({
+  const [studylogContent, setStudylogContent] = useState<StudylogForm>({
     title: '',
     content: null,
     missionId: null,
     sessionId: null,
     tags: [],
-    abilities: [],
   });
 
   const { user } = useContext(UserContext);
@@ -67,15 +62,10 @@ const EditStudylogPage = () => {
           missionId: data.mission?.id || null,
           sessionId: data.session?.sessionId || null,
           tags: data.tags,
-          abilities: data.abilities.map(({ id }) => id),
         });
       },
     }
   );
-
-  const onSelectAbilities = (abilities: number[]) => {
-    setStudylogContent({ ...studylogContent, abilities });
-  };
 
   const onChangeTitle: ChangeEventHandler<HTMLInputElement> = (event) => {
     setStudylogContent({ ...studylogContent, title: event.target.value });
@@ -172,12 +162,10 @@ const EditStudylogPage = () => {
         selectedMissionId={studylogContent.missionId}
         selectedSessionId={studylogContent.sessionId}
         selectedTags={studylogContent.tags}
-        selectedAbilities={studylogContent.abilities}
         onChangeTitle={onChangeTitle}
         onSelectMission={onSelectMission}
         onSelectSession={onSelectSession}
         onSelectTag={onSelectTag}
-        onSelectAbilities={onSelectAbilities}
         onSubmit={onEditStudylog}
       />
     </div>
