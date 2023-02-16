@@ -269,8 +269,7 @@ public class DataLoaderApplicationListener implements
 				"좋은 내용" + cnt,
 				Sessions.values()[cnt++ % Missions.values().length].getId(),
 				Missions.values()[cnt++ % Missions.values().length].getId(),
-				TagRequests.random(),
-				Collections.emptyList()
+				TagRequests.random()
 			);
 		}
 	}
