@@ -8,12 +8,10 @@ import static java.util.stream.Collectors.toMap;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,18 +21,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.ability.application.AbilityService;
-import wooteco.prolog.ability.application.dto.AbilityResponse;
-import wooteco.prolog.ability.domain.Ability;
-import wooteco.prolog.ability.domain.StudylogAbility;
-import wooteco.prolog.ability.domain.StudylogTempAbility;
-import wooteco.prolog.ability.domain.repository.StudylogAbilityRepository;
-import wooteco.prolog.ability.domain.repository.StudylogTempAbilityRepository;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.report.exception.AbilityHasChildrenException;
 import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.domain.Mission;
@@ -81,14 +71,11 @@ public class StudylogService {
     private final TagService tagService;
     private final SessionService sessionService;
     private final MissionService missionService;
-    private final AbilityService abilityService;
     private final StudylogRepository studylogRepository;
     private final StudylogScrapRepository studylogScrapRepository;
     private final StudylogReadRepository studylogReadRepository;
     private final StudylogTempRepository studylogTempRepository;
-    private final StudylogAbilityRepository studylogAbilityRepository;
     private final CommentRepository commentRepository;
-    private final StudylogTempAbilityRepository studylogTempAbilityRepository;
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
@@ -105,8 +92,6 @@ public class StudylogService {
 
     @Transactional
     public StudylogResponse insertStudylog(Long memberId, StudylogRequest studylogRequest) {
-        Set<Ability> abilities = findAbility(memberId, studylogRequest);
-
         Member member = memberService.findById(memberId);
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
         Session session = sessionService.findSessionById(studylogRequest.getSessionId())
@@ -122,44 +107,17 @@ public class StudylogService {
                 tags.getList())
         );
 
-        List<StudylogAbility> studylogAbilities = abilities.stream()
-                .map(it -> new StudylogAbility(memberId, it, persistStudylog))
-                .collect(Collectors.toList());
-
-        studylogAbilityRepository.deleteByStudylogId(persistStudylog.getId());
-        List<StudylogAbility> persistStudylogAbilities = studylogAbilityRepository.saveAll(
-                studylogAbilities);
-
-        final List<AbilityResponse> abilityResponses = persistStudylogAbilities.stream()
-                .map(it -> AbilityResponse.of(it.getAbility()))
-                .collect(toList());
-
         onStudylogCreatedEvent(member, tags, persistStudylog);
         deleteStudylogTemp(memberId);
 
-        return StudylogResponse.of(persistStudylog, abilityResponses);
-    }
-
-    private boolean hasChildAndParentAbility(Set<Ability> abilities) {
-        return abilities.stream()
-                .anyMatch(ability -> !ability.isParent() &&
-                        abilities.contains(ability.getParent()));
+        return StudylogResponse.of(persistStudylog, Collections.emptyList());
     }
 
     @Transactional
     public StudylogTempResponse insertStudylogTemp(Long memberId, StudylogRequest studylogRequest) {
-        Set<Ability> abilities = findAbility(memberId, studylogRequest);
         StudylogTemp createdStudylogTemp = creteStudylogTemp(memberId, studylogRequest);
 
-        List<StudylogTempAbility> studylogTempAbilities = abilities.stream()
-                .map(it -> new StudylogTempAbility(memberId, it, createdStudylogTemp))
-                .collect(Collectors.toList());
-
-        List<StudylogTempAbility> createdStudylogAbilities = studylogTempAbilityRepository.saveAll(
-                studylogTempAbilities);
-
-        List<AbilityResponse> abilityResponses = getAbilityTempResponses(createdStudylogAbilities);
-        return StudylogTempResponse.from(createdStudylogTemp, abilityResponses);
+        return StudylogTempResponse.from(createdStudylogTemp, Collections.emptyList());
     }
 
     private StudylogTemp creteStudylogTemp(Long memberId, StudylogRequest studylogRequest) {
@@ -180,21 +138,6 @@ public class StudylogService {
         deleteStudylogTemp(memberId);
         StudylogTemp createdStudylogTemp = studylogTempRepository.save(requestedStudylogTemp);
         return createdStudylogTemp;
-    }
-
-    private List<AbilityResponse> getAbilityTempResponses(List<StudylogTempAbility> createdStudylogAbilities) {
-        return createdStudylogAbilities.stream()
-                .map(it -> AbilityResponse.of(it.getAbility()))
-                .collect(toList());
-    }
-
-    private Set<Ability> findAbility(Long memberId, StudylogRequest studylogRequest) {
-        Set<Ability> abilities = abilityService.findByIdIn(memberId,
-                studylogRequest.getAbilities());
-        if (hasChildAndParentAbility(abilities)) {
-            throw new AbilityHasChildrenException();
-        }
-        return abilities;
     }
 
     private void onStudylogCreatedEvent(Member foundMember, Tags tags, Studylog createdStudylog) {
@@ -218,10 +161,7 @@ public class StudylogService {
     public StudylogTempResponse findStudylogTemp(Long memberId) {
         if (studylogTempRepository.existsByMemberId(memberId)) {
             StudylogTemp studylogTemp = studylogTempRepository.findByMemberId(memberId);
-            List<StudylogTempAbility> studylogTempAbilities = studylogTempAbilityRepository.findByStudylogTempId(
-                    studylogTemp.getId());
-            List<AbilityResponse> abilitiesResponse = getAbilityTempResponses(studylogTempAbilities);
-            return StudylogTempResponse.from(studylogTemp, abilitiesResponse);
+            return StudylogTempResponse.from(studylogTemp, Collections.emptyList());
         }
         return StudylogTempResponse.toNull();
     }
@@ -382,17 +322,8 @@ public class StudylogService {
                 .isPresent();
         boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId())
                 .isPresent();
-        List<AbilityResponse> abilityResponses = findAbilityByStudylogId(studylog.getId());
 
-        return StudylogResponse.of(studylog, abilityResponses, scraped, read, liked);
-    }
-
-    private List<AbilityResponse> findAbilityByStudylogId(Long studylogId) {
-        List<StudylogAbility> studylogAbilities = studylogAbilityRepository.findAllByStudylogId(studylogId);
-        List<Ability> abilities = studylogAbilities.stream()
-                .map(StudylogAbility::getAbility)
-                .collect(Collectors.toList());
-        return AbilityResponse.listOf(abilities);
+        return StudylogResponse.of(studylog, Collections.emptyList(), scraped, read, liked);
     }
 
     public StudylogResponse findByIdAndReturnStudylogResponse(Long id) {
@@ -422,8 +353,6 @@ public class StudylogService {
 
     @Transactional
     public void updateStudylog(Long memberId, Long studylogId, StudylogRequest studylogRequest) {
-        Set<Ability> abilities = findAbility(memberId, studylogRequest);
-
         Studylog studylog = studylogRepository.findById(studylogId).orElseThrow(StudylogNotFoundException::new);
         studylog.validateBelongTo(memberId);
 
@@ -436,13 +365,6 @@ public class StudylogService {
         Tags newTags = tagService.findOrCreate(studylogRequest.getTags());
         studylog.update(studylogRequest.getTitle(), studylogRequest.getContent(), session, mission, newTags);
         memberTagService.updateMemberTag(originalTags, newTags, foundMember);
-
-        List<StudylogAbility> studylogAbilities = abilities.stream()
-                .map(it -> new StudylogAbility(memberId, it, studylog))
-                .collect(Collectors.toList());
-
-        studylogAbilityRepository.deleteByStudylogId(studylog.getId());
-        studylogAbilityRepository.saveAll(studylogAbilities);
 
         studylogDocumentService.update(studylog.toStudylogDocument());
     }

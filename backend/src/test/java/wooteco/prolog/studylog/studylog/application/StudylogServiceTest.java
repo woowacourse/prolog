@@ -5,7 +5,6 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -13,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -22,8 +20,6 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -49,7 +45,6 @@ import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.studylog.application.CommentService;
-import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.studylog.application.DocumentService;
 import wooteco.prolog.studylog.application.StudylogScrapService;
 import wooteco.prolog.studylog.application.StudylogService;
@@ -582,58 +577,6 @@ class StudylogServiceTest {
         assertThat(studylogTempResponse.getAbilities()).isEmpty();
     }
 
-    @DisplayName("스터디로그를 임시저장하고 다시 수정후, 다시 임시 저장한다.")
-    @Test
-    void insertstudylogTemp_oneMore() {
-        //given
-        Mission mission = missionRepository.save(mission1);
-        String title = "임시저장 제목";
-        String content = "임시저장 내용";
-        List<Long> abilityIds = 역량을_저장한다();
-        StudylogRequest studylogRequest = new StudylogRequest(title, content, session1.getId(),
-                mission.getId(), toTagRequests(tags), abilityIds);
-        studylogService.insertStudylogTemp(member1.getId(), studylogRequest);
-
-        //when
-        String newTitle = "새로운 임시저장 제목";
-        String newContent = "새로운 임시저장 내용";
-        StudylogRequest newStudylogRequest = new StudylogRequest(newTitle, newContent, session1.getId(),
-                mission.getId(), toTagRequests(tags), abilityIds);
-        StudylogTempResponse studylogTempResponse =
-                studylogService.insertStudylogTemp(member1.getId(), newStudylogRequest);
-
-        //then
-        assertThat(studylogTempResponse.getTitle()).isEqualTo(newTitle);
-        assertThat(studylogTempResponse.getContent()).isEqualTo(newContent);
-        assertThat(studylogTempResponse.getAbilities()).isNotEmpty();
-    }
-
-    @DisplayName("스터디로그를 임시저장하고 제출한다.")
-    @Test
-    void insertstudylogTemp_andSubmit() {
-        //given
-        Mission mission = missionRepository.save(mission1);
-        String title = "임시저장 제목";
-        String content = "임시저장 내용";
-        List<Long> abilityIds = 역량을_저장한다();
-        StudylogRequest studylogRequest = new StudylogRequest(title, content, session1.getId(),
-                mission.getId(), toTagRequests(tags), abilityIds);
-        studylogService.insertStudylogTemp(member1.getId(), studylogRequest);
-
-        //when
-        String newTitle = "최종 제출할 제목";
-        String newContent = "최종 제출할 내용";
-        StudylogRequest newStudylogRequest = new StudylogRequest(newTitle, newContent, session1.getId(),
-                mission.getId(), toTagRequests(tags), abilityIds);
-        StudylogResponse studylogResponse =
-                studylogService.insertStudylog(member1.getId(), newStudylogRequest);
-
-        //then
-        assertThat(studylogResponse.getTitle()).isEqualTo(newTitle);
-        assertThat(studylogResponse.getContent()).isEqualTo(newContent);
-        assertThat(studylogResponse.getAbilities()).isNotEmpty();
-    }
-
     @DisplayName("학습로그 목록조회 시 댓글 갯수도 같이 조회한다.")
     @ParameterizedTest
     @MethodSource("provideFilterForGetCommentCount")
@@ -737,7 +680,7 @@ class StudylogServiceTest {
                 .collect(toList());
 
         StudylogRequest studylogRequest = new StudylogRequest(
-                title, content, mission.getSession().getId(), mission.getId(), tagRequests, emptyList()
+                title, content, mission.getSession().getId(), mission.getId(), tagRequests
         );
 
         return studylogService.insertStudylog(memberId, studylogRequest);
@@ -765,8 +708,7 @@ class StudylogServiceTest {
                                 studylog.getContent(),
                                 studylog.getSession().getId(),
                                 studylog.getMission().getId(),
-                                toTagRequests(studylog),
-                                Collections.emptyList()
+                                toTagRequests(studylog)
                         )
                 )
                 .collect(toList());

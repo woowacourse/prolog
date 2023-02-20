@@ -269,8 +269,7 @@ class StudylogDocumentation extends Documentation {
             "#ffffff",
             parentAbilityId));
 
-        return new StudylogRequest(title, content, sessionId, missionId, tags,
-            Arrays.asList(abilityId));
+        return new StudylogRequest(title, content, sessionId, missionId, tags);
     }
 
     private StudylogRequest createStudylogRequest2() {
@@ -290,8 +289,7 @@ class StudylogDocumentation extends Documentation {
             "#000000",
             parentAbilityId));
 
-        return new StudylogRequest(title, content, sessionId, missionId, tags,
-            Arrays.asList(abilityId));
+        return new StudylogRequest(title, content, sessionId, missionId, tags);
     }
 
     private Long 역량_등록함(AbilityCreateRequest request) {
