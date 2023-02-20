@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
@@ -86,7 +85,6 @@ public class StudylogAbilityDocumentation extends NewDocumentation {
                     "제목",
                     "내용내용내용내용내용",
                     Lists.newArrayList(new TagResponse(1L, "태그1"), new TagResponse(2L, "태그2")),
-                    Collections.emptyList(),
                     false,
                     false,
                     10,

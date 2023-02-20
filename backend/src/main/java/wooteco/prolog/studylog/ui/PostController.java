@@ -23,6 +23,7 @@ import wooteco.prolog.studylog.application.dto.search.SearchParams;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 
+@Deprecated
 @RestController
 @RequestMapping("/posts")
 public class PostController {

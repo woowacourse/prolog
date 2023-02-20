@@ -6,7 +6,6 @@ import java.sql.Date;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
@@ -52,7 +51,6 @@ public class ResponseFixture {
             "JAVA",
             "Spring Data JPA를 학습함.",
             Arrays.asList(new TagResponse(3L, "java"), new TagResponse(4L, "jpa")),
-            Collections.emptyList(),
             false,
             false,
             0,
@@ -70,7 +68,6 @@ public class ResponseFixture {
             "SPA",
             "SPA 방식으로 앱을 구현하였음.\nrouter 를 구현 하여 이용함.\n",
             Arrays.asList(new TagResponse(1L, "spa"), new TagResponse(2L, "router")),
-            Collections.emptyList(),
             false,
             false,
             0,

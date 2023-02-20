@@ -24,13 +24,8 @@ import { AxiosError, AxiosResponse } from 'axios';
 import LOCAL_STORAGE_KEY from '../../constants/localStorage';
 import { SUCCESS_MESSAGE } from '../../constants/message';
 import { ResponseError } from '../../apis/studylogs';
-import { ParentAbility } from '../../models/Ability';
 
 type SelectOption = { value: string; label: string };
-
-interface EditStudylog extends Omit<Studylog, 'abilities'> {
-  abilities: ParentAbility[];
-}
 
 // 나중에 학습로그 작성 페이지와 같아질 수  있음(임시저장)
 const EditStudylogPage = () => {
@@ -51,7 +46,7 @@ const EditStudylogPage = () => {
 
   const { id } = useParams<{ id: string }>();
 
-  const fetchStudylogRequest: UseQueryResult<AxiosResponse<EditStudylog>, AxiosError> = useQuery(
+  const fetchStudylogRequest: UseQueryResult<AxiosResponse<Studylog>, AxiosError> = useQuery(
     [REACT_QUERY_KEY.STUDYLOG, id],
     () => requestGetStudylog({ id, accessToken }),
     {
