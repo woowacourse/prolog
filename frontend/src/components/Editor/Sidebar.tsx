@@ -3,13 +3,11 @@
 import CreatableSelectBox from '../CreatableSelectBox/CreatableSelectBox';
 import { COLOR } from '../../enumerations/color';
 import SelectBox from '../Controls/SelectBox';
-import { ERROR_MESSAGE, PLACEHOLDER } from '../../constants';
+import { PLACEHOLDER } from '../../constants';
 import { Mission, Session, Tag } from '../../models/Studylogs';
 import styled from '@emotion/styled';
 import { useGetMySessions, useMissions, useTags } from '../../hooks/queries/filters';
 import { getRowGapStyle } from '../../styles/layout.styles';
-import { useQuery } from 'react-query';
-import AbilityRequest, { ErrorData } from '../../apis/ability';
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserProvider';
 import { css } from '@emotion/react';
@@ -18,11 +16,9 @@ interface SidebarProps {
   selectedSessionId: Session['sessionId'] | null;
   selectedMissionId: Mission['id'] | null;
   selectedTagList: Tag[];
-  selectedAbilities: number[];
   onSelectSession: (session: { value: string; label: string }) => void;
   onSelectMission: (mission: { value: string; label: string }) => void;
   onSelectTag: (tags: Tag[], actionMeta: { option: { label: string } }) => void;
-  onSelectAbilities: (abilities: number[]) => void;
 }
 
 const SidebarWrapper = styled.aside`
@@ -68,19 +64,6 @@ const Sidebar = ({
 
   const selectedSession = sessions.find(({ sessionId }) => sessionId === selectedSessionId);
   const selectedMission = missions.find(({ id }) => id === selectedMissionId);
-
-  /** 전체 역량 조회 */
-  const { data: abilities = [] } = useQuery(
-    [`${username}-abilities`],
-    () => AbilityRequest.getAbilityList({ url: `/members/${username}/abilities` }),
-    {
-      onError: (errorData: ErrorData) => {
-        const errorCode = errorData?.code;
-
-        alert(ERROR_MESSAGE[errorCode] ?? '역량을 가져오는데 실패하였습니다. 다시 시도해주세요.');
-      },
-    }
-  );
 
   return (
     <SidebarWrapper>
