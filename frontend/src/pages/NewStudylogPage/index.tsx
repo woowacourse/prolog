@@ -44,10 +44,6 @@ const NewStudylogPage = () => {
     abilities: [],
   });
 
-  const onSelectAbilities = (abilities: number[]) => {
-    setStudylogContent({ ...studylogContent, abilities });
-  };
-
   const onChangeTitle: ChangeEventHandler<HTMLInputElement> = (event) => {
     setStudylogContent({ ...studylogContent, title: event.target.value });
   };
@@ -168,12 +164,10 @@ const NewStudylogPage = () => {
         selectedMissionId={studylogContent.missionId}
         selectedSessionId={studylogContent.sessionId}
         selectedTags={studylogContent.tags}
-        selectedAbilities={studylogContent.abilities}
         onChangeTitle={onChangeTitle}
         onSelectMission={onSelectMission}
         onSelectSession={onSelectSession}
         onSelectTag={onSelectTag}
-        onSelectAbilities={onSelectAbilities}
         onSubmit={onCreateStudylog}
         onTempSave={onTempSaveStudylog}
       />
