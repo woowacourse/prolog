@@ -18,10 +18,6 @@ import useBeforeunload from '../../hooks/useBeforeunload';
 import { ResponseError } from '../../apis/studylogs';
 import useTempSavedStudylog from '../../hooks/Studylog/useTempSavedStudylog';
 
-interface NewStudylogForm extends StudylogForm {
-  abilities: number[];
-}
-
 type SelectOption = { value: string; label: string };
 
 const NewStudylogPage = () => {
@@ -35,13 +31,12 @@ const NewStudylogPage = () => {
 
   useBeforeunload(editorContentRef);
 
-  const [studylogContent, setStudylogContent] = useState<NewStudylogForm>({
+  const [studylogContent, setStudylogContent] = useState<StudylogForm>({
     title: '',
     content: null,
     missionId: null,
     sessionId: null,
     tags: [],
-    abilities: [],
   });
 
   const onChangeTitle: ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -138,7 +133,6 @@ const NewStudylogPage = () => {
           missionId: tempSavedStudylog.mission?.id ?? null,
           sessionId: tempSavedStudylog.session?.sessionId ?? null,
           tags: tempSavedStudylog.tags ?? [],
-          abilities: tempSavedStudylog.abilities?.map(({ id }) => id) ?? [],
         });
 
         return;

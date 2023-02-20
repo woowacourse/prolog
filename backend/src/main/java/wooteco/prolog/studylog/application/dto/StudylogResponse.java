@@ -3,7 +3,6 @@ package wooteco.prolog.studylog.application.dto;
 import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,7 +30,6 @@ public class StudylogResponse {
     private String title;
     private String content;
     private List<TagResponse> tags;
-    private List<AbilityResponse> abilities;
     private boolean scrap;
     private boolean read;
     private int viewCount;
@@ -55,7 +53,6 @@ public class StudylogResponse {
                 studylog.getTitle(),
                 studylog.getContent(),
                 tagResponses,
-                Collections.emptyList(),
                 false,
                 false,
                 studylog.getViewCount(),
@@ -70,7 +67,7 @@ public class StudylogResponse {
                             final SessionResponse session, final MissionResponse mission, final String title,
                             final String content,
                             final List<TagResponse> tags,
-                            final List<AbilityResponse> abilities, final boolean scrap, final boolean read,
+                            final boolean scrap, final boolean read,
                             final int viewCount, final boolean liked,
                             final int likesCount) {
         this.id = id;
@@ -82,12 +79,35 @@ public class StudylogResponse {
         this.title = title;
         this.content = content;
         this.tags = tags;
-        this.abilities = abilities;
         this.scrap = scrap;
         this.read = read;
         this.viewCount = viewCount;
         this.liked = liked;
         this.likesCount = likesCount;
+    }
+
+    public static StudylogResponse of(Studylog studylog, boolean scrap,
+                                      boolean read, boolean liked, long commentCount) {
+        List<StudylogTag> studylogTags = studylog.getStudylogTags();
+        List<TagResponse> tagResponses = toTagResponses(studylogTags);
+
+        return new StudylogResponse(
+                studylog.getId(),
+                MemberResponse.of(studylog.getMember()),
+                studylog.getCreatedAt(),
+                studylog.getUpdatedAt(),
+                SessionResponse.of(studylog.getSession()),
+                MissionResponse.of(studylog.getMission()),
+                studylog.getTitle(),
+                studylog.getContent(),
+                tagResponses,
+                scrap,
+                read,
+                studylog.getViewCount(),
+                liked,
+                studylog.getLikeCount(),
+                commentCount
+        );
     }
 
     public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, boolean liked) {
@@ -104,56 +124,6 @@ public class StudylogResponse {
                 studylog.getTitle(),
                 studylog.getContent(),
                 tagResponses,
-                Collections.emptyList(),
-                scrap,
-                read,
-                studylog.getViewCount(),
-                liked,
-                studylog.getLikeCount(),
-                0
-        );
-    }
-
-    public static StudylogResponse of(Studylog studylog, List<AbilityResponse> abilityResponses, boolean scrap,
-                                      boolean read, boolean liked, long commentCount) {
-        List<StudylogTag> studylogTags = studylog.getStudylogTags();
-        List<TagResponse> tagResponses = toTagResponses(studylogTags);
-
-        return new StudylogResponse(
-                studylog.getId(),
-                MemberResponse.of(studylog.getMember()),
-                studylog.getCreatedAt(),
-                studylog.getUpdatedAt(),
-                SessionResponse.of(studylog.getSession()),
-                MissionResponse.of(studylog.getMission()),
-                studylog.getTitle(),
-                studylog.getContent(),
-                tagResponses,
-                abilityResponses,
-                scrap,
-                read,
-                studylog.getViewCount(),
-                liked,
-                studylog.getLikeCount(),
-                commentCount
-        );
-    }
-
-    public static StudylogResponse of(Studylog studylog, List<AbilityResponse> abilityResponses, boolean scrap, boolean read, boolean liked) {
-        List<StudylogTag> studylogTags = studylog.getStudylogTags();
-        List<TagResponse> tagResponses = toTagResponses(studylogTags);
-
-        return new StudylogResponse(
-                studylog.getId(),
-                MemberResponse.of(studylog.getMember()),
-                studylog.getCreatedAt(),
-                studylog.getUpdatedAt(),
-                SessionResponse.of(studylog.getSession()),
-                MissionResponse.of(studylog.getMission()),
-                studylog.getTitle(),
-                studylog.getContent(),
-                tagResponses,
-                abilityResponses,
                 scrap,
                 read,
                 studylog.getViewCount(),
@@ -173,7 +143,7 @@ public class StudylogResponse {
     }
 
     public static StudylogResponse of(Studylog studylog, List<AbilityResponse> abilityResponses, boolean scrap, boolean read, Long memberId) {
-        return StudylogResponse.of(studylog, abilityResponses, scrap, read, studylog.likedByMember(memberId));
+        return StudylogResponse.of(studylog, scrap, read, studylog.likedByMember(memberId));
     }
 
     public static StudylogResponse of(Studylog studylog, Long memberId, long commentCount) {
@@ -181,11 +151,11 @@ public class StudylogResponse {
     }
 
     public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, Long memberId, long commentCount) {
-        return StudylogResponse.of(studylog, Collections.emptyList(), scrap, read, studylog.likedByMember(memberId), commentCount);
+        return StudylogResponse.of(studylog, scrap, read, studylog.likedByMember(memberId), commentCount);
     }
 
     public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, Long memberId) {
-        return StudylogResponse.of(studylog, Collections.emptyList(), scrap, read, studylog.likedByMember(memberId));
+        return StudylogResponse.of(studylog, scrap, read, studylog.likedByMember(memberId));
     }
 
     private static List<TagResponse> toTagResponses(List<StudylogTag> studylogTags) {
@@ -210,7 +180,6 @@ public class StudylogResponse {
                 studylog.getTitle(),
                 studylog.getContent(),
                 tagResponses,
-                Collections.emptyList(),
                 scrap,
                 read,
                 studylog.getViewCount(),

@@ -323,7 +323,7 @@ public class StudylogService {
         boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId())
                 .isPresent();
 
-        return StudylogResponse.of(studylog, Collections.emptyList(), scraped, read, liked);
+        return StudylogResponse.of(studylog, scraped, read, liked);
     }
 
     public StudylogResponse findByIdAndReturnStudylogResponse(Long id) {

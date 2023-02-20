@@ -133,7 +133,6 @@ public class ReportDocumentation extends NewDocumentation {
                     "제목",
                     "내용내용내용내용내용",
                     Lists.newArrayList(new TagResponse(1L, "태그1"), new TagResponse(2L, "태그2")),
-                    Collections.emptyList(),
                     false,
                     false,
                     10,
