@@ -6,6 +6,7 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Disabled;
@@ -154,14 +155,17 @@ class StudylogDocumentation extends Documentation {
         회원과_멤버그룹_그룹멤버를_등록함();
         String studylogLocation1 = 스터디로그_등록함(createStudylogRequest1()).header("Location");
         String studylogLocation2 = 스터디로그_등록함(createStudylogRequest2()).header("Location");
+        String studylogLocation3 = 스터디로그_등록함(createStudylogRequest3()).header("Location");
         Long studylogId1 = Long.parseLong(studylogLocation1.split("/studylogs/")[1]);
         Long studylogId2 = Long.parseLong(studylogLocation2.split("/studylogs/")[1]);
+        Long studylogId3 = Long.parseLong(studylogLocation3.split("/studylogs/")[1]);
 
         스터디로그_단건_조회(studylogId1);
         스터디로그_단건_조회(studylogId2);
+        스터디로그_단건_조회(studylogId3);
         스터디로그_단건_좋아요(studylogId2);
 
-        인기있는_스터디로그_목록_갱신(2);
+        인기있는_스터디로그_목록_갱신(3);
 
         // when
         ExtractableResponse<Response> response = given("studylogs/popular")
@@ -171,9 +175,10 @@ class StudylogDocumentation extends Documentation {
 
         // then
         PopularStudylogsResponse popularStudylogsResponse = response.as(PopularStudylogsResponse.class);
-        assertThat(popularStudylogsResponse.getAllResponse().getData()).hasSize(2);
-        assertThat(popularStudylogsResponse.getFrontResponse().getData()).hasSize(2);
-        assertThat(popularStudylogsResponse.getBackResponse().getData()).hasSize(2);
+        assertThat(popularStudylogsResponse.getAllResponse().getData()).hasSize(3);
+        assertThat(popularStudylogsResponse.getFrontResponse().getData()).hasSize(3);
+        assertThat(popularStudylogsResponse.getBackResponse().getData()).hasSize(3);
+        assertThat(popularStudylogsResponse.getAndroidResponse().getData()).hasSize(3);
 
     }
 
@@ -292,6 +297,16 @@ class StudylogDocumentation extends Documentation {
         return new StudylogRequest(title, content, sessionId, missionId, tags);
     }
 
+    private StudylogRequest createStudylogRequest3() {
+        String title = "KOTLIN";
+        String content = "kotlin content";
+        Long sessionId = 세션_등록함(new SessionRequest("안드로이드 레벨1"));
+        Long missionId = 미션_등록함(new MissionRequest("세션1 - 코틀린", sessionId));
+        List<TagRequest> tags = Collections.emptyList();
+
+        return new StudylogRequest(title, content, sessionId, missionId, tags);
+    }
+
     private Long 역량_등록함(AbilityCreateRequest request) {
         return RestAssured.given().log().all()
             .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
@@ -335,8 +350,10 @@ class StudylogDocumentation extends Documentation {
         MemberGroup 프론트엔드 = memberGroupRepository.save(
             new MemberGroup(null, "4기 프론트엔드", "4기 프론트엔드 설명"));
         MemberGroup 백엔드 = memberGroupRepository.save(new MemberGroup(null, "4기 백엔드", "4기 백엔드 설명"));
+        MemberGroup 안드로이드 = memberGroupRepository.save(new MemberGroup(null, "4기 안드로이드", "4기 안드로이드 설명"));
         groupMemberRepository.save(new GroupMember(null, member, 백엔드));
         groupMemberRepository.save(new GroupMember(null, member, 프론트엔드));
+        groupMemberRepository.save(new GroupMember(null, member, 안드로이드));
     }
 
     private Long 미션_등록함(MissionRequest request) {
