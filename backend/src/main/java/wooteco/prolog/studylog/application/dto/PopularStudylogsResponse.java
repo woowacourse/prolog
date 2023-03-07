@@ -12,10 +12,12 @@ public class PopularStudylogsResponse {
     private StudylogsResponse allResponse;
     private StudylogsResponse frontResponse;
     private StudylogsResponse backResponse;
+    private StudylogsResponse androidResponse;
 
     public static PopularStudylogsResponse of(StudylogsResponse all,
                                               StudylogsResponse frontend,
-                                              StudylogsResponse backend) {
-        return new PopularStudylogsResponse(all, frontend, backend);
+                                              StudylogsResponse backend,
+                                              StudylogsResponse android) {
+        return new PopularStudylogsResponse(all, frontend, backend, android);
     }
 }

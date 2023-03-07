@@ -72,6 +72,7 @@ export const studyLogCategory = {
   allResponse: '전체',
   frontResponse: '프론트엔드',
   backResponse: '백엔드',
+  androidResponse: '안드로이드',
 } as const;
 
 export type StudyLogResponse = Record<keyof typeof studyLogCategory, StudyLogList>;

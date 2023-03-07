@@ -291,5 +291,46 @@
     "totalSize": 2,
     "totalPage": 1,
     "currPage": 1
+  },
+  "androidResponse": {
+    "data": [
+      {
+        "id": 5,
+        "author": {
+          "id": 1,
+          "username": "gracefulBrown",
+          "nickname": "브라운",
+          "role": "CREW",
+          "imageUrl": "https://avatars.githubusercontent.com/u/46308949?v=4"
+        },
+        "createdAt": "2022-06-04T20:14:47.177878",
+        "updatedAt": "2022-06-04T20:14:47.177878",
+        "session": {
+          "id": 4,
+          "name": "백엔드Java 레벨1 - 2021"
+        },
+        "mission": null,
+        "title": "[자바] JAVA 주세요",
+        "content": "Java를 잡아라",
+        "tags": [
+          {
+            "id": 1,
+            "name": "자료구조"
+          },
+          {
+            "id": 2,
+            "name": "알고리즘"
+          }
+        ],
+        "scrap": false,
+        "read": false,
+        "viewCount": 0,
+        "liked": false,
+        "likesCount": 1
+      }
+    ],
+    "totalSize": 1,
+    "totalPage": 1,
+    "currPage": 1
   }
 }
