@@ -1,4 +1,4 @@
-package wooteco.prolog.report.application.dto;
+package wooteco.prolog.ability.application.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
