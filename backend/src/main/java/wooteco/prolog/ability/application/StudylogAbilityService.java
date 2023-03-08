@@ -18,7 +18,7 @@ import wooteco.prolog.ability.domain.repository.StudylogAbilityRepository;
 import wooteco.prolog.common.PageableResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.report.application.dto.StudylogPeriodRequest;
+import wooteco.prolog.ability.application.dto.StudylogPeriodRequest;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.event.StudylogDeleteEvent;

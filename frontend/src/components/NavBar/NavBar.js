@@ -164,10 +164,6 @@ const NavBar = () => {
                         path: `/${username}/ability`,
                       },
                       {
-                        menu: '내 리포트',
-                        path: `/${username}/reports`,
-                      },
-                      {
                         menu: '내 스크랩',
                         path: `/${username}/scraps`,
                       },

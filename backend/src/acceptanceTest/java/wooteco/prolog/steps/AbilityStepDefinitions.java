@@ -17,7 +17,7 @@ import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.ExceptionDto;
 import wooteco.prolog.fixtures.AbilityAcceptanceFixture;
 import wooteco.prolog.fixtures.GithubResponses;
-import wooteco.prolog.report.exception.AbilityNotFoundException;
+import wooteco.prolog.ability.exception.AbilityNotFoundException;
 
 public class AbilityStepDefinitions extends AcceptanceSteps {
 

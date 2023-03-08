@@ -19,7 +19,7 @@ import wooteco.prolog.common.PageableResponse;
 import wooteco.prolog.login.aop.MemberOnly;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
-import wooteco.prolog.report.application.dto.StudylogPeriodRequest;
+import wooteco.prolog.ability.application.dto.StudylogPeriodRequest;
 
 @RestController
 public class StudylogAbilityController {

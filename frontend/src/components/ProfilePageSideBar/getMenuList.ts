@@ -3,7 +3,6 @@ import { PROFILE_PAGE_MENU } from '../../constants';
 import { ReactComponent as StudylogIcon } from '../../assets/images/post.svg';
 import { ReactComponent as OverviewIcon } from '../../assets/images/overview.svg';
 import { ReactComponent as ScrapIcon } from '../../assets/images/scrap.svg';
-import { ReactComponent as ReportIcon } from '../../assets/images/reportIcon.svg';
 
 const getMenuList = ({ username, isOwner }: { username: string; isOwner: boolean }) => {
   const defaultMenu = [
@@ -24,12 +23,6 @@ const getMenuList = ({ username, isOwner }: { username: string; isOwner: boolean
       title: '역량',
       path: `/${username}/ability`,
       Icon: StudylogIcon,
-    },
-    {
-      key: PROFILE_PAGE_MENU.REPORTS,
-      title: '리포트',
-      path: `/${username}/reports`,
-      Icon: ReportIcon,
     },
   ];
   const privateMenu = [
