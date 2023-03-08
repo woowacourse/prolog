@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.domain.GroupMember;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.MemberGroup;
+import wooteco.prolog.member.domain.MemberGroupType;
 import wooteco.prolog.member.domain.MemberGroups;
 import wooteco.prolog.member.domain.repository.GroupMemberRepository;
 import wooteco.prolog.member.domain.repository.MemberGroupRepository;
@@ -28,14 +29,10 @@ import wooteco.prolog.studylog.domain.repository.PopularStudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 
 @Service
-@AllArgsConstructor
 @Transactional(readOnly = true)
 public class PopularStudylogService {
 
-    private static final int A_WEEK = 7;
-    private static final String FRONTEND = "프론트엔드";
-    private static final String BACKEND = "백엔드";
-    private static final String ANDROID = "안드로이드";
+    private static final int DAYS_IN_WEEK = 7;
 
     private final StudylogService studylogService;
     private final StudylogRepository studylogRepository;
@@ -43,21 +40,34 @@ public class PopularStudylogService {
     private final MemberGroupRepository memberGroupRepository;
     private final GroupMemberRepository groupMemberRepository;
 
+    @Autowired
+    public PopularStudylogService(StudylogService studylogService,
+                                  StudylogRepository studylogRepository,
+                                  PopularStudylogRepository popularStudylogRepository,
+                                  MemberGroupRepository memberGroupRepository,
+                                  GroupMemberRepository groupMemberRepository) {
+        this.studylogService = studylogService;
+        this.studylogRepository = studylogRepository;
+        this.popularStudylogRepository = popularStudylogRepository;
+        this.memberGroupRepository = memberGroupRepository;
+        this.groupMemberRepository = groupMemberRepository;
+    }
+
     @Transactional
     public void updatePopularStudylogs(Pageable pageable) {
         deleteAllLegacyPopularStudylogs();
 
         List<GroupMember> groupMembers = groupMemberRepository.findAll();
-        Map<String, List<MemberGroup>> memberGroups = memberGroupRepository.findAll().stream()
-            .collect(Collectors.groupingBy(MemberGroup::getGroupName));
+        Map<MemberGroupType, List<MemberGroup>> memberGroups = memberGroupRepository.findAll().stream()
+            .collect(Collectors.groupingBy(MemberGroup::getGroupType));
 
         List<Studylog> studylogs = new ArrayList<>();
         studylogs.addAll(findStudylogsByDays(pageable, LocalDateTime.now(),
-            new MemberGroups(memberGroups.get(FRONTEND)), groupMembers));
+            new MemberGroups(memberGroups.get(MemberGroupType.FRONTEND)), groupMembers));
         studylogs.addAll(findStudylogsByDays(pageable, LocalDateTime.now(),
-            new MemberGroups(memberGroups.get(BACKEND)), groupMembers));
+            new MemberGroups(memberGroups.get(MemberGroupType.BACKEND)), groupMembers));
         studylogs.addAll(findStudylogsByDays(pageable, LocalDateTime.now(),
-            new MemberGroups(memberGroups.get(ANDROID)), groupMembers));
+            new MemberGroups(memberGroups.get(MemberGroupType.ANDROID)), groupMembers));
 
         List<PopularStudylog> popularStudylogs = studylogs.stream()
             .map(it -> new PopularStudylog(it.getId()))
@@ -71,16 +81,16 @@ public class PopularStudylogService {
                                                          boolean isAnonymousMember) {
 
         List<GroupMember> groupMembers = groupMemberRepository.findAll();
-        Map<String, List<MemberGroup>> memberGroups = memberGroupRepository.findAll().stream()
-            .collect(Collectors.groupingBy(MemberGroup::getGroupName));
+        Map<MemberGroupType, List<MemberGroup>> memberGroups = memberGroupRepository.findAll().stream()
+            .collect(Collectors.groupingBy(MemberGroup::getGroupType));
 
         List<Studylog> all = getSortedPopularStudyLogs(pageable);
         List<Studylog> frontend = getSortedPopularStudyLogs(all,
-            new MemberGroups(memberGroups.get(FRONTEND)), groupMembers);
+            new MemberGroups(memberGroups.get(MemberGroupType.FRONTEND)), groupMembers);
         List<Studylog> backend = getSortedPopularStudyLogs(all,
-            new MemberGroups(memberGroups.get(BACKEND)), groupMembers);
+            new MemberGroups(memberGroups.get(MemberGroupType.BACKEND)), groupMembers);
         List<Studylog> android = getSortedPopularStudyLogs(all,
-            new MemberGroups(memberGroups.get(ANDROID)), groupMembers);
+            new MemberGroups(memberGroups.get(MemberGroupType.ANDROID)), groupMembers);
 
         PageImpl<Studylog> allPage = new PageImpl<>(all, pageable, all.size());
         PageImpl<Studylog> frontendPage = new PageImpl<>(frontend, pageable, frontend.size());
@@ -156,7 +166,7 @@ public class PopularStudylogService {
         int searchFailedCount = 0;
 
         while (true) {
-            decreaseDays += A_WEEK;
+            decreaseDays += DAYS_IN_WEEK;
             List<Studylog> studylogs = studylogRepository.findByPastDays(
                 dateTime.minusDays(decreaseDays));
 

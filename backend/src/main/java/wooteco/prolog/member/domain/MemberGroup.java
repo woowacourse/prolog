@@ -13,10 +13,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class MemberGroup {
 
-    private static final String BACKEND = "백엔드";
-    private static final String FRONTEND = "프론트엔드";
-    private static final String ANDROID = "안드로이드";
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,17 +27,12 @@ public class MemberGroup {
         this.description = description;
     }
 
-    public String getGroupName() {
-        if (this.name.contains(BACKEND)) {
-            return BACKEND;
+    public MemberGroupType getGroupType() {
+        for (MemberGroupType groupType : MemberGroupType.values()) {
+            if (groupType.isContainedBy(this.name)) {
+                return groupType;
+            }
         }
-        if (this.name.contains(FRONTEND)) {
-            return FRONTEND;
-        }
-        if (this.name.contains(ANDROID)) {
-            return ANDROID;
-        }
-
-        return null;
+        throw new IllegalArgumentException("그룹이 포함되는 타입이 없습니다. id=" + this.id);
     }
 }
