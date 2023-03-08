@@ -1,10 +1,9 @@
-package wooteco.prolog.report.domain.ablity;
+package wooteco.prolog.ability.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,9 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import wooteco.prolog.ability.exception.AbilityParentChildColorDifferentException;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.ability.domain.Ability;
-import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
 import wooteco.prolog.studylog.exception.AbilityNameDuplicateException;
 import wooteco.prolog.studylog.exception.AbilityParentColorDuplicateException;
 
@@ -38,7 +36,7 @@ class AbilityTest {
     private static Stream<Arguments> parametersForIsParent() {
         Member member = mock(Member.class);
         Ability parent = Ability.parent(1L, "Language", "discription", "red", member);
-        
+
         return Stream.of(
             Arguments.of(parent, true),
             Arguments.of(Ability.child(2L, "Language", "discription", "red", parent, member), false)
