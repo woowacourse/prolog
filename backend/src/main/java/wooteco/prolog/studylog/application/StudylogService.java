@@ -8,7 +8,6 @@ import static java.util.stream.Collectors.toMap;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -110,14 +109,14 @@ public class StudylogService {
         onStudylogCreatedEvent(member, tags, persistStudylog);
         deleteStudylogTemp(memberId);
 
-        return StudylogResponse.of(persistStudylog, Collections.emptyList());
+        return StudylogResponse.of(persistStudylog);
     }
 
     @Transactional
     public StudylogTempResponse insertStudylogTemp(Long memberId, StudylogRequest studylogRequest) {
         StudylogTemp createdStudylogTemp = creteStudylogTemp(memberId, studylogRequest);
 
-        return StudylogTempResponse.from(createdStudylogTemp, Collections.emptyList());
+        return StudylogTempResponse.from(createdStudylogTemp);
     }
 
     private StudylogTemp creteStudylogTemp(Long memberId, StudylogRequest studylogRequest) {
@@ -161,7 +160,7 @@ public class StudylogService {
     public StudylogTempResponse findStudylogTemp(Long memberId) {
         if (studylogTempRepository.existsByMemberId(memberId)) {
             StudylogTemp studylogTemp = studylogTempRepository.findByMemberId(memberId);
-            return StudylogTempResponse.from(studylogTemp, Collections.emptyList());
+            return StudylogTempResponse.from(studylogTemp);
         }
         return StudylogTempResponse.toNull();
     }

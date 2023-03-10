@@ -1,22 +1,5 @@
 package wooteco.prolog.studylog.studylog.application;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.ability.application.AbilityService;
-import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.login.ui.LoginMember.Authority;
@@ -44,26 +25,32 @@ import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-import wooteco.prolog.studylog.application.CommentService;
-import wooteco.prolog.studylog.application.DocumentService;
-import wooteco.prolog.studylog.application.StudylogScrapService;
-import wooteco.prolog.studylog.application.StudylogService;
-import wooteco.prolog.studylog.application.TagService;
-import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
-import wooteco.prolog.studylog.application.dto.CommentSaveRequest;
-import wooteco.prolog.studylog.application.dto.StudylogRequest;
-import wooteco.prolog.studylog.application.dto.StudylogResponse;
-import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
-import wooteco.prolog.studylog.application.dto.StudylogTempResponse;
-import wooteco.prolog.studylog.application.dto.StudylogsResponse;
-import wooteco.prolog.studylog.application.dto.TagRequest;
-import wooteco.prolog.studylog.application.dto.TagResponse;
+import wooteco.prolog.studylog.application.*;
+import wooteco.prolog.studylog.application.dto.*;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 import wooteco.support.utils.IntegrationTest;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @IntegrationTest
 @Transactional
@@ -136,8 +123,6 @@ class StudylogServiceTest {
 
     @Autowired
     private DocumentService studylogDocumentService;
-    @Autowired
-    private AbilityService abilityService;
 
     @Autowired
     private MissionRepository missionRepository;
@@ -574,7 +559,6 @@ class StudylogServiceTest {
         //then
         assertThat(studylogTempResponse.getTitle()).isEqualTo(title);
         assertThat(studylogTempResponse.getContent()).isEqualTo(content);
-        assertThat(studylogTempResponse.getAbilities()).isEmpty();
     }
 
     @DisplayName("학습로그 목록조회 시 댓글 갯수도 같이 조회한다.")
@@ -696,43 +680,9 @@ class StudylogServiceTest {
         return missionService.create(new MissionRequest(missionName, session.getId()));
     }
 
-    public List<StudylogResponse> insertStudylogs(Member member, Studylog... studylogs) {
-        return insertStudylogs(member, asList(studylogs));
-    }
-
-    private List<StudylogResponse> insertStudylogs(Member member, List<Studylog> studylogs) {
-        List<StudylogRequest> studylogRequests = studylogs.stream()
-                .map(studylog ->
-                        new StudylogRequest(
-                                studylog.getTitle(),
-                                studylog.getContent(),
-                                studylog.getSession().getId(),
-                                studylog.getMission().getId(),
-                                toTagRequests(studylog)
-                        )
-                )
-                .collect(toList());
-
-        return studylogService.insertStudylogs(member.getId(), studylogRequests);
-    }
-
     private List<TagRequest> toTagRequests(List<Tag> tags) {
         return tags.stream()
                 .map(tag -> new TagRequest(tag.getName()))
                 .collect(toList());
-    }
-
-    private List<TagRequest> toTagRequests(Studylog studylog) {
-        return studylog.getStudylogTags().stream()
-                .map(studylogTag -> new TagRequest(studylogTag.getTag().getName()))
-                .collect(toList());
-    }
-
-    private List<Long> 역량을_저장한다() {
-        AbilityCreateRequest parentRequest1 = new AbilityCreateRequest("부모1", "부모설명1", "1", null);
-        AbilityCreateRequest parentRequest2 = new AbilityCreateRequest("부모2", "부모설명2", "2", null);
-        Long abilityId1 = abilityService.createAbility(member1.getId(), parentRequest1).getId();
-        Long abilityId2 = abilityService.createAbility(member1.getId(), parentRequest2).getId();
-        return asList(abilityId1, abilityId2);
     }
 }

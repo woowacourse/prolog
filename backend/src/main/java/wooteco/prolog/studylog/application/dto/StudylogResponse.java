@@ -1,13 +1,8 @@
 package wooteco.prolog.studylog.application.dto;
 
-import static java.util.stream.Collectors.toList;
-
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.ability.application.dto.AbilityResponse;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionResponse;
@@ -15,6 +10,11 @@ import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -138,11 +138,7 @@ public class StudylogResponse {
         return of(studylog, false, false, null);
     }
 
-    public static StudylogResponse of(Studylog studylog, List<AbilityResponse> abilityResponses) {
-        return of(studylog, abilityResponses, false, false, null);
-    }
-
-    public static StudylogResponse of(Studylog studylog, List<AbilityResponse> abilityResponses, boolean scrap, boolean read, Long memberId) {
+    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, Long memberId) {
         return StudylogResponse.of(studylog, scrap, read, studylog.likedByMember(memberId));
     }
 
@@ -152,10 +148,6 @@ public class StudylogResponse {
 
     public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, Long memberId, long commentCount) {
         return StudylogResponse.of(studylog, scrap, read, studylog.likedByMember(memberId), commentCount);
-    }
-
-    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, Long memberId) {
-        return StudylogResponse.of(studylog, scrap, read, studylog.likedByMember(memberId));
     }
 
     private static List<TagResponse> toTagResponses(List<StudylogTag> studylogTags) {
