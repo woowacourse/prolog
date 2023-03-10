@@ -153,17 +153,17 @@ class StudylogDocumentation extends Documentation {
     void 인기있는_스터디로그_목록을_갱신하고_조회한다() {
         // given
         회원과_멤버그룹_그룹멤버를_등록함();
-        String studylogLocation1 = 스터디로그_등록함(createStudylogRequest1()).header("Location");
-        String studylogLocation2 = 스터디로그_등록함(createStudylogRequest2()).header("Location");
-        String studylogLocation3 = 스터디로그_등록함(createStudylogRequest3()).header("Location");
-        Long studylogId1 = Long.parseLong(studylogLocation1.split("/studylogs/")[1]);
-        Long studylogId2 = Long.parseLong(studylogLocation2.split("/studylogs/")[1]);
-        Long studylogId3 = Long.parseLong(studylogLocation3.split("/studylogs/")[1]);
+        String frontStudylogLocation = 스터디로그_등록함(createStudylogRequest1()).header("Location");
+        String backStudylogLocation = 스터디로그_등록함(createStudylogRequest2()).header("Location");
+        String androidStudylogLocation = 스터디로그_등록함(createStudylogRequest3()).header("Location");
+        Long frontStudylogId = Long.parseLong(frontStudylogLocation.split("/studylogs/")[1]);
+        Long backStudylogId = Long.parseLong(backStudylogLocation.split("/studylogs/")[1]);
+        Long androidStudylogId = Long.parseLong(androidStudylogLocation.split("/studylogs/")[1]);
 
-        스터디로그_단건_조회(studylogId1);
-        스터디로그_단건_조회(studylogId2);
-        스터디로그_단건_조회(studylogId3);
-        스터디로그_단건_좋아요(studylogId2);
+        스터디로그_단건_조회(frontStudylogId);
+        스터디로그_단건_조회(backStudylogId);
+        스터디로그_단건_조회(androidStudylogId);
+        스터디로그_단건_좋아요(backStudylogId);
 
         인기있는_스터디로그_목록_갱신(3);
 
