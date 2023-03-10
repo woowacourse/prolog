@@ -35,6 +35,7 @@ public class PopularStudylogService {
     private static final int A_WEEK = 7;
     private static final String FRONTEND = "프론트엔드";
     private static final String BACKEND = "백엔드";
+    private static final String ANDROID = "안드로이드";
 
     private final StudylogService studylogService;
     private final StudylogRepository studylogRepository;
@@ -55,6 +56,8 @@ public class PopularStudylogService {
             new MemberGroups(memberGroups.get(FRONTEND)), groupMembers));
         studylogs.addAll(findStudylogsByDays(pageable, LocalDateTime.now(),
             new MemberGroups(memberGroups.get(BACKEND)), groupMembers));
+        studylogs.addAll(findStudylogsByDays(pageable, LocalDateTime.now(),
+            new MemberGroups(memberGroups.get(ANDROID)), groupMembers));
 
         List<PopularStudylog> popularStudylogs = studylogs.stream()
             .map(it -> new PopularStudylog(it.getId()))
@@ -76,30 +79,36 @@ public class PopularStudylogService {
             new MemberGroups(memberGroups.get(FRONTEND)), groupMembers);
         List<Studylog> backend = getSortedPopularStudyLogs(all,
             new MemberGroups(memberGroups.get(BACKEND)), groupMembers);
+        List<Studylog> android = getSortedPopularStudyLogs(all,
+            new MemberGroups(memberGroups.get(ANDROID)), groupMembers);
 
         PageImpl<Studylog> allPage = new PageImpl<>(all, pageable, all.size());
         PageImpl<Studylog> frontendPage = new PageImpl<>(frontend, pageable, frontend.size());
         PageImpl<Studylog> backendPage = new PageImpl<>(backend, pageable, backend.size());
+        PageImpl<Studylog> androidPage = new PageImpl<>(android, pageable, android.size());
 
         StudylogsResponse allStudylogsResponse = StudylogsResponse.of(allPage, memberId);
         StudylogsResponse frontendStudylogsResponse = StudylogsResponse.of(frontendPage, memberId);
         StudylogsResponse backendStudylogsResponse = StudylogsResponse.of(backendPage, memberId);
+        StudylogsResponse androidStudylogsResponse = StudylogsResponse.of(androidPage, memberId);
 
         if (isAnonymousMember) {
             return PopularStudylogsResponse.of(
-                allStudylogsResponse, frontendStudylogsResponse, backendStudylogsResponse);
+                allStudylogsResponse, frontendStudylogsResponse, backendStudylogsResponse, androidStudylogsResponse);
         }
 
         List<StudylogResponse> allData = allStudylogsResponse.getData();
         List<StudylogResponse> frontendData = frontendStudylogsResponse.getData();
         List<StudylogResponse> backendData = backendStudylogsResponse.getData();
+        List<StudylogResponse> androidData = backendStudylogsResponse.getData();
 
         checkStudylogScrapAndRead(allData, memberId);
         checkStudylogScrapAndRead(frontendData, memberId);
         checkStudylogScrapAndRead(backendData, memberId);
+        checkStudylogScrapAndRead(androidData, memberId);
 
         return PopularStudylogsResponse.of(
-            allStudylogsResponse, frontendStudylogsResponse, backendStudylogsResponse);
+            allStudylogsResponse, frontendStudylogsResponse, backendStudylogsResponse, androidStudylogsResponse);
     }
 
     private List<Studylog> getSortedPopularStudyLogs(Pageable pageable) {
