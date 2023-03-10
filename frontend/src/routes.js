@@ -1,6 +1,5 @@
 import { PATH, PROFILE_PAGE_MENU } from './constants';
 import {
-  AbilityPage,
   EditStudylogPage,
   LoginCallbackPage,
   MainPage,
@@ -93,14 +92,6 @@ const pageRoutes = [
     render: () => (
       <ProfilePage menu={PROFILE_PAGE_MENU.SCRAPS}>
         <ProfilePageScraps />
-      </ProfilePage>
-    ),
-  },
-  {
-    path: [PATH.ABILITY],
-    render: () => (
-      <ProfilePage menu={PROFILE_PAGE_MENU.ABILITY}>
-        <AbilityPage />
       </ProfilePage>
     ),
   },

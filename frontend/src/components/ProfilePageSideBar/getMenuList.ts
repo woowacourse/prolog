@@ -20,12 +20,6 @@ const getMenuList = ({ username, isOwner }: { username: string; isOwner: boolean
       Icon: StudylogIcon,
     },
     {
-      key: PROFILE_PAGE_MENU.ABILITY,
-      title: '역량',
-      path: `/${username}/ability`,
-      Icon: StudylogIcon,
-    },
-    {
       key: PROFILE_PAGE_MENU.REPORTS,
       title: '리포트',
       path: `/${username}/reports`,

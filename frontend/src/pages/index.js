@@ -1,5 +1,4 @@
 export { default as MainPage } from './MainPage';
-export { default as AbilityPage } from './AbilityPage';
 export { default as StudylogPage } from './StudylogPage';
 export { default as NewStudylogPage } from './NewStudylogPage';
 export { default as ProfilePage } from './ProfilePage';
