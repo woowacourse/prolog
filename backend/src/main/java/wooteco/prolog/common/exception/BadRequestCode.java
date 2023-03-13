@@ -13,10 +13,6 @@ import wooteco.prolog.login.excetpion.TokenNotValidException;
 import wooteco.prolog.member.exception.DuplicateMemberTagException;
 import wooteco.prolog.member.exception.MemberNotAllowedException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
-import wooteco.prolog.ability.exception.AbilityHasChildrenException;
-import wooteco.prolog.ability.exception.AbilityNotFoundException;
-import wooteco.prolog.ability.exception.AbilityParentChildColorDifferentException;
-import wooteco.prolog.ability.exception.DefaultAbilityNotFoundException;
 import wooteco.prolog.roadmap.exception.CurriculumInvalidException;
 import wooteco.prolog.roadmap.exception.CurriculumNotFoundException;
 import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
@@ -27,8 +23,6 @@ import wooteco.prolog.roadmap.exception.QuizQuestionException;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.domain.TagName;
 import wooteco.prolog.studylog.domain.Title;
-import wooteco.prolog.studylog.exception.AbilityNameDuplicateException;
-import wooteco.prolog.studylog.exception.AbilityParentColorDuplicateException;
 import wooteco.prolog.studylog.exception.AuthorNotValidException;
 import wooteco.prolog.studylog.exception.CommentDeleteException;
 import wooteco.prolog.studylog.exception.CommentNotFoundException;
@@ -89,16 +83,6 @@ public enum BadRequestCode {
         StudylogScrapAlreadyRegisteredException.class),
     SCRAP_NOT_EXIST(3008, "스크랩이 존재하지 않습니다.", StudylogScrapNotExistException.class),
     SCRAP_NOT_VALID_USER(3009, "본인의 스크랩만 추가할 수 있습니다.", StudylogScrapNotValidUserException.class),
-
-    ABILITY_NOT_FOUND(4000, "역량이 존재하지 않습니다.", AbilityNotFoundException.class),
-    ABILITY_HAS_CHILDREN(4001, "해당 역량의 하위 역량이 존재합니다.", AbilityHasChildrenException.class),
-    ABILITY_NAME_DUPLICATE(4002, "중복된 이름의 역량이 존재합니다.", AbilityNameDuplicateException.class),
-    ABILITY_PARENT_COLOR_DUPLICATE(4003, "중복된 색상의 부모역량이 존재합니다.",
-        AbilityParentColorDuplicateException.class),
-    ABILITY_PARENT_CHILD_COLOR_DIFFERENT(4004, "상위 역량과 하위 역량의 색상이 일치하지 않습니다.",
-        AbilityParentChildColorDifferentException.class),
-    DEFAULT_ABILITY_NOT_FOUND(4006, "입력된 과정의 기본 역량이 존재하지 않습니다.",
-        DefaultAbilityNotFoundException.class),
 
     INVALID_LIKE_REQUEST_EXCEPTION(5001, "스터디로그를 좋아요 할 수 없습니다.", InvalidLikeRequestException.class),
     INVALID_UNLIKE_REQUEST_EXCEPTION(5002, "스터디로그를 좋아요 취소 할 수 없습니다.",

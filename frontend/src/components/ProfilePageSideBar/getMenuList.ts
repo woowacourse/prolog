@@ -18,12 +18,6 @@ const getMenuList = ({ username, isOwner }: { username: string; isOwner: boolean
       path: `/${username}/studylogs`,
       Icon: StudylogIcon,
     },
-    {
-      key: PROFILE_PAGE_MENU.ABILITY,
-      title: '역량',
-      path: `/${username}/ability`,
-      Icon: StudylogIcon,
-    },
   ];
   const privateMenu = [
     {

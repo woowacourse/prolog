@@ -3,10 +3,8 @@ import ERROR_CODE from './errorCode';
 const CONFIRM_MESSAGE = {
   DELETE_STUDYLOG: '글을 삭제하시겠습니까?',
   DELETE_SCRAP: '스크랩을 취소하시겠습니까?',
-  DELETE_ABILITY: '역량을 삭제하시겠습니까?',
   DELETE_LIKE: '좋아요를 취소하시겠습니까?',
   TEMP_SAVE_STUDYLOG: '글을 저장하시겠습니까?',
-  SET_DEFAULT_ABILITIES: '기본 역량 등록에 실패했습니다.',
 };
 
 const ALERT_MESSAGE = {
@@ -32,10 +30,6 @@ const ERROR_MESSAGE = {
   DEFAULT: '에러가 발생했습니다. 관리자에게 문의해 주세요',
   LOGIN_DEFAULT: '로그인 정보가 유효하지 않습니다. 다시 로그인해 주세요.',
 
-  NEED_ABILITY_NAME: '역량의 이름은 공백일 수 없습니다.',
-  NEED_ABILITY_COLOR: '역량의 색상을 선택해주세요.',
-  INVALID_ABILIT_COLOR: '유효하지 않은 색상코드입니다.',
-
   1000: '깃허브 로그인에 실패했습니다. 다시 로그인해 주세요.',
   1001: '깃허브 로그인에 실패했습니다. 다시 로그인해 주세요.',
   1002: '로그인 시간이 만료되었습니다. 다시 로그인해 주세요.',
@@ -43,11 +37,6 @@ const ERROR_MESSAGE = {
 
   [ERROR_CODE.NO_CONTENT]: '글 내용을 작성해 주세요.',
   [ERROR_CODE.NO_TITLE]: '글 제목을 입력해 주세요.',
-
-  4001: '하위 역량이 존재 할 때에는, 상위 역량을 삭제할 수 없습니다.',
-  4002: '같은 이름의 역량이 존재합니다.',
-  4003: '중복된 색상이 존재합니다. 다른 색을 선택해 주세요.',
-  4012: '리포트 설명은 150자를 넘을 수 없습니다.',
 
   [ERROR_CODE.SERVER_ERROR]: '서버가 응답하지 않습니다. 프롤로그 팀에 문의 주세요.',
 
@@ -59,10 +48,6 @@ const SUCCESS_MESSAGE = {
   EDIT_POST: '글이 수정되었습니다.',
   TEMP_SAVE_POST: '글이 임시저장되었습니다.',
   DELETE_STUDYLOG: '글이 삭제되었습니다.',
-  CREATE_ABILITY: '역량을 추가했습니다.',
-  EDIT_ABILITY: '역량을 수정했습니다.',
-  DELETE_ABILITY: '역량을 삭제했습니다.',
-  SET_DEFAULT_ABILITIES: '기본 역량을 설정했습니다.',
 };
 
 const PLACEHOLDER = {
