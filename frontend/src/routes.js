@@ -1,17 +1,12 @@
 import { PATH, PROFILE_PAGE_MENU } from './constants';
 import {
-  AbilityPage,
   EditStudylogPage,
   LoginCallbackPage,
   MainPage,
   NewStudylogPage,
   StudylogPage,
   ProfilePage,
-  ProfilePageEditReport,
-  ProfilePageNewReport,
   ProfilePageStudylogs,
-  ProfilePageReports,
-  ProfilePageReportsList,
   ProfilePageScraps,
   StudylogListPage,
   RoadmapPage,
@@ -57,50 +52,10 @@ const pageRoutes = [
     ),
   },
   {
-    path: [PATH.PROFILE_REPORTS],
-    render: () => (
-      <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
-        <ProfilePageReportsList />
-      </ProfilePage>
-    ),
-  },
-  {
-    path: [PATH.PROFILE_NEW_REPORT],
-    render: () => (
-      <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
-        <ProfilePageNewReport />
-      </ProfilePage>
-    ),
-  },
-  {
-    path: [PATH.PROFILE_REPORT],
-    render: () => (
-      <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
-        <ProfilePageReports />
-      </ProfilePage>
-    ),
-  },
-  {
-    path: [`${PATH.PROFILE_REPORTS}/:id/edit`],
-    render: () => (
-      <ProfilePage menu={PROFILE_PAGE_MENU.REPORTS}>
-        <ProfilePageEditReport />
-      </ProfilePage>
-    ),
-  },
-  {
     path: [PATH.PROFILE_SCRAPS],
     render: () => (
       <ProfilePage menu={PROFILE_PAGE_MENU.SCRAPS}>
         <ProfilePageScraps />
-      </ProfilePage>
-    ),
-  },
-  {
-    path: [PATH.ABILITY],
-    render: () => (
-      <ProfilePage menu={PROFILE_PAGE_MENU.ABILITY}>
-        <AbilityPage />
       </ProfilePage>
     ),
   },

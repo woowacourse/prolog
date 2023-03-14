@@ -1,14 +1,8 @@
 package wooteco.prolog.docu;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
-import wooteco.prolog.ability.application.dto.AbilityCreateRequest;
-import wooteco.prolog.ability.application.dto.AbilityResponse;
 import wooteco.prolog.member.domain.GroupMember;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.MemberGroup;
@@ -28,11 +20,14 @@ import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
-import wooteco.prolog.studylog.application.dto.PopularStudylogsResponse;
-import wooteco.prolog.studylog.application.dto.StudylogRequest;
-import wooteco.prolog.studylog.application.dto.StudylogResponse;
-import wooteco.prolog.studylog.application.dto.StudylogsResponse;
-import wooteco.prolog.studylog.application.dto.TagRequest;
+import wooteco.prolog.studylog.application.dto.*;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class StudylogDocumentation extends Documentation {
 
@@ -263,16 +258,6 @@ class StudylogDocumentation extends Documentation {
         Long sessionId = 세션_등록함(new SessionRequest("프론트엔드JS 레벨1 - 2021"));
         Long missionId = 미션_등록함(new MissionRequest("세션1 - 지하철 노선도 미션", sessionId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("spa"), new TagRequest("router"));
-        Long parentAbilityId = 역량_등록함(new AbilityCreateRequest(
-            "부모 역량1",
-            "부모 역량1입니다",
-            "#ffffff",
-            null));
-        Long abilityId = 역량_등록함(new AbilityCreateRequest(
-            "자식 역량1",
-            "자식 역량1입니다",
-            "#ffffff",
-            parentAbilityId));
 
         return new StudylogRequest(title, content, sessionId, missionId, tags);
     }
@@ -283,16 +268,6 @@ class StudylogDocumentation extends Documentation {
         Long sessionId = 세션_등록함(new SessionRequest("백엔드Java 레벨1 - 2021"));
         Long missionId = 미션_등록함(new MissionRequest("세션3 - 프로젝트", sessionId));
         List<TagRequest> tags = Arrays.asList(new TagRequest("java"), new TagRequest("jpa"));
-        Long parentAbilityId = 역량_등록함(new AbilityCreateRequest(
-            "부모 역량2",
-            "부모 역량2입니다",
-            "#000000",
-            null));
-        Long abilityId = 역량_등록함(new AbilityCreateRequest(
-            "자식 역량2",
-            "자식 역량2입니다",
-            "#000000",
-            parentAbilityId));
 
         return new StudylogRequest(title, content, sessionId, missionId, tags);
     }
@@ -305,20 +280,6 @@ class StudylogDocumentation extends Documentation {
         List<TagRequest> tags = Collections.emptyList();
 
         return new StudylogRequest(title, content, sessionId, missionId, tags);
-    }
-
-    private Long 역량_등록함(AbilityCreateRequest request) {
-        return RestAssured.given().log().all()
-            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-            .body(request)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .when()
-            .post("/abilities")
-            .then()
-            .log().all()
-            .extract()
-            .as(AbilityResponse.class)
-            .getId();
     }
 
     private ExtractableResponse<Response> 스터디로그_등록함(StudylogRequest request) {

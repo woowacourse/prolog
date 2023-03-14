@@ -1,62 +1,20 @@
 package wooteco.prolog.common.exception;
 
-import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import wooteco.prolog.levellogs.exception.InvalidLevelLogAuthorException;
 import wooteco.prolog.levellogs.exception.LevelLogNotFoundException;
-import wooteco.prolog.login.excetpion.GithubApiFailException;
-import wooteco.prolog.login.excetpion.GithubConnectionException;
-import wooteco.prolog.login.excetpion.RoleNameNotFoundException;
-import wooteco.prolog.login.excetpion.StudylogTitleNullOrEmptyException;
-import wooteco.prolog.login.excetpion.TokenNotValidException;
+import wooteco.prolog.login.excetpion.*;
 import wooteco.prolog.member.exception.DuplicateMemberTagException;
 import wooteco.prolog.member.exception.MemberNotAllowedException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
-import wooteco.prolog.report.exception.AbilityHasChildrenException;
-import wooteco.prolog.report.exception.AbilityNotFoundException;
-import wooteco.prolog.report.exception.AbilityParentChildColorDifferentException;
-import wooteco.prolog.report.exception.DefaultAbilityNotFoundException;
-import wooteco.prolog.report.exception.GraphAbilitiesAreNotParentException;
-import wooteco.prolog.report.exception.ReportDescriptionException;
-import wooteco.prolog.report.exception.ReportNotFoundException;
-import wooteco.prolog.report.exception.ReportRequestTypeException;
-import wooteco.prolog.report.exception.ReportTitleLengthException;
-import wooteco.prolog.report.exception.ReportUpdateException;
-import wooteco.prolog.report.exception.UnRelatedAbilityExistenceException;
-import wooteco.prolog.roadmap.exception.CurriculumInvalidException;
-import wooteco.prolog.roadmap.exception.CurriculumNotFoundException;
-import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
-import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
-import wooteco.prolog.roadmap.exception.KeywordOrderException;
-import wooteco.prolog.roadmap.exception.QuizNotFoundException;
-import wooteco.prolog.roadmap.exception.QuizQuestionException;
+import wooteco.prolog.roadmap.exception.*;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.domain.TagName;
 import wooteco.prolog.studylog.domain.Title;
-import wooteco.prolog.studylog.exception.AbilityNameDuplicateException;
-import wooteco.prolog.studylog.exception.AbilityParentColorDuplicateException;
-import wooteco.prolog.studylog.exception.AuthorNotValidException;
-import wooteco.prolog.studylog.exception.CommentDeleteException;
-import wooteco.prolog.studylog.exception.CommentNotFoundException;
-import wooteco.prolog.studylog.exception.DuplicateMissionException;
-import wooteco.prolog.studylog.exception.DuplicateReportTitleException;
-import wooteco.prolog.studylog.exception.DuplicateTagException;
-import wooteco.prolog.studylog.exception.InvalidLikeRequestException;
-import wooteco.prolog.studylog.exception.InvalidUnlikeRequestException;
-import wooteco.prolog.studylog.exception.MissionNotFoundException;
-import wooteco.prolog.studylog.exception.NotValidSortNameException;
-import wooteco.prolog.studylog.exception.StudylogArgumentException;
-import wooteco.prolog.studylog.exception.StudylogContentNullOrEmptyException;
-import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
-import wooteco.prolog.studylog.exception.StudylogNotFoundException;
-import wooteco.prolog.studylog.exception.StudylogScrapAlreadyRegisteredException;
-import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
-import wooteco.prolog.studylog.exception.StudylogScrapNotValidUserException;
-import wooteco.prolog.studylog.exception.TagNameNullOrEmptyException;
-import wooteco.prolog.studylog.exception.TooLongMissionNameException;
-import wooteco.prolog.studylog.exception.TooLongTagNameException;
-import wooteco.prolog.studylog.exception.TooLongTitleException;
+import wooteco.prolog.studylog.exception.*;
+
+import java.util.Arrays;
 
 @AllArgsConstructor
 @Getter
@@ -97,28 +55,6 @@ public enum BadRequestCode {
         StudylogScrapAlreadyRegisteredException.class),
     SCRAP_NOT_EXIST(3008, "스크랩이 존재하지 않습니다.", StudylogScrapNotExistException.class),
     SCRAP_NOT_VALID_USER(3009, "본인의 스크랩만 추가할 수 있습니다.", StudylogScrapNotValidUserException.class),
-
-    ABILITY_NOT_FOUND(4000, "역량이 존재하지 않습니다.", AbilityNotFoundException.class),
-    ABILITY_HAS_CHILDREN(4001, "해당 역량의 하위 역량이 존재합니다.", AbilityHasChildrenException.class),
-    ABILITY_NAME_DUPLICATE(4002, "중복된 이름의 역량이 존재합니다.", AbilityNameDuplicateException.class),
-    ABILITY_PARENT_COLOR_DUPLICATE(4003, "중복된 색상의 부모역량이 존재합니다.",
-        AbilityParentColorDuplicateException.class),
-    ABILITY_PARENT_CHILD_COLOR_DIFFERENT(4004, "상위 역량과 하위 역량의 색상이 일치하지 않습니다.",
-        AbilityParentChildColorDifferentException.class),
-    DUPLICATE_REPORT_TITLE(4005, "리포트의 이름은 중복일 수 없습니다.", DuplicateReportTitleException.class),
-    DEFAULT_ABILITY_NOT_FOUND(4006, "입력된 과정의 기본 역량이 존재하지 않습니다.",
-        DefaultAbilityNotFoundException.class),
-    GRAPH_ABILITIES_ARE_NOT_PARENT_EXCEPTION(4007, "그래프의 역량은 부모 역량만 등록 가능합니다.",
-        GraphAbilitiesAreNotParentException.class),
-    REPORT_NOT_FOUND_EXCEPTION(4008, "리포트를 찾을 수 없습니다", ReportNotFoundException.class),
-    REPORT_REQUEST_TYPE_EXCEPTION(4009, "리포트 검색 타입을 찾을 수 없습니다.", ReportRequestTypeException.class),
-    REPORT_UPDATE_EXCEPTION(4010, "리포트를 업데이트 하는데 실패했습니다.", ReportUpdateException.class),
-    UNRELATED_ABILITY_EXISTENCE_EXCEPTION(4011, "역량 그래프와 관련이 없는 역량이 스터디 로그 역량에 존재합니다.",
-        UnRelatedAbilityExistenceException.class),
-    REPORT_DESCRIPTION_EXCEPTION(4012, "리포트 설명은 150자를 넘을 수 없습니다.",
-        ReportDescriptionException.class),
-    REPORT_TITLE_LENGTH_EXCEPTION(4013, "리포트 제목은 15자를 넘을 수 없습니다.",
-        ReportTitleLengthException.class),
 
     INVALID_LIKE_REQUEST_EXCEPTION(5001, "스터디로그를 좋아요 할 수 없습니다.", InvalidLikeRequestException.class),
     INVALID_UNLIKE_REQUEST_EXCEPTION(5002, "스터디로그를 좋아요 취소 할 수 없습니다.",
