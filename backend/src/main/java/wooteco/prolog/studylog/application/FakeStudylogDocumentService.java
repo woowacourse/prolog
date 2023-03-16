@@ -18,7 +18,7 @@ import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
 
-@Profile({"local", "test", "flyway"})
+@Profile({"local", "test"})
 @Service
 public class FakeStudylogDocumentService extends AbstractStudylogDocumentService {
 
