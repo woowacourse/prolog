@@ -15,7 +15,7 @@ spring:
       ddl-auto: create-drop
     properties:
       hibernate:
-        show_sql: false
+        show_sql: true
         format_sql: true
         use_sql_comment: false
   flyway:
@@ -29,21 +29,6 @@ github:
     access-token: http://localhost:4000/github/login/oauth/access_token
     profile: http://localhost:4000/github/user
 
-elasticsearch:
-  host: 127.0.0.1
-  port: 9200
-
-management:
-  health:
-    elasticsearch:
-      enabled: false
-
-cloud:
-  aws:
-    region:
-      static: ap-northeast-2
-    stack:
-      auto: false
 application:
   url: http://localhost:8080
   bucket:
