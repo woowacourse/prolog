@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.support.fake.FakeDocumentRepository;
 
-@Profile({"local", "test", "flyway"})
+@Profile({"local", "test"})
 @Repository
 public class FakeStudylogDocumentRepository implements StudylogDocumentRepository,
     FakeDocumentRepository {

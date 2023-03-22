@@ -1,5 +1,9 @@
 package wooteco.prolog.studylog.application;
 
+import static java.util.stream.Collectors.toList;
+
+import java.time.LocalDate;
+import java.util.List;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
@@ -15,12 +19,7 @@ import wooteco.prolog.studylog.domain.StudylogDocumentQueryBuilder;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
-
-@Profile({"elastic", "dev", "prod"})
+@Profile({"dev", "prod"})
 @Service
 public class StudylogDocumentService extends AbstractStudylogDocumentService {
 

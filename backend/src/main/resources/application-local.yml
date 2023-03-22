@@ -1,46 +1,18 @@
+application:
+  url: http://127.0.0.1:8080
+
 spring:
-  jpa:
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-    hibernate:
-      ddl-auto: validate
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-        use_sql_comment: false
-  flyway:
-      enabled: true
-      baseline-on-migrate: true
-      baseline-version: 0
-      out-of-order: true
-      locations: classpath:db/migration/prod
-  h2:
-    console:
-      enabled: true
   datasource:
     url: jdbc:mysql://localhost:13306/prolog?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-security:
-  jwt:
-    token:
-      secret-key: secret_key
-      expire-length: 3600000
-
 github:
   client:
     id: f91b56445e08d44adb76
     secret: f02769f780ed3d40f9db9283f5b7cc79ecf9074e
-  url:
-    access-token: https://github.com/login/oauth/access_token
-    profile: https://api.github.com/user
 
 elasticsearch:
   host: 127.0.0.1
   port: 9200
-
-application:
-  url: http://127.0.0.1:8080
