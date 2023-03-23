@@ -57,7 +57,7 @@ public class LevelLogsController {
 
     @GetMapping
     public ResponseEntity<LevelLogSummariesResponse> findAll(
-        @PageableDefault(sort = {"createdAt"}, direction = Direction.DESC) Pageable pageable) {
+        @PageableDefault(sort = {"id"}, direction = Direction.DESC) Pageable pageable) {
         final LevelLogSummariesResponse response = levelLogService.findAll(pageable);
         return ResponseEntity.ok(response);
     }
