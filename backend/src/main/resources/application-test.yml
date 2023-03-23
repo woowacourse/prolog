@@ -19,11 +19,7 @@ spring:
         format_sql: true
         use_sql_comment: false
   flyway:
-    enabled: true
-    baseline-on-migrate: true
-    baseline-version: 0
-    locations: classpath:db/migration/prod
-    out-of-order: true
+    enabled: false
   datasource:
     url: jdbc:mysql://localhost:13306/prolog?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
     username: root
