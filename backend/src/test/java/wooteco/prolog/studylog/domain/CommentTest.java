@@ -1,6 +1,5 @@
 package wooteco.prolog.studylog.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Arrays;
@@ -28,6 +27,6 @@ public class CommentTest {
         comment.delete();
 
         assertThatThrownBy(() -> comment.delete())
-                .isInstanceOf(CommentDeleteException.class);
+            .isInstanceOf(CommentDeleteException.class);
     }
 }

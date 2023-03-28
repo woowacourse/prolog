@@ -85,8 +85,8 @@ public class StudylogService {
         }
 
         return studylogRequests.stream()
-                .map(studylogRequest -> insertStudylog(memberId, studylogRequest))
-                .collect(toList());
+            .map(studylogRequest -> insertStudylog(memberId, studylogRequest))
+            .collect(toList());
     }
 
     @Transactional
@@ -94,16 +94,16 @@ public class StudylogService {
         Member member = memberService.findById(memberId);
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
         Session session = sessionService.findSessionById(studylogRequest.getSessionId())
-                .orElse(null);
+            .orElse(null);
         Mission mission = missionService.findMissionById(studylogRequest.getMissionId())
-                .orElse(null);
+            .orElse(null);
 
         Studylog persistStudylog = studylogRepository.save(new Studylog(member,
-                studylogRequest.getTitle(),
-                studylogRequest.getContent(),
-                session,
-                mission,
-                tags.getList())
+            studylogRequest.getTitle(),
+            studylogRequest.getContent(),
+            session,
+            mission,
+            tags.getList())
         );
 
         onStudylogCreatedEvent(member, tags, persistStudylog);
@@ -123,16 +123,16 @@ public class StudylogService {
         Member member = memberService.findById(memberId);
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
         Session session = sessionService.findSessionById(studylogRequest.getSessionId())
-                .orElse(null);
+            .orElse(null);
         Mission mission = missionService.findMissionById(studylogRequest.getMissionId())
-                .orElse(null);
+            .orElse(null);
 
         StudylogTemp requestedStudylogTemp = new StudylogTemp(member,
-                studylogRequest.getTitle(),
-                studylogRequest.getContent(),
-                session,
-                mission,
-                tags.getList());
+            studylogRequest.getTitle(),
+            studylogRequest.getContent(),
+            session,
+            mission,
+            tags.getList());
 
         deleteStudylogTemp(memberId);
         StudylogTemp createdStudylogTemp = studylogTempRepository.save(requestedStudylogTemp);
@@ -165,82 +165,85 @@ public class StudylogService {
         return StudylogTempResponse.toNull();
     }
 
+    @Transactional
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Long memberId) {
         if (Objects.nonNull(request.getIds())) {
             Pageable pageable = request.getPageable();
             List<Long> ids = request.getIds();
 
-            Page<Studylog> studylogs = studylogRepository.findByIdInAndDeletedFalseOrderByIdDesc(ids, pageable);
+            Page<Studylog> studylogs = studylogRepository.findByIdInAndDeletedFalseOrderByIdDesc(
+                ids, pageable);
             Map<Long, Long> commentCounts = commentCounts(studylogs.getContent());
             return StudylogsResponse.of(studylogs, memberId, commentCounts);
         }
 
         if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
             return findStudylogsWithoutKeyword(request.getSessions(), request.getMissions(),
-                    request.getTags(),
-                    request.getUsernames(), request.getMembers(), request.getStartDate(),
-                    request.getEndDate(),
-                    request.getPageable(), memberId);
+                request.getTags(),
+                request.getUsernames(), request.getMembers(), request.getStartDate(),
+                request.getEndDate(),
+                request.getPageable(), memberId);
         }
 
         final StudylogDocumentResponse response = studylogDocumentService.findBySearchKeyword(
-                request.getKeyword(),
-                request.getTags(),
-                request.getMissions(),
-                request.getSessions(),
-                request.getUsernames(),
-                request.getStartDate(),
-                request.getEndDate(),
-                request.getPageable()
+            request.getKeyword(),
+            request.getTags(),
+            request.getMissions(),
+            request.getSessions(),
+            request.getUsernames(),
+            request.getStartDate(),
+            request.getEndDate(),
+            request.getPageable()
         );
 
         final List<Studylog> studylogs = studylogRepository.findByIdInAndDeletedFalseOrderByIdDesc(
-                response.getStudylogIds()
+            response.getStudylogIds()
         );
         Map<Long, Long> commentCounts = commentCounts(studylogs);
         return StudylogsResponse.of(
-                studylogs,
-                response.getTotalSize(),
-                response.getTotalPage(),
-                response.getCurrPage(),
-                memberId,
-                commentCounts
+            studylogs,
+            response.getTotalSize(),
+            response.getTotalPage(),
+            response.getCurrPage(),
+            memberId,
+            commentCounts
         );
     }
 
     private Map<Long, Long> commentCounts(List<Studylog> studylogs) {
-        final Map<Long, Long> commentCounts = commentRepository.countByStudylogIn(studylogs).stream()
-                .collect(toMap(CommentCount::getStudylogId, CommentCount::getCount));
+        final Map<Long, Long> commentCounts = commentRepository.countByStudylogIn(studylogs)
+            .stream()
+            .collect(toMap(CommentCount::getStudylogId, CommentCount::getCount));
 
         logger.debug("studylogs: {}", studylogs);
         logger.debug("commentCounts: {}", commentCounts);
 
         return studylogs.stream()
-                .map(Studylog::getId)
-                .collect(toMap(id -> id, id -> commentCounts.getOrDefault(id, 0L)));
+            .map(Studylog::getId)
+            .collect(toMap(id -> id, id -> commentCounts.getOrDefault(id, 0L)));
     }
 
     public StudylogsResponse findStudylogsWithoutKeyword(
-            List<Long> sessionIds,
-            List<Long> missionIds,
-            List<Long> tagIds,
-            List<String> usernames,
-            List<Long> members,
-            LocalDate startDate,
-            LocalDate endDate,
-            Pageable pageable,
-            Long memberId
+        List<Long> sessionIds,
+        List<Long> missionIds,
+        List<Long> tagIds,
+        List<String> usernames,
+        List<Long> members,
+        LocalDate startDate,
+        LocalDate endDate,
+        Pageable pageable,
+        Long memberId
     ) {
         Specification<Studylog> specs =
-                StudylogSpecification.findByDeletedFalse()
-                        .and(StudylogSpecification.equalIn("session", sessionIds))
-                        .and(StudylogSpecification.equalIn("mission", missionIds))
-                        .and(StudylogSpecification.findByTagIn(tagIds))
-                        .and(StudylogSpecification.findByUsernameIn(usernames))
-                        .and(StudylogSpecification.findByMemberIn(members))
-                        .and(StudylogSpecification.findBetweenDate(startDate, endDate))
-                        .and(StudylogSpecification.distinct(true))
-                        .and(StudylogSpecification.orderByIdDesc());
+            StudylogSpecification.findByDeletedFalse()
+                .and(StudylogSpecification.equalIn("session", sessionIds))
+                .and(StudylogSpecification.equalIn("mission", missionIds))
+                .and(StudylogSpecification.findByTagIn(tagIds))
+                .and(StudylogSpecification.findByUsernameIn(usernames))
+                .and(StudylogSpecification.findByMemberIn(members))
+                .and(StudylogSpecification.findBetweenDate(startDate, endDate))
+                .and(StudylogSpecification.distinct(true))
+                .and(StudylogSpecification.orderByIdDesc());
 
         Page<Studylog> studylogs = studylogRepository.findAll(specs, pageable);
         Map<Long, Long> commentCounts = commentCounts(studylogs.getContent());
@@ -250,8 +253,8 @@ public class StudylogService {
     public StudylogsResponse findStudylogsOf(String username, Pageable pageable) {
         Member member = memberService.findByUsername(username);
         return StudylogsResponse.of(
-                studylogRepository.findByMember(member, pageable),
-                member.getId()
+            studylogRepository.findByMember(member, pageable),
+            member.getId()
         );
     }
 
@@ -278,8 +281,9 @@ public class StudylogService {
     }
 
     @Transactional
-    public StudylogWithScrapedCountResponse retrieveStudylogByIdWithScrapedCount(LoginMember loginMember,
-                                                                                 Long studylogId, boolean isViewed) {
+    public StudylogWithScrapedCountResponse retrieveStudylogByIdWithScrapedCount(
+        LoginMember loginMember,
+        Long studylogId, boolean isViewed) {
         Studylog studylog = findStudylogById(studylogId);
 
         onStudylogRetrieveEvent(loginMember, studylog, isViewed);
@@ -287,19 +291,24 @@ public class StudylogService {
         return toStudylogResponseWithScrapedCount(loginMember, studylog);
     }
 
-    private StudylogWithScrapedCountResponse toStudylogResponseWithScrapedCount(LoginMember loginMember,
-                                                                                Studylog studylog) {
+    private StudylogWithScrapedCountResponse toStudylogResponseWithScrapedCount(
+        LoginMember loginMember,
+        Studylog studylog) {
         boolean liked = studylog.likedByMember(loginMember.getId());
-        boolean read = studylogReadRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId())
-                .isPresent();
-        boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId())
-                .isPresent();
+        boolean read = studylogReadRepository.findByMemberIdAndStudylogId(loginMember.getId(),
+                studylog.getId())
+            .isPresent();
+        boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(),
+                studylog.getId())
+            .isPresent();
         int scrapedCount = studylogScrapRepository.countByStudylogId(studylog.getId());
 
-        return new StudylogWithScrapedCountResponse(StudylogResponse.of(studylog, scraped, read, liked), scrapedCount);
+        return new StudylogWithScrapedCountResponse(
+            StudylogResponse.of(studylog, scraped, read, liked), scrapedCount);
     }
 
-    private void onStudylogRetrieveEvent(LoginMember loginMember, Studylog studylog, boolean isViewed) {
+    private void onStudylogRetrieveEvent(LoginMember loginMember, Studylog studylog,
+                                         boolean isViewed) {
         // view 증가
         if (!isViewed) {
             increaseViewCount(loginMember, studylog);
@@ -310,17 +319,20 @@ public class StudylogService {
         }
 
         // 읽음 처리
-        if (!studylogReadRepository.existsByMemberIdAndStudylogId(loginMember.getId(), studylog.getId())) {
+        if (!studylogReadRepository.existsByMemberIdAndStudylogId(loginMember.getId(),
+            studylog.getId())) {
             insertStudylogRead(studylog.getId(), loginMember.getId());
         }
     }
 
     private StudylogResponse toStudylogResponse(LoginMember loginMember, Studylog studylog) {
         boolean liked = studylog.likedByMember(loginMember.getId());
-        boolean read = studylogReadRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId())
-                .isPresent();
-        boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId())
-                .isPresent();
+        boolean read = studylogReadRepository.findByMemberIdAndStudylogId(loginMember.getId(),
+                studylog.getId())
+            .isPresent();
+        boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(),
+                studylog.getId())
+            .isPresent();
 
         return StudylogResponse.of(studylog, scraped, read, liked);
     }
@@ -332,7 +344,7 @@ public class StudylogService {
     private void insertStudylogRead(Long id, Long memberId) {
         Member readMember = memberService.findById(memberId);
         Studylog readStudylog = studylogRepository.findById(id)
-                .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(StudylogNotFoundException::new);
         studylogReadRepository.save(new StudylogRead(readMember, readStudylog));
     }
 
@@ -352,38 +364,48 @@ public class StudylogService {
 
     @Transactional
     public void updateStudylog(Long memberId, Long studylogId, StudylogRequest studylogRequest) {
-        Studylog studylog = studylogRepository.findById(studylogId).orElseThrow(StudylogNotFoundException::new);
+        Studylog studylog = studylogRepository.findById(studylogId)
+            .orElseThrow(StudylogNotFoundException::new);
         studylog.validateBelongTo(memberId);
 
-        Session session = sessionService.findSessionById(studylogRequest.getSessionId()).orElse(null);
-        Mission mission = missionService.findMissionById(studylogRequest.getMissionId()).orElse(null);
+        Session session = sessionService.findSessionById(studylogRequest.getSessionId())
+            .orElse(null);
+        Mission mission = missionService.findMissionById(studylogRequest.getMissionId())
+            .orElse(null);
 
         final Member foundMember = memberService.findById(memberId);
         final Tags originalTags = tagService.findByStudylogsAndMember(studylog, foundMember);
 
         Tags newTags = tagService.findOrCreate(studylogRequest.getTags());
-        studylog.update(studylogRequest.getTitle(), studylogRequest.getContent(), session, mission, newTags);
+        studylog.update(studylogRequest.getTitle(), studylogRequest.getContent(), session, mission,
+            newTags);
         memberTagService.updateMemberTag(originalTags, newTags, foundMember);
 
         studylogDocumentService.update(studylog.toStudylogDocument());
     }
 
     @Transactional
-    public void updateStudylogSession(Long memberId, Long studylogId, StudylogSessionRequest studylogSessionRequest) {
-        Studylog studylog = studylogRepository.findById(studylogId).orElseThrow(StudylogNotFoundException::new);
+    public void updateStudylogSession(Long memberId, Long studylogId,
+                                      StudylogSessionRequest studylogSessionRequest) {
+        Studylog studylog = studylogRepository.findById(studylogId)
+            .orElseThrow(StudylogNotFoundException::new);
         studylog.validateBelongTo(memberId);
 
-        Session session = sessionService.findSessionById(studylogSessionRequest.getSessionId()).orElse(null);
+        Session session = sessionService.findSessionById(studylogSessionRequest.getSessionId())
+            .orElse(null);
 
         studylog.updateSession(session);
     }
 
     @Transactional
-    public void updateStudylogMission(Long memberId, Long studylogId, StudylogMissionRequest studylogMissionRequest) {
-        Studylog studylog = studylogRepository.findById(studylogId).orElseThrow(StudylogNotFoundException::new);
+    public void updateStudylogMission(Long memberId, Long studylogId,
+                                      StudylogMissionRequest studylogMissionRequest) {
+        Studylog studylog = studylogRepository.findById(studylogId)
+            .orElseThrow(StudylogNotFoundException::new);
         studylog.validateBelongTo(memberId);
 
-        Mission mission = missionService.findMissionById(studylogMissionRequest.getMissionId()).orElse(null);
+        Mission mission = missionService.findMissionById(studylogMissionRequest.getMissionId())
+            .orElse(null);
 
         studylog.updateMission(mission);
     }
@@ -391,7 +413,8 @@ public class StudylogService {
     @Transactional
     public void deleteStudylog(Long memberId, Long studylogId) {
         final Member foundMember = memberService.findById(memberId);
-        Studylog studylog = studylogRepository.findById(studylogId).orElseThrow(StudylogNotFoundException::new);
+        Studylog studylog = studylogRepository.findById(studylogId)
+            .orElseThrow(StudylogNotFoundException::new);
         studylog.validateBelongTo(memberId);
 
         final Tags tags = tagService.findByStudylogsAndMember(studylog, foundMember);
@@ -405,43 +428,46 @@ public class StudylogService {
 
     private void checkScrapedOrRead(Long memberId, Long studylogId) {
         if (studylogScrapRepository.existsByMemberIdAndStudylogId(memberId, studylogId)) {
-            StudylogScrap studylogScrap = studylogScrapRepository.findByMemberIdAndStudylogId(memberId, studylogId)
-                    .orElseThrow(StudylogScrapNotExistException::new);
+            StudylogScrap studylogScrap = studylogScrapRepository.findByMemberIdAndStudylogId(
+                    memberId, studylogId)
+                .orElseThrow(StudylogScrapNotExistException::new);
             studylogScrapRepository.delete(studylogScrap);
         }
 
         if (studylogReadRepository.existsByMemberIdAndStudylogId(memberId, studylogId)) {
-            StudylogRead studylogRead = studylogReadRepository.findByMemberIdAndStudylogId(memberId, studylogId)
-                    .orElseThrow(StudylogReadNotExistException::new);
+            StudylogRead studylogRead = studylogReadRepository.findByMemberIdAndStudylogId(memberId,
+                    studylogId)
+                .orElseThrow(StudylogReadNotExistException::new);
             studylogReadRepository.delete(studylogRead);
         }
     }
 
-    public List<CalendarStudylogResponse> findCalendarStudylogs(String username, LocalDate localDate) {
+    public List<CalendarStudylogResponse> findCalendarStudylogs(String username,
+                                                                LocalDate localDate) {
         final Member member = memberService.findByUsername(username);
         final LocalDateTime start = localDate.with(firstDayOfMonth()).atStartOfDay();
         final LocalDateTime end = localDate.with(lastDayOfMonth()).atTime(LocalTime.MAX);
 
         return studylogRepository.findByMemberBetween(member, start, end)
-                .stream()
-                .map(CalendarStudylogResponse::of)
-                .collect(toList());
+            .stream()
+            .map(CalendarStudylogResponse::of)
+            .collect(toList());
     }
 
     public List<Long> findScrapIds(Long memberId) {
         List<StudylogScrap> memberScraps = studylogScrapRepository.findByMemberId(memberId);
         return memberScraps.stream()
-                .map(StudylogScrap::getStudylog)
-                .map(Studylog::getId)
-                .collect(toList());
+            .map(StudylogScrap::getStudylog)
+            .map(Studylog::getId)
+            .collect(toList());
     }
 
     public List<Long> findReadIds(Long memberId) {
         List<StudylogRead> readList = studylogReadRepository.findByMemberId(memberId);
         return readList.stream()
-                .map(StudylogRead::getStudylog)
-                .map(Studylog::getId)
-                .collect(toList());
+            .map(StudylogRead::getStudylog)
+            .map(Studylog::getId)
+            .collect(toList());
     }
 
     public void updateScrap(List<StudylogResponse> studylogs, List<Long> scrapIds) {
@@ -469,9 +495,10 @@ public class StudylogService {
         return studylogRepository.save(studylog);
     }
 
-    public List<Studylog> findStudylogsInPeriod(Long memberId, LocalDate startDate, LocalDate endDate) {
+    public List<Studylog> findStudylogsInPeriod(Long memberId, LocalDate startDate,
+                                                LocalDate endDate) {
         return studylogRepository
-                .findByMemberIdAndCreatedAtBetween(memberId, LocalDateTime.of(startDate, LocalTime.MIN),
-                        LocalDateTime.of(endDate, LocalTime.MAX));
+            .findByMemberIdAndCreatedAtBetween(memberId, LocalDateTime.of(startDate, LocalTime.MIN),
+                LocalDateTime.of(endDate, LocalTime.MAX));
     }
 }

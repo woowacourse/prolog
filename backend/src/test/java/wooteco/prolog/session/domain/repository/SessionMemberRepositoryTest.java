@@ -12,9 +12,9 @@ import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.SessionMember;
 import wooteco.prolog.session.exception.SessionNotFoundException;
-import wooteco.support.utils.IntegrationTest;
+import wooteco.support.utils.RepositoryTest;
 
-@IntegrationTest
+@RepositoryTest
 class SessionMemberRepositoryTest {
 
     @Autowired
