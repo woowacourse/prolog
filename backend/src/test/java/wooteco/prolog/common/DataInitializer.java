@@ -37,6 +37,10 @@ public class DataInitializer implements InitializingBean {
             ResultSet tables = metaData.getTables(null, null, null, new String[]{"TABLE"});
             while (tables.next()) {
                 String tableName = tables.getString("TABLE_NAME");
+                if (tableName.equals("sys_config") || tableName.equals("flyway_schema_history")) {
+                    continue;
+                }
+
                 tableNames.add(tableName);
             }
         } catch (Exception e) {
@@ -52,17 +56,15 @@ public class DataInitializer implements InitializingBean {
 
     private void truncateAllTables() {
         entityManager.flush();
-        entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
+        entityManager.createNativeQuery("SET @@foreign_key_checks = 0;").executeUpdate();
         tableNames.forEach(
             tableName -> executeQueryWithTable(tableName)
         );
-        entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate();
+        entityManager.createNativeQuery("SET @@foreign_key_checks = 1;").executeUpdate();
     }
 
     private void executeQueryWithTable(String tableName) {
         entityManager.createNativeQuery("TRUNCATE TABLE " + tableName).executeUpdate();
-        entityManager.createNativeQuery("ALTER TABLE " + tableName + " ALTER COLUMN "
-                                            + "ID RESTART WITH 1").executeUpdate();
     }
 
     private void deleteAllDocuments() {
