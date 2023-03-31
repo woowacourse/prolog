@@ -6,6 +6,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-18.04
+    services:
+      mysql:
+        image: mysql:8.0.28
+        env:
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: prolog
+        ports:
+          - 13306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Checkout Source Code
@@ -22,7 +33,7 @@ jobs:
         working-directory: backend
 
       - name: Build with Gradle
-        run: ./gradlew bootJar
+        run: ./gradlew flywayClean flywayBaseline flywayMigrate bootJar
         shell: bash
         working-directory: backend
 
