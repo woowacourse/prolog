@@ -23,9 +23,6 @@ spring:
     locations: classpath:db/migration/prod
     out-of-order: true
 
-server:
-  port: 5000
-
 management:
   health:
     elasticsearch:
