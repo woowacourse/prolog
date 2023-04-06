@@ -1,1 +1,0 @@
-ALTER TABLE studylog ADD COLUMN deleted TINYINT(1) DEFAULT 0;
