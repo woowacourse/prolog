@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
@@ -53,7 +54,8 @@ import wooteco.prolog.update.UpdatedContentsRepository;
 @Configuration
 public class DataLoaderApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
 
-    private static Logger logger = LoggerFactory.getLogger(DataLoaderApplicationListener.class);
+    private static final Random random = ThreadLocalRandom.current();
+    private static final Logger logger = LoggerFactory.getLogger(DataLoaderApplicationListener.class);
 
     private final EntityManagerFactory entityManagerFactory;
     private final SessionRepository sessionRepository;
@@ -88,6 +90,7 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         try {
+            @SuppressWarnings("unchecked")
             final Set<String> tableNames = (Set<String>) entityManager.createNativeQuery("SHOW TABLES")
                 .getResultStream()
                 .map(Object::toString)
@@ -212,7 +215,7 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
 
     private <T> T pickRandom(final Collection<T> values) {
         final List<T> list = new ArrayList<>(values);
-        return list.get(ThreadLocalRandom.current().nextInt(list.size()));
+        return list.get(random.nextInt(list.size()));
     }
 
     private List<PopularStudylog> populatePopularStudyLog(final Map<StudylogDummy, List<Studylog>> studylogs) {
@@ -221,7 +224,7 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
             .flatMap(Collection::stream)
             .map(Studylog::getId)
             .map(PopularStudylog::new)
-            .sorted((ignored1, ignored2) -> ThreadLocalRandom.current().nextInt()) // Note: Random Sort
+            .sorted((ignored1, ignored2) -> random.nextInt()) // Note: Random Sort
             .limit(10)
             .collect(toList());
 
