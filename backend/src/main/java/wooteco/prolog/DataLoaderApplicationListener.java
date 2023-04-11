@@ -107,7 +107,7 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
             entityManager.createNativeQuery("SET FIREIGN_KEY_CHECKS = 1").executeUpdate();
             entityManager.getTransaction().commit();
         } catch (final Exception e) {
-            logger.warn("Fail data load", e);
+            logger.warn("Fail clean up", e);
             entityManager.getTransaction().rollback();
         }
 
