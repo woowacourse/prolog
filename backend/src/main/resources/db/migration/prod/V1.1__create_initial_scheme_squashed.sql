@@ -32,14 +32,6 @@ create table if not exists prolog.essay_answer
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
-create table if not exists prolog.level
-(
-    id   bigint auto_increment primary key,
-    name varchar(45) not null
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
 create table if not exists prolog.member
 (
     id            bigint auto_increment primary key,
@@ -53,22 +45,6 @@ create table if not exists prolog.member
         unique (github_id),
     constraint uc_member_username
         unique (username)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
-create table if not exists prolog.ability
-(
-    id          bigint auto_increment primary key,
-    color       varchar(255) null,
-    description varchar(255) null,
-    name        varchar(255) null,
-    member_id   bigint       null,
-    parent_id   bigint       null,
-    constraint FK_ABILITY_MEMBER
-        foreign key (member_id) references prolog.member (id),
-    constraint FK_ABILITY_PARENT
-        foreign key (parent_id) references prolog.ability (id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
@@ -126,98 +102,6 @@ create table if not exists prolog.popular_studylog
     deleted     tinyint(1) default 0 not null,
     created_at  datetime             not null,
     updated_at  datetime             null
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
-create table if not exists prolog.report
-(
-    id          bigint auto_increment primary key,
-    description text         null,
-    title       varchar(255) null,
-    member_id   bigint       not null,
-    created_at  timestamp    null,
-    updated_at  timestamp    null,
-    start_date  date         null,
-    end_date    date         null,
-    constraint FK_REPORT_MEMBER
-        foreign key (member_id) references prolog.member (id)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
-create table if not exists prolog.ability_graph
-(
-    id        bigint auto_increment primary key,
-    report_id bigint null,
-    constraint FK_ABILITY_GRAPH_REPORT
-        foreign key (report_id) references prolog.report (id)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
-create table if not exists prolog.graph_ability
-(
-    id               bigint auto_increment primary key,
-    is_present       bit    null,
-    weight           bigint not null,
-    ability_id       bigint not null,
-    ability_graph_id bigint not null,
-    constraint FK_GRAPH_ABILITY_ABILITY_GRAPH
-        foreign key (ability_graph_id) references prolog.ability_graph (id),
-    constraint FK_GRAPH_ABILITY_ABILITY_WITH_ON_DELETE_CASCADE
-        foreign key (ability_id) references prolog.ability (id)
-            on delete cascade
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
-create table if not exists prolog.report_ability
-(
-    id                bigint auto_increment primary key,
-    color             varchar(255) null,
-    description       varchar(255) null,
-    name              varchar(255) null,
-    origin_ability_id bigint       null,
-    weight            int          null,
-    parent_id         bigint       null,
-    report_id         bigint       null
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
-create table if not exists prolog.report_studylog
-(
-    id                            bigint auto_increment primary key,
-    report_id                     bigint       null,
-    report_ability_id             bigint       null,
-    studylog_id                   bigint       not null,
-    report_studylog_ability_name  varchar(255) null,
-    report_studylog_ability_color varchar(255) null
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
-create table if not exists prolog.reported_studylog
-(
-    id          bigint auto_increment primary key,
-    studylog_id bigint null,
-    report_id   bigint not null,
-    constraint FK_REPORTED_STUDYLOG_REPORT
-        foreign key (report_id) references prolog.report (id)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
-create table if not exists prolog.reported_studylog_ability
-(
-    id                   bigint auto_increment primary key,
-    ability_id           bigint not null,
-    reported_studylog_id bigint not null,
-    constraint FK_REPORTED_STUDYLOG_ABILITY_ABILITY
-        foreign key (ability_id) references prolog.ability (id),
-    constraint FK_REPORTED_STUDYLOG_ABILITY_REPORTED_STUDYLOG
-        foreign key (reported_studylog_id) references prolog.reported_studylog (id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
@@ -343,16 +227,6 @@ create table if not exists prolog.likes
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
-create table if not exists prolog.studylog_ability
-(
-    id          bigint auto_increment primary key,
-    member_id   bigint not null,
-    ability_id  bigint not null,
-    studylog_id bigint not null
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
 create table if not exists prolog.studylog_read
 (
     id          bigint auto_increment primary key,
@@ -399,22 +273,6 @@ create table if not exists prolog.studylog_temp
             on delete cascade,
     constraint FK_STUDYLOG_TEMP_SESSION
         foreign key (session_id) references prolog.session (id)
-            on delete cascade
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
-create table if not exists prolog.studylog_temp_ability
-(
-    id               bigint auto_increment primary key,
-    member_id        bigint not null,
-    ability_id       bigint not null,
-    studylog_temp_id bigint not null,
-    constraint FK_STUDYLOG_TEMP_ABILITY_ABILITY
-        foreign key (ability_id) references prolog.ability (id)
-            on delete cascade,
-    constraint FK_STUDYLOG_TEMP_ABILITY_STUDYLOG_TEMP
-        foreign key (studylog_temp_id) references prolog.studylog_temp (id)
             on delete cascade
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
