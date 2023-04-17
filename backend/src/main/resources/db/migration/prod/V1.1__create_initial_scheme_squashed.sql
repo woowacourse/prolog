@@ -6,18 +6,6 @@ create table if not exists prolog.curriculum
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
-create table if not exists prolog.default_ability
-(
-    id          bigint auto_increment primary key,
-    name        varchar(255) null,
-    description varchar(255) null,
-    color       varchar(255) null,
-    template    varchar(255) null,
-    parent_id   bigint       null
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
 create table if not exists prolog.essay_answer
 (
     id         bigint auto_increment primary key,
