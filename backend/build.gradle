@@ -151,9 +151,9 @@ idea {
  * ./gradlew flywayMigrate
  */
 flyway {
-    url = "jdbc:mysql://rdb-prolog-dev.cqsc6pyqhwww.ap-northeast-2.rds.amazonaws.com:3306/prolog"
-    user = "prolog"
-    password = "gkrtmqfhrmdksTmsl?"
+    url = "jdbc:mysql://localhost:13306/prolog"
+    user = "root"
+    password = "root"
     locations = ["filesystem:${file("src/main/resources/db/migration/prod").absolutePath}"]
     encoding = "UTF-8"
     outOfOrder = true // 여러브랜치에서 서로 다른 날짜로 만들어도 작동하도록
