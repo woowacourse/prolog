@@ -13,6 +13,7 @@ import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.MissionRepository;
+import wooteco.prolog.studylog.exception.DuplicateMissionException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,8 +21,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
@@ -29,26 +30,26 @@ import static org.mockito.Mockito.when;
 class MissionServiceTest {
 
     @InjectMocks
-    MissionService missionService;
+    private MissionService missionService;
 
     @Mock
-    SessionService sessionService;
+    private SessionService sessionService;
 
     @Mock
-    MissionRepository missionRepository;
+    private MissionRepository missionRepository;
 
     @DisplayName("Mission을 생성해야 한다.")
     @Test
     void create() {
         // given
-        Session session = new Session("세션");
-        MissionRequest request = new MissionRequest("미션", 1L);
+        final Session session = new Session("세션");
+        final MissionRequest request = new MissionRequest("미션", 1L);
         doReturn(session).when(sessionService).findById(request.getSessionId());
         doReturn(new Mission("베베", session)).when(missionRepository)
             .save(new Mission("베베", new Session("베베 세션")));
 
         // when
-        MissionResponse response = missionService.create(request);
+        final MissionResponse response = missionService.create(request);
 
         // then
         assertAll(
@@ -58,18 +59,34 @@ class MissionServiceTest {
         );
     }
 
+    @DisplayName("Mission 생성시 Validate")
+    @Test
+    void validateName() {
+        // given
+        final MissionRequest request = new MissionRequest("미션", 1L);
+        final Optional<Mission> mission = Optional.of(new Mission("mission1", new Session("session1")));
+
+        doReturn(mission)
+            .when(missionRepository).findByName(request.getName());
+
+        // when, then
+        assertAll(
+            () -> assertThrows(DuplicateMissionException.class, () -> missionService.create(request))
+        );
+    }
+
     @DisplayName("모든 미션들을 MissionResponse 형태로 조회해야 한다.")
     @Test
     void findAll() {
         // given
-        List<Mission> missions = new ArrayList<>();
+        final List<Mission> missions = new ArrayList<>();
         missions.addAll(Arrays.asList(new Mission("mission1", new Session("session1"))));
         missions.addAll(Arrays.asList(new Mission("mission2", new Session("session2"))));
         missions.addAll(Arrays.asList(new Mission("mission3", new Session("session3"))));
         doReturn(missions).when(missionRepository).findAll();
 
         // when
-        List<MissionResponse> responses = missionService.findAll();
+        final List<MissionResponse> responses = missionService.findAll();
 
         // then
         assertAll(
@@ -89,11 +106,11 @@ class MissionServiceTest {
     @Test
     void findById() {
         // given
-        Optional<Mission> missionOptional = Optional.of(new Mission("mission1", new Session("session1")));
+        final Optional<Mission> missionOptional = Optional.of(new Mission("mission1", new Session("session1")));
         when(missionRepository.findById(1L)).thenReturn(missionOptional);
 
         // when
-        Mission mission = missionService.findById(1L);
+        final Mission mission = missionService.findById(1L);
 
         // then
         assertAll(
@@ -106,11 +123,11 @@ class MissionServiceTest {
     @Test
     void findMissionById() {
         // given
-        Optional<Mission> missionOptional = Optional.of(new Mission("mission1", new Session("session1")));
+        final Optional<Mission> missionOptional = Optional.of(new Mission("mission1", new Session("session1")));
         when(missionRepository.findById(1L)).thenReturn(missionOptional);
 
         // when
-        Optional<Mission> missionById = missionService.findMissionById(1L);
+        final Optional<Mission> missionById = missionService.findMissionById(1L);
 
         // then
         Assertions.assertThat(missionById.isPresent()).isTrue();
@@ -120,7 +137,7 @@ class MissionServiceTest {
     @Test
     void findMissionByIdReturnEmpty() {
         // when
-        Optional<Mission> missionById = missionService.findMissionById(1L);
+        final Optional<Mission> missionById = missionService.findMissionById(1L);
 
         // then
         Assertions.assertThat(missionById.isPresent()).isFalse();
@@ -130,12 +147,12 @@ class MissionServiceTest {
     @Test
     void findByIds() {
         // given
-        List<Mission> missions = new ArrayList<>();
+        final List<Mission> missions = new ArrayList<>();
         missions.add(new Mission("mission1", new Session("session1")));
         missions.add(new Mission("mission2", new Session("session2")));
         missions.add(new Mission("mission3", new Session("session3")));
 
-        List<Long> missionIds = new ArrayList<>();
+        final List<Long> missionIds = new ArrayList<>();
         missionIds.add(1L);
         missionIds.add(2L);
         missionIds.add(3L);
@@ -143,7 +160,7 @@ class MissionServiceTest {
         doReturn(missions).when(missionRepository).findAllById(new ArrayList<>());
 
         // when
-        List<Mission> byIds = missionService.findByIds(new ArrayList<>());
+        final List<Mission> byIds = missionService.findByIds(new ArrayList<>());
 
         // then
         assertAll(
@@ -157,18 +174,18 @@ class MissionServiceTest {
     @Test
     void findMyMissions() {
         // given
-        LoginMember loginMember = new LoginMember();
-        List<Long> mySessionIds = new ArrayList<>();
+        final LoginMember loginMember = new LoginMember();
+        final List<Long> mySessionIds = new ArrayList<>();
         mySessionIds.add(1L);
 
-        List<Mission> missions = new ArrayList<>();
+        final List<Mission> missions = new ArrayList<>();
         missions.add(new Mission("mission1", new Session("session1")));
 
         when(sessionService.findMySessionIds(loginMember.getId())).thenReturn(mySessionIds);
         when(missionRepository.findBySessionIdIn(mySessionIds)).thenReturn(missions);
 
         // when
-        List<MissionResponse> myMissions = missionService.findMyMissions(loginMember);
+        final List<MissionResponse> myMissions = missionService.findMyMissions(loginMember);
 
         // then
         assertAll(

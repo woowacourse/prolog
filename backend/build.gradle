@@ -45,13 +45,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    // Spring Cloud Gateway Mac OS M1
-    implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
-
-    // https://mvnrepository.com/artifact/io.netty/netty-all
-    implementation group: 'io.netty', name: 'netty-all', version: '5.0.0.Alpha2'
-
-
     // open csv
     implementation 'com.opencsv:opencsv:5.5.2'
 
