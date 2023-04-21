@@ -1,9 +1,10 @@
 package wooteco.prolog.badge.application;
 
-import java.util.List;
-import java.util.Optional;
 import wooteco.prolog.badge.domain.BadgeType;
 import wooteco.prolog.studylog.domain.repository.BadgeRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 public class PassionKingBadgeCreator implements BadgeCreator {
 
