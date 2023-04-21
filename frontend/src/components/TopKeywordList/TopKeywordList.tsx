@@ -28,18 +28,17 @@ const TopKeywordList = ({
 
   return (
     <StyledRoot>
-      {topKeywordList?.sort(compareFn).map((keyword, index) => {
-        const isNotLast = index + 1 !== topKeywordList?.length;
+      {topKeywordList?.sort(compareFn).map((keyword) => {
         const isSelected = selectedTopKeyword?.keywordId === keyword.keywordId;
 
         return (
           <StyledWrapper key={keyword.keywordId}>
+            <StyledArrow />
             <ResponsiveButton
               text={keyword.name}
               backgroundColor={isSelected ? COLOR.LIGHT_BLUE_900 : COLOR.LIGHT_GRAY_400}
               onClick={() => handleClickTopKeyword(keyword)}
-            ></ResponsiveButton>
-            {isNotLast && <StyledArrow />}
+            />
           </StyledWrapper>
         );
       })}
@@ -51,6 +50,8 @@ export default TopKeywordList;
 
 const StyledRoot = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  row-gap: 12px;
 `;
 
 const StyledArrow = styled.div`
@@ -66,4 +67,9 @@ const StyledArrow = styled.div`
 const StyledWrapper = styled.div`
   display: flex;
   align-items: center;
+
+  /* 첫 번째 화살표를 숨기는 스타일 */
+  &:first-child > :first-child {
+    display: none;
+  }
 `;
