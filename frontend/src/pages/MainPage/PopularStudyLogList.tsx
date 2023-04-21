@@ -22,7 +22,18 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: StudyLogResponse }): JS
         position: relative;
       `}
     >
-      <div css={[SectionHeaderGapStyle, FlexStyle, AlignItemsCenterStyle]}>
+      <div
+        css={[
+          SectionHeaderGapStyle,
+          FlexStyle,
+          AlignItemsCenterStyle,
+          css`
+            @media (max-width: 760px) {
+              flex-direction: column;
+            }
+          `,
+        ]}
+      >
         <h2>😎 인기있는 학습로그</h2>
         <ul css={[FlexStyle]}>
           {Object.values(studyLogCategory).map((item) => (
