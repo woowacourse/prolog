@@ -1,7 +1,5 @@
 package wooteco.prolog.studylog.application;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +17,9 @@ import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.exception.CommentNotFoundException;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Transactional
 @AllArgsConstructor
 @Service
@@ -30,24 +31,24 @@ public class CommentService {
 
     public Long insertComment(CommentSaveRequest request) {
         Member findMember = memberRepository.findById(request.getMemberId())
-                .orElseThrow(MemberNotFoundException::new);
+            .orElseThrow(MemberNotFoundException::new);
         Studylog findStudylog = studylogRepository.findById(request.getStudylogId())
-                .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(StudylogNotFoundException::new);
 
         Comment comment = request.toEntity(findMember, findStudylog);
-
-        return commentRepository.save(comment).getId();
+        Comment comment2 = commentRepository.save(comment);
+        return comment2.getId();
     }
 
     @Transactional(readOnly = true)
     public CommentsResponse findComments(Long studylogId) {
         Studylog findStudylog = studylogRepository.findById(studylogId)
-                .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(StudylogNotFoundException::new);
 
         List<CommentResponse> commentResponses = commentRepository.findCommentByStudylog(findStudylog)
-                .stream()
-                .map(CommentResponse::of)
-                .collect(Collectors.toList());
+            .stream()
+            .map(CommentResponse::of)
+            .collect(Collectors.toList());
 
         return new CommentsResponse(commentResponses);
     }
@@ -57,7 +58,7 @@ public class CommentService {
         validateExistsStudylog(request.getStudylogId());
 
         Comment comment = commentRepository.findById(request.getCommentId())
-                .orElseThrow(CommentNotFoundException::new);
+            .orElseThrow(CommentNotFoundException::new);
         comment.updateContent(request.getContent());
 
         return comment.getId();
@@ -68,7 +69,7 @@ public class CommentService {
         validateExistsStudylog(studylogId);
 
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(CommentNotFoundException::new);
+            .orElseThrow(CommentNotFoundException::new);
 
         comment.delete();
     }
@@ -81,7 +82,7 @@ public class CommentService {
 
     private void validateExistsStudylog(Long studylogId) {
         if (!studylogRepository.existsById(studylogId)) {
-             throw new StudylogNotFoundException();
+            throw new StudylogNotFoundException();
         }
     }
 }
