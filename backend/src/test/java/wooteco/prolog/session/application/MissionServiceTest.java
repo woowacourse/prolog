@@ -63,7 +63,7 @@ class MissionServiceTest {
     @Test
     void validateName() {
         // given
-        final MissionRequest request = new MissionRequest("미션", 1L);
+        final MissionRequest request = new MissionRequest("mission1", 1L);
         final Optional<Mission> mission = Optional.of(new Mission("mission1", new Session("session1")));
 
         doReturn(mission)
@@ -90,16 +90,15 @@ class MissionServiceTest {
 
         // then
         assertAll(
-            () -> assertThat(responses.size()).isEqualTo(3),
+            () -> assertThat(responses).hasSize(3),
 
-            () -> assertThat(responses.get(0).getName()).isEqualTo("mission1"),
-            () -> assertThat(responses.get(1).getName()).isEqualTo("mission2"),
-            () -> assertThat(responses.get(2).getName()).isEqualTo("mission3"),
+            () -> assertThat(responses).extracting(MissionResponse::getName)
+                .containsExactly("mission1", "mission2", "mission3"),
 
-            () -> assertThat(responses.get(0).getSession().getName()).isEqualTo("session1"),
-            () -> assertThat(responses.get(1).getSession().getName()).isEqualTo("session2"),
-            () -> assertThat(responses.get(2).getSession().getName()).isEqualTo("session3")
+            () -> assertThat(responses).extracting(response -> response.getSession().getName())
+                .containsExactly("session1", "session2", "session3")
         );
+
     }
 
     @DisplayName("아이디로 Mission 객체를 조회한다.")
@@ -164,9 +163,8 @@ class MissionServiceTest {
 
         // then
         assertAll(
-            () -> Assertions.assertThat(byIds.get(0).getName()).isEqualTo("mission1"),
-            () -> Assertions.assertThat(byIds.get(1).getName()).isEqualTo("mission2"),
-            () -> Assertions.assertThat(byIds.get(2).getName()).isEqualTo("mission3")
+            () -> assertThat(byIds).extracting(Mission::getName)
+                .containsExactly("mission1", "mission2", "mission3")
         );
     }
 

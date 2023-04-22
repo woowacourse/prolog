@@ -16,8 +16,6 @@ import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.SessionMember;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-import wooteco.prolog.session.exception.DuplicateSessionException;
-import wooteco.prolog.session.exception.SessionNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -121,9 +119,8 @@ class SessionServiceTest {
 
         // then
         assertAll(
-            () -> assertThat(responses.get(0).getName()).isEqualTo("session1"),
-            () -> assertThat(responses.get(1).getName()).isEqualTo("session2"),
-            () -> assertThat(responses.get(2).getName()).isEqualTo("session3")
+            () -> assertThat(responses).extracting(SessionResponse::getName)
+                .containsExactly("session1", "session2", "session3")
         );
     }
 
@@ -145,10 +142,7 @@ class SessionServiceTest {
         List<SessionResponse> responses = sessionService.findMySessions(member);
 
         // then
-        assertAll(
-            () -> assertThat(responses.get(0).getClass()).isEqualTo(SessionResponse.class),
-            () -> assertThat(responses.get(0).getName()).isEqualTo("session1")
-        );
+        assertThat(responses.get(0).getName()).isEqualTo("session1");
     }
 
     @DisplayName("현재 로그인한 Member의 SessionId들을 조회한다.")
