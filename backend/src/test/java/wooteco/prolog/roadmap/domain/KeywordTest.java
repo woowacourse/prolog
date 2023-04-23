@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static wooteco.prolog.studylog.studylogFixture.SESSION_ID;
+import static wooteco.prolog.studylog.studylogFixture.TEST_KEYWORD_JAVA;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -12,10 +14,6 @@ import wooteco.prolog.common.exception.NotFoundErrorCodeException;
 import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
 
 class KeywordTest {
-
-    private static final long SESSION_ID = 1L;
-    private static final Keyword TEST_KEYWORD = new Keyword(2L, "자바", "자바입니다", 1, 1,
-        SESSION_ID, null, null);
 
     @Nested
     class 객체_초기화_테스트 {
@@ -42,7 +40,7 @@ class KeywordTest {
         final int seq = 1;
         final int importance = 1;
 
-        final Keyword keyword = Keyword.createKeyword("자바", "자바에 대한 설명", 1,
+        Keyword keyword = Keyword.createKeyword("자바", "자바에 대한 설명", 1,
             1, SESSION_ID, null);
 
         assertAll(
@@ -88,7 +86,7 @@ class KeywordTest {
 
         @Test
         void seq가_0보다_작거나_같으면_Exception이_발생한다() {
-            final Runnable updateKeyword = () -> testKeyword.update(updateName, updateDescription, 0, updateImportance,
+            Runnable updateKeyword = () -> testKeyword.update(updateName, updateDescription, 0, updateImportance,
                 null);
 
             assertThatThrownBy(updateKeyword::run)
@@ -104,9 +102,9 @@ class KeywordTest {
          */
         @Test
         void 부모키워드가_자신과_같다면_Exception이_발생한다() {
-            final Keyword keyword = new Keyword(3L, "컬렉션", "컬렉션에 대한 설명입니다", 1, 1
+            Keyword keyword = new Keyword(3L, "컬렉션", "컬렉션에 대한 설명입니다", 1, 1
                 , SESSION_ID, testKeyword, null);
-            final Runnable updateKeyword = () -> keyword.update("List", "List에 대한 설명",
+            Runnable updateKeyword = () -> keyword.update("List", "List에 대한 설명",
                 1, 1, keyword);
 
             assertThatThrownBy(updateKeyword::run)
@@ -119,7 +117,7 @@ class KeywordTest {
 
         @Test
         void 부모키워드가_없는_경우() {
-            final Long parentId = TEST_KEYWORD.getParentIdOrNull();
+            Long parentId = TEST_KEYWORD_JAVA.getParentIdOrNull();
 
             assertThat(parentId)
                 .isNull();
@@ -127,13 +125,13 @@ class KeywordTest {
 
         @Test
         void 부모키워드가_있는_경우() {
-            final Keyword keyword = Keyword.createKeyword("컬렉션", "컬렉션에 대한 설명입니다.", 1, 1
-                , SESSION_ID, TEST_KEYWORD);
+            Keyword keyword = Keyword.createKeyword("컬렉션", "컬렉션에 대한 설명입니다.", 1, 1
+                , SESSION_ID, TEST_KEYWORD_JAVA);
 
-            final Long parentId = keyword.getParentIdOrNull();
+            Long parentId = keyword.getParentIdOrNull();
 
             assertThat(parentId)
-                .isEqualTo(TEST_KEYWORD.getId());
+                .isEqualTo(TEST_KEYWORD_JAVA.getId());
         }
     }
 }
