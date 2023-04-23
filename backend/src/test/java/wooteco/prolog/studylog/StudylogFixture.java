@@ -36,6 +36,8 @@ public class StudylogFixture {
     public static final Mission TEST_MISSION = new Mission(6L, "레벨 2 - 웹 자동차 경주", TEST_SESSION);
 
     //Studylog
-    public static final Studylog TEST_STUDYLOG = new Studylog(TEST_MEMBER_CREW1, "레벨 1 레벨인터뷰", "레벨인터뷰에 대한 내용입니다."
+    public static final Studylog TEST_STUDYLOG1 = new Studylog(TEST_MEMBER_CREW1, "레벨 1 레벨인터뷰", "레벨인터뷰에 대한 내용입니다."
+        , TEST_MISSION, Collections.emptyList());
+    public static final Studylog TEST_STUDYLOG2 = new Studylog(TEST_MEMBER_CREW2, "레벨 1 레벨인터뷰", "레벨인터뷰에 대한 내용입니다."
         , TEST_MISSION, Collections.emptyList());
 }
