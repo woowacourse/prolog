@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static wooteco.prolog.studylog.studylogFixture.SESSION_ID;
-import static wooteco.prolog.studylog.studylogFixture.TEST_KEYWORD_JAVA;
+import static wooteco.prolog.studylog.StudylogFixture.SESSION_ID;
+import static wooteco.prolog.studylog.StudylogFixture.TEST_KEYWORD_JAVA;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;

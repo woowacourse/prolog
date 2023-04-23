@@ -3,8 +3,9 @@ package wooteco.prolog.studylog;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.roadmap.domain.Keyword;
+import wooteco.prolog.studylog.application.dto.TagRequest;
 
-public class studylogFixture {
+public class StudylogFixture {
 
     //Member
     // to do : null으로 표시한 부분 채우기
@@ -19,4 +20,8 @@ public class studylogFixture {
         , 5, SESSION_ID, null, null);
 
     //Session
+
+    //Tag
+    public static final TagRequest JAVA_TAG_REQUEST = new TagRequest("자바");
+    public static final TagRequest COLLECTION_TAG_REQUEST = new TagRequest("컬렉션");
 }
