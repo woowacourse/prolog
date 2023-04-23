@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
+import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.MissionRepository;
@@ -17,6 +18,7 @@ import wooteco.prolog.studylog.exception.DuplicateMissionException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
+import static wooteco.prolog.login.ui.LoginMember.Authority.ANONYMOUS;
+import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
 
 @ExtendWith(MockitoExtension.class)
 class MissionServiceTest {
@@ -184,11 +188,73 @@ class MissionServiceTest {
 
         // when
         final List<MissionResponse> myMissions = missionService.findMyMissions(loginMember);
+        final MissionResponse response = myMissions.get(0);
 
         // then
         assertAll(
-            () -> assertThat(myMissions.get(0).getName()).isEqualTo("mission1"),
-            () -> assertThat(myMissions.get(0).getSession().getName()).isEqualTo("session1")
+            () -> assertThat(response.getName()).isEqualTo("mission1"),
+            () -> assertThat(response.getSession().getName()).isEqualTo("session1")
+        );
+    }
+
+    @DisplayName("LoginMember와 관련된 Session과 Mission을 목록 상단에 보여주도록 정렬한다.(LoginMember의 Mission과 Session이 최상단에 위치)")
+    @Test
+    void findAllWithMyMissionFirst() {
+        // given
+        final LoginMember loginMember = new LoginMember(MEMBER);
+        final Mission mission1 = new Mission("mission1", new Session("session1"));
+        final Mission mission2 = new Mission("mission2", new Session("session2"));
+        final Mission mission3 = new Mission("mission3", new Session("session3"));
+
+        final List<Mission> allMissions = new ArrayList<>();
+        allMissions.add(mission1);
+        allMissions.add(mission2);
+        allMissions.add(mission3);
+        doReturn(allMissions).when(missionRepository).findAll();
+
+        final List<Mission> myMissions = new ArrayList<>();
+        myMissions.add(mission3);
+        doReturn(myMissions).when(missionRepository).findBySessionIdIn(Collections.emptyList());
+
+        // when
+        final List<MissionResponse> responses = missionService.findAllWithMyMissionFirst(loginMember);
+        final MissionResponse myMission = responses.get(0);
+
+        // then
+        assertAll(
+            () -> assertThat(myMission.getName()).isEqualTo("mission3"),
+            () -> assertThat(myMission.getSession().getName()).isEqualTo("session3"),
+            () -> assertThat(responses).extracting(MissionResponse::getName).contains("mission1", "mission2", "mission3"),
+            () -> assertThat(responses).extracting(response -> response.getSession().getName()).contains("session1", "session2", "session3")
+        );
+    }
+
+    @DisplayName("LoginMember의 Authority가 Anonymous일 때 모든 Mission을 반환한다.")
+    @Test
+    void findAllWithMyMissionFirstReturnFindAll() {
+        // given
+        final LoginMember loginMember = new LoginMember(ANONYMOUS);
+        final Mission mission1 = new Mission("mission1", new Session("session1"));
+        final Mission mission2 = new Mission("mission2", new Session("session2"));
+        final Mission mission3 = new Mission("mission3", new Session("session3"));
+
+        final List<Mission> allMissions = new ArrayList<>();
+        allMissions.add(mission1);
+        allMissions.add(mission2);
+        allMissions.add(mission3);
+        doReturn(allMissions).when(missionRepository).findAll();
+
+        // when
+        final List<MissionResponse> responses = missionService.findAllWithMyMissionFirst(loginMember);
+        final MissionResponse firstResponse = responses.get(0);
+
+        // then
+        assertAll(
+            () -> assertThat(firstResponse.getName()).isEqualTo("mission1"),
+            () -> assertThat(firstResponse.getSession().getName()).isEqualTo("session1"),
+            () -> assertThat(responses).extracting(MissionResponse::getName).contains("mission1", "mission2", "mission3"),
+            () -> assertThat(responses).extracting(response -> response.getSession().getName()).contains("session1", "session2", "session3"),
+            () -> assertThat(responses).hasSize(3)
         );
     }
 
