@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static wooteco.prolog.studylog.StudylogFixture.COLLECTION_TAG_REQUEST;
 import static wooteco.prolog.studylog.StudylogFixture.JAVA_TAG_REQUEST;
+import static wooteco.prolog.studylog.StudylogFixture.TEST_STUDYLOG;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,11 +64,10 @@ class TagServiceTest {
 
     @Test
     void 스터디로그에_쓰인_모든_태그들을_찾는_기능_테스트() {
-        StudylogTag studylog1 = new StudylogTag(null, new Tag(1L, "스프링"));
-        StudylogTag studylog2 = new StudylogTag(null, new Tag(2L, "자바"));
-        StudylogTag studylog3 = new StudylogTag(null, new Tag(1L, "스프링"));
+        StudylogTag studylog1 = new StudylogTag(TEST_STUDYLOG, new Tag(1L, "스프링"));
+        StudylogTag studylog2 = new StudylogTag(TEST_STUDYLOG, new Tag(2L, "자바"));
 
-        doReturn(Arrays.asList(studylog1, studylog2, studylog3))
+        doReturn(Arrays.asList(studylog1, studylog2))
             .when(studylogTagService).findAll();
 
         List<TagResponse> foundTags = tagService.findTagsIncludedInStudylogs();
