@@ -10,6 +10,7 @@ export const SectionHeaderGapStyle = css`
   gap: 2.8rem;
   padding-left: 1.2rem;
   margin-bottom: 1.2rem;
+  margin-top: 3rem;
 
   @media screen and (max-width: 420px) {
     padding-left: 0.8rem;

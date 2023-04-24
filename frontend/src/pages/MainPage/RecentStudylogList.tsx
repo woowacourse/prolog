@@ -7,23 +7,23 @@ import { PATH } from '../../enumerations/path';
 import { Studylog } from '../../models/Studylogs';
 
 import {
-  FlexStyle,
-  AlignItemsCenterStyle,
-  JustifyContentSpaceBtwStyle,
+    FlexStyle,
+    AlignItemsCenterStyle,
+    JustifyContentSpaceBtwStyle,
 } from '../../styles/flex.styles';
 import { SectionHeaderGapStyle } from './styles';
 
 const RecentStudylogList = ({ studylogs }: { studylogs: Studylog[] }) => {
-  return (
-    <section>
-      <div css={[FlexStyle, JustifyContentSpaceBtwStyle, AlignItemsCenterStyle]}>
-        <h2 css={[SectionHeaderGapStyle]}>📚 최신 학습로그</h2>
-        <Link to={PATH.STUDYLOGS}>{`더보기 >`}</Link>
-      </div>
-      {studylogs?.length === 0 && '작성된 글이 없습니다.'}
-      {!!studylogs?.length && <StudylogList studylogs={studylogs} />}
-    </section>
-  );
+    return (
+        <section>
+            <div css={[FlexStyle, JustifyContentSpaceBtwStyle, AlignItemsCenterStyle]}>
+                <h2 css={[SectionHeaderGapStyle]}>📚 최신 학습로그</h2>
+                <Link to={PATH.STUDYLOGS} style={{ marginTop: '3rem' }}>{`더보기 >`}</Link>
+            </div>
+            {studylogs?.length === 0 && '작성된 글이 없습니다.'}
+            {!!studylogs?.length && <StudylogList studylogs={studylogs} />}
+        </section>
+    );
 };
 
 export default RecentStudylogList;
