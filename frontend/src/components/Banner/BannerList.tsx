@@ -92,7 +92,7 @@ const BannerList = ({ bannerList = [] }: { bannerList: BannerType[] }): JSX.Elem
             css={[
               BannerSliderItemStyle,
               css`
-                right: calc(100% * ${currentBannerIndex - index});
+                right: calc(var(--viewportWidth) * ${currentBannerIndex - index});
               `,
             ]}
           >
