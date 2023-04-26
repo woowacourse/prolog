@@ -2,8 +2,10 @@ import { css, Global } from '@emotion/react';
 import COLOR from './constants/color';
 import mediaQuery from './constants/mediaQuery';
 
-const GlobalStyles = () => (
-  <Global
+const GlobalStyles = () => {
+  const scrollbarWidth = window.innerWidth - document.body.clientWidth;
+
+  return <Global
     styles={css`
       @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
@@ -20,6 +22,7 @@ const GlobalStyles = () => (
       }
 
       html {
+        --viewportWidth: calc(100vw - ${scrollbarWidth}px);
         font-size: 10px;
       }
 
@@ -91,6 +94,6 @@ const GlobalStyles = () => (
       }
     `}
   />
-);
+};
 
 export default GlobalStyles;
