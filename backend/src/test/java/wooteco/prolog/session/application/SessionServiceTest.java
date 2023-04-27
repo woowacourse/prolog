@@ -1,0 +1,228 @@
+package wooteco.prolog.session.application;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import wooteco.prolog.common.exception.NotFoundErrorCodeException;
+import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
+import wooteco.prolog.session.application.dto.SessionRequest;
+import wooteco.prolog.session.application.dto.SessionResponse;
+import wooteco.prolog.session.domain.Session;
+import wooteco.prolog.session.domain.SessionMember;
+import wooteco.prolog.session.domain.repository.SessionRepository;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doReturn;
+import static wooteco.prolog.login.ui.LoginMember.*;
+import static wooteco.prolog.login.ui.LoginMember.Authority.*;
+
+@ExtendWith(MockitoExtension.class)
+class SessionServiceTest {
+
+    @InjectMocks
+    private SessionService sessionService;
+
+    @Mock
+    private SessionMemberService sessionMemberService;
+
+    @Mock
+    private SessionRepository sessionRepository;
+
+    @DisplayName("Session을 생성한다.")
+    @Test
+    void create() {
+        // given
+        final SessionRequest request = new SessionRequest("session");
+        doReturn(new Session("session result")).when(sessionRepository).save(request.toEntity());
+
+        // when
+        final SessionResponse response = sessionService.create(request);
+
+        // then
+        assertThat(response.getName()).isEqualTo("session result");
+    }
+
+    @DisplayName("Session을 생성할 때 예외가 발생한다.")
+    @Test
+    void createFail() {
+        // given
+        final SessionRequest request = new SessionRequest("session");
+        final Optional<Session> session = Optional.of(new Session("session"));
+        doReturn(session)
+            .when(sessionRepository).findByName(request.getName());
+
+        // when, then
+        assertThrows(NotFoundErrorCodeException.class, () -> sessionService.create(request));
+    }
+
+    @DisplayName("Id로 Session을 조회한다.")
+    @Test
+    void findById() {
+        // given
+        doReturn(Optional.of(new Session("session"))).when(sessionRepository).findById(1L);
+
+        // when
+        final Session session = sessionService.findById(1L);
+
+        // then
+        assertThat(session.getName()).isEqualTo("session");
+    }
+
+    @DisplayName("Id로 Session을 조회할 때 예외가 발생한다.")
+    @Test
+    void findByIdFail() {
+        // when, then
+        assertThrows(NotFoundErrorCodeException.class, () -> sessionService.findById(1L));
+    }
+
+    @DisplayName("Id로 Optional<Session>을 조회한다.")
+    @Test
+    void findSessionById() {
+        // given
+        doReturn(Optional.of(new Session("session"))).when(sessionRepository).findById(1L);
+
+        // when, then
+        assertThat(sessionService.findSessionById(1L).get().getName()).isEqualTo("session");
+    }
+
+    @DisplayName("Id로 Optional<Session>을 조회할 때 Optional<empty>가 반환된다.")
+    @Test
+    void findSessionByIdFail() {
+        // when, then
+        assertThat(sessionService.findSessionById(null).isPresent()).isFalse();
+    }
+
+    @DisplayName("모든 Session을 조회한다.")
+    @Test
+    void findAll() {
+        // given
+        final List<Session> sessions = new ArrayList<>();
+        sessions.add(new Session("session1"));
+        sessions.add(new Session("session2"));
+        sessions.add(new Session("session3"));
+
+        doReturn(sessions).when(sessionRepository).findAll();
+
+        // when
+        List<SessionResponse> responses = sessionService.findAll();
+
+        // then
+        assertAll(
+            () -> assertThat(responses).extracting(SessionResponse::getName)
+                .containsExactly("session1", "session2", "session3")
+        );
+    }
+
+    @DisplayName("현재 로그인한 Memeber의 Session을 조회한다.")
+    @Test
+    void findMySessions() {
+        // given
+        final LoginMember member = new LoginMember(1L, MEMBER);
+        final List<Session> sessions = new ArrayList<>();
+        sessions.add(new Session("session1"));
+
+        final List<SessionMember> sessionMembers = new ArrayList<>();
+        sessionMembers.add(new SessionMember(1L, new Member("member1", "베베", Role.CREW, Long.MIN_VALUE, "img")));
+
+        doReturn(sessionMembers).when(sessionMemberService).findByMemberId(member.getId());
+        doReturn(sessions).when(sessionRepository).findAllById(Arrays.asList(1L));
+
+        // when
+        List<SessionResponse> responses = sessionService.findMySessions(member);
+
+        // then
+        assertThat(responses.get(0).getName()).isEqualTo("session1");
+    }
+
+    @DisplayName("현재 로그인한 Member의 SessionId들을 조회한다.")
+    @Test
+    void findMySessionIds() {
+        // given
+        final LoginMember member = new LoginMember(1L, MEMBER);
+        final List<SessionMember> sessionMembers = new ArrayList<>();
+        sessionMembers.add(new SessionMember(1L, new Member("member1", "베베", Role.CREW, Long.MIN_VALUE, "img")));
+
+        doReturn(sessionMembers).when(sessionMemberService).findByMemberId(member.getId());
+
+        // when
+        List<Long> sessionIds = sessionService.findMySessionIds(member.getId());
+
+        // then
+        assertAll(
+            () -> assertThat(sessionIds.get(0)).isEqualTo(1L),
+            () -> assertThat(sessionIds.size()).isEqualTo(1)
+        );
+    }
+
+    @DisplayName("LoginMember와 관련된 Session을 목록 상단에 보여주도록 정렬한다.(LoginMember의 Session이 최상단에 위치)")
+    @Test
+    void findALlWithMySessionFirst() {
+        // given
+        final LoginMember loginMember = new LoginMember(MEMBER);
+        final Session session1 = new Session("session1");
+        final Session session2 = new Session("session2");
+        final Session session3 = new Session("session3");
+
+        final List<Session> mySessions = new ArrayList<>();
+        mySessions.add(session2);
+        doReturn(mySessions).when(sessionRepository).findAllById(Collections.emptyList());
+
+        final List<Session> allSessions = new ArrayList<>();
+        allSessions.add(session1);
+        allSessions.add(session2);
+        allSessions.add(session3);
+        doReturn(allSessions).when(sessionRepository).findAll();
+
+        // when
+        List<SessionResponse> responses = sessionService.findAllWithMySessionFirst(loginMember);
+
+        // then
+        assertAll(
+            () -> assertThat(responses.get(0).getName()).isEqualTo("session2"),
+            () -> assertThat(responses).extracting(SessionResponse::getName).contains("session1", "session2", "session3")
+        );
+    }
+
+    @DisplayName("LoginMember의 Authority가 Anonymous일 때 모든 Session을 반환한다.")
+    @Test
+    void findALlWithMySessionFirstReturnFindAll() {
+        // given
+        final LoginMember loginMember = new LoginMember(ANONYMOUS);
+        final Session session1 = new Session("session1");
+        final Session session2 = new Session("session2");
+        final Session session3 = new Session("session3");
+
+        final List<Session> allSessions = new ArrayList<>();
+        allSessions.add(session1);
+        allSessions.add(session2);
+        allSessions.add(session3);
+        doReturn(allSessions).when(sessionRepository).findAll();
+
+        // when
+        final List<SessionResponse> responses = sessionService.findAllWithMySessionFirst(loginMember);
+        final SessionResponse firstResponse = responses.get(0);
+
+        // then
+        assertAll(
+            () -> assertThat(firstResponse.getName()).isEqualTo("session1"),
+            () -> assertThat(responses.get(0).getName()).isEqualTo("session2"),
+            () -> assertThat(responses).extracting(SessionResponse::getName).contains("session1", "session2", "session3"),
+            () -> assertThat(responses).hasSize(3)
+        );
+    }
+
+}
