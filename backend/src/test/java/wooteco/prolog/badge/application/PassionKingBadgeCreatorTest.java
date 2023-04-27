@@ -4,7 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
+import java.util.Arrays;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +25,7 @@ class PassionKingBadgeCreatorTest {
     @BeforeEach
     void init() {
         passionKingBadgeCreator =
-            new PassionKingBadgeCreator(badgeRepository, List.of(1L, 2L));
+            new PassionKingBadgeCreator(badgeRepository, Arrays.asList(1L, 2L));
     }
 
     @DisplayName("일정 session동안 특정한 개수 이상만큼 글을 작성하면 열정 뱃지를 만들 수 있다")

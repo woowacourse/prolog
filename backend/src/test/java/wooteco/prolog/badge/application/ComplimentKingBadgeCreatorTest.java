@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
+import java.util.Arrays;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,7 @@ class ComplimentKingBadgeCreatorTest {
     @BeforeEach
     void init() {
         complimentKingBadgeCreator =
-            new ComplimentKingBadgeCreator(badgeRepository, List.of(1L, 2L));
+            new ComplimentKingBadgeCreator(badgeRepository, Arrays.asList(1L, 2L));
     }
 
     @DisplayName("일정 session동안 특정한 칭찬 개수 초과시 칭찬 뱃지를 만들 수 있다")
@@ -39,7 +39,6 @@ class ComplimentKingBadgeCreatorTest {
         when(badgeRepository.countLikesByUsernameDuringSessions(any(), any()))
             .thenReturn(15);
 
-        //optional >> nullable할 수 있다는 것을 알려줌
         Optional<BadgeType> badgeType = complimentKingBadgeCreator.create(userName);
 
         //then
