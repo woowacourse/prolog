@@ -1,5 +1,9 @@
 package wooteco.prolog.login.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,11 +13,6 @@ import wooteco.prolog.member.domain.MemberTag;
 import wooteco.prolog.member.domain.MemberTags;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.studylog.domain.Tag;
-import wooteco.prolog.studylog.domain.Tags;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class MemberTest {
 
@@ -95,13 +94,11 @@ class MemberTest {
 
         Tag tag1 = new Tag(1L, "tag1");
         Tag tag2 = new Tag(2L, "tag2");
-        Tag tag3 = new Tag(3L, "tag1");
 
-        MemberTag memberTag1 = new MemberTag(member, tag1);
-        MemberTag memberTag2 = new MemberTag(member, tag2);
-        MemberTag memberTag3 = new MemberTag(member, tag3);
+        MemberTag memberTag1 = new MemberTag(1L, member, tag1, 2);
+        MemberTag memberTag2 = new MemberTag(2L, member, tag2, 1);
 
-        MemberTags memberTags = new MemberTags(List.of(memberTag1, memberTag2, memberTag3));
+        MemberTags memberTags = new MemberTags(Arrays.asList(memberTag1, memberTag2));
 
         //when
         Member modifiedMember = new Member(1L, "a", "member",
@@ -109,11 +106,7 @@ class MemberTest {
 
         List<MemberTag> memberTagsWithSort = modifiedMember.getMemberTagsWithSort();
 
-        for (MemberTag memberTag : memberTagsWithSort) {
-            System.out.println(memberTag.getTag().getName());
-        }
-
-        List<MemberTag> expected = List.of(memberTag2, memberTag1);
+        List<MemberTag> expected = Arrays.asList(memberTag1, memberTag2);
 
         //then
         Assertions.assertEquals(memberTagsWithSort, expected);
