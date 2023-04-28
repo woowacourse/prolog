@@ -32,7 +32,7 @@ const GlobalStyles = () => {
         padding: 0;
         font-size: 1.6rem;
         min-height: 100vh;
-        width: 100vw;
+        width: 100%;
         background-color: ${COLOR.LIGHT_GRAY_50};
         color: ${COLOR.DARK_GRAY_900};
         overflow-x: hidden;
