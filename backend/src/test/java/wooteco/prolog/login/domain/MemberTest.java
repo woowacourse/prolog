@@ -1,11 +1,10 @@
 package wooteco.prolog.login.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.member.domain.Member;
@@ -15,13 +14,6 @@ import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.studylog.domain.Tag;
 
 class MemberTest {
-
-    private Member member;
-
-    @BeforeEach
-    void setUp() {
-        member = new Member(1L, "saminching", "손너잘", Role.CREW, 1234L, "imageUrl");
-    }
 
     @DisplayName("nickname이 없을 때 loginName으로 대체되는지 확인")
     @Test
@@ -54,7 +46,7 @@ class MemberTest {
         member.updateNickname("");
 
         //then
-        Assertions.assertEquals("judy", member.getNickname());
+        assertEquals("judy", member.getNickname());
     }
 
     @Test
@@ -68,47 +60,50 @@ class MemberTest {
         member.updateImageUrl("");
 
         //then
-        Assertions.assertEquals("imageUrl", member.getImageUrl());
+        assertEquals("imageUrl", member.getImageUrl());
     }
 
     @Test
     @DisplayName("updateProfileIntro() : 변경할 ProfileIntro가 없다면 ProfileIntro를 바꾸지 않는다.")
     void updateProfileIntro() {
         //given
-        Member member = new Member(1L, "soulg", "judy",
+        final Member member = new Member(1L, "soulg", "judy",
             Role.CREW, 1234L, "imageUrl");
+        final String profileIntro = "intro";
+
+        member.updateProfileIntro(profileIntro);
 
         //when
         member.updateProfileIntro("");
 
         //then
-        Assertions.assertNull(member.getProfileIntro());
+        assertEquals(profileIntro, member.getProfileIntro());
     }
 
     @Test
     @DisplayName("getMemberTagsWithSort() : 멤버가 가지고 있는 태그의 수로 내림차순 정렬을 할 수 있다.")
     void test_ifAbsentReplace() {
         //given
-        Member member = new Member(1L, "a", "member",
+        final Member member = new Member(1L, "a", "member",
             Role.CREW, 1234L, "imageUrl1");
 
-        Tag tag1 = new Tag(1L, "tag1");
-        Tag tag2 = new Tag(2L, "tag2");
+        final Tag tag1 = new Tag(1L, "tag1");
+        final Tag tag2 = new Tag(2L, "tag2");
 
-        MemberTag memberTag1 = new MemberTag(1L, member, tag1, 2);
-        MemberTag memberTag2 = new MemberTag(2L, member, tag2, 1);
+        final MemberTag memberTag1 = new MemberTag(1L, member, tag1, 1);
+        final MemberTag memberTag2 = new MemberTag(2L, member, tag2, 2);
 
-        MemberTags memberTags = new MemberTags(Arrays.asList(memberTag1, memberTag2));
+        final MemberTags memberTags = new MemberTags(Arrays.asList(memberTag1, memberTag2));
 
         //when
-        Member modifiedMember = new Member(1L, "a", "member",
+        final Member modifiedMember = new Member(1L, "a", "member",
             Role.CREW, 1234L, "imageUrl1", memberTags);
 
-        List<MemberTag> memberTagsWithSort = modifiedMember.getMemberTagsWithSort();
+        final List<MemberTag> memberTagsWithSort = modifiedMember.getMemberTagsWithSort();
 
-        List<MemberTag> expected = Arrays.asList(memberTag1, memberTag2);
+        final List<MemberTag> expected = Arrays.asList(memberTag2, memberTag1);
 
         //then
-        Assertions.assertEquals(memberTagsWithSort, expected);
+        assertEquals(memberTagsWithSort, expected);
     }
 }

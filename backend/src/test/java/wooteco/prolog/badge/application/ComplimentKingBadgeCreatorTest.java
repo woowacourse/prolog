@@ -29,15 +29,16 @@ class ComplimentKingBadgeCreatorTest {
             new ComplimentKingBadgeCreator(badgeRepository, Arrays.asList(1L, 2L));
     }
 
-    @DisplayName("일정 session동안 특정한 칭찬 개수 초과시 칭찬 뱃지를 만들 수 있다")
+    @DisplayName("create() : 일정 session동안 칭찬 개수가 15개 초과 시 칭찬 뱃지를 만들 수 있다")
     @Test
     void test_create() {
         //given
         final String userName = "urrr";
+        final int complimentKingUpperCriteria = 15;
 
         //when
         when(badgeRepository.countLikesByUsernameDuringSessions(any(), any()))
-            .thenReturn(15);
+            .thenReturn(complimentKingUpperCriteria);
 
         Optional<BadgeType> badgeType = complimentKingBadgeCreator.create(userName);
 
@@ -46,15 +47,16 @@ class ComplimentKingBadgeCreatorTest {
         assertThat(badgeType.get()).isEqualTo(BadgeType.COMPLIMENT_KING);
     }
 
-    @DisplayName("일정 session동안 특정한 칭찬 개수 미만일시 칭찬 뱃지를 만들 수 없다")
+    @DisplayName("create() : 일정 session동안 칭찬 개수가 15개 미만일 시 칭찬 뱃지를 만들 수 없다")
     @Test
     void test_create_exception() {
         //given
         final String username = "judy";
+        final int complimentKingLowerCriteria = 14;
 
         //when
         when(badgeRepository.countLikesByUsernameDuringSessions(any(), any()))
-            .thenReturn(14);
+            .thenReturn(complimentKingLowerCriteria);
 
         Optional<BadgeType> badgeType = complimentKingBadgeCreator.create(username);
 

@@ -114,9 +114,6 @@ class MemberServiceTest {
     @DisplayName("findById() : 존재하지 않는 Member를 조회할 경우 MemberNotFoundException이 발생한다.")
     @Test
     void test_findById_MemberNotFoundException() {
-        //given
-        final Member member = new Member(1L, "a", "a", Role.ADMIN, 1L, "imageUrl");
-
         //when
         when(memberRepository.findById(any()))
             .thenReturn(Optional.empty());
