@@ -1,10 +1,9 @@
 package wooteco.prolog.badge.application;
 
-import wooteco.prolog.badge.domain.BadgeType;
-import wooteco.prolog.studylog.domain.repository.BadgeRepository;
-
 import java.util.List;
 import java.util.Optional;
+import wooteco.prolog.badge.domain.BadgeType;
+import wooteco.prolog.studylog.domain.repository.BadgeRepository;
 
 public class PassionKingBadgeCreator implements BadgeCreator {
 
@@ -21,7 +20,8 @@ public class PassionKingBadgeCreator implements BadgeCreator {
 
     @Override
     public Optional<BadgeType> create(String username) {
-        int studylogCount = badgeRepository.countStudylogByUsernameDuringSessions(username, sessions);
+        int studylogCount = badgeRepository.countStudylogByUsernameDuringSessions(username,
+            sessions);
 
         if (studylogCount >= PASSION_KING_CRITERIA) {
             return Optional.of(BadgeType.PASSION_KING);
