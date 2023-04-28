@@ -28,12 +28,13 @@ const TopKeywordList = ({
 
   return (
     <StyledRoot>
-      {topKeywordList?.sort(compareFn).map((keyword) => {
+      {topKeywordList?.sort(compareFn).map((keyword, index) => {
+        const isNotFirst = index > 0;
         const isSelected = selectedTopKeyword?.keywordId === keyword.keywordId;
 
         return (
           <StyledWrapper key={keyword.keywordId}>
-            <StyledArrow />
+            {isNotFirst && <StyledArrow />}
             <ResponsiveButton
               text={keyword.name}
               backgroundColor={isSelected ? COLOR.LIGHT_BLUE_900 : COLOR.LIGHT_GRAY_400}
@@ -67,9 +68,4 @@ const StyledArrow = styled.div`
 const StyledWrapper = styled.div`
   display: flex;
   align-items: center;
-
-  /* 첫 번째 화살표를 숨기는 스타일 */
-  &:first-child > :first-child {
-    display: none;
-  }
 `;
