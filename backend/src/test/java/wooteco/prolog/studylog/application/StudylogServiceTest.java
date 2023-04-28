@@ -1,6 +1,7 @@
 package wooteco.prolog.studylog.application;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,11 +20,11 @@ import wooteco.prolog.studylog.domain.StudylogTemp;
 import wooteco.prolog.studylog.domain.Tags;
 import wooteco.prolog.studylog.domain.repository.*;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -57,60 +58,118 @@ class StudylogServiceTest {
     @Mock
     private ApplicationEventPublisher eventPublisher;
 
-    @Test
     @DisplayName("스터디로그를 정상적으로 생성하고 반환한다.")
-    void insertStudyLog() {
-        // given
+    @Nested
+    class insertStudylog {
+
         String title = "제목";
         String content = "내용";
-        Tags tags = Tags.of(Arrays.asList("스터디로그"));
+        Tags tags = Tags.of(Collections.singletonList("스터디로그"));
         Member member = new Member(1L, "김동해", "오션", Role.CREW, 1L, "image");
+        List<TagRequest> tagRequests = Collections.singletonList(new TagRequest("스터디로그"));
+        StudylogRequest studylogRequest = new StudylogRequest(title, content, null, null, tagRequests);
+        Studylog studylog = new Studylog(member, studylogRequest.getTitle(), studylogRequest.getContent(), null, null, tags.getList());
+        List<TagResponse> expectedTagResponses = Collections.singletonList(new TagResponse(null, "스터디로그"));
+
+        @Test
+        @DisplayName("StudyLogTemp가 존재할 경우 삭제하고, 스터디로그를 정상적으로 생성하고 반환한다.")
+        void insertStudylog_existStudyLogTemp() {
+            // given
+            when(memberService.findById(anyLong())).thenReturn(member);
+            when(tagService.findOrCreate(anyList())).thenReturn(tags);
+            when(studylogRepository.save(any())).thenReturn(studylog);
+            when(studylogTempRepository.existsByMemberId(1L)).thenReturn(true);
+
+            // when
+            StudylogResponse studylogResponse = studylogService.insertStudylog(1L, studylogRequest);
+
+            // then
+            assertAll(() -> {
+                assertThat(studylogResponse.getTitle()).isEqualTo(title);
+                assertThat(studylogResponse.getContent()).isEqualTo(content);
+                assertThat(studylogResponse.getTags()).usingRecursiveComparison().isEqualTo(expectedTagResponses);
+                verify(studylogTempRepository, times(1)).deleteByMemberId(1L);
+            });
+        }
+
+        @Test
+        @DisplayName("StudyLogTemp가 존재하지 않는 경우, 스터디로그를 정상적으로 생성하고 반환한다.")
+        void insertStudylog_notExistStudyLogTemp() {
+            // given
+            when(memberService.findById(anyLong())).thenReturn(member);
+            when(tagService.findOrCreate(anyList())).thenReturn(tags);
+            when(studylogRepository.save(any())).thenReturn(studylog);
+            when(studylogTempRepository.existsByMemberId(1L)).thenReturn(false);
+
+            // when
+            StudylogResponse studylogResponse = studylogService.insertStudylog(1L, studylogRequest);
+
+            // then
+            assertAll(() -> {
+                assertThat(studylogResponse.getTitle()).isEqualTo(title);
+                assertThat(studylogResponse.getContent()).isEqualTo(content);
+                assertThat(studylogResponse.getTags()).usingRecursiveComparison().isEqualTo(expectedTagResponses);
+                verify(studylogTempRepository, never()).deleteByMemberId(1L);
+            });
+        }
+    }
+
+    @DisplayName("임시 스터디로그를 정상적으로 생성하고 반환한다.")
+    @Nested
+    class insertStudylogTemp {
+
+        String title = "제목";
+        String content = "내용";
+        Tags tags = Tags.of(Collections.singletonList("스터디로그"));
+        Member member = new Member(1L, "문채원", "라온", Role.CREW, 1L, "image");
         List<TagRequest> tagRequests = Collections.singletonList(new TagRequest("스터디로그"));
         List<TagResponse> tagResponses = Collections.singletonList(new TagResponse(null, "스터디로그"));
         StudylogRequest studylogRequest = new StudylogRequest(title, content, null, null, tagRequests);
-        Studylog studylog = new Studylog(member, studylogRequest.getTitle(), studylogRequest.getContent(), null, null, tags.getList());
         StudylogTemp studylogTemp = new StudylogTemp(member, studylogRequest.getTitle(), studylogRequest.getContent(), null, null, tags.getList());
 
-        when(memberService.findById(anyLong())).thenReturn(member);
-        when(tagService.findOrCreate(anyList())).thenReturn(tags);
-        when(studylogRepository.save(any())).thenReturn(studylog);
+        @Test
+        @DisplayName("StudyLogTemp가 존재하지 않는 경우 삭제하고, 임시 스터디로그를 정상적으로 생성하고 반환한다.")
+        void insertStudylogTemp_existStudylogTemp() {
+            // given
+            when(memberService.findById(anyLong())).thenReturn(member);
+            when(tagService.findOrCreate(anyList())).thenReturn(tags);
+            when(studylogTempRepository.save(any())).thenReturn(studylogTemp);
+            when(studylogTempRepository.existsByMemberId(1L)).thenReturn(true);
 
-        // when, then
-        assertThat(studylogService.findStudylogTemp(1L)).isNotNull();
+            // when
+            StudylogTempResponse studylogTempResponse = studylogService.insertStudylogTemp(1L, studylogRequest);
 
-        when(studylogTempRepository.existsByMemberId(1L)).thenReturn(true);
+            // then
+            assertAll(() -> {
+                assertThat(studylogTempResponse.getTitle()).isEqualTo(title);
+                assertThat(studylogTempResponse.getContent()).isEqualTo(content);
+                assertThat(studylogTempResponse.getTags()).usingRecursiveComparison().isEqualTo(tagResponses);
+                verify(studylogTempRepository, times(1)).deleteByMemberId(1L);
+            });
+        }
 
-        StudylogResponse studylogResponse = studylogService.insertStudylog(1L, studylogRequest);
 
-        assertThat(studylogResponse.getTitle()).isEqualTo(title);
-        assertThat(studylogResponse.getContent()).isEqualTo(content);
-        assertThat(studylogResponse.getTags()).usingRecursiveComparison().isEqualTo(tagResponses);
-        verify(studylogTempRepository, times(1)).deleteByMemberId(1L);
-    }
+        @Test
+        @DisplayName("StudyLogTemp가 존재하지 않는 경우, 임시 스터디로그를 정상적으로 생성하고 반환한다.")
+        void insertStudylogTemp_notExistStudylogTemp() {
+            // given
+            when(memberService.findById(anyLong())).thenReturn(member);
+            when(tagService.findOrCreate(anyList())).thenReturn(tags);
+            when(studylogTempRepository.save(any())).thenReturn(studylogTemp);
+            when(studylogTempRepository.existsByMemberId(1L)).thenReturn(false);
 
-    @Test
-    @DisplayName("임시 스터디로그를 정상적으로 생성하고 반환한다.")
-    void insertStudylogTemp() {
-        // given
-        String title = "제목";
-        String content = "내용";
-        Tags tags = Tags.of(Arrays.asList("스터디로그"));
-        Member member = new Member(1L, "문채원", "라온", Role.CREW, 1L, "image");
-        List<TagRequest> tagRequests = Arrays.asList(new TagRequest("스터디로그"));
-        List<TagResponse> tagResponses = Arrays.asList(new TagResponse(null, "스터디로그"));
-        StudylogRequest studylogRequest = new StudylogRequest(title, content, null, null, tagRequests);
-        StudylogTemp studylogTemp = new StudylogTemp(member, studylogRequest.getTitle(), studylogRequest.getContent(), null, null, tags.getList());
 
-        when(memberService.findById(anyLong())).thenReturn(member);
-        when(tagService.findOrCreate(anyList())).thenReturn(tags);
-        when(studylogTempRepository.save(any())).thenReturn(studylogTemp);
+            // when
+            StudylogTempResponse studylogTempResponse = studylogService.insertStudylogTemp(1L, studylogRequest);
 
-        // when
-        StudylogTempResponse studylogTempResponse = studylogService.insertStudylogTemp(1L, studylogRequest);
+            // then
+            assertAll(() -> {
+                assertThat(studylogTempResponse.getTitle()).isEqualTo(title);
+                assertThat(studylogTempResponse.getContent()).isEqualTo(content);
+                assertThat(studylogTempResponse.getTags()).usingRecursiveComparison().isEqualTo(tagResponses);
+                verify(studylogTempRepository, never()).deleteByMemberId(1L);
+            });
+        }
 
-        // then
-        assertThat(studylogTempResponse.getTitle()).isEqualTo(title);
-        assertThat(studylogTempResponse.getContent()).isEqualTo(content);
-        assertThat(studylogTempResponse.getTags()).usingRecursiveComparison().isEqualTo(tagResponses);
     }
 }
