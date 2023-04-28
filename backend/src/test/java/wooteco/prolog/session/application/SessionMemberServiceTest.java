@@ -12,15 +12,16 @@ import wooteco.prolog.member.application.GroupMemberService;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.session.application.dto.SessionGroupMemberRequest;
 import wooteco.prolog.session.application.dto.SessionMemberRequest;
 import wooteco.prolog.session.domain.SessionMember;
 import wooteco.prolog.session.domain.repository.SessionMemberRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-import wooteco.prolog.session.exception.SessionNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -53,18 +54,20 @@ class SessionMemberServiceTest {
     @Test
     void registerMember() {
         // given
+        final Long sessionId = 1L;
+        final Long memberId = 1L;
         final Member member = new Member("bebe", "베베", CREW, 1L, "img");
-        when(sessionRepository.existsById(1L)).thenReturn(true);
-        doReturn(member).when(memberService).findById(1L);
+        when(sessionRepository.existsById(sessionId)).thenReturn(true);
+        doReturn(member).when(memberService).findById(memberId);
 
         // when
-        sessionMemberService.registerMember(1L, 1L);
+        sessionMemberService.registerMember(sessionId, memberId);
 
         // then
-        verify(sessionRepository, times(1)).existsById(1L);
-        verify(memberService, times(1)).findById(1L);
+        verify(sessionRepository, times(1)).existsById(sessionId);
+        verify(memberService, times(1)).findById(memberId);
         verify(sessionMemberRepository, times(1))
-            .save(new SessionMember(1L, member));
+            .save(new SessionMember(sessionId, member));
     }
 
     @DisplayName("SessionId가 이미 존재하는 Member는 회원가입을 할 수 없다.")
@@ -152,6 +155,24 @@ class SessionMemberServiceTest {
 
         // then
         assertThat(results).extracting(SessionMember::getMember).contains(member);
+    }
+
+    @DisplayName("RegistedSession 삭제 테스트")
+    @Test
+    void deleteRegistedSession() {
+        // given
+        final Long sessionId = 1L;
+        final Long memberId = 1L;
+        Member member = new Member(memberId, "userName", "user", CREW, 1L, "imageUrl");
+        SessionMember sessionMember = new SessionMember(sessionId, member);
+
+        doReturn(member).when(memberService).findById(memberId);
+        doReturn(Optional.of(sessionMember)).when(sessionMemberRepository).findBySessionIdAndMember(sessionId, member);
+        // when
+        sessionMemberService.deleteRegistedSession(sessionId, memberId);
+
+        // then
+        verify(sessionMemberRepository, atMostOnce()).delete(sessionMember);
     }
 
     @DisplayName("SesssionMember를 존재하지 않는 SesisonId와 MemberId로 조회시 예외 발생")

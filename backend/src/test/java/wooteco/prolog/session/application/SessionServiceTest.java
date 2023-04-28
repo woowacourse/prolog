@@ -1,6 +1,5 @@
 package wooteco.prolog.session.application;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,8 +26,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
-import static wooteco.prolog.login.ui.LoginMember.*;
-import static wooteco.prolog.login.ui.LoginMember.Authority.*;
+import static wooteco.prolog.login.ui.LoginMember.Authority.ANONYMOUS;
+import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
 
 @ExtendWith(MockitoExtension.class)
 class SessionServiceTest {
@@ -42,7 +41,7 @@ class SessionServiceTest {
     @Mock
     private SessionRepository sessionRepository;
 
-    @DisplayName("Session을 생성한다.")
+    @DisplayName("유효한 이름 값을 매개변수로 넣으면 Session 객체가 정상적으로 생성된다.")
     @Test
     void create() {
         // given
@@ -56,20 +55,19 @@ class SessionServiceTest {
         assertThat(response.getName()).isEqualTo("session result");
     }
 
-    @DisplayName("Session을 생성할 때 예외가 발생한다.")
+    @DisplayName("Session을 생성할 때 이미 존재하는 이름이라면 예외가 발생한다.")
     @Test
     void createFail() {
         // given
         final SessionRequest request = new SessionRequest("session");
         final Optional<Session> session = Optional.of(new Session("session"));
-        doReturn(session)
-            .when(sessionRepository).findByName(request.getName());
+        doReturn(session).when(sessionRepository).findByName(request.getName());
 
         // when, then
         assertThrows(NotFoundErrorCodeException.class, () -> sessionService.create(request));
     }
 
-    @DisplayName("Id로 Session을 조회한다.")
+    @DisplayName("유효한 Id를 매개변수로 Id Session을 조회한다.")
     @Test
     void findById() {
         // given
@@ -82,7 +80,7 @@ class SessionServiceTest {
         assertThat(session.getName()).isEqualTo("session");
     }
 
-    @DisplayName("Id로 Session을 조회할 때 예외가 발생한다.")
+    @DisplayName("Id로 Session을 조회할 때 세션이 존재하지 않는다면 예외가 발생한다.")
     @Test
     void findByIdFail() {
         // when, then
@@ -106,7 +104,7 @@ class SessionServiceTest {
         assertThat(sessionService.findSessionById(null).isPresent()).isFalse();
     }
 
-    @DisplayName("모든 Session을 조회한다.")
+    @DisplayName("findAll()을 호출하면 생성된 모든 Session을 List<SessionResponse>로 반환한다.")
     @Test
     void findAll() {
         // given

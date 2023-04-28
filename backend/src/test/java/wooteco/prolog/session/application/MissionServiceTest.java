@@ -10,7 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
-import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.MissionRepository;
