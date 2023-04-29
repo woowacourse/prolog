@@ -14,16 +14,14 @@ import wooteco.prolog.roadmap.domain.Quiz;
 import wooteco.prolog.roadmap.domain.repository.EssayAnswerRepository;
 import wooteco.prolog.roadmap.domain.repository.QuizRepository;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class EssayAnswerServiceTest {
@@ -163,7 +161,7 @@ class EssayAnswerServiceTest {
     void findByQuizId_는_EssayAnswer_의_quizId_값이_전달한_파라미터와_같은_데이터를_모두_가져온다() {
         //given
         when(essayAnswerRepository.findByQuizIdOrderByIdDesc(anyLong()))
-            .thenReturn(List.of(new EssayAnswer(null, null, null), new EssayAnswer(null, null, null)));
+            .thenReturn(Arrays.asList(new EssayAnswer(null, null, null), new EssayAnswer(null, null, null)));
 
         //when
         final List<EssayAnswer> byQuizId = essayAnswerService.findByQuizId(1L);

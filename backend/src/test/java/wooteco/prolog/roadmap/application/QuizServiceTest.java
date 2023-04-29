@@ -17,7 +17,7 @@ import wooteco.prolog.roadmap.domain.repository.QuizRepository;
 import wooteco.prolog.roadmap.exception.KeywordOrderException;
 import wooteco.prolog.roadmap.exception.QuizNotFoundException;
 
-import java.util.List;
+import java.util.Arrays;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,9 +25,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class QuizServiceTest {
@@ -87,7 +85,7 @@ class QuizServiceTest {
         final long requestKeywordId = 1L;
 
         when(quizRepository.findFetchQuizByKeywordId(anyLong()))
-            .thenReturn(List.of(
+            .thenReturn(Arrays.asList(
                     new Quiz(null, null),
                     new Quiz(null, null)
                 )
