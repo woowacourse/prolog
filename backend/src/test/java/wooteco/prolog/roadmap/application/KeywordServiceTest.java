@@ -139,6 +139,29 @@ class KeywordServiceTest {
         verify(keywordRepository, times(2)).findById(any());
     }
 
+    @DisplayName("sessionId가 유효하지 않으면 키워드 업데이트 시 예외가 발생한다")
+    @Test
+    void updateKeyword_fail() {
+        //given
+        when(sessionRepository.existsById(any())).thenReturn(false);
+        KeywordUpdateRequest request = new KeywordUpdateRequest("", "", 1, 1, 1L);
+
+        //then
+        assertThatThrownBy(() -> keywordService.updateKeyword(1L, 1L, request));
+    }
+
+    @DisplayName("keywordId가 유효하지 않으면 키워드 업데이트 시 예외가 발생한다")
+    @Test
+    void updateKeyword_fail2() {
+        //given
+        when(sessionRepository.existsById(any())).thenReturn(true);
+        KeywordUpdateRequest request = new KeywordUpdateRequest("", "", 1, 1, 1L);
+
+        //then
+        assertThatThrownBy(() -> keywordService.updateKeyword(1L, 1L, request))
+            .isInstanceOf(KeywordNotFoundException.class);
+    }
+
     @DisplayName("sessionId와 keywordId로 키워드를 삭제할 수 있다")
     @Test
     void deleteKeyword() {
