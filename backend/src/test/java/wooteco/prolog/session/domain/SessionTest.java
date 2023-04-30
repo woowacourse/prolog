@@ -14,14 +14,14 @@ public class SessionTest {
 
     @DisplayName("Session(String name)의 인수로 최대 길이 이상의 문자열을 넣으면 TooLongLevelNameException이 발생한다")
     @Test
-    public void Session_fail() {
+    public void Session_fail_because_over_length() {
         //given, when, then
         assertThatThrownBy(() -> new Session(OVER_LENGTH_NAME)).isInstanceOf(Exception.class);
     }
 
     @DisplayName("update(String name)의 인수로 최대 길이 이상의 문자열을 넣으면 예외가 발생한다.")
     @Test
-    public void update_fail() {
+    public void update_fail_because_over_length() {
         //given
         Session session = new Session(BACKEND_LEVEL1_SESSION);
 
@@ -41,7 +41,7 @@ public class SessionTest {
 
     @DisplayName("equals(Object object)는 세션 아이디가 동일한 세션을 비교할 경우 true를 반환한다")
     @Test
-    public void equals_true_by_id() {
+    public void equals_true_because_id() {
         //given
         Session criteria = new Session(BACKEND_LEVEL1_SESSION);
         Session comparison = new Session(BACKEND_LEVEL1_SESSION);
@@ -52,7 +52,7 @@ public class SessionTest {
 
     @DisplayName("equals(Object object)는 주소가 동일한 세션을 비교할 경우 true를 반환한다")
     @Test
-    public void equals_true_by_address() {
+    public void equals_true_because_address() {
         //given
         Session criteria = new Session(BACKEND_LEVEL1_SESSION);
 
@@ -62,7 +62,7 @@ public class SessionTest {
 
     @DisplayName("equals(Object object)는 다른 자료형의 객체와 세션을 비교할 경우 false를 반환한다")
     @Test
-    public void equals_false_by_type() {
+    public void equals_false_because_type() {
         //given
         Session criteria = new Session(BACKEND_LEVEL1_SESSION);
         Mission comparison = new Mission();
