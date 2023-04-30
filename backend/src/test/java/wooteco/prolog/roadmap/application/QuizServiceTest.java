@@ -25,7 +25,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class QuizServiceTest {
@@ -38,22 +40,22 @@ class QuizServiceTest {
     @InjectMocks
     QuizService quizService;
 
-
-    @Test
     @DisplayName("키워드 Id에 해당하는 Keyword 가 없으면 예외를 발생시킨다")
-    void invalid_createQuiz_Keyword_Id() {
+    @Test
+    void createQuiz_fail_KeywordId() {
         //given
         when(keywordRepository.findById(anyLong()))
             .thenReturn(Optional.empty());
+        final QuizRequest question = new QuizRequest("question");
 
-        //expect
-        assertThatThrownBy(() -> quizService.createQuiz(1L, new QuizRequest("question")))
+        //when,then
+        assertThatThrownBy(() -> quizService.createQuiz(1L, question))
             .isInstanceOf(KeywordOrderException.class);
     }
 
-    @Test
     @DisplayName("QuizRequest 를 보내면 해당 Request 의 Question 의 값과 Id 기반으로 찾은 Keyword 의 값을 가진 Quiz를 저장하고 그 Id를 반환한다")
-    void valid_createQuiz() {
+    @Test
+    void createQuiz() {
         //given
         final Keyword keyword = new Keyword(null, null, null, 2, 0, null, null, null);
         final String requestQuestion = "question";
@@ -78,8 +80,8 @@ class QuizServiceTest {
         );
     }
 
-    @Test
     @DisplayName("keywordId에 매칭되는 키워드를 가진 모든 퀴즈를 통해 응답을 만들어준다")
+    @Test
     void findQuizzesByKeywordId() {
         //given
         final long requestKeywordId = 1L;
@@ -101,21 +103,22 @@ class QuizServiceTest {
         );
     }
 
-    @Test
     @DisplayName("해당 quiz 아이디를 가진 quiz 가 없다면 예외를 발생시킨다")
-    void invalid_updateQuiz() {
+    @Test
+    void updateQuiz_fail() {
         //given
         when(quizRepository.findById(anyLong()))
             .thenReturn(Optional.empty());
+        final QuizRequest quizRequest = new QuizRequest();
 
-        //expect
-        assertThatThrownBy(() -> quizService.updateQuiz(1L, new QuizRequest()))
+        //when,then
+        assertThatThrownBy(() -> quizService.updateQuiz(1L, quizRequest))
             .isInstanceOf(QuizNotFoundException.class);
     }
 
-    @Test
     @DisplayName("찾은 quiz 의 question 을 업데이트 한다.")
-    void valid_updateQuiz() {
+    @Test
+    void updateQuiz() {
         //given
         final String originQuestion = "origin";
         final Quiz targetQuiz = new Quiz(null, originQuestion);
@@ -131,21 +134,21 @@ class QuizServiceTest {
         assertThat(targetQuiz.getQuestion()).isEqualTo(updatedQuestion);
     }
 
-    @Test
     @DisplayName("요청한 quizId 에 매핑되는 quiz 가 없으면 예외가 발생한다")
-    void invalid_deleteQuiz() {
+    @Test
+    void deleteQuiz_fail() {
         //given
         when(quizRepository.existsById(anyLong()))
             .thenReturn(false);
 
-        //expect
+        //when,then
         assertThatThrownBy(() -> quizService.deleteQuiz(1L))
             .isInstanceOf(QuizNotFoundException.class);
     }
 
-    @Test
     @DisplayName("요청한 quizId 에 매핑되는 quiz 를 저장소에서 삭제한다")
-    void valid_deleteQuiz() {
+    @Test
+    void deleteQuiz() {
         //given
         when(quizRepository.existsById(anyLong()))
             .thenReturn(true);
@@ -157,21 +160,21 @@ class QuizServiceTest {
         verify(quizRepository, times(1)).deleteById(anyLong());
     }
 
-    @Test
     @DisplayName("퀴즈가 repository 에 존재하지 않는다면 예외가 발생한다")
-    void invalid_findById() {
+    @Test
+    void findById_fail() {
         //given
         when(quizRepository.findById(anyLong()))
             .thenReturn(Optional.empty());
 
-        //expect
+        //when,then
         assertThatThrownBy(() -> quizService.findById(1L))
             .isInstanceOf(QuizNotFoundException.class);
     }
 
-    @Test
     @DisplayName("요청한 Id 기반으로 Quiz 로 만들어진 QuizResponse 를 반환해준다")
-    void valid_findById() {
+    @Test
+    void findById() {
         //given
         final long findQuizId = 1L;
         final String findQuizQuestion = "question";
