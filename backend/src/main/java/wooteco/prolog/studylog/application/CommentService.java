@@ -1,5 +1,7 @@
 package wooteco.prolog.studylog.application;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,9 +19,6 @@ import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.exception.CommentNotFoundException;
 import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Transactional
 @AllArgsConstructor
 @Service
@@ -36,8 +35,7 @@ public class CommentService {
             .orElseThrow(StudylogNotFoundException::new);
 
         Comment comment = request.toEntity(findMember, findStudylog);
-        Comment comment2 = commentRepository.save(comment);
-        return comment2.getId();
+        return commentRepository.save(comment).getId();
     }
 
     @Transactional(readOnly = true)
@@ -45,7 +43,8 @@ public class CommentService {
         Studylog findStudylog = studylogRepository.findById(studylogId)
             .orElseThrow(StudylogNotFoundException::new);
 
-        List<CommentResponse> commentResponses = commentRepository.findCommentByStudylog(findStudylog)
+        List<CommentResponse> commentResponses = commentRepository.findCommentByStudylog(
+                findStudylog)
             .stream()
             .map(CommentResponse::of)
             .collect(Collectors.toList());
