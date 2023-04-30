@@ -28,13 +28,12 @@ class PassionKingBadgeCreatorTest {
             new PassionKingBadgeCreator(badgeRepository, Arrays.asList(1L, 2L));
     }
 
-    @DisplayName("일정 session동안 특정한 개수 이상만큼 글을 작성하면 열정 뱃지를 만들 수 있다")
+    @DisplayName("create() : 어떠한 사용자의 일정 session동안 특정한 개수 이상만큼 글을 작성하면 열정 뱃지를 만들 수 있다")
     @Test
-    void test_create() {
+    void create() {
         //given
-        String userName = "judy";
+        final String userName = "judy";
 
-        //when
         when(badgeRepository.countStudylogByUsernameDuringSessions(any(), any()))
             .thenReturn(7);
         Optional<BadgeType> badgeType = passionKingBadgeCreator.create(userName);
@@ -44,15 +43,16 @@ class PassionKingBadgeCreatorTest {
         assertThat(badgeType.get()).isEqualTo(BadgeType.PASSION_KING);
     }
 
-    @DisplayName("일정 session동안 특정한 개수 미만만큼 글을 작성했다면 열정 뱃지를 만들 수 없다")
+    @DisplayName("create() : 어떠한 사용자의 일정 session동안 특정한 개수 미만만큼 글을 작성했다면 열정 뱃지를 만들 수 없다")
     @Test
-    void test_create_exception() {
+    void create_exception() {
         //given
-        String userName = "judy";
+        final String userName = "judy";
 
-        //when
         when(badgeRepository.countStudylogByUsernameDuringSessions(any(), any()))
             .thenReturn(6);
+
+        //when
         Optional<BadgeType> badgeType = passionKingBadgeCreator.create(userName);
 
         //then
