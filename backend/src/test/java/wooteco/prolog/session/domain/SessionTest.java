@@ -1,56 +1,73 @@
 package wooteco.prolog.session.domain;
 
-import org.junit.jupiter.api.Test;
-import wooteco.prolog.studylog.domain.Curriculum;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class SessionTest {
-    private final static String BACKEND_LEVEL1_SESSION = "백엔드 Java 레벨 1";
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import wooteco.prolog.studylog.domain.Curriculum;
 
+public class SessionTest {
+
+    private final static String BACKEND_LEVEL1_SESSION = "백엔드 Java 레벨 1";
     private final static String OVER_LENGTH_NAME = "01234567890123456789012345678901234567890123456789";
 
+    @DisplayName("Session(String name)의 인수로 최대 길이 이상의 문자열을 넣으면 TooLongLevelNameException이 발생한다")
     @Test
-    public void 세션을_정상적으로_생성한다() {
-        assertThat(new Session(BACKEND_LEVEL1_SESSION)).isNotNull();
-    }
-
-    @Test
-    public void 세션을_정상적으로_수정한다() {
-        Session session = new Session(BACKEND_LEVEL1_SESSION);
-        assertThatThrownBy(() -> session.update(OVER_LENGTH_NAME)).isInstanceOf(Exception.class);
-    }
-
-    @Test
-    public void 세션_이름이_최대_길이보다_크면_TooLongLevelNameException이_발생한다() {
+    public void Session_fail() {
+        //given, when, then
         assertThatThrownBy(() -> new Session(OVER_LENGTH_NAME)).isInstanceOf(Exception.class);
     }
 
+    @DisplayName("update(String name)의 인수로 최대 길이 이상의 문자열을 넣으면 예외가 발생한다.")
     @Test
-    public void 세션이_백엔드_커리큘럼에_포함되면_true를_반환한다() {
-        assertThat(new Session(BACKEND_LEVEL1_SESSION).isSameAs(Curriculum.BACKEND)).isTrue();
+    public void update_fail() {
+        //given
+        Session session = new Session(BACKEND_LEVEL1_SESSION);
+
+        //when, then
+        assertThatThrownBy(() -> session.update(OVER_LENGTH_NAME)).isInstanceOf(Exception.class);
     }
 
+    @DisplayName("isSameAs(Curriculum curriculum)에 백엔드 커리큘럼을 넣어줬을 때 세션 이름에 Backend라는 단어가 포함되어있다면면 True를 반환한다")
     @Test
-    public void 세션_아이디가_동일한_세션을_비교할_경우_equals는_true를_반환한다() {
+    public void isSameAs_true() {
+        //given
+        Session session = new Session(BACKEND_LEVEL1_SESSION);
+
+        //when, then
+        assertThat(session.isSameAs(Curriculum.BACKEND)).isTrue();
+    }
+
+    @DisplayName("equals(Object object)는 세션 아이디가 동일한 세션을 비교할 경우 true를 반환한다")
+    @Test
+    public void equals_true_by_id() {
+        //given
         Session criteria = new Session(BACKEND_LEVEL1_SESSION);
         Session comparison = new Session(BACKEND_LEVEL1_SESSION);
+
+        //when, then
         assertThat(criteria.equals(comparison)).isTrue();
     }
 
+    @DisplayName("equals(Object object)는 주소가 동일한 세션을 비교할 경우 true를 반환한다")
     @Test
-    public void 주소가_동일한_세션을_비교할_경우_equals는_true를_반환한다() {
+    public void equals_true_by_address() {
+        //given
         Session criteria = new Session(BACKEND_LEVEL1_SESSION);
+
+        //when, then
         assertThat(criteria.equals(criteria)).isTrue();
     }
 
+    @DisplayName("equals(Object object)는 다른 자료형의 객체와 세션을 비교할 경우 false를 반환한다")
     @Test
-    public void 다른_자료형의_객체와_세션을_을_비교할_경우_equals는_true를_반환한다() {
+    public void equals_false_by_type() {
+        //given
         Session criteria = new Session(BACKEND_LEVEL1_SESSION);
         Mission comparison = new Mission();
+
+        //when, then
         assertThat(criteria.equals(comparison)).isFalse();
     }
-
-
 }
