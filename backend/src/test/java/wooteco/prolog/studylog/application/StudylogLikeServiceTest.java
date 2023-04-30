@@ -1,6 +1,12 @@
 package wooteco.prolog.studylog.application;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
 import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -14,74 +20,88 @@ import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.exception.InvalidLikeRequestException;
 import wooteco.prolog.studylog.exception.InvalidUnlikeRequestException;
 
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
-
 public class StudylogLikeServiceTest {
+
+    @DisplayName("likeStudylog(Long memberId, Long studylogId, boolean isMember)가 호출될 때")
     @Nested
-    public class 좋아요_등록 {
+    public class likeStudylog {
+
+        @DisplayName("멤버 아이디가 유효할 때 오류가 발생하지 않는다.")
         @Test
-        public void 좋아요가_정상적으로_추가된다() {
+        public void success() {
+            //given
             StudylogRepository studylogRepository = Mockito.mock(StudylogRepository.class);
             MemberService memberService = Mockito.mock(MemberService.class);
-
             Member member = new Member("yboy", "잉", Role.CREW, 1L, "https://");
             Session session = new Session("백엔드 레벨 1 자바");
             Mission mission = new Mission("백엔드 체스", session);
-            Studylog studylog = new Studylog(member, "제목", "내용", session, mission, Lists.emptyList());
+            Studylog studylog = new Studylog(member, "제목", "내용", session, mission,
+                Lists.emptyList());
+            StudylogLikeService studylogLikeService = new StudylogLikeService(studylogRepository,
+                memberService);
 
             when(studylogRepository.findById(1L)).thenReturn(Optional.of(studylog));
-
             when(memberService.findById(1L)).thenReturn(member);
-            StudylogLikeService studylogLikeService = new StudylogLikeService(studylogRepository, memberService);
 
-            assertThat(studylogLikeService.likeStudylog(1L, 1L, true)).isNotNull();
+            //when, then
+            assertThatCode(
+                () -> studylogLikeService.likeStudylog(1L, 1L, true)).doesNotThrowAnyException();
         }
 
+        @DisplayName("멤버_아이디가_유효하지_않을_때_InvalidLikeRequestException이_발생한다")
         @Test
-        public void 멤버가_유효하지_않을_때_InvalidLikeRequestException이_발생한다() {
+        public void fail_because_member_not_valid() {
+            //given
             StudylogRepository studylogRepository = Mockito.mock(StudylogRepository.class);
             MemberService memberService = Mockito.mock(MemberService.class);
+            StudylogLikeService studylogLikeService = new StudylogLikeService(studylogRepository,
+                memberService);
 
-            StudylogLikeService studylogLikeService = new StudylogLikeService(studylogRepository, memberService);
-
+            //when, then
             assertThatThrownBy(
                 () -> studylogLikeService.likeStudylog(1L, 1L, false)
             ).isInstanceOf(InvalidLikeRequestException.class);
         }
     }
 
+    @DisplayName("unlikeStudylog(Long memberId, Long studylogId, boolean isMember)가 호출될 때")
     @Nested
-    public class 좋아요_취소 {
+    public class unlikeStudylog {
+
+        @DisplayName("좋아요가 추가된 상태가 아니라면 InvalidUnlikeRequestException이 발생한다")
         @Test
-        public void 좋아요가_추가된_상태가_아니라면_InvalidUnlikeRequestException이_발생한다() {
+        public void fail_because_like_not_exist() {
+            //given
             StudylogRepository studylogRepository = Mockito.mock(StudylogRepository.class);
             MemberService memberService = Mockito.mock(MemberService.class);
 
             Member member = new Member("yboy", "잉", Role.CREW, 1L, "https://");
             Session session = new Session("백엔드 레벨 1 자바");
             Mission mission = new Mission("백엔드 체스", session);
+            Studylog studylog = new Studylog(member, "제목", "내용", session, mission,
+                Lists.emptyList());
+            StudylogLikeService studylogLikeService = new StudylogLikeService(studylogRepository,
+                memberService);
 
-            Studylog studylog = new Studylog(member, "제목", "내용", session, mission, Lists.emptyList());
             when(studylogRepository.findById(1L)).thenReturn(Optional.of(studylog));
-
             when(memberService.findById(1L)).thenReturn(member);
-            StudylogLikeService studylogLikeService = new StudylogLikeService(studylogRepository, memberService);
-            
-            assertThatThrownBy(() -> studylogLikeService.unlikeStudylog(1L, 1L, true)).isInstanceOf(InvalidUnlikeRequestException.class);
+
+            //when, then
+            assertThatThrownBy(() -> studylogLikeService.unlikeStudylog(1L, 1L, true)).isInstanceOf(
+                InvalidUnlikeRequestException.class);
 
         }
 
+        @DisplayName("멤버_아이디가_유효하지_않을_때_InvalidLikeRequestException이_발생한다")
         @Test
-        public void 멤버가_유효하지_않을_때_InvalidLikeRequestException이_발생한다() {
+        public void fail_because_member_not_valid() {
+            //given
             StudylogRepository studylogRepository = Mockito.mock(StudylogRepository.class);
             MemberService memberService = Mockito.mock(MemberService.class);
+            StudylogLikeService studylogLikeService = new StudylogLikeService(studylogRepository,
+                memberService);
 
-            StudylogLikeService studylogLikeService = new StudylogLikeService(studylogRepository, memberService);
-
+            //when, then
             assertThatThrownBy(
                 () -> studylogLikeService.unlikeStudylog(1L, 1L, false)
             ).isInstanceOf(InvalidLikeRequestException.class);
