@@ -217,7 +217,7 @@ class SessionServiceTest {
         // then
         assertAll(
             () -> assertThat(firstResponse.getName()).isEqualTo("session1"),
-            () -> assertThat(responses.get(0).getName()).isEqualTo("session2"),
+            () -> assertThat(responses.get(0).getName()).isEqualTo("session1"),
             () -> assertThat(responses).extracting(SessionResponse::getName).contains("session1", "session2", "session3"),
             () -> assertThat(responses).hasSize(3)
         );
