@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -62,25 +63,33 @@ class StudylogScrapServiceTest {
     @InjectMocks
     private StudylogScrapService studylogScrapService;
 
+    @DisplayName("regeisterScrap이 호출되면,")
     @Nested
-    class 스크랩을_등록하는_기능 {
+    class registerScrap {
 
+        @DisplayName("등록하려는 스크랩이 이미 등록된 경우, Exception을 throw한다.")
         @Test
-        void 등록하려는_스크랩이_이미_등록되어있는_경우_Exception_thorw하는지_테스트() {
+        void fail_already_register() {
+            //given
             doReturn(1).when(studylogScrapRepository).countByMemberIdAndScrapStudylogId(anyLong(), anyLong());
 
+            //when,then
             assertThatThrownBy(() -> studylogScrapService.registerScrap(1L, 2L)).isInstanceOf(
                 StudylogScrapAlreadyRegisteredException.class);
         }
 
+        @DisplayName("값이 유효한 경우 정상적으로 스크랩이 등록된다.")
         @Test
-        void 정상적으로_스크랩을_등록하는_기능_테스트() {
+        void success() {
+            //given
             doReturn(0).when(studylogScrapRepository).countByMemberIdAndScrapStudylogId(anyLong(), anyLong());
             doReturn(Optional.of(TEST_STUDYLOG1)).when(studylogRepository).findById(anyLong());
             doReturn(Optional.of(TEST_MEMBER_CREW1)).when(memberRepository).findById(anyLong());
 
+            //when
             MemberScrapResponse memberScrapResponse = studylogScrapService.registerScrap(1L, 1L);
 
+            //then
             assertAll(() -> verify(studylogScrapRepository).save(any(StudylogScrap.class)),
                 () -> assertThat(memberScrapResponse.getMemberResponse().getId()).isEqualTo(TEST_MEMBER_CREW1.getId()),
                 () -> assertThat(memberScrapResponse.getStudylogResponse().getContent()).isEqualTo(
@@ -88,28 +97,36 @@ class StudylogScrapServiceTest {
         }
     }
 
+    @DisplayName("스크랩을 제거하는 기능 테스트")
     @Test
-    void 스크랩을_제거하는_기능_테스트() {
+    void unregisterScrapTest() {
+        //given
         StudylogScrap studylogScrap = new StudylogScrap(1L, TEST_MEMBER_CREW1, TEST_STUDYLOG1);
 
         doReturn(Optional.of(studylogScrap)).when(studylogScrapRepository)
             .findByMemberIdAndStudylogId(anyLong(), anyLong());
 
+        //when
         studylogScrapService.unregisterScrap(1L, 1L);
 
+        //then
         verify(studylogScrapRepository).delete(studylogScrap);
     }
 
+    @DisplayName("스크랩을 보여주는 기능 테스트")
     @Test
-    void 스크랩을_보여주는기능_테스트() {
+    void showScrapTest() {
+        //given
         List<StudylogScrap> studylogScraps = Arrays.asList(STUDYLOG_SCRAP1, STUDYLOG_SCRAP2);
         Page<StudylogScrap> studylogScrapPages = new PageImpl<>(studylogScraps);
+        Pageable pageable = mock(Pageable.class);
 
         doReturn(studylogScrapPages).when(studylogScrapRepository).findByMemberId(anyLong(), any(Pageable.class));
 
-        Pageable pageable = mock(Pageable.class);
+        //when
         StudylogsResponse studylogsResponse = studylogScrapService.showScrap(1L, pageable);
 
+        //then
         assertThat(studylogsResponse.getData()).extracting(StudylogResponse::getAuthor)
             .extracting(MemberResponse::getId)
             .contains(STUDYLOG_SCRAP1.getMember().getId(), STUDYLOG_SCRAP2.getMember().getId());

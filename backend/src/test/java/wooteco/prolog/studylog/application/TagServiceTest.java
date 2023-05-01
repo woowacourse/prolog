@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -50,14 +51,17 @@ class TagServiceTest {
     @InjectMocks
     private TagService tagService;
 
+    @DisplayName("Tags를 찾고, 없으면 생성하는 기능 테스트")
     @Test
-    void Tags를_찾거나_없으면_생성하는_기능_테스트() {
+    void findOrCreateTest() {
+        //given
         List<TagRequest> tagRequests = Arrays.asList(JAVA_TAG_REQUEST, COLLECTION_TAG_REQUEST);
-
         when(tagRepository.findByNameValueIn(anyList())).then(this::getFirstElementTags);
 
+        //when
         Tags tags = tagService.findOrCreate(tagRequests);
 
+        //then
         assertAll(() -> verify(tagRepository).saveAll(tags.getList().subList(1, 2)),
             () -> assertThat(tags.getList()).extracting(Tag::getName)
                 .contains(JAVA_TAG_REQUEST.getName(), COLLECTION_TAG_REQUEST.getName()));
@@ -71,15 +75,18 @@ class TagServiceTest {
         return existTags;
     }
 
+    @DisplayName("스터디 로그에 쓰인 모든 태그들을 찾는 기능 테스트")
     @Test
-    void 스터디로그에_쓰인_모든_태그들을_찾는_기능_테스트() {
+    void findTagsIncludedStudylogsTest() {
+        //given
         StudylogTag studylog1 = new StudylogTag(TEST_STUDYLOG1, new Tag(1L, "스프링"));
         StudylogTag studylog2 = new StudylogTag(TEST_STUDYLOG1, new Tag(2L, "자바"));
-
         doReturn(Arrays.asList(studylog1, studylog2)).when(studylogTagService).findAll();
 
+        //when
         List<TagResponse> foundTags = tagService.findTagsIncludedInStudylogs();
 
+        //then
         assertThat(foundTags).extracting(TagResponse::getName).contains("자바", "스프링");
     }
 }
