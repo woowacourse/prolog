@@ -35,10 +35,7 @@ public class MemberTag {
     private int count;
 
     public MemberTag(Member member, Tag tag) {
-        this.id = null;
-        this.member = member;
-        this.tag = tag;
-        this.count = 1;
+        this(null, member, tag, 1);
     }
 
     public MemberTag(Long id, Member member, Tag tag, int count) {
