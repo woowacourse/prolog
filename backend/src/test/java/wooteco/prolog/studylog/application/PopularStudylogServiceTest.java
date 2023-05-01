@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,51 +50,34 @@ class PopularStudylogServiceTest {
     @InjectMocks
     private PopularStudylogService popularStudylogService;
 
-    private Member split, journey;
-    private MemberGroup frontend, backend, android;
-    private GroupMember splitGroupMember, journeyGroupMember;
-    private Studylog splitStudylog, journeyStudylog;
-    private PopularStudylog splitPopularStudylog, journeyPopularStudylog;
-
-    @BeforeEach
-    void init() {
-        //memberGroup
-        frontend = new MemberGroup(null, "5기 프론트엔드", "5기 프론트엔드 설명");
-        backend = new MemberGroup(null, "5기 백엔드", "5기 백엔드 설명");
-        android = new MemberGroup(null, "5기 안드로이드", "5기 안드로이드 설명");
-
-        //member
-        split = new Member(1L, "박상현", "스플릿", Role.CREW, 1L, "image url");
-        journey = new Member(2L, "이지원", "져니", Role.CREW, 2L, "image url");
-
-        //groupMember
-        splitGroupMember = new GroupMember(null, split, backend);
-        journeyGroupMember = new GroupMember(null, journey, backend);
-
-        //studylog
-        final Session session = new Session("세션 2");
-        final Mission mission = new Mission("자동차 미션", session);
-        final Tag tag1 = new Tag("Java");
-        final Tag tag2 = new Tag("Spring");
-        final List<Tag> tags = Arrays.asList(tag1, tag2);
-
-        splitStudylog = new Studylog(split, "제목", "내용", mission, tags);
-        journeyStudylog = new Studylog(journey, "제목", "내용", mission, tags);
-
-        //popularStudylog
-        splitPopularStudylog = new PopularStudylog(1L, splitStudylog.getId(), false);
-        journeyPopularStudylog = new PopularStudylog(2L, journeyStudylog.getId(), false);
-    }
-
     @DisplayName("2주안에 작성된 인기 학습로그가 페이지에 표시될 수 있는 최대치만큼 존재할 때 인기 학습로그 업데이트를 테스트한다.")
     @Test
     void enoughWhileTwoCycle() {
         //given
+        final MemberGroup frontend = setUpMemberGroup("5기 프론트엔드", "5기 프론트엔드 설명");
+        final MemberGroup backend = setUpMemberGroup("5기 백엔드", "5기 백엔드 설명");
+        final MemberGroup android = setUpMemberGroup("5기 안드로이드", "5기 안드로이드 설명");
+
+        final Member split = setUpMember(1L, "박상현", "스플릿", 1L);
+        final Member journey = setUpMember(2L, "이지원", "져니", 2L);
+
+        final GroupMember splitGroupMember = setUpGroupMember(split, backend);
+        final GroupMember journeyGroupMember = setUpGroupMember(journey, backend);
+
+        final Studylog splitStudyLog = setUpStudyLog(split);
+        final Studylog journeyStudylog = setUpStudyLog(journey);
+
+        final PopularStudylog splitPopularStudylog = setUpPopularStudylog(1L,
+            splitStudyLog.getId());
+        final PopularStudylog journeyPopularStudylog = setUpPopularStudylog(2L,
+            journeyStudylog.getId());
+
         final PageRequest pageRequest = PageRequest.of(1, 2);
         final List<MemberGroup> memberGroups = Arrays.asList(frontend, backend, android);
         final List<GroupMember> groupMembers = Arrays.asList(splitGroupMember,
             journeyGroupMember);
-        final List<Studylog> studylogs = Arrays.asList(splitStudylog, journeyStudylog);
+
+        final List<Studylog> studylogs = Arrays.asList(splitStudyLog, journeyStudylog);
         final List<PopularStudylog> popularStudylogs = Arrays.asList(splitPopularStudylog,
             journeyPopularStudylog);
 
@@ -113,6 +95,24 @@ class PopularStudylogServiceTest {
     @Test
     void notEnoughWhileTwoCycle() {
         //given
+        final MemberGroup frontend = setUpMemberGroup("5기 프론트엔드", "5기 프론트엔드 설명");
+        final MemberGroup backend = setUpMemberGroup("5기 백엔드", "5기 백엔드 설명");
+        final MemberGroup android = setUpMemberGroup("5기 안드로이드", "5기 안드로이드 설명");
+
+        final Member split = setUpMember(1L, "박상현", "스플릿", 1L);
+        final Member journey = setUpMember(2L, "이지원", "져니", 2L);
+
+        final GroupMember splitGroupMember = setUpGroupMember(split, backend);
+        final GroupMember journeyGroupMember = setUpGroupMember(journey, backend);
+
+        final Studylog splitStudylog = setUpStudyLog(split);
+        final Studylog journeyStudylog = setUpStudyLog(journey);
+
+        final PopularStudylog splitPopularStudylog = setUpPopularStudylog(1L,
+            splitStudylog.getId());
+        final PopularStudylog journeyPopularStudylog = setUpPopularStudylog(2L,
+            journeyStudylog.getId());
+
         final PageRequest pageRequest = PageRequest.of(1, 5);
         final List<MemberGroup> memberGroups = Arrays.asList(frontend, backend, android);
         final List<GroupMember> groupMembers = Arrays.asList(splitGroupMember,
@@ -131,10 +131,27 @@ class PopularStudylogServiceTest {
         assertDoesNotThrow(() -> popularStudylogService.updatePopularStudylogs(pageRequest));
     }
 
-
     @DisplayName("익명의 사용자일 경우 스크랩과 읽음 여부가 표시하지 않고 학습로그를 조회한다.")
     @Test
     void findPopularStudylogs_IsAnonymousMemberTrue() {
+        final MemberGroup frontend = setUpMemberGroup("5기 프론트엔드", "5기 프론트엔드 설명");
+        final MemberGroup backend = setUpMemberGroup("5기 백엔드", "5기 백엔드 설명");
+        final MemberGroup android = setUpMemberGroup("5기 안드로이드", "5기 안드로이드 설명");
+
+        final Member split = setUpMember(1L, "박상현", "스플릿", 1L);
+        final Member journey = setUpMember(2L, "이지원", "져니", 2L);
+
+        final GroupMember splitGroupMember = setUpGroupMember(split, backend);
+        final GroupMember journeyGroupMember = setUpGroupMember(journey, backend);
+
+        final Studylog splitStudylog = setUpStudyLog(split);
+        final Studylog journeyStudylog = setUpStudyLog(journey);
+
+        final PopularStudylog splitPopularStudylog = setUpPopularStudylog(1L,
+            splitStudylog.getId());
+        final PopularStudylog journeyPopularStudylog = setUpPopularStudylog(2L,
+            journeyStudylog.getId());
+
         final List<Studylog> studylogs = Arrays.asList(splitStudylog, journeyStudylog);
         final PageRequest pageRequest = PageRequest.of(0, 1);
         final Page<Studylog> pages = new PageImpl<>(studylogs, pageRequest, 2);
@@ -189,6 +206,19 @@ class PopularStudylogServiceTest {
     @Test
     void findPopularStudylogs_IsAnonymousMemberFalse() {
         //given
+        final MemberGroup frontend = setUpMemberGroup("5기 프론트엔드", "5기 프론트엔드 설명");
+        final MemberGroup backend = setUpMemberGroup("5기 백엔드", "5기 백엔드 설명");
+        final MemberGroup android = setUpMemberGroup("5기 안드로이드", "5기 안드로이드 설명");
+
+        final Member split = setUpMember(1L, "박상현", "스플릿", 1L);
+        final Member journey = setUpMember(2L, "이지원", "져니", 2L);
+
+        final GroupMember splitGroupMember = setUpGroupMember(split, backend);
+        final GroupMember journeyGroupMember = setUpGroupMember(journey, backend);
+
+        final Studylog splitStudylog = setUpStudyLog(split);
+        final Studylog journeyStudylog = setUpStudyLog(journey);
+
         final List<Studylog> studylogs = Arrays.asList(splitStudylog, journeyStudylog);
         final PageRequest pageRequest = PageRequest.of(0, 1);
         final Page<Studylog> pages = new PageImpl<>(studylogs, pageRequest, 2);
@@ -238,5 +268,31 @@ class PopularStudylogServiceTest {
             () -> assertThat(allResponse.getCurrPage()).isOne(),
             () -> assertThat(allResponse.getTotalSize()).isEqualTo(2)
         );
+    }
+
+    private MemberGroup setUpMemberGroup(final String name, final String description) {
+        return new MemberGroup(null, name, description);
+    }
+
+    private Member setUpMember(final Long id, final String userName,
+                               final String nickname, final Long githubId) {
+        return new Member(id, userName, nickname, Role.CREW, githubId, "image url");
+    }
+
+    private GroupMember setUpGroupMember(final Member member, final MemberGroup memberGroup) {
+        return new GroupMember(null, member, memberGroup);
+    }
+
+    private Studylog setUpStudyLog(final Member member) {
+        final Session session = new Session("세션 2");
+        final Mission mission = new Mission("자동차 미션", session);
+        final Tag java = new Tag("Java");
+        final Tag spring = new Tag("Spring");
+        final List<Tag> tags = Arrays.asList(java, spring);
+        return new Studylog(member, "제목", "내용", mission, tags);
+    }
+
+    private PopularStudylog setUpPopularStudylog(final Long id, final Long studyLogId) {
+        return new PopularStudylog(id, studyLogId, false);
     }
 }
