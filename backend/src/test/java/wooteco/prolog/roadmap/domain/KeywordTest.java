@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.common.exception.NotFoundErrorCodeException;
@@ -13,43 +14,19 @@ import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
 class KeywordTest {
 
     private static final Long SESSION_ID = 3L;
-    private static final Keyword TEST_KEYWORD_JAVA = new Keyword(2L, "자바", "자바에 대한 설명", 1
-        , 5, SESSION_ID, null, null);
-    private static final Keyword TEST_KEYWORD_COLLECTIONS = new Keyword(3L, "컬렉션", "컬렉션 프레임워크에 대한 설명", 1
-        , 5, SESSION_ID, TEST_KEYWORD_JAVA, null);
+    private static final Keyword TEST_KEYWORD_JAVA = new Keyword(2L, "자바", "자바에 대한 설명", 1, 5, SESSION_ID, null, null);
 
-    //KeywordSeqException 이 발생하지 않고, NotFoundErrorCodeException 발생
+    //KeywordSeqException 이 발생하지 않고, NotFoundErrorCodeException 발생, 원인 모르겠음...
+    @DisplayName("seq값이 0보다 작거나 같으면 KeywordSeqException을_발생시킨다")
     @Test
-    void seq값이_0보다_작거나_같으면_KeywordSeqException을_발생시킨다() {
-        assertThatThrownBy(() -> new Keyword(1L, "자바", "자바입니다", -1, 1,
-            SESSION_ID, null, null))
-            .isInstanceOf(NotFoundErrorCodeException.class);
+    void validateSeqTest() {
+        assertThatThrownBy(() -> new Keyword(1L, "자바", "자바입니다", -1, 1, SESSION_ID, null, null)).isInstanceOf(
+            NotFoundErrorCodeException.class);
     }
 
-    @Test
-    void 키워드를_생성하는_기능_테스트() {
-        final String keywordName = "자바";
-        final String description = "자바에 대한 설명";
-        final int seq = 1;
-        final int importance = 1;
-
-        Keyword keyword = Keyword.createKeyword("자바", "자바에 대한 설명", 1,
-            1, SESSION_ID, null);
-
-        assertAll(
-            () -> assertThat(keyword.getName())
-                .isEqualTo(keywordName),
-            () -> assertThat(keyword.getDescription())
-                .isEqualTo(description),
-            () -> assertThat(keyword.getSeq())
-                .isEqualTo(seq),
-            () -> assertThat(keyword.getImportance())
-                .isEqualTo(importance)
-        );
-    }
-
+    @DisplayName("update가 호출될 때,")
     @Nested
-    class 키워드를_업데이트하는_기능_테스트 {
+    class updateTest {
 
         private static final String updateName = "List";
         private static final String updateDescription = "List에 대한 설명입니다.";
@@ -60,30 +37,26 @@ class KeywordTest {
 
         @BeforeEach
         void setUp() {
-            testKeyword = new Keyword(2L, "자바", "자바입니다", 1, 1,
-                SESSION_ID, null, null);
+            testKeyword = new Keyword(2L, "자바", "자바입니다", 1, 1, SESSION_ID, null, null);
         }
 
-        //TODO: 정상적으로 테스트하도록 수정하기
+        @DisplayName("파라미터가 유효할 때 키워드를 정상적으로 업데이트한다.")
         @Test
-        void 키워드를_정상적으로_업데이트한다() {
+        void success() {
             testKeyword.update(updateName, updateDescription, updateSeq, updateImportance, null);
 
-            assertAll(
-                () -> assertThat(testKeyword.getName()).isEqualTo(updateName),
+            assertAll(() -> assertThat(testKeyword.getName()).isEqualTo(updateName),
                 () -> assertThat(testKeyword.getDescription()).isEqualTo(updateDescription),
                 () -> assertThat(testKeyword.getSeq()).isEqualTo(updateSeq),
-                () -> assertThat(testKeyword.getImportance()).isEqualTo(updateImportance)
-            );
+                () -> assertThat(testKeyword.getImportance()).isEqualTo(updateImportance));
         }
 
+        @DisplayName("seq가 0보다 작거나 같으면 Exception이 발생한다.")
         @Test
-        void seq가_0보다_작거나_같으면_Exception이_발생한다() {
-            Runnable updateKeyword = () -> testKeyword.update(updateName, updateDescription, 0, updateImportance,
-                null);
+        void fail_seq_not_valid() {
+            Runnable updateKeyword = () -> testKeyword.update(updateName, updateDescription, 0, updateImportance, null);
 
-            assertThatThrownBy(updateKeyword::run)
-                .isInstanceOf(NotFoundErrorCodeException.class);
+            assertThatThrownBy(updateKeyword::run).isInstanceOf(NotFoundErrorCodeException.class);
         }
 
         /*
@@ -93,38 +66,36 @@ class KeywordTest {
         if(parentKeyword != null && this.id.equals(parentKeyword.getId()))
         로 되야 할듯합니다.
          */
+        @DisplayName("부모키워드가 자신과 같다면 Exception이 발생한다.")
         @Test
-        void 부모키워드가_자신과_같다면_Exception이_발생한다() {
-            Keyword keyword = new Keyword(3L, "컬렉션", "컬렉션에 대한 설명입니다", 1, 1
-                , SESSION_ID, testKeyword, null);
-            Runnable updateKeyword = () -> keyword.update("List", "List에 대한 설명",
-                1, 1, keyword);
+        void fail_parent_equal_keyword_self() {
+            Keyword keyword = new Keyword(3L, "컬렉션", "컬렉션에 대한 설명입니다", 1, 1, SESSION_ID, testKeyword, null);
+            Runnable updateKeyword = () -> keyword.update("List", "List에 대한 설명", 1, 1, keyword);
 
-            assertThatThrownBy(updateKeyword::run)
-                .isInstanceOf(KeywordAndKeywordParentSameException.class);
+            assertThatThrownBy(updateKeyword::run).isInstanceOf(KeywordAndKeywordParentSameException.class);
         }
     }
 
+    @DisplayName("getParentIdorNull이 호출될 때")
     @Nested
-    class 부모_키워드의_ID를_반환하는기능_테스트 {
+    class getParentIdOrNullTest {
 
+        @DisplayName("부모 키워드가 없는 경우")
         @Test
-        void 부모키워드가_없는_경우() {
+        void return_null() {
             Long parentId = TEST_KEYWORD_JAVA.getParentIdOrNull();
 
-            assertThat(parentId)
-                .isNull();
+            assertThat(parentId).isNull();
         }
 
+        @DisplayName("부모 키워드가 존재하는 경우")
         @Test
-        void 부모키워드가_있는_경우() {
-            Keyword keyword = Keyword.createKeyword("컬렉션", "컬렉션에 대한 설명입니다.", 1, 1
-                , SESSION_ID, TEST_KEYWORD_JAVA);
+        void return_id() {
+            Keyword keyword = Keyword.createKeyword("컬렉션", "컬렉션에 대한 설명입니다.", 1, 1, SESSION_ID, TEST_KEYWORD_JAVA);
 
             Long parentId = keyword.getParentIdOrNull();
 
-            assertThat(parentId)
-                .isEqualTo(TEST_KEYWORD_JAVA.getId());
+            assertThat(parentId).isEqualTo(TEST_KEYWORD_JAVA.getId());
         }
     }
 }
