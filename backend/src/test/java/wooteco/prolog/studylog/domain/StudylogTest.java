@@ -100,6 +100,7 @@ class StudylogTest {
         studylog = new Studylog(member, "제목", "내용", mission, Arrays.asList(tag1, tag2));
 
         // when, then
+        assertThat(studylog.getViewCount()).isEqualTo(0);
         studylog.increaseViewCount(member);
         assertThat(studylog.getViewCount()).isEqualTo(0);
     }
@@ -112,6 +113,7 @@ class StudylogTest {
         studylog = new Studylog(member, "제목", "내용", mission, Arrays.asList(tag1, tag2));
 
         // when, then
+        assertThat(studylog.getViewCount()).isEqualTo(0);
         studylog.increaseViewCount(otherMember);
         assertThat(studylog.getViewCount()).isEqualTo(1);
     }
@@ -158,13 +160,14 @@ class StudylogTest {
     void getPopularScore() {
         // given
         studylog = new Studylog(member, "제목", "내용", mission, Arrays.asList(tag1, tag2));
+        int popularScore = 3;
 
         // when, then
         assertThat(studylog.getPopularScore()).isEqualTo(0);
         studylog.increaseViewCount();
         assertThat(studylog.getPopularScore()).isEqualTo(1);
         studylog.like(SELF_MEMBER_ID);
-        assertThat(studylog.getPopularScore()).isEqualTo(3 + 1);
+        assertThat(studylog.getPopularScore()).isEqualTo(popularScore + 1);
     }
 
     @DisplayName("스터디로그의 title을 반환한다.")
@@ -175,8 +178,6 @@ class StudylogTest {
 
         // when, then
         assertThat(studylog.getTitle()).isEqualTo("제목");
-        studylog.delete();
-        assertThat(studylog.getTitle()).isEqualTo("삭제된 학습로그");
     }
 
     @DisplayName("스터디로그의 content를 반환한다.")
@@ -187,7 +188,19 @@ class StudylogTest {
 
         // when, then
         assertThat(studylog.getContent()).isEqualTo("내용");
+    }
+
+    @DisplayName("스터디로그가 정상적으로 삭제되고, 삭제된 스터디로그를 조회하였을 경우 알맞는 title과 content를 반환한다.")
+    @Test
+    void delete() {
+        // given
+        studylog = new Studylog(member, "제목", "내용", mission, Arrays.asList(tag1, tag2));
+
+        // when
         studylog.delete();
+
+        // then
+        assertThat(studylog.getTitle()).isEqualTo("삭제된 학습로그");
         assertThat(studylog.getContent()).isEqualTo("삭제된 학습로그입니다.");
     }
 
