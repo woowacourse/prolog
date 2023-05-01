@@ -71,8 +71,8 @@ class StudylogServiceTest {
         Studylog studylog = new Studylog(member, studylogRequest.getTitle(), studylogRequest.getContent(), null, null, tags.getList());
         List<TagResponse> expectedTagResponses = Collections.singletonList(new TagResponse(null, "스터디로그"));
 
-        @Test
         @DisplayName("StudyLogTemp가 존재할 경우 삭제하고, 스터디로그를 정상적으로 생성하고 반환한다.")
+        @Test
         void insertStudylog_existStudyLogTemp() {
             // given
             when(memberService.findById(anyLong())).thenReturn(member);
@@ -92,8 +92,8 @@ class StudylogServiceTest {
             });
         }
 
-        @Test
         @DisplayName("StudyLogTemp가 존재하지 않는 경우, 스터디로그를 정상적으로 생성하고 반환한다.")
+        @Test
         void insertStudylog_notExistStudyLogTemp() {
             // given
             when(memberService.findById(anyLong())).thenReturn(member);
@@ -127,8 +127,8 @@ class StudylogServiceTest {
         StudylogRequest studylogRequest = new StudylogRequest(title, content, null, null, tagRequests);
         StudylogTemp studylogTemp = new StudylogTemp(member, studylogRequest.getTitle(), studylogRequest.getContent(), null, null, tags.getList());
 
-        @Test
         @DisplayName("StudyLogTemp가 존재하지 않는 경우 삭제하고, 임시 스터디로그를 정상적으로 생성하고 반환한다.")
+        @Test
         void insertStudylogTemp_existStudylogTemp() {
             // given
             when(memberService.findById(anyLong())).thenReturn(member);
@@ -149,8 +149,8 @@ class StudylogServiceTest {
         }
 
 
-        @Test
         @DisplayName("StudyLogTemp가 존재하지 않는 경우, 임시 스터디로그를 정상적으로 생성하고 반환한다.")
+        @Test
         void insertStudylogTemp_notExistStudylogTemp() {
             // given
             when(memberService.findById(anyLong())).thenReturn(member);
