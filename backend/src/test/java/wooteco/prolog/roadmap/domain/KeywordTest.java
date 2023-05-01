@@ -3,9 +3,6 @@ package wooteco.prolog.roadmap.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static wooteco.prolog.studylog.StudylogFixture.SESSION_ID;
-import static wooteco.prolog.studylog.StudylogFixture.TEST_KEYWORD_JAVA;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -15,22 +12,18 @@ import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
 
 class KeywordTest {
 
-    @Nested
-    class 객체_초기화_테스트 {
+    private static final Long SESSION_ID = 3L;
+    private static final Keyword TEST_KEYWORD_JAVA = new Keyword(2L, "자바", "자바에 대한 설명", 1
+        , 5, SESSION_ID, null, null);
+    private static final Keyword TEST_KEYWORD_COLLECTIONS = new Keyword(3L, "컬렉션", "컬렉션 프레임워크에 대한 설명", 1
+        , 5, SESSION_ID, TEST_KEYWORD_JAVA, null);
 
-        @Test
-        void 키워드를_정상적으로_초기화한다() {
-            assertDoesNotThrow(() -> new Keyword(1L, "자바", "자바입니다", 1, 1,
-                SESSION_ID, null, null));
-        }
-
-        //KeywordSeqException 이 발생하지 않고, NotFoundErrorCodeException 발생
-        @Test
-        void seq값이_0보다_작거나_같으면_KeywordSeqException을_발생시킨다() {
-            assertThatThrownBy(() -> new Keyword(1L, "자바", "자바입니다", -1, 1,
-                SESSION_ID, null, null))
-                .isInstanceOf(NotFoundErrorCodeException.class);
-        }
+    //KeywordSeqException 이 발생하지 않고, NotFoundErrorCodeException 발생
+    @Test
+    void seq값이_0보다_작거나_같으면_KeywordSeqException을_발생시킨다() {
+        assertThatThrownBy(() -> new Keyword(1L, "자바", "자바입니다", -1, 1,
+            SESSION_ID, null, null))
+            .isInstanceOf(NotFoundErrorCodeException.class);
     }
 
     @Test
