@@ -10,6 +10,7 @@ import wooteco.prolog.member.domain.MemberTags;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.studylog.domain.Tag;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
@@ -101,14 +102,14 @@ class MemberTest {
         final MemberTag memberTag1 = new MemberTag(1L, member, tags.get(0), 1);
         final MemberTag memberTag2 = new MemberTag(2L, member, tags.get(1), 2);
         final MemberTag memberTag3 = new MemberTag(3L, member, tags.get(2), 3);
-        final MemberTags memberTags = new MemberTags(List.of(memberTag1, memberTag2, memberTag3));
+        final MemberTags memberTags = new MemberTags(Arrays.asList(memberTag1, memberTag2, memberTag3));
 
         //when
         final Member modifiedMember = new Member(1L, "a", "member",
             Role.CREW, 1234L, "imageUrl1", memberTags);
 
         final List<MemberTag> actual = modifiedMember.getMemberTagsWithSort();
-        final List<MemberTag> expected = List.of(memberTag3, memberTag2, memberTag1);
+        final List<MemberTag> expected = Arrays.asList(memberTag3, memberTag2, memberTag1);
 
         //then
         Assertions.assertEquals(actual, expected);
