@@ -21,6 +21,8 @@ export const BannerSliderItemStyle = css`
   position: absolute;
   top: 0;
   transition: right 0.6s ease-out;
+
+  width: 100%;
 `;
 
 export const BannerControllerWrapperStyle = css`
