@@ -21,7 +21,6 @@ const GlobalStyles = () => {
       }
 
       html {
-        --viewportWidth: calc(100vw - ${scrollbarWidth}px);
         font-size: 10px;
       }
 
