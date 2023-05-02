@@ -35,7 +35,17 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: StudyLogResponse }): JS
         ]}
       >
         <h2>😎 인기있는 학습로그</h2>
-        <ul css={[FlexStyle]}>
+        <ul
+          css={[
+            FlexStyle,
+            css`
+              @media (max-width: 360px) {
+                width: 100%;
+                overflow-x: scroll;
+              }
+            `,
+          ]}
+        >
           {Object.values(studyLogCategory).map((item) => (
             <li key={item}>
               <StyledChip

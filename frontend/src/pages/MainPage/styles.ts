@@ -78,9 +78,4 @@ export const StyledChip = styled(Chip)<{ active: boolean }>`
   cursor: pointer;
   padding: 7px 22px;
   background-color: ${({ active }) => active && COLOR.LIGHT_BLUE_300};
-
-  @media (max-width: 360px) {
-    font-size: 12px;
-    padding: 2px 8px;
-  }
 `;
