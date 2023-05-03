@@ -15,7 +15,7 @@ import { SectionHeaderGapStyle } from './styles';
 
 const RecentStudylogList = ({ studylogs }: { studylogs: Studylog[] }) => {
   return (
-    <section>
+    <section style={{ marginTop: '3rem' }}>
       <div css={[FlexStyle, JustifyContentSpaceBtwStyle, AlignItemsCenterStyle]}>
         <h2 css={[SectionHeaderGapStyle]}>📚 최신 학습로그</h2>
         <Link to={PATH.STUDYLOGS}>{`더보기 >`}</Link>
