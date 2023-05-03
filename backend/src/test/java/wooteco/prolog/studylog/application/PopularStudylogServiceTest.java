@@ -2,9 +2,11 @@ package wooteco.prolog.studylog.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -50,7 +52,7 @@ class PopularStudylogServiceTest {
     @InjectMocks
     private PopularStudylogService popularStudylogService;
 
-    @DisplayName("2주안에 작성된 인기 학습로그가 페이지에 표시될 수 있는 최대치만큼 존재할 때 인기 학습로그 업데이트를 테스트한다.")
+    @DisplayName("1주안에 작성된 인기 학습로그가 페이지에 표시될 수 있는 최대치만큼 존재할 때 3 그룹에서 한번만 조회한다.")
     @Test
     void enoughWhileTwoCycle() {
         //given
@@ -87,11 +89,14 @@ class PopularStudylogServiceTest {
         when(popularStudylogRepository.findAllByDeletedFalse()).thenReturn(popularStudylogs);
         when(popularStudylogRepository.saveAll(any())).thenReturn(popularStudylogs);
 
-        //when, then
-        assertDoesNotThrow(() -> popularStudylogService.updatePopularStudylogs(pageRequest));
+        //when
+        popularStudylogService.updatePopularStudylogs(pageRequest);
+
+        //then
+        verify(studylogRepository, times(3)).findByPastDays(any());
     }
 
-    @DisplayName("2주동안 작성된 인기 학습로그가 페이지에 출력할 만큼 존재하지 않을 때 인기 학습로그 업데이트를 테스트한다.")
+    @DisplayName("2주동안 작성된 인기 학습로그가 페이지에 출력할 만큼 존재하지 않을 때 각 3그룹별로 3번까지만 조회한다.")
     @Test
     void notEnoughWhileTwoCycle() {
         //given
@@ -127,8 +132,11 @@ class PopularStudylogServiceTest {
         when(popularStudylogRepository.findAllByDeletedFalse()).thenReturn(popularStudylogs);
         when(popularStudylogRepository.saveAll(any())).thenReturn(popularStudylogs);
 
-        //when, then
-        assertDoesNotThrow(() -> popularStudylogService.updatePopularStudylogs(pageRequest));
+        //when
+        popularStudylogService.updatePopularStudylogs(pageRequest);
+
+        //then
+        verify(studylogRepository, times(9)).findByPastDays(any());
     }
 
     @DisplayName("익명의 사용자일 경우 스크랩과 읽음 여부가 표시하지 않고 학습로그를 조회한다.")
@@ -178,6 +186,9 @@ class PopularStudylogServiceTest {
         final StudylogsResponse backEndResponse = popularStudylogsResponse.getBackResponse();
         final StudylogsResponse androidResponse = popularStudylogsResponse.getAndroidResponse();
         final StudylogsResponse allResponse = popularStudylogsResponse.getAllResponse();
+
+        verify(studylogService, never()).updateRead(any(), any());
+        verify(studylogService, never()).updateScrap(any(), any());
 
         assertAll(
             () -> assertThat(frontEndResponse.getData()).isEmpty(),
@@ -246,6 +257,9 @@ class PopularStudylogServiceTest {
         final StudylogsResponse backEndResponse = popularStudylogs.getBackResponse();
         final StudylogsResponse androidResponse = popularStudylogs.getAndroidResponse();
         final StudylogsResponse allResponse = popularStudylogs.getAllResponse();
+
+        verify(studylogService, times(4)).updateRead(any(), any());
+        verify(studylogService, times(4)).updateScrap(any(), any());
 
         assertAll(
             () -> assertThat(frontEndResponse.getData()).isEmpty(),
