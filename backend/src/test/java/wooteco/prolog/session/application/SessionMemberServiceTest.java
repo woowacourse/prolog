@@ -12,7 +12,6 @@ import wooteco.prolog.member.application.GroupMemberService;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.session.application.dto.SessionGroupMemberRequest;
 import wooteco.prolog.session.application.dto.SessionMemberRequest;
 import wooteco.prolog.session.domain.SessionMember;

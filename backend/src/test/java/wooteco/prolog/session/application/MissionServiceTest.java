@@ -49,7 +49,7 @@ class MissionServiceTest {
         final MissionRequest request = new MissionRequest("미션", 1L);
         doReturn(session).when(sessionService).findById(request.getSessionId());
         doReturn(new Mission("베베", session)).when(missionRepository)
-            .save(new Mission("베베", new Session("베베 세션")));
+            .save(new Mission("베베", session));
 
         // when
         final MissionResponse response = missionService.create(request);
