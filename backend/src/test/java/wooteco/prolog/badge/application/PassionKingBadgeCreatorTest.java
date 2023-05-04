@@ -36,6 +36,8 @@ class PassionKingBadgeCreatorTest {
 
         when(badgeRepository.countStudylogByUsernameDuringSessions(any(), any()))
             .thenReturn(7);
+
+        //when
         Optional<BadgeType> badgeType = passionKingBadgeCreator.create(userName);
 
         //then

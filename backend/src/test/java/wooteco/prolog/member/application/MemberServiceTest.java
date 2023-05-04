@@ -31,6 +31,7 @@ import java.util.stream.LongStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.InstanceOfAssertFactories.future;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -49,200 +50,217 @@ class MemberServiceTest {
         memberService = new MemberService(memberRepository);
     }
 
-    @Test
     @DisplayName("findOrCreateMember() : gitHub Id 를 통해서 이미 존재한 Member 조회")
+    @Test
     void findOrCreateMember_find() {
         //given
-        final Member member = new Member(1L, "a", "a", Role.ADMIN, 1L, "imageUrl");
+        final String nickname = "nickname";
+        final String imageUrl = "imageUrl";
+        final Member member = new Member(1L, "username", nickname, Role.ADMIN, 1L, imageUrl);
 
         final GithubProfileResponse githubProfileResponse =
-            new GithubProfileResponse("a",
+            new GithubProfileResponse(nickname,
                 "a",
                 "1",
-                "imageUrl"
+                imageUrl
             );
 
-        //when
         when(memberRepository.findByGithubId(any()))
             .thenReturn(Optional.of(member));
 
+        //when
         final Member foundMember = memberService.findOrCreateMember(githubProfileResponse);
 
         //then
         assertEquals(foundMember, member);
     }
 
-    @Test
     @DisplayName("findOrCreateMember() : 존재하지 않는 회원일 경우, GitHub Id를 통해서 새로 생성한다.")
+    @Test
     void findOrCreateMember_create() {
         //given
-        final Member member = new Member(1L, "a", "a", Role.ADMIN, 1L, "imageUrl");
+        final String username = "username";
+        final String nickname = "nickname";
+        final String imageUrl = "imageUrl";
+        final Member member = new Member(1L, username, nickname, Role.ADMIN, 1L, imageUrl);
 
         final GithubProfileResponse githubProfileResponse =
-            new GithubProfileResponse("a",
-                "a",
+            new GithubProfileResponse(nickname,
+                "loginName",
                 "1",
-                "imageUrl"
+                imageUrl
             );
 
-        //when
         when(memberRepository.findByGithubId(any()))
             .thenReturn(Optional.empty());
 
         when(memberRepository.save(any()))
             .thenReturn(member);
 
+        //when
         final Member savedMember = memberService.findOrCreateMember(githubProfileResponse);
 
         //then
         assertEquals(savedMember, member);
     }
 
-    @Test
     @DisplayName("findById() : Id를 통해서 Member를 조회할 수 있다.")
+    @Test
     void findById() {
         //given
-        final Member member = new Member(1L, "a", "a", Role.ADMIN, 1L, "imageUrl");
+        final Member member = new Member(1L, "username", "nickname", Role.ADMIN, 1L, "imageUrl");
 
-        //when
         when(memberRepository.findById(any()))
             .thenReturn(Optional.of(member));
 
+        //when
         final Member foundMember = memberService.findById(1L);
 
         //then
         assertEquals(foundMember, member);
     }
 
-    @Test
     @DisplayName("findById() : 존재하지 않는 Member를 조회할 경우 MemberNotFoundException이 발생한다.")
+    @Test
     void findById_MemberNotFoundException() {
-        //when
+        //given
         when(memberRepository.findById(any()))
             .thenReturn(Optional.empty());
 
-        //then
+        //when, then
         assertThatThrownBy(() -> memberService.findById(1L))
             .isInstanceOf(MemberNotFoundException.class);
     }
 
-    @Test
     @DisplayName("findByUsername() : username을 통해서 Member를 조회할 수 있다.")
+    @Test
     void findByUsername() {
         //given
-        final Member member = new Member(1L, "a", "a", Role.ADMIN, 1L, "imageUrl");
+        final String username = "username";
+        final Member member = new Member(1L, username, "nickname", Role.ADMIN, 1L, "imageUrl");
 
-        //when
         when(memberRepository.findByUsername(any()))
             .thenReturn(Optional.of(member));
 
-        final Member foundMember = memberService.findByUsername("a");
+        //when
+        final Member foundMember = memberService.findByUsername(username);
 
         //then
         assertEquals(foundMember, member);
     }
 
-    @Test
     @DisplayName("findByUsername() : 존재하지 않는 username을 통해서 Member를 조회할 경우 MemberNotFoundException이 발생한다.")
+    @Test
     void findByUsername_MemberNotFoundException() {
-        //when
+        //given
         when(memberRepository.findByUsername(any()))
             .thenReturn(Optional.empty());
 
-        //then
+        //when, then
         assertThatThrownBy(() -> memberService.findByUsername("a"))
             .isInstanceOf(MemberNotFoundException.class);
     }
 
-    @Test
     @DisplayName("findMemberResponseByUsername() : username을 통해서 MemberResponse를 조회할 수 있다.")
+    @Test
     void findMemberResponseByUsername() {
         //given
-        final MemberResponse memberResponse = new MemberResponse(1L, "a", "a", Role.ADMIN,
-            "imageUrl");
-        final Member member = new Member(1L, "a", "a", Role.ADMIN, 1L, "imageUrl");
+        final String username = "username";
+        final String nickname = "nickname";
+        final String imageUrl = "imageUrl";
 
-        //when
+        final MemberResponse memberResponse = new MemberResponse(1L, username, nickname, Role.ADMIN,
+            imageUrl);
+        final Member member = new Member(1L, username, nickname, Role.ADMIN, 1L, imageUrl);
+
         when(memberRepository.findByUsername(any()))
             .thenReturn(Optional.of(member));
 
-        final MemberResponse foundMemberResponse = memberService.findMemberResponseByUsername("a");
+        //when
+        final MemberResponse foundMemberResponse = memberService.findMemberResponseByUsername(username);
 
         //then
         assertEquals(foundMemberResponse, memberResponse);
     }
 
-    @Test
     @DisplayName("ProfileIntroResponse() : username을 통해서 ProfileIntroResponse를 조회할 수 있다.")
+    @Test
     void profileIntroResponse() {
         //given
         final ProfileIntroResponse profileIntroResponse = new ProfileIntroResponse("hi");
-        final Member member = new Member(1L, "username", "a", Role.ADMIN, 1L, "imageUrl");
+        final Member member = new Member(1L, "username", "nickname", Role.ADMIN, 1L, "imageUrl");
         member.updateProfileIntro("hi");
 
-        //when
         when(memberRepository.findByUsername(any()))
             .thenReturn(Optional.of(member));
 
+        //when
         final ProfileIntroResponse savedProfileIntroResponse = memberService.findProfileIntro(member.getUsername());
 
         //then
         assertEquals(savedProfileIntroResponse.getText(), profileIntroResponse.getText());
     }
 
-    @Test
     @DisplayName("updateMember() : ANONYMOUS인 회원일 경우 update 할 때, MemberNotAllowedException이 발생한다.")
+    @Test
     void updateMember_MemberNotAllowedException_anonymous() {
         //given
         final LoginMember loginMember = new LoginMember(LoginMember.Authority.ANONYMOUS);
-        final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest("a", "imageUrl");
+        final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest("nickname", "imageUrl");
 
-        //when & then
-        assertThatThrownBy(() -> memberService.updateMember(loginMember, "a", memberUpdateRequest))
+        //when, then
+        assertThatThrownBy(() -> memberService.updateMember(loginMember, "username", memberUpdateRequest))
             .isInstanceOf(MemberNotAllowedException.class);
     }
 
-    @Test
     @DisplayName("updateMember() : 로그인 된 Member와 수정할 Member의 username이 다르면 MemberNotAllowedException이 발생한다.")
+    @Test
     void updateMember_MemberNotAllowedException_different_name() {
         //given
-        final LoginMember loginMember = new LoginMember(LoginMember.Authority.MEMBER);
-        final Member member = new Member(1L, "a", "a", Role.CREW, 1L, "imageUrl");
-        final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest("a", "imageUrl");
+        final String username = "username";
+        final String imageUrl = "imageUrl";
 
-        //when
+        final LoginMember loginMember = new LoginMember(LoginMember.Authority.MEMBER);
+        final Member member = new Member(1L, username, "nickname", Role.CREW, 1L, imageUrl);
+        final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest("changedNickname", imageUrl);
+
         when(memberRepository.findById(any()))
             .thenReturn(Optional.of(member));
 
-        //then
-        assertThatThrownBy(() -> memberService.updateMember(loginMember, "b", memberUpdateRequest))
+        //when, then
+        assertThatThrownBy(() -> memberService.updateMember(loginMember, "anotherUsername", memberUpdateRequest))
             .isInstanceOf(MemberNotAllowedException.class);
     }
 
-    @Test
     @DisplayName("updateMember() : 로그인 된 Member와 수정할 Member의 username이 같으면 imageUrl과 nickname을 업데이트 할 수 있다.")
+    @Test
     void updateMember() {
         //given
-        final LoginMember loginMember = new LoginMember(LoginMember.Authority.MEMBER);
-        final Member member = new Member(1L, "a", "a", Role.CREW, 1L, "imageUrl");
-        final MemberUpdateRequest memberUpdateRequest =
-            new MemberUpdateRequest("b", "updateImageUrl");
+        final String username = "username";
+        final String imageUrl = "imageUrl";
+        final String updatedNickname = "updatedNickname";
+        final String updatedImageUrl = "updatedImageUrl";
 
-        //when
+        final LoginMember loginMember = new LoginMember(LoginMember.Authority.MEMBER);
+        final Member member = new Member(1L, username, "nickname", Role.CREW, 1L, imageUrl);
+        final MemberUpdateRequest memberUpdateRequest =
+            new MemberUpdateRequest(updatedNickname, updatedImageUrl);
+
         when(memberRepository.findById(any()))
             .thenReturn(Optional.of(member));
 
-        memberService.updateMember(loginMember, "a", memberUpdateRequest);
+        //when
+        memberService.updateMember(loginMember, username, memberUpdateRequest);
 
         //then
         assertAll(
-            () -> assertEquals("b", member.getNickname()),
-            () -> assertEquals("updateImageUrl", member.getImageUrl())
+            () -> assertEquals(updatedNickname, member.getNickname()),
+            () -> assertEquals(updatedImageUrl, member.getImageUrl())
         );
     }
 
-    @Test
     @DisplayName("updateProfileIntro() : ANONYMOUS인 회원일 경우 profile을 update 할 때, MemberNotAllowedException이 발생한다.")
+    @Test
     void updateProfileIntro_MemberNotAllowedException_anonymous() {
         //given
         final LoginMember loginMember = new LoginMember(LoginMember.Authority.ANONYMOUS);
@@ -250,16 +268,17 @@ class MemberServiceTest {
 
         //when & then
         assertThatThrownBy(
-            () -> memberService.updateProfileIntro(loginMember, "a", profileIntroRequest))
+            () -> memberService.updateProfileIntro(loginMember, "username", profileIntroRequest))
             .isInstanceOf(MemberNotAllowedException.class);
     }
 
-    @Test
     @DisplayName("updateProfileIntro() : 로그인 된 Member와 수정할 Member의 username이 다르면 MemberNotAllowedException이 발생한다.")
+    @Test
     void updateProfileIntro_MemberNotAllowedException_different_name() {
         //given
         final LoginMember loginMember = new LoginMember(LoginMember.Authority.MEMBER);
-        final Member member = new Member(1L, "a", "a", Role.CREW, 1L, "imageUrl");
+        final Member member = new Member(1L, "username", "nickname",
+            Role.CREW, 1L, "imageUrl");
         final ProfileIntroRequest profileIntroRequest = new ProfileIntroRequest("text");
 
         //when
@@ -268,37 +287,39 @@ class MemberServiceTest {
 
         //then
         assertThatThrownBy(
-            () -> memberService.updateProfileIntro(loginMember, "b", profileIntroRequest))
+            () -> memberService.updateProfileIntro(loginMember, "anotherUsername", profileIntroRequest))
             .isInstanceOf(MemberNotAllowedException.class);
     }
 
-    @Test
     @DisplayName("updateProfileIntro() : 로그인 된 Member와 수정할 Member의 username이 같으면 profileIntro를 업데이트 할 수 있다.")
+    @Test
     void updateProfileIntro() {
         //given
+        final String username = "username";
+
         final LoginMember loginMember = new LoginMember(LoginMember.Authority.MEMBER);
-        final Member member = new Member(1L, "a", "a", Role.CREW, 1L, "imageUrl");
+        final Member member = new Member(1L, username, "nickname", Role.CREW, 1L, "imageUrl");
         final ProfileIntroRequest profileIntroRequest = new ProfileIntroRequest("text");
 
         //when
         when(memberRepository.findById(any()))
             .thenReturn(Optional.of(member));
 
-        memberService.updateProfileIntro(loginMember, "a", profileIntroRequest);
+        memberService.updateProfileIntro(loginMember, username, profileIntroRequest);
 
         //then
         assertEquals(member.getProfileIntro(), profileIntroRequest.getText());
     }
 
-    @Test
     @DisplayName("findAllOrderByNickNameAsc() : nickname을 통해서 모든 회원을 조회하고, 닉네임 순으로 오름차순 정렬할 수 있다.")
+    @Test
     void findAllOrderByNickNameAsc() {
         //given
         final List<Member> members = Arrays.asList(
-            new Member("a", "d", Role.CREW, 1L, "imageUrl1"),
-            new Member("b", "b", Role.CREW, 2L, "imageUrl2"),
-            new Member("c", "c", Role.CREW, 3L, "imageUrl3"),
-            new Member("d", "a", Role.CREW, 4L, "imageUrl4")
+            new Member("username1", "nickname1", Role.CREW, 1L, "imageUrl1"),
+            new Member("username2", "nickname2", Role.CREW, 2L, "imageUrl2"),
+            new Member("username3", "nickname3", Role.CREW, 3L, "imageUrl3"),
+            new Member("username4", "nickname4", Role.CREW, 4L, "imageUrl4")
         );
 
         when(memberRepository.findAll())
@@ -312,8 +333,8 @@ class MemberServiceTest {
             Comparator.comparing(MemberResponse::getNickname));
     }
 
-    @Test
     @DisplayName("findAll(): Pageable을 통해 MembersResponse를 조회할 수 있다.")
+    @Test
     void findAll() {
         //given
         final List<Member> members = LongStream.range(1, 9).boxed()
@@ -337,16 +358,17 @@ class MemberServiceTest {
         );
     }
 
-    @Test
     @DisplayName("findByIdIn(): 여러개의 memberId를 통해서 Member들을 조회할 수 있다.")
+    @Test
     void findByIdIn() {
         //given
         final List<Member> members = Arrays.asList(
-            new Member(1L, "a", "d", Role.CREW, 1L, "imageUrl1"),
-            new Member(2L, "b", "b", Role.CREW, 2L, "imageUrl2"),
-            new Member(3L, "c", "c", Role.CREW, 3L, "imageUrl3"),
-            new Member(4L, "d", "a", Role.CREW, 4L, "imageUrl4")
+            new Member("username1", "nickname1", Role.CREW, 1L, "imageUrl1"),
+            new Member("username2", "nickname2", Role.CREW, 2L, "imageUrl2"),
+            new Member("username3", "nickname3", Role.CREW, 3L, "imageUrl3"),
+            new Member("username4", "nickname4", Role.CREW, 4L, "imageUrl4")
         );
+
 
         final List<Long> ids = Arrays.asList(1L, 2L, 3L, 4L, 5L);
 
