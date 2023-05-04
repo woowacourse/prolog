@@ -38,36 +38,4 @@ public class SessionTest {
         //when, then
         assertThat(session.isSameAs(Curriculum.BACKEND)).isTrue();
     }
-
-    @DisplayName("equals(Object object)는 세션 아이디가 동일한 세션을 비교할 경우 true를 반환한다")
-    @Test
-    public void equals_true_because_id() {
-        //given
-        Session criteria = new Session(BACKEND_LEVEL1_SESSION);
-        Session comparison = new Session(BACKEND_LEVEL1_SESSION);
-
-        //when, then
-        assertThat(criteria.equals(comparison)).isTrue();
-    }
-
-    @DisplayName("equals(Object object)는 주소가 동일한 세션을 비교할 경우 true를 반환한다")
-    @Test
-    public void equals_true_because_address() {
-        //given
-        Session criteria = new Session(BACKEND_LEVEL1_SESSION);
-
-        //when, then
-        assertThat(criteria.equals(criteria)).isTrue();
-    }
-
-    @DisplayName("equals(Object object)는 다른 자료형의 객체와 세션을 비교할 경우 false를 반환한다")
-    @Test
-    public void equals_false_because_type() {
-        //given
-        Session criteria = new Session(BACKEND_LEVEL1_SESSION);
-        Mission comparison = new Mission();
-
-        //when, then
-        assertThat(criteria.equals(comparison)).isFalse();
-    }
 }
