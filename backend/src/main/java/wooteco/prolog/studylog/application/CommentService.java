@@ -35,6 +35,7 @@ public class CommentService {
             .orElseThrow(StudylogNotFoundException::new);
 
         Comment comment = request.toEntity(findMember, findStudylog);
+
         return commentRepository.save(comment).getId();
     }
 
