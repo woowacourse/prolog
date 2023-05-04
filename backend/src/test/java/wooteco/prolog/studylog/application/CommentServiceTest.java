@@ -41,7 +41,6 @@ public class CommentServiceTest {
     }
 
     @DisplayName("updateComment(CommentUpdateRequest request)의 인자에 들어가는 회원이 레파지토리에 존재하지 않을 경우 MemberNotFoundException이 발생한다")
-
     @Test
     public void updateComment_fail_because_member_not_exist() {
         //given
