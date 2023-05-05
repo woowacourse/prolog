@@ -30,9 +30,9 @@ public class CommentService {
 
     public Long insertComment(CommentSaveRequest request) {
         Member findMember = memberRepository.findById(request.getMemberId())
-                .orElseThrow(MemberNotFoundException::new);
+            .orElseThrow(MemberNotFoundException::new);
         Studylog findStudylog = studylogRepository.findById(request.getStudylogId())
-                .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(StudylogNotFoundException::new);
 
         Comment comment = request.toEntity(findMember, findStudylog);
 
@@ -42,12 +42,13 @@ public class CommentService {
     @Transactional(readOnly = true)
     public CommentsResponse findComments(Long studylogId) {
         Studylog findStudylog = studylogRepository.findById(studylogId)
-                .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(StudylogNotFoundException::new);
 
-        List<CommentResponse> commentResponses = commentRepository.findCommentByStudylog(findStudylog)
-                .stream()
-                .map(CommentResponse::of)
-                .collect(Collectors.toList());
+        List<CommentResponse> commentResponses = commentRepository.findCommentByStudylog(
+                findStudylog)
+            .stream()
+            .map(CommentResponse::of)
+            .collect(Collectors.toList());
 
         return new CommentsResponse(commentResponses);
     }
@@ -57,7 +58,7 @@ public class CommentService {
         validateExistsStudylog(request.getStudylogId());
 
         Comment comment = commentRepository.findById(request.getCommentId())
-                .orElseThrow(CommentNotFoundException::new);
+            .orElseThrow(CommentNotFoundException::new);
         comment.updateContent(request.getContent());
 
         return comment.getId();
@@ -68,7 +69,7 @@ public class CommentService {
         validateExistsStudylog(studylogId);
 
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(CommentNotFoundException::new);
+            .orElseThrow(CommentNotFoundException::new);
 
         comment.delete();
     }
@@ -81,7 +82,7 @@ public class CommentService {
 
     private void validateExistsStudylog(Long studylogId) {
         if (!studylogRepository.existsById(studylogId)) {
-             throw new StudylogNotFoundException();
+            throw new StudylogNotFoundException();
         }
     }
 }
