@@ -41,7 +41,8 @@ public class SessionService {
     }
 
     public Session findById(Long id) {
-        return sessionRepository.findById(id).orElseThrow(SessionNotFoundException::new);
+        return sessionRepository.findById(id)
+            .orElseThrow(SessionNotFoundException::new);
     }
 
     public Optional<Session> findSessionById(Long id) {
@@ -66,7 +67,8 @@ public class SessionService {
     }
 
     public List<Long> findMySessionIds(Long memberId) {
-        return sessionMemberService.findByMemberId(memberId).stream()
+        return sessionMemberService.findByMemberId(memberId)
+            .stream()
             .map(SessionMember::getSessionId)
             .collect(toList());
     }
