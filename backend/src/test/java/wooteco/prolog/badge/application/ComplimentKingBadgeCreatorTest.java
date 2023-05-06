@@ -7,8 +7,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Optional;
-
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,7 +44,7 @@ class ComplimentKingBadgeCreatorTest {
 
         //then
         assertThat(badgeType).isPresent();
-        assertEquals(badgeType.get(), BadgeType.COMPLIMENT_KING);
+        assertEquals(BadgeType.COMPLIMENT_KING, badgeType.get());
     }
 
     @DisplayName("create() : 어떠한 사용자의 일정 session동안 칭찬 개수가 15개 미만일 시 칭찬 뱃지를 만들 수 없다")
