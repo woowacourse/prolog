@@ -28,31 +28,32 @@ class PassionKingBadgeCreatorTest {
             new PassionKingBadgeCreator(badgeRepository, Arrays.asList(1L, 2L));
     }
 
-    @DisplayName("create() : 어떠한 사용자의 일정 session동안 특정한 개수 이상만큼 글을 작성하면 열정 뱃지를 만들 수 있다")
+    @DisplayName("create() : 어떠한 사용자의 일정 session동안 7개 이상의 글을 작성하면 열정 뱃지를 만들 수 있다")
     @Test
     void create() {
         //given
         final String userName = "judy";
+        final int passionKingCriteria = 7;
 
         when(badgeRepository.countStudylogByUsernameDuringSessions(any(), any()))
-            .thenReturn(7);
+            .thenReturn(passionKingCriteria);
 
         //when
         Optional<BadgeType> badgeType = passionKingBadgeCreator.create(userName);
 
         //then
-        assertThat(badgeType).isPresent();
-        assertThat(badgeType.get()).isEqualTo(BadgeType.PASSION_KING);
+        assertThat(badgeType).contains(BadgeType.PASSION_KING);
     }
 
-    @DisplayName("create() : 어떠한 사용자의 일정 session동안 특정한 개수 미만만큼 글을 작성했다면 열정 뱃지를 만들 수 없다")
+    @DisplayName("create() : 어떠한 사용자의 일정 session동안 7개 미만의 글을 작성했다면 열정 뱃지를 만들 수 없다")
     @Test
     void create_exception() {
         //given
         final String userName = "judy";
+        final int passionKingLowerCriteria = 6;
 
         when(badgeRepository.countStudylogByUsernameDuringSessions(any(), any()))
-            .thenReturn(6);
+            .thenReturn(passionKingLowerCriteria);
 
         //when
         Optional<BadgeType> badgeType = passionKingBadgeCreator.create(userName);
