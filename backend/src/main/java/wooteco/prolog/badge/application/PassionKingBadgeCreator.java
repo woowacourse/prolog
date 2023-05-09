@@ -20,7 +20,8 @@ public class PassionKingBadgeCreator implements BadgeCreator {
 
     @Override
     public Optional<BadgeType> create(String username) {
-        int studylogCount = badgeRepository.countStudylogByUsernameDuringSessions(username, sessions);
+        int studylogCount = badgeRepository.countStudylogByUsernameDuringSessions(username,
+            sessions);
 
         if (studylogCount >= PASSION_KING_CRITERIA) {
             return Optional.of(BadgeType.PASSION_KING);
