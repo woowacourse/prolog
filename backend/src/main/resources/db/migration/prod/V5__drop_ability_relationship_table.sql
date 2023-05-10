@@ -1,1 +1,0 @@
-DROP TABLE ability_relationship;
