@@ -33,7 +33,7 @@ jobs:
         working-directory: backend
 
       - name: Build with Gradle
-        run: ./gradlew flywayClean flywayBaseline flywayMigrate bootJar
+        run: ./gradlew flywayClean flywayBaseline flywayMigrate bootJar -Dflyway.baselineVersion=0
         shell: bash
         working-directory: backend
 

@@ -69,7 +69,7 @@ const RoadmapPage = () => {
           ) : null}
         </section>
 
-        <section>
+        <section style={{ marginBottom: '4rem' }}>
           <Styled.Title>하위 키워드 보기</Styled.Title>
           {selectedSessionId !== -1 && selectedTopKeyword ? (
             <KeywordList

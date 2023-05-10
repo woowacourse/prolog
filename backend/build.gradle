@@ -158,7 +158,7 @@ flyway {
     encoding = "UTF-8"
     outOfOrder = true // 여러브랜치에서 서로 다른 날짜로 만들어도 작동하도록
     validateOnMigrate = true
-    baselineVersion = 0 // 기본값이 1이라서 0으로 변경한다. 기본값을 사용하는 경우 V1 스크립트가 실행되지 않는다.
+    baselineVersion = 1.1 // V1.1 스크립트는 이미 실행한 것으로 기준선을 잡는다.
 }
 
 task documentationTest(type: Test) {

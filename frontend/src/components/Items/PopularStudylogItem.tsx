@@ -59,7 +59,7 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
         </div>
 
         {/* 태그 영역 */}
-        <ul css={[TagContainerStyle, ResetScrollBar]}>
+        <ul css={[TagContainerStyle, ResetScrollBar]} style={{ margin: '0.5rem 0' }} >
           {tags.slice(0, 2).map(({ name: tagName, id: tagId }) => (
             <Link to={`${PATH.STUDYLOGS}?tags=${tagId}`} key={tagId}>
               <Chip title={tagName} onClick={() => {}}>
