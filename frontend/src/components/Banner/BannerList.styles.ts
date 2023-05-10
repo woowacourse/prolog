@@ -59,67 +59,26 @@ export const SelectedBannerControllerItemStyle = css`
 `;
 
 export const ControllerButtonStyle = css`
-  width: 1.6rem;
-  height: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  position: relative;
+  width: 2.5rem;
+  height: 2.5rem;
 
-  border-radius: 1rem;
-
-  span {
-    width: 0;
-    display: inline-block;
-    overflow: hidden;
-  }
+  border-radius: 50%;
 `;
 
-export const getPauseButtonStyle = (backgroundColor = COLOR.WHITE) => {
+export const getPlayingButtonStyle = (backgroundColor = COLOR.WHITE) => {
   const iconColor = getTextColor(backgroundColor) === COLOR.WHITE ? COLOR.BLACK_900 : COLOR.WHITE;
 
   return css`
     ${ControllerButtonStyle}
     background-color: ${getTextColor(backgroundColor)};
 
-    :after {
-      width: 0.1rem;
-      height: 0.8rem;
-
-      content: ' ';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-
-      transform: translateX(-50%) translateY(-50%);
-
-      border-right: 3px solid ${iconColor};
-      border-left: 3px solid ${iconColor};
-    }
-  `;
-};
-
-export const getPlayButtonsStyle = (backgroundColor = COLOR.WHITE) => {
-  const iconColor = getTextColor(backgroundColor) === COLOR.WHITE ? COLOR.BLACK_900 : COLOR.WHITE;
-
-  return css`
-    ${ControllerButtonStyle}
-
-    background-color: ${getTextColor(backgroundColor)};
-
-    :after {
-      width: 0;
-      height: 0;
-
-      content: ' ';
-      position: absolute;
-      top: 0;
-      left: 0;
-
-      transform: translateX(60%) translateY(30%);
-
-      border-top: 0.5rem solid transparent;
-      border-bottom: 0.5rem solid transparent;
-      border-right: 0.5rem solid transparent;
-      border-left: 0.5rem solid ${iconColor};
+    & > * {
+      width: 40%;
+      fill: ${iconColor};
     }
   `;
 };
