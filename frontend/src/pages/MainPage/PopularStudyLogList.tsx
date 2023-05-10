@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { AlignItemsCenterStyle, FlexStyle } from '../../styles/flex.styles';
 import type { ValueOf } from '../../types/utils';
 import { getKeyByValue } from '../../utils/object';
+import { ResetScrollBar } from '../../styles/reset.styles';
 
 type Category = ValueOf<typeof studyLogCategory>;
 
@@ -38,6 +39,7 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: StudyLogResponse }): JS
         <ul
           css={[
             FlexStyle,
+            ResetScrollBar,
             css`
               @media (max-width: 360px) {
                 width: 100%;
