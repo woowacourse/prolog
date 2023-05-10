@@ -10,11 +10,12 @@ import {
   BannerSliderWrapperStyle,
   getBannerControllerItemStyle,
   getNextButtonStyle,
-  getPauseButtonStyle,
-  getPlayButtonsStyle,
+  getPlayingButtonStyle,
   getPrevButtonStyle,
   SelectedBannerControllerItemStyle,
 } from './BannerList.styles';
+import { ReactComponent as PauseIcon } from '../../assets/images/pause.svg';
+import { ReactComponent as PlayIcon } from '../../assets/images/play.svg';
 
 const DEFAULT_BANNER_INDEX = 0;
 const BANNER_PLAY_INTERVAL = 3000;
@@ -25,7 +26,7 @@ const BannerList = ({ bannerList = [] }: { bannerList: BannerType[] }): JSX.Elem
 
   const bannerSwitchIntervalId = useRef<NodeJS.Timeout>();
   const [mouseOnBanner, setMouseOnBanner] = useState(false);
-  const [playBanner, setPlayBanner] = useState(true);
+  const [isBannerPlaying, setIsBannerPlaying] = useState(true);
 
   const next = () => {
     if (currentBannerIndex + 1 >= bannerList.length) {
@@ -45,7 +46,7 @@ const BannerList = ({ bannerList = [] }: { bannerList: BannerType[] }): JSX.Elem
   };
 
   useEffect(() => {
-    if (playBanner && mouseOnBanner === false) {
+    if (isBannerPlaying && mouseOnBanner === false) {
       bannerSwitchIntervalId.current = setTimeout(next, BANNER_PLAY_INTERVAL);
       return;
     }
@@ -58,7 +59,7 @@ const BannerList = ({ bannerList = [] }: { bannerList: BannerType[] }): JSX.Elem
     return () => {
       clearTimeout(bannerSwitchIntervalId.current as NodeJS.Timeout);
     };
-  }, [currentBannerIndex, mouseOnBanner, playBanner]);
+  }, [currentBannerIndex, mouseOnBanner, isBannerPlaying]);
 
   useEffect(() => {
     return () => {
@@ -124,24 +125,13 @@ const BannerList = ({ bannerList = [] }: { bannerList: BannerType[] }): JSX.Elem
               aria-label={`${index + 1}번 째 배너로 이동`}
             />
           ))}
-          {playBanner && (
-            <button
-              type="button"
-              css={getPauseButtonStyle(currentBannerBackgroundColor)}
-              onClick={() => setPlayBanner(false)}
-            >
-              <span>일시정지</span>
-            </button>
-          )}
-          {!playBanner && (
-            <button
-              type="button"
-              css={getPlayButtonsStyle(currentBannerBackgroundColor)}
-              onClick={() => setPlayBanner(true)}
-            >
-              <span>재생</span>
-            </button>
-          )}
+          <button
+            type="button"
+            css={getPlayingButtonStyle(currentBannerBackgroundColor)}
+            onClick={() => setIsBannerPlaying((isBannerPlaying) => !isBannerPlaying)}
+          >
+            {isBannerPlaying ? <PauseIcon /> : <PlayIcon />}
+          </button>
         </div>
       </div>
 
