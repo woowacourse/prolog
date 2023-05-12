@@ -7,6 +7,7 @@ import {
   SearchBarStyle,
   SearchBarWrapper,
   DropdownStyle,
+  FilterContainer,
 } from './FilterList.styles';
 import SelectedFilterList from './SelectedFilterList';
 
@@ -64,6 +65,7 @@ const FilterList = ({
 
   return (
     <Container onClick={closeDropdown} isDropdownToggled={selectedFilter} css={css}>
+      <FilterContainer>
       {Object.entries(getFilteredFiltersByLevel()).map(([key, values]) => (
         <div key={key}>
           <button
@@ -94,6 +96,7 @@ const FilterList = ({
           )}
         </div>
       ))}
+      </FilterContainer>
       {isVisibleResetFilter && <ResetFilter onClick={onResetFilter}>필터 초기화 ⟳</ResetFilter>}
     </Container>
   );
