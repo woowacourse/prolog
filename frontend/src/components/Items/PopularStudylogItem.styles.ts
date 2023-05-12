@@ -27,8 +27,9 @@ const getRandomColor = (id: number): string => {
 };
 
 export const ContainerStyle = css`
-  width: 24rem;
   height: 28rem;
+
+  margin: 0.2rem;
 
   border-radius: 1.6rem;
 
