@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
 
 import PropTypes from 'prop-types';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useHistory, Link, NavLink } from 'react-router-dom';
+import MobileLogo from '../../assets/images/woteco-logo.png';
 import LogoImage from '../../assets/images/logo.svg';
 import { PATH } from '../../constants';
 import GithubLogin from '../GithubLogin/GithubLogin';
@@ -23,7 +24,7 @@ import {
   loginButtonStyle,
 } from './NavBar.styles';
 import { UserContext } from '../../contexts/UserProvider';
-import { APP_MODE, BASE_URL, isProd } from '../../configs/environment';
+import { APP_MODE, isProd } from '../../configs/environment';
 
 const navigationConfig = [
   {
@@ -51,6 +52,9 @@ const NavBar = () => {
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const [isWritingDropdownToggled, setWritingDropdownToggled] = useState(false);
 
+  const mobile = window.matchMedia('(max-width: 420px)');
+  const [isMobile, setIsMobile] = useState(false);
+
   const goMain = () => {
     history.push(PATH.ROOT);
   };
@@ -77,6 +81,16 @@ const NavBar = () => {
     }
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+        setIsMobile(mobile.matches);
+    };
+    mobile.addEventListener('change', handleResize);
+    return () => {
+        mobile.removeEventListener('change', handleResize);
+    };
+  }, [mobile]);
+
   return (
     <Container
       isDropdownToggled={isDropdownToggled || isWritingDropdownToggled}
@@ -87,13 +101,14 @@ const NavBar = () => {
     >
       <Wrapper>
         <Logo onClick={goMain} role="link" aria-label="프롤로그 홈으로 이동하기">
-          <img src={LogoImage} alt="" />
+          {isMobile ? <img src={MobileLogo} alt="" /> : <img src={LogoImage} alt="" />}
           {!isProd && <span>{logoTag}</span>}
         </Logo>
         <Menu role="menu">
           <Navigation>
             {navigationConfig.map(({ path, title }) => (
               <NavLink
+                style={{ whiteSpace: 'nowrap' }}
                 exact
                 key={path}
                 to={path}
