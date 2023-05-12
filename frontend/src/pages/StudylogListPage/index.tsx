@@ -145,7 +145,7 @@ const StudylogListPage = (): JSX.Element => {
             css`
               margin-bottom: 1rem;
 
-              @media screen and (max-width: 420px) {
+              @media screen and (max-width: 600px) {
                 flex-direction: column;
               }
             `,
