@@ -25,16 +25,9 @@ export const PopularStudylogListStyle = css`
   display: flex;
   justify-content: content;
   align-items: center;
+  gap: 1.6rem;
 
   position: relative;
-
-  > *:not(:last-child) {
-    margin-right: 1.6rem;
-  }
-
-  > *:last-child {
-    margin-right: 0.2rem;
-  }
 
   overflow-x: scroll;
 `;
@@ -77,4 +70,8 @@ export const StyledChip = styled(Chip)<{ active: boolean }>`
   cursor: pointer;
   padding: 7px 22px;
   background-color: ${({ active }) => active && COLOR.LIGHT_BLUE_300};
+`;
+
+export const PopularStudylogListButton = css`
+  padding: 0 2rem;
 `;

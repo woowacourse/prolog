@@ -136,6 +136,74 @@
         "viewCount": 0,
         "liked": false,
         "likesCount": 0
+      },
+      {
+        "id": 5,
+        "author": {
+          "id": 1,
+          "username": "solo5star",
+          "nickname": "솔로스타",
+          "role": "CREW",
+          "imageUrl": "https://avatars.githubusercontent.com/u/20203944?v=4"
+        },
+        "createdAt": "2023-04-04T20:14:47.360507",
+        "updatedAt": "2023-04-04T20:14:47.360507",
+        "session": {
+          "id": 4,
+          "name": "백엔드Java 레벨1 - 2021"
+        },
+        "mission": null,
+        "title": "잡았다 자바",
+        "content": "자바 자바줘요",
+        "tags": [
+          {
+            "id": 1,
+            "name": "자료구조"
+          },
+          {
+            "id": 2,
+            "name": "알고리즘"
+          }
+        ],
+        "scrap": false,
+        "read": false,
+        "viewCount": 0,
+        "liked": false,
+        "likesCount": 0
+      },
+      {
+        "id": 6,
+        "author": {
+          "id": 1,
+          "username": "solo5star",
+          "nickname": "솔로스타",
+          "role": "CREW",
+          "imageUrl": "https://avatars.githubusercontent.com/u/20203944?v=4"
+        },
+        "createdAt": "2023-04-04T20:14:47.360507",
+        "updatedAt": "2023-04-04T20:14:47.360507",
+        "session": {
+          "id": 4,
+          "name": "백엔드Java 레벨1 - 2021"
+        },
+        "mission": null,
+        "title": "잡았다 자바222",
+        "content": "자바 자바줘요",
+        "tags": [
+          {
+            "id": 1,
+            "name": "자료구조"
+          },
+          {
+            "id": 2,
+            "name": "알고리즘"
+          }
+        ],
+        "scrap": false,
+        "read": false,
+        "viewCount": 120,
+        "liked": false,
+        "likesCount": 500
       }
     ],
     "totalSize": 4,
