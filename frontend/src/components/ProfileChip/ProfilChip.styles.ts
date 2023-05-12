@@ -22,6 +22,15 @@ const Image = styled.img`
 `;
 
 const Nickname = styled.span`
+  flex-shrink: 0;
+  
+  padding: 0 5px;
+  max-width: 100px;
+  
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
   margin-left: 0.8rem;
   font-size: 1.6rem;
   line-height: 1.5;
