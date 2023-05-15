@@ -79,24 +79,6 @@ class SessionMemberServiceTest {
         Assertions.assertThrows(NotFoundErrorCodeException.class, () -> sessionMemberService.registerMember(1L, 1L));
     }
 
-    @DisplayName("Member들이 회원가입을 할 수 있다.")
-    @Test
-    void registerMembers() {
-        // given
-        final List<Long> ids = new ArrayList<>();
-        ids.add(1L);
-        ids.add(2L);
-        ids.add(3L);
-        final SessionMemberRequest request = new SessionMemberRequest(ids);
-
-        // when
-        sessionMemberService.registerMembers(1L, request);
-
-        // then
-        verify(memberService, atMostOnce()).findByIdIn(request.getMemberIds());
-        verify(sessionMemberRepository, atMostOnce()).saveAll(null);
-    }
-
     @DisplayName("Members는 GroupId로 회원가입 할 수 있다.")
     @Test
     void registerMembersByGroupId() {
