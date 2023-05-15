@@ -9,7 +9,6 @@ import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,7 +22,7 @@ import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 @ExtendWith(MockitoExtension.class)
 class StudylogSessionServiceTest {
 
-    @Mock(answer = Answers.CALLS_REAL_METHODS)
+    @Mock
     private StudylogRepository studylogRepository;
     @InjectMocks
     private StudylogSessionService sessionService;
