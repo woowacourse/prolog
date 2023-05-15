@@ -1,8 +1,10 @@
 import { css, Global } from '@emotion/react';
 import COLOR from './constants/color';
 
-const GlobalStyles = () => (
-  <Global
+const GlobalStyles = () => {
+  const scrollbarWidth = window.innerWidth - document.body.clientWidth;
+
+  return <Global
     styles={css`
       @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
@@ -90,6 +92,6 @@ const GlobalStyles = () => (
       }
     `}
   />
-);
+};
 
 export default GlobalStyles;
