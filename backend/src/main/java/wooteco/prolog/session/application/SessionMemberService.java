@@ -37,16 +37,6 @@ public class SessionMemberService {
     }
 
     @Transactional
-    public void registerMembers(Long sessionId, SessionMemberRequest sessionMemberRequest) {
-        List<Member> members = memberService.findByIdIn(sessionMemberRequest.getMemberIds());
-        List<SessionMember> sessionMembers = members.stream()
-            .map(it -> new SessionMember(sessionId, it))
-            .collect(toList());
-
-        sessionMemberRepository.saveAll(sessionMembers);
-    }
-
-    @Transactional
     public void registerMembersByGroupId(Long sessionId, SessionGroupMemberRequest sessionGroupMemberRequest) {
         List<SessionMember> alreadySessionMembers = sessionMemberRepository.findAllBySessionId(sessionId);
 
