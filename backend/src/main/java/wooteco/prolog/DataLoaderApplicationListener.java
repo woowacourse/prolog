@@ -3,6 +3,7 @@ package wooteco.prolog;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -10,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
@@ -54,7 +54,7 @@ import wooteco.prolog.update.UpdatedContentsRepository;
 @Configuration
 public class DataLoaderApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
 
-    private static final Random random = ThreadLocalRandom.current();
+    private static final Random random = new SecureRandom();
     private static final Logger logger = LoggerFactory.getLogger(DataLoaderApplicationListener.class);
 
     private final EntityManagerFactory entityManagerFactory;
