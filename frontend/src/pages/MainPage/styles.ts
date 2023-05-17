@@ -22,14 +22,21 @@ export const PopularStudylogListStyle = css`
   width: 100%;
   height: 32rem;
 
-  display: flex;
-  justify-content: content;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.6rem;
 
   position: relative;
 
-  overflow-x: scroll;
+  @media screen and (max-width: 960px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  @media screen and (max-width: 380px) {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+  }
 `;
 
 export const PopularStudylogListRightControlStyle = css`
@@ -74,4 +81,17 @@ export const StyledChip = styled(Chip)<{ active: boolean }>`
 
 export const PopularStudylogListButton = css`
   padding: 0 2rem;
+
+  @media screen and (max-width: 540px) {
+    padding: 0 1rem;
+  }
+`;
+
+export const PopularStudylogListButtonIcon = css`
+  fill: rgba(0, 0, 0, 0.7);
+  width: 20px;
+
+  @media screen and (max-width: 540px) {
+    width: 12px;
+  }
 `;
