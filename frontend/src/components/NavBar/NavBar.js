@@ -83,11 +83,11 @@ const NavBar = () => {
 
   useEffect(() => {
     const handleResize = () => {
-        setIsMobile(mobile.matches);
+      setIsMobile(mobile.matches);
     };
     mobile.addEventListener('change', handleResize);
     return () => {
-        mobile.removeEventListener('change', handleResize);
+      mobile.removeEventListener('change', handleResize);
     };
   }, [mobile]);
 
