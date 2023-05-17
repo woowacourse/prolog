@@ -101,7 +101,7 @@ const NavBar = () => {
     >
       <Wrapper>
         <Logo onClick={goMain} role="link" aria-label="프롤로그 홈으로 이동하기">
-          {isMobile ? <img src={MobileLogo} alt="" /> : <img src={LogoImage} alt="" />}
+          <img src={isMobile ? MobileLogo : LogoImage} alt="" />
           {!isProd && <span>{logoTag}</span>}
         </Logo>
         <Menu role="menu">
