@@ -158,8 +158,12 @@ export const ContentsAreaStyle = css`
 
 export const TagContainerStyle = css`
   display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
 
-  overflow-x: scroll;
+  height: 24px;
+
+  overflow: hidden;
 `;
 
 export const getRandomBgColorStyle = (id: number) =>
