@@ -113,10 +113,6 @@ const NavBar = () => {
                   size="XX_SMALL"
                   icon={PencilIcon}
                   type="button"
-                  onClick={(e) => {
-                    setWritingDropdownToggled(true);
-                    hideDropdownMenu(e);
-                  }}
                   cssProps={pencilButtonStyle}
                 />
               </Link>
