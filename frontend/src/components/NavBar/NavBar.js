@@ -41,6 +41,8 @@ const navigationConfig = [
   },
 ];
 
+const MOBILE_SCREEN_SIZE = "420px";
+
 const NavBar = () => {
   const history = useHistory();
   const logoTag = isProd ? 'BETA' : APP_MODE;
@@ -52,7 +54,7 @@ const NavBar = () => {
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const [isWritingDropdownToggled, setWritingDropdownToggled] = useState(false);
 
-  const mobile = window.matchMedia('(max-width: 420px)');
+  const mobileScreen = window.matchMedia(`(max-width: ${MOBILE_SCREEN_SIZE})`);
   const [isMobile, setIsMobile] = useState(false);
 
   const goMain = () => {
@@ -83,13 +85,13 @@ const NavBar = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(mobile.matches);
+      setIsMobile(mobileScreen.matches);
     };
-    mobile.addEventListener('change', handleResize);
+    mobileScreen.addEventListener('change', handleResize);
     return () => {
-      mobile.removeEventListener('change', handleResize);
+      mobileScreen.removeEventListener('change', handleResize);
     };
-  }, [mobile]);
+  }, [mobileScreen]);
 
   return (
     <Container
