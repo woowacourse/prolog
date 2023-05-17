@@ -53,9 +53,9 @@ const NavBar = () => {
 
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const [isWritingDropdownToggled, setWritingDropdownToggled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const mobileScreen = window.matchMedia(`(max-width: ${MOBILE_SCREEN_SIZE})`);
-  const [isMobile, setIsMobile] = useState(false);
 
   const goMain = () => {
     history.push(PATH.ROOT);
