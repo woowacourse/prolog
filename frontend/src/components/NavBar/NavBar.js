@@ -25,6 +25,7 @@ import {
 } from './NavBar.styles';
 import { UserContext } from '../../contexts/UserProvider';
 import { APP_MODE, isProd } from '../../configs/environment';
+import MOBILE_MAX_SIZE from '../../constants/screenSize';
 
 const navigationConfig = [
   {
@@ -41,8 +42,6 @@ const navigationConfig = [
   },
 ];
 
-const MOBILE_SCREEN_SIZE = "420px";
-
 const NavBar = () => {
   const history = useHistory();
   const logoTag = isProd ? 'BETA' : APP_MODE;
@@ -55,7 +54,7 @@ const NavBar = () => {
   const [isWritingDropdownToggled, setWritingDropdownToggled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const mobileScreen = window.matchMedia(`(max-width: ${MOBILE_SCREEN_SIZE})`);
+  const mobileScreen = window.matchMedia(`(max-width: ${MOBILE_MAX_SIZE})`);
 
   const goMain = () => {
     history.push(PATH.ROOT);
