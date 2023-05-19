@@ -12,6 +12,10 @@ const Content = styled.div`
   margin-left: 2.4rem;
   display: flex;
   justify-content: center;
+
+  @media screen and (max-width: 768px) {
+    margin: 0;
+  }
 `;
 
 const Overview = styled.div`

@@ -8,6 +8,17 @@ export const Container = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   margin: 1em 0;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: 14rem;
+    height: 100%;
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
 `;
 
 export const Badge = styled.img`
