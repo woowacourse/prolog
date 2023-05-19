@@ -58,7 +58,7 @@ class FakeStudylogDocumentServiceTest {
     @Test
     void findById_Exception() {
         //given
-        when(studylogDocumentRepository.findById(1L)).thenThrow(StudylogDocumentNotFoundException.class);
+        when(studylogDocumentRepository.findById(1L)).thenReturn(Optional.empty());
 
         //when & then
         assertThatThrownBy(() -> fakeStudylogDocumentService.findById(1L))
@@ -125,7 +125,7 @@ class FakeStudylogDocumentServiceTest {
         final String searchKeyword = "오션 라온";
 
         assertThat(fakeStudylogDocumentService.preprocess(searchKeyword))
-            .isEqualTo(Arrays.asList("오션", "라온", "오션 라온"));
+            .containsExactly("오션", "라온", "오션 라온");
     }
 
     @DisplayName("searchkeyword로 StudylogDocument를 찾아 반환한다.")
