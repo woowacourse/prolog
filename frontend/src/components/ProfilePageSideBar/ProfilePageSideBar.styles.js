@@ -6,6 +6,16 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 20rem;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: row;
+    align-items: flex-start;
+    column-gap: 16px;
+    width: 100%;
+    max-width: none;
+    height: 284px;
+    margin-bottom: 1.8rem;
+  }
 `;
 
 const Profile = styled.div`
@@ -17,6 +27,10 @@ const Profile = styled.div`
   padding-bottom: 1.8rem;
   height: fit-content;
   width: fit-content;
+
+  @media screen and (max-width: 768px) {
+    height: 100%;
+  }
 `;
 
 const Image = styled.img`
@@ -49,6 +63,13 @@ const MenuList = styled.ul`
   border-radius: 1.6rem;
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
   padding: 1.6rem 0;
+
+  @media screen and (max-width: 768px) {
+    width: 50%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
 `;
 
 const MenuItem = styled.li`
