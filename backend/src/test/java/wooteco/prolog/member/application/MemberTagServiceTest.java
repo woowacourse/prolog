@@ -48,8 +48,7 @@ class MemberTagServiceTest {
         //given
         final String memberName = "송세연";
         final Member member = new Member(1L, memberName, "아마란스", Role.CREW, 124L, "imageUrl");
-        List<Tag> tags = LongStream.range(1, 4).boxed()
-            .map(id -> new Tag(id, id.toString()))
+        List<Tag> tags = LongStream.range(1, 4).boxed().map(id -> new Tag(id, id.toString()))
             .collect(Collectors.toList());
         member.addTags(new Tags(tags));
         final int expectedStudylogCount = 4;
@@ -60,16 +59,13 @@ class MemberTagServiceTest {
         List<MemberTagResponse> expected = memberTagService.findByMember(memberName);
 
         //then
-        Assertions.assertAll(
-            () -> assertThat(expected.size()).isEqualTo(4),
+        Assertions.assertAll(() -> assertThat(expected.size()).isEqualTo(4),
             () -> assertThat(expected.get(0).getCount()).isEqualTo(4),
             () -> assertThat(expected.get(0).getTagResponse().getName()).isEqualTo("ALL"),
-            () -> IntStream.range(1, 3).boxed()
-                .forEach((i) -> {
-                    assertThat(expected.get(i).getCount()).isEqualTo(1);
-                    assertThat(expected.get(i).getTagResponse().getName()).isEqualTo(i.toString());
-                })
-        );
+            () -> IntStream.range(1, 3).boxed().forEach((i) -> {
+                assertThat(expected.get(i).getCount()).isEqualTo(1);
+                assertThat(expected.get(i).getTagResponse().getName()).isEqualTo(i.toString());
+            }));
     }
 
     @DisplayName("tags를 memberTag로 바꾸고, 이를 저장한다.")
@@ -89,9 +85,10 @@ class MemberTagServiceTest {
         memberTagService.registerMemberTag(tags, member);
 
         //then
-
+        verify(memberTagRepository).register(argumentCaptor.capture());
         final MemberTags memberTags = argumentCaptor.getValue();
-        assertThat(memberTags.getValues()).extracting(MemberTag::getMemberId, MemberTag::getTagId)
+        assertThat(memberTags.getValues())
+            .extracting(MemberTag::getMemberId, MemberTag::getTagId)
             .containsExactlyInAnyOrder(
                 tuple(member.getId(), javaTag.getId()),
                 tuple(member.getId(), springTag.getId()),
@@ -105,13 +102,11 @@ class MemberTagServiceTest {
         //given
         final Member member = new Member(1L, "송세연", "아마란스", Role.CREW, 124L, "imageUrl");
 
-        List<Tag> tags1 = LongStream.range(1, 4).boxed()
-            .map(id -> new Tag(id, id.toString()))
+        List<Tag> tags1 = LongStream.range(1, 4).boxed().map(id -> new Tag(id, id.toString()))
             .collect(Collectors.toList());
         Tags originTags = new Tags(tags1);
 
-        List<Tag> tags2 = LongStream.range(5, 8).boxed()
-            .map(id -> new Tag(id, id.toString()))
+        List<Tag> tags2 = LongStream.range(5, 8).boxed().map(id -> new Tag(id, id.toString()))
             .collect(Collectors.toList());
         Tags newTags = new Tags(tags2);
 
@@ -140,7 +135,8 @@ class MemberTagServiceTest {
         //then
         verify(memberTagRepository).unregister(argumentCaptor.capture());
         final MemberTags memberTags = argumentCaptor.getValue();
-        assertThat(memberTags.getValues()).extracting(MemberTag::getMemberId, MemberTag::getTagId)
+        assertThat(memberTags.getValues())
+            .extracting(MemberTag::getMemberId, MemberTag::getTagId)
             .containsExactlyInAnyOrder(
                 tuple(member.getId(), javaTag.getId()),
                 tuple(member.getId(), springTag.getId()),
