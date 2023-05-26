@@ -31,10 +31,10 @@ export const SideSheetContent = styled.div<SideSheetContentProps>`
     animation: 0.25s ease-in forwards ${slide};
   `}
    @media (max-width: ${MOBILE_MAX_SIZE}) {
-    top: initial;
-      bottom: 0;
-      height: 50%;
-      width: 100%;
+     top: initial;
+     bottom: 0;
+     height: 50%;
+     width: 100%;
     }
 `;
 
