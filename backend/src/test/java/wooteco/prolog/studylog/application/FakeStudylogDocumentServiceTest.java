@@ -40,7 +40,7 @@ class FakeStudylogDocumentServiceTest {
     private FakeStudylogDocumentService fakeStudylogDocumentService;
 
 
-    @DisplayName("StudylogDocument 저장 테스트")
+    @DisplayName("StudylogDocument save 호출 테스트")
     @Test
     void save() {
         //given
@@ -54,7 +54,7 @@ class FakeStudylogDocumentServiceTest {
         verify(studylogDocumentRepository, times(1)).save(studylogDocument);
     }
 
-    @DisplayName("StudylogDocument id로 조회 예외 테스트")
+    @DisplayName("StudylogDocument id로 조회 찾지 못할 경우 예외 테스트")
     @Test
     void findById_Exception() {
         //given
@@ -76,7 +76,7 @@ class FakeStudylogDocumentServiceTest {
         assertThat(fakeStudylogDocumentService.findById(1L)).isEqualTo(studylogDocument);
     }
 
-    @DisplayName("StudylogDocument 삭제 성공 테스트")
+    @DisplayName("StudylogDocument delete 호출 성공 테스트")
     @Test
     void delete() {
         //given
@@ -90,7 +90,7 @@ class FakeStudylogDocumentServiceTest {
         verify(studylogDocumentRepository, times(1)).delete(studylogDocument);
     }
 
-    @DisplayName("StudylogDocument 업데이트 성공 테스트")
+    @DisplayName("StudylogDocument update 호출 성공 테스트")
     @Test
     void update() {
         //given
