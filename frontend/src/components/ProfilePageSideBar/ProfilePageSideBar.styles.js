@@ -72,10 +72,10 @@ const MenuList = styled.ul`
   padding: 1.6rem 0;
 
   @media screen and (max-width: 768px) {
-    width: 50%;
     height: 100%;
     padding: 0;
     margin: 0;
+    justify-content: center;
   }
 `;
 
