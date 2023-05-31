@@ -14,7 +14,6 @@
         "@toast-ui/editor-plugin-code-syntax-highlight": "3.0.0",
         "@toast-ui/editor-plugin-color-syntax": "3.0.1",
         "@toast-ui/react-editor": "3.0.3",
-        "antd": "^4.19.3",
         "axios": "^0.26.1",
         "cross-env": "7.0.3",
         "moment": "^2.29.1",

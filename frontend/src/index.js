@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import 'antd/dist/antd.css';
 
 import App from './App';
 import store from './redux/store';
@@ -13,22 +12,22 @@ import GlobalStyles from './GlobalStyles';
 const queryClient = new QueryClient();
 
 if (process.env.NODE_ENV === 'development') {
-  const { worker } = require('./mocks/browser');
+    const { worker } = require('./mocks/browser');
 
-  worker.start();
+    worker.start();
 }
 
 ReactDOM.render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <UserProvider>
-        <Provider store={store}>
-          <GlobalStyles />
-          <App />
-        </Provider>
-      </UserProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <QueryClientProvider client={queryClient}>
+            <UserProvider>
+                <Provider store={store}>
+                    <GlobalStyles />
+                    <App />
+                </Provider>
+            </UserProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
