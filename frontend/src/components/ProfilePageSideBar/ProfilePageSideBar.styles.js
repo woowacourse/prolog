@@ -8,13 +8,20 @@ const Container = styled.div`
   max-width: 20rem;
 
   @media screen and (max-width: 768px) {
-    flex-direction: row;
-    align-items: flex-start;
-    column-gap: 16px;
-    width: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 1.2rem;
     max-width: none;
     height: 284px;
-    margin-bottom: 1.8rem;
+    margin-bottom: 1.2rem;
+
+    & > * {
+      width: 100%;
+    }
+    & > :first-child {
+      grid-row: 1 / 3;
+    }
   }
 `;
 
@@ -56,7 +63,7 @@ const Role = styled.div`
 `;
 
 const MenuList = styled.ul`
-  margin-top: 2.4rem;
+  /* margin-top: 2.4rem; */
   display: flex;
   flex-direction: column;
   background-color: ${COLOR.WHITE};

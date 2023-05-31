@@ -4,10 +4,14 @@ import { COLOR } from '../../constants';
 export const Container = styled.div`
   width: 100%;
   display: flex;
+  min-height: 84px;
   gap: 0.5em;
   flex-wrap: wrap;
   justify-content: center;
   margin: 1em 0;
+  border: 1px solid #e0e0e0;
+  background: white;
+  border-radius: 2rem;
 
   @media screen and (max-width: 768px) {
     flex-direction: column;
@@ -19,6 +23,11 @@ export const Container = styled.div`
     overflow-x: hidden;
     overflow-y: scroll;
   }
+`;
+
+export const NoBadgeMessage = styled.p`
+  text-align: center;
+  margin: auto 0;
 `;
 
 export const Badge = styled.img`

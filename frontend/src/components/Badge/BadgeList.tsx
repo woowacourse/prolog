@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { Container, BadgeContainer, TooltipText } from './BadgeList.styles';
+import { Container, BadgeContainer, TooltipText, NoBadgeMessage } from './BadgeList.styles';
 import { ReactComponent as PassionBadge } from '../../assets/images/badge-1-level2.svg';
 import { ReactComponent as ComplimentBadge } from '../../assets/images/badge-2-level2.svg';
 
@@ -16,24 +16,30 @@ const BADGE_OBJ = {
 };
 
 interface BadgeListProps {
-  badgeList: [{ name: keyof typeof BADGE_OBJ }];
+  badgeList: { name: keyof typeof BADGE_OBJ }[];
 }
 
 const BadgeList = ({ badgeList }: BadgeListProps) => {
   return (
     <Container>
-      {badgeList.map(({ name }) => {
-        if (!BADGE_OBJ[name]) return false;
+      {badgeList.length === 0 ? (
+        <NoBadgeMessage>획득한 베지가 없습니다 🥲</NoBadgeMessage>
+      ) : (
+        <>
+          {badgeList.map(({ name }) => {
+            if (!BADGE_OBJ[name]) return false;
 
-        const { svgComponent: Badge, description } = BADGE_OBJ[name];
+            const { svgComponent: Badge, description } = BADGE_OBJ[name];
 
-        return (
-          <BadgeContainer key={name}>
-            <Badge aria-label={name} />
-            <TooltipText>{description}</TooltipText>
-          </BadgeContainer>
-        );
-      })}
+            return (
+              <BadgeContainer key={name}>
+                <Badge aria-label={name} />
+                <TooltipText>{description}</TooltipText>
+              </BadgeContainer>
+            );
+          })}
+        </>
+      )}
     </Container>
   );
 };
