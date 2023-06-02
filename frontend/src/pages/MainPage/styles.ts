@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Chip } from '../../components';
 import { COLOR } from '../../constants';
+import mediaQuery from '../../utils/mediaQuery';
 
 // 메인페이지 전체 적용
 export const SectionHeaderGapStyle = css`
@@ -11,7 +12,7 @@ export const SectionHeaderGapStyle = css`
   padding-left: 1.2rem;
   margin-bottom: 1.2rem;
 
-  @media screen and (max-width: 420px) {
+  ${mediaQuery.xs} {
     padding-left: 0.8rem;
     margin-bottom: 0.4rem;
   }

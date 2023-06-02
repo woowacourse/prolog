@@ -1,5 +1,6 @@
 import { css, Global } from '@emotion/react';
 import COLOR from './constants/color';
+import mediaQuery from './utils/mediaQuery';
 
 const GlobalStyles = () => (
   <Global
@@ -83,7 +84,7 @@ const GlobalStyles = () => (
         margin: 0;
       }
 
-      @media screen and (max-width: 420px) {
+      ${mediaQuery.xs} {
         html {
           font-size: 8px;
         }

@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
+import mediaQuery from '../../utils/mediaQuery';
 
 const DropdownToggledStyle = css`
   &:before {
@@ -35,7 +36,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  @media screen and (max-width: 420px) {
+  ${mediaQuery.xs} {
     padding: 0 1rem;
   }
 `;
@@ -69,7 +70,7 @@ const Menu = styled.div`
   & > * {
     margin-left: 1rem;
 
-    @media screen and (max-width: 420px) {
+    ${mediaQuery.xs} {
       margin-left: 0.5rem;
     }
   }
@@ -90,7 +91,7 @@ const DropdownStyle = css`
     text-align: center;
   }
 
-  @media screen and (max-width: 420px) {
+  ${mediaQuery.xs} {
     transform: translateX(-10%);
   }
 `;
@@ -106,7 +107,7 @@ const WritingDropdownStyle = css`
     text-align: center;
   }
 
-  @media screen and (max-width: 420px) {
+  ${mediaQuery.xs} {
     transform: translateX(-10%);
   }
 `;
