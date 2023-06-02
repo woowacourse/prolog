@@ -17,7 +17,6 @@ export const Container = styled.div`
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: center;
-    width: 14rem;
     height: 100%;
     margin: 0;
     overflow-x: hidden;

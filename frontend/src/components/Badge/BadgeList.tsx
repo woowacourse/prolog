@@ -23,7 +23,7 @@ const BadgeList = ({ badgeList }: BadgeListProps) => {
   return (
     <Container>
       {badgeList.length === 0 ? (
-        <NoBadgeMessage>획득한 베지가 없습니다 🥲</NoBadgeMessage>
+        <NoBadgeMessage>획득한 배지가 없습니다 🥲</NoBadgeMessage>
       ) : (
         <>
           {badgeList.map(({ name }) => {
