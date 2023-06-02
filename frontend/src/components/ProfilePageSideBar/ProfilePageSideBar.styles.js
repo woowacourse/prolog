@@ -63,7 +63,6 @@ const Role = styled.div`
 `;
 
 const MenuList = styled.ul`
-  /* margin-top: 2.4rem; */
   display: flex;
   flex-direction: column;
   background-color: ${COLOR.WHITE};
