@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
+import mediaQuery from '../../utils/mediaQuery';
 
 const DropdownToggledStyle = css`
   &:before {
@@ -34,7 +35,7 @@ const Container = styled.div`
   & > div:not(:last-child) {
     margin-right: 3.2rem;
 
-    @media screen and (max-width: 420px) {
+    ${mediaQuery.xs} {
       margin-right: 2rem;
     }
   }
@@ -158,21 +159,21 @@ export const NoContent = styled.div`
 `;
 
 const SessionInMission = styled.div`
-    background-color: aliceblue;
-    border-radius: 1rem;
-    padding-left: 0.3rem;
-    padding-right: 0.3rem;
-    font-size: xx-small;
+  background-color: aliceblue;
+  border-radius: 1rem;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+  font-size: xx-small;
 `;
 
 const MissionName = styled.div`
-    margin-top: 0.2rem;
-    margin-left: 0.5rem;
+  margin-top: 0.2rem;
+  margin-left: 0.5rem;
 `;
 
 const MissionWrapper = styled.div`
-    margin-top: 0.2rem;
-    margin-left: 0.5rem;
+  margin-top: 0.2rem;
+  margin-left: 0.5rem;
 `;
 
 export {

@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { COLOR } from '../../enumerations/color';
+import mediaQuery from '../../utils/mediaQuery';
 
 export const CardStyle = css`
   transition: transform 0.2s ease;
@@ -39,7 +40,7 @@ export const DescriptionStyle = css`
     overflow: hidden;
     text-overflow: ellipsis;
 
-    @media screen and (max-width: 420px) {
+    ${mediaQuery.xs} {
       font-size: 2.5rem;
       height: calc(2.5rem * 4.5);
     }
