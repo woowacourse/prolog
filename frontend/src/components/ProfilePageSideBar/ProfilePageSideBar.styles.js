@@ -6,6 +6,23 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 20rem;
+
+  @media screen and (max-width: 768px) {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 1.2rem;
+    max-width: none;
+    height: 284px;
+    margin-bottom: 1.2rem;
+
+    & > * {
+      width: 100%;
+    }
+    & > :first-child {
+      grid-row: 1 / 3;
+    }
+  }
 `;
 
 const Profile = styled.div`
@@ -17,6 +34,10 @@ const Profile = styled.div`
   padding-bottom: 1.8rem;
   height: fit-content;
   width: fit-content;
+
+  @media screen and (max-width: 768px) {
+    height: 100%;
+  }
 `;
 
 const Image = styled.img`
@@ -42,13 +63,19 @@ const Role = styled.div`
 `;
 
 const MenuList = styled.ul`
-  margin-top: 2.4rem;
   display: flex;
   flex-direction: column;
   background-color: ${COLOR.WHITE};
   border-radius: 1.6rem;
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
   padding: 1.6rem 0;
+
+  @media screen and (max-width: 768px) {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+  }
 `;
 
 const MenuItem = styled.li`
