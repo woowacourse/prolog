@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
 
 import PropTypes from 'prop-types';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useHistory, Link, NavLink } from 'react-router-dom';
+import MobileLogo from '../../assets/images/woteco-logo.png';
 import LogoImage from '../../assets/images/logo.svg';
 import { PATH } from '../../constants';
 import GithubLogin from '../GithubLogin/GithubLogin';
@@ -23,7 +24,8 @@ import {
   loginButtonStyle,
 } from './NavBar.styles';
 import { UserContext } from '../../contexts/UserProvider';
-import { APP_MODE, BASE_URL, isProd } from '../../configs/environment';
+import { APP_MODE, isProd } from '../../configs/environment';
+import MOBILE_MAX_SIZE from '../../constants/screenSize';
 
 const navigationConfig = [
   {
@@ -50,6 +52,9 @@ const NavBar = () => {
 
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const [isWritingDropdownToggled, setWritingDropdownToggled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  const mobileScreen = window.matchMedia(`(max-width: ${MOBILE_MAX_SIZE})`);
 
   const goMain = () => {
     history.push(PATH.ROOT);
@@ -77,6 +82,16 @@ const NavBar = () => {
     }
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(mobileScreen.matches);
+    };
+    mobileScreen.addEventListener('change', handleResize);
+    return () => {
+      mobileScreen.removeEventListener('change', handleResize);
+    };
+  }, [mobileScreen]);
+
   return (
     <Container
       isDropdownToggled={isDropdownToggled || isWritingDropdownToggled}
@@ -87,13 +102,14 @@ const NavBar = () => {
     >
       <Wrapper>
         <Logo onClick={goMain} role="link" aria-label="프롤로그 홈으로 이동하기">
-          <img src={LogoImage} alt="" />
+          <img src={isMobile ? MobileLogo : LogoImage} alt="" />
           {!isProd && <span>{logoTag}</span>}
         </Logo>
         <Menu role="menu">
           <Navigation>
             {navigationConfig.map(({ path, title }) => (
               <NavLink
+                style={{ whiteSpace: 'nowrap' }}
                 exact
                 key={path}
                 to={path}
