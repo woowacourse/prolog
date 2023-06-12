@@ -35,11 +35,17 @@ const useScreenMediaQuery = (): Screen => {
   );
 
   useEffect(() => {
-    Object.entries(mediaQueries).map(([name, mediaQuery]) => {
-      mediaQuery.addEventListener('change', ({ matches }) => {
+    const cleanHandlers = Object.entries(mediaQueries).map(([name, mediaQuery]) => {
+      const handleMediaQueryChange = ({ matches }: MediaQueryListEvent) => {
         setScreen((screen) => ({ ...screen, [name]: matches }));
-      });
+      };
+
+      mediaQuery.addEventListener('change', handleMediaQueryChange);
+
+      return () => mediaQuery.removeEventListener('change', handleMediaQueryChange);
     });
+
+    return () => cleanHandlers.forEach((cleanHandler) => cleanHandler());
   }, []);
 
   return screen;
