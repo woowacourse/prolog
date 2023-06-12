@@ -20,13 +20,12 @@ import SCREEN_BREAKPOINT, { ScreenBreakpoint } from '../constants/screenBreakpoi
  *   }
  * `
  */
-const mediaQuery = {
-  ...(Object.fromEntries(
-    Object.entries(SCREEN_BREAKPOINT).map(([breakpoint, maxWidth]) => [
-      breakpoint,
-      `@media screen and (max-width: ${maxWidth})`,
-    ])
-  ) as Record<ScreenBreakpoint, string>),
+const mediaQuery: Record<ScreenBreakpoint, string> = {
+  xs: `@media screen and (max-width: ${SCREEN_BREAKPOINT.xs})`,
+  sm: `@media screen and (max-width: ${SCREEN_BREAKPOINT.sm})`,
+  md: `@media screen and (max-width: ${SCREEN_BREAKPOINT.md})`,
+  lg: `@media screen and (max-width: ${SCREEN_BREAKPOINT.lg})`,
+  xl: `@media screen and (max-width: ${SCREEN_BREAKPOINT.xl})`,
 };
 
 export default mediaQuery;
