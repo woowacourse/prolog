@@ -12,22 +12,22 @@ import GlobalStyles from './GlobalStyles';
 const queryClient = new QueryClient();
 
 if (process.env.NODE_ENV === 'development') {
-    const { worker } = require('./mocks/browser');
+  const { worker } = require('./mocks/browser');
 
-    worker.start();
+  worker.start();
 }
 
 ReactDOM.render(
-    <React.StrictMode>
-        <QueryClientProvider client={queryClient}>
-            <UserProvider>
-                <Provider store={store}>
-                    <GlobalStyles />
-                    <App />
-                </Provider>
-            </UserProvider>
-            <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-    </React.StrictMode>,
-    document.getElementById('root')
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <UserProvider>
+        <Provider store={store}>
+          <GlobalStyles />
+          <App />
+        </Provider>
+      </UserProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  </React.StrictMode>,
+  document.getElementById('root')
 );
