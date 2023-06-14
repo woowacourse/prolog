@@ -1,4 +1,3 @@
-import React from 'react';
 import Button from './Button';
 import { css } from '@emotion/react';
 import COLOR from '../../constants/color';
