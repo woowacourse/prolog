@@ -1,5 +1,3 @@
-import React from 'react';
-
 const CancelIcon = ({ width, height, stroke, strokeWidth }) => {
   return (
     <svg
