@@ -40,7 +40,7 @@ const Container = styled.div`
     }
   }
 
-  @media screen and (max-width: 450px) {
+  ${MEDIA_QUERY.xs} {
     font-size: 1rem;
   }
 
@@ -90,40 +90,40 @@ const Container = styled.div`
 `;
 
 const FilterContainer = styled.div`
-display: flex;
-
-& > div:not(:last-child) {
-  margin-right: 3.2rem;
-
-  ${MEDIA_QUERY.xs} {
-    margin-right: 2rem;
-  }
-}
-
-@media screen and (max-width: 620px) {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-}
-
-& button {
   display: flex;
-  align-items: center;
-  height: 100%;
-  text-align: center;
-  color: ${COLOR.DARK_GRAY_500};
 
-  ::after {
-    content: '';
-    width: 0;
-    height: 0;
-    transform: translateY(50%);
-    margin-left: 0.2rem;
-    border-top: 0.5rem solid ${COLOR.DARK_GRAY_500};
-    border-bottom: 0.5rem solid transparent;
-    border-left: 0.5rem solid transparent;
-    border-right: 0.5rem solid transparent;
+  & > div:not(:last-child) {
+    margin-right: 3.2rem;
+
+    ${MEDIA_QUERY.xs} {
+      margin-right: 2rem;
+    }
   }
-}
+
+  ${MEDIA_QUERY.sm} {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  & button {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    color: ${COLOR.DARK_GRAY_500};
+
+    ::after {
+      content: '';
+      width: 0;
+      height: 0;
+      transform: translateY(50%);
+      margin-left: 0.2rem;
+      border-top: 0.5rem solid ${COLOR.DARK_GRAY_500};
+      border-bottom: 0.5rem solid transparent;
+      border-left: 0.5rem solid transparent;
+      border-right: 0.5rem solid transparent;
+    }
+  }
 `;
 
 const FilterDetail = styled.button`
