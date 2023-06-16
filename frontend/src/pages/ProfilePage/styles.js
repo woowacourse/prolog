@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
+import MEDIA_QUERY from '../../constants/mediaQuery';
 
 const Container = styled.div`
   display: flex;
@@ -13,7 +14,7 @@ const Content = styled.div`
   display: flex;
   justify-content: center;
 
-  @media screen and (max-width: 768px) {
+  ${MEDIA_QUERY.md} {
     margin: 0;
   }
 `;
