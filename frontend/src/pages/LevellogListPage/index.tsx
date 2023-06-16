@@ -6,7 +6,7 @@ import PencilIcon from '../../assets/images/pencil_icon.svg';
 import { Button, Pagination } from '../../components';
 import LevellogList from '../../components/Lists/LevellogList';
 import { PATH } from '../../constants';
-import mediaQuery from '../../constants/mediaQuery';
+import MEDIA_QUERY from '../../constants/mediaQuery';
 import { useLevellogList } from '../../hooks/Levellog/useLevellogList';
 import { MainContentStyle } from '../../PageRouter';
 import {
@@ -31,7 +31,7 @@ const LevellogListPage = () => {
             css`
               margin-bottom: 1rem;
 
-              ${mediaQuery.xs} {
+              ${MEDIA_QUERY.xs} {
                 flex-direction: column;
               }
             `,
@@ -50,7 +50,7 @@ const LevellogListPage = () => {
             FlexStyle,
             JustifyContentEndStyle,
             css`
-              ${mediaQuery.xs} {
+              ${MEDIA_QUERY.xs} {
                 > button {
                   display: none;
                 }
