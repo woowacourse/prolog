@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
-import mediaQuery from '../../constants/mediaQuery';
+import MEDIA_QUERY from '../../constants/mediaQuery';
 
 const DropdownToggledStyle = css`
   &:before {
@@ -35,7 +35,7 @@ const Container = styled.div`
   & > div:not(:last-child) {
     margin-right: 3.2rem;
 
-    ${mediaQuery.xs} {
+    ${MEDIA_QUERY.xs} {
       margin-right: 2rem;
     }
   }

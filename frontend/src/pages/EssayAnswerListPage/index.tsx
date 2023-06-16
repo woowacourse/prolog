@@ -2,7 +2,7 @@
 
 import { css } from '@emotion/react';
 import EssayAnswerList from '../../components/Lists/EssayAnswerList';
-import mediaQuery from '../../constants/mediaQuery';
+import MEDIA_QUERY from '../../constants/mediaQuery';
 import { useEssayAnswerList } from '../../hooks/EssayAnswer/useEssayAnswerList';
 import { MainContentStyle } from '../../PageRouter';
 import {
@@ -26,7 +26,7 @@ const EssayAnswerListPage = () => {
             css`
               margin-bottom: 1rem;
 
-              ${mediaQuery.xs} {
+              ${MEDIA_QUERY.xs} {
                 flex-direction: column;
               }
             `,

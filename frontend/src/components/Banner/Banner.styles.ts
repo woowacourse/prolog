@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { COLOR } from '../../constants';
-import mediaQuery from '../../constants/mediaQuery';
+import MEDIA_QUERY from '../../constants/mediaQuery';
 import { getTextColor } from '../../utils/textColorPicker';
 
 export const bannerWrapperStyle = css`
@@ -29,7 +29,7 @@ export const bannerWrapperStyle = css`
     text-align: center;
   }
 
-  ${mediaQuery.xs} {
+  ${MEDIA_QUERY.xs} {
     height: 180px;
 
     br {
@@ -51,7 +51,7 @@ export const bannerInnerWrapperStyle = css`
   justify-content: center;
   align-items: center;
 
-  ${mediaQuery.xs} {
+  ${MEDIA_QUERY.xs} {
     max-width: calc(100% - 5rem);
   }
 `;
@@ -79,7 +79,7 @@ export const bannerTextAreaStyle = css`
     line-height: 1.5;
   }
 
-  ${mediaQuery.xs} {
+  ${MEDIA_QUERY.xs} {
     padding-right: 0;
 
     h2 {
@@ -136,7 +136,7 @@ export const getBannerSideImageStyle = (sideImageUrl, sideImagePadding, reverse)
 
   ${reverse ? 'margin-left: 3rem;' : 'margin-right: 3rem;'}
 
-  ${mediaQuery.xs} {
+  ${MEDIA_QUERY.xs} {
     width: 0;
     height: 0;
     margin: 0;
