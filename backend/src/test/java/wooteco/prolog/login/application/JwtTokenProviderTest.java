@@ -1,14 +1,15 @@
 package wooteco.prolog.login.application;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import java.util.Date;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.login.excetpion.TokenNotValidException;
 import wooteco.prolog.member.domain.Role;
+
+import java.util.Date;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class JwtTokenProviderTest {
 

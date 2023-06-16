@@ -1,7 +1,5 @@
 package wooteco.prolog.roadmap.repository;
 
-import java.util.Arrays;
-import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +12,9 @@ import wooteco.prolog.roadmap.domain.repository.QuizRepository;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.support.utils.RepositoryTest;
+
+import java.util.Arrays;
+import java.util.List;
 
 @RepositoryTest
 class QuizRepositoryTest {

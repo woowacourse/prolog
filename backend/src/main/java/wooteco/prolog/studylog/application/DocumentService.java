@@ -3,7 +3,6 @@ package wooteco.prolog.studylog.application;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.domain.StudylogDocument;
 
@@ -14,8 +13,6 @@ public interface DocumentService {
     StudylogDocument findById(Long id);
 
     void delete(StudylogDocument studylogDocument);
-
-    void deleteAll();
 
     void sync();
 

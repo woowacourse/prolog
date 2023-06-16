@@ -2,8 +2,10 @@ import { css, Global } from '@emotion/react';
 import COLOR from './constants/color';
 import mediaQuery from './constants/mediaQuery';
 
-const GlobalStyles = () => (
-  <Global
+const GlobalStyles = () => {
+  const scrollbarWidth = window.innerWidth - document.body.clientWidth;
+
+  return <Global
     styles={css`
       @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
 
@@ -21,6 +23,8 @@ const GlobalStyles = () => (
 
       html {
         font-size: 10px;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(161, 161, 161, 0.7);
       }
 
       body {
@@ -31,6 +35,23 @@ const GlobalStyles = () => (
         width: 100%;
         background-color: ${COLOR.LIGHT_GRAY_50};
         color: ${COLOR.DARK_GRAY_900};
+        overflow-x: hidden;
+        overflow-y: overlay;
+      }
+
+      body::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      body::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background: rgba(161, 161, 161, 0.7);
+      }
+
+      body::-webkit-scrollbar-track,
+      body::-webkit-scrollbar-button:start:decrement,
+      body::-webkit-scrollbar-button:end:increment {
+        display: none;
       }
 
       #root {
@@ -91,6 +112,6 @@ const GlobalStyles = () => (
       }
     `}
   />
-);
+};
 
 export default GlobalStyles;

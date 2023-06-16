@@ -4,7 +4,7 @@ on:
     branches:
       - develop
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [ opened, synchronize, reopened ]
 jobs:
   build:
     name: Build
@@ -42,7 +42,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
       - name: Build
-        run: ./backend/gradlew flywayClean flywayBaseline flywayMigrate build
+        run: ./backend/gradlew flywayClean flywayBaseline flywayMigrate build -Dflyway.baselineVersion=0
       - name: Analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any

@@ -40,6 +40,10 @@ const Container = styled.div`
     }
   }
 
+  @media screen and (max-width: 450px) {
+    font-size: 1rem;
+  }
+
   & > div {
     input[type='search'] {
       font-weight: 500;
@@ -85,6 +89,43 @@ const Container = styled.div`
   }
 `;
 
+const FilterContainer = styled.div`
+display: flex;
+
+& > div:not(:last-child) {
+  margin-right: 3.2rem;
+
+  @media screen and (max-width: 420px) {
+    margin-right: 2rem;
+  }
+}
+
+@media screen and (max-width: 620px) {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+& button {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  color: ${COLOR.DARK_GRAY_500};
+
+  ::after {
+    content: '';
+    width: 0;
+    height: 0;
+    transform: translateY(50%);
+    margin-left: 0.2rem;
+    border-top: 0.5rem solid ${COLOR.DARK_GRAY_500};
+    border-bottom: 0.5rem solid transparent;
+    border-left: 0.5rem solid transparent;
+    border-right: 0.5rem solid transparent;
+  }
+}
+`;
+
 const FilterDetail = styled.button`
   display: flex;
   align-items: center;
@@ -100,6 +141,8 @@ const ResetFilter = styled.div`
   margin-left: auto;
   color: ${COLOR.DARK_GRAY_500};
   cursor: pointer;
+
+  flex-shrink: 0;
 `;
 
 const CheckIcon = styled.img`
@@ -190,4 +233,5 @@ export {
   SessionInMission,
   MissionName,
   MissionWrapper,
+  FilterContainer,
 };
