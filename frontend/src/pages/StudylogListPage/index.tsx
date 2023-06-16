@@ -3,32 +3,31 @@
 import { css } from '@emotion/react';
 import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { MainContentStyle } from '../../PageRouter';
+import PencilIcon from '../../assets/images/pencil_icon.svg';
 import { Button, FilterList, Pagination } from '../../components';
 import Chip from '../../components/Chip/Chip';
 import StudylogList from '../../components/Lists/StudylogList';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import { PATH } from '../../constants';
+import mediaQuery from '../../constants/mediaQuery';
 import { ERROR_MESSAGE } from '../../constants/message';
 import { UserContext } from '../../contexts/UserProvider';
 import useFetch from '../../hooks/useFetch';
 import useFilterWithParams from '../../hooks/useFilterWithParams';
 import useStudylog from '../../hooks/useStudylog';
+import { MainContentStyle } from '../../PageRouter';
 import { requestGetFilters } from '../../service/requests';
 import {
   AlignItemsCenterStyle,
   FlexStyle,
-  JustifyContentSpaceBtwStyle,
+  JustifyContentSpaceBtwStyle
 } from '../../styles/flex.styles';
 import {
   FilterListWrapper,
   HeaderContainer,
   PostListContainer,
-  SelectedFilterList,
+  SelectedFilterList
 } from './styles';
-
-import PencilIcon from '../../assets/images/pencil_icon.svg';
-import mediaQuery from '../../utils/mediaQuery';
 
 const StudylogListPage = (): JSX.Element => {
   const {

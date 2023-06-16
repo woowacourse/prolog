@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
+import mediaQuery from '../../constants/mediaQuery';
 import { COLOR } from '../../enumerations/color';
-import mediaQuery from '../../utils/mediaQuery';
 
 export const CardStyle = css`
   transition: transform 0.2s ease;

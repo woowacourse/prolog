@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import mediaQuery from '../../utils/mediaQuery';
+import mediaQuery from '../../constants/mediaQuery';
 
 const HeaderContainer = styled.div`
   display: flex;

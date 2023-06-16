@@ -1,17 +1,16 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from '@emotion/react';
-
+import EssayAnswerList from '../../components/Lists/EssayAnswerList';
+import mediaQuery from '../../constants/mediaQuery';
+import { useEssayAnswerList } from '../../hooks/EssayAnswer/useEssayAnswerList';
 import { MainContentStyle } from '../../PageRouter';
 import {
   AlignItemsCenterStyle,
   FlexStyle,
-  JustifyContentSpaceBtwStyle,
+  JustifyContentSpaceBtwStyle
 } from '../../styles/flex.styles';
 import { HeaderContainer, PostListContainer } from './styles';
-import { useEssayAnswerList } from '../../hooks/EssayAnswer/useEssayAnswerList';
-import EssayAnswerList from '../../components/Lists/EssayAnswerList';
-import mediaQuery from '../../utils/mediaQuery';
 
 const EssayAnswerListPage = () => {
   const { quiz, essayAnswers } = useEssayAnswerList();

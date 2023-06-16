@@ -1,4 +1,4 @@
-import SCREEN_BREAKPOINT, { ScreenBreakpoint } from '../constants/screenBreakpoints';
+import SCREEN_BREAKPOINT, { ScreenBreakpoint } from './screenBreakpoints';
 
 /**
  * css에서 반응형 디자인을 할 때 사용합니다.
