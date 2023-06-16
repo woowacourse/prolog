@@ -9,7 +9,7 @@ import Chip from '../../components/Chip/Chip';
 import StudylogList from '../../components/Lists/StudylogList';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import { PATH } from '../../constants';
-import mediaQuery from '../../constants/mediaQuery';
+import MEDIA_QUERY from '../../constants/mediaQuery';
 import { ERROR_MESSAGE } from '../../constants/message';
 import { UserContext } from '../../contexts/UserProvider';
 import useFetch from '../../hooks/useFetch';
@@ -141,7 +141,7 @@ const StudylogListPage = (): JSX.Element => {
             css`
               margin-bottom: 1rem;
 
-              ${mediaQuery.xs} {
+              ${MEDIA_QUERY.xs} {
                 flex-direction: column;
               }
             `,
@@ -166,7 +166,7 @@ const StudylogListPage = (): JSX.Element => {
           css={[
             FlexStyle,
             css`
-              ${mediaQuery.xs} {
+              ${MEDIA_QUERY.xs} {
                 > button {
                   display: none;
                 }

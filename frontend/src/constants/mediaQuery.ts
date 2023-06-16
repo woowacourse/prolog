@@ -20,7 +20,7 @@ import SCREEN_BREAKPOINT, { ScreenBreakpoint } from './screenBreakpoints';
  *   }
  * `
  */
-const mediaQuery: Record<ScreenBreakpoint, string> = {
+const MEDIA_QUERY: Readonly<Record<ScreenBreakpoint, string>> = {
   xs: `@media screen and (max-width: ${SCREEN_BREAKPOINT.xs})`,
   sm: `@media screen and (max-width: ${SCREEN_BREAKPOINT.sm})`,
   md: `@media screen and (max-width: ${SCREEN_BREAKPOINT.md})`,
@@ -28,4 +28,4 @@ const mediaQuery: Record<ScreenBreakpoint, string> = {
   xl: `@media screen and (max-width: ${SCREEN_BREAKPOINT.xl})`,
 };
 
-export default mediaQuery;
+export default MEDIA_QUERY;
