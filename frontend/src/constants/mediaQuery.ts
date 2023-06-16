@@ -21,11 +21,11 @@ import SCREEN_BREAKPOINT, { ScreenBreakpoint } from './screenBreakpoints';
  * `
  */
 const MEDIA_QUERY: Readonly<Record<ScreenBreakpoint, string>> = {
-  xs: `@media screen and (max-width: ${SCREEN_BREAKPOINT.xs})`,
-  sm: `@media screen and (max-width: ${SCREEN_BREAKPOINT.sm})`,
-  md: `@media screen and (max-width: ${SCREEN_BREAKPOINT.md})`,
-  lg: `@media screen and (max-width: ${SCREEN_BREAKPOINT.lg})`,
-  xl: `@media screen and (max-width: ${SCREEN_BREAKPOINT.xl})`,
+  xs: `@media screen and (max-width: ${SCREEN_BREAKPOINT.xs}px)`,
+  sm: `@media screen and (max-width: ${SCREEN_BREAKPOINT.sm}px)`,
+  md: `@media screen and (max-width: ${SCREEN_BREAKPOINT.md}px)`,
+  lg: `@media screen and (max-width: ${SCREEN_BREAKPOINT.lg}px)`,
+  xl: `@media screen and (max-width: ${SCREEN_BREAKPOINT.xl}px)`,
 };
 
 export default MEDIA_QUERY;
