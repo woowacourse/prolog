@@ -55,7 +55,12 @@ const WeekWrapper = styled.ul`
   height: 5rem;
 `;
 
-const Week = styled.strong`
+interface WeekProps {
+  isSunday: boolean;
+  isSaturday: boolean;
+}
+
+const Week = styled.strong<WeekProps>`
   font-size: 1.4rem;
 
   ${({ isSunday, isSaturday }) => css`
@@ -85,7 +90,15 @@ const ListItem = styled.li`
   text-align: center;
 `;
 
-const Day = styled.button`
+interface DayProps {
+  isSunday: boolean;
+  isSaturday: boolean;
+  isHover: boolean;
+  isSelected: boolean;
+  count: number;
+}
+
+const Day = styled.button<DayProps>`
   position: relative;
   user-select: none;
   cursor: pointer;
@@ -145,7 +158,11 @@ const Day = styled.button`
   `}
 `;
 
-const TitleList = styled.div`
+interface TitleListProp {
+  isRight: boolean;
+}
+
+const TitleList = styled.div<TitleListProp>`
   position: absolute;
   top: -0.5rem;
   border: 1px solid #ccc;

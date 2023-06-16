@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   CalendarWrapper,
   Year,
@@ -17,11 +17,11 @@ import { ReactComponent as ArrowIcon } from '../../assets/images/right-arrow-ang
 import { requestGetCalendar } from '../../service/requests';
 import { useParams } from 'react-router';
 
-const getStartDayOfMonth = (year, month) => {
+const getStartDayOfMonth = (year: number, month: number) => {
   return new Date(year, month, 1).getDay();
 };
 
-const isLeapYear = (year) => {
+const isLeapYear = (year: number) => {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 };
 
@@ -30,17 +30,29 @@ const DAYS_LEAP = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const WEEK = ['일', '월', '화', '수', '목', '금', '토'];
 const MONTHS = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
 
-const Calendar = ({ newDate, onClick = () => {}, selectedDay = -1, setSelectedDay = () => {} }) => {
+interface CalenderProps {
+  newDate: {
+    year: number;
+    month: number;
+    day: number;
+  };
+  onClick: (year: number, month: number, day: number) => void;
+  selectedDay: number;
+  setSelectedDay: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const Calendar = ({ newDate, onClick, selectedDay = -1, setSelectedDay }: CalenderProps) => {
   const today = newDate ? new Date(newDate.year, newDate.month - 1, newDate.day) : new Date();
 
-  const [date, setDate] = useState(today);
+  const [date, setDate] = useState<Date>(today);
   const [currentMonth, setCurrentMonth] = useState(date.getMonth());
   const [currentYear, setCurrentYear] = useState(date.getFullYear());
   const [startDay, setStartDay] = useState(getStartDayOfMonth(currentYear, currentMonth));
-  const [titleList, setTitleList] = useState([]);
-  const [titleListIndex, setTitleListIndex] = useState(null);
+  // any type 수정 필요
+  const [titleList, setTitleList] = useState<any[]>([]);
+  const [titleListIndex, setTitleListIndex] = useState<number | null>(null);
 
-  const { username } = useParams();
+  const { username } = useParams<{ username: string }>();
 
   const days = isLeapYear(currentYear) ? DAYS_LEAP : DAYS;
 
@@ -53,26 +65,28 @@ const Calendar = ({ newDate, onClick = () => {}, selectedDay = -1, setSelectedDa
           throw new Error(await response.text());
         }
 
+        // 이 data 형식 알 필요 있음
         const { data: titleData } = await response.json();
 
-        const data = [];
+        const data: number[] = [];
 
         [...Array(days[currentMonth])].forEach((_, index) => {
           const day = index + 1;
 
-          const firstIndex = titleData.findIndex(
+          const firstIndex: number = titleData.findIndex(
             ({ createdAt }) => day === Number(createdAt.slice(8, 10))
           );
 
-          const lastIndex = titleData.findIndex(
+          const lastIndex: number = titleData.findIndex(
             ({ createdAt }) => day < Number(createdAt.slice(8, 10))
           );
 
-          data.push(
+          const filteredData =
             firstIndex !== -1
               ? titleData.slice(firstIndex, lastIndex === -1 ? titleData.length : lastIndex)
-              : []
-          );
+              : [];
+
+          data.push(filteredData);
         });
 
         setTitleList(data);
@@ -130,7 +144,7 @@ const Calendar = ({ newDate, onClick = () => {}, selectedDay = -1, setSelectedDa
           ))}
         </WeekWrapper>
         <DayWrapper>
-          {[...Array(days[currentMonth] + startDay)].map((_, index) => {
+          {[...Array(days[currentMonth] + startDay)].map((_, index: number) => {
             const day = index - (startDay - 1);
             const isSunday = index % 7 === 0;
             const isThursday = index % 7 === 4;
