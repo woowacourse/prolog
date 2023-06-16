@@ -1,13 +1,14 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
+import MEDIA_QUERY from '../../constants/mediaQuery';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 20rem;
 
-  @media screen and (max-width: 768px) {
+  ${MEDIA_QUERY.md} {
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: auto 1fr;
@@ -35,7 +36,7 @@ const Profile = styled.div`
   height: fit-content;
   width: fit-content;
 
-  @media screen and (max-width: 768px) {
+  ${MEDIA_QUERY.md} {
     height: 100%;
   }
 `;
@@ -70,7 +71,7 @@ const MenuList = styled.ul`
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
   padding: 1.6rem 0;
 
-  @media screen and (max-width: 768px) {
+  ${MEDIA_QUERY.md} {
     height: 100%;
     padding: 0;
     margin: 0;
