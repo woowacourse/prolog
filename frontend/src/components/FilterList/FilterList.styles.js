@@ -95,7 +95,7 @@ display: flex;
 & > div:not(:last-child) {
   margin-right: 3.2rem;
 
-  @media screen and (max-width: 420px) {
+  ${MEDIA_QUERY.xs} {
     margin-right: 2rem;
   }
 }

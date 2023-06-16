@@ -1,7 +1,7 @@
-import styled from '@emotion/styled';
 import { css, keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
+import MEDIA_QUERY from '../../../constants/mediaQuery';
 import { SideSheetProps } from './SideSheet';
-import MOBILE_MAX_SIZE from '../../../constants/screenSize';
 
 export type SideSheetContentProps = Pick<SideSheetProps, 'width'>;
 
@@ -30,7 +30,8 @@ export const SideSheetContent = styled.div<SideSheetContentProps>`
     z-index: 101;
     animation: 0.25s ease-in forwards ${slide};
   `}
-   @media (max-width: ${MOBILE_MAX_SIZE}) {
+   
+  ${MEDIA_QUERY.xs} {
      top: initial;
      bottom: 0;
      height: 50%;
