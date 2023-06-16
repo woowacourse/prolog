@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
-import mediaQuery from '../../utils/mediaQuery';
+import mediaQuery from '../../constants/mediaQuery';
 
 const DropdownToggledStyle = css`
   &:before {

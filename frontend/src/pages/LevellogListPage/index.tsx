@@ -2,19 +2,19 @@
 
 import { css } from '@emotion/react';
 import { Link } from 'react-router-dom';
-import { MainContentStyle } from '../../PageRouter';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
 import { Button, Pagination } from '../../components';
 import LevellogList from '../../components/Lists/LevellogList';
 import { PATH } from '../../constants';
+import mediaQuery from '../../constants/mediaQuery';
 import { useLevellogList } from '../../hooks/Levellog/useLevellogList';
+import { MainContentStyle } from '../../PageRouter';
 import {
   AlignItemsCenterStyle,
   FlexStyle,
   JustifyContentEndStyle,
-  JustifyContentSpaceBtwStyle,
+  JustifyContentSpaceBtwStyle
 } from '../../styles/flex.styles';
-import mediaQuery from '../../utils/mediaQuery';
 import { HeaderContainer, PostListContainer } from './styles';
 
 const LevellogListPage = () => {

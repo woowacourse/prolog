@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Chip } from '../../components';
 import { COLOR } from '../../constants';
-import mediaQuery from '../../utils/mediaQuery';
+import mediaQuery from '../../constants/mediaQuery';
 
 // 메인페이지 전체 적용
 export const SectionHeaderGapStyle = css`

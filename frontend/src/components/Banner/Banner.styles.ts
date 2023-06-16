@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { COLOR } from '../../constants';
-import mediaQuery from '../../utils/mediaQuery';
+import mediaQuery from '../../constants/mediaQuery';
 import { getTextColor } from '../../utils/textColorPicker';
 
 export const bannerWrapperStyle = css`

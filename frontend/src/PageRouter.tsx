@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from '@emotion/react';
-import { Redirect, Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import { NavBar } from './components';
 import { PATH } from './constants';
+import mediaQuery from './constants/mediaQuery';
 import pageRoutes from './routes';
-import mediaQuery from './utils/mediaQuery';
 
 export const MainContentStyle = css`
   max-width: 112rem;
