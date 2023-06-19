@@ -20,7 +20,7 @@ export const useGetMyScrapQuery = ({ username, accessToken, postQueryParams }) =
       username,
       accessToken,
       postQueryParams,
-    }).then((res) => res.json())
+    }).then((res) => res.data)
   );
 };
 
@@ -35,7 +35,7 @@ export const useDeleteScrapMutation = () => {
 };
 
 export const useGetProfileQuery = ({ username }, { onSuccess }) => {
-  return useQuery(QUERY_KEY.profile, () => requestGetProfile(username).then((res) => res.json()), {
+  return useQuery(QUERY_KEY.profile, () => requestGetProfile(username).then((res) => res.data), {
     onSuccess: (data) => {
       onSuccess(data);
     },
@@ -79,5 +79,5 @@ export const usePutProfileIntroductionMutation = (
 
 export const useGetProfileIntroduction = ({ username }) =>
   useQuery(QUERY_KEY.introduction, () =>
-    requestGetProfileIntroduction(username).then((res) => res.json())
+    requestGetProfileIntroduction(username).then((res) => res.data)
   );
