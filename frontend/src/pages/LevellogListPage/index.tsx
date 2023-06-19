@@ -1,22 +1,21 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from '@emotion/react';
-
-import { Button, Pagination } from '../../components';
+import { Link } from 'react-router-dom';
 import PencilIcon from '../../assets/images/pencil_icon.svg';
-
+import { Button, Pagination } from '../../components';
+import LevellogList from '../../components/Lists/LevellogList';
+import { PATH } from '../../constants';
+import MEDIA_QUERY from '../../constants/mediaQuery';
+import { useLevellogList } from '../../hooks/Levellog/useLevellogList';
 import { MainContentStyle } from '../../PageRouter';
 import {
   AlignItemsCenterStyle,
   FlexStyle,
   JustifyContentEndStyle,
-  JustifyContentSpaceBtwStyle,
+  JustifyContentSpaceBtwStyle
 } from '../../styles/flex.styles';
 import { HeaderContainer, PostListContainer } from './styles';
-import LevellogList from '../../components/Lists/LevellogList';
-import { Link } from 'react-router-dom';
-import { PATH } from '../../constants';
-import { useLevellogList } from '../../hooks/Levellog/useLevellogList';
 
 const LevellogListPage = () => {
   const { levellogs, isLoading, isLoggedIn, onChangeCurrentPage } = useLevellogList();
@@ -32,7 +31,7 @@ const LevellogListPage = () => {
             css`
               margin-bottom: 1rem;
 
-              @media screen and (max-width: 420px) {
+              ${MEDIA_QUERY.xs} {
                 flex-direction: column;
               }
             `,
@@ -51,7 +50,7 @@ const LevellogListPage = () => {
             FlexStyle,
             JustifyContentEndStyle,
             css`
-              @media screen and (max-width: 420px) {
+              ${MEDIA_QUERY.xs} {
                 > button {
                   display: none;
                 }

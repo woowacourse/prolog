@@ -1,16 +1,16 @@
 /** @jsxImportSource @emotion/react */
 
-import {css} from '@emotion/react';
-
-import {MainContentStyle} from '../../PageRouter';
+import { css } from '@emotion/react';
+import EssayAnswerList from '../../components/Lists/EssayAnswerList';
+import MEDIA_QUERY from '../../constants/mediaQuery';
+import { useEssayAnswerList } from '../../hooks/EssayAnswer/useEssayAnswerList';
+import { MainContentStyle } from '../../PageRouter';
 import {
   AlignItemsCenterStyle,
   FlexStyle,
-  JustifyContentSpaceBtwStyle,
+  JustifyContentSpaceBtwStyle
 } from '../../styles/flex.styles';
-import {HeaderContainer, PostListContainer} from './styles';
-import {useEssayAnswerList} from "../../hooks/EssayAnswer/useEssayAnswerList";
-import EssayAnswerList from "../../components/Lists/EssayAnswerList";
+import { HeaderContainer, PostListContainer } from './styles';
 
 const EssayAnswerListPage = () => {
   const { quiz, essayAnswers } = useEssayAnswerList();
@@ -26,7 +26,7 @@ const EssayAnswerListPage = () => {
             css`
               margin-bottom: 1rem;
 
-              @media screen and (max-width: 420px) {
+              ${MEDIA_QUERY.xs} {
                 flex-direction: column;
               }
             `,

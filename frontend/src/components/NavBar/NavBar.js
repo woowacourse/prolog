@@ -1,31 +1,25 @@
 /** @jsxImportSource @emotion/react */
 
 import PropTypes from 'prop-types';
-import { useContext, useState, useEffect } from 'react';
-import { useHistory, Link, NavLink } from 'react-router-dom';
-import MobileLogo from '../../assets/images/woteco-logo.png';
+import { useContext, useState } from 'react';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 import LogoImage from '../../assets/images/logo.svg';
+import NoProfileImage from '../../assets/images/no-profile-image.png';
+import PencilIcon from '../../assets/images/pencil_icon.svg';
+import MobileLogo from '../../assets/images/woteco-logo.png';
+import { APP_MODE, isProd } from '../../configs/environment';
 import { PATH } from '../../constants';
+import { UserContext } from '../../contexts/UserProvider';
+import useScreenMediaQuery from '../../hooks/useScreenMediaQuery';
+import Button from '../Button/Button';
 import GithubLogin from '../GithubLogin/GithubLogin';
 import { DropdownMenu } from '../index';
-import Button from '../Button/Button';
-import PencilIcon from '../../assets/images/pencil_icon.svg';
-import NoProfileImage from '../../assets/images/no-profile-image.png';
-
 import {
-  Container,
-  Wrapper,
-  Logo,
-  Menu,
-  DropdownStyle,
-  pencilButtonStyle,
-  profileButtonStyle,
-  Navigation,
-  loginButtonStyle,
+  Container, DropdownStyle, loginButtonStyle, Logo,
+  Menu, Navigation, pencilButtonStyle,
+  profileButtonStyle, Wrapper
 } from './NavBar.styles';
-import { UserContext } from '../../contexts/UserProvider';
-import { APP_MODE, isProd } from '../../configs/environment';
-import MOBILE_MAX_SIZE from '../../constants/screenSize';
+
 
 const navigationConfig = [
   {
@@ -52,9 +46,7 @@ const NavBar = () => {
 
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const [isWritingDropdownToggled, setWritingDropdownToggled] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  const mobileScreen = window.matchMedia(`(max-width: ${MOBILE_MAX_SIZE})`);
+  const { isXs } = useScreenMediaQuery();
 
   const goMain = () => {
     history.push(PATH.ROOT);
@@ -82,16 +74,6 @@ const NavBar = () => {
     }
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(mobileScreen.matches);
-    };
-    mobileScreen.addEventListener('change', handleResize);
-    return () => {
-      mobileScreen.removeEventListener('change', handleResize);
-    };
-  }, [mobileScreen]);
-
   return (
     <Container
       isDropdownToggled={isDropdownToggled || isWritingDropdownToggled}
@@ -102,7 +84,7 @@ const NavBar = () => {
     >
       <Wrapper>
         <Logo onClick={goMain} role="link" aria-label="프롤로그 홈으로 이동하기">
-          <img src={isMobile ? MobileLogo : LogoImage} alt="" />
+          <img src={isXs ? MobileLogo : LogoImage} alt="" />
           {!isProd && <span>{logoTag}</span>}
         </Logo>
         <Menu role="menu">

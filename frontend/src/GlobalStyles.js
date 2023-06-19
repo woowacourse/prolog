@@ -1,5 +1,6 @@
 import { css, Global } from '@emotion/react';
 import COLOR from './constants/color';
+import MEDIA_QUERY from './constants/mediaQuery';
 
 const GlobalStyles = () => {
   const scrollbarWidth = window.innerWidth - document.body.clientWidth;
@@ -104,7 +105,7 @@ const GlobalStyles = () => {
         margin: 0;
       }
 
-      @media screen and (max-width: 420px) {
+      ${MEDIA_QUERY.xs} {
         html {
           font-size: 8px;
         }

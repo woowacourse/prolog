@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import { COLOR } from '../../constants';
+import MEDIA_QUERY from '../../constants/mediaQuery';
 import { getTextColor } from '../../utils/textColorPicker';
 
 export const BannerSliderWrapperStyle = css`
@@ -11,7 +12,7 @@ export const BannerSliderWrapperStyle = css`
 
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
 
-  @media screen and (max-width: 420px) {
+  ${MEDIA_QUERY.xs} {
     height: 180px;
   }
 `;

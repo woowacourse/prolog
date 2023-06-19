@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
+import MEDIA_QUERY from '../../constants/mediaQuery';
 
 const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 1.5rem;
 
-  @media screen and (max-width: 420px) {
+  ${MEDIA_QUERY.xs} {
     margin-bottom: 0.8rem;
   }
 `;

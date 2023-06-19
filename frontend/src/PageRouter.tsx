@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import { css } from '@emotion/react';
-import { PATH } from './constants';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import { NavBar } from './components';
+import { PATH } from './constants';
+import MEDIA_QUERY from './constants/mediaQuery';
 import pageRoutes from './routes';
 
 export const MainContentStyle = css`
@@ -11,7 +12,7 @@ export const MainContentStyle = css`
   margin: 4rem auto;
   padding: 0 4rem 8rem;
 
-  @media screen and (max-width: 420px) {
+  ${MEDIA_QUERY.xs} {
     min-width: 280px;
     max-width: 420px;
     padding: 0 1rem;
