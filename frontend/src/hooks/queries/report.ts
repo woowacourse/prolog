@@ -8,7 +8,7 @@ const QUERY_KEY = {
 export const useGetMatchedStudylogs = ({ accessToken, startDate, endDate }) => {
   return useQuery(
     [QUERY_KEY.matchedStudylogs],
-    () => requestGetMatchedStudylogs({ accessToken, startDate, endDate }).then((res) => res.json()),
+    () => requestGetMatchedStudylogs({ accessToken, startDate, endDate }).then((res) => res.data),
     { enabled: false }
   );
 };

@@ -1,4 +1,3 @@
-import { TempSavedStudyLogForm } from './../../models/Studylogs';
 import axios from 'axios';
 import { useContext } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -6,7 +5,6 @@ import { BASE_URL } from '../../configs/environment';
 import { UserContext } from '../../contexts/UserProvider';
 import { Studylog, StudyLogResponse } from '../../models/Studylogs';
 import { requestGetStudylogs } from '../../service/requests';
-
 import {
   requestPostScrap,
   requestDeleteScrap,
@@ -40,7 +38,7 @@ export const useGetRecentStudylogsQuery = () => {
       query: { type: 'searchParams', data: 'size=3' },
       accessToken,
     });
-    const { data } = await response.json();
+    const { data } = await response.data;
 
     return data;
   });

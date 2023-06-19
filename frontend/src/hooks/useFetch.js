@@ -8,18 +8,18 @@ const useFetch = (defaultValue, callback) => {
     try {
       const response = await callback();
 
-      if (!response.ok) {
-        throw new Error(await response.text());
+      if (response.status >= 400) {
+        throw new Error(response.statusText);
       }
 
-      const json = await response.json();
+      const json = response.data;
 
       setResponse(json);
     } catch (error) {
-      const errorResponse = JSON.parse(error.message);
+      const errorResponse = error.response;
 
       console.error(errorResponse);
-      setError(errorResponse.code);
+      setError(errorResponse);
     }
   };
 
