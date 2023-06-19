@@ -1,18 +1,18 @@
+import axios from 'axios';
 import { BASE_URL } from '../configs/environment';
 
 /* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
 export const requestGetStudylog = ({ id, accessToken }) => {
-  if (accessToken) {
-    return fetch(`${BASE_URL}/studylogs/${id}`, {
-      method: 'GET',
-      headers: {
+  const headers = accessToken
+    ? {
         'Content-Type': 'application/json; charset=UTF-8',
         Authorization: `Bearer ${accessToken}`,
-      },
-    });
-  }
+      }
+    : {};
 
-  return fetch(`${BASE_URL}/studylogs/${id}`);
+  return axios.get(`${BASE_URL}/studylogs/${id}`, {
+    headers: headers,
+  });
 };
 
 /* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
@@ -26,7 +26,10 @@ export const requestGetStudylogs = ({ query, accessToken }) => {
     : {};
 
   if (query.type === 'searchParams') {
-    return fetch(`${BASE_URL}/studylogs?${query.data.toString()}`, authConfig);
+    return axios.get(`${BASE_URL}/studylogs`, {
+      ...authConfig,
+      params: new URLSearchParams(query.data.toString()),
+    });
   }
 
   if (query.type === 'filter') {
@@ -39,40 +42,36 @@ export const requestGetStudylogs = ({ query, accessToken }) => {
         )
       : '';
 
-    return fetch(
-      `${BASE_URL}/studylogs?${[...filterQuery, ...searchParams].join('&')}`,
-      authConfig
-    );
+    return axios.get(`${BASE_URL}/studylogs`, {
+      ...authConfig,
+      params: new URLSearchParams([...filterQuery, ...searchParams].join('&')),
+    });
   }
 
-  return fetch(`${BASE_URL}/studylogs`, authConfig);
+  return axios.get(`${BASE_URL}/studylogs`, authConfig);
 };
 
 /* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
 export const requestPostStudylog = ({ accessToken, data }) =>
-  fetch(`${BASE_URL}/studylogs`, {
-    method: 'POST',
+  axios.post(`${BASE_URL}/studylogs`, data, {
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
   });
 
 /* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
-export const requestEditStudylog = ({ id, data, accessToken }) =>
-  fetch(`${BASE_URL}/studylogs/${id}`, {
-    method: 'PUT',
+export const requestEditStudylog = ({ id, data, accessToken }) => {
+  return axios.put(`${BASE_URL}/studylogs/${id}`, data, {
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
   });
+};
 
 export const requestDeleteStudylog = ({ id, accessToken }) =>
-  fetch(`${BASE_URL}/studylogs/${id}`, {
-    method: 'DELETE',
+  axios.delete(`${BASE_URL}/studylogs/${id}`, {
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       Authorization: `Bearer ${accessToken}`,
@@ -84,14 +83,13 @@ export const requestGetUserStudylogs = (username, postSearchParams, filteringOpt
   const filterQuery = filteringOption.length
     ? filteringOption.map(({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`)
     : '';
-  return fetch(
+  return axios.get(
     `${BASE_URL}/members/${username}/studylogs?${[...filterQuery, ...searchParams].join('&')}`
   );
 };
 
 export const requestGetCalendar = (year, month, username) =>
-  fetch(`${BASE_URL}/members/${username}/calendar-studylogs?year=${year}&month=${month}`, {
-    method: 'GET',
+  axios.get(`${BASE_URL}/members/${username}/calendar-studylogs?year=${year}&month=${month}`, {
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -100,8 +98,7 @@ export const requestGetCalendar = (year, month, username) =>
 export const requestGetMyScrap = ({ username, accessToken, postQueryParams }) => {
   const searchParams = Object.entries(postQueryParams).map(([key, value]) => `${key}=${value}`);
 
-  return fetch(`${BASE_URL}/members/${username}/scrap?${[...searchParams].join('&')}`, {
-    method: 'GET',
+  return axios.get(`${BASE_URL}/members/${username}/scrap?${[...searchParams].join('&')}`, {
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       Authorization: `Bearer ${accessToken}`,
@@ -111,105 +108,108 @@ export const requestGetMyScrap = ({ username, accessToken, postQueryParams }) =>
 
 /* Filter 관련 request */
 /* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
-export const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
+export const requestGetFilters = () => axios.get(`${BASE_URL}/filters`);
 
 /* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
-export const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
+export const requestGetMissions = () => axios.get(`${BASE_URL}/missions`);
 
 /* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
-export const requestGetTags = () => fetch(`${BASE_URL}/tags`);
+export const requestGetTags = () => axios.get(`${BASE_URL}/tags`);
 
-export const requestGetUserTags = (username) => fetch(`${BASE_URL}/members/${username}/tags`);
+export const requestGetUserTags = (username) => axios.get(`${BASE_URL}/members/${username}/tags`);
 
 /* User 관련 request */
 export const loginRequest = ({ code }) =>
-  fetch(`${BASE_URL}/login/token`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: JSON.stringify({ code }),
-  });
+  axios.post(
+    `${BASE_URL}/login/token`,
+    { code },
+    {
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    }
+  );
 
 export const getUserProfileRequest = ({ accessToken }) =>
-  fetch(`${BASE_URL}/members/me`, {
+  axios.get(`${BASE_URL}/members/me`, {
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       Authorization: `Bearer ${accessToken}`,
     },
   });
 
-export const requestGetProfile = (username) => fetch(`${BASE_URL}/members/${username}/profile`);
+export const requestGetProfile = (username) => axios.get(`${BASE_URL}/members/${username}/profile`);
 
 export const requestEditProfile = (data, accessToken) =>
-  fetch(`${BASE_URL}/members/${data.username}`, {
-    method: 'PUT',
+  axios.put(`${BASE_URL}/members/${data.username}`, data, {
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
   });
 
 export const requestGetProfileIntroduction = (username) =>
-  fetch(`${BASE_URL}/members/${username}/profile-intro`);
+  axios.get(`${BASE_URL}/members/${username}/profile-intro`);
 
 export const requestEditProfileIntroduction = (username, data, accessToken) =>
-  fetch(`${BASE_URL}/members/${username}/profile-intro`, {
-    method: 'PUT',
+  axios.put(`${BASE_URL}/members/${username}/profile-intro`, data, {
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify(data),
   });
 
 /* 사용자 리액션 관련 requests */
 export const requestPostScrap = ({ username, accessToken, id: studylogId }) =>
-  fetch(`${BASE_URL}/members/${username}/scrap`, {
-    method: 'POST',
+  axios.post(
+    `${BASE_URL}/members/${username}/scrap`,
+    { studylogId },
+    {
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+export const requestDeleteScrap = ({ username, accessToken, id }) =>
+  axios.delete(`${BASE_URL}/members/${username}/scrap`, {
     headers: {
       'Content-Type': 'application/json; charset=UTF-8',
       Authorization: `Bearer ${accessToken}`,
     },
-    body: JSON.stringify({ studylogId }),
-  });
-
-export const requestDeleteScrap = ({ username, accessToken, id }) =>
-  fetch(`${BASE_URL}/members/${username}/scrap?studylog=${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-      Authorization: `Bearer ${accessToken}`,
+    params: {
+      studylog: id,
     },
   });
 
 export const requestPostLike = ({ accessToken, id }) =>
-  fetch(`${BASE_URL}/studylogs/${id}/likes`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  axios.post(
+    `${BASE_URL}/studylogs/${id}/likes`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
 
 export const requestDeleteLike = ({ accessToken, id }) =>
-  fetch(`${BASE_URL}/studylogs/${id}/likes`, {
-    method: 'DELETE',
+  axios.delete(`${BASE_URL}/studylogs/${id}/likes`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
   });
 
 export const requestGetMatchedStudylogs = ({ accessToken, startDate, endDate }) =>
-  fetch(`${BASE_URL}/studylogs/me?startDate=${startDate}&endDate=${endDate}`, {
-    method: 'GET',
+  axios.get(`${BASE_URL}/studylogs/me`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
+    params: {
+      startDate: startDate,
+      endDate: endDate,
+    },
   });
 
-export const requestImageUpload = (formData) =>
-  fetch(`${BASE_URL}/images`, {
-    method: 'POST',
-    body: formData,
-  });
+export const requestImageUpload = (formData) => axios.post(`${BASE_URL}/images`, formData);
