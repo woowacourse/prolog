@@ -14,12 +14,11 @@ import {
 
 export const requestGetPopularStudylogs = ({ accessToken }: { accessToken?: string }) => {
   if (accessToken) {
-    return fetch(`${BASE_URL}/studylogs/popular`, {
+    return axios.get(`${BASE_URL}/studylogs/popular`, {
       headers: { Authorization: 'Bearer ' + accessToken },
     });
   }
-
-  return fetch(`${BASE_URL}/studylogs/popular`);
+  return axios.get(`${BASE_URL}/studylogs/popular`);
 };
 
 export type StudylogQuery =
@@ -54,11 +53,11 @@ export const requestGetStudylogs = ({
     : {};
 
   if (!query) {
-    return fetch(`${BASE_URL}/studylogs`, authConfig);
+    return axios.get(`${BASE_URL}/studylogs`, authConfig);
   }
 
   if (query.type === 'searchParams') {
-    return fetch(`${BASE_URL}/studylogs?${query.data.toString()}`, authConfig);
+    return axios.get(`${BASE_URL}/studylogs?${query.data.toString()}`, authConfig);
   }
 
   if (query.type === 'filter') {
@@ -71,7 +70,7 @@ export const requestGetStudylogs = ({
         )
       : [];
 
-    return fetch(
+    return axios.get(
       `${BASE_URL}/studylogs?${[...filterQuery, ...searchParams].join('&')}`,
       authConfig
     );
