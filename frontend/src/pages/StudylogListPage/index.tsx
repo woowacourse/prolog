@@ -1,37 +1,33 @@
 /** @jsxImportSource @emotion/react */
 
+import { css } from '@emotion/react';
 import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { css } from '@emotion/react';
-
-import useFetch from '../../hooks/useFetch';
-import useFilterWithParams from '../../hooks/useFilterWithParams';
-import useStudylog from '../../hooks/useStudylog';
-import { requestGetFilters } from '../../service/requests';
-import { UserContext } from '../../contexts/UserProvider';
-
+import PencilIcon from '../../assets/images/pencil_icon.svg';
 import { Button, FilterList, Pagination } from '../../components';
 import Chip from '../../components/Chip/Chip';
 import StudylogList from '../../components/Lists/StudylogList';
 import SearchBar from '../../components/SearchBar/SearchBar';
-
-import { ERROR_MESSAGE } from '../../constants/message';
 import { PATH } from '../../constants';
-
+import MEDIA_QUERY from '../../constants/mediaQuery';
+import { ERROR_MESSAGE } from '../../constants/message';
+import { UserContext } from '../../contexts/UserProvider';
+import useFetch from '../../hooks/useFetch';
+import useFilterWithParams from '../../hooks/useFilterWithParams';
+import useStudylog from '../../hooks/useStudylog';
 import { MainContentStyle } from '../../PageRouter';
+import { requestGetFilters } from '../../service/requests';
+import {
+  AlignItemsCenterStyle,
+  FlexStyle,
+  JustifyContentSpaceBtwStyle
+} from '../../styles/flex.styles';
 import {
   FilterListWrapper,
   HeaderContainer,
   PostListContainer,
-  SelectedFilterList,
+  SelectedFilterList
 } from './styles';
-import {
-  AlignItemsCenterStyle,
-  FlexStyle,
-  JustifyContentSpaceBtwStyle,
-} from '../../styles/flex.styles';
-
-import PencilIcon from '../../assets/images/pencil_icon.svg';
 
 const StudylogListPage = (): JSX.Element => {
   const {
@@ -145,7 +141,7 @@ const StudylogListPage = (): JSX.Element => {
             css`
               margin-bottom: 1rem;
 
-              @media screen and (max-width: 420px) {
+              ${MEDIA_QUERY.xs} {
                 flex-direction: column;
               }
             `,
@@ -170,7 +166,7 @@ const StudylogListPage = (): JSX.Element => {
           css={[
             FlexStyle,
             css`
-              @media screen and (max-width: 420px) {
+              ${MEDIA_QUERY.xs} {
                 > button {
                   display: none;
                 }
