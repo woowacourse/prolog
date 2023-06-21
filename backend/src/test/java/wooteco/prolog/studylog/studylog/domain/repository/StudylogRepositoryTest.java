@@ -1,15 +1,5 @@
 package wooteco.prolog.studylog.studylog.domain.repository;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +15,6 @@ import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.MissionRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-import wooteco.prolog.studylog.application.dto.TagResponse;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
@@ -34,6 +23,16 @@ import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
 import wooteco.prolog.studylog.domain.repository.StudylogTagRepository;
 import wooteco.prolog.studylog.domain.repository.TagRepository;
 import wooteco.support.utils.RepositoryTest;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RepositoryTest
 class StudylogRepositoryTest {

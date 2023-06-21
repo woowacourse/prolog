@@ -41,11 +41,6 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
     }
 
     @Override
-    public void deleteAll() {
-        studylogDocumentRepository.deleteAll();
-    }
-
-    @Override
     public void sync() {
         // sync between es and db
         studylogDocumentRepository.deleteAll();
@@ -74,4 +69,3 @@ public abstract class AbstractStudylogDocumentService implements DocumentService
         return results;
     }
 }
-

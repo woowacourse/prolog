@@ -29,6 +29,7 @@ import { ReactComponent as ScrapIcon } from '../../assets/images/scrap_filled.sv
 import { ReactComponent as UnScrapIcon } from '../../assets/images/scrap.svg';
 
 import type { Studylog } from '../../models/Studylogs';
+import { ResetScrollBar } from '../../styles/reset.styles';
 
 const PopularStudylogItem = ({ item }: { item: Studylog }) => {
   const { title, content, id, author, tags, createdAt, viewCount, liked, likesCount, scrap } = item;
@@ -58,7 +59,8 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
         </div>
 
         {/* 태그 영역 */}
-        <ul css={[TagContainerStyle]}>
+
+        <ul css={[TagContainerStyle, ResetScrollBar]} style={{ margin: '0.5rem 0' }} >
           {tags.slice(0, 2).map(({ name: tagName, id: tagId }) => (
             <Link to={`${PATH.STUDYLOGS}?tags=${tagId}`} key={tagId}>
               <Chip title={tagName} onClick={() => {}}>

@@ -4,7 +4,7 @@ import mediaQuery from '../../constants/mediaQuery';
 import { getTextColor } from '../../utils/textColorPicker';
 
 export const bannerWrapperStyle = css`
-  width: 100vw;
+  width: 100%;
   height: 320px;
 
   overflow: hidden;

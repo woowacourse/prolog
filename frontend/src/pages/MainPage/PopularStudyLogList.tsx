@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { AlignItemsCenterStyle, FlexStyle } from '../../styles/flex.styles';
 import type { ValueOf } from '../../types/utils';
 import { getKeyByValue } from '../../utils/object';
+import { ResetScrollBar } from '../../styles/reset.styles';
 
 type Category = ValueOf<typeof studyLogCategory>;
 
@@ -22,9 +23,31 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: StudyLogResponse }): JS
         position: relative;
       `}
     >
-      <div css={[SectionHeaderGapStyle, FlexStyle, AlignItemsCenterStyle]}>
+      <div
+        css={[
+          SectionHeaderGapStyle,
+          FlexStyle,
+          AlignItemsCenterStyle,
+          css`
+            @media (max-width: 760px) {
+              flex-direction: column;
+            }
+          `,
+        ]}
+      >
         <h2>😎 인기있는 학습로그</h2>
-        <ul css={[FlexStyle]}>
+        <ul
+          css={[
+            FlexStyle,
+            ResetScrollBar,
+            css`
+              @media (max-width: 360px) {
+                width: 100%;
+                overflow-x: scroll;
+              }
+            `,
+          ]}
+        >
           {Object.values(studyLogCategory).map((item) => (
             <li key={item}>
               <StyledChip
