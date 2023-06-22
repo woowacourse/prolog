@@ -141,6 +141,8 @@ const ResetFilter = styled.div`
   margin-left: auto;
   color: ${COLOR.DARK_GRAY_500};
   cursor: pointer;
+
+  flex-shrink: 0;
 `;
 
 const CheckIcon = styled.img`
@@ -231,4 +233,5 @@ export {
   SessionInMission,
   MissionName,
   MissionWrapper,
+  FilterContainer,
 };
