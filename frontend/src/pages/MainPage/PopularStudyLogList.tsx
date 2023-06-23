@@ -12,7 +12,7 @@ import { AlignItemsCenterStyle, FlexStyle } from '../../styles/flex.styles';
 import { ResetScrollBar } from '../../styles/reset.styles';
 import type { ValueOf } from '../../types/utils';
 import { getKeyByValue } from '../../utils/object';
-import { PopularStudylogListButton, PopularStudylogListButtonIcon, PopularStudylogListStyle, SectionHeaderGapStyle, StyledChip } from './styles';
+import { PopularStudylogListButtonIcon, PopularStudylogListStyle, SectionHeaderGapStyle, StyledChip } from './styles';
 
 type Category = ValueOf<typeof studyLogCategory>;
 
@@ -20,9 +20,9 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: StudyLogResponse }): JS
   const [selectedCategory, setSelectedCategory] = useState<Category>(studyLogCategory.allResponse);
   const popularStudyLogs = studylogs[getKeyByValue(studyLogCategory, selectedCategory)].data;
 
-  const { isLg, isXs } = useScreenMediaQuery();
+  const { isSm, isLg } = useScreenMediaQuery();
 
-  const itemsPerPage = isXs ? 1 : isLg ? 2 : 3;
+  const itemsPerPage = isSm ? 1 : isLg ? 2 : 3;
   const minPage = 1;
   const maxPage = Math.ceil(popularStudyLogs.length / itemsPerPage);
   const [currentPage, setPage] = useState(1);
@@ -91,9 +91,14 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: StudyLogResponse }): JS
           flex: 1;
         }
       `}>
-        <button onClick={decreasePage} css={[PopularStudylogListButton, css`
+        <button onClick={decreasePage} css={css`
+          padding: 0 2rem 0 0;
           opacity: ${page === minPage ? 0.15 : 'initial'};
-        `]}>
+
+          ${MEDIA_QUERY.xs} {
+            padding: 0 1rem 0 0;
+          }
+        `}>
           <CaretLeftIcon css={PopularStudylogListButtonIcon} />
         </button>
         <ul css={PopularStudylogListStyle}>
@@ -103,9 +108,14 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: StudyLogResponse }): JS
             </li>
           ))}
         </ul>
-        <button onClick={increasePage} css={[PopularStudylogListButton, css`
+        <button onClick={increasePage} css={css`
+          padding: 0 0 0 2rem;
           opacity: ${page === maxPage ? 0.15 : 'initial'};
-        `]}>
+
+          ${MEDIA_QUERY.xs} {
+            padding: 0 0 0 1rem;
+          }
+        `}>
           <CaretRightIcon css={PopularStudylogListButtonIcon} />
         </button>
       </div>

@@ -8,35 +8,37 @@ import MEDIA_QUERY from '../../constants/mediaQuery';
 export const SectionHeaderGapStyle = css`
   display: flex;
   align-items: center;
-  gap: 2.8rem;
-  padding-left: 1.2rem;
-  margin-bottom: 1.2rem;
+  column-gap: 2.8rem;
+  row-gap: 2rem;
+
+  margin-bottom: 3.8rem;
 
   ${MEDIA_QUERY.xs} {
-    padding-left: 0.8rem;
-    margin-bottom: 0.4rem;
+    margin-bottom: 2rem;
   }
 `;
 
 // 인기있는 학습로그
 export const PopularStudylogListStyle = css`
+  display: flex;
+  justify-content: center;
+
   width: 100%;
   height: 32rem;
 
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
   gap: 1.6rem;
-
   position: relative;
 
-  ${MEDIA_QUERY.lg} {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
+  > li {
+    width: 250px;
 
-  ${MEDIA_QUERY.xs} {
-    grid-template-columns: repeat(1, 1fr);
-    gap: 1rem;
+    ${MEDIA_QUERY.md} {
+      width: 200px;
+    }
+
+    ${MEDIA_QUERY.xs} {
+      width: 160px;
+    }
   }
 `;
 
@@ -78,14 +80,6 @@ export const StyledChip = styled(Chip)<{ active: boolean }>`
   cursor: pointer;
   padding: 7px 22px;
   background-color: ${({ active }) => active && COLOR.LIGHT_BLUE_300};
-`;
-
-export const PopularStudylogListButton = css`
-  padding: 0 2rem;
-
-  ${MEDIA_QUERY.sm} {
-    padding: 0 1rem;
-  }
 `;
 
 export const PopularStudylogListButtonIcon = css`

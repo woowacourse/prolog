@@ -71,7 +71,7 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
             AlignItemsCenterStyle,
             getColumnGapStyle(0.6),
             css`
-              ${MEDIA_QUERY.sm} {
+              ${MEDIA_QUERY.md} {
                 ${FlexColumnStyle}
                 ${AlignItemsBaseLineStyle}
                 ${getRowGapStyle(0.2)}

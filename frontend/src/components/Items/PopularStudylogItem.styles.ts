@@ -156,7 +156,7 @@ export const ContentsAreaStyle = css`
     overflow: hidden;
     text-overflow: ellipsis;
 
-    ${MEDIA_QUERY.sm} {
+    ${MEDIA_QUERY.md} {
       -webkit-line-clamp: 2;
     }
   }
