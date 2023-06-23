@@ -5,7 +5,8 @@ import { useState } from 'react';
 import { ReactComponent as CaretLeftIcon } from '../../assets/images/caret-left.svg';
 import { ReactComponent as CaretRightIcon } from '../../assets/images/caret-right.svg';
 import PopularStudylogItem from '../../components/Items/PopularStudylogItem';
-import useMediaQuery from '../../hooks/useMediaQuery';
+import MEDIA_QUERY from '../../constants/mediaQuery';
+import useScreenMediaQuery from '../../hooks/useScreenMediaQuery';
 import { studyLogCategory, StudyLogResponse } from '../../models/Studylogs';
 import { AlignItemsCenterStyle, FlexStyle } from '../../styles/flex.styles';
 import { ResetScrollBar } from '../../styles/reset.styles';
@@ -13,29 +14,28 @@ import type { ValueOf } from '../../types/utils';
 import { getKeyByValue } from '../../utils/object';
 import { PopularStudylogListButton, PopularStudylogListButtonIcon, PopularStudylogListStyle, SectionHeaderGapStyle, StyledChip } from './styles';
 
-
 type Category = ValueOf<typeof studyLogCategory>;
 
 const PopularStudyLogList = ({ studylogs }: { studylogs: StudyLogResponse }): JSX.Element => {
   const [selectedCategory, setSelectedCategory] = useState<Category>(studyLogCategory.allResponse);
   const popularStudyLogs = studylogs[getKeyByValue(studyLogCategory, selectedCategory)].data;
 
-  const isLgMobile = useMediaQuery('screen and (max-width: 960px)');
-  const isXsMobile = useMediaQuery('screen and (max-width: 380px)');
+  const { isLg, isXs } = useScreenMediaQuery();
 
-  const itemsPerPage = isXsMobile ? 1 : isLgMobile ? 2 : 3;
+  const itemsPerPage = isXs ? 1 : isLg ? 2 : 3;
   const minPage = 1;
   const maxPage = Math.ceil(popularStudyLogs.length / itemsPerPage);
-  const [page, setPage] = useState(1);
+  const [currentPage, setPage] = useState(1);
+  const page = Math.max(minPage, Math.min(maxPage, currentPage));
 
   const paginatedPopularStudyLogs = popularStudyLogs.slice(itemsPerPage * (page - 1), itemsPerPage * page);
 
   const increasePage = () => {
-    setPage((page) => Math.min(maxPage, page + 1));
+    setPage(Math.min(maxPage, page + 1));
   };
 
   const decreasePage = () => {
-    setPage((page) => Math.max(minPage, page - 1));
+    setPage(Math.max(minPage, page - 1));
   };
 
   return (
@@ -51,7 +51,7 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: StudyLogResponse }): JS
           FlexStyle,
           AlignItemsCenterStyle,
           css`
-            @media (max-width: 760px) {
+            ${MEDIA_QUERY.md} {
               flex-direction: column;
             }
           `,
@@ -65,7 +65,7 @@ const PopularStudyLogList = ({ studylogs }: { studylogs: StudyLogResponse }): JS
             css`
               gap: 1.4rem;
 
-              @media (max-width: 360px) {
+              ${MEDIA_QUERY.xs} {
                 width: 100%;
                 overflow-x: scroll;
               }

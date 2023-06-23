@@ -15,7 +15,6 @@ export const MainContentStyle = css`
   ${MEDIA_QUERY.xs} {
     min-width: 280px;
     max-width: 420px;
-    padding: 0 1rem;
     margin: 2rem auto;
   }
 `;

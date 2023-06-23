@@ -1,35 +1,29 @@
 /** @jsxImportSource @emotion/react */
 
+import { css } from '@emotion/react';
 import { Link } from 'react-router-dom';
-
 import { Chip } from '..';
-import { PATH } from '../../enumerations/path';
-import {
-  AlignItemsCenterStyle,
-  FlexStyle,
-  JustifyContentSpaceBtwStyle,
-} from '../../styles/flex.styles';
-import { getColumnGapStyle } from '../../styles/layout.styles';
-import {
-  ContainerStyle,
-  TopContainerStyle,
-  ProfileAreaStyle,
-  UserReactionIconStyle,
-  getRandomBgColorStyle,
-  BottomContainerStyle,
-  ContentsAreaStyle,
-  TagContainerStyle,
-  TitleLink,
-} from './PopularStudylogItem.styles';
-
-import { ReactComponent as ViewIcon } from '../../assets/images/view.svg';
 import { ReactComponent as LikedIcon } from '../../assets/images/heart-filled.svg';
 import { ReactComponent as UnLikeIcon } from '../../assets/images/heart.svg';
-import { ReactComponent as ScrapIcon } from '../../assets/images/scrap_filled.svg';
 import { ReactComponent as UnScrapIcon } from '../../assets/images/scrap.svg';
-
+import { ReactComponent as ScrapIcon } from '../../assets/images/scrap_filled.svg';
+import { ReactComponent as ViewIcon } from '../../assets/images/view.svg';
+import MEDIA_QUERY from '../../constants/mediaQuery';
+import { PATH } from '../../enumerations/path';
 import type { Studylog } from '../../models/Studylogs';
+import {
+  AlignItemsBaseLineStyle,
+  AlignItemsCenterStyle,
+  FlexColumnStyle,
+  FlexStyle,
+  JustifyContentSpaceBtwStyle
+} from '../../styles/flex.styles';
+import { getColumnGapStyle, getRowGapStyle } from '../../styles/layout.styles';
 import { ResetScrollBar } from '../../styles/reset.styles';
+import {
+  BottomContainerStyle, ContainerStyle, ContentsAreaStyle, getRandomBgColorStyle, ProfileAreaStyle, TagContainerStyle,
+  TitleLink, TopContainerStyle, UserReactionIconStyle
+} from './PopularStudylogItem.styles';
 
 const PopularStudylogItem = ({ item }: { item: Studylog }) => {
   const { title, content, id, author, tags, createdAt, viewCount, liked, likesCount, scrap } = item;
@@ -59,8 +53,7 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
         </div>
 
         {/* 태그 영역 */}
-
-        <ul css={[TagContainerStyle, ResetScrollBar]} style={{ margin: '0.5rem 0' }} >
+        <ul css={[TagContainerStyle, ResetScrollBar]} >
           {tags.slice(0, 2).map(({ name: tagName, id: tagId }) => (
             <Link to={`${PATH.STUDYLOGS}?tags=${tagId}`} key={tagId}>
               <Chip title={tagName} onClick={() => {}}>
@@ -77,6 +70,13 @@ const PopularStudylogItem = ({ item }: { item: Studylog }) => {
             JustifyContentSpaceBtwStyle,
             AlignItemsCenterStyle,
             getColumnGapStyle(0.6),
+            css`
+              ${MEDIA_QUERY.sm} {
+                ${FlexColumnStyle}
+                ${AlignItemsBaseLineStyle}
+                ${getRowGapStyle(0.2)}
+              }
+            `
           ]}
         >
           <div css={[FlexStyle, AlignItemsCenterStyle]}>

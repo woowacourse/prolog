@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-
+import MEDIA_QUERY from '../../constants/mediaQuery';
 import { COLOR } from '../../enumerations/color';
 import { hexToRgba } from '../../utils/styles';
 
@@ -89,7 +89,7 @@ export const TitleLink = css`
 export const BottomContainerStyle = css`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 1rem;
 
   width: 100%;
   height: 15rem;
@@ -105,6 +105,10 @@ export const BottomContainerStyle = css`
 
   span {
     font-size: 1.2rem;
+  }
+
+  > :first-child {
+    margin-bottom: auto;
   }
 `;
 
@@ -144,8 +148,6 @@ export const ProfileAreaStyle = css`
 
 export const ContentsAreaStyle = css`
   > a > div {
-    height: calc(1.4rem * 4.5);
-
     font-size: 1.4rem;
 
     display: -webkit-box;
@@ -153,6 +155,10 @@ export const ContentsAreaStyle = css`
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    ${MEDIA_QUERY.sm} {
+      -webkit-line-clamp: 2;
+    }
   }
 `;
 

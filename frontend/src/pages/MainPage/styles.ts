@@ -29,12 +29,12 @@ export const PopularStudylogListStyle = css`
 
   position: relative;
 
-  @media screen and (max-width: 960px) {
+  ${MEDIA_QUERY.lg} {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
 
-  @media screen and (max-width: 380px) {
+  ${MEDIA_QUERY.xs} {
     grid-template-columns: repeat(1, 1fr);
     gap: 1rem;
   }
@@ -83,7 +83,7 @@ export const StyledChip = styled(Chip)<{ active: boolean }>`
 export const PopularStudylogListButton = css`
   padding: 0 2rem;
 
-  @media screen and (max-width: 540px) {
+  ${MEDIA_QUERY.sm} {
     padding: 0 1rem;
   }
 `;
@@ -91,8 +91,4 @@ export const PopularStudylogListButton = css`
 export const PopularStudylogListButtonIcon = css`
   fill: rgba(0, 0, 0, 0.7);
   width: 20px;
-
-  @media screen and (max-width: 540px) {
-    width: 12px;
-  }
 `;
