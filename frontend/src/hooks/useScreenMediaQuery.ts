@@ -17,7 +17,7 @@ type Screen = Map<ScreenKey, MediaQueryList>;
  *   // ...
  * }
  */
-const useScreenMediaQuery = () => {
+const useScreenMediaQuery = (): Record<ScreenKey, boolean> => {
   const mediaQueries = useMemo<Screen>(() => {
     const addIsPrefix = (name: string) => `is${name[0].toUpperCase() + name.slice(1)}`;
 
@@ -46,7 +46,7 @@ const useScreenMediaQuery = () => {
     return () => cleanHandlers.forEach((cleanHandler) => cleanHandler());
   }, []);
 
-  return Object.fromEntries(screen);
+  return Object.fromEntries(screen) as Record<ScreenKey, boolean>;
 };
 
 export default useScreenMediaQuery;
