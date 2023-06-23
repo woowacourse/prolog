@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
 
-import { useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/react';
-
+import { useEffect, useRef, useState } from 'react';
+import { ReactComponent as PauseIcon } from '../../assets/images/pause.svg';
+import { ReactComponent as PlayIcon } from '../../assets/images/play.svg';
 import Banner, { BannerType } from './Banner';
 import {
   BannerControllerWrapperStyle,
@@ -10,12 +11,11 @@ import {
   BannerSliderWrapperStyle,
   getBannerControllerItemStyle,
   getNextButtonStyle,
-  getPlayingButtonStyle,
+  getPlayButtonStyle,
   getPrevButtonStyle,
-  SelectedBannerControllerItemStyle,
+  SelectedBannerControllerItemStyle
 } from './BannerList.styles';
-import { ReactComponent as PauseIcon } from '../../assets/images/pause.svg';
-import { ReactComponent as PlayIcon } from '../../assets/images/play.svg';
+
 
 const DEFAULT_BANNER_INDEX = 0;
 const BANNER_PLAY_INTERVAL = 3000;
@@ -127,7 +127,7 @@ const BannerList = ({ bannerList = [] }: { bannerList: BannerType[] }): JSX.Elem
           ))}
           <button
             type="button"
-            css={getPlayingButtonStyle(currentBannerBackgroundColor)}
+            css={getPlayButtonStyle(currentBannerBackgroundColor)}
             onClick={() => setIsBannerPlaying((isBannerPlaying) => !isBannerPlaying)}
           >
             {isBannerPlaying ? <PauseIcon /> : <PlayIcon />}

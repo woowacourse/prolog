@@ -72,7 +72,7 @@ export const ControllerButtonStyle = css`
   border-radius: 50%;
 `;
 
-export const getPlayingButtonStyle = (backgroundColor = COLOR.WHITE) => {
+export const getPlayButtonStyle = (backgroundColor = COLOR.WHITE) => {
   const iconColor = getTextColor(backgroundColor) === COLOR.WHITE ? COLOR.BLACK_900 : COLOR.WHITE;
 
   return css`
