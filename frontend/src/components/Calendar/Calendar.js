@@ -49,10 +49,6 @@ const Calendar = ({ newDate, onClick = () => {}, selectedDay = -1, setSelectedDa
       try {
         const response = await requestGetCalendar(currentYear, currentMonth + 1, username);
 
-        if (response.status >= 400) {
-          throw new Error(response.statusText);
-        }
-
         const { data: titleData } = await response.json();
 
         const data = [];

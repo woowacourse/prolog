@@ -7,11 +7,6 @@ const useFetch = (defaultValue, callback) => {
   const fetchData = async () => {
     try {
       const response = await callback();
-
-      if (response.status >= 400) {
-        throw new Error(response.statusText);
-      }
-
       const json = response.data;
 
       setResponse(json);

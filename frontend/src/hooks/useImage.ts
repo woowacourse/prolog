@@ -13,8 +13,6 @@ const useImage = () => {
 
       const response = await requestImageUpload(imageData);
 
-      if (response.status >= 400) throw new Error('이미지 업로드에 실패하였습니다');
-
       const { imageUrl } = await response.data;
 
       callback(imageUrl, blob.name);

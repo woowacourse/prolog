@@ -14,10 +14,6 @@ const useMutation = (callback, { onSuccess, onError, onFinish }) => {
         return;
       }
 
-      if (response.status >= 400) {
-        throw new Error(response.statusText);
-      }
-
       onSuccess?.(await getResponseData(response));
     } catch (error) {
       if (error instanceof TypeError) {
