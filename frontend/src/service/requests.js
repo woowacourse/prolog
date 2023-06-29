@@ -20,6 +20,7 @@ export const requestGetStudylogs = ({ query, accessToken }) => {
   const authConfig = accessToken
     ? {
         headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
           Authorization: `Bearer ${accessToken}`,
         },
       }
@@ -189,6 +190,7 @@ export const requestPostLike = ({ accessToken, id }) =>
     {},
     {
       headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
         Authorization: `Bearer ${accessToken}`,
       },
     }
@@ -197,6 +199,7 @@ export const requestPostLike = ({ accessToken, id }) =>
 export const requestDeleteLike = ({ accessToken, id }) =>
   axios.delete(`${BASE_URL}/studylogs/${id}/likes`, {
     headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
       Authorization: `Bearer ${accessToken}`,
     },
   });
@@ -204,6 +207,7 @@ export const requestDeleteLike = ({ accessToken, id }) =>
 export const requestGetMatchedStudylogs = ({ accessToken, startDate, endDate }) =>
   axios.get(`${BASE_URL}/studylogs/me`, {
     headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
       Authorization: `Bearer ${accessToken}`,
     },
     params: {
