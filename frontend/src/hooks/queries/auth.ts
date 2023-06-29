@@ -6,7 +6,7 @@ export const useLogin = ({ onSuccess }) =>
     async ({ code }) => {
       const response = await loginRequest({ code });
 
-      return await response.data;
+      return response.data;
     },
     {
       onSuccess: ({ accessToken }) => {
