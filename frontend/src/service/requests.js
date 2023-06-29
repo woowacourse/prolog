@@ -11,7 +11,7 @@ export const requestGetStudylog = ({ id, accessToken }) => {
     : {};
 
   return axios.get(`${BASE_URL}/studylogs/${id}`, {
-    headers: headers,
+    headers,
   });
 };
 
