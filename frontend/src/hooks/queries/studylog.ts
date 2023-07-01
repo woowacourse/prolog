@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useContext } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { BASE_URL } from '../../configs/environment';
@@ -22,6 +21,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import { PATH } from '../../constants';
 import { requestGetTempSavedStudylog, requestPostTempSavedStudylog } from '../../apis/studylogs';
+import { createAxiosInstance } from '../../utils/axiosInstance';
 
 const QUERY_KEY = {
   recentStudylogs: 'recentStudylogs',
@@ -47,13 +47,10 @@ export const useGetRecentStudylogsQuery = () => {
 export const useGetPopularStudylogsQuery = () => {
   const { user } = useContext(UserContext);
   const { accessToken } = user;
+  const instance = createAxiosInstance({ accessToken });
 
   return useQuery<StudyLogResponse>('popularStudyLogs', async () => {
-    const { data } = await axios({
-      method: 'get',
-      url: `${BASE_URL}/studylogs/popular`,
-      headers: accessToken && { Authorization: 'Bearer ' + accessToken },
-    });
+    const { data } = await instance.get(`${BASE_URL}/studylogs/popular`);
 
     return data;
   });
