@@ -1,17 +1,13 @@
 import { useState, useContext } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import axios from 'axios';
-
 import { UserContext } from '../../contexts/UserProvider';
-
-import { Button, BUTTON_SIZE } from '..';
 import BadgeList from '../Badge/BadgeList';
-
 import getMenuList from './getMenuList';
-
+import { Button, BUTTON_SIZE } from '..';
 import { BASE_URL } from '../../configs/environment';
-
+import { useGetProfileQuery, usePutProfileMutation } from '../../hooks/queries/profile';
+import { createAxiosInstance } from '../../utils/axiosInstance';
 import {
   Profile,
   Image,
@@ -25,7 +21,6 @@ import {
   NicknameWrapper,
   NicknameInput,
 } from './ProfilePageSideBar.styles';
-import { useGetProfileQuery, usePutProfileMutation } from '../../hooks/queries/profile';
 
 const ProfilePageSideBar = ({ menu }) => {
   const history = useHistory();
@@ -41,6 +36,8 @@ const ProfilePageSideBar = ({ menu }) => {
   const [isProfileEditing, setIsProfileEditing] = useState(false);
   const [nickname, setNickname] = useState('');
 
+  const instance = createAxiosInstance();
+
   const { data: user } = useGetProfileQuery(
     { username },
     {
@@ -53,10 +50,7 @@ const ProfilePageSideBar = ({ menu }) => {
   const { data: badgeList = [], isLoading } = useQuery([`${username}-badges`], async () => {
     const {
       data: { badges },
-    } = await axios({
-      method: 'get',
-      url: `${BASE_URL}/members/${username}/badges`,
-    });
+    } = await instance.get(`${BASE_URL}/members/${username}/badges`);
 
     return badges;
   });
