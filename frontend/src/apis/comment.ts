@@ -1,8 +1,10 @@
-import { client } from '.';
+import { createAxiosInstance } from '../utils/axiosInstance';
 import { CommentListResponse, CommentRequest } from '../models/Comment';
 
+const instanceWithoutToken = createAxiosInstance();
+
 export const getComments = async (studylogId: number): Promise<CommentListResponse> => {
-  const response = await client.get(`/studylogs/${studylogId}/comments`);
+  const response = await instanceWithoutToken.get(`/studylogs/${studylogId}/comments`);
 
   return response.data;
 };
@@ -13,7 +15,7 @@ export const createCommentRequest = ({
 }: {
   studylogId: number;
   body: CommentRequest;
-}) => client.post(`/studylogs/${studylogId}/comments`, body);
+}) => instanceWithoutToken.post(`/studylogs/${studylogId}/comments`, body);
 
 export const editComment = ({
   studylogId,
@@ -23,7 +25,7 @@ export const editComment = ({
   studylogId: number;
   commentId: number;
   body: CommentRequest;
-}) => client.put(`/studylogs/${studylogId}/comments/${commentId}`, body);
+}) => instanceWithoutToken.put(`/studylogs/${studylogId}/comments/${commentId}`, body);
 
 export const deleteComment = ({
   studylogId,
@@ -31,4 +33,4 @@ export const deleteComment = ({
 }: {
   studylogId: number;
   commentId: number;
-}) => client.delete(`/studylogs/${studylogId}/comments/${commentId}`);
+}) => instanceWithoutToken.delete(`/studylogs/${studylogId}/comments/${commentId}`);
