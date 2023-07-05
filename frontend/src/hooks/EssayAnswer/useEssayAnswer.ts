@@ -12,8 +12,7 @@ import useSnackBar from "../useSnackBar";
 
 const useEssayAnswer = () => {
   const { essayAnswerId } = useParams<{ essayAnswerId: string }>();
-  const { user } = useContext(UserContext);
-  const { username, userId } = user;
+  const { user: { username, userId } } = useContext(UserContext);
   const history = useHistory();
   const { openSnackBar } = useSnackBar();
 
@@ -54,6 +53,7 @@ const useEssayAnswer = () => {
 
   return {
     essayAnswer,
+    essayAnswerId,
     deleteEssayAnswer,
     isCurrentUserAuthor,
     isLoading,
