@@ -44,7 +44,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "start:devLocal": "cp ./env/.env.development.local ./.env && cross-env NODE_ENV=development.local react-scripts start"
   },
   "eslintConfig": {
     "extends": [

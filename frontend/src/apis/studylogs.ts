@@ -1,7 +1,5 @@
-import axios, { AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosPromise, AxiosResponse } from 'axios';
 import { Nullable } from '../types/utils';
-import { client } from '.';
-import { BASE_URL } from '../configs/environment';
 import {
   Mission,
   TempSavedStudyLog,
@@ -11,15 +9,16 @@ import {
   Tag,
   TempSavedStudyLogForm,
 } from '../models/Studylogs';
+import { createAxiosInstance } from '../utils/axiosInstance';
+
+const instanceWithoutToken = createAxiosInstance();
+const instanceWithToken = (accessToken) => createAxiosInstance({ accessToken });
 
 export const requestGetPopularStudylogs = ({ accessToken }: { accessToken?: string }) => {
   if (accessToken) {
-    return fetch(`${BASE_URL}/studylogs/popular`, {
-      headers: { Authorization: 'Bearer ' + accessToken },
-    });
+    return instanceWithToken(accessToken).get('/studylogs/popular');
   }
-
-  return fetch(`${BASE_URL}/studylogs/popular`);
+  return instanceWithoutToken.get('/studylogs/popular');
 };
 
 export type StudylogQuery =
@@ -45,20 +44,14 @@ export const requestGetStudylogs = ({
   query?: StudylogQuery;
   accessToken?: string;
 }) => {
-  const authConfig = accessToken
-    ? {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    : {};
+  const instance = accessToken ? instanceWithToken(accessToken) : instanceWithoutToken;
 
   if (!query) {
-    return fetch(`${BASE_URL}/studylogs`, authConfig);
+    return instance.get('/studylogs');
   }
 
   if (query.type === 'searchParams') {
-    return fetch(`${BASE_URL}/studylogs?${query.data.toString()}`, authConfig);
+    return instance.get(`/studylogs?${query.data.toString()}`);
   }
 
   if (query.type === 'filter') {
@@ -71,40 +64,20 @@ export const requestGetStudylogs = ({
         )
       : [];
 
-    return fetch(
-      `${BASE_URL}/studylogs?${[...filterQuery, ...searchParams].join('&')}`,
-      authConfig
-    );
+    return instance.get(`/studylogs?${[...filterQuery, ...searchParams].join('&')}`);
   }
 };
 
 export type ResponseError = { code: number; messsage: string };
 
-export const httpRequester = axios.create({
-  baseURL: BASE_URL,
-});
+export const requestGetTags = (): Promise<AxiosResponse<Tag[]>> =>
+  instanceWithoutToken.get('/tags');
 
-const getAuthConfig = (accessToken: string, config?: AxiosRequestConfig) =>
-  accessToken
-    ? {
-        headers: { Authorization: 'Bearer ' + accessToken },
-        ...config,
-      }
-    : { ...config };
+export const requestGetMissions = ({ accessToken }): Promise<AxiosResponse<Mission[]>> =>
+  instanceWithToken(accessToken).get('/missions/mine');
 
-export const requestGetTags = (): Promise<AxiosResponse<Tag[]>> => httpRequester.get('/tags');
-export const requestGetMissions = ({
-  accessToken,
-}: {
-  accessToken: string;
-}): Promise<AxiosResponse<Mission[]>> =>
-  httpRequester.get('/missions/mine', getAuthConfig(accessToken));
-export const requestGetSessions = ({
-  accessToken,
-}: {
-  accessToken: string;
-}): Promise<AxiosResponse<Session[]>> =>
-  httpRequester.get('/sessions/mine', getAuthConfig(accessToken));
+export const requestGetSessions = ({ accessToken }): Promise<AxiosResponse<Session[]>> =>
+  instanceWithToken(accessToken).get('/sessions/mine');
 
 export const requestGetStudylog = ({
   id,
@@ -113,7 +86,7 @@ export const requestGetStudylog = ({
   id: string;
   accessToken: string;
 }): AxiosPromise<AxiosResponse<Studylog>> =>
-  httpRequester.get<AxiosResponse<Studylog>>(`/studylogs/${id}`, getAuthConfig(accessToken));
+  instanceWithToken(accessToken).get<AxiosResponse<Studylog>>(`/studylogs/${id}`);
 
 /** 작성 및 수정 **/
 export const requestPostStudylog = ({
@@ -122,8 +95,7 @@ export const requestPostStudylog = ({
 }: {
   accessToken: string;
   data: StudylogForm;
-}): AxiosPromise<AxiosResponse<null>> =>
-  httpRequester.post('/studylogs', data, getAuthConfig(accessToken));
+}): AxiosPromise<AxiosResponse<null>> => instanceWithToken(accessToken).post('/studylogs', data);
 
 export const requestEditStudylog = ({
   id,
@@ -134,14 +106,14 @@ export const requestEditStudylog = ({
   accessToken: string;
   data: StudylogForm;
 }): AxiosPromise<AxiosResponse<null>> =>
-  httpRequester.put(`/studylogs/${id}`, data, getAuthConfig(accessToken));
+  instanceWithToken(accessToken).put(`/studylogs/${id}`, data);
 
 /** 임시 저장 **/
 export const requestGetTempSavedStudylog = async () => {
-  const { data } = await client.get<Nullable<TempSavedStudyLog>>('/studylogs/temp');
+  const { data } = await instanceWithoutToken.get<Nullable<TempSavedStudyLog>>('/studylogs/temp');
 
   return data;
 };
 
 export const requestPostTempSavedStudylog = (data: TempSavedStudyLogForm) =>
-  client.put('/studylogs/temp', data);
+  instanceWithoutToken.put('/studylogs/temp', data);

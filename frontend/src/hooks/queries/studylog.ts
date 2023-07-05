@@ -1,12 +1,9 @@
-import { TempSavedStudyLogForm } from './../../models/Studylogs';
-import axios from 'axios';
 import { useContext } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { BASE_URL } from '../../configs/environment';
 import { UserContext } from '../../contexts/UserProvider';
 import { Studylog, StudyLogResponse } from '../../models/Studylogs';
 import { requestGetStudylogs } from '../../service/requests';
-
 import {
   requestPostScrap,
   requestDeleteScrap,
@@ -24,6 +21,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import { PATH } from '../../constants';
 import { requestGetTempSavedStudylog, requestPostTempSavedStudylog } from '../../apis/studylogs';
+import { createAxiosInstance } from '../../utils/axiosInstance';
 
 const QUERY_KEY = {
   recentStudylogs: 'recentStudylogs',
@@ -40,7 +38,7 @@ export const useGetRecentStudylogsQuery = () => {
       query: { type: 'searchParams', data: 'size=3' },
       accessToken,
     });
-    const { data } = await response.json();
+    const { data } = await response.data;
 
     return data;
   });
@@ -49,13 +47,10 @@ export const useGetRecentStudylogsQuery = () => {
 export const useGetPopularStudylogsQuery = () => {
   const { user } = useContext(UserContext);
   const { accessToken } = user;
+  const instance = createAxiosInstance({ accessToken });
 
   return useQuery<StudyLogResponse>('popularStudyLogs', async () => {
-    const { data } = await axios({
-      method: 'get',
-      url: `${BASE_URL}/studylogs/popular`,
-      headers: accessToken && { Authorization: 'Bearer ' + accessToken },
-    });
+    const { data } = await instance.get(`${BASE_URL}/studylogs/popular`);
 
     return data;
   });
