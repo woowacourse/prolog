@@ -1,14 +1,14 @@
-import {useHistory, useParams} from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import TagManager from 'react-gtm-module';
-import {useContext} from 'react';
-import {UserContext} from '../../contexts/UserProvider';
+import { useContext } from 'react';
+import { UserContext } from '../../contexts/UserProvider';
 import {
   useDeleteEssayAnswerMutation,
   useGetEssayAnswer
-} from "../queries/essayanswer";
-import {ALERT_MESSAGE, ERROR_MESSAGE, SUCCESS_MESSAGE} from "../../constants/message";
-import {PATH} from "../../constants";
-import useSnackBar from "../useSnackBar";
+} from '../queries/essayanswer';
+import { ALERT_MESSAGE, ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
+import { PATH } from '../../constants';
+import useSnackBar from '../useSnackBar';
 
 const useEssayAnswer = () => {
   const { essayAnswerId } = useParams<{ essayAnswerId: string }>();
@@ -38,6 +38,7 @@ const useEssayAnswer = () => {
       history.push(PATH.ROADMAP);
       alert(SUCCESS_MESSAGE.DELETE_STUDYLOG);
     },
+
     onError: (error: { code: number }) => {
       openSnackBar(ERROR_MESSAGE[error.code] ?? ALERT_MESSAGE.FAIL_TO_DELETE_ESSAY_ANSWER);
     },

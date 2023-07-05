@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 
 import Content from './Content';
-import {Button, BUTTON_SIZE} from '../../components';
-import {ButtonList, EditButtonStyle} from './styles';
+import { Button, BUTTON_SIZE } from '../../components';
+import { ButtonList, EditButtonStyle } from './styles';
 
-import {MainContentStyle} from '../../PageRouter';
-import useEssayAnswer from "../../hooks/EssayAnswer/useEssayAnswer";
-import {DeleteButtonStyle} from "../LevellogPage/styles";
-import {CONFIRM_MESSAGE} from "../../constants";
+import { MainContentStyle } from '../../PageRouter';
+import useEssayAnswer from '../../hooks/EssayAnswer/useEssayAnswer';
+import { DeleteButtonStyle } from '../LevellogPage/styles';
+import { CONFIRM_MESSAGE } from '../../constants';
 import { useHistory } from 'react-router-dom';
 
 const EssayAnswerPage = () => {
@@ -45,7 +45,7 @@ const EssayAnswerPage = () => {
             <Button
               key={title}
               size={BUTTON_SIZE.X_SMALL}
-              type="button"
+              type='button'
               cssProps={cssProps}
               onClick={onClick}
             >
