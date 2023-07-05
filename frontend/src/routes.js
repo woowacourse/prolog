@@ -13,6 +13,7 @@ import {
   NewEssayAnswerPage,
   EssayAnswerPage,
   EssayAnswerListPage,
+  EditEssayAnswerPage
 } from './pages';
 
 const pageRoutes = [
@@ -71,6 +72,10 @@ const pageRoutes = [
     path: [PATH.ESSAY_ANSWER_LIST],
     render: () => <EssayAnswerListPage />,
   },
+  {
+    path: '/essay-answers/:id/edit',
+    render: () => <EditEssayAnswerPage />,
+  }
 ];
 
 export default pageRoutes;
