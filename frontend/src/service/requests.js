@@ -1,18 +1,32 @@
-import { createAxiosInstance } from '../utils/axiosInstance';
-
-const instanceWithoutToken = createAxiosInstance();
-const instanceWithToken = (accessToken) => createAxiosInstance({ accessToken });
+import { BASE_URL } from '../configs/environment';
 
 /* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
-export const requestGetStudylog = ({ id, accessToken }) =>
-  instanceWithToken(accessToken).get(`/studylogs/${id}`);
+export const requestGetStudylog = ({ id, accessToken }) => {
+  if (accessToken) {
+    return fetch(`${BASE_URL}/studylogs/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  }
+
+  return fetch(`${BASE_URL}/studylogs/${id}`);
+};
 
 /* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
 export const requestGetStudylogs = ({ query, accessToken }) => {
+  const authConfig = accessToken
+    ? {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    : {};
+
   if (query.type === 'searchParams') {
-    return instanceWithToken(accessToken).get('/studylogs', {
-      params: new URLSearchParams(query.data.toString()),
-    });
+    return fetch(`${BASE_URL}/studylogs?${query.data.toString()}`, authConfig);
   }
 
   if (query.type === 'filter') {
@@ -24,103 +38,178 @@ export const requestGetStudylogs = ({ query, accessToken }) => {
           ({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`
         )
       : '';
-    return instanceWithToken(accessToken).get('/studylogs', {
-      params: new URLSearchParams([...filterQuery, ...searchParams].join('&')),
-    });
+
+    return fetch(
+      `${BASE_URL}/studylogs?${[...filterQuery, ...searchParams].join('&')}`,
+      authConfig
+    );
   }
 
-  return instanceWithToken(accessToken).get('/studylogs');
+  return fetch(`${BASE_URL}/studylogs`, authConfig);
 };
 
 /* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
 export const requestPostStudylog = ({ accessToken, data }) =>
-  instanceWithToken(accessToken).post('/studylogs', data);
+  fetch(`${BASE_URL}/studylogs`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
 
 /* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
 export const requestEditStudylog = ({ id, data, accessToken }) =>
-  instanceWithToken(accessToken).put(`/studylogs/${id}`, data);
+  fetch(`${BASE_URL}/studylogs/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
 
 export const requestDeleteStudylog = ({ id, accessToken }) =>
-  instanceWithToken(accessToken).delete(`/studylogs/${id}`);
+  fetch(`${BASE_URL}/studylogs/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 
 export const requestGetUserStudylogs = (username, postSearchParams, filteringOption) => {
   const searchParams = Object.entries(postSearchParams).map(([key, value]) => `${key}=${value}`);
   const filterQuery = filteringOption.length
     ? filteringOption.map(({ filterType, filterDetailId }) => `${filterType}=${filterDetailId}`)
     : '';
-
-  return instanceWithoutToken.get(
-    `/members/${username}/studylogs?${[...filterQuery, ...searchParams].join('&')}`
+  return fetch(
+    `${BASE_URL}/members/${username}/studylogs?${[...filterQuery, ...searchParams].join('&')}`
   );
 };
 
 export const requestGetCalendar = (year, month, username) =>
-  instanceWithoutToken.get(`/members/${username}/calendar-studylogs?year=${year}&month=${month}`);
+  fetch(`${BASE_URL}/members/${username}/calendar-studylogs?year=${year}&month=${month}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+  });
 
 export const requestGetMyScrap = ({ username, accessToken, postQueryParams }) => {
   const searchParams = Object.entries(postQueryParams).map(([key, value]) => `${key}=${value}`);
 
-  return instanceWithToken(accessToken).get(
-    `/members/${username}/scrap?${[...searchParams].join('&')}`
-  );
+  return fetch(`${BASE_URL}/members/${username}/scrap?${[...searchParams].join('&')}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 };
 
 /* Filter 관련 request */
 /* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
-export const requestGetFilters = () => instanceWithoutToken.get('/filters');
+export const requestGetFilters = () => fetch(`${BASE_URL}/filters`);
 
 /* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
-export const requestGetMissions = () => instanceWithoutToken.get('/missions');
+export const requestGetMissions = () => fetch(`${BASE_URL}/missions`);
 
 /* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
-export const requestGetTags = () => instanceWithoutToken.get('/tags');
+export const requestGetTags = () => fetch(`${BASE_URL}/tags`);
 
-export const requestGetUserTags = (username) =>
-  instanceWithoutToken.get(`/members/${username}/tags`);
+export const requestGetUserTags = (username) => fetch(`${BASE_URL}/members/${username}/tags`);
 
 /* User 관련 request */
-export const loginRequest = ({ code }) => instanceWithoutToken.post('/login/token', { code });
+export const loginRequest = ({ code }) =>
+  fetch(`${BASE_URL}/login/token`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: JSON.stringify({ code }),
+  });
 
 export const getUserProfileRequest = ({ accessToken }) =>
-  instanceWithToken(accessToken).get('/members/me');
+  fetch(`${BASE_URL}/members/me`, {
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 
-export const requestGetProfile = (username) =>
-  instanceWithoutToken.get(`/members/${username}/profile`);
+export const requestGetProfile = (username) => fetch(`${BASE_URL}/members/${username}/profile`);
 
 export const requestEditProfile = (data, accessToken) =>
-  instanceWithToken(accessToken).put(`/members/${data.username}`, data);
+  fetch(`${BASE_URL}/members/${data.username}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
 
 export const requestGetProfileIntroduction = (username) =>
-  instanceWithoutToken.get(`/members/${username}/profile-intro`);
+  fetch(`${BASE_URL}/members/${username}/profile-intro`);
 
 export const requestEditProfileIntroduction = (username, data, accessToken) =>
-  instanceWithToken(accessToken).put(`/members/${username}/profile-intro`, data);
+  fetch(`${BASE_URL}/members/${username}/profile-intro`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
 
 /* 사용자 리액션 관련 requests */
 export const requestPostScrap = ({ username, accessToken, id: studylogId }) =>
-  instanceWithToken(accessToken).post(`/members/${username}/scrap`, {
-    studylogId,
+  fetch(`${BASE_URL}/members/${username}/scrap`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({ studylogId }),
   });
 
 export const requestDeleteScrap = ({ username, accessToken, id }) =>
-  instanceWithToken(accessToken).delete(`/members/${username}/scrap`, {
-    params: {
-      studylog: id,
+  fetch(`${BASE_URL}/members/${username}/scrap?studylog=${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 
 export const requestPostLike = ({ accessToken, id }) =>
-  instanceWithToken(accessToken).post(`/studylogs/${id}/likes`);
-
-export const requestDeleteLike = ({ accessToken, id }) =>
-  instanceWithToken(accessToken).delete(`/studylogs/${id}/likes`);
-
-export const requestGetMatchedStudylogs = ({ accessToken, startDate, endDate }) =>
-  instanceWithToken(accessToken).get('/studylogs/me', {
-    params: {
-      startDate: startDate,
-      endDate: endDate,
+  fetch(`${BASE_URL}/studylogs/${id}/likes`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 
-export const requestImageUpload = (formData) => instanceWithoutToken.post('/images', formData);
+export const requestDeleteLike = ({ accessToken, id }) =>
+  fetch(`${BASE_URL}/studylogs/${id}/likes`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+export const requestGetMatchedStudylogs = ({ accessToken, startDate, endDate }) =>
+  fetch(`${BASE_URL}/studylogs/me?startDate=${startDate}&endDate=${endDate}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+export const requestImageUpload = (formData) =>
+  fetch(`${BASE_URL}/images`, {
+    method: 'POST',
+    body: formData,
+  });

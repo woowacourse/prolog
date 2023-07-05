@@ -15,16 +15,13 @@ const QUERY_KEY = {
 };
 
 export const useGetMyScrapQuery = ({ username, accessToken, postQueryParams }) => {
-  const fetchMyScrap = async () => {
-    const res = await requestGetMyScrap({
+  return useQuery([QUERY_KEY.scrap, postQueryParams.page], () =>
+    requestGetMyScrap({
       username,
       accessToken,
       postQueryParams,
-    });
-    return res.data;
-  };
-
-  return useQuery([QUERY_KEY.scrap, postQueryParams.page], fetchMyScrap);
+    }).then((res) => res.json())
+  );
 };
 
 export const useDeleteScrapMutation = () => {
@@ -38,12 +35,7 @@ export const useDeleteScrapMutation = () => {
 };
 
 export const useGetProfileQuery = ({ username }, { onSuccess }) => {
-  const fetchProfile = async () => {
-    const res = await requestGetProfile(username);
-    return res.data;
-  };
-
-  return useQuery(QUERY_KEY.profile, fetchProfile, {
+  return useQuery(QUERY_KEY.profile, () => requestGetProfile(username).then((res) => res.json()), {
     onSuccess: (data) => {
       onSuccess(data);
     },
@@ -85,11 +77,7 @@ export const usePutProfileIntroductionMutation = (
   );
 };
 
-export const useGetProfileIntroduction = ({ username }) => {
-  const fetchProfileIntroduction = async () => {
-    const res = await requestGetProfileIntroduction(username);
-    return res.data;
-  };
-
-  return useQuery(QUERY_KEY.introduction, fetchProfileIntroduction);
-};
+export const useGetProfileIntroduction = ({ username }) =>
+  useQuery(QUERY_KEY.introduction, () =>
+    requestGetProfileIntroduction(username).then((res) => res.json())
+  );

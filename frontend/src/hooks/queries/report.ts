@@ -6,10 +6,9 @@ const QUERY_KEY = {
 };
 
 export const useGetMatchedStudylogs = ({ accessToken, startDate, endDate }) => {
-  const fetchMatchedStudylogs = async () => {
-    const res = await requestGetMatchedStudylogs({ accessToken, startDate, endDate });
-    return res.data;
-  };
-
-  return useQuery([QUERY_KEY.matchedStudylogs], fetchMatchedStudylogs, { enabled: false });
+  return useQuery(
+    [QUERY_KEY.matchedStudylogs],
+    () => requestGetMatchedStudylogs({ accessToken, startDate, endDate }).then((res) => res.json()),
+    { enabled: false }
+  );
 };

@@ -14,6 +14,10 @@ const useMutation = (callback, { onSuccess, onError, onFinish }) => {
         return;
       }
 
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+
       onSuccess?.(await getResponseData(response));
     } catch (error) {
       if (error instanceof TypeError) {
