@@ -1,5 +1,5 @@
 import {client} from '.';
-import {EssayAnswerRequest} from "../models/EssayAnswers";
+import {EssayAnswerRequest, EssayEditRequest} from "../models/EssayAnswers";
 import {AxiosPromise, AxiosResponse} from "axios";
 import {httpRequester} from "./studylogs";
 import {Quiz} from "../models/Keywords";
@@ -11,6 +11,10 @@ export const requestGetEssayAnswer = async (essayAnswerId) => {
 
   return data;
 };
+
+export const requestEditEssayAnswer = async (essayAnswerId: number, body: EssayEditRequest) => {
+  await client.patch(`/essay-answers/${essayAnswerId}`, body);
+}
 
 export const requestDeleteEssayAnswer = async (essayAnswerId) => {
   await client.delete(`/essay-answers/${essayAnswerId}`);

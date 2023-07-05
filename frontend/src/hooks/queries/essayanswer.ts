@@ -2,6 +2,7 @@ import {useMutation, useQuery} from "react-query";
 import {
   createNewEssayAnswerRequest,
   requestDeleteEssayAnswer,
+  requestEditEssayAnswer,
   requestGetEssayAnswer,
   requestGetEssayAnswerList,
   requestGetQuizAsync
@@ -15,6 +16,8 @@ import ERROR_CODE from '../../constants/errorCode';
 import useSnackBar from '../useSnackBar';
 import REACT_QUERY_KEY from "../../constants/reactQueryKey";
 import {Quiz} from "../../models/Keywords";
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from "../../constants/message";
+import { ResponseError } from "../../apis/studylogs";
 
 export const useCreateNewEssayAnswerMutation = ({
   onSuccess = () => {},
@@ -28,6 +31,27 @@ export const useCreateNewEssayAnswerMutation = ({
       onError?.(error);
     },
   });
+
+export const useEditEssayAnswer = (
+  { essayAnswerId }: { essayAnswerId: number },
+) => {
+  const history = useHistory();
+
+  return useMutation(
+    (data: { answer: string }) =>
+      requestEditEssayAnswer(essayAnswerId, data),
+    {
+      onSuccess: async () => {
+        alert(SUCCESS_MESSAGE.EDIT_POST);
+        history.push(`${PATH.STUDYLOG}/${essayAnswerId}`);
+      },
+
+      onError: (error: ResponseError) => {
+        alert(ERROR_MESSAGE[error.code] ?? ERROR_MESSAGE.FAIL_TO_EDIT_STUDYLOG);
+      },
+    }
+  );
+}
 
 export const useGetEssayAnswer = (
   { essayAnswerId },
