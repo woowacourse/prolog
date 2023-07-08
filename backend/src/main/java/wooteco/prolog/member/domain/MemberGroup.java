@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Arrays;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -34,22 +32,13 @@ public class MemberGroup {
         this.description = description;
     }
 
-    public static List<String> parts() {
-        return Arrays.asList(BACKEND, FRONTEND, ANDROID);
-    }
-
-    public String part() {
-        if (this.name.contains(BACKEND)) {
-            return BACKEND;
+    public MemberGroupType getGroupType() {
+        for (MemberGroupType groupType : MemberGroupType.values()) {
+            if (groupType.isContainedBy(this.name)) {
+                return groupType;
+            }
         }
-        if (this.name.contains(FRONTEND)) {
-            return FRONTEND;
-        }
-        if (this.name.contains(ANDROID)) {
-            return ANDROID;
-        }
-
-        return null;
+        throw new IllegalArgumentException("그룹이 포함되는 타입이 없습니다. id=" + this.id);
     }
 
 }

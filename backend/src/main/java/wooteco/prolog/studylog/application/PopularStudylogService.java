@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.domain.GroupMember;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.MemberGroup;
+import wooteco.prolog.member.domain.MemberGroupType;
 import wooteco.prolog.member.domain.MemberGroups;
 import wooteco.prolog.member.domain.repository.GroupMemberRepository;
 import wooteco.prolog.member.domain.repository.MemberGroupRepository;
@@ -50,14 +51,14 @@ public class PopularStudylogService {
         deleteAllLegacyPopularStudylogs();
 
         List<GroupMember> groupMembers = groupMemberRepository.findAll();
-        Map<String, List<MemberGroup>> memberGroupsByPart = memberGroupRepository.findAll().stream()
-            .collect(Collectors.groupingBy(MemberGroup::part));
+        Map<MemberGroupType, List<MemberGroup>> memberGroupsByPart = memberGroupRepository.findAll().stream()
+            .collect(Collectors.groupingBy(MemberGroup::getGroupType));
 
         final List<Studylog> recentStudylogs = findRecentStudylogs(LocalDateTime.now(), pageable.getPageSize());
 
         List<Studylog> popularStudylogs = new ArrayList<>();
 
-        for (String part : MemberGroup.parts()) {
+        for (MemberGroupType part : MemberGroupType.values()) {
             popularStudylogs.addAll(filterStudylogsByMemberGroups(recentStudylogs, new MemberGroups(memberGroupsByPart.get(part)), groupMembers)
                 .stream()
                 .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
@@ -120,14 +121,14 @@ public class PopularStudylogService {
 
         List<Studylog> allPopularStudylogs = getSortedPopularStudyLogs(pageable);
         List<GroupMember> groupedMembers = groupMemberRepository.findAll();
-        Map<String, List<MemberGroup>> memberGroupsByPart = memberGroupRepository.findAll().stream()
-            .collect(Collectors.groupingBy(MemberGroup::part));
+        Map<MemberGroupType, List<MemberGroup>> memberGroupsByPart = memberGroupRepository.findAll().stream()
+            .collect(Collectors.groupingBy(MemberGroup::getGroupType));
 
         return PopularStudylogsResponse.of(
             studylogsResponse(allPopularStudylogs, pageable, memberId),
-            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsByPart.get(FRONTEND)), groupedMembers), pageable, memberId),
-            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsByPart.get(BACKEND)), groupedMembers), pageable, memberId),
-            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsByPart.get(ANDROID)), groupedMembers), pageable, memberId)
+            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsByPart.get(MemberGroupType.FRONTEND)), groupedMembers), pageable, memberId),
+            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsByPart.get(MemberGroupType.BACKEND)), groupedMembers), pageable, memberId),
+            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsByPart.get(MemberGroupType.ANDROID)), groupedMembers), pageable, memberId)
         );
     }
 
