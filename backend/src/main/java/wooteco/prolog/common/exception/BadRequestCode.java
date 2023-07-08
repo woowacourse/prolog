@@ -1,48 +1,22 @@
 package wooteco.prolog.common.exception;
 
-import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import wooteco.prolog.article.exception.ArticleNotFoundException;
+import wooteco.prolog.article.exception.InvalidArticleAuthorException;
 import wooteco.prolog.levellogs.exception.InvalidLevelLogAuthorException;
 import wooteco.prolog.levellogs.exception.LevelLogNotFoundException;
-import wooteco.prolog.login.excetpion.GithubApiFailException;
-import wooteco.prolog.login.excetpion.GithubConnectionException;
-import wooteco.prolog.login.excetpion.RoleNameNotFoundException;
-import wooteco.prolog.login.excetpion.StudylogTitleNullOrEmptyException;
-import wooteco.prolog.login.excetpion.TokenNotValidException;
+import wooteco.prolog.login.excetpion.*;
 import wooteco.prolog.member.exception.DuplicateMemberTagException;
 import wooteco.prolog.member.exception.MemberNotAllowedException;
 import wooteco.prolog.member.exception.MemberNotFoundException;
-import wooteco.prolog.roadmap.exception.CurriculumInvalidException;
-import wooteco.prolog.roadmap.exception.CurriculumNotFoundException;
-import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
-import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
-import wooteco.prolog.roadmap.exception.KeywordOrderException;
-import wooteco.prolog.roadmap.exception.QuizNotFoundException;
-import wooteco.prolog.roadmap.exception.QuizQuestionException;
+import wooteco.prolog.roadmap.exception.*;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.studylog.domain.TagName;
 import wooteco.prolog.studylog.domain.Title;
-import wooteco.prolog.studylog.exception.AuthorNotValidException;
-import wooteco.prolog.studylog.exception.CommentDeleteException;
-import wooteco.prolog.studylog.exception.CommentNotFoundException;
-import wooteco.prolog.studylog.exception.DuplicateMissionException;
-import wooteco.prolog.studylog.exception.DuplicateTagException;
-import wooteco.prolog.studylog.exception.InvalidLikeRequestException;
-import wooteco.prolog.studylog.exception.InvalidUnlikeRequestException;
-import wooteco.prolog.studylog.exception.MissionNotFoundException;
-import wooteco.prolog.studylog.exception.NotValidSortNameException;
-import wooteco.prolog.studylog.exception.StudylogArgumentException;
-import wooteco.prolog.studylog.exception.StudylogContentNullOrEmptyException;
-import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
-import wooteco.prolog.studylog.exception.StudylogNotFoundException;
-import wooteco.prolog.studylog.exception.StudylogScrapAlreadyRegisteredException;
-import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
-import wooteco.prolog.studylog.exception.StudylogScrapNotValidUserException;
-import wooteco.prolog.studylog.exception.TagNameNullOrEmptyException;
-import wooteco.prolog.studylog.exception.TooLongMissionNameException;
-import wooteco.prolog.studylog.exception.TooLongTagNameException;
-import wooteco.prolog.studylog.exception.TooLongTitleException;
+import wooteco.prolog.studylog.exception.*;
+
+import java.util.Arrays;
 
 @AllArgsConstructor
 @Getter
@@ -106,7 +80,10 @@ public enum BadRequestCode {
         KeywordAndKeywordParentSameException.class),
 
     CURRICULUM_NAME_RANGE_EXCEPTION(8006, "커리큘럼 이름은 공백일 수 없습니다", CurriculumInvalidException.class),
-    CURRICULUM_NOT_FOUND_EXCEPTION(8007, "해당하는 커리큘럼을 찾을 수 없습니다", CurriculumNotFoundException.class);
+    CURRICULUM_NOT_FOUND_EXCEPTION(8007, "해당하는 커리큘럼을 찾을 수 없습니다", CurriculumNotFoundException.class),
+
+    ARTICLE_NOT_FOUND_EXCEPTION(8008, "아티클을 찾을 수 없습니다.",ArticleNotFoundException.class),
+    INVALID_ARTICLE_AUTHOR_EXCEPTION(8009, "아티클 작성자가 아닙니다.", InvalidArticleAuthorException.class);
 
     private int code;
     private String message;
