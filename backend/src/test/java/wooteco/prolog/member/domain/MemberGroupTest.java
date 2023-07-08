@@ -21,7 +21,7 @@ class MemberGroupTest {
         final MemberGroup memberGroup = new MemberGroup(1L, name, description);
 
         //when
-        final String groupName = memberGroup.getGroupName();
+        final String groupName = memberGroup.part();
 
         //then
         assertThat(groupName)
@@ -35,7 +35,7 @@ class MemberGroupTest {
         final MemberGroup memberGroup = new MemberGroup(1L, "5기 기타그룹", "5기 기타그룹 설명");
 
         //when
-        final String groupName = memberGroup.getGroupName();
+        final String groupName = memberGroup.part();
 
         //then
         assertThat(groupName)
