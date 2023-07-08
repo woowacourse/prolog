@@ -1,12 +1,15 @@
 package wooteco.prolog.member.domain;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,7 +34,11 @@ public class MemberGroup {
         this.description = description;
     }
 
-    public String getGroupName() {
+    public static List<String> parts() {
+        return Arrays.asList(BACKEND, FRONTEND, ANDROID);
+    }
+
+    public String part() {
         if (this.name.contains(BACKEND)) {
             return BACKEND;
         }
@@ -44,4 +51,5 @@ public class MemberGroup {
 
         return null;
     }
+
 }
