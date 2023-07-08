@@ -51,15 +51,15 @@ public class PopularStudylogService {
         deleteAllLegacyPopularStudylogs();
 
         List<GroupMember> groupMembers = groupMemberRepository.findAll();
-        Map<MemberGroupType, List<MemberGroup>> memberGroupsByPart = memberGroupRepository.findAll().stream()
+        Map<MemberGroupType, List<MemberGroup>> memberGroupsBygroupType = memberGroupRepository.findAll().stream()
             .collect(Collectors.groupingBy(MemberGroup::getGroupType));
 
         final List<Studylog> recentStudylogs = findRecentStudylogs(LocalDateTime.now(), pageable.getPageSize());
 
         List<Studylog> popularStudylogs = new ArrayList<>();
 
-        for (MemberGroupType part : MemberGroupType.values()) {
-            popularStudylogs.addAll(filterStudylogsByMemberGroups(recentStudylogs, new MemberGroups(memberGroupsByPart.get(part)), groupMembers)
+        for (MemberGroupType groupType : MemberGroupType.values()) {
+            popularStudylogs.addAll(filterStudylogsByMemberGroups(recentStudylogs, new MemberGroups(memberGroupsBygroupType.get(groupType)), groupMembers)
                 .stream()
                 .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
                 .limit(pageable.getPageSize())
@@ -121,14 +121,14 @@ public class PopularStudylogService {
 
         List<Studylog> allPopularStudylogs = getSortedPopularStudyLogs(pageable);
         List<GroupMember> groupedMembers = groupMemberRepository.findAll();
-        Map<MemberGroupType, List<MemberGroup>> memberGroupsByPart = memberGroupRepository.findAll().stream()
+        Map<MemberGroupType, List<MemberGroup>> memberGroupsBygroupType = memberGroupRepository.findAll().stream()
             .collect(Collectors.groupingBy(MemberGroup::getGroupType));
 
         return PopularStudylogsResponse.of(
             studylogsResponse(allPopularStudylogs, pageable, memberId),
-            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsByPart.get(MemberGroupType.FRONTEND)), groupedMembers), pageable, memberId),
-            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsByPart.get(MemberGroupType.BACKEND)), groupedMembers), pageable, memberId),
-            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsByPart.get(MemberGroupType.ANDROID)), groupedMembers), pageable, memberId)
+            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsBygroupType.get(MemberGroupType.FRONTEND)), groupedMembers), pageable, memberId),
+            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsBygroupType.get(MemberGroupType.BACKEND)), groupedMembers), pageable, memberId),
+            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsBygroupType.get(MemberGroupType.ANDROID)), groupedMembers), pageable, memberId)
         );
     }
 
