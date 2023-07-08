@@ -11,41 +11,34 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import wooteco.prolog.common.exception.BadRequestException;
 
-class TitleTest {
+class UrlTest {
 
-    @ParameterizedTest(name = "타이틀이 \"{0}\" 일 때 예외 발생")
+    @ParameterizedTest(name = "URL이 \"{0}\" 일 때 예외 발생")
     @NullSource
     @ValueSource(strings = {"", " "})
-    void createTitle_fail(final String title) {
-        //given
-        //when
-        //then
-        assertThatThrownBy(() -> new Title(title))
+    void createUrl_fail(final String url) {
+        assertThatThrownBy(() -> new Url(url))
             .isInstanceOf(BadRequestException.class);
     }
 
-    @DisplayName("타이틀의 길이가 최대길이를 초과할 경우 예외발생")
+    @DisplayName("URL의 길이가 최대길이를 초과할 경우 예외발생")
     @Test
-    void createTitle_fail_overLength() {
-        //given
-        final String title = Strings.repeat('.', 51);
-
-        //when
-        //then
-        assertThatThrownBy(() -> new Title(title))
+    void createUrl_fail_overLength() {
+        final String url = Strings.repeat('.', 1025);
+        assertThatThrownBy(() -> new Url(url))
             .isInstanceOf(BadRequestException.class);
     }
 
-    @DisplayName("타이틀 앞뒤의 공백은 제거되어 저장된다.")
+    @DisplayName("URL 앞뒤의 공백은 제거되어 저장된다.")
     @Test
     void trim() {
         //given
-        final String articleTitle = "    title   ";
+        final String articleUrl = "    url   ";
 
         //when
-        final Title title = new Title(articleTitle);
+        final Url url = new Url(articleUrl);
 
         //then
-        assertThat(title.getTitle()).isEqualTo("title");
+        assertThat(url.getUrl()).isEqualTo("url");
     }
 }
