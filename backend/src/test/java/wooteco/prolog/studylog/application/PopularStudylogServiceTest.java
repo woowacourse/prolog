@@ -93,7 +93,7 @@ class PopularStudylogServiceTest {
         popularStudylogService.updatePopularStudylogs(pageRequest);
 
         //then
-        verify(studylogRepository, times(3)).findByPastDays(any());
+        verify(studylogRepository, times(1)).findByPastDays(any());
     }
 
     @DisplayName("2주동안 작성된 인기 학습로그가 페이지에 출력할 만큼 존재하지 않을 때 각 3그룹별로 3번까지만 조회한다.")
@@ -136,7 +136,7 @@ class PopularStudylogServiceTest {
         popularStudylogService.updatePopularStudylogs(pageRequest);
 
         //then
-        verify(studylogRepository, times(9)).findByPastDays(any());
+        verify(studylogRepository, times(3)).findByPastDays(any());
     }
 
     @DisplayName("익명의 사용자일 경우 스크랩과 읽음 여부가 표시하지 않고 학습로그를 조회한다.")
@@ -177,7 +177,7 @@ class PopularStudylogServiceTest {
         //when
         final PopularStudylogsResponse popularStudylogsResponse = popularStudylogService.findPopularStudylogs(
             pageRequest,
-            1L,
+            null,
             true
         );
 
