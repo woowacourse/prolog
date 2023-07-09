@@ -12,7 +12,7 @@ import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 
-class ArticleTest {
+class $ArticleTest {
 
     private Member member;
     private Title title;
