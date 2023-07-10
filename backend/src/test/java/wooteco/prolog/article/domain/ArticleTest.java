@@ -34,7 +34,7 @@ class ArticleTest {
         assertDoesNotThrow(() -> new Article(member, title, url));
     }
 
-    @DisplayName("아티클을 작성자를 검증한다. (작성자일 떄)")
+    @DisplayName("아티클을 작성자를 검증한다. (작성자일 때)")
     @Test
     void validateOwner_validOwner() {
         //given
