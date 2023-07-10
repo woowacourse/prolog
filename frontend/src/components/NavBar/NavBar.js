@@ -114,26 +114,6 @@ const NavBar = () => {
                   cssProps={pencilButtonStyle}
                 />
               </Link>
-              {/* {isWritingDropdownToggled && (
-                <DropdownMenu cssProps={WritingDropdownStyle}>
-                  <ul onClick={onSelectMenu}>
-                    {[
-                      {
-                        menu: '학습로그',
-                        path: PATH.NEW_STUDYLOG,
-                      },
-                      {
-                        menu: '레벨로그',
-                        path: PATH.NEW_LEVELLOG,
-                      },
-                    ].map(({ menu, path }) => (
-                      <li key={menu}>
-                        <Link to={path}>{menu}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                </DropdownMenu>
-              )} */}
               <Button
                 size="XX_SMALL"
                 type="button"
