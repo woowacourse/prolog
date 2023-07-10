@@ -55,7 +55,7 @@ const NavBar = () => {
 
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const [isWritingDropdownToggled, setWritingDropdownToggled] = useState(false);
-  const { isXs } = useScreenMediaQuery();
+  const { isSm } = useScreenMediaQuery();
 
   const goMain = () => {
     history.push(PATH.ROOT);
@@ -93,7 +93,7 @@ const NavBar = () => {
     >
       <Wrapper>
         <Logo onClick={goMain} role="link" aria-label="프롤로그 홈으로 이동하기">
-          <img src={isXs ? MobileLogo : LogoImage} alt="" />
+          <img src={isSm ? MobileLogo : LogoImage} alt="" />
           {!isProd && <span>{logoTag}</span>}
         </Logo>
         <Menu role="menu">
