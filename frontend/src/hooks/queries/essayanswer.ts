@@ -41,9 +41,9 @@ export const useEditEssayAnswer = (
     (data: { answer: string }) =>
       requestEditEssayAnswer(essayAnswerId, data),
     {
-      onSuccess: async () => {
+      onSuccess: () => {
         alert(SUCCESS_MESSAGE.EDIT_POST);
-        history.push(`${PATH.STUDYLOG}/${essayAnswerId}`);
+        history.push(`/essay-answers/${essayAnswerId}`);
       },
 
       onError: (error: ResponseError) => {
