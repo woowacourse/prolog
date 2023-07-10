@@ -13,7 +13,7 @@ import wooteco.prolog.common.exception.BadRequestException;
 
 class UrlTest {
 
-    @ParameterizedTest(name = "URL이 \"{0}\" 일 때 예외 발생")
+    @ParameterizedTest(name = "URL이 \"{0}\" 일 때 예외가 발생한다")
     @NullSource
     @ValueSource(strings = {"", " "})
     void createUrl_fail(final String url) {
@@ -21,7 +21,7 @@ class UrlTest {
             .isInstanceOf(BadRequestException.class);
     }
 
-    @DisplayName("URL의 길이가 최대길이를 초과할 경우 예외발생")
+    @DisplayName("URL의 길이가 최대길이를 초과할 경우 예외가 발생한다")
     @Test
     void createUrl_fail_overLength() {
         final String url = Strings.repeat('.', 1025);
