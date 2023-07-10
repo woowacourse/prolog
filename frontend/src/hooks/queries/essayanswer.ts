@@ -1,4 +1,4 @@
-import {useMutation, useQuery} from "react-query";
+import { useMutation, useQuery } from 'react-query';
 import {
   createNewEssayAnswerRequest,
   requestDeleteEssayAnswer,
@@ -6,18 +6,18 @@ import {
   requestGetEssayAnswer,
   requestGetEssayAnswerList,
   requestGetQuizAsync
-} from "../../apis/essayanswers";
-import {EssayAnswerRequest, EssayAnswerResponse} from "../../models/EssayAnswers";
+} from '../../apis/essayanswers';
+import { EssayAnswerRequest, EssayAnswerResponse } from '../../models/EssayAnswers';
 
-import {AxiosError} from 'axios';
-import {useHistory} from 'react-router-dom';
-import {ALERT_MESSAGE, PATH} from '../../constants';
+import { AxiosError } from 'axios';
+import { useHistory } from 'react-router-dom';
+import { ALERT_MESSAGE, PATH } from '../../constants';
 import ERROR_CODE from '../../constants/errorCode';
 import useSnackBar from '../useSnackBar';
-import REACT_QUERY_KEY from "../../constants/reactQueryKey";
-import {Quiz} from "../../models/Keywords";
-import { ERROR_MESSAGE, SUCCESS_MESSAGE } from "../../constants/message";
-import { ResponseError } from "../../apis/studylogs";
+import REACT_QUERY_KEY from '../../constants/reactQueryKey';
+import { Quiz } from '../../models/Keywords';
+import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
+import { ResponseError } from '../../apis/studylogs';
 
 export const useCreateNewEssayAnswerMutation = ({
   onSuccess = () => {},
