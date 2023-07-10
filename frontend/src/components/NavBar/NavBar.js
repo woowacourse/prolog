@@ -15,9 +15,15 @@ import Button from '../Button/Button';
 import GithubLogin from '../GithubLogin/GithubLogin';
 import { DropdownMenu } from '../index';
 import {
-  Container, DropdownStyle, loginButtonStyle, Logo,
-  Menu, Navigation, pencilButtonStyle,
-  profileButtonStyle, Wrapper
+  Container,
+  DropdownStyle,
+  loginButtonStyle,
+  Logo,
+  Menu,
+  Navigation,
+  pencilButtonStyle,
+  profileButtonStyle,
+  Wrapper,
 } from './NavBar.styles';
 
 
