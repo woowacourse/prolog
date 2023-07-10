@@ -1,4 +1,3 @@
-// import PropTypes from 'prop-types';
 import { SerializedStyles } from '@emotion/react';
 import { Container, Title } from './Card.styles';
 
@@ -7,7 +6,7 @@ interface Props {
   title?: string;
   size: string;
   cssProps?: SerializedStyles;
-  css?: SerializedStyles ;
+  css?: SerializedStyles;
   onClick?: () => void;
 }
 
