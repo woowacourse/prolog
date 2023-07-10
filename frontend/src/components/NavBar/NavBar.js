@@ -26,7 +26,6 @@ import {
   Wrapper,
 } from './NavBar.styles';
 
-
 const navigationConfig = [
   {
     path: PATH.ROOT,
@@ -39,6 +38,10 @@ const navigationConfig = [
   {
     path: PATH.ROADMAP,
     title: '로드맵',
+  },
+  {
+    path: PATH.ARTICLE,
+    title: '아티클',
   },
 ];
 
