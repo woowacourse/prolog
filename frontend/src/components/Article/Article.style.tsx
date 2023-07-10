@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
 
 export const Container = styled.li`
-  width: 300px;
+  width: 100%;
   height: 340px;
   padding: 20px;
   border-radius: 15px;
@@ -21,9 +21,10 @@ export const ThumbnailWrapper = styled.div`
 `;
 
 export const Thumbnail = styled.img`
-  width: 260px;
+  width: 100%;
   height: 154px;
   border-radius: 15px;
+  object-fit: cover;
 `;
 
 export const ArticleInfoContainer = styled.div`
