@@ -12,7 +12,7 @@ import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 
-class $ArticleTest {
+class ArticleTest {
 
     private Member member;
     private Title title;
@@ -34,7 +34,7 @@ class $ArticleTest {
         assertDoesNotThrow(() -> new Article(member, title, url));
     }
 
-    @DisplayName("아티클을 작성자를 검증한다. (작성자일 떄)")
+    @DisplayName("아티클을 작성자를 검증한다. (작성자일 때)")
     @Test
     void validateOwner_validOwner() {
         //given
