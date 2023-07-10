@@ -13,6 +13,7 @@ import {
   NewEssayAnswerPage,
   EssayAnswerPage,
   EssayAnswerListPage,
+  ArticleListPage,
 } from './pages';
 
 const pageRoutes = [
@@ -24,7 +25,10 @@ const pageRoutes = [
     path: [PATH.ROOT],
     render: () => <MainPage />,
   },
-
+  {
+    path: [PATH.ARTICLE],
+    render: () => <ArticleListPage />,
+  },
   {
     path: [PATH.LOGIN_CALLBACK],
     render: () => <LoginCallbackPage />,
