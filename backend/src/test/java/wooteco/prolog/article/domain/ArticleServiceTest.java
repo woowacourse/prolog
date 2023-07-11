@@ -1,13 +1,12 @@
 package wooteco.prolog.article.domain;
 
 import org.assertj.core.api.Assertions;
-import org.flywaydb.core.internal.jdbc.JdbcTemplate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.jdbc.Sql;
 import wooteco.prolog.article.domain.repository.ArticleRepository;
 import wooteco.prolog.article.ui.ArticleRequest;
 import wooteco.prolog.article.ui.ArticleResponse;
@@ -15,14 +14,16 @@ import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
+import wooteco.support.utils.RepositoryTest;
 
 import java.util.List;
 import java.util.Optional;
 
 import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 @TestExecutionListeners(value = AcceptanceTestExecutionListener.class, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
+@RepositoryTest
 class ArticleServiceTest {
 
     @Autowired
