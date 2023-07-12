@@ -49,7 +49,7 @@ public class EssayAnswerController {
     public ResponseEntity<Void> updateById(@PathVariable Long essayAnswerId,
                                            @AuthMemberPrincipal LoginMember member,
                                            @RequestBody EssayAnswerUpdateRequest request) {
-        essayAnswerService.updateEssayAnswer(essayAnswerId, request.getAnswer(), member.getId());
+        essayAnswerService.updateEssayAnswer(essayAnswerId, request, member.getId());
         return ResponseEntity.ok().build();
     }
 
