@@ -13,7 +13,8 @@ import {
   NewEssayAnswerPage,
   EssayAnswerPage,
   EssayAnswerListPage,
-  EditEssayAnswerPage
+  EditEssayAnswerPage,
+  NewArticlePage
 } from './pages';
 
 const pageRoutes = [
@@ -40,6 +41,7 @@ const pageRoutes = [
     path: `${PATH.STUDYLOG}/:id/edit`,
     render: () => <EditStudylogPage />,
   },
+  { path: [PATH.ARTICLE], render: () => <NewArticlePage /> },
   {
     path: [PATH.PROFILE],
     render: () => <ProfilePage menu={PROFILE_PAGE_MENU.OVERVIEW} />,
