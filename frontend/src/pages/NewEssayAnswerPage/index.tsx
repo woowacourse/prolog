@@ -1,20 +1,21 @@
 /** @jsxImportSource @emotion/react */
 
-import {css} from '@emotion/react';
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 
-import {MainContentStyle} from '../../PageRouter';
+import { MainContentStyle } from '../../PageRouter';
+
+import { useState } from 'react';
+import { useQuery, UseQueryResult } from 'react-query';
+import { AxiosError, AxiosResponse } from 'axios';
 
 import Editor from '../../components/Editor/Editor';
-import {FlexColumnStyle, FlexStyle} from '../../styles/flex.styles';
-import styled from '@emotion/styled';
-import {COLOR} from '../../constants';
-import useNewEssayAnswer from "../../hooks/EssayAnswer/useNewEssayAnswer";
-import {useQuery, UseQueryResult} from "react-query";
-import {AxiosError, AxiosResponse} from "axios";
-import {Quiz} from "../../models/Keywords";
-import REACT_QUERY_KEY from "../../constants/reactQueryKey";
-import {requestGetQuiz} from "../../apis/essayanswers";
-import {useState} from "react";
+import { FlexColumnStyle, FlexStyle } from '../../styles/flex.styles';
+import { COLOR } from '../../constants';
+import useNewEssayAnswer from '../../hooks/EssayAnswer/useNewEssayAnswer';
+import { Quiz } from '../../models/Keywords';
+import REACT_QUERY_KEY from '../../constants/reactQueryKey';
+import { requestGetQuiz } from '../../apis/essayanswers';
 
 const NewEssayAnswerPage = () => {
   const {
@@ -23,7 +24,7 @@ const NewEssayAnswerPage = () => {
     editorContentRef,
   } = useNewEssayAnswer();
 
-  const [quizTitle, setQuizTitle] = useState<string>("퀴즈 제목");
+  const [quizTitle, setQuizTitle] = useState<string>('퀴즈 제목');
 
   const fetchQuiz: UseQueryResult<AxiosResponse<Quiz>, AxiosError> = useQuery(
     [REACT_QUERY_KEY.QUIZ, quizId],
@@ -33,7 +34,7 @@ const NewEssayAnswerPage = () => {
         setQuizTitle(data.question)
       }
     }
-  )
+  );
 
   return (
     <div
@@ -49,10 +50,10 @@ const NewEssayAnswerPage = () => {
       <Editor
         title={quizTitle}
         titleReadOnly={true}
-        height="40vh"
+        height='40vh'
         editorContentRef={editorContentRef}
       />
-      <SubmitButton type="submit" onClick={createNewEssayAnswer}>
+      <SubmitButton type='submit' onClick={createNewEssayAnswer}>
         제출하기
       </SubmitButton>
     </div>

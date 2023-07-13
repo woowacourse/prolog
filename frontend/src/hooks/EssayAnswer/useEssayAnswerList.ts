@@ -1,5 +1,5 @@
-import {useGetEssayAnswerList, useGetQuiz} from "../queries/essayanswer";
-import {useParams} from "react-router-dom";
+import { useGetEssayAnswerList, useGetQuiz } from '../queries/essayanswer';
+import { useParams } from 'react-router-dom';
 
 export const useEssayAnswerList = () => {
   const { quizId } = useParams<{ quizId: string }>();

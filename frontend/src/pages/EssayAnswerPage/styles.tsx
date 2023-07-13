@@ -1,7 +1,7 @@
-import {css} from '@emotion/react';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
-import {markdownStyle} from '../../styles/markdown.styles';
+import { markdownStyle } from '../../styles/markdown.styles';
 
 const ButtonList = styled.div`
   display: flex;
