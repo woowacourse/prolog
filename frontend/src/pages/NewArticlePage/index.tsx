@@ -9,16 +9,17 @@ import {
   SubmitButtonStyle,
 } from './styles';
 
-export interface ArticleForm {
-  title: string;
-  link: string;
-}
+import { usePostArticles } from '../../hooks/Articles/useArticles';
+import { ArticleRequest } from '../../models/Article';
+
 
 const NewArticlePage = () => {
-  const [articleContent, setArticleContent] = useState<ArticleForm>({
+  const [articleContent, setArticleContent] = useState<ArticleRequest>({
     title: '',
     link: '',
   });
+
+  const { postArticle } = usePostArticles();
 
   const onArticleTitleChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     setArticleContent({ ...articleContent, title: e.target.value });
@@ -30,12 +31,13 @@ const NewArticlePage = () => {
     console.log(e.target.value);
   };
 
-  const onSubmit = () => {
-    // post 요청
+  const createArticle = () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    postArticle(articleContent);
   };
 
   return (
-    <ArticlePageContainer onSubmit={onSubmit}>
+    <ArticlePageContainer>
       <Title>📑 아티클 작성</Title>
       <InputContainer>
         <Label>제목</Label>
@@ -53,7 +55,7 @@ const NewArticlePage = () => {
           onChange={onArticleLinkChanged}
         />
       </InputContainer>
-      <Button size="X_SMALL" type="submit" css={[SubmitButtonStyle]}>
+      <Button type="button" size="X_SMALL" css={[SubmitButtonStyle]} onClick={createArticle}>
         작성 완료
       </Button>
     </ArticlePageContainer>

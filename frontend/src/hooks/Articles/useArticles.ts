@@ -20,9 +20,13 @@ export const useFetchArticles = async () => {
   return { articles };
 };
 
-export const usePostArticles = (data) => {
+export const usePostArticles = () => {
   const { user } = useContext(UserContext);
   const { accessToken } = user;
 
-  requestPostArticles({ accessToken, data });
+  const postArticle = async (body) => {
+    await requestPostArticles({ accessToken, body });
+  };
+
+  return { postArticle };
 };
