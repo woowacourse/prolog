@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { COLOR } from '../../constants';
 
-const ArticlePageContainer = styled.div`
+const ArticlePageContainer = styled.form`
   width: 100%;
   height: auto;
   max-width: 650px;
@@ -18,7 +18,7 @@ const Title = styled.div`
   margin-bottom: 9rem;
 `;
 
-const InputContainer = styled.form``;
+const InputContainer = styled.div``;
 
 const Input = styled.input`
   width: 100%;

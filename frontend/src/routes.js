@@ -41,7 +41,7 @@ const pageRoutes = [
     path: `${PATH.STUDYLOG}/:id/edit`,
     render: () => <EditStudylogPage />,
   },
-  { path: [PATH.ARTICLE], render: () => <NewArticlePage /> },
+  { path: [PATH.NEW_ARTICLE], render: () => <NewArticlePage /> },
   {
     path: [PATH.PROFILE],
     render: () => <ProfilePage menu={PROFILE_PAGE_MENU.OVERVIEW} />,
