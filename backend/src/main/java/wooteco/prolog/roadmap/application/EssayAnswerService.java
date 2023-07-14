@@ -1,19 +1,27 @@
 package wooteco.prolog.roadmap.application;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import org.hibernate.Hibernate;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerRequest;
+import wooteco.prolog.roadmap.application.dto.EssayAnswerResponse;
+import wooteco.prolog.roadmap.application.dto.EssayAnswerSearchRequest;
+import wooteco.prolog.roadmap.domain.Curriculum;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
 import wooteco.prolog.roadmap.domain.Quiz;
+import wooteco.prolog.roadmap.domain.repository.CurriculumRepository;
 import wooteco.prolog.roadmap.domain.repository.EssayAnswerRepository;
+import wooteco.prolog.roadmap.domain.repository.EssayAnswerSpecification;
+import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.roadmap.domain.repository.QuizRepository;
-
-import javax.persistence.PersistenceContext;
+import wooteco.prolog.session.domain.Session;
+import wooteco.prolog.session.domain.repository.SessionRepository;
 
 @Transactional
 @Service
@@ -22,14 +30,20 @@ public class EssayAnswerService {
     private final EssayAnswerRepository essayAnswerRepository;
     private final QuizRepository quizRepository;
     private final MemberService memberService;
+    private final CurriculumRepository curriculumRepository;
+    private final SessionRepository sessionRepository;
 
-    @Autowired
-    public EssayAnswerService(EssayAnswerRepository essayAnswerRepository,
-                              QuizRepository quizRepository,
-                              MemberService memberService) {
+    public EssayAnswerService(
+        EssayAnswerRepository essayAnswerRepository,
+        QuizRepository quizRepository,
+        MemberService memberService,
+        CurriculumRepository curriculumRepository,
+        SessionRepository sessionRepository) {
         this.essayAnswerRepository = essayAnswerRepository;
         this.quizRepository = quizRepository;
         this.memberService = memberService;
+        this.curriculumRepository = curriculumRepository;
+        this.sessionRepository = sessionRepository;
     }
 
     @Transactional
@@ -81,5 +95,44 @@ public class EssayAnswerService {
         });
 
         return essayAnswers;
+    }
+
+    public List<EssayAnswerResponse> searchEssayAnswers(
+        final EssayAnswerSearchRequest request,
+        final Pageable pageable
+    ) {
+
+        final Long curriculumId = request.getCurriculumId();
+
+        final Curriculum curriculum = curriculumRepository.findById(curriculumId)
+            .orElseThrow(() -> new IllegalArgumentException(
+                "해당 커리큘럼이 존재하지 않습니다. curriculumId = " + curriculumId));
+
+        final List<Long> sessionIds = sessionRepository.findAllByCurriculumId(curriculum.getId())
+            .stream()
+            .map(Session::getId)
+            .collect(Collectors.toList());
+
+        if (sessionIds.isEmpty()) {
+            throw new IllegalArgumentException("세션이 비어있으면 안됨");
+        }
+
+        final Specification<EssayAnswer> essayAnswers = EssayAnswerSpecification.equalsSessionIdsIn(
+                sessionIds)
+            .and(EssayAnswerSpecification.equalsKeywordId(request.getKeywordId()))
+            .and(EssayAnswerSpecification.inQuizIds(request.getQuizIds()))
+            .and(EssayAnswerSpecification.inMemberIds(request.getMemberIds()))
+            .and(EssayAnswerSpecification.orderByIdDesc());
+
+        // 1. 키워드 없음 (커리큘럼만)
+        // 2. 키워드 있음, 퀴즈 없음
+        // 3. 키워드 있음, 퀴즈 있음
+        // 4. 키워드 있음, 퀴즈 없음, 멤버 있음
+        // 5. 키워드 있음, 퀴즈 없음, 멤버 없음
+        // 6. 키워드 있음, 퀴즈 있음, 멤버 있음
+        // 7. 키워드 있음, 퀴즈 있음, 멤버 없음
+
+        return null;
+
     }
 }

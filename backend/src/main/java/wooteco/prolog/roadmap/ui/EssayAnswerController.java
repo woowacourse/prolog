@@ -1,6 +1,11 @@
 package wooteco.prolog.roadmap.ui;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
@@ -9,6 +14,7 @@ import wooteco.prolog.roadmap.application.EssayAnswerService;
 import wooteco.prolog.roadmap.application.QuizService;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerRequest;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerResponse;
+import wooteco.prolog.roadmap.application.dto.EssayAnswerSearchRequest;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerUpdateRequest;
 import wooteco.prolog.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
@@ -38,6 +44,13 @@ public class EssayAnswerController {
         return ResponseEntity.ok(essayAnswerService.createEssayAnswer(request, member.getId()));
     }
 
+    @GetMapping("/essay-answers")
+    public ResponseEntity<List<EssayAnswerResponse>> search(
+        EssayAnswerSearchRequest request,
+        @PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(essayAnswerService.searchEssayAnswers(request, pageable));
+    }
+
     @GetMapping("/essay-answers/{essayAnswerId}")
     public ResponseEntity<EssayAnswerResponse> findById(@PathVariable Long essayAnswerId) {
         EssayAnswer essayAnswer = essayAnswerService.getById(essayAnswerId);
@@ -52,7 +65,7 @@ public class EssayAnswerController {
         essayAnswerService.updateEssayAnswer(essayAnswerId, request.getAnswer(), member.getId());
         return ResponseEntity.ok().build();
     }
-    
+
     @DeleteMapping("/essay-answers/{essayAnswerId}")
     public ResponseEntity<Void> deleteEssayAnswerById(@PathVariable Long essayAnswerId,
                                                       @AuthMemberPrincipal LoginMember member) {
