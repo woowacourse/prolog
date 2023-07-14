@@ -1,4 +1,4 @@
 export interface ArticleRequest {
-    title: string;
-    link: string;
-  }
+  title: string;
+  link: string;
+}

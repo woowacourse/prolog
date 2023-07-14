@@ -12,7 +12,6 @@ import {
 import { usePostArticles } from '../../hooks/Articles/useArticles';
 import { ArticleRequest } from '../../models/Article';
 
-
 const NewArticlePage = () => {
   const [articleContent, setArticleContent] = useState<ArticleRequest>({
     title: '',
