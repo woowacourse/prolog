@@ -1,24 +1,17 @@
 package wooteco.prolog.roadmap.domain;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
 import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
 import wooteco.prolog.roadmap.exception.KeywordSeqException;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -42,6 +35,11 @@ public class Keyword {
 
     @Column(name = "session_id", nullable = false)
     private Long sessionId;
+
+    @ElementCollection
+    @CollectionTable(name = "keyword_reference")
+    @Column(name = "url")
+    private List<String> references;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
@@ -75,7 +73,6 @@ public class Keyword {
 
     public void update(final String name, final String description, final int seq,
                        final int importance, final Keyword keywordParent) {
-        System.out.println("ㅎㅎㅎ");
         validateSeq(seq); // seq 가 0 보다 작으면 예외를 발생 시킨다.
         validateKeywordParent(keywordParent); //
         this.name = name;
