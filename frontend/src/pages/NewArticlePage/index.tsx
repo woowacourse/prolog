@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import {
   ArticlePageContainer,
@@ -11,6 +12,7 @@ import {
 
 import { usePostArticles } from '../../hooks/Articles/useArticles';
 import { ArticleRequest } from '../../models/Article';
+import { PATH } from '../../constants';
 
 const NewArticlePage = () => {
   const [articleContent, setArticleContent] = useState<ArticleRequest>({
@@ -18,21 +20,21 @@ const NewArticlePage = () => {
     link: '',
   });
 
+  const history = useHistory();
+
   const { postArticle } = usePostArticles();
 
   const onArticleTitleChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     setArticleContent({ ...articleContent, title: e.target.value });
-    console.log(e.target.value);
   };
 
   const onArticleLinkChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     setArticleContent({ ...articleContent, link: e.target.value });
-    console.log(e.target.value);
   };
 
   const createArticle = () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     postArticle(articleContent);
+    history.push(PATH.ARTICLE);
   };
 
   return (
