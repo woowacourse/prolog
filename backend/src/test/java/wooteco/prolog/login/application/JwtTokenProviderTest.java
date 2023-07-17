@@ -1,15 +1,15 @@
 package wooteco.prolog.login.application;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static wooteco.prolog.common.exception.BadRequestCode.TOKEN_NOT_VALID;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Date;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import wooteco.prolog.login.excetpion.TokenNotValidException;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Role;
-
-import java.util.Date;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class JwtTokenProviderTest {
 
@@ -36,6 +36,7 @@ class JwtTokenProviderTest {
         assertThatThrownBy(() -> jwtTokenProvider.extractSubject(expiredToken))
             .isInstanceOf(TokenNotValidException.class);
         assertThatThrownBy(() -> jwtTokenProvider.extractSubject(malformedToken))
-            .isInstanceOf(TokenNotValidException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(TOKEN_NOT_VALID.getMessage());
     }
 }

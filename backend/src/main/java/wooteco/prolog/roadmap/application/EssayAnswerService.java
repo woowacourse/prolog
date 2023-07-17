@@ -13,8 +13,6 @@ import wooteco.prolog.roadmap.domain.Quiz;
 import wooteco.prolog.roadmap.domain.repository.EssayAnswerRepository;
 import wooteco.prolog.roadmap.domain.repository.QuizRepository;
 
-import javax.persistence.PersistenceContext;
-
 @Transactional
 @Service
 public class EssayAnswerService {

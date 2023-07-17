@@ -1,5 +1,7 @@
 package wooteco.prolog.login.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.TOKEN_NOT_VALID;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;

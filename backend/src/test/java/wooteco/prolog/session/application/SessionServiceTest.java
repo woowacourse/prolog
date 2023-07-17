@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import wooteco.prolog.common.exception.NotFoundErrorCodeException;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
@@ -23,9 +23,12 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
+import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_SESSION_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.SESSION_NOT_FOUND_EXCEPTION;
 import static wooteco.prolog.login.ui.LoginMember.Authority.ANONYMOUS;
 import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
 

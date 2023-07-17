@@ -1,12 +1,14 @@
 package wooteco.prolog.studylog.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.INVALID_LIKE_REQUEST_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.INVALID_UNLIKE_REQUEST_EXCEPTION;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
-import wooteco.prolog.studylog.exception.InvalidLikeRequestException;
-import wooteco.prolog.studylog.exception.InvalidUnlikeRequestException;
+import wooteco.prolog.common.exception.BadRequestException;
 
 @Embeddable
 public class Likes {
@@ -41,7 +43,7 @@ public class Likes {
             .filter(memberId -> memberId.equals(id))
             .findAny()
             .ifPresent(memberId -> {
-                throw new InvalidLikeRequestException();
+                throw new BadRequestException(INVALID_LIKE_REQUEST_EXCEPTION);
             });
     }
 
@@ -52,7 +54,7 @@ public class Likes {
 
     private void validateExistingLike(Long id) {
         if (!likedByMember(id)) {
-            throw new InvalidUnlikeRequestException();
+            throw new BadRequestException(INVALID_UNLIKE_REQUEST_EXCEPTION);
         }
     }
 

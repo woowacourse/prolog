@@ -51,7 +51,8 @@ public class CommentController {
                                               @PathVariable Long studylogId,
                                               @PathVariable Long commentId,
                                               @RequestBody CommentChangeRequest request) {
-        commentService.updateComment(request.toUpdateRequest(loginMember.getId(), studylogId, commentId));
+        commentService.updateComment(
+            request.toUpdateRequest(loginMember.getId(), studylogId, commentId));
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

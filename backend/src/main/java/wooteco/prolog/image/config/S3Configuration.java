@@ -13,9 +13,9 @@ public class S3Configuration {
     @Bean
     public AmazonS3 amazonS3() {
         return AmazonS3ClientBuilder
-                .standard()
-                .withCredentials(InstanceProfileCredentialsProvider.getInstance())
-                .withRegion(Regions.AP_NORTHEAST_2)
-                .build();
+            .standard()
+            .withCredentials(InstanceProfileCredentialsProvider.getInstance())
+            .withRegion(Regions.AP_NORTHEAST_2)
+            .build();
     }
 }

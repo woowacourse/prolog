@@ -16,8 +16,6 @@ import wooteco.prolog.studylog.domain.Comment;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.CommentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.studylog.exception.CommentNotFoundException;
-import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 
 @Transactional
 @AllArgsConstructor

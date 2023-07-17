@@ -25,6 +25,7 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class CurriculumServiceTest {
+
     @InjectMocks
     private CurriculumService curriculumService;
 
@@ -115,7 +116,6 @@ class CurriculumServiceTest {
 
         given(curriculumRepository.findById(anyLong()))
             .willReturn(Optional.of(curriculum));
-
 
         //when
         curriculumService.delete(1L);

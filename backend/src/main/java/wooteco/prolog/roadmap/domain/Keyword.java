@@ -51,7 +51,8 @@ public class Keyword {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Keyword> children = new HashSet<>();
 
-    public Keyword(final Long id, final String name, final String description, final int seq, final int importance,
+    public Keyword(final Long id, final String name, final String description, final int seq,
+                   final int importance,
                    final Long sessionId, final Keyword parent, final Set<Keyword> children) {
         validateSeq(seq);
         this.id = id;

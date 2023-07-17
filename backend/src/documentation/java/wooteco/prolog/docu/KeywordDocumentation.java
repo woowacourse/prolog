@@ -73,7 +73,8 @@ public class KeywordDocumentation extends NewDocumentation {
 
     @Test
     void 세션별_키워드_목록_조회() {
-        given(keywordService.findSessionIncludeRootKeywords(any())).willReturn(KEYWORD_SESSION_INCLUDE_MULTI_RESPONSE);
+        given(keywordService.findSessionIncludeRootKeywords(any())).willReturn(
+            KEYWORD_SESSION_INCLUDE_MULTI_RESPONSE);
 
         given
             .when().get("/sessions/1/keywords")
@@ -83,7 +84,8 @@ public class KeywordDocumentation extends NewDocumentation {
 
     @Test
     void 최상위_키워드의_모든_자식_키워드들의_목록_조회() {
-        given(keywordService.findKeywordWithAllChild(any(), any())).willReturn(KEYWORD_WITH_ALL_CHILD_MULTI_RESPONSE);
+        given(keywordService.findKeywordWithAllChild(any(), any())).willReturn(
+            KEYWORD_WITH_ALL_CHILD_MULTI_RESPONSE);
 
         given
             .when().get("/sessions/1/keywords/1/children")

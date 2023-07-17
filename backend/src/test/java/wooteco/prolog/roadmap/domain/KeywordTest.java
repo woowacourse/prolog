@@ -8,13 +8,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import wooteco.prolog.common.exception.NotFoundErrorCodeException;
-import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
+import wooteco.prolog.common.exception.BadRequestException;
 
 class KeywordTest {
 
     private static final Long SESSION_ID = 3L;
-    private static final Keyword TEST_KEYWORD_JAVA = new Keyword(2L, "자바", "자바에 대한 설명", 1, 5, SESSION_ID, null, null);
+    private static final Keyword TEST_KEYWORD_JAVA = new Keyword(2L, "자바", "자바에 대한 설명", 1, 5,
+        SESSION_ID, null, null);
 
     //KeywordSeqException 이 발생하지 않고, NotFoundErrorCodeException 발생, 원인 모르겠음...
     @DisplayName("seq값이 0보다 작거나 같으면 KeywordSeqException을_발생시킨다")
@@ -58,7 +58,8 @@ class KeywordTest {
         @Test
         void fail_seq_not_valid() {
             //given
-            Runnable updateKeyword = () -> testKeyword.update(updateName, updateDescription, 0, updateImportance, null);
+            Runnable updateKeyword = () -> testKeyword.update(updateName, updateDescription, 0,
+                updateImportance, null);
 
             //when,then
             assertThatThrownBy(updateKeyword::run).isInstanceOf(NotFoundErrorCodeException.class);
@@ -75,7 +76,8 @@ class KeywordTest {
         @Test
         void fail_parent_equal_keyword_self() {
             //given
-            Keyword keyword = new Keyword(3L, "컬렉션", "컬렉션에 대한 설명입니다", 1, 1, SESSION_ID, testKeyword, null);
+            Keyword keyword = new Keyword(3L, "컬렉션", "컬렉션에 대한 설명입니다", 1, 1, SESSION_ID, testKeyword,
+                null);
             Runnable updateKeyword = () -> keyword.update("List", "List에 대한 설명", 1, 1, keyword);
 
             //when, then
@@ -101,7 +103,8 @@ class KeywordTest {
         @Test
         void return_id() {
             //given
-            Keyword keyword = Keyword.createKeyword("컬렉션", "컬렉션에 대한 설명입니다.", 1, 1, SESSION_ID, TEST_KEYWORD_JAVA);
+            Keyword keyword = Keyword.createKeyword("컬렉션", "컬렉션에 대한 설명입니다.", 1, 1, SESSION_ID,
+                TEST_KEYWORD_JAVA);
 
             //when
             Long parentId = keyword.getParentIdOrNull();

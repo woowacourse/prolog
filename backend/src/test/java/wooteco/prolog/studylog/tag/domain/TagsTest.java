@@ -1,16 +1,16 @@
 package wooteco.prolog.studylog.tag.domain;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import wooteco.prolog.studylog.domain.Tag;
-import wooteco.prolog.studylog.domain.Tags;
-import wooteco.prolog.studylog.exception.DuplicateTagException;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_TAG;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import wooteco.prolog.common.exception.BadRequestException;
+import wooteco.prolog.studylog.domain.Tag;
+import wooteco.prolog.studylog.domain.Tags;
 
 class TagsTest {
 
@@ -38,7 +38,8 @@ class TagsTest {
 
         //then
         assertThatThrownBy(() -> new Tags(tags))
-            .isExactlyInstanceOf(DuplicateTagException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(DUPLICATE_TAG.getMessage());
     }
 
     @DisplayName("Tags 간 이름비교를 통한 Tag 제거 테스트")

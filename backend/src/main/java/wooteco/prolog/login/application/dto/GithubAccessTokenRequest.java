@@ -2,9 +2,9 @@ package wooteco.prolog.login.application.dto;
 
 public class GithubAccessTokenRequest {
 
-    private String code;
-    private String client_id;
-    private String client_secret;
+    private final String code;
+    private final String client_id;
+    private final String client_secret;
 
     public GithubAccessTokenRequest(String code, String client_id, String client_secret) {
         this.code = code;

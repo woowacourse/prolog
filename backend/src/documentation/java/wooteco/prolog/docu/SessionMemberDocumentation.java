@@ -22,10 +22,10 @@ public class SessionMemberDocumentation extends NewDocumentation {
     void 강의에_자신을_등록한다() {
         //given, when
         ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().post("/sessions/{sessionId}/members/me", 1L)
-                .then().log().all();
+            .header("Authorization", "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().post("/sessions/{sessionId}/members/me", 1L)
+            .then().log().all();
 
         //then
         response.expect(status().isOk());
@@ -38,10 +38,10 @@ public class SessionMemberDocumentation extends NewDocumentation {
     void 강의에서_자신을_제거한다() {
         //given, when
         ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().delete("/sessions/{sessionId}/members/me", 1L)
-                .then().log().all();
+            .header("Authorization", "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().delete("/sessions/{sessionId}/members/me", 1L)
+            .then().log().all();
 
         //then
         response.expect(status().isOk());

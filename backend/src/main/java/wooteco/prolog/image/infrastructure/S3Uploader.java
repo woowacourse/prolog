@@ -30,9 +30,9 @@ public class S3Uploader {
     private void putImageFileToS3(final MultipartFile uploadImageFile, final String fileName) {
         try {
             amazonS3.putObject(new PutObjectRequest(bucket,
-                    fileName,
-                    uploadImageFile.getInputStream(),
-                    createObjectMetaData(uploadImageFile)));
+                fileName,
+                uploadImageFile.getInputStream(),
+                createObjectMetaData(uploadImageFile)));
         } catch (IOException e) {
             throw new FileUploadFailException();
         }

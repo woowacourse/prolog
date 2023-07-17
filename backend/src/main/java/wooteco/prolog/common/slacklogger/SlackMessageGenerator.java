@@ -33,8 +33,8 @@ public class SlackMessageGenerator {
     }
 
     public String generate(ContentCachingRequestWrapper request,
-                                 Exception exception,
-                                 SlackAlarmErrorLevel level) {
+                           Exception exception,
+                           SlackAlarmErrorLevel level) {
         try {
             String token = AuthorizationExtractor.extract(request);
             String profile = getProfile();
@@ -47,7 +47,7 @@ public class SlackMessageGenerator {
             String exceptionMessage = extractExceptionMessage(exception, level);
 
             return toMessage(profile, currentTime, userId,
-                    exceptionMessage, method, requestURI, headers, body);
+                exceptionMessage, method, requestURI, headers, body);
         } catch (Exception e) {
             return String.format(EXTRACTION_ERROR_MESSAGE, e.getMessage());
         }

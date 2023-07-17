@@ -8,8 +8,6 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.dto.StudylogLikeResponse;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.studylog.exception.InvalidLikeRequestException;
-import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 
 @Service
 @AllArgsConstructor

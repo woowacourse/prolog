@@ -1,5 +1,13 @@
 package wooteco.prolog.studylog.application;
 
+import static java.util.stream.Collectors.toList;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -19,15 +27,6 @@ import wooteco.prolog.studylog.domain.PopularStudylog;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.PopularStudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @AllArgsConstructor
@@ -51,15 +50,18 @@ public class PopularStudylogService {
         deleteAllLegacyPopularStudylogs();
 
         List<GroupMember> groupMembers = groupMemberRepository.findAll();
-        Map<MemberGroupType, List<MemberGroup>> memberGroupsBygroupType = memberGroupRepository.findAll().stream()
+        Map<MemberGroupType, List<MemberGroup>> memberGroupsBygroupType = memberGroupRepository.findAll()
+            .stream()
             .collect(Collectors.groupingBy(MemberGroup::getGroupType));
 
-        final List<Studylog> recentStudylogs = findRecentStudylogs(LocalDateTime.now(), pageable.getPageSize());
+        final List<Studylog> recentStudylogs = findRecentStudylogs(LocalDateTime.now(),
+            pageable.getPageSize());
 
         List<Studylog> popularStudylogs = new ArrayList<>();
 
         for (MemberGroupType groupType : MemberGroupType.values()) {
-            popularStudylogs.addAll(filterStudylogsByMemberGroups(recentStudylogs, new MemberGroups(memberGroupsBygroupType.get(groupType)), groupMembers)
+            popularStudylogs.addAll(filterStudylogsByMemberGroups(recentStudylogs,
+                new MemberGroups(memberGroupsBygroupType.get(groupType)), groupMembers)
                 .stream()
                 .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
                 .limit(pageable.getPageSize())
@@ -79,7 +81,8 @@ public class PopularStudylogService {
         }
     }
 
-    private List<Studylog> findRecentStudylogs(final LocalDateTime dateTime, final int minStudylogsSize) {
+    private List<Studylog> findRecentStudylogs(final LocalDateTime dateTime,
+                                               final int minStudylogsSize) {
         int decreaseDays = A_WEEK;
         List<Studylog> recentStudylogs = new ArrayList<>();
         while (decreaseDays <= THREE_WEEK) {
@@ -92,10 +95,13 @@ public class PopularStudylogService {
         return recentStudylogs;
     }
 
-    private List<Studylog> filterStudylogsByMemberGroups(final List<Studylog> studylogs, final MemberGroups memberGroups, final List<GroupMember> groupMembers) {
+    private List<Studylog> filterStudylogsByMemberGroups(final List<Studylog> studylogs,
+                                                         final MemberGroups memberGroups,
+                                                         final List<GroupMember> groupMembers) {
         return studylogs.stream()
-            .filter(studylog -> checkMemberAssignedInMemberGroups(memberGroups, studylog.getMember(),
-                groupMembers))
+            .filter(
+                studylog -> checkMemberAssignedInMemberGroups(memberGroups, studylog.getMember(),
+                    groupMembers))
             .collect(toList());
     }
 
@@ -121,14 +127,21 @@ public class PopularStudylogService {
 
         List<Studylog> allPopularStudylogs = getSortedPopularStudyLogs(pageable);
         List<GroupMember> groupedMembers = groupMemberRepository.findAll();
-        Map<MemberGroupType, List<MemberGroup>> memberGroupsBygroupType = memberGroupRepository.findAll().stream()
+        Map<MemberGroupType, List<MemberGroup>> memberGroupsBygroupType = memberGroupRepository.findAll()
+            .stream()
             .collect(Collectors.groupingBy(MemberGroup::getGroupType));
 
         return PopularStudylogsResponse.of(
             studylogsResponse(allPopularStudylogs, pageable, memberId),
-            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsBygroupType.get(MemberGroupType.FRONTEND)), groupedMembers), pageable, memberId),
-            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsBygroupType.get(MemberGroupType.BACKEND)), groupedMembers), pageable, memberId),
-            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsBygroupType.get(MemberGroupType.ANDROID)), groupedMembers), pageable, memberId)
+            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs,
+                new MemberGroups(memberGroupsBygroupType.get(MemberGroupType.FRONTEND)),
+                groupedMembers), pageable, memberId),
+            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs,
+                new MemberGroups(memberGroupsBygroupType.get(MemberGroupType.BACKEND)),
+                groupedMembers), pageable, memberId),
+            studylogsResponse(filterStudylogsByMemberGroups(allPopularStudylogs,
+                new MemberGroups(memberGroupsBygroupType.get(MemberGroupType.ANDROID)),
+                groupedMembers), pageable, memberId)
         );
     }
 
@@ -146,7 +159,8 @@ public class PopularStudylogService {
             .collect(toList());
     }
 
-    private StudylogsResponse studylogsResponse(final List<Studylog> studylogs, final Pageable pageable, final Long memberId) {
+    private StudylogsResponse studylogsResponse(final List<Studylog> studylogs,
+                                                final Pageable pageable, final Long memberId) {
         final PageImpl<Studylog> page = new PageImpl<>(studylogs, pageable, studylogs.size());
         if (memberId == null) {
             return StudylogsResponse.of(page);

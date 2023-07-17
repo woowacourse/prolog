@@ -1,28 +1,7 @@
 package wooteco.prolog.session.application;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import wooteco.prolog.common.exception.NotFoundErrorCodeException;
-import wooteco.prolog.member.application.GroupMemberService;
-import wooteco.prolog.member.application.MemberService;
-import wooteco.prolog.member.application.dto.MemberResponse;
-import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.session.application.dto.SessionGroupMemberRequest;
-import wooteco.prolog.session.application.dto.SessionMemberRequest;
-import wooteco.prolog.session.domain.SessionMember;
-import wooteco.prolog.session.domain.repository.SessionMemberRepository;
-import wooteco.prolog.session.domain.repository.SessionRepository;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.atMostOnce;
 import static org.mockito.Mockito.doReturn;
@@ -30,6 +9,25 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static wooteco.prolog.member.domain.Role.CREW;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import wooteco.prolog.common.exception.BadRequestException;
+import wooteco.prolog.member.application.GroupMemberService;
+import wooteco.prolog.member.application.MemberService;
+import wooteco.prolog.member.application.dto.MemberResponse;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.session.application.dto.SessionGroupMemberRequest;
+import wooteco.prolog.session.domain.SessionMember;
+import wooteco.prolog.session.domain.repository.SessionMemberRepository;
+import wooteco.prolog.session.domain.repository.SessionRepository;
 
 @ExtendWith(MockitoExtension.class)
 class SessionMemberServiceTest {
@@ -148,7 +146,8 @@ class SessionMemberServiceTest {
         SessionMember sessionMember = new SessionMember(sessionId, member);
 
         doReturn(member).when(memberService).findById(memberId);
-        doReturn(Optional.of(sessionMember)).when(sessionMemberRepository).findBySessionIdAndMember(sessionId, member);
+        doReturn(Optional.of(sessionMember)).when(sessionMemberRepository)
+            .findBySessionIdAndMember(sessionId, member);
         // when
         sessionMemberService.deleteRegistedSession(sessionId, memberId);
 

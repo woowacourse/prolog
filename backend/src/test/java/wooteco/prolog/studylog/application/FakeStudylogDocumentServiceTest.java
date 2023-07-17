@@ -9,6 +9,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import wooteco.prolog.common.exception.BadRequestCode;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.studylog.domain.Studylog;
@@ -28,6 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static wooteco.prolog.common.exception.BadRequestCode.*;
 
 @ExtendWith(MockitoExtension.class)
 class FakeStudylogDocumentServiceTest {
@@ -62,7 +65,9 @@ class FakeStudylogDocumentServiceTest {
 
         //when & then
         assertThatThrownBy(() -> fakeStudylogDocumentService.findById(1L))
-            .isInstanceOf(StudylogDocumentNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(STUDYLOG_NOT_FOUND.getMessage());
+
     }
 
     @DisplayName("StudylogDocument id로 조회 성공 테스트")

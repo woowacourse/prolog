@@ -91,11 +91,13 @@ public class LevelLogService {
     }
 
     @Transactional
-    public LevelLogResponse updateLevelLog(Long memberId, Long levelLogId, LevelLogRequest levelLogRequest) {
+    public LevelLogResponse updateLevelLog(Long memberId, Long levelLogId,
+                                           LevelLogRequest levelLogRequest) {
         final LevelLog levelLog = findById(levelLogId);
         levelLog.validateBelongTo(memberId);
 
-        final List<SelfDiscussion> selfDiscussions = selfDiscussionRepository.findByLevelLog(levelLog);
+        final List<SelfDiscussion> selfDiscussions = selfDiscussionRepository.findByLevelLog(
+            levelLog);
 
         if (selfDiscussions.isEmpty()) {
             throw new SelfDiscussionNotFoundException();
@@ -111,7 +113,8 @@ public class LevelLogService {
 
         levelLog.update(levelLogRequest.getTitle(), levelLogRequest.getContent());
         for (SelfDiscussionRequest request : levelLogRequest.getLevelLogs()) {
-            selfDiscussionRepository.save(new SelfDiscussion(levelLog, request.getQuestion(), request.getAnswer()));
+            selfDiscussionRepository.save(
+                new SelfDiscussion(levelLog, request.getQuestion(), request.getAnswer()));
         }
     }
 
