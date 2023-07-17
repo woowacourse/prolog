@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import {Card, ProfileChip} from '../../components';
+import { Card, ProfileChip } from '../../components';
 import {FlexStyle, JustifyContentSpaceBtwStyle} from '../../styles/flex.styles';
 import {
   CardInner,
@@ -15,13 +15,12 @@ import {
 import defaultProfileImage from '../../assets/images/no-profile-image.png';
 
 // 마크다운
-import {Viewer} from '@toast-ui/react-editor';
+import { Viewer } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import 'prismjs/themes/prism.css';
 import Prism from 'prismjs';
-import codeSyntaxHighlight
-  from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
-import {Link} from 'react-router-dom';
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
+import { Link } from 'react-router-dom';
 
 const Content = ({ essayAnswer }) => {
   const { author = null, quiz, answer = '', createdAt = null } = essayAnswer;

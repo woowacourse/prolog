@@ -1,10 +1,12 @@
-import {useRef} from 'react';
-import {useHistory, useParams} from 'react-router-dom';
-import {ALERT_MESSAGE, ERROR_MESSAGE, PATH} from '../../constants';
+import { useRef } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+
 import useBeforeunload from '../useBeforeunload';
-import {SUCCESS_MESSAGE} from '../../constants/message';
 import useSnackBar from '../useSnackBar';
-import {useCreateNewEssayAnswerMutation} from "../queries/essayanswer";
+import { useCreateNewEssayAnswerMutation } from '../queries/essayanswer';
+
+import { SUCCESS_MESSAGE } from '../../constants/message';
+import { ALERT_MESSAGE, ERROR_MESSAGE } from '../../constants';
 
 const useNewEssayAnswer = () => {
   const history = useHistory();

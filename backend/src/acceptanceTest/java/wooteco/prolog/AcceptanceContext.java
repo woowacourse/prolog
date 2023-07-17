@@ -82,6 +82,15 @@ public class AcceptanceContext {
         response.then().log().all();
     }
 
+    public void invokeHttpPatchWithToken(String path, Object data) {
+        request = RestAssured
+            .given().log().all()
+            .body(data).contentType(ContentType.JSON)
+            .auth().oauth2(accessToken);
+        response = request.patch(path);
+        response.then().log().all();
+    }
+
     public void invokeHttpPostWithToken(String path) {
         request = RestAssured
             .given().log().all()
