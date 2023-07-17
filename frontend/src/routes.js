@@ -13,6 +13,9 @@ import {
   NewEssayAnswerPage,
   EssayAnswerPage,
   EssayAnswerListPage,
+  EditEssayAnswerPage,
+  NewArticlePage,
+  ArticleListPage,
 } from './pages';
 
 const pageRoutes = [
@@ -24,7 +27,10 @@ const pageRoutes = [
     path: [PATH.ROOT],
     render: () => <MainPage />,
   },
-
+  {
+    path: [PATH.ARTICLE],
+    render: () => <ArticleListPage />,
+  },
   {
     path: [PATH.LOGIN_CALLBACK],
     render: () => <LoginCallbackPage />,
@@ -39,6 +45,7 @@ const pageRoutes = [
     path: `${PATH.STUDYLOG}/:id/edit`,
     render: () => <EditStudylogPage />,
   },
+  { path: [PATH.NEW_ARTICLE], render: () => <NewArticlePage /> },
   {
     path: [PATH.PROFILE],
     render: () => <ProfilePage menu={PROFILE_PAGE_MENU.OVERVIEW} />,
@@ -71,6 +78,10 @@ const pageRoutes = [
     path: [PATH.ESSAY_ANSWER_LIST],
     render: () => <EssayAnswerListPage />,
   },
+  {
+    path: '/essay-answers/:id/edit',
+    render: () => <EditEssayAnswerPage />,
+  }
 ];
 
 export default pageRoutes;

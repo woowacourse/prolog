@@ -93,7 +93,7 @@ class PopularStudylogServiceTest {
         popularStudylogService.updatePopularStudylogs(pageRequest);
 
         //then
-        verify(studylogRepository, times(3)).findByPastDays(any());
+        verify(studylogRepository, times(1)).findByPastDays(any());
     }
 
     @DisplayName("2주동안 작성된 인기 학습로그가 페이지에 출력할 만큼 존재하지 않을 때 각 3그룹별로 3번까지만 조회한다.")
@@ -136,7 +136,7 @@ class PopularStudylogServiceTest {
         popularStudylogService.updatePopularStudylogs(pageRequest);
 
         //then
-        verify(studylogRepository, times(9)).findByPastDays(any());
+        verify(studylogRepository, times(3)).findByPastDays(any());
     }
 
     @DisplayName("익명의 사용자일 경우 스크랩과 읽음 여부가 표시하지 않고 학습로그를 조회한다.")
@@ -177,7 +177,7 @@ class PopularStudylogServiceTest {
         //when
         final PopularStudylogsResponse popularStudylogsResponse = popularStudylogService.findPopularStudylogs(
             pageRequest,
-            1L,
+            null,
             true
         );
 
@@ -216,80 +216,162 @@ class PopularStudylogServiceTest {
     @DisplayName("로그인한 멤버일 경우 스크랩과 읽음 여부가 표시하여 학습로그를 조회한다.")
     @Test
     void findPopularStudylogs_IsAnonymousMemberFalse() {
-        //given
-        final MemberGroup frontend = setUpMemberGroup("5기 프론트엔드", "5기 프론트엔드 설명");
-        final MemberGroup backend = setUpMemberGroup("5기 백엔드", "5기 백엔드 설명");
-        final MemberGroup android = setUpMemberGroup("5기 안드로이드", "5기 안드로이드 설명");
+        {
+            //given
+            final MemberGroup frontend = setUpMemberGroup("5기 프론트엔드", "5기 프론트엔드 설명");
+            final MemberGroup backend = setUpMemberGroup("5기 백엔드", "5기 백엔드 설명");
+            final MemberGroup android = setUpMemberGroup("5기 안드로이드", "5기 안드로이드 설명");
 
-        final Member split = setUpMember(1L, "박상현", "스플릿", 1L);
-        final Member journey = setUpMember(2L, "이지원", "져니", 2L);
+            final Member split = setUpMember(1L, "박상현", "스플릿", 1L);
+            final Member journey = setUpMember(2L, "이지원", "져니", 2L);
 
-        final GroupMember splitGroupMember = setUpGroupMember(split, backend);
-        final GroupMember journeyGroupMember = setUpGroupMember(journey, backend);
+            final GroupMember splitGroupMember = setUpGroupMember(split, backend);
+            final GroupMember journeyGroupMember = setUpGroupMember(journey, backend);
 
-        final Studylog splitStudylog = setUpStudyLog(split);
-        final Studylog journeyStudylog = setUpStudyLog(journey);
+            final Studylog splitStudylog = setUpStudyLog(split);
+            final Studylog journeyStudylog = setUpStudyLog(journey);
 
-        final List<Studylog> studylogs = Arrays.asList(splitStudylog, journeyStudylog);
-        final PageRequest pageRequest = PageRequest.of(0, 1);
-        final Page<Studylog> pages = new PageImpl<>(studylogs, pageRequest, 2);
-        final List<MemberGroup> memberGroups = Arrays.asList(frontend, backend, android);
-        final List<GroupMember> groupMembers = Arrays.asList(splitGroupMember,
-            journeyGroupMember);
+            final List<Studylog> studylogs = Arrays.asList(splitStudylog, journeyStudylog);
+            final PageRequest pageRequest = PageRequest.of(0, 1);
+            final Page<Studylog> pages = new PageImpl<>(studylogs, pageRequest, 2);
+            final List<MemberGroup> memberGroups = Arrays.asList(frontend, backend, android);
+            final List<GroupMember> groupMembers = Arrays.asList(splitGroupMember,
+                journeyGroupMember);
 
-        when(groupMemberRepository.findAll()).thenReturn(groupMembers);
-        when(memberGroupRepository.findAll()).thenReturn(memberGroups);
-        when(studylogRepository.findAllByIdIn(any(), any())).thenReturn(pages);
-        when(studylogService.findScrapIds(any())).thenReturn(Arrays.asList(1L, 2L));
-        doNothing().when(studylogService).updateScrap(any(), any());
-        when(studylogService.findReadIds(any())).thenReturn(Arrays.asList(1L, 2L));
-        doNothing().when(studylogService).updateRead(any(), any());
+            when(groupMemberRepository.findAll()).thenReturn(groupMembers);
+            when(memberGroupRepository.findAll()).thenReturn(memberGroups);
+            when(studylogRepository.findAllByIdIn(any(), any())).thenReturn(pages);
+            when(studylogService.findScrapIds(any())).thenReturn(Arrays.asList(1L, 2L));
+            doNothing().when(studylogService).updateScrap(any(), any());
+            when(studylogService.findReadIds(any())).thenReturn(Arrays.asList(1L, 2L));
+            doNothing().when(studylogService).updateRead(any(), any());
 
-        //when
-        final PopularStudylogsResponse popularStudylogs = popularStudylogService.findPopularStudylogs(
-            pageRequest,
-            split.getId(),
-            false
-        );
+            //when
+            final PopularStudylogsResponse popularStudylogs = popularStudylogService.findPopularStudylogs(
+                pageRequest,
+                split.getId(),
+                false
+            );
 
-        //then
-        final StudylogsResponse frontEndResponse = popularStudylogs.getFrontResponse();
-        final StudylogsResponse backEndResponse = popularStudylogs.getBackResponse();
-        final StudylogsResponse androidResponse = popularStudylogs.getAndroidResponse();
-        final StudylogsResponse allResponse = popularStudylogs.getAllResponse();
+            //then
+            final StudylogsResponse frontEndResponse = popularStudylogs.getFrontResponse();
+            final StudylogsResponse backEndResponse = popularStudylogs.getBackResponse();
+            final StudylogsResponse androidResponse = popularStudylogs.getAndroidResponse();
+            final StudylogsResponse allResponse = popularStudylogs.getAllResponse();
 
-        verify(studylogService, times(4)).updateRead(any(), any());
-        verify(studylogService, times(4)).updateScrap(any(), any());
+            verify(studylogService, times(4)).updateRead(any(), any());
+            verify(studylogService, times(4)).updateScrap(any(), any());
 
-        assertAll(
-            () -> assertThat(frontEndResponse.getData()).isEmpty(),
-            () -> assertThat(frontEndResponse.getTotalPage()).isZero(),
-            () -> assertThat(frontEndResponse.getCurrPage()).isOne(),
-            () -> assertThat(frontEndResponse.getTotalSize()).isZero(),
+            assertAll(
+                () -> assertThat(frontEndResponse.getData()).isEmpty(),
+                () -> assertThat(frontEndResponse.getTotalPage()).isZero(),
+                () -> assertThat(frontEndResponse.getCurrPage()).isOne(),
+                () -> assertThat(frontEndResponse.getTotalSize()).isZero(),
 
-            () -> assertThat(backEndResponse.getData()).hasSize(2),
-            () -> assertThat(backEndResponse.getTotalPage()).isEqualTo(2),
-            () -> assertThat(backEndResponse.getCurrPage()).isOne(),
-            () -> assertThat(backEndResponse.getTotalSize()).isEqualTo(2),
+                () -> assertThat(backEndResponse.getData()).hasSize(2),
+                () -> assertThat(backEndResponse.getTotalPage()).isEqualTo(2),
+                () -> assertThat(backEndResponse.getCurrPage()).isOne(),
+                () -> assertThat(backEndResponse.getTotalSize()).isEqualTo(2),
 
-            () -> assertThat(androidResponse.getData()).isEmpty(),
-            () -> assertThat(androidResponse.getTotalPage()).isZero(),
-            () -> assertThat(androidResponse.getCurrPage()).isOne(),
-            () -> assertThat(androidResponse.getTotalSize()).isZero(),
+                () -> assertThat(androidResponse.getData()).isEmpty(),
+                () -> assertThat(androidResponse.getTotalPage()).isZero(),
+                () -> assertThat(androidResponse.getCurrPage()).isOne(),
+                () -> assertThat(androidResponse.getTotalSize()).isZero(),
 
-            () -> assertThat(allResponse.getData()).hasSize(2),
-            () -> assertThat(allResponse.getTotalPage()).isEqualTo(2),
-            () -> assertThat(allResponse.getCurrPage()).isOne(),
-            () -> assertThat(allResponse.getTotalSize()).isEqualTo(2)
-        );
+                () -> assertThat(allResponse.getData()).hasSize(2),
+                () -> assertThat(allResponse.getTotalPage()).isEqualTo(2),
+                () -> assertThat(allResponse.getCurrPage()).isOne(),
+                () -> assertThat(allResponse.getTotalSize()).isEqualTo(2)
+            );
+        }
     }
+
+    @DisplayName("인기학습 로그를 분야별로 나누어서 반한한다.")
+    @Test
+    void findPopularStudylogs_filterGroupType() {
+        {
+            //given
+            final MemberGroup frontend = setUpMemberGroup("5기 프론트엔드", "5기 프론트엔드 설명");
+            final MemberGroup backend = setUpMemberGroup("5기 백엔드", "5기 백엔드 설명");
+            final MemberGroup android = setUpMemberGroup("5기 안드로이드", "5기 안드로이드 설명");
+
+            final Member split = setUpMember(1L, "박상현", "스플릿", 1L);
+            final Member journey = setUpMember(2L, "이지원", "져니", 2L);
+            final Member pooh = setUpMember(3L, "백승준", "푸우", 3L);
+
+            final GroupMember splitGroupMember = setUpGroupMember(split, frontend);
+            final GroupMember journeyGroupMember = setUpGroupMember(journey, backend);
+            final GroupMember poohGroupMember = setUpGroupMember(pooh, android);
+
+            final Studylog splitStudylog = setUpStudyLog(split);
+            final Studylog journeyStudylog = setUpStudyLog(journey);
+            final Studylog poohStudylog = setUpStudyLog(pooh);
+
+            final List<Studylog> studylogs = Arrays.asList(splitStudylog, journeyStudylog, poohStudylog);
+            final PageRequest pageRequest = PageRequest.of(0, 3);
+            final Page<Studylog> pages = new PageImpl<>(studylogs, pageRequest, 1);
+            final List<MemberGroup> memberGroups = Arrays.asList(frontend, backend, android);
+            final List<GroupMember> groupMembers = Arrays.asList(splitGroupMember, journeyGroupMember, poohGroupMember);
+
+            final PopularStudylog splitPopularStudylog = setUpPopularStudylog(1L,
+                splitStudylog.getId());
+            final PopularStudylog journeyPopularStudylog = setUpPopularStudylog(2L,
+                journeyStudylog.getId());
+            final PopularStudylog poohPopularStudylog = setUpPopularStudylog(3L,
+                poohStudylog.getId());
+
+            final List<PopularStudylog> popularStudylogs = Arrays.asList(splitPopularStudylog,
+                journeyPopularStudylog, poohPopularStudylog);
+
+            when(popularStudylogRepository.findAllByDeletedFalse()).thenReturn(popularStudylogs);
+            when(groupMemberRepository.findAll()).thenReturn(groupMembers);
+            when(memberGroupRepository.findAll()).thenReturn(memberGroups);
+            when(studylogRepository.findAllByIdIn(any(), any())).thenReturn(pages);
+
+            //when
+            final PopularStudylogsResponse popularStudylogsResponse = popularStudylogService.findPopularStudylogs(
+                pageRequest,
+                null,
+                true
+            );
+
+            //then
+            final StudylogsResponse frontEndResponse = popularStudylogsResponse.getFrontResponse();
+            final StudylogsResponse backEndResponse = popularStudylogsResponse.getBackResponse();
+            final StudylogsResponse androidResponse = popularStudylogsResponse.getAndroidResponse();
+            final StudylogsResponse allResponse = popularStudylogsResponse.getAllResponse();
+
+            assertAll(
+                () -> assertThat(frontEndResponse.getData()).hasSize(1),
+                () -> assertThat(frontEndResponse.getTotalPage()).isEqualTo(1),
+                () -> assertThat(frontEndResponse.getCurrPage()).isOne(),
+                () -> assertThat(frontEndResponse.getTotalSize()).isEqualTo(1),
+
+                () -> assertThat(backEndResponse.getData()).hasSize(1),
+                () -> assertThat(backEndResponse.getTotalPage()).isEqualTo(1),
+                () -> assertThat(backEndResponse.getCurrPage()).isOne(),
+                () -> assertThat(backEndResponse.getTotalSize()).isEqualTo(1),
+
+                () -> assertThat(androidResponse.getData()).hasSize(1),
+                () -> assertThat(androidResponse.getTotalPage()).isEqualTo(1),
+                () -> assertThat(androidResponse.getCurrPage()).isOne(),
+                () -> assertThat(androidResponse.getTotalSize()).isEqualTo(1),
+
+                () -> assertThat(allResponse.getData()).hasSize(3),
+                () -> assertThat(allResponse.getTotalPage()).isEqualTo(1),
+                () -> assertThat(allResponse.getCurrPage()).isOne(),
+                () -> assertThat(allResponse.getTotalSize()).isEqualTo(3)
+            );
+        }
+    }
+
 
     private MemberGroup setUpMemberGroup(final String name, final String description) {
         return new MemberGroup(null, name, description);
     }
 
     private Member setUpMember(final Long id, final String userName,
-                               final String nickname, final Long githubId) {
+        final String nickname, final Long githubId) {
         return new Member(id, userName, nickname, Role.CREW, githubId, "image url");
     }
 

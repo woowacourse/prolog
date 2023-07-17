@@ -1,31 +1,44 @@
-import {client} from '.';
-import {EssayAnswerRequest} from "../models/EssayAnswers";
-import {AxiosPromise, AxiosResponse} from "axios";
-import {httpRequester} from "./studylogs";
-import {Quiz} from "../models/Keywords";
+import { EssayAnswerRequest, EssayEditRequest } from "../models/EssayAnswers";
+import { AxiosPromise, AxiosResponse } from "axios";
+import { Quiz } from "../models/Keywords";
+import { createAxiosInstance } from "../utils/axiosInstance";
 
-export const createNewEssayAnswerRequest = (body: EssayAnswerRequest) => client.post(`/essay-answers`, body);
+import LOCAL_STORAGE_KEY from "../constants/localStorage";
+
+const anyoneInstance = createAxiosInstance();
+const loggedInUserInstance = createAxiosInstance({
+  accessToken: localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN) ?? '',
+});
+
+export const createNewEssayAnswerRequest = (body: EssayAnswerRequest) => (
+  loggedInUserInstance.post(`/essay-answers`, body)
+);
 
 export const requestGetEssayAnswer = async (essayAnswerId) => {
-  const { data } = await client.get(`/essay-answers/${essayAnswerId}`);
+  const { data } = await anyoneInstance.get(`/essay-answers/${essayAnswerId}`);
+  return data
+};
 
-  return data;
+export const requestEditEssayAnswer = async (essayAnswerId: number, body: EssayEditRequest) => {
+  await loggedInUserInstance.patch(`/essay-answers/${essayAnswerId}`, body);
 };
 
 export const requestDeleteEssayAnswer = async (essayAnswerId) => {
-  await client.delete(`/essay-answers/${essayAnswerId}`);
+  await loggedInUserInstance.delete(`/essay-answers/${essayAnswerId}`);
 };
 
 export const requestGetEssayAnswerList = async (quizId) => {
-  const { data } = await client.get(`/quizzes/${quizId}/essay-answers`);
+  const { data } = await anyoneInstance.get(`/quizzes/${quizId}/essay-answers`);
 
   return data;
 };
 
 export const requestGetQuizAsync = async (quizId) => {
-  const { data } = await client.get(`/quizzes/${quizId}`);
+  const { data } = await anyoneInstance.get(`/quizzes/${quizId}`);
 
   return data;
 };
 
-export const requestGetQuiz = (quizId: Number): AxiosPromise<AxiosResponse<Quiz>> => httpRequester.get<AxiosResponse<Quiz>>(`/quizzes/${quizId}`);
+export const requestGetQuiz = (quizId: Number): AxiosPromise<AxiosResponse<Quiz>> => (
+  anyoneInstance.get<AxiosResponse<Quiz>>(`/quizzes/${quizId}`)
+);

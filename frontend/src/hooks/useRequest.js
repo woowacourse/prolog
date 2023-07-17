@@ -15,10 +15,6 @@ const useRequest = (defaultValue, callback, onSuccess, onError, onFinish) => {
         return;
       }
 
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-
       const responseData = await getResponseData(response);
 
       setResponse(responseData);

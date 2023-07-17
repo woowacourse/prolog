@@ -22,7 +22,6 @@ import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 @ExtendWith(MockitoExtension.class)
 class StudylogSessionServiceTest {
 
-
     @Mock
     private StudylogRepository studylogRepository;
     @InjectMocks
