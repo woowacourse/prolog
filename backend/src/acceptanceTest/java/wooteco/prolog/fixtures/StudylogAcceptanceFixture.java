@@ -99,7 +99,7 @@ public enum StudylogAcceptanceFixture {
         "진짜 어려움",
         1L,
         1L,
-        List.of(4L)
+        Arrays.asList(4L)
     );
 
     private final StudylogRequest studylogRequest;
