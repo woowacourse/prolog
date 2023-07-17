@@ -3,6 +3,7 @@ package wooteco.prolog.roadmap.application;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.hibernate.Hibernate;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerRequest;
-import wooteco.prolog.roadmap.application.dto.EssayAnswerResponse;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerSearchRequest;
 import wooteco.prolog.roadmap.domain.Curriculum;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
@@ -18,10 +18,10 @@ import wooteco.prolog.roadmap.domain.Quiz;
 import wooteco.prolog.roadmap.domain.repository.CurriculumRepository;
 import wooteco.prolog.roadmap.domain.repository.EssayAnswerRepository;
 import wooteco.prolog.roadmap.domain.repository.EssayAnswerSpecification;
-import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.roadmap.domain.repository.QuizRepository;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
+import wooteco.prolog.studylog.application.dto.EssayAnswersResponse;
 
 @Transactional
 @Service
@@ -97,7 +97,7 @@ public class EssayAnswerService {
         return essayAnswers;
     }
 
-    public List<EssayAnswerResponse> searchEssayAnswers(
+    public EssayAnswersResponse searchEssayAnswers(
         final EssayAnswerSearchRequest request,
         final Pageable pageable
     ) {
@@ -117,22 +117,15 @@ public class EssayAnswerService {
             throw new IllegalArgumentException("세션이 비어있으면 안됨");
         }
 
-        final Specification<EssayAnswer> essayAnswers = EssayAnswerSpecification.equalsSessionIdsIn(
+        final Specification<EssayAnswer> essayAnswerSpecification = EssayAnswerSpecification.equalsSessionIdsIn(
                 sessionIds)
             .and(EssayAnswerSpecification.equalsKeywordId(request.getKeywordId()))
             .and(EssayAnswerSpecification.inQuizIds(request.getQuizIds()))
             .and(EssayAnswerSpecification.inMemberIds(request.getMemberIds()))
             .and(EssayAnswerSpecification.orderByIdDesc());
 
-        // 1. 키워드 없음 (커리큘럼만)
-        // 2. 키워드 있음, 퀴즈 없음
-        // 3. 키워드 있음, 퀴즈 있음
-        // 4. 키워드 있음, 퀴즈 없음, 멤버 있음
-        // 5. 키워드 있음, 퀴즈 없음, 멤버 없음
-        // 6. 키워드 있음, 퀴즈 있음, 멤버 있음
-        // 7. 키워드 있음, 퀴즈 있음, 멤버 없음
-
-        return null;
-
+        final Page<EssayAnswer> essayAnswers = essayAnswerRepository.findAll(essayAnswerSpecification,
+            pageable);
+        return EssayAnswersResponse.of(essayAnswers);
     }
 }
