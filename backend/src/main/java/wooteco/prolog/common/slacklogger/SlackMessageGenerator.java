@@ -11,9 +11,9 @@ import java.util.Objects;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.ContentCachingRequestWrapper;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.application.AuthorizationExtractor;
 import wooteco.prolog.login.application.JwtTokenProvider;
-import wooteco.prolog.login.excetpion.TokenNotValidException;
 
 @Component
 public class SlackMessageGenerator {
@@ -33,8 +33,8 @@ public class SlackMessageGenerator {
     }
 
     public String generate(ContentCachingRequestWrapper request,
-                                 Exception exception,
-                                 SlackAlarmErrorLevel level) {
+                           Exception exception,
+                           SlackAlarmErrorLevel level) {
         try {
             String token = AuthorizationExtractor.extract(request);
             String profile = getProfile();
@@ -47,7 +47,7 @@ public class SlackMessageGenerator {
             String exceptionMessage = extractExceptionMessage(exception, level);
 
             return toMessage(profile, currentTime, userId,
-                    exceptionMessage, method, requestURI, headers, body);
+                exceptionMessage, method, requestURI, headers, body);
         } catch (Exception e) {
             return String.format(EXTRACTION_ERROR_MESSAGE, e.getMessage());
         }
@@ -64,7 +64,7 @@ public class SlackMessageGenerator {
     private String getUserId(String token) {
         try {
             return jwtTokenProvider.extractSubject(token);
-        } catch (TokenNotValidException e) {
+        } catch (BadRequestException e) {
             return "Guest";
         }
     }

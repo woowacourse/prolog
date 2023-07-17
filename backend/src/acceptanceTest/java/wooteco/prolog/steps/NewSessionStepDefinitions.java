@@ -14,7 +14,8 @@ public class NewSessionStepDefinitions extends AcceptanceSteps {
     @Given("{int}번 커리큘럼에 {string} 세션을 작성하고")
     @When("{int}번 커리큘럼에 {string} 세션을 작성하면")
     public void 세션을_생성하고(int curriculumId, String name) {
-        context.invokeHttpPost("/curriculums/" + curriculumId + "/sessions", new SessionRequest(name));
+        context.invokeHttpPost("/curriculums/" + curriculumId + "/sessions",
+            new SessionRequest(name));
     }
 
     @Then("세션이 생성된다")
@@ -34,7 +35,8 @@ public class NewSessionStepDefinitions extends AcceptanceSteps {
 
     @When("{int}번 커리큘럼의 {int}번 세션을 {string} 세션으로 수정하면")
     public void 세션을_수정하면(int curriculumId, int sessionId, String name) {
-        context.invokeHttpPut("/curriculums/" + curriculumId + "/sessions/" + sessionId, new SessionRequest(name));
+        context.invokeHttpPut("/curriculums/" + curriculumId + "/sessions/" + sessionId,
+            new SessionRequest(name));
     }
 
     @Then("세션이 수정된다")

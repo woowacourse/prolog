@@ -1,5 +1,7 @@
 package wooteco.prolog.session.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.TOO_LONG_MISSION_NAME;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +13,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.studylog.exception.TooLongMissionNameException;
+import wooteco.prolog.common.exception.BadRequestException;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -46,7 +48,7 @@ public class Mission {
 
     private void validateMaxLength(String name) {
         if (name.length() > MAX_LENGTH) {
-            throw new TooLongMissionNameException();
+            throw new BadRequestException(TOO_LONG_MISSION_NAME);
         }
     }
 }

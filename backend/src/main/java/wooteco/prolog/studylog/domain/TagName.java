@@ -1,12 +1,15 @@
 package wooteco.prolog.studylog.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.TAG_NAME_NULL_OR_EMPTY;
+import static wooteco.prolog.common.exception.BadRequestCode.TOO_LONG_TAG_NAME;
+
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.studylog.exception.TooLongTagNameException;
+import wooteco.prolog.common.exception.BadRequestException;
 
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,7 +31,7 @@ public class TagName {
 
     private void validateMaxLength(String name) {
         if (name.length() > MAX_LENGTH) {
-            throw new TooLongTagNameException();
+            throw new BadRequestException(TOO_LONG_TAG_NAME);
         }
     }
 
@@ -38,19 +41,19 @@ public class TagName {
 
     private void validateNull(String name) {
         if (Objects.isNull(name)) {
-            throw new wooteco.prolog.studylog.exception.TagNameNullOrEmptyException();
+            throw new BadRequestException(TAG_NAME_NULL_OR_EMPTY);
         }
     }
 
     private void validateEmpty(String name) {
         if (name.isEmpty()) {
-            throw new wooteco.prolog.studylog.exception.TagNameNullOrEmptyException();
+            throw new BadRequestException(TAG_NAME_NULL_OR_EMPTY);
         }
     }
 
     private void validateOnlyBlank(String name) {
         if (name.trim().isEmpty()) {
-            throw new wooteco.prolog.studylog.exception.TagNameNullOrEmptyException();
+            throw new BadRequestException(TAG_NAME_NULL_OR_EMPTY);
         }
     }
 

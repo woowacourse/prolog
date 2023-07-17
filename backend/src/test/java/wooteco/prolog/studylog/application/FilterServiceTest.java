@@ -1,5 +1,11 @@
 package wooteco.prolog.studylog.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.doReturn;
+
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,13 +22,6 @@ import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.FilterResponse;
 import wooteco.prolog.studylog.application.dto.TagResponse;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
 class FilterServiceTest {
@@ -53,7 +52,8 @@ class FilterServiceTest {
         doReturn(sessionResponses).when(sessionService).findAllWithMySessionFirst(loginMember);
 
         List<MissionResponse> missionResponses = new ArrayList<>();
-        missionResponses.add(new MissionResponse(1L, "mission1", new wooteco.prolog.session.application.dto.SessionResponse(1L, "session1")));
+        missionResponses.add(new MissionResponse(1L, "mission1",
+            new wooteco.prolog.session.application.dto.SessionResponse(1L, "session1")));
         doReturn(missionResponses).when(missionService).findAllWithMyMissionFirst(loginMember);
 
         List<TagResponse> tagResponses = new ArrayList<>();

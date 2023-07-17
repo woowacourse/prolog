@@ -23,9 +23,9 @@ public class BadgeService {
         Member member = memberService.findByUsername(username);
 
         return badgeCreators.stream()
-                .map(creator -> creator.create(member.getUsername()))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
+            .map(creator -> creator.create(member.getUsername()))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .collect(Collectors.toList());
     }
 }

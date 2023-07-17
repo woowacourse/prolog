@@ -19,7 +19,8 @@ public class KeywordResponse {
     private Long parentKeywordId;
     private Set<KeywordResponse> childrenKeywords;
 
-    public KeywordResponse(final Long keywordId, final String name, final String description, final int order,
+    public KeywordResponse(final Long keywordId, final String name, final String description,
+                           final int order,
                            final int importance, final Long parentKeywordId,
                            final Set<KeywordResponse> childrenKeywords) {
         this.keywordId = keywordId;

@@ -1,22 +1,24 @@
 package wooteco.prolog.studylog.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_SCRAP_ALREADY_REGISTERED_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_SCRAP_NOT_EXIST_EXCEPTION;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.application.dto.MemberScrapResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.member.exception.MemberNotFoundException;
-import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
-import wooteco.prolog.studylog.domain.StudylogScrap;
-import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
-import wooteco.prolog.studylog.exception.StudylogScrapAlreadyRegisteredException;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.domain.Studylog;
+import wooteco.prolog.studylog.domain.StudylogScrap;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.studylog.exception.StudylogNotFoundException;
+import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 
 @RequiredArgsConstructor
 @Service
@@ -31,14 +33,14 @@ public class StudylogScrapService {
     public MemberScrapResponse registerScrap(Long memberId, Long studylogId) {
         if (studylogScrapRepository
             .countByMemberIdAndScrapStudylogId(memberId, studylogId) > 0) {
-            throw new StudylogScrapAlreadyRegisteredException();
+            throw new BadRequestException(STUDYLOG_SCRAP_ALREADY_REGISTERED_EXCEPTION);
         }
 
         Studylog studylog = studylogRepository.findById(studylogId)
-            .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(STUDYLOG_NOT_FOUND));
 
         Member member = memberRepository.findById(memberId)
-            .orElseThrow(MemberNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(MEMBER_NOT_ALLOWED));
 
         StudylogScrap studylogScrap = new StudylogScrap(member, studylog);
         studylogScrapRepository.save(studylogScrap);
@@ -49,8 +51,8 @@ public class StudylogScrapService {
     @Transactional
     public void unregisterScrap(Long memberId, Long studylogId) {
         StudylogScrap scrap = studylogScrapRepository
-            .findByMemberIdAndStudylogId(memberId, studylogId).orElseThrow(
-                StudylogScrapNotExistException::new);
+            .findByMemberIdAndStudylogId(memberId, studylogId)
+            .orElseThrow(() -> new BadRequestException(STUDYLOG_SCRAP_NOT_EXIST_EXCEPTION));
 
         studylogScrapRepository.delete(scrap);
     }
