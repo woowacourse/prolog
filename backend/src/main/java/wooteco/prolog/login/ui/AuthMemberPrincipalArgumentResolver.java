@@ -1,5 +1,7 @@
 package wooteco.prolog.login.ui;
 
+import static wooteco.prolog.common.exception.BadRequestCode.TOKEN_NOT_VALID;
+
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -7,11 +9,11 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.aop.MemberAuthorityCache;
 import wooteco.prolog.login.application.AuthorizationExtractor;
 import wooteco.prolog.login.application.JwtTokenProvider;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
-import wooteco.prolog.login.excetpion.TokenNotValidException;
 import wooteco.prolog.login.ui.LoginMember.Authority;
 
 @AllArgsConstructor
@@ -43,8 +45,8 @@ public class AuthMemberPrincipalArgumentResolver implements HandlerMethodArgumen
             memberAuthorityCache.setAuthority(Authority.MEMBER);
             return new LoginMember(id, Authority.MEMBER);
         } catch (NumberFormatException e) {
-            throw new TokenNotValidException();
+            throw new BadRequestException(TOKEN_NOT_VALID);
         }
-
     }
+
 }

@@ -67,7 +67,9 @@ class SessionServiceTest {
         doReturn(session).when(sessionRepository).findByName(request.getName());
 
         // when, then
-        assertThrows(NotFoundErrorCodeException.class, () -> sessionService.create(request));
+        assertThatThrownBy(() -> sessionService.create(request))
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(DUPLICATE_SESSION_EXCEPTION.getMessage());
     }
 
     @DisplayName("유효한 Id를 매개변수로 Id Session을 조회한다.")
@@ -87,7 +89,9 @@ class SessionServiceTest {
     @Test
     void findByIdFail() {
         // when, then
-        assertThrows(NotFoundErrorCodeException.class, () -> sessionService.findById(1L));
+        assertThatThrownBy(() -> sessionService.findById(1L))
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(SESSION_NOT_FOUND_EXCEPTION.getMessage());
     }
 
     @DisplayName("Id로 Optional<Session>을 조회한다.")

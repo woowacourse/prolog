@@ -17,8 +17,7 @@ class ContentTest {
         //given
         String empty = "";
         String justBlank = "    ";
-        //when
-        //then
+        //when, then
         assertThatThrownBy(() -> new Content(empty))
             .isInstanceOf(BadRequestException.class)
             .hasMessage(STUDYLOG_CONTENT_NULL_OR_EMPTY.getMessage());

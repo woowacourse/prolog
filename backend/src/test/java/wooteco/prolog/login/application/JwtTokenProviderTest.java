@@ -34,7 +34,9 @@ class JwtTokenProviderTest {
         //when
         //then
         assertThatThrownBy(() -> jwtTokenProvider.extractSubject(expiredToken))
-            .isInstanceOf(TokenNotValidException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(TOKEN_NOT_VALID.getMessage());
+
         assertThatThrownBy(() -> jwtTokenProvider.extractSubject(malformedToken))
             .isInstanceOf(BadRequestException.class)
             .hasMessage(TOKEN_NOT_VALID.getMessage());

@@ -36,7 +36,7 @@ public class Curriculum {
 
     private void validateName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            throw new CurriculumInvalidException();
+            throw new BadRequestException(CURRICULUM_INVALID_EXCEPTION);
         }
     }
 

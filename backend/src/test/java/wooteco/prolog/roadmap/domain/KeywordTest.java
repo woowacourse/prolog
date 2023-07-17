@@ -21,8 +21,8 @@ class KeywordTest {
     @Test
     void validateSeqTest() {
         //given,when,then
-        assertThatThrownBy(() -> new Keyword(1L, "자바", "자바입니다", -1, 1, SESSION_ID, null, null)).isInstanceOf(
-            NotFoundErrorCodeException.class);
+        assertThatThrownBy(() -> new Keyword(1L, "자바", "자바입니다", -1, 1, SESSION_ID, null, null))
+            .isInstanceOf(BadRequestException.class);
     }
 
     @DisplayName("update가 호출될 때,")
@@ -62,7 +62,8 @@ class KeywordTest {
                 updateImportance, null);
 
             //when,then
-            assertThatThrownBy(updateKeyword::run).isInstanceOf(NotFoundErrorCodeException.class);
+            assertThatThrownBy(updateKeyword::run)
+                .isInstanceOf(BadRequestException.class);
         }
 
         /*
@@ -81,7 +82,8 @@ class KeywordTest {
             Runnable updateKeyword = () -> keyword.update("List", "List에 대한 설명", 1, 1, keyword);
 
             //when, then
-            assertThatThrownBy(updateKeyword::run).isInstanceOf(KeywordAndKeywordParentSameException.class);
+            assertThatThrownBy(updateKeyword::run)
+                .isInstanceOf(BadRequestException.class);
         }
     }
 

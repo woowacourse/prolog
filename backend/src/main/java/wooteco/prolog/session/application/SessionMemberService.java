@@ -1,21 +1,21 @@
 package wooteco.prolog.session.application;
 
 import static java.util.stream.Collectors.toList;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.application.GroupMemberService;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.session.application.dto.SessionGroupMemberRequest;
-import wooteco.prolog.session.application.dto.SessionMemberRequest;
 import wooteco.prolog.session.domain.SessionMember;
 import wooteco.prolog.session.domain.repository.SessionMemberRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-import wooteco.prolog.session.exception.SessionNotFoundException;
 
 @Service
 @AllArgsConstructor
@@ -30,7 +30,7 @@ public class SessionMemberService {
     @Transactional
     public void registerMember(Long sessionId, Long memberId) {
         if (!sessionRepository.existsById(sessionId)) {
-            throw new SessionNotFoundException();
+            throw new BadRequestException(ROADMAP_SESSION_NOT_FOUND_EXCEPTION);
         }
         final Member member = memberService.findById(memberId);
         sessionMemberRepository.save(new SessionMember(sessionId, member));
@@ -81,6 +81,6 @@ public class SessionMemberService {
 
     private SessionMember findSessionMemberBySessionIdAndMemberId(Long sessionId, Member member) {
         return sessionMemberRepository.findBySessionIdAndMember(sessionId, member)
-            .orElseThrow(SessionNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(ROADMAP_SESSION_NOT_FOUND_EXCEPTION));
     }
 }

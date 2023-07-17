@@ -74,7 +74,8 @@ class SessionMemberServiceTest {
         when(sessionRepository.existsById(1L)).thenReturn(false);
 
         // when, then
-        Assertions.assertThrows(NotFoundErrorCodeException.class, () -> sessionMemberService.registerMember(1L, 1L));
+        assertThatThrownBy(() -> sessionMemberService.registerMember(1L, 1L))
+            .isInstanceOf(BadRequestException.class);
     }
 
     @DisplayName("Members는 GroupId로 회원가입 할 수 있다.")
@@ -159,9 +160,8 @@ class SessionMemberServiceTest {
     @Test
     void deleteRegistedSessionFail() {
         // when, then
-        Assertions.assertThrows(
-            NotFoundErrorCodeException.class, () -> sessionMemberService.deleteRegistedSession(1L, 1L)
-        );
+        assertThatThrownBy(() -> sessionMemberService.deleteRegistedSession(1L, 1L))
+            .isInstanceOf(BadRequestException.class);
     }
 
 }

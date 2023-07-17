@@ -33,14 +33,14 @@ public class StudylogScrapService {
     public MemberScrapResponse registerScrap(Long memberId, Long studylogId) {
         if (studylogScrapRepository
             .countByMemberIdAndScrapStudylogId(memberId, studylogId) > 0) {
-            throw new StudylogScrapAlreadyRegisteredException();
+            throw new BadRequestException(STUDYLOG_SCRAP_ALREADY_REGISTERED_EXCEPTION);
         }
 
         Studylog studylog = studylogRepository.findById(studylogId)
-            .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(STUDYLOG_NOT_FOUND));
 
         Member member = memberRepository.findById(memberId)
-            .orElseThrow(MemberNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(MEMBER_NOT_ALLOWED));
 
         StudylogScrap studylogScrap = new StudylogScrap(member, studylog);
         studylogScrapRepository.save(studylogScrap);
@@ -51,8 +51,8 @@ public class StudylogScrapService {
     @Transactional
     public void unregisterScrap(Long memberId, Long studylogId) {
         StudylogScrap scrap = studylogScrapRepository
-            .findByMemberIdAndStudylogId(memberId, studylogId).orElseThrow(
-                StudylogScrapNotExistException::new);
+            .findByMemberIdAndStudylogId(memberId, studylogId)
+            .orElseThrow(() -> new BadRequestException(STUDYLOG_SCRAP_NOT_EXIST_EXCEPTION));
 
         studylogScrapRepository.delete(scrap);
     }

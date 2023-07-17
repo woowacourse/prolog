@@ -1,8 +1,12 @@
 package wooteco.prolog.studylog.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.INVALID_LIKE_REQUEST_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
+
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.dto.StudylogLikeResponse;
@@ -22,7 +26,7 @@ public class StudylogLikeService {
         validIfMember(isMember);
 
         Studylog studylog = studylogRepository.findById(studylogId)
-            .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(STUDYLOG_NOT_FOUND));
         Member member = memberService.findById(memberId);
 
         studylog.like(member.getId());
@@ -35,7 +39,7 @@ public class StudylogLikeService {
         validIfMember(isMember);
 
         Studylog studylog = studylogRepository.findById(studylogId)
-            .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(STUDYLOG_NOT_FOUND));
         Member member = memberService.findById(memberId);
 
         studylog.unlike(member.getId());
@@ -45,7 +49,7 @@ public class StudylogLikeService {
 
     private void validIfMember(boolean isMember) {
         if (!isMember) {
-            throw new InvalidLikeRequestException();
+            throw new BadRequestException(INVALID_LIKE_REQUEST_EXCEPTION);
         }
     }
 }

@@ -37,13 +37,13 @@ public class SessionService {
 
     private void validateName(String name) {
         if (sessionRepository.findByName(name).isPresent()) {
-            throw new DuplicateSessionException();
+            throw new BadRequestException(DUPLICATE_SESSION_EXCEPTION);
         }
     }
 
     public Session findById(Long id) {
         return sessionRepository.findById(id)
-            .orElseThrow(SessionNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(SESSION_NOT_FOUND_EXCEPTION));
     }
 
     public Optional<Session> findSessionById(Long id) {

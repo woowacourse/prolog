@@ -1,5 +1,8 @@
 package wooteco.prolog.roadmap.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_AND_KEYWORD_PARENT_SAME_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_SEQUENCE_EXCEPTION;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -17,8 +20,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
-import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
-import wooteco.prolog.roadmap.exception.KeywordSeqException;
+import wooteco.prolog.common.exception.BadRequestException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -88,13 +90,13 @@ public class Keyword {
 
     private void validateSeq(final int seq) {
         if (seq <= 0) {
-            throw new KeywordSeqException();
+            throw new BadRequestException(ROADMAP_KEYWORD_SEQUENCE_EXCEPTION);
         }
     }
 
     private void validateKeywordParent(final Keyword parentKeyword) {
         if (this.parent != null && this.id.equals(parentKeyword.getId())) {
-            throw new KeywordAndKeywordParentSameException();
+            throw new BadRequestException(ROADMAP_KEYWORD_AND_KEYWORD_PARENT_SAME_EXCEPTION);
         }
     }
 

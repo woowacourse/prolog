@@ -18,7 +18,6 @@ import wooteco.prolog.studylog.domain.StudylogDocument;
 import wooteco.prolog.studylog.domain.Tags;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

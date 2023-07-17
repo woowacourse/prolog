@@ -52,9 +52,6 @@ import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogTempRepository;
 import wooteco.prolog.studylog.domain.repository.dto.CommentCount;
 import wooteco.prolog.studylog.event.StudylogDeleteEvent;
-import wooteco.prolog.studylog.exception.AuthorNotValidException;
-import wooteco.prolog.studylog.exception.StudylogArgumentException;
-import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
