@@ -1,15 +1,16 @@
 /** @jsxImportSource @emotion/react */
 
-import StudylogOverview from './StudylogOverviews';
-import Introduction from '../../components/Introduction/Introduction';
-import { ProfilePageSideBar } from '../../components';
-
-import useNotFound from '../../hooks/useNotFound';
-
-import { Content } from './styles';
-import { FlexStyle } from '../../styles/flex.styles';
-import { MainContentStyle } from '../../PageRouter';
 import { css } from '@emotion/react';
+import { ProfilePageSideBar } from '../../components';
+import Introduction from '../../components/Introduction/Introduction';
+import MEDIA_QUERY from '../../constants/mediaQuery';
+import useNotFound from '../../hooks/useNotFound';
+import { MainContentStyle } from '../../PageRouter';
+import { FlexStyle } from '../../styles/flex.styles';
+import StudylogOverview from './StudylogOverviews';
+import { Content } from './styles';
+
+
 
 const ProfilePage = ({ children, menu }) => {
   const { isNotFound, NotFound } = useNotFound();
@@ -24,7 +25,7 @@ const ProfilePage = ({ children, menu }) => {
         MainContentStyle,
         FlexStyle,
         css`
-          @media screen and (max-width: 768px) {
+          ${MEDIA_QUERY.md} {
             flex-direction: column;
           }
         `,

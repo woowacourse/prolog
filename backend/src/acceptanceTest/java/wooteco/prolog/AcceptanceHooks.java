@@ -1,5 +1,6 @@
 package wooteco.prolog;
 
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
@@ -21,6 +22,12 @@ public class AcceptanceHooks {
 
     @Before("@api")
     public void setupForApi() {
+        RestAssured.port = port;
+        dataInitializer.execute();
+    }
+
+    @After("@api")
+    public void deleteForApi() {
         RestAssured.port = port;
         dataInitializer.execute();
     }

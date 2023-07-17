@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
+import MEDIA_QUERY from '../../constants/mediaQuery';
 
 export const Container = styled.div`
   width: 100%;
@@ -13,7 +14,7 @@ export const Container = styled.div`
   background: white;
   border-radius: 2rem;
 
-  @media screen and (max-width: 768px) {
+  ${MEDIA_QUERY.md} {
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: center;

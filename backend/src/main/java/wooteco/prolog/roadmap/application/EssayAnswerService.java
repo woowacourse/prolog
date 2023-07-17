@@ -1,6 +1,5 @@
 package wooteco.prolog.roadmap.application;
 
-import java.util.List;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,12 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerRequest;
+import wooteco.prolog.roadmap.application.dto.EssayAnswerUpdateRequest;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
 import wooteco.prolog.roadmap.domain.Quiz;
 import wooteco.prolog.roadmap.domain.repository.EssayAnswerRepository;
 import wooteco.prolog.roadmap.domain.repository.QuizRepository;
 
-import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Transactional
 @Service
@@ -46,11 +46,11 @@ public class EssayAnswerService {
     }
 
     @Transactional
-    public void updateEssayAnswer(Long answerId, String answer, Long memberId) {
+    public void updateEssayAnswer(Long answerId, EssayAnswerUpdateRequest request, Long memberId) {
         EssayAnswer essayAnswer = getById(answerId);
         Member member = memberService.findById(memberId);
 
-        essayAnswer.update(answer, member);
+        essayAnswer.update(request.getAnswer(), member);
         essayAnswerRepository.save(essayAnswer);
     }
 

@@ -4,9 +4,9 @@ import { loginRequest } from '../../service/requests';
 export const useLogin = ({ onSuccess }) =>
   useMutation<any, unknown, { code: string }>(
     async ({ code }) => {
-      const res = await loginRequest({ code });
+      const response = await loginRequest({ code });
 
-      return await res.json();
+      return response.data;
     },
     {
       onSuccess: ({ accessToken }) => {

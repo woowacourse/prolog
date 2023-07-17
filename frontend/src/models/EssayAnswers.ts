@@ -6,6 +6,10 @@ export interface EssayAnswerRequest {
   answer: string;
 }
 
+export interface EssayEditRequest {
+  answer: string;
+}
+
 export interface EssayAnswerResponse {
   id: number;
   quiz: Quiz;

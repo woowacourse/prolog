@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import MEDIA_QUERY from '../../constants/mediaQuery';
 import { COLOR } from '../../enumerations/color';
 
 export const CardStyle = css`
@@ -37,7 +38,7 @@ export const DescriptionStyle = css`
     overflow: hidden;
     text-overflow: ellipsis;
 
-    @media screen and (max-width: 420px) {
+    ${MEDIA_QUERY.xs} {
       font-size: 2.5rem;
       height: calc(2.5rem * 4.5);
     }

@@ -1,44 +1,32 @@
 package wooteco.prolog.member.domain;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+
 class MemberGroupTest {
+    private static final MemberGroup ANDROID_GROUP = new MemberGroup(null, " 안드로이드 5기", "A");
+    private static final MemberGroup BACKEND_GROUP = new MemberGroup(null, " 백엔드 5기", "B");
+    private static final MemberGroup FRONTEND_GROUP = new MemberGroup(null, " 프론트엔드 5기", "F");
 
-    @DisplayName("유효한 그룹명을 조회한다.")
-    @CsvSource(value = {
-        "5기 백엔드:5기 백엔드 설명:백엔드",
-        "5기 프론트엔드:5기 프론트엔드 설명:프론트엔드",
-        "5기 안드로이드:5기 안드로이드 설명:안드로이드"
-    }, delimiter = ':')
-    @ParameterizedTest(name = "이름으로 {0}을 가지고 설명으로 {1}을 가질 때 그룹 명으로 {2}를 반환한다.")
-    void getGroupName(final String name, final String description, final String expected) {
-        //given
-        final MemberGroup memberGroup = new MemberGroup(1L, name, description);
-
-        //when
-        final String groupName = memberGroup.getGroupName();
-
-        //then
-        assertThat(groupName)
-            .isEqualTo(expected);
-    }
-
-    @DisplayName("이름에 그룹명을 칭하는 문자열이 없을 경우 null 을 반환한다.")
     @Test
-    void getGroupNameNull() {
-        //given
-        final MemberGroup memberGroup = new MemberGroup(1L, "5기 기타그룹", "5기 기타그룹 설명");
-
-        //when
-        final String groupName = memberGroup.getGroupName();
-
-        //then
-        assertThat(groupName)
-            .isNull();
+    void getGroupType_이름이_그룹명을_포함하면_그룹을_반환한다() {
+        assertThat(ANDROID_GROUP.getGroupType()).isEqualTo(MemberGroupType.ANDROID);
+        assertThat(BACKEND_GROUP.getGroupType()).isEqualTo(MemberGroupType.BACKEND);
+        assertThat(FRONTEND_GROUP.getGroupType()).isEqualTo(MemberGroupType.FRONTEND);
     }
+
+    @Test
+    void getGroupType_이름이_포함하는_그룹명이_없으면_예외가_발생한다() {
+        MemberGroup memberGroup = new MemberGroup(null, "테스트", "test");
+
+        assertThatThrownBy(memberGroup::getGroupType)
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("그룹이 포함되는 타입이 없습니다. id=null");
+    }
+
 }
