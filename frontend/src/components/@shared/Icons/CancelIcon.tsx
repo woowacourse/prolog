@@ -1,6 +1,11 @@
-import React from 'react';
+interface CancelIconProps {
+  width: string;
+  height: string;
+  stroke: string;
+  strokeWidth?: string;
+}
 
-const CancelIcon = ({ width, height, stroke, strokeWidth }) => {
+const CancelIcon = ({ width, height, stroke, strokeWidth }: CancelIconProps) => {
   return (
     <svg
       viewBox="0 0 16 16"
