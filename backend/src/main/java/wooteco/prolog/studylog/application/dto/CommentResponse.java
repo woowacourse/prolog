@@ -17,7 +17,8 @@ public class CommentResponse {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createAt;
 
-    public CommentResponse(Long id, CommentMemberResponse author, String content, LocalDateTime localDateTime) {
+    public CommentResponse(Long id, CommentMemberResponse author, String content,
+                           LocalDateTime localDateTime) {
         this.id = id;
         this.author = author;
         this.content = content;

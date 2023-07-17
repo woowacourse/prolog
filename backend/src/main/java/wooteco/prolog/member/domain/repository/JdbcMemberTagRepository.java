@@ -30,14 +30,18 @@ public class JdbcMemberTagRepository implements MemberTagRepository {
     }
 
     private void addCount(List<MemberTag> memberTags) {
-        if (memberTags == null || memberTags.isEmpty()) return;
+        if (memberTags == null || memberTags.isEmpty()) {
+            return;
+        }
 
         String sql = "update member_tag set count = count + 1 where member_id = ? and tag_id in (%s)";
         executeInQuery(sql, memberTags);
     }
 
     private void insertMemberTags(List<MemberTag> memberTags) {
-        if(memberTags == null || memberTags.isEmpty()) return;
+        if (memberTags == null || memberTags.isEmpty()) {
+            return;
+        }
 
         String sql = "insert into member_tag(member_id, tag_id, count) select ?,?,1 from dual where not exists (select * from member_tag where member_id = ? and tag_id = ? limit 1)";
 
@@ -68,14 +72,18 @@ public class JdbcMemberTagRepository implements MemberTagRepository {
     }
 
     private void removeMemberTags(List<MemberTag> memberTags) {
-        if (memberTags == null || memberTags.isEmpty()) return;
+        if (memberTags == null || memberTags.isEmpty()) {
+            return;
+        }
 
         String sql = "delete from member_tag where count = 1 and member_id = ? and tag_id in (%s)";
         executeInQuery(sql, memberTags);
     }
 
     private void removeCount(List<MemberTag> memberTags) {
-        if (memberTags == null || memberTags.isEmpty()) return;
+        if (memberTags == null || memberTags.isEmpty()) {
+            return;
+        }
 
         String sql = "update member_tag set count = count - 1 where count > 1 and member_id = ? and tag_id in (%s)";
         executeInQuery(sql, memberTags);

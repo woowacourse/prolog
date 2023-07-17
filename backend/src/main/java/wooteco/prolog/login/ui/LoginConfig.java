@@ -35,6 +35,7 @@ public class LoginConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new AuthMemberPrincipalArgumentResolver(jwtTokenProvider, memberAuthorityCache));
+        resolvers.add(
+            new AuthMemberPrincipalArgumentResolver(jwtTokenProvider, memberAuthorityCache));
     }
 }

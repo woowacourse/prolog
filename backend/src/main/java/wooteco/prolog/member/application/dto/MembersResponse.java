@@ -25,6 +25,7 @@ public class MembersResponse {
             .map(it -> MemberResponse.of(it))
             .collect(Collectors.toList());
 
-        return new MembersResponse(data, originData.getTotalElements(), originData.getTotalPages(), originData.getNumber() + 1);
+        return new MembersResponse(data, originData.getTotalElements(), originData.getTotalPages(),
+            originData.getNumber() + 1);
     }
 }

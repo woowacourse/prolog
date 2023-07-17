@@ -1,17 +1,19 @@
 package wooteco.prolog.roadmap.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
+
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordResponse;
 import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordsResponse;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
-import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-import wooteco.prolog.session.exception.SessionNotFoundException;
 
 @Transactional
 @Service
@@ -43,7 +45,7 @@ public class KeywordService {
     public KeywordResponse findKeyword(final Long sessionId, final Long keywordId) {
         existSession(sessionId);
         Keyword keyword = keywordRepository.findById(keywordId)
-            .orElseThrow(KeywordNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION));
 
         return KeywordResponse.createResponse(keyword);
     }
@@ -71,7 +73,7 @@ public class KeywordService {
                               final KeywordUpdateRequest request) {
         existSession(sessionId); // 세션이 없다면 예외가 발생
         Keyword keyword = keywordRepository.findById(keywordId)
-            .orElseThrow(KeywordNotFoundException::new); // keyword 가 없다면 예외를 발생
+            .orElseThrow(() -> new BadRequestException(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION));
         Keyword keywordParent = findKeywordParentOrNull(request.getParentKeywordId());
 
         keyword.update(request.getName(), request.getDescription(), request.getOrder(),
@@ -88,14 +90,14 @@ public class KeywordService {
     private void existSession(final Long sessionId) {
         boolean exists = sessionRepository.existsById(sessionId);
         if (!exists) {
-            throw new SessionNotFoundException();
+            throw new BadRequestException(ROADMAP_SESSION_NOT_FOUND_EXCEPTION);
         }
     }
 
     private void existKeyword(final Long keywordId) {
         boolean exists = keywordRepository.existsById(keywordId);
         if (!exists) {
-            throw new KeywordNotFoundException();
+            throw new BadRequestException(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION);
         }
     }
 
@@ -103,6 +105,7 @@ public class KeywordService {
         if (keywordId == null) {
             return null;
         }
-        return keywordRepository.findById(keywordId).orElseThrow(KeywordNotFoundException::new);
+        return keywordRepository.findById(keywordId)
+            .orElseThrow(() -> new BadRequestException(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION));
     }
 }

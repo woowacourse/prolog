@@ -16,8 +16,10 @@ public class DocumentQueryParser {
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < word.length(); i++) {
                 char c = word.charAt(i);
-                if (c == '\\' || c == '+' || c == '-' || c == '!' || c == '(' || c == ')' || c == ':'
-                    || c == '^' || c == '[' || c == ']' || c == '\"' || c == '{' || c == '}' || c == '~'
+                if (c == '\\' || c == '+' || c == '-' || c == '!' || c == '(' || c == ')'
+                    || c == ':'
+                    || c == '^' || c == '[' || c == ']' || c == '\"' || c == '{' || c == '}'
+                    || c == '~'
                     || c == '*' || c == '?' || c == '|' || c == '&' || c == '/') {
                     continue;
                 }

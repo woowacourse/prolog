@@ -1,5 +1,18 @@
 package wooteco.prolog.session.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
+import static wooteco.prolog.login.ui.LoginMember.Authority.ANONYMOUS;
+import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -7,27 +20,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.MissionRepository;
-import wooteco.prolog.studylog.exception.DuplicateMissionException;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
-import static wooteco.prolog.login.ui.LoginMember.Authority.ANONYMOUS;
-import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
 
 @ExtendWith(MockitoExtension.class)
 class MissionServiceTest {
@@ -67,14 +66,15 @@ class MissionServiceTest {
     void validateName() {
         // given
         final MissionRequest request = new MissionRequest("mission1", 1L);
-        final Optional<Mission> mission = Optional.of(new Mission("mission1", new Session("session1")));
+        final Optional<Mission> mission = Optional.of(
+            new Mission("mission1", new Session("session1")));
 
         doReturn(mission)
             .when(missionRepository).findByName(request.getName());
 
         // when, then
         assertAll(
-            () -> assertThrows(DuplicateMissionException.class, () -> missionService.create(request))
+            () -> assertThrows(BadRequestException.class, () -> missionService.create(request))
         );
     }
 
@@ -108,7 +108,8 @@ class MissionServiceTest {
     @Test
     void findById() {
         // given
-        final Optional<Mission> missionOptional = Optional.of(new Mission("mission1", new Session("session1")));
+        final Optional<Mission> missionOptional = Optional.of(
+            new Mission("mission1", new Session("session1")));
         when(missionRepository.findById(1L)).thenReturn(missionOptional);
 
         // when
@@ -125,7 +126,8 @@ class MissionServiceTest {
     @Test
     void findMissionById() {
         // given
-        final Optional<Mission> missionOptional = Optional.of(new Mission("mission1", new Session("session1")));
+        final Optional<Mission> missionOptional = Optional.of(
+            new Mission("mission1", new Session("session1")));
         when(missionRepository.findById(1L)).thenReturn(missionOptional);
 
         // when
@@ -216,15 +218,18 @@ class MissionServiceTest {
         doReturn(myMissions).when(missionRepository).findBySessionIdIn(Collections.emptyList());
 
         // when
-        final List<MissionResponse> responses = missionService.findAllWithMyMissionFirst(loginMember);
+        final List<MissionResponse> responses = missionService.findAllWithMyMissionFirst(
+            loginMember);
         final MissionResponse myMission = responses.get(0);
 
         // then
         assertAll(
             () -> assertThat(myMission.getName()).isEqualTo("mission3"),
             () -> assertThat(myMission.getSession().getName()).isEqualTo("session3"),
-            () -> assertThat(responses).extracting(MissionResponse::getName).contains("mission1", "mission2", "mission3"),
-            () -> assertThat(responses).extracting(response -> response.getSession().getName()).contains("session1", "session2", "session3")
+            () -> assertThat(responses).extracting(MissionResponse::getName)
+                .contains("mission1", "mission2", "mission3"),
+            () -> assertThat(responses).extracting(response -> response.getSession().getName())
+                .contains("session1", "session2", "session3")
         );
     }
 
@@ -244,15 +249,18 @@ class MissionServiceTest {
         doReturn(allMissions).when(missionRepository).findAll();
 
         // when
-        final List<MissionResponse> responses = missionService.findAllWithMyMissionFirst(loginMember);
+        final List<MissionResponse> responses = missionService.findAllWithMyMissionFirst(
+            loginMember);
         final MissionResponse firstResponse = responses.get(0);
 
         // then
         assertAll(
             () -> assertThat(firstResponse.getName()).isEqualTo("mission1"),
             () -> assertThat(firstResponse.getSession().getName()).isEqualTo("session1"),
-            () -> assertThat(responses).extracting(MissionResponse::getName).contains("mission1", "mission2", "mission3"),
-            () -> assertThat(responses).extracting(response -> response.getSession().getName()).contains("session1", "session2", "session3"),
+            () -> assertThat(responses).extracting(MissionResponse::getName)
+                .contains("mission1", "mission2", "mission3"),
+            () -> assertThat(responses).extracting(response -> response.getSession().getName())
+                .contains("session1", "session2", "session3"),
             () -> assertThat(responses).hasSize(3)
         );
     }

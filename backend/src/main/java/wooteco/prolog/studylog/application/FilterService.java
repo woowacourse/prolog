@@ -23,10 +23,13 @@ public class FilterService {
     private final MemberService memberService;
 
     public FilterResponse showAll(LoginMember loginMember) {
-        List<SessionResponse> sessionResponses = sessionService.findAllWithMySessionFirst(loginMember); // my session으로 대체
-        List<MissionResponse> missionResponses = missionService.findAllWithMyMissionFirst(loginMember);
+        List<SessionResponse> sessionResponses = sessionService.findAllWithMySessionFirst(
+            loginMember); // my session으로 대체
+        List<MissionResponse> missionResponses = missionService.findAllWithMyMissionFirst(
+            loginMember);
         List<TagResponse> tagResponses = tagService.findTagsIncludedInStudylogs();
         List<MemberResponse> memberResponses = memberService.findAllOrderByNickNameAsc();
-        return new FilterResponse(sessionResponses, missionResponses, tagResponses, memberResponses);
+        return new FilterResponse(sessionResponses, missionResponses, tagResponses,
+            memberResponses);
     }
 }

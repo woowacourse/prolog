@@ -1,23 +1,26 @@
 package wooteco.prolog.roadmap.application;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
+
+import java.util.Collections;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
-import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-
-import java.util.Collections;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class KeywordServiceTest {
@@ -49,7 +52,8 @@ class KeywordServiceTest {
 
         //then
         assertThatThrownBy(() -> keywordService.createKeyword(1L, request))
-            .isInstanceOf(KeywordNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION.getMessage());
     }
 
     @DisplayName("세션 id로 키워드를 생성할 수 있다")
@@ -74,7 +78,8 @@ class KeywordServiceTest {
 
         //then
         assertThatThrownBy(() -> keywordService.findKeyword(1L, 1L))
-            .isInstanceOf(KeywordNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION.getMessage());
     }
 
     @DisplayName("keywordId로 해당 키워드를 찾을 수 있다")
@@ -159,7 +164,8 @@ class KeywordServiceTest {
 
         //then
         assertThatThrownBy(() -> keywordService.updateKeyword(1L, 1L, request))
-            .isInstanceOf(KeywordNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION.getMessage());
     }
 
     @DisplayName("sessionId와 keywordId로 키워드를 삭제할 수 있다")

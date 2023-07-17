@@ -1,12 +1,11 @@
 package wooteco.prolog.common.exception;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static wooteco.prolog.common.exception.BadRequestCode.GITHUB_API_FAIL;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_FOUND;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import wooteco.prolog.login.excetpion.GithubApiFailException;
-import wooteco.prolog.member.exception.MemberNotFoundException;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class BadRequestCodeTest {
 
@@ -14,8 +13,8 @@ class BadRequestCodeTest {
     @Test
     void findByTest() {
         //given
-        MemberNotFoundException memberNotFoundException = new MemberNotFoundException();
-        GithubApiFailException githubApiFailException = new GithubApiFailException();
+        BadRequestException memberNotFoundException = new BadRequestException(MEMBER_NOT_FOUND);
+        BadRequestException githubApiFailException = new BadRequestException(GITHUB_API_FAIL);
 
         //when
         int githubApiFailExceptionCode = githubApiFailException.getCode();
@@ -25,23 +24,14 @@ class BadRequestCodeTest {
         String memberNotFoundExceptionMessage = memberNotFoundException.getMessage();
 
         //then
-        assertThat(githubApiFailExceptionCode).isEqualTo(BadRequestCode.GITHUB_API_FAIL.getCode());
+        assertThat(githubApiFailExceptionCode).isEqualTo(GITHUB_API_FAIL.getCode());
         assertThat(githubApiFailExceptionMessage)
-            .isEqualTo(BadRequestCode.GITHUB_API_FAIL.getMessage());
+            .isEqualTo(GITHUB_API_FAIL.getMessage());
 
         assertThat(memberNotFoundExceptionCode)
-            .isEqualTo(BadRequestCode.MEMBER_NOT_FOUND.getCode());
+            .isEqualTo(MEMBER_NOT_FOUND.getCode());
         assertThat(memberNotFoundExceptionMessage)
-            .isEqualTo(BadRequestCode.MEMBER_NOT_FOUND.getMessage());
+            .isEqualTo(MEMBER_NOT_FOUND.getMessage());
     }
 
-    @DisplayName("해당하는 예외가 없을 때 오류가 나는지 확인한다.")
-    @Test
-    void failFoundExceptionTest() {
-        //given
-        //when
-        //then
-        assertThatThrownBy(BadRequestException::new)
-            .isInstanceOf(NotFoundErrorCodeException.class);
-    }
 }

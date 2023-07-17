@@ -29,7 +29,8 @@ class StudylogTagServiceTest {
     private static final List<Tag> TAG_LIST = ImmutableList.of(TAG_JAVA, TAG_JCF);
     private static final Member MEMBER = new Member(1L, "홍혁준", "홍실", Role.CREW, 1234L, "imageUrl");
     private static final Session SESSION = new Session("2023 백엔드 레벨 1");
-    private static final Studylog STUDYLOG = new Studylog(MEMBER, "페이지 이름", "페이지 내용", SESSION, null, TAG_LIST);
+    private static final Studylog STUDYLOG = new Studylog(MEMBER, "페이지 이름", "페이지 내용", SESSION, null,
+        TAG_LIST);
 
     @Mock
     private StudylogTagRepository studylogTagRepository;

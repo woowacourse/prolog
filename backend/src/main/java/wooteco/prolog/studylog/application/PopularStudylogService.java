@@ -48,7 +48,8 @@ public class PopularStudylogService {
 
         List<GroupMember> groupMembers = groupMemberRepository.findAll();
         Map<MemberGroupType, List<MemberGroup>> memberGroupsBygroupType = memberGroupRepository.findAll()
-            .stream().collect(Collectors.groupingBy(MemberGroup::getGroupType));
+            .stream()
+            .collect(Collectors.groupingBy(MemberGroup::getGroupType));
 
         final List<Studylog> recentStudylogs = findRecentStudylogs(LocalDateTime.now(),
             pageable.getPageSize());
@@ -91,9 +92,11 @@ public class PopularStudylogService {
     private List<Studylog> filterStudylogsByMemberGroups(final List<Studylog> studylogs,
                                                          final MemberGroups memberGroups,
                                                          final List<GroupMember> groupMembers) {
-        return studylogs.stream().filter(
-            studylog -> checkMemberAssignedInMemberGroups(memberGroups, studylog.getMember(),
-                groupMembers)).collect(toList());
+        return studylogs.stream()
+            .filter(
+                studylog -> checkMemberAssignedInMemberGroups(memberGroups, studylog.getMember(),
+                    groupMembers))
+            .collect(toList());
     }
 
     private boolean checkMemberAssignedInMemberGroups(MemberGroups memberGroups, Member member,

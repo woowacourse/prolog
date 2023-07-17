@@ -1,5 +1,8 @@
 package wooteco.prolog.studylog.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_TITLE_NULL_OR_EMPTY;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_TITLE_TOO_LONG;
+
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -8,8 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import wooteco.prolog.login.excetpion.StudylogTitleNullOrEmptyException;
-import wooteco.prolog.studylog.exception.TooLongTitleException;
+import wooteco.prolog.common.exception.BadRequestException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,25 +39,25 @@ public class Title {
 
     private void validateNull(String title) {
         if (Objects.isNull(title)) {
-            throw new StudylogTitleNullOrEmptyException();
+            throw new BadRequestException(STUDYLOG_TITLE_NULL_OR_EMPTY);
         }
     }
 
     private void validateEmpty(String title) {
         if (title.isEmpty()) {
-            throw new StudylogTitleNullOrEmptyException();
+            throw new BadRequestException(STUDYLOG_TITLE_NULL_OR_EMPTY);
         }
     }
 
     private void validateOnlyBlank(String title) {
         if (title.trim().isEmpty()) {
-            throw new StudylogTitleNullOrEmptyException();
+            throw new BadRequestException(STUDYLOG_TITLE_NULL_OR_EMPTY);
         }
     }
 
     private void validateMaxLength(String title) {
         if (title.length() > MAX_LENGTH) {
-            throw new TooLongTitleException();
+            throw new BadRequestException(STUDYLOG_TITLE_TOO_LONG);
         }
     }
 }

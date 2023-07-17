@@ -1,25 +1,5 @@
 package wooteco.prolog.roadmap.application;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import wooteco.prolog.roadmap.application.dto.QuizRequest;
-import wooteco.prolog.roadmap.application.dto.QuizResponse;
-import wooteco.prolog.roadmap.application.dto.QuizzesResponse;
-import wooteco.prolog.roadmap.domain.Keyword;
-import wooteco.prolog.roadmap.domain.Quiz;
-import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
-import wooteco.prolog.roadmap.domain.repository.QuizRepository;
-import wooteco.prolog.roadmap.exception.KeywordOrderException;
-import wooteco.prolog.roadmap.exception.QuizNotFoundException;
-
-import java.util.Arrays;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -28,9 +8,29 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_QUIZ_NOT_FOUND_EXCEPTION;
+
+import java.util.Arrays;
+import java.util.Optional;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import wooteco.prolog.common.exception.BadRequestException;
+import wooteco.prolog.roadmap.application.dto.QuizRequest;
+import wooteco.prolog.roadmap.application.dto.QuizResponse;
+import wooteco.prolog.roadmap.application.dto.QuizzesResponse;
+import wooteco.prolog.roadmap.domain.Keyword;
+import wooteco.prolog.roadmap.domain.Quiz;
+import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
+import wooteco.prolog.roadmap.domain.repository.QuizRepository;
 
 @ExtendWith(MockitoExtension.class)
 class QuizServiceTest {
+
     @Mock
     private KeywordRepository keywordRepository;
 
@@ -50,7 +50,8 @@ class QuizServiceTest {
 
         //when,then
         assertThatThrownBy(() -> quizService.createQuiz(1L, question))
-            .isInstanceOf(KeywordOrderException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage("키워드의 순서는 1 이상이여야 합니다.");
     }
 
     @DisplayName("QuizRequest 를 보내면 해당 Request 의 Question 의 값과 Id 기반으로 찾은 Keyword 의 값을 가진 Quiz를 저장하고 그 Id를 반환한다")
@@ -94,7 +95,8 @@ class QuizServiceTest {
             );
 
         //when
-        final QuizzesResponse quizzesByKeywordId = quizService.findQuizzesByKeywordId(requestKeywordId);
+        final QuizzesResponse quizzesByKeywordId = quizService.findQuizzesByKeywordId(
+            requestKeywordId);
 
         //then
         assertAll(
@@ -113,7 +115,8 @@ class QuizServiceTest {
 
         //when,then
         assertThatThrownBy(() -> quizService.updateQuiz(1L, quizRequest))
-            .isInstanceOf(QuizNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(ROADMAP_QUIZ_NOT_FOUND_EXCEPTION.getMessage());
     }
 
     @DisplayName("찾은 quiz 의 question 을 업데이트 한다.")
@@ -143,7 +146,8 @@ class QuizServiceTest {
 
         //when,then
         assertThatThrownBy(() -> quizService.deleteQuiz(1L))
-            .isInstanceOf(QuizNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(ROADMAP_QUIZ_NOT_FOUND_EXCEPTION.getMessage());
     }
 
     @DisplayName("요청한 quizId 에 매핑되는 quiz 를 저장소에서 삭제한다")
@@ -169,7 +173,8 @@ class QuizServiceTest {
 
         //when,then
         assertThatThrownBy(() -> quizService.findById(1L))
-            .isInstanceOf(QuizNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(ROADMAP_QUIZ_NOT_FOUND_EXCEPTION.getMessage());
     }
 
     @DisplayName("요청한 Id 기반으로 Quiz 로 만들어진 QuizResponse 를 반환해준다")

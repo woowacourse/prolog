@@ -42,7 +42,8 @@ class GroupMemberServiceTest {
         when(groupMemberRepository.findByGroupId(any())).thenReturn(ImmutableList.of(groupMember));
 
         //when
-        final List<GroupMember> groupMembers = groupMemberService.findGroupMemberByGroupId(memberGroupId);
+        final List<GroupMember> groupMembers = groupMemberService.findGroupMemberByGroupId(
+            memberGroupId);
 
         //then
         assertThat(groupMembers).containsExactly(groupMember);

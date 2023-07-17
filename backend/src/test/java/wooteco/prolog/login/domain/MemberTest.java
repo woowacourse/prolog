@@ -1,7 +1,12 @@
 package wooteco.prolog.login.domain;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.member.domain.Member;
@@ -10,17 +15,9 @@ import wooteco.prolog.member.domain.MemberTags;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.studylog.domain.Tag;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.LongStream;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 class MemberTest {
 
-    private final String empty ="";
+    private final String empty = "";
 
     @DisplayName("constructor : nickname이 없을 때 loginName으로 대체되는지 확인")
     @Test
@@ -98,7 +95,8 @@ class MemberTest {
         final MemberTag memberTag1 = new MemberTag(1L, member, tags.get(0), 1);
         final MemberTag memberTag2 = new MemberTag(2L, member, tags.get(1), 2);
         final MemberTag memberTag3 = new MemberTag(3L, member, tags.get(2), 3);
-        final MemberTags memberTags = new MemberTags(Arrays.asList(memberTag1, memberTag2, memberTag3));
+        final MemberTags memberTags = new MemberTags(
+            Arrays.asList(memberTag1, memberTag2, memberTag3));
 
         final Member modifiedMember = new Member(1L, "a", "member",
             Role.CREW, 1234L, "imageUrl1", memberTags);

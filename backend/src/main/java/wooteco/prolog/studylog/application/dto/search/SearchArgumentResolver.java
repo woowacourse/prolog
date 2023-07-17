@@ -17,7 +17,8 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import wooteco.prolog.studylog.exception.SearchArgumentParseException;
+import wooteco.prolog.common.exception.BadRequestCode;
+import wooteco.prolog.common.exception.BadRequestException;
 
 @Component
 public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
@@ -44,7 +45,7 @@ public class SearchArgumentResolver implements HandlerMethodArgumentResolver {
                 makePageableDefault(webRequest)
             );
         } catch (Exception e) {
-            throw new SearchArgumentParseException();
+            throw new BadRequestException(BadRequestCode.SEARCH_ARGUMENT_PARSE_EXCEPTION);
         }
     }
 
