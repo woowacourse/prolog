@@ -1,5 +1,4 @@
 create table if not exists prolog.keyword_reference
-create table prolog.keyword_reference
 (
     keyword_id bigint       not null,
     url        varchar(255) null,
