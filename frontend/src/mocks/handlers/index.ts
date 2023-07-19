@@ -1,11 +1,13 @@
-import { popularStudyLogHandler } from './popularStudyLog';
 import { commentsHandler } from './comment';
-import { levellogHandler } from './levellog';
+import { essayAnswerHandler } from './essayAnswers';
 import { roadmapHandler } from './keywords';
+import { levellogHandler } from './levellog';
+import { popularStudyLogHandler } from './popularStudyLog';
 
 export const handlers = [
-  ...popularStudyLogHandler,
   ...commentsHandler,
-  ...levellogHandler,
+  ...essayAnswerHandler,
   ...roadmapHandler,
+  ...levellogHandler,
+  ...popularStudyLogHandler,
 ];

@@ -1,9 +1,8 @@
-import { BASE_URL } from '../../configs/environment';
 import { rest } from 'msw';
-import keywordsMock from '../fixtures/keywords';
+import { BASE_URL } from '../../configs/environment';
 import curriculums from '../fixtures/curriculums';
-
-import { quizMock } from '../fixtures/quizs';
+import keywordsMock from '../fixtures/keywords';
+import quizMock from '../fixtures/quizs';
 import { sessionsMock } from '../fixtures/sessions';
 
 export const roadmapHandler = [
@@ -62,6 +61,6 @@ export const roadmapHandler = [
       params: { sessionId, keywordId },
     } = req;
 
-    return res(ctx.status(200), ctx.json(quizMock[Number(keywordId)]));
+    return res(ctx.status(200), ctx.json(quizMock.findQuiz(Number(keywordId))));
   }),
 ];
