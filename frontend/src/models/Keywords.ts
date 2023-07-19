@@ -23,7 +23,7 @@ export interface KeywordResponse {
   keywordId: number;
   order: number;
   importance: number;
-  parentKeywordId: number;
+  parentKeywordId: number | null;
   description: string;
   childrenKeywords: KeywordResponse[] | null;
 }
