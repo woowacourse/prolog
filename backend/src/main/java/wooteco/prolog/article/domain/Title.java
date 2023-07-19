@@ -1,5 +1,7 @@
 package wooteco.prolog.article.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.ARTICLE_TITLE_NULL_OR_EMPTY_EXCEPTION;
+
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -8,8 +10,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import wooteco.prolog.article.exception.ArticleTitleNullOrEmptyException;
-import wooteco.prolog.article.exception.ArticleTitleOverLengthException;
+import wooteco.prolog.common.exception.BadRequestCode;
+import wooteco.prolog.common.exception.BadRequestException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,19 +39,19 @@ public class Title {
 
     private void validateNull(String title) {
         if (Objects.isNull(title)) {
-            throw new ArticleTitleNullOrEmptyException();
+            throw new BadRequestException(ARTICLE_TITLE_NULL_OR_EMPTY_EXCEPTION);
         }
     }
 
     private void validateEmpty(String title) {
         if (title.isEmpty()) {
-            throw new ArticleTitleNullOrEmptyException();
+            throw new BadRequestException(ARTICLE_TITLE_NULL_OR_EMPTY_EXCEPTION);
         }
     }
 
     private void validateOnlyBlank(String title) {
         if (title.trim().isEmpty()) {
-            throw new ArticleTitleNullOrEmptyException();
+            throw new BadRequestException(ARTICLE_TITLE_NULL_OR_EMPTY_EXCEPTION);
         }
     }
 

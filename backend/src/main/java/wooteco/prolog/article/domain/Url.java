@@ -1,5 +1,7 @@
 package wooteco.prolog.article.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.ARTICLE_URL_OVER_LENGTH_EXCEPTION;
+
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -8,8 +10,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import wooteco.prolog.article.exception.ArticleUrlNullOrEmptyException;
-import wooteco.prolog.article.exception.ArticleUrlOverLengthException;
+import wooteco.prolog.common.exception.BadRequestCode;
+import wooteco.prolog.common.exception.BadRequestException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,25 +39,25 @@ public class Url {
 
     private void validateNull(String url) {
         if (Objects.isNull(url)) {
-            throw new ArticleUrlNullOrEmptyException();
+            throw new BadRequestException(BadRequestCode.ARTICLE_URL_NULL_OR_EMPTY_EXCEPTION);
         }
     }
 
     private void validateEmpty(String url) {
         if (url.isEmpty()) {
-            throw new ArticleUrlNullOrEmptyException();
+            throw new BadRequestException(BadRequestCode.ARTICLE_URL_NULL_OR_EMPTY_EXCEPTION);
         }
     }
 
     private void validateOnlyBlank(String url) {
         if (url.trim().isEmpty()) {
-            throw new ArticleUrlNullOrEmptyException();
+            throw new BadRequestException(BadRequestCode.ARTICLE_URL_NULL_OR_EMPTY_EXCEPTION);
         }
     }
 
     private void validateMaxLength(String url) {
         if (url.length() > MAX_LENGTH) {
-            throw new ArticleUrlOverLengthException();
+            throw new BadRequestException(ARTICLE_URL_OVER_LENGTH_EXCEPTION);
         }
     }
 }

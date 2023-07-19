@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.article.domain.repository.ArticleRepository;
-import wooteco.prolog.article.exception.ArticleNotFoundException;
 import wooteco.prolog.article.ui.ArticleRequest;
 import wooteco.prolog.article.ui.ArticleResponse;
 import wooteco.prolog.login.ui.LoginMember;
@@ -51,7 +50,7 @@ public class ArticleService {
     @Transactional
     public void delete(final Long id, final LoginMember loginMember) {
         final Article article = articleRepository.findById(id)
-            .orElseThrow(ArticleNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(BadRequestCode.ARTICLE_NOT_FOUND_EXCEPTION));
 
         final Member member = memberService.findById(loginMember.getId());
         article.validateOwner(member);

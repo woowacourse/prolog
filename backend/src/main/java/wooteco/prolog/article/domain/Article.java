@@ -37,7 +37,7 @@ public class Article {
 
     @Embedded
     private Url url;
-    
+
     @CreatedDate
     private LocalDateTime createdAt;
 
