@@ -1,44 +1,57 @@
-import { EssayAnswerRequest, EssayEditRequest } from "../models/EssayAnswers";
-import { AxiosPromise, AxiosResponse } from "axios";
-import { Quiz } from "../models/Keywords";
-import { createAxiosInstance } from "../utils/axiosInstance";
+import { AxiosPromise, AxiosResponse } from 'axios';
+import { client } from '.';
+import { EssayAnswerListRequest, EssayAnswerRequest, EssayEditRequest } from '../models/EssayAnswers';
+import { Quiz } from '../models/Keywords';
 
-import LOCAL_STORAGE_KEY from "../constants/localStorage";
+export const requestGetEssayAnswers = async (params: EssayAnswerListRequest) => {
+  const {
+    quizIds,
+    memberIds,
+    ...otherParams
+  } = params;
 
-const anyoneInstance = createAxiosInstance();
-const loggedInUserInstance = createAxiosInstance({
-  accessToken: localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN) ?? '',
-});
+  const axiosParams: Omit<EssayAnswerListRequest, 'quizIds' | 'memberIds'> & {
+    quizIds?: string;
+    memberIds?: string;
+  } = { ...otherParams };
 
-export const createNewEssayAnswerRequest = (body: EssayAnswerRequest) => (
-  loggedInUserInstance.post(`/essay-answers`, body)
-);
+  if (quizIds) axiosParams.quizIds = '[' + quizIds.join(',') + ']';
+  if (memberIds) axiosParams.memberIds = '[' + memberIds.join(',') + ']';
 
-export const requestGetEssayAnswer = async (essayAnswerId) => {
-  const { data } = await anyoneInstance.get(`/essay-answers/${essayAnswerId}`);
-  return data
+  const { data } = await client.get('/essay-answers', {
+    params: axiosParams,
+  });
+
+  return data;
+};
+
+export const createNewEssayAnswerRequest = (body: EssayAnswerRequest) =>
+  client.post(`/essay-answers`, body);
+
+export const requestGetEssayAnswer = async (essayAnswerId: number) => {
+  const { data } = await client.get(`/essay-answers/${essayAnswerId}`);
+  return data;
 };
 
 export const requestEditEssayAnswer = async (essayAnswerId: number, body: EssayEditRequest) => {
-  await loggedInUserInstance.patch(`/essay-answers/${essayAnswerId}`, body);
+  await client.patch(`/essay-answers/${essayAnswerId}`, body);
 };
 
-export const requestDeleteEssayAnswer = async (essayAnswerId) => {
-  await loggedInUserInstance.delete(`/essay-answers/${essayAnswerId}`);
+export const requestDeleteEssayAnswer = async (essayAnswerId: number) => {
+  await client.delete(`/essay-answers/${essayAnswerId}`);
 };
 
-export const requestGetEssayAnswerList = async (quizId) => {
-  const { data } = await anyoneInstance.get(`/quizzes/${quizId}/essay-answers`);
+export const requestGetQuizAnswers = async (quizId: number) => {
+  const { data } = await client.get(`/quizzes/${quizId}/essay-answers`);
 
   return data;
 };
 
-export const requestGetQuizAsync = async (quizId) => {
-  const { data } = await anyoneInstance.get(`/quizzes/${quizId}`);
+export const requestGetQuizAsync = async (quizId: number) => {
+  const { data } = await client.get(`/quizzes/${quizId}`);
 
   return data;
 };
 
-export const requestGetQuiz = (quizId: Number): AxiosPromise<AxiosResponse<Quiz>> => (
-  anyoneInstance.get<AxiosResponse<Quiz>>(`/quizzes/${quizId}`)
-);
+export const requestGetQuiz = (quizId: Number): AxiosPromise<AxiosResponse<Quiz>> =>
+  client.get<AxiosResponse<Quiz>>(`/quizzes/${quizId}`);

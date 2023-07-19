@@ -1,22 +1,27 @@
 import { PATH, PROFILE_PAGE_MENU } from './constants';
 import {
+  EditEssayAnswerPage,
   EditStudylogPage,
+  EssayAnswerListPage,
+  EssayAnswerPage,
   LoginCallbackPage,
   MainPage,
-  NewStudylogPage,
-  StudylogPage,
-  ProfilePage,
-  ProfilePageStudylogs,
-  ProfilePageScraps,
-  StudylogListPage,
-  RoadmapPage,
   NewEssayAnswerPage,
-  EssayAnswerPage,
-  EssayAnswerListPage,
-  EditEssayAnswerPage
+  NewStudylogPage,
+  ProfilePage,
+  ProfilePageScraps,
+  ProfilePageStudylogs,
+  QuizAnswerListPage,
+  RoadmapPage,
+  StudylogListPage,
+  StudylogPage,
 } from './pages';
 
 const pageRoutes = [
+  {
+    path: '/essay-answers',
+    render: () => <EssayAnswerListPage />,
+  },
   {
     path: [PATH.ROADMAP],
     render: () => <RoadmapPage />,
@@ -25,13 +30,18 @@ const pageRoutes = [
     path: [PATH.ROOT],
     render: () => <MainPage />,
   },
-
   {
     path: [PATH.LOGIN_CALLBACK],
     render: () => <LoginCallbackPage />,
   },
-  { path: [PATH.STUDYLOG], render: () => <StudylogListPage /> },
-  { path: [PATH.NEW_STUDYLOG], render: () => <NewStudylogPage /> },
+  {
+    path: [PATH.STUDYLOG],
+    render: () => <StudylogListPage />,
+  },
+  {
+    path: [PATH.NEW_STUDYLOG],
+    render: () => <NewStudylogPage />,
+  },
   {
     path: [`${PATH.STUDYLOG}/:id`],
     render: () => <StudylogPage />,
@@ -70,12 +80,12 @@ const pageRoutes = [
   },
   {
     path: [PATH.ESSAY_ANSWER_LIST],
-    render: () => <EssayAnswerListPage />,
+    render: () => <QuizAnswerListPage />,
   },
   {
     path: '/essay-answers/:id/edit',
     render: () => <EditEssayAnswerPage />,
-  }
+  },
 ];
 
 export default pageRoutes;
