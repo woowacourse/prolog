@@ -57,7 +57,7 @@ public class Title {
 
     private void validateMaxLength(String title) {
         if (title.length() > MAX_LENGTH) {
-            throw new ArticleTitleOverLengthException();
+            throw new BadRequestException(BadRequestCode.ARTICLE_TITLE_OVER_LENGTH_EXCEPTION);
         }
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.article.domain.repository.ArticleRepository;
 import wooteco.prolog.article.ui.ArticleRequest;
 import wooteco.prolog.article.ui.ArticleResponse;
+import wooteco.prolog.common.exception.BadRequestCode;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
@@ -39,7 +41,7 @@ public class ArticleService {
     public void update(final Long id, final ArticleRequest articleRequest,
                        final LoginMember loginMember) {
         final Article article = articleRepository.findById(id)
-            .orElseThrow(ArticleNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(BadRequestCode.ARTICLE_NOT_FOUND_EXCEPTION));
 
         final Member member = memberService.findById(loginMember.getId());
         article.validateOwner(member);
