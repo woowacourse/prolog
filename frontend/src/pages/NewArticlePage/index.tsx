@@ -17,7 +17,7 @@ import { PATH } from '../../constants';
 const NewArticlePage = () => {
   const [articleContent, setArticleContent] = useState<ArticleRequest>({
     title: '',
-    link: '',
+    url: '',
   });
 
   const history = useHistory();
@@ -28,8 +28,8 @@ const NewArticlePage = () => {
     setArticleContent({ ...articleContent, title: e.target.value });
   };
 
-  const onArticleLinkChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setArticleContent({ ...articleContent, link: e.target.value });
+  const onArticleUrlChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setArticleContent({ ...articleContent, url: e.target.value });
   };
 
   const createArticle = () => {
@@ -51,9 +51,9 @@ const NewArticlePage = () => {
       <InputContainer>
         <Label>링크</Label>
         <Input
-          value={articleContent.link}
+          value={articleContent.url}
           placeholder="링크를 입력해주세요."
-          onChange={onArticleLinkChanged}
+          onChange={onArticleUrlChanged}
         />
       </InputContainer>
       <Button type="button" size="X_SMALL" css={[SubmitButtonStyle]} onClick={createArticle}>
