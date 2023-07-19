@@ -31,14 +31,14 @@ public class StudylogOverviewDocumentation extends NewDocumentation {
     void 유저의_태그를_조회한다() {
         //given
         given(memberTagService.findByMember(any()))
-                .willReturn(MEMBER_TAB_RESPONSES);
+            .willReturn(MEMBER_TAB_RESPONSES);
 
         //when
         ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/members/{username}/tags", GithubResponses.브라운.getLogin())
-                .then().log().all();
+            .header("Authorization", "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().get("/members/{username}/tags", GithubResponses.브라운.getLogin())
+            .then().log().all();
 
         //then
         response.expect(status().isOk());
@@ -51,16 +51,16 @@ public class StudylogOverviewDocumentation extends NewDocumentation {
     void 유저의_달력_스터디로그를_조회한다() {
         //given
         given(studylogService.findCalendarStudylogs(any(), any()))
-                .willReturn(CALENDER_STUDYLOG_RESPONSES);
+            .willReturn(CALENDER_STUDYLOG_RESPONSES);
 
         //when
         ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .param("year", 2021)
-                .param("month", 8)
-                .when().get("/members/{username}/calendar-studylogs", GithubResponses.브라운.getLogin())
-                .then().log().all();
+            .header("Authorization", "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .param("year", 2021)
+            .param("month", 8)
+            .when().get("/members/{username}/calendar-studylogs", GithubResponses.브라운.getLogin())
+            .then().log().all();
 
         //then
         response.expect(status().isOk());

@@ -1,7 +1,6 @@
 package wooteco.prolog.common.exception;
 
 import static wooteco.prolog.common.slacklogger.SlackAlarmErrorLevel.ERROR;
-import static wooteco.prolog.common.slacklogger.SlackAlarmErrorLevel.WARN;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -10,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.testcontainers.shaded.org.bouncycastle.math.ec.ECAlgorithms;
 import wooteco.prolog.common.slacklogger.SlackAlarm;
 
 @Slf4j
@@ -26,7 +24,8 @@ public class ExceptionController {
 
     @SlackAlarm(level = ERROR)
     @ExceptionHandler(ElasticsearchCustomException.class)
-    public ResponseEntity<ExceptionDto> elasticsearchCustomExceptionHandler(ElasticsearchCustomException e) {
+    public ResponseEntity<ExceptionDto> elasticsearchCustomExceptionHandler(
+        ElasticsearchCustomException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(new ExceptionDto(500, "알 수 없는 에러"));

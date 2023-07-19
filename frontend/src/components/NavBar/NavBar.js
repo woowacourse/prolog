@@ -15,11 +15,16 @@ import Button from '../Button/Button';
 import GithubLogin from '../GithubLogin/GithubLogin';
 import { DropdownMenu } from '../index';
 import {
-  Container, DropdownStyle, loginButtonStyle, Logo,
-  Menu, Navigation, pencilButtonStyle,
-  profileButtonStyle, Wrapper
+  Container,
+  DropdownStyle,
+  loginButtonStyle,
+  Logo,
+  Menu,
+  Navigation,
+  pencilButtonStyle,
+  profileButtonStyle,
+  Wrapper,
 } from './NavBar.styles';
-
 
 const navigationConfig = [
   {
@@ -34,6 +39,10 @@ const navigationConfig = [
     path: PATH.ROADMAP,
     title: '로드맵',
   },
+  {
+    path: PATH.ARTICLE,
+    title: '아티클',
+  },
 ];
 
 const NavBar = () => {
@@ -46,7 +55,7 @@ const NavBar = () => {
 
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const [isWritingDropdownToggled, setWritingDropdownToggled] = useState(false);
-  const { isXs } = useScreenMediaQuery();
+  const { isSm } = useScreenMediaQuery();
 
   const goMain = () => {
     history.push(PATH.ROOT);
@@ -84,7 +93,7 @@ const NavBar = () => {
     >
       <Wrapper>
         <Logo onClick={goMain} role="link" aria-label="프롤로그 홈으로 이동하기">
-          <img src={isXs ? MobileLogo : LogoImage} alt="" />
+          <img src={isSm ? MobileLogo : LogoImage} alt="" />
           {!isProd && <span>{logoTag}</span>}
         </Logo>
         <Menu role="menu">
@@ -114,26 +123,6 @@ const NavBar = () => {
                   cssProps={pencilButtonStyle}
                 />
               </Link>
-              {/* {isWritingDropdownToggled && (
-                <DropdownMenu cssProps={WritingDropdownStyle}>
-                  <ul onClick={onSelectMenu}>
-                    {[
-                      {
-                        menu: '학습로그',
-                        path: PATH.NEW_STUDYLOG,
-                      },
-                      {
-                        menu: '레벨로그',
-                        path: PATH.NEW_LEVELLOG,
-                      },
-                    ].map(({ menu, path }) => (
-                      <li key={menu}>
-                        <Link to={path}>{menu}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                </DropdownMenu>
-              )} */}
               <Button
                 size="XX_SMALL"
                 type="button"

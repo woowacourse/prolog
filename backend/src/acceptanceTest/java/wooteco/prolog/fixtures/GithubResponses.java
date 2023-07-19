@@ -19,12 +19,12 @@ public enum GithubResponses {
     수달("7", "access_token_7", "수달", "her0807", "777777",
         "https://avatars.githubusercontent.com/u/26570275?v=4");
 
-    private String code;
-    private String accessToken;
-    private String name;
-    private String login;
-    private String id;
-    private String avatarUrl;
+    private final String code;
+    private final String accessToken;
+    private final String name;
+    private final String login;
+    private final String id;
+    private final String avatarUrl;
 
     GithubResponses(String code, String accessToken, String name, String login, String id,
                     String avatarUrl) {

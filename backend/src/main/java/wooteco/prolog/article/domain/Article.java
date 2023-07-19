@@ -15,7 +15,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import wooteco.prolog.article.exception.InvalidArticleAuthorException;
+import wooteco.prolog.common.exception.BadRequestCode;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
 
 @Entity
@@ -37,7 +38,7 @@ public class Article {
 
     @Embedded
     private Url url;
-    
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -49,7 +50,7 @@ public class Article {
 
     public void validateOwner(final Member member) {
         if (!member.equals(this.member)) {
-            throw new InvalidArticleAuthorException();
+            throw new BadRequestException(BadRequestCode.INVALID_ARTICLE_AUTHOR_EXCEPTION);
         }
     }
 

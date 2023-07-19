@@ -10,8 +10,8 @@ public enum TagAcceptanceFixture {
     TAG5(5L, "자료구조"),
     TAG6(6L, "알고리즘");
 
-    private Long tagId;
-    private TagRequest tagRequest;
+    private final Long tagId;
+    private final TagRequest tagRequest;
 
     TagAcceptanceFixture(Long id, String name) {
         this.tagId = id;

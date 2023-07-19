@@ -28,15 +28,15 @@ public class LoginDocumentation extends NewDocumentation {
     void 토큰을_생성한다() {
         //given
         given(loginService.createToken(any()))
-                .willReturn(TokenResponse.of(accessToken));
+            .willReturn(TokenResponse.of(accessToken));
 
         //when
         TokenRequest params = new TokenRequest(GithubResponses.소롱.getCode());
         ValidatableMockMvcResponse response = given
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(params)
-                .when().post("/login/token")
-                .then().log().all();
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(params)
+            .when().post("/login/token")
+            .then().log().all();
 
         //then
         response.expect(status().isOk());

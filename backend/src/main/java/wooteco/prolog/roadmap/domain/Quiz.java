@@ -1,5 +1,7 @@
 package wooteco.prolog.roadmap.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_QUIZ_NOT_FOUND_EXCEPTION;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.roadmap.exception.QuizNotFoundException;
+import wooteco.prolog.common.exception.BadRequestException;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -39,7 +41,7 @@ public class Quiz {
 
     public void update(String question) {
         if (question.isEmpty()) {
-            throw new QuizNotFoundException();
+            throw new BadRequestException(ROADMAP_QUIZ_NOT_FOUND_EXCEPTION);
         }
         this.question = question;
     }

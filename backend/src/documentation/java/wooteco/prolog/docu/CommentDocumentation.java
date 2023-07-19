@@ -30,11 +30,11 @@ public class CommentDocumentation extends NewDocumentation {
         //given, when
         CommentCreateRequest params = new CommentCreateRequest(COMMENT);
         ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .body(params)
-                .when().post("/studylogs/{studylogId}/comments", 1L)
-                .then().log().all();
+            .header("Authorization", "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+            .body(params)
+            .when().post("/studylogs/{studylogId}/comments", 1L)
+            .then().log().all();
 
         //then
         response.expect(status().isCreated());
@@ -48,14 +48,14 @@ public class CommentDocumentation extends NewDocumentation {
     void 단일_스터디로그에_대한_댓글을_조회한다() {
         //given
         given(commentService.findComments(any()))
-                .willReturn(COMMENTS_RESPONSE);
+            .willReturn(COMMENTS_RESPONSE);
 
         //when
         ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/studylogs/{studylogId}/comments", 1L)
-                .then().log().all();
+            .header("Authorization", "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().get("/studylogs/{studylogId}/comments", 1L)
+            .then().log().all();
 
         //then
         response.expect(status().isOk());
@@ -69,11 +69,11 @@ public class CommentDocumentation extends NewDocumentation {
         //given, when
         CommentChangeRequest params = new CommentChangeRequest("수정된 댓글의 내용입니다.");
         ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .body(params)
-                .when().put("/studylogs/{studylogId}/comments/{commentId}", 1L, 1L)
-                .then().log().all();
+            .header("Authorization", "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+            .body(params)
+            .when().put("/studylogs/{studylogId}/comments/{commentId}", 1L, 1L)
+            .then().log().all();
 
         //then
         response.expect(status().isNoContent());
@@ -86,10 +86,10 @@ public class CommentDocumentation extends NewDocumentation {
     void 댓글을_삭제한다() {
         //given, when
         ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .when().delete("/studylogs/{studylogId}/comments/{commentId}", 1L, 1L)
-                .then().log().all();
+            .header("Authorization", "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+            .when().delete("/studylogs/{studylogId}/comments/{commentId}", 1L, 1L)
+            .then().log().all();
 
         //then
         response.expect(status().isNoContent());

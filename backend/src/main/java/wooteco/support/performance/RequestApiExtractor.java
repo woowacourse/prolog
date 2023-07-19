@@ -29,9 +29,9 @@ public class RequestApiExtractor {
         final MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
 
         final Optional<AnnotationDataExtractor> extractor = dataExtractors.stream()
-                .filter(annotationDataExtractor -> annotationDataExtractor
-                        .isAssignable(methodSignature.getMethod()))
-                .findAny();
+            .filter(annotationDataExtractor -> annotationDataExtractor
+                .isAssignable(methodSignature.getMethod()))
+            .findAny();
 
         if (!extractor.isPresent()) {
             return new RequestApi();
@@ -44,8 +44,8 @@ public class RequestApiExtractor {
         if (targetClass.isAnnotationPresent(RequestMapping.class)) {
             final RequestMapping requestMapping = targetClass.getAnnotation(RequestMapping.class);
             return Arrays.stream(requestMapping.value())
-                    .findAny()
-                    .orElseGet(() -> Arrays.stream(requestMapping.path()).findAny().orElse(""));
+                .findAny()
+                .orElseGet(() -> Arrays.stream(requestMapping.path()).findAny().orElse(""));
         }
         return "";
     }

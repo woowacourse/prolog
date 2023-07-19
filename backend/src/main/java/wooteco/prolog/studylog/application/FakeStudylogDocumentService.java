@@ -7,7 +7,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -29,11 +28,14 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
     }
 
     @Override
-    public StudylogDocumentResponse findBySearchKeyword(String keyword, List<Long> tags, List<Long> missions,
+    public StudylogDocumentResponse findBySearchKeyword(String keyword, List<Long> tags,
+                                                        List<Long> missions,
                                                         List<Long> sessions, List<String> usernames,
-                                                        LocalDate start, LocalDate end, Pageable pageable) {
+                                                        LocalDate start, LocalDate end,
+                                                        Pageable pageable) {
         final Page<Studylog> studylogs = studylogRepository.findAll(
-            makeSpecifications(keyword.toLowerCase(), tags, missions, sessions, usernames, start, end), pageable);
+            makeSpecifications(keyword.toLowerCase(), tags, missions, sessions, usernames, start,
+                end), pageable);
 
         final List<Long> studylogIds = studylogs.stream()
             .map(Studylog::getId)
@@ -45,7 +47,8 @@ public class FakeStudylogDocumentService extends AbstractStudylogDocumentService
             studylogs.getNumber());
     }
 
-    private Specification<Studylog> makeSpecifications(String keyword, List<Long> tags, List<Long> missions,
+    private Specification<Studylog> makeSpecifications(String keyword, List<Long> tags,
+                                                       List<Long> missions,
                                                        List<Long> sessions, List<String> usernames,
                                                        LocalDate start, LocalDate end
     ) {

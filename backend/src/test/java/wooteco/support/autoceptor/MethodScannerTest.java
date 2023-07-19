@@ -1,20 +1,19 @@
 package wooteco.support.autoceptor;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import wooteco.prolog.login.domain.AuthMemberPrincipal;
-import wooteco.support.autoceptor.scanner.MethodScanner;
-import wooteco.support.autoceptor.test_classes.ControllerClass;
-import wooteco.support.autoceptor.test_classes.RestControllerClass;
+import static java.util.stream.Collectors.toList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import wooteco.prolog.login.domain.AuthMemberPrincipal;
+import wooteco.support.autoceptor.scanner.MethodScanner;
+import wooteco.support.autoceptor.test_classes.ControllerClass;
+import wooteco.support.autoceptor.test_classes.RestControllerClass;
 
 class MethodScannerTest {
 

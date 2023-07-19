@@ -1,20 +1,5 @@
 package wooteco.prolog.roadmap.application;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import wooteco.prolog.roadmap.application.dto.CurriculumRequest;
-import wooteco.prolog.roadmap.application.dto.CurriculumResponses;
-import wooteco.prolog.roadmap.domain.Curriculum;
-import wooteco.prolog.roadmap.domain.repository.CurriculumRepository;
-import wooteco.prolog.roadmap.exception.CurriculumNotFoundException;
-
-import java.util.Arrays;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -22,9 +7,25 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static wooteco.prolog.common.exception.BadRequestCode.CURRICULUM_NOT_FOUND_EXCEPTION;
+
+import java.util.Arrays;
+import java.util.Optional;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import wooteco.prolog.common.exception.BadRequestException;
+import wooteco.prolog.roadmap.application.dto.CurriculumRequest;
+import wooteco.prolog.roadmap.application.dto.CurriculumResponses;
+import wooteco.prolog.roadmap.domain.Curriculum;
+import wooteco.prolog.roadmap.domain.repository.CurriculumRepository;
 
 @ExtendWith(MockitoExtension.class)
 class CurriculumServiceTest {
+
     @InjectMocks
     private CurriculumService curriculumService;
 
@@ -74,7 +75,8 @@ class CurriculumServiceTest {
 
         //when, then
         assertThatThrownBy(() -> curriculumService.update(1L, noImpactRequest))
-            .isInstanceOf(CurriculumNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(CURRICULUM_NOT_FOUND_EXCEPTION.getMessage());
     }
 
     @DisplayName("요청한 Id 를 가진 커리큘럼이 있으면 새로운 이름으로 업데이트 한다.")
@@ -104,7 +106,8 @@ class CurriculumServiceTest {
 
         //when, then
         assertThatThrownBy(() -> curriculumService.delete(1L))
-            .isInstanceOf(CurriculumNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(CURRICULUM_NOT_FOUND_EXCEPTION.getMessage());
     }
 
     @DisplayName("요청한 Id 를 가진 커리큘럼이 있으면 삭제한다.")
@@ -115,7 +118,6 @@ class CurriculumServiceTest {
 
         given(curriculumRepository.findById(anyLong()))
             .willReturn(Optional.of(curriculum));
-
 
         //when
         curriculumService.delete(1L);

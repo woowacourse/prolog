@@ -62,7 +62,8 @@ public class ExceptionAppender {
     private boolean validateHasOneArgument(Object[] args) {
         if (args.length != 1) {
             log.warn(String
-                .format(SLACK_ALARM_FORMAT, "ambiguous exceptions! require just only one Exception"));
+                .format(SLACK_ALARM_FORMAT,
+                    "ambiguous exceptions! require just only one Exception"));
             return false;
         }
 

@@ -1,5 +1,7 @@
 package wooteco.prolog.roadmap.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.CURRICULUM_INVALID_EXCEPTION;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +10,7 @@ import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.roadmap.exception.CurriculumInvalidException;
+import wooteco.prolog.common.exception.BadRequestException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -34,7 +36,7 @@ public class Curriculum {
 
     private void validateName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            throw new CurriculumInvalidException();
+            throw new BadRequestException(CURRICULUM_INVALID_EXCEPTION);
         }
     }
 

@@ -23,7 +23,8 @@ public class NewSessionController {
     private final NewSessionService sessionService;
 
     @PostMapping
-    public ResponseEntity<Void> createSession(@PathVariable Long curriculumId, @RequestBody SessionRequest request) {
+    public ResponseEntity<Void> createSession(@PathVariable Long curriculumId,
+                                              @RequestBody SessionRequest request) {
         Long sessionId = sessionService.createSession(curriculumId, request);
 
         return ResponseEntity.created(URI.create("/sessions/" + sessionId)).build();
