@@ -18,7 +18,7 @@ public class FilterStepDefinitions extends AcceptanceSteps {
     public void nickname을기준으로멤버데이터들을오름차순정렬하여반환한다() {
         assertThat(context.response.statusCode()).isEqualTo(HttpStatus.OK.value());
         assertThat(context.response.body().jsonPath().getList("members"))
-                .extracting("nickname")
-                .containsExactly("브라운", "서니", "현구막");
+            .extracting("nickname")
+            .containsExactly("브라운", "서니", "현구막");
     }
 }

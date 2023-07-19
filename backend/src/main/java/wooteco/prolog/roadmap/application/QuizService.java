@@ -1,9 +1,13 @@
 package wooteco.prolog.roadmap.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_ORDER_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_QUIZ_NOT_FOUND_EXCEPTION;
+
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.roadmap.application.dto.QuizRequest;
 import wooteco.prolog.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.roadmap.application.dto.QuizzesResponse;
@@ -11,8 +15,6 @@ import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.Quiz;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.roadmap.domain.repository.QuizRepository;
-import wooteco.prolog.roadmap.exception.KeywordOrderException;
-import wooteco.prolog.roadmap.exception.QuizNotFoundException;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,7 +27,7 @@ public class QuizService {
     @Transactional
     public Long createQuiz(Long keywordId, QuizRequest quizRequest) {
         final Keyword keyword = keywordRepository.findById(keywordId)
-            .orElseThrow(KeywordOrderException::new);
+            .orElseThrow(() -> new BadRequestException(ROADMAP_KEYWORD_ORDER_EXCEPTION));
         final Quiz quiz = quizRepository.save(new Quiz(keyword, quizRequest.getQuestion()));
         return quiz.getId();
     }
@@ -37,20 +39,22 @@ public class QuizService {
 
     @Transactional
     public void updateQuiz(Long quizId, QuizRequest quizRequest) {
-        final Quiz quiz = quizRepository.findById(quizId).orElseThrow(QuizNotFoundException::new);
+        final Quiz quiz = quizRepository.findById(quizId)
+            .orElseThrow(() -> new BadRequestException(ROADMAP_QUIZ_NOT_FOUND_EXCEPTION));
         quiz.update(quizRequest.getQuestion());
     }
 
     @Transactional
     public void deleteQuiz(Long quizId) {
         if (!quizRepository.existsById(quizId)) {
-            throw new QuizNotFoundException();
+            throw new BadRequestException(ROADMAP_QUIZ_NOT_FOUND_EXCEPTION);
         }
         quizRepository.deleteById(quizId);
     }
 
     public QuizResponse findById(Long quizId) {
-        final Quiz quiz = quizRepository.findById(quizId).orElseThrow(QuizNotFoundException::new);
+        final Quiz quiz = quizRepository.findById(quizId)
+            .orElseThrow(() -> new BadRequestException(ROADMAP_QUIZ_NOT_FOUND_EXCEPTION));
         return QuizResponse.of(quiz);
     }
 }

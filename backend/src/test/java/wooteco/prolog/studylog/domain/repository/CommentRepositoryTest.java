@@ -1,5 +1,10 @@
 package wooteco.prolog.studylog.domain.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,12 +20,6 @@ import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.studylog.domain.Comment;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.support.utils.RepositoryTest;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RepositoryTest
 class CommentRepositoryTest {

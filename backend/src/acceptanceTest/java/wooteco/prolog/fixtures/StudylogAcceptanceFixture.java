@@ -116,7 +116,8 @@ public enum StudylogAcceptanceFixture {
         List<TagRequest> tagRequests = Arrays.stream(tags)
             .map(TagAcceptanceFixture::getTagRequest)
             .collect(toList());
-        this.studylogRequest = new StudylogRequest(title, content, sessionId, missionId, tagRequests);
+        this.studylogRequest = new StudylogRequest(title, content, sessionId, missionId,
+            tagRequests);
     }
 
     public static List<StudylogRequest> findByMissionNumber(Long missionId) {

@@ -1,5 +1,8 @@
 package wooteco.prolog.member.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_MEMBER_TAG;
+import static wooteco.prolog.common.exception.BadRequestCode.NOT_EXISTS_MEMBER_TAG;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,8 +12,7 @@ import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.member.exception.DuplicateMemberTagException;
-import wooteco.prolog.member.exception.NotExistsMemberTag;
+import wooteco.prolog.common.exception.BadRequestException;
 
 @Getter
 @Embeddable
@@ -23,7 +25,10 @@ public class MemberTags {
     public MemberTags(List<MemberTag> values) {
         final int originalSize = values.size();
         final long count = values.stream().distinct().count();
-        if(originalSize != count) throw new DuplicateMemberTagException();
+        if (originalSize != count) {
+            throw new BadRequestException(DUPLICATE_MEMBER_TAG);
+        }
+
         this.values = values;
     }
 
@@ -50,7 +55,8 @@ public class MemberTags {
 
     private void remove(MemberTag memberTag) {
         final MemberTag foundMemberTag =
-                findMemberTag(memberTag).orElseThrow(NotExistsMemberTag::new);
+            findMemberTag(memberTag)
+                .orElseThrow(() -> new BadRequestException(NOT_EXISTS_MEMBER_TAG));
 
         if (foundMemberTag.hasOnlyOne()) {
             values.remove(foundMemberTag);
@@ -61,8 +67,8 @@ public class MemberTags {
 
     private Optional<MemberTag> findMemberTag(MemberTag memberTag) {
         return values.stream()
-                .filter(value -> value.isSame(memberTag))
-                .findAny();
+            .filter(value -> value.isSame(memberTag))
+            .findAny();
     }
 
     public void updateTags(List<MemberTag> originalMemberTag, List<MemberTag> newMemberTag) {

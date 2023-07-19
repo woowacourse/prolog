@@ -41,7 +41,8 @@ public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
             RestClient.builder(new HttpHost(host, port, "http"))
                 .setHttpClientConfigCallback(httpClientBuilder -> {
                     httpClientBuilder.disableAuthCaching();
-                    return httpClientBuilder.setDefaultCredentialsProvider(basicCredentialsProvider);
+                    return httpClientBuilder.setDefaultCredentialsProvider(
+                        basicCredentialsProvider);
                 })
         );
     }

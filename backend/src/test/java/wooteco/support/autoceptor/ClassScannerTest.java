@@ -1,15 +1,14 @@
 package wooteco.support.autoceptor;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.support.autoceptor.scanner.ClassScanner;
 import wooteco.support.autoceptor.test_classes.ControllerClass;
 import wooteco.support.autoceptor.test_classes.NormalClass;
 import wooteco.support.autoceptor.test_classes.RestControllerClass;
-
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class ClassScannerTest {
 

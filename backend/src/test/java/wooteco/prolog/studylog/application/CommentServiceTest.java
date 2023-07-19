@@ -5,6 +5,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static wooteco.prolog.common.exception.BadRequestCode.COMMENT_NOT_FOUND;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_FOUND;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,10 +19,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.member.exception.MemberNotFoundException;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.application.dto.CommentMemberResponse;
@@ -32,8 +35,6 @@ import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.domain.repository.CommentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.studylog.exception.CommentNotFoundException;
-import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
@@ -83,7 +84,8 @@ class CommentServiceTest {
         //when
         //then
         assertThatThrownBy(() -> commentService.insertComment(댓글_저장_요청))
-            .isInstanceOf(MemberNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(MEMBER_NOT_FOUND.getMessage());
     }
 
     @DisplayName("댓글을 저장할 때 스터디 로그가 존재하지 않으면 예외가 발생한다.")
@@ -99,7 +101,8 @@ class CommentServiceTest {
         //when
         //then
         assertThatThrownBy(() -> commentService.insertComment(댓글_저장_요청))
-            .isInstanceOf(StudylogNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(STUDYLOG_NOT_FOUND.getMessage());
     }
 
     @DisplayName("특정 스터디 로그의 모든 댓글을 조회한다.")
@@ -151,7 +154,8 @@ class CommentServiceTest {
         //when
         //then
         assertThatThrownBy(() -> commentService.findComments(1L))
-            .isInstanceOf(StudylogNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(STUDYLOG_NOT_FOUND.getMessage());
     }
 
     @DisplayName("특정 학습로그의 특정 멤버의 댓글이 수정될 시 댓글의 아이디를 반환한다.")
@@ -193,7 +197,8 @@ class CommentServiceTest {
         //when
         //then
         assertThatThrownBy(() -> commentService.updateComment(commentUpdateRequest))
-            .isInstanceOf(MemberNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(MEMBER_NOT_FOUND.getMessage());
     }
 
     @DisplayName("수정하려는 댓글의 학습로그가 존재하지 않으면 예외가 발생한다.")
@@ -209,7 +214,8 @@ class CommentServiceTest {
         //when
         //then
         assertThatThrownBy(() -> commentService.updateComment(commentUpdateRequest))
-            .isInstanceOf(StudylogNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(STUDYLOG_NOT_FOUND.getMessage());
     }
 
     @DisplayName("수정하려는 댓글이 존재하지 않으면 예외가 발생한다.")
@@ -226,7 +232,8 @@ class CommentServiceTest {
         //when
         //then
         assertThatThrownBy(() -> commentService.updateComment(commentUpdateRequest))
-            .isInstanceOf(CommentNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(COMMENT_NOT_FOUND.getMessage());
     }
 
     @DisplayName("특정 학습로그의 특정 멤버의 댓글을 삭제시 댓글의 삭제 상태를 true로 업데이트한다.")
@@ -261,7 +268,8 @@ class CommentServiceTest {
         //when
         //then
         assertThatThrownBy(() -> commentService.deleteComment(1L, 1L, 1L))
-            .isInstanceOf(MemberNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(MEMBER_NOT_FOUND.getMessage());
     }
 
     @DisplayName("삭제하려는 댓글의 학습로그가 존재하지 않으면 예외가 발생한다.")
@@ -274,7 +282,8 @@ class CommentServiceTest {
         //when
         //then
         assertThatThrownBy(() -> commentService.deleteComment(1L, 1L, 1L))
-            .isInstanceOf(StudylogNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(STUDYLOG_NOT_FOUND.getMessage());
     }
 
     @DisplayName("삭제하려는 댓글이 존재하지 않으면 예외가 발생한다.")
@@ -288,6 +297,7 @@ class CommentServiceTest {
         //when
         //then
         assertThatThrownBy(() -> commentService.deleteComment(1L, 1L, 1L))
-            .isInstanceOf(CommentNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(COMMENT_NOT_FOUND.getMessage());
     }
 }

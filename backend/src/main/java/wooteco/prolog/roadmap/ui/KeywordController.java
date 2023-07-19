@@ -30,7 +30,8 @@ public class KeywordController {
     public ResponseEntity<Void> createKeyword(@PathVariable Long sessionId,
                                               @RequestBody KeywordCreateRequest createRequest) {
         Long keywordId = keywordService.createKeyword(sessionId, createRequest);
-        return ResponseEntity.created(URI.create("/sessions/" + sessionId + "/keywords/" + keywordId)).build();
+        return ResponseEntity.created(
+            URI.create("/sessions/" + sessionId + "/keywords/" + keywordId)).build();
     }
 
     @GetMapping("/{keywordId}")
@@ -56,11 +57,12 @@ public class KeywordController {
     }
 
     @GetMapping
-    public ResponseEntity<KeywordsResponse> findSessionIncludeRootKeywords(@PathVariable Long sessionId) {
+    public ResponseEntity<KeywordsResponse> findSessionIncludeRootKeywords(
+        @PathVariable Long sessionId) {
         KeywordsResponse response = keywordService.findSessionIncludeRootKeywords(sessionId);
         return ResponseEntity.ok(response);
     }
-    
+
     @GetMapping("/{keywordId}/children")
     public ResponseEntity<KeywordResponse> find(@PathVariable Long sessionId,
                                                 @PathVariable Long keywordId) {

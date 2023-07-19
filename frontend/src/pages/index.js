@@ -12,4 +12,6 @@ export { default as RoadmapPage } from './RoadmapPage';
 export { default as NewEssayAnswerPage } from './NewEssayAnswerPage';
 export { default as EssayAnswerPage } from './EssayAnswerPage';
 export { default as EssayAnswerListPage } from './EssayAnswerListPage';
+export { default as ArticleListPage } from './ArticleListPage';
 export { default as EditEssayAnswerPage } from './EditEssayAnswerPage';
+export { default as NewArticlePage } from './NewArticlePage';

@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <included>
-  <property name="home" value="logs/performance/"/>
-  <appender name="performance-logger" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${home}performance.log</file>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>${home}performance-%d{yyyyMMdd}-%i.log</fileNamePattern>
-      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-        <maxFileSize>15MB</maxFileSize>
-      </timeBasedFileNamingAndTriggeringPolicy>
-      <maxHistory>1</maxHistory>
-    </rollingPolicy>
-    <encoder>
-      <charset>utf8</charset>
-      <Pattern>
-        %msg%n
-      </Pattern>
-    </encoder>
-  </appender>
+    <property name="home" value="logs/performance/"/>
+    <appender name="performance-logger" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${home}performance.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${home}performance-%d{yyyyMMdd}-%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>15MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>1</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>utf8</charset>
+            <Pattern>
+                %msg%n
+            </Pattern>
+        </encoder>
+    </appender>
 </included>

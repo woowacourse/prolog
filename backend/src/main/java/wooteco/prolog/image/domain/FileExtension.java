@@ -17,6 +17,6 @@ public enum FileExtension {
 
     public static boolean isSupport(final String extension) {
         return Stream.of(values())
-                .anyMatch(it -> it.value.equalsIgnoreCase(extension));
+            .anyMatch(it -> it.value.equalsIgnoreCase(extension));
     }
 }

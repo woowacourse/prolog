@@ -55,7 +55,8 @@ import wooteco.prolog.update.UpdatedContentsRepository;
 public class DataLoaderApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
 
     private static final Random random = new SecureRandom();
-    private static final Logger logger = LoggerFactory.getLogger(DataLoaderApplicationListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(
+        DataLoaderApplicationListener.class);
 
     private final EntityManagerFactory entityManagerFactory;
     private final SessionRepository sessionRepository;
@@ -90,8 +91,8 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         try {
-            @SuppressWarnings("unchecked")
-            final Set<String> tableNames = (Set<String>) entityManager.createNativeQuery("SHOW TABLES")
+            @SuppressWarnings("unchecked") final Set<String> tableNames = (Set<String>) entityManager.createNativeQuery(
+                    "SHOW TABLES")
                 .getResultStream()
                 .map(Object::toString)
                 .collect(Collectors.toSet());
@@ -121,18 +122,22 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
         final Map<MissionDummy, Mission> missions = populateMission(sessions);
         final Map<TagsDummy, Tags> tags = populateTags();
         final Map<MemberDummy, Member> members = populateMember();
-        final Map<SessionMembersDummy, List<SessionMember>> sessionMembers = populateSessionMembers(sessions, members);
-        final Map<StudylogDummy, List<Studylog>> studylogs = populateStudylogs(members, sessions, missions, tags);
+        final Map<SessionMembersDummy, List<SessionMember>> sessionMembers = populateSessionMembers(
+            sessions, members);
+        final Map<StudylogDummy, List<Studylog>> studylogs = populateStudylogs(members, sessions,
+            missions, tags);
         final List<PopularStudylog> popularStudylogs = populatePopularStudyLog(studylogs);
         populateUpdatedContents();
         final Map<LevelLogDummy, LevelLog> levelLogs = populateLevelLog(members);
-        final Map<SelfDiscussionDummy, SelfDiscussion> selfDiscussions = populateSelfDiscussion(levelLogs);
+        final Map<SelfDiscussionDummy, SelfDiscussion> selfDiscussions = populateSelfDiscussion(
+            levelLogs);
 
         logger.debug("Complete populate");
     }
 
     private Map<SessionDummy, Session> populateSession() {
-        final Function<SessionDummy, Session> createSession = it -> sessionRepository.save(new Session(it.name));
+        final Function<SessionDummy, Session> createSession = it -> sessionRepository.save(
+            new Session(it.name));
 
         return Arrays.stream(SessionDummy.values())
             .collect(toMap(Function.identity(), createSession));
@@ -177,20 +182,22 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
 
         final Function<SessionMembersDummy, List<SessionMember>> createSessionMembers = it -> {
             final List<SessionMember> sessionMembers = it.value.stream()
-                .map(memberDummy -> new SessionMember(backendLevel1SessionId, members.get(memberDummy)))
+                .map(memberDummy -> new SessionMember(backendLevel1SessionId,
+                    members.get(memberDummy)))
                 .collect(toList());
 
             return sessionMemberRepository.saveAll(sessionMembers);
         };
 
         return Arrays.stream(SessionMembersDummy.values())
-                .collect(toMap(Function.identity(), createSessionMembers));
+            .collect(toMap(Function.identity(), createSessionMembers));
     }
 
-    private Map<StudylogDummy, List<Studylog>> populateStudylogs(final Map<MemberDummy, Member> members,
-                                                                 final Map<SessionDummy, Session> sessions,
-                                                                 final Map<MissionDummy, Mission> missions,
-                                                                 final Map<TagsDummy, Tags> tags) {
+    private Map<StudylogDummy, List<Studylog>> populateStudylogs(
+        final Map<MemberDummy, Member> members,
+        final Map<SessionDummy, Session> sessions,
+        final Map<MissionDummy, Mission> missions,
+        final Map<TagsDummy, Tags> tags) {
         final Function<StudylogDummy, List<Studylog>> insertStudyLogs = it -> {
             final Member member = members.get(it.memberDummy);
 
@@ -218,7 +225,8 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
         return list.get(random.nextInt(list.size()));
     }
 
-    private List<PopularStudylog> populatePopularStudyLog(final Map<StudylogDummy, List<Studylog>> studylogs) {
+    private List<PopularStudylog> populatePopularStudyLog(
+        final Map<StudylogDummy, List<Studylog>> studylogs) {
         final List<PopularStudylog> randomPopularStudyLogs = studylogs.values()
             .stream()
             .flatMap(Collection::stream)
@@ -232,7 +240,8 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
     }
 
     private void populateUpdatedContents() {
-        updatedContentsRepository.save(new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
+        updatedContentsRepository.save(
+            new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
     }
 
     private Map<LevelLogDummy, LevelLog> populateLevelLog(final Map<MemberDummy, Member> members) {
@@ -298,18 +307,21 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
     }
 
     private enum MemberDummy {
-        BROWN("류성현", "gracefulBrown", 46308949, "https://avatars.githubusercontent.com/u/46308949?v=4"),
+        BROWN("류성현", "gracefulBrown", 46308949,
+            "https://avatars.githubusercontent.com/u/46308949?v=4"),
         JOANNE("서민정", "seovalue", 123456, "https://avatars.githubusercontent.com/u/48412963?v=4"),
         TYCHE("티케", "devhyun637", 59258239, "https://avatars.githubusercontent.com/u/59258239?v=4"),
         SUNNY("박선희", "서니", 67677561, "https://avatars.githubusercontent.com/u/67677561?v=4"),
-        HYEON9MAK("최현구", "hyeon9mak", 37354145,  "https://avatars.githubusercontent.com/u/37354145?v=4");
+        HYEON9MAK("최현구", "hyeon9mak", 37354145,
+            "https://avatars.githubusercontent.com/u/37354145?v=4");
 
         final String nickname;
         final String loginName;
         final long githubId;
         final String imageUrl;
 
-        MemberDummy(final String nickname, final String loginName, final long githubId, final String imageUrl) {
+        MemberDummy(final String nickname, final String loginName, final long githubId,
+                    final String imageUrl) {
             this.nickname = nickname;
             this.loginName = loginName;
             this.githubId = githubId;
@@ -348,8 +360,10 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
 
     private enum LevelLogDummy {
         HOW_TO_SET_DUMMY(MemberDummy.BROWN, "더미데이터 넣는 방법", "DataLoderApplication 에서 넣으세요."),
-        SECRETLY_WRITTEN_LEVEL_LOG_1(MemberDummy.SUNNY, "수달이 서니 이름으로 작성한 레벨로그1", "서니처럼 멋진 개발자가 되는 방법에 대해서 고민해보았습니다."),
-        SECRETLY_WRITTEN_LEVEL_LOG_2(MemberDummy.SUNNY, "수달이 서니 이름으로 작성한 레벨로그2", "서니는 언제부터 개발자가 되고 싶었나요?");
+        SECRETLY_WRITTEN_LEVEL_LOG_1(MemberDummy.SUNNY, "수달이 서니 이름으로 작성한 레벨로그1",
+            "서니처럼 멋진 개발자가 되는 방법에 대해서 고민해보았습니다."),
+        SECRETLY_WRITTEN_LEVEL_LOG_2(MemberDummy.SUNNY, "수달이 서니 이름으로 작성한 레벨로그2",
+            "서니는 언제부터 개발자가 되고 싶었나요?");
 
         final MemberDummy memberDummy;
         final String title;
@@ -365,13 +379,15 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
     private enum SelfDiscussionDummy {
         HOW_TO_RESET("초기화 하는 방법", "후이에게 부탁하기", LevelLogDummy.HOW_TO_SET_DUMMY),
         WHAT_IS_COOL_PERSON("멋진 사람이란", "우테코 수료한사람 ~", LevelLogDummy.SECRETLY_WRITTEN_LEVEL_LOG_1),
-        WHAT_IS_BACKEND_DEVELOPER("백엔드 개발자란?", "우테코 수료한사람 ~", LevelLogDummy.SECRETLY_WRITTEN_LEVEL_LOG_2);
+        WHAT_IS_BACKEND_DEVELOPER("백엔드 개발자란?", "우테코 수료한사람 ~",
+            LevelLogDummy.SECRETLY_WRITTEN_LEVEL_LOG_2);
 
         final String question;
         final String answer;
         final LevelLogDummy levelLogDummy;
 
-        SelfDiscussionDummy(final String question, final String answer, final LevelLogDummy levelLogDummy) {
+        SelfDiscussionDummy(final String question, final String answer,
+                            final LevelLogDummy levelLogDummy) {
             this.question = question;
             this.answer = answer;
             this.levelLogDummy = levelLogDummy;

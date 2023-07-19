@@ -25,9 +25,9 @@ public class BadgeController {
     public ResponseEntity<BadgesResponse> findMemberBadges(@PathVariable String username) {
         List<BadgeType> badges = badgeService.getBadges(username);
         List<BadgeResponse> badgeResponses = badges.stream()
-                .map(BadgeType::toString)
-                .map(BadgeResponse::new)
-                .collect(Collectors.toList());
+            .map(BadgeType::toString)
+            .map(BadgeResponse::new)
+            .collect(Collectors.toList());
         return ResponseEntity.ok(new BadgesResponse(badgeResponses));
     }
 }

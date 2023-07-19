@@ -1,6 +1,8 @@
 package wooteco.prolog.session.application;
 
 import static java.util.stream.Collectors.toList;
+import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_MISSION;
+import static wooteco.prolog.common.exception.BadRequestCode.MISSION_NOT_FOUND;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,14 +11,13 @@ import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.MissionRepository;
-import wooteco.prolog.studylog.exception.DuplicateMissionException;
-import wooteco.prolog.studylog.exception.MissionNotFoundException;
 
 @Service
 @AllArgsConstructor
@@ -31,12 +32,13 @@ public class MissionService {
         validateName(missionRequest.getName());
 
         Session session = sessionService.findById(missionRequest.getSessionId());
-        return MissionResponse.of(missionRepository.save(new Mission(missionRequest.getName(), session)));
+        return MissionResponse.of(
+            missionRepository.save(new Mission(missionRequest.getName(), session)));
     }
 
     private void validateName(String name) {
         if (missionRepository.findByName(name).isPresent()) {
-            throw new DuplicateMissionException();
+            throw new BadRequestException(DUPLICATE_MISSION);
         }
     }
 
@@ -46,7 +48,7 @@ public class MissionService {
 
     public Mission findById(Long id) {
         return missionRepository.findById(id)
-            .orElseThrow(MissionNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(MISSION_NOT_FOUND));
     }
 
     public Optional<Mission> findMissionById(Long id) {
