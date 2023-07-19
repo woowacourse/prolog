@@ -49,10 +49,10 @@ public class EssayAnswerController {
     public ResponseEntity<Void> updateById(@PathVariable Long essayAnswerId,
                                            @AuthMemberPrincipal LoginMember member,
                                            @RequestBody EssayAnswerUpdateRequest request) {
-        essayAnswerService.updateEssayAnswer(essayAnswerId, request.getAnswer(), member.getId());
+        essayAnswerService.updateEssayAnswer(essayAnswerId, request, member.getId());
         return ResponseEntity.ok().build();
     }
-    
+
     @DeleteMapping("/essay-answers/{essayAnswerId}")
     public ResponseEntity<Void> deleteEssayAnswerById(@PathVariable Long essayAnswerId,
                                                       @AuthMemberPrincipal LoginMember member) {
@@ -61,7 +61,7 @@ public class EssayAnswerController {
     }
 
     @GetMapping("/quizzes/{quizId}")
-    public ResponseEntity<QuizResponse> findEssayAnswerById(@PathVariable Long quizId) {
+    public ResponseEntity<QuizResponse> findQuizById(@PathVariable Long quizId) {
         return ResponseEntity.ok(quizService.findById(quizId));
     }
 

@@ -73,13 +73,13 @@ public class CurriculumDocumentation extends NewDocumentation {
     }
 
 
-    private static CurriculumRequest CURRICULUM_REQUEST = new CurriculumRequest(
+    private static final CurriculumRequest CURRICULUM_REQUEST = new CurriculumRequest(
         "수달이 슬로를 위해 만든 커리큘럼");
 
-    private static CurriculumRequest CURRICULUM_EDIT_REQUEST = new CurriculumRequest(
+    private static final CurriculumRequest CURRICULUM_EDIT_REQUEST = new CurriculumRequest(
         "수달이 에덴을 위해 수정한 커리큘럼");
 
-    private static CurriculumResponses CURRICULUMS_RESPONSE = new CurriculumResponses(
+    private static final CurriculumResponses CURRICULUMS_RESPONSE = new CurriculumResponses(
         Arrays.asList(new CurriculumResponse(1L, "이스트 전용 커리큘럼"),
             new CurriculumResponse(1L, "동키콩 전용 커리큘럼")));
 }

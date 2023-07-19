@@ -1,5 +1,10 @@
 package wooteco.prolog.studylog.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,17 +14,12 @@ import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class StudylogTagsTest {
 
     private static final Member 웨지 = new Member("sihyung92", "웨지", Role.CREW, 2222L,
         "https://avatars.githubusercontent.com/u/51393021?v=4");
-    private static final Studylog 웨지가_쓴_글 = new Studylog(웨지, "제목", "내용", new Mission("[BE] 글쓰기 미션", new Session("세션1")), Lists.emptyList());
+    private static final Studylog 웨지가_쓴_글 = new Studylog(웨지, "제목", "내용",
+        new Mission("[BE] 글쓰기 미션", new Session("세션1")), Lists.emptyList());
     private static final Tag 워니_태그 = new Tag("워니");
     private static final StudylogTag 워니_스터디로그_태그 = new StudylogTag(1L, 웨지가_쓴_글, 워니_태그);
 
@@ -47,7 +47,9 @@ public class StudylogTagsTest {
         this.studylogTags.add(studylogTags);
 
         // then
-        assertThat(this.studylogTags.getValues()).containsExactlyInAnyOrder(this.워니_스터디로그_태그, 세션1_스터디로그_태그);
+        assertThat(this.studylogTags.getValues()).containsExactlyInAnyOrder(
+            StudylogTagsTest.워니_스터디로그_태그,
+            세션1_스터디로그_태그);
     }
 
     @DisplayName("update로 StudylogTag 리스트를 교체한다.")
@@ -66,6 +68,7 @@ public class StudylogTagsTest {
         this.studylogTags.update(studylogTags);
 
         // then
-        assertThat(this.studylogTags.getValues()).containsExactlyInAnyOrder(포비_스터디로그_태그, 세션1_스터디로그_태그);
+        assertThat(this.studylogTags.getValues()).containsExactlyInAnyOrder(포비_스터디로그_태그,
+            세션1_스터디로그_태그);
     }
 }

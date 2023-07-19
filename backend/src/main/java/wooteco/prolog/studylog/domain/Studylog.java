@@ -14,10 +14,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.AuditingEntity;
+import wooteco.prolog.common.exception.BadRequestCode;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
-import wooteco.prolog.studylog.exception.AuthorNotValidException;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -61,7 +62,8 @@ public class Studylog extends AuditingEntity {
 
     private boolean deleted;
 
-    public Studylog(Member member, String title, String content, Session session, Mission mission, List<Tag> tags) {
+    public Studylog(Member member, String title, String content, Session session, Mission mission,
+                    List<Tag> tags) {
         this.member = member;
         this.title = new Title(title);
         this.content = new Content(content);
@@ -79,7 +81,7 @@ public class Studylog extends AuditingEntity {
 
     public void validateBelongTo(Long memberId) {
         if (!isBelongsTo(memberId)) {
-            throw new AuthorNotValidException();
+            throw new BadRequestException(BadRequestCode.ONLY_AUTHOR_CAN_EDIT);
         }
     }
 
@@ -116,8 +118,8 @@ public class Studylog extends AuditingEntity {
 
     private List<StudylogTag> convertToStudylogTags(Tags tags) {
         return tags.getList().stream()
-                .map(tag -> new StudylogTag(this, tag))
-                .collect(Collectors.toList());
+            .map(tag -> new StudylogTag(this, tag))
+            .collect(Collectors.toList());
     }
 
     public void increaseViewCount(Member member) {
@@ -203,7 +205,7 @@ public class Studylog extends AuditingEntity {
     @Override
     public String toString() {
         return "Studylog{" +
-                "id=" + id +
-                '}';
+            "id=" + id +
+            '}';
     }
 }

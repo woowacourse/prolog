@@ -10,8 +10,8 @@ import io.cucumber.java.en.When;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
-import wooteco.prolog.common.exception.ExceptionDto;
 import wooteco.prolog.badge.domain.BadgeType;
+import wooteco.prolog.common.exception.ExceptionDto;
 
 public class BadgesStepDefinitions extends AcceptanceSteps {
 

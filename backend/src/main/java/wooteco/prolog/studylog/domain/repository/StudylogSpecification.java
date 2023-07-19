@@ -3,18 +3,10 @@ package wooteco.prolog.studylog.domain.repository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
-import org.hibernate.query.criteria.internal.OrderImpl;
 import org.springframework.data.jpa.domain.Specification;
 import wooteco.prolog.studylog.domain.Studylog;
 
@@ -31,7 +23,8 @@ public class StudylogSpecification {
             }
 
             for (String keyword : keywords) {
-                predicates.add(builder.like(builder.lower(root.get(key).get(key)), "%" + keyword + "%"));
+                predicates.add(
+                    builder.like(builder.lower(root.get(key).get(key)), "%" + keyword + "%"));
             }
 
             return builder.or(predicates.toArray(new Predicate[0]));
@@ -64,7 +57,8 @@ public class StudylogSpecification {
                 return builder.and();
             }
 
-            return root.join("studylogTags", JoinType.LEFT).join("values", JoinType.LEFT).get("tag").in(values);
+            return root.join("studylogTags", JoinType.LEFT).join("values", JoinType.LEFT).get("tag")
+                .in(values);
         };
     }
 

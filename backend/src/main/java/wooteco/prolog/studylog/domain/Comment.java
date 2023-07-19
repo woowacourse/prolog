@@ -1,5 +1,7 @@
 package wooteco.prolog.studylog.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.COMMENT_DELETE_EXCEPTION;
+
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,8 +15,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.AuditingEntity;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.studylog.exception.CommentDeleteException;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -52,7 +54,7 @@ public class Comment extends AuditingEntity {
 
     public void delete() {
         if (isDelete) {
-            throw new CommentDeleteException();
+            throw new BadRequestException(COMMENT_DELETE_EXCEPTION);
         }
 
         this.isDelete = true;

@@ -9,8 +9,9 @@ import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wooteco.prolog.common.exception.BadRequestCode;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.studylog.domain.Curriculum;
-import wooteco.prolog.studylog.exception.TooLongLevelNameException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -51,7 +52,7 @@ public class Session {
 
     private void validateMaxLength(String name) {
         if (name.length() > MAX_LENGTH) {
-            throw new TooLongLevelNameException();
+            throw new BadRequestException(BadRequestCode.TOO_LONG_LEVEL_NAME_EXCEPTION);
         }
     }
 

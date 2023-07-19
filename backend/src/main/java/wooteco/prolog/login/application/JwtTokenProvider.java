@@ -1,5 +1,7 @@
 package wooteco.prolog.login.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.TOKEN_NOT_VALID;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -9,7 +11,7 @@ import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import wooteco.prolog.login.excetpion.TokenNotValidException;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
 
 @Component
@@ -50,7 +52,7 @@ public class JwtTokenProvider {
                 .getSubject();
         } catch (JwtException | IllegalArgumentException e) {
             log.info(e.getMessage(), e);
-            throw new TokenNotValidException();
+            throw new BadRequestException(TOKEN_NOT_VALID);
         }
     }
 }

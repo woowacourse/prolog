@@ -1,13 +1,15 @@
 package wooteco.prolog.roadmap.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.CURRICULUM_NOT_FOUND_EXCEPTION;
+
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.roadmap.application.dto.CurriculumRequest;
 import wooteco.prolog.roadmap.application.dto.CurriculumResponses;
 import wooteco.prolog.roadmap.domain.Curriculum;
 import wooteco.prolog.roadmap.domain.repository.CurriculumRepository;
-import wooteco.prolog.roadmap.exception.CurriculumNotFoundException;
 
 @Transactional
 @Service
@@ -44,6 +46,6 @@ public class CurriculumService {
 
     private Curriculum getCurriculum(Long curriculumId) {
         return curriculumRepository.findById(curriculumId)
-            .orElseThrow(CurriculumNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(CURRICULUM_NOT_FOUND_EXCEPTION));
     }
 }

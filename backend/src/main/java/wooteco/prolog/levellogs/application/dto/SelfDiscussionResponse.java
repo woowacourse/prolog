@@ -1,7 +1,6 @@
 package wooteco.prolog.levellogs.application.dto;
 
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;

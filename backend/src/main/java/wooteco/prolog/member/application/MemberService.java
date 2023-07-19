@@ -1,5 +1,8 @@
 package wooteco.prolog.member.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_FOUND;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -9,17 +12,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
+import wooteco.prolog.member.application.dto.MembersResponse;
 import wooteco.prolog.member.application.dto.ProfileIntroRequest;
 import wooteco.prolog.member.application.dto.ProfileIntroResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.member.exception.MemberNotAllowedException;
-import wooteco.prolog.member.exception.MemberNotFoundException;
-import wooteco.prolog.member.application.dto.MembersResponse;
 
 @Service
 @AllArgsConstructor
@@ -36,12 +38,12 @@ public class MemberService {
 
     public Member findById(Long id) {
         return memberRepository.findById(id)
-            .orElseThrow(MemberNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(MEMBER_NOT_FOUND));
     }
 
     public Member findByUsername(String username) {
         return memberRepository.findByUsername(username)
-            .orElseThrow(MemberNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(MEMBER_NOT_FOUND));
     }
 
     public MemberResponse findMemberResponseByUsername(String username) {
@@ -66,11 +68,11 @@ public class MemberService {
     public void updateMember(LoginMember loginMember,
                              String username,
                              MemberUpdateRequest updateRequest) {
-        loginMember.act().throwIfAnonymous(MemberNotAllowedException::new);
+        loginMember.act().throwIfAnonymous(() -> new BadRequestException(MEMBER_NOT_ALLOWED));
         Member persistMember = loginMember.act().ifMember(memberId -> {
             Member member = findById(memberId);
             if (!Objects.equals(member.getUsername(), username)) {
-                throw new MemberNotAllowedException();
+                throw new BadRequestException(MEMBER_NOT_ALLOWED);
             }
             return member;
         }).getReturnValue(Member.class);
@@ -83,12 +85,12 @@ public class MemberService {
     public void updateProfileIntro(LoginMember loginMember,
                                    String username,
                                    ProfileIntroRequest updateRequest) {
-        loginMember.act().throwIfAnonymous(MemberNotAllowedException::new);
+        loginMember.act().throwIfAnonymous(() -> new BadRequestException(MEMBER_NOT_ALLOWED));
 
         Member persistMember = loginMember.act().ifMember(memberId -> {
             Member member = findById(memberId);
             if (!Objects.equals(member.getUsername(), username)) {
-                throw new MemberNotAllowedException();
+                throw new BadRequestException(MEMBER_NOT_ALLOWED);
             }
             return member;
         }).getReturnValue(Member.class);
@@ -99,9 +101,9 @@ public class MemberService {
     public List<MemberResponse> findAllOrderByNickNameAsc() {
         final List<Member> members = memberRepository.findAll();
         return members.stream()
-                .sorted(Comparator.comparing(Member::getNickname))
-                .map(MemberResponse::of)
-                .collect(Collectors.toList());
+            .sorted(Comparator.comparing(Member::getNickname))
+            .map(MemberResponse::of)
+            .collect(Collectors.toList());
     }
 
     public MembersResponse findAll(Pageable pageable) {

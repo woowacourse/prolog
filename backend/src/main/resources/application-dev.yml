@@ -1,2 +1,6 @@
 application:
   url: https://dev.prolog.techcourse.co.kr
+
+spring:
+  flyway:
+    enabled: true

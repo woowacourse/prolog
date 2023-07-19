@@ -20,9 +20,11 @@ public class StudylogsWithScrapCountResponse {
     private int totalPage;
     private int currPage;
 
-    public static StudylogsWithScrapCountResponse of(List<StudylogWithScrapedCountResponse> studylogWithScrapedCountResponses,
+    public static StudylogsWithScrapCountResponse of(
+        List<StudylogWithScrapedCountResponse> studylogWithScrapedCountResponses,
         Page<Studylog> page) {
-        return new StudylogsWithScrapCountResponse(studylogWithScrapedCountResponses, page.getTotalElements(),
+        return new StudylogsWithScrapCountResponse(studylogWithScrapedCountResponses,
+            page.getTotalElements(),
             page.getTotalPages(), page.getNumber() + ONE_INDEXED_PARAMETER);
     }
 
