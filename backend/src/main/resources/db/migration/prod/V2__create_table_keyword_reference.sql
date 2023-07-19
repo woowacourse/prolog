@@ -5,6 +5,3 @@ create table if not exists prolog.keyword_reference
     constraint FK_KEYWORD_ID
         foreign key (keyword_id) references prolog.keyword (id)
 );
-
-
-
