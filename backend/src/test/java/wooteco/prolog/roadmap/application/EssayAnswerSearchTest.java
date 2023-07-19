@@ -238,4 +238,132 @@ public class EssayAnswerSearchTest {
             answer, new MemberResponse(member.getId(), member.getUsername(), member.getNickname(),
             Role.CREW, "https://"), LocalDateTime.now(), LocalDateTime.now());
     }
+
+    @DisplayName("searchEssayAnswers() : 키워드 id가 있고, 퀴즈 id는 없으며, "
+        + "사용자의 id가 주어지면 해당 키워드의 답변들 중에 해당 사용자가 작성한 글을 조회할 수 있다.")
+    @Test
+    void test_searchEssayAnswers_keywordId_noQuizId_memberId() {
+        // given
+        final EssayAnswerSearchRequest request = new EssayAnswerSearchRequest(
+            curriculum.getId(),
+            keyword4.getId(),
+            null,
+            Arrays.asList(member1.getId())
+        );
+
+        // when
+        final EssayAnswersResponse actual = essayAnswerService.searchEssayAnswers(
+            request, PageRequest.of(0, 10));
+
+        // then
+        final List<EssayAnswerResponse> expected = Arrays.asList(
+            예상_답변_응답(essayAnswerId18, quiz9, "대답18", member1),
+            예상_답변_응답(essayAnswerId16, quiz8, "대답16", member1),
+            예상_답변_응답(essayAnswerId14, quiz7, "대답14", member1),
+            예상_답변_응답(essayAnswerId11, quiz6, "대답11", member1)
+        );
+
+        final EssayAnswersResponse response = new EssayAnswersResponse(expected, 4L, 1, 1);
+
+        assertThat(actual)
+            .usingRecursiveComparison()
+            .ignoringFields("data.createdAt", "data.updatedAt")
+            .isEqualTo(response);
+    }
+
+    @DisplayName("searchEssayAnswers() : 키워드 id 있고, 퀴즈 id 없고, "
+        + "사용자의 id가 주어지지 않으면 해당 키워드의 답변들을 모두 조회할 수 있다.")
+    @Test
+    void test_searchEssayAnswers_keywordId_NoQuizId_noMemberId() {
+        // given
+        final EssayAnswerSearchRequest request = new EssayAnswerSearchRequest(
+            curriculum.getId(),
+            keyword2.getId(),
+            null,
+            null
+        );
+
+        // when
+        final EssayAnswersResponse actual = essayAnswerService.searchEssayAnswers(
+            request, PageRequest.of(0, 10));
+
+        // then
+        final List<EssayAnswerResponse> expected = Arrays.asList(
+            예상_답변_응답(essayAnswerId6, quiz3, "대답6", member1),
+            예상_답변_응답(essayAnswerId5, quiz2, "대답5", member4),
+            예상_답변_응답(essayAnswerId4, quiz2, "대답4", member3),
+            예상_답변_응답(essayAnswerId3, quiz2, "대답3", member2),
+            예상_답변_응답(essayAnswerId2, quiz2, "대답2", member1)
+        );
+
+        final EssayAnswersResponse response = new EssayAnswersResponse(expected, 5L, 1, 1);
+
+        assertThat(actual)
+            .usingRecursiveComparison()
+            .ignoringFields("data.createdAt", "data.updatedAt")
+            .isEqualTo(response);
+    }
+
+    @DisplayName("searchEssayAnswers() : 키워드 id 있고, 퀴즈 id 있고, "
+        + "사용자의 id가 주어지면 사용자가 작성한 해당 퀴즈의 답변들을 모두 조회할 수 있다.")
+    @Test
+    void test_searchEssayAnswers_keywordId_quizId_memberId() {
+        // given
+        final EssayAnswerSearchRequest request = new EssayAnswerSearchRequest(
+            curriculum.getId(),
+            keyword4.getId(),
+            Arrays.asList(quiz6.getId(), quiz7.getId()),
+            Arrays.asList(member1.getId())
+        );
+
+        // when
+        final EssayAnswersResponse actual = essayAnswerService.searchEssayAnswers(
+            request, PageRequest.of(0, 10));
+
+        // then
+        final List<EssayAnswerResponse> expected = Arrays.asList(
+            예상_답변_응답(essayAnswerId14, quiz7, "대답14", member1),
+            예상_답변_응답(essayAnswerId11, quiz6, "대답11", member1)
+        );
+
+        final EssayAnswersResponse response = new EssayAnswersResponse(expected, 2L, 1, 1);
+
+        assertThat(actual)
+            .usingRecursiveComparison()
+            .ignoringFields("data.createdAt", "data.updatedAt")
+            .isEqualTo(response);
+    }
+
+    @DisplayName("searchEssayAnswers() : 키워드 id 있고, 퀴즈 id 있고, "
+        + "사용자의 id가 주어지지 않으면 해당 퀴즈의 답변들을 모두 조회할 수 있다.")
+    @Test
+    void test_searchEssayAnswers_keywordId_quizId_noMemberId() {
+        // given
+        final EssayAnswerSearchRequest request = new EssayAnswerSearchRequest(
+            curriculum.getId(),
+            keyword4.getId(),
+            Arrays.asList(quiz6.getId(), quiz7.getId()),
+            null
+        );
+
+        // when
+        final EssayAnswersResponse actual = essayAnswerService.searchEssayAnswers(
+            request, PageRequest.of(0, 10));
+
+        // then
+        final List<EssayAnswerResponse> expected = Arrays.asList(
+            예상_답변_응답(essayAnswerId15, quiz7, "대답15", member2),
+            예상_답변_응답(essayAnswerId14, quiz7, "대답14", member1),
+            예상_답변_응답(essayAnswerId13, quiz6, "대답13", member3),
+            예상_답변_응답(essayAnswerId12, quiz6, "대답12", member2),
+            예상_답변_응답(essayAnswerId11, quiz6, "대답11", member1)
+        );
+
+        final EssayAnswersResponse response = new EssayAnswersResponse(expected, 5L, 1, 1);
+
+        assertThat(actual)
+            .usingRecursiveComparison()
+            .ignoringFields("data.createdAt", "data.updatedAt")
+            .isEqualTo(response);
+    }
 }
