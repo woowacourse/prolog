@@ -1,7 +1,9 @@
+import { InterpolationWithTheme } from '@emotion/core';
+import { Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
 
-const Container = styled.div`
+const Container = styled.div<{ css?: InterpolationWithTheme<Theme> }>`
   background-color: ${COLOR.LIGHT_GRAY_100};
   height: 4.8rem;
   width: 36rem;

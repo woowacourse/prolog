@@ -1,12 +1,13 @@
 import DropdownMenu from './DropdownMenu';
+import { Story, Meta } from '@storybook/react';
 
 export default {
   title: 'Component/DropdownMenu',
   component: DropdownMenu,
   argTypes: { children: { control: 'text' } },
-};
+} as Meta;
 
-const Template = (args) => <DropdownMenu {...args} />;
+const Template: Story<typeof DropdownMenu> = (args) => <DropdownMenu {...args} />;
 
 export const Basic = Template.bind({});
 
