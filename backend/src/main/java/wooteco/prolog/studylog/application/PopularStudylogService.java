@@ -92,6 +92,7 @@ public class PopularStudylogService {
     private List<Studylog> filterStudylogsByMemberGroups(final List<Studylog> studylogs,
                                                          final MemberGroups memberGroups,
                                                          final List<GroupMember> groupMembers) {
+
         return studylogs.stream()
             .filter(
                 studylog -> checkMemberAssignedInMemberGroups(memberGroups, studylog.getMember(),
