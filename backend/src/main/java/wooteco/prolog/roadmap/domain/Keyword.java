@@ -37,10 +37,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -65,10 +62,8 @@ public class Keyword {
     @Column(name = "session_id", nullable = false)
     private Long sessionId;
 
-    @ElementCollection
-    @CollectionTable(name = "keyword_reference")
-    @Column(name = "url")
-    private List<String> references;
+    @OneToMany(mappedBy = "keyword", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<RecommendedPost> recommendedPosts = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
