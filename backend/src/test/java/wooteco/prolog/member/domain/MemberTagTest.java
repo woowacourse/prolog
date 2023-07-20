@@ -1,5 +1,8 @@
 package wooteco.prolog.member.domain;
 
+import static org.junit.jupiter.params.provider.Arguments.arguments;
+
+import java.util.stream.Stream;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,15 +11,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import wooteco.prolog.studylog.domain.Tag;
 
-import java.util.stream.Stream;
-
-import static org.junit.jupiter.params.provider.Arguments.arguments;
-
 class MemberTagTest {
 
-    private static Member bebe = new Member(1L, "최원용", "베베", Role.CREW, 1L, "test");
-    private static Tag tag = new Tag(1L, "#베베바보");
-    private static MemberTag memberTag = new MemberTag(bebe, tag);
+    private static final Member bebe = new Member(1L, "최원용", "베베", Role.CREW, 1L, "test");
+    private static final Tag tag = new Tag(1L, "#베베바보");
+    private static final MemberTag memberTag = new MemberTag(bebe, tag);
 
     @DisplayName("addCount를 수행하면 count가 증가한다.")
     @Test

@@ -2,7 +2,6 @@ package wooteco.prolog.studylog.application.dto.search;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.domain.Pageable;

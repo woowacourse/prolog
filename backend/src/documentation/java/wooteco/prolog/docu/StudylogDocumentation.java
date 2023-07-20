@@ -1,8 +1,14 @@
 package wooteco.prolog.docu;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +26,11 @@ import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
-import wooteco.prolog.studylog.application.dto.*;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import wooteco.prolog.studylog.application.dto.PopularStudylogsResponse;
+import wooteco.prolog.studylog.application.dto.StudylogRequest;
+import wooteco.prolog.studylog.application.dto.StudylogResponse;
+import wooteco.prolog.studylog.application.dto.StudylogsResponse;
+import wooteco.prolog.studylog.application.dto.TagRequest;
 
 class StudylogDocumentation extends Documentation {
 
@@ -69,11 +72,11 @@ class StudylogDocumentation extends Documentation {
     void 스터디로그_임시저장_한다() {
         //given, when
         ExtractableResponse<Response> createResponse = given("studylog/create/temp")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .body(createStudylogRequest1())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().put("/studylogs/temp")
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(createStudylogRequest1())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().put("/studylogs/temp")
+            .then().log().all().extract();
 
         //then
         assertThat(createResponse.statusCode()).isEqualTo(HttpStatus.CREATED.value());
@@ -84,17 +87,17 @@ class StudylogDocumentation extends Documentation {
     void 임시저장_스터디로그_조회한다() {
         //given
         given("studylog/create/temp")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .body(createStudylogRequest1())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().put("/studylogs/temp")
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .body(createStudylogRequest1())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().put("/studylogs/temp")
+            .then().log().all().extract();
         //when
         ExtractableResponse<Response> createResponse = given("studylog/create/temp")
-                .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/studylogs/temp")
-                .then().log().all().extract();
+            .header("Authorization", "Bearer " + 로그인_사용자.getAccessToken())
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().get("/studylogs/temp")
+            .then().log().all().extract();
 
         // then
         assertThat(createResponse.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -169,7 +172,8 @@ class StudylogDocumentation extends Documentation {
             .then().log().all().extract();
 
         // then
-        PopularStudylogsResponse popularStudylogsResponse = response.as(PopularStudylogsResponse.class);
+        PopularStudylogsResponse popularStudylogsResponse = response.as(
+            PopularStudylogsResponse.class);
         assertThat(popularStudylogsResponse.getAllResponse().getData()).hasSize(3);
         assertThat(popularStudylogsResponse.getFrontResponse().getData()).hasSize(3);
         assertThat(popularStudylogsResponse.getBackResponse().getData()).hasSize(3);
@@ -311,7 +315,8 @@ class StudylogDocumentation extends Documentation {
         MemberGroup 프론트엔드 = memberGroupRepository.save(
             new MemberGroup(null, "4기 프론트엔드", "4기 프론트엔드 설명"));
         MemberGroup 백엔드 = memberGroupRepository.save(new MemberGroup(null, "4기 백엔드", "4기 백엔드 설명"));
-        MemberGroup 안드로이드 = memberGroupRepository.save(new MemberGroup(null, "4기 안드로이드", "4기 안드로이드 설명"));
+        MemberGroup 안드로이드 = memberGroupRepository.save(
+            new MemberGroup(null, "4기 안드로이드", "4기 안드로이드 설명"));
         groupMemberRepository.save(new GroupMember(null, member, 백엔드));
         groupMemberRepository.save(new GroupMember(null, member, 프론트엔드));
         groupMemberRepository.save(new GroupMember(null, member, 안드로이드));

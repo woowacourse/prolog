@@ -1,5 +1,8 @@
 package wooteco.prolog.login.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.GITHUB_API_FAIL;
+import static wooteco.prolog.common.exception.BadRequestCode.GITHUB_CONNECTION_FAIL;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -9,11 +12,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.application.dto.GithubAccessTokenRequest;
 import wooteco.prolog.login.application.dto.GithubAccessTokenResponse;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
-import wooteco.prolog.login.excetpion.GithubApiFailException;
-import wooteco.prolog.login.excetpion.GithubConnectionException;
 
 @Component
 public class GithubClient {
@@ -46,7 +48,7 @@ public class GithubClient {
             .getBody()
             .getAccessToken();
         if (accessToken == null) {
-            throw new GithubApiFailException();
+            throw new BadRequestException(GITHUB_API_FAIL);
         }
         return accessToken;
     }
@@ -63,7 +65,7 @@ public class GithubClient {
                 .exchange(profileUrl, HttpMethod.GET, httpEntity, GithubProfileResponse.class)
                 .getBody();
         } catch (HttpClientErrorException e) {
-            throw new GithubConnectionException();
+            throw new BadRequestException(GITHUB_CONNECTION_FAIL);
         }
     }
 }

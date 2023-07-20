@@ -30,16 +30,16 @@ public class MemberReactionDocumentation extends NewDocumentation {
     void 스터디로그를_스크랩한다() {
         //given
         given(studylogScrapService.registerScrap(any(), any()))
-                .willReturn(new MemberScrapResponse(MEMBER_RESPONSE, STUDYLOG_RESPONSE1));
+            .willReturn(new MemberScrapResponse(MEMBER_RESPONSE, STUDYLOG_RESPONSE1));
 
         //when
         MemberScrapRequest params = new MemberScrapRequest(1L);
         ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(params)
-                .when().post("/members/scrap")
-                .then().log().all();
+            .header("Authorization", "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(params)
+            .when().post("/members/scrap")
+            .then().log().all();
 
         //then
         response.expect(status().isCreated());
@@ -54,12 +54,12 @@ public class MemberReactionDocumentation extends NewDocumentation {
         //given, when
         MemberScrapRequest params = new MemberScrapRequest(1L);
         ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(params)
-                .formParam("studylog", 1L)
-                .when().delete("/members/scrap")
-                .then().log().all();
+            .header("Authorization", "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(params)
+            .formParam("studylog", 1L)
+            .when().delete("/members/scrap")
+            .then().log().all();
 
         //then
         response.expect(status().isNoContent());
@@ -72,16 +72,16 @@ public class MemberReactionDocumentation extends NewDocumentation {
     void 스크랩한_스터디로그를_목록을_조회한다() {
         //given
         given(studylogScrapService.showScrap(any(), any()))
-                .willReturn(STUDYLOGS_RESPONSE);
+            .willReturn(STUDYLOGS_RESPONSE);
 
         //when
         MemberScrapRequest params = new MemberScrapRequest(1L);
         ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(params)
-                .when().get("/members/scrap")
-                .then().log().all();
+            .header("Authorization", "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(params)
+            .when().get("/members/scrap")
+            .then().log().all();
 
         //then
         response.expect(status().isOk());

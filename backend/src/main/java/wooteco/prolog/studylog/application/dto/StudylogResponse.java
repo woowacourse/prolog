@@ -1,5 +1,9 @@
 package wooteco.prolog.studylog.application.dto;
 
+import static java.util.stream.Collectors.toList;
+
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +14,6 @@ import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,33 +37,35 @@ public class StudylogResponse {
     private long commentCount;
 
     public StudylogResponse(
-            Studylog studylog,
-            SessionResponse sessionResponse,
-            MissionResponse missionResponse,
-            List<TagResponse> tagResponses,
-            boolean liked, long commentCount) {
+        Studylog studylog,
+        SessionResponse sessionResponse,
+        MissionResponse missionResponse,
+        List<TagResponse> tagResponses,
+        boolean liked, long commentCount) {
         this(
-                studylog.getId(),
-                MemberResponse.of(studylog.getMember()),
-                studylog.getCreatedAt(),
-                studylog.getUpdatedAt(),
-                sessionResponse,
-                missionResponse,
-                studylog.getTitle(),
-                studylog.getContent(),
-                tagResponses,
-                false,
-                false,
-                studylog.getViewCount(),
-                liked,
-                studylog.getLikeCount(),
-                commentCount
+            studylog.getId(),
+            MemberResponse.of(studylog.getMember()),
+            studylog.getCreatedAt(),
+            studylog.getUpdatedAt(),
+            sessionResponse,
+            missionResponse,
+            studylog.getTitle(),
+            studylog.getContent(),
+            tagResponses,
+            false,
+            false,
+            studylog.getViewCount(),
+            liked,
+            studylog.getLikeCount(),
+            commentCount
         );
     }
 
-    public StudylogResponse(final Long id, final MemberResponse author, final LocalDateTime createdAt,
+    public StudylogResponse(final Long id, final MemberResponse author,
+                            final LocalDateTime createdAt,
                             final LocalDateTime updatedAt,
-                            final SessionResponse session, final MissionResponse mission, final String title,
+                            final SessionResponse session, final MissionResponse mission,
+                            final String title,
                             final String content,
                             final List<TagResponse> tags,
                             final boolean scrap, final boolean read,
@@ -92,44 +93,45 @@ public class StudylogResponse {
         List<TagResponse> tagResponses = toTagResponses(studylogTags);
 
         return new StudylogResponse(
-                studylog.getId(),
-                MemberResponse.of(studylog.getMember()),
-                studylog.getCreatedAt(),
-                studylog.getUpdatedAt(),
-                SessionResponse.of(studylog.getSession()),
-                MissionResponse.of(studylog.getMission()),
-                studylog.getTitle(),
-                studylog.getContent(),
-                tagResponses,
-                scrap,
-                read,
-                studylog.getViewCount(),
-                liked,
-                studylog.getLikeCount(),
-                commentCount
+            studylog.getId(),
+            MemberResponse.of(studylog.getMember()),
+            studylog.getCreatedAt(),
+            studylog.getUpdatedAt(),
+            SessionResponse.of(studylog.getSession()),
+            MissionResponse.of(studylog.getMission()),
+            studylog.getTitle(),
+            studylog.getContent(),
+            tagResponses,
+            scrap,
+            read,
+            studylog.getViewCount(),
+            liked,
+            studylog.getLikeCount(),
+            commentCount
         );
     }
 
-    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, boolean liked) {
+    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read,
+                                      boolean liked) {
         List<StudylogTag> studylogTags = studylog.getStudylogTags();
         List<TagResponse> tagResponses = toTagResponses(studylogTags);
 
         return new StudylogResponse(
-                studylog.getId(),
-                MemberResponse.of(studylog.getMember()),
-                studylog.getCreatedAt(),
-                studylog.getUpdatedAt(),
-                SessionResponse.of(studylog.getSession()),
-                MissionResponse.of(studylog.getMission()),
-                studylog.getTitle(),
-                studylog.getContent(),
-                tagResponses,
-                scrap,
-                read,
-                studylog.getViewCount(),
-                liked,
-                studylog.getLikeCount(),
-                0
+            studylog.getId(),
+            MemberResponse.of(studylog.getMember()),
+            studylog.getCreatedAt(),
+            studylog.getUpdatedAt(),
+            SessionResponse.of(studylog.getSession()),
+            MissionResponse.of(studylog.getMission()),
+            studylog.getTitle(),
+            studylog.getContent(),
+            tagResponses,
+            scrap,
+            read,
+            studylog.getViewCount(),
+            liked,
+            studylog.getLikeCount(),
+            0
         );
     }
 
@@ -138,7 +140,8 @@ public class StudylogResponse {
         return of(studylog, false, false, null);
     }
 
-    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, Long memberId) {
+    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read,
+                                      Long memberId) {
         return StudylogResponse.of(studylog, scrap, read, studylog.likedByMember(memberId));
     }
 
@@ -146,38 +149,41 @@ public class StudylogResponse {
         return of(studylog, false, false, memberId, commentCount);
     }
 
-    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, Long memberId, long commentCount) {
-        return StudylogResponse.of(studylog, scrap, read, studylog.likedByMember(memberId), commentCount);
+    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, Long memberId,
+                                      long commentCount) {
+        return StudylogResponse.of(studylog, scrap, read, studylog.likedByMember(memberId),
+            commentCount);
     }
 
     private static List<TagResponse> toTagResponses(List<StudylogTag> studylogTags) {
         return studylogTags.stream()
-                .map(StudylogTag::getTag)
-                .map(TagResponse::of)
-                .collect(toList());
+            .map(StudylogTag::getTag)
+            .map(TagResponse::of)
+            .collect(toList());
     }
 
-    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, boolean liked, Session session,
+    public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, boolean liked,
+                                      Session session,
                                       Mission mission) {
         List<StudylogTag> studylogTags = studylog.getStudylogTags();
         List<TagResponse> tagResponses = toTagResponses(studylogTags);
 
         return new StudylogResponse(
-                studylog.getId(),
-                MemberResponse.of(studylog.getMember()),
-                studylog.getCreatedAt(),
-                studylog.getUpdatedAt(),
-                SessionResponse.of(session),
-                MissionResponse.of(mission),
-                studylog.getTitle(),
-                studylog.getContent(),
-                tagResponses,
-                scrap,
-                read,
-                studylog.getViewCount(),
-                liked,
-                studylog.getLikeCount(),
-                0
+            studylog.getId(),
+            MemberResponse.of(studylog.getMember()),
+            studylog.getCreatedAt(),
+            studylog.getUpdatedAt(),
+            SessionResponse.of(session),
+            MissionResponse.of(mission),
+            studylog.getTitle(),
+            studylog.getContent(),
+            tagResponses,
+            scrap,
+            read,
+            studylog.getViewCount(),
+            liked,
+            studylog.getLikeCount(),
+            0
         );
     }
 

@@ -4,6 +4,10 @@ import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_ARGUMENT;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_DOCUMENT_NOT_FOUND;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_SCRAP_NOT_EXIST_EXCEPTION;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
@@ -52,17 +57,13 @@ import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
 import wooteco.prolog.studylog.domain.repository.StudylogTempRepository;
 import wooteco.prolog.studylog.domain.repository.dto.CommentCount;
 import wooteco.prolog.studylog.event.StudylogDeleteEvent;
-import wooteco.prolog.studylog.exception.StudylogArgumentException;
-import wooteco.prolog.studylog.exception.StudylogNotFoundException;
-import wooteco.prolog.studylog.exception.StudylogReadNotExistException;
-import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
 
 @Service
 @AllArgsConstructor
 @Transactional(readOnly = true)
 public class StudylogService {
 
-    private static Logger logger = LoggerFactory.getLogger(StudylogService.class);
+    private static final Logger logger = LoggerFactory.getLogger(StudylogService.class);
 
     private final MemberTagService memberTagService;
     private final DocumentService studylogDocumentService;
@@ -81,7 +82,7 @@ public class StudylogService {
     public List<StudylogResponse> insertStudylogs(Long memberId,
                                                   List<StudylogRequest> studylogRequests) {
         if (studylogRequests.isEmpty()) {
-            throw new StudylogArgumentException();
+            throw new BadRequestException(STUDYLOG_ARGUMENT);
         }
 
         return studylogRequests.stream()
@@ -344,12 +345,13 @@ public class StudylogService {
     private void insertStudylogRead(Long id, Long memberId) {
         Member readMember = memberService.findById(memberId);
         Studylog readStudylog = studylogRepository.findById(id)
-            .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(STUDYLOG_NOT_FOUND));
         studylogReadRepository.save(new StudylogRead(readMember, readStudylog));
     }
 
     public Studylog findStudylogById(Long id) {
-        return studylogRepository.findById(id).orElseThrow(StudylogNotFoundException::new);
+        return studylogRepository.findById(id)
+            .orElseThrow(() -> new BadRequestException(STUDYLOG_NOT_FOUND));
     }
 
     private void increaseViewCount(LoginMember loginMember, Studylog studylog) {
@@ -365,7 +367,8 @@ public class StudylogService {
     @Transactional
     public void updateStudylog(Long memberId, Long studylogId, StudylogRequest studylogRequest) {
         Studylog studylog = studylogRepository.findById(studylogId)
-            .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(STUDYLOG_NOT_FOUND));
+
         studylog.validateBelongTo(memberId);
 
         Session session = sessionService.findSessionById(studylogRequest.getSessionId())
@@ -388,7 +391,7 @@ public class StudylogService {
     public void updateStudylogSession(Long memberId, Long studylogId,
                                       StudylogSessionRequest studylogSessionRequest) {
         Studylog studylog = studylogRepository.findById(studylogId)
-            .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(STUDYLOG_NOT_FOUND));
         studylog.validateBelongTo(memberId);
 
         Session session = sessionService.findSessionById(studylogSessionRequest.getSessionId())
@@ -401,7 +404,7 @@ public class StudylogService {
     public void updateStudylogMission(Long memberId, Long studylogId,
                                       StudylogMissionRequest studylogMissionRequest) {
         Studylog studylog = studylogRepository.findById(studylogId)
-            .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(STUDYLOG_NOT_FOUND));
         studylog.validateBelongTo(memberId);
 
         Mission mission = missionService.findMissionById(studylogMissionRequest.getMissionId())
@@ -414,7 +417,7 @@ public class StudylogService {
     public void deleteStudylog(Long memberId, Long studylogId) {
         final Member foundMember = memberService.findById(memberId);
         Studylog studylog = studylogRepository.findById(studylogId)
-            .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(STUDYLOG_NOT_FOUND));
         studylog.validateBelongTo(memberId);
 
         final Tags tags = tagService.findByStudylogsAndMember(studylog, foundMember);
@@ -430,14 +433,14 @@ public class StudylogService {
         if (studylogScrapRepository.existsByMemberIdAndStudylogId(memberId, studylogId)) {
             StudylogScrap studylogScrap = studylogScrapRepository.findByMemberIdAndStudylogId(
                     memberId, studylogId)
-                .orElseThrow(StudylogScrapNotExistException::new);
+                .orElseThrow(() -> new BadRequestException(STUDYLOG_SCRAP_NOT_EXIST_EXCEPTION));
             studylogScrapRepository.delete(studylogScrap);
         }
 
         if (studylogReadRepository.existsByMemberIdAndStudylogId(memberId, studylogId)) {
             StudylogRead studylogRead = studylogReadRepository.findByMemberIdAndStudylogId(memberId,
                     studylogId)
-                .orElseThrow(StudylogReadNotExistException::new);
+                .orElseThrow(() -> new BadRequestException(STUDYLOG_DOCUMENT_NOT_FOUND));
             studylogReadRepository.delete(studylogRead);
         }
     }

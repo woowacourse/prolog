@@ -11,13 +11,14 @@ import wooteco.prolog.studylog.domain.repository.dto.CommentCount;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query("SELECT c FROM Comment c"
-            + " JOIN FETCH c.studylog s"
-            + " JOIN FETCH c.member m"
-            + " WHERE s = :studylog"
-            + " AND c.isDelete = false")
+        + " JOIN FETCH c.studylog s"
+        + " JOIN FETCH c.member m"
+        + " WHERE s = :studylog"
+        + " AND c.isDelete = false")
     List<Comment> findCommentByStudylog(Studylog studylog);
 
-    @Query("SELECT new wooteco.prolog.studylog.domain.repository.dto.CommentCount(c.studylog, COUNT(c))"
+    @Query(
+        "SELECT new wooteco.prolog.studylog.domain.repository.dto.CommentCount(c.studylog, COUNT(c))"
             + " FROM Comment c"
             + " WHERE c.studylog IN :studylogs"
             + " AND c.isDelete = false"

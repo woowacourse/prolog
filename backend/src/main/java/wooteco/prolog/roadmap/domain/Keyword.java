@@ -1,11 +1,40 @@
 package wooteco.prolog.roadmap.domain;
 
+
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_AND_KEYWORD_PARENT_SAME_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_SEQUENCE_EXCEPTION;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
-import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
-import wooteco.prolog.roadmap.exception.KeywordSeqException;
+import wooteco.prolog.common.exception.BadRequestException;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -49,7 +78,8 @@ public class Keyword {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Keyword> children = new HashSet<>();
 
-    public Keyword(final Long id, final String name, final String description, final int seq, final int importance,
+    public Keyword(final Long id, final String name, final String description, final int seq,
+                   final int importance,
                    final Long sessionId, final Keyword parent, final Set<Keyword> children) {
         validateSeq(seq);
         this.id = id;
@@ -84,13 +114,13 @@ public class Keyword {
 
     private void validateSeq(final int seq) {
         if (seq <= 0) {
-            throw new KeywordSeqException();
+            throw new BadRequestException(ROADMAP_KEYWORD_SEQUENCE_EXCEPTION);
         }
     }
 
     private void validateKeywordParent(final Keyword parentKeyword) {
         if (this.parent != null && this.id.equals(parentKeyword.getId())) {
-            throw new KeywordAndKeywordParentSameException();
+            throw new BadRequestException(ROADMAP_KEYWORD_AND_KEYWORD_PARENT_SAME_EXCEPTION);
         }
     }
 

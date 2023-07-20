@@ -1,16 +1,18 @@
 package wooteco.prolog.roadmap.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.roadmap.application.dto.SessionRequest;
 import wooteco.prolog.roadmap.application.dto.SessionResponse;
 import wooteco.prolog.roadmap.application.dto.SessionsResponse;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-import wooteco.prolog.session.exception.SessionNotFoundException;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -36,7 +38,7 @@ public class NewSessionService {
     @Transactional
     public void updateSession(final Long sessionId, final SessionRequest request) {
         Session session = sessionRepository.findById(sessionId)
-            .orElseThrow(SessionNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(ROADMAP_SESSION_NOT_FOUND_EXCEPTION));
 
         session.update(request.getName());
     }
@@ -49,7 +51,7 @@ public class NewSessionService {
 
     private void validateExistSession(final Long sessionId) {
         if (!sessionRepository.existsById(sessionId)) {
-            throw new SessionNotFoundException();
+            throw new BadRequestException(ROADMAP_SESSION_NOT_FOUND_EXCEPTION);
         }
     }
 }

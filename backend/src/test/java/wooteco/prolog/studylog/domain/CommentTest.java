@@ -1,16 +1,16 @@
 package wooteco.prolog.studylog.domain;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static wooteco.prolog.common.exception.BadRequestCode.COMMENT_DELETE_EXCEPTION;
+
+import java.util.Arrays;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
-import wooteco.prolog.studylog.exception.CommentDeleteException;
-
-import java.util.Arrays;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class CommentTest {
 
@@ -28,6 +28,7 @@ public class CommentTest {
         comment.delete();
 
         assertThatThrownBy(() -> comment.delete())
-            .isInstanceOf(CommentDeleteException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(COMMENT_DELETE_EXCEPTION.getMessage());
     }
 }

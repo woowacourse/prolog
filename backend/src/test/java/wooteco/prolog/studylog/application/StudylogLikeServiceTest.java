@@ -3,6 +3,8 @@ package wooteco.prolog.studylog.application;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
+import static wooteco.prolog.common.exception.BadRequestCode.INVALID_LIKE_REQUEST_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.INVALID_UNLIKE_REQUEST_EXCEPTION;
 
 import java.util.Optional;
 import org.assertj.core.util.Lists;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
@@ -18,8 +21,6 @@ import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.studylog.exception.InvalidLikeRequestException;
-import wooteco.prolog.studylog.exception.InvalidUnlikeRequestException;
 
 public class StudylogLikeServiceTest {
 
@@ -62,8 +63,9 @@ public class StudylogLikeServiceTest {
         public void fail_because_member_not_valid() {
             //given, when, then
             assertThatThrownBy(
-                () -> studylogLikeService.likeStudylog(1L, 1L, false)
-            ).isInstanceOf(InvalidLikeRequestException.class);
+                () -> studylogLikeService.likeStudylog(1L, 1L, false))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage(INVALID_LIKE_REQUEST_EXCEPTION.getMessage());
         }
     }
 
@@ -80,8 +82,8 @@ public class StudylogLikeServiceTest {
 
             //when, then
             assertThatThrownBy(() -> studylogLikeService.unlikeStudylog(1L, 1L, true))
-                .isInstanceOf(InvalidUnlikeRequestException.class);
-
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage(INVALID_UNLIKE_REQUEST_EXCEPTION.getMessage());
         }
 
         @DisplayName("멤버_아이디가_유효하지_않을_때_InvalidLikeRequestException이_발생한다")
@@ -89,8 +91,9 @@ public class StudylogLikeServiceTest {
         public void fail_because_member_not_valid() {
             //given, when, then
             assertThatThrownBy(
-                () -> studylogLikeService.unlikeStudylog(1L, 1L, false)
-            ).isInstanceOf(InvalidLikeRequestException.class);
+                () -> studylogLikeService.unlikeStudylog(1L, 1L, false))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage(INVALID_LIKE_REQUEST_EXCEPTION.getMessage());
         }
     }
 

@@ -1,5 +1,20 @@
 package wooteco.prolog.member.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_FOUND;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,6 +24,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.dto.MemberResponse;
@@ -19,23 +35,6 @@ import wooteco.prolog.member.application.dto.ProfileIntroResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.member.exception.MemberNotAllowedException;
-import wooteco.prolog.member.exception.MemberNotFoundException;
-
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.LongStream;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.InstanceOfAssertFactories.future;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
@@ -129,7 +128,8 @@ class MemberServiceTest {
 
         //when, then
         assertThatThrownBy(() -> memberService.findById(1L))
-            .isInstanceOf(MemberNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(MEMBER_NOT_FOUND.getMessage());
     }
 
     @DisplayName("findByUsername() : username을 통해서 Member를 조회할 수 있다.")
@@ -158,7 +158,8 @@ class MemberServiceTest {
 
         //when, then
         assertThatThrownBy(() -> memberService.findByUsername("a"))
-            .isInstanceOf(MemberNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(MEMBER_NOT_FOUND.getMessage());
     }
 
     @DisplayName("findMemberResponseByUsername() : username을 통해서 MemberResponse를 조회할 수 있다.")
@@ -177,7 +178,8 @@ class MemberServiceTest {
             .thenReturn(Optional.of(member));
 
         //when
-        final MemberResponse foundMemberResponse = memberService.findMemberResponseByUsername(username);
+        final MemberResponse foundMemberResponse = memberService.findMemberResponseByUsername(
+            username);
 
         //then
         assertEquals(foundMemberResponse, memberResponse);
@@ -195,7 +197,8 @@ class MemberServiceTest {
             .thenReturn(Optional.of(member));
 
         //when
-        final ProfileIntroResponse savedProfileIntroResponse = memberService.findProfileIntro(member.getUsername());
+        final ProfileIntroResponse savedProfileIntroResponse = memberService.findProfileIntro(
+            member.getUsername());
 
         //then
         assertEquals(savedProfileIntroResponse.getText(), profileIntroResponse.getText());
@@ -206,11 +209,14 @@ class MemberServiceTest {
     void updateMember_MemberNotAllowedException_anonymous() {
         //given
         final LoginMember loginMember = new LoginMember(LoginMember.Authority.ANONYMOUS);
-        final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest("nickname", "imageUrl");
+        final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest("nickname",
+            "imageUrl");
 
         //when, then
-        assertThatThrownBy(() -> memberService.updateMember(loginMember, "username", memberUpdateRequest))
-            .isInstanceOf(MemberNotAllowedException.class);
+        assertThatThrownBy(
+            () -> memberService.updateMember(loginMember, "username", memberUpdateRequest))
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(MEMBER_NOT_ALLOWED.getMessage());
     }
 
     @DisplayName("updateMember() : 로그인 된 Member와 수정할 Member의 username이 다르면 MemberNotAllowedException이 발생한다.")
@@ -222,14 +228,17 @@ class MemberServiceTest {
 
         final LoginMember loginMember = new LoginMember(LoginMember.Authority.MEMBER);
         final Member member = new Member(1L, username, "nickname", Role.CREW, 1L, imageUrl);
-        final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest("changedNickname", imageUrl);
+        final MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest("changedNickname",
+            imageUrl);
 
         when(memberRepository.findById(any()))
             .thenReturn(Optional.of(member));
 
         //when, then
-        assertThatThrownBy(() -> memberService.updateMember(loginMember, "anotherUsername", memberUpdateRequest))
-            .isInstanceOf(MemberNotAllowedException.class);
+        assertThatThrownBy(
+            () -> memberService.updateMember(loginMember, "anotherUsername", memberUpdateRequest))
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(MEMBER_NOT_ALLOWED.getMessage());
     }
 
     @DisplayName("updateMember() : 로그인 된 Member와 수정할 Member의 username이 같으면 imageUrl과 nickname을 업데이트 할 수 있다.")
@@ -269,7 +278,8 @@ class MemberServiceTest {
         //when & then
         assertThatThrownBy(
             () -> memberService.updateProfileIntro(loginMember, "username", profileIntroRequest))
-            .isInstanceOf(MemberNotAllowedException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(MEMBER_NOT_ALLOWED.getMessage());
     }
 
     @DisplayName("updateProfileIntro() : 로그인 된 Member와 수정할 Member의 username이 다르면 MemberNotAllowedException이 발생한다.")
@@ -287,8 +297,10 @@ class MemberServiceTest {
 
         //then
         assertThatThrownBy(
-            () -> memberService.updateProfileIntro(loginMember, "anotherUsername", profileIntroRequest))
-            .isInstanceOf(MemberNotAllowedException.class);
+            () -> memberService.updateProfileIntro(loginMember, "anotherUsername",
+                profileIntroRequest))
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(MEMBER_NOT_ALLOWED.getMessage());
     }
 
     @DisplayName("updateProfileIntro() : 로그인 된 Member와 수정할 Member의 username이 같으면 profileIntro를 업데이트 할 수 있다.")
@@ -368,7 +380,6 @@ class MemberServiceTest {
             new Member("username3", "nickname3", Role.CREW, 3L, "imageUrl3"),
             new Member("username4", "nickname4", Role.CREW, 4L, "imageUrl4")
         );
-
 
         final List<Long> ids = Arrays.asList(1L, 2L, 3L, 4L, 5L);
 

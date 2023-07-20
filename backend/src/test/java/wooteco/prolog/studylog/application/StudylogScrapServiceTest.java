@@ -7,6 +7,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_FOUND;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_SCRAP_ALREADY_REGISTERED_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_SCRAP_NOT_EXIST_EXCEPTION;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,12 +25,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberScrapResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.member.exception.MemberNotFoundException;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
@@ -35,9 +40,6 @@ import wooteco.prolog.studylog.domain.StudylogScrap;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
-import wooteco.prolog.studylog.exception.StudylogNotFoundException;
-import wooteco.prolog.studylog.exception.StudylogScrapAlreadyRegisteredException;
-import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
 
 @ExtendWith(MockitoExtension.class)
 class StudylogScrapServiceTest {
@@ -80,7 +82,8 @@ class StudylogScrapServiceTest {
 
         //then
         assertAll(
-            () -> assertThat(memberScrapResponse.getMemberResponse().getId()).isEqualTo(멤버_스플릿.getId()),
+            () -> assertThat(memberScrapResponse.getMemberResponse().getId()).isEqualTo(
+                멤버_스플릿.getId()),
             () -> assertThat(memberScrapResponse.getStudylogResponse().getContent())
                 .isEqualTo(스플릿_학습로그.getContent()));
     }
@@ -95,7 +98,8 @@ class StudylogScrapServiceTest {
         //when
         //then
         assertThatThrownBy(() -> studylogScrapService.registerScrap(1L, 2L))
-            .isInstanceOf(StudylogScrapAlreadyRegisteredException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(STUDYLOG_SCRAP_ALREADY_REGISTERED_EXCEPTION.getMessage());
     }
 
     @DisplayName("학습로그 스크랩 등록 시 등록하려는 학습로그가 존재하지 않으면 예외가 발생한다.")
@@ -110,7 +114,8 @@ class StudylogScrapServiceTest {
         //when
         //then
         assertThatThrownBy(() -> studylogScrapService.registerScrap(1L, 2L))
-            .isInstanceOf(StudylogNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(STUDYLOG_NOT_FOUND.getMessage());
     }
 
     @DisplayName("학습로그 스크랩 등록 시 멤버가 존재하지 않으면 예외가 발생한다.")
@@ -137,7 +142,8 @@ class StudylogScrapServiceTest {
         //when
         //then
         assertThatThrownBy(() -> studylogScrapService.registerScrap(1L, 2L))
-            .isInstanceOf(MemberNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(MEMBER_NOT_ALLOWED.getMessage());
     }
 
     @DisplayName("학습로그 스크랩을 등록 해제한다.")
@@ -174,8 +180,9 @@ class StudylogScrapServiceTest {
 
         //when
         //then
-        assertThatThrownBy(() ->  studylogScrapService.unregisterScrap(1L, 1L))
-            .isInstanceOf(StudylogScrapNotExistException.class);
+        assertThatThrownBy(() -> studylogScrapService.unregisterScrap(1L, 1L))
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(STUDYLOG_SCRAP_NOT_EXIST_EXCEPTION.getMessage());
     }
 
 
@@ -193,7 +200,6 @@ class StudylogScrapServiceTest {
         final Tag 자바_태그 = new Tag("Java");
         final Tag 스프링_태그 = new Tag("Spring");
         final List<Tag> 자바_스프링_태그_목록 = Arrays.asList(자바_태그, 스프링_태그);
-
 
         final Studylog 스플릿_학습로그 = new Studylog(멤버_스플릿, "title", "content",
             자동차_미션, 자바_스프링_태그_목록);
