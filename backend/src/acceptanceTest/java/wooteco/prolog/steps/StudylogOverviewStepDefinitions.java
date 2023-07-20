@@ -26,27 +26,28 @@ public class StudylogOverviewStepDefinitions extends AcceptanceSteps {
     @Then("해당 유저의 태그 목록이 조회된다")
     public void 나의태그목록이조회된다() {
         final List<MemberTagResponse> data = context.response.then().extract()
-                .body()
-                .jsonPath()
-                .getList("data", MemberTagResponse.class);
+            .body()
+            .jsonPath()
+            .getList("data", MemberTagResponse.class);
 
         assertThat(data)
-                .extracting(
-                        memberTagResponse -> memberTagResponse.getTagResponse().getName(),
-                        MemberTagResponse::getCount)
-                .containsExactlyInAnyOrder(
-                        tuple(TagAcceptanceFixture.TAG1.getTagName(), 2),
-                        tuple(TagAcceptanceFixture.TAG2.getTagName(), 2),
-                        tuple(TagAcceptanceFixture.TAG3.getTagName(), 2),
-                        tuple(TagAcceptanceFixture.TAG4.getTagName(), 2),
-                        tuple("ALL", 4)
-                );
+            .extracting(
+                memberTagResponse -> memberTagResponse.getTagResponse().getName(),
+                MemberTagResponse::getCount)
+            .containsExactlyInAnyOrder(
+                tuple(TagAcceptanceFixture.TAG1.getTagName(), 2),
+                tuple(TagAcceptanceFixture.TAG2.getTagName(), 2),
+                tuple(TagAcceptanceFixture.TAG3.getTagName(), 2),
+                tuple(TagAcceptanceFixture.TAG4.getTagName(), 2),
+                tuple("ALL", 4)
+            );
     }
 
     @When("{string}의 {int}년 {int}월 스터디로그 목록을 조회하면")
     public void 나의스터디로그목록을조회하면(String name, int year, int month) {
         final String memberName = GithubResponses.findByName(name).getLogin();
-        String path = String.format("members/%s/calendar-studylogs?year=%d&month=%d", memberName, year, month);
+        String path = String.format("members/%s/calendar-studylogs?year=%d&month=%d", memberName,
+            year, month);
         context.invokeHttpGet(path);
     }
 
@@ -58,14 +59,14 @@ public class StudylogOverviewStepDefinitions extends AcceptanceSteps {
     @Then("해당 유저의 스터디로그 목록이 조회된다")
     public void 나의스터디로그목록이조회된다() {
         final List<CalendarStudylogResponse> data = context.response.then().extract()
-                .body()
-                .jsonPath()
-                .getList("data", CalendarStudylogResponse.class);
+            .body()
+            .jsonPath()
+            .getList("data", CalendarStudylogResponse.class);
 
         assertThat(data).extracting(CalendarStudylogResponse::getTitle)
-                .containsExactlyInAnyOrder(
-                        PostAcceptanceFixture.POST1.getPostRequest().getTitle(),
-                        PostAcceptanceFixture.POST2.getPostRequest().getTitle()
-                );
+            .containsExactlyInAnyOrder(
+                PostAcceptanceFixture.POST1.getPostRequest().getTitle(),
+                PostAcceptanceFixture.POST2.getPostRequest().getTitle()
+            );
     }
 }

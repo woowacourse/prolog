@@ -16,10 +16,10 @@ public class PostMappingDataExtractor implements AnnotationDataExtractor {
     public RequestApi extractRequestApi(Method method, String classUrl) {
         final PostMapping postMapping = method.getAnnotation(PostMapping.class);
         final String api = Arrays.stream(postMapping.value())
-                .findAny()
-                .orElseGet(() ->
-                        Arrays.stream(postMapping.path()).findAny().orElse("")
-                );
+            .findAny()
+            .orElseGet(() ->
+                Arrays.stream(postMapping.path()).findAny().orElse("")
+            );
         return new RequestApi(classUrl + api, "POST");
     }
 }

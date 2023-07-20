@@ -1,11 +1,13 @@
 package wooteco.prolog.studylog.studylog.domain;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_CONTENT_NULL_OR_EMPTY;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_TITLE_NULL_OR_EMPTY;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.studylog.domain.Content;
-import wooteco.prolog.studylog.exception.StudylogContentNullOrEmptyException;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ContentTest {
 
@@ -15,13 +17,15 @@ class ContentTest {
         //given
         String empty = "";
         String justBlank = "    ";
-        //when
-        //then
+        //when, then
         assertThatThrownBy(() -> new Content(empty))
-            .isInstanceOf(StudylogContentNullOrEmptyException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(STUDYLOG_CONTENT_NULL_OR_EMPTY.getMessage());
         assertThatThrownBy(() -> new Content(justBlank))
-            .isInstanceOf(StudylogContentNullOrEmptyException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(STUDYLOG_CONTENT_NULL_OR_EMPTY.getMessage());
         assertThatThrownBy(() -> new Content(null))
-            .isInstanceOf(StudylogContentNullOrEmptyException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(STUDYLOG_CONTENT_NULL_OR_EMPTY.getMessage());
     }
 }

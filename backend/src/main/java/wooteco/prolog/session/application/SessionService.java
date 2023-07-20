@@ -1,6 +1,8 @@
 package wooteco.prolog.session.application;
 
 import static java.util.stream.Collectors.toList;
+import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_SESSION_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.SESSION_NOT_FOUND_EXCEPTION;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,14 +11,13 @@ import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.SessionMember;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-import wooteco.prolog.session.exception.DuplicateSessionException;
-import wooteco.prolog.session.exception.SessionNotFoundException;
 
 @Service
 @AllArgsConstructor
@@ -36,13 +37,13 @@ public class SessionService {
 
     private void validateName(String name) {
         if (sessionRepository.findByName(name).isPresent()) {
-            throw new DuplicateSessionException();
+            throw new BadRequestException(DUPLICATE_SESSION_EXCEPTION);
         }
     }
 
     public Session findById(Long id) {
         return sessionRepository.findById(id)
-            .orElseThrow(SessionNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(SESSION_NOT_FOUND_EXCEPTION));
     }
 
     public Optional<Session> findSessionById(Long id) {

@@ -1,12 +1,13 @@
 package wooteco.prolog.studylog.studylog.domain;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import wooteco.prolog.login.excetpion.StudylogTitleNullOrEmptyException;
-import wooteco.prolog.studylog.domain.Title;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_TITLE_NULL_OR_EMPTY;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import wooteco.prolog.common.exception.BadRequestException;
+import wooteco.prolog.studylog.domain.Title;
 
 class TitleTest {
 
@@ -19,11 +20,14 @@ class TitleTest {
         //when
         //then
         assertThatThrownBy(() -> new Title(empty))
-            .isExactlyInstanceOf(StudylogTitleNullOrEmptyException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(STUDYLOG_TITLE_NULL_OR_EMPTY.getMessage());
         assertThatThrownBy(() -> new Title(justBlank))
-            .isExactlyInstanceOf(StudylogTitleNullOrEmptyException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(STUDYLOG_TITLE_NULL_OR_EMPTY.getMessage());
         assertThatThrownBy(() -> new Title(null))
-            .isExactlyInstanceOf(StudylogTitleNullOrEmptyException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(STUDYLOG_TITLE_NULL_OR_EMPTY.getMessage());
     }
 
     @DisplayName("생성")

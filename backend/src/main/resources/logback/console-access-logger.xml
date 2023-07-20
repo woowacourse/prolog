@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <included>
-  <appender name="console-access-logger" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <charset>utf8</charset>
-      <pattern>
-        %n###### HTTP Request ###### %n%fullRequest###### HTTP Response ###### %n%fullResponse
-      </pattern>
-    </encoder>
-  </appender>
+    <appender name="console-access-logger" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>utf8</charset>
+            <pattern>
+                %n###### HTTP Request ###### %n%fullRequest###### HTTP Response ######
+                %n%fullResponse
+            </pattern>
+        </encoder>
+    </appender>
 </included>

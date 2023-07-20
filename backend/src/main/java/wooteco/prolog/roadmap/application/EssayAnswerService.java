@@ -13,6 +13,7 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerRequest;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerSearchRequest;
 import wooteco.prolog.roadmap.domain.Curriculum;
+import wooteco.prolog.roadmap.application.dto.EssayAnswerUpdateRequest;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
 import wooteco.prolog.roadmap.domain.Quiz;
 import wooteco.prolog.roadmap.domain.repository.CurriculumRepository;
@@ -22,6 +23,8 @@ import wooteco.prolog.roadmap.domain.repository.QuizRepository;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.studylog.application.dto.EssayAnswersResponse;
+
+import java.util.List;
 
 @Transactional
 @Service
@@ -60,11 +63,11 @@ public class EssayAnswerService {
     }
 
     @Transactional
-    public void updateEssayAnswer(Long answerId, String answer, Long memberId) {
+    public void updateEssayAnswer(Long answerId, EssayAnswerUpdateRequest request, Long memberId) {
         EssayAnswer essayAnswer = getById(answerId);
         Member member = memberService.findById(memberId);
 
-        essayAnswer.update(answer, member);
+        essayAnswer.update(request.getAnswer(), member);
         essayAnswerRepository.save(essayAnswer);
     }
 

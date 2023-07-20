@@ -4,11 +4,10 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 @Component
 @Scope(scopeName = "cucumber-glue")
@@ -65,7 +64,8 @@ public class AcceptanceContext {
         response.then().log().all();
     }
 
-    public void invokeHttpGetWithTokenAndCookies(String path, Map<String, ?> cookies, Object... pathParams) {
+    public void invokeHttpGetWithTokenAndCookies(String path, Map<String, ?> cookies,
+                                                 Object... pathParams) {
         request = RestAssured.given().log().all()
             .cookies(cookies)
             .auth().oauth2(accessToken);

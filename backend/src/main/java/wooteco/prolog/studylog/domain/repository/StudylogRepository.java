@@ -4,15 +4,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.lang.Nullable;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.domain.Studylog;
 
-public interface StudylogRepository extends JpaRepository<Studylog, Long>, JpaSpecificationExecutor<Studylog> {
+public interface StudylogRepository extends JpaRepository<Studylog, Long>,
+    JpaSpecificationExecutor<Studylog> {
 
     @Query(value = "select distinct p from Studylog p left join fetch p.studylogTags.values pt left join fetch pt.tag where p.member = :member and p.deleted <> true",
         countQuery = "select count(p) from Studylog p where p.member = :member and p.deleted <> true")
@@ -31,7 +30,8 @@ public interface StudylogRepository extends JpaRepository<Studylog, Long>, JpaSp
 
     List<Studylog> findTop50ByDeletedFalseOrderByIdDesc();
 
-    List<Studylog> findByMemberIdAndCreatedAtBetween(Long memberId, LocalDateTime startDate, LocalDateTime endDate);
+    List<Studylog> findByMemberIdAndCreatedAtBetween(Long memberId, LocalDateTime startDate,
+                                                     LocalDateTime endDate);
 
     Page<Studylog> findByIdInAndDeletedFalseOrderByIdDesc(List<Long> ids, Pageable pageable);
 

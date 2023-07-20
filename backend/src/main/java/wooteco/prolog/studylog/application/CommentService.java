@@ -1,13 +1,17 @@
 package wooteco.prolog.studylog.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.COMMENT_NOT_FOUND;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_FOUND;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-import wooteco.prolog.member.exception.MemberNotFoundException;
 import wooteco.prolog.studylog.application.dto.CommentResponse;
 import wooteco.prolog.studylog.application.dto.CommentSaveRequest;
 import wooteco.prolog.studylog.application.dto.CommentUpdateRequest;
@@ -16,8 +20,6 @@ import wooteco.prolog.studylog.domain.Comment;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.CommentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-import wooteco.prolog.studylog.exception.CommentNotFoundException;
-import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 
 @Transactional
 @AllArgsConstructor
@@ -30,9 +32,9 @@ public class CommentService {
 
     public Long insertComment(CommentSaveRequest request) {
         Member findMember = memberRepository.findById(request.getMemberId())
-            .orElseThrow(MemberNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(MEMBER_NOT_FOUND));
         Studylog findStudylog = studylogRepository.findById(request.getStudylogId())
-            .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(STUDYLOG_NOT_FOUND));
 
         Comment comment = request.toEntity(findMember, findStudylog);
 
@@ -42,7 +44,7 @@ public class CommentService {
     @Transactional(readOnly = true)
     public CommentsResponse findComments(Long studylogId) {
         Studylog findStudylog = studylogRepository.findById(studylogId)
-            .orElseThrow(StudylogNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(STUDYLOG_NOT_FOUND));
 
         List<CommentResponse> commentResponses = commentRepository.findCommentByStudylog(
                 findStudylog)
@@ -58,7 +60,7 @@ public class CommentService {
         validateExistsStudylog(request.getStudylogId());
 
         Comment comment = commentRepository.findById(request.getCommentId())
-            .orElseThrow(CommentNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(COMMENT_NOT_FOUND));
         comment.updateContent(request.getContent());
 
         return comment.getId();
@@ -69,20 +71,20 @@ public class CommentService {
         validateExistsStudylog(studylogId);
 
         Comment comment = commentRepository.findById(commentId)
-            .orElseThrow(CommentNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(COMMENT_NOT_FOUND));
 
         comment.delete();
     }
 
     private void validateExistsMember(Long memberId) {
         if (!memberRepository.existsById(memberId)) {
-            throw new MemberNotFoundException();
+            throw new BadRequestException(MEMBER_NOT_FOUND);
         }
     }
 
     private void validateExistsStudylog(Long studylogId) {
         if (!studylogRepository.existsById(studylogId)) {
-            throw new StudylogNotFoundException();
+            throw new BadRequestException(STUDYLOG_NOT_FOUND);
         }
     }
 }

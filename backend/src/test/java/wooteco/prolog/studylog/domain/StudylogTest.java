@@ -1,25 +1,26 @@
 package wooteco.prolog.studylog.domain;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.Role;
-import wooteco.prolog.session.domain.Mission;
-import wooteco.prolog.session.domain.Session;
-import wooteco.prolog.studylog.exception.AuthorNotValidException;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static wooteco.prolog.common.exception.BadRequestCode.ONLY_AUTHOR_CAN_EDIT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import wooteco.prolog.common.exception.BadRequestException;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
+import wooteco.prolog.session.domain.Mission;
+import wooteco.prolog.session.domain.Session;
 
 class StudylogTest {
+
     private static final Long SELF_MEMBER_ID = 1L;
     private static final Long OTHER_MEMBER_ID = 2L;
 
@@ -51,7 +52,7 @@ class StudylogTest {
     @Test
     void update() {
         // given
-        Tags tags = newTags("new Java","new Spring");
+        Tags tags = newTags("new Java", "new Spring");
         List<StudylogTag> studylogTag = tags.getList().stream()
             .map(tag -> new StudylogTag(studylog, tag))
             .collect(Collectors.toList());
@@ -76,14 +77,15 @@ class StudylogTest {
 
         // when, then
         assertThatThrownBy(() -> studylog.validateBelongTo(OTHER_MEMBER_ID))
-            .isInstanceOf(AuthorNotValidException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(ONLY_AUTHOR_CAN_EDIT.getMessage());
     }
 
     @DisplayName("스터디로그에 정상적으로 태그를 추가한다.")
     @Test
     void addTags() {
         // given
-        Tags tags = newTags("new Java","new Spring");
+        Tags tags = newTags("new Java", "new Spring");
         studylog = new Studylog(member, "제목", "내용", mission, Arrays.asList(tag1, tag2));
 
         // when
@@ -217,7 +219,7 @@ class StudylogTest {
         assertThat(studylog.getStudylogTags()).isEqualTo(studylogTags);
     }
 
-    private Tags newTags(String... values){
+    private Tags newTags(String... values) {
         List<Tag> tags = new ArrayList<>();
         for (String value : values) {
             tags.add(new Tag(value));

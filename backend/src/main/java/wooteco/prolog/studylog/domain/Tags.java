@@ -2,13 +2,14 @@ package wooteco.prolog.studylog.domain;
 
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
+import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_TAG;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.MemberTag;
-import wooteco.prolog.studylog.exception.DuplicateTagException;
 
 public class Tags {
 
@@ -30,7 +31,7 @@ public class Tags {
     private void validateDuplicate(List<String> names) {
         Set<String> duplicateChecker = new HashSet<>(names);
         if (names.size() != duplicateChecker.size()) {
-            throw new DuplicateTagException();
+            throw new BadRequestException(DUPLICATE_TAG);
         }
     }
 

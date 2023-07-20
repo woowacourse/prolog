@@ -1,122 +1,87 @@
 package wooteco.prolog.common.exception;
 
-import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import wooteco.prolog.levellogs.exception.InvalidLevelLogAuthorException;
-import wooteco.prolog.levellogs.exception.LevelLogNotFoundException;
-import wooteco.prolog.login.excetpion.GithubApiFailException;
-import wooteco.prolog.login.excetpion.GithubConnectionException;
-import wooteco.prolog.login.excetpion.RoleNameNotFoundException;
-import wooteco.prolog.login.excetpion.StudylogTitleNullOrEmptyException;
-import wooteco.prolog.login.excetpion.TokenNotValidException;
-import wooteco.prolog.member.exception.DuplicateMemberTagException;
-import wooteco.prolog.member.exception.MemberNotAllowedException;
-import wooteco.prolog.member.exception.MemberNotFoundException;
-import wooteco.prolog.roadmap.exception.CurriculumInvalidException;
-import wooteco.prolog.roadmap.exception.CurriculumNotFoundException;
-import wooteco.prolog.roadmap.exception.KeywordAndKeywordParentSameException;
-import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
-import wooteco.prolog.roadmap.exception.KeywordOrderException;
-import wooteco.prolog.roadmap.exception.QuizNotFoundException;
-import wooteco.prolog.roadmap.exception.QuizQuestionException;
 import wooteco.prolog.session.domain.Mission;
+import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.domain.TagName;
 import wooteco.prolog.studylog.domain.Title;
-import wooteco.prolog.studylog.exception.AuthorNotValidException;
-import wooteco.prolog.studylog.exception.CommentDeleteException;
-import wooteco.prolog.studylog.exception.CommentNotFoundException;
-import wooteco.prolog.studylog.exception.DuplicateMissionException;
-import wooteco.prolog.studylog.exception.DuplicateTagException;
-import wooteco.prolog.studylog.exception.InvalidLikeRequestException;
-import wooteco.prolog.studylog.exception.InvalidUnlikeRequestException;
-import wooteco.prolog.studylog.exception.MissionNotFoundException;
-import wooteco.prolog.studylog.exception.NotValidSortNameException;
-import wooteco.prolog.studylog.exception.StudylogArgumentException;
-import wooteco.prolog.studylog.exception.StudylogContentNullOrEmptyException;
-import wooteco.prolog.studylog.exception.StudylogDocumentNotFoundException;
-import wooteco.prolog.studylog.exception.StudylogNotFoundException;
-import wooteco.prolog.studylog.exception.StudylogScrapAlreadyRegisteredException;
-import wooteco.prolog.studylog.exception.StudylogScrapNotExistException;
-import wooteco.prolog.studylog.exception.StudylogScrapNotValidUserException;
-import wooteco.prolog.studylog.exception.TagNameNullOrEmptyException;
-import wooteco.prolog.studylog.exception.TooLongMissionNameException;
-import wooteco.prolog.studylog.exception.TooLongTagNameException;
-import wooteco.prolog.studylog.exception.TooLongTitleException;
 
 @AllArgsConstructor
 @Getter
 public enum BadRequestCode {
-    NOT_FOUND_ERROR_CODE(0000, "해당 에러의 에러코드를 찾을 수 없습니다.", NotFoundErrorCodeException.class),
+    NOT_FOUND_ERROR_CODE(0000, "해당 에러의 에러코드를 찾을 수 없습니다."),
 
-    GITHUB_API_FAIL(1000, "깃헙 API에서 엑세스 토큰을 받아오는 데 실패했습니다.", GithubApiFailException.class),
-    GITHUB_CONNECTION_FAIL(1001, "깃헙 API에서 엑세스 토큰을 받아오는 데 실패했습니다.",
-        GithubConnectionException.class),
-    TOKEN_NOT_VALID(1002, "JWT 토큰이 유효하지 않습니다.", TokenNotValidException.class),
-    ROLE_NAME_NOT_FOUND(1003, "해당 이름을 가진 역할이 없습니다.", RoleNameNotFoundException.class),
-    MEMBER_NOT_FOUND(1004, "해당 ID를 가진 멤버가 없습니다.", MemberNotFoundException.class),
-    MEMBER_NOT_ALLOWED(1005, "권한이 없습니다.", MemberNotAllowedException.class),
+    GITHUB_API_FAIL(1000, "깃헙 API에서 엑세스 토큰을 받아오는 데 실패했습니다."),
+    GITHUB_CONNECTION_FAIL(1001, "깃헙 API에서 엑세스 토큰을 받아오는 데 실패했습니다."),
+    TOKEN_NOT_VALID(1002, "JWT 토큰이 유효하지 않습니다."),
+    ROLE_NAME_NOT_FOUND(1003, "해당 이름을 가진 역할이 없습니다."),
+    MEMBER_NOT_FOUND(1004, "해당 ID를 가진 멤버가 없습니다."),
+    MEMBER_NOT_ALLOWED(1005, "권한이 없습니다."),
 
-    STUDYLOG_ARGUMENT(2000, "최소 1개의 글이 있어야 합니다.", StudylogArgumentException.class),
-    STUDYLOG_CONTENT_NULL_OR_EMPTY(2001, "글 내용은 공백일 수 없습나다.",
-        StudylogContentNullOrEmptyException.class),
-    STUDYLOG_TITLE_NULL_OR_EMPTY(2002, "글 제목은 공백일 수 없습나다.",
-        StudylogTitleNullOrEmptyException.class),
-    NOT_VALID_SORT_NAME(2003, "정렬 형식이 올바르지 않습니다.", NotValidSortNameException.class),
-    STUDYLOG_NOT_FOUND(2004, "존재하지 않는 글입니다.", StudylogNotFoundException.class),
-    STUDYLOG_TITLE_TOO_LONG(2005, String.format("스터디로그 제목이 %d자 초과입니다.", Title.MAX_LENGTH),
-        TooLongTitleException.class),
-    ONLY_AUTHOR_CAN_EDIT(2006, "작성자만 수정할 수 있습니다.", AuthorNotValidException.class),
-    STUDYLOG_DOCUMENT_NOT_FOUND(2007, "검색용 스터디로그가 존재하지 않습니다.",
-        StudylogDocumentNotFoundException.class),
+    STUDYLOG_ARGUMENT(2000, "최소 1개의 글이 있어야 합니다."),
+    STUDYLOG_CONTENT_NULL_OR_EMPTY(2001, "글 내용은 공백일 수 없습니다."),
+    STUDYLOG_TITLE_NULL_OR_EMPTY(2002, "글 제목은 공백일 수 없습니다."),
+    NOT_VALID_SORT_NAME(2003, "정렬 형식이 올바르지 않습니다."),
+    STUDYLOG_NOT_FOUND(2004, "존재하지 않는 글입니다."),
+    STUDYLOG_TITLE_TOO_LONG(2005, String.format("스터디로그 제목이 %d자 초과입니다.", Title.MAX_LENGTH)),
+    ONLY_AUTHOR_CAN_EDIT(2006, "작성자만 수정할 수 있습니다."),
+    STUDYLOG_DOCUMENT_NOT_FOUND(2007, "검색용 스터디로그가 존재하지 않습니다."),
+    STUDYLOG_SCRAP_ALREADY_REGISTERED_EXCEPTION(2008, "이미 등록한 스터디 로그 스크랩입니다."),
+    STUDYLOG_SCRAP_NOT_EXIST_EXCEPTION(2009, "존재하지 않는 스터디 로그 스크랩입니다."),
 
-    MISSION_NOT_FOUND(3000, "존재하지 않는 미션입니다.", MissionNotFoundException.class),
-    DUPLICATE_MISSION(3001, "미션이 중복됩니다.", DuplicateMissionException.class),
-    DUPLICATE_TAG(3002, "태그가 중복됩니다.", DuplicateTagException.class),
-    TAG_NAME_NULL_OR_EMPTY(3003, "태그 이름이 null이거나 비어있습니다.", TagNameNullOrEmptyException.class),
-    TOO_LONG_TAG_NAME(3004, String.format("태그 이름이 %d자 초과입니다.", TagName.MAX_LENGTH),
-        TooLongTagNameException.class),
-    TOO_LONG_MISSION_NAME(3005, String.format("미션 이름이 %d자 초과입니다.", Mission.MAX_LENGTH),
-        TooLongMissionNameException.class),
-    DUPLICATE_MEMBER_TAG(3006, "중복되는 멤버 태그 입니다.", DuplicateMemberTagException.class),
-    SCRAP_ALREADY_REGISTERED(3007, "이미 스크랩한 스터디로그입니다.",
-        StudylogScrapAlreadyRegisteredException.class),
-    SCRAP_NOT_EXIST(3008, "스크랩이 존재하지 않습니다.", StudylogScrapNotExistException.class),
-    SCRAP_NOT_VALID_USER(3009, "본인의 스크랩만 추가할 수 있습니다.", StudylogScrapNotValidUserException.class),
+    MISSION_NOT_FOUND(3000, "존재하지 않는 미션입니다."),
+    DUPLICATE_MISSION(3001, "미션이 중복됩니다."),
+    DUPLICATE_TAG(3002, "태그가 중복됩니다."),
+    TAG_NAME_NULL_OR_EMPTY(3003, "태그 이름이 null이거나 비어있습니다."),
+    TOO_LONG_TAG_NAME(3004, String.format("태그 이름이 %d자 초과입니다.", TagName.MAX_LENGTH)),
+    TOO_LONG_MISSION_NAME(3005, String.format("미션 이름이 %d자 초과입니다.", Mission.MAX_LENGTH)),
+    DUPLICATE_MEMBER_TAG(3006, "중복되는 멤버 태그 입니다."),
+    SCRAP_ALREADY_REGISTERED(3007, "이미 스크랩한 스터디로그입니다."),
+    SCRAP_NOT_EXIST(3008, "스크랩이 존재하지 않습니다."),
+    SCRAP_NOT_VALID_USER(3009, "본인의 스크랩만 추가할 수 있습니다."),
+    NOT_EXISTS_MEMBER_TAG(3010, "멤버 태그가 존재하지 않습니다."),
 
-    INVALID_LIKE_REQUEST_EXCEPTION(5001, "스터디로그를 좋아요 할 수 없습니다.", InvalidLikeRequestException.class),
-    INVALID_UNLIKE_REQUEST_EXCEPTION(5002, "스터디로그를 좋아요 취소 할 수 없습니다.",
-        InvalidUnlikeRequestException.class),
+    INVALID_LIKE_REQUEST_EXCEPTION(5001, "스터디로그를 좋아요 할 수 없습니다."),
+    INVALID_UNLIKE_REQUEST_EXCEPTION(5002, "스터디로그를 좋아요 취소 할 수 없습니다."),
 
+    COMMENT_NOT_FOUND(6001, "존재하지 않는 댓글입니다."),
+    COMMENT_DELETE_EXCEPTION(6002, "댓글을 삭제할 수 없습니다."),
 
-    COMMENT_NOT_FOUND(6001, "존재하지 않는 댓글입니다.", CommentNotFoundException.class),
-    COMMENT_DELETE_EXCEPTION(6002, "댓글을 삭제할 수 없습니다.", CommentDeleteException.class),
+    INVALID_LEVEL_LOG_AUTHOR_EXCEPTION(7001, "레벨 로그 작성자가 아닙니다."),
+    LEVEL_LOG_NOT_FOUND_EXCEPTION(7002, "레벨 로그를 찾을 수 없습니다."),
+    SELF_DISCUSSION_NOT_FOUND_EXCEPTION(7003, "자신이 작성한 디스커션을 찾을 수 없습니다."),
 
-    INVALID_LEVEL_LOG_AUTHOR_EXCEPTION(7001, "레벨 로그 작성자가 아닙니다.",
-        InvalidLevelLogAuthorException.class),
-    LEVEL_LOG_NOT_FOUND_EXCEPTION(7002, "레벨 로그를 찾을 수 없습니다.", LevelLogNotFoundException.class),
+    ROADMAP_KEYWORD_ORDER_EXCEPTION(8001, "키워드의 순서는 1 이상이여야 합니다."),
+    ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION(8002, "키워드를 찾을 수 없습니다."),
+    ROADMAP_QUIZ_NOT_FOUND_EXCEPTION(8003, "퀴즈를 찾을 수 없습니다."),
+    ROADMAP_QUIZ_INVALID_QUESTION_EXCEPTION(8004, "퀴즈 내용을 업데이트할 수 없습니다."),
+    ROADMAP_KEYWORD_SAME_PARENT_EXCEPTION(8005, "부모의 키워드를 수정할 수 없습니다"),
+    ROADMAP_SESSION_NOT_FOUND_EXCEPTION(8006, "세션을 찾을 수 없습니다."),
+    ROADMAP_KEYWORD_SEQUENCE_EXCEPTION(8007, "키워드 시퀀스가 유효하지 않습니다."),
+    ROADMAP_KEYWORD_AND_KEYWORD_PARENT_SAME_EXCEPTION(8008, "로드맵 키워드는 키워드의 부모와 같을 수 없습니다."),
 
-    ROADMAP_KEYWORD_ORDER_EXCEPTION(8001, "키워드의 순서는 1 이상이여야 합니다.", KeywordOrderException.class),
-    ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION(8002, "키워드를 찾을 수 없습니다.", KeywordNotFoundException.class),
-    ROADMAP_QUIZ_NOT_FOUND_EXCEPTION(8003, "퀴즈를 찾을 수 없습니다.", QuizNotFoundException.class),
-    ROADMAP_QUIZ_INVALID_QUESTION_EXCEPTION(8004, "퀴즈 내용을 업데이트할 수 없습니다.",
-        QuizQuestionException.class),
+    CURRICULUM_NAME_RANGE_EXCEPTION(8009, "커리큘럼 이름은 공백일 수 없습니다"),
+    CURRICULUM_NOT_FOUND_EXCEPTION(8010, "해당하는 커리큘럼을 찾을 수 없습니다"),
+    CURRICULUM_INVALID_EXCEPTION(8011, "커리큘럼이 유효하지 않습니다."),
 
-    ROADMAP_KEYWORD_SAME_PARENT_EXCEPTION(8005, "부모의 키워드를 수정할 수 없습니다",
-        KeywordAndKeywordParentSameException.class),
+    FILE_NAME_EMPTY_EXCEPTION(9001, "파일 이름이 존재하지 않습니다."),
+    UNSUPPORTED_FILE_EXTENSION_EXCEPTION(9002, "지원하지 않는 파일 확장자입니다."),
+    FILE_UPLOAD_FAIL_EXCEPTION(9003, "파일 업로드에 실패했습니다."),
 
-    CURRICULUM_NAME_RANGE_EXCEPTION(8006, "커리큘럼 이름은 공백일 수 없습니다", CurriculumInvalidException.class),
-    CURRICULUM_NOT_FOUND_EXCEPTION(8007, "해당하는 커리큘럼을 찾을 수 없습니다", CurriculumNotFoundException.class);
+    DUPLICATE_SESSION_EXCEPTION(10001, "중복되는 세션입니다."),
+    SESSION_NOT_FOUND_EXCEPTION(10002, "세션을 찾을 수 없습니다."),
+    TOO_LONG_LEVEL_NAME_EXCEPTION(10003, String.format("세션 이름이 %d자 초과입니다.", Session.MAX_LENGTH)),
+
+    SEARCH_ARGUMENT_PARSE_EXCEPTION(11001, "parsing 할 수 없는 argument입니다."),
+
+    ARTICLE_URL_OVER_LENGTH_EXCEPTION(12000, "ARTICLE_URL_OVER_LENGTH_EXCEPTION"),
+    ARTICLE_TITLE_NULL_OR_EMPTY_EXCEPTION(12001, "ARTICLE_TITLE_NULL_OR_EMPTY_EXCEPTION"),
+    ARTICLE_TITLE_OVER_LENGTH_EXCEPTION(12002, "ARTICLE_TITLE_OVER_LENGTH_EXCEPTION"),
+    ARTICLE_URL_NULL_OR_EMPTY_EXCEPTION(12003, "ARTICLE_URL_NULL_OR_EMPTY_EXCEPTION"),
+    ARTICLE_NOT_FOUND_EXCEPTION(12004, "ARTICLE_NOT_FOUND_EXCEPTION"),
+    INVALID_ARTICLE_AUTHOR_EXCEPTION(12005, "INVALID_ARTICLE_AUTHOR_EXCEPTION");
 
     private int code;
     private String message;
-    private Class<? extends BadRequestException> type;
-
-    public static BadRequestCode findByClass(Class<?> type) {
-        return Arrays.stream(BadRequestCode.values())
-            .filter(code -> code.type.equals(type))
-            .findAny()
-            .orElseThrow(NotFoundErrorCodeException::new);
-    }
-
 }

@@ -1,14 +1,12 @@
 package wooteco.prolog.member.domain;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+import org.junit.jupiter.api.Test;
+
 class MemberGroupTest {
+
     private static final MemberGroup ANDROID_GROUP = new MemberGroup(null, " 안드로이드 5기", "A");
     private static final MemberGroup BACKEND_GROUP = new MemberGroup(null, " 백엔드 5기", "B");
     private static final MemberGroup FRONTEND_GROUP = new MemberGroup(null, " 프론트엔드 5기", "F");

@@ -28,14 +28,14 @@ public class MemberDocumentation extends NewDocumentation {
     void 사용자_본인_정보를_조회한다() {
         //given
         given(memberService.findById(any()))
-                .willReturn(MEMBER);
+            .willReturn(MEMBER);
 
         //when
         ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/members/me")
-                .then().log().all();
+            .header("Authorization", "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().get("/members/me")
+            .then().log().all();
 
         //then
         response.expect(status().isOk());
@@ -48,14 +48,14 @@ public class MemberDocumentation extends NewDocumentation {
     void 자신의_사용자_정보를_수정한다() {
         //given, when
         MemberUpdateRequest params = new MemberUpdateRequest(
-                "다른이름",
-                "https://avatars.githubusercontent.com/u/51393021?v=4");
+            "다른이름",
+            "https://avatars.githubusercontent.com/u/51393021?v=4");
         ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(params)
-                .when().put("/members/{username}", GithubResponses.소롱.getLogin())
-                .then().log().all();
+            .header("Authorization", "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(params)
+            .when().put("/members/{username}", GithubResponses.소롱.getLogin())
+            .then().log().all();
 
         //then
         response.expect(status().isOk());
@@ -68,14 +68,14 @@ public class MemberDocumentation extends NewDocumentation {
     void 사용자_정보를_조회한다() {
         //given
         given(memberService.findByUsername(any()))
-                .willReturn(MEMBER);
+            .willReturn(MEMBER);
 
         //when
         ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/members/{username}", GithubResponses.소롱.getLogin())
-                .then().log().all();
+            .header("Authorization", "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().get("/members/{username}", GithubResponses.소롱.getLogin())
+            .then().log().all();
 
         //then
         response.expect(status().isOk());

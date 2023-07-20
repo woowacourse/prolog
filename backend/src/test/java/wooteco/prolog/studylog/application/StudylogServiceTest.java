@@ -14,6 +14,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import wooteco.prolog.common.exception.BadRequestCode;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
@@ -50,9 +52,6 @@ import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogTempRepository;
 import wooteco.prolog.studylog.domain.repository.dto.CommentCount;
 import wooteco.prolog.studylog.event.StudylogDeleteEvent;
-import wooteco.prolog.studylog.exception.AuthorNotValidException;
-import wooteco.prolog.studylog.exception.StudylogArgumentException;
-import wooteco.prolog.studylog.exception.StudylogNotFoundException;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
@@ -79,6 +78,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static wooteco.prolog.common.exception.BadRequestCode.*;
 
 @ExtendWith(MockitoExtension.class)
 class StudylogServiceTest {
@@ -293,7 +293,8 @@ class StudylogServiceTest {
     void insertStudyLogs_fail() {
         //when, then
         assertThatThrownBy(() -> studylogService.insertStudylogs(1L, emptyList()))
-            .isInstanceOf(StudylogArgumentException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(STUDYLOG_ARGUMENT.getMessage());
     }
 
     @DisplayName("스터디로그 여러 개를 저장할 수 있다")
@@ -325,7 +326,8 @@ class StudylogServiceTest {
 
         //when, then
         assertThatThrownBy(() -> studylogService.findStudylogById(1L))
-            .isInstanceOf(StudylogNotFoundException.class);
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(STUDYLOG_NOT_FOUND.getMessage());
     }
 
     @Nested
@@ -460,7 +462,8 @@ class StudylogServiceTest {
 
             //when, then
             assertThatThrownBy(() -> studylogService.deleteStudylog(1L, 1L))
-                .isInstanceOf(StudylogNotFoundException.class);
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage(STUDYLOG_NOT_FOUND.getMessage());
         }
 
         @DisplayName("자신이 것이 아닌 스터디 로그를 삭제하면 예외가 발생한다")
@@ -474,7 +477,8 @@ class StudylogServiceTest {
 
             //when, then
             assertThatThrownBy(() -> studylogService.deleteStudylog(2L, 1L))
-                .isInstanceOf(AuthorNotValidException.class);
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage(ONLY_AUTHOR_CAN_EDIT.getMessage());
         }
 
         @DisplayName("해당 StudyLog 에 대한 스크랩과 Read 와 함께 StudyLog 를 삭제한다.")
@@ -539,7 +543,8 @@ class StudylogServiceTest {
 
             //when, then
             assertThatThrownBy(() -> studylogService.updateStudylogMission(1L, 1L, null))
-                .isInstanceOf(StudylogNotFoundException.class);
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage(STUDYLOG_NOT_FOUND.getMessage());
         }
 
         @DisplayName("자신의 스터디로그가 아니라면 예외가 발생한다.")
@@ -551,7 +556,8 @@ class StudylogServiceTest {
 
             //when, then
             assertThatThrownBy(() -> studylogService.updateStudylogMission(2L, 1L, null))
-                .isInstanceOf(AuthorNotValidException.class);
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage(ONLY_AUTHOR_CAN_EDIT.getMessage());
         }
 
         @DisplayName("스터디로그의 미션을 업데이트한다.")
