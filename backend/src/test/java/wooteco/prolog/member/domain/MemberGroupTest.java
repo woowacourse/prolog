@@ -13,16 +13,16 @@ class MemberGroupTest {
 
     @Test
     void getGroupType_이름이_그룹명을_포함하면_그룹을_반환한다() {
-        assertThat(ANDROID_GROUP.getGroupType()).isEqualTo(MemberGroupType.ANDROID);
-        assertThat(BACKEND_GROUP.getGroupType()).isEqualTo(MemberGroupType.BACKEND);
-        assertThat(FRONTEND_GROUP.getGroupType()).isEqualTo(MemberGroupType.FRONTEND);
+        assertThat(ANDROID_GROUP.groupType()).isEqualTo(MemberGroupType.ANDROID);
+        assertThat(BACKEND_GROUP.groupType()).isEqualTo(MemberGroupType.BACKEND);
+        assertThat(FRONTEND_GROUP.groupType()).isEqualTo(MemberGroupType.FRONTEND);
     }
 
     @Test
     void getGroupType_이름이_포함하는_그룹명이_없으면_예외가_발생한다() {
         MemberGroup memberGroup = new MemberGroup(null, "테스트", "test");
 
-        assertThatThrownBy(memberGroup::getGroupType)
+        assertThatThrownBy(memberGroup::groupType)
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("그룹이 포함되는 타입이 없습니다. id=null");
     }
