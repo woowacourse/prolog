@@ -6,9 +6,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import wooteco.prolog.common.exception.BadRequestCode;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
 
-public class EssayAnswerTest {
+class EssayAnswerTest {
 
     @ValueSource(strings = {"", "  "})
     @ParameterizedTest
@@ -19,8 +21,8 @@ public class EssayAnswerTest {
 
         //expect
         assertThatThrownBy(() -> essayAnswer.update(answer, member))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("답변 내용은 공백일 수 없습니다.");
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage("답변은 공백일 수 없습니다.");
     }
 
     @Test
@@ -32,7 +34,7 @@ public class EssayAnswerTest {
 
         //expect
         assertThatThrownBy(() -> essayAnswer.update("answer", another))
-            .isInstanceOf(IllegalArgumentException.class)
+            .isInstanceOf(BadRequestException.class)
             .hasMessage("본인이 작성한 답변만 수정할 수 있습니다.");
     }
 

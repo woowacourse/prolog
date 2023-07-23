@@ -4,6 +4,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
+import wooteco.prolog.common.exception.BadRequestCode;
+import wooteco.prolog.common.exception.BadRequestException;
 
 class MemberGroupTest {
 
@@ -23,8 +25,8 @@ class MemberGroupTest {
         MemberGroup memberGroup = new MemberGroup(null, "테스트", "test");
 
         assertThatThrownBy(memberGroup::groupType)
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("그룹이 포함되는 타입이 없습니다. id=null");
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage("해당 그룹의 타입을 결정할 수 없습니다.");
     }
 
 }
