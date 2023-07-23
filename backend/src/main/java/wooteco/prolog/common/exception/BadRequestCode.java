@@ -41,6 +41,7 @@ public enum BadRequestCode {
     SCRAP_NOT_EXIST(3008, "스크랩이 존재하지 않습니다."),
     SCRAP_NOT_VALID_USER(3009, "본인의 스크랩만 추가할 수 있습니다."),
     NOT_EXISTS_MEMBER_TAG(3010, "멤버 태그가 존재하지 않습니다."),
+    CANT_FIND_GROUP_TYPE(3011, "해당 그룹의 타입을 결정할 수 없습니다."),
 
     INVALID_LIKE_REQUEST_EXCEPTION(5001, "스터디로그를 좋아요 할 수 없습니다."),
     INVALID_UNLIKE_REQUEST_EXCEPTION(5002, "스터디로그를 좋아요 취소 할 수 없습니다."),
@@ -64,6 +65,10 @@ public enum BadRequestCode {
     CURRICULUM_NAME_RANGE_EXCEPTION(8009, "커리큘럼 이름은 공백일 수 없습니다"),
     CURRICULUM_NOT_FOUND_EXCEPTION(8010, "해당하는 커리큘럼을 찾을 수 없습니다"),
     CURRICULUM_INVALID_EXCEPTION(8011, "커리큘럼이 유효하지 않습니다."),
+
+    ESSAY_ANSWER_NOT_FOUND_EXCEPTION(8012, "해당 답변을 찾을 수 없습니다."),
+    NOT_EMPTY_ESSAY_ANSWER_EXCEPTION(8013, "답변은 공백일 수 없습니다."),
+    ESSAY_ANSWER_NOT_VALID_USER(8014, "본인이 작성한 답변만 수정할 수 있습니다."),
 
     FILE_NAME_EMPTY_EXCEPTION(9001, "파일 이름이 존재하지 않습니다."),
     UNSUPPORTED_FILE_EXTENSION_EXCEPTION(9002, "지원하지 않는 파일 확장자입니다."),

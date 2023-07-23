@@ -1,5 +1,8 @@
 package wooteco.prolog.roadmap.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.ESSAY_ANSWER_NOT_VALID_USER;
+import static wooteco.prolog.common.exception.BadRequestCode.NOT_EMPTY_ESSAY_ANSWER_EXCEPTION;
+
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -16,6 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import wooteco.prolog.common.AuditingEntity;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
 
 @Table(name = "essay_answer")
@@ -52,10 +56,10 @@ public class EssayAnswer extends AuditingEntity {
 
     public void update(String answer, Member member) {
         if (StringUtils.isBlank(answer)) {
-            throw new IllegalArgumentException("답변 내용은 공백일 수 없습니다.");
+            throw new BadRequestException(NOT_EMPTY_ESSAY_ANSWER_EXCEPTION);
         }
         if (!this.member.equals(member)) {
-            throw new IllegalArgumentException("본인이 작성한 답변만 수정할 수 있습니다.");
+            throw new BadRequestException(ESSAY_ANSWER_NOT_VALID_USER);
         }
 
         this.answer = answer;
