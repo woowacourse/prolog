@@ -18,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
@@ -109,7 +110,7 @@ class EssayAnswerServiceTest {
 
         //when,then
         assertThatThrownBy(() -> essayAnswerService.deleteEssayAnswer(1L, 1L))
-            .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(BadRequestException.class);
     }
 
     @DisplayName("deleteEssayAnswer 에서 answerId memberId 에 매핑되는 EssayAnswer 가 있다면 삭제한다")
@@ -135,7 +136,7 @@ class EssayAnswerServiceTest {
 
         //when,then
         assertThatThrownBy(() -> essayAnswerService.getById(1L))
-            .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(BadRequestException.class);
     }
 
     @DisplayName("getById 에서 answerId 에 해당하는 EssayAnswer 가있다면 반환해준다")

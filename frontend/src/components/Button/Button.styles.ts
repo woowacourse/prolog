@@ -65,7 +65,7 @@ const imageSizeStyle = {
   },
 };
 
-const Container = styled.button`
+const Container = styled.button<{ size: string; css: {} }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -78,13 +78,13 @@ const Container = styled.button`
   ${({ css }) => css};
 `;
 
-const Icon = styled.img`
+const Icon = styled.img<{ hasText: boolean; size: string }>`
   margin-right: ${({ hasText }) => (hasText ? '0.5em' : '0')};
 
   ${({ size }) => imageSizeStyle[size] || imageSizeStyle.MEDIUM};
 `;
 
-const Image = styled.div`
+const Image = styled.div<{ backgroundImage: string }>`
   background-image: url(${({ backgroundImage }) => backgroundImage});
   background-size: contain;
   width: inherit;
