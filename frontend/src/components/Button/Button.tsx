@@ -6,7 +6,7 @@ interface ButtonProps {
   size?: string;
   alt?: string;
   icon?: string;
-  css?: SerializedStyles;
+  css?: SerializedStyles | SerializedStyles[];
   cssProps?: SerializedStyles;
   backgroundImageUrl?: string;
   type?: 'button' | 'submit' | 'reset';

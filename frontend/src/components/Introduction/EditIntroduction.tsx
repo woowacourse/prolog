@@ -20,13 +20,21 @@ import { markdownStyle } from '../../styles/markdown.styles';
 
 const DEFAULT_EDITOR_HEIGHT = '480px';
 
+interface EditIntroductionProps {
+  initialContent?: string;
+  editorRef: any;
+  onEdit: () => void;
+  editorHeight?: string;
+  onCancel: () => void;
+}
+
 const EditIntroduction = ({
   initialContent,
   editorRef,
   onEdit,
   editorHeight = DEFAULT_EDITOR_HEIGHT,
   onCancel,
-}) => {
+}: EditIntroductionProps) => {
   return (
     <section css={[FlexStyle, FlexColumnStyle, EditorWrapperStyle, EditorStyle, markdownStyle]}>
       <h2>자기소개 수정</h2>
