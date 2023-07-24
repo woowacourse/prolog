@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import PropTypes from 'prop-types';
-import { useContext, useState } from 'react';
+import { MouseEvent, MouseEventHandler, useContext, useState } from 'react';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 import LogoImage from '../../assets/images/logo.svg';
 import NoProfileImage from '../../assets/images/no-profile-image.png';
@@ -43,7 +42,7 @@ const navigationConfig = [
     path: PATH.ARTICLE,
     title: '아티클',
   },
-];
+] as const;
 
 const NavBar = () => {
   const history = useHistory();
@@ -65,19 +64,25 @@ const NavBar = () => {
     setDropdownToggled(true);
   };
 
-  const hideWritingDropdownMenu = (event) => {
-    if (event.currentTarget === event.target) {
+  const hideWritingDropdownMenu = ({
+    currentTarget,
+    target,
+  }: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
+    if (currentTarget === target) {
       setWritingDropdownToggled(false);
     }
   };
-  const hideDropdownMenu = (event) => {
-    if (event.currentTarget === event.target) {
+  const hideDropdownMenu = ({
+    currentTarget,
+    target,
+  }: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
+    if (currentTarget === target) {
       setDropdownToggled(false);
     }
   };
 
-  const onSelectMenu = (event) => {
-    if (event.target.tagName === 'A') {
+  const onSelectMenu: MouseEventHandler<HTMLUListElement> = ({ target }) => {
+    if ('tagName' in target && target.tagName === 'A') {
       setDropdownToggled(false);
       setWritingDropdownToggled(false);
     }
@@ -106,7 +111,7 @@ const NavBar = () => {
                 to={path}
                 activeStyle={{
                   borderBottom: '2px solid black',
-                  fontWeight: '600',
+                  fontWeight: 'bold',
                 }}
               >
                 {title}
@@ -131,7 +136,7 @@ const NavBar = () => {
                 cssProps={profileButtonStyle}
               />
               {isDropdownToggled && (
-                <DropdownMenu cssProps={DropdownStyle}>
+                <DropdownMenu css={DropdownStyle}>
                   <ul onClick={onSelectMenu}>
                     {[
                       {
@@ -172,10 +177,6 @@ const NavBar = () => {
       </Wrapper>
     </Container>
   );
-};
-
-NavBar.propTypes = {
-  children: PropTypes.node,
 };
 
 export default NavBar;
