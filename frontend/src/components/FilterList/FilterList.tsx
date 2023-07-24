@@ -11,6 +11,8 @@ import {
 } from './FilterList.styles';
 import SelectedFilterList from './SelectedFilterList';
 
+interface FilterListProps extends Record<string, any> {}
+
 const FilterList = ({
   selectedFilter,
   setSelectedFilter,
@@ -19,8 +21,8 @@ const FilterList = ({
   setSelectedFilterDetails,
   isVisibleResetFilter,
   onResetFilter,
-  css = null,
-}) => {
+  css,
+}: FilterListProps) => {
   const [searchKeyword, setSearchKeyword] = useState('');
 
   const closeDropdown = (event) => {
@@ -66,36 +68,36 @@ const FilterList = ({
   return (
     <Container onClick={closeDropdown} isDropdownToggled={selectedFilter} css={css}>
       <FilterContainer>
-      {Object.entries(getFilteredFiltersByLevel()).map(([key, values]) => (
-        <div key={key}>
-          <button
-            onClick={() => {
-              setSelectedFilter(key);
-              setSearchKeyword('');
-            }}
-          >
-            {key}
-          </button>
-          {selectedFilter === key && (
-            <DropdownMenu css={DropdownStyle}>
-              <SearchBarWrapper>
-                <SearchBar
-                  css={SearchBarStyle}
-                  onChange={({ target }) => setSearchKeyword(target.value)}
-                  value={searchKeyword}
+        {Object.entries(getFilteredFiltersByLevel()).map(([key, values]) => (
+          <div key={key}>
+            <button
+              onClick={() => {
+                setSelectedFilter(key);
+                setSearchKeyword('');
+              }}
+            >
+              {key}
+            </button>
+            {selectedFilter === key && (
+              <DropdownMenu css={DropdownStyle}>
+                <SearchBarWrapper>
+                  <SearchBar
+                    css={SearchBarStyle}
+                    onChange={({ target }) => setSearchKeyword(target.value)}
+                    value={searchKeyword}
+                  />
+                </SearchBarWrapper>
+                <SelectedFilterList
+                  searchKeyword={searchKeyword}
+                  filterList={values}
+                  type={key}
+                  findFilterItem={findFilterItem}
+                  toggleFilterDetails={toggleFilterDetails}
                 />
-              </SearchBarWrapper>
-              <SelectedFilterList
-                searchKeyword={searchKeyword}
-                filterList={values}
-                type={key}
-                findFilterItem={findFilterItem}
-                toggleFilterDetails={toggleFilterDetails}
-              />
-            </DropdownMenu>
-          )}
-        </div>
-      ))}
+              </DropdownMenu>
+            )}
+          </div>
+        ))}
       </FilterContainer>
       {isVisibleResetFilter && <ResetFilter onClick={onResetFilter}>필터 초기화 ⟳</ResetFilter>}
     </Container>

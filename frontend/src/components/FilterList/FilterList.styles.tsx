@@ -18,7 +18,10 @@ const DropdownToggledStyle = css`
   }
 `;
 
-const Container = styled.div`
+const Container = styled.div<{
+  isDropdownToggled: boolean;
+  css: ReturnType<typeof css>;
+}>`
   background-color: ${COLOR.LIGHT_GRAY_50};
 
   border: 1px solid ${COLOR.DARK_GRAY_400};
@@ -145,7 +148,9 @@ const ResetFilter = styled.div`
   flex-shrink: 0;
 `;
 
-const CheckIcon = styled.img`
+const CheckIcon = styled.img<{
+  checked: boolean;
+}>`
   ${({ checked }) => !checked && 'visibility: hidden;'}
 `;
 
