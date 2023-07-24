@@ -1,5 +1,11 @@
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
+import { SerializedStyles } from '@emotion/react';
+
+interface ContainerProps {
+  size: string;
+  css?: SerializedStyles;
+}
 
 const CARD_SIZE = {
   EXTRA_SMALL: 'EXTRA_SMALL',
@@ -22,7 +28,7 @@ const sizeStyle = {
   },
 };
 
-const Container = styled.section`
+const Container = styled.section<ContainerProps>`
   background-color: ${COLOR.WHITE};
   border: 1px solid ${COLOR.LIGHT_GRAY_400};
   border-radius: 2rem;
