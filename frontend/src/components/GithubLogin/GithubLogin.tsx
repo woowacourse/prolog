@@ -6,8 +6,8 @@ const params = {
 const githubOauthURL = 'https://github.com/login/oauth/authorize';
 const githubOauthQueries = new URLSearchParams(params).toString();
 
-const GithubLogin = ({ children }) => (
-  <a href={`${githubOauthURL}?${githubOauthQueries}`}>{children}</a>
-);
+const GithubLogin = ({ children }) => {
+  return <a href={`${githubOauthURL}?${githubOauthQueries}`}>{children}</a>;
+};
 
 export default GithubLogin;
