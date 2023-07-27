@@ -11,13 +11,14 @@ import {
 } from '../models/Studylogs';
 import { createAxiosInstance } from '../utils/axiosInstance';
 
-const customAxios = (accessToken?: string) => createAxiosInstance({ accessToken });
+const instanceWithoutToken = createAxiosInstance();
+const instanceWithToken = (accessToken) => createAxiosInstance({ accessToken });
 
 export const requestGetPopularStudylogs = ({ accessToken }: { accessToken?: string }) => {
   if (accessToken) {
-    return customAxios(accessToken).get('/studylogs/popular');
+    return instanceWithToken(accessToken).get('/studylogs/popular');
   }
-  return customAxios().get('/studylogs/popular');
+  return instanceWithoutToken.get('/studylogs/popular');
 };
 
 export type StudylogQuery =
@@ -43,7 +44,7 @@ export const requestGetStudylogs = ({
   query?: StudylogQuery;
   accessToken?: string;
 }) => {
-  const instance = accessToken ? customAxios(accessToken) : customAxios();
+  const instance = accessToken ? instanceWithToken(accessToken) : instanceWithoutToken;
 
   if (!query) {
     return instance.get('/studylogs');
@@ -69,13 +70,14 @@ export const requestGetStudylogs = ({
 
 export type ResponseError = { code: number; messsage: string };
 
-export const requestGetTags = (): Promise<AxiosResponse<Tag[]>> => customAxios().get('/tags');
+export const requestGetTags = (): Promise<AxiosResponse<Tag[]>> =>
+  instanceWithoutToken.get('/tags');
 
 export const requestGetMissions = ({ accessToken }): Promise<AxiosResponse<Mission[]>> =>
-  customAxios(accessToken).get('/missions/mine');
+  instanceWithToken(accessToken).get('/missions/mine');
 
 export const requestGetSessions = ({ accessToken }): Promise<AxiosResponse<Session[]>> =>
-  customAxios(accessToken).get('/sessions/mine');
+  instanceWithToken(accessToken).get('/sessions/mine');
 
 export const requestGetStudylog = ({
   id,
@@ -84,7 +86,7 @@ export const requestGetStudylog = ({
   id: string;
   accessToken: string;
 }): AxiosPromise<AxiosResponse<Studylog>> =>
-  customAxios(accessToken).get<AxiosResponse<Studylog>>(`/studylogs/${id}`);
+  instanceWithToken(accessToken).get<AxiosResponse<Studylog>>(`/studylogs/${id}`);
 
 /** 작성 및 수정 **/
 export const requestPostStudylog = ({
@@ -93,7 +95,7 @@ export const requestPostStudylog = ({
 }: {
   accessToken: string;
   data: StudylogForm;
-}): AxiosPromise<AxiosResponse<null>> => customAxios(accessToken).post('/studylogs', data);
+}): AxiosPromise<AxiosResponse<null>> => instanceWithToken(accessToken).post('/studylogs', data);
 
 export const requestEditStudylog = ({
   id,
@@ -103,14 +105,15 @@ export const requestEditStudylog = ({
   id: string;
   accessToken: string;
   data: StudylogForm;
-}): AxiosPromise<AxiosResponse<null>> => customAxios(accessToken).put(`/studylogs/${id}`, data);
+}): AxiosPromise<AxiosResponse<null>> =>
+  instanceWithToken(accessToken).put(`/studylogs/${id}`, data);
 
 /** 임시 저장 **/
 export const requestGetTempSavedStudylog = async () => {
-  const { data } = await customAxios().get<Nullable<TempSavedStudyLog>>('/studylogs/temp');
+  const { data } = await instanceWithoutToken.get<Nullable<TempSavedStudyLog>>('/studylogs/temp');
 
   return data;
 };
 
 export const requestPostTempSavedStudylog = (data: TempSavedStudyLogForm) =>
-  customAxios().put('/studylogs/temp', data);
+  instanceWithoutToken.put('/studylogs/temp', data);
