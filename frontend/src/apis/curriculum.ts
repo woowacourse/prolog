@@ -1,10 +1,10 @@
 import { createAxiosInstance } from '../utils/axiosInstance';
 import { CurriculumListResponse } from '../models/Keywords';
 
-const customAxios = createAxiosInstance();
+const instanceWithoutToken = createAxiosInstance();
 
 export const getCurriculums = async () => {
-  const response = await customAxios.get<CurriculumListResponse>(`/curriculums`);
+  const response = await instanceWithoutToken.get<CurriculumListResponse>(`/curriculums`);
 
   return response.data;
 };
