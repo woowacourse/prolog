@@ -8,7 +8,13 @@ export const Container = styled.li`
   border-radius: 15px;
   background-color: #ffffff;
   list-style: none;
+
+  &:hover {
+    background-color: #f2f2f2;
+  }
 `;
+
+export const Anchor = styled.a``;
 
 export const ThumbnailWrapper = styled.div`
   display: flex;
