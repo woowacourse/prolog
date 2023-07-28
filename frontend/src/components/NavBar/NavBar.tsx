@@ -38,6 +38,10 @@ const navigationConfig = [
     path: PATH.ROADMAP,
     title: '로드맵',
   },
+  {
+    path: PATH.ARTICLE,
+    title: '아티클',
+  },
 ] as const;
 
 const NavBar = () => {
@@ -78,7 +82,7 @@ const NavBar = () => {
   };
 
   const onSelectMenu: MouseEventHandler<HTMLUListElement> = ({ target }) => {
-    if ('tagName' in target && target.tagName === 'A') {
+    if (target instanceof HTMLElement && target.nodeName === 'A') {
       setDropdownToggled(false);
       setWritingDropdownToggled(false);
     }
