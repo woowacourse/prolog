@@ -18,7 +18,11 @@ const DropdownToggledStyle = css`
   }
 `;
 
-const Container = styled.div`
+interface ContainerProps {
+  isDropdownToggled: boolean;
+}
+
+const Container = styled.div<ContainerProps>`
   width: 100%;
   height: 4.8rem;
   background-color: ${COLOR.LIGHT_BLUE_400};

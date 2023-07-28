@@ -29,7 +29,7 @@ import {
 } from '../../hooks/queries/profile';
 
 const Introduction = () => {
-  const { username } = useParams();
+  const { username } = useParams<{ username: string }>();
   const [isEditing, setIsEditing] = useState(false);
   const editorContentRef = useRef('');
 

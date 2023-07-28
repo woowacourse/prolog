@@ -1,7 +1,10 @@
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
+import { css } from '@emotion/react';
 
-const Container = styled.div`
+const Container = styled.div<{
+  css: ReturnType<typeof css>;
+}>`
   height: fit-content;
   max-height: 32rem;
   white-space: nowrap;
