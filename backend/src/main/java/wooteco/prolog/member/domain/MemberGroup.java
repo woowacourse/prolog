@@ -1,5 +1,7 @@
 package wooteco.prolog.member.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.CANT_FIND_GROUP_TYPE;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,6 +9,8 @@ import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wooteco.prolog.common.exception.BadRequestCode;
+import wooteco.prolog.common.exception.BadRequestException;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,13 +35,13 @@ public class MemberGroup {
         this.description = description;
     }
 
-    public MemberGroupType getGroupType() {
+    public MemberGroupType groupType() {
         for (MemberGroupType groupType : MemberGroupType.values()) {
             if (groupType.isContainedBy(this.name)) {
                 return groupType;
             }
         }
-        throw new IllegalArgumentException("그룹이 포함되는 타입이 없습니다. id=" + this.id);
+        throw new BadRequestException(CANT_FIND_GROUP_TYPE);
     }
 
 }
