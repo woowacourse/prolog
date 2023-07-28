@@ -38,10 +38,6 @@ const navigationConfig = [
     path: PATH.ROADMAP,
     title: '로드맵',
   },
-  {
-    path: PATH.ARTICLE,
-    title: '아티클',
-  },
 ] as const;
 
 const NavBar = () => {
