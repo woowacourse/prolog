@@ -15,5 +15,6 @@ Feature: 로드맵 키워드 추천 포스트 관련 기능
         Then 추천 포스트가 수정된다
 
     Scenario: 키워드 추천 포스트 삭제하기
+        Given 1번 키워드에 대해 추천 포스트 "https://javajavajava"를 작성하고
         When 1번 키워드에 대한 1번 추천 포스트를 삭제하면
         Then 추천 포스트가 삭제된다
