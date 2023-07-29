@@ -12,14 +12,6 @@ import static wooteco.prolog.fixtures.KeywordAcceptanceFixture.KEYWORD_REQUEST;
 
 public class KeywordRecommendedPostStepDefinitions extends AcceptanceSteps {
 
-    @Given("{int}번 세션에 {string}라는 키워드를 순서 {int}, 중요도 {int}, 부모 키워드 {long}로 작성하고")
-    public void 키워드를_부모_키워드와_함께_작성하고(int sessionId, String keywordName, int seq, int importance,
-                                     long parentId) {
-        context.invokeHttpPost(
-            "/sessions/" + sessionId + "/keywords",
-            KEYWORD_REQUEST.getSaveChild(keywordName, seq, importance, parentId));
-    }
-
     @Given("{int}번 키워드에 대해 추천 포스트 {string}를 작성하고")
     @When("{int}번 키워드에 대해 추천 포스트 {string}를 작성하면")
     public void 추천_포스트를_추가하면(int keywordId, String url) {
