@@ -12,6 +12,8 @@ import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.RecommendedPost;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.roadmap.domain.repository.RecommendedRepository;
+import wooteco.prolog.session.domain.Session;
+import wooteco.prolog.session.domain.repository.SessionRepository;
 
 import java.util.Optional;
 
@@ -28,13 +30,15 @@ class RecommendedServiceTest {
     private RecommendedRepository recommendedRepository;
     @Autowired
     private KeywordRepository keywordRepository;
+    @Autowired
+    private SessionRepository sessionRepository;
 
     private Keyword keyword;
 
     @BeforeEach
     public void init() {
-        final Keyword keyword = Keyword.createKeyword("이름", "설명", 1, 1, 1L, null);
-        this.keyword = keywordRepository.save(keyword);
+        final Session session = sessionRepository.save(new Session("레벨 1"));
+        this.keyword = keywordRepository.save(Keyword.createKeyword("이름", "설명", 1, 1, session.getId(), null));
     }
 
     @Test
