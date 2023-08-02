@@ -7,7 +7,7 @@ const ArticlePageContainer = styled.form`
   height: auto;
   max-width: 650px;
 
-  padding: 9% 4% 0 4%;
+  padding: 9% 4%;
   margin: 0 auto;
 `;
 
@@ -34,6 +34,10 @@ const Input = styled.input`
   border-radius: 8px;
 
   background-color: #ffffff;
+
+  &:disabled {
+    background: #f0f0f0;
+  }
 `;
 
 const Label = styled.label`
@@ -60,4 +64,23 @@ const SubmitButtonStyle = css`
   }
 `;
 
-export { ArticlePageContainer, Title, InputContainer, SubmitButtonStyle, Input, Label };
+const ThumbnailContainer = styled.div`
+  text-align: center;
+  
+  margin-bottom: 24px;
+`;
+
+const ThumbnailImage = styled.img`
+  width: 50%;
+`;
+
+export {
+  ArticlePageContainer,
+  Title,
+  InputContainer,
+  SubmitButtonStyle,
+  Input,
+  Label,
+  ThumbnailContainer,
+  ThumbnailImage,
+};

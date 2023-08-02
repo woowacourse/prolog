@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { requestGetArticles, requestPostArticles } from '../../apis/articles';
+import { requestGetArticles, requestPostArticles, requestPostMetaOg } from '../../apis/articles';
 import { UserContext } from '../../contexts/UserProvider';
 import { ArticleType } from '../../models/Article';
 
@@ -30,4 +30,13 @@ export const usePostArticles = () => {
   };
 
   return { postArticle };
+};
+
+export const usePostMetaOg = () => {
+  const postMetaOg = async (body) => {
+    const data = await requestPostMetaOg(body);
+    return data;
+  };
+
+  return { postMetaOg };
 };
