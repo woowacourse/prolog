@@ -17,12 +17,14 @@ class ArticleTest {
     private Member member;
     private Title title;
     private Url url;
+    private ImageUrl imageUrl;
 
     @BeforeEach
     void setUp() {
         member = new Member(11L, "username", "nickname", Role.CREW, 101L, "https://");
         title = new Title("title");
         url = new Url("url");
+        imageUrl = new ImageUrl("imageUrl");
     }
 
     @DisplayName("아티클을 생성한다.")
@@ -31,14 +33,14 @@ class ArticleTest {
         //given
         //when
         //then
-        assertDoesNotThrow(() -> new Article(member, title, url));
+        assertDoesNotThrow(() -> new Article(member, title, url, imageUrl));
     }
 
     @DisplayName("아티클을 작성자를 검증한다. (작성자일 때)")
     @Test
     void validateOwner_validOwner() {
         //given
-        final Article article = new Article(member, title, url);
+        final Article article = new Article(member, title, url, imageUrl);
 
         //when
         //then
@@ -49,7 +51,7 @@ class ArticleTest {
     @Test
     void validateOwner_invalidOwner() {
         //given
-        final Article article = new Article(member, title, url);
+        final Article article = new Article(member, title, url, imageUrl);
 
         //when
         final Member member2 = new Member(2L, "user2", "nickname2", Role.CREW, 102L, "https://");
@@ -62,7 +64,7 @@ class ArticleTest {
     @Test
     void update_success() {
         //given
-        final Article article = new Article(member, title, url);
+        final Article article = new Article(member, title, url, imageUrl);
 
         //when
         article.update("newTitle", "newUrl");
@@ -76,7 +78,7 @@ class ArticleTest {
     @Test
     void update_invalidTitle() {
         //given
-        final Article article = new Article(member, title, url);
+        final Article article = new Article(member, title, url, imageUrl);
 
         //when
         //then
@@ -88,7 +90,7 @@ class ArticleTest {
     @Test
     void update_invalidUrl() {
         //given
-        final Article article = new Article(member, title, url);
+        final Article article = new Article(member, title, url, imageUrl);
 
         //when
         //then
