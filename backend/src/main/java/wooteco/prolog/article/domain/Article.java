@@ -39,13 +39,17 @@ public class Article {
     @Embedded
     private Url url;
 
+    @Embedded
+    private ImageUrl imageUrl;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
-    public Article(final Member member, final Title title, final Url url) {
+    public Article(final Member member, final Title title, final Url url, final ImageUrl imageUrl) {
         this.member = member;
         this.title = title;
         this.url = url;
+        this.imageUrl = imageUrl;
     }
 
     public void validateOwner(final Member member) {
