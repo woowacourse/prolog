@@ -70,6 +70,8 @@ public enum BadRequestCode {
     NOT_EMPTY_ESSAY_ANSWER_EXCEPTION(8013, "답변은 공백일 수 없습니다."),
     ESSAY_ANSWER_NOT_VALID_USER(8014, "본인이 작성한 답변만 수정할 수 있습니다."),
 
+    ROADMAP_RECOMMENDED_POST_NOT_FOUND(8101, "해당 추천 포스트가 존재하지 않습니다."),
+
     FILE_NAME_EMPTY_EXCEPTION(9001, "파일 이름이 존재하지 않습니다."),
     UNSUPPORTED_FILE_EXTENSION_EXCEPTION(9002, "지원하지 않는 파일 확장자입니다."),
     FILE_UPLOAD_FAIL_EXCEPTION(9003, "파일 업로드에 실패했습니다."),

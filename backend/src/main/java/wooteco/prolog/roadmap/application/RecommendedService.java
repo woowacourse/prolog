@@ -2,14 +2,16 @@ package wooteco.prolog.roadmap.application;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.roadmap.application.dto.RecommendedRequest;
 import wooteco.prolog.roadmap.application.dto.RecommendedUpdateRequest;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.RecommendedPost;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.roadmap.domain.repository.RecommendedRepository;
-import wooteco.prolog.roadmap.exception.KeywordNotFoundException;
-import wooteco.prolog.roadmap.exception.RecommendedPostNotFoundException;
+
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_RECOMMENDED_POST_NOT_FOUND;
 
 @Transactional(readOnly = true)
 @Service
@@ -35,7 +37,7 @@ public class RecommendedService {
 
     private Keyword findKeywordOrThrow(final Long keywordId) {
         return keywordRepository.findById(keywordId)
-            .orElseThrow(KeywordNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION));
     }
 
     @Transactional
@@ -47,7 +49,7 @@ public class RecommendedService {
 
     private RecommendedPost findPostOrThrow(final Long recommendedId) {
         return recommendedRepository.findById(recommendedId)
-            .orElseThrow(RecommendedPostNotFoundException::new);
+            .orElseThrow(() -> new BadRequestException(ROADMAP_RECOMMENDED_POST_NOT_FOUND));
     }
 
     @Transactional
