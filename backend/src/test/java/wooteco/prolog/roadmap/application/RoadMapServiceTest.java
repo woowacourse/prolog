@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -36,13 +37,13 @@ class RoadMapServiceTest {
 
     @Test
     @DisplayName("curriculumId가 주어지면 해당 커리큘럼의 키워드들을 전부 조회할 수 있다.")
-    void findAllKeywords() throws Exception {
+    void findAllKeywords() {
         //given
         final Curriculum curriculum = new Curriculum(1L, "커리큘럼1");
         final Session session = new Session(1L, curriculum.getId(), "세션1");
         final List<Session> sessions = Arrays.asList(session);
-        final Keyword keyword = Keyword.createKeyword("자바1", "자바 설명1", 1, 5, session.getId(),
-            null);
+        final Keyword keyword = new Keyword(1L, "자바1", "자바 설명1", 1, 5, session.getId(),
+            null, Collections.emptySet());
 
         when(curriculumRepository.findById(anyLong()))
             .thenReturn(Optional.of(curriculum));
@@ -53,7 +54,7 @@ class RoadMapServiceTest {
         when(keywordRepository.findBySessionIdIn(any()))
             .thenReturn(Arrays.asList(keyword));
 
-        final KeywordsResponse expected = KeywordsResponse.createResponse(Arrays.asList(keyword));
+        final KeywordsResponse expected = KeywordsResponse.createResponseWithChildren(Arrays.asList(keyword));
 
         //when
         final KeywordsResponse actual =
