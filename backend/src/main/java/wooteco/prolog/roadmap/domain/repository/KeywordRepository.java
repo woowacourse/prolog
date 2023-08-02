@@ -1,6 +1,7 @@
 package wooteco.prolog.roadmap.domain.repository;
 
 import java.util.List;
+import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +18,6 @@ public interface KeywordRepository extends JpaRepository<Keyword, Long> {
     @Query("SELECT k FROM Keyword k "
         + "WHERE k.sessionId = :sessionId AND k.parent IS NULL")
     List<Keyword> findBySessionIdAndParentIsNull(@Param("sessionId") Long sessionId);
+
+    List<Keyword> findBySessionIdIn(final Set<Long> sessionIds);
 }

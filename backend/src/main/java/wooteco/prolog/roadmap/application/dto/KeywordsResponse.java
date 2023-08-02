@@ -23,4 +23,12 @@ public class KeywordsResponse {
             .collect(Collectors.toList());
         return new KeywordsResponse(keywordsResponse);
     }
+
+    public static KeywordsResponse createResponseWithChildren(final List<Keyword> keywords) {
+        List<KeywordResponse> keywordsResponse = keywords.stream()
+            .filter(it -> it.getParent() == null)
+            .map(KeywordResponse::createWithAllChildResponse)
+            .collect(Collectors.toList());
+        return new KeywordsResponse(keywordsResponse);
+    }
 }
