@@ -1,13 +1,14 @@
 package wooteco.prolog.article.ui;
 
-import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import wooteco.prolog.article.domain.ArticleService;
+import wooteco.prolog.article.application.ArticleService;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
+
+import java.net.URI;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -42,5 +43,11 @@ public class ArticleController {
                                               @AuthMemberPrincipal final LoginMember member) {
         articleService.delete(id, member);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/parse-url")
+    public ResponseEntity<ArticleUrlResponse> parseUrl(@RequestBody final ArticleUrlRequest articleUrlRequest){
+        final ArticleUrlResponse response = articleService.parse(articleUrlRequest);
+        return ResponseEntity.ok(response);
     }
 }
