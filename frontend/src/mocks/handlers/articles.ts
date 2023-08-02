@@ -1,6 +1,8 @@
 import { rest } from 'msw';
 import { BASE_URL } from '../../configs/environment';
 import articles from '../db/articles.json';
+import metaOg from '../db/metaOg.json';
+import axios from 'axios';
 
 // 추후 articles type models에 정의 후 삭제
 export interface Articles {
@@ -14,6 +16,12 @@ export interface Articles {
 export const articlesHandler = [
   rest.get(`${BASE_URL}/articles`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(articles));
+  }),
+
+  rest.post(`${BASE_URL}/articles/url`, async (req, res, ctx) => {
+    const data = metaOg;
+
+    return res(ctx.status(200), ctx.json(data));
   }),
 
   rest.post<Articles[]>(`${BASE_URL}/articles`, (req, res, ctx) => {
