@@ -1,28 +1,29 @@
 import { rest } from 'msw';
 import { BASE_URL } from '../../configs/environment';
 import articles from '../db/articles.json';
-
-// 추후 articles type models에 정의 후 삭제
-export interface Articles {
-  id: number;
-  userName: string;
-  title: string;
-  url: string;
-  createdAt: string;
-}
+import metaOg from '../db/metaOg.json';
+import { ArticleType } from '../../models/Article';
 
 export const articlesHandler = [
   rest.get(`${BASE_URL}/articles`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(articles));
   }),
 
-  rest.post<Articles[]>(`${BASE_URL}/articles`, (req, res, ctx) => {
-    const newArticle: Articles = {
+  rest.post(`${BASE_URL}/articles/url`, async (req, res, ctx) => {
+    const data = metaOg;
+
+    return res(ctx.status(200), ctx.json(data));
+  }),
+
+  rest.post<ArticleType[]>(`${BASE_URL}/articles`, (req, res, ctx) => {
+    const newArticle: ArticleType = {
       id: articles.length + 1,
       userName: '도밥',
       title: '직렬화, 역직렬화는 무엇일까?',
       url: 'https://think0wise.tistory.com/107',
-      createdAt: '2023-07-08',
+      createdAt: '2023-07-08 16:48',
+      imageUrl:
+        'https://plus.unsplash.com/premium_photo-1682088845396-1b310a002302?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8JUVDJTk1JTg0JUVEJThCJUIwJUVEJTgxJUI0fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
     };
 
     articles.push(newArticle);
