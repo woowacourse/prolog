@@ -24,23 +24,23 @@ public class RecommendedController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createRecommendedPost(@PathVariable("keywordId") Long keywordId,
-                                                      @RequestBody RecommendedRequest request) {
-        final Long id = recommendedPostService.create(keywordId, request);
+    public ResponseEntity<Void> createRecommendedPost(@PathVariable("keywordId") final Long keywordId,
+                                                      @RequestBody final RecommendedRequest request) {
+        recommendedPostService.create(keywordId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{recommendedId}")
-    public ResponseEntity<Void> updateRecommendedPost(@PathVariable("keywordId") Long keywordId,
-                                                      @PathVariable("recommendedId") Long recommendedId,
-                                                      @RequestBody RecommendedUpdateRequest request) {
+    public ResponseEntity<Void> updateRecommendedPost(@PathVariable("keywordId") final Long keywordId,
+                                                      @PathVariable("recommendedId") final Long recommendedId,
+                                                      @RequestBody final RecommendedUpdateRequest request) {
         recommendedPostService.update(recommendedId, request);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{recommendedId}")
-    public ResponseEntity<Void> deleteRecommendedPost(@PathVariable("keywordId") Long keywordId,
-                                                      @PathVariable("recommendedId") Long recommendedId) {
+    public ResponseEntity<Void> deleteRecommendedPost(@PathVariable("keywordId") final Long keywordId,
+                                                      @PathVariable("recommendedId") final Long recommendedId) {
         recommendedPostService.delete(recommendedId);
         return ResponseEntity.noContent().build();
     }
