@@ -1,9 +1,9 @@
 package wooteco.prolog.roadmap.domain;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wooteco.prolog.common.exception.BadRequestException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,11 +14,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.util.Objects;
 
+import static java.util.Objects.hash;
+import static java.util.Objects.isNull;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_RECOMMENDED_POST_INVALID_URL_LENGTH;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Getter
 public class RecommendedPost {
+
+    public static final int URL_LENGTH_UPPER_BOUND = 512;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +36,24 @@ public class RecommendedPost {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Keyword keyword;
+
+    public RecommendedPost(final Long id, final String url, final Keyword keyword) {
+        final String trimmed = url.trim();
+        validate(trimmed, keyword);
+
+        this.id = id;
+        this.url = trimmed;
+        this.keyword = keyword;
+    }
+
+    private void validate(final String url, final Keyword keyword) {
+        if (isNull(keyword)) {
+            throw new BadRequestException(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION);
+        }
+        if (url.isEmpty() || url.length() > URL_LENGTH_UPPER_BOUND) {
+            throw new BadRequestException(ROADMAP_RECOMMENDED_POST_INVALID_URL_LENGTH);
+        }
+    }
 
     public RecommendedPost(final String url, final Keyword keyword) {
         this(null, url, keyword);
@@ -58,6 +82,6 @@ public class RecommendedPost {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return hash(id);
     }
 }

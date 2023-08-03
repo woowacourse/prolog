@@ -2,19 +2,72 @@ package wooteco.prolog.roadmap.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import wooteco.prolog.common.exception.BadRequestException;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_RECOMMENDED_POST_INVALID_URL_LENGTH;
 
 class RecommendedPostTest {
+
+    @Test
+    @DisplayName("추천 포스트 생성 시 키워드가 null이면 예외가 발생한다")
+    void construct_fail1() {
+        assertThatThrownBy(() -> new RecommendedPost("https://example.com", null))
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION.getMessage());
+    }
+
+    @Test
+    @DisplayName("추천 포스트 생성 시 url의 길이가 공백 제외 0이면 예외가 발생한다")
+    void construct_fail2() {
+        //given
+        final String url = "   ";
+
+        //when, then
+        assertThatThrownBy(() -> new RecommendedPost(url, null))
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION.getMessage());
+    }
+
+    @Test
+    @DisplayName("추천 포스트 생성 시 url의 길이가 공백 제외 512보다 크면 예외가 발생한다")
+    void construct_fail3() {
+        //given
+        final Keyword keyword = Keyword.createKeyword("name", "description", 1, 1, 1L, null);
+        final String url = Stream.generate(() -> "a")
+            .limit(513)
+            .collect(Collectors.joining());
+
+        //when, then
+        assertThatThrownBy(() -> new RecommendedPost(url, keyword))
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(ROADMAP_RECOMMENDED_POST_INVALID_URL_LENGTH.getMessage());
+    }
+
+    @Test
+    @DisplayName("추천 포스트 생성 테스트")
+    void construct() {
+        //given
+        final Keyword keyword = Keyword.createKeyword("name", "description", 1, 1, 1L, null);
+        final String url = "http://www.salmon";
+
+        //when, then
+        assertDoesNotThrow(() -> new RecommendedPost(url, keyword));
+    }
 
     @Test
     @DisplayName("삭제 기능 테스트")
     void remove() {
         //given
         final Keyword keyword = Keyword.createKeyword("이름", "설명", 1, 1, 1L, null);
-        final RecommendedPost recommendedPost = new RecommendedPost(1L, "https://example.com", null);
-        recommendedPost.addKeyword(keyword);
+        final RecommendedPost recommendedPost = new RecommendedPost("https://example.com", keyword);
 
         //when
         recommendedPost.remove();
