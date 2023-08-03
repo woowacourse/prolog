@@ -35,7 +35,7 @@ public class RecommendedController {
                                                       @PathVariable("recommendedId") Long recommendedId,
                                                       @RequestBody RecommendedUpdateRequest request) {
         recommendedService.update(recommendedId, request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{recommendedId}")
