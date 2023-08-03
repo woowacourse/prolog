@@ -1,7 +1,6 @@
-
 export interface ArticleRequest {
   title: string;
-  link: string;
+  url: string;
 }
 
 export interface ArticleType {

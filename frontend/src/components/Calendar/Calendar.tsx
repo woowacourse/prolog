@@ -61,7 +61,7 @@ const Calendar = ({ newDate, onClick, selectedDay = -1, setSelectedDay }: Calend
       try {
         const response = await requestGetCalendar(currentYear, currentMonth + 1, username);
 
-        const { data: titleData } = await response.json();
+        const { data: titleData } = await response.data;
 
         const data: number[] = [];
 

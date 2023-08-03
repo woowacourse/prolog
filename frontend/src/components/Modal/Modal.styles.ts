@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { COLOR } from '../../constants';
+import { ModalProps } from './Modal';
 
 const ModalSection = styled.section`
   position: absolute;
@@ -9,11 +10,10 @@ const ModalSection = styled.section`
   width: 100%;
   height: 100vh;
 
-  /* border: 1px solid red; */
   background-color: ${COLOR.BLACK_OPACITY_100};
 `;
 
-const ModalInner = styled.article`
+const ModalInner = styled.article<ModalProps>`
   position: absolute;
   width: ${({ width }) => width ?? '50%'};
   height: ${({ height }) => height ?? '50%'};

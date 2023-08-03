@@ -1,13 +1,15 @@
 package wooteco.prolog.roadmap.application;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import static wooteco.prolog.common.exception.BadRequestCode.ESSAY_ANSWER_NOT_FOUND_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_QUIZ_NOT_FOUND_EXCEPTION;
+
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerRequest;
@@ -25,6 +27,7 @@ import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.studylog.application.dto.EssayAnswersResponse;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -53,7 +56,7 @@ public class EssayAnswerService {
     public Long createEssayAnswer(EssayAnswerRequest essayAnswerRequest, Long memberId) {
         Long quizId = essayAnswerRequest.getQuizId();
         Quiz quiz = quizRepository.findById(quizId)
-            .orElseThrow(() -> new IllegalArgumentException("퀴즈가 존재하지 않습니다. quizId=" + quizId));
+            .orElseThrow(() -> new BadRequestException(ROADMAP_QUIZ_NOT_FOUND_EXCEPTION));
 
         Member member = memberService.findById(memberId);
         EssayAnswer essayAnswer = new EssayAnswer(quiz, essayAnswerRequest.getAnswer(), member);
@@ -73,16 +76,15 @@ public class EssayAnswerService {
 
     @Transactional
     public void deleteEssayAnswer(Long answerId, Long memberId) {
-        if (!essayAnswerRepository.findByIdAndMemberId(answerId, memberId).isPresent()) {
-            throw new IllegalArgumentException("답변이 존재하지 않습니다. answerId=" + answerId);
-        }
-        essayAnswerRepository.deleteById(answerId);
+        EssayAnswer essayAnswer = essayAnswerRepository.findByIdAndMemberId(answerId, memberId)
+            .orElseThrow(() -> new BadRequestException(ESSAY_ANSWER_NOT_FOUND_EXCEPTION));
+        essayAnswerRepository.deleteById(essayAnswer.getId());
     }
 
     @Transactional(readOnly = true)
     public EssayAnswer getById(Long answerId) {
         EssayAnswer essayAnswer = essayAnswerRepository.findById(answerId)
-            .orElseThrow(() -> new IllegalArgumentException("답변이 존재하지 않습니다. answerId=" + answerId));
+            .orElseThrow(() -> new BadRequestException(ESSAY_ANSWER_NOT_FOUND_EXCEPTION));
         Hibernate.initialize(essayAnswer.getQuiz());
         Hibernate.initialize(essayAnswer.getMember());
 

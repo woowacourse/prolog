@@ -1,28 +1,28 @@
 import { createAxiosInstance } from '../utils/axiosInstance';
 import { LevellogRequest } from '../models/Levellogs';
 
-const customAxios = createAxiosInstance();
+const instanceWithoutToken = createAxiosInstance();
 
 export const requestGetLevellogs = async (currPage: number) => {
   const params = currPage !== 1 ? `?page=${currPage}` : '';
 
-  const { data } = await customAxios.get(`/levellogs${params}`);
+  const { data } = await instanceWithoutToken.get(`/levellogs${params}`);
 
   return data;
 };
 
 export const createNewLevellogRequest = (body: LevellogRequest) =>
-  customAxios.post(`/levellogs`, body);
+  instanceWithoutToken.post(`/levellogs`, body);
 
 export const requestGetLevellog = async (id) => {
-  const { data } = await customAxios.get(`/levellogs/${id}`);
+  const { data } = await instanceWithoutToken.get(`/levellogs/${id}`);
 
   return data;
 };
 
 export const requestDeleteLevellog = async (id) => {
-  customAxios.delete(`/levellogs/${id}`);
+  instanceWithoutToken.delete(`/levellogs/${id}`);
 };
 
 export const requestEditLevellog = (id, body: LevellogRequest) =>
-  customAxios.put(`/levellogs/${id}`, body);
+  instanceWithoutToken.put(`/levellogs/${id}`, body);

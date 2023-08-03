@@ -7,14 +7,16 @@ const Article = ({ id, title, userName, url, createdAt }: ArticleType) => {
 
   return (
     <Styled.Container>
-      <Styled.ThumbnailWrapper>
-        <Styled.Thumbnail src={thumbnailExample} />
-      </Styled.ThumbnailWrapper>
-      <Styled.ArticleInfoContainer>
-        <Styled.UserName>{userName}</Styled.UserName>
-        <Styled.Title>{title}</Styled.Title>
-        <Styled.CreatedAt>{createdDate}</Styled.CreatedAt>
-      </Styled.ArticleInfoContainer>
+      <Styled.Anchor href={url} target="_blank" rel="noopener noreferrer">
+        <Styled.ThumbnailWrapper>
+          <Styled.Thumbnail src={thumbnailExample} />
+        </Styled.ThumbnailWrapper>
+        <Styled.ArticleInfoContainer>
+          <Styled.UserName>{userName}</Styled.UserName>
+          <Styled.Title>{title}</Styled.Title>
+          <Styled.CreatedAt>{createdDate}</Styled.CreatedAt>
+        </Styled.ArticleInfoContainer>
+      </Styled.Anchor>
     </Styled.Container>
   );
 };
