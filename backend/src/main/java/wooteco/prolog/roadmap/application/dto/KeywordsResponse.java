@@ -26,7 +26,7 @@ public class KeywordsResponse {
 
     public static KeywordsResponse createResponseWithChildren(final List<Keyword> keywords) {
         List<KeywordResponse> keywordsResponse = keywords.stream()
-            .filter(it -> it.getParent() == null)
+            .filter(Keyword::isRoot)
             .map(KeywordResponse::createWithAllChildResponse)
             .collect(Collectors.toList());
         return new KeywordsResponse(keywordsResponse);
