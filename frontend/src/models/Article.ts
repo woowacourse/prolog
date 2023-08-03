@@ -13,6 +13,11 @@ export interface ArticleType {
   imageUrl: string;
 }
 
-export interface ArticleMetaOgRequest {
+export interface MetaOgRequest {
   url: string;
+}
+
+export interface MetaOgResponse {
+  imageUrl: string;
+  title: string;
 }

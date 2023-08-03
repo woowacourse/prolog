@@ -12,7 +12,7 @@ import {
   ThumbnailContainer,
 } from './styles';
 
-import { usePostMetaOg, usePostArticles } from '../../hooks/Articles/useArticles';
+import { useGetMetaOg, usePostArticles } from '../../hooks/Articles/useArticles';
 import { ArticleRequest } from '../../models/Article';
 import { PATH } from '../../constants';
 
@@ -30,7 +30,7 @@ const NewArticlePage = () => {
 
   const { postArticle } = usePostArticles();
 
-  const { postMetaOg } = usePostMetaOg();
+  const { getMetaOg } = useGetMetaOg();
 
   const onArticleTitleChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     setArticleContent({ ...articleContent, title: e.target.value });
@@ -48,7 +48,7 @@ const NewArticlePage = () => {
       return;
     }
 
-    const response = await postMetaOg({ url: articleContent.url });
+    const response = await getMetaOg({ url: articleContent.url });
 
     setIsButton(true);
 
@@ -61,7 +61,7 @@ const NewArticlePage = () => {
       setIsValidate(false);
     } else {
       const isDefault = window.confirm(
-        '게실글에서 제목과 썸네일을 가져오는데 실패했습니다. 기본값을 사용하시겠습니까?'
+        '게시글에서 제목과 썸네일을 가져오는데 실패했습니다. 기본값을 사용하시겠습니까?'
       );
       if (isDefault) {
         setArticleContent({
