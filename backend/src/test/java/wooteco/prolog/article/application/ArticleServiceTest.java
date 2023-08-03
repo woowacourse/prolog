@@ -1,14 +1,5 @@
 package wooteco.prolog.article.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
-
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import wooteco.prolog.article.domain.Article;
-import wooteco.prolog.article.domain.ArticleService;
 import wooteco.prolog.article.domain.ImageUrl;
 import wooteco.prolog.article.domain.Title;
 import wooteco.prolog.article.domain.Url;
@@ -27,6 +17,14 @@ import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
 
 @ExtendWith(MockitoExtension.class)
 class ArticleServiceTest {
