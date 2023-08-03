@@ -11,7 +11,7 @@ import wooteco.prolog.roadmap.application.dto.RecommendedUpdateRequest;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.RecommendedPost;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
-import wooteco.prolog.roadmap.domain.repository.RecommendedRepository;
+import wooteco.prolog.roadmap.domain.repository.RecommendedPostRepository;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
 
@@ -27,7 +27,7 @@ class RecommendedServiceTest {
     @Autowired
     private RecommendedService recommendedService;
     @Autowired
-    private RecommendedRepository recommendedRepository;
+    private RecommendedPostRepository recommendedPostRepository;
     @Autowired
     private KeywordRepository keywordRepository;
     @Autowired
@@ -51,7 +51,7 @@ class RecommendedServiceTest {
         Long recommendedPostId = recommendedService.create(keyword.getId(), request);
 
         final Keyword persistedKeyword = keywordRepository.findById(keyword.getId()).get();
-        final RecommendedPost persistedPost = recommendedRepository.findById(recommendedPostId).get();
+        final RecommendedPost persistedPost = recommendedPostRepository.findById(recommendedPostId).get();
 
         //then
         assertSoftly(softAssertions -> {
@@ -71,7 +71,7 @@ class RecommendedServiceTest {
 
         //when
         recommendedService.update(recommendedPostId, updateRrequest);
-        Optional<RecommendedPost> actual = recommendedRepository.findById(recommendedPostId);
+        Optional<RecommendedPost> actual = recommendedPostRepository.findById(recommendedPostId);
 
         //then
         assertThat(actual.get().getUrl()).isEqualTo(newUrl);
@@ -89,7 +89,7 @@ class RecommendedServiceTest {
 
         //then
         assertSoftly(softAssertions -> {
-            assertThat(recommendedRepository.findAll()).hasSize(0);
+            assertThat(recommendedPostRepository.findAll()).hasSize(0);
             assertThat(keywordRepository.findById(keyword.getId()).get().getRecommendedPosts())
                 .isEmpty();
         });

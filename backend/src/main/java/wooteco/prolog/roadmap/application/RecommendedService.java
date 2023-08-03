@@ -8,7 +8,7 @@ import wooteco.prolog.roadmap.application.dto.RecommendedUpdateRequest;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.RecommendedPost;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
-import wooteco.prolog.roadmap.domain.repository.RecommendedRepository;
+import wooteco.prolog.roadmap.domain.repository.RecommendedPostRepository;
 
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_RECOMMENDED_POST_NOT_FOUND;
@@ -17,11 +17,11 @@ import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_RECOMMENDED
 @Service
 public class RecommendedService {
 
-    private final RecommendedRepository recommendedRepository;
+    private final RecommendedPostRepository recommendedPostRepository;
     private final KeywordRepository keywordRepository;
 
-    public RecommendedService(final RecommendedRepository recommendedRepository, final KeywordRepository keywordRepository) {
-        this.recommendedRepository = recommendedRepository;
+    public RecommendedService(final RecommendedPostRepository recommendedPostRepository, final KeywordRepository keywordRepository) {
+        this.recommendedPostRepository = recommendedPostRepository;
         this.keywordRepository = keywordRepository;
     }
 
@@ -32,7 +32,7 @@ public class RecommendedService {
         final RecommendedPost post = new RecommendedPost(request.getUrl());
         post.addKeyword(keyword);
 
-        return recommendedRepository.save(post).getId();
+        return recommendedPostRepository.save(post).getId();
     }
 
     private Keyword findKeywordOrThrow(final Long keywordId) {
@@ -48,7 +48,7 @@ public class RecommendedService {
     }
 
     private RecommendedPost findPostOrThrow(final Long recommendedId) {
-        return recommendedRepository.findById(recommendedId)
+        return recommendedPostRepository.findById(recommendedId)
             .orElseThrow(() -> new BadRequestException(ROADMAP_RECOMMENDED_POST_NOT_FOUND));
     }
 
@@ -56,6 +56,6 @@ public class RecommendedService {
     public void delete(final Long recommendedId) {
         final RecommendedPost recommendedPost = findPostOrThrow(recommendedId);
         recommendedPost.remove();
-        recommendedRepository.delete(recommendedPost);
+        recommendedPostRepository.delete(recommendedPost);
     }
 }
