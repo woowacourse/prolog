@@ -4,12 +4,14 @@ import articles from '../db/articles.json';
 import metaOg from '../db/metaOg.json';
 import { ArticleType } from '../../models/Article';
 
+const articleUrl = 'https://think0wise.tistory.com/107';
+
 export const articlesHandler = [
   rest.get(`${BASE_URL}/articles`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(articles));
   }),
 
-  rest.post(`${BASE_URL}/articles/url`, async (req, res, ctx) => {
+  rest.get(`${BASE_URL}/meta-og?url=${articleUrl}`, async (req, res, ctx) => {
     const data = metaOg;
 
     return res(ctx.status(200), ctx.json(data));
