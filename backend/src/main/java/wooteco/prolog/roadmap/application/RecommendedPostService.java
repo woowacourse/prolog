@@ -28,9 +28,7 @@ public class RecommendedPostService {
     @Transactional
     public Long create(final Long keywordId, final RecommendedRequest request) {
         final Keyword keyword = findKeywordOrThrow(keywordId);
-
-        final RecommendedPost post = new RecommendedPost(request.getUrl());
-        post.addKeyword(keyword);
+        final RecommendedPost post = new RecommendedPost(request.getUrl(), keyword);
 
         return recommendedPostRepository.save(post).getId();
     }

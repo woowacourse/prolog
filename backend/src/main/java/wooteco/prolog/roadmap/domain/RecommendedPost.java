@@ -31,8 +31,8 @@ public class RecommendedPost {
     @JoinColumn(nullable = false)
     private Keyword keyword;
 
-    public RecommendedPost(final String url) {
-        this(null, url, null);
+    public RecommendedPost(final String url, final Keyword keyword) {
+        this(null, url, keyword);
     }
 
     public void updateUrl(final String url) {

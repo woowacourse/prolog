@@ -27,8 +27,8 @@ class RecommendedPostTest {
     @DisplayName("소속 키워드를 추가한다")
     void addKeyword() {
         //given
-        final RecommendedPost post = new RecommendedPost("http://연어");
         final Keyword keyword = Keyword.createKeyword("name", "description", 1, 1, 1L, null);
+        final RecommendedPost post = new RecommendedPost("http://연어", keyword);
 
         //when
         post.addKeyword(keyword);
