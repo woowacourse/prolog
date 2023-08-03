@@ -22,10 +22,10 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @SpringBootTest
 @Transactional
-class RecommendedServiceTest {
+class RecommendedPostServiceTest {
 
     @Autowired
-    private RecommendedService recommendedService;
+    private RecommendedPostService recommendedPostService;
     @Autowired
     private RecommendedPostRepository recommendedPostRepository;
     @Autowired
@@ -48,7 +48,7 @@ class RecommendedServiceTest {
         final RecommendedRequest request = new RecommendedRequest("https//:example.com");
 
         //when
-        Long recommendedPostId = recommendedService.create(keyword.getId(), request);
+        Long recommendedPostId = recommendedPostService.create(keyword.getId(), request);
 
         final Keyword persistedKeyword = keywordRepository.findById(keyword.getId()).get();
         final RecommendedPost persistedPost = recommendedPostRepository.findById(recommendedPostId).get();
@@ -65,12 +65,12 @@ class RecommendedServiceTest {
     void update() {
         //given
         final RecommendedRequest request = new RecommendedRequest("https//:example.com");
-        Long recommendedPostId = recommendedService.create(keyword.getId(), request);
+        Long recommendedPostId = recommendedPostService.create(keyword.getId(), request);
         String newUrl = "https//:example222.com";
         final RecommendedUpdateRequest updateRrequest = new RecommendedUpdateRequest(newUrl);
 
         //when
-        recommendedService.update(recommendedPostId, updateRrequest);
+        recommendedPostService.update(recommendedPostId, updateRrequest);
         Optional<RecommendedPost> actual = recommendedPostRepository.findById(recommendedPostId);
 
         //then
@@ -82,10 +82,10 @@ class RecommendedServiceTest {
     void delete() {
         //given
         final RecommendedRequest request = new RecommendedRequest("https//:example.com");
-        Long recommendedPostId = recommendedService.create(keyword.getId(), request);
+        Long recommendedPostId = recommendedPostService.create(keyword.getId(), request);
 
         //when
-        recommendedService.delete(recommendedPostId);
+        recommendedPostService.delete(recommendedPostId);
 
         //then
         assertSoftly(softAssertions -> {
