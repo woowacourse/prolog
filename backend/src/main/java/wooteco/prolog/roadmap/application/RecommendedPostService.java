@@ -56,6 +56,5 @@ public class RecommendedPostService {
     public void delete(final Long recommendedId) {
         final RecommendedPost recommendedPost = findPostOrThrow(recommendedId);
         recommendedPost.remove();
-        recommendedPostRepository.delete(recommendedPost);
     }
 }

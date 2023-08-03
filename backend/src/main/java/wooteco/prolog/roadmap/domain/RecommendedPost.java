@@ -5,7 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.util.Objects;
 
 @Entity
@@ -34,12 +40,7 @@ public class RecommendedPost {
     }
 
     public void remove() {
-        if (this.keyword == null) {
-            return;
-        }
-
         keyword.getRecommendedPosts().remove(this);
-        this.keyword = null;
     }
 
     public void addKeyword(final Keyword keyword) {

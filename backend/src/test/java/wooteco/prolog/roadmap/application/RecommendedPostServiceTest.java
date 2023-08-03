@@ -1,11 +1,12 @@
 package wooteco.prolog.roadmap.application;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.DataInitializer;
 import wooteco.prolog.roadmap.application.dto.RecommendedRequest;
 import wooteco.prolog.roadmap.application.dto.RecommendedUpdateRequest;
 import wooteco.prolog.roadmap.domain.Keyword;
@@ -21,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @SpringBootTest
-@Transactional
 class RecommendedPostServiceTest {
 
     @Autowired
@@ -33,12 +33,21 @@ class RecommendedPostServiceTest {
     @Autowired
     private SessionRepository sessionRepository;
 
+    @Autowired
+    private DataInitializer dataInitializer;
+
+
     private Keyword keyword;
 
     @BeforeEach
     public void init() {
         final Session session = sessionRepository.save(new Session("레벨 1"));
         this.keyword = keywordRepository.save(Keyword.createKeyword("이름", "설명", 1, 1, session.getId(), null));
+    }
+
+    @AfterEach
+    public void removeAll() {
+        dataInitializer.execute();
     }
 
     @Test
@@ -81,7 +90,7 @@ class RecommendedPostServiceTest {
     @DisplayName("추천 포스트 삭제 테스트")
     void delete() {
         //given
-        final RecommendedRequest request = new RecommendedRequest("https//:example.com");
+        final RecommendedRequest request = new RecommendedRequest("https://example.com");
         Long recommendedPostId = recommendedPostService.create(keyword.getId(), request);
 
         //when

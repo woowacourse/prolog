@@ -1,6 +1,5 @@
 package wooteco.prolog.roadmap.domain;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,21 +12,15 @@ class RecommendedPostTest {
     @DisplayName("삭제 기능 테스트")
     void remove() {
         //given
-        final RecommendedPost recommendedPost = new RecommendedPost(1L, "https://example.com", null);
         final Keyword keyword = Keyword.createKeyword("이름", "설명", 1, 1, 1L, null);
+        final RecommendedPost recommendedPost = new RecommendedPost(1L, "https://example.com", null);
         recommendedPost.addKeyword(keyword);
 
         //when
-        final Keyword before = recommendedPost.getKeyword();
         recommendedPost.remove();
-        final Keyword after = recommendedPost.getKeyword();
 
         //then
-        Assertions.assertAll(
-            () -> assertThat(before).isNotNull(),
-            () -> assertThat(after).isNull()
-        );
-
+        assertThat(keyword.getRecommendedPosts()).isEmpty();
     }
 
     @Test
