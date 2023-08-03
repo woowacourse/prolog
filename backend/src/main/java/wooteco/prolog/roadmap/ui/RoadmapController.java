@@ -14,7 +14,7 @@ public class RoadmapController {
     private final RoadMapService roadMapService;
 
     @GetMapping("/roadmaps")
-    public KeywordsResponse findKeywords(@RequestParam final Long curriculumId) {
+    public KeywordsResponse findRoadMapKeyword(@RequestParam final Long curriculumId) {
         return roadMapService.findAllKeywords(curriculumId);
     }
 }
