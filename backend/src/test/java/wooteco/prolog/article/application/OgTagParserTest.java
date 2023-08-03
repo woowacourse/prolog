@@ -1,13 +1,12 @@
 package wooteco.prolog.article.application;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import wooteco.prolog.article.application.OgTagParser.OgType;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import wooteco.prolog.article.application.OgTagParser.OgType;
 
 public class OgTagParserTest {
 
@@ -16,11 +15,13 @@ public class OgTagParserTest {
     @Test
     @DisplayName("image와 title을 파싱한다.")
     void parseTags() {
+        // "https://www.woowahan.com/" 사이트에 요청을 하기에 외부 의존성이 존재하는 테스트입니다.
+
         //given
-        final String url = "https://velog.io/@hong-sile/OAuth-2.0-%EA%B0%9C%EB%85%90%EA%B3%BC-%EC%84%A4%EA%B3%84-%EC%9D%B4%EC%9C%A0";
+        final String url = "https://www.woowahan.com/";
         final Map<OgType, String> expected = new HashMap<>();
-        expected.put(OgType.IMAGE, "https://velog.velcdn.com/images/hong-sile/post/fa53be22-2cb2-4a18-b6f8-cf014957d3e2/image.png");
-        expected.put(OgType.TITLE, "OAuth 2.0 개요");
+        expected.put(OgType.IMAGE, "https://woowahan-cdn.woowahan.com/static/image/share_kor.jpg");
+        expected.put(OgType.TITLE, "우아한형제들");
 
         //when
         final Map<OgType, String> actual = ogTagParser.parse(url);
@@ -30,4 +31,5 @@ public class OgTagParserTest {
             .usingRecursiveComparison()
             .isEqualTo(expected);
     }
+
 }
