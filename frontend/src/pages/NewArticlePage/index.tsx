@@ -15,6 +15,7 @@ import {
 import { useGetMetaOg, usePostArticles } from '../../hooks/Articles/useArticles';
 import { ArticleRequest } from '../../models/Article';
 import { PATH } from '../../constants';
+import { usePostArticlesMutation } from '../../hooks/queries/article';
 
 const NewArticlePage = () => {
   const [isValidate, setIsValidate] = useState<boolean>(true);
@@ -28,7 +29,7 @@ const NewArticlePage = () => {
 
   const history = useHistory();
 
-  const { postArticle } = usePostArticles();
+  const { mutate: postArticleMutate } = usePostArticlesMutation();
 
   const { getMetaOg } = useGetMetaOg();
 
@@ -75,7 +76,7 @@ const NewArticlePage = () => {
   };
 
   const createArticle = async () => {
-    postArticle(articleContent);
+    postArticleMutate(articleContent);
     history.push(PATH.ARTICLE);
   };
 
