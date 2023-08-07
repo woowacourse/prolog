@@ -1,17 +1,16 @@
 package wooteco.prolog.article.application;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Component;
 import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.BadRequestException;
-
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 public class OgTagParser {
@@ -50,6 +49,8 @@ public class OgTagParser {
 
             return OgType.parseMap(document);
         } catch (Exception e) {
+            //TODO: 추후 삭제 필요
+            e.printStackTrace();
             throw new BadRequestException(BadRequestCode.ARTICLE_URL_NULL_OR_EMPTY_EXCEPTION);
         }
     }
