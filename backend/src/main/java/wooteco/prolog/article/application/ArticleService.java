@@ -1,5 +1,8 @@
 package wooteco.prolog.article.application;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,21 +10,11 @@ import wooteco.prolog.article.domain.Article;
 import wooteco.prolog.article.domain.repository.ArticleRepository;
 import wooteco.prolog.article.ui.ArticleRequest;
 import wooteco.prolog.article.ui.ArticleResponse;
-import wooteco.prolog.article.ui.ArticleUrlRequest;
-import wooteco.prolog.article.ui.ArticleUrlResponse;
 import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-
-import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
 @Service
@@ -30,7 +23,6 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final MemberService memberService;
-    private final OgTagParser ogTagParser;
 
     @Transactional
     public Long create(final ArticleRequest articleRequest, final LoginMember loginMember) {
@@ -67,11 +59,5 @@ public class ArticleService {
         article.validateOwner(member);
 
         articleRepository.delete(article);
-    }
-
-    public ArticleUrlResponse parse(final ArticleUrlRequest articleUrlRequest) {
-        final Map<OgTagParser.OgType, String> parse = ogTagParser.parse(articleUrlRequest.getUrl());
-
-        return ArticleUrlResponse.from(parse);
     }
 }
