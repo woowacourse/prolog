@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { requestGetArticles, requestPostArticles } from '../../apis/articles';
-import { ArticleRequest, ArticleType } from '../../models/Article';
+import { MetaOgRequest, ArticleRequest, ArticleType } from '../../models/Article';
+import { requestGetArticles, requestPostArticles, requestGetMetaOg } from '../../apis/articles';
 
 export const useFetchArticles = () => {
   const [articles, setArticles] = useState<ArticleType[]>([]);
@@ -23,4 +23,14 @@ export const usePostArticles = () => {
   };
 
   return { postArticle };
+};
+
+export const useGetMetaOg = () => {
+  const getMetaOg = async (url: MetaOgRequest) => {
+    const data = await requestGetMetaOg(url);
+
+    return data;
+  };
+
+  return { getMetaOg };
 };

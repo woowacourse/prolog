@@ -41,15 +41,27 @@ export const ArticleInfoContainer = styled.div`
   padding: 10px;
 `;
 
-export const UserName = styled.span`
+export const UserName = styled.p`
+  width: 250px;
+  margin: 0;
   color: ${COLOR.DARK_GRAY_400};
-  font-size: 16px;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
 `;
 
-export const Title = styled.span`
+export const Title = styled.p`
+  width: 250px;
+  margin: 0;
   color: ${COLOR.BLACK_900};
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
 `;
 
 export const CreatedAt = styled.span`
