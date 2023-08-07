@@ -8,6 +8,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,12 +17,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import wooteco.prolog.article.application.OgTagParser.OgType;
 import wooteco.prolog.article.domain.Article;
-import wooteco.prolog.article.domain.ArticleService;
+import wooteco.prolog.article.domain.ImageUrl;
 import wooteco.prolog.article.domain.Title;
 import wooteco.prolog.article.domain.Url;
 import wooteco.prolog.article.domain.repository.ArticleRepository;
 import wooteco.prolog.article.ui.ArticleRequest;
+import wooteco.prolog.article.ui.ArticleUrlRequest;
+import wooteco.prolog.article.ui.ArticleUrlResponse;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
@@ -32,8 +37,13 @@ class ArticleServiceTest {
 
     @Mock
     private ArticleRepository articleRepository;
+
     @Mock
     private MemberService memberService;
+
+    @Mock
+    private OgTagParser ogTagParser;
+
     @InjectMocks
     private ArticleService articleService;
 
@@ -41,11 +51,12 @@ class ArticleServiceTest {
     @Test
     void create_success() {
         //given
-        final ArticleRequest judyRequest = new ArticleRequest("title", "url");
+        final ArticleRequest judyRequest = new ArticleRequest("title", "url", "imageUrl");
         final Member member = new Member(1L, "username", "nickname", Role.CREW, 1L, "url");
         when(memberService.findById(any())).thenReturn(member);
 
-        final Article article = new Article(member, new Title("title"), new Url("url"));
+        final Article article = new Article(member, new Title("title"), new Url("url"),
+            new ImageUrl("imageUrl"));
         when(articleRepository.save(any())).thenReturn(article);
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
 
@@ -61,12 +72,14 @@ class ArticleServiceTest {
     void update_success() {
         //given
         final Member judy = new Member(1L, "username", "nickname", Role.CREW, 1L, "url");
-        final Article judyArticle = new Article(judy, new Title("judyTitle"), new Url("judyUrl"));
+        final Article judyArticle = new Article(judy, new Title("judyTitle"), new Url("judyUrl"),
+            new ImageUrl("imageUrl"));
         when(articleRepository.findById(any())).thenReturn(Optional.of(judyArticle));
         when(memberService.findById(any())).thenReturn(judy);
 
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
-        final ArticleRequest judyChangedRequest = new ArticleRequest("title", "changedUrl");
+        final ArticleRequest judyChangedRequest = new ArticleRequest("title", "changedUrl",
+            "imageUrl");
 
         //when
         articleService.update(1L, judyChangedRequest, judyLogin);
@@ -82,7 +95,8 @@ class ArticleServiceTest {
         when(articleRepository.findById(any())).thenReturn(Optional.ofNullable(null));
 
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
-        final ArticleRequest judyChangedRequest = new ArticleRequest("title", "changedUrl");
+        final ArticleRequest judyChangedRequest = new ArticleRequest("title", "changedUrl",
+            "imageUrl");
 
         //when, then
         assertThatThrownBy(() -> articleService.update(1L, judyChangedRequest, judyLogin))
@@ -96,12 +110,13 @@ class ArticleServiceTest {
         final Member judy = new Member(1L, "judith", "judy", Role.CREW, 1L, "judyUrl");
         final Member brown = new Member(2L, "brown", "brownie", Role.CREW, 2L, "brownUrl");
         final Article brownArticle = new Article(brown, new Title("brownTitle"),
-            new Url("brownUrl"));
+            new Url("brownUrl"), new ImageUrl("imageUrl"));
         when(articleRepository.findById(any())).thenReturn(Optional.of(brownArticle));
 
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
         when(memberService.findById(any())).thenReturn(judy);
-        final ArticleRequest judyChangedRequest = new ArticleRequest("title", "changedUrl");
+        final ArticleRequest judyChangedRequest = new ArticleRequest("title", "changedUrl",
+            "imageUrl");
 
         //when, then
         assertThatThrownBy(() -> articleService.update(1L, judyChangedRequest, judyLogin))
@@ -113,7 +128,8 @@ class ArticleServiceTest {
     void delete_success() {
         //given
         final Member judy = new Member(1L, "judith", "judy", Role.CREW, 1L, "judyUrl");
-        final Article judyArticle = new Article(judy, new Title("judyTitle"), new Url("judyUrl"));
+        final Article judyArticle = new Article(judy, new Title("judyTitle"), new Url("judyUrl"),
+            new ImageUrl("imageUrl"));
         when(articleRepository.findById(any())).thenReturn(Optional.of(judyArticle));
         when(memberService.findById(any())).thenReturn(judy);
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
@@ -145,7 +161,7 @@ class ArticleServiceTest {
         final Member judy = new Member(1L, "judith", "judy", Role.CREW, 1L, "judyUrl");
         final Member brown = new Member(2L, "brown", "brownie", Role.CREW, 2L, "brownUrl");
         final Article brownArticle = new Article(brown, new Title("brownTitle"),
-            new Url("brownUrl"));
+            new Url("brownUrl"), new ImageUrl("imageUrl"));
         when(articleRepository.findById(any())).thenReturn(Optional.of(brownArticle));
 
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
@@ -154,5 +170,25 @@ class ArticleServiceTest {
         //when, then
         assertThatThrownBy(() -> articleService.delete(1L, judyLogin))
             .isInstanceOf(BadRequestException.class);
+    }
+
+    @DisplayName("링크에서 추출한 제목, 이미지를 반환한다.")
+    @Test
+    void parse() {
+        //given
+        final ArticleUrlRequest request = new ArticleUrlRequest("https://www.woowahan.com/");
+
+        final Map<OgType, String> expectedParsedValue = new HashMap<>();
+        expectedParsedValue.put(OgType.IMAGE, "이미지");
+        expectedParsedValue.put(OgType.TITLE, "제목");
+
+        when(ogTagParser.parse(any())).thenReturn(expectedParsedValue);
+
+        //when
+        final ArticleUrlResponse response = articleService.parse(request);
+
+        //then
+        assertThat(response.getTitle()).isEqualTo("제목");
+        assertThat(response.getImageUrl()).isEqualTo("이미지");
     }
 }

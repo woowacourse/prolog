@@ -22,3 +22,7 @@ Feature: 아티클 관련 기능
         Given 아티클을 여러개 작성하고
         When 1번 아티클을 삭제하면
         Then 아티클이 삭제된다
+
+    Scenario: Url og태그 파싱하기
+        When Url을 입력하면
+        Then og태그를 파싱해서 반환한다.
