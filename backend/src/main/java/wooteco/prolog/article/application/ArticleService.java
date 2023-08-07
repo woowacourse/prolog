@@ -15,8 +15,11 @@ import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -37,7 +40,7 @@ public class ArticleService {
     }
 
     public List<ArticleResponse> getAll() {
-        return articleRepository.findAll()
+        return articleRepository.findAllByOrderByCreatedAtDesc()
             .stream()
             .map(ArticleResponse::from)
             .collect(toList());
