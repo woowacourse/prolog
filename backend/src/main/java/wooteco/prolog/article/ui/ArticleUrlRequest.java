@@ -1,11 +1,16 @@
 package wooteco.prolog.article.ui;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ArticleUrlRequest {
+
     private final String url;
+
+    private ArticleUrlRequest() {
+        this(null);
+    }
 }
 

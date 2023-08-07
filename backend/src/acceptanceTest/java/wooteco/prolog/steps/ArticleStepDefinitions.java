@@ -1,17 +1,18 @@
 package wooteco.prolog.steps;
 
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
-import org.springframework.http.HttpStatus;
-import wooteco.prolog.AcceptanceSteps;
-import wooteco.prolog.article.ui.ArticleResponse;
-
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static wooteco.prolog.fixtures.ArticleFixture.ARTICLE_REQUEST1;
 import static wooteco.prolog.fixtures.ArticleFixture.ARTICLE_REQUEST2;
+import static wooteco.prolog.fixtures.ArticleFixture.ARTICLE_URL_REQUEST;
+
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import java.util.List;
+import org.springframework.http.HttpStatus;
+import wooteco.prolog.AcceptanceSteps;
+import wooteco.prolog.article.ui.ArticleResponse;
+import wooteco.prolog.article.ui.ArticleUrlResponse;
 
 
 public class ArticleStepDefinitions extends AcceptanceSteps {
@@ -49,6 +50,12 @@ public class ArticleStepDefinitions extends AcceptanceSteps {
         context.invokeHttpDeleteWithToken(path, ARTICLE_REQUEST2);
     }
 
+    @When("Url을 입력하면")
+    public void Url을_입력하면() {
+        final String path = "/articles/parse-url";
+        context.invokeHttpPostWithToken(path, ARTICLE_URL_REQUEST);
+    }
+
     @Then("아티클이 작성된다")
     public void 아티클이_작성된다() {
         int statusCode = context.response.statusCode();
@@ -60,7 +67,8 @@ public class ArticleStepDefinitions extends AcceptanceSteps {
         int statusCode = context.response.statusCode();
         assertThat(statusCode).isEqualTo(HttpStatus.OK.value());
 
-        List<ArticleResponse> articleResponses = (List<ArticleResponse>) context.storage.get("articles");
+        List<ArticleResponse> articleResponses = (List<ArticleResponse>) context.storage.get(
+            "articles");
         assertThat(articleResponses.size()).isEqualTo(2);
     }
 
@@ -74,5 +82,19 @@ public class ArticleStepDefinitions extends AcceptanceSteps {
     public void 아티클이_삭제된다() {
         int statusCode = context.response.statusCode();
         assertThat(statusCode).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    @Then("og태그를 파싱해서 반환한다.")
+    public void 아티클을_파싱해서_반환한다() {
+        final ArticleUrlResponse actual = context.response
+            .as(ArticleUrlResponse.class);
+        final ArticleUrlResponse expected = new ArticleUrlResponse(
+            "우아한형제들",
+            "https://woowahan-cdn.woowahan.com/static/image/share_kor.jpg"
+        );
+
+        assertThat(actual)
+            .usingRecursiveComparison()
+            .isEqualTo(expected);
     }
 }
