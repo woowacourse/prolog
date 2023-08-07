@@ -8,8 +8,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,15 +15,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import wooteco.prolog.article.application.OgTagParser.OgType;
 import wooteco.prolog.article.domain.Article;
 import wooteco.prolog.article.domain.ImageUrl;
 import wooteco.prolog.article.domain.Title;
 import wooteco.prolog.article.domain.Url;
 import wooteco.prolog.article.domain.repository.ArticleRepository;
 import wooteco.prolog.article.ui.ArticleRequest;
-import wooteco.prolog.article.ui.ArticleUrlRequest;
-import wooteco.prolog.article.ui.ArticleUrlResponse;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
@@ -40,9 +35,6 @@ class ArticleServiceTest {
 
     @Mock
     private MemberService memberService;
-
-    @Mock
-    private OgTagParser ogTagParser;
 
     @InjectMocks
     private ArticleService articleService;
@@ -170,25 +162,5 @@ class ArticleServiceTest {
         //when, then
         assertThatThrownBy(() -> articleService.delete(1L, judyLogin))
             .isInstanceOf(BadRequestException.class);
-    }
-
-    @DisplayName("링크에서 추출한 제목, 이미지를 반환한다.")
-    @Test
-    void parse() {
-        //given
-        final ArticleUrlRequest request = new ArticleUrlRequest("https://www.woowahan.com/");
-
-        final Map<OgType, String> expectedParsedValue = new HashMap<>();
-        expectedParsedValue.put(OgType.IMAGE, "이미지");
-        expectedParsedValue.put(OgType.TITLE, "제목");
-
-        when(ogTagParser.parse(any())).thenReturn(expectedParsedValue);
-
-        //when
-        final ArticleUrlResponse response = articleService.parse(request);
-
-        //then
-        assertThat(response.getTitle()).isEqualTo("제목");
-        assertThat(response.getImageUrl()).isEqualTo("이미지");
     }
 }
