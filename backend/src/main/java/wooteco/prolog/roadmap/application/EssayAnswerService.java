@@ -1,8 +1,12 @@
 package wooteco.prolog.roadmap.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.CURRICULUM_NOT_FOUND_EXCEPTION;
 import static wooteco.prolog.common.exception.BadRequestCode.ESSAY_ANSWER_NOT_FOUND_EXCEPTION;
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_QUIZ_NOT_FOUND_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,8 +18,8 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerRequest;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerSearchRequest;
-import wooteco.prolog.roadmap.domain.Curriculum;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerUpdateRequest;
+import wooteco.prolog.roadmap.domain.Curriculum;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
 import wooteco.prolog.roadmap.domain.Quiz;
 import wooteco.prolog.roadmap.domain.repository.CurriculumRepository;
@@ -25,9 +29,6 @@ import wooteco.prolog.roadmap.domain.repository.QuizRepository;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.studylog.application.dto.EssayAnswersResponse;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -110,8 +111,7 @@ public class EssayAnswerService {
         final Long curriculumId = request.getCurriculumId();
 
         final Curriculum curriculum = curriculumRepository.findById(curriculumId)
-            .orElseThrow(() -> new IllegalArgumentException(
-                "해당 커리큘럼이 존재하지 않습니다. curriculumId = " + curriculumId));
+            .orElseThrow(() -> new BadRequestException(CURRICULUM_NOT_FOUND_EXCEPTION));
 
         final List<Long> sessionIds = sessionRepository.findAllByCurriculumId(curriculum.getId())
             .stream()
@@ -119,7 +119,7 @@ public class EssayAnswerService {
             .collect(Collectors.toList());
 
         if (sessionIds.isEmpty()) {
-            throw new IllegalArgumentException("세션이 비어있으면 안됨");
+            throw new BadRequestException(ROADMAP_SESSION_NOT_FOUND_EXCEPTION);
         }
 
         final Specification<EssayAnswer> essayAnswerSpecification = EssayAnswerSpecification.equalsSessionIdsIn(

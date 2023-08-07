@@ -143,7 +143,7 @@ public class EssayAnswerSearchTest {
     }
 
     @Test
-    @DisplayName("커리큘럼 아이디를 받아 답변을 검색한다.")
+    @DisplayName("커리큘럼 아이디 O, 키워드 아이디 X, 퀴즈 아이디 X, 멤버 아이디 X")
     void 커리큘럼_아이디를_받아서_답변을_검색한다() {
         // given
         final EssayAnswerSearchRequest 답변_검색_요청 = new EssayAnswerSearchRequest(
@@ -175,7 +175,7 @@ public class EssayAnswerSearchTest {
     }
 
     @Test
-    @DisplayName("커리큘럼 아이디와 키워드 아이디를 받아서 답변을 검색한다.")
+    @DisplayName("커리큘럼 아이디 O, 키워드 아이디 O, 퀴즈 아이디 X, 멤버 아이디 X")
     void 커리큘럼_아이디와_키워드_아이디를_받아서_답변을_검색한다() {
         // given
         final EssayAnswerSearchRequest 답변_검색_요청 = new EssayAnswerSearchRequest(
@@ -202,7 +202,7 @@ public class EssayAnswerSearchTest {
     }
 
     @Test
-    @DisplayName("커리큘럼 아이디와 키워드 아이디와 퀴즈 아이디를 받아서 답변을 검색한다.")
+    @DisplayName("커리큘럼 아이디 O, 키워드 아이디 O, 퀴즈 아이디 O, 멤버 아이디 X")
     void 커리큘럼_아이디와_키워드_아이디와_퀴즈_아이디를_받아서_답변을_검색한다() {
         // given
         final EssayAnswerSearchRequest 답변_검색_요청 = new EssayAnswerSearchRequest(
@@ -231,18 +231,9 @@ public class EssayAnswerSearchTest {
             .isEqualTo(예상되는_답변_응답들);
     }
 
-    private EssayAnswerResponse 예상_답변_응답(final Long essayAnswerId, final Quiz quiz,
-                                         final String answer, final Member member) {
-        return new EssayAnswerResponse(essayAnswerId,
-            new QuizResponse(quiz.getId(), quiz.getQuestion()),
-            answer, new MemberResponse(member.getId(), member.getUsername(), member.getNickname(),
-            Role.CREW, "https://"), LocalDateTime.now(), LocalDateTime.now());
-    }
-
-    @DisplayName("searchEssayAnswers() : 키워드 id가 있고, 퀴즈 id는 없으며, "
-        + "사용자의 id가 주어지면 해당 키워드의 답변들 중에 해당 사용자가 작성한 글을 조회할 수 있다.")
     @Test
-    void test_searchEssayAnswers_keywordId_noQuizId_memberId() {
+    @DisplayName("커리큘럼 아이디 O, 키워드 아이디 O, 퀴즈 아이디 X, 멤버 아이디 O")
+    void 커리큘럼_아이디와_키워드_아이디와_멤버_아이디를_받아서_답변을_검색한다() {
         // given
         final EssayAnswerSearchRequest request = new EssayAnswerSearchRequest(
             curriculum.getId(),
@@ -271,43 +262,9 @@ public class EssayAnswerSearchTest {
             .isEqualTo(response);
     }
 
-    @DisplayName("searchEssayAnswers() : 키워드 id 있고, 퀴즈 id 없고, "
-        + "사용자의 id가 주어지지 않으면 해당 키워드의 답변들을 모두 조회할 수 있다.")
     @Test
-    void test_searchEssayAnswers_keywordId_NoQuizId_noMemberId() {
-        // given
-        final EssayAnswerSearchRequest request = new EssayAnswerSearchRequest(
-            curriculum.getId(),
-            keyword2.getId(),
-            null,
-            null
-        );
-
-        // when
-        final EssayAnswersResponse actual = essayAnswerService.searchEssayAnswers(
-            request, PageRequest.of(0, 10));
-
-        // then
-        final List<EssayAnswerResponse> expected = Arrays.asList(
-            예상_답변_응답(essayAnswerId6, quiz3, "대답6", member1),
-            예상_답변_응답(essayAnswerId5, quiz2, "대답5", member4),
-            예상_답변_응답(essayAnswerId4, quiz2, "대답4", member3),
-            예상_답변_응답(essayAnswerId3, quiz2, "대답3", member2),
-            예상_답변_응답(essayAnswerId2, quiz2, "대답2", member1)
-        );
-
-        final EssayAnswersResponse response = new EssayAnswersResponse(expected, 5L, 1, 1);
-
-        assertThat(actual)
-            .usingRecursiveComparison()
-            .ignoringFields("data.createdAt", "data.updatedAt")
-            .isEqualTo(response);
-    }
-
-    @DisplayName("searchEssayAnswers() : 키워드 id 있고, 퀴즈 id 있고, "
-        + "사용자의 id가 주어지면 사용자가 작성한 해당 퀴즈의 답변들을 모두 조회할 수 있다.")
-    @Test
-    void test_searchEssayAnswers_keywordId_quizId_memberId() {
+    @DisplayName("커리큘럼 아이디 O, 키워드 아이디 O, 퀴즈 아이디 O, 멤버 아이디 O")
+    void 커리큘럼_아이디와_키워드_아이디와_퀴즈_아이디와_멤버_아이디를_받아서_답변을_검색한다() {
         // given
         final EssayAnswerSearchRequest request = new EssayAnswerSearchRequest(
             curriculum.getId(),
@@ -334,16 +291,15 @@ public class EssayAnswerSearchTest {
             .isEqualTo(response);
     }
 
-    @DisplayName("searchEssayAnswers() : 키워드 id 있고, 퀴즈 id 있고, "
-        + "사용자의 id가 주어지지 않으면 해당 퀴즈의 답변들을 모두 조회할 수 있다.")
     @Test
-    void test_searchEssayAnswers_keywordId_quizId_noMemberId() {
+    @DisplayName("커리큘럼 아이디 O, 키워드 아이디 X, 퀴즈 아이디 X, 멤버 아이디 O")
+    void 커리큘럼_아이디와_멤버_아이디를_받아서_답변을_검색한다() {
         // given
         final EssayAnswerSearchRequest request = new EssayAnswerSearchRequest(
             curriculum.getId(),
-            keyword4.getId(),
-            Arrays.asList(quiz6.getId(), quiz7.getId()),
-            null
+            null,
+            null,
+            Arrays.asList(member1.getId())
         );
 
         // when
@@ -352,18 +308,30 @@ public class EssayAnswerSearchTest {
 
         // then
         final List<EssayAnswerResponse> expected = Arrays.asList(
-            예상_답변_응답(essayAnswerId15, quiz7, "대답15", member2),
+            예상_답변_응답(essayAnswerId18, quiz9, "대답18", member1),
+            예상_답변_응답(essayAnswerId16, quiz8, "대답16", member1),
             예상_답변_응답(essayAnswerId14, quiz7, "대답14", member1),
-            예상_답변_응답(essayAnswerId13, quiz6, "대답13", member3),
-            예상_답변_응답(essayAnswerId12, quiz6, "대답12", member2),
-            예상_답변_응답(essayAnswerId11, quiz6, "대답11", member1)
+            예상_답변_응답(essayAnswerId11, quiz6, "대답11", member1),
+            예상_답변_응답(essayAnswerId9, quiz5, "대답9", member1),
+            예상_답변_응답(essayAnswerId7, quiz4, "대답7", member1),
+            예상_답변_응답(essayAnswerId6, quiz3, "대답6", member1),
+            예상_답변_응답(essayAnswerId2, quiz2, "대답2", member1),
+            예상_답변_응답(essayAnswerId1, quiz1, "대답1", member1)
         );
 
-        final EssayAnswersResponse response = new EssayAnswersResponse(expected, 5L, 1, 1);
+        final EssayAnswersResponse response = new EssayAnswersResponse(expected, 9L, 1, 1);
 
         assertThat(actual)
             .usingRecursiveComparison()
             .ignoringFields("data.createdAt", "data.updatedAt")
             .isEqualTo(response);
+    }
+
+    private EssayAnswerResponse 예상_답변_응답(final Long essayAnswerId, final Quiz quiz,
+                                         final String answer, final Member member) {
+        return new EssayAnswerResponse(essayAnswerId,
+            new QuizResponse(quiz.getId(), quiz.getQuestion()),
+            answer, new MemberResponse(member.getId(), member.getUsername(), member.getNickname(),
+            Role.CREW, "https://"), LocalDateTime.now(), LocalDateTime.now());
     }
 }
