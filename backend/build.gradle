@@ -111,6 +111,9 @@ dependencies {
 
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
+
+    // jsoup
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.16.1'
 }
 
 ext {

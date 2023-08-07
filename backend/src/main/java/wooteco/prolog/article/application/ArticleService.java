@@ -1,4 +1,4 @@
-package wooteco.prolog.article.domain;
+package wooteco.prolog.article.application;
 
 import static java.util.stream.Collectors.toList;
 
@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.article.domain.Article;
 import wooteco.prolog.article.domain.repository.ArticleRepository;
 import wooteco.prolog.article.ui.ArticleRequest;
 import wooteco.prolog.article.ui.ArticleResponse;
@@ -31,7 +32,7 @@ public class ArticleService {
     }
 
     public List<ArticleResponse> getAll() {
-        return articleRepository.findAll()
+        return articleRepository.findAllByOrderByCreatedAtDesc()
             .stream()
             .map(ArticleResponse::from)
             .collect(toList());

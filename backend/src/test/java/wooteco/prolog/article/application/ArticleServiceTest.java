@@ -16,7 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import wooteco.prolog.article.domain.Article;
-import wooteco.prolog.article.domain.ArticleService;
+import wooteco.prolog.article.domain.ImageUrl;
 import wooteco.prolog.article.domain.Title;
 import wooteco.prolog.article.domain.Url;
 import wooteco.prolog.article.domain.repository.ArticleRepository;
@@ -32,8 +32,10 @@ class ArticleServiceTest {
 
     @Mock
     private ArticleRepository articleRepository;
+
     @Mock
     private MemberService memberService;
+
     @InjectMocks
     private ArticleService articleService;
 
@@ -41,11 +43,12 @@ class ArticleServiceTest {
     @Test
     void create_success() {
         //given
-        final ArticleRequest judyRequest = new ArticleRequest("title", "url");
+        final ArticleRequest judyRequest = new ArticleRequest("title", "url", "imageUrl");
         final Member member = new Member(1L, "username", "nickname", Role.CREW, 1L, "url");
         when(memberService.findById(any())).thenReturn(member);
 
-        final Article article = new Article(member, new Title("title"), new Url("url"));
+        final Article article = new Article(member, new Title("title"), new Url("url"),
+            new ImageUrl("imageUrl"));
         when(articleRepository.save(any())).thenReturn(article);
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
 
@@ -61,12 +64,14 @@ class ArticleServiceTest {
     void update_success() {
         //given
         final Member judy = new Member(1L, "username", "nickname", Role.CREW, 1L, "url");
-        final Article judyArticle = new Article(judy, new Title("judyTitle"), new Url("judyUrl"));
+        final Article judyArticle = new Article(judy, new Title("judyTitle"), new Url("judyUrl"),
+            new ImageUrl("imageUrl"));
         when(articleRepository.findById(any())).thenReturn(Optional.of(judyArticle));
         when(memberService.findById(any())).thenReturn(judy);
 
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
-        final ArticleRequest judyChangedRequest = new ArticleRequest("title", "changedUrl");
+        final ArticleRequest judyChangedRequest = new ArticleRequest("title", "changedUrl",
+            "imageUrl");
 
         //when
         articleService.update(1L, judyChangedRequest, judyLogin);
@@ -82,7 +87,8 @@ class ArticleServiceTest {
         when(articleRepository.findById(any())).thenReturn(Optional.ofNullable(null));
 
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
-        final ArticleRequest judyChangedRequest = new ArticleRequest("title", "changedUrl");
+        final ArticleRequest judyChangedRequest = new ArticleRequest("title", "changedUrl",
+            "imageUrl");
 
         //when, then
         assertThatThrownBy(() -> articleService.update(1L, judyChangedRequest, judyLogin))
@@ -96,12 +102,13 @@ class ArticleServiceTest {
         final Member judy = new Member(1L, "judith", "judy", Role.CREW, 1L, "judyUrl");
         final Member brown = new Member(2L, "brown", "brownie", Role.CREW, 2L, "brownUrl");
         final Article brownArticle = new Article(brown, new Title("brownTitle"),
-            new Url("brownUrl"));
+            new Url("brownUrl"), new ImageUrl("imageUrl"));
         when(articleRepository.findById(any())).thenReturn(Optional.of(brownArticle));
 
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
         when(memberService.findById(any())).thenReturn(judy);
-        final ArticleRequest judyChangedRequest = new ArticleRequest("title", "changedUrl");
+        final ArticleRequest judyChangedRequest = new ArticleRequest("title", "changedUrl",
+            "imageUrl");
 
         //when, then
         assertThatThrownBy(() -> articleService.update(1L, judyChangedRequest, judyLogin))
@@ -113,7 +120,8 @@ class ArticleServiceTest {
     void delete_success() {
         //given
         final Member judy = new Member(1L, "judith", "judy", Role.CREW, 1L, "judyUrl");
-        final Article judyArticle = new Article(judy, new Title("judyTitle"), new Url("judyUrl"));
+        final Article judyArticle = new Article(judy, new Title("judyTitle"), new Url("judyUrl"),
+            new ImageUrl("imageUrl"));
         when(articleRepository.findById(any())).thenReturn(Optional.of(judyArticle));
         when(memberService.findById(any())).thenReturn(judy);
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
@@ -145,7 +153,7 @@ class ArticleServiceTest {
         final Member judy = new Member(1L, "judith", "judy", Role.CREW, 1L, "judyUrl");
         final Member brown = new Member(2L, "brown", "brownie", Role.CREW, 2L, "brownUrl");
         final Article brownArticle = new Article(brown, new Title("brownTitle"),
-            new Url("brownUrl"));
+            new Url("brownUrl"), new ImageUrl("imageUrl"));
         when(articleRepository.findById(any())).thenReturn(Optional.of(brownArticle));
 
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);

@@ -11,11 +11,11 @@ export const Container = styled.ul`
     gap: 30px 40px;
   }
 
-  ${MEDIA_QUERY.md} {
+  ${MEDIA_QUERY.lg} {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  ${MEDIA_QUERY.xs} {
+  ${MEDIA_QUERY.md} {
     grid-template-columns: repeat(1, 1fr);
   }
 `;

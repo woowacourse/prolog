@@ -1,15 +1,5 @@
 package wooteco.prolog.article.domain;
 
-import java.time.LocalDateTime;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +8,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -39,13 +32,17 @@ public class Article {
     @Embedded
     private Url url;
 
+    @Embedded
+    private ImageUrl imageUrl;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
-    public Article(final Member member, final Title title, final Url url) {
+    public Article(final Member member, final Title title, final Url url, final ImageUrl imageUrl) {
         this.member = member;
         this.title = title;
         this.url = url;
+        this.imageUrl = imageUrl;
     }
 
     public void validateOwner(final Member member) {
