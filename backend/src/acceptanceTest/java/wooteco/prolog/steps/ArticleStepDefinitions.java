@@ -3,7 +3,6 @@ package wooteco.prolog.steps;
 import static org.assertj.core.api.Assertions.assertThat;
 import static wooteco.prolog.fixtures.ArticleFixture.ARTICLE_REQUEST1;
 import static wooteco.prolog.fixtures.ArticleFixture.ARTICLE_REQUEST2;
-import static wooteco.prolog.fixtures.ArticleFixture.ARTICLE_URL_REQUEST;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -52,8 +51,8 @@ public class ArticleStepDefinitions extends AcceptanceSteps {
 
     @When("Url을 입력하면")
     public void Url을_입력하면() {
-        final String path = "/articles/parse-url";
-        context.invokeHttpPostWithToken(path, ARTICLE_URL_REQUEST);
+        final String path = "/meta-og?url=https://www.woowahan.com/";
+        context.invokeHttpGetWithToken(path);
     }
 
     @Then("아티클이 작성된다")

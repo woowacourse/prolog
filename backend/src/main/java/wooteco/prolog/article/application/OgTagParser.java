@@ -49,9 +49,7 @@ public class OgTagParser {
 
             return OgType.parseMap(document);
         } catch (Exception e) {
-            //TODO: 추후 삭제 필요
-            e.printStackTrace();
-            throw new BadRequestException(BadRequestCode.ARTICLE_URL_NULL_OR_EMPTY_EXCEPTION);
+            throw new BadRequestException(BadRequestCode.ARTICLE_INVALID_URL_EXCEPTION);
         }
     }
 }
