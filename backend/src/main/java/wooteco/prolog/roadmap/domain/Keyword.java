@@ -124,6 +124,10 @@ public class Keyword {
         }
     }
 
+    public boolean isRoot() {
+        return parent == null;
+    }
+
     public Long getParentIdOrNull() {
         if (parent == null) {
             return null;
