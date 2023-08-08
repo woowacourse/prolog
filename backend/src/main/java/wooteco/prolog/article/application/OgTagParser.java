@@ -39,7 +39,7 @@ public class OgTagParser {
             final Element element = document.selectFirst(String.format(FORMAT, type.metaTag));
             return Optional.ofNullable(element)
                 .map(it -> it.attr("content"))
-                .orElse(null);
+                .orElse("");
         }
     }
 
