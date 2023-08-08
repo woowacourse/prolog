@@ -16,7 +16,7 @@ import { useGetMetaOg } from '../../hooks/Articles/useArticles';
 import { ArticleRequest } from '../../models/Article';
 import { PATH } from '../../constants';
 import { usePostArticlesMutation } from '../../hooks/queries/article';
-import NotFound from '../../assets/images/not-found.png'
+import NotFound from '../../assets/images/not-found.png';
 
 const NewArticlePage = () => {
   const [isValidate, setIsValidate] = useState<boolean>(false);
@@ -44,6 +44,14 @@ const NewArticlePage = () => {
 
   const onArticleUrlChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     setArticleContent({ ...articleContent, url: e.target.value });
+  };
+
+  const clickEnterInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      console.log('sdafsdaf');
+      e.preventDefault();
+      onUrl();
+    }
   };
 
   const onUrl = async () => {
@@ -92,7 +100,7 @@ const NewArticlePage = () => {
   };
 
   const addDefaultImg = (e: SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src = NotFound
+    e.currentTarget.src = NotFound;
   };
 
   const createArticle = async () => {
@@ -109,6 +117,7 @@ const NewArticlePage = () => {
           value={articleContent.url}
           placeholder="링크를 입력해주세요."
           onChange={onArticleUrlChanged}
+          onKeyPress={clickEnterInput}
         />
       </InputContainer>
       <Button type="button" size="XX_SMALL" css={[SubmitButtonStyle]} onClick={onUrl}>
@@ -134,7 +143,7 @@ const NewArticlePage = () => {
             />
             <ThumbnailContainer>
               {articleContent.imageUrl && (
-                <ThumbnailImage src={articleContent.imageUrl} onError={addDefaultImg}/>
+                <ThumbnailImage src={articleContent.imageUrl} onError={addDefaultImg} />
               )}
             </ThumbnailContainer>
           </InputContainer>
