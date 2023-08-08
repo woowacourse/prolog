@@ -1,7 +1,7 @@
 import { rest } from 'msw';
 import { BASE_URL } from '../../configs/environment';
 import articles from '../db/articles.json';
-import metaOg from '../db/metaOg.json';
+import metaOg from '../db/metaog.json';
 import { ArticleType } from '../../models/Article';
 
 const articleUrl = 'https://think0wise.tistory.com/107';
