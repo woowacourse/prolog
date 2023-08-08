@@ -94,25 +94,33 @@ const NewArticlePage = () => {
       <Button type="button" size="XX_SMALL" css={[SubmitButtonStyle]} onClick={onUrl}>
         링크 입력
       </Button>
-      <InputContainer>
-        <Label>제목</Label>
-        <Input value={articleContent.title} placeholder="제목" onChange={onArticleTitleChanged} />
-      </InputContainer>
-      <InputContainer>
-        <Label>썸네일</Label>
-        <Input
-          defaultValue={articleContent.imageUrl}
-          placeholder="이미지 링크"
-          disabled={isValidate ? false : true}
-        />
-        <ThumbnailContainer>
-          {articleContent.imageUrl && <ThumbnailImage src={articleContent.imageUrl} alt="썸네일" />}
-        </ThumbnailContainer>
-      </InputContainer>
       {isButton && (
-        <Button type="button" size="X_SMALL" css={[SubmitButtonStyle]} onClick={createArticle}>
-          작성 완료
-        </Button>
+        <>
+          <InputContainer>
+            <Label>제목</Label>
+            <Input
+              value={articleContent.title}
+              placeholder="제목"
+              onChange={onArticleTitleChanged}
+            />
+          </InputContainer>
+          <InputContainer>
+            <Label>썸네일</Label>
+            <Input
+              defaultValue={articleContent.imageUrl}
+              placeholder="이미지 링크"
+              disabled={isValidate ? false : true}
+            />
+            <ThumbnailContainer>
+              {articleContent.imageUrl && (
+                <ThumbnailImage src={articleContent.imageUrl} alt="썸네일" />
+              )}
+            </ThumbnailContainer>
+          </InputContainer>
+          <Button type="button" size="X_SMALL" css={[SubmitButtonStyle]} onClick={createArticle}>
+            작성 완료
+          </Button>
+        </>
       )}
     </ArticlePageContainer>
   );
