@@ -91,14 +91,14 @@ public class EssayAnswerSearchTest {
         quiz9 = quizRepository.save(new Quiz(keyword4, "퀴즈9"));
 
         member1 = memberRepository.save(
-            new Member(11L, "username1", "nickname1", Role.CREW, 111L, "https://"));
+            new Member("username1", "nickname1", Role.CREW, 111L, "https://"));
         member2 = memberRepository.save(
-            new Member(12L, "username2", "nickname2", Role.CREW, 112L, "https://"));
+            new Member("username2", "nickname2", Role.CREW, 112L, "https://"));
         member3 = memberRepository.save(
-            new Member(13L, "username3", "nickname3", Role.CREW, 113L, "https://"));
+            new Member("username3", "nickname3", Role.CREW, 113L, "https://"));
         member4 = memberRepository.save(
-            new Member(14L, "username4", "nickname4", Role.CREW, 115L, "https://"));
-
+            new Member("username4", "nickname4", Role.CREW, 115L, "https://"));
+        
         final EssayAnswerRequest essayAnswer1 = new EssayAnswerRequest(quiz1.getId(), "대답1");
         final EssayAnswerRequest essayAnswer2 = new EssayAnswerRequest(quiz2.getId(), "대답2");
         final EssayAnswerRequest essayAnswer3 = new EssayAnswerRequest(quiz2.getId(), "대답3");
