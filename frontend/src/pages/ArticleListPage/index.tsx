@@ -7,23 +7,31 @@ import { useHistory } from 'react-router-dom';
 import { PATH } from '../../constants';
 import styled from '@emotion/styled';
 import { MainContentStyle } from '../../PageRouter';
+import { useContext } from 'react';
+import { UserContext } from '../../contexts/UserProvider';
 
 const ArticleListPage = () => {
   const history = useHistory();
+
+  const { user } = useContext(UserContext);
+  const { isLoggedIn } = user;
+
   const goNewArticlePage = () => history.push(PATH.NEW_ARTICLE);
 
   return (
     <div css={[MainContentStyle]}>
       <Container>
-        <Button
-          type="button"
-          size="SMALL"
-          icon={PencilIcon}
-          alt="새 아티클 쓰기 아이콘"
-          onClick={goNewArticlePage}
-        >
-          글쓰기
-        </Button>
+        {isLoggedIn && (
+          <Button
+            type="button"
+            size="SMALL"
+            icon={PencilIcon}
+            alt="새 아티클 쓰기 아이콘"
+            onClick={goNewArticlePage}
+          >
+            글쓰기
+          </Button>
+        )}
       </Container>
       <ArticleList />
     </div>
