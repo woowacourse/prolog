@@ -75,7 +75,6 @@ public enum BadRequestCode {
     FILE_UPLOAD_FAIL_EXCEPTION(9003, "파일 업로드에 실패했습니다."),
 
     DUPLICATE_SESSION_EXCEPTION(10001, "중복되는 세션입니다."),
-    SESSION_NOT_FOUND_EXCEPTION(10002, "세션을 찾을 수 없습니다."),
     TOO_LONG_LEVEL_NAME_EXCEPTION(10003, String.format("세션 이름이 %d자 초과입니다.", Session.MAX_LENGTH)),
 
     SEARCH_ARGUMENT_PARSE_EXCEPTION(11001, "parsing 할 수 없는 argument입니다."),
