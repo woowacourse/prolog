@@ -20,7 +20,8 @@ public class RecommendedPostService {
     private final RecommendedPostRepository recommendedPostRepository;
     private final KeywordRepository keywordRepository;
 
-    public RecommendedPostService(final RecommendedPostRepository recommendedPostRepository, final KeywordRepository keywordRepository) {
+    public RecommendedPostService(final RecommendedPostRepository recommendedPostRepository,
+                                  final KeywordRepository keywordRepository) {
         this.recommendedPostRepository = recommendedPostRepository;
         this.keywordRepository = keywordRepository;
     }
