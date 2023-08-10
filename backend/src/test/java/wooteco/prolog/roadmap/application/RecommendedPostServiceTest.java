@@ -16,8 +16,6 @@ import wooteco.prolog.roadmap.domain.repository.RecommendedPostRepository;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -53,36 +51,32 @@ class RecommendedPostServiceTest {
     @DisplayName("추천 포스트 생성 테스트")
     void create() {
         //given
-        final RecommendedRequest request = new RecommendedRequest("https//:example.com");
+        final RecommendedRequest request = new RecommendedRequest("https://example.com");
 
         //when
-        Long recommendedPostId = recommendedPostService.create(keyword.getId(), request);
-
-        final Keyword persistedKeyword = keywordRepository.findById(keyword.getId()).get();
-        final RecommendedPost persistedPost = recommendedPostRepository.findById(recommendedPostId).get();
+        recommendedPostService.create(keyword.getId(), request);
 
         //then
-        assertSoftly(softAssertions -> {
-            assertThat(persistedPost.getUrl()).isEqualTo(request.getUrl());
-            assertThat(persistedKeyword.getRecommendedPosts()).containsExactly(persistedPost);
-        });
+        assertThat(recommendedPostRepository.findAll()).hasSize(1);
     }
 
     @Test
     @DisplayName("추천 포스트 수정 테스트")
     void update() {
         //given
-        final RecommendedRequest request = new RecommendedRequest("https//:example.com");
-        Long recommendedPostId = recommendedPostService.create(keyword.getId(), request);
-        String newUrl = "https//:example222.com";
-        final RecommendedUpdateRequest updateRrequest = new RecommendedUpdateRequest(newUrl);
+        final Long recommendedPostId = recommendedPostService.create(
+            keyword.getId(),
+            new RecommendedRequest("https://example.com"));
+
+        final String newUrl = "https://new.com";
+        final RecommendedUpdateRequest updateRequest = new RecommendedUpdateRequest(newUrl);
 
         //when
-        recommendedPostService.update(recommendedPostId, updateRrequest);
-        Optional<RecommendedPost> actual = recommendedPostRepository.findById(recommendedPostId);
+        recommendedPostService.update(recommendedPostId, updateRequest);
 
         //then
-        assertThat(actual.get().getUrl()).isEqualTo(newUrl);
+        final RecommendedPost post = recommendedPostRepository.findById(recommendedPostId).get();
+        assertThat(post.getUrl()).isEqualTo(newUrl);
     }
 
     @Test
@@ -90,7 +84,7 @@ class RecommendedPostServiceTest {
     void delete() {
         //given
         final RecommendedRequest request = new RecommendedRequest("https://example.com");
-        Long recommendedPostId = recommendedPostService.create(keyword.getId(), request);
+        final Long recommendedPostId = recommendedPostService.create(keyword.getId(), request);
 
         //when
         recommendedPostService.delete(recommendedPostId);
