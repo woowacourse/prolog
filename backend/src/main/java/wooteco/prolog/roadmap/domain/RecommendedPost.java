@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.util.Objects;
 
+import static io.micrometer.core.instrument.util.StringUtils.isBlank;
 import static java.util.Objects.hash;
 import static java.util.Objects.isNull;
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
@@ -38,11 +39,10 @@ public class RecommendedPost {
     private Keyword keyword;
 
     public RecommendedPost(final Long id, final String url, final Keyword keyword) {
-        final String trimmed = url.trim();
-        validate(trimmed, keyword);
+        validate(url, keyword);
 
         this.id = id;
-        this.url = trimmed;
+        this.url = url.trim();
         this.keyword = keyword;
     }
 
@@ -50,7 +50,7 @@ public class RecommendedPost {
         if (isNull(keyword)) {
             throw new BadRequestException(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION);
         }
-        if (url.isEmpty() || url.length() > URL_LENGTH_UPPER_BOUND) {
+        if (isBlank(url) || url.trim().length() > URL_LENGTH_UPPER_BOUND) {
             throw new BadRequestException(ROADMAP_RECOMMENDED_POST_INVALID_URL_LENGTH);
         }
     }

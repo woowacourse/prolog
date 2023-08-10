@@ -2,6 +2,8 @@ package wooteco.prolog.roadmap.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import wooteco.prolog.common.exception.BadRequestException;
 
 import java.util.stream.Collectors;
@@ -24,11 +26,20 @@ class RecommendedPostTest {
             .hasMessage(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION.getMessage());
     }
 
+    @ParameterizedTest
+    @NullAndEmptySource
+    @DisplayName("추천 포스트 생성 시 url이 null이면 예외가 발생한다")
+    void construct_fail2(final String url) {
+        assertThatThrownBy(() -> new RecommendedPost(url, null))
+            .isInstanceOf(BadRequestException.class)
+            .hasMessage(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION.getMessage());
+    }
+
     @Test
     @DisplayName("추천 포스트 생성 시 url의 길이가 공백 제외 0이면 예외가 발생한다")
-    void construct_fail2() {
+    void construct_fail3() {
         //given
-        final String url = "   ";
+        final String url = "        ";
 
         //when, then
         assertThatThrownBy(() -> new RecommendedPost(url, null))
@@ -38,7 +49,7 @@ class RecommendedPostTest {
 
     @Test
     @DisplayName("추천 포스트 생성 시 url의 길이가 공백 제외 512보다 크면 예외가 발생한다")
-    void construct_fail3() {
+    void construct_fail4() {
         //given
         final Keyword keyword = Keyword.createKeyword("name", "description", 1, 1, 1L, null);
         final String url = Stream.generate(() -> "a")
