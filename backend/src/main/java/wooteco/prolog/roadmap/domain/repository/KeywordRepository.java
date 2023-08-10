@@ -1,21 +1,21 @@
 package wooteco.prolog.roadmap.domain.repository;
 
-import java.util.List;
-import java.util.Set;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import wooteco.prolog.roadmap.domain.Keyword;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.FETCH;
 
 public interface KeywordRepository extends JpaRepository<Keyword, Long> {
 
     @EntityGraph(attributePaths = "recommendedPosts", type = FETCH)
-    Optional<Keyword> findById(final long id);
+    Optional<Keyword> findById(final Long id);
 
     @EntityGraph(attributePaths = "recommendedPosts", type = FETCH)
     List<Keyword> findAll();
