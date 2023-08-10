@@ -1,23 +1,6 @@
 package wooteco.prolog.roadmap.domain;
 
 
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_AND_KEYWORD_PARENT_SAME_EXCEPTION;
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_SEQUENCE_EXCEPTION;
-
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,18 +9,11 @@ import wooteco.prolog.common.exception.BadRequestException;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-
-import javax.persistence.*;
-import java.util.*;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_AND_KEYWORD_PARENT_SAME_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_SEQUENCE_EXCEPTION;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -62,8 +38,8 @@ public class Keyword {
     @Column(name = "session_id", nullable = false)
     private Long sessionId;
 
-    @OneToMany(mappedBy = "keyword", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<RecommendedPost> recommendedPosts = new ArrayList<>();
+    @OneToMany(mappedBy = "keyword", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<RecommendedPost> recommendedPosts = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")

@@ -36,7 +36,6 @@ class RecommendedPostServiceTest {
     @Autowired
     private DataInitializer dataInitializer;
 
-
     private Keyword keyword;
 
     @BeforeEach
