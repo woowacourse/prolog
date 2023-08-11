@@ -13,6 +13,7 @@ import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_QUIZ_NOT_FO
 import java.util.Arrays;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -25,6 +26,7 @@ import wooteco.prolog.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.roadmap.application.dto.QuizzesResponse;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.Quiz;
+import wooteco.prolog.roadmap.domain.repository.EssayAnswerRepository;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.roadmap.domain.repository.QuizRepository;
 
@@ -36,6 +38,9 @@ class QuizServiceTest {
 
     @Mock
     private QuizRepository quizRepository;
+
+    @Mock
+    private EssayAnswerRepository essayAnswerRepository;
 
     @InjectMocks
     QuizService quizService;
@@ -96,7 +101,7 @@ class QuizServiceTest {
 
         //when
         final QuizzesResponse quizzesByKeywordId = quizService.findQuizzesByKeywordId(
-            requestKeywordId);
+            requestKeywordId, null);
 
         //then
         assertAll(
@@ -172,7 +177,7 @@ class QuizServiceTest {
             .thenReturn(Optional.empty());
 
         //when,then
-        assertThatThrownBy(() -> quizService.findById(1L))
+        assertThatThrownBy(() -> quizService.findById(1L, null))
             .isInstanceOf(BadRequestException.class)
             .hasMessage(ROADMAP_QUIZ_NOT_FOUND_EXCEPTION.getMessage());
     }
@@ -187,13 +192,71 @@ class QuizServiceTest {
             .thenReturn(Optional.of(new Quiz(findQuizId, null, findQuizQuestion)));
 
         //when
-        final QuizResponse quizResponseById = quizService.findById(1L);
+        final QuizResponse quizResponseById = quizService.findById(1L, null);
 
         //then
         assertAll(
             () -> assertThat(quizResponseById.getQuizId()).isEqualTo(findQuizId),
             () -> assertThat(quizResponseById.getQuestion()).isEqualTo(findQuizQuestion)
         );
+    }
+
+    @DisplayName("quizId로 Quiz를 조회할 때 quiz의 답변 여부가 QuizResponse에 포함된다.")
+    @Nested
+    class findQuizzesByKeywordId {
+
+        @DisplayName("조회한 Quiz에 대해 답변을 게시한 적이 있으면 isLearning 값이 true이다.")
+        @Test
+        void findById_isLearning_true() {
+            //given
+            final long findQuizId = 1L;
+            final String findQuizQuestion = "question";
+            when(essayAnswerRepository.existsByQuizIdAndMemberId(anyLong(), anyLong()))
+                .thenReturn(true);
+            when(quizRepository.findById(anyLong()))
+                .thenReturn(Optional.of(new Quiz(findQuizId, null, findQuizQuestion)));
+
+            //when
+            final QuizResponse quizResponseById = quizService.findById(1L, 1L);
+
+            //then
+            assertThat(quizResponseById.getIsLearning()).isTrue();
+        }
+
+        @DisplayName("조회한 Quiz에 대해 답변을 게시한 적이 없으면 isLearning 값이 false이다.")
+        @Test
+        void findById_isLearning_false() {
+            //given
+            final long findQuizId = 1L;
+            final String findQuizQuestion = "question";
+            when(essayAnswerRepository.existsByQuizIdAndMemberId(anyLong(), anyLong()))
+                .thenReturn(false);
+            when(quizRepository.findById(anyLong()))
+                .thenReturn(Optional.of(new Quiz(findQuizId, null, findQuizQuestion)));
+
+            //when
+            final QuizResponse quizResponseById = quizService.findById(1L, 1L);
+
+            //then
+            assertThat(quizResponseById.getIsLearning()).isFalse();
+        }
+
+        @DisplayName("로그인되지 않은 사용자이면 isLearning 값이 false이다.")
+        @Test
+        void findById_isLearning_false_anonymous() {
+            //given
+            final long findQuizId = 1L;
+            final String findQuizQuestion = "question";
+            when(quizRepository.findById(anyLong()))
+                .thenReturn(Optional.of(new Quiz(findQuizId, null, findQuizQuestion)));
+
+            //when
+            final QuizResponse quizResponseById = quizService.findById(1L, null);
+
+            //then
+            assertThat(quizResponseById.getIsLearning()).isFalse();
+        }
+
     }
 
 }

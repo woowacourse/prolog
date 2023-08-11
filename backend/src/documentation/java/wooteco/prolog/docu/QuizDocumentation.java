@@ -39,7 +39,7 @@ public class QuizDocumentation extends NewDocumentation {
 
     @Test
     void Keyword별_Quiz_목록_조회() {
-        given(quizService.findQuizzesByKeywordId(any())).willReturn(QUIZZES_RESPONSE);
+        given(quizService.findQuizzesByKeywordId(any(), any())).willReturn(QUIZZES_RESPONSE);
 
         given
             .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -82,6 +82,7 @@ public class QuizDocumentation extends NewDocumentation {
     );
 
     private static final QuizzesResponse QUIZZES_RESPONSE = new QuizzesResponse(1L,
-        Arrays.asList(new QuizResponse(1L, "브라운을 위해 낸 퀴즈"), new QuizResponse(1L, "포코를 위해 낸 퀴즈")));
+        Arrays.asList(new QuizResponse(1L, "브라운을 위해 낸 퀴즈", true),
+            new QuizResponse(1L, "포코를 위해 낸 퀴즈", false)));
 
 }

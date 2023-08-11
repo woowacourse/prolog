@@ -12,7 +12,7 @@ import wooteco.prolog.roadmap.domain.EssayAnswer;
 public class EssayAnswerResponse {
 
     private Long id;
-    private QuizResponse quiz;
+    private EssayAnswerQuizResponse quiz;
     private String answer;
     private MemberResponse author;
     private LocalDateTime createdAt;
@@ -22,7 +22,7 @@ public class EssayAnswerResponse {
         EssayAnswerResponse response = new EssayAnswerResponse();
 
         response.id = essayAnswer.getId();
-        response.quiz = QuizResponse.of(essayAnswer.getQuiz());
+        response.quiz = EssayAnswerQuizResponse.of(essayAnswer.getQuiz());
         response.answer = essayAnswer.getAnswer();
         response.author = MemberResponse.of(essayAnswer.getMember());
         response.createdAt = essayAnswer.getCreatedAt();
