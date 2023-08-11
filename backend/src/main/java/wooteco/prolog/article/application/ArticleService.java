@@ -27,6 +27,9 @@ public class ArticleService {
     @Transactional
     public Long create(final ArticleRequest articleRequest, final LoginMember loginMember) {
         final Member member = memberService.findById(loginMember.getId());
+        if (member.isAnonymous()) {
+            throw new BadRequestException(BadRequestCode.UNVALIDATED_MEMBER_EXCEPTION);
+        }
         final Article article = articleRequest.toArticle(member);
         return articleRepository.save(article).getId();
     }
