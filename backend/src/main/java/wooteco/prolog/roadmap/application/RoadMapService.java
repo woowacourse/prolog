@@ -1,11 +1,14 @@
 package wooteco.prolog.roadmap.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.CURRICULUM_NOT_FOUND_EXCEPTION;
+
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.roadmap.application.dto.KeywordsResponse;
 import wooteco.prolog.roadmap.domain.Curriculum;
 import wooteco.prolog.roadmap.domain.Keyword;
@@ -26,8 +29,7 @@ public class RoadMapService {
     @Transactional(readOnly = true)
     public KeywordsResponse findAllKeywords(final Long curriculumId) {
         final Curriculum curriculum = curriculumRepository.findById(curriculumId)
-            .orElseThrow(() -> new IllegalArgumentException(
-                "해당 커리큘럼이 존재하지 않습니다. curriculumId = " + curriculumId));
+            .orElseThrow(() -> new BadRequestException(CURRICULUM_NOT_FOUND_EXCEPTION));
 
         final Set<Long> sessionIds = sessionRepository.findAllByCurriculumId(curriculum.getId())
             .stream()

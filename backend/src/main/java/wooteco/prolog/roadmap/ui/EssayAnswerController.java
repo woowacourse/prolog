@@ -4,6 +4,8 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +21,12 @@ import wooteco.prolog.roadmap.application.EssayAnswerService;
 import wooteco.prolog.roadmap.application.QuizService;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerRequest;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerResponse;
+import wooteco.prolog.roadmap.application.dto.EssayAnswerSearchRequest;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerUpdateRequest;
 import wooteco.prolog.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
+import wooteco.prolog.studylog.application.dto.EssayAnswersResponse;
+
 
 @RestController
 @RequestMapping
@@ -42,6 +47,13 @@ public class EssayAnswerController {
                                        @AuthMemberPrincipal LoginMember member) {
 
         return ResponseEntity.ok(essayAnswerService.createEssayAnswer(request, member.getId()));
+    }
+
+    @GetMapping("/essay-answers")
+    public ResponseEntity<EssayAnswersResponse> search(
+        EssayAnswerSearchRequest request,
+        @PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(essayAnswerService.searchEssayAnswers(request, pageable));
     }
 
     @GetMapping("/essay-answers/{essayAnswerId}")
