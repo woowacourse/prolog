@@ -47,7 +47,7 @@ class KeywordRepositoryTest {
         em.clear();
 
         // when
-        Keyword extract = keywordRepository.findFetchById(keywordParentId);
+        Keyword extract = keywordRepository.findFetchByIdOrderBySeq(keywordParentId);
 
         // then
         assertAll(
@@ -79,7 +79,7 @@ class KeywordRepositoryTest {
         em.clear();
 
         // when
-        Keyword extract = keywordRepository.findFetchById(keywordParentId);
+        Keyword extract = keywordRepository.findFetchByIdOrderBySeq(keywordParentId);
 
         // then
         assertAll(

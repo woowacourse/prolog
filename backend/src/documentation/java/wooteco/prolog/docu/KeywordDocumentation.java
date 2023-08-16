@@ -1,12 +1,5 @@
 package wooteco.prolog.docu;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-
-import java.util.Arrays;
-import java.util.HashSet;
 import org.elasticsearch.common.collect.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,6 +13,14 @@ import wooteco.prolog.roadmap.application.dto.KeywordResponse;
 import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordsResponse;
 import wooteco.prolog.roadmap.ui.KeywordController;
+
+import java.util.Arrays;
+import java.util.HashSet;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 @WebMvcTest(controllers = KeywordController.class)
 public class KeywordDocumentation extends NewDocumentation {
@@ -108,6 +109,7 @@ public class KeywordDocumentation extends NewDocumentation {
         1,
         1,
         null,
+        null,
         null
     );
 
@@ -133,6 +135,7 @@ public class KeywordDocumentation extends NewDocumentation {
         1,
         1,
         null,
+        null,
         new HashSet<>(
             Arrays.asList(
                 new KeywordResponse(
@@ -142,6 +145,7 @@ public class KeywordDocumentation extends NewDocumentation {
                     1,
                     1,
                     1L,
+                    null,
                     null
                 ),
                 new KeywordResponse(
@@ -151,6 +155,7 @@ public class KeywordDocumentation extends NewDocumentation {
                     2,
                     1,
                     1L,
+                    null,
                     null
                 ))
         )

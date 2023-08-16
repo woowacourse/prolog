@@ -2,6 +2,7 @@ package wooteco.prolog.common.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import wooteco.prolog.roadmap.domain.RecommendedPost;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.domain.TagName;
@@ -69,6 +70,10 @@ public enum BadRequestCode {
     ESSAY_ANSWER_NOT_FOUND_EXCEPTION(8012, "해당 답변을 찾을 수 없습니다."),
     NOT_EMPTY_ESSAY_ANSWER_EXCEPTION(8013, "답변은 공백일 수 없습니다."),
     ESSAY_ANSWER_NOT_VALID_USER(8014, "본인이 작성한 답변만 수정할 수 있습니다."),
+
+    ROADMAP_RECOMMENDED_POST_NOT_FOUND(8101, "해당 추천 포스트가 존재하지 않습니다."),
+    ROADMAP_RECOMMENDED_POST_INVALID_URL_LENGTH(8102, String.format(
+        "해당 추천 포스트의 URL 길이는 1 ~ %d여야 합니다.", RecommendedPost.URL_LENGTH_UPPER_BOUND)),
 
     FILE_NAME_EMPTY_EXCEPTION(9001, "파일 이름이 존재하지 않습니다."),
     UNSUPPORTED_FILE_EXTENSION_EXCEPTION(9002, "지원하지 않는 파일 확장자입니다."),
