@@ -12,6 +12,7 @@ import wooteco.prolog.roadmap.domain.repository.EssayAnswerRepository;
 import wooteco.support.utils.RepositoryTest;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -46,7 +47,7 @@ class EssayAnswerRepositoryTest {
         essayAnswerRepository.saveAll(answers);
 
         //when
-        final List<EssayAnswer> essayAnswers = essayAnswerRepository.findAllByMemberId(11L);
+        final Set<EssayAnswer> essayAnswers = essayAnswerRepository.findAllByMemberId(11L);
 
         //then
         assertThat(essayAnswers).hasSize(expectedCount);

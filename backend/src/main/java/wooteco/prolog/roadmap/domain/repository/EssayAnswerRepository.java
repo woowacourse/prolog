@@ -8,6 +8,7 @@ import wooteco.prolog.roadmap.domain.EssayAnswer;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface EssayAnswerRepository extends JpaRepository<EssayAnswer, Long>,
     JpaSpecificationExecutor<EssayAnswer> {
@@ -20,7 +21,8 @@ public interface EssayAnswerRepository extends JpaRepository<EssayAnswer, Long>,
     List<EssayAnswer> findByQuizIdOrderByIdDesc(Long quizId);
 
     @Query("SELECT e FROM EssayAnswer e " +
-        "LEFT JOIN FETCH e.quiz " +
+        "LEFT JOIN FETCH e.quiz q " +
+        "LEFT JOIN FETCH q.keyword " +
         "WHERE e.member.id = :memberId")
-    List<EssayAnswer> findAllByMemberId(@Param("memberId") Long memberId);
+    Set<EssayAnswer> findAllByMemberId(@Param("memberId") Long memberId);
 }
