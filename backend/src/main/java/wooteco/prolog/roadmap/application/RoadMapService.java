@@ -36,21 +36,6 @@ public class RoadMapService {
     private final EssayAnswerRepository essayAnswerRepository;
 
     @Transactional(readOnly = true)
-    public KeywordsResponse findAllKeywords(final Long curriculumId) {
-        final Curriculum curriculum = curriculumRepository.findById(curriculumId)
-            .orElseThrow(() -> new BadRequestException(CURRICULUM_NOT_FOUND_EXCEPTION));
-
-        final Set<Long> sessionIds = sessionRepository.findAllByCurriculumId(curriculum.getId())
-            .stream()
-            .map(Session::getId)
-            .collect(Collectors.toSet());
-
-        final List<Keyword> keywords = keywordRepository.findBySessionIdIn(sessionIds);
-
-        return KeywordsResponse.createResponseWithChildren(keywords);
-    }
-
-    @Transactional(readOnly = true)
     public KeywordsResponse findAllKeywordsWithProgress(final Long curriculumId, final Long memberId) {
         final Curriculum curriculum = curriculumRepository.findById(curriculumId)
             .orElseThrow(() -> new BadRequestException(CURRICULUM_NOT_FOUND_EXCEPTION));
@@ -73,8 +58,8 @@ public class RoadMapService {
     }
 
     private KeywordsResponse createWithProgress(final List<Keyword> keywords,
-                                               final Map<Keyword, Set<Quiz>> quizzesPerKeyword,
-                                               final Set<Quiz> doneQuizzes) {
+                                                final Map<Keyword, Set<Quiz>> quizzesPerKeyword,
+                                                final Set<Quiz> doneQuizzes) {
         final List<KeywordResponse> keywordResponses = keywords.stream()
             .filter(Keyword::isRoot)
             .map(keyword -> createWithProgress(keyword, quizzesPerKeyword, doneQuizzes))
