@@ -24,7 +24,7 @@ public class EssayAnswerResponse {
         EssayAnswerResponse response = new EssayAnswerResponse();
 
         response.id = essayAnswer.getId();
-        response.quiz = EssayAnswerQuizResponse.of(essayAnswer.getQuiz());
+        response.quiz = EssayAnswerQuizResponse.from(essayAnswer.getQuiz());
         response.answer = essayAnswer.getAnswer();
         response.author = MemberResponse.of(essayAnswer.getMember());
         response.createdAt = essayAnswer.getCreatedAt();

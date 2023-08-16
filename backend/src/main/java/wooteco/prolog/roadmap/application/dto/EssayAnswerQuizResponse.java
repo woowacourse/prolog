@@ -17,7 +17,7 @@ public class EssayAnswerQuizResponse {
         this.question = question;
     }
 
-    public static EssayAnswerQuizResponse of(Quiz quiz) {
+    public static EssayAnswerQuizResponse from(Quiz quiz) {
         return new EssayAnswerQuizResponse(quiz.getId(), quiz.getQuestion());
     }
 }
