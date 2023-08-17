@@ -10,7 +10,7 @@ import wooteco.prolog.roadmap.domain.EssayAnswer;
 public interface EssayAnswerRepository extends JpaRepository<EssayAnswer, Long>,
     JpaSpecificationExecutor<EssayAnswer> {
 
-    @Query("select ea from EssayAnswer ea where ea.quiz.id = :quizId and ea.member.id = :memberId ")
+    @Query("select ea from EssayAnswer ea where ea.quiz.id = :quizId and ea.member.id = :memberId")
     boolean existsByQuizIdAndMemberId(Long quizId, Long memberId);
 
     Optional<EssayAnswer> findByIdAndMemberId(Long id, Long memberId);
