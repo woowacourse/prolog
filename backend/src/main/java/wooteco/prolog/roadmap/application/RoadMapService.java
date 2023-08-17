@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.roadmap.application.dto.KeywordResponse;
 import wooteco.prolog.roadmap.application.dto.KeywordsResponse;
+import wooteco.prolog.roadmap.application.dto.RecommendedPostResponse;
 import wooteco.prolog.roadmap.domain.Curriculum;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
 import wooteco.prolog.roadmap.domain.Keyword;
@@ -20,8 +21,10 @@ import wooteco.prolog.session.domain.repository.SessionRepository;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import static wooteco.prolog.common.exception.BadRequestCode.CURRICULUM_NOT_FOUND_EXCEPTION;
 
 @RequiredArgsConstructor
@@ -40,41 +43,49 @@ public class RoadMapService {
         final Curriculum curriculum = curriculumRepository.findById(curriculumId)
             .orElseThrow(() -> new BadRequestException(CURRICULUM_NOT_FOUND_EXCEPTION));
 
+        final List<Keyword> keywordsInCurriculum = getKeywordsInCurriculum(curriculum);
+
+        final Map<Keyword, Set<Quiz>> quizzesInKeywords = quizRepository.findAll().stream()
+            .collect(groupingBy(Quiz::getKeyword, toSet()));
+
+        return createResponsesWithProgress(keywordsInCurriculum, quizzesInKeywords, getDoneQuizzes(memberId));
+    }
+
+    private Set<Quiz> getDoneQuizzes(final Long memberId) {
+        return essayAnswerRepository.findAllByMemberId(memberId).stream()
+            .map(EssayAnswer::getQuiz)
+            .collect(toSet());
+    }
+
+    private List<Keyword> getKeywordsInCurriculum(final Curriculum curriculum) {
         final Set<Long> sessionIds = sessionRepository.findAllByCurriculumId(curriculum.getId())
             .stream()
             .map(Session::getId)
-            .collect(Collectors.toSet());
+            .collect(toSet());
 
-        final List<Keyword> keywords = keywordRepository.findBySessionIdIn(sessionIds);
-
-        final Set<Quiz> doneQuizzes = essayAnswerRepository.findAllByMemberId(memberId).stream()
-            .map(EssayAnswer::getQuiz)
-            .collect(Collectors.toSet());
-
-        final Map<Keyword, Set<Quiz>> quizzesPerKeyword = quizRepository.findAll().stream()
-            .collect(Collectors.groupingBy(Quiz::getKeyword, Collectors.toSet()));
-
-        return createWithProgress(keywords, quizzesPerKeyword, doneQuizzes);
+        return keywordRepository.findBySessionIdIn(sessionIds);
     }
 
-    private KeywordsResponse createWithProgress(final List<Keyword> keywords,
-                                                final Map<Keyword, Set<Quiz>> quizzesPerKeyword,
-                                                final Set<Quiz> doneQuizzes) {
+    private KeywordsResponse createResponsesWithProgress(final List<Keyword> keywords,
+                                                         final Map<Keyword, Set<Quiz>> quizzesPerKeyword,
+                                                         final Set<Quiz> doneQuizzes) {
         final List<KeywordResponse> keywordResponses = keywords.stream()
             .filter(Keyword::isRoot)
-            .map(keyword -> createWithProgress(keyword, quizzesPerKeyword, doneQuizzes))
-            .collect(Collectors.toList());
+            .map(keyword -> createResponseWithProgress(keyword, quizzesPerKeyword, doneQuizzes))
+            .collect(toList());
 
         return new KeywordsResponse(keywordResponses);
     }
 
-    private KeywordResponse createWithProgress(final Keyword keyword,
-                                               final Map<Keyword, Set<Quiz>> quizzesPerKeyword,
-                                               final Set<Quiz> doneQuizzes) {
+    private KeywordResponse createResponseWithProgress(final Keyword keyword,
+                                                       final Map<Keyword, Set<Quiz>> quizzesPerKeyword,
+                                                       final Set<Quiz> doneQuizzes) {
         final int totalQuizCount = quizzesPerKeyword.get(keyword).size();
-        final Set<Quiz> quizzes = quizzesPerKeyword.get(keyword);
-        quizzes.retainAll(doneQuizzes);
-        final int doneQuizCount = quizzes.size();
+        final int doneQuizCount = getDoneQuizCount(quizzesPerKeyword.get(keyword), doneQuizzes);
+
+        final List<RecommendedPostResponse> recommendedPostResponses = keyword.getRecommendedPosts().stream()
+            .map(RecommendedPostResponse::from)
+            .collect(toList());
 
         return new KeywordResponse(
             keyword.getId(),
@@ -85,15 +96,21 @@ public class RoadMapService {
             totalQuizCount,
             doneQuizCount,
             keyword.getParentIdOrNull(),
+            recommendedPostResponses,
             createChildrenWithProgress(keyword.getChildren(), quizzesPerKeyword, doneQuizzes)
         );
+    }
+
+    private int getDoneQuizCount(final Set<Quiz> quizzes, final Set<Quiz> doneQuizzes) {
+        quizzes.retainAll(doneQuizzes);
+        return quizzes.size();
     }
 
     private Set<KeywordResponse> createChildrenWithProgress(final Set<Keyword> children,
                                                             final Map<Keyword, Set<Quiz>> quizzesPerKeyword,
                                                             final Set<Quiz> userAnswers) {
         return children.stream()
-            .map(child -> createWithProgress(child, quizzesPerKeyword, userAnswers))
-            .collect(Collectors.toSet());
+            .map(child -> createResponseWithProgress(child, quizzesPerKeyword, userAnswers))
+            .collect(toSet());
     }
 }

@@ -22,7 +22,6 @@ public interface EssayAnswerRepository extends JpaRepository<EssayAnswer, Long>,
 
     @Query("SELECT e FROM EssayAnswer e " +
         "LEFT JOIN FETCH e.quiz q " +
-        "LEFT JOIN FETCH q.keyword " +
         "WHERE e.member.id = :memberId")
     Set<EssayAnswer> findAllByMemberId(@Param("memberId") Long memberId);
 }
