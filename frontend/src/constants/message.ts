@@ -48,6 +48,7 @@ const SUCCESS_MESSAGE = {
   EDIT_POST: '글이 수정되었습니다.',
   TEMP_SAVE_POST: '글이 임시저장되었습니다.',
   DELETE_STUDYLOG: '글이 삭제되었습니다.',
+  CREATE_ARTICLE: '아티클이 성공적으로 추가되었습니다!',
 };
 
 const PLACEHOLDER = {
