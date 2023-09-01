@@ -18,7 +18,7 @@ const SelectBox = ({
   const $label = useRef(null);
   const $selectorContainer = useRef(null);
 
-  const [isSelectBoxOpened, setIsSelectBoxOpened] = useCustomSelectBox({ targetRef: $label });
+  const { isSelectBoxOpened, setIsSelectBoxOpened } = useCustomSelectBox({ targetRef: $label });
 
   useScrollToSelected({
     container: $selectorContainer,
@@ -33,7 +33,7 @@ const SelectBox = ({
     }
   }, [options]);
 
-  const onSelectItem = (event, option) => {
+  const onSelectItem = (event, option = null) => {
     event.stopPropagation();
 
     option ? setSelectedOption(option) : setSelectedOption(event.target.value);
