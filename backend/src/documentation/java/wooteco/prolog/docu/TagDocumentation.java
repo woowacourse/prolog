@@ -24,14 +24,14 @@ public class TagDocumentation extends NewDocumentation {
     void 태그_목록을_조회한다() {
         //given
         given(studylogTagService.findTagsIncludedInStudylogs())
-                .willReturn(TAG_RESPONSES);
+            .willReturn(TAG_RESPONSES);
 
         //when
         ValidatableMockMvcResponse response = given
-                .header("Authorization", "Bearer " + accessToken)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/tags")
-                .then().log().all();
+            .header("Authorization", "Bearer " + accessToken)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .when().get("/tags")
+            .then().log().all();
 
         //then
         response.expect(status().isOk());

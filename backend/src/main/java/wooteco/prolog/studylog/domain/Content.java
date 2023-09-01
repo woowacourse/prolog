@@ -1,6 +1,8 @@
 package wooteco.prolog.studylog.domain;
 
 
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_CONTENT_NULL_OR_EMPTY;
+
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -9,7 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import wooteco.prolog.studylog.exception.StudylogContentNullOrEmptyException;
+import wooteco.prolog.common.exception.BadRequestException;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,7 +37,7 @@ public class Content {
 
     private void validateNullOrEmpty(String content, int trimedContentLength) {
         if (Objects.isNull(content) || trimedContentLength == 0) {
-            throw new StudylogContentNullOrEmptyException();
+            throw new BadRequestException(STUDYLOG_CONTENT_NULL_OR_EMPTY);
         }
     }
 }

@@ -1,5 +1,7 @@
 package wooteco.prolog.levellogs.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.INVALID_LEVEL_LOG_AUTHOR_EXCEPTION;
+
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +14,7 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.AuditingEntity;
-import wooteco.prolog.levellogs.exception.InvalidLevelLogAuthorException;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
 
 @Entity
@@ -63,7 +65,7 @@ public class LevelLog extends AuditingEntity {
 
     public void validateBelongTo(Long memberId) {
         if (!isBelongsTo(memberId)) {
-            throw new InvalidLevelLogAuthorException();
+            throw new BadRequestException(INVALID_LEVEL_LOG_AUTHOR_EXCEPTION);
         }
     }
 

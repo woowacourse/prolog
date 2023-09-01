@@ -23,6 +23,6 @@ public class MemberResponse {
 
     public static MemberResponse of(Member member) {
         return new MemberResponse(member.getId(), member.getUsername(), member.getNickname(),
-                                  member.getRole(), member.getImageUrl());
+            member.getRole(), member.getImageUrl());
     }
 }

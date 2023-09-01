@@ -16,11 +16,11 @@ public class DeleteMappingDataExtractor implements AnnotationDataExtractor {
     public RequestApi extractRequestApi(Method method, String classUrl) {
         final DeleteMapping deleteMapping = method.getAnnotation(DeleteMapping.class);
         final String api = Arrays.stream(deleteMapping.value())
-                .findAny()
-                .orElseGet(() ->
-                        Arrays.stream(deleteMapping.path()).findAny()
-                                .orElse("")
-                );
+            .findAny()
+            .orElseGet(() ->
+                Arrays.stream(deleteMapping.path()).findAny()
+                    .orElse("")
+            );
         return new RequestApi(classUrl + api, "DELETE");
     }
 }

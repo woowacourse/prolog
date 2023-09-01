@@ -1,14 +1,15 @@
 import { AxiosPromise, AxiosResponse } from 'axios';
-import { Nullable } from '../types/utils';
+import { client } from '.';
 import {
   Mission,
-  TempSavedStudyLog,
   Session,
   Studylog,
   StudylogForm,
   Tag,
+  TempSavedStudyLog,
   TempSavedStudyLogForm,
 } from '../models/Studylogs';
+import { Nullable } from '../types/utils';
 import { createAxiosInstance } from '../utils/axiosInstance';
 
 const instanceWithoutToken = createAxiosInstance();
@@ -110,10 +111,10 @@ export const requestEditStudylog = ({
 
 /** 임시 저장 **/
 export const requestGetTempSavedStudylog = async () => {
-  const { data } = await instanceWithoutToken.get<Nullable<TempSavedStudyLog>>('/studylogs/temp');
+  const { data } = await client.get<Nullable<TempSavedStudyLog>>('/studylogs/temp');
 
   return data;
 };
 
 export const requestPostTempSavedStudylog = (data: TempSavedStudyLogForm) =>
-  instanceWithoutToken.put('/studylogs/temp', data);
+  client.put('/studylogs/temp', data);

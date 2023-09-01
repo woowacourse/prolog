@@ -32,17 +32,18 @@ public class StudylogsResponse {
         return of(page, null);
     }
 
-    public static StudylogsResponse of(Page<Studylog> page, Long memberId, Map<Long, Long> commentCounts) {
+    public static StudylogsResponse of(Page<Studylog> page, Long memberId,
+                                       Map<Long, Long> commentCounts) {
         Page<StudylogResponse> responsePage = new PageImpl<>(
-                toResponses(page.getContent(), memberId, commentCounts),
-                page.getPageable(),
-                page.getTotalElements()
+            toResponses(page.getContent(), memberId, commentCounts),
+            page.getPageable(),
+            page.getTotalElements()
         );
 
         return new StudylogsResponse(responsePage.getContent(),
-                responsePage.getTotalElements(),
-                responsePage.getTotalPages(),
-                responsePage.getNumber() + ONE_INDEXED_PARAMETER);
+            responsePage.getTotalElements(),
+            responsePage.getTotalPages(),
+            responsePage.getNumber() + ONE_INDEXED_PARAMETER);
     }
 
     public static StudylogsResponse of(Page<Studylog> page, Long memberId) {
@@ -66,39 +67,47 @@ public class StudylogsResponse {
         Long memberId,
         Map<Long, Long> commentCounts
     ) {
-        final List<StudylogResponse> studylogResponses = convertToStudylogResponse(studylogs, memberId, commentCounts);
+        final List<StudylogResponse> studylogResponses = convertToStudylogResponse(studylogs,
+            memberId, commentCounts);
         return new StudylogsResponse(studylogResponses,
             totalSize,
             totalPage,
             currPage + ONE_INDEXED_PARAMETER);
     }
 
-    private static List<StudylogResponse> convertToStudylogResponse(List<Studylog> studylogs, Long memberId, Map<Long, Long> commentCounts) {
+    private static List<StudylogResponse> convertToStudylogResponse(List<Studylog> studylogs,
+                                                                    Long memberId,
+                                                                    Map<Long, Long> commentCounts) {
         return studylogs.stream()
-            .map(studylog -> StudylogResponse.of(studylog, memberId, commentCounts.get(studylog.getId())))
+            .map(studylog -> StudylogResponse.of(studylog, memberId,
+                commentCounts.get(studylog.getId())))
             .collect(toList());
     }
 
-    private static List<StudylogResponse> toResponses(List<Studylog> studylogs, Long memberId, Map<Long, Long> commentCounts) {
-        return studylogs.stream().map(studylog -> toResponse(studylog, memberId, commentCounts.get(studylog.getId()))).collect(toList());
+    private static List<StudylogResponse> toResponses(List<Studylog> studylogs, Long memberId,
+                                                      Map<Long, Long> commentCounts) {
+        return studylogs.stream()
+            .map(studylog -> toResponse(studylog, memberId, commentCounts.get(studylog.getId())))
+            .collect(toList());
     }
 
     private static List<StudylogResponse> toResponses(List<Studylog> studylogs, Long memberId) {
         return studylogs.stream().map(studylog -> toResponse(studylog, memberId)).collect(toList());
     }
 
-    private static StudylogResponse toResponse(Studylog studylog, Long memberId, long commentCount) {
+    private static StudylogResponse toResponse(Studylog studylog, Long memberId,
+                                               long commentCount) {
         List<StudylogTag> studylogTags = studylog.getStudylogTags();
         final List<Tag> tags = studylogTags.stream()
-                .map(StudylogTag::getTag)
-                .collect(toList());
+            .map(StudylogTag::getTag)
+            .collect(toList());
 
         return new StudylogResponse(
-                studylog,
-                SessionResponse.of(studylog.getSession()),
-                MissionResponse.of(studylog.getMission()),
-                toResponse(tags),
-                studylog.likedByMember(memberId), commentCount
+            studylog,
+            SessionResponse.of(studylog.getSession()),
+            MissionResponse.of(studylog.getMission()),
+            toResponse(tags),
+            studylog.likedByMember(memberId), commentCount
         );
     }
 
@@ -119,7 +128,7 @@ public class StudylogsResponse {
 
     private static List<TagResponse> toResponse(List<Tag> tags) {
         return tags.stream()
-                .map(TagResponse::of)
-                .collect(Collectors.toList());
+            .map(TagResponse::of)
+            .collect(Collectors.toList());
     }
 }

@@ -31,7 +31,8 @@ public class SessionMemberController {
 //    }
 
     @PostMapping("/me")
-    public ResponseEntity<Void> registerMe(@PathVariable Long sessionId, @AuthMemberPrincipal LoginMember member){
+    public ResponseEntity<Void> registerMe(@PathVariable Long sessionId,
+                                           @AuthMemberPrincipal LoginMember member) {
         sessionMemberService.registerMember(sessionId, member.getId());
         return ResponseEntity.ok().build();
     }
@@ -40,14 +41,15 @@ public class SessionMemberController {
     public ResponseEntity<Void> deleteRegisteredSession(
         @PathVariable Long sessionId,
         @AuthMemberPrincipal LoginMember member
-    ){
+    ) {
         sessionMemberService.deleteRegistedSession(sessionId, member.getId());
         return ResponseEntity.ok().build();
     }
 
     // admin only
     @PostMapping
-    public ResponseEntity<Void> registerByGroupId(@PathVariable Long sessionId, @RequestBody SessionGroupMemberRequest sessionGroupMemberRequest) {
+    public ResponseEntity<Void> registerByGroupId(@PathVariable Long sessionId,
+                                                  @RequestBody SessionGroupMemberRequest sessionGroupMemberRequest) {
         sessionMemberService.registerMembersByGroupId(sessionId, sessionGroupMemberRequest);
         return ResponseEntity.ok().build();
     }
