@@ -1,8 +1,17 @@
 import Button from '../Button/Button';
 import SearchIcon from '../../assets/images/search_icon.svg';
 import { Container } from './SearchBar.styles';
+import { css } from '@emotion/react';
+import { ChangeEventHandler, FormEventHandler } from 'react';
 
-const SearchBar = ({ css, onSubmit, onChange, value }) => {
+interface SearchBarProps {
+  onSubmit?: FormEventHandler;
+  onChange: ChangeEventHandler<HTMLInputElement>;
+  css: ReturnType<typeof css>;
+  value: string;
+}
+
+const SearchBar = ({ css, onSubmit, onChange, value }: SearchBarProps) => {
   return (
     <form onSubmit={onSubmit}>
       <Container css={css}>
