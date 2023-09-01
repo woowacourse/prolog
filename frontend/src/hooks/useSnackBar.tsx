@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { default as SnackBarComponent } from '../components/@shared/SnackBar/SnackBar';
 import { CLOSE_SNACKBAR, OPEN_SNACKBAR } from '../redux/actions/snackBarAction';
+import type { SnackBar } from '../redux/reducers/snackBarReducer';
 
 const useSnackBar = () => {
   const dispatch = useDispatch();
-  const { isSnackBarOpen, message } = useSelector((state) => state.snackBar);
+  const { isSnackBarOpen, message } = useSelector((state: SnackBar) => state);
 
   const SnackbarPortal = ({ children }) =>
     ReactDOM.createPortal(children, document.getElementById('snackbar'));

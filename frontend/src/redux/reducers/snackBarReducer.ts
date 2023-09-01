@@ -1,6 +1,10 @@
 import { CLOSE_SNACKBAR, OPEN_SNACKBAR } from '../actions/snackBarAction';
+export interface SnackBar {
+  isSnackBarOpen: boolean;
+  message: string;
+}
 
-const initialState = {
+const initialState: SnackBar = {
   isSnackBarOpen: false,
   message: '',
 };
