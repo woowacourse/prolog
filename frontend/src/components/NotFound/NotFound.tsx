@@ -1,4 +1,3 @@
-import React from 'react';
 import Lottie from 'react-lottie';
 import { NotFoundAnimation } from '../../assets/lotties';
 import { Container } from './NotFound.styles';

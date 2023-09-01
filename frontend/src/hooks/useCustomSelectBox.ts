@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 
-const useCustomSelectBox = ({ targetRef }) => {
-  const [isSelectBoxOpened, setIsSelectBoxOpened] = useState(false);
+interface Params {
+  targetRef: React.MutableRefObject<any>;
+}
+
+const useCustomSelectBox = ({ targetRef }: Params) => {
+  const [isSelectBoxOpened, setIsSelectBoxOpened] = useState<boolean>(false);
 
   useEffect(() => {
     const onCloseOptionList = (event) => {
@@ -21,7 +25,7 @@ const useCustomSelectBox = ({ targetRef }) => {
     };
   }, [isSelectBoxOpened, targetRef]);
 
-  return [isSelectBoxOpened, setIsSelectBoxOpened];
+  return { isSelectBoxOpened, setIsSelectBoxOpened };
 };
 
 export default useCustomSelectBox;
