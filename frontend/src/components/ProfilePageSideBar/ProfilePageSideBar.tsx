@@ -22,9 +22,13 @@ import {
   NicknameInput,
 } from './ProfilePageSideBar.styles';
 
-const ProfilePageSideBar = ({ menu }) => {
+interface ProfilePageSideBarProps {
+  menu: string;
+}
+
+const ProfilePageSideBar = ({ menu }: ProfilePageSideBarProps) => {
   const history = useHistory();
-  const { username } = useParams();
+  const { username } = useParams<{ username: string }>();
 
   const { user: loginUser } = useContext(UserContext);
   const { accessToken, username: loginUsername } = loginUser;
@@ -105,7 +109,7 @@ const ProfilePageSideBar = ({ menu }) => {
       {isLoading ? <></> : <BadgeList badgeList={badgeList} />}
       <MenuList>
         {getMenuList({ username, isOwner }).map((menuItem) => (
-          <MenuItem key={menuItem.key} isSelectedMenu={selectedMenu === menuItem.key}>
+          <MenuItem key={menuItem.key} isSelectedMenu={selectedMenu === menuItem?.key}>
             <MenuButton
               type="button"
               onClick={onSelectMenu({ key: menuItem.key, path: menuItem.path })}

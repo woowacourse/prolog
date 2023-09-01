@@ -12,7 +12,7 @@ const fontSizeStyle = {
   },
 };
 
-const Label = styled.label`
+const Label = styled.label<{ width: string }>`
   position: relative;
   display: inline-block;
   width: ${({ width }) => width ?? `${width}`};
@@ -31,7 +31,7 @@ const Label = styled.label`
   }
 `;
 
-const Select = styled.select`
+const Select = styled.select<{ fontSize: string }>`
   padding: 1rem 2rem;
   width: 100%;
 
@@ -47,7 +47,7 @@ const Select = styled.select`
   appearance: none;
 `;
 
-const SelectItemList = styled.ul`
+const SelectItemList = styled.ul<{ maxHeight: string }>`
   position: absolute;
   top: 0;
   width: 100%;
@@ -79,7 +79,7 @@ const SelectItemList = styled.ul`
   }
 `;
 
-const SelectItem = styled.li`
+const SelectItem = styled.li<{ fontSize: string; isSelected: boolean }>`
   display: flex;
   align-items: center;
   padding: 1rem 2rem;

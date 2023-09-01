@@ -79,7 +79,7 @@ const MenuList = styled.ul`
   }
 `;
 
-const MenuItem = styled.li`
+const MenuItem = styled.li<{ isSelectedMenu: boolean }>`
   height: 4rem;
   display: flex;
   align-items: center;
