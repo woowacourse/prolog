@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
 
-const Container = styled.div`
+const Container = styled.div<{ isSelected: boolean }>`
   border: 0.1rem solid ${COLOR.LIGHT_GRAY_200};
   width: fit-content;
   padding: 0.6rem 0.8rem;
@@ -21,7 +21,7 @@ const Container = styled.div`
     `}
 `;
 
-const PostCount = styled.span`
+const PostCount = styled.span<{ isSelected: boolean }>`
   color: ${COLOR.LIGHT_GRAY_500};
   margin-left: 0.4rem;
 
