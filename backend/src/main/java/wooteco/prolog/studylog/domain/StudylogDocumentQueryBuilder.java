@@ -64,8 +64,8 @@ public class StudylogDocumentQueryBuilder {
         query.withQuery(QueryBuilders.boolQuery()
             .must(multiField(keyword))
             .must(defaultField(username, "username"))
-            .must(defaultField(levels, "levelId"))
-            .must(defaultField(missions, "missionId"))
+//            .must(defaultField(levels, "levelId"))
+//            .must(defaultField(missions, "missionId"))
             .filter(rangeQuery(start, end))
         );
     }

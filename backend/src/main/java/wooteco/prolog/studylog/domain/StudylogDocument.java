@@ -41,6 +41,6 @@ public class StudylogDocument {
     @Field(type = FieldType.Text)
     private String username;
 
-    @Field(type = FieldType.Date, format = DateFormat.basic_date)
+    @Field(type = FieldType.Text)
     private LocalDateTime dateTime;
 }
