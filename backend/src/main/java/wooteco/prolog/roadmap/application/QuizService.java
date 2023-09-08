@@ -1,5 +1,6 @@
 package wooteco.prolog.roadmap.application;
 
+import static java.util.Objects.isNull;
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_ORDER_EXCEPTION;
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_QUIZ_NOT_FOUND_EXCEPTION;
 
@@ -44,11 +45,10 @@ public class QuizService {
     }
 
     private boolean isLearning(Long memberId, Long quizId) {
-        if (memberId == null) {
+        if (isNull(memberId)) {
             return false;
         }
-        return essayAnswerRepository.existsByQuizIdAndMemberId(quizId,
-            memberId);
+        return essayAnswerRepository.existsByQuizIdAndMemberId(quizId, memberId);
     }
 
     @Transactional
