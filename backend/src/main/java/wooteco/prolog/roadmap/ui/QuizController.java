@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import wooteco.prolog.login.domain.AuthMemberPrincipal;
+import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.roadmap.application.QuizService;
 import wooteco.prolog.roadmap.application.dto.QuizRequest;
 import wooteco.prolog.roadmap.application.dto.QuizResponse;
@@ -35,14 +37,16 @@ public class QuizController {
     }
 
     @GetMapping("/{quizId}")
-    public ResponseEntity<QuizResponse> findQuizById(@PathVariable Long quizId) {
-        return ResponseEntity.ok(quizService.findById(quizId));
+    public ResponseEntity<QuizResponse> findQuizById(@PathVariable Long quizId,
+                                                     @AuthMemberPrincipal LoginMember member) {
+        return ResponseEntity.ok(quizService.findById(quizId, member.getId()));
     }
 
     @GetMapping
     public ResponseEntity<QuizzesResponse> findQuizzesByKeyword(@PathVariable Long sessionId,
-                                                                @PathVariable Long keywordId) {
-        return ResponseEntity.ok(quizService.findQuizzesByKeywordId(keywordId));
+                                                                @PathVariable Long keywordId,
+                                                                @AuthMemberPrincipal LoginMember member) {
+        return ResponseEntity.ok(quizService.findQuizzesByKeywordId(keywordId, member.getId()));
     }
 
     @PutMapping("/{quizId}")

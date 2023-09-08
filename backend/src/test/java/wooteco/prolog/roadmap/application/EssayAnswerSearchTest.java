@@ -17,10 +17,10 @@ import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
+import wooteco.prolog.roadmap.application.dto.EssayAnswerQuizResponse;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerRequest;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerResponse;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerSearchRequest;
-import wooteco.prolog.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.roadmap.domain.Curriculum;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.Quiz;
@@ -98,7 +98,7 @@ public class EssayAnswerSearchTest {
             new Member("username3", "nickname3", Role.CREW, 113L, "https://"));
         member4 = memberRepository.save(
             new Member("username4", "nickname4", Role.CREW, 115L, "https://"));
-        
+
         final EssayAnswerRequest essayAnswer1 = new EssayAnswerRequest(quiz1.getId(), "대답1");
         final EssayAnswerRequest essayAnswer2 = new EssayAnswerRequest(quiz2.getId(), "대답2");
         final EssayAnswerRequest essayAnswer3 = new EssayAnswerRequest(quiz2.getId(), "대답3");
@@ -330,7 +330,7 @@ public class EssayAnswerSearchTest {
     private EssayAnswerResponse 예상_답변_응답(final Long essayAnswerId, final Quiz quiz,
                                          final String answer, final Member member) {
         return new EssayAnswerResponse(essayAnswerId,
-            new QuizResponse(quiz.getId(), quiz.getQuestion()),
+            new EssayAnswerQuizResponse(quiz.getId(), quiz.getQuestion()),
             answer, new MemberResponse(member.getId(), member.getUsername(), member.getNickname(),
             Role.CREW, "https://"), LocalDateTime.now(), LocalDateTime.now());
     }

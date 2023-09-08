@@ -1,6 +1,5 @@
 package wooteco.prolog.roadmap.application.dto;
 
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,19 +7,17 @@ import wooteco.prolog.roadmap.domain.Quiz;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class QuizResponse {
+public class EssayAnswerQuizResponse {
 
     private Long quizId;
     private String question;
-    private Boolean isLearning;
 
-    public QuizResponse(Long quizId, String question, boolean isLearning) {
+    public EssayAnswerQuizResponse(Long quizId, String question) {
         this.quizId = quizId;
         this.question = question;
-        this.isLearning = isLearning;
     }
 
-    public static QuizResponse of(Quiz quiz, boolean isLearning) {
-        return new QuizResponse(quiz.getId(), quiz.getQuestion(), isLearning);
+    public static EssayAnswerQuizResponse from(Quiz quiz) {
+        return new EssayAnswerQuizResponse(quiz.getId(), quiz.getQuestion());
     }
 }

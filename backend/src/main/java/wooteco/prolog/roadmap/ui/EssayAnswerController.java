@@ -27,6 +27,7 @@ import wooteco.prolog.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
 import wooteco.prolog.studylog.application.dto.EssayAnswersResponse;
 
+
 @RestController
 @RequestMapping
 public class EssayAnswerController {
@@ -78,8 +79,9 @@ public class EssayAnswerController {
     }
 
     @GetMapping("/quizzes/{quizId}")
-    public ResponseEntity<QuizResponse> findQuizById(@PathVariable Long quizId) {
-        return ResponseEntity.ok(quizService.findById(quizId));
+    public ResponseEntity<QuizResponse> findQuizById(@PathVariable Long quizId,
+                                                     @AuthMemberPrincipal LoginMember member) {
+        return ResponseEntity.ok(quizService.findById(quizId, member.getId()));
     }
 
     @GetMapping("/quizzes/{quizId}/essay-answers")
