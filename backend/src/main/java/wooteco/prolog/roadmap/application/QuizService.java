@@ -41,7 +41,7 @@ public class QuizService {
         final List<QuizResponse> quizResponses = quizzes.stream()
             .map(quiz -> QuizResponse.of(quiz, isLearning(memberId, quiz.getId())))
             .collect(Collectors.toList());
-        return QuizzesResponse.of(keywordId, quizResponses);
+        return new QuizzesResponse(keywordId, quizResponses);
     }
 
     private boolean isLearning(Long memberId, Long quizId) {

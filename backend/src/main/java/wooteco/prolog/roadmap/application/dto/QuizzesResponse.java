@@ -18,8 +18,4 @@ public class QuizzesResponse {
         this.keywordId = keywordId;
         this.data = data;
     }
-
-    public static QuizzesResponse of(Long keywordId, List<QuizResponse> quizzes) {
-        return new QuizzesResponse(keywordId, quizzes);
-    }
 }
