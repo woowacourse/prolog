@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -49,8 +50,8 @@ class QuizServiceTest {
     @Test
     void createQuiz_fail_KeywordId() {
         //given
-        when(keywordRepository.findById(anyLong()))
-            .thenReturn(Optional.empty());
+        BDDMockito.given(keywordRepository.findById(anyLong()))
+            .willReturn(Optional.empty());
         final QuizRequest question = new QuizRequest("question");
 
         //when,then
@@ -66,10 +67,10 @@ class QuizServiceTest {
         final Keyword keyword = new Keyword(null, null, null, 2, 0, null, null, null);
         final String requestQuestion = "question";
 
-        when(keywordRepository.findById(anyLong()))
-            .thenReturn(Optional.of(keyword));
-        when(quizRepository.save(any()))
-            .thenReturn(new Quiz(keyword, null));
+        BDDMockito.given(keywordRepository.findById(anyLong()))
+            .willReturn(Optional.of(keyword));
+        BDDMockito.given(quizRepository.save(any()))
+            .willReturn(new Quiz(keyword, null));
 
         final ArgumentCaptor<Quiz> quizArgumentCaptor = ArgumentCaptor.forClass(Quiz.class);
 
@@ -92,8 +93,8 @@ class QuizServiceTest {
         //given
         final long requestKeywordId = 1L;
 
-        when(quizRepository.findFetchQuizByKeywordId(anyLong()))
-            .thenReturn(Arrays.asList(
+        BDDMockito.given(quizRepository.findFetchQuizByKeywordId(anyLong()))
+            .willReturn(Arrays.asList(
                     new Quiz(null, null),
                     new Quiz(null, null)
                 )
@@ -114,8 +115,8 @@ class QuizServiceTest {
     @Test
     void updateQuiz_fail() {
         //given
-        when(quizRepository.findById(anyLong()))
-            .thenReturn(Optional.empty());
+        BDDMockito.given(quizRepository.findById(anyLong()))
+            .willReturn(Optional.empty());
         final QuizRequest quizRequest = new QuizRequest();
 
         //when,then
@@ -131,8 +132,8 @@ class QuizServiceTest {
         final String originQuestion = "origin";
         final Quiz targetQuiz = new Quiz(null, originQuestion);
 
-        when(quizRepository.findById(anyLong()))
-            .thenReturn(Optional.of(targetQuiz));
+        BDDMockito.given(quizRepository.findById(anyLong()))
+            .willReturn(Optional.of(targetQuiz));
 
         //when
         final String updatedQuestion = "updated";
@@ -146,8 +147,8 @@ class QuizServiceTest {
     @Test
     void deleteQuiz_fail() {
         //given
-        when(quizRepository.existsById(anyLong()))
-            .thenReturn(false);
+        BDDMockito.given(quizRepository.existsById(anyLong()))
+            .willReturn(false);
 
         //when,then
         assertThatThrownBy(() -> quizService.deleteQuiz(1L))
@@ -159,8 +160,8 @@ class QuizServiceTest {
     @Test
     void deleteQuiz() {
         //given
-        when(quizRepository.existsById(anyLong()))
-            .thenReturn(true);
+        BDDMockito.given(quizRepository.existsById(anyLong()))
+            .willReturn(true);
 
         //when
         quizService.deleteQuiz(1L);
@@ -173,8 +174,8 @@ class QuizServiceTest {
     @Test
     void findById_fail() {
         //given
-        when(quizRepository.findById(anyLong()))
-            .thenReturn(Optional.empty());
+        BDDMockito.given(quizRepository.findById(anyLong()))
+            .willReturn(Optional.empty());
 
         //when,then
         assertThatThrownBy(() -> quizService.findById(1L, null))
@@ -188,8 +189,8 @@ class QuizServiceTest {
         //given
         final long findQuizId = 1L;
         final String findQuizQuestion = "question";
-        when(quizRepository.findById(anyLong()))
-            .thenReturn(Optional.of(new Quiz(findQuizId, null, findQuizQuestion)));
+        BDDMockito.given(quizRepository.findById(anyLong()))
+            .willReturn(Optional.of(new Quiz(findQuizId, null, findQuizQuestion)));
 
         //when
         final QuizResponse quizResponseById = quizService.findById(1L, null);
@@ -211,10 +212,10 @@ class QuizServiceTest {
             //given
             final long findQuizId = 1L;
             final String findQuizQuestion = "question";
-            when(essayAnswerRepository.existsByQuizIdAndMemberId(anyLong(), anyLong()))
-                .thenReturn(true);
-            when(quizRepository.findById(anyLong()))
-                .thenReturn(Optional.of(new Quiz(findQuizId, null, findQuizQuestion)));
+            BDDMockito.given(essayAnswerRepository.existsByQuizIdAndMemberId(anyLong(), anyLong()))
+                .willReturn(true);
+            BDDMockito.given(quizRepository.findById(anyLong()))
+                .willReturn(Optional.of(new Quiz(findQuizId, null, findQuizQuestion)));
 
             //when
             final QuizResponse quizResponseById = quizService.findById(1L, 1L);
@@ -229,10 +230,10 @@ class QuizServiceTest {
             //given
             final long findQuizId = 1L;
             final String findQuizQuestion = "question";
-            when(essayAnswerRepository.existsByQuizIdAndMemberId(anyLong(), anyLong()))
-                .thenReturn(false);
-            when(quizRepository.findById(anyLong()))
-                .thenReturn(Optional.of(new Quiz(findQuizId, null, findQuizQuestion)));
+            BDDMockito.given(essayAnswerRepository.existsByQuizIdAndMemberId(anyLong(), anyLong()))
+                .willReturn(false);
+            BDDMockito.given(quizRepository.findById(anyLong()))
+                .willReturn(Optional.of(new Quiz(findQuizId, null, findQuizQuestion)));
 
             //when
             final QuizResponse quizResponseById = quizService.findById(1L, 1L);
@@ -247,8 +248,8 @@ class QuizServiceTest {
             //given
             final long findQuizId = 1L;
             final String findQuizQuestion = "question";
-            when(quizRepository.findById(anyLong()))
-                .thenReturn(Optional.of(new Quiz(findQuizId, null, findQuizQuestion)));
+            BDDMockito.given(quizRepository.findById(anyLong()))
+                .willReturn(Optional.of(new Quiz(findQuizId, null, findQuizQuestion)));
 
             //when
             final QuizResponse quizResponseById = quizService.findById(1L, null);
