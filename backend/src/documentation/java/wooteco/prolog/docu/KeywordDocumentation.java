@@ -108,6 +108,8 @@ public class KeywordDocumentation extends NewDocumentation {
         "자바에 대한 설명을 작성했습니다.",
         1,
         1,
+        0,
+        0,
         null,
         null,
         null
@@ -134,6 +136,8 @@ public class KeywordDocumentation extends NewDocumentation {
         "자바에 대한 설명을 작성했습니다.",
         1,
         1,
+        0,
+        0,
         null,
         null,
         new HashSet<>(
@@ -145,7 +149,6 @@ public class KeywordDocumentation extends NewDocumentation {
                     1,
                     1,
                     1L,
-                    null,
                     null
                 ),
                 new KeywordResponse(
@@ -155,7 +158,6 @@ public class KeywordDocumentation extends NewDocumentation {
                     2,
                     1,
                     1L,
-                    null,
                     null
                 ))
         )
