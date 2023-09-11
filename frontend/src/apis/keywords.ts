@@ -1,45 +1,31 @@
-import { createAxiosInstance } from '../utils/axiosInstance';
-import {
-  KeywordResponse,
-  QuizListResponse,
-  SubKeywordListResponse,
-  TopKeywordListResponse,
-} from '../models/Keywords';
+import { client } from '.';
 import {
   KeywordRequest,
-  ChildKeywordListRequest,
+  KeywordResponse,
   QuizListByKeywordRequest,
+  QuizListResponse,
+  RoadmapRequest,
+  RoadmapResponse,
 } from '../models/Keywords';
+import { createAxiosInstance } from '../utils/axiosInstance';
 
 const instanceWithoutToken = createAxiosInstance();
 
-export const getKeyword = async ({ sessionId, keywordId }: KeywordRequest) => {
-  const response = await instanceWithoutToken.get<KeywordResponse>(
-    `/sessions/${sessionId}/keywords/${keywordId}`
-  );
+export const getRoadmap = async ({ curriculumId }: RoadmapRequest) => {
+  const response = await client.get<RoadmapResponse>(`/roadmaps?curriculumId=${curriculumId}`);
 
   return response.data;
 };
 
-export const getTopKeywordList = async (sessionId: number) => {
-  const response = await instanceWithoutToken.get<TopKeywordListResponse>(
-    `/sessions/${sessionId}/keywords`
-  );
+export const getKeyword = async ({ keywordId }: KeywordRequest) => {
+  const response = await instanceWithoutToken.get<KeywordResponse>(`/keywords/${keywordId}`);
 
   return response.data;
 };
 
-export const getChildKeywordList = async ({ sessionId, keywordId }: ChildKeywordListRequest) => {
-  const response = await instanceWithoutToken.get<SubKeywordListResponse>(
-    `/sessions/${sessionId}/keywords/${keywordId}/children`
-  );
-
-  return response.data;
-};
-
-export const getQuizListByKeyword = async ({ sessionId, keywordId }: QuizListByKeywordRequest) => {
+export const getQuizListByKeyword = async ({ keywordId }: QuizListByKeywordRequest) => {
   const response = await instanceWithoutToken.get<QuizListResponse>(
-    `/sessions/${sessionId}/keywords/${keywordId}/quizs`
+    `/quizzes?keywordId=${keywordId}`
   );
 
   return response.data;

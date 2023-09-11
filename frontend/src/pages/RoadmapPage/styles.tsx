@@ -8,9 +8,10 @@ export const Root = styled.div`
 
 export const Main = styled.main`
   display: flex;
-  width: 700px;
   flex-direction: column;
   gap: 30px;
+  max-width: 112rem;
+  padding: 0 4rem;
 `;
 
 export const Title = styled.h2`

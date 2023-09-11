@@ -7,19 +7,17 @@ import {UserContext} from "../../contexts/UserProvider";
 
 interface KeywordDetailSideSheetProps {
   keywordDetail: KeywordResponse;
-  sessionId: number;
   handleCloseSideSheet: () => void;
 }
 
 const KeywordDetailSideSheet = ({
   keywordDetail,
-  sessionId,
   handleCloseSideSheet,
 }: KeywordDetailSideSheetProps) => {
-  const { name, keywordId, order, importance, description } = keywordDetail;
+  const { name, keywordId, description } = keywordDetail;
 
   const { user: { isLoggedIn } } = useContext(UserContext);
-  const { quizList } = useGetQuizListByKeyword({ sessionId, keywordId });
+  const { quizList } = useGetQuizListByKeyword({ keywordId });
 
   return (
     <SideSheet onClickBackdrop={handleCloseSideSheet}>

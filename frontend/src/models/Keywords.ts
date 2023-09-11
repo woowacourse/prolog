@@ -1,8 +1,11 @@
 // Request
 
 type SessionAndKeywordId = {
-  sessionId: number;
   keywordId: number;
+};
+
+export type RoadmapRequest = {
+  curriculumId: number;
 };
 
 export type KeywordRequest = SessionAndKeywordId;
@@ -23,14 +26,15 @@ export interface KeywordResponse {
   keywordId: number;
   order: number;
   importance: number;
-  parentKeywordId: number;
+  parentKeywordId: number | null;
   description: string;
-  childrenKeywords: KeywordResponse[] | null;
+  childrenKeywords: KeywordResponse[];
 }
 
-export interface TopKeywordListResponse {
+export interface RoadmapResponse {
   data: KeywordResponse[];
 }
+
 export interface SubKeywordListResponse {
   childrenKeywords: KeywordResponse[];
 }
