@@ -20,7 +20,7 @@ jobs:
         id: cache
         uses: actions/cache@v2
         with:
-          path: '**/node_modules'
+          path: "**/node_modules"
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-node-modules-
@@ -36,7 +36,6 @@ jobs:
           cd frontend
           yarn build:dev
         env:
-          TSC_COMPILE_ON_ERROR: true # fixme: 타입 검사를 건너뛰고 빌드를 우선 통과시킵니다. 반드시 지워주세요.
           CI: false
 
       - name: Deploy to S3
