@@ -9,7 +9,7 @@ const getValidQueries = <T extends string>(search: string, queryKeys: Readonly<T
       const [key, value] = keyValue.split('=');
       const includes = arrayMutation(queryKeys, 'includes');
 
-      if (Object.hasOwn(queries, key)) {
+      if (queries.hasOwnProperty(key)) {
         throw new Error('Duplicated query');
       }
 
