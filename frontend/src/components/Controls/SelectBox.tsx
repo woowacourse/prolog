@@ -46,6 +46,7 @@ interface SelectBoxProps {
 }
 
 const SelectBox: React.VFC<SelectBoxProps> = ({
+  isClearable = true,
   isMulti = false,
   options,
   placeholder,
@@ -75,7 +76,7 @@ const SelectBox: React.VFC<SelectBoxProps> = ({
     `}
   >
     <Select
-      isClearable={true}
+      isClearable={isClearable}
       isMulti={isMulti}
       options={options}
       placeholder={placeholder}
@@ -83,7 +84,6 @@ const SelectBox: React.VFC<SelectBoxProps> = ({
       styles={selectStyles}
       defaultValue={defaultOption}
       value={value}
-      // theme={(theme) => ({ ...theme, colors: { ...theme.colors, primary: 'transparent' } })}
     />
   </div>
 );
