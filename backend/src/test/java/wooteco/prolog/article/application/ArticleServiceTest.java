@@ -59,6 +59,21 @@ class ArticleServiceTest {
         verify(articleRepository).save(any());
     }
 
+    @DisplayName("아티클 생성시 UNVALIDATED 권한일 경우 예외를 발생한다.")
+    @Test
+    void create_success_unAuthorized() {
+        //given
+        final ArticleRequest judyRequest = new ArticleRequest("title", "url", "imageUrl");
+        final Member member = new Member(1L, "username", "nickname", Role.UNVALIDATED, 1L, "url");
+        final LoginMember judyLogin = new LoginMember(1L, MEMBER);
+
+        when(memberService.findById(any())).thenReturn(member);
+
+        //when
+        assertThatThrownBy(() -> articleService.create(judyRequest, judyLogin))
+            .isInstanceOf(BadRequestException.class);
+    }
+
     @DisplayName("아티클을 수정한다.")
     @Test
     void update_success() {
