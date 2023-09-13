@@ -20,13 +20,13 @@ import { requestGetFilters } from '../../service/requests';
 import {
   AlignItemsCenterStyle,
   FlexStyle,
-  JustifyContentSpaceBtwStyle
+  JustifyContentSpaceBtwStyle,
 } from '../../styles/flex.styles';
 import {
   FilterListWrapper,
   HeaderContainer,
   PostListContainer,
-  SelectedFilterList
+  SelectedFilterList,
 } from './styles';
 
 const StudylogListPage = (): JSX.Element => {

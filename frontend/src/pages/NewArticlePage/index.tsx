@@ -48,7 +48,6 @@ const NewArticlePage = () => {
 
   const clickEnterInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      console.log('sdafsdaf');
       e.preventDefault();
       onUrl();
     }
