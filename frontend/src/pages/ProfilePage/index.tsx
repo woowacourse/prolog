@@ -10,8 +10,7 @@ import { FlexStyle } from '../../styles/flex.styles';
 import StudylogOverview from './StudylogOverviews';
 import { Content } from './styles';
 
-
-
+// TODO: any 타입
 const ProfilePage = ({ children, menu }) => {
   const { isNotFound, NotFound } = useNotFound();
 

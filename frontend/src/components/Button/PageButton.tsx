@@ -1,13 +1,15 @@
 import Button from './Button';
 import { css } from '@emotion/react';
 import COLOR from '../../constants/color';
+import { ComponentPropsWithoutRef, PropsWithChildren } from 'react';
 
-interface PageButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-  children: number;
+interface PageButtonProps extends ComponentPropsWithoutRef<'button'> {
+  size: string;
+  css: ReturnType<typeof css>;
   selected?: boolean;
 }
 
-const PageButton = ({ children, ...props }: PageButtonProps) => {
+const PageButton = ({ children, ...props }: PropsWithChildren<PageButtonProps>) => {
   return (
     <Button {...props} css={props.selected ? selectedStyle : unselectedStyle}>
       {children}

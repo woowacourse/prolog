@@ -1,6 +1,7 @@
 import CreatableSelect from 'react-select/creatable';
 
 import COLOR from '../../constants/color';
+import { Tag } from '../../models/Studylogs';
 
 const selectStyles = {
   container: (styles) => ({
@@ -34,7 +35,33 @@ const selectStyles = {
   menu: (styles) => ({ ...styles, fontSize: '1.4rem', fontColor: COLOR.DARK_GRAY_900 }),
 };
 
-const CreatableSelectBox = ({ isMulti = true, options, placeholder, onChange, ...props }) => (
+type Options = {
+  value: string,
+  label: string,
+}[];
+
+interface CreatableSelectBoxProps {
+  isMulti?: boolean;
+  placeholder: string;
+  options: Options;
+  onChange: (
+    tags: Tag[],
+    actionMeta: {
+      option: {
+        label: string,
+      },
+    }
+  ) => void;
+  value: Options;
+}
+
+const CreatableSelectBox = ({
+  isMulti = true,
+  options,
+  placeholder,
+  onChange,
+  ...props
+}: CreatableSelectBoxProps) => (
   <CreatableSelect
     {...props}
     isMulti={isMulti}

@@ -1,8 +1,7 @@
 import * as Styled from './Article.style';
 import type { ArticleType } from '../../models/Article';
 
-const Article = ({ id, title, userName, url, createdAt, imageUrl }: ArticleType) => {
-  console.log(imageUrl);
+const Article = ({ title, userName, url, createdAt, imageUrl }: ArticleType) => {
   return (
     <Styled.Container>
       <Styled.Anchor href={url} target="_blank" rel="noopener noreferrer">
