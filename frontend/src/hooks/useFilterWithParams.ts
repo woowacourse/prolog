@@ -28,6 +28,7 @@ const useFilterWithParams = () => {
 
   const onFilterChange = (value) => {
     setPostQueryParams({ ...postQueryParams, page: 1 });
+
     setSelectedFilterDetails(value);
   };
 
@@ -41,6 +42,7 @@ const useFilterWithParams = () => {
     );
 
     setPostQueryParams({ ...postQueryParams, page: 1 });
+
     setSelectedFilterDetails(newFilters);
   };
 
@@ -78,10 +80,12 @@ const makeFilters = (filters, filterType) => {
   if (!filters || !filterType) return [];
 
   if (typeof filters === 'string') {
-    return [{ filterType, filterDetailId: Number(filters) }];
+    return [{ filterType, filterDetailId: Number(filters), name: '' }];
   }
 
-  return [...filters].map((id) => ({ filterType, filterDetailId: Number(id) }));
+  const value = [...filters].map((id) => ({ filterType, filterDetailId: Number(id) }));
+
+  return [...filters].map((id) => ({ filterType, filterDetailId: Number(id), name: '' }));
 };
 
 export default useFilterWithParams;
