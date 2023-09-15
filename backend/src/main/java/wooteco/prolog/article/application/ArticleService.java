@@ -69,7 +69,7 @@ public class ArticleService {
     @Transactional
     public void bookmarkArticle(final Long id, final LoginMember loginMember,
                                 final Boolean checked) {
-        final Article article = articleRepository.findById(id)
+        final Article article = articleRepository.findFetchById(id)
             .orElseThrow(() -> new BadRequestException(ARTICLE_NOT_FOUND_EXCEPTION));
         final Member member = memberService.findById(loginMember.getId());
 
