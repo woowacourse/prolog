@@ -49,7 +49,7 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
     public void 키워드를_수정하면(int sessionId, int keywordId, String keywordName, int seq,
                           int importance) {
         context.invokeHttpPut(
-            "/sessions/" + sessionId + "/keywords/" + keywordId,
+            "/keywords/" + keywordId,
             KEYWORD_REQUEST.getUpdateParent(keywordName, seq, importance));
     }
 

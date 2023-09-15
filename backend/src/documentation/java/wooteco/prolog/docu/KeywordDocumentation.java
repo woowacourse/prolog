@@ -52,7 +52,7 @@ public class KeywordDocumentation extends NewDocumentation {
 
     @Test
     void 키워드_단일_수정() {
-        doNothing().when(keywordService).updateKeyword(any(), any(), any());
+        doNothing().when(keywordService).updateKeyword(any(), any());
 
         given
             .contentType(MediaType.APPLICATION_JSON_VALUE)

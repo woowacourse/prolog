@@ -138,7 +138,7 @@ class KeywordServiceTest {
         KeywordUpdateRequest request = new KeywordUpdateRequest("", "", 1, 1, 1L);
 
         //when
-        keywordService.updateKeyword(1L, 1L, request);
+        keywordService.updateKeyword(1L, request);
 
         //then
         verify(keywordRepository, times(2)).findById(any());
@@ -152,7 +152,7 @@ class KeywordServiceTest {
         KeywordUpdateRequest request = new KeywordUpdateRequest("", "", 1, 1, 1L);
 
         //then
-        assertThatThrownBy(() -> keywordService.updateKeyword(1L, 1L, request));
+        assertThatThrownBy(() -> keywordService.updateKeyword(1L, request));
     }
 
     @DisplayName("keywordId가 유효하지 않으면 키워드 업데이트 시 예외가 발생한다")
@@ -163,7 +163,7 @@ class KeywordServiceTest {
         KeywordUpdateRequest request = new KeywordUpdateRequest("", "", 1, 1, 1L);
 
         //then
-        assertThatThrownBy(() -> keywordService.updateKeyword(1L, 1L, request))
+        assertThatThrownBy(() -> keywordService.updateKeyword(1L, request))
             .isInstanceOf(BadRequestException.class)
             .hasMessage(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION.getMessage());
     }

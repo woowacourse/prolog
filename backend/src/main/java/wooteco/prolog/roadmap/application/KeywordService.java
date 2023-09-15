@@ -68,9 +68,8 @@ public class KeywordService {
         return KeywordsResponse.createResponse(keywords);
     }
 
-    public void updateKeyword(final Long sessionId, final Long keywordId,
+    public void updateKeyword(final Long keywordId,
                               final KeywordUpdateRequest request) {
-        existSession(sessionId); // 세션이 없다면 예외가 발생
         Keyword keyword = keywordRepository.findById(keywordId)
             .orElseThrow(() -> new BadRequestException(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION));
         Keyword keywordParent = findKeywordParentOrNull(request.getParentKeywordId());
