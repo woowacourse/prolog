@@ -18,7 +18,6 @@ import wooteco.prolog.roadmap.application.dto.QuizzesResponse;
 
 @RestController
 @AllArgsConstructor
-//@RequestMapping("/sessions/{sessionId}/keywords/{keywordId}/quizs")
 public class QuizController {
 
     private final QuizService quizService;
@@ -39,9 +38,8 @@ public class QuizController {
         return ResponseEntity.ok(quizService.findById(quizId));
     }
 
-    @GetMapping("/sessions/{sessionId}/keywords/{keywordId}/quizs")
-    public ResponseEntity<QuizzesResponse> findQuizzesByKeyword(@PathVariable Long sessionId,
-                                                                @PathVariable Long keywordId) {
+    @GetMapping("/keywords/{keywordId}/quizs")
+    public ResponseEntity<QuizzesResponse> findQuizzesByKeyword(@PathVariable Long keywordId) {
         return ResponseEntity.ok(quizService.findQuizzesByKeywordId(keywordId));
     }
 
