@@ -26,3 +26,8 @@ Feature: 아티클 관련 기능
     Scenario: Url og태그 파싱하기
         When Url을 입력하면
         Then og태그를 파싱해서 반환한다.
+
+    Scenario: 아티클을 북마크로 등록하기
+        Given 아티클이 작성되어 있고
+        When 1번 아티클에 북마크 요청을 보내면
+        Then 아티클에 북마크가 등록된다
