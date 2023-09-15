@@ -50,10 +50,10 @@ public class KeywordController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/sessions/{sessionId}/keywords/{keywordId}")
-    public ResponseEntity<Void> deleteKeyword(@PathVariable Long sessionId,
+    @DeleteMapping("/keywords/{keywordId}")
+    public ResponseEntity<Void> deleteKeyword(
         @PathVariable Long keywordId) {
-        keywordService.deleteKeyword(sessionId, keywordId);
+        keywordService.deleteKeyword(keywordId);
         return ResponseEntity.noContent().build();
     }
 

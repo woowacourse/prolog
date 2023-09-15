@@ -78,8 +78,7 @@ public class KeywordService {
             request.getImportance(), keywordParent);
     }
 
-    public void deleteKeyword(final Long sessionId, final Long keywordId) {
-        existSession(sessionId);
+    public void deleteKeyword(final Long keywordId) {
         Keyword keyword = keywordRepository.findFetchById(keywordId);
 
         keywordRepository.delete(keyword);

@@ -56,7 +56,7 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
     @When("{int}번 세션에 대한 {int}번 키워드를 삭제하면")
     public void 키워드를_삭제하면(int sessionId, int keywordId) {
         context.invokeHttpDelete(
-            "/sessions/" + sessionId + "/keywords/" + keywordId
+            "/keywords/" + keywordId
         );
     }
 

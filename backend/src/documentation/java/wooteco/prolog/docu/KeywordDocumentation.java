@@ -64,7 +64,7 @@ public class KeywordDocumentation extends NewDocumentation {
 
     @Test
     void 키워드_단일_삭제() {
-        doNothing().when(keywordService).deleteKeyword(any(), any());
+        doNothing().when(keywordService).deleteKeyword(any());
 
         given
             .when().delete("/sessions/1/keywords/1")

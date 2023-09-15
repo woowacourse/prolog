@@ -175,7 +175,7 @@ class KeywordServiceTest {
         when(sessionRepository.existsById(any())).thenReturn(true);
 
         //when
-        keywordService.deleteKeyword(1L, 1L);
+        keywordService.deleteKeyword(1L);
 
         //then
         verify(keywordRepository, times(1)).findFetchById(any());
