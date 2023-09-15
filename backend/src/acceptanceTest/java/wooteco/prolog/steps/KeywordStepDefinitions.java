@@ -63,7 +63,7 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
     @When("{int}번 세션에 대해서 최상위 키워드들을 조회하면")
     public void 세션에_대해서_키워드들을_조회하면(int sessionId) {
         context.invokeHttpGet(
-            "/sessions/" + sessionId + "/keywords"
+            "/keywords"
         );
     }
 

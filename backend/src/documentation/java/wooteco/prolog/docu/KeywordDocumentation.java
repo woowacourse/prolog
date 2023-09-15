@@ -74,7 +74,7 @@ public class KeywordDocumentation extends NewDocumentation {
 
     @Test
     void 세션별_키워드_목록_조회() {
-        given(keywordService.findSessionIncludeRootKeywords(any())).willReturn(
+        given(keywordService.findRootKeywords()).willReturn(
             KEYWORD_SESSION_INCLUDE_MULTI_RESPONSE);
 
         given

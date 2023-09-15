@@ -15,6 +15,6 @@ public interface KeywordRepository extends JpaRepository<Keyword, Long> {
     Keyword findFetchById(@Param("keywordId") Long keywordId);
 
     @Query("SELECT k FROM Keyword k "
-        + "WHERE k.sessionId = :sessionId AND k.parent IS NULL")
-    List<Keyword> findBySessionIdAndParentIsNull(@Param("sessionId") Long sessionId);
+        + "WHERE k.parent IS NULL")
+    List<Keyword> findByParentIsNull();
 }

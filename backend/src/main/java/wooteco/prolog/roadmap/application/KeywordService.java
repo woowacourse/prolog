@@ -60,10 +60,8 @@ public class KeywordService {
     }
 
     @Transactional(readOnly = true)
-    public KeywordsResponse findSessionIncludeRootKeywords(final Long sessionId) {
-        existSession(sessionId);
-
-        List<Keyword> keywords = keywordRepository.findBySessionIdAndParentIsNull(sessionId);
+    public KeywordsResponse findRootKeywords() {
+        List<Keyword> keywords = keywordRepository.findByParentIsNull();
 
         return KeywordsResponse.createResponse(keywords);
     }

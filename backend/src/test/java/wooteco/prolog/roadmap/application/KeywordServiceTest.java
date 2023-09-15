@@ -117,14 +117,11 @@ class KeywordServiceTest {
     @DisplayName("sessionId로 최상위 키워드들을 찾을 수 있다")
     @Test
     void findSessionIncludeRootKeywords() {
-        //given
-        when(sessionRepository.existsById(any())).thenReturn(true);
-
         //when
-        keywordService.findSessionIncludeRootKeywords(1L);
+        keywordService.findRootKeywords();
 
         //then
-        verify(keywordRepository, times(1)).findBySessionIdAndParentIsNull(any());
+        verify(keywordRepository, times(1)).findByParentIsNull();
     }
 
     @DisplayName("sessionId와 keywordId로 키워드를 업데이트할 수 있다")

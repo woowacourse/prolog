@@ -57,10 +57,9 @@ public class KeywordController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/sessions/{sessionId}/keywords")
-    public ResponseEntity<KeywordsResponse> findSessionIncludeRootKeywords(
-        @PathVariable Long sessionId) {
-        KeywordsResponse response = keywordService.findSessionIncludeRootKeywords(sessionId);
+    @GetMapping("/keywords")
+    public ResponseEntity<KeywordsResponse> findSessionIncludeRootKeywords() {
+        KeywordsResponse response = keywordService.findRootKeywords();
         return ResponseEntity.ok(response);
     }
 

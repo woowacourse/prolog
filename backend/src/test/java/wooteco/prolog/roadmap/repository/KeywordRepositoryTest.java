@@ -101,8 +101,7 @@ class KeywordRepositoryTest {
         em.clear();
 
         // when
-        final List<Keyword> extractParentKeyword = keywordRepository.findBySessionIdAndParentIsNull(
-            sessionId);
+        final List<Keyword> extractParentKeyword = keywordRepository.findByParentIsNull();
 
         // then
         Assertions.assertThat(extractParentKeyword.size()).isEqualTo(1);
