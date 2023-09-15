@@ -1,16 +1,24 @@
 import * as Styled from './Article.style';
 import type { ArticleType } from '../../models/Article';
 import Scrap from '../Reaction/Scrap';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { usePutArticleBookmarkMutation } from '../../hooks/queries/article';
+import debounce from '../../utils/debounce';
 
-const Article = ({ title, userName, url, createdAt, imageUrl }: ArticleType) => {
-  const [scrap, setScrap] = useState(false);
+const Article = ({ id, title, userName, url, createdAt, imageUrl }: ArticleType) => {
+  const bookmarkRef = useRef(false);
+  const [bookmark, setBookmark] = useState(false);
+  const { mutate: putBookmark } = usePutArticleBookmarkMutation();
 
-  const toggleScrap: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+  const toggleBookmark: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
-    setScrap((prev) => !prev);
 
-    // api
+    bookmarkRef.current = !bookmarkRef.current;
+    setBookmark((prev) => !prev);
+
+    debounce(() => {
+      putBookmark({ articleId: id, bookmark: bookmarkRef.current });
+    }, 300);
   };
 
   return (
@@ -25,9 +33,11 @@ const Article = ({ title, userName, url, createdAt, imageUrl }: ArticleType) => 
             <Styled.CreatedAt>{createdAt.split(' ')[0]}</Styled.CreatedAt>
           </Styled.ArticleInfoWrapper>
           <Styled.Title>{title}</Styled.Title>
-          <Styled.ScrapButtonWrapper>
-            <Scrap scrap={scrap} onClick={toggleScrap} cssProps={Styled.ArticleScrapButtonStyle} />
-          </Styled.ScrapButtonWrapper>
+          <Scrap
+            scrap={bookmark}
+            onClick={toggleBookmark}
+            cssProps={Styled.ArticleBookmarkButtonStyle}
+          />
         </Styled.ArticleInfoContainer>
       </Styled.Anchor>
     </Styled.Container>

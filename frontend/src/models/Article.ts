@@ -21,3 +21,8 @@ export interface MetaOgResponse {
   imageUrl: string;
   title: string;
 }
+
+export interface ArticleBookmarkPutRequest {
+  articleId: number;
+  bookmark: boolean;
+}

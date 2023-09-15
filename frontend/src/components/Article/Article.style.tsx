@@ -72,9 +72,7 @@ export const Title = styled.p`
   -webkit-box-orient: vertical;
 `;
 
-export const ScrapButtonWrapper = styled.div``;
-
-export const ArticleScrapButtonStyle = css`
+export const ArticleBookmarkButtonStyle = css`
   flex-direction: column;
   padding: 0;
   width: fit-content;

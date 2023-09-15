@@ -1,5 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { requestGetArticles, requestPostArticles } from '../../apis/articles';
+import {
+  requestGetArticles,
+  requestPostArticles,
+  requestPutArticleBookmark,
+} from '../../apis/articles';
 import { ArticleType } from '../../models/Article';
 import { ERROR_MESSAGE } from '../../constants';
 import { SUCCESS_MESSAGE } from '../../constants/message';
@@ -27,5 +31,12 @@ export const usePostArticlesMutation = () => {
     onError: () => {
       alert(ERROR_MESSAGE.DEFAULT);
     },
+  });
+};
+
+export const usePutArticleBookmarkMutation = () => {
+  return useMutation(requestPutArticleBookmark, {
+    onSuccess: () => {},
+    onError: () => {},
   });
 };

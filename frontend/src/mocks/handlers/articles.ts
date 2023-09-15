@@ -31,4 +31,8 @@ export const articlesHandler = [
     articles.push(newArticle);
     return res(ctx.status(200), ctx.json(newArticle));
   }),
+
+  rest.put(`${BASE_URL}/articles/:articleId/bookmark`, (req, res, ctx) => {
+    return res(ctx.status(200));
+  }),
 ];
