@@ -1,6 +1,8 @@
 package wooteco.prolog.article.application;
 
+import static java.lang.Boolean.TRUE;
 import static java.util.stream.Collectors.toList;
+import static wooteco.prolog.common.exception.BadRequestCode.ARTICLE_NOT_FOUND_EXCEPTION;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +47,7 @@ public class ArticleService {
     public void update(final Long id, final ArticleRequest articleRequest,
                        final LoginMember loginMember) {
         final Article article = articleRepository.findById(id)
-            .orElseThrow(() -> new BadRequestException(BadRequestCode.ARTICLE_NOT_FOUND_EXCEPTION));
+            .orElseThrow(() -> new BadRequestException(ARTICLE_NOT_FOUND_EXCEPTION));
 
         final Member member = memberService.findById(loginMember.getId());
         article.validateOwner(member);
@@ -56,11 +58,25 @@ public class ArticleService {
     @Transactional
     public void delete(final Long id, final LoginMember loginMember) {
         final Article article = articleRepository.findById(id)
-            .orElseThrow(() -> new BadRequestException(BadRequestCode.ARTICLE_NOT_FOUND_EXCEPTION));
+            .orElseThrow(() -> new BadRequestException(ARTICLE_NOT_FOUND_EXCEPTION));
 
         final Member member = memberService.findById(loginMember.getId());
         article.validateOwner(member);
 
         articleRepository.delete(article);
+    }
+
+    @Transactional
+    public void bookmarkArticle(final Long id, final LoginMember loginMember,
+                                final Boolean checked) {
+        final Article article = articleRepository.findById(id)
+            .orElseThrow(() -> new BadRequestException(ARTICLE_NOT_FOUND_EXCEPTION));
+        final Member member = memberService.findById(loginMember.getId());
+
+        if (TRUE.equals(checked)) {
+            article.addBookmark(member);
+        } else {
+            article.removeBookmark(member);
+        }
     }
 }
