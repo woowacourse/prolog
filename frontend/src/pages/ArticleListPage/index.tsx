@@ -8,8 +8,10 @@ import { COLOR, PATH } from '../../constants';
 import styled from '@emotion/styled';
 import { MainContentStyle } from '../../PageRouter';
 import SelectBox from '../../components/Controls/SelectBox';
-import { useState } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 import { css } from '@emotion/react';
+import ArticleBookmarkFilter from '../../components/Article/ArticleBookmarkFIlter';
+import { useGetFilteredArticleQuery } from '../../hooks/queries/article';
 
 const CATEGORY_OPTIONS = [
   { value: '전체보기', label: '전체보기' },
@@ -23,10 +25,22 @@ type CategoryOptions = typeof CATEGORY_OPTIONS[number];
 const ArticleListPage = () => {
   const history = useHistory();
   const goNewArticlePage = () => history.push(PATH.NEW_ARTICLE);
-  const [selectedOption, setSelectedOption] = useState<CategoryOptions>(CATEGORY_OPTIONS[0]);
+  const [selectedCourse, setSelectedCourse] = useState<CategoryOptions>(CATEGORY_OPTIONS[0]);
+  const [checked, setChecked] = useState(false);
+
+  const { data: filteredArticles = [], refetch: getFilteredArticles } = useGetFilteredArticleQuery(
+    selectedCourse.value,
+    checked
+  );
 
   const changeFilterOption: (option: { value: string; label: string }) => void = (option) => {
-    setSelectedOption(option);
+    setSelectedCourse(option);
+    // getFilteredArticles();
+  };
+
+  const handleCheckBookmark: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setChecked(e.currentTarget.checked);
+    // getFilteredArticles();
   };
 
   return (
@@ -35,12 +49,13 @@ const ArticleListPage = () => {
         <SelectBoxWrapper>
           <SelectBox
             isClearable={false}
-            value={selectedOption}
-            defaultOption={selectedOption}
+            value={selectedCourse}
+            defaultOption={selectedCourse}
             options={CATEGORY_OPTIONS}
             onChange={changeFilterOption}
           />
         </SelectBoxWrapper>
+        <ArticleBookmarkFilter checked={checked} handleCheckBookmark={handleCheckBookmark} />
         <Button
           type="button"
           size="X_SMALL"
@@ -52,7 +67,7 @@ const ArticleListPage = () => {
           글쓰기
         </Button>
       </Container>
-      <ArticleList />
+      <ArticleList articles={filteredArticles} />
     </div>
   );
 };

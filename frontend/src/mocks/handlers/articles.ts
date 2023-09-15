@@ -24,6 +24,7 @@ export const articlesHandler = [
       title: '직렬화, 역직렬화는 무엇일까?',
       url: 'https://think0wise.tistory.com/107',
       createdAt: '2023-07-08 16:48',
+      isBookMarked: false,
       imageUrl:
         'https://plus.unsplash.com/premium_photo-1682088845396-1b310a002302?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8JUVDJTk1JTg0JUVEJThCJUIwJUVEJTgxJUI0fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
     };
@@ -34,5 +35,14 @@ export const articlesHandler = [
 
   rest.put(`${BASE_URL}/articles/:articleId/bookmark`, (req, res, ctx) => {
     return res(ctx.status(200));
+  }),
+
+  rest.get(`${BASE_URL}/articles/filter`, (req, res, ctx) => {
+    const course = req.url.searchParams.get('course');
+    const bookmark = req.url.searchParams.get('bookmark');
+
+    const filteredArticle = articles.filter((article) => bookmark === String(article.isBookMarked));
+
+    return res(ctx.status(200), ctx.json(filteredArticle));
   }),
 ];

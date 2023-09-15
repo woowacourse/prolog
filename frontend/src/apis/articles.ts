@@ -2,6 +2,7 @@ import { client } from '.';
 import {
   ArticleBookmarkPutRequest,
   ArticleRequest,
+  CourseFilter,
   MetaOgRequest,
   MetaOgResponse,
 } from '../models/Article';
@@ -16,4 +17,8 @@ export const requestGetMetaOg = ({ url }: MetaOgRequest) => {
 
 export const requestPutArticleBookmark = ({ articleId, bookmark }: ArticleBookmarkPutRequest) => {
   return client.put(`/articles/${articleId}/bookmark`, { checked: bookmark });
+};
+
+export const requestGetFilteredArticle = (course: string, bookmark: boolean) => {
+  return client.get(`/articles/filter?course=${course}&bookmark=${bookmark}`);
 };
