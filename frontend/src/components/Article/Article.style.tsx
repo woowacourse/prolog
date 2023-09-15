@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import { COLOR } from '../../constants';
 
 export const Container = styled.li`
   width: 100%;
-  height: 340px;
-  padding: 20px;
-  border-radius: 15px;
+  height: 100%;
+  padding: 10px;
+  border-radius: 8px;
   background-color: #ffffff;
   list-style: none;
 
@@ -20,16 +21,16 @@ export const ThumbnailWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  aspect-ratio: 16/9;
   width: 100%;
-  height: 154px;
   border-radius: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
 
 export const Thumbnail = styled.img`
   width: 100%;
-  height: 154px;
-  border-radius: 15px;
+  height: 100%;
+  border-radius: 8px;
   object-fit: cover;
 `;
 
@@ -41,34 +42,58 @@ export const ArticleInfoContainer = styled.div`
   padding: 10px;
 `;
 
-export const UserName = styled.p`
-  width: 250px;
-  margin: 0;
-  color: ${COLOR.DARK_GRAY_400};
-  font-size: 14px;
+export const ArticleInfoWrapper = styled.div`
+  display: flex;
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   word-break: break-all;
+  font-size: 14px;
+`;
+
+export const UserName = styled.p`
+  margin: 0;
+  color: ${COLOR.DARK_GRAY_400};
 `;
 
 export const Title = styled.p`
-  width: 250px;
+  width: 100%;
+  height: 50px;
   margin: 0;
   color: ${COLOR.BLACK_900};
   font-size: 16px;
   font-weight: 700;
-  overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  word-break: break-all;
+  overflow: hidden;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+`;
+
+export const ScrapButtonWrapper = styled.div``;
+
+export const ArticleScrapButtonStyle = css`
+  flex-direction: column;
+  padding: 0;
+  width: fit-content;
+  font-size: 1.4rem;
+
+  background-color: transparent;
+  color: ${COLOR.BLACK_800};
+
+  & > img {
+    margin-right: 0;
+    width: 1.8rem;
+    height: 1.8rem;
+  }
 `;
 
 export const CreatedAt = styled.span`
   width: 100%;
-  margin-top: 16px;
   color: ${COLOR.DARK_GRAY_400};
   text-align: right;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 700;
 `;

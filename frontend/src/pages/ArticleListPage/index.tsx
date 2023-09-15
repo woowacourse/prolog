@@ -68,7 +68,7 @@ export const Container = styled.div`
 `;
 
 const SelectBoxWrapper = styled.div`
-  width: 200px;
+  width: 150px;
 `;
 
 export const WriteButtonStyle = css`

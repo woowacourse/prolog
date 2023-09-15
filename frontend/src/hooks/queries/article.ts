@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { UserContext } from '../../contexts/UserProvider';
 import { requestGetArticles, requestPostArticles } from '../../apis/articles';
 import { ArticleType } from '../../models/Article';
 import { ERROR_MESSAGE } from '../../constants';
