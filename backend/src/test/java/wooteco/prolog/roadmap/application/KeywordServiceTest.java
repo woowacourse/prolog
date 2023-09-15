@@ -73,9 +73,6 @@ class KeywordServiceTest {
     @DisplayName("keywordId에 해당하는 키워드가 없으면 KeywordNotFoundException가 발생한다")
     @Test
     void notExistKeyword() {
-        //given
-        when(sessionRepository.existsById(any())).thenReturn(true);
-
         //then
         assertThatThrownBy(() -> keywordService.findKeyword(1L))
             .isInstanceOf(BadRequestException.class)
@@ -88,7 +85,6 @@ class KeywordServiceTest {
         //given
         Keyword keyword = new Keyword(1L, null, null, 1, 1, null, null, null);
         when(keywordRepository.findById(any())).thenReturn(Optional.of(keyword));
-        when(sessionRepository.existsById(any())).thenReturn(true);
 
         //when
         keywordService.findKeyword(1L);
@@ -101,9 +97,6 @@ class KeywordServiceTest {
     @Test
     void findKeywordWithAllChild() {
         //given
-        when(sessionRepository.existsById(any())).thenReturn(true);
-        when(keywordRepository.existsById(any())).thenReturn(true);
-
         Keyword keyword = new Keyword(1L, "", "", 1, 1, 1L, null, Collections.emptySet());
         when(keywordRepository.findFetchById(1L)).thenReturn(keyword);
 
@@ -128,7 +121,6 @@ class KeywordServiceTest {
     @Test
     void updateKeyword() {
         //given
-        when(sessionRepository.existsById(any())).thenReturn(true);
         Keyword keyword = new Keyword(1L, "", "", 1, 1, 1L, null, Collections.emptySet());
         when(keywordRepository.findById(any())).thenReturn(Optional.of(keyword));
 
@@ -145,7 +137,6 @@ class KeywordServiceTest {
     @Test
     void updateKeyword_fail() {
         //given
-        when(sessionRepository.existsById(any())).thenReturn(false);
         KeywordUpdateRequest request = new KeywordUpdateRequest("", "", 1, 1, 1L);
 
         //then
@@ -156,7 +147,6 @@ class KeywordServiceTest {
     @Test
     void updateKeyword_fail2() {
         //given
-        when(sessionRepository.existsById(any())).thenReturn(true);
         KeywordUpdateRequest request = new KeywordUpdateRequest("", "", 1, 1, 1L);
 
         //then
@@ -168,9 +158,6 @@ class KeywordServiceTest {
     @DisplayName("sessionId와 keywordId로 키워드를 삭제할 수 있다")
     @Test
     void deleteKeyword() {
-        //given
-        when(sessionRepository.existsById(any())).thenReturn(true);
-
         //when
         keywordService.deleteKeyword(1L);
 

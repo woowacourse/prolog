@@ -45,7 +45,7 @@ public class KeywordDocumentation extends NewDocumentation {
         given(keywordService.findKeyword(anyLong())).willReturn(KEYWORD_SINGLE_RESPONSE);
 
         given
-            .when().get("/sessions/1/keywords/1")
+            .when().get("/keywords/1")
             .then().log().all().apply(document("keywords/find"))
             .statusCode(HttpStatus.OK.value());
     }
@@ -57,7 +57,7 @@ public class KeywordDocumentation extends NewDocumentation {
         given
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(KEYWORD_UPDATE_REQUEST)
-            .when().put("/sessions/1/keywords/1")
+            .when().put("/keywords/1")
             .then().log().all().apply(document("keywords/update"))
             .statusCode(HttpStatus.NO_CONTENT.value());
     }
@@ -67,7 +67,7 @@ public class KeywordDocumentation extends NewDocumentation {
         doNothing().when(keywordService).deleteKeyword(any());
 
         given
-            .when().delete("/sessions/1/keywords/1")
+            .when().delete("/keywords/1")
             .then().log().all().apply(document("keywords/delete"))
             .statusCode(HttpStatus.NO_CONTENT.value());
     }
@@ -78,7 +78,7 @@ public class KeywordDocumentation extends NewDocumentation {
             KEYWORD_SESSION_INCLUDE_MULTI_RESPONSE);
 
         given
-            .when().get("/sessions/1/keywords")
+            .when().get("/keywords")
             .then().log().all().apply(document("keywords/find-childAll"))
             .statusCode(HttpStatus.OK.value());
     }
@@ -89,7 +89,7 @@ public class KeywordDocumentation extends NewDocumentation {
             KEYWORD_WITH_ALL_CHILD_MULTI_RESPONSE);
 
         given
-            .when().get("/sessions/1/keywords/1/children")
+            .when().get("/keywords/1/children")
             .then().log().all().apply(document("keywords/find-with-childAll"))
             .statusCode(HttpStatus.OK.value());
     }
