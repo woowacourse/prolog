@@ -183,7 +183,7 @@ class ArticleServiceTest {
     }
 
     @Nested
-    @DisplayName("아티클의 북마크 상태를 바굴 수 있다.")
+    @DisplayName("아티클의 북마크 상태를 바꿀 수 있다.")
     class bookmarkArticle {
 
         @DisplayName("아티클의 북마크를 추가한다.")
@@ -197,7 +197,7 @@ class ArticleServiceTest {
             final Long articleId = 3L;
             final LoginMember loginMember = new LoginMember(member.getId(), MEMBER);
 
-            when(articleRepository.findById(articleId)).thenReturn(Optional.of(article));
+            when(articleRepository.findFetchById(articleId)).thenReturn(Optional.of(article));
             when(memberService.findById(member.getId())).thenReturn(member);
 
             //when
@@ -220,7 +220,7 @@ class ArticleServiceTest {
             final Long articleId = 3L;
             final LoginMember loginMember = new LoginMember(member.getId(), MEMBER);
 
-            when(articleRepository.findById(articleId)).thenReturn(Optional.of(article));
+            when(articleRepository.findFetchById(articleId)).thenReturn(Optional.of(article));
             when(memberService.findById(member.getId())).thenReturn(member);
 
             //when
