@@ -41,7 +41,7 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
     @When("{int}번 세션과 {int}번 키워드를 조회하면")
     public void 키워드를_조회하면(int sessionId, int keywordId) {
         context.invokeHttpGet(
-            "/sessions/" + sessionId + "/keywords/" + keywordId
+            "/keywords/" + keywordId
         );
     }
 

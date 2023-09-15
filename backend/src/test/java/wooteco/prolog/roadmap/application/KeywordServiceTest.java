@@ -77,7 +77,7 @@ class KeywordServiceTest {
         when(sessionRepository.existsById(any())).thenReturn(true);
 
         //then
-        assertThatThrownBy(() -> keywordService.findKeyword(1L, 1L))
+        assertThatThrownBy(() -> keywordService.findKeyword(1L))
             .isInstanceOf(BadRequestException.class)
             .hasMessage(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION.getMessage());
     }
@@ -91,7 +91,7 @@ class KeywordServiceTest {
         when(sessionRepository.existsById(any())).thenReturn(true);
 
         //when
-        keywordService.findKeyword(1L, 1L);
+        keywordService.findKeyword(1L);
 
         //then
         verify(keywordRepository, times(1)).findById(any());

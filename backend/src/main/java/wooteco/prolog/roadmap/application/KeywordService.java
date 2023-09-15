@@ -42,8 +42,7 @@ public class KeywordService {
     }
 
     @Transactional(readOnly = true)
-    public KeywordResponse findKeyword(final Long sessionId, final Long keywordId) {
-        existSession(sessionId);
+    public KeywordResponse findKeyword(final Long keywordId) {
         Keyword keyword = keywordRepository.findById(keywordId)
             .orElseThrow(() -> new BadRequestException(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION));
 

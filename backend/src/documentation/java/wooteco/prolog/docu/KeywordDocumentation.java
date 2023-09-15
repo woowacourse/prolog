@@ -1,6 +1,7 @@
 package wooteco.prolog.docu;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -41,7 +42,7 @@ public class KeywordDocumentation extends NewDocumentation {
 
     @Test
     void 키워드_단일_조회() {
-        given(keywordService.findKeyword(any(), any())).willReturn(KEYWORD_SINGLE_RESPONSE);
+        given(keywordService.findKeyword(anyLong())).willReturn(KEYWORD_SINGLE_RESPONSE);
 
         given
             .when().get("/sessions/1/keywords/1")
