@@ -3,7 +3,6 @@ package wooteco.prolog.article.domain;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -11,7 +10,7 @@ import org.hibernate.annotations.CascadeType;
 @Embeddable
 public class ArticleBookmarks {
 
-    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "article")
     @Cascade(value = {CascadeType.PERSIST, CascadeType.DELETE})
     private List<ArticleBookmark> articleBookmarks;
 

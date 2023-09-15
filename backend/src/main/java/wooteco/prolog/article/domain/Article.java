@@ -68,7 +68,7 @@ public class Article {
     }
 
     public void addBookmark(final Member member) {
-        final ArticleBookmark articleBookmark = new ArticleBookmark(id, member.getId());
+        final ArticleBookmark articleBookmark = new ArticleBookmark(this, member.getId());
         articleBookmarks.addBookmark(articleBookmark);
     }
 

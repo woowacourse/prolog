@@ -2,23 +2,40 @@ package wooteco.prolog.article.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
 
 class ArticleBookmarksTest {
+
+    private Member member;
+    private Title title;
+    private Url url;
+    private ImageUrl imageUrl;
+
+    @BeforeEach
+    void setUp() {
+        member = new Member(11L, "username", "nickname", Role.CREW, 101L, "https://");
+        title = new Title("title");
+        url = new Url("url");
+        imageUrl = new ImageUrl("imageUrl");
+    }
 
     @Test
     @DisplayName("ArticleBookmark를 추가할 수 있다.")
     void addArticleBookmark() {
         //given
         final ArticleBookmarks articleBookmarks = new ArticleBookmarks();
-        final ArticleBookmark articleBookmark = new ArticleBookmark(1L, 2L);
+        final Article article = new Article(member, title, url, imageUrl);
+        final ArticleBookmark articleBookmark = new ArticleBookmark(article, member.getId());
 
         //when
         articleBookmarks.addBookmark(articleBookmark);
 
         //then
-        assertThat(articleBookmarks.containBookmark(2L))
+        assertThat(articleBookmarks.containBookmark(member.getId()))
             .isTrue();
     }
 
@@ -27,15 +44,15 @@ class ArticleBookmarksTest {
     void removeArticleBookmark() {
         //given
         final ArticleBookmarks articleBookmarks = new ArticleBookmarks();
-        final Long memberId = 2L;
-        final ArticleBookmark articleBookmark = new ArticleBookmark(1L, memberId);
+        final Article article = new Article(member, title, url, imageUrl);
+        final ArticleBookmark articleBookmark = new ArticleBookmark(article, member.getId());
         articleBookmarks.addBookmark(articleBookmark);
 
         //when
-        articleBookmarks.removeBookmark(memberId);
+        articleBookmarks.removeBookmark(member.getId());
 
         //then
-        assertThat(articleBookmarks.containBookmark(memberId))
+        assertThat(articleBookmarks.containBookmark(member.getId()))
             .isFalse();
     }
 
@@ -44,12 +61,12 @@ class ArticleBookmarksTest {
     void containBookmark() {
         //given
         final ArticleBookmarks articleBookmarks = new ArticleBookmarks();
-        final Long memberId = 2L;
-        final ArticleBookmark articleBookmark = new ArticleBookmark(1L, memberId);
+        final Article article = new Article(member, title, url, imageUrl);
+        final ArticleBookmark articleBookmark = new ArticleBookmark(article, member.getId());
         articleBookmarks.addBookmark(articleBookmark);
 
         //when
-        final Boolean actual = articleBookmarks.containBookmark(memberId);
+        final Boolean actual = articleBookmarks.containBookmark(member.getId());
 
         //then
         assertThat(actual)

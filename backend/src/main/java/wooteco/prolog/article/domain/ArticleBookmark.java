@@ -2,9 +2,12 @@ package wooteco.prolog.article.domain;
 
 import java.util.Objects;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -18,18 +21,20 @@ public class ArticleBookmark {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long articleId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "article_id")
+    private Article article;
 
     private Long memberId;
 
-    private ArticleBookmark(final Long id, final Long articleId, final Long memberId) {
+    private ArticleBookmark(final Long id, final Article article, final Long memberId) {
         this.id = id;
-        this.articleId = articleId;
+        this.article = article;
         this.memberId = memberId;
     }
 
-    public ArticleBookmark(final Long articleId, final Long memberId) {
-        this(null, articleId, memberId);
+    public ArticleBookmark(final Article article, final Long memberId) {
+        this(null, article, memberId);
     }
 
     public boolean isOwner(final Long memberId) {
