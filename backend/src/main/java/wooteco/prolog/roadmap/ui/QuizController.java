@@ -18,13 +18,13 @@ import wooteco.prolog.roadmap.application.dto.QuizzesResponse;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/sessions/{sessionId}/keywords/{keywordId}/quizs")
+//@RequestMapping("/sessions/{sessionId}/keywords/{keywordId}/quizs")
 public class QuizController {
 
     private final QuizService quizService;
 
     //: todo admin login 생기면 검증 추가
-    @PostMapping
+    @PostMapping("/sessions/{sessionId}/keywords/{keywordId}/quizs")
     public ResponseEntity<Void> create(@PathVariable Long sessionId, @PathVariable Long keywordId,
                                        @RequestBody QuizRequest quizRequest) {
         final Long quizId = quizService.createQuiz(keywordId, quizRequest);
@@ -34,18 +34,18 @@ public class QuizController {
             .build();
     }
 
-    @GetMapping("/{quizId}")
+    @GetMapping("/quizs/{quizId}")
     public ResponseEntity<QuizResponse> findQuizById(@PathVariable Long quizId) {
         return ResponseEntity.ok(quizService.findById(quizId));
     }
 
-    @GetMapping
+    @GetMapping("/sessions/{sessionId}/keywords/{keywordId}/quizs")
     public ResponseEntity<QuizzesResponse> findQuizzesByKeyword(@PathVariable Long sessionId,
                                                                 @PathVariable Long keywordId) {
         return ResponseEntity.ok(quizService.findQuizzesByKeywordId(keywordId));
     }
 
-    @PutMapping("/{quizId}")
+    @PutMapping("/sessions/{sessionId}/keywords/{keywordId}/quizs/{quizId}")
     ResponseEntity<Void> updateQuiz(@PathVariable Long sessionId,
                                     @PathVariable Long keywordId,
                                     @PathVariable Long quizId,
@@ -55,7 +55,7 @@ public class QuizController {
     }
 
 
-    @DeleteMapping("/{quizId}")
+    @DeleteMapping("/sessions/{sessionId}/keywords/{keywordId}/quizs/{quizId}")
     public ResponseEntity<Void> deleteQuiz(@PathVariable Long sessionId,
                                            @PathVariable Long keywordId,
                                            @PathVariable Long quizId) {

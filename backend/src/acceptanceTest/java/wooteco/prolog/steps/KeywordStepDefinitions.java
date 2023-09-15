@@ -123,10 +123,10 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
     }
 
 
-    @When("{int}번 세션과 {int}번 키워드와 {int}번 퀴즈를 조회하면")
-    public void 퀴즈를_조회하면(int sessionId, int keywordId, int quizId) {
+    @When("{int}번 퀴즈를 조회하면")
+    public void 퀴즈를_조회하면(int quizId) {
         context.invokeHttpGet(
-            "/sessions/" + sessionId + "/keywords/" + keywordId + "/quizs/" + quizId
+            "/quizs/" + quizId
         );
     }
 
