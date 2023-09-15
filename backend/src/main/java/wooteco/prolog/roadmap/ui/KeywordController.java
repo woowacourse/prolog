@@ -16,7 +16,6 @@ import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordsResponse;
 
 @RestController
-//@RequestMapping("/sessions/{sessionId}/keywords")
 public class KeywordController {
 
     private final KeywordService keywordService;
@@ -63,10 +62,9 @@ public class KeywordController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/sessions/{sessionId}/keywords/{keywordId}/children")
-    public ResponseEntity<KeywordResponse> find(@PathVariable Long sessionId,
-        @PathVariable Long keywordId) {
-        KeywordResponse response = keywordService.findKeywordWithAllChild(sessionId, keywordId);
+    @GetMapping("/keywords/{keywordId}/children")
+    public ResponseEntity<KeywordResponse> findChildrenKeywords(@PathVariable Long keywordId) {
+        KeywordResponse response = keywordService.findKeywordWithAllChild(keywordId);
         return ResponseEntity.ok(response);
     }
 }

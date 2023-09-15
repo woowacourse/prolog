@@ -108,7 +108,7 @@ class KeywordServiceTest {
         when(keywordRepository.findFetchById(1L)).thenReturn(keyword);
 
         //when
-        keywordService.findKeywordWithAllChild(1L, 1L);
+        keywordService.findKeywordWithAllChild(1L);
 
         //then
         verify(keywordRepository, times(1)).findFetchById(any());

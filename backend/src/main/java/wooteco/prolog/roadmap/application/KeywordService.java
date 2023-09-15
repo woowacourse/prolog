@@ -50,10 +50,7 @@ public class KeywordService {
     }
 
     @Transactional(readOnly = true)
-    public KeywordResponse findKeywordWithAllChild(final Long sessionId, final Long keywordId) {
-        existSession(sessionId);
-        existKeyword(keywordId);
-
+    public KeywordResponse findKeywordWithAllChild(final Long keywordId) {
         Keyword keyword = keywordRepository.findFetchById(keywordId);
 
         return KeywordResponse.createWithAllChildResponse(keyword);

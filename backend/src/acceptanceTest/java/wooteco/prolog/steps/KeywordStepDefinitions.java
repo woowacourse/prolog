@@ -70,7 +70,7 @@ public class KeywordStepDefinitions extends AcceptanceSteps {
     @When("{int}번 세션에 대한 {int}번 키워드와 자식 키워드를 함께 조회하면")
     public void 키워드와_자식_키워드를_함께_조회하면(int sessionId, int keywordId) {
         context.invokeHttpGet(
-            "/sessions/" + sessionId + "/keywords/" + keywordId + "/children"
+            "/keywords/" + keywordId + "/children"
         );
     }
 
