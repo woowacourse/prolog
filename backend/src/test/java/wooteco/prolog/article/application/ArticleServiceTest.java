@@ -7,15 +7,18 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
+import static wooteco.prolog.member.domain.Role.CREW;
 
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import wooteco.prolog.article.domain.Article;
+import wooteco.prolog.article.domain.ArticleBookmarks;
 import wooteco.prolog.article.domain.ImageUrl;
 import wooteco.prolog.article.domain.Title;
 import wooteco.prolog.article.domain.Url;
@@ -44,7 +47,7 @@ class ArticleServiceTest {
     void create_success() {
         //given
         final ArticleRequest judyRequest = new ArticleRequest("title", "url", "imageUrl");
-        final Member member = new Member(1L, "username", "nickname", Role.CREW, 1L, "url");
+        final Member member = new Member(1L, "username", "nickname", CREW, 1L, "url");
         when(memberService.findById(any())).thenReturn(member);
 
         final Article article = new Article(member, new Title("title"), new Url("url"),
@@ -78,7 +81,7 @@ class ArticleServiceTest {
     @Test
     void update_success() {
         //given
-        final Member judy = new Member(1L, "username", "nickname", Role.CREW, 1L, "url");
+        final Member judy = new Member(1L, "username", "nickname", CREW, 1L, "url");
         final Article judyArticle = new Article(judy, new Title("judyTitle"), new Url("judyUrl"),
             new ImageUrl("imageUrl"));
         when(articleRepository.findById(any())).thenReturn(Optional.of(judyArticle));
@@ -114,8 +117,8 @@ class ArticleServiceTest {
     @Test
     void update_fail_InvalidArticleAuthorException() {
         //given
-        final Member judy = new Member(1L, "judith", "judy", Role.CREW, 1L, "judyUrl");
-        final Member brown = new Member(2L, "brown", "brownie", Role.CREW, 2L, "brownUrl");
+        final Member judy = new Member(1L, "judith", "judy", CREW, 1L, "judyUrl");
+        final Member brown = new Member(2L, "brown", "brownie", CREW, 2L, "brownUrl");
         final Article brownArticle = new Article(brown, new Title("brownTitle"),
             new Url("brownUrl"), new ImageUrl("imageUrl"));
         when(articleRepository.findById(any())).thenReturn(Optional.of(brownArticle));
@@ -134,7 +137,7 @@ class ArticleServiceTest {
     @Test
     void delete_success() {
         //given
-        final Member judy = new Member(1L, "judith", "judy", Role.CREW, 1L, "judyUrl");
+        final Member judy = new Member(1L, "judith", "judy", CREW, 1L, "judyUrl");
         final Article judyArticle = new Article(judy, new Title("judyTitle"), new Url("judyUrl"),
             new ImageUrl("imageUrl"));
         when(articleRepository.findById(any())).thenReturn(Optional.of(judyArticle));
@@ -165,8 +168,8 @@ class ArticleServiceTest {
     @Test
     void delete_fail_InvalidArticleAuthorException() {
         //given
-        final Member judy = new Member(1L, "judith", "judy", Role.CREW, 1L, "judyUrl");
-        final Member brown = new Member(2L, "brown", "brownie", Role.CREW, 2L, "brownUrl");
+        final Member judy = new Member(1L, "judith", "judy", CREW, 1L, "judyUrl");
+        final Member brown = new Member(2L, "brown", "brownie", CREW, 2L, "brownUrl");
         final Article brownArticle = new Article(brown, new Title("brownTitle"),
             new Url("brownUrl"), new ImageUrl("imageUrl"));
         when(articleRepository.findById(any())).thenReturn(Optional.of(brownArticle));
@@ -177,5 +180,56 @@ class ArticleServiceTest {
         //when, then
         assertThatThrownBy(() -> articleService.delete(1L, judyLogin))
             .isInstanceOf(BadRequestException.class);
+    }
+
+    @Nested
+    @DisplayName("아티클의 북마크 상태를 바꿀 수 있다.")
+    class bookmarkArticle {
+
+        @DisplayName("아티클의 북마크를 추가한다.")
+        @Test
+        void add() {
+            //given
+            final Member member = new Member(1L, "userName", "nickName",
+                CREW, 1L, "imageUrl");
+            final Article article = new Article(member, new Title("brownTitle"),
+                new Url("brownUrl"), new ImageUrl("imageUrl"));
+            final Long articleId = 3L;
+            final LoginMember loginMember = new LoginMember(member.getId(), MEMBER);
+
+            when(articleRepository.findFetchById(articleId)).thenReturn(Optional.of(article));
+            when(memberService.findById(member.getId())).thenReturn(member);
+
+            //when
+            articleService.bookmarkArticle(articleId, loginMember, true);
+
+            //then
+            final ArticleBookmarks articleBookmarks = article.getArticleBookmarks();
+            assertThat(articleBookmarks.containBookmark(member.getId()))
+                .isTrue();
+        }
+
+        @DisplayName("아티클의 북마크를 삭제한다.")
+        @Test
+        void remove() {
+            //given
+            final Member member = new Member(1L, "userName", "nickName",
+                CREW, 1L, "imageUrl");
+            final Article article = new Article(member, new Title("brownTitle"),
+                new Url("brownUrl"), new ImageUrl("imageUrl"));
+            final Long articleId = 3L;
+            final LoginMember loginMember = new LoginMember(member.getId(), MEMBER);
+
+            when(articleRepository.findFetchById(articleId)).thenReturn(Optional.of(article));
+            when(memberService.findById(member.getId())).thenReturn(member);
+
+            //when
+            articleService.bookmarkArticle(articleId, loginMember, true);
+
+            //then
+            final ArticleBookmarks articleBookmarks = article.getArticleBookmarks();
+            assertThat(articleBookmarks.containBookmark(member.getId()))
+                .isTrue();
+        }
     }
 }

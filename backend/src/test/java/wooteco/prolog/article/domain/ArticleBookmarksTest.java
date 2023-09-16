@@ -1,0 +1,75 @@
+package wooteco.prolog.article.domain;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
+
+class ArticleBookmarksTest {
+
+    private Member member;
+    private Title title;
+    private Url url;
+    private ImageUrl imageUrl;
+
+    @BeforeEach
+    void setUp() {
+        member = new Member(11L, "username", "nickname", Role.CREW, 101L, "https://");
+        title = new Title("title");
+        url = new Url("url");
+        imageUrl = new ImageUrl("imageUrl");
+    }
+
+    @Test
+    @DisplayName("ArticleBookmark를 추가할 수 있다.")
+    void addArticleBookmark() {
+        //given
+        final ArticleBookmarks articleBookmarks = new ArticleBookmarks();
+        final Article article = new Article(member, title, url, imageUrl);
+        final ArticleBookmark articleBookmark = new ArticleBookmark(article, member.getId());
+
+        //when
+        articleBookmarks.addBookmark(articleBookmark);
+
+        //then
+        assertThat(articleBookmarks.containBookmark(member.getId()))
+            .isTrue();
+    }
+
+    @Test
+    @DisplayName("ArticleBookmark를 삭제할 수 있다,")
+    void removeArticleBookmark() {
+        //given
+        final ArticleBookmarks articleBookmarks = new ArticleBookmarks();
+        final Article article = new Article(member, title, url, imageUrl);
+        final ArticleBookmark articleBookmark = new ArticleBookmark(article, member.getId());
+        articleBookmarks.addBookmark(articleBookmark);
+
+        //when
+        articleBookmarks.removeBookmark(member.getId());
+
+        //then
+        assertThat(articleBookmarks.containBookmark(member.getId()))
+            .isFalse();
+    }
+
+    @Test
+    @DisplayName("ArticleBookmarks에 memberId를 넘겨서 해당 member가 아티클을 북마크했는지 확인한다.")
+    void containBookmark() {
+        //given
+        final ArticleBookmarks articleBookmarks = new ArticleBookmarks();
+        final Article article = new Article(member, title, url, imageUrl);
+        final ArticleBookmark articleBookmark = new ArticleBookmark(article, member.getId());
+        articleBookmarks.addBookmark(articleBookmark);
+
+        //when
+        final Boolean actual = articleBookmarks.containBookmark(member.getId());
+
+        //then
+        assertThat(actual)
+            .isTrue();
+    }
+}

@@ -1,16 +1,16 @@
 package wooteco.prolog.article.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 import joptsimple.internal.Strings;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class ArticleTest {
 
@@ -70,8 +70,8 @@ class ArticleTest {
         article.update("newTitle", "newUrl");
 
         //then
-        Assertions.assertThat(article.getTitle()).isEqualTo(new Title("newTitle"));
-        Assertions.assertThat(article.getUrl()).isEqualTo(new Url("newUrl"));
+        assertThat(article.getTitle()).isEqualTo(new Title("newTitle"));
+        assertThat(article.getUrl()).isEqualTo(new Url("newUrl"));
     }
 
     @DisplayName("유효하지 않은 제목으로 업데이트시 예외를 발생한다.")
@@ -96,5 +96,40 @@ class ArticleTest {
         //then
         assertThatThrownBy(() -> article.update("newTitle", Strings.repeat('.', 1025)))
             .isInstanceOf(BadRequestException.class);
+    }
+
+    @DisplayName("멤버가 아티클을 북마크로 등록한다.")
+    @Test
+    void addBookmark() {
+        //given
+        final Article article = new Article(member, title, url, imageUrl);
+
+        //when
+        article.addBookmark(member);
+
+        //then
+        final ArticleBookmarks articleBookmarks = article.getArticleBookmarks();
+        final boolean contains = articleBookmarks.containBookmark(member.getId());
+
+        assertThat(contains)
+            .isTrue();
+    }
+
+    @DisplayName("멤버가 아티클을 북마크로 등록한다.")
+    @Test
+    void removeBookmark() {
+        //given
+        final Article article = new Article(member, title, url, imageUrl);
+        article.addBookmark(member);
+
+        //when
+        article.removeBookmark(member);
+
+        //then
+        final ArticleBookmarks articleBookmarks = article.getArticleBookmarks();
+        final boolean contains = articleBookmarks.containBookmark(member.getId());
+
+        assertThat(contains)
+            .isFalse();
     }
 }

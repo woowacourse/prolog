@@ -1,5 +1,15 @@
 package wooteco.prolog.article.domain;
 
+import java.time.LocalDateTime;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,9 +18,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -35,6 +42,9 @@ public class Article {
     @Embedded
     private ImageUrl imageUrl;
 
+    @Embedded
+    private ArticleBookmarks articleBookmarks;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -43,6 +53,7 @@ public class Article {
         this.title = title;
         this.url = url;
         this.imageUrl = imageUrl;
+        this.articleBookmarks = new ArticleBookmarks();
     }
 
     public void validateOwner(final Member member) {
@@ -54,5 +65,14 @@ public class Article {
     public void update(final String title, final String url) {
         this.title = new Title(title);
         this.url = new Url(url);
+    }
+
+    public void addBookmark(final Member member) {
+        final ArticleBookmark articleBookmark = new ArticleBookmark(this, member.getId());
+        articleBookmarks.addBookmark(articleBookmark);
+    }
+
+    public void removeBookmark(final Member member) {
+        articleBookmarks.removeBookmark(member.getId());
     }
 }
