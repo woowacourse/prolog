@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.article.application.ArticleService;
-import wooteco.prolog.article.domain.ArticleBookmark;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
 
@@ -57,6 +56,14 @@ public class ArticleController {
                                                 @AuthMemberPrincipal final LoginMember member,
                                                 @RequestBody final ArticleBookmarkRequest request) {
         articleService.bookmarkArticle(id, member, request.getBookmark());
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}/likes")
+    public ResponseEntity<Void> likeArticle(@PathVariable final Long id,
+                                            @AuthMemberPrincipal final LoginMember member,
+                                            @RequestBody final ArticleLikesRequest request) {
+        articleService.likeArticle(id, member, request.getLikes());
         return ResponseEntity.ok().build();
     }
 }

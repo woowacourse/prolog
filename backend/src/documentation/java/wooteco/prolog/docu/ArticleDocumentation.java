@@ -12,6 +12,7 @@ import wooteco.prolog.NewDocumentation;
 import wooteco.prolog.article.application.ArticleService;
 import wooteco.prolog.article.ui.ArticleBookmarkRequest;
 import wooteco.prolog.article.ui.ArticleController;
+import wooteco.prolog.article.ui.ArticleLikesRequest;
 
 @WebMvcTest(controllers = ArticleController.class)
 public class ArticleDocumentation extends NewDocumentation {
@@ -36,5 +37,24 @@ public class ArticleDocumentation extends NewDocumentation {
 
         //docs
         response.apply(document("article/bookmark"));
+    }
+
+    @Test
+    void 아티클에_좋아요를_변경한다() {
+        //given, when
+        final ArticleLikesRequest articleLikesRequest = new ArticleLikesRequest(true);
+
+        final ValidatableMockMvcResponse response = given
+            .header("Authorization", "Bearer " + accessToken)
+            .contentType(APPLICATION_JSON)
+            .body(articleLikesRequest)
+            .when().put("/articles/{bookmark-id}/likes", 1L)
+            .then().log().all();
+
+        //then
+        response.expect(status().isOk());
+
+        //docs
+        response.apply(document("article/likes"));
     }
 }

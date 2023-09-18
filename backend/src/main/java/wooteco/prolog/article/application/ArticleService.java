@@ -79,4 +79,8 @@ public class ArticleService {
             article.removeBookmark(member);
         }
     }
+
+    public void likeArticle(final Long id, final LoginMember member, final Boolean likes) {
+
+    }
 }
