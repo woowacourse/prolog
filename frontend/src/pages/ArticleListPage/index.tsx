@@ -8,7 +8,7 @@ import { COLOR, PATH } from '../../constants';
 import styled from '@emotion/styled';
 import { MainContentStyle } from '../../PageRouter';
 import SelectBox from '../../components/Controls/SelectBox';
-import { ChangeEventHandler, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import ArticleBookmarkFilter from '../../components/Article/ArticleBookmarkFIlter';
 import { useGetFilteredArticleQuery } from '../../hooks/queries/article';
@@ -35,27 +35,31 @@ const ArticleListPage = () => {
 
   const changeFilterOption: (option: { value: string; label: string }) => void = (option) => {
     setSelectedCourse(option);
-    // getFilteredArticles();
   };
 
   const handleCheckBookmark: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setChecked(e.currentTarget.checked);
-    // getFilteredArticles();
   };
+
+  useEffect(() => {
+    getFilteredArticles();
+  }, [checked, selectedCourse]);
 
   return (
     <div css={[MainContentStyle]}>
       <Container>
-        <SelectBoxWrapper>
-          <SelectBox
-            isClearable={false}
-            value={selectedCourse}
-            defaultOption={selectedCourse}
-            options={CATEGORY_OPTIONS}
-            onChange={changeFilterOption}
-          />
-        </SelectBoxWrapper>
-        <ArticleBookmarkFilter checked={checked} handleCheckBookmark={handleCheckBookmark} />
+        <FilteringWrapper>
+          <SelectBoxWrapper>
+            <SelectBox
+              isClearable={false}
+              value={selectedCourse}
+              defaultOption={selectedCourse}
+              options={CATEGORY_OPTIONS}
+              onChange={changeFilterOption}
+            />
+          </SelectBoxWrapper>
+          <ArticleBookmarkFilter checked={checked} handleCheckBookmark={handleCheckBookmark} />
+        </FilteringWrapper>
         <Button
           type="button"
           size="X_SMALL"
@@ -80,6 +84,10 @@ export const Container = styled.div`
   justify-content: space-between;
   margin-bottom: 20px;
   gap: 15px;
+`;
+
+const FilteringWrapper = styled.div`
+  display: flex;
 `;
 
 const SelectBoxWrapper = styled.div`
