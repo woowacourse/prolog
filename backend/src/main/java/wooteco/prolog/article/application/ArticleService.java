@@ -68,16 +68,11 @@ public class ArticleService {
 
     @Transactional
     public void bookmarkArticle(final Long id, final LoginMember loginMember,
-                                final Boolean checked) {
+                                final Boolean isBookmark) {
         final Article article = articleRepository.findFetchById(id)
             .orElseThrow(() -> new BadRequestException(ARTICLE_NOT_FOUND_EXCEPTION));
         final Member member = memberService.findById(loginMember.getId());
-
-        if (TRUE.equals(checked)) {
-            article.addBookmark(member);
-        } else {
-            article.removeBookmark(member);
-        }
+        article.setBookmark(member, isBookmark);
     }
 
     public void likeArticle(final Long id, final LoginMember member, final Boolean likes) {

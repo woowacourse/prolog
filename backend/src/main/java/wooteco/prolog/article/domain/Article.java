@@ -1,5 +1,7 @@
 package wooteco.prolog.article.domain;
 
+import static java.lang.Boolean.TRUE;
+
 import java.time.LocalDateTime;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -67,12 +69,20 @@ public class Article {
         this.url = new Url(url);
     }
 
-    public void addBookmark(final Member member) {
+    public void setBookmark(final Member member, final Boolean isBookmark) {
+        if (TRUE.equals(isBookmark)) {
+            addBookmark(member);
+        } else {
+            removeBookmark(member);
+        }
+    }
+
+    private void addBookmark(final Member member) {
         final ArticleBookmark articleBookmark = new ArticleBookmark(this, member.getId());
         articleBookmarks.addBookmark(articleBookmark);
     }
 
-    public void removeBookmark(final Member member) {
+    private void removeBookmark(final Member member) {
         articleBookmarks.removeBookmark(member.getId());
     }
 }
