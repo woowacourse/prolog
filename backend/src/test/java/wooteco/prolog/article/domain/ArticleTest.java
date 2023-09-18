@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import joptsimple.internal.Strings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
@@ -98,38 +99,43 @@ class ArticleTest {
             .isInstanceOf(BadRequestException.class);
     }
 
-    @DisplayName("멤버가 아티클을 북마크로 등록한다.")
-    @Test
-    void addBookmark() {
-        //given
-        final Article article = new Article(member, title, url, imageUrl);
+    @Nested
+    @DisplayName("멤버가 아티클의 북마크값을 세팅한다.")
+    class setBookmark {
 
-        //when
-        article.addBookmark(member);
+        @DisplayName("멤버가 아티클을 북마크로 등록한다.")
+        @Test
+        void addBookmark() {
+            //given
+            final Article article = new Article(member, title, url, imageUrl);
 
-        //then
-        final ArticleBookmarks articleBookmarks = article.getArticleBookmarks();
-        final boolean contains = articleBookmarks.containBookmark(member.getId());
+            //when
+            article.setBookmark(member, true);
 
-        assertThat(contains)
-            .isTrue();
-    }
+            //then
+            final ArticleBookmarks articleBookmarks = article.getArticleBookmarks();
+            final boolean contains = articleBookmarks.containBookmark(member.getId());
 
-    @DisplayName("멤버가 아티클을 북마크로 등록한다.")
-    @Test
-    void removeBookmark() {
-        //given
-        final Article article = new Article(member, title, url, imageUrl);
-        article.addBookmark(member);
+            assertThat(contains)
+                .isTrue();
+        }
 
-        //when
-        article.removeBookmark(member);
+        @DisplayName("멤버가 아티클의 북마크를 해제한다.")
+        @Test
+        void removeBookmark() {
+            //given
+            final Article article = new Article(member, title, url, imageUrl);
+            article.setBookmark(member, true);
 
-        //then
-        final ArticleBookmarks articleBookmarks = article.getArticleBookmarks();
-        final boolean contains = articleBookmarks.containBookmark(member.getId());
+            //when
+            article.setBookmark(member, false);
 
-        assertThat(contains)
-            .isFalse();
+            //then
+            final ArticleBookmarks articleBookmarks = article.getArticleBookmarks();
+            final boolean contains = articleBookmarks.containBookmark(member.getId());
+
+            assertThat(contains)
+                .isFalse();
+        }
     }
 }
