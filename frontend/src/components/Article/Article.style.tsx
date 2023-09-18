@@ -72,19 +72,20 @@ export const Title = styled.p`
   -webkit-box-orient: vertical;
 `;
 
-export const ArticleBookmarkButtonStyle = css`
-  flex-direction: column;
-  padding: 0;
-  width: fit-content;
-  font-size: 1.4rem;
+export const BookmarkWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+`;
 
+export const ArticleBookmarkButtonStyle = css`
+  width: initial;
   background-color: transparent;
-  color: ${COLOR.BLACK_800};
+  text-align: right;
 
   & > img {
-    margin-right: 0;
-    width: 1.8rem;
-    height: 1.8rem;
+    width: 2.3rem;
+    height: 2.3rem;
   }
 `;
 
