@@ -33,11 +33,13 @@ const Article = ({ id, title, userName, url, createdAt, imageUrl }: ArticleType)
             <Styled.CreatedAt>{createdAt.split(' ')[0]}</Styled.CreatedAt>
           </Styled.ArticleInfoWrapper>
           <Styled.Title>{title}</Styled.Title>
-          <Scrap
-            scrap={bookmark}
-            onClick={toggleBookmark}
-            cssProps={Styled.ArticleBookmarkButtonStyle}
-          />
+          <Styled.BookmarkWrapper>
+            <Scrap
+              scrap={bookmark}
+              onClick={toggleBookmark}
+              cssProps={Styled.ArticleBookmarkButtonStyle}
+            />
+          </Styled.BookmarkWrapper>
         </Styled.ArticleInfoContainer>
       </Styled.Anchor>
     </Styled.Container>
