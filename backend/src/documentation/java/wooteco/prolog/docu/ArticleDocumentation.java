@@ -29,7 +29,7 @@ public class ArticleDocumentation extends NewDocumentation {
             .header("Authorization", "Bearer " + accessToken)
             .contentType(APPLICATION_JSON)
             .body(bookmarkRequest)
-            .when().put("/articles/{bookmark-id}/bookmark", 1L)
+            .when().put("/articles/{article-id}/bookmark", 1L)
             .then().log().all();
 
         //then
@@ -48,7 +48,7 @@ public class ArticleDocumentation extends NewDocumentation {
             .header("Authorization", "Bearer " + accessToken)
             .contentType(APPLICATION_JSON)
             .body(articleLikesRequest)
-            .when().put("/articles/{bookmark-id}/likes", 1L)
+            .when().put("/articles/{article-id}/likes", 1L)
             .then().log().all();
 
         //then
