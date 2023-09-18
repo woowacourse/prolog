@@ -8,12 +8,10 @@ interface ArticleBookmarkFilterProps {
 const ArticleBookmarkFilter = ({ checked, handleCheckBookmark }: ArticleBookmarkFilterProps) => {
   return (
     <ArticleBookmarkFilterContainer>
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={handleCheckBookmark}
-        value="북마크한 아티클"
-      />
+      <label>
+        <input type="checkbox" checked={checked} onChange={handleCheckBookmark} />
+        북마크한 아티클
+      </label>
     </ArticleBookmarkFilterContainer>
   );
 };
@@ -21,8 +19,10 @@ const ArticleBookmarkFilter = ({ checked, handleCheckBookmark }: ArticleBookmark
 export default ArticleBookmarkFilter;
 
 const ArticleBookmarkFilterContainer = styled.div`
-  width: 100px;
-  border: 1px solid black;
-  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  width: 150px;
+  height: 100%;
   font-size: 1.5rem;
 `;
