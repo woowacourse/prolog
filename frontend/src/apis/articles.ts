@@ -2,7 +2,6 @@ import { client } from '.';
 import {
   ArticleBookmarkPutRequest,
   ArticleRequest,
-  CourseFilter,
   MetaOgRequest,
   MetaOgResponse,
 } from '../models/Article';
@@ -20,5 +19,5 @@ export const requestPutArticleBookmark = ({ articleId, bookmark }: ArticleBookma
 };
 
 export const requestGetFilteredArticle = (course: string, bookmark: boolean) => {
-  return client.get(`/articles/filter?course=${course}&bookmark=${bookmark}`);
+  return client.get(`/articles/filter?course=${course}&onlyBookmarked=${bookmark}`);
 };

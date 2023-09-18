@@ -39,9 +39,11 @@ export const articlesHandler = [
 
   rest.get(`${BASE_URL}/articles/filter`, (req, res, ctx) => {
     const course = req.url.searchParams.get('course');
-    const bookmark = req.url.searchParams.get('bookmark');
+    const onlyBookmarked = req.url.searchParams.get('onlyBookmarked');
 
-    const filteredArticle = articles.filter((article) => bookmark === String(article.isBookMarked));
+    const filteredArticle = articles.filter(
+      (article) => onlyBookmarked === String(article.isBookMarked)
+    );
 
     return res(ctx.status(200), ctx.json(filteredArticle));
   }),
