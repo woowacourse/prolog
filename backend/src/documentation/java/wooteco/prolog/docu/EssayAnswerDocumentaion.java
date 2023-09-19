@@ -34,22 +34,6 @@ import wooteco.prolog.studylog.application.dto.EssayAnswersResponse;
 @WebMvcTest(EssayAnswerController.class)
 public class EssayAnswerDocumentaion extends NewDocumentation {
 
-    private static final EssayAnswer ESSAY_ANSWER_1 = new EssayAnswer(
-        new Quiz(1L,
-            new Keyword(1L, "keyword1", "첫 번째 키워드", 1, 5, 1L, null, Collections.emptySet()),
-            "questoin"),
-        "answer",
-        new Member(1L, "member1", "nickname1", Role.CREW, 1L, "image.jpg")
-    );
-
-    private static final EssayAnswer ESSAY_ANSWER_2 = new EssayAnswer(
-        new Quiz(2L,
-            new Keyword(1L, "keyword1", "첫 번째 키워드", 1, 5, 1L, null, Collections.emptySet()),
-            "questoin"),
-        "answer",
-        new Member(2L, "member2", "nickname2", Role.CREW, 2L, "image.jpg")
-    );
-
     @MockBean
     EssayAnswerService essayAnswerService;
 
@@ -75,8 +59,8 @@ public class EssayAnswerDocumentaion extends NewDocumentation {
         given(essayAnswerService.searchEssayAnswers(any(), any())).willReturn(
             new EssayAnswersResponse(
                 Arrays.asList(
-                    EssayAnswerResponse.of(ESSAY_ANSWER_1),
-                    EssayAnswerResponse.of(ESSAY_ANSWER_1)),
+                    EssayAnswerResponse.of(ESSAY_ANSWER),
+                    EssayAnswerResponse.of(ESSAY_ANSWER)),
                 1L, 1, 1));
         EssayAnswerSearchRequest request = new EssayAnswerSearchRequest(1L, 2L, Collections.emptyList(),
             Collections.emptyList());
@@ -92,7 +76,7 @@ public class EssayAnswerDocumentaion extends NewDocumentation {
     @Test
     void EssayAnswer_조회() {
         given(essayAnswerService.getById(anyLong()))
-            .willReturn(ESSAY_ANSWER_1);
+            .willReturn(ESSAY_ANSWER);
 
         given
             .when().get("essay-answers/{id}", 1)
@@ -134,11 +118,19 @@ public class EssayAnswerDocumentaion extends NewDocumentation {
     @Test
     void Quiz_에_대한_EssayAnswerResponse_조회() {
         given(essayAnswerService.findByQuizId(anyLong()))
-            .willReturn(Arrays.asList(ESSAY_ANSWER_1, ESSAY_ANSWER_2));
+            .willReturn(Arrays.asList(ESSAY_ANSWER, ESSAY_ANSWER));
 
         given
             .when().get("quizzes/{id}/essay-answers", 1)
             .then().log().all().apply(document("essay-answer/quiz-essay-answers-search"))
             .statusCode(HttpStatus.OK.value());
     }
+
+    private static final EssayAnswer ESSAY_ANSWER = new EssayAnswer(
+        new Quiz(1L,
+            new Keyword(1L, "keyword1", "첫 번째 키워드", 1, 5, 1L, null, Collections.emptySet()),
+            "questoin"),
+        "answer",
+        new Member(1L, "member1", "nickname1", Role.CREW, 1L, "image.jpg")
+    );
 }
