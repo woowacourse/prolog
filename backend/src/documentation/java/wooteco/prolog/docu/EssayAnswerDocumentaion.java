@@ -69,7 +69,7 @@ public class EssayAnswerDocumentaion extends NewDocumentation {
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(request)
             .when().get("essay-answers")
-            .then().log().all().apply(document("essay-answer/search-list"))
+            .then().log().all().apply(document("essay-answer/search/list"))
             .statusCode(HttpStatus.OK.value());
     }
 
@@ -111,7 +111,7 @@ public class EssayAnswerDocumentaion extends NewDocumentation {
 
         given
             .when().get("quizzes/{id}", 1)
-            .then().log().all().apply(document("essay-answer/quiz-search"))
+            .then().log().all().apply(document("essay-answer/quiz/search"))
             .statusCode(HttpStatus.OK.value());
     }
 
@@ -122,7 +122,7 @@ public class EssayAnswerDocumentaion extends NewDocumentation {
 
         given
             .when().get("quizzes/{id}/essay-answers", 1)
-            .then().log().all().apply(document("essay-answer/quiz-essay-answers-search"))
+            .then().log().all().apply(document("essay-answer/quiz/essay-answer"))
             .statusCode(HttpStatus.OK.value());
     }
 
