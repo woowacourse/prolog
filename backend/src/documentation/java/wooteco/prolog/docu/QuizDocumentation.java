@@ -27,13 +27,29 @@ public class QuizDocumentation extends NewDocumentation {
 
     @Test
     void 퀴즈_생성() {
+        QuizResponse question = new QuizResponse(
+            1L,
+            "question",
+            true
+        );
+        given(quizService.findById(any(), any()))
+            .willReturn(question);
+
+        given
+            .when().get("/sessions/{sessionId}/keywords/{keywordId}/quizs/{quizId}", 1L, 1L, 1L)
+            .then().log().all().apply(document("quiz/create"))
+            .statusCode(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    void 퀴즈_상세_조회() {
         given(quizService.createQuiz(any(), any())).willReturn(1L);
 
         given
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .body(QUIZ_REQUEST)
             .when().post("/sessions/{sessionId}/keywords/{keywordId}/quizs", 1L, 1L)
-            .then().log().all().apply(document("quiz/create"))
+            .then().log().all().apply(document("quiz/detail"))
             .statusCode(HttpStatus.CREATED.value());
     }
 
