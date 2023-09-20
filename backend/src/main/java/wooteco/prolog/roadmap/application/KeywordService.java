@@ -52,8 +52,25 @@ public class KeywordService {
     }
 
     @Transactional(readOnly = true)
+    public KeywordResponse newFindKeyword(final Long keywordId) {
+        Keyword keyword = keywordRepository.findById(keywordId)
+            .orElseThrow(() -> new BadRequestException(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION));
+
+        return KeywordResponse.createResponse(keyword);
+    }
+
+    @Transactional(readOnly = true)
     public KeywordResponse findKeywordWithAllChild(final Long sessionId, final Long keywordId) {
         existSession(sessionId);
+        existKeyword(keywordId);
+
+        Keyword keyword = keywordRepository.findFetchByIdOrderBySeq(keywordId);
+
+        return KeywordResponse.createWithAllChildResponse(keyword);
+    }
+
+    @Transactional(readOnly = true)
+    public KeywordResponse newFindKeywordWithAllChild(final Long keywordId) {
         existKeyword(keywordId);
 
         Keyword keyword = keywordRepository.findFetchByIdOrderBySeq(keywordId);
@@ -66,6 +83,13 @@ public class KeywordService {
         existSession(sessionId);
 
         List<Keyword> keywords = keywordRepository.findBySessionIdAndParentIsNull(sessionId);
+
+        return KeywordsResponse.createResponse(keywords);
+    }
+
+    @Transactional(readOnly = true)
+    public KeywordsResponse newFindSessionIncludeRootKeywords() {
+        List<Keyword> keywords = keywordRepository.newFindParentIsNull();
 
         return KeywordsResponse.createResponse(keywords);
     }
