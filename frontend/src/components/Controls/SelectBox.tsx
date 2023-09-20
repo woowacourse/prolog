@@ -34,6 +34,25 @@ interface SelectOption {
   label: string;
 }
 
+/**
+  FIXME: value props type SelectOption['value'] 로 변경되어야 함.
+  아래 예시처럼 type을 좁힐 수 없는 문제가 있음.
+
+  const CATEGORY_OPTIONS = [
+    { value: '', label: '전체보기' },
+    { value: 'frontend', label: '프론트엔드' },
+    { value: 'backend', label: '백엔드' },
+    { value: 'android', label: '안드로이드' },
+  ];
+
+  type CategoryOptions = typeof CATEGORY_OPTIONS[number]; 
+
+  ->type CategoryOptions = {
+      value: string;
+      label: string;
+    }
+  위 처럼 value type을 좁힐 수 없음.
+ */
 interface SelectBoxProps {
   isMulti?: boolean;
   options: SelectOption[];
