@@ -19,5 +19,5 @@ export const requestPutArticleBookmark = ({ articleId, bookmark }: ArticleBookma
 };
 
 export const requestGetFilteredArticle = (course: string, bookmark: boolean) => {
-  return client.get(`/articles/filter?course=${course}&onlyBookmarked=${bookmark}`);
+  return client.get(`/articles?course=${course}&onlyBookmarked=${bookmark}`);
 };
