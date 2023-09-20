@@ -8,7 +8,7 @@ export interface ArticleType {
   id: number;
   userName: string;
   title: string;
-  isBookMarked: false;
+  isBookMarked: boolean;
   url: string;
   createdAt: string;
   imageUrl: string;

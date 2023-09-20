@@ -5,9 +5,9 @@ import { useRef, useState } from 'react';
 import { usePutArticleBookmarkMutation } from '../../hooks/queries/article';
 import debounce from '../../utils/debounce';
 
-const Article = ({ id, title, userName, url, createdAt, imageUrl }: ArticleType) => {
+const Article = ({ id, title, userName, url, createdAt, imageUrl, isBookMarked }: ArticleType) => {
   const bookmarkRef = useRef(false);
-  const [bookmark, setBookmark] = useState(false);
+  const [bookmark, setBookmark] = useState(isBookMarked);
   const { mutate: putBookmark } = usePutArticleBookmarkMutation();
 
   const toggleBookmark: React.MouseEventHandler<HTMLButtonElement> = (e) => {
