@@ -195,7 +195,7 @@ class KeywordRepositoryTest {
             Keyword.createKeyword("자바10", "자바 설명10", 10, 5, session5.getId(), null));
 
         //when
-        final List<Keyword> keywords = keywordRepository.newFindParentIsNull();
+        final List<Keyword> keywords = keywordRepository.newFindByParentIsNull();
 
         //then
         assertThat(keywords)

@@ -40,7 +40,7 @@ public interface KeywordRepository extends JpaRepository<Keyword, Long> {
     @Query("SELECT k FROM Keyword k "
         + "LEFT JOIN FETCH k.recommendedPosts "
         + "WHERE k.parent IS NULL")
-    List<Keyword> newFindParentIsNull();
+    List<Keyword> newFindByParentIsNull();
 
     List<Keyword> findBySessionIdIn(final Set<Long> sessionIds);
 }
