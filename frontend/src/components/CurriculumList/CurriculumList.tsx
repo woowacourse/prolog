@@ -1,18 +1,16 @@
 import ResponsiveButton from '../Button/ResponsiveButton';
 import COLOR from '../../constants/color';
 import * as Styled from './CurriculumList.styles';
-import { useGetCurriculums } from '../../hooks/queries/curriculum';
+import { CurriculumResponse } from '../../models/Keywords';
 
 interface CurriculumListProps {
   selectedCurriculumId: number;
-  handleClickCurriculum: (curriculumId: number) => void;
+  curriculums: CurriculumResponse[];
+  onCurriculumClick: (curriculumId: number) => void;
 }
 
-const CurriculumList = ({ selectedCurriculumId, handleClickCurriculum }: CurriculumListProps) => {
-  const { isLoading, curriculums } = useGetCurriculums();
-  if (isLoading) {
-    return null;
-  }
+const CurriculumList = (props: CurriculumListProps) => {
+  const { curriculums, selectedCurriculumId, onCurriculumClick } = props;
 
   return (
     <Styled.Root>
@@ -20,7 +18,7 @@ const CurriculumList = ({ selectedCurriculumId, handleClickCurriculum }: Curricu
         return (
           <Styled.SessionButtonWrapper key={id}>
             <ResponsiveButton
-              onClick={() => handleClickCurriculum(id)}
+              onClick={() => onCurriculumClick(id)}
               text={name}
               color={selectedCurriculumId === id ? COLOR.WHITE : COLOR.BLACK_600}
               backgroundColor={

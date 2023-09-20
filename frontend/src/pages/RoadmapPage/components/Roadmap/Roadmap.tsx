@@ -1,22 +1,24 @@
 /** @jsxImportSource @emotion/react */
 
 import * as d3 from 'd3';
-import { KeywordResponse } from '../../models/Keywords';
-import { PropsWithChildren } from 'react';
-import { css } from '@emotion/react';
-import QuizProgress from './QuizProgress';
+import { KeywordResponse } from '../../../../models/Keywords';
+import SubKeyword from './SubKeyword';
+import MainKeyword from './MainKeyword';
+import { hsl, KeywordColors } from '../../colors';
 
 type KeywordPosition = 'left' | 'right';
 
 type Keyword = KeywordResponse;
 
 type RoadmapProps = {
+  hue: number;
   keywords: KeywordResponse[];
   width: number;
   onClick: (keyword: KeywordResponse) => void;
 };
 
 type SubKeywordsProps = {
+  hue: number;
   subKeywordWidth: number;
   subKeywordHeight: number;
   subKeywordsGap: number;
@@ -24,28 +26,12 @@ type SubKeywordsProps = {
   keywords: Keyword[];
   position: KeywordPosition;
 
-  // onClick: () => void;
   onClick: (keyword: KeywordResponse) => void;
-};
-
-const Color = {
-  MAIN_KEYWORD: 'hsl(220, 50%, 40%)', // hsl(60, 100%, 50%)
-  SUB_KEYWORD: 'hsl(220, 100%, 80%)', // hsl(50, 100%, 80%)
-  MAIN_KEYWORD_HOVER: 'hsl(60, 100%, 40%)',
-  SUB_KEYWORD_HOVER: 'hsl(50, 100%, 65%)',
-  LINE: '#333333',
-  BORDER: 'white',
-};
-
-const IMPORTANCE_COLOR = {
-  4: 'hsl(0, 100%, 50%)',
-  3: 'hsl(30, 100%, 60%)',
-  2: 'hsl(60, 100%, 48%)',
-  1: '#EEEEEE',
 };
 
 const createSubKeywords = (props: SubKeywordsProps): { height: number; child: React.ReactNode } => {
   const {
+    hue,
     subKeywordWidth,
     subKeywordHeight,
     subKeywordsGap,
@@ -61,6 +47,7 @@ const createSubKeywords = (props: SubKeywordsProps): { height: number; child: Re
   const { childrenHeight, children } = keywords.reduce(
     ({ childrenHeight, children }, keyword, index) => {
       const { height: childHeight, child } = createSubKeywords({
+        hue,
         subKeywordWidth,
         subKeywordHeight,
         subKeywordsGap,
@@ -104,7 +91,7 @@ const createSubKeywords = (props: SubKeywordsProps): { height: number; child: Re
           <>
             <path
               d={pathFromMainToSubKeyword(index, childrenHeight)}
-              stroke={Color.LINE}
+              stroke={hsl(KeywordColors.LINE)}
               strokeDasharray="2 4"
               strokeWidth={2}
               fill="none"
@@ -120,65 +107,7 @@ const createSubKeywords = (props: SubKeywordsProps): { height: number; child: Re
                 height={subKeywordHeight}
                 overflow="visible"
               >
-                <div
-                  css={css`
-                    background: ${Color.SUB_KEYWORD};
-                    height: 100%;
-                    display: grid;
-                    grid-template-columns: 1fr;
-                    align-items: center;
-                    font-size: 12px;
-                    font-weight: bold;
-                    cursor: pointer;
-                    border-radius: 4px;
-                    overflow: hidden;
-
-                    &:hover {
-                      background: ${Color.SUB_KEYWORD_HOVER};
-                    }
-                    & > * {
-                      grid-area: 1 / 1 / 1 / 1;
-                    }
-                  `}
-                  title={keyword.name}
-                >
-                  <div 
-                    css={css`
-                      height: 100%;
-                      display: flex;
-                      align-items: flex-start;
-                      justify-content: flex-end;
-                      position: absolute;
-                      top: -5px;
-                      right: -5px;
-                    `}>
-                  <QuizProgress
-                    totalCount={keyword.totalQuizCount}
-                    doneCount={keyword.doneQuizCount}
-                  />
-                  </div>
-                  <div
-                    css={css`
-                      width: 10px;
-                      height: 100%;
-                      background: ${IMPORTANCE_COLOR[keyword.importance]};
-                      margin-right: auto;
-                      box-shadow: inset 1px 0 1px 1px rgba(0, 0, 0, 0.05);
-                    `}
-                  />
-                  <div
-                    css={css`
-                      justify-self: center;
-                      text-align: center;
-                      width: 80%;
-                      overflow: hidden;
-                      white-space: nowrap;
-                      text-overflow: ellipsis;
-                    `}
-                  >
-                    {keyword.name}
-                  </div>
-                </div>
+                <SubKeyword keyword={keyword} hue={hue} onClick={onClick} />
               </foreignObject>
             </g>
             <g
@@ -206,64 +135,8 @@ const createSubKeywords = (props: SubKeywordsProps): { height: number; child: Re
   };
 };
 
-type MainKeywordProps = PropsWithChildren<{
-  keyword: Keyword;
-  position: KeywordPosition;
-  width: number;
-  height: number;
-  onClick: (keyword: KeywordResponse) => void;
-}>;
-
-const MainKeyword = (props: MainKeywordProps) => {
-  const { width, height, keyword, position, children, onClick } = props;
-
-  return (
-    <>
-      <foreignObject
-        x={-width / 2}
-        y={0}
-        width={width}
-        height={height}
-        onClick={() => onClick(keyword)}
-      >
-        <div
-          css={css`
-            background: ${Color.MAIN_KEYWORD};
-            border: 4px solid ${Color.BORDER};
-            border-radius: 8px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-weight: bold;
-            font-family: 'TheJamsil5Bold';
-            color: white;
-
-            text-align: center;
-            width: 100%;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-
-            &:hover {
-              background: ${Color.MAIN_KEYWORD_HOVER};
-            }
-          `}
-        >
-          {keyword.name}
-        </div>
-      </foreignObject>
-
-      <g transform={`translate(${(width / 2) * (position === 'left' ? -1 : 1)}, ${height / 2})`}>
-        {children}
-      </g>
-    </>
-  );
-};
-
 const Roadmap = (props: RoadmapProps) => {
-  const { keywords: data, width, onClick } = props;
+  const { keywords: data, width, hue, onClick } = props;
 
   const mainKeywordWidth = 200;
   const mainKeywordHeight = 50;
@@ -313,6 +186,7 @@ const Roadmap = (props: RoadmapProps) => {
           keywords: keyword.childrenKeywords,
           position,
           onClick,
+          hue,
         });
 
         const oppositeTreeHeightDiff = Math.abs(
@@ -342,22 +216,30 @@ const Roadmap = (props: RoadmapProps) => {
             <g transform={`translate(0, ${subKeywordsTotalHeight})`}>
               <path
                 d={fromPreviousMainKeywordArcArrow(start, end)}
-                stroke={Color.LINE}
+                stroke={hsl(KeywordColors.LINE)}
                 strokeWidth={4}
                 fill="transparent"
                 markerEnd="url(#arrow-head)"
               />
             </g>
             <g transform={`translate(${horizontalOffset}, ${subKeywordsTotalHeight})`}>
-              <MainKeyword
+              <foreignObject
+                x={-mainKeywordWidth / 2}
+                y={0}
                 width={mainKeywordWidth}
                 height={mainKeywordHeight}
-                keyword={keyword}
-                position={position}
-                onClick={onClick}
+                onClick={() => onClick(keyword)}
+              >
+                <MainKeyword keyword={keyword} hue={hue} onClick={onClick} />
+              </foreignObject>
+
+              <g
+                transform={`translate(${(mainKeywordWidth / 2) * (position === 'left' ? -1 : 1)}, ${
+                  mainKeywordHeight / 2
+                })`}
               >
                 {child}
-              </MainKeyword>
+              </g>
             </g>
           </>
         );

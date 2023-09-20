@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 export const Root = styled.main`
   display: flex;
   flex-direction: column;
+  gap: 24px;
+
   width: 100%;
   padding: 0 30px;
 `;

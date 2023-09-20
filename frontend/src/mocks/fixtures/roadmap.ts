@@ -11,7 +11,28 @@ const roadmapData: RoadmapResponse['data'] = [
     description: '동적 타이핑, 스크립트 언어입니다.',
     doneQuizCount: 4,
     totalQuizCount: 5,
-    recommendedPosts: [],
+    recommendedPosts: [
+      {
+        id: 1,
+        url: 'https://solo5star.tistory.com',
+      },
+      {
+        id: 2,
+        url: 'https://solo5star.tistory.com',
+      },
+      {
+        id: 3,
+        url: 'https://solo5star.tistory.com',
+      },
+      {
+        id: 4,
+        url: 'https://solo5star.tistory.com',
+      },
+      {
+        id: 5,
+        url: 'https://solo5star.tistory.com',
+      },
+    ],
     childrenKeywords: [
       {
         keywordId: 2,
@@ -45,7 +66,16 @@ const roadmapData: RoadmapResponse['data'] = [
             description: 'const',
             doneQuizCount: 3,
             totalQuizCount: 3,
-            recommendedPosts: [],
+            recommendedPosts: [
+              {
+                id: 1,
+                url: 'https://solo5star.tistory.com',
+              },
+              {
+                id: 2,
+                url: 'https://solo5star.tistory.com',
+              },
+            ],
             childrenKeywords: [],
           },
           {
@@ -57,7 +87,24 @@ const roadmapData: RoadmapResponse['data'] = [
             description: 'var',
             doneQuizCount: 0,
             totalQuizCount: 5,
-            recommendedPosts: [],
+            recommendedPosts: [
+              {
+                id: 1,
+                url: 'https://solo5star.tistory.com',
+              },
+              {
+                id: 12,
+                url: 'https://solo5star.tistory.com',
+              },
+              {
+                id: 13,
+                url: 'https://solo5star.tistory.com',
+              },
+              {
+                id: 14,
+                url: 'https://solo5star.tistory.com',
+              },
+            ],
             childrenKeywords: [],
           },
         ],

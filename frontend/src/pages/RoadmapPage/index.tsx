@@ -3,18 +3,32 @@ import { KeywordResponse } from '../../models/Keywords';
 import KeywordDetailSideSheet from '../../components/KeywordDetailSideSheet/KeywordDetailSideSheet';
 import * as Styled from './styles';
 import CurriculumList from '../../components/CurriculumList/CurriculumList';
-import Roadmap from './Roadmap';
+import Roadmap from './components/Roadmap/Roadmap';
 import { useRoadmap } from '../../hooks/queries/keywords';
 import RoadmapStyles from './RoadmapStyles';
+import { useGetCurriculums } from '../../hooks/queries/curriculum';
 
 const lastSeenCurriculumId = Number(localStorage.getItem('curriculumId') ?? 1);
 
+const getHueHeuristically = (curriculumName: string) => {
+  const defaultHue = 0;
+  const [hue] = ([
+    [44, '백엔드'],
+    [220, '프론트엔드'],
+    [130, '안드로이드'],
+  ] as const).find(([, searchName]) => curriculumName.includes(searchName)) ?? [defaultHue];
+
+  return hue;
+};
+
 const RoadmapPage = () => {
   const [isSideSheetOpen, setIsSideSheetOpen] = useState(false);
+  const { curriculums } = useGetCurriculums();
   const [selectedCurriculumId, setSelectedCurriculumId] = useState(lastSeenCurriculumId);
   const [keywordDetail, setKeywordDetail] = useState<KeywordResponse | null>(null);
-
   const { data: roadmap } = useRoadmap({ curriculumId: selectedCurriculumId });
+
+  const selectedCurriculum = curriculums?.find(it => it.id === selectedCurriculumId) ?? null;
 
   const handleClickCurriculum = (id: number) => {
     setSelectedCurriculumId(id);
@@ -36,17 +50,18 @@ const RoadmapPage = () => {
       <Styled.Main>
         <section>
           <Styled.Title>커리큘럼</Styled.Title>
-          <CurriculumList
+          {curriculums && <CurriculumList
+            curriculums={curriculums}
             selectedCurriculumId={selectedCurriculumId}
-            handleClickCurriculum={handleClickCurriculum}
-          />
+            onCurriculumClick={handleClickCurriculum}
+          />}
         </section>
 
         <section style={{ marginBottom: '4rem' }}>
           <Styled.Title>로드맵!!</Styled.Title>
           <Styled.RoadmapContainer>
-            {roadmap && (
-              <Roadmap width={1040} keywords={roadmap.data} onClick={handleClickKeyword} />
+            {roadmap && selectedCurriculum && (
+              <Roadmap width={1040} keywords={roadmap.data} hue={getHueHeuristically(selectedCurriculum.name)} onClick={handleClickKeyword} />
             )}
           </Styled.RoadmapContainer>
         </section>

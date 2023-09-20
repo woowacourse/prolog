@@ -14,7 +14,7 @@ const KeywordDetailSideSheet = ({
   keywordDetail,
   handleCloseSideSheet,
 }: KeywordDetailSideSheetProps) => {
-  const { name, keywordId, description } = keywordDetail;
+  const { name, keywordId, description, recommendedPosts } = keywordDetail;
 
   const { user: { isLoggedIn } } = useContext(UserContext);
   const { quizList } = useGetQuizListByKeyword({ keywordId });
@@ -41,6 +41,17 @@ const KeywordDetailSideSheet = ({
                 &nbsp;/&nbsp;
                 <a href={`/quizzes/${quizId}/essay-answers`}>답변 보러가기</a>
               </li>
+            ))}
+          </ol>
+        </Styled.QuizSection>
+        <Styled.QuizSection>
+          <h3>
+            추천 포스트
+          </h3>
+          {recommendedPosts.length === 0 && <p>등록된 글이 없어요 😭</p>}
+          <ol>
+            {recommendedPosts.map(({ id, url }) => (
+              <li key={id}><a href={url} target="_blank" rel="noreferrer">- {url.slice(8)}</a></li>
             ))}
           </ol>
         </Styled.QuizSection>
