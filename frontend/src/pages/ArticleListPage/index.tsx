@@ -14,10 +14,10 @@ import ArticleBookmarkFilter from '../../components/Article/ArticleBookmarkFIlte
 import { useGetFilteredArticleQuery } from '../../hooks/queries/article';
 
 const CATEGORY_OPTIONS = [
-  { value: '전체보기', label: '전체보기' },
-  { value: '프론트엔드', label: '프론트엔드' },
-  { value: '백엔드', label: '백엔드' },
-  { value: '안드로이드', label: '안드로이드' },
+  { value: 'all', label: '전체보기' },
+  { value: 'frontend', label: '프론트엔드' },
+  { value: 'backend', label: '백엔드' },
+  { value: 'android', label: '안드로이드' },
 ];
 
 type CategoryOptions = typeof CATEGORY_OPTIONS[number];
