@@ -1,7 +1,5 @@
 package wooteco.prolog.article.ui;
 
-import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,11 +9,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.article.application.ArticleService;
-import wooteco.prolog.article.domain.ArticleBookmark;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.member.domain.MemberGroupType;
+
+import java.net.URI;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -58,5 +60,14 @@ public class ArticleController {
                                                 @RequestBody final ArticleBookmarkRequest request) {
         articleService.bookmarkArticle(id, member, request.getBookmark());
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<ArticleResponse>> filterArticles(@AuthMemberPrincipal final LoginMember member,
+                                                                @RequestParam("course") final MemberGroupType course,
+                                                                @RequestParam("onlyBookmarked") boolean onlyBookmarked) {
+        final List<ArticleResponse> articleResponses = articleService.filter(member, course, onlyBookmarked);
+
+        return ResponseEntity.ok(articleResponses);
     }
 }

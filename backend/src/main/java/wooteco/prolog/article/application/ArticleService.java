@@ -1,10 +1,5 @@
 package wooteco.prolog.article.application;
 
-import static java.lang.Boolean.TRUE;
-import static java.util.stream.Collectors.toList;
-import static wooteco.prolog.common.exception.BadRequestCode.ARTICLE_NOT_FOUND_EXCEPTION;
-
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +12,13 @@ import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.MemberGroupType;
+
+import java.util.List;
+
+import static java.lang.Boolean.TRUE;
+import static java.util.stream.Collectors.toList;
+import static wooteco.prolog.common.exception.BadRequestCode.ARTICLE_NOT_FOUND_EXCEPTION;
 
 @RequiredArgsConstructor
 @Service
@@ -78,5 +80,17 @@ public class ArticleService {
         } else {
             article.removeBookmark(member);
         }
+    }
+
+    public List<ArticleResponse> filter(final LoginMember member, final MemberGroupType course, final boolean onlyBookmarked) {
+        if (member.isMember() && onlyBookmarked) {
+            return articleRepository.findArticlesByCourseAndMember(course.getGroupName(), member.getId()).stream()
+                .map(ArticleResponse::from)
+                .collect(toList());
+        }
+
+        return articleRepository.findArticlesByCourse(course.getGroupName()).stream()
+            .map(ArticleResponse::from)
+            .collect(toList());
     }
 }
