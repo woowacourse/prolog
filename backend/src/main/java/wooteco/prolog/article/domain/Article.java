@@ -47,6 +47,9 @@ public class Article {
     @Embedded
     private ArticleBookmarks articleBookmarks;
 
+    @Embedded
+    private ArticleLikes articleLikes;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -56,6 +59,7 @@ public class Article {
         this.url = url;
         this.imageUrl = imageUrl;
         this.articleBookmarks = new ArticleBookmarks();
+        this.articleLikes = new ArticleLikes();
     }
 
     public void validateOwner(final Member member) {
@@ -84,5 +88,22 @@ public class Article {
 
     private void removeBookmark(final Member member) {
         articleBookmarks.removeBookmark(member.getId());
+    }
+
+    public void setLike(final Member member, final Boolean isLike) {
+        if (TRUE.equals(isLike)) {
+            addLike(member);
+        } else {
+            removeLike(member);
+        }
+    }
+
+    private void addLike(final Member member) {
+        final ArticleLike articleLike = new ArticleLike(this, member.getId());
+        articleLikes.addLike(articleLike);
+    }
+
+    private void removeLike(final Member member) {
+        articleLikes.removeLike(member.getId());
     }
 }

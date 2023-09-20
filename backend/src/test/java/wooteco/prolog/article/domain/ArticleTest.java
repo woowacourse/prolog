@@ -138,4 +138,44 @@ class ArticleTest {
                 .isFalse();
         }
     }
+
+    @Nested
+    @DisplayName("멤버가 아티클의 좋아요 값을 세팅한다.")
+    class setLike {
+
+        @DisplayName("멤버가 아티클 좋아요를 추가한다.")
+        @Test
+        void addLike() {
+            //given
+            final Article article = new Article(member, title, url, imageUrl);
+
+            //when
+            article.setLike(member, true);
+
+            //then
+            final ArticleLikes articleLike = article.getArticleLikes();
+            final boolean alreadyLike = articleLike.isAlreadyLike(member.getId());
+
+            assertThat(alreadyLike)
+                .isTrue();
+        }
+
+        @DisplayName("멤버가 아티클 좋아요를 해제한다.")
+        @Test
+        void removeLike() {
+            //given
+            final Article article = new Article(member, title, url, imageUrl);
+            article.setLike(member, true);
+
+            //when
+            article.setLike(member, false);
+
+            //then
+            final ArticleLikes articleLike = article.getArticleLikes();
+            final boolean alreadyLike = articleLike.isAlreadyLike(member.getId());
+
+            assertThat(alreadyLike)
+                .isFalse();
+        }
+    }
 }
