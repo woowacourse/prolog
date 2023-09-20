@@ -1,14 +1,10 @@
 package wooteco.prolog.article.application;
 
-import static java.lang.Boolean.TRUE;
-import static java.util.stream.Collectors.toList;
-import static wooteco.prolog.common.exception.BadRequestCode.ARTICLE_NOT_FOUND_EXCEPTION;
-
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.article.domain.Article;
+import wooteco.prolog.article.domain.ArticleFilterType;
 import wooteco.prolog.article.domain.repository.ArticleRepository;
 import wooteco.prolog.article.ui.ArticleRequest;
 import wooteco.prolog.article.ui.ArticleResponse;
@@ -17,6 +13,12 @@ import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
+
+import java.util.List;
+
+import static java.lang.Boolean.TRUE;
+import static java.util.stream.Collectors.toList;
+import static wooteco.prolog.common.exception.BadRequestCode.ARTICLE_NOT_FOUND_EXCEPTION;
 
 @RequiredArgsConstructor
 @Service
@@ -34,13 +36,6 @@ public class ArticleService {
         }
         final Article article = articleRequest.toArticle(member);
         return articleRepository.save(article).getId();
-    }
-
-    public List<ArticleResponse> getAll() {
-        return articleRepository.findAllByOrderByCreatedAtDesc()
-            .stream()
-            .map(ArticleResponse::from)
-            .collect(toList());
     }
 
     @Transactional
@@ -78,5 +73,17 @@ public class ArticleService {
         } else {
             article.removeBookmark(member);
         }
+    }
+
+    public List<ArticleResponse> getFilteredArticles(final LoginMember member, final ArticleFilterType course, final boolean onlyBookmarked) {
+        if (member.isMember() && onlyBookmarked) {
+            return articleRepository.findArticlesByCourseAndMember(course.getGroupName(), member.getId()).stream()
+                .map(article -> ArticleResponse.of(article,member.getId()))
+                .collect(toList());
+        }
+
+        return articleRepository.findArticlesByCourse(course.getGroupName()).stream()
+            .map(article -> ArticleResponse.of(article,member.getId()))
+            .collect(toList());
     }
 }
