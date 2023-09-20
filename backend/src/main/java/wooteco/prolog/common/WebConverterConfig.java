@@ -3,7 +3,7 @@ package wooteco.prolog.common;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import wooteco.prolog.member.domain.MemberGroupType;
+import wooteco.prolog.article.domain.ArticleFilterType;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -21,8 +21,8 @@ public class WebConverterConfig implements WebMvcConfigurer {
             source -> LocalDate.parse(source, DateTimeFormatter.BASIC_ISO_DATE)
         );
 
-        registry.addConverter(String.class, MemberGroupType.class,
-            source -> MemberGroupType.valueOf(source.toUpperCase())
+        registry.addConverter(String.class, ArticleFilterType.class,
+            source -> ArticleFilterType.valueOf(source.toUpperCase())
         );
     }
 }

@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.article.application.ArticleService;
+import wooteco.prolog.article.domain.ArticleFilterType;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
-import wooteco.prolog.member.domain.MemberGroupType;
 
 import java.net.URI;
 import java.util.List;
@@ -31,12 +31,6 @@ public class ArticleController {
                                                @AuthMemberPrincipal final LoginMember member) {
         final Long id = articleService.create(articleRequest, member);
         return ResponseEntity.created(URI.create("/articles/" + id)).build();
-    }
-
-    @GetMapping
-    public ResponseEntity<List<ArticleResponse>> getArticles() {
-        final List<ArticleResponse> allArticles = articleService.getAll();
-        return ResponseEntity.ok(allArticles);
     }
 
     @PutMapping("/{id}")
@@ -62,11 +56,11 @@ public class ArticleController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/filter")
-    public ResponseEntity<List<ArticleResponse>> filterArticles(@AuthMemberPrincipal final LoginMember member,
-                                                                @RequestParam("course") final MemberGroupType course,
+    @GetMapping
+    public ResponseEntity<List<ArticleResponse>> getFilteredArticles(@AuthMemberPrincipal final LoginMember member,
+                                                                @RequestParam("course") final ArticleFilterType course,
                                                                 @RequestParam("onlyBookmarked") boolean onlyBookmarked) {
-        final List<ArticleResponse> articleResponses = articleService.filter(member, course, onlyBookmarked);
+        final List<ArticleResponse> articleResponses = articleService.getFilteredArticles(member, course, onlyBookmarked);
 
         return ResponseEntity.ok(articleResponses);
     }

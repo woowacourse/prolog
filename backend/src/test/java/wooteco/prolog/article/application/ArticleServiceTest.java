@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import wooteco.prolog.article.domain.Article;
 import wooteco.prolog.article.domain.ArticleBookmarks;
+import wooteco.prolog.article.domain.ArticleFilterType;
 import wooteco.prolog.article.domain.ImageUrl;
 import wooteco.prolog.article.domain.Title;
 import wooteco.prolog.article.domain.Url;
@@ -20,7 +21,6 @@ import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.MemberGroupType;
 import wooteco.prolog.member.domain.Role;
 
 import java.util.Arrays;
@@ -251,7 +251,7 @@ class ArticleServiceTest {
         when(articleRepository.findArticlesByCourse(any())).thenReturn(Arrays.asList(article));
 
         //when
-        final List<ArticleResponse> articleResponses = articleService.filter(unLoginMember, MemberGroupType.BACKEND, false);
+        final List<ArticleResponse> articleResponses = articleService.getFilteredArticles(unLoginMember, ArticleFilterType.BACKEND, false);
 
         //then
         verify(articleRepository).findArticlesByCourse(any());
@@ -269,7 +269,7 @@ class ArticleServiceTest {
         when(articleRepository.findArticlesByCourseAndMember(any(), any())).thenReturn(Arrays.asList(article));
 
         //when
-        final List<ArticleResponse> articleResponses = articleService.filter(loginMember, MemberGroupType.BACKEND, true);
+        final List<ArticleResponse> articleResponses = articleService.getFilteredArticles(loginMember, ArticleFilterType.BACKEND, true);
 
         //then
         verify(articleRepository).findArticlesByCourseAndMember(any(), any());

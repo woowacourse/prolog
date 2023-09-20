@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.article.domain.Article;
+import wooteco.prolog.article.domain.ArticleFilterType;
 import wooteco.prolog.article.domain.repository.ArticleRepository;
 import wooteco.prolog.article.ui.ArticleRequest;
 import wooteco.prolog.article.ui.ArticleResponse;
@@ -12,7 +13,6 @@ import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.MemberGroupType;
 
 import java.util.List;
 
@@ -36,13 +36,6 @@ public class ArticleService {
         }
         final Article article = articleRequest.toArticle(member);
         return articleRepository.save(article).getId();
-    }
-
-    public List<ArticleResponse> getAll() {
-        return articleRepository.findAllByOrderByCreatedAtDesc()
-            .stream()
-            .map(ArticleResponse::from)
-            .collect(toList());
     }
 
     @Transactional
@@ -82,15 +75,15 @@ public class ArticleService {
         }
     }
 
-    public List<ArticleResponse> filter(final LoginMember member, final MemberGroupType course, final boolean onlyBookmarked) {
+    public List<ArticleResponse> getFilteredArticles(final LoginMember member, final ArticleFilterType course, final boolean onlyBookmarked) {
         if (member.isMember() && onlyBookmarked) {
             return articleRepository.findArticlesByCourseAndMember(course.getGroupName(), member.getId()).stream()
-                .map(ArticleResponse::from)
+                .map(article -> ArticleResponse.of(article,member.getId()))
                 .collect(toList());
         }
 
         return articleRepository.findArticlesByCourse(course.getGroupName()).stream()
-            .map(ArticleResponse::from)
+            .map(article -> ArticleResponse.of(article,member.getId()))
             .collect(toList());
     }
 }
