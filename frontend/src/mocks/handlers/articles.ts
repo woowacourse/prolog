@@ -37,7 +37,7 @@ export const articlesHandler = [
     return res(ctx.status(200));
   }),
 
-  rest.get(`${BASE_URL}/articles/filter`, (req, res, ctx) => {
+  rest.get(`${BASE_URL}/articles/`, (req, res, ctx) => {
     const course = req.url.searchParams.get('course');
     const onlyBookmarked = req.url.searchParams.get('onlyBookmarked');
 
