@@ -5,6 +5,7 @@ import * as Styled from './styles';
 import CurriculumList from '../../components/CurriculumList/CurriculumList';
 import Roadmap from './Roadmap';
 import { useRoadmap } from '../../hooks/queries/keywords';
+import RoadmapStyles from './RoadmapStyles';
 
 const lastSeenCurriculumId = Number(localStorage.getItem('curriculumId') ?? 1);
 
@@ -31,6 +32,7 @@ const RoadmapPage = () => {
 
   return (
     <Styled.Root>
+      <RoadmapStyles />
       <Styled.Main>
         <section>
           <Styled.Title>커리큘럼</Styled.Title>
@@ -42,11 +44,14 @@ const RoadmapPage = () => {
 
         <section style={{ marginBottom: '4rem' }}>
           <Styled.Title>로드맵!!</Styled.Title>
-          {roadmap && <Roadmap width={1040} keywords={roadmap.data} onClick={handleClickKeyword}/>}
+          <Styled.RoadmapContainer>
+            {roadmap && (
+              <Roadmap width={1040} keywords={roadmap.data} onClick={handleClickKeyword} />
+            )}
+          </Styled.RoadmapContainer>
         </section>
-
       </Styled.Main>
-      
+
       {isSideSheetOpen && keywordDetail && (
         <KeywordDetailSideSheet
           keywordDetail={keywordDetail}

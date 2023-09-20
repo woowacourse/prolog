@@ -1,8 +1,12 @@
-import * as d3 from "d3";
-import { KeywordResponse } from "../../models/Keywords";
-import { PropsWithChildren } from "react";
+/** @jsxImportSource @emotion/react */
 
-type KeywordPosition = "left" | "right";
+import * as d3 from 'd3';
+import { KeywordResponse } from '../../models/Keywords';
+import { PropsWithChildren } from 'react';
+import { css } from '@emotion/react';
+import QuizProgress from './QuizProgress';
+
+type KeywordPosition = 'left' | 'right';
 
 type Keyword = KeywordResponse;
 
@@ -24,9 +28,23 @@ type SubKeywordsProps = {
   onClick: (keyword: KeywordResponse) => void;
 };
 
-const createSubKeywords = (
-  props: SubKeywordsProps
-): { height: number; child: React.ReactNode } => {
+const Color = {
+  MAIN_KEYWORD: 'hsl(220, 50%, 40%)', // hsl(60, 100%, 50%)
+  SUB_KEYWORD: 'hsl(220, 100%, 80%)', // hsl(50, 100%, 80%)
+  MAIN_KEYWORD_HOVER: 'hsl(60, 100%, 40%)',
+  SUB_KEYWORD_HOVER: 'hsl(50, 100%, 65%)',
+  LINE: '#333333',
+  BORDER: 'white',
+};
+
+const IMPORTANCE_COLOR = {
+  4: 'hsl(0, 100%, 50%)',
+  3: 'hsl(30, 100%, 60%)',
+  2: 'hsl(60, 100%, 48%)',
+  1: '#EEEEEE',
+};
+
+const createSubKeywords = (props: SubKeywordsProps): { height: number; child: React.ReactNode } => {
   const {
     subKeywordWidth,
     subKeywordHeight,
@@ -38,9 +56,7 @@ const createSubKeywords = (
   } = props;
 
   const subKeywordOffset =
-    position === "left"
-      ? -childrenInterval + -subKeywordWidth
-      : childrenInterval;
+    position === 'left' ? -childrenInterval + -subKeywordWidth : childrenInterval;
 
   const { childrenHeight, children } = keywords.reduce(
     ({ childrenHeight, children }, keyword, index) => {
@@ -59,15 +75,9 @@ const createSubKeywords = (
         .domain([0, keywords.length])
         .range([subKeywordHeight * -0.4, subKeywordHeight * 0.4]);
 
-      const pathFromMainToSubKeyword = (
-        index: number,
-        childrenHeight: number
-      ) => {
+      const pathFromMainToSubKeyword = (index: number, childrenHeight: number) => {
         const [x1, y1] = [0, pathStartY(index)];
-        const [x2, y2] = [
-          childrenInterval * (position === "left" ? -1 : 1),
-          childrenHeight,
-        ];
+        const [x2, y2] = [childrenInterval * (position === 'left' ? -1 : 1), childrenHeight];
 
         const curve = d3.line().curve(d3.curveNatural);
         return (
@@ -75,7 +85,7 @@ const createSubKeywords = (
             [x1, y1],
             [(x1 + x2) / 2, y2 * 0.8],
             [x2, y2],
-          ])?.toString() ?? ""
+          ])?.toString() ?? ''
         );
       };
 
@@ -94,35 +104,86 @@ const createSubKeywords = (
           <>
             <path
               d={pathFromMainToSubKeyword(index, childrenHeight)}
-              stroke="#333333"
-              strokeWidth={1.3}
+              stroke={Color.LINE}
+              strokeDasharray="2 4"
+              strokeWidth={2}
               fill="none"
             />
-            <g transform={`translate(${subKeywordOffset}, ${childrenHeight})`} onClick={() => onClick(keyword)}>
+            <g
+              transform={`translate(${subKeywordOffset}, ${childrenHeight})`}
+              onClick={() => onClick(keyword)}
+            >
               <foreignObject
                 x={0}
                 y={-(subKeywordHeight / 2)}
                 width={subKeywordWidth}
                 height={subKeywordHeight}
+                overflow="visible"
               >
                 <div
-                  style={{
-                    background: "#9cf8fc",
-                    height: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "10px",
-                    cursor: 'pointer',
-                  }}
+                  css={css`
+                    background: ${Color.SUB_KEYWORD};
+                    height: 100%;
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    align-items: center;
+                    font-size: 12px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    border-radius: 4px;
+                    overflow: hidden;
+
+                    &:hover {
+                      background: ${Color.SUB_KEYWORD_HOVER};
+                    }
+                    & > * {
+                      grid-area: 1 / 1 / 1 / 1;
+                    }
+                  `}
+                  title={keyword.name}
                 >
-                  {keyword.name}
+                  <div 
+                    css={css`
+                      height: 100%;
+                      display: flex;
+                      align-items: flex-start;
+                      justify-content: flex-end;
+                      position: absolute;
+                      top: -5px;
+                      right: -5px;
+                    `}>
+                  <QuizProgress
+                    totalCount={keyword.totalQuizCount}
+                    doneCount={keyword.doneQuizCount}
+                  />
+                  </div>
+                  <div
+                    css={css`
+                      width: 10px;
+                      height: 100%;
+                      background: ${IMPORTANCE_COLOR[keyword.importance]};
+                      margin-right: auto;
+                      box-shadow: inset 1px 0 1px 1px rgba(0, 0, 0, 0.05);
+                    `}
+                  />
+                  <div
+                    css={css`
+                      justify-self: center;
+                      text-align: center;
+                      width: 80%;
+                      overflow: hidden;
+                      white-space: nowrap;
+                      text-overflow: ellipsis;
+                    `}
+                  >
+                    {keyword.name}
+                  </div>
                 </div>
               </foreignObject>
             </g>
             <g
               transform={`translate(${
-                subKeywordOffset + (position === "left" ? 0 : subKeywordWidth)
+                subKeywordOffset + (position === 'left' ? 0 : subKeywordWidth)
               }, ${childrenHeight})`}
             >
               {child}
@@ -158,28 +219,43 @@ const MainKeyword = (props: MainKeywordProps) => {
 
   return (
     <>
-      <foreignObject x={-width / 2} y={0} width={width} height={height} onClick={() => onClick(keyword)}>
+      <foreignObject
+        x={-width / 2}
+        y={0}
+        width={width}
+        height={height}
+        onClick={() => onClick(keyword)}
+      >
         <div
-          style={{
-            background: "#6ed9fc",
-            border: '2px solid #555555',
-            borderRadius: '4px',
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: 'pointer',
-          }}
+          css={css`
+            background: ${Color.MAIN_KEYWORD};
+            border: 4px solid ${Color.BORDER};
+            border-radius: 8px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'TheJamsil5Bold';
+            color: white;
+
+            text-align: center;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            &:hover {
+              background: ${Color.MAIN_KEYWORD_HOVER};
+            }
+          `}
         >
           {keyword.name}
         </div>
       </foreignObject>
 
-      <g
-        transform={`translate(${
-          (width / 2) * (position === "left" ? -1 : 1)
-        }, ${height / 2})`}
-      >
+      <g transform={`translate(${(width / 2) * (position === 'left' ? -1 : 1)}, ${height / 2})`}>
         {children}
       </g>
     </>
@@ -190,7 +266,7 @@ const Roadmap = (props: RoadmapProps) => {
   const { keywords: data, width, onClick } = props;
 
   const mainKeywordWidth = 200;
-  const mainKeywordHeight = 40;
+  const mainKeywordHeight = 50;
 
   const subKeywordWidth = 120;
   const subKeywordHeight = 30;
@@ -200,10 +276,7 @@ const Roadmap = (props: RoadmapProps) => {
 
   const miniumGapBetweenMainKeywords = 200;
 
-  const fromPreviousMainKeywordArcArrow = (
-    start: [number, number],
-    end: [number, number]
-  ) => {
+  const fromPreviousMainKeywordArcArrow = (start: [number, number], end: [number, number]) => {
     const [x1, y1] = start;
     const [x2, y2] = end;
     const [xDiff, yDiff] = [x2 - x1, y2 - y1];
@@ -215,7 +288,7 @@ const Roadmap = (props: RoadmapProps) => {
         [x1 + xDiff * (1 / 5), y1 + yDiff * (1 / 3)],
         [x1 + xDiff * (4 / 5), y1 + yDiff * (2 / 3)],
         [x2, y2],
-      ])?.toString() ?? ""
+      ])?.toString() ?? ''
     );
   };
 
@@ -225,77 +298,75 @@ const Roadmap = (props: RoadmapProps) => {
     lastCoordinate: [0, 0] as [number, number],
   };
 
-  const roadmapTree = <g transform={`translate(${width / 2}, 0)`}>
-    {data.map((keyword) => {
-      const position =
-        treeHeights.left > treeHeights.right ? "right" : "left";
-      const oppositePosition = position === "left" ? "right" : "left";
-      const horizontalOffset = position === "left" ? -80 : 80;
+  const roadmapTree = (
+    <g transform={`translate(${width / 2}, 0)`}>
+      {data.map((keyword) => {
+        const position = treeHeights.left > treeHeights.right ? 'right' : 'left';
+        const oppositePosition = position === 'left' ? 'right' : 'left';
+        const horizontalOffset = position === 'left' ? -80 : 80;
 
-      const { height, child } = createSubKeywords({
-        childrenInterval,
-        subKeywordHeight,
-        subKeywordWidth,
-        subKeywordsGap,
-        keywords: keyword.childrenKeywords,
-        position,
-        onClick,
-      });
+        const { height, child } = createSubKeywords({
+          childrenInterval,
+          subKeywordHeight,
+          subKeywordWidth,
+          subKeywordsGap,
+          keywords: keyword.childrenKeywords,
+          position,
+          onClick,
+        });
 
-      const oppositeTreeHeightDiff = Math.abs(
-        treeHeights[position] - treeHeights[oppositePosition]
-      );
-      if (oppositeTreeHeightDiff < miniumGapBetweenMainKeywords) {
-        treeHeights[oppositePosition] =
-          treeHeights[position] + miniumGapBetweenMainKeywords;
-      }
+        const oppositeTreeHeightDiff = Math.abs(
+          treeHeights[position] - treeHeights[oppositePosition]
+        );
+        if (oppositeTreeHeightDiff < miniumGapBetweenMainKeywords) {
+          treeHeights[oppositePosition] = treeHeights[position] + miniumGapBetweenMainKeywords;
+        }
 
-      const subKeywordsTotalHeight = treeHeights[position];
+        const subKeywordsTotalHeight = treeHeights[position];
 
-      // 다음 메인 키워드의 위치를 정하기 위해 누산
-      treeHeights[position] += Math.max(height, miniumGapBetweenMainKeywords);
+        // 다음 메인 키워드의 위치를 정하기 위해 누산
+        treeHeights[position] += Math.max(height, miniumGapBetweenMainKeywords);
 
-      // 이전 메인 키워드에서 자기한테 오는 수직 뱡향 곡선 화살표의 시작점과 끝점
-      const start: [number, number] = [
-        treeHeights.lastCoordinate[0],
-        -(subKeywordsTotalHeight - treeHeights.lastCoordinate[1]) + mainKeywordHeight,
-      ];
-      const end: [number, number] = [horizontalOffset, 0];
+        // 이전 메인 키워드에서 자기한테 오는 수직 뱡향 곡선 화살표의 시작점과 끝점
+        const start: [number, number] = [
+          treeHeights.lastCoordinate[0],
+          -(subKeywordsTotalHeight - treeHeights.lastCoordinate[1]) + mainKeywordHeight,
+        ];
+        const end: [number, number] = [horizontalOffset, 0];
 
-      // 다음 메인 키워드를 위한 시작점을 저장
-      treeHeights.lastCoordinate = [horizontalOffset, subKeywordsTotalHeight];
+        // 다음 메인 키워드를 위한 시작점을 저장
+        treeHeights.lastCoordinate = [horizontalOffset, subKeywordsTotalHeight];
 
-      return (
-        <>
-          <g transform={`translate(0, ${subKeywordsTotalHeight})`}>
-            <path
-              d={fromPreviousMainKeywordArcArrow(start, end)}
-              stroke="#06edf9"
-              strokeWidth={4}
-              fill="transparent"
-              markerEnd="url(#arrow-head)"
-            />
-          </g>
-          <g
-            transform={`translate(${horizontalOffset}, ${subKeywordsTotalHeight})`}
-          >
-            <MainKeyword
-              width={mainKeywordWidth}
-              height={mainKeywordHeight}
-              keyword={keyword}
-              position={position}
-              onClick={onClick}
-            >
-              {child}
-            </MainKeyword>
-          </g>
-        </>
-      );
-    })}
-  </g>
+        return (
+          <>
+            <g transform={`translate(0, ${subKeywordsTotalHeight})`}>
+              <path
+                d={fromPreviousMainKeywordArcArrow(start, end)}
+                stroke={Color.LINE}
+                strokeWidth={4}
+                fill="transparent"
+                markerEnd="url(#arrow-head)"
+              />
+            </g>
+            <g transform={`translate(${horizontalOffset}, ${subKeywordsTotalHeight})`}>
+              <MainKeyword
+                width={mainKeywordWidth}
+                height={mainKeywordHeight}
+                keyword={keyword}
+                position={position}
+                onClick={onClick}
+              >
+                {child}
+              </MainKeyword>
+            </g>
+          </>
+        );
+      })}
+    </g>
+  );
 
   return (
-    <svg width={width} height={Math.max(treeHeights.left, treeHeights.right)} style={{ border: "1px solid black" }}>
+    <svg width={width} height={Math.max(treeHeights.left, treeHeights.right)}>
       <defs>
         <marker
           id="arrow-head"
