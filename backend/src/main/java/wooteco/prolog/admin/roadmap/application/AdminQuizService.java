@@ -22,7 +22,7 @@ import wooteco.prolog.common.exception.BadRequestException;
 @Service
 @Transactional(readOnly = true)
 @AllArgsConstructor
-public class QuizService {
+public class AdminQuizService {
 
     private final KeywordRepository keywordRepository;
     private final QuizRepository quizRepository;

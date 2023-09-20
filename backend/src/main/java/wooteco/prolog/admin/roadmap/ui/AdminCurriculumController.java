@@ -10,42 +10,41 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.admin.roadmap.application.CurriculumService;
+import wooteco.prolog.admin.roadmap.application.AdminCurriculumService;
 import wooteco.prolog.admin.roadmap.application.dto.CurriculumRequest;
 import wooteco.prolog.admin.roadmap.application.dto.CurriculumResponses;
 
 @RestController
-@RequestMapping("/curriculums")
-public class CurriculumController {
+@RequestMapping("/admin/curriculums")
+public class AdminCurriculumController {
 
-    private final CurriculumService curriculumService;
+    private final AdminCurriculumService adminCurriculumService;
 
-    public CurriculumController(CurriculumService curriculumService) {
-        this.curriculumService = curriculumService;
-    }
-
-    @PostMapping
-    public ResponseEntity<Void> createCurriculum(@RequestBody CurriculumRequest createRequest) {
-        Long curriculumId = curriculumService.create(createRequest);
-        return ResponseEntity.created(URI.create("/curriculums/" + curriculumId)).build();
+    public AdminCurriculumController(AdminCurriculumService adminCurriculumService) {
+        this.adminCurriculumService = adminCurriculumService;
     }
 
     @GetMapping
     public ResponseEntity<CurriculumResponses> findAll() {
-        return ResponseEntity.ok(curriculumService.findCurriculums());
+        return ResponseEntity.ok(adminCurriculumService.findCurriculums());
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> createCurriculum(@RequestBody CurriculumRequest createRequest) {
+        Long curriculumId = adminCurriculumService.create(createRequest);
+        return ResponseEntity.created(URI.create("/curriculums/" + curriculumId)).build();
     }
 
     @PutMapping("/{curriculumId}")
     public ResponseEntity<Void> updateCurriculum(@PathVariable Long curriculumId,
                                                  @RequestBody CurriculumRequest createRequest) {
-        curriculumService.update(curriculumId, createRequest);
+        adminCurriculumService.update(curriculumId, createRequest);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{curriculumId}")
     public ResponseEntity<Void> deleteCurriculum(@PathVariable Long curriculumId) {
-        curriculumService.delete(curriculumId);
+        adminCurriculumService.delete(curriculumId);
         return ResponseEntity.noContent().build();
     }
-
 }

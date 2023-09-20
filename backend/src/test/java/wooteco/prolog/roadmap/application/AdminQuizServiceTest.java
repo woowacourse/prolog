@@ -32,7 +32,7 @@ import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.roadmap.domain.repository.QuizRepository;
 
 @ExtendWith(MockitoExtension.class)
-class QuizServiceTest {
+class AdminQuizServiceTest {
 
     @Mock
     private KeywordRepository keywordRepository;

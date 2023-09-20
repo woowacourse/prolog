@@ -24,7 +24,7 @@ import wooteco.prolog.roadmap.domain.Curriculum;
 import wooteco.prolog.roadmap.domain.repository.CurriculumRepository;
 
 @ExtendWith(MockitoExtension.class)
-class CurriculumServiceTest {
+class AdminCurriculumServiceTest {
 
     @InjectMocks
     private CurriculumService curriculumService;

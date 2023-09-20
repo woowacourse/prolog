@@ -13,11 +13,11 @@ import wooteco.prolog.roadmap.domain.repository.CurriculumRepository;
 
 @Transactional
 @Service
-public class CurriculumService {
+public class AdminCurriculumService {
 
     private final CurriculumRepository curriculumRepository;
 
-    public CurriculumService(CurriculumRepository repository) {
+    public AdminCurriculumService(CurriculumRepository repository) {
         this.curriculumRepository = repository;
     }
 

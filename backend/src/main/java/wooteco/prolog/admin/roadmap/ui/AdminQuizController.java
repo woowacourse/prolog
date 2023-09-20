@@ -13,40 +13,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
-import wooteco.prolog.admin.roadmap.application.QuizService;
+import wooteco.prolog.admin.roadmap.application.AdminQuizService;
 import wooteco.prolog.admin.roadmap.application.dto.QuizRequest;
-import wooteco.prolog.admin.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.admin.roadmap.application.dto.QuizzesResponse;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/sessions/{sessionId}/keywords/{keywordId}/quizs")
-public class QuizController {
+@RequestMapping("/admin/sessions/{sessionId}/keywords/{keywordId}/quizs")
+public class AdminQuizController {
 
-    private final QuizService quizService;
+    private final AdminQuizService adminQuizService;
 
-    //: todo admin login 생기면 검증 추가
+    @GetMapping
+    public ResponseEntity<QuizzesResponse> findQuizzesByKeyword(@PathVariable Long sessionId,
+        @PathVariable Long keywordId,
+        @AuthMemberPrincipal LoginMember member) {
+        return ResponseEntity.ok(adminQuizService.findQuizzesByKeywordId(keywordId, member.getId()));
+    }
+
     @PostMapping
     public ResponseEntity<Void> create(@PathVariable Long sessionId, @PathVariable Long keywordId,
                                        @RequestBody QuizRequest quizRequest) {
-        final Long quizId = quizService.createQuiz(keywordId, quizRequest);
+        final Long quizId = adminQuizService.createQuiz(keywordId, quizRequest);
 
         return ResponseEntity.created(
                 URI.create("/sessions/" + sessionId + "/keywords/" + keywordId + "/quizs/" + quizId))
             .build();
-    }
-
-    @GetMapping("/{quizId}")
-    public ResponseEntity<QuizResponse> findQuizById(@PathVariable Long quizId,
-                                                     @AuthMemberPrincipal LoginMember member) {
-        return ResponseEntity.ok(quizService.findById(quizId, member.getId()));
-    }
-
-    @GetMapping
-    public ResponseEntity<QuizzesResponse> findQuizzesByKeyword(@PathVariable Long sessionId,
-                                                                @PathVariable Long keywordId,
-                                                                @AuthMemberPrincipal LoginMember member) {
-        return ResponseEntity.ok(quizService.findQuizzesByKeywordId(keywordId, member.getId()));
     }
 
     @PutMapping("/{quizId}")
@@ -54,7 +46,7 @@ public class QuizController {
                                     @PathVariable Long keywordId,
                                     @PathVariable Long quizId,
                                     @RequestBody QuizRequest quizRequest) {
-        quizService.updateQuiz(quizId, quizRequest);
+        adminQuizService.updateQuiz(quizId, quizRequest);
         return ResponseEntity.noContent().build();
     }
 
@@ -63,7 +55,7 @@ public class QuizController {
     public ResponseEntity<Void> deleteQuiz(@PathVariable Long sessionId,
                                            @PathVariable Long keywordId,
                                            @PathVariable Long quizId) {
-        quizService.deleteQuiz(quizId);
+        adminQuizService.deleteQuiz(quizId);
         return ResponseEntity.noContent().build();
     }
 }

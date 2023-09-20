@@ -17,7 +17,7 @@ import wooteco.prolog.session.domain.repository.SessionRepository;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
-public class NewSessionService {
+public class AdminNewSessionService {
 
     private final SessionRepository sessionRepository;
 

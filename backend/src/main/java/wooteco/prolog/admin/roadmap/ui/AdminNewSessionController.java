@@ -11,16 +11,23 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.admin.roadmap.application.NewSessionService;
+import wooteco.prolog.admin.roadmap.application.AdminNewSessionService;
 import wooteco.prolog.admin.roadmap.application.dto.SessionRequest;
 import wooteco.prolog.admin.roadmap.application.dto.SessionsResponse;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/curriculums/{curriculumId}/sessions")
-public class NewSessionController {
+@RequestMapping("/admin/curriculums/{curriculumId}/sessions")
+public class AdminNewSessionController {
 
-    private final NewSessionService sessionService;
+    private final AdminNewSessionService sessionService;
+
+    @GetMapping
+    public ResponseEntity<SessionsResponse> findSessions(@PathVariable Long curriculumId) {
+        SessionsResponse response = sessionService.findSessions(curriculumId);
+
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping
     public ResponseEntity<Void> createSession(@PathVariable Long curriculumId,
@@ -28,13 +35,6 @@ public class NewSessionController {
         Long sessionId = sessionService.createSession(curriculumId, request);
 
         return ResponseEntity.created(URI.create("/sessions/" + sessionId)).build();
-    }
-
-    @GetMapping
-    public ResponseEntity<SessionsResponse> findSessions(@PathVariable Long curriculumId) {
-        SessionsResponse response = sessionService.findSessions(curriculumId);
-
-        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{sessionId}")

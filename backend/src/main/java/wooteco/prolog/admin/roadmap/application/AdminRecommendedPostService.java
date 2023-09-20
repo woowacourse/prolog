@@ -15,12 +15,12 @@ import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_RECOMMENDED
 
 @Transactional(readOnly = true)
 @Service
-public class RecommendedPostService {
+public class AdminRecommendedPostService {
 
     private final RecommendedPostRepository recommendedPostRepository;
     private final KeywordRepository keywordRepository;
 
-    public RecommendedPostService(final RecommendedPostRepository recommendedPostRepository,
+    public AdminRecommendedPostService(final RecommendedPostRepository recommendedPostRepository,
                                   final KeywordRepository keywordRepository) {
         this.recommendedPostRepository = recommendedPostRepository;
         this.keywordRepository = keywordRepository;

@@ -18,12 +18,12 @@ import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT
 
 @Transactional
 @Service
-public class KeywordService {
+public class AdminKeywordService {
 
     private final SessionRepository sessionRepository;
     private final KeywordRepository keywordRepository;
 
-    public KeywordService(final SessionRepository sessionRepository,
+    public AdminKeywordService(final SessionRepository sessionRepository,
                           final KeywordRepository keywordRepository) {
         this.sessionRepository = sessionRepository;
         this.keywordRepository = keywordRepository;

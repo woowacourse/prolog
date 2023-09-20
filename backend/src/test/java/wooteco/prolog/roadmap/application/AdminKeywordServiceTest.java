@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
 
 @ExtendWith(MockitoExtension.class)
-class KeywordServiceTest {
+class AdminKeywordServiceTest {
 
     @InjectMocks
     private KeywordService keywordService;

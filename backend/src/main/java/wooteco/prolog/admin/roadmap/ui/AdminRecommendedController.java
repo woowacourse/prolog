@@ -9,24 +9,24 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import wooteco.prolog.admin.roadmap.application.RecommendedPostService;
+import wooteco.prolog.admin.roadmap.application.AdminRecommendedPostService;
 import wooteco.prolog.admin.roadmap.application.dto.RecommendedRequest;
 import wooteco.prolog.admin.roadmap.application.dto.RecommendedUpdateRequest;
 
 @RestController
-@RequestMapping("/keywords/{keywordId}/recommended-posts")
-public class RecommendedController {
+@RequestMapping("/admin/keywords/{keywordId}/recommended-posts")
+public class AdminRecommendedController {
 
-    private final RecommendedPostService recommendedPostService;
+    private final AdminRecommendedPostService adminRecommendedPostService;
 
-    public RecommendedController(final RecommendedPostService recommendedPostService) {
-        this.recommendedPostService = recommendedPostService;
+    public AdminRecommendedController(final AdminRecommendedPostService adminRecommendedPostService) {
+        this.adminRecommendedPostService = adminRecommendedPostService;
     }
 
     @PostMapping
     public ResponseEntity<Void> createRecommendedPost(@PathVariable("keywordId") final Long keywordId,
                                                       @RequestBody final RecommendedRequest request) {
-        recommendedPostService.create(keywordId, request);
+        adminRecommendedPostService.create(keywordId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -34,14 +34,14 @@ public class RecommendedController {
     public ResponseEntity<Void> updateRecommendedPost(@PathVariable("keywordId") final Long keywordId,
                                                       @PathVariable("recommendedId") final Long recommendedId,
                                                       @RequestBody final RecommendedUpdateRequest request) {
-        recommendedPostService.update(recommendedId, request);
+        adminRecommendedPostService.update(recommendedId, request);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{recommendedId}")
     public ResponseEntity<Void> deleteRecommendedPost(@PathVariable("keywordId") final Long keywordId,
                                                       @PathVariable("recommendedId") final Long recommendedId) {
-        recommendedPostService.delete(recommendedId);
+        adminRecommendedPostService.delete(recommendedId);
         return ResponseEntity.noContent().build();
     }
 }
