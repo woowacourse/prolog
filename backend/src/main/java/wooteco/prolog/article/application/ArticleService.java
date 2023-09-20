@@ -1,6 +1,5 @@
 package wooteco.prolog.article.application;
 
-import static java.lang.Boolean.TRUE;
 import static java.util.stream.Collectors.toList;
 import static wooteco.prolog.common.exception.BadRequestCode.ARTICLE_NOT_FOUND_EXCEPTION;
 
@@ -69,13 +68,17 @@ public class ArticleService {
     @Transactional
     public void bookmarkArticle(final Long id, final LoginMember loginMember,
                                 final Boolean isBookmark) {
-        final Article article = articleRepository.findFetchById(id)
+        final Article article = articleRepository.findFetchBookmarkById(id)
             .orElseThrow(() -> new BadRequestException(ARTICLE_NOT_FOUND_EXCEPTION));
         final Member member = memberService.findById(loginMember.getId());
         article.setBookmark(member, isBookmark);
     }
 
-    public void likeArticle(final Long id, final LoginMember member, final Boolean likes) {
-
+    @Transactional
+    public void likeArticle(final Long id, final LoginMember loginMember, final Boolean isLike) {
+        final Article article = articleRepository.findFetchLikeById(id)
+            .orElseThrow(() -> new BadRequestException(ARTICLE_NOT_FOUND_EXCEPTION));
+        final Member member = memberService.findById(loginMember.getId());
+        article.setLike(member, isLike);
     }
 }
