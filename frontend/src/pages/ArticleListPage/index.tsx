@@ -8,10 +8,11 @@ import { COLOR, PATH } from '../../constants';
 import styled from '@emotion/styled';
 import { MainContentStyle } from '../../PageRouter';
 import SelectBox from '../../components/Controls/SelectBox';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import ArticleBookmarkFilter from '../../components/Article/ArticleBookmarkFIlter';
 import { useGetFilteredArticleQuery } from '../../hooks/queries/article';
+import { UserContext } from '../../contexts/UserProvider';
 
 const CATEGORY_OPTIONS = [
   { value: 'all', label: '전체보기' },
@@ -27,6 +28,9 @@ const ArticleListPage = () => {
   const goNewArticlePage = () => history.push(PATH.NEW_ARTICLE);
   const [selectedCourse, setSelectedCourse] = useState<CategoryOptions>(CATEGORY_OPTIONS[0]);
   const [checked, setChecked] = useState(false);
+
+  const { user } = useContext(UserContext);
+  const { isLoggedIn } = user;
 
   const { data: filteredArticles = [], refetch: getFilteredArticles } = useGetFilteredArticleQuery(
     selectedCourse.value,
@@ -58,18 +62,22 @@ const ArticleListPage = () => {
               onChange={changeFilterOption}
             />
           </SelectBoxWrapper>
-          <ArticleBookmarkFilter checked={checked} handleCheckBookmark={handleCheckBookmark} />
+          {isLoggedIn && (
+            <ArticleBookmarkFilter checked={checked} handleCheckBookmark={handleCheckBookmark} />
+          )}
         </FilteringWrapper>
-        <Button
-          type="button"
-          size="X_SMALL"
-          icon={PencilIcon}
-          alt="새 아티클 쓰기 아이콘"
-          onClick={goNewArticlePage}
-          cssProps={WriteButtonStyle}
-        >
-          글쓰기
-        </Button>
+        {isLoggedIn && (
+          <Button
+            type="button"
+            size="X_SMALL"
+            icon={PencilIcon}
+            alt="새 아티클 쓰기 아이콘"
+            onClick={goNewArticlePage}
+            cssProps={WriteButtonStyle}
+          >
+            글쓰기
+          </Button>
+        )}
       </Container>
       <ArticleList articles={filteredArticles} />
     </div>
