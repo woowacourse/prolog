@@ -3,14 +3,11 @@ package wooteco.prolog.docu;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 import java.util.Arrays;
 import java.util.Collections;
-import org.elasticsearch.common.collect.List;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -41,8 +38,16 @@ public class EssayAnswerDocumentaion extends NewDocumentation {
     QuizService quizService;
 
 
+    private static final EssayAnswer ESSAY_ANSWER = new EssayAnswer(
+        new Quiz(1L,
+            new Keyword(1L, "keyword1", "첫 번째 키워드", 1, 5, 1L, null, Collections.emptySet()),
+            "question"),
+        "answer",
+        new Member(1L, "member1", "nickname1", Role.CREW, 1L, "image.jpg")
+    );
+
     @Test
-    void EssayAnswer_응답() {
+    void EssayAnswer_생성() {
         given(essayAnswerService.createEssayAnswer(any(), any())).willReturn(1L);
         EssayAnswerRequest request = new EssayAnswerRequest(1L, "answer");
 
@@ -70,17 +75,6 @@ public class EssayAnswerDocumentaion extends NewDocumentation {
             .body(request)
             .when().get("essay-answers")
             .then().log().all().apply(document("essay-answer/search/list"))
-            .statusCode(HttpStatus.OK.value());
-    }
-
-    @Test
-    void EssayAnswer_조회() {
-        given(essayAnswerService.getById(anyLong()))
-            .willReturn(ESSAY_ANSWER);
-
-        given
-            .when().get("essay-answers/{id}", 1)
-            .then().log().all().apply(document("essay-answer/search"))
             .statusCode(HttpStatus.OK.value());
     }
 
@@ -126,11 +120,14 @@ public class EssayAnswerDocumentaion extends NewDocumentation {
             .statusCode(HttpStatus.OK.value());
     }
 
-    private static final EssayAnswer ESSAY_ANSWER = new EssayAnswer(
-        new Quiz(1L,
-            new Keyword(1L, "keyword1", "첫 번째 키워드", 1, 5, 1L, null, Collections.emptySet()),
-            "questoin"),
-        "answer",
-        new Member(1L, "member1", "nickname1", Role.CREW, 1L, "image.jpg")
-    );
+    @Test
+    void EssayAnswer_조회() {
+        given(essayAnswerService.getById(anyLong()))
+            .willReturn(ESSAY_ANSWER);
+
+        given
+            .when().get("essay-answers/{id}", 1)
+            .then().log().all().apply(document("essay-answer/search"))
+            .statusCode(HttpStatus.OK.value());
+    }
 }

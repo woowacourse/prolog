@@ -27,6 +27,18 @@ public class QuizDocumentation extends NewDocumentation {
 
     @Test
     void 퀴즈_생성() {
+        given(quizService.createQuiz(any(), any())).willReturn(1L);
+
+        given
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .body(QUIZ_REQUEST)
+            .when().post("/sessions/{sessionId}/keywords/{keywordId}/quizs", 1L, 1L)
+            .then().log().all().apply(document("quiz/create"))
+            .statusCode(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    void 퀴즈_상세_조회() {
         QuizResponse question = new QuizResponse(
             1L,
             "question",
@@ -36,21 +48,10 @@ public class QuizDocumentation extends NewDocumentation {
             .willReturn(question);
 
         given
+            .header("Authorization", "Bearer " + accessToken)
             .when().get("/sessions/{sessionId}/keywords/{keywordId}/quizs/{quizId}", 1L, 1L, 1L)
-            .then().log().all().apply(document("quiz/create"))
-            .statusCode(HttpStatus.CREATED.value());
-    }
-
-    @Test
-    void 퀴즈_상세_조회() {
-        given(quizService.createQuiz(any(), any())).willReturn(1L);
-
-        given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(QUIZ_REQUEST)
-            .when().post("/sessions/{sessionId}/keywords/{keywordId}/quizs", 1L, 1L)
             .then().log().all().apply(document("quiz/detail"))
-            .statusCode(HttpStatus.CREATED.value());
+            .statusCode(HttpStatus.OK.value());
     }
 
     @Test
@@ -60,7 +61,7 @@ public class QuizDocumentation extends NewDocumentation {
         given
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().get("/sessions/{sessionId}/keywords/{keywordId}/quizs", 1L, 1L)
-            .then().log().all().apply(document("quiz/delete"))
+            .then().log().all().apply(document("quiz/list"))
             .statusCode(HttpStatus.OK.value());
     }
 

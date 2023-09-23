@@ -29,7 +29,7 @@ public class RoadmapDocument extends NewDocumentation {
             .willReturn(KEYWORD_SESSION_INCLUDE_MULTI_RESPONSE);
 
         given
-            .header("Authorization", "Bearer " + accessToken)
+            .param("curriculumId", 1)
             .when().get("/roadmaps")
             .then().log().all().apply(document("roadmap/find"))
             .statusCode(HttpStatus.OK.value());
