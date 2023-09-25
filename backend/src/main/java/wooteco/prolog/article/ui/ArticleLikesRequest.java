@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ArticleLikesRequest {
 
-    private final Boolean likes;
+    private final Boolean like;
 
     public ArticleLikesRequest() {
         this(null);

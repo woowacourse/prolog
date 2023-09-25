@@ -55,6 +55,6 @@ public class ArticleDocumentation extends NewDocumentation {
         response.expect(status().isOk());
 
         //docs
-        response.apply(document("article/likes"));
+        response.apply(document("article/like"));
     }
 }
