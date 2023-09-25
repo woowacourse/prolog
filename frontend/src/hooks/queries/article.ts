@@ -1,17 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { UserContext } from '../../contexts/UserProvider';
-import { requestGetArticles, requestPostArticles } from '../../apis/articles';
-import { ArticleType } from '../../models/Article';
+import {
+  requestGetFilteredArticle,
+  requestPostArticles,
+  requestPutArticleBookmark,
+} from '../../apis/articles';
+import { ArticleType, CourseFilter } from '../../models/Article';
 import { ERROR_MESSAGE } from '../../constants';
 import { SUCCESS_MESSAGE } from '../../constants/message';
 
 const QUERY_KEY = {
-  articles: 'articles',
+  filteredArticles: 'filteredArticles',
 };
 
-export const useGetRequestArticleQuery = () => {
-  return useQuery<ArticleType[]>([QUERY_KEY.articles], async () => {
-    const response = await requestGetArticles();
+export const useGetFilteredArticleQuery = (course: string, bookmark: boolean) => {
+  return useQuery<ArticleType[]>([QUERY_KEY.filteredArticles], async () => {
+    const response = await requestGetFilteredArticle(course, bookmark);
 
     return response.data;
   });
@@ -22,11 +25,18 @@ export const usePostArticlesMutation = () => {
 
   return useMutation(requestPostArticles, {
     onSuccess: () => {
-      queryClient.invalidateQueries([QUERY_KEY.articles]);
+      queryClient.invalidateQueries([QUERY_KEY.filteredArticles]);
       alert(SUCCESS_MESSAGE.CREATE_ARTICLE);
     },
     onError: () => {
       alert(ERROR_MESSAGE.DEFAULT);
     },
+  });
+};
+
+export const usePutArticleBookmarkMutation = () => {
+  return useMutation(requestPutArticleBookmark, {
+    onSuccess: () => {},
+    onError: () => {},
   });
 };

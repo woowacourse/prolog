@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.article.domain.Article;
+import wooteco.prolog.article.domain.ArticleFilterType;
 import wooteco.prolog.article.domain.repository.ArticleRepository;
 import wooteco.prolog.article.ui.ArticleRequest;
 import wooteco.prolog.article.ui.ArticleResponse;
@@ -33,13 +34,6 @@ public class ArticleService {
         }
         final Article article = articleRequest.toArticle(member);
         return articleRepository.save(article).getId();
-    }
-
-    public List<ArticleResponse> getAll() {
-        return articleRepository.findAllByOrderByCreatedAtDesc()
-            .stream()
-            .map(ArticleResponse::from)
-            .collect(toList());
     }
 
     @Transactional
@@ -80,5 +74,20 @@ public class ArticleService {
             .orElseThrow(() -> new BadRequestException(ARTICLE_NOT_FOUND_EXCEPTION));
         final Member member = memberService.findById(loginMember.getId());
         article.setLike(member, isLike);
+    }
+
+    public List<ArticleResponse> getFilteredArticles(final LoginMember member,
+                                                     final ArticleFilterType course,
+                                                     final boolean onlyBookmarked) {
+        if (member.isMember() && onlyBookmarked) {
+            return articleRepository.findArticlesByCourseAndMember(course.getGroupName(),
+                    member.getId()).stream()
+                .map(article -> ArticleResponse.of(article, member.getId()))
+                .collect(toList());
+        }
+
+        return articleRepository.findArticlesByCourse(course.getGroupName()).stream()
+            .map(article -> ArticleResponse.of(article, member.getId()))
+            .collect(toList());
     }
 }

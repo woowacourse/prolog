@@ -1,13 +1,12 @@
 import * as Styled from './ArticleList.style';
 import Article from './Article';
-import { useGetRequestArticleQuery } from '../../hooks/queries/article';
+import { ArticleType } from '../../models/Article';
 
-const ArticleList = () => {
-  const { data: articles, isLoading, isError } = useGetRequestArticleQuery();
+interface ArticleListProps {
+  articles: ArticleType[];
+}
 
-  if (isLoading) return <div>loading...</div>;
-  if (isError) return <div>error...</div>;
-
+const ArticleList = ({ articles }: ArticleListProps) => {
   return (
     <Styled.Container>
       {articles?.map((article) => (
