@@ -10,10 +10,6 @@ import { ArticleType } from '../../models/Article';
 const articleUrl = 'https://think0wise.tistory.com/107';
 
 export const articlesHandler = [
-  // rest.get(`${BASE_URL}/articles`, (req, res, ctx) => {
-  //   return res(ctx.status(200), ctx.json(articles));
-  // }),
-
   rest.get(`${BASE_URL}/meta-og?url=${articleUrl}`, async (req, res, ctx) => {
     const data = metaOg;
 
@@ -28,6 +24,7 @@ export const articlesHandler = [
       url: 'https://think0wise.tistory.com/107',
       createdAt: '2023-07-08 16:48',
       isBookMarked: false,
+      isLiked: false,
       imageUrl:
         'https://plus.unsplash.com/premium_photo-1682088845396-1b310a002302?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8JUVDJTk1JTg0JUVEJThCJUIwJUVEJTgxJUI0fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
     };
@@ -37,6 +34,10 @@ export const articlesHandler = [
   }),
 
   rest.put(`${BASE_URL}/articles/:articleId/bookmark`, (req, res, ctx) => {
+    return res(ctx.status(200));
+  }),
+
+  rest.put(`${BASE_URL}/articles/:articleId/like`, (req, res, ctx) => {
     return res(ctx.status(200));
   }),
 

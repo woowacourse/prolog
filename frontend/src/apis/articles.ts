@@ -1,6 +1,7 @@
 import { client } from '.';
 import {
   ArticleBookmarkPutRequest,
+  ArticleLikePutRequest,
   ArticleRequest,
   MetaOgRequest,
   MetaOgResponse,
@@ -15,9 +16,13 @@ export const requestGetMetaOg = ({ url }: MetaOgRequest) => {
 };
 
 export const requestPutArticleBookmark = ({ articleId, bookmark }: ArticleBookmarkPutRequest) => {
-  return client.put(`/articles/${articleId}/bookmark`, { checked: bookmark });
+  return client.put(`/articles/${articleId}/bookmark`, { bookmark });
 };
 
 export const requestGetFilteredArticle = (course: string, bookmark: boolean) => {
   return client.get(`/articles?course=${course}&onlyBookmarked=${bookmark}`);
+};
+
+export const requestPutArticleLike = ({ articleId, like }: ArticleLikePutRequest) => {
+  return client.put(`/articles/${articleId}/like`, { like });
 };

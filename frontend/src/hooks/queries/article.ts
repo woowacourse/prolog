@@ -3,8 +3,9 @@ import {
   requestGetFilteredArticle,
   requestPostArticles,
   requestPutArticleBookmark,
+  requestPutArticleLike,
 } from '../../apis/articles';
-import { ArticleType, CourseFilter } from '../../models/Article';
+import { ArticleType } from '../../models/Article';
 import { ERROR_MESSAGE } from '../../constants';
 import { SUCCESS_MESSAGE } from '../../constants/message';
 
@@ -36,6 +37,13 @@ export const usePostArticlesMutation = () => {
 
 export const usePutArticleBookmarkMutation = () => {
   return useMutation(requestPutArticleBookmark, {
+    onSuccess: () => {},
+    onError: () => {},
+  });
+};
+
+export const usePutArticleLikeMutation = () => {
+  return useMutation(requestPutArticleLike, {
     onSuccess: () => {},
     onError: () => {},
   });
