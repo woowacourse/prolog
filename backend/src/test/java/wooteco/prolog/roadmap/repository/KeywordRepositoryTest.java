@@ -161,6 +161,49 @@ class KeywordRepositoryTest {
             .isEqualTo(Arrays.asList(keyword1, keyword2, keyword3, keyword4, keyword9, keyword10));
     }
 
+    @Test
+    @DisplayName("newFindParentIsNull() : 모든 상위 키워드들을 조회할 수 있다.")
+    void newFindParentIsNull() {
+        //given
+        final Curriculum curriculum = curriculumRepository.save(new Curriculum("커리큘럼1"));
+
+        final Session session1 = sessionRepository.save(new Session(curriculum.getId(), "세션1"));
+        final Session session2 = sessionRepository.save(new Session(curriculum.getId(), "세션2"));
+        final Session session3 = sessionRepository.save(new Session(curriculum.getId(), "세션3"));
+        final Session session4 = sessionRepository.save(new Session(curriculum.getId(), "세션4"));
+        final Session session5 = sessionRepository.save(new Session(curriculum.getId(), "세션5"));
+
+        final Keyword keyword1 = keywordRepository.save(
+            Keyword.createKeyword("자바1", "자바 설명1", 1, 5, session1.getId(), null));
+        final Keyword keyword2 = keywordRepository.save(
+            Keyword.createKeyword("자바2", "자바 설명2", 2, 5, session1.getId(), keyword1));
+        final Keyword keyword3 = keywordRepository.save(
+            Keyword.createKeyword("자바3", "자바 설명3", 3, 5, session1.getId(), null));
+        final Keyword keyword4 = keywordRepository.save(
+            Keyword.createKeyword("자바4", "자바 설명4", 4, 5, session1.getId(), keyword3));
+        final Keyword keyword5 = keywordRepository.save(
+            Keyword.createKeyword("자바5", "자바 설명5", 5, 5, session2.getId(), null));
+        final Keyword keyword6 = keywordRepository.save(
+            Keyword.createKeyword("자바6", "자바 설명6", 6, 5, session2.getId(), keyword1));
+        final Keyword keyword7 = keywordRepository.save(
+            Keyword.createKeyword("자바7", "자바 설명7", 7, 5, session2.getId(), null));
+        final Keyword keyword8 = keywordRepository.save(
+            Keyword.createKeyword("자바8", "자바 설명8", 8, 5, session3.getId(), keyword2));
+        final Keyword keyword9 = keywordRepository.save(
+            Keyword.createKeyword("자바9", "자바 설명9", 9, 5, session4.getId(), keyword2));
+        final Keyword keyword10 = keywordRepository.save(
+            Keyword.createKeyword("자바10", "자바 설명10", 10, 5, session5.getId(), null));
+
+        //when
+        final List<Keyword> keywords = keywordRepository.newFindByParentIsNull();
+
+        //then
+        assertThat(keywords)
+            .usingRecursiveComparison()
+            .ignoringFields("id", "parent.id")
+            .isEqualTo(Arrays.asList(keyword1, keyword3, keyword5, keyword7, keyword10));
+    }
+
     private Keyword createKeywordParent(final Keyword keyword) {
         return keywordRepository.save(keyword);
     }
