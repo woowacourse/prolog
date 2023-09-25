@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import wooteco.prolog.NewDocumentation;
 import wooteco.prolog.roadmap.application.QuizService;
 import wooteco.prolog.roadmap.application.dto.QuizRequest;
@@ -30,7 +29,7 @@ public class QuizDocumentation extends NewDocumentation {
         given(quizService.createQuiz(any(), any())).willReturn(1L);
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .contentType("application/json;charset=UTF-8")
             .body(QUIZ_REQUEST)
             .when().post("/sessions/{sessionId}/keywords/{keywordId}/quizs", 1L, 1L)
             .then().log().all().apply(document("quiz/create"))
@@ -59,7 +58,6 @@ public class QuizDocumentation extends NewDocumentation {
         given(quizService.findQuizzesByKeywordId(any(), any())).willReturn(QUIZZES_RESPONSE);
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().get("/sessions/{sessionId}/keywords/{keywordId}/quizs", 1L, 1L)
             .then().log().all().apply(document("quiz/list"))
             .statusCode(HttpStatus.OK.value());
@@ -70,7 +68,7 @@ public class QuizDocumentation extends NewDocumentation {
         doNothing().when(quizService).updateQuiz(any(), any());
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .contentType("application/json;charset=UTF-8")
             .body(QUIZ_EDIT_REQUEST)
             .when().put("/sessions/{sessionId}/keywords/{keywordId}/quizs/{quizId}", 1L, 1L, 1L)
             .then().log().all().apply(document("quiz/update"))
@@ -83,7 +81,6 @@ public class QuizDocumentation extends NewDocumentation {
         doNothing().when(quizService).deleteQuiz(any());
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().delete("/sessions/{sessionId}/keywords/{keywordId}/quizs/{quizId}", 1L, 1L, 1L)
             .then().log().all().apply(document("quiz/delete"))
             .statusCode(HttpStatus.NO_CONTENT.value());

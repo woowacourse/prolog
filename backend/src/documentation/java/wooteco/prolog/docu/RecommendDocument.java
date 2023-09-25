@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import wooteco.prolog.NewDocumentation;
 import wooteco.prolog.roadmap.application.RecommendedPostService;
 import wooteco.prolog.roadmap.application.dto.RecommendedRequest;
@@ -24,7 +23,7 @@ public class RecommendDocument extends NewDocumentation {
         RecommendedRequest recommendUrlValue = new RecommendedRequest("recommendUrlValue");
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .contentType("application/json;charset=UTF-8")
             .body(recommendUrlValue)
             .when().post("/keywords/{keywordId}/recommended-posts", 1L)
             .then().log().all().apply(document("recommend/create"))
@@ -36,7 +35,7 @@ public class RecommendDocument extends NewDocumentation {
         RecommendedUpdateRequest recommendedUpdateRequest = new RecommendedUpdateRequest("recommendUrlValue");
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .contentType("application/json;charset=UTF-8")
             .body(recommendedUpdateRequest)
             .when().put("/keywords/{keywordId}/recommended-posts/{recommendedId}", 1L, 2L)
             .then().log().all().apply(document("recommend/update"))
@@ -45,11 +44,7 @@ public class RecommendDocument extends NewDocumentation {
 
     @Test
     void 추천_포스트_삭제() {
-        RecommendedUpdateRequest recommendedUpdateRequest = new RecommendedUpdateRequest("recommendUrlValue");
-
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(recommendedUpdateRequest)
             .when().delete("/keywords/{keywordId}/recommended-posts/{recommendedId}", 1L, 2L)
             .then().log().all().apply(document("recommend/delete"))
             .statusCode(HttpStatus.NO_CONTENT.value());

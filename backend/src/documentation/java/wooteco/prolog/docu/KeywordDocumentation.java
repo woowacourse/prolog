@@ -1,11 +1,17 @@
 package wooteco.prolog.docu;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+
+import java.util.Arrays;
+import java.util.HashSet;
 import org.elasticsearch.common.collect.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import wooteco.prolog.NewDocumentation;
 import wooteco.prolog.roadmap.application.KeywordService;
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
@@ -13,14 +19,6 @@ import wooteco.prolog.roadmap.application.dto.KeywordResponse;
 import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordsResponse;
 import wooteco.prolog.roadmap.ui.KeywordController;
-
-import java.util.Arrays;
-import java.util.HashSet;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 @WebMvcTest(controllers = KeywordController.class)
 public class KeywordDocumentation extends NewDocumentation {
@@ -33,7 +31,7 @@ public class KeywordDocumentation extends NewDocumentation {
         given(keywordService.createKeyword(any(), any())).willReturn(1L);
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .contentType("application/json;charset=UTF-8")
             .body(KEYWORD_CREATE_REQUEST)
             .when().post("/sessions/1/keywords")
             .then().log().all().apply(document("keywords/create"))
@@ -55,7 +53,7 @@ public class KeywordDocumentation extends NewDocumentation {
         doNothing().when(keywordService).updateKeyword(any(), any(), any());
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .contentType("application/json;charset=UTF-8")
             .body(KEYWORD_UPDATE_REQUEST)
             .when().put("/sessions/1/keywords/1")
             .then().log().all().apply(document("keywords/update"))

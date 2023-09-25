@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import wooteco.prolog.NewDocumentation;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
@@ -52,7 +51,7 @@ public class EssayAnswerDocumentaion extends NewDocumentation {
         EssayAnswerRequest request = new EssayAnswerRequest(1L, "answer");
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .contentType("application/json;charset=UTF-8")
             .body(request)
             .when().post("essay-answers")
             .then().log().all().apply(document("essay-answer/create"))
@@ -71,7 +70,7 @@ public class EssayAnswerDocumentaion extends NewDocumentation {
             Collections.emptyList());
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .contentType("application/json;charset=UTF-8")
             .body(request)
             .when().get("essay-answers")
             .then().log().all().apply(document("essay-answer/search/list"))
@@ -83,7 +82,7 @@ public class EssayAnswerDocumentaion extends NewDocumentation {
         EssayAnswerUpdateRequest request = new EssayAnswerUpdateRequest("new Answer");
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .contentType("application/json;charset=UTF-8")
             .body(request)
             .when().patch("essay-answers/{id}", 1)
             .then().log().all().apply(document("essay-answer/update"))
