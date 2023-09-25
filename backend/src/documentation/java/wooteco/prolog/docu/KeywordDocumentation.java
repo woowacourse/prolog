@@ -1,5 +1,7 @@
 package wooteco.prolog.docu;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -146,8 +148,11 @@ public class KeywordDocumentation extends NewDocumentation {
                     "자바의 자료구조인 List에 대한 설명을 작성했습니다.",
                     1,
                     1,
+                    0,
+                    0,
                     1L,
-                    null
+                    emptyList(),
+                    emptySet()
                 ),
                 new KeywordResponse(
                     1L,
@@ -155,8 +160,11 @@ public class KeywordDocumentation extends NewDocumentation {
                     "자바의 자료구조인 Set에 대한 설명을 작성했습니다.",
                     2,
                     1,
+                    0,
+                    0,
                     1L,
-                    null
+                    emptyList(),
+                    emptySet()
                 ))
         )
     );
