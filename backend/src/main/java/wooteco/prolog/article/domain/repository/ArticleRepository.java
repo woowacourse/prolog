@@ -12,5 +12,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     List<Article> findAllByOrderByCreatedAtDesc();
 
     @Query("select a from Article a join fetch a.articleBookmarks where a.id = :id")
-    Optional<Article> findFetchById(@Param("id") final Long id);
+    Optional<Article> findFetchBookmarkById(@Param("id") final Long id);
+
+    @Query("select a from Article a join fetch a.articleLikes where a.id = :id")
+    Optional<Article> findFetchLikeById(@Param("id") final Long id);
 }
