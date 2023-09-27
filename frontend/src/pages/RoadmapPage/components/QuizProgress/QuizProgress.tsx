@@ -3,7 +3,6 @@
 import type { KeywordResponse } from '../../../../models/Keywords';
 import { css } from '@emotion/react';
 import { CircularProgress } from './QuizProgress.styles';
-
 interface QuizProgressProps {
   doneCount: KeywordResponse['doneQuizCount'];
   totalCount: KeywordResponse['totalQuizCount'];
@@ -23,7 +22,6 @@ const QuizProgress = (props: QuizProgressProps) => {
   if (totalCount === 0) return null;
 
   const ratio = doneCount / totalCount;
-
   return ratio < 1 ? (
     <CircularProgress value={ratio} />
   ) : (
@@ -32,7 +30,7 @@ const QuizProgress = (props: QuizProgressProps) => {
         width: 16px;
         height: 16px;
         border-radius: 50%;
-        background-color: hsl(147, 100%, 50%);
+        background-color: hsl(147, 100%, 38%);
       `}
     >
       <MaterialSymbolsCheckSmall width="100%" height="100%" />
