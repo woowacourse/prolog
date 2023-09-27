@@ -1,4 +1,4 @@
-create table if not exists prolog.article_bookmark
+create table if not exists prolog.article_like
 (
     id         bigint auto_increment primary key,
     article_id bigint not null,

@@ -115,6 +115,25 @@ public class ArticleStepDefinitions extends AcceptanceSteps {
         assertAll(
             () -> assertThat(statusCode).isEqualTo(HttpStatus.OK.value())
         );
-        //아티클 단건 조회 변경 시, 단건 조회로 bookmark 여부까지 검증해보기
+        //아티클 단건 조회에 북마크 여부가 추가되면 단건 조회로 bookmark 여부까지 검증해보기
+    }
+
+    @When("{long}번 아티클에 좋아요 요청을 보내면")
+    public void 아티클에_좋아요_요청을_보내면(final Long articleId) {
+        //final String articleUrl = context.response.header("Location");
+        final ArticleBookmarkRequest request = new ArticleBookmarkRequest(true);
+        context.invokeHttpPutWithToken(
+            String.format("/articles/%d/likes", articleId),
+            request
+        );
+    }
+
+    @Then("아티클에 좋아요가 등록된다")
+    public void 아티클에_좋아요가_등록된다() {
+        final int statusCode = context.response.statusCode();
+        assertAll(
+            () -> assertThat(statusCode).isEqualTo(HttpStatus.OK.value())
+        );
+        //아티클 단건 조회에 좋아요 여부가 추가되면 단건 조회로 likes 여부까지 검증해보기
     }
 }

@@ -10,3 +10,13 @@ include::{snippets}/article/bookmark/http-request.adoc[]
 ==== Response
 
 include::{snippets}/article/bookmark/http-response.adoc[]
+
+=== 아티클 좋아요 추가
+
+==== Request
+
+include::{snippets}/article/likes/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/article/likes/http-response.adoc[]

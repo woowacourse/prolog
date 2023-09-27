@@ -1,5 +1,7 @@
 package wooteco.prolog.article.domain;
 
+import static java.lang.Boolean.TRUE;
+
 import java.time.LocalDateTime;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -45,6 +47,9 @@ public class Article {
     @Embedded
     private ArticleBookmarks articleBookmarks;
 
+    @Embedded
+    private ArticleLikes articleLikes;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -54,6 +59,7 @@ public class Article {
         this.url = url;
         this.imageUrl = imageUrl;
         this.articleBookmarks = new ArticleBookmarks();
+        this.articleLikes = new ArticleLikes();
     }
 
     public void validateOwner(final Member member) {
@@ -67,12 +73,37 @@ public class Article {
         this.url = new Url(url);
     }
 
-    public void addBookmark(final Member member) {
+    public void setBookmark(final Member member, final Boolean isBookmark) {
+        if (TRUE.equals(isBookmark)) {
+            addBookmark(member);
+        } else {
+            removeBookmark(member);
+        }
+    }
+
+    private void addBookmark(final Member member) {
         final ArticleBookmark articleBookmark = new ArticleBookmark(this, member.getId());
         articleBookmarks.addBookmark(articleBookmark);
     }
 
-    public void removeBookmark(final Member member) {
+    private void removeBookmark(final Member member) {
         articleBookmarks.removeBookmark(member.getId());
+    }
+
+    public void setLike(final Member member, final Boolean isLike) {
+        if (TRUE.equals(isLike)) {
+            addLike(member);
+        } else {
+            removeLike(member);
+        }
+    }
+
+    private void addLike(final Member member) {
+        final ArticleLike articleLike = new ArticleLike(this, member.getId());
+        articleLikes.addLike(articleLike);
+    }
+
+    private void removeLike(final Member member) {
+        articleLikes.removeLike(member.getId());
     }
 }

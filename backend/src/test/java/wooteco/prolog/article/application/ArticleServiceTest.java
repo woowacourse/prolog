@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import wooteco.prolog.article.domain.Article;
 import wooteco.prolog.article.domain.ArticleBookmarks;
 import wooteco.prolog.article.domain.ArticleFilterType;
+import wooteco.prolog.article.domain.ArticleLikes;
 import wooteco.prolog.article.domain.ImageUrl;
 import wooteco.prolog.article.domain.Title;
 import wooteco.prolog.article.domain.Url;
@@ -204,7 +205,8 @@ class ArticleServiceTest {
             final Long articleId = 3L;
             final LoginMember loginMember = new LoginMember(member.getId(), MEMBER);
 
-            when(articleRepository.findFetchById(articleId)).thenReturn(Optional.of(article));
+            when(articleRepository.findFetchBookmarkById(articleId)).thenReturn(
+                Optional.of(article));
             when(memberService.findById(member.getId())).thenReturn(member);
 
             //when
@@ -227,7 +229,8 @@ class ArticleServiceTest {
             final Long articleId = 3L;
             final LoginMember loginMember = new LoginMember(member.getId(), MEMBER);
 
-            when(articleRepository.findFetchById(articleId)).thenReturn(Optional.of(article));
+            when(articleRepository.findFetchBookmarkById(articleId)).thenReturn(
+                Optional.of(article));
             when(memberService.findById(member.getId())).thenReturn(member);
 
             //when
@@ -237,6 +240,57 @@ class ArticleServiceTest {
             final ArticleBookmarks articleBookmarks = article.getArticleBookmarks();
             assertThat(articleBookmarks.containBookmark(member.getId()))
                 .isTrue();
+        }
+    }
+
+    @Nested
+    @DisplayName("아티클의 좋아요 상태를 바꿀 수 있다.")
+    class likeArticle {
+
+        @DisplayName("아티클에 좋아요를 추가한다.")
+        @Test
+        void add() {
+            //given
+            final Member member = new Member(1L, "userName", "nickName",
+                CREW, 1L, "imageUrl");
+            final Article article = new Article(member, new Title("brownTitle"),
+                new Url("brownUrl"), new ImageUrl("imageUrl"));
+            final Long articleId = 3L;
+            final LoginMember loginMember = new LoginMember(member.getId(), MEMBER);
+
+            when(articleRepository.findFetchLikeById(articleId)).thenReturn(Optional.of(article));
+            when(memberService.findById(member.getId())).thenReturn(member);
+
+            //when
+            articleService.likeArticle(articleId, loginMember, true);
+
+            //then
+            final ArticleLikes articleBookmarks = article.getArticleLikes();
+            assertThat(articleBookmarks.isAlreadyLike(member.getId()))
+                .isTrue();
+        }
+
+        @DisplayName("아티클의 좋아요를 삭제한다.")
+        @Test
+        void remove() {
+            //given
+            final Member member = new Member(1L, "userName", "nickName",
+                CREW, 1L, "imageUrl");
+            final Article article = new Article(member, new Title("brownTitle"),
+                new Url("brownUrl"), new ImageUrl("imageUrl"));
+            final Long articleId = 3L;
+            final LoginMember loginMember = new LoginMember(member.getId(), MEMBER);
+
+            when(articleRepository.findFetchLikeById(articleId)).thenReturn(Optional.of(article));
+            when(memberService.findById(member.getId())).thenReturn(member);
+
+            //when
+            articleService.likeArticle(articleId, loginMember, false);
+
+            //then
+            final ArticleLikes articleBookmarks = article.getArticleLikes();
+            assertThat(articleBookmarks.isAlreadyLike(member.getId()))
+                .isFalse();
         }
     }
 

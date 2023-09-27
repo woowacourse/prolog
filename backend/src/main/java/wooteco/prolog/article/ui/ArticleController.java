@@ -56,6 +56,14 @@ public class ArticleController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/{id}/like")
+    public ResponseEntity<Void> likeArticle(@PathVariable final Long id,
+                                            @AuthMemberPrincipal final LoginMember member,
+                                            @RequestBody final ArticleLikesRequest request) {
+        articleService.likeArticle(id, member, request.getLike());
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping
     public ResponseEntity<List<ArticleResponse>> getFilteredArticles(@AuthMemberPrincipal final LoginMember member,
                                                                 @RequestParam("course") final ArticleFilterType course,
