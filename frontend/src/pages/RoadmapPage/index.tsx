@@ -13,7 +13,7 @@ const lastSeenCurriculumId = Number(localStorage.getItem('curriculumId') ?? 1);
 const getHueHeuristically = (curriculumName: string) => {
   const defaultHue = 0;
   const [hue] = ([
-    [44, '백엔드'],
+    [30, '백엔드'],
     [220, '프론트엔드'],
     [130, '안드로이드'],
   ] as const).find(([, searchName]) => curriculumName.includes(searchName)) ?? [defaultHue];
