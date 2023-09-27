@@ -123,7 +123,7 @@ public class ArticleStepDefinitions extends AcceptanceSteps {
         //final String articleUrl = context.response.header("Location");
         final ArticleBookmarkRequest request = new ArticleBookmarkRequest(true);
         context.invokeHttpPutWithToken(
-            String.format("/articles/%d/likes", articleId),
+            String.format("/articles/%d/like", articleId),
             request
         );
     }
