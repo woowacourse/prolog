@@ -25,6 +25,8 @@ import wooteco.prolog.roadmap.ui.KeywordController;
 @WebMvcTest(controllers = KeywordController.class)
 public class KeywordDocumentation extends NewDocumentation {
 
+    private static final String UTF8_JSON_TYPE = "application/json;charset=UTF-8";
+
     @MockBean
     private KeywordService keywordService;
 
@@ -33,7 +35,7 @@ public class KeywordDocumentation extends NewDocumentation {
         given(keywordService.createKeyword(any(), any())).willReturn(1L);
 
         given
-            .contentType("application/json;charset=UTF-8")
+            .contentType(UTF8_JSON_TYPE)
             .body(KEYWORD_CREATE_REQUEST)
             .when().post("/sessions/1/keywords")
             .then().log().all().apply(document("keywords/create"))
@@ -55,7 +57,7 @@ public class KeywordDocumentation extends NewDocumentation {
         doNothing().when(keywordService).updateKeyword(any(), any(), any());
 
         given
-            .contentType("application/json;charset=UTF-8")
+            .contentType(UTF8_JSON_TYPE)
             .body(KEYWORD_UPDATE_REQUEST)
             .when().put("/sessions/1/keywords/1")
             .then().log().all().apply(document("keywords/update"))

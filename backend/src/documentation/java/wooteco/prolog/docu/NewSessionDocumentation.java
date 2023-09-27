@@ -20,6 +20,8 @@ import wooteco.prolog.roadmap.ui.NewSessionController;
 @WebMvcTest(controllers = NewSessionController.class)
 public class NewSessionDocumentation extends NewDocumentation {
 
+    private static final String UTF8_JSON_TYPE = "application/json;charset=UTF-8";
+
     @MockBean
     private NewSessionService sessionService;
 
@@ -28,7 +30,7 @@ public class NewSessionDocumentation extends NewDocumentation {
         given(sessionService.createSession(any(), any())).willReturn(1L);
 
         given
-            .contentType("application/json;charset=UTF-8")
+            .contentType(UTF8_JSON_TYPE)
             .body(SESSION_CREATE_REQUEST)
             .when().post("/curriculums/1/sessions")
             .then().log().all().apply(document("sessions-new/create"))
@@ -50,7 +52,7 @@ public class NewSessionDocumentation extends NewDocumentation {
         doNothing().when(sessionService).updateSession(any(), any());
 
         given
-            .contentType("application/json;charset=UTF-8")
+            .contentType(UTF8_JSON_TYPE)
             .body(SESSION_UPDATE_REQUEST)
             .when().put("/curriculums/1/sessions/1")
             .then().log().all().apply(document("sessions-new/update"))

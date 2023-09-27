@@ -30,6 +30,8 @@ import wooteco.prolog.studylog.application.dto.EssayAnswersResponse;
 @WebMvcTest(EssayAnswerController.class)
 public class EssayAnswerDocumentaion extends NewDocumentation {
 
+    private static final String UTF8_JSON_TYPE = "application/json;charset=UTF-8";
+
     @MockBean
     EssayAnswerService essayAnswerService;
 
@@ -51,7 +53,7 @@ public class EssayAnswerDocumentaion extends NewDocumentation {
         EssayAnswerRequest request = new EssayAnswerRequest(1L, "answer");
 
         given
-            .contentType("application/json;charset=UTF-8")
+            .contentType(UTF8_JSON_TYPE)
             .body(request)
             .when().post("essay-answers")
             .then().log().all().apply(document("essay-answer/create"))
@@ -70,7 +72,7 @@ public class EssayAnswerDocumentaion extends NewDocumentation {
             Collections.emptyList());
 
         given
-            .contentType("application/json;charset=UTF-8")
+            .contentType(UTF8_JSON_TYPE)
             .body(request)
             .when().get("essay-answers")
             .then().log().all().apply(document("essay-answer/search/list"))
@@ -82,7 +84,7 @@ public class EssayAnswerDocumentaion extends NewDocumentation {
         EssayAnswerUpdateRequest request = new EssayAnswerUpdateRequest("new Answer");
 
         given
-            .contentType("application/json;charset=UTF-8")
+            .contentType(UTF8_JSON_TYPE)
             .body(request)
             .when().patch("essay-answers/{id}", 1)
             .then().log().all().apply(document("essay-answer/update"))

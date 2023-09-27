@@ -21,6 +21,8 @@ import wooteco.prolog.roadmap.ui.CurriculumController;
 @WebMvcTest(controllers = CurriculumController.class)
 public class CurriculumDocumentation extends NewDocumentation {
 
+    private static final String UTF8_JSON_TYPE = "application/json;charset=UTF-8";
+
     @MockBean
     CurriculumService curriculumService;
 
@@ -29,7 +31,7 @@ public class CurriculumDocumentation extends NewDocumentation {
         given(curriculumService.create(any())).willReturn(1L);
 
         given
-            .contentType("application/json;charset=UTF-8")
+            .contentType(UTF8_JSON_TYPE)
             .body(CURRICULUM_REQUEST)
             .when().post("/curriculums")
             .then().log().all().apply(document("curriculums/create"))
@@ -41,7 +43,7 @@ public class CurriculumDocumentation extends NewDocumentation {
         given(curriculumService.findCurriculums()).willReturn(CURRICULUMS_RESPONSE);
 
         given
-            .contentType("application/json;charset=UTF-8")
+            .contentType(UTF8_JSON_TYPE)
             .body(CURRICULUM_REQUEST)
             .when().get("/curriculums")
             .then().log().all().apply(document("curriculums/find"))
@@ -53,7 +55,7 @@ public class CurriculumDocumentation extends NewDocumentation {
         doNothing().when(curriculumService).update(any(), any());
 
         given
-            .contentType("application/json;charset=UTF-8")
+            .contentType(UTF8_JSON_TYPE)
             .body(CURRICULUM_EDIT_REQUEST)
             .when().put("/curriculums/{curriculumId}", 1)
             .then().log().all().apply(document("curriculums/update"))
@@ -65,7 +67,7 @@ public class CurriculumDocumentation extends NewDocumentation {
         doNothing().when(curriculumService).delete(any());
 
         given
-            .contentType("application/json;charset=UTF-8")
+            .contentType(UTF8_JSON_TYPE)
             .when().delete("/curriculums/{curriculumId}", 1)
             .then().log().all().apply(document("curriculums/delete"))
             .statusCode(HttpStatus.NO_CONTENT.value());

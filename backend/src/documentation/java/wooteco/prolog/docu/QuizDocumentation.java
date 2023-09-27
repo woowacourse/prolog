@@ -21,6 +21,8 @@ import wooteco.prolog.roadmap.ui.QuizController;
 @WebMvcTest(controllers = QuizController.class)
 public class QuizDocumentation extends NewDocumentation {
 
+    private static final String UTF8_JSON_TYPE = "application/json;charset=UTF-8";
+
     @MockBean
     private QuizService quizService;
 
@@ -29,7 +31,7 @@ public class QuizDocumentation extends NewDocumentation {
         given(quizService.createQuiz(any(), any())).willReturn(1L);
 
         given
-            .contentType("application/json;charset=UTF-8")
+            .contentType(UTF8_JSON_TYPE)
             .body(QUIZ_REQUEST)
             .when().post("/sessions/{sessionId}/keywords/{keywordId}/quizs", 1L, 1L)
             .then().log().all().apply(document("quiz/create"))
@@ -68,7 +70,7 @@ public class QuizDocumentation extends NewDocumentation {
         doNothing().when(quizService).updateQuiz(any(), any());
 
         given
-            .contentType("application/json;charset=UTF-8")
+            .contentType(UTF8_JSON_TYPE)
             .body(QUIZ_EDIT_REQUEST)
             .when().put("/sessions/{sessionId}/keywords/{keywordId}/quizs/{quizId}", 1L, 1L, 1L)
             .then().log().all().apply(document("quiz/update"))

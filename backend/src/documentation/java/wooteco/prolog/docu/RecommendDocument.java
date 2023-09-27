@@ -15,6 +15,8 @@ import wooteco.prolog.roadmap.ui.RecommendedController;
 @WebMvcTest(controllers = RecommendedController.class)
 public class RecommendDocument extends NewDocumentation {
 
+    private static final String UTF8_JSON_TYPE = "application/json;charset=UTF-8";
+
     @MockBean
     RecommendedPostService recommendedPostService;
 
@@ -23,7 +25,7 @@ public class RecommendDocument extends NewDocumentation {
         RecommendedRequest recommendUrlValue = new RecommendedRequest("recommendUrlValue");
 
         given
-            .contentType("application/json;charset=UTF-8")
+            .contentType(UTF8_JSON_TYPE)
             .body(recommendUrlValue)
             .when().post("/keywords/{keywordId}/recommended-posts", 1L)
             .then().log().all().apply(document("recommend/create"))
@@ -35,7 +37,7 @@ public class RecommendDocument extends NewDocumentation {
         RecommendedUpdateRequest recommendedUpdateRequest = new RecommendedUpdateRequest("recommendUrlValue");
 
         given
-            .contentType("application/json;charset=UTF-8")
+            .contentType(UTF8_JSON_TYPE)
             .body(recommendedUpdateRequest)
             .when().put("/keywords/{keywordId}/recommended-posts/{recommendedId}", 1L, 2L)
             .then().log().all().apply(document("recommend/update"))
