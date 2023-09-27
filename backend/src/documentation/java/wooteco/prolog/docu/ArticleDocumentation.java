@@ -48,7 +48,7 @@ public class ArticleDocumentation extends NewDocumentation {
             .header("Authorization", "Bearer " + accessToken)
             .contentType(APPLICATION_JSON)
             .body(articleLikesRequest)
-            .when().put("/articles/{article-id}/likes", 1L)
+            .when().put("/articles/{article-id}/like", 1L)
             .then().log().all();
 
         //then
