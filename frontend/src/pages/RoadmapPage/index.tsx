@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { KeywordResponse } from '../../models/Keywords';
 import KeywordDetailSideSheet from '../../components/KeywordDetailSideSheet/KeywordDetailSideSheet';
 import * as Styled from './styles';
-import CurriculumList from '../../components/CurriculumList/CurriculumList';
 import Roadmap from './components/Roadmap/Roadmap';
 import { useRoadmap } from '../../hooks/queries/keywords';
 import RoadmapStyles from './RoadmapStyles';
 import { useGetCurriculums } from '../../hooks/queries/curriculum';
+import ImportanceLegend from './components/ImportanceLegend/ImportanceLegend';
+import ResponsiveButton from '../../components/Button/ResponsiveButton';
+import { COLOR } from '../../constants';
 
 const lastSeenCurriculumId = Number(localStorage.getItem('curriculumId') ?? 1);
 
@@ -28,7 +30,7 @@ const RoadmapPage = () => {
   const [keywordDetail, setKeywordDetail] = useState<KeywordResponse | null>(null);
   const { data: roadmap } = useRoadmap({ curriculumId: selectedCurriculumId });
 
-  const selectedCurriculum = curriculums?.find(it => it.id === selectedCurriculumId) ?? null;
+  const selectedCurriculum = curriculums?.find((it) => it.id === selectedCurriculumId) ?? null;
 
   const handleClickCurriculum = (id: number) => {
     setSelectedCurriculumId(id);
@@ -50,18 +52,37 @@ const RoadmapPage = () => {
       <Styled.Main>
         <section>
           <Styled.Title>커리큘럼</Styled.Title>
-          {curriculums && <CurriculumList
-            curriculums={curriculums}
-            selectedCurriculumId={selectedCurriculumId}
-            onCurriculumClick={handleClickCurriculum}
-          />}
+          <Styled.CurriculumButtonList>
+            {curriculums?.map((curriculum) => (
+              <ResponsiveButton
+                style={{ width: 'fit-content' }}
+                onClick={() => handleClickCurriculum(curriculum.id)}
+                text={curriculum.name}
+                color={selectedCurriculumId === curriculum.id ? COLOR.WHITE : COLOR.BLACK_600}
+                backgroundColor={
+                  selectedCurriculumId === curriculum.id
+                    ? `hsl(${getHueHeuristically(curriculum.name)}, 50%, 40%)`
+                    : COLOR.LIGHT_GRAY_400
+                }
+                height="32px"
+              />
+            ))}
+          </Styled.CurriculumButtonList>
         </section>
 
         <section style={{ marginBottom: '4rem' }}>
           <Styled.Title>로드맵!!</Styled.Title>
+
+          <ImportanceLegend />
+
           <Styled.RoadmapContainer>
             {roadmap && selectedCurriculum && (
-              <Roadmap width={1040} keywords={roadmap.data} hue={getHueHeuristically(selectedCurriculum.name)} onClick={handleClickKeyword} />
+              <Roadmap
+                width={1040}
+                keywords={roadmap.data}
+                hue={getHueHeuristically(selectedCurriculum.name)}
+                onClick={handleClickKeyword}
+              />
             )}
           </Styled.RoadmapContainer>
         </section>

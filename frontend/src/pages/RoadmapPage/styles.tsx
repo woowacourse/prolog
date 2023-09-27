@@ -23,3 +23,9 @@ export const RoadmapContainer = styled.div`
   overflow-x: auto;
   margin: 0 -4rem;
 `;
+
+export const CurriculumButtonList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+`;
