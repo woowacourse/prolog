@@ -2,7 +2,7 @@ package wooteco.prolog.member.domain;
 
 public enum Role {
 
-    UNVALIDATED,
+    GUEST,
     CREW,
     COACH,
     ADMIN
