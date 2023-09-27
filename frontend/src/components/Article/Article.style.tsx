@@ -72,10 +72,11 @@ export const Title = styled.p`
   -webkit-box-orient: vertical;
 `;
 
-export const BookmarkWrapper = styled.div`
+export const ButtonContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
 `;
 
 export const ArticleBookmarkButtonStyle = css`

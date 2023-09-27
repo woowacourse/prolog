@@ -9,6 +9,7 @@ export interface ArticleType {
   userName: string;
   title: string;
   isBookMarked: boolean;
+  isLiked: boolean;
   url: string;
   createdAt: string;
   imageUrl: string;
@@ -26,6 +27,11 @@ export interface MetaOgResponse {
 export interface ArticleBookmarkPutRequest {
   articleId: number;
   bookmark: boolean;
+}
+
+export interface ArticleLikePutRequest {
+  articleId: number;
+  like: boolean;
 }
 
 export type Course = '프론트엔드' | '백엔드' | '안드로이드';
