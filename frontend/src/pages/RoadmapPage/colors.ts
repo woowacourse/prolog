@@ -29,20 +29,14 @@ export const toAdjustedLightness = ([hue, saturation, lightness]: HSL, offset: n
 
 export const KeywordColors = {
   MAIN_KEYWORD: [220, 0.5, 0.4],
-  SUB_KEYWORD: [220, 1, 0.8],
+  SUB_KEYWORD: [220, 0.35, 0.85],
   LINE: [0, 0, 0.2],
   BORDER: [0, 0, 1],
 } as const;
 
 export const ImportanceColors = {
-  1: [0, 0, 0.93],
-  2: [60, 1, 0.48],
-  3: [30, 1, 0.6],
+  1: [0, 0, 0.95],
+  2: [50, 1, 0.6],
+  3: [30, 0.95, 0.55],
   4: [0, 1, 0.5],
-  /**
-   * 임시 색상
-   * 원래 중요도는 1~4로 1이 가장 안 중요하고, 4가 가장 중요.
-   * 현재 백엔드에 importance:5 데이터가 남아있어 해당 값을 임시로 무효하기 위한 색상
-   * */
-  5: [0, 0, 0.93],
 } as const;
