@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,11 +26,17 @@ import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 
 @Service
-@AllArgsConstructor
 @Transactional(readOnly = true)
 public class MemberService {
 
-    private MemberRepository memberRepository;
+    private final Role mangerRole;
+    private final MemberRepository memberRepository;
+
+    public MemberService(@Value("${manager.role}") final Role mangerRole,
+                         final MemberRepository memberRepository) {
+        this.mangerRole = mangerRole;
+        this.memberRepository = memberRepository;
+    }
 
     @Transactional
     public Member findOrCreateMember(GithubProfileResponse githubProfile) {
@@ -123,15 +129,15 @@ public class MemberService {
                                  final RoleUpdateRequest updateRequest) {
         requestMember.act().throwIfAnonymous(() -> new BadRequestException(MEMBER_NOT_ALLOWED));
         final Member member = findById(requestMember.getId());
-        if (isMemberRoleLowerThanCoach(member)) {
+        if (isMemberHasLowerRoleImportanceThan(member, mangerRole)) {
             throw new BadRequestException(MEMBER_NOT_ALLOWED);
         }
         final Role newRole = Role.valueOf(updateRequest.getRole());
         updateMemberRole(targetMemberId, newRole);
     }
 
-    private boolean isMemberRoleLowerThanCoach(final Member member) {
-        return member.isGuest() || member.isCrew();
+    private boolean isMemberHasLowerRoleImportanceThan(final Member member, final Role mangerRole) {
+        return member.getRole().hasLowerImportanceThan(mangerRole);
     }
 
     private void updateMemberRole(final Long memberId, final Role role) {

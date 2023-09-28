@@ -41,6 +41,7 @@ import wooteco.prolog.member.domain.repository.MemberRepository;
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
 
+    private static final Role MANGER_ROLE = Role.COACH;
     @Mock
     private MemberRepository memberRepository;
 
@@ -48,7 +49,7 @@ class MemberServiceTest {
 
     @BeforeEach
     void setUp() {
-        memberService = new MemberService(memberRepository);
+        memberService = new MemberService(MANGER_ROLE, memberRepository);
     }
 
     @DisplayName("findOrCreateMember() : gitHub Id 를 통해서 이미 존재한 Member 조회")
@@ -449,7 +450,7 @@ class MemberServiceTest {
     @Test
     void updateMemberRole_targetMemberNotExist() {
         //given
-        final Member coach = new Member("username1", "nickname1", Role.COACH, 1L, "imageUrl1");
+        final Member coach = new Member("username1", "nickname1", MANGER_ROLE, 1L, "imageUrl1");
 
         when(memberRepository.findById(1L)).thenReturn(Optional.of(coach));
         when(memberRepository.findById(2L)).thenReturn(Optional.empty());
