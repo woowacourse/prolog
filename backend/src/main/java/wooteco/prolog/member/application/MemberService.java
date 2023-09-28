@@ -20,7 +20,9 @@ import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.application.dto.MembersResponse;
 import wooteco.prolog.member.application.dto.ProfileIntroRequest;
 import wooteco.prolog.member.application.dto.ProfileIntroResponse;
+import wooteco.prolog.member.application.dto.RoleUpdateRequest;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 
 @Service
@@ -113,5 +115,27 @@ public class MemberService {
 
     public List<Member> findByIdIn(List<Long> memberIds) {
         return memberRepository.findByIdIn(memberIds);
+    }
+
+    @Transactional
+    public void updateMemberRole(final LoginMember requestMember,
+                                 final Long targetMemberId,
+                                 final RoleUpdateRequest updateRequest) {
+        requestMember.act().throwIfAnonymous(() -> new BadRequestException(MEMBER_NOT_ALLOWED));
+        final Member member = findById(requestMember.getId());
+        if (isMemberRoleLowerThanCoach(member)) {
+            throw new BadRequestException(MEMBER_NOT_ALLOWED);
+        }
+        final Role newRole = Role.valueOf(updateRequest.getRole());
+        updateMemberRole(targetMemberId, newRole);
+    }
+
+    private boolean isMemberRoleLowerThanCoach(final Member member) {
+        return member.isGuest() || member.isCrew();
+    }
+
+    private void updateMemberRole(final Long memberId, final Role role) {
+        final Member targetMember = findById(memberId);
+        targetMember.updateRole(role);
     }
 }

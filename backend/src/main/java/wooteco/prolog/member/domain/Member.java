@@ -1,5 +1,6 @@
 package wooteco.prolog.member.domain;
 
+import static wooteco.prolog.member.domain.Role.CREW;
 import static wooteco.prolog.member.domain.Role.GUEST;
 
 import java.util.List;
@@ -139,6 +140,14 @@ public class Member {
 
     public boolean isGuest() {
         return this.role == GUEST;
+    }
+
+    public boolean isCrew() {
+        return this.role == CREW;
+    }
+
+    public void updateRole(final Role role) {
+        this.role = role;
     }
 
     @Override

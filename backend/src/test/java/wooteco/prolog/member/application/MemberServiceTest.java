@@ -27,11 +27,13 @@ import org.springframework.data.domain.PageRequest;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
 import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.login.ui.LoginMember.Authority;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.application.dto.MembersResponse;
 import wooteco.prolog.member.application.dto.ProfileIntroRequest;
 import wooteco.prolog.member.application.dto.ProfileIntroResponse;
+import wooteco.prolog.member.application.dto.RoleUpdateRequest;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
@@ -391,5 +393,73 @@ class MemberServiceTest {
 
         //then
         assertEquals(members.size(), savedMembers.size());
+    }
+
+    @DisplayName("코치 권한 이상을 가진 멤버가 해당 Id의 멤버 역할을 변경한다.")
+    @Test
+    void updateMemberRole() {
+        //given
+        final Member coach = new Member("username1", "nickname1", Role.COACH, 1L, "imageUrl1");
+        final Member target = new Member("username1", "nickname2", Role.GUEST, 2L, "imageUrl1");
+
+        when(memberRepository.findById(1L)).thenReturn(Optional.of(coach));
+        when(memberRepository.findById(2L)).thenReturn(Optional.of(target));
+
+        final LoginMember requestMember = new LoginMember(1L, Authority.MEMBER);
+        final RoleUpdateRequest roleUpdateRequest = new RoleUpdateRequest("CREW");
+
+        //when
+        memberService.updateMemberRole(requestMember, 2L, roleUpdateRequest);
+
+        //then
+        assertThat(target.getRole()).isEqualTo(Role.CREW);
+    }
+
+    @DisplayName("코치 권한 이상을 가진 멤버가 해당 Id의 멤버 역할을 변경한다.")
+    @Test
+    void updateMemberRole_anonymous() {
+        //given
+        final LoginMember requestMember = new LoginMember(null, Authority.ANONYMOUS);
+        final RoleUpdateRequest roleUpdateRequest = new RoleUpdateRequest("CREW");
+
+        //when
+        //then
+        assertThatThrownBy(() -> memberService.updateMemberRole(requestMember, 2L, roleUpdateRequest))
+            .isInstanceOf(BadRequestException.class);
+    }
+
+    @DisplayName("코치 권한 미만의 권한을 가진 멤버가 해당 Id의 멤버 역할을 변경시 예외가 발생한다.")
+    @Test
+    void updateMemberRole_underCoachRole() {
+        //given
+        final Member crew = new Member("username1", "nickname1", Role.CREW, 1L, "imageUrl1");
+
+        when(memberRepository.findById(1L)).thenReturn(Optional.of(crew));
+
+        final LoginMember requestMember = new LoginMember(1L, Authority.MEMBER);
+        final RoleUpdateRequest roleUpdateRequest = new RoleUpdateRequest("CREW");
+
+        //when
+        //then
+        assertThatThrownBy(() -> memberService.updateMemberRole(requestMember, 2L, roleUpdateRequest))
+            .isInstanceOf(BadRequestException.class);
+    }
+
+    @DisplayName("변경할 Id의 멤버가 없으면 예외가 발생한다.")
+    @Test
+    void updateMemberRole_targetMemberNotExist() {
+        //given
+        final Member coach = new Member("username1", "nickname1", Role.COACH, 1L, "imageUrl1");
+
+        when(memberRepository.findById(1L)).thenReturn(Optional.of(coach));
+        when(memberRepository.findById(2L)).thenReturn(Optional.empty());
+
+        final LoginMember requestMember = new LoginMember(1L, Authority.MEMBER);
+        final RoleUpdateRequest roleUpdateRequest = new RoleUpdateRequest("CREW");
+
+        //when
+        //then
+        assertThatThrownBy(() -> memberService.updateMemberRole(requestMember, 2L, roleUpdateRequest))
+            .isInstanceOf(BadRequestException.class);
     }
 }
