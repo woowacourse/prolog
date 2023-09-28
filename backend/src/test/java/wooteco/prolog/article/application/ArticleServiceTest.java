@@ -59,6 +59,21 @@ class ArticleServiceTest {
         verify(articleRepository).save(any());
     }
 
+    @DisplayName("게스트일시 아티클을 생성하려고 하면 예외가 발생한다.")
+    @Test
+    void create_fail_guest() {
+        //given
+        final ArticleRequest judyRequest = new ArticleRequest("title", "url", "imageUrl");
+        final Member member = new Member(1L, "username", "nickname", Role.GUEST, 1L, "url");
+        when(memberService.findById(any())).thenReturn(member);
+        final LoginMember judyLogin = new LoginMember(1L, MEMBER);
+
+        //when
+        //then
+        assertThatThrownBy(() -> articleService.create(judyRequest, judyLogin))
+            .isInstanceOf(BadRequestException.class);
+    }
+
     @DisplayName("아티클을 수정한다.")
     @Test
     void update_success() {
@@ -84,7 +99,10 @@ class ArticleServiceTest {
     @Test
     void update_fail_ArticleNotFoundException() {
         //given
+        final Member judy = new Member(1L, "judith", "judy", Role.CREW, 1L, "judyUrl");
+
         when(articleRepository.findById(any())).thenReturn(Optional.ofNullable(null));
+        when(memberService.findById(any())).thenReturn(judy);
 
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
         final ArticleRequest judyChangedRequest = new ArticleRequest("title", "changedUrl",
@@ -137,7 +155,10 @@ class ArticleServiceTest {
     @Test
     void delete_fail_ArticleNotFoundException() {
         //given
+        final Member judy = new Member(1L, "judith", "judy", Role.CREW, 1L, "judyUrl");
+
         when(articleRepository.findById(any())).thenReturn(Optional.ofNullable(null));
+        when(memberService.findById(any())).thenReturn(judy);
 
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
 
