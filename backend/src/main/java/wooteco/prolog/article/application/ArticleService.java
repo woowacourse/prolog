@@ -16,6 +16,7 @@ import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
 
 @RequiredArgsConstructor
 @Service
@@ -34,7 +35,7 @@ public class ArticleService {
     }
 
     private void validateMemberIsCrew(final Member member) {
-        if (member.isGuest()) {
+        if (member.hasLowerImportanceRoleThan(Role.CREW)) {
             throw new BadRequestException(MEMBER_NOT_ALLOWED);
         }
     }
