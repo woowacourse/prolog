@@ -51,12 +51,5 @@ export const usePutArticleLikeMutation = () => {
 };
 
 export const usePostArticleViewsMutation = () => {
-  return useMutation(requestPostArticleView, {
-    onSuccess: () => {
-      alert(SUCCESS_MESSAGE.CREATE_ARTICLE);
-    },
-    onError: () => {
-      alert(ERROR_MESSAGE.DEFAULT);
-    },
-  });
+  return useMutation(requestPostArticleView);
 };
