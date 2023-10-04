@@ -1,7 +1,5 @@
 package wooteco.prolog.member.domain;
 
-import static wooteco.prolog.member.domain.Role.UNVALIDATED;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -137,8 +135,12 @@ public class Member {
             .collect(Collectors.toList());
     }
 
-    public boolean isAnonymous() {
-        return this.role == UNVALIDATED;
+    public boolean hasLowerImportanceRoleThan(final Role role) {
+        return this.role.hasLowerImportanceThan(role);
+    }
+
+    public void updateRole(final Role role) {
+        this.role = role;
     }
 
     @Override
