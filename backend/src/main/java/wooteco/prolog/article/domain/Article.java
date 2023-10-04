@@ -1,8 +1,14 @@
 package wooteco.prolog.article.domain;
 
-import static java.lang.Boolean.TRUE;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import wooteco.prolog.common.exception.BadRequestCode;
+import wooteco.prolog.common.exception.BadRequestException;
+import wooteco.prolog.member.domain.Member;
 
-import java.time.LocalDateTime;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -12,14 +18,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import wooteco.prolog.common.exception.BadRequestCode;
-import wooteco.prolog.common.exception.BadRequestException;
-import wooteco.prolog.member.domain.Member;
+import java.time.LocalDateTime;
+
+import static java.lang.Boolean.TRUE;
 
 @Entity
 @Getter
@@ -53,6 +54,9 @@ public class Article {
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @Embedded
+    private ViewCount views;
+
     public Article(final Member member, final Title title, final Url url, final ImageUrl imageUrl) {
         this.member = member;
         this.title = title;
@@ -60,6 +64,7 @@ public class Article {
         this.imageUrl = imageUrl;
         this.articleBookmarks = new ArticleBookmarks();
         this.articleLikes = new ArticleLikes();
+        this.views = new ViewCount();
     }
 
     public void validateOwner(final Member member) {
@@ -105,5 +110,9 @@ public class Article {
 
     private void removeLike(final Member member) {
         articleLikes.removeLike(member.getId());
+    }
+
+    public void updateViewCount() {
+        this.views.increase();
     }
 }
