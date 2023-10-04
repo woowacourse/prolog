@@ -26,3 +26,7 @@ export const requestGetFilteredArticle = (course: string, bookmark: boolean) => 
 export const requestPutArticleLike = ({ articleId, like }: ArticleLikePutRequest) => {
   return client.put(`/articles/${articleId}/like`, { like });
 };
+
+export const requestPostArticleView = (articleId: number) => {
+  return client.post(`/articles/${articleId}/views`);
+};
