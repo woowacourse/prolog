@@ -178,4 +178,17 @@ class ArticleTest {
                 .isFalse();
         }
     }
+
+    @DisplayName("아티클 조회시 조회수가 증가한다.")
+    @Test
+    void updateViewCount() {
+        //given
+        final Article article = new Article(member, title, url, imageUrl);
+
+        //when
+        article.updateViewCount();
+
+        //then
+        assertThat(article.getViews().getViews()).isEqualTo(1);
+    }
 }
