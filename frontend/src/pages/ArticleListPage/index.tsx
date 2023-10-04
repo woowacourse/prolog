@@ -30,7 +30,9 @@ const ArticleListPage = () => {
   const [checked, setChecked] = useState(false);
 
   const { user } = useContext(UserContext);
-  const { isLoggedIn } = user;
+  const { isLoggedIn, role } = user;
+
+  const authorized = role === 'CREW' && isLoggedIn;
 
   const { data: filteredArticles = [], refetch: getFilteredArticles } = useGetFilteredArticleQuery(
     selectedCourse.value,
@@ -66,7 +68,7 @@ const ArticleListPage = () => {
             <ArticleBookmarkFilter checked={checked} handleCheckBookmark={handleCheckBookmark} />
           )}
         </FilteringWrapper>
-        {isLoggedIn && (
+        {authorized && (
           <Button
             type="button"
             size="X_SMALL"
