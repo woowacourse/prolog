@@ -1,5 +1,9 @@
 package wooteco.prolog.roadmap.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
+
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.common.exception.BadRequestException;
@@ -10,11 +14,6 @@ import wooteco.prolog.roadmap.application.dto.KeywordsResponse;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-
-import java.util.List;
-
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
 
 @Transactional
 @Service
@@ -89,7 +88,7 @@ public class KeywordService {
 
     @Transactional(readOnly = true)
     public KeywordsResponse newFindSessionIncludeRootKeywords() {
-        List<Keyword> keywords = keywordRepository.newFindParentIsNull();
+        List<Keyword> keywords = keywordRepository.newFindByParentIsNull();
 
         return KeywordsResponse.createResponse(keywords);
     }

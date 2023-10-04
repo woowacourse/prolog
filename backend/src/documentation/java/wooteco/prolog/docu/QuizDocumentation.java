@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import wooteco.prolog.NewDocumentation;
 import wooteco.prolog.roadmap.application.QuizService;
 import wooteco.prolog.roadmap.application.dto.QuizRequest;
@@ -22,6 +21,8 @@ import wooteco.prolog.roadmap.ui.QuizController;
 @WebMvcTest(controllers = QuizController.class)
 public class QuizDocumentation extends NewDocumentation {
 
+    private static final String UTF8_JSON_TYPE = "application/json;charset=UTF-8";
+
     @MockBean
     private QuizService quizService;
 
@@ -30,7 +31,7 @@ public class QuizDocumentation extends NewDocumentation {
         given(quizService.createQuiz(any(), any())).willReturn(1L);
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .contentType(UTF8_JSON_TYPE)
             .body(QUIZ_REQUEST)
             .when().post("/sessions/{sessionId}/keywords/{keywordId}/quizs", 1L, 1L)
             .then().log().all().apply(document("quiz/create"))
@@ -38,13 +39,29 @@ public class QuizDocumentation extends NewDocumentation {
     }
 
     @Test
+    void 퀴즈_상세_조회() {
+        QuizResponse question = new QuizResponse(
+            1L,
+            "question",
+            true
+        );
+        given(quizService.findById(any(), any()))
+            .willReturn(question);
+
+        given
+            .header("Authorization", "Bearer " + accessToken)
+            .when().get("/sessions/{sessionId}/keywords/{keywordId}/quizs/{quizId}", 1L, 1L, 1L)
+            .then().log().all().apply(document("quiz/detail"))
+            .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
     void Keyword별_Quiz_목록_조회() {
         given(quizService.findQuizzesByKeywordId(any(), any())).willReturn(QUIZZES_RESPONSE);
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().get("/sessions/{sessionId}/keywords/{keywordId}/quizs", 1L, 1L)
-            .then().log().all().apply(document("quiz/delete"))
+            .then().log().all().apply(document("quiz/list"))
             .statusCode(HttpStatus.OK.value());
     }
 
@@ -53,7 +70,7 @@ public class QuizDocumentation extends NewDocumentation {
         doNothing().when(quizService).updateQuiz(any(), any());
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .contentType(UTF8_JSON_TYPE)
             .body(QUIZ_EDIT_REQUEST)
             .when().put("/sessions/{sessionId}/keywords/{keywordId}/quizs/{quizId}", 1L, 1L, 1L)
             .then().log().all().apply(document("quiz/update"))
@@ -66,7 +83,6 @@ public class QuizDocumentation extends NewDocumentation {
         doNothing().when(quizService).deleteQuiz(any());
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().delete("/sessions/{sessionId}/keywords/{keywordId}/quizs/{quizId}", 1L, 1L, 1L)
             .then().log().all().apply(document("quiz/delete"))
             .statusCode(HttpStatus.NO_CONTENT.value());
