@@ -8,6 +8,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.application.dto.MembersResponse;
+import wooteco.prolog.member.application.dto.RoleUpdateRequest;
 
 @RestController
 @AllArgsConstructor
@@ -68,5 +70,13 @@ public class MemberController {
     public ResponseEntity<MemberResponse> findMemberInfoOfMine(
         @AuthMemberPrincipal LoginMember member) {
         return ResponseEntity.ok().body(MemberResponse.of(memberService.findById(member.getId())));
+    }
+
+    @PatchMapping("/{memberId}/role")
+    public ResponseEntity<Void> updateMemberRole(@AuthMemberPrincipal LoginMember requestMember,
+                                                 @PathVariable(name = "memberId") Long targetMemberId,
+                                                 @RequestBody final RoleUpdateRequest request) {
+        memberService.updateMemberRole(requestMember, targetMemberId, request);
+        return ResponseEntity.ok().build();
     }
 }

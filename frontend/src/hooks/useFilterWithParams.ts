@@ -86,6 +86,7 @@ const makeFilters = (filters, filterType) => {
   const value = [...filters].map((id) => ({ filterType, filterDetailId: Number(id) }));
 
   return [...filters].map((id) => ({ filterType, filterDetailId: Number(id), name: '' }));
+
 };
 
 export default useFilterWithParams;
