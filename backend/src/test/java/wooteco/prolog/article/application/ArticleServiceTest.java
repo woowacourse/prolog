@@ -31,6 +31,9 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -320,13 +323,13 @@ class ArticleServiceTest {
         final Article article = new Article(member, new Title("title"), new Url("url"), new ImageUrl("imageUrl"));
         final LoginMember loginMember = new LoginMember(1L, MEMBER);
 
-        when(articleRepository.findArticlesByCourseAndMember(any(), any(), any())).thenReturn(Arrays.asList(article));
+        when(articleRepository.findArticlesByCourseAndMember(anyString(), anyLong(), anyBoolean())).thenReturn(Arrays.asList(article));
 
         //when
         final List<ArticleResponse> articleResponses = articleService.getFilteredArticles(loginMember, ArticleFilterType.BACKEND, true);
 
         //then
-        verify(articleRepository).findArticlesByCourseAndMember(any(), any(), any());
+        verify(articleRepository).findArticlesByCourseAndMember(anyString(), anyLong(), anyBoolean());
         Assertions.assertThat(articleResponses.get(0).getTitle()).isEqualTo(article.getTitle().getTitle());
     }
 
