@@ -30,6 +30,7 @@ const Article = ({
 
   const toggleBookmark: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
+    e.stopPropagation();
 
     bookmarkRef.current = !bookmarkRef.current;
     setBookmark((prev) => !prev);
@@ -41,6 +42,7 @@ const Article = ({
 
   const toggleLike: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
+    e.stopPropagation();
 
     likeRef.current = !likeRef.current;
     setLike((prev) => !prev);
