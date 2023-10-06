@@ -72,4 +72,10 @@ public class ArticleController {
 
         return ResponseEntity.ok(articleResponses);
     }
+
+    @PostMapping("/{id}/views")
+    public ResponseEntity<Void> updateViewCount(@PathVariable final Long id) {
+        articleService.updateViewCount(id);
+        return ResponseEntity.ok().build();
+    }
 }

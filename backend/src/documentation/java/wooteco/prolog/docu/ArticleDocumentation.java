@@ -57,4 +57,18 @@ public class ArticleDocumentation extends NewDocumentation {
         //docs
         response.apply(document("article/like"));
     }
+
+    @Test
+    void 아티클의_조회수를_증가시킨다() {
+        //given, when
+        final ValidatableMockMvcResponse response = given
+            .when().post("/articles/{article-id}/views", 1L)
+            .then().log().all();
+
+        //then
+        response.expect(status().isOk());
+
+        //docs
+        response.apply(document("article/views"));
+    }
 }

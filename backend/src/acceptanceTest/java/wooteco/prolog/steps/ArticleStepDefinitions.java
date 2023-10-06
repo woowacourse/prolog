@@ -136,4 +136,19 @@ public class ArticleStepDefinitions extends AcceptanceSteps {
         );
         //아티클 단건 조회에 좋아요 여부가 추가되면 단건 조회로 likes 여부까지 검증해보기
     }
+
+    @When("{long}번 아티클에 조회수 추가요청을 보내면")
+    public void 아티클에_조회수_추가요청을_보내면(final Long articleId) {
+        context.invokeHttpPost(
+            String.format("/articles/%d/views", articleId),""
+        );
+    }
+
+    @Then("아티클의 조회수가 증가한다")
+    public void 아티클의_조회수가_증가한다() {
+        final int statusCode = context.response.statusCode();
+        assertAll(
+            () -> assertThat(statusCode).isEqualTo(HttpStatus.OK.value())
+        );
+    }
 }
