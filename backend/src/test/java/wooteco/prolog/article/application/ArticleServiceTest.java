@@ -59,7 +59,7 @@ class ArticleServiceTest {
         when(memberService.findById(any())).thenReturn(member);
 
         final Article article = new Article(member, new Title("title"), new Url("url"),
-            new ImageUrl("imageUrl"));
+                new ImageUrl("imageUrl"));
         when(articleRepository.save(any())).thenReturn(article);
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
 
@@ -82,7 +82,7 @@ class ArticleServiceTest {
 
         //when
         assertThatThrownBy(() -> articleService.create(judyRequest, judyLogin))
-            .isInstanceOf(BadRequestException.class);
+                .isInstanceOf(BadRequestException.class);
     }
 
     @DisplayName("아티클을 수정한다.")
@@ -91,13 +91,13 @@ class ArticleServiceTest {
         //given
         final Member judy = new Member(1L, "username", "nickname", CREW, 1L, "url");
         final Article judyArticle = new Article(judy, new Title("judyTitle"), new Url("judyUrl"),
-            new ImageUrl("imageUrl"));
+                new ImageUrl("imageUrl"));
         when(articleRepository.findById(any())).thenReturn(Optional.of(judyArticle));
         when(memberService.findById(any())).thenReturn(judy);
 
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
         final ArticleRequest judyChangedRequest = new ArticleRequest("title", "changedUrl",
-            "imageUrl");
+                "imageUrl");
 
         //when
         articleService.update(1L, judyChangedRequest, judyLogin);
@@ -114,11 +114,11 @@ class ArticleServiceTest {
 
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
         final ArticleRequest judyChangedRequest = new ArticleRequest("title", "changedUrl",
-            "imageUrl");
+                "imageUrl");
 
         //when, then
         assertThatThrownBy(() -> articleService.update(1L, judyChangedRequest, judyLogin))
-            .isInstanceOf(BadRequestException.class);
+                .isInstanceOf(BadRequestException.class);
     }
 
     @DisplayName("수정시 아티클 작성자가 아니라면 예외를 발생시킨다.")
@@ -128,17 +128,17 @@ class ArticleServiceTest {
         final Member judy = new Member(1L, "judith", "judy", CREW, 1L, "judyUrl");
         final Member brown = new Member(2L, "brown", "brownie", CREW, 2L, "brownUrl");
         final Article brownArticle = new Article(brown, new Title("brownTitle"),
-            new Url("brownUrl"), new ImageUrl("imageUrl"));
+                new Url("brownUrl"), new ImageUrl("imageUrl"));
         when(articleRepository.findById(any())).thenReturn(Optional.of(brownArticle));
 
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
         when(memberService.findById(any())).thenReturn(judy);
         final ArticleRequest judyChangedRequest = new ArticleRequest("title", "changedUrl",
-            "imageUrl");
+                "imageUrl");
 
         //when, then
         assertThatThrownBy(() -> articleService.update(1L, judyChangedRequest, judyLogin))
-            .isInstanceOf(BadRequestException.class);
+                .isInstanceOf(BadRequestException.class);
     }
 
     @DisplayName("아티클을 삭제한다.")
@@ -147,7 +147,7 @@ class ArticleServiceTest {
         //given
         final Member judy = new Member(1L, "judith", "judy", CREW, 1L, "judyUrl");
         final Article judyArticle = new Article(judy, new Title("judyTitle"), new Url("judyUrl"),
-            new ImageUrl("imageUrl"));
+                new ImageUrl("imageUrl"));
         when(articleRepository.findById(any())).thenReturn(Optional.of(judyArticle));
         when(memberService.findById(any())).thenReturn(judy);
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
@@ -169,7 +169,7 @@ class ArticleServiceTest {
 
         //when, then
         assertThatThrownBy(() -> articleService.delete(1L, judyLogin))
-            .isInstanceOf(BadRequestException.class);
+                .isInstanceOf(BadRequestException.class);
     }
 
     @DisplayName("삭제시 아티클 작성자가 아니라면 예외를 발생시킨다.")
@@ -179,7 +179,7 @@ class ArticleServiceTest {
         final Member judy = new Member(1L, "judith", "judy", CREW, 1L, "judyUrl");
         final Member brown = new Member(2L, "brown", "brownie", CREW, 2L, "brownUrl");
         final Article brownArticle = new Article(brown, new Title("brownTitle"),
-            new Url("brownUrl"), new ImageUrl("imageUrl"));
+                new Url("brownUrl"), new ImageUrl("imageUrl"));
         when(articleRepository.findById(any())).thenReturn(Optional.of(brownArticle));
 
         final LoginMember judyLogin = new LoginMember(1L, MEMBER);
@@ -187,7 +187,7 @@ class ArticleServiceTest {
 
         //when, then
         assertThatThrownBy(() -> articleService.delete(1L, judyLogin))
-            .isInstanceOf(BadRequestException.class);
+                .isInstanceOf(BadRequestException.class);
     }
 
     @Nested
@@ -199,14 +199,14 @@ class ArticleServiceTest {
         void add() {
             //given
             final Member member = new Member(1L, "userName", "nickName",
-                CREW, 1L, "imageUrl");
+                    CREW, 1L, "imageUrl");
             final Article article = new Article(member, new Title("brownTitle"),
-                new Url("brownUrl"), new ImageUrl("imageUrl"));
+                    new Url("brownUrl"), new ImageUrl("imageUrl"));
             final Long articleId = 3L;
             final LoginMember loginMember = new LoginMember(member.getId(), MEMBER);
 
             when(articleRepository.findFetchBookmarkById(articleId)).thenReturn(
-                Optional.of(article));
+                    Optional.of(article));
             when(memberService.findById(member.getId())).thenReturn(member);
 
             //when
@@ -215,7 +215,7 @@ class ArticleServiceTest {
             //then
             final ArticleBookmarks articleBookmarks = article.getArticleBookmarks();
             assertThat(articleBookmarks.containBookmark(member.getId()))
-                .isTrue();
+                    .isTrue();
         }
 
         @DisplayName("아티클의 북마크를 삭제한다.")
@@ -223,14 +223,14 @@ class ArticleServiceTest {
         void remove() {
             //given
             final Member member = new Member(1L, "userName", "nickName",
-                CREW, 1L, "imageUrl");
+                    CREW, 1L, "imageUrl");
             final Article article = new Article(member, new Title("brownTitle"),
-                new Url("brownUrl"), new ImageUrl("imageUrl"));
+                    new Url("brownUrl"), new ImageUrl("imageUrl"));
             final Long articleId = 3L;
             final LoginMember loginMember = new LoginMember(member.getId(), MEMBER);
 
             when(articleRepository.findFetchBookmarkById(articleId)).thenReturn(
-                Optional.of(article));
+                    Optional.of(article));
             when(memberService.findById(member.getId())).thenReturn(member);
 
             //when
@@ -239,7 +239,7 @@ class ArticleServiceTest {
             //then
             final ArticleBookmarks articleBookmarks = article.getArticleBookmarks();
             assertThat(articleBookmarks.containBookmark(member.getId()))
-                .isTrue();
+                    .isTrue();
         }
     }
 
@@ -252,9 +252,9 @@ class ArticleServiceTest {
         void add() {
             //given
             final Member member = new Member(1L, "userName", "nickName",
-                CREW, 1L, "imageUrl");
+                    CREW, 1L, "imageUrl");
             final Article article = new Article(member, new Title("brownTitle"),
-                new Url("brownUrl"), new ImageUrl("imageUrl"));
+                    new Url("brownUrl"), new ImageUrl("imageUrl"));
             final Long articleId = 3L;
             final LoginMember loginMember = new LoginMember(member.getId(), MEMBER);
 
@@ -267,7 +267,7 @@ class ArticleServiceTest {
             //then
             final ArticleLikes articleBookmarks = article.getArticleLikes();
             assertThat(articleBookmarks.isAlreadyLike(member.getId()))
-                .isTrue();
+                    .isTrue();
         }
 
         @DisplayName("아티클의 좋아요를 삭제한다.")
@@ -275,9 +275,9 @@ class ArticleServiceTest {
         void remove() {
             //given
             final Member member = new Member(1L, "userName", "nickName",
-                CREW, 1L, "imageUrl");
+                    CREW, 1L, "imageUrl");
             final Article article = new Article(member, new Title("brownTitle"),
-                new Url("brownUrl"), new ImageUrl("imageUrl"));
+                    new Url("brownUrl"), new ImageUrl("imageUrl"));
             final Long articleId = 3L;
             final LoginMember loginMember = new LoginMember(member.getId(), MEMBER);
 
@@ -290,7 +290,7 @@ class ArticleServiceTest {
             //then
             final ArticleLikes articleBookmarks = article.getArticleLikes();
             assertThat(articleBookmarks.isAlreadyLike(member.getId()))
-                .isFalse();
+                    .isFalse();
         }
     }
 
@@ -320,13 +320,13 @@ class ArticleServiceTest {
         final Article article = new Article(member, new Title("title"), new Url("url"), new ImageUrl("imageUrl"));
         final LoginMember loginMember = new LoginMember(1L, MEMBER);
 
-        when(articleRepository.findArticlesByCourseAndMember(any(), any())).thenReturn(Arrays.asList(article));
+        when(articleRepository.findArticlesByCourseAndMember(any(), any(), any())).thenReturn(Arrays.asList(article));
 
         //when
         final List<ArticleResponse> articleResponses = articleService.getFilteredArticles(loginMember, ArticleFilterType.BACKEND, true);
 
         //then
-        verify(articleRepository).findArticlesByCourseAndMember(any(), any());
+        verify(articleRepository).findArticlesByCourseAndMember(any(), any(), any());
         Assertions.assertThat(articleResponses.get(0).getTitle()).isEqualTo(article.getTitle().getTitle());
     }
 

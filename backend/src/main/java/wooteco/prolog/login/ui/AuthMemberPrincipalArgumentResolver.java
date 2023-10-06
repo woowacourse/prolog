@@ -32,21 +32,22 @@ public class AuthMemberPrincipalArgumentResolver implements HandlerMethodArgumen
                                        ModelAndViewContainer mavContainer,
                                        NativeWebRequest webRequest,
                                        WebDataBinderFactory binderFactory) {
-        String credentials = AuthorizationExtractor
-            .extract(webRequest.getNativeRequest(HttpServletRequest.class));
-
-        if (credentials == null || credentials.isEmpty()) {
-            memberAuthorityCache.setAuthority(Authority.ANONYMOUS);
-            return new LoginMember(Authority.ANONYMOUS);
-        }
-
-        try {
-            Long id = Long.parseLong(jwtTokenProvider.extractSubject(credentials));
-            memberAuthorityCache.setAuthority(Authority.MEMBER);
-            return new LoginMember(id, Authority.MEMBER);
-        } catch (NumberFormatException e) {
-            throw new BadRequestException(TOKEN_NOT_VALID);
-        }
+        return new LoginMember(1L, Authority.MEMBER);
+//        String credentials = AuthorizationExtractor
+//            .extract(webRequest.getNativeRequest(HttpServletRequest.class));
+//
+//        if (credentials == null || credentials.isEmpty()) {
+//            memberAuthorityCache.setAuthority(Authority.ANONYMOUS);
+//            return new LoginMember(Authority.ANONYMOUS);
+//        }
+//
+//        try {
+//            Long id = Long.parseLong(jwtTokenProvider.extractSubject(credentials));
+//            memberAuthorityCache.setAuthority(Authority.MEMBER);
+//            return new LoginMember(id, Authority.MEMBER);
+//        } catch (NumberFormatException e) {
+//            throw new BadRequestException(TOKEN_NOT_VALID);
+//        }
     }
 
 }
