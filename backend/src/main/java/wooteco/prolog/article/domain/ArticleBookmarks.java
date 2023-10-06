@@ -19,7 +19,14 @@ public class ArticleBookmarks {
     }
 
     public void addBookmark(final ArticleBookmark bookmark) {
-        articleBookmarks.add(bookmark);
+        if (isNotAlreadyAdded(bookmark)) {
+            articleBookmarks.add(bookmark);
+        }
+    }
+
+    private boolean isNotAlreadyAdded(final ArticleBookmark newBookmark) {
+        return articleBookmarks.stream()
+            .noneMatch(bookmark -> bookmark.isOwner(newBookmark.getMemberId()));
     }
 
     public void removeBookmark(final Long memberId) {
@@ -32,5 +39,9 @@ public class ArticleBookmarks {
     public boolean containBookmark(final Long memberId) {
         return articleBookmarks.stream()
             .anyMatch(bookmark -> bookmark.isOwner(memberId));
+    }
+
+    public List<ArticleBookmark> getArticleBookmarks() {
+        return articleBookmarks;
     }
 }

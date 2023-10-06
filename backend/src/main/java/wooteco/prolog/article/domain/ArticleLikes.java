@@ -19,7 +19,14 @@ public class ArticleLikes {
     }
 
     public void addLike(final ArticleLike articleLike) {
-        articleLikes.add(articleLike);
+        if (isNotAlreadyAdded(articleLike)) {
+            articleLikes.add(articleLike);
+        }
+    }
+
+    private boolean isNotAlreadyAdded(final ArticleLike articleLike) {
+        return articleLikes.stream()
+            .noneMatch(like -> like.equals(articleLike));
     }
 
     public void removeLike(final Long memberId) {
@@ -32,5 +39,9 @@ public class ArticleLikes {
     public boolean isAlreadyLike(final Long memberId) {
         return articleLikes.stream()
             .anyMatch(like -> like.isOwner(memberId));
+    }
+
+    public List<ArticleLike> getArticleLikes() {
+        return articleLikes;
     }
 }

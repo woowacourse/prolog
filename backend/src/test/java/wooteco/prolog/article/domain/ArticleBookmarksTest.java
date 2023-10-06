@@ -40,6 +40,22 @@ class ArticleBookmarksTest {
     }
 
     @Test
+    @DisplayName("이미 추가되어 있으면 ArticleBookmark를 추가하지 않는다.")
+    void addArticleBookmarkIfAlreadyAdded() {
+        //given
+        final ArticleBookmarks articleLikes = new ArticleBookmarks();
+        final Article article = new Article(member, title, url, imageUrl);
+        final ArticleBookmark articleLike = new ArticleBookmark(article, member.getId());
+        articleLikes.addBookmark(articleLike);
+
+        //when
+        articleLikes.addBookmark(articleLike);
+
+        //then
+        assertThat(articleLikes.getArticleBookmarks()).hasSize(1);
+    }
+
+    @Test
     @DisplayName("ArticleBookmark를 삭제할 수 있다,")
     void removeArticleBookmark() {
         //given
