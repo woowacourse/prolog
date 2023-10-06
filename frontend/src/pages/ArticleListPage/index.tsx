@@ -27,9 +27,6 @@ type CategoryOptions = typeof CATEGORY_OPTIONS[number];
 const ArticleListPage = () => {
   const history = useHistory();
 
-  const { user } = useContext(UserContext);
-  const { isLoggedIn } = user;
-
   const goNewArticlePage = () => history.push(PATH.NEW_ARTICLE);
   const [selectedCourse, setSelectedCourse] = useState<CategoryOptions>(CATEGORY_OPTIONS[0]);
   const [checked, setChecked] = useState(false);
