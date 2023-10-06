@@ -1,22 +1,22 @@
 import { AxiosPromise, AxiosResponse } from 'axios';
 import { client } from '.';
-import { EssayAnswerListRequest, EssayAnswerRequest, EssayEditRequest } from '../models/EssayAnswers';
+import {
+  EssayAnswerListRequest,
+  EssayAnswerRequest,
+  EssayEditRequest,
+} from '../models/EssayAnswers';
 import { Quiz } from '../models/Keywords';
 
 export const requestGetEssayAnswers = async (params: EssayAnswerListRequest) => {
-  const {
-    quizIds,
-    memberIds,
-    ...otherParams
-  } = params;
+  const { quizIds, memberIds, ...otherParams } = params;
 
   const axiosParams: Omit<EssayAnswerListRequest, 'quizIds' | 'memberIds'> & {
     quizIds?: string;
     memberIds?: string;
   } = { ...otherParams };
 
-  if (quizIds) axiosParams.quizIds = '[' + quizIds.join(',') + ']';
-  if (memberIds) axiosParams.memberIds = '[' + memberIds.join(',') + ']';
+  if (quizIds) axiosParams.quizIds = quizIds.join(',');
+  if (memberIds) axiosParams.memberIds = memberIds.join(',');
 
   const { data } = await client.get('/essay-answers', {
     params: axiosParams,
