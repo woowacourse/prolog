@@ -3,6 +3,7 @@ import type { ArticleType } from '../../models/Article';
 import Scrap from '../Reaction/Scrap';
 import { useRef, useState } from 'react';
 import {
+  usePostArticleViewsMutation,
   usePutArticleBookmarkMutation,
   usePutArticleLikeMutation,
 } from '../../hooks/queries/article';
@@ -25,6 +26,7 @@ const Article = ({
   const [like, setLike] = useState(isLiked);
   const { mutate: putBookmark } = usePutArticleBookmarkMutation();
   const { mutate: putLike } = usePutArticleLikeMutation();
+  const { mutate: postViews } = usePostArticleViewsMutation();
 
   const toggleBookmark: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
@@ -49,7 +51,7 @@ const Article = ({
   };
 
   return (
-    <Styled.Container>
+    <Styled.Container onClick={() => postViews(id)}>
       <Styled.Anchor href={url} target="_blank" rel="noopener noreferrer">
         <Styled.ThumbnailWrapper>
           <Styled.Thumbnail src={imageUrl} />

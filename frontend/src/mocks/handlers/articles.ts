@@ -62,4 +62,8 @@ export const articlesHandler = [
 
     return res(ctx.status(200), ctx.json(filteredArticle));
   }),
+
+  rest.post(`${BASE_URL}/articles/:articleId/views`, (req, res, ctx) => {
+    return res(ctx.status(200));
+  }),
 ];

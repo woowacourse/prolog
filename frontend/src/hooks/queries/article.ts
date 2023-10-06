@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
   requestGetFilteredArticle,
+  requestPostArticleView,
   requestPostArticles,
   requestPutArticleBookmark,
   requestPutArticleLike,
@@ -47,4 +48,8 @@ export const usePutArticleLikeMutation = () => {
     onSuccess: () => {},
     onError: () => {},
   });
+};
+
+export const usePostArticleViewsMutation = () => {
+  return useMutation(requestPostArticleView);
 };
