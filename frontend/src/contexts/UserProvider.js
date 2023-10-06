@@ -10,7 +10,7 @@ const DEFAULT_USER = {
   userId: null,
   username: null,
   nickname: null,
-  role: null,
+  role: '',
   imageUrl: null,
   accessToken: null,
   isLoggedIn: false,
