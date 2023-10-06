@@ -10,8 +10,8 @@ import org.hibernate.annotations.CascadeType;
 @Embeddable
 public class ArticleLikes {
 
-    @OneToMany(mappedBy = "article")
-    @Cascade(value = {CascadeType.PERSIST, CascadeType.DELETE})
+    @OneToMany(mappedBy = "article", orphanRemoval = true)
+    @Cascade(value = CascadeType.PERSIST)
     private List<ArticleLike> articleLikes;
 
     public ArticleLikes() {
