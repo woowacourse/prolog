@@ -1,7 +1,7 @@
 import { rest } from 'msw';
 import { BASE_URL } from '../../configs/environment';
 import curriculums from '../fixtures/curriculums';
-import { quizMock } from '../fixtures/quizs';
+import { quizMock } from '../fixtures/quizzes';
 import roadmapMock from '../fixtures/roadmap';
 
 export const roadmapHandler = [

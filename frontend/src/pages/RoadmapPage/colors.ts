@@ -29,14 +29,14 @@ export const toAdjustedLightness = ([hue, saturation, lightness]: HSL, offset: n
 
 export const KeywordColors = {
   MAIN_KEYWORD: [220, 0.5, 0.4],
-  SUB_KEYWORD: [220, 1, 0.8],
+  SUB_KEYWORD: [220, 0.35, 0.85],
   LINE: [0, 0, 0.2],
   BORDER: [0, 0, 1],
 } as const;
 
 export const ImportanceColors = {
-  1: [0, 0, 0.93],
-  2: [60, 1, 0.48],
-  3: [30, 1, 0.6],
+  1: [0, 0, 0.95],
+  2: [50, 1, 0.6],
+  3: [30, 0.95, 0.55],
   4: [0, 1, 0.5],
 } as const;

@@ -150,7 +150,7 @@ const roadmapData: RoadmapResponse['data'] = [
             keywordId: 9,
             name: 'unmount',
             order: 1,
-            importance: 1,
+            importance: 5,
             parentKeywordId: 7,
             description: 'unmount 설명',
             doneQuizCount: 0,

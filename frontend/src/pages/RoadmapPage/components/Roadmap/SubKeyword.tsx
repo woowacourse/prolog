@@ -9,7 +9,7 @@ type Keyword = KeywordResponse;
 
 type SubKeywordProps = {
   hue: number;
-  keyword: Keyword
+  keyword: Keyword;
   onClick?: (keyword: Keyword) => void;
 };
 
@@ -59,7 +59,9 @@ const SubKeyword = (props: SubKeywordProps) => {
         css={css`
           width: 10px;
           height: 100%;
-          background: ${hsl(ImportanceColors[keyword.importance])};
+          background: ${ImportanceColors[keyword.importance]
+            ? hsl(ImportanceColors[keyword.importance])
+            : 'transparent'};
           margin-right: auto;
           box-shadow: inset 1px 0 1px 1px rgba(0, 0, 0, 0.05);
         `}
