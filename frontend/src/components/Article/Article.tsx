@@ -20,8 +20,8 @@ const Article = ({
   isBookmarked,
   isLiked,
 }: ArticleType) => {
-  const bookmarkRef = useRef(false);
-  const likeRef = useRef(false);
+  const bookmarkRef = useRef(isBookmarked);
+  const likeRef = useRef(isLiked);
   const [bookmark, setBookmark] = useState(isBookmarked);
   const [like, setLike] = useState(isLiked);
   const { mutate: putBookmark } = usePutArticleBookmarkMutation();
