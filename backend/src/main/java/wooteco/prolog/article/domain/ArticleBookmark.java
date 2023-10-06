@@ -40,4 +40,8 @@ public class ArticleBookmark {
     public boolean isOwner(final Long memberId) {
         return Objects.equals(this.memberId, memberId);
     }
+
+    public Long getMemberId() {
+        return memberId;
+    }
 }

@@ -2,9 +2,11 @@ package wooteco.prolog.article.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 
@@ -24,7 +26,7 @@ class ArticleLikesTest {
     }
 
     @Test
-    @DisplayName("ArticleBookmark를 추가할 수 있다.")
+    @DisplayName("ArticleLike를 추가할 수 있다.")
     void addArticleLike() {
         //given
         final ArticleLikes articleLikes = new ArticleLikes();
@@ -40,7 +42,23 @@ class ArticleLikesTest {
     }
 
     @Test
-    @DisplayName("ArticleBookmark를 삭제할 수 있다,")
+    @DisplayName("이미 추가되어 있으면 ArticleLike를 추가하지 않는다.")
+    void addArticleLikeIfAlreadyAdded() {
+        //given
+        final ArticleLikes articleLikes = new ArticleLikes();
+        final Article article = new Article(member, title, url, imageUrl);
+        final ArticleLike articleLike = new ArticleLike(article, member.getId());
+        articleLikes.addLike(articleLike);
+
+        //when
+        articleLikes.addLike(articleLike);
+
+        //then
+        assertThat(articleLikes.getArticleLikes()).hasSize(1);
+    }
+
+    @Test
+    @DisplayName("ArticleLike를 삭제할 수 있다,")
     void removeArticleLike() {
         //given
         final ArticleLikes articleLikes = new ArticleLikes();
