@@ -13,6 +13,7 @@ import { css } from '@emotion/react';
 import ArticleBookmarkFilter from '../../components/Article/ArticleBookmarkFIlter';
 import { useGetFilteredArticleQuery } from '../../hooks/queries/article';
 import { UserContext } from '../../contexts/UserProvider';
+import MEDIA_QUERY from '../../constants/mediaQuery';
 
 const CATEGORY_OPTIONS = [
   { value: 'all', label: '전체보기' },
@@ -81,7 +82,7 @@ const ArticleListPage = () => {
             onClick={goNewArticlePage}
             cssProps={WriteButtonStyle}
           >
-            글쓰기
+            <ButtonText>글쓰기</ButtonText>
           </Button>
         )}
       </Container>
@@ -106,6 +107,10 @@ const FilteringWrapper = styled.div`
 
 const SelectBoxWrapper = styled.div`
   width: 150px;
+
+  ${MEDIA_QUERY.sm} {
+    width: 130px;
+  }
 `;
 
 export const WriteButtonStyle = css`
@@ -120,5 +125,19 @@ export const WriteButtonStyle = css`
 
   :hover {
     background-color: ${COLOR.DARK_BLUE_600};
+  }
+
+  ${MEDIA_QUERY.sm} {
+    width: 42px;
+
+    & > img {
+      margin: 0;
+    }
+  }
+`;
+
+const ButtonText = styled.span`
+  ${MEDIA_QUERY.sm} {
+    display: none;
   }
 `;
