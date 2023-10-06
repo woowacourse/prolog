@@ -3,11 +3,9 @@ package wooteco.prolog.article.ui;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import wooteco.prolog.article.domain.Article;
 
 @AllArgsConstructor
-@Getter
 public class ArticleResponse {
 
     private final Long id;
@@ -36,5 +34,37 @@ public class ArticleResponse {
         final LocalDateTime createdAt = article.getCreatedAt();
         return new ArticleResponse(id, nickName, title, url, imageUrl, isBookmarked, isLiked,
             createdAt);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public boolean isBookmarked() {
+        return isBookmarked;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }
