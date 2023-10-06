@@ -90,4 +90,11 @@ public class ArticleService {
             .map(article -> ArticleResponse.of(article, member.getId()))
             .collect(toList());
     }
+
+    @Transactional
+    public void updateViewCount(final Long id) {
+        final Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException(ARTICLE_NOT_FOUND_EXCEPTION));
+        article.updateViewCount();
+    }
 }

@@ -329,4 +329,20 @@ class ArticleServiceTest {
         verify(articleRepository).findArticlesByCourseAndMember(any(), any());
         Assertions.assertThat(articleResponses.get(0).getTitle()).isEqualTo(article.getTitle().getTitle());
     }
+
+    @DisplayName("아티클 조회시 조회수가 증가한다.")
+    @Test
+    void updateViews() {
+        //given
+        final Member member = new Member(1L, "username", "nickname", CREW, 1L, "url");
+        final Article article = new Article(member, new Title("title"), new Url("url"), new ImageUrl("imageUrl"));
+        final Long articleId = 1L;
+        when(articleRepository.findById(articleId)).thenReturn(Optional.of(article));
+
+        //when
+        articleService.updateViewCount(articleId);
+
+        //then
+        Assertions.assertThat(article.getViews().getViews()).isEqualTo(1);
+    }
 }

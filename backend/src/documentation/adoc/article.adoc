@@ -20,3 +20,13 @@ include::{snippets}/article/likes/http-request.adoc[]
 ==== Response
 
 include::{snippets}/article/likes/http-response.adoc[]
+
+=== 아티클 조회수 추가
+
+==== Request
+
+include::{snippets}/article/views/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/article/views/http-response.adoc[]
