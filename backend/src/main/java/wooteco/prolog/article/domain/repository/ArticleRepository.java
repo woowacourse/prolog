@@ -26,8 +26,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("SELECT DISTINCT a FROM Article a " +
         "JOIN GroupMember gm ON a.member.id = gm.member.id " +
         "JOIN gm.group mg " +
-        "left JOIN a.articleBookmarks.articleBookmarks ab " +
-        "left JOIN a.articleLikes.articleLikes al " +
+        "LEFT JOIN a.articleBookmarks.articleBookmarks ab " +
+        "LEFT JOIN a.articleLikes.articleLikes al " +
         "WHERE mg.name LIKE %:course AND (:onlyBookmarked = false OR (:onlyBookmarked = true and ab.memberId = :memberId))")
     List<Article> findArticlesByCourseAndMember(@Param("course") String course,
                                                 @Param("memberId") Long memberId,
