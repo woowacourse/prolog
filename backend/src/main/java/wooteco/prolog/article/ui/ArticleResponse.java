@@ -56,11 +56,11 @@ public class ArticleResponse {
         return imageUrl;
     }
 
-    public boolean isBookmarked() {
+    public boolean getIsBookmarked() {
         return isBookmarked;
     }
 
-    public boolean isLiked() {
+    public boolean getIsLiked() {
         return isLiked;
     }
 
