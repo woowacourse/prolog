@@ -12,17 +12,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import wooteco.prolog.member.domain.GroupMember;
+import wooteco.prolog.member.domain.DepartmentMember;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.MemberGroup;
+import wooteco.prolog.member.domain.Department;
 import wooteco.prolog.member.domain.Role;
-import wooteco.prolog.member.domain.repository.GroupMemberRepository;
+import wooteco.prolog.member.domain.repository.DepartmentMemberRepository;
 
 @ExtendWith(MockitoExtension.class)
-class GroupMemberServiceTest {
+class DepartmentMemberServiceTest {
 
     @Mock
-    private GroupMemberRepository groupMemberRepository;
+    private DepartmentMemberRepository departmentMemberRepository;
 
     @InjectMocks
     private GroupMemberService groupMemberService;
@@ -32,20 +32,20 @@ class GroupMemberServiceTest {
     void findGroupMemberByGroupId() {
         //given
         final Long memberId = 1L;
-        final Long memberGroupId = 2L;
+        final Long DepartmetId = 2L;
         final Long groupMemberId = 3L;
 
         final Member member = new Member(memberId, "송세연", "아마란스", Role.CREW, 1523L, "image");
-        final MemberGroup memberGroup = new MemberGroup(memberGroupId, "백엔드", "2023 백엔드");
-        final GroupMember groupMember = new GroupMember(groupMemberId, member, memberGroup);
+        final Department department = new Department(DepartmetId, "백엔드", "2023 백엔드");
+        final DepartmentMember departmentMember = new DepartmentMember(groupMemberId, member, department);
 
-        when(groupMemberRepository.findByGroupId(any())).thenReturn(ImmutableList.of(groupMember));
+        when(departmentMemberRepository.findByDepartmentId(any())).thenReturn(ImmutableList.of(departmentMember));
 
         //when
-        final List<GroupMember> groupMembers = groupMemberService.findGroupMemberByGroupId(
-            memberGroupId);
+        final List<DepartmentMember> departmentMembers = groupMemberService.findGroupMemberByGroupId(
+            DepartmetId);
 
         //then
-        assertThat(groupMembers).containsExactly(groupMember);
+        assertThat(departmentMembers).containsExactly(departmentMember);
     }
 }

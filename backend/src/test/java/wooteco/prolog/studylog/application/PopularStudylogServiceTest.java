@@ -20,12 +20,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import wooteco.prolog.member.domain.GroupMember;
+import wooteco.prolog.member.domain.DepartmentMember;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.MemberGroup;
+import wooteco.prolog.member.domain.Department;
 import wooteco.prolog.member.domain.Role;
-import wooteco.prolog.member.domain.repository.GroupMemberRepository;
-import wooteco.prolog.member.domain.repository.MemberGroupRepository;
+import wooteco.prolog.member.domain.repository.DepartmentMemberRepository;
+import wooteco.prolog.member.domain.repository.DepartmentRepository;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.application.dto.PopularStudylogsResponse;
@@ -46,9 +46,9 @@ class PopularStudylogServiceTest {
     @Mock
     private PopularStudylogRepository popularStudylogRepository;
     @Mock
-    private MemberGroupRepository memberGroupRepository;
+    private DepartmentRepository departmentRepository;
     @Mock
-    private GroupMemberRepository groupMemberRepository;
+    private DepartmentMemberRepository departmentMemberRepository;
     @InjectMocks
     private PopularStudylogService popularStudylogService;
 
@@ -56,15 +56,15 @@ class PopularStudylogServiceTest {
     @Test
     void enoughWhileTwoCycle() {
         //given
-        final MemberGroup frontend = setUpMemberGroup("5기 프론트엔드", "5기 프론트엔드 설명");
-        final MemberGroup backend = setUpMemberGroup("5기 백엔드", "5기 백엔드 설명");
-        final MemberGroup android = setUpMemberGroup("5기 안드로이드", "5기 안드로이드 설명");
+        final Department frontend = setUpDepartment("프론트엔드", "5기");
+        final Department backend = setUpDepartment("백엔드", "5기");
+        final Department android = setUpDepartment("안드로이드", "5기");
 
         final Member split = setUpMember(1L, "박상현", "스플릿", 1L);
         final Member journey = setUpMember(2L, "이지원", "져니", 2L);
 
-        final GroupMember splitGroupMember = setUpGroupMember(split, backend);
-        final GroupMember journeyGroupMember = setUpGroupMember(journey, backend);
+        final DepartmentMember splitDepartmentMember = setUpDepartmentMember(split, backend);
+        final DepartmentMember journeyDepartmentMember = setUpDepartmentMember(journey, backend);
 
         final Studylog splitStudyLog = setUpStudyLog(split);
         final Studylog journeyStudylog = setUpStudyLog(journey);
@@ -75,16 +75,16 @@ class PopularStudylogServiceTest {
             journeyStudylog.getId());
 
         final PageRequest pageRequest = PageRequest.of(1, 2);
-        final List<MemberGroup> memberGroups = Arrays.asList(frontend, backend, android);
-        final List<GroupMember> groupMembers = Arrays.asList(splitGroupMember,
-            journeyGroupMember);
+        final List<Department> departments = Arrays.asList(frontend, backend, android);
+        final List<DepartmentMember> departmentMembers = Arrays.asList(splitDepartmentMember,
+            journeyDepartmentMember);
 
         final List<Studylog> studylogs = Arrays.asList(splitStudyLog, journeyStudylog);
         final List<PopularStudylog> popularStudylogs = Arrays.asList(splitPopularStudylog,
             journeyPopularStudylog);
 
-        when(groupMemberRepository.findAll()).thenReturn(groupMembers);
-        when(memberGroupRepository.findAll()).thenReturn(memberGroups);
+        when(departmentMemberRepository.findAll()).thenReturn(departmentMembers);
+        when(departmentRepository.findAll()).thenReturn(departments);
         when(studylogRepository.findByPastDays(any())).thenReturn(studylogs);
         when(popularStudylogRepository.findAllByDeletedFalse()).thenReturn(popularStudylogs);
         when(popularStudylogRepository.saveAll(any())).thenReturn(popularStudylogs);
@@ -100,15 +100,15 @@ class PopularStudylogServiceTest {
     @Test
     void notEnoughWhileTwoCycle() {
         //given
-        final MemberGroup frontend = setUpMemberGroup("5기 프론트엔드", "5기 프론트엔드 설명");
-        final MemberGroup backend = setUpMemberGroup("5기 백엔드", "5기 백엔드 설명");
-        final MemberGroup android = setUpMemberGroup("5기 안드로이드", "5기 안드로이드 설명");
+        final Department frontend = setUpDepartment("프론트엔드", "5기");
+        final Department backend = setUpDepartment("백엔드", "5기");
+        final Department android = setUpDepartment("안드로이드", "5기");
 
         final Member split = setUpMember(1L, "박상현", "스플릿", 1L);
         final Member journey = setUpMember(2L, "이지원", "져니", 2L);
 
-        final GroupMember splitGroupMember = setUpGroupMember(split, backend);
-        final GroupMember journeyGroupMember = setUpGroupMember(journey, backend);
+        final DepartmentMember splitDepartmentMember = setUpDepartmentMember(split, backend);
+        final DepartmentMember journeyDepartmentMember = setUpDepartmentMember(journey, backend);
 
         final Studylog splitStudylog = setUpStudyLog(split);
         final Studylog journeyStudylog = setUpStudyLog(journey);
@@ -119,15 +119,15 @@ class PopularStudylogServiceTest {
             journeyStudylog.getId());
 
         final PageRequest pageRequest = PageRequest.of(1, 5);
-        final List<MemberGroup> memberGroups = Arrays.asList(frontend, backend, android);
-        final List<GroupMember> groupMembers = Arrays.asList(splitGroupMember,
-            journeyGroupMember);
+        final List<Department> departments = Arrays.asList(frontend, backend, android);
+        final List<DepartmentMember> departmentMembers = Arrays.asList(splitDepartmentMember,
+            journeyDepartmentMember);
         final List<Studylog> studylogs = Arrays.asList(splitStudylog, journeyStudylog);
         final List<PopularStudylog> popularStudylogs = Arrays.asList(splitPopularStudylog,
             journeyPopularStudylog);
 
-        when(groupMemberRepository.findAll()).thenReturn(groupMembers);
-        when(memberGroupRepository.findAll()).thenReturn(memberGroups);
+        when(departmentMemberRepository.findAll()).thenReturn(departmentMembers);
+        when(departmentRepository.findAll()).thenReturn(departments);
         when(studylogRepository.findByPastDays(any())).thenReturn(studylogs);
         when(popularStudylogRepository.findAllByDeletedFalse()).thenReturn(popularStudylogs);
         when(popularStudylogRepository.saveAll(any())).thenReturn(popularStudylogs);
@@ -142,15 +142,15 @@ class PopularStudylogServiceTest {
     @DisplayName("익명의 사용자일 경우 스크랩과 읽음 여부가 표시하지 않고 학습로그를 조회한다.")
     @Test
     void findPopularStudylogs_IsAnonymousMemberTrue() {
-        final MemberGroup frontend = setUpMemberGroup("5기 프론트엔드", "5기 프론트엔드 설명");
-        final MemberGroup backend = setUpMemberGroup("5기 백엔드", "5기 백엔드 설명");
-        final MemberGroup android = setUpMemberGroup("5기 안드로이드", "5기 안드로이드 설명");
+        final Department frontend = setUpDepartment("프론트엔드", "5기");
+        final Department backend = setUpDepartment("백엔드", "5기");
+        final Department android = setUpDepartment("안드로이드", "5기");
 
         final Member split = setUpMember(1L, "박상현", "스플릿", 1L);
         final Member journey = setUpMember(2L, "이지원", "져니", 2L);
 
-        final GroupMember splitGroupMember = setUpGroupMember(split, backend);
-        final GroupMember journeyGroupMember = setUpGroupMember(journey, backend);
+        final DepartmentMember splitDepartmentMember = setUpDepartmentMember(split, backend);
+        final DepartmentMember journeyDepartmentMember = setUpDepartmentMember(journey, backend);
 
         final Studylog splitStudylog = setUpStudyLog(split);
         final Studylog journeyStudylog = setUpStudyLog(journey);
@@ -163,14 +163,14 @@ class PopularStudylogServiceTest {
         final List<Studylog> studylogs = Arrays.asList(splitStudylog, journeyStudylog);
         final PageRequest pageRequest = PageRequest.of(0, 1);
         final Page<Studylog> pages = new PageImpl<>(studylogs, pageRequest, 2);
-        final List<MemberGroup> memberGroups = Arrays.asList(frontend, backend, android);
-        final List<GroupMember> groupMembers = Arrays.asList(splitGroupMember,
-            journeyGroupMember);
+        final List<Department> departments = Arrays.asList(frontend, backend, android);
+        final List<DepartmentMember> departmentMembers = Arrays.asList(splitDepartmentMember,
+            journeyDepartmentMember);
         final List<PopularStudylog> popularStudylogs = Arrays.asList(splitPopularStudylog,
             journeyPopularStudylog);
 
-        when(groupMemberRepository.findAll()).thenReturn(groupMembers);
-        when(memberGroupRepository.findAll()).thenReturn(memberGroups);
+        when(departmentMemberRepository.findAll()).thenReturn(departmentMembers);
+        when(departmentRepository.findAll()).thenReturn(departments);
         when(studylogRepository.findAllByIdIn(any(), any())).thenReturn(pages);
         when(popularStudylogRepository.findAllByDeletedFalse()).thenReturn(popularStudylogs);
 
@@ -218,15 +218,15 @@ class PopularStudylogServiceTest {
     void findPopularStudylogs_IsAnonymousMemberFalse() {
         {
             //given
-            final MemberGroup frontend = setUpMemberGroup("5기 프론트엔드", "5기 프론트엔드 설명");
-            final MemberGroup backend = setUpMemberGroup("5기 백엔드", "5기 백엔드 설명");
-            final MemberGroup android = setUpMemberGroup("5기 안드로이드", "5기 안드로이드 설명");
+            final Department frontend = setUpDepartment("프론트엔드", "5기");
+            final Department backend = setUpDepartment("백엔드", "5기");
+            final Department android = setUpDepartment("안드로이드", "5기");
 
             final Member split = setUpMember(1L, "박상현", "스플릿", 1L);
             final Member journey = setUpMember(2L, "이지원", "져니", 2L);
 
-            final GroupMember splitGroupMember = setUpGroupMember(split, backend);
-            final GroupMember journeyGroupMember = setUpGroupMember(journey, backend);
+            final DepartmentMember splitDepartmentMember = setUpDepartmentMember(split, backend);
+            final DepartmentMember journeyDepartmentMember = setUpDepartmentMember(journey, backend);
 
             final Studylog splitStudylog = setUpStudyLog(split);
             final Studylog journeyStudylog = setUpStudyLog(journey);
@@ -234,12 +234,12 @@ class PopularStudylogServiceTest {
             final List<Studylog> studylogs = Arrays.asList(splitStudylog, journeyStudylog);
             final PageRequest pageRequest = PageRequest.of(0, 1);
             final Page<Studylog> pages = new PageImpl<>(studylogs, pageRequest, 2);
-            final List<MemberGroup> memberGroups = Arrays.asList(frontend, backend, android);
-            final List<GroupMember> groupMembers = Arrays.asList(splitGroupMember,
-                journeyGroupMember);
+            final List<Department> departments = Arrays.asList(frontend, backend, android);
+            final List<DepartmentMember> departmentMembers = Arrays.asList(splitDepartmentMember,
+                journeyDepartmentMember);
 
-            when(groupMemberRepository.findAll()).thenReturn(groupMembers);
-            when(memberGroupRepository.findAll()).thenReturn(memberGroups);
+            when(departmentMemberRepository.findAll()).thenReturn(departmentMembers);
+            when(departmentRepository.findAll()).thenReturn(departments);
             when(studylogRepository.findAllByIdIn(any(), any())).thenReturn(pages);
             when(studylogService.findScrapIds(any())).thenReturn(Arrays.asList(1L, 2L));
             doNothing().when(studylogService).updateScrap(any(), any());
@@ -291,17 +291,17 @@ class PopularStudylogServiceTest {
     void findPopularStudylogs_filterGroupType() {
         {
             //given
-            final MemberGroup frontend = setUpMemberGroup("5기 프론트엔드", "5기 프론트엔드 설명");
-            final MemberGroup backend = setUpMemberGroup("5기 백엔드", "5기 백엔드 설명");
-            final MemberGroup android = setUpMemberGroup("5기 안드로이드", "5기 안드로이드 설명");
+            final Department frontend = setUpDepartment("프론트엔드", "5기");
+            final Department backend = setUpDepartment("백엔드", "5기");
+            final Department android = setUpDepartment("안드로이드", "5기");
 
             final Member split = setUpMember(1L, "박상현", "스플릿", 1L);
             final Member journey = setUpMember(2L, "이지원", "져니", 2L);
             final Member pooh = setUpMember(3L, "백승준", "푸우", 3L);
 
-            final GroupMember splitGroupMember = setUpGroupMember(split, frontend);
-            final GroupMember journeyGroupMember = setUpGroupMember(journey, backend);
-            final GroupMember poohGroupMember = setUpGroupMember(pooh, android);
+            final DepartmentMember splitDepartmentMember = setUpDepartmentMember(split, frontend);
+            final DepartmentMember journeyDepartmentMember = setUpDepartmentMember(journey, backend);
+            final DepartmentMember poohDepartmentMember = setUpDepartmentMember(pooh, android);
 
             final Studylog splitStudylog = setUpStudyLog(split);
             final Studylog journeyStudylog = setUpStudyLog(journey);
@@ -310,8 +310,8 @@ class PopularStudylogServiceTest {
             final List<Studylog> studylogs = Arrays.asList(splitStudylog, journeyStudylog, poohStudylog);
             final PageRequest pageRequest = PageRequest.of(0, 3);
             final Page<Studylog> pages = new PageImpl<>(studylogs, pageRequest, 1);
-            final List<MemberGroup> memberGroups = Arrays.asList(frontend, backend, android);
-            final List<GroupMember> groupMembers = Arrays.asList(splitGroupMember, journeyGroupMember, poohGroupMember);
+            final List<Department> departments = Arrays.asList(frontend, backend, android);
+            final List<DepartmentMember> departmentMembers = Arrays.asList(splitDepartmentMember, journeyDepartmentMember, poohDepartmentMember);
 
             final PopularStudylog splitPopularStudylog = setUpPopularStudylog(1L,
                 splitStudylog.getId());
@@ -324,8 +324,8 @@ class PopularStudylogServiceTest {
                 journeyPopularStudylog, poohPopularStudylog);
 
             when(popularStudylogRepository.findAllByDeletedFalse()).thenReturn(popularStudylogs);
-            when(groupMemberRepository.findAll()).thenReturn(groupMembers);
-            when(memberGroupRepository.findAll()).thenReturn(memberGroups);
+            when(departmentMemberRepository.findAll()).thenReturn(departmentMembers);
+            when(departmentRepository.findAll()).thenReturn(departments);
             when(studylogRepository.findAllByIdIn(any(), any())).thenReturn(pages);
 
             //when
@@ -366,8 +366,8 @@ class PopularStudylogServiceTest {
     }
 
 
-    private MemberGroup setUpMemberGroup(final String name, final String description) {
-        return new MemberGroup(null, name, description);
+    private Department setUpDepartment(final String part, final String term) {
+        return new Department(null, part, term);
     }
 
     private Member setUpMember(final Long id, final String userName,
@@ -375,8 +375,8 @@ class PopularStudylogServiceTest {
         return new Member(id, userName, nickname, Role.CREW, githubId, "image url");
     }
 
-    private GroupMember setUpGroupMember(final Member member, final MemberGroup memberGroup) {
-        return new GroupMember(null, member, memberGroup);
+    private DepartmentMember setUpDepartmentMember(final Member member, final Department department) {
+        return new DepartmentMember(null, member, department);
     }
 
     private Studylog setUpStudyLog(final Member member) {
