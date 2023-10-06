@@ -25,9 +25,9 @@ export const essayAnswerHandler = [
       ctx.json(
         essayAnswersMock.filter({
           curriculumId: curriculumId,
-          keywordId: params.curriculumId ? Number(params.curriculumId) : undefined,
-          quizIds: params.curriculumId
-            ? params.curriculumId.slice(1, -1).split(',').map(Number) ?? []
+          keywordId: params.keywordId ? Number(params.keywordId) : undefined,
+          quizIds: params.quizIds
+            ? params.quizIds.slice(1, -1).split(',').map(Number) ?? []
             : undefined,
           memberIds: params.memberIds
             ? params.memberIds.slice(1, -1).split(',').map(Number) ?? []
