@@ -41,7 +41,7 @@ public class QuizController {
         return ResponseEntity.ok(quizService.findById(quizId, member.getId()));
     }
 
-    @GetMapping("/quizs/{quizId}")
+    @GetMapping("/quizzes/{quizId}")
     public ResponseEntity<QuizResponse> newFindQuizById(
         @PathVariable Long quizId,
         @AuthMemberPrincipal LoginMember member
@@ -56,9 +56,9 @@ public class QuizController {
         return ResponseEntity.ok(quizService.findQuizzesByKeywordId(keywordId, member.getId()));
     }
 
-    @GetMapping("/quizs")
+    @GetMapping("/quizzes")
     public ResponseEntity<QuizzesResponse> newFindQuizzesByKeyword(
-        @RequestParam("keyword-id") Long keywordId,
+        @RequestParam("keywordId") Long keywordId,
         @AuthMemberPrincipal LoginMember member
     ) {
         return ResponseEntity.ok(quizService.findQuizzesByKeywordId(keywordId, member.getId()));

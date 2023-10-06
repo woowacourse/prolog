@@ -23,7 +23,7 @@ public class KeywordService {
     private final KeywordRepository keywordRepository;
 
     public KeywordService(final SessionRepository sessionRepository,
-                          final KeywordRepository keywordRepository) {
+        final KeywordRepository keywordRepository) {
         this.sessionRepository = sessionRepository;
         this.keywordRepository = keywordRepository;
     }
@@ -93,8 +93,11 @@ public class KeywordService {
         return KeywordsResponse.createResponse(keywords);
     }
 
-    public void updateKeyword(final Long sessionId, final Long keywordId,
-                              final KeywordUpdateRequest request) {
+    public void updateKeyword(
+        final Long sessionId,
+        final Long keywordId,
+        final KeywordUpdateRequest request
+    ) {
         existSession(sessionId); // 세션이 없다면 예외가 발생
         Keyword keyword = keywordRepository.findById(keywordId)
             .orElseThrow(() -> new BadRequestException(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION));

@@ -23,7 +23,6 @@ import wooteco.prolog.roadmap.application.dto.EssayAnswerRequest;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerResponse;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerSearchRequest;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerUpdateRequest;
-import wooteco.prolog.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
 import wooteco.prolog.studylog.application.dto.EssayAnswersResponse;
 
@@ -37,14 +36,14 @@ public class EssayAnswerController {
 
     @Autowired
     public EssayAnswerController(EssayAnswerService essayAnswerService,
-                                 QuizService quizService) {
+        QuizService quizService) {
         this.essayAnswerService = essayAnswerService;
         this.quizService = quizService;
     }
 
     @PostMapping("/essay-answers")
     public ResponseEntity<Long> create(@RequestBody EssayAnswerRequest request,
-                                       @AuthMemberPrincipal LoginMember member) {
+        @AuthMemberPrincipal LoginMember member) {
 
         return ResponseEntity.ok(essayAnswerService.createEssayAnswer(request, member.getId()));
     }
@@ -65,28 +64,25 @@ public class EssayAnswerController {
 
     @PatchMapping("/essay-answers/{essayAnswerId}")
     public ResponseEntity<Void> updateById(@PathVariable Long essayAnswerId,
-                                           @AuthMemberPrincipal LoginMember member,
-                                           @RequestBody EssayAnswerUpdateRequest request) {
+        @AuthMemberPrincipal LoginMember member,
+        @RequestBody EssayAnswerUpdateRequest request) {
         essayAnswerService.updateEssayAnswer(essayAnswerId, request, member.getId());
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/essay-answers/{essayAnswerId}")
-    public ResponseEntity<Void> deleteEssayAnswerById(@PathVariable Long essayAnswerId,
-                                                      @AuthMemberPrincipal LoginMember member) {
+    public ResponseEntity<Void> deleteEssayAnswerById(
+        @PathVariable Long essayAnswerId,
+        @AuthMemberPrincipal LoginMember member
+    ) {
         essayAnswerService.deleteEssayAnswer(essayAnswerId, member.getId());
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/quizzes/{quizId}")
-    public ResponseEntity<QuizResponse> findQuizById(@PathVariable Long quizId,
-                                                     @AuthMemberPrincipal LoginMember member) {
-        return ResponseEntity.ok(quizService.findById(quizId, member.getId()));
-    }
-
     @GetMapping("/quizzes/{quizId}/essay-answers")
     public ResponseEntity<List<EssayAnswerResponse>> findAnswersByQuizId(
-        @PathVariable Long quizId) {
+        @PathVariable Long quizId
+    ) {
 
         List<EssayAnswer> essayAnswers = essayAnswerService.findByQuizId(quizId);
         List<EssayAnswerResponse> responses = essayAnswers.stream().map(EssayAnswerResponse::of)
@@ -94,5 +90,4 @@ public class EssayAnswerController {
 
         return ResponseEntity.ok(responses);
     }
-
 }
