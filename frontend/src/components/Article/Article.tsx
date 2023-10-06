@@ -17,12 +17,12 @@ const Article = ({
   url,
   createdAt,
   imageUrl,
-  isBookMarked,
+  isBookmarked,
   isLiked,
 }: ArticleType) => {
-  const bookmarkRef = useRef(false);
-  const likeRef = useRef(false);
-  const [bookmark, setBookmark] = useState(isBookMarked);
+  const bookmarkRef = useRef(isBookmarked);
+  const likeRef = useRef(isLiked);
+  const [bookmark, setBookmark] = useState(isBookmarked);
   const [like, setLike] = useState(isLiked);
   const { mutate: putBookmark } = usePutArticleBookmarkMutation();
   const { mutate: putLike } = usePutArticleLikeMutation();
@@ -30,6 +30,7 @@ const Article = ({
 
   const toggleBookmark: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
+    e.stopPropagation();
 
     bookmarkRef.current = !bookmarkRef.current;
     setBookmark((prev) => !prev);
@@ -41,6 +42,7 @@ const Article = ({
 
   const toggleLike: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
+    e.stopPropagation();
 
     likeRef.current = !likeRef.current;
     setLike((prev) => !prev);

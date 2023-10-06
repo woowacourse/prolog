@@ -32,7 +32,7 @@ const ArticleListPage = () => {
   const { user } = useContext(UserContext);
   const { isLoggedIn, role } = user;
 
-  const authorized = role === 'CREW' && isLoggedIn;
+  const authorized = isLoggedIn && role !== 'GUEST';
 
   const { data: filteredArticles = [], refetch: getFilteredArticles } = useGetFilteredArticleQuery(
     selectedCourse.value,
