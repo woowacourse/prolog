@@ -1,27 +1,46 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from '@emotion/react';
+import { useState } from 'react';
+import { useLocation } from 'react-router';
 import { MainContentStyle } from '../../PageRouter';
 import EssayAnswerList from '../../components/Lists/QuizAnswerList';
+import RoadmapFilter from '../../components/RoadmapFilter/RoadmapFilter';
 import MEDIA_QUERY from '../../constants/mediaQuery';
 import { useGetCurriculums } from '../../hooks/queries/curriculum';
 import { useGetEssayAnswers } from '../../hooks/queries/essayanswer';
 import {
   AlignItemsCenterStyle,
   FlexStyle,
-  JustifyContentSpaceBtwStyle
+  JustifyContentSpaceBtwStyle,
 } from '../../styles/flex.styles';
 import { HeaderContainer, PostListContainer } from './styles';
-import { useLocation } from 'react-router';
+
+export interface FilterlingType {
+  curriculumId: number;
+  keywordId: number;
+  quizIds: number[];
+  memberIds: number[];
+}
 
 const EssayAnswerListPage = () => {
   const { curriculums } = useGetCurriculums();
   const { search } = useLocation();
-  const searchParams = new URLSearchParams(search);
+  const [searchKeyword, setSearchKeyword] = useState<string>('');
+  const searchParams = new URLSearchParams(search); // keywordId quizIds memberIds
   const curriculumId = Number(searchParams.get('curriculumId') ?? '1');
-  const selectedCurriculum = (curriculums ?? []).find(curriculum => curriculum.id === curriculumId)?.name ?? '😎';
+  const keywordId = Number(searchParams.get('keywordId') ?? undefined);
+  const quizIds = searchParams.get('quizIds')?.split(',').map(Number) ?? undefined;
+  const memberIds = searchParams.get('memberIds')?.split(',').map(Number) ?? undefined;
+  const selectedCurriculum =
+    (curriculums ?? []).find((curriculum) => curriculum.id === curriculumId)?.name ?? '😎';
 
-  const { data: essayAnswers } = useGetEssayAnswers({ curriculumId });
+  const { data: essayAnswers } = useGetEssayAnswers({
+    curriculumId,
+    keywordId,
+    quizIds,
+    memberIds,
+  });
 
   return (
     <div css={[MainContentStyle]}>
@@ -49,6 +68,8 @@ const EssayAnswerListPage = () => {
           </h1>
         </div>
       </HeaderContainer>
+      <RoadmapFilter searchKeyword={searchKeyword} setSearchKeyword={setSearchKeyword} />
+
       <PostListContainer>
         {(!essayAnswers || essayAnswers.length === 0) && '작성된 글이 없습니다.'}
         {!!essayAnswers && <EssayAnswerList essayAnswers={essayAnswers} showQuizTitle={true} />}
