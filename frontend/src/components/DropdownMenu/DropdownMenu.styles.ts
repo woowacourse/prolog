@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
 import { css } from '@emotion/react';
+import MEDIA_QUERY from '../../constants/mediaQuery';
 
 const Container = styled.div<{
   css: ReturnType<typeof css>;
@@ -15,7 +16,13 @@ const Container = styled.div<{
   padding: 1rem 1.2rem;
   position: absolute;
   z-index: 100;
+  right: 30px;
+  top: 50px;
 
+  ${MEDIA_QUERY.xs} {
+    right: 10px;
+    top: 40px;
+  }
   /* transform: translateY(30%); */
 
   && {
