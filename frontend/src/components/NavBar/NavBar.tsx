@@ -119,16 +119,19 @@ const NavBar = () => {
               </NavLink>
             ))}
           </Navigation>
-          {authorized ? (
+          {authorized && (
+            <Link to={PATH.NEW_STUDYLOG}>
+              <Button
+                size="XX_SMALL"
+                icon={PencilIcon}
+                type="button"
+                cssProps={pencilButtonStyle}
+              />
+            </Link>
+          )}
+
+          {isLoggedIn ? (
             <>
-              <Link to={PATH.NEW_STUDYLOG}>
-                <Button
-                  size="XX_SMALL"
-                  icon={PencilIcon}
-                  type="button"
-                  cssProps={pencilButtonStyle}
-                />
-              </Link>
               <Button
                 size="XX_SMALL"
                 type="button"
