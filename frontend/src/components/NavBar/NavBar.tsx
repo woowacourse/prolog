@@ -50,7 +50,8 @@ const NavBar = () => {
 
   const { user, onLogout } = useContext(UserContext);
 
-  const { username, imageUrl: userImage = NoProfileImage, isLoggedIn } = user;
+  const { username, imageUrl: userImage = NoProfileImage, isLoggedIn, role } = user;
+  const authorized = isLoggedIn && role !== 'GUEST';
 
   const [isDropdownToggled, setDropdownToggled] = useState(false);
   const [isWritingDropdownToggled, setWritingDropdownToggled] = useState(false);
@@ -118,7 +119,7 @@ const NavBar = () => {
               </NavLink>
             ))}
           </Navigation>
-          {isLoggedIn ? (
+          {authorized ? (
             <>
               <Link to={PATH.NEW_STUDYLOG}>
                 <Button

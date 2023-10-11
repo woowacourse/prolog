@@ -1,14 +1,5 @@
 package wooteco.prolog.roadmap.application;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
-
-import java.util.Collections;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +12,13 @@ import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
+
+import java.util.Collections;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
 
 @ExtendWith(MockitoExtension.class)
 class KeywordServiceTest {
@@ -105,13 +103,13 @@ class KeywordServiceTest {
         when(keywordRepository.existsById(any())).thenReturn(true);
 
         Keyword keyword = new Keyword(1L, "", "", 1, 1, 1L, null, Collections.emptySet());
-        when(keywordRepository.findFetchById(1L)).thenReturn(keyword);
+        when(keywordRepository.findFetchByIdOrderBySeq(1L)).thenReturn(keyword);
 
         //when
         keywordService.findKeywordWithAllChild(1L, 1L);
 
         //then
-        verify(keywordRepository, times(1)).findFetchById(any());
+        verify(keywordRepository, times(1)).findFetchByIdOrderBySeq(any());
     }
 
     @DisplayName("sessionId로 최상위 키워드들을 찾을 수 있다")
@@ -178,7 +176,7 @@ class KeywordServiceTest {
         keywordService.deleteKeyword(1L, 1L);
 
         //then
-        verify(keywordRepository, times(1)).findFetchById(any());
+        verify(keywordRepository, times(1)).findFetchByIdOrderBySeq(any());
         verify(keywordRepository, times(1)).delete(any());
     }
 }

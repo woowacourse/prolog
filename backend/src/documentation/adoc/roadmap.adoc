@@ -1,0 +1,12 @@
+[[Roadmap]]
+== 로드맵
+
+=== 로드맵 검색
+
+==== Request
+
+include::{snippets}/roadmap/find/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/roadmap/find/http-response.adoc[]

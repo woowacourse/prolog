@@ -1,5 +1,15 @@
 version: "3.8"
 services:
+  server:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    ports:
+      - 9900:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/prolog?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC
+      SPRING_FLYWAY_ENABLED: true
+
   db:
     platform: linux/x86_64
     image: library/mysql:8.0.28
