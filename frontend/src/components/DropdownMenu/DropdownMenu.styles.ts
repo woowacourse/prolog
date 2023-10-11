@@ -1,10 +1,10 @@
+import { InterpolationWithTheme } from '@emotion/core';
+import { Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
 import { css } from '@emotion/react';
 
-const Container = styled.div<{
-  css: ReturnType<typeof css>;
-}>`
+const Container = styled.div<{ css?: InterpolationWithTheme<Theme> }>`
   height: fit-content;
   max-height: 32rem;
   white-space: nowrap;
@@ -19,7 +19,7 @@ const Container = styled.div<{
   /* transform: translateY(30%); */
 
   && {
-    ${(props) => props.css}
+    ${({ css }) => css}
   }
 
   /* &:before {

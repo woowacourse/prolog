@@ -72,8 +72,8 @@ const StudylogListPage = (): JSX.Element => {
     history.push(`${PATH.STUDYLOG}?${params.toString()}`);
   };
 
-  const onSearchKeywordsChange = (event) => {
-    setSearchKeywords(event.target.value);
+  const onSearchKeywordsChange = (value: string) => {
+    setSearchKeywords(value);
   };
 
   const onSearch = async (event) => {
@@ -156,7 +156,6 @@ const StudylogListPage = (): JSX.Element => {
           </h1>
           {/* 타입스크립트 일부 적용 이슈로 인한 css 빈 string 전달 */}
           <SearchBar
-            css={css``}
             onSubmit={onSearch}
             onChange={onSearchKeywordsChange}
             value={searchKeywords}

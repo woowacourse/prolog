@@ -1,111 +1,80 @@
-import { RoadmapResponse } from '../../models/Keywords';
+import { KeywordResponse, Quiz } from '../../models/Keywords';
+import quizMock from './quizzes';
 
-const roadmapData: RoadmapResponse['data'] = [
+type WithSession<T> = T & {
+  sessionId: number;
+  quizs: {
+    data: Quiz[];
+  };
+  childrenKeywords:
+    | (T extends { childrenKeywords: Array<infer R> | null } ? WithSession<R>[] : null)
+    | null;
+};
+
+const data: Array<WithSession<KeywordResponse>> = [
   // 세션 1
   {
     keywordId: 1,
+    sessionId: 1, // for mock
     name: 'JavaScript',
     order: 1,
-    importance: 4,
+    importance: 5,
     parentKeywordId: null,
     description: '동적 타이핑, 스크립트 언어입니다.',
-    doneQuizCount: 4,
-    totalQuizCount: 5,
-    recommendedPosts: [
-      {
-        id: 1,
-        url: 'https://solo5star.tistory.com',
-      },
-      {
-        id: 2,
-        url: 'https://solo5star.tistory.com',
-      },
-      {
-        id: 3,
-        url: 'https://solo5star.tistory.com',
-      },
-      {
-        id: 4,
-        url: 'https://solo5star.tistory.com',
-      },
-      {
-        id: 5,
-        url: 'https://solo5star.tistory.com',
-      },
-    ],
+    quizs: {
+      data: quizMock.filterByKeyword(1),
+    },
     childrenKeywords: [
       {
         keywordId: 2,
+        sessionId: 1, // for mock
         name: 'let, const, var',
         order: 1,
-        importance: 4,
+        importance: 5,
         parentKeywordId: 1,
         description: 'let, const, var',
-        doneQuizCount: 0,
-        totalQuizCount: 0,
-        recommendedPosts: [],
+        quizs: {
+          data: quizMock.filterByKeyword(2),
+        },
         childrenKeywords: [
           {
             keywordId: 3,
+            sessionId: 1, // for mock
             name: 'let',
             order: 1,
-            importance: 4,
+            importance: 5,
             parentKeywordId: 2,
             description: 'let',
-            doneQuizCount: 1,
-            totalQuizCount: 4,
-            recommendedPosts: [],
-            childrenKeywords: [],
+            quizs: {
+              data: quizMock.filterByKeyword(3),
+            },
+            childrenKeywords: null,
           },
           {
             keywordId: 4,
+            sessionId: 1, // for mock
             name: 'const',
             order: 1,
-            importance: 4,
+            importance: 5,
             parentKeywordId: 2,
             description: 'const',
-            doneQuizCount: 3,
-            totalQuizCount: 3,
-            recommendedPosts: [
-              {
-                id: 1,
-                url: 'https://solo5star.tistory.com',
-              },
-              {
-                id: 2,
-                url: 'https://solo5star.tistory.com',
-              },
-            ],
-            childrenKeywords: [],
+            quizs: {
+              data: quizMock.filterByKeyword(4),
+            },
+            childrenKeywords: null,
           },
           {
             keywordId: 5,
+            sessionId: 1, // for mock
             name: 'var',
             order: 1,
-            importance: 2,
+            importance: 5,
             parentKeywordId: 2,
             description: 'var',
-            doneQuizCount: 0,
-            totalQuizCount: 5,
-            recommendedPosts: [
-              {
-                id: 1,
-                url: 'https://solo5star.tistory.com',
-              },
-              {
-                id: 12,
-                url: 'https://solo5star.tistory.com',
-              },
-              {
-                id: 13,
-                url: 'https://solo5star.tistory.com',
-              },
-              {
-                id: 14,
-                url: 'https://solo5star.tistory.com',
-              },
-            ],
-            childrenKeywords: [],
+            quizs: {
+              data: quizMock.filterByKeyword(5),
+            },
+            childrenKeywords: null,
           },
         ],
       },
@@ -114,110 +83,66 @@ const roadmapData: RoadmapResponse['data'] = [
   // 세션 1 - React 키워드
   {
     keywordId: 6,
+    sessionId: 1, // for mock
     name: 'React',
     order: 1,
-    importance: 4,
+    importance: 5,
     parentKeywordId: null,
     description: 'React입니다.',
-    doneQuizCount: 3,
-    totalQuizCount: 3,
-    recommendedPosts: [],
+    quizs: {
+      data: quizMock.filterByKeyword(6),
+    },
     childrenKeywords: [
       {
         keywordId: 7,
+        sessionId: 1, // for mock
         name: 'lifecycle',
         order: 1,
-        importance: 3,
+        importance: 5,
         parentKeywordId: 6,
         description: 'lifecycle 설명',
-        doneQuizCount: 2,
-        totalQuizCount: 4,
-        recommendedPosts: [],
+        quizs: {
+          data: quizMock.filterByKeyword(7),
+        },
         childrenKeywords: [
           {
             keywordId: 8,
+            sessionId: 1, // for mock
             name: 'mount',
             order: 1,
-            importance: 1,
+            importance: 5,
             parentKeywordId: 7,
             description: 'mount 설명',
-            doneQuizCount: 1,
-            totalQuizCount: 0,
-            recommendedPosts: [],
-            childrenKeywords: [],
+            quizs: {
+              data: quizMock.filterByKeyword(8),
+            },
+            childrenKeywords: null,
           },
           {
             keywordId: 9,
+            sessionId: 1, // for mock
             name: 'unmount',
             order: 1,
             importance: 5,
             parentKeywordId: 7,
             description: 'unmount 설명',
-            doneQuizCount: 0,
-            totalQuizCount: 0,
-            recommendedPosts: [],
-            childrenKeywords: [],
+            quizs: {
+              data: quizMock.filterByKeyword(9),
+            },
+            childrenKeywords: null,
           },
           {
             keywordId: 10,
+            sessionId: 1, // for mock
             name: 'update',
             order: 1,
-            importance: 4,
+            importance: 5,
             parentKeywordId: 7,
             description: 'update 설명',
-            doneQuizCount: 0,
-            totalQuizCount: 2,
-            recommendedPosts: [],
-            childrenKeywords: [],
-          },
-        ],
-      },
-      {
-        keywordId: 14,
-        name: 'hooks',
-        order: 1,
-        importance: 4,
-        parentKeywordId: 6,
-        description: 'hooks 설명',
-        doneQuizCount: 0,
-        totalQuizCount: 1,
-        recommendedPosts: [],
-        childrenKeywords: [
-          {
-            keywordId: 15,
-            name: 'useState',
-            order: 1,
-            importance: 4,
-            parentKeywordId: 14,
-            description: 'useState 설명',
-            doneQuizCount: 5,
-            totalQuizCount: 5,
-            recommendedPosts: [],
-            childrenKeywords: [],
-          },
-          {
-            keywordId: 16,
-            name: 'useEffect',
-            order: 1,
-            importance: 4,
-            parentKeywordId: 14,
-            description: 'useEffect 설명',
-            doneQuizCount: 4,
-            totalQuizCount: 5,
-            recommendedPosts: [],
-            childrenKeywords: [],
-          },
-          {
-            keywordId: 17,
-            name: 'useMemo',
-            order: 1,
-            importance: 4,
-            parentKeywordId: 14,
-            description: 'useMemo 설명',
-            doneQuizCount: 0,
-            totalQuizCount: 2,
-            recommendedPosts: [],
-            childrenKeywords: [],
+            quizs: {
+              data: quizMock.filterByKeyword(10),
+            },
+            childrenKeywords: null,
           },
         ],
       },
@@ -226,49 +151,40 @@ const roadmapData: RoadmapResponse['data'] = [
   // 세션 2 - Test
   {
     keywordId: 11,
+    sessionId: 2, // for mock
     name: 'Test',
     order: 1,
-    importance: 3,
+    importance: 5,
     parentKeywordId: null,
     description: 'Test입니다.',
-    doneQuizCount: 0,
-    totalQuizCount: 4,
-    recommendedPosts: [],
+    quizs: {
+      data: quizMock.filterByKeyword(11),
+    },
     childrenKeywords: [
       {
         keywordId: 12,
+        sessionId: 2, // for mock
         name: 'Jest',
         order: 1,
-        importance: 1,
+        importance: 5,
         parentKeywordId: 11,
         description: 'Jest 설명',
-        doneQuizCount: 0,
-        totalQuizCount: 2,
-        recommendedPosts: [],
+        quizs: {
+          data: quizMock.filterByKeyword(12),
+        },
         childrenKeywords: [
           {
             keywordId: 13,
-            name: 'React Testing Library',
+            sessionId: 2, // for mock
+            name: 'ReactTestingLibrary',
             order: 1,
-            importance: 1,
+            importance: 5,
             parentKeywordId: 12,
             description: 'ReactTestingLibrary 설명',
-            doneQuizCount: 0,
-            totalQuizCount: 3,
-            recommendedPosts: [],
-            childrenKeywords: [],
-          },
-          {
-            keywordId: 18,
-            name: 'jest',
-            order: 1,
-            importance: 2,
-            parentKeywordId: 12,
-            description: 'jest 설명',
-            doneQuizCount: 0,
-            totalQuizCount: 6,
-            recommendedPosts: [],
-            childrenKeywords: [],
+            quizs: {
+              data: quizMock.filterByKeyword(13),
+            },
+            childrenKeywords: null,
           },
         ],
       },
@@ -276,10 +192,14 @@ const roadmapData: RoadmapResponse['data'] = [
   },
 ];
 
-export default {
-  data: roadmapData,
-  getKeywords() {
-    return this.data;
+const keywordMock = {
+  data,
+  filterKeywordsBySession(sessionId: string | readonly string[]) {
+    const filteredData = this.data.filter((item) => item.sessionId === Number(sessionId));
+
+    return {
+      data: filteredData,
+    };
   },
   findKeyword(keywordId: string | readonly string[]) {
     // data를 순회하면서, childrenKeywords를 순회하면서 해당 keyword가 있는지 확인한다.
@@ -290,24 +210,40 @@ export default {
           return depth1Item;
         }
 
-        return depth1Item.childrenKeywords.map((depth2Item) => {
-          // 2뎁스 순회
-          if (depth2Item.keywordId === Number(keywordId)) {
-            return depth2Item;
-          }
-
-          return depth2Item.childrenKeywords.map((depth3Item) => {
-            // 3뎁스 순회
-            if (depth3Item.keywordId === Number(keywordId)) {
-              return depth3Item;
+        return (
+          depth1Item.childrenKeywords?.map((depth2Item) => {
+            // 2뎁스 순회
+            if (depth2Item.keywordId === Number(keywordId)) {
+              return depth2Item;
             }
 
-            return undefined;
-          });
-        });
+            return (
+              depth2Item.childrenKeywords?.map((depth3Item) => {
+                // 3뎁스 순회
+                if (depth3Item.keywordId === Number(keywordId)) {
+                  return depth3Item;
+                }
+
+                return undefined;
+              }) ?? []
+            );
+          }) ?? []
+        );
       })
       .find((item) => item !== undefined);
 
     return data;
   },
+  // 6-1
+  filterChildrenKeywords(keywordId: string | readonly string[]) {
+    const childrenKeywords = this.data.find((depth1Item) => {
+      return depth1Item.keywordId === Number(keywordId);
+    })?.childrenKeywords;
+
+    return {
+      childrenKeywords,
+    };
+  },
 };
+
+export default keywordMock;
