@@ -7,7 +7,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_QUIZ_NOT_FOUND_EXCEPTION;
 
 import java.util.Arrays;
@@ -95,8 +94,8 @@ class QuizServiceTest {
 
         BDDMockito.given(quizRepository.findFetchQuizByKeywordId(anyLong()))
             .willReturn(Arrays.asList(
-                    new Quiz(null, null),
-                    new Quiz(null, null)
+                    new Quiz(1L, null, null),
+                    new Quiz(2L, null, null)
                 )
             );
 
