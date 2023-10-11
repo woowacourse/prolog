@@ -2,6 +2,7 @@ package wooteco.prolog.roadmap.application;
 
 import static wooteco.prolog.common.exception.BadRequestCode.CURRICULUM_NOT_FOUND_EXCEPTION;
 import static wooteco.prolog.common.exception.BadRequestCode.ESSAY_ANSWER_NOT_FOUND_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_QUIZ_NOT_FOUND_EXCEPTION;
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
 
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerRequest;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerSearchRequest;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerUpdateRequest;
@@ -29,6 +31,7 @@ import wooteco.prolog.roadmap.domain.repository.QuizRepository;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.studylog.application.dto.EssayAnswersResponse;
+
 
 @Transactional
 @Service
@@ -60,10 +63,17 @@ public class EssayAnswerService {
             .orElseThrow(() -> new BadRequestException(ROADMAP_QUIZ_NOT_FOUND_EXCEPTION));
 
         Member member = memberService.findById(memberId);
+        validateMemberIsCrew(member);
         EssayAnswer essayAnswer = new EssayAnswer(quiz, essayAnswerRequest.getAnswer(), member);
         essayAnswerRepository.save(essayAnswer);
 
         return essayAnswer.getId();
+    }
+
+    private void validateMemberIsCrew(final Member member) {
+        if (member.hasLowerImportanceRoleThan(Role.CREW)) {
+            throw new BadRequestException(MEMBER_NOT_ALLOWED);
+        }
     }
 
     @Transactional
@@ -129,7 +139,8 @@ public class EssayAnswerService {
             .and(EssayAnswerSpecification.inMemberIds(request.getMemberIds()))
             .and(EssayAnswerSpecification.orderByIdDesc());
 
-        final Page<EssayAnswer> essayAnswers = essayAnswerRepository.findAll(essayAnswerSpecification,
+        final Page<EssayAnswer> essayAnswers = essayAnswerRepository.findAll(
+            essayAnswerSpecification,
             pageable);
         return EssayAnswersResponse.of(essayAnswers);
     }
