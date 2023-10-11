@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import wooteco.prolog.NewDocumentation;
 import wooteco.prolog.roadmap.application.NewSessionService;
 import wooteco.prolog.roadmap.application.dto.SessionRequest;
@@ -21,6 +20,8 @@ import wooteco.prolog.roadmap.ui.NewSessionController;
 @WebMvcTest(controllers = NewSessionController.class)
 public class NewSessionDocumentation extends NewDocumentation {
 
+    private static final String UTF8_JSON_TYPE = "application/json;charset=UTF-8";
+
     @MockBean
     private NewSessionService sessionService;
 
@@ -29,7 +30,7 @@ public class NewSessionDocumentation extends NewDocumentation {
         given(sessionService.createSession(any(), any())).willReturn(1L);
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .contentType(UTF8_JSON_TYPE)
             .body(SESSION_CREATE_REQUEST)
             .when().post("/curriculums/1/sessions")
             .then().log().all().apply(document("sessions-new/create"))
@@ -51,7 +52,7 @@ public class NewSessionDocumentation extends NewDocumentation {
         doNothing().when(sessionService).updateSession(any(), any());
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .contentType(UTF8_JSON_TYPE)
             .body(SESSION_UPDATE_REQUEST)
             .when().put("/curriculums/1/sessions/1")
             .then().log().all().apply(document("sessions-new/update"))
