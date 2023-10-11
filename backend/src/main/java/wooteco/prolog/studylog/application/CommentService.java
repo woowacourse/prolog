@@ -1,6 +1,7 @@
 package wooteco.prolog.studylog.application;
 
 import static wooteco.prolog.common.exception.BadRequestCode.COMMENT_NOT_FOUND;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
 import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_FOUND;
 import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.studylog.application.dto.CommentResponse;
 import wooteco.prolog.studylog.application.dto.CommentSaveRequest;
@@ -33,12 +35,19 @@ public class CommentService {
     public Long insertComment(CommentSaveRequest request) {
         Member findMember = memberRepository.findById(request.getMemberId())
             .orElseThrow(() -> new BadRequestException(MEMBER_NOT_FOUND));
+        validateMemberIsCrew(findMember);
         Studylog findStudylog = studylogRepository.findById(request.getStudylogId())
             .orElseThrow(() -> new BadRequestException(STUDYLOG_NOT_FOUND));
 
         Comment comment = request.toEntity(findMember, findStudylog);
 
         return commentRepository.save(comment).getId();
+    }
+
+    private void validateMemberIsCrew(final Member member) {
+        if (member.hasLowerImportanceRoleThan(Role.CREW)) {
+            throw new BadRequestException(MEMBER_NOT_ALLOWED);
+        }
     }
 
     @Transactional(readOnly = true)
