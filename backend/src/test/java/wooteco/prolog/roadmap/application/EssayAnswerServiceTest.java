@@ -22,6 +22,7 @@ import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerRequest;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerUpdateRequest;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
@@ -75,7 +76,7 @@ class EssayAnswerServiceTest {
         when(quizRepository.findById(anyLong())).thenReturn(
             Optional.of(new Quiz(null, "question")));
         when(memberService.findById(anyLong())).thenReturn(
-            new Member(null, null, null, null, null));
+            new Member(null, null, Role.CREW, null, null));
 
         //when
         final Long essayAnswer = essayAnswerService.createEssayAnswer(ESSAY_ANSWER_REQUEST, 1L);

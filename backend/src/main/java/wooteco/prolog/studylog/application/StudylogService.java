@@ -4,6 +4,7 @@ import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
 import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_ARGUMENT;
 import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_DOCUMENT_NOT_FOUND;
 import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
@@ -24,11 +25,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.domain.Mission;
@@ -93,6 +96,7 @@ public class StudylogService {
     @Transactional
     public StudylogResponse insertStudylog(Long memberId, StudylogRequest studylogRequest) {
         Member member = memberService.findById(memberId);
+        validateMemberIsCrew(member);
         Tags tags = tagService.findOrCreate(studylogRequest.getTags());
         Session session = sessionService.findSessionById(studylogRequest.getSessionId())
             .orElse(null);
@@ -111,6 +115,12 @@ public class StudylogService {
         deleteStudylogTemp(memberId);
 
         return StudylogResponse.of(persistStudylog);
+    }
+
+    private void validateMemberIsCrew(final Member member) {
+        if (member.hasLowerImportanceRoleThan(Role.CREW)) {
+            throw new BadRequestException(MEMBER_NOT_ALLOWED);
+        }
     }
 
     @Transactional

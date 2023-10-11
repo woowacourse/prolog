@@ -47,8 +47,9 @@ const StudylogListPage = (): JSX.Element => {
   const search = new URLSearchParams(history.location.search).get('keyword');
 
   const { user } = useContext(UserContext);
-  const { isLoggedIn, accessToken } = user;
+  const { isLoggedIn, role, accessToken } = user;
 
+  const authorized = isLoggedIn && role !== 'GUEST';
   const { response: studylogs, getAllData: getStudylogs } = useStudylog([]);
 
   const [filters] = useFetch([], requestGetFilters);
@@ -185,7 +186,7 @@ const StudylogListPage = (): JSX.Element => {
               onResetFilter={resetFilter}
             />
           </FilterListWrapper>
-          {isLoggedIn && (
+          {authorized && (
             <Button
               type="button"
               size="SMALL"
