@@ -100,17 +100,6 @@ public class EssayAnswerDocumentaion extends NewDocumentation {
     }
 
     @Test
-    void Quiz_조회() {
-        given(quizService.findById(anyLong(), anyLong()))
-            .willReturn(new QuizResponse(1L, "question", false));
-
-        given
-            .when().get("quizzes/{id}", 1)
-            .then().log().all().apply(document("essay-answer/quiz/search"))
-            .statusCode(HttpStatus.OK.value());
-    }
-
-    @Test
     void Quiz_에_대한_EssayAnswerResponse_조회() {
         given(essayAnswerService.findByQuizId(anyLong()))
             .willReturn(Arrays.asList(ESSAY_ANSWER, ESSAY_ANSWER));
