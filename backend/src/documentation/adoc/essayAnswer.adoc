@@ -50,13 +50,3 @@ include::{snippets}/essay-answer/delete/http-request.adoc[]
 ==== Response
 
 include::{snippets}/essay-answer/delete/http-response.adoc[]
-
-=== 퀴즈에 대한 답변 목록 조회
-
-==== Request
-
-include::{snippets}/essay-answer/quiz/essay-answer/http-request.adoc[]
-
-==== Response
-
-include::{snippets}/essay-answer/quiz/essay-answer/http-response.adoc[]
