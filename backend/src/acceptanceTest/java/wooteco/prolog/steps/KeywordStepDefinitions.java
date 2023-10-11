@@ -1,14 +1,14 @@
 package wooteco.prolog.steps;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static wooteco.prolog.fixtures.KeywordAcceptanceFixture.KEYWORD_REQUEST;
-
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.session.application.dto.SessionRequest;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static wooteco.prolog.fixtures.KeywordAcceptanceFixture.KEYWORD_REQUEST;
 
 public class KeywordStepDefinitions extends AcceptanceSteps {
 

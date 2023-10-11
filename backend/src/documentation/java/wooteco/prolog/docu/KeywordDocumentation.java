@@ -1,10 +1,13 @@
 package wooteco.prolog.docu;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import org.elasticsearch.common.collect.List;
@@ -12,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import wooteco.prolog.NewDocumentation;
 import wooteco.prolog.roadmap.application.KeywordService;
 import wooteco.prolog.roadmap.application.dto.KeywordCreateRequest;
@@ -24,6 +26,8 @@ import wooteco.prolog.roadmap.ui.KeywordController;
 @WebMvcTest(controllers = KeywordController.class)
 public class KeywordDocumentation extends NewDocumentation {
 
+    private static final String UTF8_JSON_TYPE = "application/json;charset=UTF-8";
+
     @MockBean
     private KeywordService keywordService;
 
@@ -32,7 +36,7 @@ public class KeywordDocumentation extends NewDocumentation {
         given(keywordService.createKeyword(any(), any())).willReturn(1L);
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .contentType(UTF8_JSON_TYPE)
             .body(KEYWORD_CREATE_REQUEST)
             .when().post("/sessions/1/keywords")
             .then().log().all().apply(document("keywords/create"))
@@ -54,7 +58,7 @@ public class KeywordDocumentation extends NewDocumentation {
         doNothing().when(keywordService).updateKeyword(any(), any(), any());
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .contentType(UTF8_JSON_TYPE)
             .body(KEYWORD_UPDATE_REQUEST)
             .when().put("/sessions/1/keywords/1")
             .then().log().all().apply(document("keywords/update"))
@@ -107,6 +111,9 @@ public class KeywordDocumentation extends NewDocumentation {
         "자바에 대한 설명을 작성했습니다.",
         1,
         1,
+        0,
+        0,
+        null,
         null,
         null
     );
@@ -132,8 +139,11 @@ public class KeywordDocumentation extends NewDocumentation {
         "자바에 대한 설명을 작성했습니다.",
         1,
         1,
+        0,
+        0,
         null,
-        new HashSet<>(
+        null,
+        new ArrayList<>(
             Arrays.asList(
                 new KeywordResponse(
                     2L,
@@ -141,8 +151,11 @@ public class KeywordDocumentation extends NewDocumentation {
                     "자바의 자료구조인 List에 대한 설명을 작성했습니다.",
                     1,
                     1,
+                    0,
+                    0,
                     1L,
-                    null
+                    emptyList(),
+                    emptyList()
                 ),
                 new KeywordResponse(
                     1L,
@@ -150,8 +163,11 @@ public class KeywordDocumentation extends NewDocumentation {
                     "자바의 자료구조인 Set에 대한 설명을 작성했습니다.",
                     2,
                     1,
+                    0,
+                    0,
                     1L,
-                    null
+                    emptyList(),
+                    emptyList()
                 ))
         )
     );
