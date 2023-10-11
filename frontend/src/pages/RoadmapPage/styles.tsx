@@ -10,6 +10,7 @@ export const Main = styled.main`
   display: flex;
   flex-direction: column;
   gap: 30px;
+  width: 100%;
   max-width: 112rem;
   overflow-x: hidden;
   padding: 0 4rem;

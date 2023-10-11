@@ -51,7 +51,7 @@ const RoadmapPage = () => {
       <RoadmapStyles />
       <Styled.Main>
         <section>
-          <Styled.Title>커리큘럼</Styled.Title>
+          <Styled.Title>로드맵</Styled.Title>
           <Styled.CurriculumButtonList>
             {curriculums?.map((curriculum) => (
               <ResponsiveButton
@@ -71,8 +71,6 @@ const RoadmapPage = () => {
         </section>
 
         <section style={{ marginBottom: '4rem' }}>
-          <Styled.Title>로드맵!!</Styled.Title>
-
           <ImportanceLegend />
 
           <Styled.RoadmapContainer>

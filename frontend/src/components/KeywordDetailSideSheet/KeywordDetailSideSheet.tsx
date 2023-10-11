@@ -16,8 +16,10 @@ const KeywordDetailSideSheet = ({
 }: KeywordDetailSideSheetProps) => {
   const { name, keywordId, description, recommendedPosts } = keywordDetail;
 
-  const { user: { isLoggedIn } } = useContext(UserContext);
+  const { user: { isLoggedIn, role } } = useContext(UserContext);
   const { quizList } = useGetQuizListByKeyword({ keywordId });
+
+  const isAuthorized = isLoggedIn && role !== 'GUEST';
 
   return (
     <SideSheet onClickBackdrop={handleCloseSideSheet}>
@@ -32,10 +34,10 @@ const KeywordDetailSideSheet = ({
           <ol>
             {quizList?.map(({ quizId, question }, index) => (
               <li key={quizId}>
-                {isLoggedIn && (
+                {isAuthorized && (
                   <a href={`/quizzes/${quizId}/essay-answers/form`}>{index + 1}. {question}</a>
                 )}
-                {!isLoggedIn && (
+                {!isAuthorized && (
                   <>{index + 1}. {question}</>
                 )}
                 &nbsp;/&nbsp;
