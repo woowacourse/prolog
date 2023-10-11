@@ -1,5 +1,8 @@
 package wooteco.prolog.roadmap.application;
 
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,6 +75,7 @@ public class RoadMapService {
         final List<KeywordResponse> keywordResponses = keywords.stream()
             .filter(Keyword::isRoot)
             .map(keyword -> createResponseWithProgress(keyword, quizzesPerKeyword, doneQuizzes))
+            .sorted(Comparator.comparing(KeywordResponse::getKeywordId))
             .collect(toList());
 
         return new KeywordsResponse(keywordResponses);
@@ -80,8 +84,9 @@ public class RoadMapService {
     private KeywordResponse createResponseWithProgress(final Keyword keyword,
                                                        final Map<Keyword, Set<Quiz>> quizzesPerKeyword,
                                                        final Set<Quiz> doneQuizzes) {
-        final int totalQuizCount = quizzesPerKeyword.get(keyword).size();
-        final int doneQuizCount = getDoneQuizCount(quizzesPerKeyword.get(keyword), doneQuizzes);
+        final int totalQuizCount = quizzesPerKeyword.getOrDefault(keyword, new HashSet<>()).size();
+        final int doneQuizCount = getDoneQuizCount(
+            quizzesPerKeyword.getOrDefault(keyword, new HashSet<>()), doneQuizzes);
 
         final List<RecommendedPostResponse> recommendedPostResponses = keyword.getRecommendedPosts().stream()
             .map(RecommendedPostResponse::from)
@@ -106,11 +111,12 @@ public class RoadMapService {
         return quizzes.size();
     }
 
-    private Set<KeywordResponse> createChildrenWithProgress(final Set<Keyword> children,
+    private List<KeywordResponse> createChildrenWithProgress(final Set<Keyword> children,
                                                             final Map<Keyword, Set<Quiz>> quizzesPerKeyword,
                                                             final Set<Quiz> userAnswers) {
         return children.stream()
             .map(child -> createResponseWithProgress(child, quizzesPerKeyword, userAnswers))
-            .collect(toSet());
+            .sorted(Comparator.comparing(KeywordResponse::getKeywordId))
+            .collect(Collectors.toList());
     }
 }

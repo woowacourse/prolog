@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -45,7 +46,7 @@ public class RoadmapDocument extends NewDocumentation {
         1,
         null,
         null,
-        new HashSet<>(
+        new ArrayList<>(
             Arrays.asList(
                 new KeywordResponse(
                     2L,
@@ -57,7 +58,7 @@ public class RoadmapDocument extends NewDocumentation {
                     1,
                     1L,
                     Collections.emptyList(),
-                    Collections.emptySet()
+                    Collections.emptyList()
                 ),
                 new KeywordResponse(
                     1L,
@@ -69,7 +70,7 @@ public class RoadmapDocument extends NewDocumentation {
                     1,
                     1L,
                     Collections.emptyList(),
-                    Collections.emptySet()
+                    Collections.emptyList()
                 ))
         )
     );

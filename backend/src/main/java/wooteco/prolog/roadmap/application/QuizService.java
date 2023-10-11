@@ -4,6 +4,7 @@ import static java.util.Objects.isNull;
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_ORDER_EXCEPTION;
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_QUIZ_NOT_FOUND_EXCEPTION;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,7 @@ public class QuizService {
         final List<Quiz> quizzes = quizRepository.findFetchQuizByKeywordId(keywordId);
         final List<QuizResponse> quizResponses = quizzes.stream()
             .map(quiz -> QuizResponse.of(quiz, isLearning(memberId, quiz.getId())))
+            .sorted(Comparator.comparing(QuizResponse::getQuizId))
             .collect(Collectors.toList());
         return new QuizzesResponse(keywordId, quizResponses);
     }

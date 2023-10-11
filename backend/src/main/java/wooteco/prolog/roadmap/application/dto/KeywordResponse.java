@@ -1,5 +1,6 @@
 package wooteco.prolog.roadmap.application.dto;
 
+import java.util.ArrayList;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,13 +24,13 @@ public class KeywordResponse {
     private int doneQuizCount;
     private Long parentKeywordId;
     private List<RecommendedPostResponse> recommendedPosts;
-    private Set<KeywordResponse> childrenKeywords;
+    private List<KeywordResponse> childrenKeywords;
 
     public KeywordResponse(final Long keywordId, final String name, final String description,
                            final int order, final int importance, final int totalQuizCount,
                            final int doneQuizCount, final Long parentKeywordId,
                            final List<RecommendedPostResponse> recommendedPosts,
-                           final Set<KeywordResponse> childrenKeywords) {
+                           final List<KeywordResponse> childrenKeywords) {
         this.keywordId = keywordId;
         this.name = name;
         this.description = description;
@@ -75,8 +76,8 @@ public class KeywordResponse {
             createChildren(keyword.getChildren()));
     }
 
-    private static Set<KeywordResponse> createChildren(final Set<Keyword> children) {
-        Set<KeywordResponse> keywords = new HashSet<>();
+    private static List<KeywordResponse> createChildren(final Set<Keyword> children) {
+        List<KeywordResponse> keywords = new ArrayList<>();
         for (Keyword keyword : children) {
             keywords.add(createWithAllChildResponse(keyword));
         }

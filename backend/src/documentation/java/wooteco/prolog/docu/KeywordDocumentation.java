@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import org.elasticsearch.common.collect.List;
@@ -142,7 +143,7 @@ public class KeywordDocumentation extends NewDocumentation {
         0,
         null,
         null,
-        new HashSet<>(
+        new ArrayList<>(
             Arrays.asList(
                 new KeywordResponse(
                     2L,
@@ -154,7 +155,7 @@ public class KeywordDocumentation extends NewDocumentation {
                     0,
                     1L,
                     emptyList(),
-                    emptySet()
+                    emptyList()
                 ),
                 new KeywordResponse(
                     1L,
@@ -166,7 +167,7 @@ public class KeywordDocumentation extends NewDocumentation {
                     0,
                     1L,
                     emptyList(),
-                    emptySet()
+                    emptyList()
                 ))
         )
     );
