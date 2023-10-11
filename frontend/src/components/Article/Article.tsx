@@ -1,7 +1,7 @@
 import * as Styled from './Article.style';
 import type { ArticleType } from '../../models/Article';
 import Scrap from '../Reaction/Scrap';
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import {
   usePostArticleViewsMutation,
   usePutArticleBookmarkMutation,
@@ -9,6 +9,7 @@ import {
 } from '../../hooks/queries/article';
 import debounce from '../../utils/debounce';
 import Like from '../Reaction/Like';
+import { UserContext } from '../../contexts/UserProvider';
 
 const Article = ({
   id,
@@ -28,9 +29,17 @@ const Article = ({
   const { mutate: putLike } = usePutArticleLikeMutation();
   const { mutate: postViews } = usePostArticleViewsMutation();
 
+  const { user } = useContext(UserContext);
+  const { isLoggedIn } = user;
+
   const toggleBookmark: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (!isLoggedIn) {
+      alert('로그인을 해주세요');
+      return;
+    }
 
     bookmarkRef.current = !bookmarkRef.current;
     setBookmark((prev) => !prev);
@@ -43,6 +52,11 @@ const Article = ({
   const toggleLike: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (!isLoggedIn) {
+      alert('로그인을 해주세요');
+      return;
+    }
 
     likeRef.current = !likeRef.current;
     setLike((prev) => !prev);
