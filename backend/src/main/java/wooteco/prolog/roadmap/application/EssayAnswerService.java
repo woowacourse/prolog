@@ -1,9 +1,9 @@
 package wooteco.prolog.roadmap.application;
 
 import static wooteco.prolog.common.exception.BadRequestCode.ESSAY_ANSWER_NOT_FOUND_EXCEPTION;
-import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_QUIZ_NOT_FOUND_EXCEPTION;
 
+import java.util.List;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,15 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerRequest;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerUpdateRequest;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
 import wooteco.prolog.roadmap.domain.Quiz;
 import wooteco.prolog.roadmap.domain.repository.EssayAnswerRepository;
 import wooteco.prolog.roadmap.domain.repository.QuizRepository;
-
-import java.util.List;
 
 @Transactional
 @Service
@@ -45,17 +42,10 @@ public class EssayAnswerService {
             .orElseThrow(() -> new BadRequestException(ROADMAP_QUIZ_NOT_FOUND_EXCEPTION));
 
         Member member = memberService.findById(memberId);
-        validateMemberIsCrew(member);
         EssayAnswer essayAnswer = new EssayAnswer(quiz, essayAnswerRequest.getAnswer(), member);
         essayAnswerRepository.save(essayAnswer);
 
         return essayAnswer.getId();
-    }
-
-    private void validateMemberIsCrew(final Member member) {
-        if (member.hasLowerImportanceRoleThan(Role.CREW)) {
-            throw new BadRequestException(MEMBER_NOT_ALLOWED);
-        }
     }
 
     @Transactional
