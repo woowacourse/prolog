@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,15 +20,23 @@ import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.application.dto.MembersResponse;
 import wooteco.prolog.member.application.dto.ProfileIntroRequest;
 import wooteco.prolog.member.application.dto.ProfileIntroResponse;
+import wooteco.prolog.member.application.dto.RoleUpdateRequest;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 
 @Service
-@AllArgsConstructor
 @Transactional(readOnly = true)
 public class MemberService {
 
-    private MemberRepository memberRepository;
+    private final Role mangerRole;
+    private final MemberRepository memberRepository;
+
+    public MemberService(@Value("${manager.role}") final Role mangerRole,
+                         final MemberRepository memberRepository) {
+        this.mangerRole = mangerRole;
+        this.memberRepository = memberRepository;
+    }
 
     @Transactional
     public Member findOrCreateMember(GithubProfileResponse githubProfile) {
@@ -113,5 +121,27 @@ public class MemberService {
 
     public List<Member> findByIdIn(List<Long> memberIds) {
         return memberRepository.findByIdIn(memberIds);
+    }
+
+    @Transactional
+    public void updateMemberRole(final LoginMember requestMember,
+                                 final Long targetMemberId,
+                                 final RoleUpdateRequest updateRequest) {
+        requestMember.act().throwIfAnonymous(() -> new BadRequestException(MEMBER_NOT_ALLOWED));
+        final Member member = findById(requestMember.getId());
+        if (isMemberHasLowerRoleImportanceThan(member, mangerRole)) {
+            throw new BadRequestException(MEMBER_NOT_ALLOWED);
+        }
+        final Role newRole = Role.valueOf(updateRequest.getRole());
+        updateMemberRole(targetMemberId, newRole);
+    }
+
+    private boolean isMemberHasLowerRoleImportanceThan(final Member member, final Role mangerRole) {
+        return member.getRole().hasLowerImportanceThan(mangerRole);
+    }
+
+    private void updateMemberRole(final Long memberId, final Role role) {
+        final Member targetMember = findById(memberId);
+        targetMember.updateRole(role);
     }
 }

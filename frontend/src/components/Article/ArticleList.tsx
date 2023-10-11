@@ -1,13 +1,15 @@
 import * as Styled from './ArticleList.style';
 import Article from './Article';
-import { useFetchArticles } from '../../hooks/Articles/useArticles';
+import { ArticleType } from '../../models/Article';
 
-const ArticleList = () => {
-  const { articles } = useFetchArticles();
+interface ArticleListProps {
+  articles: ArticleType[];
+}
 
+const ArticleList = ({ articles }: ArticleListProps) => {
   return (
     <Styled.Container>
-      {articles.map((article) => (
+      {articles?.map((article) => (
         <Article key={article.id} {...article} />
       ))}
     </Styled.Container>

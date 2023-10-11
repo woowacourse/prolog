@@ -9,11 +9,12 @@ import java.util.HashMap;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.login.application.dto.TokenResponse;
+import wooteco.prolog.member.application.dto.MemberResponse;
 
 public class LoginStepDefinitions extends AcceptanceSteps {
 
-    @Given("{string}(이)(가) 로그인을 하고")
-    public void 멤버가로그인을하고(String member) {
+    @Given("{string}(이)(가) 크루역할로 로그인을 하고")
+    public void 멤버가크루역할로로그인을하고(String member) {
         HashMap<String, Object> data = new HashMap<>();
         data.put("code", GithubResponses.findByName(member).getCode());
 
@@ -22,6 +23,23 @@ public class LoginStepDefinitions extends AcceptanceSteps {
         context.accessToken = tokenResponse.getAccessToken();
 
         context.storage.put("username", GithubResponses.findByName(member).getLogin());
+        updateRoleToCrew();
+    }
+
+    private void updateRoleToCrew() {
+        final String loginUsername = (String) context.storage.get("username");
+        final Long memberId = findMemberIdByUsername(loginUsername);
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("role", "CREW");
+
+        context.invokeHttpPatchWithToken("/members/" + memberId + "/role", data);
+    }
+
+    private Long findMemberIdByUsername(final String username) {
+        context.invokeHttpGet("/members/" + username);
+        final MemberResponse memberResponse = context.response.as(MemberResponse.class);
+        return memberResponse.getId();
     }
 
     @When("{string}(이)(가) 로그인을 하면")

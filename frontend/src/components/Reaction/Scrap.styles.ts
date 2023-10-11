@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { COLOR } from '../../enumerations/color';
 
-export const ScrapButtonStyle = css`
+export const DefaultScrapButtonStyle = css`
   flex-direction: column;
   padding: 0;
   width: fit-content;
