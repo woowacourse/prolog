@@ -1,6 +1,6 @@
 import { commentsHandler } from './comment';
 import { essayAnswerHandler } from './essayAnswers';
-import { roadmapHandler } from './keywords';
+import { roadmapHandler } from './roadmap';
 import { levellogHandler } from './levellog';
 import { popularStudyLogHandler } from './popularStudyLog';
 

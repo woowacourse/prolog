@@ -1,5 +1,5 @@
 import { KeywordResponse, Quiz } from '../../models/Keywords';
-import quizMock from './quizs';
+import quizMock from './quizzes';
 
 type WithSession<T> = T & {
   sessionId: number;
