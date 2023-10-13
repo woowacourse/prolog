@@ -2,7 +2,7 @@ package wooteco.prolog.session.application;
 
 import static java.util.stream.Collectors.toList;
 import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_SESSION_EXCEPTION;
-import static wooteco.prolog.common.exception.BadRequestCode.SESSION_NOT_FOUND_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
 
 import java.util.Collection;
 import java.util.List;
@@ -43,7 +43,7 @@ public class SessionService {
 
     public Session findById(Long id) {
         return sessionRepository.findById(id)
-            .orElseThrow(() -> new BadRequestException(SESSION_NOT_FOUND_EXCEPTION));
+            .orElseThrow(() -> new BadRequestException(ROADMAP_SESSION_NOT_FOUND_EXCEPTION));
     }
 
     public Optional<Session> findSessionById(Long id) {

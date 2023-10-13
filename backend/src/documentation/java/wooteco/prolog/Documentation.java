@@ -8,7 +8,9 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
+import java.util.HashMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,15 @@ public class Documentation {
             .when().post("/login/token")
             .then().log().all()
             .extract().body().as(TokenResponse.class);
+
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("role", "CREW");
+
+        final RequestSpecification requestSpecification = RestAssured
+            .given().log().all()
+            .body(data).contentType(ContentType.JSON)
+            .auth().oauth2(로그인_사용자.getAccessToken());
+        requestSpecification.patch("/members/" + 1 + "/role");
 
         this.spec = new RequestSpecBuilder()
             .addFilter(documentationConfiguration(restDocumentation))

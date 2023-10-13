@@ -1,8 +1,11 @@
 // Request
 
 type SessionAndKeywordId = {
-  sessionId: number;
   keywordId: number;
+};
+
+export type RoadmapRequest = {
+  curriculumId: number;
 };
 
 export type KeywordRequest = SessionAndKeywordId;
@@ -23,14 +26,26 @@ export interface KeywordResponse {
   keywordId: number;
   order: number;
   importance: number;
-  parentKeywordId: number;
+  parentKeywordId: number | null;
   description: string;
-  childrenKeywords: KeywordResponse[] | null;
+  // 해당 키워드의 총 퀴즈의 갯수
+  totalQuizCount: number;
+  // 내가 완료한 해당 키워드의 퀴즈의 갯수
+  doneQuizCount: number;
+  // 키워드에 대해 추천 포스트 URL 목록
+  recommendedPosts: RecommendedPostResponse[];
+  childrenKeywords: KeywordResponse[];
 }
 
-export interface TopKeywordListResponse {
+export interface RecommendedPostResponse {
+  id: number;
+  url: string;
+}
+
+export interface RoadmapResponse {
   data: KeywordResponse[];
 }
+
 export interface SubKeywordListResponse {
   childrenKeywords: KeywordResponse[];
 }
@@ -38,8 +53,11 @@ export interface SubKeywordListResponse {
 export interface Quiz {
   quizId: number;
   question: string;
+  // 퀴즈에 대해서 답변을 달았는지 여부
+  isLearning: boolean;
 }
 
 export interface QuizListResponse {
+  keywordId: number;
   data: Quiz[];
 }
