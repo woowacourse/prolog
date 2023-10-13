@@ -2,10 +2,8 @@ package wooteco.prolog.member.domain;
 
 import static wooteco.prolog.common.exception.BadRequestCode.CANT_FIND_GROUP_TYPE;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,8 +18,10 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(value = EnumType.STRING)
     private Part part;
 
+    @Enumerated(value = EnumType.STRING)
     private Term term;
 
     public Department(Long id, String part, String term) {
