@@ -10,12 +10,12 @@ import wooteco.prolog.member.domain.repository.DepartmentMemberRepository;
 @Service
 @AllArgsConstructor
 @Transactional(readOnly = true)
-public class GroupMemberService {
+public class DepartmentMemberService {
 
     private DepartmentMemberRepository departmentMemberRepository;
 
-    public List<DepartmentMember> findGroupMemberByGroupId(Long groupId) {
-        return departmentMemberRepository.findByDepartmentId(groupId);
+    public List<DepartmentMember> findDepartmentMemberByDepartmentId(Long departmentId) {
+        return departmentMemberRepository.findByDepartmentId(departmentId);
     }
 
 }

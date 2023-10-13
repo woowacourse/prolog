@@ -52,9 +52,9 @@ public class PopularStudylogService {
 
         List<Studylog> popularStudylogs = new ArrayList<>();
 
-        for (Part groupType : Part.values()) {
+        for (Part partType : Part.values()) {
             popularStudylogs.addAll(filterStudylogsByDepartmets(recentStudylogs,
-                new Departments(DepartmetsBygroupType.get(groupType)), departmentMembers).stream()
+                new Departments(DepartmetsBygroupType.get(partType)), departmentMembers).stream()
                 .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
                 .limit(pageable.getPageSize()).collect(toList()));
         }

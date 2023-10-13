@@ -25,25 +25,25 @@ class DepartmentMemberServiceTest {
     private DepartmentMemberRepository departmentMemberRepository;
 
     @InjectMocks
-    private GroupMemberService groupMemberService;
+    private DepartmentMemberService departmentMemberService;
 
     @DisplayName("GroupId로 GroupMember를 찾는다.")
     @Test
-    void findGroupMemberByGroupId() {
+    void findDepartmentMemberByDepartmentId() {
         //given
         final Long memberId = 1L;
-        final Long DepartmetId = 2L;
+        final Long DepartmentId = 2L;
         final Long groupMemberId = 3L;
 
         final Member member = new Member(memberId, "송세연", "아마란스", Role.CREW, 1523L, "image");
-        final Department department = new Department(DepartmetId, "백엔드", "2023 백엔드");
+        final Department department = new Department(DepartmentId, "백엔드", "2023 백엔드");
         final DepartmentMember departmentMember = new DepartmentMember(groupMemberId, member, department);
 
         when(departmentMemberRepository.findByDepartmentId(any())).thenReturn(ImmutableList.of(departmentMember));
 
         //when
-        final List<DepartmentMember> departmentMembers = groupMemberService.findGroupMemberByGroupId(
-            DepartmetId);
+        final List<DepartmentMember> departmentMembers = departmentMemberService.findDepartmentMemberByDepartmentId(
+            DepartmentId);
 
         //then
         assertThat(departmentMembers).containsExactly(departmentMember);

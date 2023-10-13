@@ -288,7 +288,7 @@ class PopularStudylogServiceTest {
 
     @DisplayName("인기학습 로그를 분야별로 나누어서 반한한다.")
     @Test
-    void findPopularStudylogs_filterGroupType() {
+    void findPopularStudylogs_filterDepartmentType() {
         {
             //given
             final Department frontend = setUpDepartment("프론트엔드", "5기");

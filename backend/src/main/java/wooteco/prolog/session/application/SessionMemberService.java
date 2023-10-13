@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.common.exception.BadRequestException;
-import wooteco.prolog.member.application.GroupMemberService;
+import wooteco.prolog.member.application.DepartmentMemberService;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
@@ -25,7 +25,7 @@ public class SessionMemberService {
     private SessionMemberRepository sessionMemberRepository;
     private SessionRepository sessionRepository;
     private MemberService memberService;
-    private GroupMemberService groupMemberService;
+    private DepartmentMemberService departmentMemberService;
 
     @Transactional
     public void registerMember(Long sessionId, Long memberId) {
@@ -42,7 +42,7 @@ public class SessionMemberService {
         List<SessionMember> alreadySessionMembers = sessionMemberRepository.findAllBySessionId(
             sessionId);
 
-        List<Member> members = groupMemberService.findGroupMemberByGroupId(
+        List<Member> members = departmentMemberService.findDepartmentMemberByDepartmentId(
                 sessionGroupMemberRequest.getGroupId()).stream()
             .map(it -> it.getMember())
             .collect(toList());
