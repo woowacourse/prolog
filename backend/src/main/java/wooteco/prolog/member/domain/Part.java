@@ -15,14 +15,6 @@ public enum Part {
 
     private final String name;
 
-    public boolean isContainedBy(String name) {
-        if (name == null) {
-            return false;
-        }
-        return Arrays.stream(values())
-            .anyMatch(p -> p.name.equals(name));
-    }
-
     public static Part getPartByName(String name) {
         return Arrays.stream(values())
             .filter(part -> part.name.equals(name))

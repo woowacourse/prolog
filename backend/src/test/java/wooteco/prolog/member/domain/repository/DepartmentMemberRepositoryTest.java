@@ -1,14 +1,13 @@
 package wooteco.prolog.member.domain.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static wooteco.prolog.member.domain.Part.*;
+import static wooteco.prolog.member.domain.Term.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import wooteco.prolog.member.domain.DepartmentMember;
-import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.Department;
-import wooteco.prolog.member.domain.Role;
+import wooteco.prolog.member.domain.*;
 import wooteco.support.utils.RepositoryTest;
 
 @RepositoryTest
@@ -28,7 +27,7 @@ class DepartmentMemberRepositoryTest {
         Member saveMember = memberRepository.save(
             new Member("username", "nickname", Role.CREW, 1L, "imageUrl"));
         Department saveDepartment = departmentRepository.save(
-            new Department(null, "프론트엔드", "5")
+            new Department(null, FRONTEND, FIFTH)
         );
         departmentMemberRepository.save(
             new DepartmentMember(null, saveMember, saveDepartment)

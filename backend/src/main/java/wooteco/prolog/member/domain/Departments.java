@@ -10,7 +10,7 @@ public class Departments {
 
     private List<Department> values;
 
-    public boolean isContainsDepartments(DepartmentMember departmentMember) {
-        return values.contains(departmentMember.getDepartment());
+    public boolean isContainsDepartments(Department department) {
+        return values.contains(department);
     }
 }
