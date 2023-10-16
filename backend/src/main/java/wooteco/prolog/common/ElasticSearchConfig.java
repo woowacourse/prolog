@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfiguration;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
-@Profile({"dev", "prod"})
+@Profile({"local", "dev", "prod"})
 @Configuration
 @EnableElasticsearchRepositories
 public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
