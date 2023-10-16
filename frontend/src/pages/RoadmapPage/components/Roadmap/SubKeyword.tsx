@@ -29,7 +29,7 @@ const SubKeyword = (props: SubKeywordProps) => {
         font-weight: bold;
         cursor: pointer;
         border-radius: 4px;
-        overflow: hidden;
+        overflow: visible;
 
         &:hover {
           background: ${hsl(toAdjustedLightness(toHue(KeywordColors.SUB_KEYWORD, hue), -0.1))};
@@ -48,9 +48,8 @@ const SubKeyword = (props: SubKeywordProps) => {
           display: flex;
           align-items: flex-start;
           justify-content: flex-end;
-          position: absolute;
-          top: -5px;
-          right: -5px;
+          margin-right: -5px;
+          margin-top: -5px;
         `}
       >
         <QuizProgress totalCount={keyword.totalQuizCount} doneCount={keyword.doneQuizCount} />
@@ -64,6 +63,8 @@ const SubKeyword = (props: SubKeywordProps) => {
             : 'transparent'};
           margin-right: auto;
           box-shadow: inset 1px 0 1px 1px rgba(0, 0, 0, 0.05);
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
         `}
       />
       <div
