@@ -40,3 +40,6 @@ application:
     name: prolog-image
   cloudfront:
     url: https://d36rfsjtlhxac1.cloudfront.net/
+
+manager:
+  role: GUEST

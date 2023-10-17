@@ -1,0 +1,32 @@
+[
+  {
+    "id": 4,
+    "userName": "패트릭",
+    "title": "CORS",
+    "isBookmarked": false,
+    "isLiked": false,
+    "url": "https://pgccoding.tistory.com/66",
+    "createdAt": "2023-07-24 18:18",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1682088845396-1b310a002302?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8JUVDJTk1JTg0JUVEJThCJUIwJUVEJTgxJUI0fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+  },
+  {
+    "id": 5,
+    "userName": "패트릭",
+    "title": "CORS",
+    "isBookmarked": true,
+    "isLiked": false,
+    "url": "https://pgccoding.tistory.com/66",
+    "createdAt": "2023-07-24 18:18",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1682088845396-1b310a002302?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8JUVDJTk1JTg0JUVEJThCJUIwJUVEJTgxJUI0fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+  },
+  {
+    "id": 6,
+    "userName": "패트릭",
+    "title": "CORS",
+    "isBookmarked": true,
+    "isLiked": false,
+    "url": "https://pgccoding.tistory.com/66",
+    "createdAt": "2023-07-24 18:18",
+    "imageUrl": "https://plus.unsplash.com/premium_photo-1682088845396-1b310a002302?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8JUVDJTk1JTg0JUVEJThCJUIwJUVEJTgxJUI0fGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+  }
+]

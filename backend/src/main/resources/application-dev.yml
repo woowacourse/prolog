@@ -4,3 +4,6 @@ application:
 spring:
   flyway:
     enabled: true
+
+manager:
+  role: GUEST

@@ -7,7 +7,7 @@ import { LikeIconStyle } from './Like.styles';
 
 interface Props {
   liked: boolean;
-  likesCount: number;
+  likesCount?: number;
   onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -24,7 +24,7 @@ const Like = ({ liked, likesCount, onClick }: Props) => {
       cssProps={LikeIconStyle}
       onClick={onClick}
     >
-      {likesCount ?? 0}
+      {likesCount}
     </Button>
   );
 };

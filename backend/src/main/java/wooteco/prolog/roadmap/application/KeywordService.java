@@ -23,7 +23,7 @@ public class KeywordService {
     private final KeywordRepository keywordRepository;
 
     public KeywordService(final SessionRepository sessionRepository,
-                          final KeywordRepository keywordRepository) {
+        final KeywordRepository keywordRepository) {
         this.sessionRepository = sessionRepository;
         this.keywordRepository = keywordRepository;
     }
@@ -51,11 +51,28 @@ public class KeywordService {
     }
 
     @Transactional(readOnly = true)
+    public KeywordResponse newFindKeyword(final Long keywordId) {
+        Keyword keyword = keywordRepository.findById(keywordId)
+            .orElseThrow(() -> new BadRequestException(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION));
+
+        return KeywordResponse.createResponse(keyword);
+    }
+
+    @Transactional(readOnly = true)
     public KeywordResponse findKeywordWithAllChild(final Long sessionId, final Long keywordId) {
         existSession(sessionId);
         existKeyword(keywordId);
 
-        Keyword keyword = keywordRepository.findFetchById(keywordId);
+        Keyword keyword = keywordRepository.findFetchByIdOrderBySeq(keywordId);
+
+        return KeywordResponse.createWithAllChildResponse(keyword);
+    }
+
+    @Transactional(readOnly = true)
+    public KeywordResponse newFindKeywordWithAllChild(final Long keywordId) {
+        existKeyword(keywordId);
+
+        Keyword keyword = keywordRepository.findFetchByIdOrderBySeq(keywordId);
 
         return KeywordResponse.createWithAllChildResponse(keyword);
     }
@@ -69,8 +86,18 @@ public class KeywordService {
         return KeywordsResponse.createResponse(keywords);
     }
 
-    public void updateKeyword(final Long sessionId, final Long keywordId,
-                              final KeywordUpdateRequest request) {
+    @Transactional(readOnly = true)
+    public KeywordsResponse newFindSessionIncludeRootKeywords() {
+        List<Keyword> keywords = keywordRepository.newFindByParentIsNull();
+
+        return KeywordsResponse.createResponse(keywords);
+    }
+
+    public void updateKeyword(
+        final Long sessionId,
+        final Long keywordId,
+        final KeywordUpdateRequest request
+    ) {
         existSession(sessionId); // 세션이 없다면 예외가 발생
         Keyword keyword = keywordRepository.findById(keywordId)
             .orElseThrow(() -> new BadRequestException(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION));
@@ -82,7 +109,7 @@ public class KeywordService {
 
     public void deleteKeyword(final Long sessionId, final Long keywordId) {
         existSession(sessionId);
-        Keyword keyword = keywordRepository.findFetchById(keywordId);
+        Keyword keyword = keywordRepository.findFetchByIdOrderBySeq(keywordId);
 
         keywordRepository.delete(keyword);
     }
