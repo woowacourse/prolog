@@ -1,14 +1,14 @@
 /** @jsxImportSource @emotion/react */
 
-import {css} from '@emotion/react';
+import { css } from '@emotion/react';
 
-import {MainContentStyle} from '../../PageRouter';
+import { MainContentStyle } from '../../PageRouter';
 
 import Editor from '../../components/Editor/Editor';
-import {FlexColumnStyle, FlexStyle} from '../../styles/flex.styles';
+import { FlexColumnStyle, FlexStyle } from '../../styles/flex.styles';
 import styled from '@emotion/styled';
-import {ALERT_MESSAGE, COLOR} from '../../constants';
-import {useContext, useEffect, useRef, useState} from "react";
+import { ALERT_MESSAGE, COLOR } from '../../constants';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { UserContext } from '../../contexts/UserProvider';
 import { useHistory, useParams } from 'react-router';
 import { useEditEssayAnswer, useGetEssayAnswer } from '../../hooks/queries/essayanswer';
@@ -18,7 +18,9 @@ const EditEssayAnswerPage = () => {
   const history = useHistory();
   const { id } = useParams<{ id: string }>();
 
-  const { user: { username } } = useContext(UserContext);
+  const {
+    user: { username },
+  } = useContext(UserContext);
 
   const [quizTitle, setQuizTitle] = useState<string>('');
   const [answer, setAnswer] = useState<string | null>(null);
@@ -32,7 +34,7 @@ const EditEssayAnswerPage = () => {
         setAnswer(answer);
         setQuizTitle(question);
       },
-    },
+    }
   );
 
   const author = previousEssayAnswer.data?.author;
