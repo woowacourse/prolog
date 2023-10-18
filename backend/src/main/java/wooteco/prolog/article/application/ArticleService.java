@@ -86,13 +86,13 @@ public class ArticleService {
                                                      final ArticleFilterType course,
                                                      final boolean onlyBookmarked) {
         if (member.isMember()) {
-            return articleRepository.findArticlesByCourseAndMember(course.getGroupName(),
+            return articleRepository.findArticlesByCourseAndMember(course.getPartName(),
                     member.getId(), onlyBookmarked).stream()
                 .map(article -> ArticleResponse.of(article, member.getId()))
                 .collect(toList());
         }
 
-        return articleRepository.findArticlesByCourse(course.getGroupName()).stream()
+        return articleRepository.findArticlesByCourse(course.getPartName()).stream()
             .map(article -> ArticleResponse.of(article, member.getId()))
             .collect(toList());
     }
