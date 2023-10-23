@@ -2,17 +2,24 @@ package wooteco.prolog.docu;
 
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
+import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.NewDocumentation;
 import wooteco.prolog.roadmap.application.QuizService;
+import wooteco.prolog.roadmap.application.dto.CurriculumQuizResponse;
 import wooteco.prolog.roadmap.application.dto.QuizRequest;
 import wooteco.prolog.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.roadmap.application.dto.QuizzesResponse;
@@ -61,8 +68,45 @@ public class QuizDocumentation extends NewDocumentation {
 
         given
             .when().get("/sessions/{sessionId}/keywords/{keywordId}/quizs", 1L, 1L)
-            .then().log().all().apply(document("quiz/list"))
+            .then().log().all().apply(document("quiz/list-keyword"))
             .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void Curriculum별_Quiz_조회() {
+        given(quizService.findQuizzesByCurriculumId(anyLong()))
+            .willReturn(makeMockResponse());
+
+        given
+            .when().get("/curriculums/{curriculumId}/quizzes", 1L)
+            .then().log().all().apply(document("quiz/list-curriculum"))
+            .statusCode(HttpStatus.OK.value());
+    }
+
+    private List<CurriculumQuizResponse> makeMockResponse() {
+        CurriculumQuizResponse response1 = new CurriculumQuizResponse() {
+            @Override
+            public Long getId() {
+                return 1L;
+            }
+
+            @Override
+            public String getQuestion() {
+                return "question1";
+            }
+        };
+        CurriculumQuizResponse response2 = new CurriculumQuizResponse() {
+            @Override
+            public Long getId() {
+                return 2L;
+            }
+
+            @Override
+            public String getQuestion() {
+                return "question2";
+            }
+        };
+        return Arrays.asList(response1, response2);
     }
 
     @Test
