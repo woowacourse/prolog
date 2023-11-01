@@ -39,7 +39,6 @@ public interface KeywordRepository extends JpaRepository<Keyword, Long> {
 
     @Query("SELECT k FROM Keyword k " +
         "JOIN Session s ON s.id = k.sessionId " +
-        "LEFT JOIN FETCH RecommendedPost r ON r.keyword.id = k.id " +
         "WHERE s.curriculumId = :curriculumId ")
     List<Keyword> findAllByCurriculumId(Long curriculumId);
 }
