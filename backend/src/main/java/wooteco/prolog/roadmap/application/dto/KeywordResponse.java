@@ -1,13 +1,12 @@
 package wooteco.prolog.roadmap.application.dto;
 
-import java.util.ArrayList;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.roadmap.domain.Keyword;
 
-import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -56,12 +55,6 @@ public class KeywordResponse {
             null);
     }
 
-    private static List<RecommendedPostResponse> createRecommendedPostResponses(final Keyword keyword) {
-        return keyword.getRecommendedPosts().stream()
-            .map(RecommendedPostResponse::from)
-            .collect(Collectors.toList());
-    }
-
     public static KeywordResponse createWithAllChildResponse(final Keyword keyword) {
         return new KeywordResponse(
             keyword.getId(),
@@ -76,11 +69,22 @@ public class KeywordResponse {
             createChildren(keyword.getChildren()));
     }
 
+    private static List<RecommendedPostResponse> createRecommendedPostResponses(final Keyword keyword) {
+        return keyword.getRecommendedPosts().stream()
+            .map(RecommendedPostResponse::from)
+            .collect(Collectors.toList());
+    }
+
     private static List<KeywordResponse> createChildren(final Set<Keyword> children) {
-        List<KeywordResponse> keywords = new ArrayList<>();
-        for (Keyword keyword : children) {
-            keywords.add(createWithAllChildResponse(keyword));
-        }
-        return keywords;
+        return children.stream()
+            .map(KeywordResponse::createWithAllChildResponse)
+            .collect(Collectors.toList());
+    }
+
+    public void setProgress(final Map<Long, Integer> totalQuizCounts, final Map<Long, Integer> doneQuizCounts) {
+        totalQuizCount = totalQuizCounts.getOrDefault(keywordId, 0);
+        doneQuizCount = doneQuizCounts.getOrDefault(keywordId, 0);
+
+        childrenKeywords.forEach(child -> child.setProgress(totalQuizCounts, doneQuizCounts));
     }
 }
