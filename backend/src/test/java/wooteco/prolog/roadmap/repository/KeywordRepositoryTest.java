@@ -3,10 +3,19 @@ package wooteco.prolog.roadmap.repository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
+import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.roadmap.domain.Curriculum;
+import wooteco.prolog.roadmap.domain.EssayAnswer;
 import wooteco.prolog.roadmap.domain.Keyword;
+import wooteco.prolog.roadmap.domain.Quiz;
 import wooteco.prolog.roadmap.domain.repository.CurriculumRepository;
+import wooteco.prolog.roadmap.domain.repository.EssayAnswerRepository;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
+import wooteco.prolog.roadmap.domain.repository.QuizRepository;
+import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndDoneQuizCount;
+import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndTotalQuizCount;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.support.utils.RepositoryTest;
@@ -16,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @RepositoryTest
@@ -26,16 +36,20 @@ class KeywordRepositoryTest {
     @Autowired
     private SessionRepository sessionRepository;
     @Autowired
+    private EssayAnswerRepository essayAnswerRepository;
+    @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
     private EntityManager em;
     @Autowired
     private CurriculumRepository curriculumRepository;
+    @Autowired
+    private QuizRepository quizRepository;
 
     @Test
     void 부모_키워드와_1뎁스까지의_자식_키워드를_함께_조회할_수_있다() {
         // given
-        Session session = new Session("테스트 세션");
-        sessionRepository.save(session);
-        Long sessionId = session.getId();
+        Long sessionId = createSession();
 
         Keyword keywordParent = createKeywordParent(
             Keyword.createKeyword("자바", "자바에 대한 설명", 1, 1, sessionId, null));
@@ -58,9 +72,7 @@ class KeywordRepositoryTest {
     @Test
     void 부모_키워드와_2뎁스까지의_자식_키워드를_함께_조회할_수_있다() {
         // given
-        Session session = new Session("테스트 세션");
-        sessionRepository.save(session);
-        Long sessionId = session.getId();
+        Long sessionId = createSession();
 
         Keyword parent = createKeywordParent(
             Keyword.createKeyword("자바", "자바에 대한 설명", 1, 1, sessionId, null));
@@ -93,9 +105,7 @@ class KeywordRepositoryTest {
     @Test
     void 최상위_키워드만_조회한다() {
         // given
-        Session session = new Session("테스트 세션");
-        sessionRepository.save(session);
-        Long sessionId = session.getId();
+        Long sessionId = createSession();
 
         Keyword keywordParent = createKeywordParent(
             Keyword.createKeyword("자바", "자바에 대한 설명", 1, 1, sessionId, null));
@@ -155,6 +165,77 @@ class KeywordRepositoryTest {
             .usingRecursiveComparison()
             .ignoringFields("id", "parent.id")
             .isEqualTo(Arrays.asList(keyword1, keyword3, keyword5, keyword7, keyword10));
+    }
+
+    @Test
+    @DisplayName("각 키워드별 퀴즈 개수를 조회할 수 있다")
+    void findTotalQuizCount() {
+        //given
+        final Long sessionId = createSession();
+
+        final Keyword parent = createKeywordParent(
+            Keyword.createKeyword("자바", "자바에 대한 설명", 1, 1, sessionId, null));
+        final Keyword child1 = createKeywordChildren(
+            Keyword.createKeyword("List", "List에 대한 설명", 1, 1, sessionId, parent));
+        createKeywordChildren(
+            Keyword.createKeyword("Set", "Set에 대한 설명", 2, 1, sessionId, parent));
+
+        quizRepository.save(new Quiz(parent, "자바란 무엇일까요?"));
+        quizRepository.save(new Quiz(parent, "자바를 왜 쓰죠?"));
+        quizRepository.save(new Quiz(child1, "리스트보단 배열이 낫지 않나요?"));
+
+        //when
+        final List<KeywordIdAndTotalQuizCount> totalQuizCounts = keywordRepository.findTotalQuizCount();
+
+        //then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(totalQuizCounts)
+                .map(KeywordIdAndTotalQuizCount::getKeywordId)
+                .containsExactlyInAnyOrder(parent.getId(), child1.getId());
+
+            softAssertions.assertThat(totalQuizCounts)
+                .map(KeywordIdAndTotalQuizCount::getTotalQuizCount)
+                .containsExactlyInAnyOrder(1, 2);
+        });
+    }
+
+    @Test
+    @DisplayName("회원의 id로 각 키워드별 완료한 답변 개수를 조회할 수 있다")
+    void findDoneQuizCountByMemberId() {
+        //given
+        final Long sessionId = createSession();
+
+        final Keyword parent = createKeywordParent(
+            Keyword.createKeyword("자바", "자바에 대한 설명", 1, 1, sessionId, null));
+        final Keyword child1 = createKeywordChildren(
+            Keyword.createKeyword("List", "List에 대한 설명", 1, 1, sessionId, parent));
+
+        final Quiz quiz1 = quizRepository.save(new Quiz(parent, "자바란 무엇일까요?"));
+        final Quiz quiz2 = quizRepository.save(new Quiz(parent, "코틀린은 뭘까요?"));
+        quizRepository.save(new Quiz(child1, "리스트보단 배열이 낫지 않나요?"));
+
+        final Member member = memberRepository.save(new Member("username1", "nickname1", Role.CREW, 1L, "imageUrl1"));
+        essayAnswerRepository.save(new EssayAnswer(quiz1, "쓰라고 해서요ㅠ", member));
+        essayAnswerRepository.save(new EssayAnswer(quiz2, "쓰라고 해서요ㅠ", member));
+
+        //when
+        final List<KeywordIdAndDoneQuizCount> doneQuizCounts = keywordRepository.findDoneQuizCountByMemberId(member.getId());
+
+        //then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(doneQuizCounts)
+                .map(KeywordIdAndDoneQuizCount::getKeywordId)
+                .containsExactly(parent.getId());
+            softAssertions.assertThat(doneQuizCounts)
+                .map(KeywordIdAndDoneQuizCount::getDoneQuizCount)
+                .containsExactly(2);
+        });
+    }
+
+    private Long createSession() {
+        Session session = new Session("테스트 세션");
+        sessionRepository.save(session);
+        return session.getId();
     }
 
     private Keyword createKeywordParent(final Keyword keyword) {
