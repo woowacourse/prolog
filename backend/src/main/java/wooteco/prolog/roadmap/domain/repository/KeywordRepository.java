@@ -1,35 +1,30 @@
 package wooteco.prolog.roadmap.domain.repository;
 
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import wooteco.prolog.roadmap.domain.Keyword;
+import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndDoneQuizCount;
+import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndTotalQuizCount;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import static org.springframework.data.jpa.repository.EntityGraph.EntityGraphType.FETCH;
 
 public interface KeywordRepository extends JpaRepository<Keyword, Long> {
 
-    @EntityGraph(attributePaths = "recommendedPosts", type = FETCH)
-    Optional<Keyword> findById(final Long id);
+    @Query("SELECT k.id AS keywordId, COUNT (q.id) as totalQuizCount " +
+        "FROM Keyword k " +
+        "JOIN Quiz q ON q.keyword.id = k.id " +
+        "GROUP BY k.id")
+    List<KeywordIdAndTotalQuizCount> findTotalQuizCount();
 
-    @EntityGraph(attributePaths = "recommendedPosts", type = FETCH)
-    List<Keyword> findAll();
+    @Query("SELECT k.id AS keywordId, COUNT (e.id) AS doneQuizCount " +
+        "FROM Keyword k " +
+        "JOIN Quiz q ON k.id = q.keyword.id " +
+        "JOIN EssayAnswer e ON e.quiz.id = q.id " +
+        "WHERE e.member.id = :memberId " +
+        "GROUP BY k.id ")
+    List<KeywordIdAndDoneQuizCount> findDoneQuizCountByMemberId(@Param("memberId") Long memberId);
 
-    @Query("SELECT k FROM Keyword k "
-        + "LEFT JOIN FETCH k.children c "
-        + "LEFT JOIN FETCH k.recommendedPosts "
-        + "LEFT JOIN FETCH k.parent p "
-        + "LEFT JOIN FETCH p.recommendedPosts "
-        + "LEFT JOIN FETCH c.recommendedPosts "
-        + "LEFT JOIN FETCH c.children lc "
-        + "LEFT JOIN FETCH lc.recommendedPosts "
-        + "LEFT JOIN FETCH lc.children "
-        + "WHERE k.id = :keywordId ORDER BY k.seq")
     Keyword findFetchByIdOrderBySeq(@Param("keywordId") Long keywordId);
 
     @Query("SELECT k FROM Keyword k "
@@ -42,5 +37,9 @@ public interface KeywordRepository extends JpaRepository<Keyword, Long> {
         + "WHERE k.parent IS NULL")
     List<Keyword> newFindByParentIsNull();
 
-    List<Keyword> findBySessionIdIn(final Set<Long> sessionIds);
+    @Query("SELECT k FROM Keyword k " +
+        "JOIN Session s ON s.id = k.sessionId " +
+        "LEFT JOIN FETCH RecommendedPost r ON r.keyword.id = k.id " +
+        "WHERE s.curriculumId = :curriculumId ")
+    List<Keyword> findAllByCurriculumId(Long curriculumId);
 }
