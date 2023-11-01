@@ -9,11 +9,10 @@ import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndDoneQuizCount;
 import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndTotalQuizCount;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Objects.isNull;
+import static java.util.stream.Collectors.toMap;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -34,25 +33,18 @@ public class RoadMapService {
     }
 
     private Map<Long, Integer> getTotalQuizCounts() {
-        final Map<Long, Integer> totalQuizCounts = new HashMap<>();
-
-        for (KeywordIdAndTotalQuizCount totalQuizCount : keywordRepository.findTotalQuizCount()) {
-            totalQuizCounts.put(totalQuizCount.getKeywordId(), totalQuizCount.getTotalQuizCount());
-        }
-
-        return totalQuizCounts;
+        return keywordRepository.findTotalQuizCount().stream()
+            .collect(
+                toMap(
+                    KeywordIdAndTotalQuizCount::getKeywordId,
+                    KeywordIdAndTotalQuizCount::getTotalQuizCount));
     }
 
     private Map<Long, Integer> getDoneQuizCounts(final Long memberId) {
-        final Map<Long, Integer> doneQuizCounts = new HashMap<>();
-        if (isNull(memberId)) {
-            return doneQuizCounts;
-        }
-
-        for (KeywordIdAndDoneQuizCount doneQuizCount : keywordRepository.findDoneQuizCountByMemberId(memberId)) {
-            doneQuizCounts.put(doneQuizCount.getKeywordId(), doneQuizCount.getDoneQuizCount());
-        }
-
-        return doneQuizCounts;
+        return keywordRepository.findDoneQuizCountByMemberId(memberId).stream()
+            .collect(
+                toMap(
+                    KeywordIdAndDoneQuizCount::getKeywordId,
+                    KeywordIdAndDoneQuizCount::getDoneQuizCount));
     }
 }
