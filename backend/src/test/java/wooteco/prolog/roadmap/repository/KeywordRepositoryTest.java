@@ -232,8 +232,38 @@ class KeywordRepositoryTest {
         });
     }
 
+    @Test
+    @DisplayName("커리큘럼 ID에 해당하는 모든 키워드들을 조회할 수 있다")
+    void findAllByCurriculumId() {
+        //given
+        final Long session1 = createSessionWithCurriculumId(1L);
+        final Long session2 = createSessionWithCurriculumId(1L);
+
+        final Keyword parent1 = createKeywordParent(
+            Keyword.createKeyword("자바", "자바에 대한 설명", 1, 1, session1, null));
+        createKeywordChildren(
+            Keyword.createKeyword("List", "List에 대한 설명", 1, 1, session1, parent1));
+        createKeywordChildren(
+            Keyword.createKeyword("List", "List에 대한 설명", 1, 1, session1, parent1));
+
+        createKeywordParent(
+            Keyword.createKeyword("자바", "자바에 대한 설명", 1, 1, session2, null));
+
+        //when
+        final List<Keyword> keywords = keywordRepository.findAllByCurriculumId(1L);
+
+        //then
+        assertThat(keywords).hasSize(4);
+    }
+
     private Long createSession() {
         Session session = new Session("테스트 세션");
+        sessionRepository.save(session);
+        return session.getId();
+    }
+
+    private Long createSessionWithCurriculumId(final Long curriculumId) {
+        Session session = new Session(curriculumId, "테스트 세션");
         sessionRepository.save(session);
         return session.getId();
     }
