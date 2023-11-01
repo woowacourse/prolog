@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.roadmap.application.dto.KeywordsResponse;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
-import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndDoneQuizCount;
+import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndAnsweredQuizCount;
 import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndTotalQuizCount;
 
 import java.util.List;
@@ -24,10 +24,10 @@ public class RoadMapService {
     public KeywordsResponse findAllKeywordsWithProgress(final Long curriculumId, final Long memberId) {
         final List<Keyword> keywords = keywordRepository.findAllByCurriculumId(curriculumId);
         final Map<Long, Integer> totalQuizCounts = getTotalQuizCounts();
-        final Map<Long, Integer> doneQuizCounts = getDoneQuizCounts(memberId);
+        final Map<Long, Integer> answeredQuizCounts = getAnsweredQuizCounts(memberId);
 
         final KeywordsResponse keywordsResponse = KeywordsResponse.of(keywords);
-        keywordsResponse.setProgress(totalQuizCounts, doneQuizCounts);
+        keywordsResponse.setProgress(totalQuizCounts, answeredQuizCounts);
 
         return keywordsResponse;
     }
@@ -40,11 +40,11 @@ public class RoadMapService {
                     KeywordIdAndTotalQuizCount::getTotalQuizCount));
     }
 
-    private Map<Long, Integer> getDoneQuizCounts(final Long memberId) {
-        return keywordRepository.findDoneQuizCountByMemberId(memberId).stream()
+    private Map<Long, Integer> getAnsweredQuizCounts(final Long memberId) {
+        return keywordRepository.findAnsweredQuizCountByMemberId(memberId).stream()
             .collect(
                 toMap(
-                    KeywordIdAndDoneQuizCount::getKeywordId,
-                    KeywordIdAndDoneQuizCount::getDoneQuizCount));
+                    KeywordIdAndAnsweredQuizCount::getKeywordId,
+                    KeywordIdAndAnsweredQuizCount::getAnsweredQuizCount));
     }
 }

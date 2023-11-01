@@ -86,17 +86,17 @@ class RoadMapServiceTest {
             roots.hasSize(2)
                 .satisfies(containsKeywordIds(root1.getId(), root2.getId()))
                 .satisfies(containsTotalQuizCounts(0, 1))
-                .satisfies(containsDoneQuizCounts(0, 0));
+                .satisfies(containsAnsweredQuizCounts(0, 0));
 
             oneDepthChildren.hasSize(1)
                 .satisfies(containsKeywordIds(oneDepthChild.getId()))
                 .satisfies(containsTotalQuizCounts(1))
-                .satisfies(containsDoneQuizCounts(0));
+                .satisfies(containsAnsweredQuizCounts(0));
 
             twoDepthChildren.hasSize(1)
                 .satisfies(containsKeywordIds(twoDepthChild.getId()))
                 .satisfies(containsTotalQuizCounts(0))
-                .satisfies(containsDoneQuizCounts(0));
+                .satisfies(containsAnsweredQuizCounts(0));
         });
     }
 
@@ -137,21 +137,21 @@ class RoadMapServiceTest {
             roots.hasSize(2)
                 .satisfies(containsKeywordIds(root1.getId(), root2.getId()))
                 .satisfies(containsTotalQuizCounts(0, 1))
-                .satisfies(containsDoneQuizCounts(0, 1));
+                .satisfies(containsAnsweredQuizCounts(0, 1));
 
             oneDepthChildren.hasSize(1)
                 .satisfies(containsKeywordIds(oneDepthChild.getId()))
                 .satisfies(containsTotalQuizCounts(1))
-                .satisfies(containsDoneQuizCounts(0));
+                .satisfies(containsAnsweredQuizCounts(0));
 
             twoDepthChildren.hasSize(1)
                 .satisfies(containsKeywordIds(twoDepthChild.getId()))
                 .satisfies(containsTotalQuizCounts(1))
-                .satisfies(containsDoneQuizCounts(1));
+                .satisfies(containsAnsweredQuizCounts(1));
         });
     }
 
-    private Consumer<List<? extends KeywordResponse>> containsDoneQuizCounts(final Integer... expected) {
+    private Consumer<List<? extends KeywordResponse>> containsAnsweredQuizCounts(final Integer... expected) {
         return keywords -> assertThat(keywords)
             .map(KeywordResponse::getDoneQuizCount)
             .containsExactlyInAnyOrder(expected);

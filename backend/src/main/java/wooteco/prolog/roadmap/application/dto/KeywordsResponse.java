@@ -28,7 +28,7 @@ public class KeywordsResponse {
         return new KeywordsResponse(keywordsResponse);
     }
 
-    public void setProgress(final Map<Long, Integer> totalQuizCounts, final Map<Long, Integer> doneQuizCounts) {
-        data.forEach(response -> response.setProgress(totalQuizCounts, doneQuizCounts));
+    public void setProgress(final Map<Long, Integer> totalQuizCounts, final Map<Long, Integer> answeredQuizCounts) {
+        data.forEach(response -> response.setProgress(totalQuizCounts, answeredQuizCounts));
     }
 }
