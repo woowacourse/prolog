@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import wooteco.prolog.roadmap.domain.Keyword;
-import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndDoneQuizCount;
+import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndAnsweredQuizCount;
 import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndTotalQuizCount;
 
 import java.util.List;
@@ -17,13 +17,13 @@ public interface KeywordRepository extends JpaRepository<Keyword, Long> {
         "GROUP BY k.id")
     List<KeywordIdAndTotalQuizCount> findTotalQuizCount();
 
-    @Query("SELECT k.id AS keywordId, COUNT (e.id) AS doneQuizCount " +
+    @Query("SELECT k.id AS keywordId, COUNT (e.id) AS answeredQuizCount " +
         "FROM Keyword k " +
         "JOIN Quiz q ON k.id = q.keyword.id " +
         "JOIN EssayAnswer e ON e.quiz.id = q.id " +
         "WHERE e.member.id = :memberId " +
         "GROUP BY k.id ")
-    List<KeywordIdAndDoneQuizCount> findDoneQuizCountByMemberId(@Param("memberId") Long memberId);
+    List<KeywordIdAndAnsweredQuizCount> findAnsweredQuizCountByMemberId(@Param("memberId") Long memberId);
 
     Keyword findFetchByIdOrderBySeq(@Param("keywordId") Long keywordId);
 

@@ -81,10 +81,10 @@ public class KeywordResponse {
             .collect(Collectors.toList());
     }
 
-    public void setProgress(final Map<Long, Integer> totalQuizCounts, final Map<Long, Integer> doneQuizCounts) {
+    public void setProgress(final Map<Long, Integer> totalQuizCounts, final Map<Long, Integer> answeredQuizCounts) {
         totalQuizCount = totalQuizCounts.getOrDefault(keywordId, 0);
-        doneQuizCount = doneQuizCounts.getOrDefault(keywordId, 0);
+        doneQuizCount = answeredQuizCounts.getOrDefault(keywordId, 0);
 
-        childrenKeywords.forEach(child -> child.setProgress(totalQuizCounts, doneQuizCounts));
+        childrenKeywords.forEach(child -> child.setProgress(totalQuizCounts, answeredQuizCounts));
     }
 }

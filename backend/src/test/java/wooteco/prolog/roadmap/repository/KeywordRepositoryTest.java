@@ -14,7 +14,7 @@ import wooteco.prolog.roadmap.domain.repository.CurriculumRepository;
 import wooteco.prolog.roadmap.domain.repository.EssayAnswerRepository;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.roadmap.domain.repository.QuizRepository;
-import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndDoneQuizCount;
+import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndAnsweredQuizCount;
 import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndTotalQuizCount;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
@@ -121,7 +121,7 @@ class KeywordRepositoryTest {
             sessionId);
 
         // then
-        assertThat(extractParentKeyword.size()).isEqualTo(1);
+        assertThat(extractParentKeyword).hasSize(1);
     }
 
     @Test
@@ -219,15 +219,15 @@ class KeywordRepositoryTest {
         essayAnswerRepository.save(new EssayAnswer(quiz2, "쓰라고 해서요ㅠ", member));
 
         //when
-        final List<KeywordIdAndDoneQuizCount> doneQuizCounts = keywordRepository.findDoneQuizCountByMemberId(member.getId());
+        final List<KeywordIdAndAnsweredQuizCount> doneQuizCounts = keywordRepository.findAnsweredQuizCountByMemberId(member.getId());
 
         //then
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(doneQuizCounts)
-                .map(KeywordIdAndDoneQuizCount::getKeywordId)
+                .map(KeywordIdAndAnsweredQuizCount::getKeywordId)
                 .containsExactly(parent.getId());
             softAssertions.assertThat(doneQuizCounts)
-                .map(KeywordIdAndDoneQuizCount::getDoneQuizCount)
+                .map(KeywordIdAndAnsweredQuizCount::getAnsweredQuizCount)
                 .containsExactly(2);
         });
     }

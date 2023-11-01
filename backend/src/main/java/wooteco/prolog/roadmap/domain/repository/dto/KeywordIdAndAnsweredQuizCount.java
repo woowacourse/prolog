@@ -1,7 +1,7 @@
 package wooteco.prolog.roadmap.domain.repository.dto;
 
-public interface KeywordIdAndDoneQuizCount {
+public interface KeywordIdAndAnsweredQuizCount {
     long getKeywordId();
 
-    int getDoneQuizCount();
+    int getAnsweredQuizCount();
 }
