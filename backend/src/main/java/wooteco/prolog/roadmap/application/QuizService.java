@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.common.exception.BadRequestException;
+import wooteco.prolog.roadmap.application.dto.CurriculumQuizResponse;
 import wooteco.prolog.roadmap.application.dto.QuizRequest;
 import wooteco.prolog.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.roadmap.application.dto.QuizzesResponse;
@@ -72,5 +73,9 @@ public class QuizService {
         final Quiz quiz = quizRepository.findById(quizId)
             .orElseThrow(() -> new BadRequestException(ROADMAP_QUIZ_NOT_FOUND_EXCEPTION));
         return QuizResponse.of(quiz, isLearning(memberId, quizId));
+    }
+
+    public List<CurriculumQuizResponse> findQuizzesByCurriculumId(Long curriculumId) {
+        return quizRepository.findQuizzesByCurriculum(curriculumId);
     }
 }
