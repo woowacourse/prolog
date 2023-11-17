@@ -18,7 +18,10 @@ const DropdownToggledStyle = css`
   }
 `;
 
-const Container = styled.div<{ isDropdownToggled: boolean }>`
+const Container = styled.div<{
+  isDropdownToggled: string;
+  css: ReturnType<typeof css> | null;
+}>`
   background-color: ${COLOR.LIGHT_GRAY_50};
 
   border: 1px solid ${COLOR.DARK_GRAY_400};

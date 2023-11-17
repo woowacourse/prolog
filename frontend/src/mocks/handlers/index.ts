@@ -1,13 +1,15 @@
 import { articlesHandler } from './articles';
 import { commentsHandler } from './comment';
+import { essayAnswerHandler } from './essayAnswers';
+import { roadmapHandler } from './roadmap';
 import { levellogHandler } from './levellog';
 import { popularStudyLogHandler } from './popularStudyLog';
-import { roadmapHandler } from './roadmap';
 
 export const handlers = [
-  ...popularStudyLogHandler,
   ...commentsHandler,
-  ...levellogHandler,
+  ...essayAnswerHandler,
   ...roadmapHandler,
   ...articlesHandler,
+  ...levellogHandler,
+  ...popularStudyLogHandler,
 ];
