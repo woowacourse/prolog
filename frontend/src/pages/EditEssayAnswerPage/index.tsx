@@ -12,7 +12,7 @@ import {useContext, useEffect, useRef, useState} from "react";
 import { UserContext } from '../../contexts/UserProvider';
 import { useHistory, useParams } from 'react-router';
 import { useEditEssayAnswer, useGetEssayAnswer } from '../../hooks/queries/essayanswer';
-import { EssayAnswerResponse } from '../../models/EssayAnswers';
+import { EssayAnswer } from '../../models/EssayAnswers';
 
 const EditEssayAnswerPage = () => {
   const history = useHistory();
@@ -28,7 +28,7 @@ const EditEssayAnswerPage = () => {
   const previousEssayAnswer = useGetEssayAnswer(
     { essayAnswerId: id },
     {
-      onSuccess: ({ quiz: { question }, answer }: EssayAnswerResponse) => {
+      onSuccess: ({ quiz: { question }, answer }: EssayAnswer) => {
         setAnswer(answer);
         setQuizTitle(question);
       },

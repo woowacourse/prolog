@@ -1,4 +1,4 @@
-import { EssayAnswerResponse } from '../../models/EssayAnswers';
+import { EssayAnswer } from '../../models/EssayAnswers';
 
 type EssayAnswersFilterParams = {
   curriculumId: number;
@@ -11,7 +11,7 @@ type EssayAnswersFilterParams = {
 
 const data: Array<{
   curriculumId: number;
-  essayAnswers: (EssayAnswerResponse & {
+  essayAnswers: (EssayAnswer & {
     keywordId: number;
   })[];
 }> = [
@@ -23,6 +23,7 @@ const data: Array<{
         keywordId: 1,
         quiz: {
           quizId: 29,
+          isLearning: true,
           question: 'Varargs는 어떻게 사용하고, 사용했을 때 장점은 무엇인가요?',
         },
         answer:
@@ -42,6 +43,7 @@ const data: Array<{
         keywordId: 2,
         quiz: {
           quizId: 29,
+          isLearning: false,
           question: 'Varargs는 어떻게 사용하고, 사용했을 때 장점은 무엇인가요?',
         },
         answer:
@@ -66,6 +68,7 @@ const data: Array<{
         keywordId: 1,
         quiz: {
           quizId: 29,
+          isLearning: true,
           question: 'Varargs는 어떻게 사용하고, 사용했을 때 장점은 무엇인가요?',
         },
         answer:
@@ -85,6 +88,7 @@ const data: Array<{
         keywordId: 1,
         quiz: {
           quizId: 29,
+          isLearning: false,
           question: 'Vara하고, 사용했을 때 장점은 무엇인가요?',
         },
         answer:

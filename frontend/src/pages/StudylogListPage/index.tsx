@@ -157,7 +157,7 @@ const StudylogListPage = (): JSX.Element => {
           {/* 타입스크립트 일부 적용 이슈로 인한 css 빈 string 전달 */}
           <SearchBar
             onSubmit={onSearch}
-            onChange={onSearchKeywordsChange}
+            onChange={({ target: { value } }) => onSearchKeywordsChange(value)}
             value={searchKeywords}
           />
         </div>

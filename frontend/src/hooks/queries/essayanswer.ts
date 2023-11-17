@@ -9,6 +9,7 @@ import {
   requestGetEssayAnswers,
   requestGetQuizAnswers,
   requestGetQuizAsync,
+  requestGetQuizzes,
 } from '../../apis/essayanswers';
 import { ResponseError } from '../../apis/studylogs';
 import { ALERT_MESSAGE, PATH } from '../../constants';
@@ -16,6 +17,7 @@ import ERROR_CODE from '../../constants/errorCode';
 import { ERROR_MESSAGE, SUCCESS_MESSAGE } from '../../constants/message';
 import REACT_QUERY_KEY from '../../constants/reactQueryKey';
 import {
+  EssayAnswer,
   EssayAnswerFilterRequest,
   EssayAnswerRequest,
   EssayAnswerResponse,
@@ -53,15 +55,15 @@ export const useEditEssayAnswer = ({ essayAnswerId }: { essayAnswerId: number })
 
 export const useGetEssayAnswer = (
   { essayAnswerId },
-  { onSuccess = (essayAnswer: EssayAnswerResponse) => {}, onError = () => {} } = {}
+  { onSuccess = (essayAnswer: EssayAnswer) => {}, onError = () => {} } = {}
 ) => {
   const history = useHistory();
   const { openSnackBar } = useSnackBar();
-  return useQuery<EssayAnswerResponse>(
+  return useQuery<EssayAnswer>(
     [REACT_QUERY_KEY.ESSAY_ANSWER, essayAnswerId],
     () => requestGetEssayAnswer(essayAnswerId),
     {
-      onSuccess: (essayAnswer: EssayAnswerResponse) => {
+      onSuccess: (essayAnswer: EssayAnswer) => {
         onSuccess?.(essayAnswer);
       },
       onError: (error) => {
@@ -93,13 +95,13 @@ export const useDeleteEssayAnswerMutation = ({
 
 export const useGetQuizAnswerList = (
   { quizId },
-  { onSuccess = (essayAnswer: EssayAnswerResponse[]) => {}, onError = () => {} } = {}
+  { onSuccess = (essayAnswer: EssayAnswer[]) => {}, onError = () => {} } = {}
 ) => {
-  return useQuery<EssayAnswerResponse[]>(
+  return useQuery<EssayAnswer[]>(
     [REACT_QUERY_KEY.QUIZ_ANSWERS, quizId],
     () => requestGetQuizAnswers(quizId),
     {
-      onSuccess: (essayAnswer: EssayAnswerResponse[]) => {
+      onSuccess: (essayAnswer: EssayAnswer[]) => {
         onSuccess?.(essayAnswer);
       },
       onError: (error) => {},
@@ -110,7 +112,7 @@ export const useGetQuizAnswerList = (
 };
 
 export const useGetEssayAnswers = (filter: EssayAnswerFilterRequest) => {
-  return useQuery<EssayAnswerResponse[]>([REACT_QUERY_KEY.ESSAY_ANSWER_FILTER_LIST, filter], () =>
+  return useQuery<EssayAnswerResponse>([REACT_QUERY_KEY.ESSAY_ANSWER_FILTER_LIST, filter], () =>
     requestGetEssayAnswers(filter)
   );
 };
@@ -126,4 +128,10 @@ export const useGetQuiz = (
     refetchOnWindowFocus: false,
     retry: false,
   });
+};
+
+export const useGetQuizzes = ({ curriculumId }: { curriculumId: number }) => {
+  return useQuery<Array<{ id: number; question: string }>>([REACT_QUERY_KEY.QUIZZES], () =>
+    requestGetQuizzes(curriculumId)
+  );
 };

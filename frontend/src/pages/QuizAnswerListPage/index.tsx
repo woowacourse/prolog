@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from '@emotion/react';
+import { useParams } from 'react-router';
 import QuizAnswerList from '../../components/Lists/QuizAnswerList';
 import MEDIA_QUERY from '../../constants/mediaQuery';
-import { useEssayAnswerList } from '../../hooks/EssayAnswer/useEssayAnswerList';
+import { useGetQuiz, useGetQuizAnswerList } from '../../hooks/queries/essayanswer';
 import { MainContentStyle } from '../../PageRouter';
 import {
   AlignItemsCenterStyle,
@@ -13,7 +14,10 @@ import {
 import { HeaderContainer, PostListContainer } from './styles';
 
 const QuizAnswerListPage = () => {
-  const { quiz, essayAnswers } = useEssayAnswerList();
+  const { quizId } = useParams<{ quizId: string }>();
+
+  const { data: essayAnswers } = useGetQuizAnswerList({ quizId });
+  const { data: quiz } = useGetQuiz({ quizId });
 
   return (
     <div css={[MainContentStyle]}>

@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import COLOR from '../../constants/color';
-import MEDIA_QUERY from '../../constants/mediaQuery';
+import COLOR from '../../../../constants/color';
+import MEDIA_QUERY from '../../../../constants/mediaQuery';
 
 export const Container = styled.div`
   background-color: ${COLOR.LIGHT_GRAY_50};

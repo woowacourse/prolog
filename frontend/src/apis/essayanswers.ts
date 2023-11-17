@@ -55,3 +55,10 @@ export const requestGetQuizAsync = async (quizId: number) => {
 
 export const requestGetQuiz = (quizId: Number): AxiosPromise<AxiosResponse<Quiz>> =>
   client.get<AxiosResponse<Quiz>>(`/quizzes/${quizId}`);
+
+export const requestGetQuizzes = async (curriculumId: number) => {
+  const { data } = await client.get<{ id: number; question: string }[]>(
+    `/curriculums/${curriculumId}/quizzes`
+  );
+  return data;
+};

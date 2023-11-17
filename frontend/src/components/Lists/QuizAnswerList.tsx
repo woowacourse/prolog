@@ -2,10 +2,10 @@
 import {css} from '@emotion/react';
 import EssayAnswerItem from "../Items/EssayAnswerItem";
 import { NoDefaultHoverLink } from '../Items/EssayAnswerItem.styles';
-import { EssayAnswerResponse } from '../../models/EssayAnswers';
+import { EssayAnswer } from '../../models/EssayAnswers';
 
 interface QuizAnswerListProps {
-  essayAnswers: EssayAnswerResponse[];
+  essayAnswers: EssayAnswer[];
   showQuizTitle?: boolean;
 }
 

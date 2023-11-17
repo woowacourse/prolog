@@ -1,9 +1,4 @@
-import { Quiz } from '../../models/Keywords';
-
-const data: Array<{
-  keywordId: number;
-  data: Quiz[];
-}> = [
+export const quizMock = [
   {
     keywordId: 0,
     data: [],
@@ -230,15 +225,3 @@ const data: Array<{
     ],
   },
 ];
-
-const quizMock = {
-  data,
-  findQuiz(quizId) {
-    return this.data.flatMap(({ data }) => data).find((quiz) => quiz.quizId === quizId) ?? null;
-  },
-  filterByKeyword(keywordId) {
-    return this.data.find((quizs) => quizs.keywordId === keywordId)?.data ?? [];
-  },
-};
-
-export default quizMock;

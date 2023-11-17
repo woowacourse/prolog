@@ -1,14 +1,14 @@
+import { useContext } from 'react';
 import { useQuery } from 'react-query';
-
+import { getMembersForFilter } from '../../apis/filter';
 import {
   requestGetMissions,
   requestGetSessions,
   requestGetTags,
   ResponseError,
 } from '../../apis/studylogs';
-import { Mission, Session, Tag } from '../../models/Studylogs';
-import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserProvider';
+import { Author, Mission, Session, Tag } from '../../models/Studylogs';
 
 export const useTags = () =>
   useQuery<Tag[], ResponseError>(
@@ -43,6 +43,17 @@ export const useGetMySessions = () => {
     async () => {
       const response = await requestGetSessions({ accessToken });
       return response.data;
+    },
+    { initialData: [] }
+  );
+};
+
+export const useGetMembers = () => {
+  return useQuery<Author[]>(
+    ['memberList'],
+    async () => {
+      const members = await getMembersForFilter();
+      return members;
     },
     { initialData: [] }
   );

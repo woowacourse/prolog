@@ -8,13 +8,20 @@ export interface EssayAnswerRequest {
 
 export type EssayEditRequest = Pick<EssayAnswerRequest, 'answer'>;
 
-export interface EssayAnswerResponse {
+export interface EssayAnswer {
   id: number;
   quiz: Quiz;
   answer: string;
   author: Author;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface EssayAnswerResponse {
+  data: EssayAnswer[];
+  totalSize: number;
+  totalPage: number;
+  currPage: number;
 }
 
 export type EssayAnswerFilter = {

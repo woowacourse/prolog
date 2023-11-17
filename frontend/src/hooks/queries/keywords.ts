@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import { getKeyword, getQuizListByKeyword, getRoadmap } from '../../apis/keywords';
-import type { RoadmapRequest } from '../../models/Keywords';
+import type { KeywordResponse, RoadmapRequest } from '../../models/Keywords';
 
 const QUERY_KEY = {
   keyword: 'keyword',
@@ -16,12 +16,8 @@ export const useRoadmap = ({ curriculumId }: RoadmapRequest) => {
   });
 };
 
-export const useGetKeyword = ({ keywordId }: { keywordId: number }) => {
-  const { data } = useQuery([QUERY_KEY.keyword, keywordId], () => getKeyword({ keywordId }));
-
-  return {
-    keyword: data,
-  };
+export const useGetKeywords = ({ keywordId }: { keywordId: number }) => {
+  return useQuery<KeywordResponse>([QUERY_KEY.keyword, keywordId], () => getKeyword({ keywordId }));
 };
 
 export const useGetQuizListByKeyword = ({ keywordId }: { keywordId: number }) => {

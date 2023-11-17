@@ -2,7 +2,6 @@ import { InterpolationWithTheme } from '@emotion/core';
 import { Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 import COLOR from '../../constants/color';
-import { css } from '@emotion/react';
 
 const Container = styled.div<{ css?: InterpolationWithTheme<Theme> }>`
   height: fit-content;
