@@ -1,6 +1,7 @@
 package wooteco.prolog.roadmap.ui;
 
 import java.net.URI;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.roadmap.application.QuizService;
+import wooteco.prolog.roadmap.application.dto.CurriculumQuizResponse;
 import wooteco.prolog.roadmap.application.dto.QuizRequest;
 import wooteco.prolog.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.roadmap.application.dto.QuizzesResponse;
@@ -62,6 +64,13 @@ public class QuizController {
         @AuthMemberPrincipal LoginMember member
     ) {
         return ResponseEntity.ok(quizService.findQuizzesByKeywordId(keywordId, member.getId()));
+    }
+
+    @GetMapping("/curriculums/{curriculumId}/quizzes")
+    public ResponseEntity<List<CurriculumQuizResponse>> findQuizzesByCurriculum(
+        @PathVariable Long curriculumId
+    ) {
+        return ResponseEntity.ok(quizService.findQuizzesByCurriculumId(curriculumId));
     }
 
     @PutMapping("/sessions/{sessionId}/keywords/{keywordId}/quizs/{quizId}")

@@ -20,7 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import wooteco.prolog.common.exception.BadRequestException;
-import wooteco.prolog.member.application.GroupMemberService;
+import wooteco.prolog.member.application.DepartmentMemberService;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
@@ -45,7 +45,7 @@ class SessionMemberServiceTest {
     private MemberService memberService;
 
     @Mock
-    private GroupMemberService groupMemberService;
+    private DepartmentMemberService departmentMemberService;
 
     @DisplayName("Member가 회원가입을 할 수 있어야 한다.")
     @Test
@@ -89,7 +89,7 @@ class SessionMemberServiceTest {
 
         // then
         verify(sessionMemberRepository, atMostOnce()).findAllBySessionId(1L);
-        verify(groupMemberService, atMostOnce()).findGroupMemberByGroupId(request.getGroupId());
+        verify(departmentMemberService, atMostOnce()).findDepartmentMemberByDepartmentId(request.getGroupId());
         verify(sessionMemberRepository, atMostOnce()).saveAll(null);
 
     }

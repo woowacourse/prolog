@@ -18,18 +18,18 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     Optional<Article> findFetchLikeById(@Param("id") final Long id);
 
     @Query("SELECT DISTINCT a FROM Article a " +
-        "JOIN GroupMember gm ON a.member.id = gm.member.id " +
-        "JOIN gm.group mg " +
-        "WHERE mg.name LIKE %:course " +
+        "JOIN DepartmentMember dm ON dm.member.id = dm.member.id " +
+        "JOIN dm.department d " +
+        "WHERE d.part = :course " +
         "ORDER by a.createdAt desc")
     List<Article> findArticlesByCourse(@Param("course") String course);
 
     @Query("SELECT DISTINCT a FROM Article a " +
-        "JOIN GroupMember gm ON a.member.id = gm.member.id " +
-        "JOIN gm.group mg " +
+        "JOIN DepartmentMember dm ON a.member.id = dm.member.id " +
+        "JOIN dm.department d " +
         "LEFT JOIN a.articleBookmarks.articleBookmarks ab " +
         "LEFT JOIN a.articleLikes.articleLikes al " +
-        "WHERE mg.name LIKE %:course AND (:onlyBookmarked = false OR (:onlyBookmarked = true and ab.memberId = :memberId))" +
+        "WHERE d.part = :course AND (:onlyBookmarked = false OR (:onlyBookmarked = true and ab.memberId = :memberId))" +
         "ORDER by a.createdAt desc")
     List<Article> findArticlesByCourseAndMember(@Param("course") String course,
                                                 @Param("memberId") Long memberId,
