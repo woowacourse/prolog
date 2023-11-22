@@ -46,7 +46,7 @@ public class KeywordRecommendedPostStepDefinitions extends AcceptanceSteps {
     public void 추천_포스트가_수정된다() {
         int statusCode = context.response.statusCode();
 
-        assertThat(statusCode).isEqualTo(HttpStatus.OK.value());
+        assertThat(statusCode).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 
     @Then("추천 포스트가 삭제된다")
