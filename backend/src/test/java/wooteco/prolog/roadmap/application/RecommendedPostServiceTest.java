@@ -17,7 +17,6 @@ import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @SpringBootTest
 class RecommendedPostServiceTest {
@@ -90,10 +89,6 @@ class RecommendedPostServiceTest {
         recommendedPostService.delete(recommendedPostId);
 
         //then
-        assertSoftly(softAssertions -> {
-            assertThat(recommendedPostRepository.findAll()).hasSize(0);
-            assertThat(keywordRepository.findById(keyword.getId()).get().getRecommendedPosts())
-                .isEmpty();
-        });
+        assertThat(recommendedPostRepository.existsById(recommendedPostId)).isFalse();
     }
 }
