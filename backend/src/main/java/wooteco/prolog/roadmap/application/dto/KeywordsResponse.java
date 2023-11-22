@@ -19,16 +19,14 @@ public class KeywordsResponse {
         this.data = data;
     }
 
-    public static KeywordsResponse from(final List<Keyword> keywords) {
+    public static KeywordsResponse of(final List<Keyword> keywords,
+                                      final Map<Long, Integer> totalQuizCounts,
+                                      final Map<Long, Integer> answeredQuizCounts) {
         final List<KeywordResponse> keywordsResponse = keywords.stream()
             .filter(Keyword::isRoot)
-            .map(KeywordResponse::createWithAllChildResponse)
+            .map(rootKeyword -> KeywordResponse.createWithAllChildResponse(rootKeyword, totalQuizCounts, answeredQuizCounts))
             .collect(Collectors.toList());
 
         return new KeywordsResponse(keywordsResponse);
-    }
-
-    public void setProgress(final Map<Long, Integer> totalQuizCounts, final Map<Long, Integer> answeredQuizCounts) {
-        data.forEach(response -> response.setProgress(totalQuizCounts, answeredQuizCounts));
     }
 }

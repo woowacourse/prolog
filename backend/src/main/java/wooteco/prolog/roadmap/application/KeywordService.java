@@ -13,6 +13,7 @@ import wooteco.prolog.session.domain.repository.SessionRepository;
 
 import java.util.List;
 
+import static java.util.Collections.emptyMap;
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
 
@@ -66,7 +67,7 @@ public class KeywordService {
 
         Keyword keyword = keywordRepository.findFetchByIdOrderBySeq(keywordId);
 
-        return KeywordResponse.createWithAllChildResponse(keyword);
+        return KeywordResponse.createWithAllChildResponse(keyword, emptyMap(), emptyMap());
     }
 
     @Transactional(readOnly = true)
@@ -75,7 +76,7 @@ public class KeywordService {
 
         Keyword keyword = keywordRepository.findFetchByIdOrderBySeq(keywordId);
 
-        return KeywordResponse.createWithAllChildResponse(keyword);
+        return KeywordResponse.createWithAllChildResponse(keyword, emptyMap(), emptyMap());
     }
 
     @Transactional(readOnly = true)
@@ -84,14 +85,14 @@ public class KeywordService {
 
         List<Keyword> keywords = keywordRepository.findBySessionIdAndParentIsNull(sessionId);
 
-        return KeywordsResponse.from(keywords);
+        return KeywordsResponse.of(keywords, emptyMap(), emptyMap());
     }
 
     @Transactional(readOnly = true)
     public KeywordsResponse newFindSessionIncludeRootKeywords() {
         List<Keyword> keywords = keywordRepository.newFindByParentIsNull();
 
-        return KeywordsResponse.from(keywords);
+        return KeywordsResponse.of(keywords, emptyMap(), emptyMap());
     }
 
     public void updateKeyword(
