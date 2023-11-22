@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.roadmap.domain.Keyword;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,14 +21,14 @@ public class KeywordResponse {
     private int order;
     private int importance;
     private int totalQuizCount;
-    private int doneQuizCount;
+    private int answeredQuizCount;
     private Long parentKeywordId;
     private List<RecommendedPostResponse> recommendedPosts;
     private List<KeywordResponse> childrenKeywords;
 
     public KeywordResponse(final Long keywordId, final String name, final String description,
                            final int order, final int importance, final int totalQuizCount,
-                           final int doneQuizCount, final Long parentKeywordId,
+                           final int answeredQuizCount, final Long parentKeywordId,
                            final List<RecommendedPostResponse> recommendedPosts,
                            final List<KeywordResponse> childrenKeywords) {
         this.keywordId = keywordId;
@@ -36,7 +37,7 @@ public class KeywordResponse {
         this.order = order;
         this.importance = importance;
         this.totalQuizCount = totalQuizCount;
-        this.doneQuizCount = doneQuizCount;
+        this.answeredQuizCount = answeredQuizCount;
         this.parentKeywordId = parentKeywordId;
         this.recommendedPosts = recommendedPosts;
         this.childrenKeywords = childrenKeywords;
@@ -52,21 +53,23 @@ public class KeywordResponse {
             0, 0,
             keyword.getParentIdOrNull(),
             createRecommendedPostResponses(keyword),
-            null);
+            Collections.emptyList());
     }
 
-    public static KeywordResponse createWithAllChildResponse(final Keyword keyword) {
+    public static KeywordResponse createWithAllChildResponse(final Keyword keyword,
+                                                             final Map<Long, Integer> totalQuizCounts,
+                                                             final Map<Long, Integer> answeredQuizCounts) {
         return new KeywordResponse(
             keyword.getId(),
             keyword.getName(),
             keyword.getDescription(),
             keyword.getSeq(),
             keyword.getImportance(),
-            0,
-            0,
+            totalQuizCounts.getOrDefault(keyword.getId(), 0),
+            answeredQuizCounts.getOrDefault(keyword.getId(), 0),
             keyword.getParentIdOrNull(),
             createRecommendedPostResponses(keyword),
-            createChildren(keyword.getChildren()));
+            createChildren(keyword.getChildren(), totalQuizCounts, answeredQuizCounts));
     }
 
     private static List<RecommendedPostResponse> createRecommendedPostResponses(final Keyword keyword) {
@@ -75,16 +78,11 @@ public class KeywordResponse {
             .collect(Collectors.toList());
     }
 
-    private static List<KeywordResponse> createChildren(final Set<Keyword> children) {
+    private static List<KeywordResponse> createChildren(final Set<Keyword> children,
+                                                        final Map<Long, Integer> totalQuizCounts,
+                                                        final Map<Long, Integer> answeredQuizCounts) {
         return children.stream()
-            .map(KeywordResponse::createWithAllChildResponse)
+            .map(keyword -> createWithAllChildResponse(keyword, totalQuizCounts, answeredQuizCounts))
             .collect(Collectors.toList());
-    }
-
-    public void setProgress(final Map<Long, Integer> totalQuizCounts, final Map<Long, Integer> answeredQuizCounts) {
-        totalQuizCount = totalQuizCounts.getOrDefault(keywordId, 0);
-        doneQuizCount = answeredQuizCounts.getOrDefault(keywordId, 0);
-
-        childrenKeywords.forEach(child -> child.setProgress(totalQuizCounts, answeredQuizCounts));
     }
 }
