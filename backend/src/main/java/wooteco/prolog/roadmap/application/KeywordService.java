@@ -84,14 +84,14 @@ public class KeywordService {
 
         List<Keyword> keywords = keywordRepository.findBySessionIdAndParentIsNull(sessionId);
 
-        return KeywordsResponse.of(keywords);
+        return KeywordsResponse.from(keywords);
     }
 
     @Transactional(readOnly = true)
     public KeywordsResponse newFindSessionIncludeRootKeywords() {
         List<Keyword> keywords = keywordRepository.newFindByParentIsNull();
 
-        return KeywordsResponse.of(keywords);
+        return KeywordsResponse.from(keywords);
     }
 
     public void updateKeyword(

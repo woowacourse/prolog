@@ -26,7 +26,7 @@ public class RoadMapService {
         final Map<Long, Integer> totalQuizCounts = getTotalQuizCounts();
         final Map<Long, Integer> answeredQuizCounts = getAnsweredQuizCounts(memberId);
 
-        final KeywordsResponse keywordsResponse = KeywordsResponse.of(keywords);
+        final KeywordsResponse keywordsResponse = KeywordsResponse.from(keywords);
         keywordsResponse.setProgress(totalQuizCounts, answeredQuizCounts);
 
         return keywordsResponse;
