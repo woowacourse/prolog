@@ -19,7 +19,7 @@ public class KeywordsResponse {
         this.data = data;
     }
 
-    public static KeywordsResponse of(final List<Keyword> keywords) {
+    public static KeywordsResponse from(final List<Keyword> keywords) {
         final List<KeywordResponse> keywordsResponse = keywords.stream()
             .filter(Keyword::isRoot)
             .map(KeywordResponse::createWithAllChildResponse)
