@@ -22,7 +22,6 @@ class DepartmentTest {
 
     @Test
     void getPartType_이름이_포함하는_그룹명이_없으면_예외가_발생한다() {
-
         assertThatThrownBy(() -> new Department(null, "테스트", "test"))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("name과 일치하는 part가 존재하지 않습니다.");
