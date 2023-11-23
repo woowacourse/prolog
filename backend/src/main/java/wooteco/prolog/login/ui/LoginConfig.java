@@ -18,7 +18,7 @@ import wooteco.support.autoceptor.AutoInterceptorPatternMaker;
 @Profile("!docu")
 public class LoginConfig implements WebMvcConfigurer {
 
-    private final static String BASE_PACKAGE = "wooteco.prolog";
+    private static final String BASE_PACKAGE = "wooteco.prolog";
 
     private final GithubLoginService githubLoginService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -29,7 +29,7 @@ public class LoginConfig implements WebMvcConfigurer {
         AutoInterceptorPatternMaker mapper =
             new AutoInterceptorPatternMaker(BASE_PACKAGE, AuthMemberPrincipal.class);
 
-        registry.addInterceptor(new LoginInterceptor(githubLoginService))
+        registry.addInterceptor(new LoginInterceptor(githubLoginService, mapper.extractLoginDetector()))
             .addPathPatterns(mapper.extractPatterns());
     }
 
