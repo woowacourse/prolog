@@ -1,3 +1,7 @@
+ALTER TABLE department_member
+DROP FOREIGN KEY FK_DEPARTMENT_MEMBER_ON_MEMBER,
+DROP FOREIGN KEY FK_DEPARTMENT_MEMBER_ON_DEPARTMENT;
+
 drop table department;
 drop table department_member;
 
