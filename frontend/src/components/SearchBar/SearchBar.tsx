@@ -7,7 +7,7 @@ import { ChangeEventHandler, FormEventHandler } from 'react';
 interface SearchBarProps {
   onSubmit?: FormEventHandler;
   onChange: ChangeEventHandler<HTMLInputElement>;
-  css: ReturnType<typeof css>;
+  css?: ReturnType<typeof css>;
   value: string;
 }
 

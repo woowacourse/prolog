@@ -99,7 +99,7 @@ public class PopularStudylogService {
     private boolean checkMemberAssignedInDepartmets(Departments departments, Member member,
                                                     List<DepartmentMember> departmentMembers) {
         return departmentMembers.stream().anyMatch(
-            it -> it.getMember().equals(member) && departments.isContainsDepartments(it));
+            it -> it.getMember().equals(member) && departments.isContainsDepartments(it.getDepartment()));
     }
 
     public PopularStudylogsResponse findPopularStudylogs(Pageable pageable, Long memberId,

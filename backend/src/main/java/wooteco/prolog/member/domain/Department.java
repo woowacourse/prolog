@@ -1,13 +1,10 @@
 package wooteco.prolog.member.domain;
 
-import static wooteco.prolog.common.exception.BadRequestCode.CANT_FIND_GROUP_TYPE;
-
-import javax.persistence.*;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.common.exception.BadRequestException;
+
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -24,19 +21,20 @@ public class Department {
     @Enumerated(value = EnumType.STRING)
     private Term term;
 
-    public Department(Long id, String part, String term) {
+    public Department(Long id, Part part, Term term) {
         this.id = id;
-        this.part = Part.valueOf(part);
-        this.term = Term.valueOf(term);
+        this.part = part;
+        this.term = term;
     }
 
-//    public Part getPart() {
-//        for (Part part : Part.values()) {
-//            if (part.isContainedBy(this.part.getName())) {
-//                return part;
-//            }
-//        }
-//        throw new BadRequestException(CANT_FIND_GROUP_TYPE);
-//    }
+    public Department(Long id, String part, String term) {
+        this.id = id;
+        this.part = Part.getPartByName(part);
+        this.term = Term.getTermByName(term);
+    }
+  
+    public Part getPart() {
+        return part;
+    }
 
 }

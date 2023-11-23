@@ -3,6 +3,8 @@ package wooteco.prolog.member.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 @AllArgsConstructor
 public enum Term {
@@ -16,4 +18,10 @@ public enum Term {
 
     private final String name;
 
+    public static Term getTermByName(String name) {
+        return Arrays.stream(values())
+            .filter(term -> term.name.equals(name))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("name과 일치하는 term이 존재하지 않습니다."));
+    }
 }

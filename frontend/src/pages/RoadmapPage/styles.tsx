@@ -25,6 +25,11 @@ export const RoadmapContainer = styled.div`
   margin: 0 -4rem;
 `;
 
+export const RoadmapHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
 export const CurriculumButtonList = styled.div`
   display: flex;
   flex-wrap: wrap;

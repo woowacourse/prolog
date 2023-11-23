@@ -3,6 +3,8 @@ package wooteco.prolog.member.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static wooteco.prolog.member.domain.Part.*;
+import static wooteco.prolog.member.domain.Term.*;
 
 import com.google.common.collect.ImmutableList;
 import java.util.List;
@@ -12,10 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import wooteco.prolog.member.domain.DepartmentMember;
-import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.Department;
-import wooteco.prolog.member.domain.Role;
+import wooteco.prolog.member.domain.*;
 import wooteco.prolog.member.domain.repository.DepartmentMemberRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,7 +35,7 @@ class DepartmentMemberServiceTest {
         final Long groupMemberId = 3L;
 
         final Member member = new Member(memberId, "송세연", "아마란스", Role.CREW, 1523L, "image");
-        final Department department = new Department(DepartmentId, "백엔드", "2023 백엔드");
+        final Department department = new Department(DepartmentId, BACKEND, FIFTH);
         final DepartmentMember departmentMember = new DepartmentMember(groupMemberId, member, department);
 
         when(departmentMemberRepository.findByDepartmentId(any())).thenReturn(ImmutableList.of(departmentMember));

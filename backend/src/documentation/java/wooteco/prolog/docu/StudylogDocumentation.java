@@ -1,6 +1,8 @@
 package wooteco.prolog.docu;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static wooteco.prolog.member.domain.Part.*;
+import static wooteco.prolog.member.domain.Term.*;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -16,9 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
-import wooteco.prolog.member.domain.DepartmentMember;
-import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.Department;
+import wooteco.prolog.member.domain.*;
 import wooteco.prolog.member.domain.repository.DepartmentMemberRepository;
 import wooteco.prolog.member.domain.repository.DepartmentRepository;
 import wooteco.prolog.member.domain.repository.MemberRepository;
@@ -313,10 +313,10 @@ class StudylogDocumentation extends Documentation {
     private void 회원과_멤버그룹_그룹멤버를_등록함() {
         Member member = memberRepository.findById(1L).get();
         Department 프론트엔드 = departmentRepository.save(
-            new Department(null, "프론트엔드", "4기"));
-        Department 백엔드 = departmentRepository.save(new Department(null, "백엔드", "4기"));
+            new Department(null, FRONTEND, FOURTH));
+        Department 백엔드 = departmentRepository.save(new Department(null, BACKEND, FOURTH));
         Department 안드로이드 = departmentRepository.save(
-            new Department(null, "안드로이드", "4기"));
+            new Department(null, ANDROID, FOURTH));
         departmentMemberRepository.save(new DepartmentMember(null, member, 백엔드));
         departmentMemberRepository.save(new DepartmentMember(null, member, 프론트엔드));
         departmentMemberRepository.save(new DepartmentMember(null, member, 안드로이드));

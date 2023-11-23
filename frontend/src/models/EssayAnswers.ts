@@ -1,16 +1,14 @@
+import { Quiz } from './Keywords';
 import { Author } from './Studylogs';
-import {Quiz} from "./Keywords";
 
 export interface EssayAnswerRequest {
   quizId: number;
   answer: string;
 }
 
-export interface EssayEditRequest {
-  answer: string;
-}
+export type EssayEditRequest = Pick<EssayAnswerRequest, 'answer'>;
 
-export interface EssayAnswerResponse {
+export interface EssayAnswer {
   id: number;
   quiz: Quiz;
   answer: string;
@@ -18,3 +16,31 @@ export interface EssayAnswerResponse {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface EssayAnswerResponse {
+  data: EssayAnswer[];
+  totalSize: number;
+  totalPage: number;
+  currPage: number;
+}
+
+export type EssayAnswerFilter = {
+  curriculumId: number;
+  keywordId?: number;
+  quizIds?: number[];
+  memberIds?: number[];
+};
+
+export type EssayAnswerListRequest = EssayAnswerFilter & {
+  page?: number;
+  size?: number;
+};
+
+export type EssayAnswerFilterRequest = {
+  curriculumId: number;
+  keywordId?: number;
+  quizIds?: number[];
+  memberIds?: number[];
+  page?: number;
+  size?: number;
+};

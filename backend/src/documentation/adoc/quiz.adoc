@@ -25,11 +25,21 @@ include::{snippets}/quiz/detail/http-response.adoc[]
 
 ==== Request
 
-include::{snippets}/quiz/list/http-request.adoc[]
+include::{snippets}/quiz/list-keyword/http-request.adoc[]
 
 ==== Response
 
-include::{snippets}/quiz/list/http-response.adoc[]
+include::{snippets}/quiz/list-keyword/http-response.adoc[]
+
+=== 커리큘럼별 퀴즈 목록 조회
+
+==== Request
+
+include::{snippets}/quiz/list-curriculum/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/quiz/list-curriculum/http-response.adoc[]
 
 === 퀴즈 삭제
 

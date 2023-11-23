@@ -66,7 +66,7 @@ public class StudylogDocumentQueryBuilder {
             .must(defaultField(username, "username"))
 //            .must(defaultField(levels, "levelId"))
 //            .must(defaultField(missions, "missionId"))
-            .filter(rangeQuery(start, end))
+//            .filter(rangeQuery(start, end))
         );
     }
 
@@ -96,7 +96,6 @@ public class StudylogDocumentQueryBuilder {
         if (Objects.isNull(end)) {
             end = LocalDate.parse("99991231", DateTimeFormatter.BASIC_ISO_DATE);
         }
-
         return QueryBuilders.rangeQuery("dateTime")
             .from(start)
             .to(end);
