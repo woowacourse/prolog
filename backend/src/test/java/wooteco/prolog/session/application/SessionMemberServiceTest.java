@@ -24,7 +24,7 @@ import wooteco.prolog.member.application.DepartmentMemberService;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.session.application.dto.SessionGroupMemberRequest;
+import wooteco.prolog.session.application.dto.SessionDepartmentMemberRequest;
 import wooteco.prolog.session.domain.SessionMember;
 import wooteco.prolog.session.domain.repository.SessionMemberRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
@@ -82,14 +82,14 @@ class SessionMemberServiceTest {
     @Test
     void registerMembersByGroupId() {
         // given
-        final SessionGroupMemberRequest request = new SessionGroupMemberRequest(1L);
+        final SessionDepartmentMemberRequest request = new SessionDepartmentMemberRequest(1L);
 
         // when
         sessionMemberService.registerMembersByGroupId(1L, request);
 
         // then
         verify(sessionMemberRepository, atMostOnce()).findAllBySessionId(1L);
-        verify(departmentMemberService, atMostOnce()).findDepartmentMemberByDepartmentId(request.getGroupId());
+        verify(departmentMemberService, atMostOnce()).findDepartmentMemberByDepartmentId(request.getDepartmentId());
         verify(sessionMemberRepository, atMostOnce()).saveAll(null);
 
     }

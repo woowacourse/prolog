@@ -12,7 +12,7 @@ import wooteco.prolog.member.application.DepartmentMemberService;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.session.application.dto.SessionGroupMemberRequest;
+import wooteco.prolog.session.application.dto.SessionDepartmentMemberRequest;
 import wooteco.prolog.session.domain.SessionMember;
 import wooteco.prolog.session.domain.repository.SessionMemberRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
@@ -38,12 +38,12 @@ public class SessionMemberService {
 
     @Transactional
     public void registerMembersByGroupId(Long sessionId,
-                                         SessionGroupMemberRequest sessionGroupMemberRequest) {
+                                         SessionDepartmentMemberRequest sessionDepartmentMemberRequest) {
         List<SessionMember> alreadySessionMembers = sessionMemberRepository.findAllBySessionId(
             sessionId);
 
         List<Member> members = departmentMemberService.findDepartmentMemberByDepartmentId(
-                sessionGroupMemberRequest.getGroupId()).stream()
+                sessionDepartmentMemberRequest.getDepartmentId()).stream()
             .map(it -> it.getMember())
             .collect(toList());
 
