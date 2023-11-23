@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 
 @RequiredArgsConstructor
-public class LoginDetector {
+public class AuthenticationDetector {
 
     private static final String ORIGIN = "Origin";
     private static final String ACCESS_REQUEST_METHOD = "Access-Control-Request-Method";
