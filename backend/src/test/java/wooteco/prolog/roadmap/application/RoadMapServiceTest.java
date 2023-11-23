@@ -153,7 +153,7 @@ class RoadMapServiceTest {
 
     private Consumer<List<? extends KeywordResponse>> containsAnsweredQuizCounts(final Integer... expected) {
         return keywords -> assertThat(keywords)
-            .map(KeywordResponse::getAnsweredQuizCount)
+            .map(KeywordResponse::getDoneQuizCount)
             .containsExactlyInAnyOrder(expected);
     }
 

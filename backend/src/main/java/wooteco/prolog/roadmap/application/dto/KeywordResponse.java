@@ -21,14 +21,14 @@ public class KeywordResponse {
     private int order;
     private int importance;
     private int totalQuizCount;
-    private int answeredQuizCount;
+    private int doneQuizCount;
     private Long parentKeywordId;
     private List<RecommendedPostResponse> recommendedPosts;
     private List<KeywordResponse> childrenKeywords;
 
     public KeywordResponse(final Long keywordId, final String name, final String description,
                            final int order, final int importance, final int totalQuizCount,
-                           final int answeredQuizCount, final Long parentKeywordId,
+                           final int doneQuizCount, final Long parentKeywordId,
                            final List<RecommendedPostResponse> recommendedPosts,
                            final List<KeywordResponse> childrenKeywords) {
         this.keywordId = keywordId;
@@ -37,7 +37,7 @@ public class KeywordResponse {
         this.order = order;
         this.importance = importance;
         this.totalQuizCount = totalQuizCount;
-        this.answeredQuizCount = answeredQuizCount;
+        this.doneQuizCount = doneQuizCount;
         this.parentKeywordId = parentKeywordId;
         this.recommendedPosts = recommendedPosts;
         this.childrenKeywords = childrenKeywords;
