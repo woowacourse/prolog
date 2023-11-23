@@ -32,7 +32,7 @@ public class Department {
         this.part = Part.getPartByName(part);
         this.term = Term.getTermByName(term);
     }
-
+  
     public Part getPart() {
         return part;
     }

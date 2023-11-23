@@ -15,10 +15,12 @@ public enum Part {
 
     private final String name;
 
-    public static Part getPartByName(String name) {
+    public boolean isContainedBy(String name) {
+        if (name == null) {
+            return false;
+        }
         return Arrays.stream(values())
-            .filter(part -> part.name.equals(name))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("name과 일치하는 part가 존재하지 않습니다."));
+            .anyMatch(p -> p.name.equals(name));
     }
+
 }
