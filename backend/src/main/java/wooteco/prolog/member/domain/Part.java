@@ -27,7 +27,7 @@ public enum Part {
         return Arrays.stream(values())
             .filter(part -> part.name.equals(name))
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException());
+            .orElseThrow(() -> new IllegalArgumentException("name과 일치하는 part가 존재하지 않습니다."));
     }
 
 }
