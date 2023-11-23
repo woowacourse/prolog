@@ -8,18 +8,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.member.domain.GroupMember;
-import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.MemberGroup;
-import wooteco.prolog.member.domain.MemberGroupType;
-import wooteco.prolog.member.domain.MemberGroups;
-import wooteco.prolog.member.domain.repository.GroupMemberRepository;
-import wooteco.prolog.member.domain.repository.MemberGroupRepository;
+import wooteco.prolog.member.domain.*;
+import wooteco.prolog.member.domain.repository.DepartmentMemberRepository;
+import wooteco.prolog.member.domain.repository.DepartmentRepository;
 import wooteco.prolog.studylog.application.dto.PopularStudylogsResponse;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
@@ -39,26 +36,26 @@ public class PopularStudylogService {
     private final StudylogService studylogService;
     private final StudylogRepository studylogRepository;
     private final PopularStudylogRepository popularStudylogRepository;
-    private final MemberGroupRepository memberGroupRepository;
-    private final GroupMemberRepository groupMemberRepository;
+    private final DepartmentRepository departmentRepository;
+    private final DepartmentMemberRepository departmentMemberRepository;
 
     @Transactional
     public void updatePopularStudylogs(Pageable pageable) {
         deleteAllLegacyPopularStudylogs();
 
-        List<GroupMember> groupMembers = groupMemberRepository.findAll();
-        Map<MemberGroupType, List<MemberGroup>> memberGroupsBygroupType = memberGroupRepository.findAll()
+        List<DepartmentMember> departmentMembers = departmentMemberRepository.findAll();
+        Map<String, List<Department>> departmentsByPart = departmentRepository.findAll()
             .stream()
-            .collect(Collectors.groupingBy(MemberGroup::groupType));
+            .collect(Collectors.groupingBy(part -> part.getPart().getName()));
 
         final List<Studylog> recentStudylogs = findRecentStudylogs(LocalDateTime.now(),
             pageable.getPageSize());
 
         List<Studylog> popularStudylogs = new ArrayList<>();
 
-        for (MemberGroupType groupType : MemberGroupType.values()) {
-            popularStudylogs.addAll(filterStudylogsByMemberGroups(recentStudylogs,
-                new MemberGroups(memberGroupsBygroupType.get(groupType)), groupMembers).stream()
+        for (Part partType : Part.values()) {
+            popularStudylogs.addAll(filterStudylogsByDepartmets(recentStudylogs,
+                new Departments(departmentsByPart.get(partType.getName())), departmentMembers).stream()
                 .sorted(Comparator.comparing(Studylog::getPopularScore).reversed())
                 .limit(pageable.getPageSize()).collect(toList()));
         }
@@ -89,43 +86,44 @@ public class PopularStudylogService {
         return recentStudylogs;
     }
 
-    private List<Studylog> filterStudylogsByMemberGroups(final List<Studylog> studylogs,
-                                                         final MemberGroups memberGroups,
-                                                         final List<GroupMember> groupMembers) {
-
+    private List<Studylog> filterStudylogsByDepartmets(final List<Studylog> studylogs,
+                                                       final Departments departments,
+                                                       final List<DepartmentMember> departmentMembers) {
         return studylogs.stream()
             .filter(
-                studylog -> checkMemberAssignedInMemberGroups(memberGroups, studylog.getMember(),
-                    groupMembers))
+                studylog -> checkMemberAssignedInDepartmets(departments, studylog.getMember(),
+                    departmentMembers))
             .collect(toList());
     }
 
-    private boolean checkMemberAssignedInMemberGroups(MemberGroups memberGroups, Member member,
-                                                      List<GroupMember> groupMembers) {
-        return groupMembers.stream().anyMatch(
-            it -> it.getMember().equals(member) && memberGroups.isContainsMemberGroups(it));
+    private boolean checkMemberAssignedInDepartmets(Departments departments, Member member,
+                                                    List<DepartmentMember> departmentMembers) {
+        return departmentMembers.stream().anyMatch(
+            it -> it.getMember().equals(member) && departments.isContainsDepartments(it.getDepartment()));
     }
 
     public PopularStudylogsResponse findPopularStudylogs(Pageable pageable, Long memberId,
                                                          boolean isAnonymousMember) {
 
         List<Studylog> allPopularStudylogs = getSortedPopularStudyLogs(pageable);
-        List<GroupMember> groupedMembers = groupMemberRepository.findAll();
-        Map<MemberGroupType, List<MemberGroup>> memberGroupsBygroupType = memberGroupRepository.findAll()
-            .stream().collect(Collectors.groupingBy(MemberGroup::groupType));
+        List<DepartmentMember> departmentMembers = departmentMemberRepository.findAll();
+        Map<Part, List<Department>> departmentsByPart = departmentRepository.findAll()
+            .stream()
+            .collect(Collectors.groupingBy(Department::getPart));
 
         return PopularStudylogsResponse.of(
             studylogsResponse(allPopularStudylogs, pageable, memberId),
             studylogsResponse(
-                filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsBygroupType.get(MemberGroupType.FRONTEND)), groupedMembers),
+                filterStudylogsByDepartmets(allPopularStudylogs, new Departments(departmentsByPart.get(Part.FRONTEND)), departmentMembers),
+                pageable,
+                memberId
+            ),
+            studylogsResponse(
+                filterStudylogsByDepartmets(allPopularStudylogs, new Departments(departmentsByPart.get(Part.BACKEND)), departmentMembers),
                 pageable,
                 memberId),
             studylogsResponse(
-                filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsBygroupType.get(MemberGroupType.BACKEND)), groupedMembers),
-                pageable,
-                memberId),
-            studylogsResponse(
-                filterStudylogsByMemberGroups(allPopularStudylogs, new MemberGroups(memberGroupsBygroupType.get(MemberGroupType.ANDROID)), groupedMembers),
+                filterStudylogsByDepartmets(allPopularStudylogs, new Departments(departmentsByPart.get(Part.ANDROID)), departmentMembers),
                 pageable,
                 memberId));
     }

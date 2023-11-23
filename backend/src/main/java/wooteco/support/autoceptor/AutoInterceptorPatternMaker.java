@@ -46,4 +46,8 @@ public class AutoInterceptorPatternMaker {
     public List<String> extractPatterns() {
         return uriScanner.extractUri();
     }
+
+    public AuthenticationDetector extractLoginDetector() {
+        return uriScanner.extractLoginDetector();
+    }
 }

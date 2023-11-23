@@ -8,11 +8,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.common.exception.BadRequestException;
-import wooteco.prolog.member.application.GroupMemberService;
+import wooteco.prolog.member.application.DepartmentMemberService;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.session.application.dto.SessionGroupMemberRequest;
+import wooteco.prolog.session.application.dto.SessionDepartmentMemberRequest;
 import wooteco.prolog.session.domain.SessionMember;
 import wooteco.prolog.session.domain.repository.SessionMemberRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
@@ -25,7 +25,7 @@ public class SessionMemberService {
     private SessionMemberRepository sessionMemberRepository;
     private SessionRepository sessionRepository;
     private MemberService memberService;
-    private GroupMemberService groupMemberService;
+    private DepartmentMemberService departmentMemberService;
 
     @Transactional
     public void registerMember(Long sessionId, Long memberId) {
@@ -38,12 +38,12 @@ public class SessionMemberService {
 
     @Transactional
     public void registerMembersByGroupId(Long sessionId,
-                                         SessionGroupMemberRequest sessionGroupMemberRequest) {
+                                         SessionDepartmentMemberRequest sessionDepartmentMemberRequest) {
         List<SessionMember> alreadySessionMembers = sessionMemberRepository.findAllBySessionId(
             sessionId);
 
-        List<Member> members = groupMemberService.findGroupMemberByGroupId(
-                sessionGroupMemberRequest.getGroupId()).stream()
+        List<Member> members = departmentMemberService.findDepartmentMemberByDepartmentId(
+                sessionDepartmentMemberRequest.getDepartmentId()).stream()
             .map(it -> it.getMember())
             .collect(toList());
 

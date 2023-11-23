@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+
 import { useState } from 'react';
 import { DropdownMenu } from '..';
 import SearchBar from '../SearchBar/SearchBar';
@@ -81,7 +83,7 @@ const FilterList = ({
               <SearchBarWrapper>
                 <SearchBar
                   css={SearchBarStyle}
-                  onChange={({ target }) => setSearchKeyword(target.value)}
+                  onChange={(value) => setSearchKeyword(value)}
                   value={searchKeyword}
                 />
               </SearchBarWrapper>

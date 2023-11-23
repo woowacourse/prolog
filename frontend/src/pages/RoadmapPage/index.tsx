@@ -9,6 +9,7 @@ import { useGetCurriculums } from '../../hooks/queries/curriculum';
 import ImportanceLegend from './components/ImportanceLegend/ImportanceLegend';
 import ResponsiveButton from '../../components/Button/ResponsiveButton';
 import { COLOR } from '../../constants';
+import { Link } from 'react-router-dom';
 
 const lastSeenCurriculumId = Number(localStorage.getItem('curriculumId') ?? 1);
 
@@ -52,22 +53,25 @@ const RoadmapPage = () => {
       <Styled.Main>
         <section>
           <Styled.Title>로드맵</Styled.Title>
-          <Styled.CurriculumButtonList>
-            {curriculums?.map((curriculum) => (
-              <ResponsiveButton
-                style={{ width: 'fit-content' }}
-                onClick={() => handleClickCurriculum(curriculum.id)}
-                text={curriculum.name}
-                color={selectedCurriculumId === curriculum.id ? COLOR.WHITE : COLOR.BLACK_600}
-                backgroundColor={
-                  selectedCurriculumId === curriculum.id
-                    ? `hsl(${getHueHeuristically(curriculum.name)}, 50%, 40%)`
-                    : COLOR.LIGHT_GRAY_400
-                }
-                height="32px"
-              />
-            ))}
-          </Styled.CurriculumButtonList>
+          <Styled.RoadmapHeader>
+            <Styled.CurriculumButtonList>
+              {curriculums?.map((curriculum) => (
+                <ResponsiveButton
+                  style={{ width: 'fit-content' }}
+                  onClick={() => handleClickCurriculum(curriculum.id)}
+                  text={curriculum.name}
+                  color={selectedCurriculumId === curriculum.id ? COLOR.WHITE : COLOR.BLACK_600}
+                  backgroundColor={
+                    selectedCurriculumId === curriculum.id
+                      ? `hsl(${getHueHeuristically(curriculum.name)}, 50%, 40%)`
+                      : COLOR.LIGHT_GRAY_400
+                  }
+                  height="32px"
+                />
+              ))}
+            </Styled.CurriculumButtonList>
+            {selectedCurriculum && <Link to={`/essay-answers?curriculumId=${selectedCurriculum.id}`}>전체 답변 보러가기</Link>}
+          </Styled.RoadmapHeader>
         </section>
 
         <section style={{ marginBottom: '4rem' }}>

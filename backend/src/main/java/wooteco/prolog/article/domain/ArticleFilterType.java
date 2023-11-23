@@ -9,9 +9,9 @@ public enum ArticleFilterType {
     BACKEND("백엔드"),
     FRONTEND("프론트엔드");
 
-    private final String groupName;
+    private final String partName;
 
-    ArticleFilterType(String groupName) {
-        this.groupName = groupName;
+    ArticleFilterType(String partName) {
+        this.partName = partName;
     }
 }

@@ -1,6 +1,8 @@
 package wooteco.prolog.docu;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static wooteco.prolog.member.domain.Part.*;
+import static wooteco.prolog.member.domain.Term.*;
 
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -16,11 +18,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import wooteco.prolog.Documentation;
-import wooteco.prolog.member.domain.GroupMember;
-import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.MemberGroup;
-import wooteco.prolog.member.domain.repository.GroupMemberRepository;
-import wooteco.prolog.member.domain.repository.MemberGroupRepository;
+import wooteco.prolog.member.domain.*;
+import wooteco.prolog.member.domain.repository.DepartmentMemberRepository;
+import wooteco.prolog.member.domain.repository.DepartmentRepository;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
@@ -37,9 +37,9 @@ class StudylogDocumentation extends Documentation {
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
-    private MemberGroupRepository memberGroupRepository;
+    private DepartmentRepository departmentRepository;
     @Autowired
-    private GroupMemberRepository groupMemberRepository;
+    private DepartmentMemberRepository departmentMemberRepository;
 
     @Test
     void 스터디로그를_생성한다() {
@@ -312,14 +312,14 @@ class StudylogDocumentation extends Documentation {
 
     private void 회원과_멤버그룹_그룹멤버를_등록함() {
         Member member = memberRepository.findById(1L).get();
-        MemberGroup 프론트엔드 = memberGroupRepository.save(
-            new MemberGroup(null, "4기 프론트엔드", "4기 프론트엔드 설명"));
-        MemberGroup 백엔드 = memberGroupRepository.save(new MemberGroup(null, "4기 백엔드", "4기 백엔드 설명"));
-        MemberGroup 안드로이드 = memberGroupRepository.save(
-            new MemberGroup(null, "4기 안드로이드", "4기 안드로이드 설명"));
-        groupMemberRepository.save(new GroupMember(null, member, 백엔드));
-        groupMemberRepository.save(new GroupMember(null, member, 프론트엔드));
-        groupMemberRepository.save(new GroupMember(null, member, 안드로이드));
+        Department 프론트엔드 = departmentRepository.save(
+            new Department(null, FRONTEND, FOURTH));
+        Department 백엔드 = departmentRepository.save(new Department(null, BACKEND, FOURTH));
+        Department 안드로이드 = departmentRepository.save(
+            new Department(null, ANDROID, FOURTH));
+        departmentMemberRepository.save(new DepartmentMember(null, member, 백엔드));
+        departmentMemberRepository.save(new DepartmentMember(null, member, 프론트엔드));
+        departmentMemberRepository.save(new DepartmentMember(null, member, 안드로이드));
     }
 
     private Long 미션_등록함(MissionRequest request) {

@@ -20,11 +20,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import wooteco.prolog.common.exception.BadRequestException;
-import wooteco.prolog.member.application.GroupMemberService;
+import wooteco.prolog.member.application.DepartmentMemberService;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.session.application.dto.SessionGroupMemberRequest;
+import wooteco.prolog.session.application.dto.SessionDepartmentMemberRequest;
 import wooteco.prolog.session.domain.SessionMember;
 import wooteco.prolog.session.domain.repository.SessionMemberRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
@@ -45,7 +45,7 @@ class SessionMemberServiceTest {
     private MemberService memberService;
 
     @Mock
-    private GroupMemberService groupMemberService;
+    private DepartmentMemberService departmentMemberService;
 
     @DisplayName("Member가 회원가입을 할 수 있어야 한다.")
     @Test
@@ -82,14 +82,14 @@ class SessionMemberServiceTest {
     @Test
     void registerMembersByGroupId() {
         // given
-        final SessionGroupMemberRequest request = new SessionGroupMemberRequest(1L);
+        final SessionDepartmentMemberRequest request = new SessionDepartmentMemberRequest(1L);
 
         // when
         sessionMemberService.registerMembersByGroupId(1L, request);
 
         // then
         verify(sessionMemberRepository, atMostOnce()).findAllBySessionId(1L);
-        verify(groupMemberService, atMostOnce()).findGroupMemberByGroupId(request.getGroupId());
+        verify(departmentMemberService, atMostOnce()).findDepartmentMemberByDepartmentId(request.getDepartmentId());
         verify(sessionMemberRepository, atMostOnce()).saveAll(null);
 
     }

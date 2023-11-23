@@ -1,5 +1,7 @@
 package wooteco.prolog.roadmap.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Arrays;
 import java.util.List;
 import org.assertj.core.api.Assertions;
@@ -7,8 +9,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import wooteco.prolog.roadmap.application.dto.CurriculumQuizResponse;
+import wooteco.prolog.roadmap.domain.Curriculum;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.Quiz;
+import wooteco.prolog.roadmap.domain.repository.CurriculumRepository;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.roadmap.domain.repository.QuizRepository;
 import wooteco.prolog.session.domain.Session;
@@ -25,7 +30,12 @@ class QuizRepositoryTest {
     private KeywordRepository keywordRepository;
 
     @Autowired
+    private CurriculumRepository curriculumRepository;
+
+    @Autowired
     private SessionRepository sessionRepository;
+
+    private Curriculum 백엔드;
 
     private Session session_백엔드_레벨1;
 
@@ -38,15 +48,15 @@ class QuizRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        session_백엔드_레벨1 = sessionRepository.save(new Session("백엔드Java 레벨1"));
+        백엔드 = curriculumRepository.save(new Curriculum("백엔드"));
+
+        session_백엔드_레벨1 = sessionRepository.save(new Session(백엔드.getId(), "백엔드Java 레벨1"));
 
         자바 = keywordRepository.save(
             new Keyword(null, "자바", "자바입니다", 1, 1, session_백엔드_레벨1.getId(), null, null));
-        session_백엔드_레벨1 = sessionRepository.save(new Session("백엔드Java 레벨1"));
 
         깃 = keywordRepository.save(
             new Keyword(null, "깃", "깃입니다", 2, 2, session_백엔드_레벨1.getId(), null, null));
-        session_백엔드_레벨1 = sessionRepository.save(new Session("백엔드Java 레벨1"));
 
         자바_질문1 = quizRepository.save(new Quiz(자바, "자바의 아버지는 제임스 고슬링일까요 ? 제이슨일까요 ?"));
         자바_질문2 = quizRepository.save(new Quiz(자바, "Stream 은 자바 몇 버전부터 지원했을까요?"));
@@ -61,6 +71,19 @@ class QuizRepositoryTest {
         final List<Quiz> expect = Arrays.asList(자바_질문1, 자바_질문2);
         final List<Quiz> actual = quizRepository.findFetchQuizByKeywordId(자바.getId());
 
-        Assertions.assertThat(actual).containsExactlyElementsOf(expect);
+        assertThat(actual).containsExactlyElementsOf(expect);
+    }
+
+    @DisplayName("커리큘럼 id 로 퀴즈 List 를 조회한다.")
+    @Test
+    void findQuizzesByCurriculum() {
+        // given
+        Long 백엔드_커리큘럼_Id = 백엔드.getId();
+
+        // when
+        List<CurriculumQuizResponse> acutal = quizRepository.findQuizzesByCurriculum(백엔드_커리큘럼_Id);
+
+        // then
+        assertThat(acutal).hasSize(3);
     }
 }
