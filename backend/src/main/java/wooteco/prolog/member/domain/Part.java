@@ -23,10 +23,4 @@ public enum Part {
             .anyMatch(p -> p.name.equals(name));
     }
 
-    public static Part getPartByName(String name) {
-        return Arrays.stream(values())
-            .filter(part -> part.name.equals(name))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("name과 일치하는 part가 존재하지 않습니다."));
-    }
 }

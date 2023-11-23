@@ -30,12 +30,13 @@ public class Department {
         this.term = Term.valueOf(term);
     }
 
-    public Part getPart() {
-        for (Part part : Part.values()) {
-            if (part.isContainedBy(this.part.getName())) {
-                return part;
-            }
-        }
-        throw new BadRequestException(CANT_FIND_GROUP_TYPE);
-    }
+//    public Part getPart() {
+//        for (Part part : Part.values()) {
+//            if (part.isContainedBy(this.part.getName())) {
+//                return part;
+//            }
+//        }
+//        throw new BadRequestException(CANT_FIND_GROUP_TYPE);
+//    }
+
 }
