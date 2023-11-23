@@ -36,19 +36,19 @@ public class LoginDetector {
             && hasRequestMethods(request);
     }
 
-    public boolean isOptionsMethod(HttpServletRequest request) {
+    private boolean isOptionsMethod(HttpServletRequest request) {
         return HttpMethod.OPTIONS.matches(request.getMethod());
     }
 
-    public boolean hasOrigin(HttpServletRequest request) {
+    private boolean hasOrigin(HttpServletRequest request) {
         return Objects.nonNull(request.getHeader(ORIGIN));
     }
 
-    public boolean hasRequestMethods(HttpServletRequest request) {
+    private boolean hasRequestMethods(HttpServletRequest request) {
         return Objects.nonNull(request.getHeader(ACCESS_REQUEST_METHOD));
     }
 
-    public boolean hasRequestHeaders(HttpServletRequest request) {
+    private boolean hasRequestHeaders(HttpServletRequest request) {
         return Objects.nonNull(request.getHeader(ACCESS_REQUEST_HEADERS));
     }
 }
