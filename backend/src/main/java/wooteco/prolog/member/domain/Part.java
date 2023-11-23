@@ -23,4 +23,11 @@ public enum Part {
             .anyMatch(p -> p.name.equals(name));
     }
 
+    public static Part getPartByName(String name) {
+        return Arrays.stream(values())
+            .filter(part -> part.name.equals(name))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException());
+    }
+
 }
