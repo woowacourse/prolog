@@ -14,7 +14,7 @@ import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.session.application.SessionMemberService;
-import wooteco.prolog.session.application.dto.SessionGroupMemberRequest;
+import wooteco.prolog.session.application.dto.SessionDepartmentMemberRequest;
 
 @RestController
 @RequestMapping("/sessions/{sessionId}/members")
@@ -49,8 +49,8 @@ public class SessionMemberController {
     // admin only
     @PostMapping
     public ResponseEntity<Void> registerByGroupId(@PathVariable Long sessionId,
-                                                  @RequestBody SessionGroupMemberRequest sessionGroupMemberRequest) {
-        sessionMemberService.registerMembersByGroupId(sessionId, sessionGroupMemberRequest);
+                                                  @RequestBody SessionDepartmentMemberRequest sessionDepartmentMemberRequest) {
+        sessionMemberService.registerMembersByGroupId(sessionId, sessionDepartmentMemberRequest);
         return ResponseEntity.ok().build();
     }
 

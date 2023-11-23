@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class SessionGroupMemberRequest {
+public class SessionDepartmentMemberRequest {
 
-    private Long groupId;
+    private Long departmentId;
+
 }
