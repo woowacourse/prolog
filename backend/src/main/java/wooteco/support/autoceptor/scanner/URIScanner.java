@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.StringUtils;
-import wooteco.support.autoceptor.LoginDetector;
+import wooteco.support.autoceptor.AuthenticationDetector;
 import wooteco.support.autoceptor.MethodPattern;
 
 public class URIScanner {
@@ -87,7 +87,7 @@ public class URIScanner {
 
     }
 
-    public LoginDetector extractLoginDetector() {
+    public AuthenticationDetector extractLoginDetector() {
         List<Class<?>> controllers = controllerScanner.extractControllers();
         List<MethodPattern> requireLoginMethods = new ArrayList<>();
 
@@ -97,7 +97,7 @@ public class URIScanner {
             requireLoginMethods.addAll(extractRequireLogin(controllerUris, methods));
         }
 
-        return new LoginDetector(requireLoginMethods);
+        return new AuthenticationDetector(requireLoginMethods);
     }
 
     private List<MethodPattern> extractRequireLogin(List<String> controllerUris,

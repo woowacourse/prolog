@@ -6,9 +6,6 @@ import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.assertj.core.api.ArraySortedAssert;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
@@ -56,7 +53,7 @@ class URIScannerTest {
         );
 
         // when
-        LoginDetector detector = uriScanner.extractLoginDetector();
+        AuthenticationDetector detector = uriScanner.extractLoginDetector();
 
         // then
         assertThat(detector).extracting("requireLoginPatterns").usingRecursiveComparison()
