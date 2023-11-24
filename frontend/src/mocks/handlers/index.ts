@@ -1,8 +1,8 @@
-import { popularStudyLogHandler } from './popularStudyLog';
+import { articlesHandler } from './articles';
 import { commentsHandler } from './comment';
 import { levellogHandler } from './levellog';
-import { roadmapHandler } from './keywords';
-import { articlesHandler } from './articles';
+import { popularStudyLogHandler } from './popularStudyLog';
+import { roadmapHandler } from './roadmap';
 
 export const handlers = [
   ...popularStudyLogHandler,

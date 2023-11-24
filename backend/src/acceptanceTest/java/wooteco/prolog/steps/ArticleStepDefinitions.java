@@ -1,6 +1,7 @@
 package wooteco.prolog.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static wooteco.prolog.fixtures.ArticleFixture.ARTICLE_REQUEST1;
 import static wooteco.prolog.fixtures.ArticleFixture.ARTICLE_REQUEST2;
 
@@ -10,6 +11,7 @@ import io.cucumber.java.en.When;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
+import wooteco.prolog.article.ui.ArticleBookmarkRequest;
 import wooteco.prolog.article.ui.ArticleResponse;
 import wooteco.prolog.article.ui.ArticleUrlResponse;
 
@@ -22,7 +24,7 @@ public class ArticleStepDefinitions extends AcceptanceSteps {
         context.invokeHttpPostWithToken("/articles", ARTICLE_REQUEST2);
     }
 
-    @Given("아티클을 작성하고")
+    @Given("아티클이 작성되어 있고")
     @When("아티클을 작성하면")
     public void 아티클을_작성하면() {
         context.invokeHttpPostWithToken("/articles", ARTICLE_REQUEST1);
@@ -95,5 +97,58 @@ public class ArticleStepDefinitions extends AcceptanceSteps {
         assertThat(actual)
             .usingRecursiveComparison()
             .isEqualTo(expected);
+    }
+
+    @When("{long}번 아티클에 북마크 요청을 보내면")
+    public void 아티클에_북마크_요청을_보내면(final Long articleId) {
+        //final String articleUrl = context.response.header("Location");
+        final ArticleBookmarkRequest request = new ArticleBookmarkRequest(true);
+        context.invokeHttpPutWithToken(
+            String.format("/articles/%d/bookmark", articleId),
+            request
+        );
+    }
+
+    @Then("아티클에 북마크가 등록된다")
+    public void 아티클에_북마크가_등록된다() {
+        final int statusCode = context.response.statusCode();
+        assertAll(
+            () -> assertThat(statusCode).isEqualTo(HttpStatus.OK.value())
+        );
+        //아티클 단건 조회에 북마크 여부가 추가되면 단건 조회로 bookmark 여부까지 검증해보기
+    }
+
+    @When("{long}번 아티클에 좋아요 요청을 보내면")
+    public void 아티클에_좋아요_요청을_보내면(final Long articleId) {
+        //final String articleUrl = context.response.header("Location");
+        final ArticleBookmarkRequest request = new ArticleBookmarkRequest(true);
+        context.invokeHttpPutWithToken(
+            String.format("/articles/%d/like", articleId),
+            request
+        );
+    }
+
+    @Then("아티클에 좋아요가 등록된다")
+    public void 아티클에_좋아요가_등록된다() {
+        final int statusCode = context.response.statusCode();
+        assertAll(
+            () -> assertThat(statusCode).isEqualTo(HttpStatus.OK.value())
+        );
+        //아티클 단건 조회에 좋아요 여부가 추가되면 단건 조회로 likes 여부까지 검증해보기
+    }
+
+    @When("{long}번 아티클에 조회수 추가요청을 보내면")
+    public void 아티클에_조회수_추가요청을_보내면(final Long articleId) {
+        context.invokeHttpPost(
+            String.format("/articles/%d/views", articleId),""
+        );
+    }
+
+    @Then("아티클의 조회수가 증가한다")
+    public void 아티클의_조회수가_증가한다() {
+        final int statusCode = context.response.statusCode();
+        assertAll(
+            () -> assertThat(statusCode).isEqualTo(HttpStatus.OK.value())
+        );
     }
 }

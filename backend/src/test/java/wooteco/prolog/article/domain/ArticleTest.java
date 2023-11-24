@@ -1,16 +1,17 @@
 package wooteco.prolog.article.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 import joptsimple.internal.Strings;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class ArticleTest {
 
@@ -70,8 +71,8 @@ class ArticleTest {
         article.update("newTitle", "newUrl");
 
         //then
-        Assertions.assertThat(article.getTitle()).isEqualTo(new Title("newTitle"));
-        Assertions.assertThat(article.getUrl()).isEqualTo(new Url("newUrl"));
+        assertThat(article.getTitle()).isEqualTo(new Title("newTitle"));
+        assertThat(article.getUrl()).isEqualTo(new Url("newUrl"));
     }
 
     @DisplayName("유효하지 않은 제목으로 업데이트시 예외를 발생한다.")
@@ -96,5 +97,98 @@ class ArticleTest {
         //then
         assertThatThrownBy(() -> article.update("newTitle", Strings.repeat('.', 1025)))
             .isInstanceOf(BadRequestException.class);
+    }
+
+    @Nested
+    @DisplayName("멤버가 아티클의 북마크값을 세팅한다.")
+    class setBookmark {
+
+        @DisplayName("멤버가 아티클을 북마크로 등록한다.")
+        @Test
+        void addBookmark() {
+            //given
+            final Article article = new Article(member, title, url, imageUrl);
+
+            //when
+            article.setBookmark(member, true);
+
+            //then
+            final ArticleBookmarks articleBookmarks = article.getArticleBookmarks();
+            final boolean contains = articleBookmarks.containBookmark(member.getId());
+
+            assertThat(contains)
+                .isTrue();
+        }
+
+        @DisplayName("멤버가 아티클의 북마크를 해제한다.")
+        @Test
+        void removeBookmark() {
+            //given
+            final Article article = new Article(member, title, url, imageUrl);
+            article.setBookmark(member, true);
+
+            //when
+            article.setBookmark(member, false);
+
+            //then
+            final ArticleBookmarks articleBookmarks = article.getArticleBookmarks();
+            final boolean contains = articleBookmarks.containBookmark(member.getId());
+
+            assertThat(contains)
+                .isFalse();
+        }
+    }
+
+    @Nested
+    @DisplayName("멤버가 아티클의 좋아요 값을 세팅한다.")
+    class setLike {
+
+        @DisplayName("멤버가 아티클 좋아요를 추가한다.")
+        @Test
+        void addLike() {
+            //given
+            final Article article = new Article(member, title, url, imageUrl);
+
+            //when
+            article.setLike(member, true);
+
+            //then
+            final ArticleLikes articleLike = article.getArticleLikes();
+            final boolean alreadyLike = articleLike.isAlreadyLike(member.getId());
+
+            assertThat(alreadyLike)
+                .isTrue();
+        }
+
+        @DisplayName("멤버가 아티클 좋아요를 해제한다.")
+        @Test
+        void removeLike() {
+            //given
+            final Article article = new Article(member, title, url, imageUrl);
+            article.setLike(member, true);
+
+            //when
+            article.setLike(member, false);
+
+            //then
+            final ArticleLikes articleLike = article.getArticleLikes();
+            final boolean alreadyLike = articleLike.isAlreadyLike(member.getId());
+
+            assertThat(alreadyLike)
+                .isFalse();
+        }
+    }
+
+    @DisplayName("아티클 조회시 조회수가 증가한다.")
+    @Test
+    void updateViewCount() {
+        //given
+        final Article article = new Article(member, title, url, imageUrl);
+
+        //when
+        article.updateViewCount();
+
+        //then
+        assertThat(article.getViews().getViews()).isEqualTo(1);
     }
 }

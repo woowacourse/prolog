@@ -1,9 +1,5 @@
 package wooteco.prolog.roadmap.application;
 
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
-
-import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.common.exception.BadRequestException;
@@ -14,6 +10,12 @@ import wooteco.prolog.roadmap.application.dto.KeywordsResponse;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
+
+import java.util.List;
+
+import static java.util.Collections.emptyMap;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
 
 @Transactional
 @Service
@@ -51,13 +53,30 @@ public class KeywordService {
     }
 
     @Transactional(readOnly = true)
+    public KeywordResponse newFindKeyword(final Long keywordId) {
+        Keyword keyword = keywordRepository.findById(keywordId)
+            .orElseThrow(() -> new BadRequestException(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION));
+
+        return KeywordResponse.createResponse(keyword);
+    }
+
+    @Transactional(readOnly = true)
     public KeywordResponse findKeywordWithAllChild(final Long sessionId, final Long keywordId) {
         existSession(sessionId);
         existKeyword(keywordId);
 
-        Keyword keyword = keywordRepository.findFetchById(keywordId);
+        Keyword keyword = keywordRepository.findFetchByIdOrderBySeq(keywordId);
 
-        return KeywordResponse.createWithAllChildResponse(keyword);
+        return KeywordResponse.createWithAllChildResponse(keyword, emptyMap(), emptyMap());
+    }
+
+    @Transactional(readOnly = true)
+    public KeywordResponse newFindKeywordWithAllChild(final Long keywordId) {
+        existKeyword(keywordId);
+
+        Keyword keyword = keywordRepository.findFetchByIdOrderBySeq(keywordId);
+
+        return KeywordResponse.createWithAllChildResponse(keyword, emptyMap(), emptyMap());
     }
 
     @Transactional(readOnly = true)
@@ -66,11 +85,21 @@ public class KeywordService {
 
         List<Keyword> keywords = keywordRepository.findBySessionIdAndParentIsNull(sessionId);
 
-        return KeywordsResponse.createResponse(keywords);
+        return KeywordsResponse.of(keywords, emptyMap(), emptyMap());
     }
 
-    public void updateKeyword(final Long sessionId, final Long keywordId,
-                              final KeywordUpdateRequest request) {
+    @Transactional(readOnly = true)
+    public KeywordsResponse newFindSessionIncludeRootKeywords() {
+        List<Keyword> keywords = keywordRepository.newFindByParentIsNull();
+
+        return KeywordsResponse.of(keywords, emptyMap(), emptyMap());
+    }
+
+    public void updateKeyword(
+        final Long sessionId,
+        final Long keywordId,
+        final KeywordUpdateRequest request
+    ) {
         existSession(sessionId); // 세션이 없다면 예외가 발생
         Keyword keyword = keywordRepository.findById(keywordId)
             .orElseThrow(() -> new BadRequestException(ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION));
@@ -82,7 +111,7 @@ public class KeywordService {
 
     public void deleteKeyword(final Long sessionId, final Long keywordId) {
         existSession(sessionId);
-        Keyword keyword = keywordRepository.findFetchById(keywordId);
+        Keyword keyword = keywordRepository.findFetchByIdOrderBySeq(keywordId);
 
         keywordRepository.delete(keyword);
     }

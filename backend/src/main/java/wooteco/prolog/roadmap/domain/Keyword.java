@@ -1,12 +1,12 @@
 package wooteco.prolog.roadmap.domain;
 
 
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_AND_KEYWORD_PARENT_SAME_EXCEPTION;
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_SEQUENCE_EXCEPTION;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
+import wooteco.prolog.common.exception.BadRequestException;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,30 +17,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
-import wooteco.prolog.common.exception.BadRequestException;
-
-import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_AND_KEYWORD_PARENT_SAME_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_SEQUENCE_EXCEPTION;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -65,10 +47,9 @@ public class Keyword {
     @Column(name = "session_id", nullable = false)
     private Long sessionId;
 
-    @ElementCollection
-    @CollectionTable(name = "keyword_reference")
-    @Column(name = "url")
-    private List<String> references;
+    @BatchSize(size = 1000)
+    @OneToMany(mappedBy = "keyword", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<RecommendedPost> recommendedPosts = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
@@ -79,8 +60,7 @@ public class Keyword {
     private Set<Keyword> children = new HashSet<>();
 
     public Keyword(final Long id, final String name, final String description, final int seq,
-                   final int importance,
-                   final Long sessionId, final Keyword parent, final Set<Keyword> children) {
+                   final int importance, final Long sessionId, final Keyword parent, final Set<Keyword> children) {
         validateSeq(seq);
         this.id = id;
         this.name = name;
@@ -98,7 +78,7 @@ public class Keyword {
                                         final int importance,
                                         final Long sessionId,
                                         final Keyword parent) {
-        return new Keyword(null, name, description, seq, importance, sessionId, parent, null);
+        return new Keyword(null, name, description, seq, importance, sessionId, parent, new HashSet<>());
     }
 
     public void update(final String name, final String description, final int seq,
@@ -122,6 +102,10 @@ public class Keyword {
         if (this.parent != null && this.id.equals(parentKeyword.getId())) {
             throw new BadRequestException(ROADMAP_KEYWORD_AND_KEYWORD_PARENT_SAME_EXCEPTION);
         }
+    }
+
+    public boolean isRoot() {
+        return parent == null;
     }
 
     public Long getParentIdOrNull() {

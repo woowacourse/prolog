@@ -1,32 +1,40 @@
 import { useState } from 'react';
-import TopKeywordList from '../../components/TopKeywordList/TopKeywordList';
 import { KeywordResponse } from '../../models/Keywords';
 import KeywordDetailSideSheet from '../../components/KeywordDetailSideSheet/KeywordDetailSideSheet';
-import KeywordList from '../../components/KeywordList/KeywordList';
 import * as Styled from './styles';
-import SessionList from '../../components/SessionList/SessionList';
-import CurriculumList from '../../components/CurriculumList/CurriculumList';
+import Roadmap from './components/Roadmap/Roadmap';
+import { useRoadmap } from '../../hooks/queries/keywords';
+import RoadmapStyles from './RoadmapStyles';
+import { useGetCurriculums } from '../../hooks/queries/curriculum';
+import ImportanceLegend from './components/ImportanceLegend/ImportanceLegend';
+import ResponsiveButton from '../../components/Button/ResponsiveButton';
+import { COLOR } from '../../constants';
 
 const lastSeenCurriculumId = Number(localStorage.getItem('curriculumId') ?? 1);
 
+const getHueHeuristically = (curriculumName: string) => {
+  const defaultHue = 0;
+  const [hue] = ([
+    [30, '백엔드'],
+    [220, '프론트엔드'],
+    [130, '안드로이드'],
+  ] as const).find(([, searchName]) => curriculumName.includes(searchName)) ?? [defaultHue];
+
+  return hue;
+};
+
 const RoadmapPage = () => {
   const [isSideSheetOpen, setIsSideSheetOpen] = useState(false);
+  const { curriculums } = useGetCurriculums();
   const [selectedCurriculumId, setSelectedCurriculumId] = useState(lastSeenCurriculumId);
-  const [selectedSessionId, setSelectedSessionId] = useState(-1);
-  const [selectedTopKeyword, setSelectedTopKeyword] = useState<KeywordResponse | null>(null);
   const [keywordDetail, setKeywordDetail] = useState<KeywordResponse | null>(null);
+  const { data: roadmap } = useRoadmap({ curriculumId: selectedCurriculumId });
+
+  const selectedCurriculum = curriculums?.find((it) => it.id === selectedCurriculumId) ?? null;
 
   const handleClickCurriculum = (id: number) => {
     setSelectedCurriculumId(id);
     localStorage.setItem('curriculumId', String(id));
-  };
-
-  const handleClickSession = (sessionId: number) => {
-    setSelectedSessionId(sessionId);
-  };
-
-  const handleClickTopKeyword = (keyword: KeywordResponse) => {
-    setSelectedTopKeyword(keyword);
   };
 
   const handleClickKeyword = (keyword: KeywordResponse | null) => {
@@ -40,51 +48,47 @@ const RoadmapPage = () => {
 
   return (
     <Styled.Root>
+      <RoadmapStyles />
       <Styled.Main>
         <section>
-          <Styled.Title>커리큘럼</Styled.Title>
-          <CurriculumList
-            selectedCurriculumId={selectedCurriculumId}
-            handleClickCurriculum={handleClickCurriculum}
-          />
-        </section>
-
-        <section>
-          <Styled.Title>세션</Styled.Title>
-          <SessionList
-            curriculumId={selectedCurriculumId}
-            selectedSessionId={selectedSessionId}
-            handleClickSession={handleClickSession}
-          />
-        </section>
-
-        <section>
-          <Styled.Title>상위 키워드 선택</Styled.Title>
-          {selectedSessionId !== -1 ? (
-            <TopKeywordList
-              sessionId={selectedSessionId}
-              selectedTopKeyword={selectedTopKeyword}
-              handleClickTopKeyword={handleClickTopKeyword}
-            />
-          ) : null}
+          <Styled.Title>로드맵</Styled.Title>
+          <Styled.CurriculumButtonList>
+            {curriculums?.map((curriculum) => (
+              <ResponsiveButton
+                style={{ width: 'fit-content' }}
+                onClick={() => handleClickCurriculum(curriculum.id)}
+                text={curriculum.name}
+                color={selectedCurriculumId === curriculum.id ? COLOR.WHITE : COLOR.BLACK_600}
+                backgroundColor={
+                  selectedCurriculumId === curriculum.id
+                    ? `hsl(${getHueHeuristically(curriculum.name)}, 50%, 40%)`
+                    : COLOR.LIGHT_GRAY_400
+                }
+                height="32px"
+              />
+            ))}
+          </Styled.CurriculumButtonList>
         </section>
 
         <section style={{ marginBottom: '4rem' }}>
-          <Styled.Title>하위 키워드 보기</Styled.Title>
-          {selectedSessionId !== -1 && selectedTopKeyword ? (
-            <KeywordList
-              sessionId={selectedSessionId}
-              selectedTopKeyword={selectedTopKeyword}
-              handleClickKeyword={handleClickKeyword}
-            />
-          ) : null}
+          <ImportanceLegend />
+
+          <Styled.RoadmapContainer>
+            {roadmap && selectedCurriculum && (
+              <Roadmap
+                width={1040}
+                keywords={roadmap.data}
+                hue={getHueHeuristically(selectedCurriculum.name)}
+                onClick={handleClickKeyword}
+              />
+            )}
+          </Styled.RoadmapContainer>
         </section>
       </Styled.Main>
 
       {isSideSheetOpen && keywordDetail && (
         <KeywordDetailSideSheet
           keywordDetail={keywordDetail}
-          sessionId={selectedSessionId}
           handleCloseSideSheet={handleCloseSideSheet}
         />
       )}

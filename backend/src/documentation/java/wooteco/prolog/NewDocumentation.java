@@ -13,6 +13,7 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 @ActiveProfiles("docu")
 @ExtendWith({RestDocumentationExtension.class})
@@ -27,6 +28,7 @@ public class NewDocumentation {
                       RestDocumentationContextProvider restDocumentation) {
         given = RestAssuredMockMvc.given()
             .mockMvc(MockMvcBuilders.webAppContextSetup(webApplicationContext)
+                .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .apply(documentationConfiguration(restDocumentation).operationPreprocessors()
                     .withRequestDefaults(prettyPrint())
                     .withResponseDefaults(prettyPrint()))

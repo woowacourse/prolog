@@ -1,5 +1,33 @@
 package wooteco.prolog.studylog.application;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static wooteco.prolog.common.exception.BadRequestCode.ONLY_AUTHOR_CAN_EDIT;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_ARGUMENT;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
+
+import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -14,7 +42,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
@@ -52,33 +79,6 @@ import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogTempRepository;
 import wooteco.prolog.studylog.domain.repository.dto.CommentCount;
 import wooteco.prolog.studylog.event.StudylogDeleteEvent;
-
-import java.lang.reflect.Field;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static wooteco.prolog.common.exception.BadRequestCode.*;
 
 @ExtendWith(MockitoExtension.class)
 class StudylogServiceTest {
@@ -119,8 +119,10 @@ class StudylogServiceTest {
         Tags tags = Tags.of(singletonList("스터디로그"));
         Member member = new Member(1L, "김동해", "오션", Role.CREW, 1L, "image");
         List<TagRequest> tagRequests = singletonList(new TagRequest("스터디로그"));
-        StudylogRequest studylogRequest = new StudylogRequest(title, content, null, null, tagRequests);
-        Studylog studylog = new Studylog(member, studylogRequest.getTitle(), studylogRequest.getContent(), null, null, tags.getList());
+        StudylogRequest studylogRequest = new StudylogRequest(title, content, null, null,
+            tagRequests);
+        Studylog studylog = new Studylog(member, studylogRequest.getTitle(),
+            studylogRequest.getContent(), null, null, tags.getList());
         List<TagResponse> expectedTagResponses = singletonList(new TagResponse(null, "스터디로그"));
 
         @DisplayName("StudyLogTemp가 존재할 경우 삭제하고, 스터디로그를 정상적으로 생성하고 반환한다.")
@@ -139,7 +141,8 @@ class StudylogServiceTest {
             assertAll(() -> {
                 assertThat(studylogResponse.getTitle()).isEqualTo(title);
                 assertThat(studylogResponse.getContent()).isEqualTo(content);
-                assertThat(studylogResponse.getTags()).usingRecursiveComparison().isEqualTo(expectedTagResponses);
+                assertThat(studylogResponse.getTags()).usingRecursiveComparison()
+                    .isEqualTo(expectedTagResponses);
                 verify(studylogTempRepository, times(1)).deleteByMemberId(1L);
             });
         }
@@ -160,7 +163,8 @@ class StudylogServiceTest {
             assertAll(() -> {
                 assertThat(studylogResponse.getTitle()).isEqualTo(title);
                 assertThat(studylogResponse.getContent()).isEqualTo(content);
-                assertThat(studylogResponse.getTags()).usingRecursiveComparison().isEqualTo(expectedTagResponses);
+                assertThat(studylogResponse.getTags()).usingRecursiveComparison()
+                    .isEqualTo(expectedTagResponses);
                 verify(studylogTempRepository, never()).deleteByMemberId(1L);
             });
         }
@@ -176,8 +180,10 @@ class StudylogServiceTest {
         Member member = new Member(1L, "문채원", "라온", Role.CREW, 1L, "image");
         List<TagRequest> tagRequests = singletonList(new TagRequest("스터디로그"));
         List<TagResponse> tagResponses = singletonList(new TagResponse(null, "스터디로그"));
-        StudylogRequest studylogRequest = new StudylogRequest(title, content, null, null, tagRequests);
-        StudylogTemp studylogTemp = new StudylogTemp(member, studylogRequest.getTitle(), studylogRequest.getContent(), null, null, tags.getList());
+        StudylogRequest studylogRequest = new StudylogRequest(title, content, null, null,
+            tagRequests);
+        StudylogTemp studylogTemp = new StudylogTemp(member, studylogRequest.getTitle(),
+            studylogRequest.getContent(), null, null, tags.getList());
 
         @DisplayName("StudyLogTemp가 존재하지 않는 경우 삭제하고, 임시 스터디로그를 정상적으로 생성하고 반환한다.")
         @Test
@@ -189,13 +195,15 @@ class StudylogServiceTest {
             when(studylogTempRepository.existsByMemberId(1L)).thenReturn(true);
 
             // when
-            StudylogTempResponse studylogTempResponse = studylogService.insertStudylogTemp(1L, studylogRequest);
+            StudylogTempResponse studylogTempResponse = studylogService.insertStudylogTemp(1L,
+                studylogRequest);
 
             // then
             assertAll(() -> {
                 assertThat(studylogTempResponse.getTitle()).isEqualTo(title);
                 assertThat(studylogTempResponse.getContent()).isEqualTo(content);
-                assertThat(studylogTempResponse.getTags()).usingRecursiveComparison().isEqualTo(tagResponses);
+                assertThat(studylogTempResponse.getTags()).usingRecursiveComparison()
+                    .isEqualTo(tagResponses);
                 verify(studylogTempRepository, times(1)).deleteByMemberId(1L);
             });
         }
@@ -210,15 +218,16 @@ class StudylogServiceTest {
             when(studylogTempRepository.save(any())).thenReturn(studylogTemp);
             when(studylogTempRepository.existsByMemberId(1L)).thenReturn(false);
 
-
             // when
-            StudylogTempResponse studylogTempResponse = studylogService.insertStudylogTemp(1L, studylogRequest);
+            StudylogTempResponse studylogTempResponse = studylogService.insertStudylogTemp(1L,
+                studylogRequest);
 
             // then
             assertAll(() -> {
                 assertThat(studylogTempResponse.getTitle()).isEqualTo(title);
                 assertThat(studylogTempResponse.getContent()).isEqualTo(content);
-                assertThat(studylogTempResponse.getTags()).usingRecursiveComparison().isEqualTo(tagResponses);
+                assertThat(studylogTempResponse.getTags()).usingRecursiveComparison()
+                    .isEqualTo(tagResponses);
                 verify(studylogTempRepository, never()).deleteByMemberId(1L);
             });
         }
@@ -232,7 +241,8 @@ class StudylogServiceTest {
         //given
         final Member member = new Member(1L, "hihi", "연어", Role.CREW, 1L, "image");
         final Mission mission = new Mission(1L, "지하철", new Session("BE 레벨2"));
-        final Studylog studylog = new Studylog(member, "짜장면", "먹고싶다", mission, singletonList(new Tag("스프링")));
+        final Studylog studylog = new Studylog(member, "짜장면", "먹고싶다", mission,
+            singletonList(new Tag("스프링")));
         final StudylogScrap scrap = new StudylogScrap(member, studylog);
 
         when(studylogScrapRepository.findByMemberId(anyLong())).thenReturn(singletonList(scrap));
@@ -265,7 +275,8 @@ class StudylogServiceTest {
             1L);
 
         //then
-        verify(studylogRepository, times(1)).findAll((Specification<Studylog>) any(), (Pageable) any());
+        verify(studylogRepository, times(1)).findAll((Specification<Studylog>) any(),
+            (Pageable) any());
     }
 
     @DisplayName("StudylogResponse의 scrap 여부를 설정할 수 있다")
@@ -306,7 +317,9 @@ class StudylogServiceTest {
 
         final Member member = new Member(1L, "hihi", "연어", Role.CREW, 1L, "image");
         final Mission mission = new Mission(1L, "지하철", new Session("BE 레벨2"));
-        when(studylogRepository.save(any())).thenReturn(new Studylog(member, "제목", "내용", mission, emptyList()));
+        when(studylogRepository.save(any())).thenReturn(
+            new Studylog(member, "제목", "내용", mission, emptyList()));
+        when(memberService.findById(any())).thenReturn(member);
         when(tagService.findOrCreate(any())).thenReturn(new Tags(emptyList()));
 
         //when
@@ -332,6 +345,7 @@ class StudylogServiceTest {
 
     @Nested
     class retrieveStudylogById {
+
         private Studylog studylog;
         private long studyLogId = 1L;
 
@@ -360,14 +374,16 @@ class StudylogServiceTest {
                 .willReturn(Optional.of(studylog));
             final int previousViewCount = studylog.getViewCount();
 
-
             //when
-            final StudylogResponse studylogResponse = studylogService.retrieveStudylogById(loginMember, 1L, false);
+            final StudylogResponse studylogResponse = studylogService.retrieveStudylogById(
+                loginMember, 1L, false);
 
             //then
             assertAll(
-                () -> assertThat(studylogResponse).extracting(StudylogResponse::getViewCount).isEqualTo(previousViewCount + 1),
-                () -> assertThat(studylogResponse).extracting(StudylogResponse::getId).isEqualTo(studyLogId)
+                () -> assertThat(studylogResponse).extracting(StudylogResponse::getViewCount)
+                    .isEqualTo(previousViewCount + 1),
+                () -> assertThat(studylogResponse).extracting(StudylogResponse::getId)
+                    .isEqualTo(studyLogId)
             );
         }
 
@@ -376,7 +392,8 @@ class StudylogServiceTest {
         void retrieveStudylogById_readOtherUserStudylog() {
             //given
             final long otherUserId = 2L;
-            final LoginMember loginMember = new LoginMember(otherUserId, LoginMember.Authority.MEMBER);
+            final LoginMember loginMember = new LoginMember(otherUserId,
+                LoginMember.Authority.MEMBER);
             given(studylogRepository.findById(anyLong()))
                 .willReturn(Optional.of(studylog));
             given(studylogReadRepository.findByMemberIdAndStudylogId(anyLong(), anyLong()))
@@ -389,14 +406,19 @@ class StudylogServiceTest {
             final int previousViewCount = studylog.getViewCount();
 
             //when
-            final StudylogResponse studylogResponse = studylogService.retrieveStudylogById(loginMember, 1L, false);
+            final StudylogResponse studylogResponse = studylogService.retrieveStudylogById(
+                loginMember, 1L, false);
 
             //then
             assertAll(
-                () -> assertThat(studylogResponse).extracting(StudylogResponse::getViewCount).isEqualTo(previousViewCount + 1),
-                () -> assertThat(studylogResponse).extracting(StudylogResponse::getId).isEqualTo(studyLogId),
-                () -> assertThat(studylogResponse).extracting(StudylogResponse::isRead).isEqualTo(true),
-                () -> assertThat(studylogResponse).extracting(StudylogResponse::isScrap).isEqualTo(true)
+                () -> assertThat(studylogResponse).extracting(StudylogResponse::getViewCount)
+                    .isEqualTo(previousViewCount + 1),
+                () -> assertThat(studylogResponse).extracting(StudylogResponse::getId)
+                    .isEqualTo(studyLogId),
+                () -> assertThat(studylogResponse).extracting(StudylogResponse::isRead)
+                    .isEqualTo(true),
+                () -> assertThat(studylogResponse).extracting(StudylogResponse::isScrap)
+                    .isEqualTo(true)
             );
         }
 
@@ -417,14 +439,19 @@ class StudylogServiceTest {
             final int previousViewCount = studylog.getViewCount();
 
             //when
-            final StudylogResponse studylogResponse = studylogService.retrieveStudylogById(loginMember, 1L, false);
+            final StudylogResponse studylogResponse = studylogService.retrieveStudylogById(
+                loginMember, 1L, false);
 
             //then
             assertAll(
-                () -> assertThat(studylogResponse).extracting(StudylogResponse::getViewCount).isEqualTo(previousViewCount),
-                () -> assertThat(studylogResponse).extracting(StudylogResponse::getId).isEqualTo(studyLogId),
-                () -> assertThat(studylogResponse).extracting(StudylogResponse::isRead).isEqualTo(true),
-                () -> assertThat(studylogResponse).extracting(StudylogResponse::isScrap).isEqualTo(true)
+                () -> assertThat(studylogResponse).extracting(StudylogResponse::getViewCount)
+                    .isEqualTo(previousViewCount),
+                () -> assertThat(studylogResponse).extracting(StudylogResponse::getId)
+                    .isEqualTo(studyLogId),
+                () -> assertThat(studylogResponse).extracting(StudylogResponse::isRead)
+                    .isEqualTo(true),
+                () -> assertThat(studylogResponse).extracting(StudylogResponse::isScrap)
+                    .isEqualTo(true)
             );
         }
     }
@@ -629,14 +656,17 @@ class StudylogServiceTest {
                 );
 
             //when
-            final StudylogsResponse studylogsResponse = studylogService.findStudylogs(studylogsSearchRequest, 1L);
+            final StudylogsResponse studylogsResponse = studylogService.findStudylogs(
+                studylogsSearchRequest, 1L);
             int oneIndexedParameter = 1;
 
             //then
             assertAll(
-                () -> assertThat(studylogsResponse.getCurrPage()).isEqualTo(requestPage + oneIndexedParameter),
+                () -> assertThat(studylogsResponse.getCurrPage()).isEqualTo(
+                    requestPage + oneIndexedParameter),
                 () -> assertThat(studylogsResponse.getTotalSize()).isEqualTo(findElementCounts),
-                () -> assertThat(studylogsResponse.getTotalPage()).isEqualTo((findElementCounts / pageSize) + 1),
+                () -> assertThat(studylogsResponse.getTotalPage()).isEqualTo(
+                    (findElementCounts / pageSize) + 1),
                 () -> assertThat(studylogsResponse.getData()).hasSize(1)
             );
         }
@@ -677,14 +707,17 @@ class StudylogServiceTest {
                 );
 
             //when
-            final StudylogsResponse studylogsResponse = studylogService.findStudylogs(studylogsSearchRequest, 1L);
+            final StudylogsResponse studylogsResponse = studylogService.findStudylogs(
+                studylogsSearchRequest, 1L);
             int oneIndexedParameter = 1;
 
             //then
             assertAll(
-                () -> assertThat(studylogsResponse.getCurrPage()).isEqualTo(requestPage + oneIndexedParameter),
+                () -> assertThat(studylogsResponse.getCurrPage()).isEqualTo(
+                    requestPage + oneIndexedParameter),
                 () -> assertThat(studylogsResponse.getTotalSize()).isEqualTo(findElementCounts),
-                () -> assertThat(studylogsResponse.getTotalPage()).isEqualTo((findElementCounts / pageSize) + 1),
+                () -> assertThat(studylogsResponse.getTotalPage()).isEqualTo(
+                    (findElementCounts / pageSize) + 1),
                 () -> assertThat(studylogsResponse.getData()).hasSize(1)
             );
         }
@@ -708,7 +741,8 @@ class StudylogServiceTest {
                 pageableRequest
             );
 
-            given(studylogDocumentService.findBySearchKeyword(any(), any(), any(), any(), any(), any(), any(), any()))
+            given(studylogDocumentService.findBySearchKeyword(any(), any(), any(), any(), any(),
+                any(), any(), any()))
                 .willReturn(StudylogDocumentResponse.of(Arrays.asList(1L), 1, 1, 0));
 
             final int findElementCounts = 1;
@@ -722,14 +756,17 @@ class StudylogServiceTest {
                 );
 
             //when
-            final StudylogsResponse studylogsResponse = studylogService.findStudylogs(studylogsSearchRequest, 1L);
+            final StudylogsResponse studylogsResponse = studylogService.findStudylogs(
+                studylogsSearchRequest, 1L);
             int oneIndexedParameter = 1;
 
             //then
             assertAll(
-                () -> assertThat(studylogsResponse.getCurrPage()).isEqualTo(requestPage + oneIndexedParameter),
+                () -> assertThat(studylogsResponse.getCurrPage()).isEqualTo(
+                    requestPage + oneIndexedParameter),
                 () -> assertThat(studylogsResponse.getTotalSize()).isEqualTo(findElementCounts),
-                () -> assertThat(studylogsResponse.getTotalPage()).isEqualTo((findElementCounts / pageSize) + 1),
+                () -> assertThat(studylogsResponse.getTotalPage()).isEqualTo(
+                    (findElementCounts / pageSize) + 1),
                 () -> assertThat(studylogsResponse.getData()).hasSize(1)
             );
         }
@@ -770,7 +807,8 @@ class StudylogServiceTest {
 
         //then
         assertAll(
-            () -> assertEquals(updatedSession.getCurriculumId(), studylog.getSession().getCurriculumId()),
+            () -> assertEquals(updatedSession.getCurriculumId(),
+                studylog.getSession().getCurriculumId()),
             () -> assertEquals(updatedSession.getName(), studylog.getSession().getName())
         );
     }
@@ -922,7 +960,8 @@ class StudylogServiceTest {
         }
 
         private Studylog makeStudyLogFor(final long id) {
-            final Studylog idInjectedStudylog = new Studylog(judy, "제목", "내용", session, mission, new ArrayList<>());
+            final Studylog idInjectedStudylog = new Studylog(judy, "제목", "내용", session, mission,
+                new ArrayList<>());
             try {
                 final Field idField = idInjectedStudylog.getClass().getDeclaredField("id");
                 idField.setAccessible(true);
@@ -985,20 +1024,23 @@ class StudylogServiceTest {
                 .willReturn(studylogs);
 
             //when
-            List<StudylogRssFeedResponse> studylogRssFeedResponses = studylogService.readRssFeeds("URI");
+            List<StudylogRssFeedResponse> studylogRssFeedResponses = studylogService.readRssFeeds(
+                "URI");
 
             //then
             assertThat(studylogRssFeedResponses).hasSize(50);
         }
 
         private Studylog makeStudylogWithDateFor(final long id) {
-            final Studylog idAndDateInjectedStudylog = new Studylog(judy, "제목", "내용", session, mission, new ArrayList<>());
+            final Studylog idAndDateInjectedStudylog = new Studylog(judy, "제목", "내용", session,
+                mission, new ArrayList<>());
             try {
                 final Field idField = idAndDateInjectedStudylog.getClass().getDeclaredField("id");
                 idField.setAccessible(true);
                 idField.set(idAndDateInjectedStudylog, id);
 
-                final Field createdAtField = idAndDateInjectedStudylog.getClass().getSuperclass().getDeclaredField("createdAt");
+                final Field createdAtField = idAndDateInjectedStudylog.getClass().getSuperclass()
+                    .getDeclaredField("createdAt");
                 createdAtField.setAccessible(true);
                 createdAtField.set(idAndDateInjectedStudylog, LocalDateTime.now());
 

@@ -2,18 +2,24 @@ package wooteco.prolog.docu;
 
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 
 import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
+import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import wooteco.prolog.NewDocumentation;
 import wooteco.prolog.roadmap.application.QuizService;
+import wooteco.prolog.roadmap.application.dto.CurriculumQuizResponse;
 import wooteco.prolog.roadmap.application.dto.QuizRequest;
 import wooteco.prolog.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.roadmap.application.dto.QuizzesResponse;
@@ -21,6 +27,8 @@ import wooteco.prolog.roadmap.ui.QuizController;
 
 @WebMvcTest(controllers = QuizController.class)
 public class QuizDocumentation extends NewDocumentation {
+
+    private static final String UTF8_JSON_TYPE = "application/json;charset=UTF-8";
 
     @MockBean
     private QuizService quizService;
@@ -30,7 +38,7 @@ public class QuizDocumentation extends NewDocumentation {
         given(quizService.createQuiz(any(), any())).willReturn(1L);
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .contentType(UTF8_JSON_TYPE)
             .body(QUIZ_REQUEST)
             .when().post("/sessions/{sessionId}/keywords/{keywordId}/quizs", 1L, 1L)
             .then().log().all().apply(document("quiz/create"))
@@ -38,14 +46,67 @@ public class QuizDocumentation extends NewDocumentation {
     }
 
     @Test
-    void Keyword별_Quiz_목록_조회() {
-        given(quizService.findQuizzesByKeywordId(any())).willReturn(QUIZZES_RESPONSE);
+    void 퀴즈_상세_조회() {
+        QuizResponse question = new QuizResponse(
+            1L,
+            "question",
+            true
+        );
+        given(quizService.findById(any(), any()))
+            .willReturn(question);
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .when().get("/sessions/{sessionId}/keywords/{keywordId}/quizs", 1L, 1L)
-            .then().log().all().apply(document("quiz/delete"))
+            .header("Authorization", "Bearer " + accessToken)
+            .when().get("/sessions/{sessionId}/keywords/{keywordId}/quizs/{quizId}", 1L, 1L, 1L)
+            .then().log().all().apply(document("quiz/detail"))
             .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void Keyword별_Quiz_목록_조회() {
+        given(quizService.findQuizzesByKeywordId(any(), any())).willReturn(QUIZZES_RESPONSE);
+
+        given
+            .when().get("/sessions/{sessionId}/keywords/{keywordId}/quizs", 1L, 1L)
+            .then().log().all().apply(document("quiz/list-keyword"))
+            .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void Curriculum별_Quiz_조회() {
+        given(quizService.findQuizzesByCurriculumId(anyLong()))
+            .willReturn(makeMockResponse());
+
+        given
+            .when().get("/curriculums/{curriculumId}/quizzes", 1L)
+            .then().log().all().apply(document("quiz/list-curriculum"))
+            .statusCode(HttpStatus.OK.value());
+    }
+
+    private List<CurriculumQuizResponse> makeMockResponse() {
+        CurriculumQuizResponse response1 = new CurriculumQuizResponse() {
+            @Override
+            public Long getId() {
+                return 1L;
+            }
+
+            @Override
+            public String getQuestion() {
+                return "question1";
+            }
+        };
+        CurriculumQuizResponse response2 = new CurriculumQuizResponse() {
+            @Override
+            public Long getId() {
+                return 2L;
+            }
+
+            @Override
+            public String getQuestion() {
+                return "question2";
+            }
+        };
+        return Arrays.asList(response1, response2);
     }
 
     @Test
@@ -53,7 +114,7 @@ public class QuizDocumentation extends NewDocumentation {
         doNothing().when(quizService).updateQuiz(any(), any());
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .contentType(UTF8_JSON_TYPE)
             .body(QUIZ_EDIT_REQUEST)
             .when().put("/sessions/{sessionId}/keywords/{keywordId}/quizs/{quizId}", 1L, 1L, 1L)
             .then().log().all().apply(document("quiz/update"))
@@ -66,7 +127,6 @@ public class QuizDocumentation extends NewDocumentation {
         doNothing().when(quizService).deleteQuiz(any());
 
         given
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when().delete("/sessions/{sessionId}/keywords/{keywordId}/quizs/{quizId}", 1L, 1L, 1L)
             .then().log().all().apply(document("quiz/delete"))
             .statusCode(HttpStatus.NO_CONTENT.value());
@@ -82,6 +142,7 @@ public class QuizDocumentation extends NewDocumentation {
     );
 
     private static final QuizzesResponse QUIZZES_RESPONSE = new QuizzesResponse(1L,
-        Arrays.asList(new QuizResponse(1L, "브라운을 위해 낸 퀴즈"), new QuizResponse(1L, "포코를 위해 낸 퀴즈")));
+        Arrays.asList(new QuizResponse(1L, "브라운을 위해 낸 퀴즈", true),
+            new QuizResponse(1L, "포코를 위해 낸 퀴즈", false)));
 
 }

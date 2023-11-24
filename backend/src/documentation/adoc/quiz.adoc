@@ -1,0 +1,52 @@
+[[Quiz]]
+== 퀴즈
+
+=== 퀴즈 생성
+
+==== Request
+
+include::{snippets}/quiz/create/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/quiz/create/http-response.adoc[]
+
+=== 퀴즈 상세 조회
+
+==== Request
+
+include::{snippets}/quiz/detail/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/quiz/detail/http-response.adoc[]
+
+=== 키워드별 퀴즈 목록 조회
+
+==== Request
+
+include::{snippets}/quiz/list-keyword/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/quiz/list-keyword/http-response.adoc[]
+
+=== 커리큘럼별 퀴즈 목록 조회
+
+==== Request
+
+include::{snippets}/quiz/list-curriculum/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/quiz/list-curriculum/http-response.adoc[]
+
+=== 퀴즈 삭제
+
+==== Request
+
+include::{snippets}/quiz/delete/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/quiz/delete/http-response.adoc[]
