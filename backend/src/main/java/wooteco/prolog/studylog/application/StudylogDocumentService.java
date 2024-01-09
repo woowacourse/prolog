@@ -19,7 +19,7 @@ import wooteco.prolog.studylog.domain.StudylogDocumentQueryBuilder;
 import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 
-@Profile({"dev", "prod"})
+@Profile({"local", "dev", "prod"})
 @Service
 public class StudylogDocumentService extends AbstractStudylogDocumentService {
 

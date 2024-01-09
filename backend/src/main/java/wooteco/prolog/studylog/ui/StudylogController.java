@@ -42,10 +42,10 @@ public class StudylogController {
     }
 
     @PostMapping
-    @MemberOnly
+//    @MemberOnly
     public ResponseEntity<StudylogResponse> createStudylog(@AuthMemberPrincipal LoginMember member,
                                                            @RequestBody StudylogRequest studylogRequest) {
-        StudylogResponse studylogResponse = studylogService.insertStudylog(member.getId(),
+        StudylogResponse studylogResponse = studylogService.insertStudylog(1L,
             studylogRequest);
         return ResponseEntity.created(URI.create("/studylogs/" + studylogResponse.getId()))
             .body(studylogResponse);
