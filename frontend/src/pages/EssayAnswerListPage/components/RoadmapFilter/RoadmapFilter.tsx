@@ -1,16 +1,17 @@
+import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 import DropdownMenu from '../../../../components/DropdownMenu/DropdownMenu';
 import { useGetQuizzes } from '../../../../hooks/queries/essayanswer';
 import { useGetMembers } from '../../../../hooks/queries/filters';
 import { useRoadmap } from '../../../../hooks/queries/keywords';
 import { KeywordResponse } from '../../../../models/Keywords';
-import { Container, DropdownStyle, FilterContainer } from './RoadmapFilter.styles';
+import { Container, FilterContainer } from './RoadmapFilter.styles';
 
 const filterKoreanNames: Record<string, string> = {
   keywordId: '주제',
   memberIds: '회원',
   quizIds: '질문',
-}
+};
 
 const useGetKeywords = ({ curriculumId }: { curriculumId: number }) => {
   const { data: roadmap } = useRoadmap({ curriculumId });
@@ -104,25 +105,28 @@ const RoadmapFilter = ({ curriculumId, filter, onFilterChange }: RoadmapFilterPr
   return (
     <Container>
       <FilterContainer>
-        {
-          Object.keys(filterData).map((filterKeyword, index) => (
-            <div key={index} onClick={(event) => event.stopPropagation()}>
-              <button
-                onClick={() => setActiveFilterKeyword(filterKeyword)}
-              >
-                {filterKoreanNames[filterKeyword]}
-              </button>
-              {activeFilterKeyword === filterKeyword && (
-                <DropdownMenu css={DropdownStyle}>
-                  <ul>
-                    {filterData[filterKeyword].map((item) => (
-                      <li onClick={() => handleFilter(filterKeyword, item.key)}>{item.label}</li>
-                    ))}
-                  </ul>
-                </DropdownMenu>
-              )}
-            </div>
-          ))}
+        {Object.keys(filterData).map((filterKeyword, index) => (
+          <div
+            key={index}
+            onClick={(event) => event.stopPropagation()}
+            css={css`
+              position: relative;
+            `}
+          >
+            <button onClick={() => setActiveFilterKeyword(filterKeyword)}>
+              {filterKoreanNames[filterKeyword]}
+            </button>
+            {activeFilterKeyword === filterKeyword && (
+              <DropdownMenu>
+                <ul>
+                  {filterData[filterKeyword].map((item) => (
+                    <li onClick={() => handleFilter(filterKeyword, item.key)}>{item.label}</li>
+                  ))}
+                </ul>
+              </DropdownMenu>
+            )}
+          </div>
+        ))}
       </FilterContainer>
       {Object.keys(filter).length !== 0 && <button onClick={resetFilter}>필터 초기화 ⟳</button>}
     </Container>

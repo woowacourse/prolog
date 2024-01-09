@@ -79,6 +79,7 @@ const EssayAnswerListPage = () => {
           </h1>
         </div>
       </HeaderContainer>
+
       <RoadmapFilter curriculumId={Number(curriculumId)} filter={filter} onFilterChange={handleFilterChange} />
 
       <PostListContainer>
