@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import COLOR from '../../../../constants/color';
 import MEDIA_QUERY from '../../../../constants/mediaQuery';
@@ -53,10 +52,6 @@ export const FilterContainer = styled.div`
       border-right: 0.5rem solid transparent;
     }
   }
-`;
-
-export const DropdownStyle = css`
-  padding-top: 0;
 `;
 
 export const ResetFilterButton = styled.button`
