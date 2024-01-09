@@ -2,37 +2,39 @@ package wooteco.prolog.steps;
 
 import io.cucumber.java.en.Given;
 import wooteco.prolog.AcceptanceSteps;
-import wooteco.prolog.member.domain.GroupMember;
-import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.MemberGroup;
-import wooteco.prolog.member.domain.repository.GroupMemberRepository;
-import wooteco.prolog.member.domain.repository.MemberGroupRepository;
+import wooteco.prolog.member.domain.*;
+import wooteco.prolog.member.domain.repository.DepartmentMemberRepository;
+import wooteco.prolog.member.domain.repository.DepartmentRepository;
 import wooteco.prolog.member.domain.repository.MemberRepository;
+
+import static wooteco.prolog.member.domain.Part.*;
+import static wooteco.prolog.member.domain.Term.*;
 
 public class GroupMemberStepDefinitions extends AcceptanceSteps {
 
     private final MemberRepository memberRepository;
-    private final MemberGroupRepository memberGroupRepository;
-    private final GroupMemberRepository groupMemberRepository;
+    private final DepartmentRepository departmentRepository;
+    private final DepartmentMemberRepository departmentMemberRepository;
 
     public GroupMemberStepDefinitions(MemberRepository memberRepository,
-                                      MemberGroupRepository memberGroupRepository,
-                                      GroupMemberRepository groupMemberRepository) {
+                                      DepartmentRepository departmentRepository,
+                                      DepartmentMemberRepository departmentMemberRepository) {
         this.memberRepository = memberRepository;
-        this.memberGroupRepository = memberGroupRepository;
-        this.groupMemberRepository = groupMemberRepository;
+        this.departmentRepository = departmentRepository;
+        this.departmentMemberRepository = departmentMemberRepository;
     }
 
     @Given("{string}을 멤버그룹과 그룹멤버에 등록하고")
     public void 그룹멤버를_생성하고(String title) {
         Member member = memberRepository.findById(1L).get();
-        MemberGroup 프론트엔드 = memberGroupRepository.save(
-            new MemberGroup(null, "4기 프론트엔드", "4기 프론트엔드 설명"));
-        MemberGroup 백엔드 = memberGroupRepository.save(new MemberGroup(null, "4기 백엔드", "4기 백엔드 설명"));
-        MemberGroup 안드로이드 = memberGroupRepository.save(
-            new MemberGroup(null, "4기 안드로이드", "4기 안드로이드 설명"));
-        groupMemberRepository.save(new GroupMember(null, member, 백엔드));
-        groupMemberRepository.save(new GroupMember(null, member, 프론트엔드));
-        groupMemberRepository.save(new GroupMember(null, member, 안드로이드));
+        Department 프론트엔드 = departmentRepository.save(
+            new Department(null, FRONTEND, FOURTH));
+        Department 백엔드 = departmentRepository.save(new Department(null, BACKEND, FOURTH));
+        Department 안드로이드 = departmentRepository.save(
+            new Department(null, ANDROID, FOURTH));
+        departmentMemberRepository.save(new DepartmentMember(null, member, 백엔드));
+        departmentMemberRepository.save(new DepartmentMember(null, member, 프론트엔드));
+        departmentMemberRepository.save(new DepartmentMember(null, member, 안드로이드));
     }
+
 }

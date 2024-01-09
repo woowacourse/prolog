@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class GroupMember {
+public class DepartmentMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,12 +25,12 @@ public class GroupMember {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id", nullable = false)
-    private MemberGroup group;
+    @JoinColumn(name = "department_id", nullable = false)
+    private Department department;
 
-    public GroupMember(Long id, Member member, MemberGroup group) {
+    public DepartmentMember(Long id, Member member, Department department) {
         this.id = id;
         this.member = member;
-        this.group = group;
+        this.department = department;
     }
 }

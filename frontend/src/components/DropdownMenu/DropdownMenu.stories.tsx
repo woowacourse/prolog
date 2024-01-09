@@ -1,12 +1,16 @@
-import DropdownMenu from './DropdownMenu';
+/** @jsxImportSource @emotion/react */
+
+import DropdownMenu, { DropdownMenuProps } from './DropdownMenu';
+import { Story, Meta } from '@storybook/react';
+import { css } from '@emotion/react';
 
 export default {
   title: 'Component/DropdownMenu',
   component: DropdownMenu,
   argTypes: { children: { control: 'text' } },
-};
+} as Meta<typeof DropdownMenu>;
 
-const Template = (args) => <DropdownMenu {...args} />;
+const Template: Story<React.PropsWithChildren<DropdownMenuProps>> = (args) => <DropdownMenu {...args} />;
 
 export const Basic = Template.bind({});
 
@@ -24,5 +28,5 @@ Basic.args = {
       </li>
     </ul>
   ),
-  onLogoClick: () => {},
+  css: css``,
 };
