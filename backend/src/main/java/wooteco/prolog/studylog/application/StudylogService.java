@@ -1,21 +1,5 @@
 package wooteco.prolog.studylog.application;
 
-import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
-import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
-import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_ARGUMENT;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_DOCUMENT_NOT_FOUND;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_SCRAP_NOT_EXIST_EXCEPTION;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
@@ -37,7 +20,6 @@ import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
-import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.application.dto.StudylogMissionRequest;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
 import wooteco.prolog.studylog.application.dto.StudylogResponse;
@@ -61,6 +43,23 @@ import wooteco.prolog.studylog.domain.repository.StudylogTempRepository;
 import wooteco.prolog.studylog.domain.repository.dto.CommentCount;
 import wooteco.prolog.studylog.event.StudylogDeleteEvent;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_ARGUMENT;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_DOCUMENT_NOT_FOUND;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_SCRAP_NOT_EXIST_EXCEPTION;
+
 @Service
 @AllArgsConstructor
 @Transactional(readOnly = true)
@@ -69,7 +68,6 @@ public class StudylogService {
     private static final Logger logger = LoggerFactory.getLogger(StudylogService.class);
 
     private final MemberTagService memberTagService;
-    private final DocumentService studylogDocumentService;
     private final MemberService memberService;
     private final TagService tagService;
     private final SessionService sessionService;
@@ -152,7 +150,6 @@ public class StudylogService {
 
     private void onStudylogCreatedEvent(Member foundMember, Tags tags, Studylog createdStudylog) {
         memberTagService.registerMemberTag(tags, foundMember);
-        studylogDocumentService.save(createdStudylog.toStudylogDocument());
     }
 
     public StudylogsResponse findStudylogs(StudylogsSearchRequest request, Long memberId,
@@ -188,37 +185,11 @@ public class StudylogService {
             return StudylogsResponse.of(studylogs, memberId, commentCounts);
         }
 
-        if (request.getKeyword() == null || request.getKeyword().isEmpty()) {
-            return findStudylogsWithoutKeyword(request.getSessions(), request.getMissions(),
-                request.getTags(),
-                request.getUsernames(), request.getMembers(), request.getStartDate(),
-                request.getEndDate(),
-                request.getPageable(), memberId);
-        }
-
-        final StudylogDocumentResponse response = studylogDocumentService.findBySearchKeyword(
-            request.getKeyword(),
+        return findStudylogsWithoutKeyword(request.getSessions(), request.getMissions(),
             request.getTags(),
-            request.getMissions(),
-            request.getSessions(),
-            request.getUsernames(),
-            request.getStartDate(),
+            request.getUsernames(), request.getMembers(), request.getStartDate(),
             request.getEndDate(),
-            request.getPageable()
-        );
-
-        final List<Studylog> studylogs = studylogRepository.findByIdInAndDeletedFalseOrderByIdDesc(
-            response.getStudylogIds()
-        );
-        Map<Long, Long> commentCounts = commentCounts(studylogs);
-        return StudylogsResponse.of(
-            studylogs,
-            response.getTotalSize(),
-            response.getTotalPage(),
-            response.getCurrPage(),
-            memberId,
-            commentCounts
-        );
+            request.getPageable(), memberId);
     }
 
     private Map<Long, Long> commentCounts(List<Studylog> studylogs) {
@@ -393,8 +364,6 @@ public class StudylogService {
         studylog.update(studylogRequest.getTitle(), studylogRequest.getContent(), session, mission,
             newTags);
         memberTagService.updateMemberTag(originalTags, newTags, foundMember);
-
-        studylogDocumentService.update(studylog.toStudylogDocument());
     }
 
     @Transactional
@@ -431,7 +400,6 @@ public class StudylogService {
         studylog.validateBelongTo(memberId);
 
         final Tags tags = tagService.findByStudylogsAndMember(studylog, foundMember);
-        studylogDocumentService.delete(studylog.toStudylogDocument());
         checkScrapedOrRead(memberId, studylogId);
         memberTagService.removeMemberTag(tags, foundMember);
         studylog.delete();
