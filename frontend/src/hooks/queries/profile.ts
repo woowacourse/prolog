@@ -50,13 +50,13 @@ export const useGetProfileQuery = ({ username }, { onSuccess }) => {
   });
 };
 
-export const usePutProfileMutation = ({ user, nickname, accessToken }, { onSuccess }) => {
+export const usePutProfileMutation = ({ user, nickname, accessToken, rssFeedUrl }, { onSuccess }) => {
   const queryClient = useQueryClient();
 
   return useMutation(
     () =>
       requestEditProfile(
-        { username: user.username, nickname: nickname, imageUrl: user.imageUrl },
+        { username: user.username, nickname: nickname, imageUrl: user.imageUrl, rssFeedUrl: rssFeedUrl },
         accessToken
       ),
     {

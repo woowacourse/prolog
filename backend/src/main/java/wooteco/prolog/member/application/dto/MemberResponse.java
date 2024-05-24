@@ -20,9 +20,10 @@ public class MemberResponse {
     private String nickname;
     private Role role;
     private String imageUrl;
+    private String rssFeedUrl;
 
     public static MemberResponse of(Member member) {
         return new MemberResponse(member.getId(), member.getUsername(), member.getNickname(),
-            member.getRole(), member.getImageUrl());
+            member.getRole(), member.getImageUrl(), member.getRssFeedUrl());
     }
 }

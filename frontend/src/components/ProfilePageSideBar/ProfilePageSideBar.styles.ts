@@ -56,6 +56,14 @@ const Nickname = styled.div`
   padding-left: 1.2rem;
 `;
 
+const RssFeedUrl = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  border-top: none;
+  padding-left: 1.2rem;
+`;
+
 const Role = styled.div`
   margin-top: 1rem;
   padding-left: 1.2rem;
@@ -142,6 +150,24 @@ const NicknameWrapper = styled.div`
   align-items: center;
 `;
 
+const RssFeedInput = styled.input`
+  margin: 0.5rem 1.2rem;
+  margin-right: 0;
+  padding: 0.2rem 0.5rem;
+  font-size: 1.6rem;
+  outline: none;
+  border-radius: 0.5rem;
+  border: 1px solid ${COLOR.LIGHT_GRAY_900};
+  width: 12rem;
+`;
+
+const RssFeedWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  word-break: break-all;
+  align-items: center;
+`;
+
 const EditButtonStyle = css`
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
   background-color: ${COLOR.WHITE};
@@ -160,6 +186,7 @@ export {
   Profile,
   Image,
   Nickname,
+  RssFeedUrl,
   Role,
   MenuList,
   MenuItem,
@@ -167,5 +194,7 @@ export {
   Container,
   NicknameInput,
   NicknameWrapper,
+  RssFeedInput,
+  RssFeedWrapper,
   EditButtonStyle,
 };

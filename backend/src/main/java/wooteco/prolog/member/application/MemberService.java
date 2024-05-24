@@ -87,6 +87,7 @@ public class MemberService {
 
         persistMember.updateImageUrl(updateRequest.getImageUrl());
         persistMember.updateNickname(updateRequest.getNickname());
+        persistMember.updateRssFeedUrl(updateRequest.getRssFeedUrl());
     }
 
     @Transactional

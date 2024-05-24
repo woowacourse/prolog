@@ -12,6 +12,7 @@ import {
   Profile,
   Image,
   Nickname,
+  RssFeedUrl,
   MenuList,
   MenuItem,
   MenuButton,
@@ -20,6 +21,8 @@ import {
   EditButtonStyle,
   NicknameWrapper,
   NicknameInput,
+  RssFeedWrapper,
+  RssFeedInput,
 } from './ProfilePageSideBar.styles';
 
 interface ProfilePageSideBarProps {
@@ -38,7 +41,9 @@ const ProfilePageSideBar = ({ menu }: ProfilePageSideBarProps) => {
   const [selectedMenu, setSelectedMenu] = useState(menu);
 
   const [isProfileEditing, setIsProfileEditing] = useState(false);
+  const [isRssFeedEditing, setIsRssFeedEditing] = useState(false);
   const [nickname, setNickname] = useState('');
+  const [rssFeedUrl, setRssFeedUrl] = useState('');
 
   const instance = createAxiosInstance();
 
@@ -47,6 +52,7 @@ const ProfilePageSideBar = ({ menu }: ProfilePageSideBarProps) => {
     {
       onSuccess: (data) => {
         setNickname(data.nickname);
+        setRssFeedUrl(data.rssFeedUrl);
       },
     }
   );
@@ -63,11 +69,13 @@ const ProfilePageSideBar = ({ menu }: ProfilePageSideBarProps) => {
     {
       user,
       nickname,
+      rssFeedUrl,
       accessToken,
     },
     {
       onSuccess: () => {
         setIsProfileEditing(false);
+        setIsRssFeedEditing(false);
       },
     }
   );
@@ -105,6 +113,30 @@ const ProfilePageSideBar = ({ menu }: ProfilePageSideBarProps) => {
             </Button>
           )}
         </NicknameWrapper>
+        <RssFeedWrapper>
+          {isRssFeedEditing ? (
+            <RssFeedInput
+              autoFocus
+              value={rssFeedUrl}
+              onChange={({ target }) => setRssFeedUrl(target.value)}
+            />
+          ) : (
+            <RssFeedUrl>{rssFeedUrl}</RssFeedUrl>
+          )}
+          {isOwner && (
+            <Button
+              size={BUTTON_SIZE.X_SMALL}
+              type="button"
+              css={EditButtonStyle}
+              alt={isRssFeedEditing ? '수정 완료 버튼' : '수정 버튼'}
+              onClick={() => {
+                isRssFeedEditing ? editProfile() : setIsRssFeedEditing(true);
+              }}
+            >
+              {isRssFeedEditing ? '완료' : '수정'}
+            </Button>
+          )}
+        </RssFeedWrapper>
       </Profile>
       {isLoading ? <></> : <BadgeList badgeList={badgeList} />}
       <MenuList>

@@ -48,6 +48,9 @@ public class Member {
     @Embedded
     private MemberTags memberTags;
 
+    @Column
+    private String rssFeedUrl;
+
     public Member(String username, String nickname, Role role, Long githubId, String imageUrl) {
         this(null, username, nickname, role, githubId, imageUrl);
     }
@@ -100,6 +103,10 @@ public class Member {
         if (!ObjectUtils.isEmpty(text)) {
             this.profileIntro = text;
         }
+    }
+
+    public void updateRssFeedUrl(String url) {
+        this.rssFeedUrl = url;
     }
 
     public void addTag(Tag tag) {
