@@ -57,6 +57,7 @@ const UserProvider = ({ children }) => {
       client.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
       setState((prev) => ({ ...prev, accessToken }));
     },
+    onLogout
   });
 
   function onLogout() {

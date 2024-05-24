@@ -20,6 +20,16 @@ const useRequest = (defaultValue, callback, onSuccess, onError, onFinish) => {
       setResponse(responseData);
       onSuccess?.(responseData);
     } catch (error) {
+
+      if (!response.isLoggedIn) {
+        setError(ERROR_CODE.EXPIRED_ACCESS_TOKEN);
+        onError?.({
+          code: ERROR_CODE.EXPIRED_ACCESS_TOKEN,
+          message: ERROR_MESSAGE[ERROR_CODE.EXPIRED_ACCESS_TOKEN],
+        });
+        return;
+      }
+
       if (error instanceof TypeError) {
         setError(ERROR_CODE.SERVER_ERROR);
         onError?.({

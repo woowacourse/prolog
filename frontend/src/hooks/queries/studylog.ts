@@ -34,13 +34,16 @@ export const useGetRecentStudylogsQuery = () => {
   const { accessToken } = user;
 
   return useQuery<Studylog[]>([QUERY_KEY.recentStudylogs], async () => {
-    const response = await requestGetStudylogs({
-      query: { type: 'searchParams', data: 'size=3' },
-      accessToken,
-    });
-    const { data } = await response.data;
-
-    return data;
+    try {
+      const response = await requestGetStudylogs({
+        query: {type: 'searchParams', data: 'size=3'},
+        accessToken,
+      });
+      const {data} = await response.data;
+      return data;
+    } catch (error) {
+      alert(ERROR_MESSAGE.DEFAULT);
+    }
   });
 };
 

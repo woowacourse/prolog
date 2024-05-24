@@ -18,8 +18,8 @@ const useFilterWithParams = () => {
     ...memberFilter,
   ]);
 
-  const [postQueryParams, setPostQueryParams] = useState({
-    page: query.page ? query.page : 1,
+  const [postQueryParams, setPostQueryParams] = useState<{ page?: number }>({
+    page: query.page ? Number(query.page) : 1,
   });
 
   const onSetPage = (page) => {
