@@ -18,7 +18,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     Optional<Article> findFetchLikeById(@Param("id") final Long id);
 
     @Query("SELECT DISTINCT a FROM Article a " +
-        "JOIN DepartmentMember dm ON dm.member.id = dm.member.id " +
+        "JOIN DepartmentMember dm ON a.member.id = dm.member.id " +
         "JOIN dm.department d " +
         "WHERE d.part = :course " +
         "ORDER by a.createdAt desc")

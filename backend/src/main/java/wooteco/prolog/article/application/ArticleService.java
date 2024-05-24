@@ -85,14 +85,7 @@ public class ArticleService {
     public List<ArticleResponse> getFilteredArticles(final LoginMember member,
                                                      final ArticleFilterType course,
                                                      final boolean onlyBookmarked) {
-        if (member.isMember()) {
-            return articleRepository.findArticlesByCourseAndMember(course.getPartName(),
-                    member.getId(), onlyBookmarked).stream()
-                .map(article -> ArticleResponse.of(article, member.getId()))
-                .collect(toList());
-        }
-
-        return articleRepository.findArticlesByCourse(course.getPartName()).stream()
+        return articleRepository.findAllByOrderByCreatedAtDesc().stream()
             .map(article -> ArticleResponse.of(article, member.getId()))
             .collect(toList());
     }

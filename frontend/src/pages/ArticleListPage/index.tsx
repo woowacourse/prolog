@@ -56,20 +56,20 @@ const ArticleListPage = () => {
   return (
     <div css={[MainContentStyle]}>
       <Container>
-        <FilteringWrapper>
-          <SelectBoxWrapper>
-            <SelectBox
-              isClearable={false}
-              value={selectedCourse}
-              defaultOption={selectedCourse}
-              options={CATEGORY_OPTIONS}
-              onChange={changeFilterOption}
-            />
-          </SelectBoxWrapper>
-          {isLoggedIn && (
-            <ArticleBookmarkFilter checked={checked} handleCheckBookmark={handleCheckBookmark} />
-          )}
-        </FilteringWrapper>
+        {/*<FilteringWrapper>*/}
+        {/*  <SelectBoxWrapper>*/}
+        {/*    <SelectBox*/}
+        {/*      isClearable={false}*/}
+        {/*      value={selectedCourse}*/}
+        {/*      defaultOption={selectedCourse}*/}
+        {/*      options={CATEGORY_OPTIONS}*/}
+        {/*      onChange={changeFilterOption}*/}
+        {/*    />*/}
+        {/*  </SelectBoxWrapper>*/}
+        {/*  {isLoggedIn && (*/}
+        {/*    <ArticleBookmarkFilter checked={checked} handleCheckBookmark={handleCheckBookmark} />*/}
+        {/*  )}*/}
+        {/*</FilteringWrapper>*/}
         {authorized && (
           <Button
             type="button"
