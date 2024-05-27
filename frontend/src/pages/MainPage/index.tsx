@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { UserContext } from '../../contexts/UserProvider';
 import bannerList from '../../configs/bannerList';
@@ -11,26 +11,37 @@ import PopularStudyLogList from './PopularStudyLogList';
 import { MainContentStyle } from '../../PageRouter';
 import { getRowGapStyle } from '../../styles/layout.styles';
 
-import {
-  useGetPopularStudylogsQuery,
-  useGetRecentStudylogsQuery,
-} from '../../hooks/queries/studylog';
+import { requestGetStudylogs } from '../../service/requests';
+import { ERROR_MESSAGE } from '../../constants';
 
 const MainPage = () => {
   const { user } = useContext(UserContext);
   const { accessToken } = user;
 
-  const { data: recentStudylogs, refetch: refetchRecentStudylogs } = useGetRecentStudylogsQuery();
-
-  const {
-    data: popularStudyLogs,
-    refetch: refetchPopularStudyLogs,
-  } = useGetPopularStudylogsQuery();
+  const [recentStudylogs, setRecentStudylogs] = useState(null);
+  const [popularStudyLogs, setPopularStudyLogs] = useState(null);
 
   useEffect(() => {
-    refetchRecentStudylogs();
-    refetchPopularStudyLogs();
-  }, [accessToken]);
+    const fetchRecentStudylogs = async () => {
+      try {
+        const response = await requestGetStudylogs({
+          query: { type: 'searchParams', data: 'size=3' },
+          accessToken,
+        });
+
+        if (!response) {
+          return [];
+        }
+
+        const { data } = response.data;
+        setRecentStudylogs(data);
+      } catch (error) {
+        alert(ERROR_MESSAGE.DEFAULT);
+      }
+    };
+
+    fetchRecentStudylogs();
+  }, []);
 
   return (
     <>

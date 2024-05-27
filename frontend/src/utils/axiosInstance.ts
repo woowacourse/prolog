@@ -14,8 +14,29 @@ export const createAxiosInstance = ({ accessToken }: AxiosInstanceProps = {}) =>
     headers['Authorization'] = `Bearer ${accessToken}`;
   }
 
-  return axios.create({
+  const axiosInstance = axios.create({
     baseURL: BASE_URL,
     headers: accessToken ? headers : {},
   });
+
+  axiosInstance.interceptors.response.use(
+    response => {
+      // 성공적인 응답 처리
+      return response;
+    },
+    error => {
+      if (error.response && error.response.status === 400) {
+        const { code } = error.response.data;
+        if (code === 1002) {
+          localStorage.removeItem('accessToken');
+          window.location.href = '/';
+          return Promise.resolve();
+        }
+      }
+
+      return Promise.reject(error);
+    }
+  );
+
+  return axiosInstance;
 };

@@ -29,6 +29,7 @@ const QUERY_KEY = {
   tempSavedStudylog: 'tempSavedStudylog',
 };
 
+/* @deprecated index에서 useState로 처리 */
 export const useGetRecentStudylogsQuery = () => {
   const { user } = useContext(UserContext);
   const { accessToken } = user;
@@ -36,10 +37,10 @@ export const useGetRecentStudylogsQuery = () => {
   return useQuery<Studylog[]>([QUERY_KEY.recentStudylogs], async () => {
     try {
       const response = await requestGetStudylogs({
-        query: {type: 'searchParams', data: 'size=3'},
+        query: { type: 'searchParams', data: 'size=3' },
         accessToken,
       });
-      const {data} = await response.data;
+      const { data } = await response.data;
       return data;
     } catch (error) {
       alert(ERROR_MESSAGE.DEFAULT);
@@ -47,6 +48,7 @@ export const useGetRecentStudylogsQuery = () => {
   });
 };
 
+/* @deprecated index에서 useState로 처리 */
 export const useGetPopularStudylogsQuery = () => {
   const { user } = useContext(UserContext);
   const { accessToken } = user;
