@@ -71,6 +71,13 @@ const Role = styled.div`
   color: ${COLOR.LIGHT_GRAY_900};
 `;
 
+const RssLinkLabel = styled.div`
+  margin-top: 1rem;
+  padding-left: 1.2rem;
+  font-size: 1.2rem;
+  color: ${COLOR.LIGHT_GRAY_900};
+`;
+
 const MenuList = styled.ul`
   display: flex;
   flex-direction: column;
@@ -188,6 +195,7 @@ export {
   Nickname,
   RssFeedUrl,
   Role,
+  RssLinkLabel,
   MenuList,
   MenuItem,
   MenuButton,

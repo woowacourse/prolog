@@ -12,4 +12,9 @@ public class MemberUpdateRequest {
     private String nickname;
     private String imageUrl;
     private String rssFeedUrl;
+
+    public MemberUpdateRequest(String nickname, String imageUrl) {
+        this.nickname = nickname;
+        this.imageUrl = imageUrl;
+    }
 }

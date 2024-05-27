@@ -22,6 +22,14 @@ public class MemberResponse {
     private String imageUrl;
     private String rssFeedUrl;
 
+    public MemberResponse(Long id, String username, String nickname, Role role, String imageUrl) {
+        this.id = id;
+        this.username = username;
+        this.nickname = nickname;
+        this.role = role;
+        this.imageUrl = imageUrl;
+    }
+
     public static MemberResponse of(Member member) {
         return new MemberResponse(member.getId(), member.getUsername(), member.getNickname(),
             member.getRole(), member.getImageUrl(), member.getRssFeedUrl());

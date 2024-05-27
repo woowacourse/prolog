@@ -17,6 +17,7 @@ import {
   MenuItem,
   MenuButton,
   Role,
+  RssLinkLabel,
   Container,
   EditButtonStyle,
   NicknameWrapper,
@@ -113,6 +114,7 @@ const ProfilePageSideBar = ({ menu }: ProfilePageSideBarProps) => {
             </Button>
           )}
         </NicknameWrapper>
+        <RssLinkLabel>RSS Link</RssLinkLabel>
         <RssFeedWrapper>
           {isRssFeedEditing ? (
             <RssFeedInput

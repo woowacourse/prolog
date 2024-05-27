@@ -311,13 +311,13 @@ class ArticleServiceTest {
         final Article article = new Article(member, new Title("title"), new Url("url"), new ImageUrl("imageUrl"));
         final LoginMember unLoginMember = new LoginMember(1L, ANONYMOUS);
 
-        when(articleRepository.findArticlesByCourse(any())).thenReturn(Arrays.asList(article));
+        when(articleRepository.findAllByOrderByCreatedAtDesc()).thenReturn(Arrays.asList(article));
 
         //when
         final List<ArticleResponse> articleResponses = articleService.getFilteredArticles(unLoginMember, ArticleFilterType.BACKEND, false);
 
         //then
-        verify(articleRepository).findArticlesByCourse(any());
+        verify(articleRepository).findAllByOrderByCreatedAtDesc();
         Assertions.assertThat(articleResponses.get(0).getTitle()).isEqualTo(article.getTitle().getTitle());
     }
 
@@ -329,13 +329,13 @@ class ArticleServiceTest {
         final Article article = new Article(member, new Title("title"), new Url("url"), new ImageUrl("imageUrl"));
         final LoginMember loginMember = new LoginMember(1L, MEMBER);
 
-        when(articleRepository.findArticlesByCourseAndMember(anyString(), anyLong(), anyBoolean())).thenReturn(Arrays.asList(article));
+        when(articleRepository.findAllByOrderByCreatedAtDesc()).thenReturn(Arrays.asList(article));
 
         //when
         final List<ArticleResponse> articleResponses = articleService.getFilteredArticles(loginMember, ArticleFilterType.BACKEND, true);
 
         //then
-        verify(articleRepository).findArticlesByCourseAndMember(anyString(), anyLong(), anyBoolean());
+        verify(articleRepository).findAllByOrderByCreatedAtDesc();
         Assertions.assertThat(articleResponses.get(0).getTitle()).isEqualTo(article.getTitle().getTitle());
     }
 

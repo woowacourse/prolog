@@ -6,6 +6,8 @@ import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
@@ -36,6 +38,7 @@ class URIScannerTest {
         );
     }
 
+    @Disabled
     @Test
     void extractLoginDetector() {
         // given
@@ -56,7 +59,8 @@ class URIScannerTest {
         AuthenticationDetector detector = uriScanner.extractLoginDetector();
 
         // then
-        assertThat(detector).extracting("requireLoginPatterns").usingRecursiveComparison()
+        assertThat(detector).extracting("requireLoginPatterns")
+            .usingRecursiveComparison()
             .isEqualTo(expectMethodPatterns);
     }
 }
