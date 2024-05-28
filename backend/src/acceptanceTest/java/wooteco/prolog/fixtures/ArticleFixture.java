@@ -1,7 +1,7 @@
 package wooteco.prolog.fixtures;
 
-import wooteco.prolog.article.ui.ArticleRequest;
-import wooteco.prolog.article.ui.ArticleUrlRequest;
+import wooteco.prolog.article.application.dto.ArticleRequest;
+import wooteco.prolog.article.application.dto.ArticleUrlRequest;
 
 public class ArticleFixture {
 

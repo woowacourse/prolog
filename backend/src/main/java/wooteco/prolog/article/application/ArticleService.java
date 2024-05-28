@@ -1,23 +1,25 @@
 package wooteco.prolog.article.application;
 
-import static java.util.stream.Collectors.toList;
-import static wooteco.prolog.common.exception.BadRequestCode.ARTICLE_NOT_FOUND_EXCEPTION;
-import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
-
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.article.application.dto.ArticleRequest;
+import wooteco.prolog.article.application.dto.ArticleResponse;
 import wooteco.prolog.article.domain.Article;
 import wooteco.prolog.article.domain.ArticleFilterType;
+import wooteco.prolog.article.domain.Articles;
 import wooteco.prolog.article.domain.repository.ArticleRepository;
-import wooteco.prolog.article.ui.ArticleRequest;
-import wooteco.prolog.article.ui.ArticleResponse;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
+
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+import static wooteco.prolog.common.exception.BadRequestCode.ARTICLE_NOT_FOUND_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
 
 @RequiredArgsConstructor
 @Service
@@ -93,7 +95,41 @@ public class ArticleService {
     @Transactional
     public void updateViewCount(final Long id) {
         final Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException(ARTICLE_NOT_FOUND_EXCEPTION));
+            .orElseThrow(() -> new BadRequestException(ARTICLE_NOT_FOUND_EXCEPTION));
         article.updateViewCount();
+    }
+
+    @Transactional
+    public List<ArticleResponse> fetchArticlesOf(String username) {
+        if (username == null || username.isEmpty()) {
+            return fetchArticleWithRssFeeds();
+        }
+
+        Member member = memberService.findByUsername(username);
+        return fetchArticleWithRssFeedOf(member);
+    }
+
+    private List<ArticleResponse> fetchArticleWithRssFeeds() {
+        List<Member> members = memberService.findMembersWhoHasRssFeedLink();
+
+        return members.stream()
+            .map(this::fetchArticleWithRssFeedOf)
+            .flatMap(List::stream)
+            .collect(toList());
+    }
+
+    private List<ArticleResponse> fetchArticleWithRssFeedOf(Member member) {
+        try {
+            Articles rssArticles = Articles.fromRssFeedBy(member);
+            List<Article> existedArticles = articleRepository.findAllByMemberId(member.getId());
+
+            List<Article> newArticles = rssArticles.findNewArticles(existedArticles);
+
+            return articleRepository.saveAll(newArticles).stream()
+                .map(article -> ArticleResponse.of(article, member.getId()))
+                .collect(toList());
+        } catch (Exception e) {
+            throw new RssFeedException("Failed to fetch RSS feed for member: " + member.getId(), e);
+        }
     }
 }

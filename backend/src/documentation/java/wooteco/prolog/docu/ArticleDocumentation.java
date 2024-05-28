@@ -10,9 +10,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import wooteco.prolog.NewDocumentation;
 import wooteco.prolog.article.application.ArticleService;
-import wooteco.prolog.article.ui.ArticleBookmarkRequest;
+import wooteco.prolog.article.application.dto.ArticleBookmarkRequest;
 import wooteco.prolog.article.ui.ArticleController;
-import wooteco.prolog.article.ui.ArticleLikesRequest;
+import wooteco.prolog.article.application.dto.ArticleLikesRequest;
 
 @WebMvcTest(controllers = ArticleController.class)
 public class ArticleDocumentation extends NewDocumentation {

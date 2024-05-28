@@ -1,4 +1,4 @@
-package wooteco.prolog.article.ui;
+package wooteco.prolog.article.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

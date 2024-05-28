@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.article.application.ArticleService;
+import wooteco.prolog.article.application.dto.ArticleBookmarkRequest;
+import wooteco.prolog.article.application.dto.ArticleLikesRequest;
+import wooteco.prolog.article.application.dto.ArticleRequest;
+import wooteco.prolog.article.application.dto.ArticleResponse;
 import wooteco.prolog.article.domain.ArticleFilterType;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
@@ -77,5 +81,12 @@ public class ArticleController {
     public ResponseEntity<Void> updateViewCount(@PathVariable final Long id) {
         articleService.updateViewCount(id);
         return ResponseEntity.ok().build();
+    }
+
+    // TODO: PutMapping으로 변경
+    @GetMapping("/fetch")
+    public ResponseEntity<List<ArticleResponse>> fetchArticles(@RequestParam(required = false) String username) {
+        List<ArticleResponse> articleResponses = articleService.fetchArticlesOf(username);
+        return ResponseEntity.ok().body(articleResponses);
     }
 }

@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.article.application.MetaOgService;
+import wooteco.prolog.article.application.dto.ArticleUrlRequest;
+import wooteco.prolog.article.application.dto.ArticleUrlResponse;
 
 @RequiredArgsConstructor
 @RestController

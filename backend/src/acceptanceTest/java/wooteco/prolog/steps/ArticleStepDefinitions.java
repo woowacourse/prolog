@@ -11,9 +11,9 @@ import io.cucumber.java.en.When;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
-import wooteco.prolog.article.ui.ArticleBookmarkRequest;
-import wooteco.prolog.article.ui.ArticleResponse;
-import wooteco.prolog.article.ui.ArticleUrlResponse;
+import wooteco.prolog.article.application.dto.ArticleBookmarkRequest;
+import wooteco.prolog.article.application.dto.ArticleResponse;
+import wooteco.prolog.article.application.dto.ArticleUrlResponse;
 
 
 public class ArticleStepDefinitions extends AcceptanceSteps {

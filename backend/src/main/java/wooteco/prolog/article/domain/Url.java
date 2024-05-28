@@ -60,4 +60,8 @@ public class Url {
             throw new BadRequestException(ARTICLE_URL_OVER_LENGTH_EXCEPTION);
         }
     }
+
+    public boolean isSame(String url) {
+        return this.url.equals(url);
+    }
 }

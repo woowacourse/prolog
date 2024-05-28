@@ -115,4 +115,8 @@ public class Article {
     public void updateViewCount() {
         this.views.increase();
     }
+
+    public boolean hasDuplicateUrl(String url) {
+        return this.url.isSame(url);
+    }
 }

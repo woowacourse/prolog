@@ -145,4 +145,8 @@ public class MemberService {
         final Member targetMember = findById(memberId);
         targetMember.updateRole(role);
     }
+
+    public List<Member> findMembersWhoHasRssFeedLink() {
+        return memberRepository.findByRssFeedUrlIsNotNull();
+    }
 }

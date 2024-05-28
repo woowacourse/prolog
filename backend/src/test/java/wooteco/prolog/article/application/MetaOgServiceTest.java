@@ -13,8 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import wooteco.prolog.article.application.OgTagParser.OgType;
-import wooteco.prolog.article.ui.ArticleUrlRequest;
-import wooteco.prolog.article.ui.ArticleUrlResponse;
+import wooteco.prolog.article.application.dto.ArticleUrlRequest;
+import wooteco.prolog.article.application.dto.ArticleUrlResponse;
 
 @ExtendWith(MockitoExtension.class)
 class MetaOgServiceTest {

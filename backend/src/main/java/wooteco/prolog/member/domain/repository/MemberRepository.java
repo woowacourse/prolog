@@ -12,4 +12,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByUsername(String username);
 
     List<Member> findByIdIn(List<Long> memberIds);
+
+    List<Member> findByRssFeedUrlIsNotNull();
 }

@@ -55,6 +55,10 @@ public class Member {
         this(null, username, nickname, role, githubId, imageUrl);
     }
 
+    public Member(String username, String nickname, Role role, Long githubId, String imageUrl, String rssFeedUrl) {
+        this(null, username, nickname, role, githubId, imageUrl, null, rssFeedUrl);
+    }
+
     public Member(Long id,
                   String username,
                   String nickname,
@@ -78,6 +82,24 @@ public class Member {
         this.githubId = githubId;
         this.imageUrl = imageUrl;
         this.memberTags = memberTags;
+    }
+
+    public Member(Long id,
+                  String username,
+                  String nickname,
+                  Role role,
+                  Long githubId,
+                  String imageUrl,
+                  MemberTags memberTags,
+                  String rssFeedUrl) {
+        this.id = id;
+        this.username = username;
+        this.nickname = ifAbsentReplace(nickname, username);
+        this.role = role;
+        this.githubId = githubId;
+        this.imageUrl = imageUrl;
+        this.memberTags = memberTags;
+        this.rssFeedUrl = rssFeedUrl;
     }
 
     private String ifAbsentReplace(String nickname, String username) {
