@@ -19,3 +19,8 @@ elasticsearch:
 
 manager:
   role: GUEST
+
+slack:
+  article:
+    token: token
+    channel: channel

@@ -101,6 +101,10 @@ dependencies {
     implementation 'com.rometools:rome:1.18.0'
     implementation 'org.commonmark:commonmark:0.18.2'
 
+    // slack
+    implementation 'com.slack.api:slack-api-client:1.39.3'
+    implementation 'com.slack.api:slack-api-model:1.39.3'
+
     // aws s3
     implementation platform('software.amazon.awssdk:bom:2.5.29')
     implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.319'

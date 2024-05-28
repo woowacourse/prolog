@@ -47,6 +47,9 @@ class ArticleServiceTest {
     @Mock
     private MemberService memberService;
 
+    @Mock
+    private SlackService slackService;
+
     @InjectMocks
     private ArticleService articleService;
 

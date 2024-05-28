@@ -31,6 +31,7 @@ public class Articles {
                 syndFeed.getEntries().stream()
                     .map(entry -> new Article(member,
                         new Title(entry.getTitle()),
+                        new Description(entry.getDescription().getValue()),
                         new Url(entry.getLink()),
                         new ImageUrl(extractImageUrl(entry.getDescription().getValue()))))
                     .collect(toList())

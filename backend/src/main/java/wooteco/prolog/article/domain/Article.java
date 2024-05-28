@@ -40,6 +40,9 @@ public class Article {
     private Title title;
 
     @Embedded
+    private Description description;
+
+    @Embedded
     private Url url;
 
     @Embedded
@@ -57,14 +60,19 @@ public class Article {
     @Embedded
     private ViewCount views;
 
-    public Article(final Member member, final Title title, final Url url, final ImageUrl imageUrl) {
+    public Article(Member member, Title title, Description description, Url url, ImageUrl imageUrl) {
         this.member = member;
         this.title = title;
+        this.description = description;
         this.url = url;
         this.imageUrl = imageUrl;
         this.articleBookmarks = new ArticleBookmarks();
         this.articleLikes = new ArticleLikes();
         this.views = new ViewCount();
+    }
+
+    public Article(Member member, Title title, Url url, ImageUrl imageUrl) {
+        this(member, title, new Description(), url, imageUrl);
     }
 
     public void validateOwner(final Member member) {

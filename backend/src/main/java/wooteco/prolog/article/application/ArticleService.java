@@ -15,6 +15,8 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -28,13 +30,16 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final MemberService memberService;
+    private final SlackService slackService;
 
     @Transactional
     public Long create(final ArticleRequest articleRequest, final LoginMember loginMember) {
         final Member member = memberService.findById(loginMember.getId());
         validateMemberIsCrew(member);
-        final Article article = articleRequest.toArticle(member);
-        return articleRepository.save(article).getId();
+        Article article = articleRepository.save(articleRequest.toArticle(member));
+
+        slackService.sendSlackMessage(article);
+        return article.getId();
     }
 
     private void validateMemberIsCrew(final Member member) {
@@ -125,7 +130,18 @@ public class ArticleService {
 
             List<Article> newArticles = rssArticles.findNewArticles(existedArticles);
 
-            return articleRepository.saveAll(newArticles).stream()
+            if (newArticles.isEmpty()) {
+                return new ArrayList<>();
+            }
+
+            List<Article> persistNewArticles = articleRepository.saveAll(newArticles);
+
+            // 최신글만 슬랙 메시지 전송
+            persistNewArticles.stream()
+                .max(Comparator.comparing(Article::getCreatedAt))
+                .ifPresent(slackService::sendSlackMessage);
+
+            return persistNewArticles.stream()
                 .map(article -> ArticleResponse.of(article, member.getId()))
                 .collect(toList());
         } catch (Exception e) {

@@ -10,6 +10,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.apache.commons.text.StringEscapeUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.BadRequestException;
 
@@ -34,7 +37,9 @@ public class Title {
     }
 
     private String trim(String name) {
-        return name.trim();
+        // HTML 태그와 자바스크립트를 제거, HTML 특수 문자를 변환
+        String result = StringEscapeUtils.unescapeHtml4(Jsoup.clean(name, Safelist.none()));
+        return result.trim();
     }
 
     private void validateNull(String title) {

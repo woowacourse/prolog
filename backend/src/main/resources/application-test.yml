@@ -43,3 +43,8 @@ application:
 
 manager:
   role: GUEST
+
+slack:
+  article:
+    token: test_token
+    channel: test_channel
