@@ -1,6 +1,7 @@
 package wooteco.prolog.article.application;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.article.application.dto.ArticleRequest;
@@ -13,6 +14,7 @@ import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.MemberUpdatedEvent;
 import wooteco.prolog.member.domain.Role;
 
 import java.util.ArrayList;
@@ -104,6 +106,12 @@ public class ArticleService {
         article.updateViewCount();
     }
 
+    @EventListener
+    public void handleMemberUpdatedEvent(MemberUpdatedEvent event) {
+        Member member = event.getMember();
+        fetchArticleWithoutSlackMessage(member);
+    }
+
     @Transactional
     public List<ArticleResponse> fetchArticlesOf(String username) {
         if (username == null || username.isEmpty()) {
@@ -125,21 +133,13 @@ public class ArticleService {
 
     private List<ArticleResponse> fetchArticleWithRssFeedOf(Member member) {
         try {
-            Articles rssArticles = Articles.fromRssFeedBy(member);
-            List<Article> existedArticles = articleRepository.findAllByMemberId(member.getId());
-
-            List<Article> newArticles = rssArticles.findNewArticles(existedArticles);
-
+            List<Article> newArticles = findNewArticles(member);
             if (newArticles.isEmpty()) {
                 return new ArrayList<>();
             }
 
             List<Article> persistNewArticles = articleRepository.saveAll(newArticles);
-
-            // 최신글만 슬랙 메시지 전송
-            persistNewArticles.stream()
-                .max(Comparator.comparing(Article::getCreatedAt))
-                .ifPresent(slackService::sendSlackMessage);
+            persistNewArticles.forEach(slackService::sendSlackMessage);
 
             return persistNewArticles.stream()
                 .map(article -> ArticleResponse.of(article, member.getId()))
@@ -147,5 +147,27 @@ public class ArticleService {
         } catch (Exception e) {
             throw new RssFeedException("Failed to fetch RSS feed for member: " + member.getId(), e);
         }
+    }
+
+    private List<ArticleResponse> fetchArticleWithoutSlackMessage(Member member) {
+        try {
+            List<Article> newArticles = findNewArticles(member);
+            if (newArticles.isEmpty()) {
+                return new ArrayList<>();
+            }
+
+            return articleRepository.saveAll(newArticles).stream()
+                .map(article -> ArticleResponse.of(article, member.getId()))
+                .collect(toList());
+        } catch (Exception e) {
+            throw new RssFeedException("Failed to fetch RSS feed for member: " + member.getId(), e);
+        }
+    }
+
+    private List<Article> findNewArticles(Member member) {
+        Articles rssArticles = Articles.fromRssFeedBy(member);
+        List<Article> existedArticles = articleRepository.findAllByMemberId(member.getId());
+
+        return rssArticles.findNewArticles(existedArticles);
     }
 }

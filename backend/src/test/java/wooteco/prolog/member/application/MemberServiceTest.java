@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -45,11 +46,14 @@ class MemberServiceTest {
     @Mock
     private MemberRepository memberRepository;
 
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
+
     private MemberService memberService;
 
     @BeforeEach
     void setUp() {
-        memberService = new MemberService(MANGER_ROLE, memberRepository);
+        memberService = new MemberService(MANGER_ROLE, eventPublisher, memberRepository);
     }
 
     @DisplayName("findOrCreateMember() : gitHub Id 를 통해서 이미 존재한 Member 조회")

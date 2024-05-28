@@ -1,13 +1,7 @@
 package wooteco.prolog.member.application;
 
-import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
-import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_FOUND;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,19 +16,31 @@ import wooteco.prolog.member.application.dto.ProfileIntroRequest;
 import wooteco.prolog.member.application.dto.ProfileIntroResponse;
 import wooteco.prolog.member.application.dto.RoleUpdateRequest;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.MemberUpdatedEvent;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_FOUND;
 
 @Service
 @Transactional(readOnly = true)
 public class MemberService {
 
     private final Role mangerRole;
+    private final ApplicationEventPublisher eventPublisher;
     private final MemberRepository memberRepository;
 
-    public MemberService(@Value("${manager.role}") final Role mangerRole,
-                         final MemberRepository memberRepository) {
+    public MemberService(@Value("${manager.role}") Role mangerRole,
+                         ApplicationEventPublisher eventPublisher,
+                         MemberRepository memberRepository) {
         this.mangerRole = mangerRole;
+        this.eventPublisher = eventPublisher;
         this.memberRepository = memberRepository;
     }
 
@@ -88,6 +94,10 @@ public class MemberService {
         persistMember.updateImageUrl(updateRequest.getImageUrl());
         persistMember.updateNickname(updateRequest.getNickname());
         persistMember.updateRssFeedUrl(updateRequest.getRssFeedUrl());
+
+        if (updateRequest.getRssFeedUrl() != null) {
+            eventPublisher.publishEvent(new MemberUpdatedEvent(persistMember));
+        }
     }
 
     @Transactional
