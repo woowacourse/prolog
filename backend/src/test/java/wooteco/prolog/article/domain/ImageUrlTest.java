@@ -13,20 +13,20 @@ import wooteco.prolog.common.exception.BadRequestException;
 
 class ImageUrlTest {
 
-    @ParameterizedTest(name = "이미지 URL이 \"{0}\" 일 때 예외가 발생한다")
+    @ParameterizedTest(name = "이미지 URL이 \"{0}\" 일 때")
     @NullSource
     @ValueSource(strings = {"", " "})
     void createUrl_fail(final String url) {
-        assertThatThrownBy(() -> new ImageUrl(url))
-            .isInstanceOf(BadRequestException.class);
+        ImageUrl imageUrl = new ImageUrl(url);
+        assertThat(imageUrl.getUrl()).isNotBlank();
     }
 
-    @DisplayName("이미지 URL의 길이가 최대길이를 초과할 경우 예외가 발생한다")
+    @DisplayName("이미지 URL의 길이가 최대길이를 초과할 경우")
     @Test
     void createUrl_fail_overLength() {
         final String url = Strings.repeat('.', 1025);
-        assertThatThrownBy(() -> new ImageUrl(url))
-            .isInstanceOf(BadRequestException.class);
+        ImageUrl imageUrl = new ImageUrl(url);
+        assertThat(imageUrl.getUrl()).isNotBlank();
     }
 
     @DisplayName("이미지 URL 앞뒤의 공백은 제거되어 저장된다.")

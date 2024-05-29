@@ -20,6 +20,9 @@ public class Description {
     private String description;
 
     public Description(String description) {
+        if (description == null || description.isEmpty() || description.trim().isEmpty()) {
+            description = "내용없음";
+        }
         this.description = StringEscapeUtils.unescapeHtml4(Jsoup.clean(description, Safelist.none()));
     }
 }

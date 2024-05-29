@@ -30,14 +30,10 @@ public class Title {
             title = "제목없음";
         }
         if (title.length() > MAX_LENGTH) {
-            title = title.substring(0, MAX_LENGTH - 1);
+            title = title.substring(0, MAX_LENGTH);
         }
-        this.title = trim(title);
-    }
+        title = StringEscapeUtils.unescapeHtml4(Jsoup.clean(title, Safelist.none()));
 
-    private String trim(String name) {
-        // HTML 태그와 자바스크립트를 제거, HTML 특수 문자를 변환
-        String result = StringEscapeUtils.unescapeHtml4(Jsoup.clean(name, Safelist.none()));
-        return result.trim();
+        this.title = title;
     }
 }

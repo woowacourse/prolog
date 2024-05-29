@@ -1,5 +1,7 @@
 package wooteco.prolog.article.domain;
 
+import com.rometools.rome.feed.synd.SyndEntry;
+import com.rometools.rome.feed.synd.SyndFeed;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,6 +62,11 @@ public class Article {
     @Embedded
     private ViewCount views;
 
+
+    public Article(Member member, Title title, Url url, ImageUrl imageUrl) {
+        this(member, title, new Description(), url, imageUrl);
+    }
+
     public Article(Member member, Title title, Description description, Url url, ImageUrl imageUrl) {
         this.member = member;
         this.title = title;
@@ -71,8 +78,12 @@ public class Article {
         this.views = new ViewCount();
     }
 
-    public Article(Member member, Title title, Url url, ImageUrl imageUrl) {
-        this(member, title, new Description(), url, imageUrl);
+    public static Article of(Member member, SyndFeed syndFeed, SyndEntry entry) {
+        Title title = new Title(entry.getTitle());
+        Description description = new Description(entry.getDescription().getValue());
+        ImageUrl imageUrl = ImageUrl.of(entry.getDescription().getValue(), syndFeed.getImage().getUrl());
+
+        return new Article(member, title, description, new Url(entry.getLink()), imageUrl);
     }
 
     public void validateOwner(final Member member) {

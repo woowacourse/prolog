@@ -1,15 +1,17 @@
 package wooteco.prolog.article.domain;
 
-import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import wooteco.prolog.common.exception.BadRequestCode;
-import wooteco.prolog.common.exception.BadRequestException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,38 +26,17 @@ public class ImageUrl {
     private String url;
 
     public ImageUrl(String url) {
-        validateNull(url);
-        validateEmpty(url);
-        validateOnlyBlank(url);
-        validateMaxLength(url);
-        this.url = trim(url);
-    }
-
-    private String trim(String name) {
-        return name.trim();
-    }
-
-    private void validateNull(String url) {
-        if (Objects.isNull(url)) {
-            throw new BadRequestException(BadRequestCode.ARTICLE_IMAGE_URL_NULL_OR_EMPTY_EXCEPTION);
+        if (Objects.isNull(url) || url.isEmpty() || url.trim().isEmpty() || url.length() > MAX_LENGTH) {
+            url = "https://avatars.githubusercontent.com/u/45747236?s=200&v=4";
         }
+        this.url = url.trim();
     }
 
-    private void validateEmpty(String url) {
-        if (url.isEmpty()) {
-            throw new BadRequestException(BadRequestCode.ARTICLE_IMAGE_URL_NULL_OR_EMPTY_EXCEPTION);
-        }
-    }
+    public static ImageUrl of(String description, String defaultUrl) {
+        Document doc = Jsoup.parse(description);
+        Element img = doc.select("img").first();
+        String url = img != null ? img.attr("src") : defaultUrl;
 
-    private void validateOnlyBlank(String url) {
-        if (url.trim().isEmpty()) {
-            throw new BadRequestException(BadRequestCode.ARTICLE_IMAGE_URL_NULL_OR_EMPTY_EXCEPTION);
-        }
-    }
-
-    private void validateMaxLength(String url) {
-        if (url.length() > MAX_LENGTH) {
-            throw new BadRequestException(BadRequestCode.ARTICLE_IMAGE_URL_OVER_LENGTH_EXCEPTION);
-        }
+        return new ImageUrl(url);
     }
 }

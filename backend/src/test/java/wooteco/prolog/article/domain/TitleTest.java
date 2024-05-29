@@ -26,7 +26,7 @@ class TitleTest {
         final String title = Strings.repeat('.', 51);
 
         Title result = new Title(title);
-        assertThat(result.getTitle()).isEqualTo(title.substring(0, 49));
+        assertThat(result.getTitle()).isEqualTo(title.substring(0, 50));
     }
 
     @DisplayName("타이틀 앞뒤의 공백은 제거되어 저장된다.")

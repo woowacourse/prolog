@@ -5,9 +5,6 @@ import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import wooteco.prolog.member.domain.Member;
 
 import java.net.URL;
@@ -29,23 +26,13 @@ public class Articles {
 
             return new Articles(
                 syndFeed.getEntries().stream()
-                    .map(entry -> new Article(member,
-                        new Title(entry.getTitle()),
-                        new Description(entry.getDescription().getValue()),
-                        new Url(entry.getLink()),
-                        new ImageUrl(extractImageUrl(entry.getDescription().getValue()))))
+                    .map(entry -> Article.of(member, syndFeed, entry))
                     .collect(toList())
             );
         } catch (Exception e) {
             e.printStackTrace();
             return new Articles(new ArrayList<>());
         }
-    }
-
-    public static String extractImageUrl(String description) {
-        Document doc = Jsoup.parse(description);
-        Element img = doc.select("img").first();
-        return img != null ? img.attr("src") : null;
     }
 
     public List<Article> findNewArticles(List<Article> existedArticles) {

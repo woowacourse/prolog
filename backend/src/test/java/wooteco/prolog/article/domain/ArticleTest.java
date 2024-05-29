@@ -85,7 +85,7 @@ class ArticleTest {
         article.update(Strings.repeat('a', 51), "newUrl");
 
         //then
-        assertThat(article.getTitle().getTitle()).isEqualTo(Strings.repeat('a', 49));
+        assertThat(article.getTitle().getTitle()).isEqualTo(Strings.repeat('a', 50));
     }
 
     @DisplayName("유효하지 않은 URL으로 업데이트시 예외를 발생한다.")

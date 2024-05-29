@@ -12,7 +12,7 @@ class ArticlesTest {
     void fromRssFeedBy() {
         SSLUtil.disableSSLVerification();
 
-        final Member member = new Member(1L, "username", "nickname", CREW, 1L, "url", null, "https://brunch.co.kr/rss/@@7vZS");
+        final Member member = new Member(1L, "username", "nickname", CREW, 1L, "url", null, "https://lazypazy.tistory.com/rss");
         Articles articles = Articles.fromRssFeedBy(member);
         assertThat(articles).isNotNull();
         assertThat(articles.getArticles()).hasSizeGreaterThan(1);
