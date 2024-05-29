@@ -18,6 +18,13 @@ public class ArticleRequest {
     private final String imageUrl;
     private final String description;
 
+    public ArticleRequest(String title, String url, String imageUrl) {
+        this.title = title;
+        this.url = url;
+        this.imageUrl = imageUrl;
+        this.description = "";
+    }
+
     public Article toArticle(final Member member) {
         return new Article(member, new Title(title), new Description(description), new Url(url), new ImageUrl(imageUrl));
     }
