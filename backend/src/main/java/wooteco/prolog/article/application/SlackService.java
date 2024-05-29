@@ -57,7 +57,7 @@ public class SlackService {
 
         // Context block
         String name = article.getMember().getNickname() + "(" + article.getMember().getUsername() + ")";
-        String date = article.getCreatedAt().toLocalDate().toString();
+        String date = article.getPublishedAt().toLocalDate().toString();
         ContextBlock contextBlock = ContextBlock.builder()
             .elements(Collections.singletonList(
                 MarkdownTextObject.builder()

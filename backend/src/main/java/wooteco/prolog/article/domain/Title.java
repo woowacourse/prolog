@@ -32,8 +32,7 @@ public class Title {
         if (title.length() > MAX_LENGTH) {
             title = title.substring(0, MAX_LENGTH);
         }
-        title = StringEscapeUtils.unescapeHtml4(Jsoup.clean(title, Safelist.none()));
 
-        this.title = title;
+        this.title = title.trim();
     }
 }

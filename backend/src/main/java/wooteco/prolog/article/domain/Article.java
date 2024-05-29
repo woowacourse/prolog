@@ -11,6 +11,7 @@ import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -21,6 +22,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import static java.lang.Boolean.TRUE;
 
@@ -50,6 +52,9 @@ public class Article {
     @Embedded
     private ImageUrl imageUrl;
 
+    @Column
+    private LocalDateTime publishedAt;
+
     @Embedded
     private ArticleBookmarks articleBookmarks;
 
@@ -62,17 +67,21 @@ public class Article {
     @Embedded
     private ViewCount views;
 
-
-    public Article(Member member, Title title, Url url, ImageUrl imageUrl) {
-        this(member, title, new Description(), url, imageUrl);
+    public Article(Member member, Title title, Description description, Url url, ImageUrl imageUrl) {
+        this(member, title, description, url, imageUrl, null);
     }
 
-    public Article(Member member, Title title, Description description, Url url, ImageUrl imageUrl) {
+    public Article(Member member, Title title, Url url, ImageUrl imageUrl) {
+        this(member, title, new Description(), url, imageUrl, null);
+    }
+
+    public Article(Member member, Title title, Description description, Url url, ImageUrl imageUrl, LocalDateTime publishedAt) {
         this.member = member;
         this.title = title;
         this.description = description;
         this.url = url;
         this.imageUrl = imageUrl;
+        this.publishedAt = publishedAt;
         this.articleBookmarks = new ArticleBookmarks();
         this.articleLikes = new ArticleLikes();
         this.views = new ViewCount();
@@ -80,10 +89,11 @@ public class Article {
 
     public static Article of(Member member, SyndFeed syndFeed, SyndEntry entry) {
         Title title = new Title(entry.getTitle());
-        Description description = new Description(entry.getDescription().getValue());
         ImageUrl imageUrl = ImageUrl.of(entry.getDescription().getValue(), syndFeed.getImage().getUrl());
+        Description description = new Description(entry.getDescription().getValue());
+        LocalDateTime publishedAt = entry.getPublishedDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
-        return new Article(member, title, description, new Url(entry.getLink()), imageUrl);
+        return new Article(member, title, description, new Url(entry.getLink()), imageUrl, publishedAt);
     }
 
     public void validateOwner(final Member member) {
