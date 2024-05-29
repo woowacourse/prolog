@@ -109,7 +109,7 @@ public class ArticleService {
     @EventListener
     public void handleMemberUpdatedEvent(MemberUpdatedEvent event) {
         Member member = event.getMember();
-        fetchArticleWithoutSlackMessage(member);
+        fetchArticleWhenMemberUpdated(member);
     }
 
     @Transactional
@@ -149,14 +149,20 @@ public class ArticleService {
         }
     }
 
-    private List<ArticleResponse> fetchArticleWithoutSlackMessage(Member member) {
+    private List<ArticleResponse> fetchArticleWhenMemberUpdated(Member member) {
         try {
             List<Article> newArticles = findNewArticles(member);
             if (newArticles.isEmpty()) {
                 return new ArrayList<>();
             }
 
-            return articleRepository.saveAll(newArticles).stream()
+            List<Article> persistNewArticles = articleRepository.saveAll(newArticles);
+
+            persistNewArticles.stream()
+                .max(Comparator.comparing(Article::getCreatedAt))
+                .ifPresent(slackService::sendSlackMessage);
+
+            return persistNewArticles.stream()
                 .map(article -> ArticleResponse.of(article, member.getId()))
                 .collect(toList());
         } catch (Exception e) {
