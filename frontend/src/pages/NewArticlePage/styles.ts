@@ -66,7 +66,7 @@ const SubmitButtonStyle = css`
 
 const ThumbnailContainer = styled.div`
   text-align: center;
-  
+
   margin-bottom: 24px;
 `;
 

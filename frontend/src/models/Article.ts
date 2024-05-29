@@ -1,5 +1,6 @@
 export interface ArticleRequest {
   title: string;
+  description: string;
   url: string;
   imageUrl: string;
 }
@@ -22,6 +23,7 @@ export interface MetaOgRequest {
 export interface MetaOgResponse {
   imageUrl: string;
   title: string;
+  description: string;
 }
 
 export interface ArticleBookmarkPutRequest {

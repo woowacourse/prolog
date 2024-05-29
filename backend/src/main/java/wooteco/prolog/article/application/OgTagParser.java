@@ -17,6 +17,7 @@ public class OgTagParser {
 
     public enum OgType {
         TITLE("title"),
+        DESCRIPTION("description"),
         IMAGE("image");
 
         private static final String FORMAT = "meta[property=og:%s]";

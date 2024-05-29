@@ -24,6 +24,7 @@ const NewArticlePage = () => {
 
   const [articleContent, setArticleContent] = useState<ArticleRequest>({
     title: '',
+    description: '',
     url: '',
     imageUrl: '',
   });
@@ -36,6 +37,10 @@ const NewArticlePage = () => {
 
   const onArticleTitleChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     setArticleContent({ ...articleContent, title: e.target.value });
+  };
+
+  const onArticleDescriptionChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setArticleContent({ ...articleContent, description: e.target.value });
   };
 
   const onArticleThumbnailChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,6 +75,7 @@ const NewArticlePage = () => {
         ...articleContent,
         title: response.data.title,
         imageUrl: response.data.imageUrl,
+        description: response.data.description
       });
       setIsValidate(true);
     } else if (response.data.title !== '' && response.data.imageUrl === '') {
@@ -78,6 +84,7 @@ const NewArticlePage = () => {
         title: response.data.title,
         imageUrl:
           'https://user-images.githubusercontent.com/59258239/133797281-819ab585-4da3-4703-9d22-4453d30f9d1f.png',
+        description: response.data.description
       });
       setIsValidate(false);
     } else if (response.data.title === '' && response.data.imageUrl !== '') {
@@ -85,6 +92,7 @@ const NewArticlePage = () => {
         ...articleContent,
         title: '제목을 적어주세요.',
         imageUrl: response.data.imageUrl,
+        description: response.data.description
       });
       setIsValidate(true);
     } else {
@@ -93,6 +101,7 @@ const NewArticlePage = () => {
         title: '제목을 적어주세요.',
         imageUrl:
           'https://user-images.githubusercontent.com/59258239/133797281-819ab585-4da3-4703-9d22-4453d30f9d1f.png',
+        description: response.data.description
       });
       setIsValidate(false);
     }
@@ -130,6 +139,12 @@ const NewArticlePage = () => {
               value={articleContent.title}
               placeholder="제목"
               onChange={onArticleTitleChanged}
+            />
+            <Label>설명</Label>
+            <Input
+              value={articleContent.description}
+              placeholder="설명"
+              onChange={onArticleDescriptionChanged}
             />
           </InputContainer>
           <InputContainer>
