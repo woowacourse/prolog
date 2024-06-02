@@ -1,6 +1,8 @@
 package wooteco.prolog.article.application;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,8 @@ import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
 @Service
 @Transactional(readOnly = true)
 public class ArticleService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ArticleService.class);
 
     private final ArticleRepository articleRepository;
     private final MemberService memberService;
@@ -139,12 +143,17 @@ public class ArticleService {
             }
 
             List<Article> persistNewArticles = articleRepository.saveAll(newArticles);
-            persistNewArticles.forEach(slackService::sendSlackMessage);
+
+            // 가장 최신의 글만 슬랙 메시지로 알림
+            persistNewArticles.stream()
+                .max(Comparator.comparing(Article::getPublishedAt))
+                .ifPresent(slackService::sendSlackMessage);
 
             return persistNewArticles.stream()
                 .map(article -> ArticleResponse.of(article, member.getId()))
                 .collect(toList());
         } catch (Exception e) {
+            logger.error("Failed to fetch RSS feed for member: " + member.getId(), e);
             throw new RssFeedException("Failed to fetch RSS feed for member: " + member.getId(), e);
         }
     }
@@ -158,14 +167,11 @@ public class ArticleService {
 
             List<Article> persistNewArticles = articleRepository.saveAll(newArticles);
 
-            persistNewArticles.stream()
-                .max(Comparator.comparing(Article::getCreatedAt))
-                .ifPresent(slackService::sendSlackMessage);
-
             return persistNewArticles.stream()
                 .map(article -> ArticleResponse.of(article, member.getId()))
                 .collect(toList());
         } catch (Exception e) {
+            logger.error("Failed to fetch RSS feed for member: " + member.getId(), e);
             throw new RssFeedException("Failed to fetch RSS feed for member: " + member.getId(), e);
         }
     }

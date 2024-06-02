@@ -29,7 +29,7 @@ public class ImageUrl {
         if (Objects.isNull(url) || url.isEmpty() || url.trim().isEmpty() || url.length() > MAX_LENGTH) {
             url = "https://avatars.githubusercontent.com/u/45747236?s=200&v=4";
         }
-        this.url = url;
+        this.url = url.trim();
     }
 
     public static ImageUrl of(String description, String defaultUrl) {
