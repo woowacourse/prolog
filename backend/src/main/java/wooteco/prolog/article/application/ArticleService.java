@@ -160,7 +160,11 @@ public class ArticleService {
 
     private List<ArticleResponse> fetchArticleWhenMemberUpdated(Member member) {
         try {
-            List<Article> newArticles = findNewArticles(member);
+            List<Article> newArticles = findNewArticles(member).stream()
+                .sorted(Comparator.comparing(Article::getPublishedAt).reversed())
+                .limit(10)
+                .collect(toList());
+
             if (newArticles.isEmpty()) {
                 return new ArrayList<>();
             }
