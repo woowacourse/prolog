@@ -67,6 +67,12 @@ const Article = ({
     }, 300);
   };
 
+  const displayAt = (publishedAt ? publishedAt : createdAt).split(' ')[0]
+  console.log("publishedAt:" + publishedAt);
+  console.log("createdAt:" + createdAt);
+  console.log("displayAt:" + displayAt);
+  console.log("");
+
   return (
     <Styled.Container onClick={() => postViews(id)}>
       <Styled.Anchor href={url} target="_blank" rel="noopener noreferrer">
@@ -76,7 +82,7 @@ const Article = ({
         <Styled.ArticleInfoContainer>
           <Styled.ArticleInfoWrapper>
             <Styled.UserName>{userName}</Styled.UserName>
-            <Styled.PublishedAt>{(publishedAt ? publishedAt : createdAt).split(' ')[0]}</Styled.PublishedAt>
+            <Styled.PublishedAt>{displayAt}</Styled.PublishedAt>
           </Styled.ArticleInfoWrapper>
           <Styled.Title>{title}</Styled.Title>
           <Styled.ButtonContainer>
