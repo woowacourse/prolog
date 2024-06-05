@@ -107,6 +107,12 @@ public class ArticleService {
             .collect(toList());
     }
 
+    public List<ArticleResponse> getArticlesByPublishedAt(final LoginMember member) {
+        return articleRepository.findAllOrderByPublishedAtOrCreatedAt().stream()
+            .map(article -> ArticleResponse.of(article, member.getId()))
+            .collect(toList());
+    }
+
     @Transactional
     public void updateViewCount(final Long id) {
         final Article article = articleRepository.findById(id)

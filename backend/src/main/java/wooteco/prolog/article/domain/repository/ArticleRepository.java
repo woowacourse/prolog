@@ -12,6 +12,9 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     List<Article> findAllByOrderByCreatedAtDesc();
 
+    @Query("SELECT a FROM Article a ORDER BY COALESCE(a.publishedAt, a.createdAt) desc")
+    List<Article> findAllOrderByPublishedAtOrCreatedAt();
+
     @Query("select a from Article a join fetch a.articleBookmarks where a.id = :id")
     Optional<Article> findFetchBookmarkById(@Param("id") final Long id);
 

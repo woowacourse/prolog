@@ -69,10 +69,10 @@ public class ArticleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ArticleResponse>> getFilteredArticles(@AuthMemberPrincipal final LoginMember member,
+    public ResponseEntity<List<ArticleResponse>> getArticlesByPublishedAt(@AuthMemberPrincipal final LoginMember member,
                                                                 @RequestParam("course") final ArticleFilterType course,
                                                                 @RequestParam("onlyBookmarked") boolean onlyBookmarked) {
-        final List<ArticleResponse> articleResponses = articleService.getFilteredArticles(member, course, onlyBookmarked);
+        final List<ArticleResponse> articleResponses = articleService.getArticlesByPublishedAt(member);
 
         return ResponseEntity.ok(articleResponses);
     }
