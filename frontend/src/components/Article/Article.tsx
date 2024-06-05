@@ -17,6 +17,7 @@ const Article = ({
   userName,
   url,
   createdAt,
+  publishedAt,
   imageUrl,
   isBookmarked,
   isLiked,
@@ -75,7 +76,7 @@ const Article = ({
         <Styled.ArticleInfoContainer>
           <Styled.ArticleInfoWrapper>
             <Styled.UserName>{userName}</Styled.UserName>
-            <Styled.CreatedAt>{createdAt.split(' ')[0]}</Styled.CreatedAt>
+            <Styled.PublishedAt>{(publishedAt ? publishedAt : createdAt).split(' ')[0]}</Styled.PublishedAt>
           </Styled.ArticleInfoWrapper>
           <Styled.Title>{title}</Styled.Title>
           <Styled.ButtonContainer>

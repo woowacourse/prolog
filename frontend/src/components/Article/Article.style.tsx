@@ -90,7 +90,7 @@ export const ArticleBookmarkButtonStyle = css`
   }
 `;
 
-export const CreatedAt = styled.span`
+export const PublishedAt = styled.span`
   width: 100%;
   color: ${COLOR.DARK_GRAY_400};
   text-align: right;

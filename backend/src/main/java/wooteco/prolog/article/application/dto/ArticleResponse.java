@@ -19,8 +19,11 @@ public class ArticleResponse {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private final LocalDateTime createdAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    private final LocalDateTime publishedAt;
+
     private ArticleResponse() {
-        this(null, null, null, null, null, false, false, null);
+        this(null, null, null, null, null, false, false, null, null);
     }
 
     public static ArticleResponse of(final Article article, final Long memberId) {
@@ -32,8 +35,9 @@ public class ArticleResponse {
         final boolean isBookmarked = article.getArticleBookmarks().containBookmark(memberId);
         final boolean isLiked = article.getArticleLikes().isAlreadyLike(memberId);
         final LocalDateTime createdAt = article.getCreatedAt();
+        final LocalDateTime publishedAt = article.getPublishedAt();
         return new ArticleResponse(id, nickName, title, url, imageUrl, isBookmarked, isLiked,
-            createdAt);
+            createdAt, publishedAt);
     }
 
     public Long getId() {
@@ -66,5 +70,9 @@ public class ArticleResponse {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public LocalDateTime getPublishedAt() {
+        return publishedAt;
     }
 }

@@ -23,6 +23,7 @@ export const articlesHandler = [
       title: '직렬화, 역직렬화는 무엇일까?',
       url: 'https://think0wise.tistory.com/107',
       createdAt: '2023-07-08 16:48',
+      publishedAt: '2023-07-08 16:48',
       isBookmarked: false,
       isLiked: false,
       imageUrl:

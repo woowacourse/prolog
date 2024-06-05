@@ -13,6 +13,7 @@ export interface ArticleType {
   isLiked: boolean;
   url: string;
   createdAt: string;
+  publishedAt: string;
   imageUrl: string;
 }
 
