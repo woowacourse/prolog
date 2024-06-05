@@ -23,8 +23,8 @@ public class Description {
         if (description == null || description.isEmpty() || description.trim().isEmpty()) {
             description = "내용없음";
         }
-        if (description.length() > 100) {
-            description = description.substring(0, 100);
+        if (description.length() > 200) {
+            description = description.substring(0, 200);
         }
 
         this.description = StringEscapeUtils.unescapeHtml4(Jsoup.clean(description, Safelist.none()));

@@ -31,12 +31,4 @@ public class ImageUrl {
         }
         this.url = url.trim();
     }
-
-    public static ImageUrl of(String description, String defaultUrl) {
-        Document doc = Jsoup.parse(description);
-        Element img = doc.select("img").first();
-        String url = img != null ? img.attr("src") : defaultUrl;
-
-        return new ImageUrl(url);
-    }
 }

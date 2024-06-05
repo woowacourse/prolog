@@ -1,5 +1,6 @@
 package wooteco.prolog.article.application;
 
+import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +11,8 @@ import wooteco.prolog.article.application.dto.ArticleRequest;
 import wooteco.prolog.article.application.dto.ArticleResponse;
 import wooteco.prolog.article.domain.Article;
 import wooteco.prolog.article.domain.ArticleFilterType;
-import wooteco.prolog.article.domain.Articles;
+import wooteco.prolog.article.domain.RssFeed;
+import wooteco.prolog.article.domain.RssFeeds;
 import wooteco.prolog.article.domain.repository.ArticleRepository;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
@@ -19,6 +21,7 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.MemberUpdatedEvent;
 import wooteco.prolog.member.domain.Role;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -37,6 +40,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final MemberService memberService;
     private final SlackService slackService;
+    private final RssClient rssClient;
 
     @Transactional
     public Long create(final ArticleRequest articleRequest, final LoginMember loginMember) {
@@ -113,7 +117,7 @@ public class ArticleService {
     @EventListener
     public void handleMemberUpdatedEvent(MemberUpdatedEvent event) {
         Member member = event.getMember();
-        fetchArticleWhenMemberUpdated(member);
+        fetchArticlesOf(member);
     }
 
     @Transactional
@@ -136,54 +140,52 @@ public class ArticleService {
     }
 
     private List<ArticleResponse> fetchArticleWithRssFeedOf(Member member) {
+        List<Article> newArticles = fetchArticlesOf(member);
+        if (newArticles.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        // 가장 최신의 글만 슬랙 메시지로 알림
+        newArticles.stream()
+            .max(Comparator.comparing(Article::getPublishedAt))
+            .ifPresent(slackService::sendSlackMessage);
+
+        // 저장된 모든 아티클 출력
+        return newArticles.stream()
+            .map(article -> ArticleResponse.of(article, member.getId()))
+            .collect(toList());
+    }
+
+    private List<Article> fetchArticlesOf(Member member) {
         try {
-            List<Article> newArticles = findNewArticles(member);
-            if (newArticles.isEmpty()) {
-                return new ArrayList<>();
+            RssFeeds rssFeeds = rssClient.fromRssFeedBy(member.getRssFeedUrl());
+            RssFeed latestRssFeed = rssFeeds.findLatestRssFeed();
+
+            // 만약에 가장 최신의 피드가 없으면? 끝
+            if (rssFeeds.isEmpty()) {
+                new ArrayList<>();
             }
 
-            List<Article> persistNewArticles = articleRepository.saveAll(newArticles);
+            // 기존에 하나도 저장된 아티클이 없으면? 가장 최신의 피드를 저장
+            List<Article> existedArticles = articleRepository.findAllByMemberId(member.getId());
+            if (existedArticles.isEmpty()) {
+                return Lists.newArrayList(articleRepository.save(latestRssFeed.toArticle(member)));
+            }
 
-            // 가장 최신의 글만 슬랙 메시지로 알림
-            persistNewArticles.stream()
-                .max(Comparator.comparing(Article::getPublishedAt))
-                .ifPresent(slackService::sendSlackMessage);
+            // 가장 최근 아티클의 발행시간 조회
+            LocalDateTime latestArticlePublishedAt = existedArticles.stream()
+                .max(Comparator.comparing(Article::getPublishedAt)).get().getPublishedAt();
 
-            return persistNewArticles.stream()
-                .map(article -> ArticleResponse.of(article, member.getId()))
-                .collect(toList());
+            // 최근 아티클 발행 시간 이후로 작성된 피드 추출
+            List<RssFeed> articlesAfter = rssFeeds.findArticlesAfter(latestArticlePublishedAt);
+
+            // 최근 아티클 발행 시간 이후로 작성된 피드를 모두 저장
+            return articleRepository.saveAll(articlesAfter.stream()
+                .map(it -> it.toArticle(member))
+                .collect(toList()));
         } catch (Exception e) {
             logger.error("Failed to fetch RSS feed for member: " + member.getId(), e);
             throw new RssFeedException("Failed to fetch RSS feed for member: " + member.getId(), e);
         }
-    }
-
-    private List<ArticleResponse> fetchArticleWhenMemberUpdated(Member member) {
-        try {
-            List<Article> newArticles = findNewArticles(member).stream()
-                .sorted(Comparator.comparing(Article::getPublishedAt).reversed())
-                .limit(3)
-                .collect(toList());
-
-            if (newArticles.isEmpty()) {
-                return new ArrayList<>();
-            }
-
-            List<Article> persistNewArticles = articleRepository.saveAll(newArticles);
-
-            return persistNewArticles.stream()
-                .map(article -> ArticleResponse.of(article, member.getId()))
-                .collect(toList());
-        } catch (Exception e) {
-            logger.error("Failed to fetch RSS feed for member: " + member.getId(), e);
-            throw new RssFeedException("Failed to fetch RSS feed for member: " + member.getId(), e);
-        }
-    }
-
-    private List<Article> findNewArticles(Member member) {
-        Articles rssArticles = Articles.fromRssFeedBy(member);
-        List<Article> existedArticles = articleRepository.findAllByMemberId(member.getId());
-
-        return rssArticles.findNewArticles(existedArticles);
     }
 }

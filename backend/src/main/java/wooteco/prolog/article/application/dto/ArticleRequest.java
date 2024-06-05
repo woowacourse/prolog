@@ -26,6 +26,6 @@ public class ArticleRequest {
     }
 
     public Article toArticle(final Member member) {
-        return new Article(member, new Title(title), new Description(description), new Url(url), new ImageUrl(imageUrl));
+        return new Article(member, new Title(title), new Description(description), new Url(url), new ImageUrl(imageUrl), null);
     }
 }

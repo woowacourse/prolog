@@ -67,10 +67,6 @@ public class Article {
     @Embedded
     private ViewCount views;
 
-    public Article(Member member, Title title, Description description, Url url, ImageUrl imageUrl) {
-        this(member, title, description, url, imageUrl, null);
-    }
-
     public Article(Member member, Title title, Url url, ImageUrl imageUrl) {
         this(member, title, new Description(), url, imageUrl, null);
     }
@@ -85,15 +81,6 @@ public class Article {
         this.articleBookmarks = new ArticleBookmarks();
         this.articleLikes = new ArticleLikes();
         this.views = new ViewCount();
-    }
-
-    public static Article of(Member member, SyndFeed syndFeed, SyndEntry entry) {
-        Title title = new Title(entry.getTitle());
-        ImageUrl imageUrl = ImageUrl.of(entry.getDescription().getValue(), syndFeed.getImage().getUrl());
-        Description description = new Description(entry.getDescription().getValue());
-        LocalDateTime publishedAt = entry.getPublishedDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-
-        return new Article(member, title, description, new Url(entry.getLink()), imageUrl, publishedAt);
     }
 
     public void validateOwner(final Member member) {
