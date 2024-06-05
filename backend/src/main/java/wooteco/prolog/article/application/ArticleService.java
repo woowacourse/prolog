@@ -162,7 +162,7 @@ public class ArticleService {
         try {
             List<Article> newArticles = findNewArticles(member).stream()
                 .sorted(Comparator.comparing(Article::getPublishedAt).reversed())
-                .limit(10)
+                .limit(3)
                 .collect(toList());
 
             if (newArticles.isEmpty()) {
