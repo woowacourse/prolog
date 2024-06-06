@@ -179,8 +179,7 @@ public class ArticleService {
             }
 
             // 가장 최근 아티클의 발행시간 조회
-            LocalDateTime latestArticlePublishedAt = existedArticles.stream()
-                .max(Comparator.comparing(Article::getPublishedAt)).get().getPublishedAt();
+            LocalDateTime latestArticlePublishedAt = findLatestPublishedAt(existedArticles);
 
             // 최근 아티클 발행 시간 이후로 작성된 피드 추출
             List<RssFeed> articlesAfter = rssFeeds.findArticlesAfter(latestArticlePublishedAt);
@@ -193,5 +192,12 @@ public class ArticleService {
             logger.error("Failed to fetch RSS feed for member: " + member.getId(), e);
             throw new RssFeedException("Failed to fetch RSS feed for member: " + member.getId(), e);
         }
+    }
+
+    public LocalDateTime findLatestPublishedAt(List<Article> articles) {
+        return articles.stream()
+            .max(Comparator.comparing(Article::getPublishedAt))
+            .map(Article::getPublishedAt)
+            .orElseThrow(() -> new BadRequestException(ARTICLE_NOT_FOUND_EXCEPTION));
     }
 }
