@@ -169,7 +169,7 @@ public class ArticleService {
 
             // 만약에 가장 최신의 피드가 없으면? 끝
             if (rssFeeds.isEmpty()) {
-                new ArrayList<>();
+                return new ArrayList<>();
             }
 
             // 기존에 하나도 저장된 아티클이 없으면? 가장 최신의 피드를 저장
