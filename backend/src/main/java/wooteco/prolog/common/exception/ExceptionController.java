@@ -40,6 +40,7 @@ public class ExceptionController {
             log.error(Arrays.stream(e.getStackTrace()).map(it -> it.toString())
                 .collect(Collectors.joining("\n")));
         } else {
+            e.printStackTrace();
             log.error(e.getMessage());
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
