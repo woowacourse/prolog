@@ -1,7 +1,6 @@
 plugins {
     id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id "org.asciidoctor.convert" version "1.5.10"
     id "jacoco"
     id "org.sonarqube" version "3.3"
     id 'java'
@@ -11,7 +10,8 @@ plugins {
 
 group = 'wooteco'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenCentral()
@@ -22,19 +22,12 @@ sourceSets {
         compileClasspath += sourceSets.main.output + sourceSets.test.output
         runtimeClasspath += sourceSets.main.output + sourceSets.test.output
     }
-    documentation {
-        compileClasspath += sourceSets.main.output + sourceSets.test.output
-        runtimeClasspath += sourceSets.main.output + sourceSets.test.output
-    }
-
 }
 
 configurations {
     acceptanceTestImplementation.extendsFrom(implementation, testImplementation)
     acceptanceTestRuntimeOnly.extendsFrom(runtimeOnly, testRuntimeOnly)
     acceptanceTestImplementation.canBeResolved(true)
-    documentationImplementation.extendsFrom(implementation, testImplementation)
-    documentationRuntimeOnly.extendsFrom(runtimeOnly, testRuntimeOnly)
 }
 
 dependencies {
@@ -59,19 +52,11 @@ dependencies {
 
     // rest-assured
     acceptanceTestImplementation 'io.rest-assured:rest-assured:3.3.0'
-    documentationImplementation 'io.rest-assured:rest-assured:3.3.0'
-    documentationImplementation 'io.rest-assured:spring-mock-mvc:3.3.0'
-
 
     // cucumber
     acceptanceTestImplementation 'io.cucumber:cucumber-java:6.10.4'
     acceptanceTestImplementation 'io.cucumber:cucumber-spring:6.10.4'
     acceptanceTestImplementation 'io.cucumber:cucumber-junit-platform-engine:6.10.4'
-
-    // rest docs
-    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.5.RELEASE'
-    documentationImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-    documentationImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
 
     //lombok
     compileOnly 'org.projectlombok:lombok:1.18.20'
@@ -109,7 +94,6 @@ dependencies {
     implementation platform('software.amazon.awssdk:bom:2.5.29')
     implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.319'
 
-
     // IO
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 
@@ -118,6 +102,9 @@ dependencies {
 
     // jsoup
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.16.1'
+
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
 }
 
 ext {
@@ -141,9 +128,7 @@ jacocoTestReport {
 idea {
     module {
         sourceDirs -= file('src/acceptanceTest/java')
-        sourceDirs -= file('src/documentation/java')
         testSourceDirs += file('src/acceptanceTest/java')
-        testSourceDirs += file('src/documentation/java')
     }
 }
 
@@ -168,29 +153,6 @@ flyway {
     baselineVersion = 1.1 // V1.1 스크립트는 이미 실행한 것으로 기준선을 잡는다.
 }
 
-task documentationTest(type: Test) {
-    testClassesDirs = sourceSets.documentation.output.classesDirs
-    classpath = sourceSets.documentation.runtimeClasspath
-    useJUnitPlatform()
-}
-
-asciidoctor {
-    inputs.dir snippetsDir
-    sourceDir 'src/documentation/adoc'
-    dependsOn documentationTest
-}
-
-task createDocument(type: Copy) {
-    dependsOn asciidoctor
-
-    from file("build/asciidoc/html5/index.html")
-    into file("src/main/resources/static")
-}
-
-bootJar {
-    dependsOn createDocument
-}
-
 task acceptanceTest(type: Test) {
     testClassesDirs = sourceSets.acceptanceTest.output.classesDirs
     classpath = sourceSets.acceptanceTest.runtimeClasspath
@@ -204,4 +166,3 @@ sonarqube {
         property "sonar.host.url", "https://sonarcloud.io"
     }
 }
-targetCompatibility = JavaVersion.VERSION_1_8

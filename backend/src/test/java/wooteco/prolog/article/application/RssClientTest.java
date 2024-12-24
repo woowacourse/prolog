@@ -29,7 +29,7 @@ class RssClientTest {
         SSLUtil.disableSSLVerification();
 
         RssClient rssClient = new RssClient();
-        RssFeeds rssFeeds = rssClient.fromRssFeedBy("https://v2.velog.io/rss/junho5336");
+        RssFeeds rssFeeds = rssClient.fromRssFeedBy("https://brunch.co.kr/rss/@@7vZS");
 
         assertThat(rssFeeds.getRssFeeds()).isNotEmpty();
     }
