@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.AuditingEntity;
 import wooteco.prolog.common.exception.BadRequestException;
@@ -19,7 +18,6 @@ import wooteco.prolog.member.domain.Member;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode
 public class LevelLog extends AuditingEntity {
 
     @Id

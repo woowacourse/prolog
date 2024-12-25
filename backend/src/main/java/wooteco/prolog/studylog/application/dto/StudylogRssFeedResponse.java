@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import wooteco.prolog.studylog.domain.Studylog;
 
 @AllArgsConstructor

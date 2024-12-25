@@ -1,10 +1,10 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.5'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id "jacoco"
-    id "org.sonarqube" version "3.3"
     id 'java'
     id 'idea'
+    id "jacoco"
+    id 'org.springframework.boot' version '2.4.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id "org.sonarqube" version "3.3"
     id 'org.flywaydb.flyway' version "6.4.2"
 }
 
@@ -37,9 +37,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-    // open csv
-    implementation 'com.opencsv:opencsv:5.5.2'
 
     // log
     implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
@@ -103,6 +100,7 @@ dependencies {
     // jsoup
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.16.1'
 
+    // swagger
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
 }
