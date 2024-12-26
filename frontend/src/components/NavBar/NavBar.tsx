@@ -27,20 +27,12 @@ import {
 
 const navigationConfig = [
   {
-    path: PATH.ROOT,
-    title: '홈',
-  },
-  {
     path: PATH.STUDYLOG,
     title: '학습로그',
   },
   {
-    path: PATH.ROADMAP,
-    title: '로드맵',
-  },
-  {
     path: PATH.ARTICLE,
-    title: '아티클',
+    title: '피드',
   },
 ] as const;
 

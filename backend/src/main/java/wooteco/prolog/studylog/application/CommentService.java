@@ -35,7 +35,7 @@ public class CommentService {
     public Long insertComment(CommentSaveRequest request) {
         Member findMember = memberRepository.findById(request.getMemberId())
             .orElseThrow(() -> new BadRequestException(MEMBER_NOT_FOUND));
-        validateMemberIsCrew(findMember);
+//        validateMemberIsCrew(findMember);
         Studylog findStudylog = studylogRepository.findById(request.getStudylogId())
             .orElseThrow(() -> new BadRequestException(STUDYLOG_NOT_FOUND));
 

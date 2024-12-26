@@ -71,6 +71,7 @@ const FilterList = ({
       {Object.entries(getFilteredFiltersByLevel()).map(([key, values]) => (
         <div key={key}>
           <button
+            className={"dropdown"}
             onClick={() => {
               setSelectedFilter(key);
               setSearchKeyword('');
@@ -80,13 +81,13 @@ const FilterList = ({
           </button>
           {selectedFilter === key && (
             <DropdownMenu css={DropdownStyle}>
-              <SearchBarWrapper>
-                <SearchBar
-                  css={SearchBarStyle}
-                  onChange={(value) => setSearchKeyword(value)}
-                  value={searchKeyword}
-                />
-              </SearchBarWrapper>
+              {/*<SearchBarWrapper>*/}
+              {/*  <SearchBar*/}
+              {/*    css={SearchBarStyle}*/}
+              {/*    onChange={(value) => setSearchKeyword(value)}*/}
+              {/*    value={searchKeyword}*/}
+              {/*  />*/}
+              {/*</SearchBarWrapper>*/}
               <SelectedFilterList
                 searchKeyword={searchKeyword}
                 filterList={values}
