@@ -105,7 +105,7 @@ const FilterContainer = styled.div`
     grid-template-columns: repeat(2, 1fr);
   }
 
-  & button {
+  & button.dropdown {
     display: flex;
     align-items: center;
     height: 100%;
