@@ -79,6 +79,7 @@ const RssLinkLabel = styled.div`
 `;
 
 const MenuList = styled.ul`
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   background-color: ${COLOR.WHITE};

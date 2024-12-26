@@ -58,10 +58,6 @@ const Introduction = () => {
     }
   );
 
-  if (!isOwner && !hasIntro) {
-    return <></>;
-  }
-
   return (
     <div
       css={[
@@ -108,6 +104,22 @@ const Introduction = () => {
           ]}
         >
           소개글을 작성해 보세요! :D
+        </p>
+      )}
+
+      {!isOwner && !hasIntro && !isEditing && (
+        <p
+          css={[
+            css`
+              margin: 0;
+              width: 100%;
+            `,
+            FlexStyle,
+            JustifyContentCenterStyle,
+            AlignItemsCenterStyle,
+          ]}
+        >
+          아직 소개글이 작성되지 않았어요! :D
         </p>
       )}
 

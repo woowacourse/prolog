@@ -37,7 +37,6 @@ const ProfilePage = ({ children, menu }) => {
         ) : (
           <div>
             <Introduction />
-            <StudylogOverview />
           </div>
         )}
       </Content>

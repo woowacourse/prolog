@@ -135,34 +135,6 @@ const ProfilePageStudylogs = () => {
   return (
     <Container>
       <Heading>학습로그</Heading>
-      <HeaderContainer>
-        <FilterListWrapper>
-          <FilterList
-            filters={filters}
-            selectedFilter={selectedFilter}
-            setSelectedFilter={setSelectedFilter}
-            selectedFilterDetails={selectedFilterDetails}
-            setSelectedFilterDetails={onFilterChange}
-            isVisibleResetFilter={!!selectedFilterDetails.length}
-            onResetFilter={resetFilter}
-            css={FilterStyles}
-          />
-        </FilterListWrapper>
-        <SelectedFilterList>
-          <ul>
-            {selectedFilterDetails.map(({ filterType, filterDetailId, name }) => (
-              <li key={filterType + filterDetailId + name}>
-                <Chip
-                  title={`${filterType}: ${name}`}
-                  onDelete={() => onUnsetFilter({ filterType, filterDetailId })}
-                >
-                  {`${filterType}: ${name}`}
-                </Chip>
-              </li>
-            ))}
-          </ul>
-        </SelectedFilterList>
-      </HeaderContainer>
       <Card css={CardStyles}>
         {studylogs?.data?.length ? (
           <>

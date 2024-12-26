@@ -78,7 +78,7 @@ export const usePutProfileIntroductionMutation = (
     () =>
       requestEditProfileIntroduction(
         username,
-        editorContentRef.current.getInstance().getMarkdown(),
+        { text: editorContentRef.current.getInstance().getMarkdown() },
         accessToken
       ),
     options
