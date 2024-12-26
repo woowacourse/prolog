@@ -137,34 +137,6 @@ const StudylogListPage = (): JSX.Element => {
         <div
           css={[
             FlexStyle,
-            JustifyContentSpaceBtwStyle,
-            AlignItemsCenterStyle,
-            css`
-              margin-bottom: 1rem;
-
-              ${MEDIA_QUERY.xs} {
-                flex-direction: column;
-              }
-            `,
-          ]}
-        >
-          <h1
-            css={css`
-              font-size: 2.4rem;
-            `}
-          >
-            📚 학습로그
-          </h1>
-          {/* 타입스크립트 일부 적용 이슈로 인한 css 빈 string 전달 */}
-          <SearchBar
-            onSubmit={onSearch}
-            onChange={({ target: { value } }) => onSearchKeywordsChange(value)}
-            value={searchKeywords}
-          />
-        </div>
-        <div
-          css={[
-            FlexStyle,
             css`
               ${MEDIA_QUERY.xs} {
                 > button {
