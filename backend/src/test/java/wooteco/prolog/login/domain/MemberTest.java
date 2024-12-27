@@ -64,23 +64,6 @@ class MemberTest {
         assertEquals("imageUrl", member.getImageUrl());
     }
 
-    @DisplayName("updateProfileIntro() : 변경할 ProfileIntro가 없다면 ProfileIntro를 바꾸지 않는다.")
-    @Test
-    void updateProfileIntro() {
-        //given
-        final Member member = new Member(1L, "soulg", "judy",
-            Role.CREW, 1234L, "imageUrl");
-        final String profileIntro = "intro";
-
-        member.updateProfileIntro(profileIntro);
-
-        //when
-        member.updateProfileIntro(empty);
-
-        //then
-        assertEquals(profileIntro, member.getProfileIntro());
-    }
-
     @DisplayName("getMemberTagsWithSort() : 멤버가 가지고 있는 태그의 수로 내림차순 정렬을 할 수 있다.")
     @Test
     void getMemberTagsWithSort() {

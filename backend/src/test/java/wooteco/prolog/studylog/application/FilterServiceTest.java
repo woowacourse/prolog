@@ -14,14 +14,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.MemberService;
-import wooteco.prolog.member.application.dto.MemberResponse;
-import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.roadmap.application.dto.SessionResponse;
 import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.FilterResponse;
-import wooteco.prolog.studylog.application.dto.TagResponse;
 
 @ExtendWith(MockitoExtension.class)
 class FilterServiceTest {
@@ -55,14 +52,6 @@ class FilterServiceTest {
         missionResponses.add(new MissionResponse(1L, "mission1",
             new wooteco.prolog.session.application.dto.SessionResponse(1L, "session1")));
         doReturn(missionResponses).when(missionService).findAllWithMyMissionFirst(loginMember);
-
-        List<TagResponse> tagResponses = new ArrayList<>();
-        tagResponses.add(new TagResponse(1L, "tag1"));
-        doReturn(tagResponses).when(tagService).findTagsIncludedInStudylogs();
-
-        List<MemberResponse> memberResponses = new ArrayList<>();
-        memberResponses.add(new MemberResponse(1L, "베베", "bebe", Role.CREW, "img"));
-        doReturn(memberResponses).when(memberService).findAllOrderByNickNameAsc();
 
         // when
         FilterResponse response = filterService.showAll(loginMember);

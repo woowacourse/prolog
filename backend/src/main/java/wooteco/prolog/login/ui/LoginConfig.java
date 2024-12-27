@@ -3,7 +3,6 @@ package wooteco.prolog.login.ui;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -15,7 +14,6 @@ import wooteco.support.autoceptor.AutoInterceptorPatternMaker;
 
 @Configuration
 @AllArgsConstructor
-@Profile("!docu")
 public class LoginConfig implements WebMvcConfigurer {
 
     private static final String BASE_PACKAGE = "wooteco.prolog";

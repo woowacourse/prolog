@@ -151,7 +151,7 @@ flyway {
     baselineVersion = 1.1 // V1.1 스크립트는 이미 실행한 것으로 기준선을 잡는다.
 }
 
-task acceptanceTest(type: Test) {
+tasks.register('acceptanceTest', Test) {
     testClassesDirs = sourceSets.acceptanceTest.output.classesDirs
     classpath = sourceSets.acceptanceTest.runtimeClasspath
     useJUnitPlatform()

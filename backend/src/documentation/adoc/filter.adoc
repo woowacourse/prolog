@@ -1,6 +1,0 @@
-[[filter]]
-== 필터
-
-=== 필터 목록 조회
-
-operation::filter/list[snippets='http-request,http-response']
