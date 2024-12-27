@@ -1,9 +1,9 @@
 package wooteco.prolog.article.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.article.domain.RssFeeds;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class RssClientTest {
     @Test

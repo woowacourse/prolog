@@ -1,5 +1,7 @@
 package wooteco.prolog.article.ui;
 
+import java.net.URI;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,9 +21,6 @@ import wooteco.prolog.article.application.dto.ArticleResponse;
 import wooteco.prolog.article.domain.ArticleFilterType;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
-
-import java.net.URI;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController

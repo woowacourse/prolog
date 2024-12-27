@@ -3,8 +3,8 @@ package wooteco.prolog.member.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static wooteco.prolog.member.domain.Part.*;
-import static wooteco.prolog.member.domain.Term.*;
+import static wooteco.prolog.member.domain.Part.BACKEND;
+import static wooteco.prolog.member.domain.Term.FIFTH;
 
 import com.google.common.collect.ImmutableList;
 import java.util.List;
@@ -14,7 +14,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import wooteco.prolog.member.domain.*;
+import wooteco.prolog.member.domain.Department;
+import wooteco.prolog.member.domain.DepartmentMember;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.DepartmentMemberRepository;
 
 @ExtendWith(MockitoExtension.class)

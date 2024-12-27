@@ -1,16 +1,15 @@
 package wooteco.prolog.article.application;
 
+import static java.util.stream.Collectors.toList;
+
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
+import java.net.URL;
+import java.util.ArrayList;
 import org.springframework.stereotype.Component;
 import wooteco.prolog.article.domain.RssFeed;
 import wooteco.prolog.article.domain.RssFeeds;
-
-import java.net.URL;
-import java.util.ArrayList;
-
-import static java.util.stream.Collectors.toList;
 
 @Component
 public class RssClient {

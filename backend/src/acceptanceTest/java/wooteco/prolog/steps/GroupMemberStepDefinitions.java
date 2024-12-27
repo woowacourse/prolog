@@ -1,14 +1,18 @@
 package wooteco.prolog.steps;
 
+import static wooteco.prolog.member.domain.Part.ANDROID;
+import static wooteco.prolog.member.domain.Part.BACKEND;
+import static wooteco.prolog.member.domain.Part.FRONTEND;
+import static wooteco.prolog.member.domain.Term.FOURTH;
+
 import io.cucumber.java.en.Given;
 import wooteco.prolog.AcceptanceSteps;
-import wooteco.prolog.member.domain.*;
+import wooteco.prolog.member.domain.Department;
+import wooteco.prolog.member.domain.DepartmentMember;
+import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.DepartmentMemberRepository;
 import wooteco.prolog.member.domain.repository.DepartmentRepository;
 import wooteco.prolog.member.domain.repository.MemberRepository;
-
-import static wooteco.prolog.member.domain.Part.*;
-import static wooteco.prolog.member.domain.Term.*;
 
 public class GroupMemberStepDefinitions extends AcceptanceSteps {
 

@@ -2,8 +2,11 @@ package wooteco.prolog.member.domain;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static wooteco.prolog.member.domain.Part.*;
-import static wooteco.prolog.member.domain.Term.*;
+import static wooteco.prolog.member.domain.Part.ANDROID;
+import static wooteco.prolog.member.domain.Part.BACKEND;
+import static wooteco.prolog.member.domain.Part.FRONTEND;
+import static wooteco.prolog.member.domain.Term.FIFTH;
+import static wooteco.prolog.member.domain.Term.FOURTH;
 
 import org.junit.jupiter.api.Test;
 

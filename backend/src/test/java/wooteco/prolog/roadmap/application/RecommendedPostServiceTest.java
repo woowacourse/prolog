@@ -1,5 +1,7 @@
 package wooteco.prolog.roadmap.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,8 +17,6 @@ import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.roadmap.domain.repository.RecommendedPostRepository;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class RecommendedPostServiceTest {
