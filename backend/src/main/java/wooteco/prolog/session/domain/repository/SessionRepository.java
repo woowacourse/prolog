@@ -10,4 +10,8 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
     Optional<Session> findByName(String name);
 
     List<Session> findAllByCurriculumId(Long curriculumId);
+
+    List<Session> findAllByOrderByIdDesc();
+
+    List<Session> findAllByIdInOrderByIdDesc(List<Long> ids);
 }

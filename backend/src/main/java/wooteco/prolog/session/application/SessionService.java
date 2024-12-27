@@ -59,10 +59,16 @@ public class SessionService {
             .collect(toList());
     }
 
+    public List<SessionResponse> findAllByOrderByIdDesc() {
+        return sessionRepository.findAllByOrderByIdDesc().stream()
+            .map(SessionResponse::of)
+            .collect(toList());
+    }
+
     public List<SessionResponse> findMySessions(LoginMember member) {
         List<Long> sessionIds = findMySessionIds(member.getId());
 
-        return sessionRepository.findAllById(sessionIds).stream()
+        return sessionRepository.findAllByIdInOrderByIdDesc(sessionIds).stream()
             .map(SessionResponse::of)
             .collect(toList());
     }
@@ -76,11 +82,11 @@ public class SessionService {
 
     public List<SessionResponse> findAllWithMySessionFirst(LoginMember loginMember) {
         if (loginMember.isAnonymous()) {
-            return findAll();
+            return findAllByOrderByIdDesc();
         }
 
         List<SessionResponse> mySessions = findMySessions(loginMember);
-        List<SessionResponse> allSessions = findAll();
+        List<SessionResponse> allSessions = findAllByOrderByIdDesc();
         allSessions.removeAll(mySessions);
 
         return Stream.of(mySessions, allSessions)

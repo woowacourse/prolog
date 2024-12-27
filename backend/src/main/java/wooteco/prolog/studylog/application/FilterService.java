@@ -18,10 +18,8 @@ public class FilterService {
     private final MissionService missionService;
 
     public FilterResponse showAll(LoginMember loginMember) {
-        List<SessionResponse> sessionResponses = sessionService.findAllWithMySessionFirst(
-            loginMember); // my session으로 대체
-        List<MissionResponse> missionResponses = missionService.findAllWithMyMissionFirst(
-            loginMember);
+        List<SessionResponse> sessionResponses = sessionService.findAllWithMySessionFirst(loginMember);
+        List<MissionResponse> missionResponses = missionService.findAllWithMyMissionFirst(loginMember);
         return new FilterResponse(sessionResponses, missionResponses);
     }
 }

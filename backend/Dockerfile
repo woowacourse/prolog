@@ -14,7 +14,6 @@ COPY ./gradlew .
 RUN ./gradlew clean build -x test -x acceptanceTest
 RUN mv /work/build/libs/*[!-plain].jar ./app.jar
 
-
 FROM eclipse-temurin:17-jre
 
 COPY --from=build /work/app.jar .
