@@ -8,7 +8,7 @@ const getMenuList = ({ username, isOwner }: { username: string; isOwner: boolean
   const defaultMenu = [
     {
       key: PROFILE_PAGE_MENU.OVERVIEW,
-      title: '오버뷰',
+      title: '프로필',
       path: `/${username}`,
       Icon: OverviewIcon,
     },

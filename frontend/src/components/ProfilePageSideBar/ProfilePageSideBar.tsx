@@ -140,7 +140,7 @@ const ProfilePageSideBar = ({ menu }: ProfilePageSideBarProps) => {
           )}
         </RssFeedWrapper>
       </Profile>
-      {isLoading ? <></> : <BadgeList badgeList={badgeList} />}
+      {/*{isLoading ? <></> : <BadgeList badgeList={badgeList} />}*/}
       <MenuList>
         {getMenuList({ username, isOwner }).map((menuItem) => (
           <MenuItem key={menuItem.key} isSelectedMenu={selectedMenu === menuItem?.key}>

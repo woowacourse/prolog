@@ -122,9 +122,7 @@ public class Member {
     }
 
     public void updateProfileIntro(String text) {
-        if (!ObjectUtils.isEmpty(text)) {
-            this.profileIntro = text;
-        }
+        this.profileIntro = text;
     }
 
     public void updateRssFeedUrl(String url) {

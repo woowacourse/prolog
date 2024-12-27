@@ -42,9 +42,6 @@ import wooteco.prolog.studylog.domain.Tags;
 import wooteco.prolog.studylog.domain.repository.PopularStudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.prolog.studylog.domain.repository.TagRepository;
-import wooteco.prolog.update.UpdateContent;
-import wooteco.prolog.update.UpdatedContents;
-import wooteco.prolog.update.UpdatedContentsRepository;
 
 /**
  * prolog 서비스를 띄울 때 기본 데이터가 없다면 기본 데이터를 추가한다.
@@ -66,7 +63,6 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
     private final SessionMemberRepository sessionMemberRepository;
     private final StudylogRepository studylogRepository;
     private final PopularStudylogRepository popularStudylogRepository;
-    private final UpdatedContentsRepository updatedContentsRepository;
     private final LevelLogRepository levelLogRepository;
     private final SelfDiscussionRepository selfDiscussionRepository;
 
@@ -127,7 +123,6 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
         final Map<StudylogDummy, List<Studylog>> studylogs = populateStudylogs(members, sessions,
             missions, tags);
         final List<PopularStudylog> popularStudylogs = populatePopularStudyLog(studylogs);
-        populateUpdatedContents();
         final Map<LevelLogDummy, LevelLog> levelLogs = populateLevelLog(members);
         final Map<SelfDiscussionDummy, SelfDiscussion> selfDiscussions = populateSelfDiscussion(
             levelLogs);
@@ -237,11 +232,6 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
             .collect(toList());
 
         return popularStudylogRepository.saveAll(randomPopularStudyLogs);
-    }
-
-    private void populateUpdatedContents() {
-        updatedContentsRepository.save(
-            new UpdatedContents(null, UpdateContent.MEMBER_TAG_UPDATE, 1));
     }
 
     private Map<LevelLogDummy, LevelLog> populateLevelLog(final Map<MemberDummy, Member> members) {

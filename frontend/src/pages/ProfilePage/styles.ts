@@ -11,7 +11,6 @@ const Content = styled.div`
   width: 100%;
   height: fit-content;
   margin-left: 2.4rem;
-  display: flex;
   justify-content: center;
 
   ${MEDIA_QUERY.md} {
@@ -22,7 +21,7 @@ const Content = styled.div`
 const Overview = styled.div`
   display: grid;
   width: 100%;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   gap: 1.6rem;
 
   & > * {
