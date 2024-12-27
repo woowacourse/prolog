@@ -2,10 +2,10 @@ package wooteco.prolog.member.domain;
 
 public enum Role {
 
-    GUEST(0),
-    CREW(1),
-    COACH(2),
-    ADMIN(3);
+    GUEST(0),   // 미인증 사용자
+    CREW(1),    // 인증 사용자
+    COACH(2),   // 운영진
+    ADMIN(3);   // 관리자
 
     private final int importance;
 

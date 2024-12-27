@@ -23,6 +23,7 @@ import wooteco.prolog.member.application.dto.ProfileIntroRequest;
 import wooteco.prolog.member.application.dto.ProfileIntroResponse;
 import wooteco.prolog.member.application.dto.RoleUpdateRequest;
 import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.MemberCreatedEvent;
 import wooteco.prolog.member.domain.MemberUpdatedEvent;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
@@ -46,7 +47,13 @@ public class MemberService {
     @Transactional
     public Member findOrCreateMember(GithubProfileResponse githubProfile) {
         return memberRepository.findByGithubId(githubProfile.getGithubId())
-            .orElseGet(() -> memberRepository.save(githubProfile.toMember()));
+            .orElseGet(() -> createMember(githubProfile));
+    }
+
+    public Member createMember(GithubProfileResponse githubProfile) {
+        Member member = memberRepository.save(githubProfile.toMember());
+        eventPublisher.publishEvent(new MemberCreatedEvent(member));
+        return member;
     }
 
     public Member findById(Long id) {
