@@ -68,8 +68,7 @@ public class ArticleStepDefinitions extends AcceptanceSteps {
         int statusCode = context.response.statusCode();
         assertThat(statusCode).isEqualTo(HttpStatus.OK.value());
 
-        List<ArticleResponse> articleResponses = (List<ArticleResponse>) context.storage.get(
-            "articles");
+        List<ArticleResponse> articleResponses = (List<ArticleResponse>) context.storage.get("articles");
         assertThat(articleResponses.size()).isEqualTo(2);
     }
 
@@ -87,10 +86,10 @@ public class ArticleStepDefinitions extends AcceptanceSteps {
 
     @Then("og태그를 파싱해서 반환한다.")
     public void 아티클을_파싱해서_반환한다() {
-        final ArticleUrlResponse actual = context.response
-            .as(ArticleUrlResponse.class);
+        final ArticleUrlResponse actual = context.response.as(ArticleUrlResponse.class);
         final ArticleUrlResponse expected = new ArticleUrlResponse(
             "우아한형제들",
+            "문 앞으로 일상의 행복을 배달합니다.",
             "https://woowahan-cdn.woowahan.com/static/image/share_kor.jpg"
         );
 

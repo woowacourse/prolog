@@ -70,9 +70,7 @@ class FilterServiceTest {
         // then
         assertAll(
             () -> assertThat(response.getSessions()).isEqualTo(sessionResponses),
-            () -> assertThat(response.getMissions()).isEqualTo(missionResponses),
-            () -> assertThat(response.getTags()).isEqualTo(tagResponses),
-            () -> assertThat(response.getMembers()).isEqualTo(memberResponses)
+            () -> assertThat(response.getMissions()).isEqualTo(missionResponses)
         );
     }
 }

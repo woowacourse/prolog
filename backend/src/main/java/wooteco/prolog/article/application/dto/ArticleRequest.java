@@ -1,7 +1,9 @@
 package wooteco.prolog.article.application.dto;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import wooteco.prolog.article.domain.Article;
 import wooteco.prolog.article.domain.Description;
 import wooteco.prolog.article.domain.ImageUrl;
@@ -11,12 +13,13 @@ import wooteco.prolog.member.domain.Member;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class ArticleRequest {
 
-    private final String title;
-    private final String url;
-    private final String imageUrl;
-    private final String description;
+    private String title;
+    private String url;
+    private String imageUrl;
+    private String description;
 
     public ArticleRequest(String title, String url, String imageUrl) {
         this.title = title;
@@ -26,6 +29,6 @@ public class ArticleRequest {
     }
 
     public Article toArticle(final Member member) {
-        return new Article(member, new Title(title), new Description(description), new Url(url), new ImageUrl(imageUrl), null);
+        return new Article(member, new Title(title), new Description(description), new Url(url), new ImageUrl(imageUrl), LocalDateTime.now());
     }
 }
