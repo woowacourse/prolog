@@ -21,25 +21,31 @@ import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.application.dto.MembersResponse;
 import wooteco.prolog.member.application.dto.ProfileIntroRequest;
 import wooteco.prolog.member.application.dto.ProfileIntroResponse;
+import wooteco.prolog.member.application.dto.ProfileResponse;
 import wooteco.prolog.member.application.dto.RoleUpdateRequest;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.MemberCreatedEvent;
 import wooteco.prolog.member.domain.MemberUpdatedEvent;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
+import wooteco.prolog.organization.application.OrganizationService;
+import wooteco.prolog.organization.domain.OrganizationGroup;
+import wooteco.prolog.organization.domain.OrganizationGroupMember;
 
 @Service
 @Transactional(readOnly = true)
 public class MemberService {
 
     private final Role mangerRole;
+    private final OrganizationService organizationService;
     private final ApplicationEventPublisher eventPublisher;
     private final MemberRepository memberRepository;
 
-    public MemberService(@Value("${manager.role}") Role mangerRole,
+    public MemberService(@Value("${manager.role}") Role mangerRole, OrganizationService organizationService,
                          ApplicationEventPublisher eventPublisher,
                          MemberRepository memberRepository) {
         this.mangerRole = mangerRole;
+        this.organizationService = organizationService;
         this.eventPublisher = eventPublisher;
         this.memberRepository = memberRepository;
     }
@@ -66,9 +72,10 @@ public class MemberService {
             .orElseThrow(() -> new BadRequestException(MEMBER_NOT_FOUND));
     }
 
-    public MemberResponse findMemberResponseByUsername(String username) {
+    public ProfileResponse findMemberResponseByUsername(String username) {
         Member member = findByUsername(username);
-        return MemberResponse.of(member);
+        List<OrganizationGroup> groups = organizationService.findOrganizationGroupsByMemberId(member.getId());
+        return ProfileResponse.of(member, groups);
     }
 
     public ProfileIntroResponse findProfileIntro(String username) {

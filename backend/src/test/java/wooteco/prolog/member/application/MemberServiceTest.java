@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,10 +35,12 @@ import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.application.dto.MembersResponse;
 import wooteco.prolog.member.application.dto.ProfileIntroRequest;
 import wooteco.prolog.member.application.dto.ProfileIntroResponse;
+import wooteco.prolog.member.application.dto.ProfileResponse;
 import wooteco.prolog.member.application.dto.RoleUpdateRequest;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
+import wooteco.prolog.organization.application.OrganizationService;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
@@ -48,12 +51,14 @@ class MemberServiceTest {
 
     @Mock
     private ApplicationEventPublisher eventPublisher;
+    @Mock
+    private OrganizationService organizationService;
 
     private MemberService memberService;
 
     @BeforeEach
     void setUp() {
-        memberService = new MemberService(MANGER_ROLE, eventPublisher, memberRepository);
+        memberService = new MemberService(MANGER_ROLE, organizationService, eventPublisher, memberRepository);
     }
 
     @DisplayName("findOrCreateMember() : gitHub Id 를 통해서 이미 존재한 Member 조회")
@@ -169,7 +174,7 @@ class MemberServiceTest {
             .hasMessage(MEMBER_NOT_FOUND.getMessage());
     }
 
-    @DisplayName("findMemberResponseByUsername() : username을 통해서 MemberResponse를 조회할 수 있다.")
+    @DisplayName("findMemberResponseByUsername() : username 을 통해서 ProfileResponse 를 조회할 수 있다.")
     @Test
     void findMemberResponseByUsername() {
         //given
@@ -177,19 +182,17 @@ class MemberServiceTest {
         final String nickname = "nickname";
         final String imageUrl = "imageUrl";
 
-        final MemberResponse memberResponse = new MemberResponse(1L, username, nickname, Role.ADMIN,
-            imageUrl);
         final Member member = new Member(1L, username, nickname, Role.ADMIN, 1L, imageUrl);
+        final ProfileResponse profileResponse = ProfileResponse.of(member, Lists.emptyList());
 
         when(memberRepository.findByUsername(any()))
             .thenReturn(Optional.of(member));
 
         //when
-        final MemberResponse foundMemberResponse = memberService.findMemberResponseByUsername(
-            username);
+        final ProfileResponse foundMemberResponse = memberService.findMemberResponseByUsername(username);
 
         //then
-        assertEquals(foundMemberResponse, memberResponse);
+        assertEquals(foundMemberResponse.getUsername(), profileResponse.getUsername());
     }
 
     @DisplayName("ProfileIntroResponse() : username을 통해서 ProfileIntroResponse를 조회할 수 있다.")

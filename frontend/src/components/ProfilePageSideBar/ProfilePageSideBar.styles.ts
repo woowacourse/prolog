@@ -65,10 +65,23 @@ const RssFeedUrl = styled.div`
 `;
 
 const Role = styled.div`
-  margin-top: 1rem;
+  margin-bottom: 1rem;
   padding-left: 1.2rem;
   font-size: 1.2rem;
   color: ${COLOR.LIGHT_GRAY_900};
+`;
+
+const RoleButton = styled.button`
+  margin-top: .3rem;
+  font-size: 1.2rem;
+  color: ${COLOR.DARK_GRAY_700};
+`;
+
+const RoleLabel = styled.div`
+  margin-top: 1rem;
+  padding-left: 1.2rem;
+  font-size: 1.5rem;
+  color: ${COLOR.DARK_GRAY_700};
 `;
 
 const RssLinkLabel = styled.div`
@@ -196,6 +209,8 @@ export {
   Nickname,
   RssFeedUrl,
   Role,
+  RoleButton,
+  RoleLabel,
   RssLinkLabel,
   MenuList,
   MenuItem,

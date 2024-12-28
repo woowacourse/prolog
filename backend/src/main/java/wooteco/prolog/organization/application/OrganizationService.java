@@ -4,14 +4,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.MemberCreatedEvent;
 import wooteco.prolog.organization.domain.Organization;
 import wooteco.prolog.organization.domain.OrganizationGroup;
 import wooteco.prolog.organization.domain.OrganizationGroupMember;
+import wooteco.prolog.organization.domain.OrganizationGroupSession;
 import wooteco.prolog.organization.domain.repository.OrganizationGroupMemberRepository;
 import wooteco.prolog.organization.domain.repository.OrganizationGroupRepository;
-import wooteco.prolog.organization.domain.OrganizationGroupSession;
 import wooteco.prolog.organization.domain.repository.OrganizationGroupSessionRepository;
 import wooteco.prolog.organization.domain.repository.OrganizationRepository;
 import wooteco.prolog.session.domain.Session;
@@ -19,34 +18,20 @@ import wooteco.prolog.session.domain.Session;
 @Service
 public class OrganizationService {
 
-    private final MemberService memberService;
     private final OrganizationRepository organizationRepository;
     private final OrganizationGroupRepository organizationGroupRepository;
     private final OrganizationGroupMemberRepository organizationGroupMemberRepository;
     private final OrganizationGroupSessionRepository organizationGroupSessionRepository;
 
     public OrganizationService(OrganizationRepository organizationRepository,
-                               OrganizationGroupRepository organizationGroupRepository, MemberService memberService,
+                               OrganizationGroupRepository organizationGroupRepository,
                                OrganizationGroupMemberRepository organizationGroupMemberRepository,
                                OrganizationGroupSessionRepository organizationGroupSessionRepository) {
         this.organizationRepository = organizationRepository;
         this.organizationGroupRepository = organizationGroupRepository;
-        this.memberService = memberService;
         this.organizationGroupMemberRepository = organizationGroupMemberRepository;
         this.organizationGroupSessionRepository = organizationGroupSessionRepository;
     }
-
-    //
-//    public List<OrganizationGroup> findMyOrganizationGroupByMemberId(Long memberId) {
-//        List<OrganizationGroupMember> organizationGroupMembers = organizationGroupMemberRepository.findByMemberId(
-//            memberId);
-//        List<Long> organizationGroupId = organizationGroupMembers.stream()
-//            .map(it -> it.getOrganizationGroupId())
-//            .collect(Collectors.toList());
-//
-//        List<OrganizationGroup> organizationGroups = organizationGroupRepository.findByIdIn(organizationGroupId);
-//        return organizationGroups;
-//    }
 
     public Organization saveOrganization(String name) {
         return organizationRepository.save(new Organization(name));
@@ -108,5 +93,11 @@ public class OrganizationService {
 
         // 조회한 OrganizationGroupMember 의 memberId를 변경
         organizationGroupMembers.forEach(it -> it.updateMemberId(event.getMember().getId()));
+    }
+
+    public List<OrganizationGroup> findOrganizationGroupsByMemberId(Long memberId) {
+        List<Long> organizationGroupIds = organizationGroupMemberRepository.findByMemberId(
+            memberId).stream().map(OrganizationGroupMember::getOrganizationGroupId).collect(Collectors.toList());
+        return organizationGroupRepository.findByIdInOrderByIdDesc(organizationGroupIds);
     }
 }

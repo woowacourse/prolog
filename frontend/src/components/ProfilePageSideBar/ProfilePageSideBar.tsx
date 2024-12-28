@@ -17,6 +17,8 @@ import {
   MenuItem,
   MenuButton,
   Role,
+  RoleButton,
+  RoleLabel,
   RssLinkLabel,
   Container,
   EditButtonStyle,
@@ -86,10 +88,30 @@ const ProfilePageSideBar = ({ menu }: ProfilePageSideBarProps) => {
     history.push(path);
   };
 
+const [showAll, setShowAll] = useState(false); // 상태 관리: 전체 표시 여부
+
+const toggleShowAll = () => setShowAll((prev) => !prev); // 상태 토글 함수
+
+const displayedGroups = showAll
+    ? user?.organizationGroups // 전체 항목 표시
+    : user?.organizationGroups?.slice(0, 2); // 첫 2개만 표시
+
   return (
     <Container>
       <Profile>
-        <Image src={user?.imageUrl} alt="프로필 이미지" /> <Role>{user?.role}</Role>
+        <Image src={user?.imageUrl} alt="프로필 이미지" />
+          <RoleLabel>소속</RoleLabel>
+          <Role>
+              {displayedGroups?.map((group, index) => (
+                  <div key={index}>{group}</div>
+              ))}
+
+              {user?.organizationGroups?.length > 2 && (
+                  <RoleButton onClick={toggleShowAll}>
+                      {showAll ? "가리기" : "더보기"}
+                  </RoleButton>
+              )}
+          </Role>
         <NicknameWrapper>
           {isProfileEditing ? (
             <NicknameInput

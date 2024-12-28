@@ -23,6 +23,7 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.ProfileIntroRequest;
 import wooteco.prolog.member.application.dto.ProfileIntroResponse;
+import wooteco.prolog.member.application.dto.ProfileResponse;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 
@@ -72,9 +73,9 @@ public class ProfileStudylogController {
     }
 
     @GetMapping(value = "/{username}/profile", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MemberResponse> findMemberProfile(@PathVariable String username) {
-        MemberResponse member = memberService.findMemberResponseByUsername(username);
-        return ResponseEntity.ok().body(member);
+    public ResponseEntity<ProfileResponse> findMemberProfile(@PathVariable String username) {
+        ProfileResponse profileResponse = memberService.findMemberResponseByUsername(username);
+        return ResponseEntity.ok().body(profileResponse);
     }
 
     @GetMapping(value = "/{username}/profile-intro", produces = MediaType.APPLICATION_JSON_VALUE)
