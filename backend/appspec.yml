@@ -1,0 +1,22 @@
+version: 0.0
+os: linux
+
+files:
+  - source: /app.jar
+    destination: /home/ec2-user/
+
+hooks:
+  ApplicationStop:
+    - location: scripts/stop-app.sh
+      timeout: 300
+      runas: ec2-user
+
+  AfterInstall:
+    - location: scripts/after-install.sh
+      timeout: 300
+      runas: ec2-user
+
+  ApplicationStart:
+    - location: scripts/start-app.sh
+      timeout: 300
+      runas: ec2-user

@@ -29,6 +29,10 @@ crash.log
 *.tfvars
 *.tfvars.json
 
+# Terraform plan files
+tfplan
+*.tfplan
+
 # Terraform override files
 override.tf
 override.tf.json
@@ -42,3 +46,9 @@ override.tf.json
 # Local command logs
 .terraform.rc
 terraform.rc
+
+# Deploy folder
+backend/deploy
+
+# Private key
+private_key.pem

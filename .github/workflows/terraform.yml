@@ -1,0 +1,32 @@
+name: back deploy for dev
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment (dev, prod)'
+        required: true
+        default: 'dev'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.3
+
+      - name: Select workspace
+        run: |
+          ENVIRONMENT=${{ github.event.inputs.environment }}
+          terraform workspace select "$ENVIRONMENT" || terraform workspace new "$ENVIRONMENT"
+
+      - name: Terraform Init and Apply
+        run: |
+          terraform init
+          terraform plan -out=tfplan
+          terraform apply tfplan
