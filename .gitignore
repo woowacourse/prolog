@@ -14,3 +14,31 @@
 
 ### direnv ###
 .envrc
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Backup files created by Terraform
+*.tfstate.backup
+
+# Crash log files
+crash.log
+
+# Terraform variable files containing sensitive data
+*.tfvars
+*.tfvars.json
+
+# Terraform override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform provider plugins
+.terraform/
+.terraform.lock.hcl
+
+# Local command logs
+.terraform.rc
+terraform.rc
