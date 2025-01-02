@@ -2,26 +2,29 @@ package wooteco.prolog.common.slacklogger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Component
 public class PrologSlack {
 
-    private static final String SLACK_LOGGER_WEBHOOK_URI =
-        System.getenv("SLACK_LOGGER_WEBHOOK_URI");
+    private final String slackLoggerWebhookUri;
 
     public final ObjectMapper objectMapper;
 
-    public PrologSlack(ObjectMapper objectMapper) {
+    public PrologSlack(@Value("slack.logger-webhook-uri") String slackLoggerWebhookUri,
+                       ObjectMapper objectMapper) {
+        this.slackLoggerWebhookUri = slackLoggerWebhookUri;
         this.objectMapper = objectMapper;
     }
 
     public void send(String message) {
-        WebClient.create(SLACK_LOGGER_WEBHOOK_URI)
+        WebClient.create(slackLoggerWebhookUri)
             .post()
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue(toJson(message))
