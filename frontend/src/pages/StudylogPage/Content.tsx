@@ -1,8 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
-import { MouseEventHandler } from 'react';
-import { Card, ProfileChip } from '../../components';
-import ViewCount from '../../components/ViewCount/ViewCount';
+import React, { MouseEventHandler, useContext } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { Button, BUTTON_SIZE, Card, ProfileChip } from '../../components';
+import ViewCount from '../../components/Count/ViewCount';
 import {
   AlignItemsBaseLineStyle,
   FlexStyle,
@@ -10,7 +12,10 @@ import {
 } from '../../styles/flex.styles';
 import {
   BottomContainer,
+  ButtonList,
   CardInner,
+  DeleteButtonStyle,
+  EditButtonStyle,
   IssuedDate,
   Mission,
   ProfileChipStyle,
@@ -20,7 +25,7 @@ import {
   Title,
   ViewerWrapper,
 } from './styles';
-import { Studylog } from '../../models/Studylogs';
+import { QuestionAnswer, Studylog } from '../../models/Studylogs';
 import defaultProfileImage from '../../assets/images/no-profile-image.png';
 import { css } from '@emotion/react';
 import Like from '../../components/Reaction/Like';
@@ -32,6 +37,14 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import 'prismjs/themes/prism.css';
 import Prism from 'prismjs';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
+import { ALERT_MESSAGE, CONFIRM_MESSAGE, ERROR_MESSAGE, PATH } from '../../constants';
+import { useHistory, useParams } from 'react-router-dom';
+import useSnackBar from '../../hooks/useSnackBar';
+import { useMutation } from 'react-query';
+import { requestDeleteStudylog } from '../../service/requests';
+import { SUCCESS_MESSAGE } from '../../constants/message';
+import { useDeleteStudylogMutation } from '../../hooks/queries/studylog';
+import { UserContext } from '../../contexts/UserProvider';
 
 interface Props {
   studylog: Studylog;
@@ -39,9 +52,16 @@ interface Props {
   toggleScrap: MouseEventHandler<HTMLButtonElement>;
   // ProfileChip 내부 타이핑 불가로인하여 any로 단언
   goAuthorProfilePage: any;
+  answers: QuestionAnswer[];
 }
 
-const Content = ({ studylog, toggleLike, toggleScrap, goAuthorProfilePage }: Props) => {
+const Content: React.FC<Props> = ({
+  studylog,
+  toggleLike,
+  toggleScrap,
+  goAuthorProfilePage,
+  answers,
+}) => {
   const {
     author,
     mission,
@@ -55,31 +75,96 @@ const Content = ({ studylog, toggleLike, toggleScrap, goAuthorProfilePage }: Pro
     scrap,
   } = studylog;
 
+  const history = useHistory();
+  const { user } = useContext(UserContext);
+  const { accessToken, username } = user;
+  const { id } = useParams<{ id: string }>();
+
+  const { mutate: deleteStudylog } = useDeleteStudylogMutation();
+
+  const goEditTargetPost = () => {
+    history.push(`${PATH.STUDYLOG}/${id}/edit`);
+  };
   return (
     <Card size="LARGE">
       <CardInner>
         <div>
           <SubHeader>
             <Mission>{mission?.name}</Mission>
-            <SubHeaderRightContent>
-              <IssuedDate>{new Date(createdAt).toLocaleString('ko-KR')}</IssuedDate>
-            </SubHeaderRightContent>
+            <SubHeaderRightContent></SubHeaderRightContent>
           </SubHeader>
 
           <div css={[FlexStyle, JustifyContentSpaceBtwStyle]}>
             <Title>{title}</Title>
-            <ViewCount count={viewCount} />
+          </div>
+          <div css={[FlexStyle, JustifyContentSpaceBtwStyle]}>
+            <div>
+              <div
+                css={[
+                  css`
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 2rem;
+                  `,
+                ]}
+              >
+                <ProfileChip
+                  imageSrc={author?.imageUrl || defaultProfileImage}
+                  cssProps={ProfileChipStyle}
+                  onClick={goAuthorProfilePage}
+                >
+                  {author?.nickname}
+                </ProfileChip>
+                <IssuedDate>{new Date(createdAt).toLocaleString('ko-KR')}</IssuedDate>
+              </div>
+            </div>
+
+            <div>
+              {username === author?.username && (
+                <ButtonList>
+                  {[
+                    { title: '수정', cssProps: EditButtonStyle, onClick: goEditTargetPost },
+                    {
+                      title: '삭제',
+                      cssProps: DeleteButtonStyle,
+                      onClick: () => {
+                        if (!window.confirm(CONFIRM_MESSAGE.DELETE_STUDYLOG)) return;
+                        deleteStudylog({ id, accessToken });
+                      },
+                    },
+                  ].map(({ title, cssProps, onClick }) => (
+                    <Button
+                      key={title}
+                      size={BUTTON_SIZE.X_SMALL}
+                      type="button"
+                      cssProps={cssProps}
+                      onClick={onClick}
+                    >
+                      {title}
+                    </Button>
+                  ))}
+                </ButtonList>
+              )}
+            </div>
           </div>
 
-          <ProfileChip
-            imageSrc={author?.imageUrl || defaultProfileImage}
-            cssProps={ProfileChipStyle}
-            onClick={goAuthorProfilePage}
+          <div
+            css={[
+              css`
+                display: flex;
+                align-items: center;
+                border-top: 1px solid #e6e6e6;
+                border-bottom: 1px solid #e6e6e6;
+                justify-content: flex-end;
+                padding-right: 1rem;
+              `,
+            ]}
           >
-            {author?.nickname}
-          </ProfileChip>
+            <ViewCount count={viewCount} />
+            <Like liked={liked} likesCount={likesCount} onClick={toggleLike} />
+            <Scrap scrap={scrap} onClick={toggleScrap} />
+          </div>
         </div>
-
         <ViewerWrapper>
           {content && (
             <Viewer
@@ -96,20 +181,20 @@ const Content = ({ studylog, toggleLike, toggleScrap, goAuthorProfilePage }: Pro
               <span key={id}>{`#${name} `}</span>
             ))}
           </Tags>
-          <div
-            css={[
-              FlexStyle,
-              AlignItemsBaseLineStyle,
-              css`
-                > *:not(:last-child) {
-                  margin-right: 1rem;
-                }
-              `,
-            ]}
-          >
-            <Like liked={liked} likesCount={likesCount} onClick={toggleLike} />
-            <Scrap scrap={scrap} onClick={toggleScrap} />
-          </div>
+          {/*<div*/}
+          {/*  css={[*/}
+          {/*    css`*/}
+          {/*      display: flex;*/}
+          {/*      align-items: center;*/}
+          {/*      justify-content: flex-end;*/}
+          {/*      padding-right: 1rem;*/}
+          {/*    `,*/}
+          {/*  ]}*/}
+          {/*>*/}
+          {/*  <ViewCount count={viewCount} />*/}
+          {/*  <Like liked={liked} likesCount={likesCount} onClick={toggleLike} />*/}
+          {/*  <Scrap scrap={scrap} onClick={toggleScrap} />*/}
+          {/*</div>*/}
         </BottomContainer>
       </CardInner>
     </Card>

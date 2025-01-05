@@ -10,25 +10,27 @@ const ButtonList = styled.div`
 `;
 
 const EditButtonStyle = css`
-  border: 1px solid ${COLOR.LIGHT_GRAY_200};
-
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: 1px solid ${COLOR.LIGHT_GRAY_50};
   background-color: ${COLOR.WHITE};
-  color: ${COLOR.BLACK_800};
-
-  margin-right: 1rem;
-
+  color: ${COLOR.DARK_GRAY_600};
   &:hover {
-    background-color: ${COLOR.LIGHT_GRAY_300};
+    border: 1px solid ${COLOR.LIGHT_GRAY_100};
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 `;
 
 const DeleteButtonStyle = css`
-  border: 1px solid ${COLOR.LIGHT_GRAY_200};
-  background-color: ${COLOR.RED_300};
-  color: ${COLOR.BLACK_800};
-
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  border: 1px solid ${COLOR.RED_50};
+  background-color: ${COLOR.RED_50};
+  color: ${COLOR.DARK_GRAY_600};
   &:hover {
-    background-color: ${COLOR.RED_400};
+    background-color: ${COLOR.RED_50};
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -64,8 +66,8 @@ const SubHeaderRightContent = styled.div`
 `;
 
 const Mission = styled.div`
-  font-size: 2rem;
-  color: ${COLOR.DARK_GRAY_900};
+  font-size: 1.5rem;
+  color: ${COLOR.DARK_GRAY_600};
   font-weight: lighter;
 `;
 
@@ -73,7 +75,7 @@ const Title = styled.div`
   font-size: 3.6rem;
   color: ${COLOR.DARK_GRAY_900};
   font-weight: bold;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 `;
 
 const Tags = styled.div`
@@ -84,13 +86,12 @@ const Tags = styled.div`
 `;
 
 const IssuedDate = styled.div`
-  color: ${COLOR.DARK_GRAY_800};
+  color: ${COLOR.LIGHT_GRAY_900};
   font-size: 1.4rem;
 `;
 
 const ProfileChipStyle = css`
   border: none;
-  padding: 0.8rem;
   cursor: pointer;
 
   &:hover {
@@ -137,6 +138,10 @@ const ViewerWrapper = styled.div`
     color: #222;
   }
 
+  .toastui-editor-contents p {
+    color: ${COLOR.DARK_GRAY_900};
+  }
+
   ${markdownStyle};
 `;
 
@@ -144,6 +149,8 @@ const BottomContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: auto;
+  //border-top: 1px solid #e6e6e6;
+  //border-bottom: 1px solid #e6e6e6;
 `;
 
 const EditorForm = styled.form`

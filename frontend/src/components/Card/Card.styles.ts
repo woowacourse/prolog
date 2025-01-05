@@ -29,9 +29,11 @@ const sizeStyle = {
 };
 
 const Container = styled.section<ContainerProps>`
+  padding: 2.5rem;
   background-color: ${COLOR.WHITE};
-  border: 1px solid ${COLOR.LIGHT_GRAY_400};
-  border-radius: 2rem;
+  border-radius: 8px;
+  border: 1px solid ${COLOR.LIGHT_GRAY_50};
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   ${({ size }) => sizeStyle[size] || sizeStyle.SMALL}
   ${({ css }) => css}

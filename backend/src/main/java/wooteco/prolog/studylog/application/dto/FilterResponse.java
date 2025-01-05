@@ -13,5 +13,6 @@ import wooteco.prolog.session.application.dto.SessionResponse;
 public class FilterResponse {
 
     private List<SessionResponse> sessions;
+    private List<SessionResponse> mySessions;
     private List<MissionResponse> missions;
 }

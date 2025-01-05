@@ -1,8 +1,9 @@
+/** @jsxImportSource @emotion/react */
+
 import { useState, useContext } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { UserContext } from '../../contexts/UserProvider';
-import BadgeList from '../Badge/BadgeList';
 import getMenuList from './getMenuList';
 import { Button, BUTTON_SIZE } from '..';
 import { BASE_URL } from '../../configs/environment';
@@ -26,7 +27,10 @@ import {
   NicknameInput,
   RssFeedWrapper,
   RssFeedInput,
+  UpdateButton,
 } from './ProfilePageSideBar.styles';
+import { css } from '@emotion/react';
+import { FlexStyle, JustifyContentEndStyle } from '../../styles/flex.styles';
 
 interface ProfilePageSideBarProps {
   menu: string;
@@ -68,7 +72,7 @@ const ProfilePageSideBar = ({ menu }: ProfilePageSideBarProps) => {
     return badges;
   });
 
-  const { mutate: editProfile } = usePutProfileMutation(
+  const { mutate: editNickname } = usePutProfileMutation(
     {
       user,
       nickname,
@@ -78,6 +82,19 @@ const ProfilePageSideBar = ({ menu }: ProfilePageSideBarProps) => {
     {
       onSuccess: () => {
         setIsProfileEditing(false);
+      },
+    }
+  );
+
+  const { mutate: editRssUrl } = usePutProfileMutation(
+    {
+      user,
+      nickname,
+      rssFeedUrl,
+      accessToken,
+    },
+    {
+      onSuccess: () => {
         setIsRssFeedEditing(false);
       },
     }
@@ -88,11 +105,11 @@ const ProfilePageSideBar = ({ menu }: ProfilePageSideBarProps) => {
     history.push(path);
   };
 
-const [showAll, setShowAll] = useState(false); // 상태 관리: 전체 표시 여부
+  const [showAll, setShowAll] = useState(false); // 상태 관리: 전체 표시 여부
 
-const toggleShowAll = () => setShowAll((prev) => !prev); // 상태 토글 함수
+  const toggleShowAll = () => setShowAll((prev) => !prev); // 상태 토글 함수
 
-const displayedGroups = showAll
+  const displayedGroups = showAll
     ? user?.organizationGroups // 전체 항목 표시
     : user?.organizationGroups?.slice(0, 2); // 첫 2개만 표시
 
@@ -100,67 +117,70 @@ const displayedGroups = showAll
     <Container>
       <Profile>
         <Image src={user?.imageUrl} alt="프로필 이미지" />
+        <div
+          css={[
+            css`
+              padding: 2rem;
+            `,
+          ]}
+        >
           <RoleLabel>소속</RoleLabel>
           <Role>
-              {displayedGroups?.map((group, index) => (
-                  <div key={index}>{group}</div>
-              ))}
+            {displayedGroups && displayedGroups.length === 0 && <div>소속된 그룹이 없습니다.</div>}
+            {displayedGroups?.map((group, index) => (
+              <div key={index}>{group}</div>
+            ))}
 
-              {user?.organizationGroups?.length > 2 && (
-                  <RoleButton onClick={toggleShowAll}>
-                      {showAll ? "가리기" : "더보기"}
-                  </RoleButton>
-              )}
+            {user?.organizationGroups?.length > 2 && (
+              <RoleButton onClick={toggleShowAll}>{showAll ? '가리기' : '더보기'}</RoleButton>
+            )}
           </Role>
-        <NicknameWrapper>
-          {isProfileEditing ? (
-            <NicknameInput
-              autoFocus
-              value={nickname}
-              onChange={({ target }) => setNickname(target.value)}
-            />
-          ) : (
-            <Nickname>{nickname}</Nickname>
-          )}
-          {isOwner && (
-            <Button
-              size={BUTTON_SIZE.X_SMALL}
-              type="button"
-              css={EditButtonStyle}
-              alt={isProfileEditing ? '수정 완료 버튼' : '수정 버튼'}
-              onClick={() => {
-                isProfileEditing ? editProfile() : setIsProfileEditing(true);
-              }}
-            >
-              {isProfileEditing ? '완료' : '수정'}
-            </Button>
-          )}
-        </NicknameWrapper>
-        <RssLinkLabel>RSS Link</RssLinkLabel>
-        <RssFeedWrapper>
-          {isRssFeedEditing ? (
-            <RssFeedInput
-              autoFocus
-              value={rssFeedUrl}
-              onChange={({ target }) => setRssFeedUrl(target.value)}
-            />
-          ) : (
-            <RssFeedUrl>{rssFeedUrl}</RssFeedUrl>
-          )}
-          {isOwner && (
-            <Button
-              size={BUTTON_SIZE.X_SMALL}
-              type="button"
-              css={EditButtonStyle}
-              alt={isRssFeedEditing ? '수정 완료 버튼' : '수정 버튼'}
-              onClick={() => {
-                isRssFeedEditing ? editProfile() : setIsRssFeedEditing(true);
-              }}
-            >
-              {isRssFeedEditing ? '완료' : '수정'}
-            </Button>
-          )}
-        </RssFeedWrapper>
+          <RoleLabel>닉네임</RoleLabel>
+          <NicknameWrapper>
+            {isProfileEditing ? (
+              <NicknameInput
+                autoFocus
+                value={nickname}
+                onChange={({ target }) => setNickname(target.value)}
+              />
+            ) : (
+              <Nickname>{nickname}</Nickname>
+            )}
+            {isOwner && (
+              <UpdateButton
+                type="button"
+                css={EditButtonStyle}
+                onClick={() => {
+                  isProfileEditing ? editNickname() : setIsProfileEditing(true);
+                }}
+              >
+                {isProfileEditing ? '완료' : '수정'}
+              </UpdateButton>
+            )}
+          </NicknameWrapper>
+          <RoleLabel>RSS Link</RoleLabel>
+          <RssFeedWrapper>
+            {isRssFeedEditing ? (
+              <NicknameInput
+                autoFocus
+                value={rssFeedUrl}
+                onChange={({ target }) => setRssFeedUrl(target.value)}
+              />
+            ) : (
+              <Nickname>{rssFeedUrl}</Nickname>
+            )}
+            {isOwner && (
+              <UpdateButton
+                css={EditButtonStyle}
+                onClick={() => {
+                  isRssFeedEditing ? editRssUrl() : setIsRssFeedEditing(true);
+                }}
+              >
+                {isRssFeedEditing ? '완료' : '수정'}
+              </UpdateButton>
+            )}
+          </RssFeedWrapper>
+        </div>
       </Profile>
       {/*{isLoading ? <></> : <BadgeList badgeList={badgeList} />}*/}
       <MenuList>

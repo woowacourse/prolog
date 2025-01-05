@@ -21,7 +21,7 @@ const EditEssayAnswerPage = () => {
   const { user: { username } } = useContext(UserContext);
 
   const [quizTitle, setQuizTitle] = useState<string>('');
-  const [answer, setAnswer] = useState<string | null>(null);
+  const [answer, setAnswer] = useState<string>('');
 
   const editorContentRef = useRef<any>(null);
 

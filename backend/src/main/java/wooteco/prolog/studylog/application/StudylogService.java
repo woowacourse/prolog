@@ -31,8 +31,11 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
+import wooteco.prolog.session.application.AnswerService;
 import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.SessionService;
+import wooteco.prolog.session.domain.Answer;
+import wooteco.prolog.session.domain.AnswerTemp;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
@@ -71,6 +74,7 @@ public class StudylogService {
     private final DocumentService studylogDocumentService;
     private final MemberService memberService;
     private final TagService tagService;
+    private final AnswerService answerService;
     private final SessionService sessionService;
     private final MissionService missionService;
     private final StudylogRepository studylogRepository;
@@ -110,10 +114,12 @@ public class StudylogService {
             tags.getList())
         );
 
+        List<Answer> answers = answerService.saveAnswers(member.getId(), studylogRequest.getAnswers(), persistStudylog);
+
         onStudylogCreatedEvent(member, tags, persistStudylog);
         deleteStudylogTemp(memberId);
 
-        return StudylogResponse.of(persistStudylog);
+        return StudylogResponse.of(persistStudylog, answers);
     }
 
     private void validateMemberIsCrew(final Member member) {
@@ -126,7 +132,10 @@ public class StudylogService {
     public StudylogTempResponse insertStudylogTemp(Long memberId, StudylogRequest studylogRequest) {
         StudylogTemp createdStudylogTemp = creteStudylogTemp(memberId, studylogRequest);
 
-        return StudylogTempResponse.from(createdStudylogTemp);
+        List<AnswerTemp> answerTemps
+            = answerService.saveAnswerTemp(memberId, studylogRequest.getAnswers(), createdStudylogTemp);
+
+        return StudylogTempResponse.from(createdStudylogTemp, answerTemps);
     }
 
     private StudylogTemp creteStudylogTemp(Long memberId, StudylogRequest studylogRequest) {
@@ -145,8 +154,7 @@ public class StudylogService {
             tags.getList());
 
         deleteStudylogTemp(memberId);
-        StudylogTemp createdStudylogTemp = studylogTempRepository.save(requestedStudylogTemp);
-        return createdStudylogTemp;
+        return studylogTempRepository.save(requestedStudylogTemp);
     }
 
     private void onStudylogCreatedEvent(Member foundMember, Tags tags, Studylog createdStudylog) {
@@ -170,7 +178,8 @@ public class StudylogService {
     public StudylogTempResponse findStudylogTemp(Long memberId) {
         if (studylogTempRepository.existsByMemberId(memberId)) {
             StudylogTemp studylogTemp = studylogTempRepository.findByMemberId(memberId);
-            return StudylogTempResponse.from(studylogTemp);
+            List<AnswerTemp> answerTemps = answerService.findAnswersTempByMemberId(memberId);
+            return StudylogTempResponse.from(studylogTemp, answerTemps);
         }
         return StudylogTempResponse.toNull();
     }
@@ -256,8 +265,9 @@ public class StudylogService {
                 .and(StudylogSpecification.orderByIdDesc());
 
         Page<Studylog> studylogs = studylogRepository.findAll(specs, pageable);
+        Map<Long, List<Answer>> answers = answerService.findAnswersByStudylogs(studylogs.getContent());
         Map<Long, Long> commentCounts = commentCounts(studylogs.getContent());
-        return StudylogsResponse.of(studylogs, memberId, commentCounts);
+        return StudylogsResponse.of(studylogs, answers, memberId, commentCounts);
     }
 
     public StudylogsResponse findStudylogsOf(String username, Pageable pageable) {
@@ -285,9 +295,11 @@ public class StudylogService {
 
         Studylog studylog = findStudylogById(studylogId);
 
+        List<Answer> answers = answerService.findAnswersByStudylogId(studylog.getId());
+
         onStudylogRetrieveEvent(loginMember, studylog, isViewed);
 
-        return toStudylogResponse(loginMember, studylog);
+        return toStudylogResponse(loginMember, studylog, answers);
     }
 
     @Transactional
@@ -335,16 +347,14 @@ public class StudylogService {
         }
     }
 
-    private StudylogResponse toStudylogResponse(LoginMember loginMember, Studylog studylog) {
+    private StudylogResponse toStudylogResponse(LoginMember loginMember, Studylog studylog, List<Answer> answers) {
         boolean liked = studylog.likedByMember(loginMember.getId());
-        boolean read = studylogReadRepository.findByMemberIdAndStudylogId(loginMember.getId(),
-                studylog.getId())
+        boolean read = studylogReadRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId())
             .isPresent();
-        boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(),
-                studylog.getId())
+        boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId())
             .isPresent();
 
-        return StudylogResponse.of(studylog, scraped, read, liked);
+        return StudylogResponse.of(studylog, answers, scraped, read, liked);
     }
 
     public StudylogResponse findByIdAndReturnStudylogResponse(Long id) {
@@ -391,6 +401,8 @@ public class StudylogService {
         Tags newTags = tagService.findOrCreate(studylogRequest.getTags());
         studylog.update(studylogRequest.getTitle(), studylogRequest.getContent(), session, mission,
             newTags);
+
+        answerService.updateAnswers(studylogRequest.getAnswers(), studylog);
         memberTagService.updateMemberTag(originalTags, newTags, foundMember);
 
         studylogDocumentService.update(studylog.toStudylogDocument());

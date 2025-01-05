@@ -15,6 +15,7 @@ public class StudylogRequest {
     private Long sessionId;
     private Long missionId;
     private List<TagRequest> tags;
+    private List<AnswerRequest> answers;
 
     public StudylogRequest(String title, String content, Long missionId, List<TagRequest> tags) {
         this.title = title;
