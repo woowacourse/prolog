@@ -1,10 +1,12 @@
-#!/bin/bash
+#!/bin/bash -xe
 # Set Timezone
 sudo timedatectl set-timezone Asia/Seoul
 
-# Update and install dependencies
-sudo yum update -y
-sudo yum install -y java-1.8.0-openjdk-devel.aarch64
+# Set Java
+sudo wget https://corretto.aws/downloads/latest/amazon-corretto-21-aarch64-linux-jdk.rpm
+sudo yum localinstall -y amazon-corretto-21-aarch64-linux-jdk.rpm
+
+# Set Code Deploy Agent
 sudo yum install -y ruby
 sudo yum install -y wget
 cd /home/ec2-user
@@ -12,8 +14,6 @@ wget https://aws-codedeploy-${region}.s3.${region}.amazonaws.com/latest/install
 chmod +x ./install
 sudo ./install auto
 sudo service codedeploy-agent start
-
-# Enable auto start
 sudo systemctl enable codedeploy-agent
 
 # Download application from S3
