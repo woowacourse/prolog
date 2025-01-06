@@ -119,7 +119,7 @@ test {
 
 jacocoTestReport {
     reports {
-        xml.enabled true
+        xml.required.set(true)
     }
 }
 
