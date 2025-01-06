@@ -1,9 +1,10 @@
 package wooteco.prolog.roadmap.domain.repository;
 
-import java.util.List;
-import javax.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.JoinType;
 import org.springframework.data.jpa.domain.Specification;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
+
+import java.util.List;
 
 public class EssayAnswerSpecification {
 

@@ -1,5 +1,11 @@
 package wooteco.prolog.fixtures;
 
+import wooteco.prolog.studylog.application.dto.StudylogRequest;
+import wooteco.prolog.studylog.application.dto.TagRequest;
+
+import java.util.Arrays;
+import java.util.List;
+
 import static java.util.stream.Collectors.toList;
 import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG1;
 import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG2;
@@ -7,11 +13,6 @@ import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG3;
 import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG4;
 import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG5;
 import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG6;
-
-import java.util.Arrays;
-import java.util.List;
-import wooteco.prolog.studylog.application.dto.StudylogRequest;
-import wooteco.prolog.studylog.application.dto.TagRequest;
 
 public enum PostAcceptanceFixture {
     POST1(

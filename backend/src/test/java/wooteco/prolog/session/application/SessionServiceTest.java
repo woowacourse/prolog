@@ -143,7 +143,7 @@ class SessionServiceTest {
         sessionMembers.add(new SessionMember(1L, new Member("member1", "베베", Role.CREW, Long.MIN_VALUE, "img")));
 
         doReturn(sessionMembers).when(sessionMemberService).findByMemberId(member.getId());
-        doReturn(sessions).when(sessionRepository).findAllByIdInOrderByIdDesc(Arrays.asList(1L));
+        doReturn(sessions).when(sessionRepository).findAllByIdInOrderByIdDesc(List.of(1L));
 
         // when
         List<SessionResponse> responses = sessionService.findMySessions(member);

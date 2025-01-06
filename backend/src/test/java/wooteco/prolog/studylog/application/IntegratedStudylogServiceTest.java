@@ -1,18 +1,9 @@
 package wooteco.prolog.studylog.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
@@ -28,9 +19,17 @@ import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogRead;
 import wooteco.prolog.studylog.domain.repository.StudylogReadRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import wooteco.support.utils.RepositoryTest;
 
-@SpringBootTest
-@Transactional
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
+@RepositoryTest
 class IntegratedStudylogServiceTest {
 
     @Autowired
@@ -53,7 +52,7 @@ class IntegratedStudylogServiceTest {
 
     @BeforeEach
     void setUp() {
-        Member 주디 = new Member(1L, "xrabcde", "바다", Role.CREW, 1111L,
+        Member 주디 = new Member("xrabcde", "바다", Role.CREW, 1111L,
             "https://avatars.githubusercontent.com/u/56033755?v=4");
         judy = memberRepository.save(주디);
         session = sessionRepository.save(new Session("세션1"));
@@ -85,7 +84,7 @@ class IntegratedStudylogServiceTest {
 
         List<Long> readIds = studylogService.findReadIds(judy.getId());
         SessionResponse sessionResponse = new SessionResponse(1L, "sessionResponse");
-        List<StudylogResponse> studylogs = Arrays.asList(new StudylogResponse(studylog, sessionResponse, new MissionResponse(1L, "missionResponse", sessionResponse),
+        List<StudylogResponse> studylogs = List.of(new StudylogResponse(studylog, sessionResponse, new MissionResponse(1L, "missionResponse", sessionResponse),
             new ArrayList<>(), false, 0L));
 
         //when

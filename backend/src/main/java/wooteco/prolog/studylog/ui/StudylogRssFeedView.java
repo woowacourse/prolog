@@ -1,18 +1,19 @@
 package wooteco.prolog.studylog.ui;
 
-import static java.util.stream.Collectors.toList;
-
 import com.rometools.rome.feed.rss.Channel;
 import com.rometools.rome.feed.rss.Description;
 import com.rometools.rome.feed.rss.Item;
-import java.util.List;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.feed.AbstractRssFeedView;
 import wooteco.prolog.studylog.application.dto.StudylogRssFeedResponse;
+
+import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class StudylogRssFeedView extends AbstractRssFeedView {

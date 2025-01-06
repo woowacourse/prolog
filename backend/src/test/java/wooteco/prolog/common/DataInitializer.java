@@ -1,18 +1,18 @@
 package wooteco.prolog.common;
 
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.sql.DataSource;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import wooteco.support.fake.FakeDocumentRepository;
+
+import javax.sql.DataSource;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @Profile("test")
@@ -20,9 +20,6 @@ public class DataInitializer implements InitializingBean {
 
     @PersistenceContext
     private EntityManager entityManager;
-
-    @Autowired
-    private List<FakeDocumentRepository> fakeDocumentRepositories;
 
     @Autowired
     private DataSource dataSource;
@@ -51,7 +48,6 @@ public class DataInitializer implements InitializingBean {
     @Transactional
     public void execute() {
         truncateAllTables();
-        deleteAllDocuments();
     }
 
     private void truncateAllTables() {
@@ -65,9 +61,5 @@ public class DataInitializer implements InitializingBean {
 
     private void executeQueryWithTable(String tableName) {
         entityManager.createNativeQuery("TRUNCATE TABLE " + tableName).executeUpdate();
-    }
-
-    private void deleteAllDocuments() {
-        fakeDocumentRepositories.forEach(it -> it.deleteAll());
     }
 }

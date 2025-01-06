@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'idea'
     id "jacoco"
-    id 'org.springframework.boot' version '2.4.5'
+    id 'org.springframework.boot' version '3.4.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id "org.sonarqube" version "3.3"
     id 'org.flywaydb.flyway' version "6.4.2"
@@ -10,8 +10,8 @@ plugins {
 
 group = 'wooteco'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_21
+targetCompatibility = JavaVersion.VERSION_21
 
 repositories {
     mavenCentral()
@@ -48,7 +48,7 @@ dependencies {
     implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.4'
 
     // rest-assured
-    acceptanceTestImplementation 'io.rest-assured:rest-assured:3.3.0'
+    acceptanceTestImplementation 'io.rest-assured:rest-assured'
 
     // cucumber
     acceptanceTestImplementation 'io.cucumber:cucumber-java:6.10.4'
@@ -56,16 +56,11 @@ dependencies {
     acceptanceTestImplementation 'io.cucumber:cucumber-junit-platform-engine:6.10.4'
 
     //lombok
-    compileOnly 'org.projectlombok:lombok:1.18.20'
+    compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
     // reflections
     implementation 'org.reflections:reflections:0.9.10'
-
-    // elastic-search
-    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-    implementation "org.testcontainers:elasticsearch:1.15.3"
-    testImplementation "org.testcontainers:elasticsearch:1.16.0"
 
     //flyway
     implementation 'org.flywaydb:flyway-core:6.4.2'
@@ -95,7 +90,7 @@ dependencies {
     implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 
     runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'mysql:mysql-connector-java'
+    runtimeOnly 'com.mysql:mysql-connector-j'
 
     // jsoup
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.16.1'

@@ -1,14 +1,15 @@
 package wooteco.prolog.studylog.domain;
 
-import static wooteco.prolog.common.exception.BadRequestCode.INVALID_LIKE_REQUEST_EXCEPTION;
-import static wooteco.prolog.common.exception.BadRequestCode.INVALID_UNLIKE_REQUEST_EXCEPTION;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.OneToMany;
+import wooteco.prolog.common.exception.BadRequestException;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Embeddable;
-import javax.persistence.OneToMany;
-import wooteco.prolog.common.exception.BadRequestException;
+
+import static wooteco.prolog.common.exception.BadRequestCode.INVALID_LIKE_REQUEST_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.INVALID_UNLIKE_REQUEST_EXCEPTION;
 
 @Embeddable
 public class Likes {

@@ -1,17 +1,18 @@
 package wooteco.prolog.studylog.domain;
 
-import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.member.domain.Member;
+
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -45,10 +46,9 @@ public class StudylogScrap {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof StudylogScrap)) {
+        if (!(o instanceof StudylogScrap studylogScrap)) {
             return false;
         }
-        StudylogScrap studylogScrap = (StudylogScrap) o;
         return Objects.equals(member.getId(), studylogScrap.member.getId()) &&
             Objects.equals(studylog.getId(), studylogScrap.getStudylog().getId());
     }

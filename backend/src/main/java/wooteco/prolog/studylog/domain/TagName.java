@@ -1,15 +1,16 @@
 package wooteco.prolog.studylog.domain;
 
-import static wooteco.prolog.common.exception.BadRequestCode.TAG_NAME_NULL_OR_EMPTY;
-import static wooteco.prolog.common.exception.BadRequestCode.TOO_LONG_TAG_NAME;
-
-import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.exception.BadRequestException;
+
+import java.util.Objects;
+
+import static wooteco.prolog.common.exception.BadRequestCode.TAG_NAME_NULL_OR_EMPTY;
+import static wooteco.prolog.common.exception.BadRequestCode.TOO_LONG_TAG_NAME;
 
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

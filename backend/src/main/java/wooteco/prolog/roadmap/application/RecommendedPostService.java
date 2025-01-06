@@ -1,8 +1,5 @@
 package wooteco.prolog.roadmap.application;
 
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_RECOMMENDED_POST_NOT_FOUND;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.common.exception.BadRequestException;
@@ -12,6 +9,9 @@ import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.RecommendedPost;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.roadmap.domain.repository.RecommendedPostRepository;
+
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_RECOMMENDED_POST_NOT_FOUND;
 
 @Transactional(readOnly = true)
 @Service

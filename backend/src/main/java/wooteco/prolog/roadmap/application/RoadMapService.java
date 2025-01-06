@@ -1,9 +1,5 @@
 package wooteco.prolog.roadmap.application;
 
-import static java.util.stream.Collectors.toMap;
-
-import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +8,11 @@ import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndAnsweredQuizCount;
 import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndTotalQuizCount;
+
+import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.toMap;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

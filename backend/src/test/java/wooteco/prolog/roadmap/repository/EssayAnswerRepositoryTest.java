@@ -1,11 +1,5 @@
 package wooteco.prolog.roadmap.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +10,13 @@ import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.Quiz;
 import wooteco.prolog.roadmap.domain.repository.EssayAnswerRepository;
 import wooteco.support.utils.RepositoryTest;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RepositoryTest
 class EssayAnswerRepositoryTest {

@@ -1,6 +1,5 @@
 package wooteco.prolog.roadmap.ui;
 
-import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +14,8 @@ import wooteco.prolog.roadmap.application.dto.KeywordResponse;
 import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
 import wooteco.prolog.roadmap.application.dto.KeywordsResponse;
 
+import java.net.URI;
+
 @RestController
 public class KeywordController {
 
@@ -26,7 +27,7 @@ public class KeywordController {
 
     @PostMapping("/sessions/{sessionId}/keywords")
     public ResponseEntity<Void> createKeyword(@PathVariable Long sessionId,
-        @RequestBody KeywordCreateRequest createRequest) {
+                                              @RequestBody KeywordCreateRequest createRequest) {
         Long keywordId = keywordService.createKeyword(sessionId, createRequest);
         return ResponseEntity.created(
             URI.create("/sessions/" + sessionId + "/keywords/" + keywordId)).build();
@@ -34,7 +35,7 @@ public class KeywordController {
 
     @GetMapping("/sessions/{sessionId}/keywords/{keywordId}")
     public ResponseEntity<KeywordResponse> findKeyword(@PathVariable Long sessionId,
-        @PathVariable Long keywordId) {
+                                                       @PathVariable Long keywordId) {
         KeywordResponse response = keywordService.findKeyword(sessionId, keywordId);
         return ResponseEntity.ok(response);
     }
@@ -49,15 +50,15 @@ public class KeywordController {
 
     @PutMapping("/sessions/{sessionId}/keywords/{keywordId}")
     public ResponseEntity<Void> updateKeyword(@PathVariable Long sessionId,
-        @PathVariable Long keywordId,
-        @RequestBody KeywordUpdateRequest updateRequest) {
+                                              @PathVariable Long keywordId,
+                                              @RequestBody KeywordUpdateRequest updateRequest) {
         keywordService.updateKeyword(sessionId, keywordId, updateRequest);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/sessions/{sessionId}/keywords/{keywordId}")
     public ResponseEntity<Void> deleteKeyword(@PathVariable Long sessionId,
-        @PathVariable Long keywordId) {
+                                              @PathVariable Long keywordId) {
         keywordService.deleteKeyword(sessionId, keywordId);
         return ResponseEntity.noContent().build();
     }
@@ -78,7 +79,7 @@ public class KeywordController {
 
     @GetMapping("/sessions/{sessionId}/keywords/{keywordId}/children")
     public ResponseEntity<KeywordResponse> find(@PathVariable Long sessionId,
-        @PathVariable Long keywordId) {
+                                                @PathVariable Long keywordId) {
         KeywordResponse response = keywordService.findKeywordWithAllChild(sessionId, keywordId);
         return ResponseEntity.ok(response);
     }

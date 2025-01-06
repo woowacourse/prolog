@@ -1,33 +1,5 @@
 package wooteco.prolog.studylog.application;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static wooteco.prolog.common.exception.BadRequestCode.ONLY_AUTHOR_CAN_EDIT;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_ARGUMENT;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
-
-import java.lang.reflect.Field;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -79,6 +51,35 @@ import wooteco.prolog.studylog.domain.repository.StudylogScrapRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogTempRepository;
 import wooteco.prolog.studylog.domain.repository.dto.CommentCount;
 import wooteco.prolog.studylog.event.StudylogDeleteEvent;
+
+import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static wooteco.prolog.common.exception.BadRequestCode.ONLY_AUTHOR_CAN_EDIT;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_ARGUMENT;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
 class StudylogServiceTest {
@@ -347,7 +348,7 @@ class StudylogServiceTest {
     class retrieveStudylogById {
 
         private Studylog studylog;
-        private long studyLogId = 1L;
+        private final long studyLogId = 1L;
 
         @BeforeEach
         void setting() throws NoSuchFieldException, IllegalAccessException {
@@ -460,7 +461,7 @@ class StudylogServiceTest {
     class deleteStudylog {
 
         private Studylog studylog;
-        private long studyLogId = 1L;
+        private final long studyLogId = 1L;
 
         @BeforeEach
         void setting() throws NoSuchFieldException, IllegalAccessException {
@@ -543,7 +544,7 @@ class StudylogServiceTest {
     class updateStudylogMIssion {
 
         private Studylog studylog;
-        private long studyLogId = 1L;
+        private final long studyLogId = 1L;
 
         @BeforeEach
         void setting() throws NoSuchFieldException, IllegalAccessException {
@@ -644,13 +645,13 @@ class StudylogServiceTest {
             final int findElementCounts = 1;
             given(studylogRepository.findByIdInAndDeletedFalseOrderByIdDesc(any(), any()))
                 .willReturn(new PageImpl<>(
-                    Arrays.asList(studylog),
+                    singletonList(studylog),
                     pageableRequest,
                     findElementCounts
                 ));
 
             given(commentRepository.countByStudylogIn(anyList()))
-                .willReturn(Arrays.asList(
+                .willReturn(List.of(
                         new CommentCount(studylog, 1L)
                     )
                 );
@@ -666,7 +667,7 @@ class StudylogServiceTest {
                     requestPage + oneIndexedParameter),
                 () -> assertThat(studylogsResponse.getTotalSize()).isEqualTo(findElementCounts),
                 () -> assertThat(studylogsResponse.getTotalPage()).isEqualTo(
-                    (findElementCounts / pageSize) + 1),
+                    1),
                 () -> assertThat(studylogsResponse.getData()).hasSize(1)
             );
         }
@@ -694,14 +695,14 @@ class StudylogServiceTest {
             given(studylogRepository.findAll(any(Specification.class), any(Pageable.class)))
                 .willReturn(
                     new PageImpl<>(
-                        Arrays.asList(studylog),
+                        singletonList(studylog),
                         pageableRequest,
                         findElementCounts
                     )
                 );
 
             given(commentRepository.countByStudylogIn(anyList()))
-                .willReturn(Arrays.asList(
+                .willReturn(List.of(
                         new CommentCount(studylog, 1L)
                     )
                 );
@@ -717,7 +718,7 @@ class StudylogServiceTest {
                     requestPage + oneIndexedParameter),
                 () -> assertThat(studylogsResponse.getTotalSize()).isEqualTo(findElementCounts),
                 () -> assertThat(studylogsResponse.getTotalPage()).isEqualTo(
-                    (findElementCounts / pageSize) + 1),
+                    1),
                 () -> assertThat(studylogsResponse.getData()).hasSize(1)
             );
         }
@@ -743,14 +744,14 @@ class StudylogServiceTest {
 
             given(studylogDocumentService.findBySearchKeyword(any(), any(), any(), any(), any(),
                 any(), any(), any()))
-                .willReturn(StudylogDocumentResponse.of(Arrays.asList(1L), 1, 1, 0));
+                .willReturn(StudylogDocumentResponse.of(List.of(1L), 1, 1, 0));
 
             final int findElementCounts = 1;
             given(studylogRepository.findByIdInAndDeletedFalseOrderByIdDesc(anyList()))
-                .willReturn(Arrays.asList(studylog));
+                .willReturn(singletonList(studylog));
 
             given(commentRepository.countByStudylogIn(anyList()))
-                .willReturn(Arrays.asList(
+                .willReturn(List.of(
                         new CommentCount(studylog, 1L)
                     )
                 );
@@ -766,7 +767,7 @@ class StudylogServiceTest {
                     requestPage + oneIndexedParameter),
                 () -> assertThat(studylogsResponse.getTotalSize()).isEqualTo(findElementCounts),
                 () -> assertThat(studylogsResponse.getTotalPage()).isEqualTo(
-                    (findElementCounts / pageSize) + 1),
+                    1),
                 () -> assertThat(studylogsResponse.getData()).hasSize(1)
             );
         }

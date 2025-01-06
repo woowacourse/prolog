@@ -1,22 +1,23 @@
 package wooteco.prolog.studylog.domain;
 
-import static wooteco.prolog.common.exception.BadRequestCode.COMMENT_DELETE_EXCEPTION;
-
-import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.AuditingEntity;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
+
+import java.util.Objects;
+
+import static wooteco.prolog.common.exception.BadRequestCode.COMMENT_DELETE_EXCEPTION;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

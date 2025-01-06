@@ -1,13 +1,14 @@
 package wooteco.prolog.steps;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.studylog.application.dto.TagResponse;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TagStepDefinitions extends AcceptanceSteps {
 

@@ -1,6 +1,5 @@
 package wooteco.prolog.roadmap.ui;
 
-import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.roadmap.application.CurriculumService;
 import wooteco.prolog.roadmap.application.dto.CurriculumRequest;
 import wooteco.prolog.roadmap.application.dto.CurriculumResponses;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/curriculums")

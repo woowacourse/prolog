@@ -1,7 +1,7 @@
 package wooteco.prolog.login.ui;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.web.servlet.HandlerInterceptor;
 import wooteco.prolog.login.application.AuthorizationExtractor;

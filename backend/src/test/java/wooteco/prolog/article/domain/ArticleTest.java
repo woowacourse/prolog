@@ -1,10 +1,5 @@
 package wooteco.prolog.article.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-
-import joptsimple.internal.Strings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -12,6 +7,10 @@ import org.junit.jupiter.api.Test;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class ArticleTest {
 
@@ -82,10 +81,10 @@ class ArticleTest {
         final Article article = new Article(member, title, url, imageUrl);
 
         //when
-        article.update(Strings.repeat('a', 51), "newUrl");
+        article.update("a".repeat(51), "newUrl");
 
         //then
-        assertThat(article.getTitle().getTitle()).isEqualTo(Strings.repeat('a', 50));
+        assertThat(article.getTitle().getTitle()).isEqualTo("a".repeat(50));
     }
 
     @DisplayName("유효하지 않은 URL으로 업데이트시 예외를 발생한다.")
@@ -96,7 +95,7 @@ class ArticleTest {
 
         //when
         //then
-        assertThatThrownBy(() -> article.update("newTitle", Strings.repeat('.', 1025)))
+        assertThatThrownBy(() -> article.update("newTitle", ".".repeat(1025)))
             .isInstanceOf(BadRequestException.class);
     }
 

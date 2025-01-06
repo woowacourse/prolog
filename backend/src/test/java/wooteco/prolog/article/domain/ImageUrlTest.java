@@ -1,13 +1,12 @@
 package wooteco.prolog.article.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import joptsimple.internal.Strings;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ImageUrlTest {
 
@@ -22,7 +21,7 @@ class ImageUrlTest {
     @DisplayName("이미지 URL의 길이가 최대길이를 초과할 경우")
     @Test
     void createUrl_fail_overLength() {
-        final String url = Strings.repeat('.', 1025);
+        final String url = ".".repeat(1025);
         ImageUrl imageUrl = new ImageUrl(url);
         assertThat(imageUrl.getUrl()).isNotBlank();
     }

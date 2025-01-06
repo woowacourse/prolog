@@ -1,7 +1,9 @@
 package wooteco.support.autoceptor.scanner;
 
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
+import org.springframework.http.HttpMethod;
+import org.springframework.util.StringUtils;
+import wooteco.support.autoceptor.AuthenticationDetector;
+import wooteco.support.autoceptor.MethodPattern;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -12,10 +14,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
-import org.springframework.http.HttpMethod;
-import org.springframework.util.StringUtils;
-import wooteco.support.autoceptor.AuthenticationDetector;
-import wooteco.support.autoceptor.MethodPattern;
+
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 public class URIScanner {
 

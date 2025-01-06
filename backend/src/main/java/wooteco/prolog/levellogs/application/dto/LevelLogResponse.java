@@ -1,8 +1,5 @@
 package wooteco.prolog.levellogs.application.dto;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +8,10 @@ import lombok.ToString;
 import wooteco.prolog.levellogs.domain.LevelLog;
 import wooteco.prolog.levellogs.domain.SelfDiscussion;
 import wooteco.prolog.member.application.dto.MemberResponse;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

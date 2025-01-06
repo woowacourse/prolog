@@ -1,13 +1,14 @@
 package wooteco.prolog.session.domain.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.google.common.collect.Lists;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import wooteco.prolog.session.domain.Session;
 import wooteco.support.utils.RepositoryTest;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RepositoryTest
 class SessionRepositoryTest {

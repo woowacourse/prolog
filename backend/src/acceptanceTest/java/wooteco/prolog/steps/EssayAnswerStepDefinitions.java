@@ -1,7 +1,5 @@
 package wooteco.prolog.steps;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -9,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerRequest;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerUpdateRequest;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public final class EssayAnswerStepDefinitions extends AcceptanceSteps {
 

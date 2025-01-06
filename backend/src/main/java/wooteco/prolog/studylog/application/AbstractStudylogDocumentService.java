@@ -1,62 +1,50 @@
 package wooteco.prolog.studylog.application;
 
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_DOCUMENT_NOT_FOUND;
+import wooteco.prolog.common.exception.BadRequestException;
+import wooteco.prolog.studylog.domain.StudylogDocument;
+import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import wooteco.prolog.common.exception.BadRequestException;
-import wooteco.prolog.studylog.domain.Studylog;
-import wooteco.prolog.studylog.domain.StudylogDocument;
-import wooteco.prolog.studylog.domain.repository.StudylogDocumentRepository;
-import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_DOCUMENT_NOT_FOUND;
 
 public abstract class AbstractStudylogDocumentService implements DocumentService {
 
     private static final String EMPTY = " ";
 
-    protected final StudylogDocumentRepository studylogDocumentRepository;
     protected final StudylogRepository studylogRepository;
 
-    public AbstractStudylogDocumentService(StudylogDocumentRepository studylogDocumentRepository,
-                                           StudylogRepository studylogRepository) {
-        this.studylogDocumentRepository = studylogDocumentRepository;
+    public AbstractStudylogDocumentService(StudylogRepository studylogRepository) {
         this.studylogRepository = studylogRepository;
     }
 
     @Override
     public void save(StudylogDocument studylogDocument) {
-        studylogDocumentRepository.save(studylogDocument);
+        // TODO: ES와 같이 제거됨. 다시 구현 필요
     }
 
     @Override
     public StudylogDocument findById(Long id) {
-        return studylogDocumentRepository.findById(id)
-            .orElseThrow(() -> new BadRequestException(STUDYLOG_DOCUMENT_NOT_FOUND));
+        // TODO: ES와 같이 제거됨. 다시 구현 필요
+
+        throw new BadRequestException(STUDYLOG_DOCUMENT_NOT_FOUND);
     }
 
     @Override
     public void delete(StudylogDocument studylogDocument) {
-        studylogDocumentRepository.delete(studylogDocument);
+        // TODO: ES와 같이 제거됨. 다시 구현 필요
     }
 
     @Override
     public void sync() {
-        // sync between es and db
-        studylogDocumentRepository.deleteAll();
-
-        List<Studylog> studylogs = studylogRepository.findAll();
-        studylogDocumentRepository.saveAll(
-            studylogs.stream()
-                .map(Studylog::toStudylogDocument)
-                .collect(Collectors.toList())
-        );
+        // TODO: ES와 같이 제거됨. 다시 구현 필요
     }
 
     @Override
     public void update(StudylogDocument studylogDocument) {
-        studylogDocumentRepository.save(studylogDocument);
+        // TODO: ES와 같이 제거됨. 다시 구현 필요
     }
 
     protected List<String> preprocess(String searchKeyword) {

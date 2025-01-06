@@ -1,17 +1,18 @@
 package wooteco.prolog.session.domain;
 
-import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.studylog.domain.Curriculum;
+
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -69,10 +70,9 @@ public class Session {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Session)) {
+        if (!(o instanceof Session level)) {
             return false;
         }
-        Session level = (Session) o;
         return Objects.equals(id, level.id);
     }
 

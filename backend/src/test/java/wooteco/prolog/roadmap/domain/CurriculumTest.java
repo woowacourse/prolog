@@ -1,12 +1,12 @@
 package wooteco.prolog.roadmap.domain;
 
-import static wooteco.prolog.common.exception.BadRequestCode.CURRICULUM_INVALID_EXCEPTION;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import wooteco.prolog.common.exception.BadRequestException;
+
+import static wooteco.prolog.common.exception.BadRequestCode.CURRICULUM_INVALID_EXCEPTION;
 
 class CurriculumTest {
 

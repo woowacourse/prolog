@@ -1,13 +1,13 @@
 package wooteco.prolog.login.aop;
 
-import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
-
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember.Authority;
+
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
 
 @Aspect
 @Component

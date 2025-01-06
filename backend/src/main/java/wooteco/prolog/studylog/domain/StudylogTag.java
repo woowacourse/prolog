@@ -1,16 +1,17 @@
 package wooteco.prolog.studylog.domain;
 
-import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -48,10 +49,9 @@ public class StudylogTag {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof StudylogTag)) {
+        if (!(o instanceof StudylogTag studylogTag)) {
             return false;
         }
-        StudylogTag studylogTag = (StudylogTag) o;
         return Objects.equals(id, studylogTag.id);
     }
 

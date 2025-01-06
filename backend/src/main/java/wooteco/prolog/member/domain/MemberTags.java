@@ -1,18 +1,19 @@
 package wooteco.prolog.member.domain;
 
-import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_MEMBER_TAG;
-import static wooteco.prolog.common.exception.BadRequestCode.NOT_EXISTS_MEMBER_TAG;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.exception.BadRequestException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_MEMBER_TAG;
+import static wooteco.prolog.common.exception.BadRequestCode.NOT_EXISTS_MEMBER_TAG;
 
 @Getter
 @Embeddable

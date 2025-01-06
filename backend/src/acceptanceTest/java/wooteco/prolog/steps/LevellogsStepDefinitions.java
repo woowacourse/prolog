@@ -1,17 +1,8 @@
 package wooteco.prolog.steps;
 
-import static org.apache.http.HttpHeaders.LOCATION;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static wooteco.prolog.fixtures.LevellogFixture.LEVEL_LOG_UPDATE_REQUEST;
-import static wooteco.prolog.fixtures.LevellogFixture.levelLogRequests;
-
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.LevellogFixture;
@@ -20,6 +11,16 @@ import wooteco.prolog.levellogs.application.dto.LevelLogResponse;
 import wooteco.prolog.levellogs.application.dto.LevelLogSummariesResponse;
 import wooteco.prolog.levellogs.application.dto.LevelLogSummaryResponse;
 import wooteco.prolog.levellogs.application.dto.SelfDiscussionResponse;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.apache.http.HttpHeaders.LOCATION;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static wooteco.prolog.fixtures.LevellogFixture.LEVEL_LOG_UPDATE_REQUEST;
+import static wooteco.prolog.fixtures.LevellogFixture.levelLogRequests;
 
 public class LevellogsStepDefinitions extends AcceptanceSteps {
 

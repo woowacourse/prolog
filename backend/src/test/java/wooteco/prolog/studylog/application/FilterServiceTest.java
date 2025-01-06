@@ -1,11 +1,5 @@
 package wooteco.prolog.studylog.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.doReturn;
-
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +13,13 @@ import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.studylog.application.dto.FilterResponse;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
 class FilterServiceTest {

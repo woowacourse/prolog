@@ -1,9 +1,5 @@
 package wooteco.prolog.studylog.domain.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Arrays;
-import java.util.List;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,10 +16,15 @@ import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.support.utils.RepositoryTest;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @RepositoryTest
 class StudylogTagRepositoryTest {
 
-    private static final Member 웨지 = new Member("sihyung92", "웨지", Role.CREW, 2222L,
+    private final Member 웨지 = new Member("sihyung92", "웨지", Role.CREW, 2222L,
         "https://avatars.githubusercontent.com/u/51393021?v=4");
 
     @Autowired

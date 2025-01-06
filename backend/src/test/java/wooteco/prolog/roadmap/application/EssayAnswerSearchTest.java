@@ -1,10 +1,5 @@
 package wooteco.prolog.roadmap.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,17 +26,24 @@ import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.prolog.studylog.application.dto.EssayAnswersResponse;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest
 @Transactional
 @TestConstructor(autowireMode = AutowireMode.ALL)
 public class EssayAnswerSearchTest {
 
-    private CurriculumRepository curriculumRepository;
-    private SessionRepository sessionRepository;
-    private KeywordRepository keywordRepository;
-    private QuizRepository quizRepository;
-    private MemberRepository memberRepository;
-    private EssayAnswerService essayAnswerService;
+    private final CurriculumRepository curriculumRepository;
+    private final SessionRepository sessionRepository;
+    private final KeywordRepository keywordRepository;
+    private final QuizRepository quizRepository;
+    private final MemberRepository memberRepository;
+    private final EssayAnswerService essayAnswerService;
 
     public EssayAnswerSearchTest(CurriculumRepository curriculumRepository,
                                  SessionRepository sessionRepository,
@@ -239,7 +241,7 @@ public class EssayAnswerSearchTest {
             curriculum.getId(),
             keyword4.getId(),
             null,
-            Arrays.asList(member1.getId())
+            Collections.singletonList(member1.getId())
         );
 
         // when
@@ -270,7 +272,7 @@ public class EssayAnswerSearchTest {
             curriculum.getId(),
             keyword4.getId(),
             Arrays.asList(quiz6.getId(), quiz7.getId()),
-            Arrays.asList(member1.getId())
+            Collections.singletonList(member1.getId())
         );
 
         // when
@@ -299,7 +301,7 @@ public class EssayAnswerSearchTest {
             curriculum.getId(),
             null,
             null,
-            Arrays.asList(member1.getId())
+            Collections.singletonList(member1.getId())
         );
 
         // when

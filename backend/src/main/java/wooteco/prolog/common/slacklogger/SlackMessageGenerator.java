@@ -1,6 +1,11 @@
 package wooteco.prolog.common.slacklogger;
 
-import static java.util.stream.Collectors.joining;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
+import org.springframework.web.util.ContentCachingRequestWrapper;
+import wooteco.prolog.common.exception.BadRequestException;
+import wooteco.prolog.login.application.AuthorizationExtractor;
+import wooteco.prolog.login.application.JwtTokenProvider;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -8,12 +13,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
-import org.springframework.web.util.ContentCachingRequestWrapper;
-import wooteco.prolog.common.exception.BadRequestException;
-import wooteco.prolog.login.application.AuthorizationExtractor;
-import wooteco.prolog.login.application.JwtTokenProvider;
+
+import static java.util.stream.Collectors.joining;
 
 @Component
 public class SlackMessageGenerator {

@@ -1,9 +1,10 @@
 package wooteco.support.performance.annotationDataExtractor;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import org.springframework.web.bind.annotation.GetMapping;
 import wooteco.support.performance.RequestApi;
+
+import java.lang.reflect.Method;
+import java.util.Arrays;
 
 public class GetMappingDataExtractor implements AnnotationDataExtractor {
 

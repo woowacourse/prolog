@@ -1,8 +1,5 @@
 package wooteco.prolog.roadmap.ui;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -26,6 +23,10 @@ import wooteco.prolog.roadmap.application.dto.EssayAnswerUpdateRequest;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
 import wooteco.prolog.studylog.application.dto.EssayAnswersResponse;
 
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+
 
 @RestController
 @RequestMapping
@@ -36,14 +37,14 @@ public class EssayAnswerController {
 
     @Autowired
     public EssayAnswerController(EssayAnswerService essayAnswerService,
-        QuizService quizService) {
+                                 QuizService quizService) {
         this.essayAnswerService = essayAnswerService;
         this.quizService = quizService;
     }
 
     @PostMapping("/essay-answers")
     public ResponseEntity<Long> create(@RequestBody EssayAnswerRequest request,
-        @AuthMemberPrincipal LoginMember member) {
+                                       @AuthMemberPrincipal LoginMember member) {
 
         return ResponseEntity.ok(essayAnswerService.createEssayAnswer(request, member.getId()));
     }
@@ -64,8 +65,8 @@ public class EssayAnswerController {
 
     @PatchMapping("/essay-answers/{essayAnswerId}")
     public ResponseEntity<Void> updateById(@PathVariable Long essayAnswerId,
-        @AuthMemberPrincipal LoginMember member,
-        @RequestBody EssayAnswerUpdateRequest request) {
+                                           @AuthMemberPrincipal LoginMember member,
+                                           @RequestBody EssayAnswerUpdateRequest request) {
         essayAnswerService.updateEssayAnswer(essayAnswerId, request, member.getId());
         return ResponseEntity.ok().build();
     }
