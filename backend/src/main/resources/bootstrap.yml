@@ -1,0 +1,11 @@
+aws:
+  secretsmanager:
+    enabled: false
+    name: prolog
+    prefix: secrets
+    default-context: prolog
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2

@@ -3,7 +3,7 @@ plugins {
     id 'idea'
     id "jacoco"
     id 'org.springframework.boot' version '3.4.1'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'io.spring.dependency-management' version '1.1.6'
     id "org.sonarqube" version "3.3"
     id 'org.flywaydb.flyway' version "6.4.2"
 }
@@ -98,6 +98,9 @@ dependencies {
     // swagger
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
+    // aws secrets manager
+    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap:4.2.0'
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws-secrets-manager-config:2.4.4'
 }
 
 ext {
