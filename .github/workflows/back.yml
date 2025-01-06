@@ -1,0 +1,74 @@
+name: back deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment (dev, prod)'
+        required: true
+        default: 'dev'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    services:
+      mysql:
+        image: mysql:8.0.28
+        env:
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: prolog
+        ports:
+          - 13306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: 21
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        shell: bash
+        working-directory: backend
+
+      - name: Build with Gradle
+        run: ./gradlew flywayClean flywayBaseline flywayMigrate bootJar -Dflyway.baselineVersion=0
+        shell: bash
+        working-directory: backend
+
+      - name: Generate deployment package
+        working-directory: backend
+        run: |
+          mkdir -p deploy
+          cp build/libs/*.jar deploy/app.jar
+          cp appspec.yml deploy/appspec.yml
+          cp -r scripts deploy/scripts
+          cd deploy && zip -r app.zip .
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Upload to S3
+        run: |
+          aws s3 cp backend/deploy/app.zip s3://${{ secrets.BUCKET_NAME }}/app.zip
+
+      - name: Trigger AWS CodeDeploy
+        run: |
+          aws deploy create-deployment \
+          --application-name ${{ secrets.APPLICATION_NAME }} \
+          --deployment-group-name ${{ secrets.DEPLOYMENT_GROUP_NAME }} \
+          --s3-location bucket=${{ secrets.BUCKET_NAME }},key=app.zip,bundleType=zip \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --auto-rollback-configuration enabled=true,events=DEPLOYMENT_FAILURE
