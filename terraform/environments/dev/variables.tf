@@ -17,5 +17,5 @@ variable "db_name" {
     default = "prolog"
 }
 variable "db_secret_name" {
-    default = "prolog/dev"
+    default = "secrets/prolog_dev"
 }

@@ -38,6 +38,7 @@ resource "aws_db_subnet_group" "database_subnet_group" {
 }
 
 resource "aws_db_instance" "database" {
+    identifier           = var.project_name
     allocated_storage    = 20
     engine               = "mysql"
     engine_version       = "8.0"
