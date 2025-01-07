@@ -24,16 +24,6 @@ public class ExceptionController {
     }
 
     @SlackAlarm(level = ERROR)
-    @ExceptionHandler(ElasticsearchCustomException.class)
-    public ResponseEntity<ExceptionDto> elasticsearchCustomExceptionHandler(
-        ElasticsearchCustomException e) {
-        log.error(e.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(new ExceptionDto(500, "알 수 없는 에러"));
-    }
-
-
-    @SlackAlarm(level = ERROR)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionDto> runtimeExceptionHandler(Exception e) {
         if (e.getMessage() == null) {
