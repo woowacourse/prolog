@@ -17,7 +17,7 @@ public class PrologSlack {
 
     public final ObjectMapper objectMapper;
 
-    public PrologSlack(@Value("slack.logger-webhook-uri") String slackLoggerWebhookUri,
+    public PrologSlack(@Value("${slack.logger-webhook-uri}") String slackLoggerWebhookUri,
                        ObjectMapper objectMapper) {
         this.slackLoggerWebhookUri = slackLoggerWebhookUri;
         this.objectMapper = objectMapper;
