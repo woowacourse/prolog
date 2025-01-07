@@ -197,6 +197,7 @@ resource "aws_launch_template" "ec2_launch_template" {
     key_name      = var.key_pair_name
 
     user_data = base64encode(templatefile("${path.module}/templates/user_data.tpl", {
+        environment = var.environment,
         bucket_name = var.bucket_name,
         region      = var.region
     }))
