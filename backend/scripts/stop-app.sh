@@ -1,4 +1,4 @@
 #!/bin/bash
 echo "Stopping application..."
 
-pkill -f app.jar || true
+sudo pkill -f app.jar || true
