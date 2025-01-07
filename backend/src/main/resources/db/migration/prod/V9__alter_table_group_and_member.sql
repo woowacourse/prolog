@@ -11,7 +11,7 @@ create table if not exists department_member
     id        bigint auto_increment primary key,
     member_id bigint not null,
     department_id  bigint not null,
-    constraint FK_DEPARTMENT_MEMBER_ON_MEMBERㅇ
+    constraint FK_DEPARTMENT_MEMBER_ON_MEMBER
         foreign key (member_id) references prolog.member (id),
     constraint FK_DEPARTMENT_MEMBER_ON_DEPARTMENT
         foreign key (department_id) references prolog.department (id)
