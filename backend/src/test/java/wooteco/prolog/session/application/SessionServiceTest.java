@@ -6,12 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.doReturn;
 import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_SESSION_EXCEPTION;
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
-import static wooteco.prolog.login.ui.LoginMember.Authority.ANONYMOUS;
 import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -142,7 +140,7 @@ class SessionServiceTest {
         sessionMembers.add(new SessionMember(1L, new Member("member1", "베베", Role.CREW, Long.MIN_VALUE, "img")));
 
         doReturn(sessionMembers).when(sessionMemberService).findByMemberId(member.getId());
-        doReturn(sessions).when(sessionRepository).findAllById(Arrays.asList(1L));
+        doReturn(sessions).when(sessionRepository).findAllByIdInOrderByIdDesc(Arrays.asList(1L));
 
         // when
         List<SessionResponse> responses = sessionService.findMySessions(member);
@@ -171,61 +169,24 @@ class SessionServiceTest {
         );
     }
 
-    @DisplayName("LoginMember와 관련된 Session을 목록 상단에 보여주도록 정렬한다.(LoginMember의 Session이 최상단에 위치)")
+    @DisplayName("현재 로그인한 Member의 Session을 조회한다.")
     @Test
-    void findALlWithMySessionFirst() {
+    void findMySessionResponses() {
         // given
-        final LoginMember loginMember = new LoginMember(MEMBER);
-        final Session session1 = new Session("session1");
-        final Session session2 = new Session("session2");
-        final Session session3 = new Session("session3");
+        final LoginMember member = new LoginMember(1L, MEMBER);
+        final List<Session> sessions = new ArrayList<>();
+        sessions.add(new Session("session1"));
 
-        final List<Session> mySessions = new ArrayList<>();
-        mySessions.add(session2);
-        doReturn(mySessions).when(sessionRepository).findAllById(Collections.emptyList());
+        final List<SessionMember> sessionMembers = new ArrayList<>();
+        sessionMembers.add(new SessionMember(1L, new Member("member1", "베베", Role.CREW, Long.MIN_VALUE, "img")));
 
-        final List<Session> allSessions = new ArrayList<>();
-        allSessions.add(session1);
-        allSessions.add(session2);
-        allSessions.add(session3);
-        doReturn(allSessions).when(sessionRepository).findAll();
+        doReturn(sessionMembers).when(sessionMemberService).findByMemberId(member.getId());
+        doReturn(sessions).when(sessionRepository).findAllByIdInOrderByIdDesc(Arrays.asList(1L));
 
         // when
-        List<SessionResponse> responses = sessionService.findAllWithMySessionFirst(loginMember);
+        List<SessionResponse> responses = sessionService.findMySessionResponses(member);
 
         // then
-        assertAll(
-            () -> assertThat(responses.get(0).getName()).isEqualTo("session2"),
-            () -> assertThat(responses).extracting(SessionResponse::getName).contains("session1", "session2", "session3")
-        );
+        assertThat(responses.get(0).getName()).isEqualTo("session1");
     }
-
-    @DisplayName("LoginMember의 Authority가 Anonymous일 때 모든 Session을 반환한다.")
-    @Test
-    void findALlWithMySessionFirstReturnFindAll() {
-        // given
-        final LoginMember loginMember = new LoginMember(ANONYMOUS);
-        final Session session1 = new Session("session1");
-        final Session session2 = new Session("session2");
-        final Session session3 = new Session("session3");
-
-        final List<Session> allSessions = new ArrayList<>();
-        allSessions.add(session1);
-        allSessions.add(session2);
-        allSessions.add(session3);
-        doReturn(allSessions).when(sessionRepository).findAll();
-
-        // when
-        final List<SessionResponse> responses = sessionService.findAllWithMySessionFirst(loginMember);
-        final SessionResponse firstResponse = responses.get(0);
-
-        // then
-        assertAll(
-            () -> assertThat(firstResponse.getName()).isEqualTo("session1"),
-            () -> assertThat(responses.get(0).getName()).isEqualTo("session1"),
-            () -> assertThat(responses).extracting(SessionResponse::getName).contains("session1", "session2", "session3"),
-            () -> assertThat(responses).hasSize(3)
-        );
-    }
-
 }

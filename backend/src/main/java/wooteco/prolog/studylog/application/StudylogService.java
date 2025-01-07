@@ -13,6 +13,7 @@ import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_SCRAP_NOT_
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -38,6 +39,7 @@ import wooteco.prolog.session.domain.Answer;
 import wooteco.prolog.session.domain.AnswerTemp;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
+import wooteco.prolog.studylog.application.dto.AnswerRequest;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.application.dto.StudylogMissionRequest;
@@ -114,12 +116,20 @@ public class StudylogService {
             tags.getList())
         );
 
-        List<Answer> answers = answerService.saveAnswers(member.getId(), studylogRequest.getAnswers(), persistStudylog);
+        List<Answer> answers = saveAnswers(member.getId(), studylogRequest.getAnswers(), persistStudylog);
 
         onStudylogCreatedEvent(member, tags, persistStudylog);
         deleteStudylogTemp(memberId);
 
         return StudylogResponse.of(persistStudylog, answers);
+    }
+
+    private List<Answer> saveAnswers(Long memberId, List<AnswerRequest> answers, Studylog persistStudylog) {
+        if (answers == null || answers.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return answerService.saveAnswers(memberId, answers, persistStudylog);
     }
 
     private void validateMemberIsCrew(final Member member) {

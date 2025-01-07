@@ -10,6 +10,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -49,6 +50,7 @@ import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
+import wooteco.prolog.session.application.AnswerService;
 import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.dto.MissionResponse;
@@ -98,6 +100,8 @@ class StudylogServiceTest {
     @Mock
     private MissionService missionService;
     @Mock
+    private AnswerService answerService;
+    @Mock
     private StudylogRepository studylogRepository;
     @Mock
     private StudylogScrapRepository studylogScrapRepository;
@@ -119,8 +123,7 @@ class StudylogServiceTest {
         Tags tags = Tags.of(singletonList("스터디로그"));
         Member member = new Member(1L, "김동해", "오션", Role.CREW, 1L, "image");
         List<TagRequest> tagRequests = singletonList(new TagRequest("스터디로그"));
-        StudylogRequest studylogRequest = new StudylogRequest(title, content, null, null,
-            tagRequests);
+        StudylogRequest studylogRequest = new StudylogRequest(title, content, null, null, tagRequests, null);
         Studylog studylog = new Studylog(member, studylogRequest.getTitle(),
             studylogRequest.getContent(), null, null, tags.getList());
         List<TagResponse> expectedTagResponses = singletonList(new TagResponse(null, "스터디로그"));
@@ -180,8 +183,7 @@ class StudylogServiceTest {
         Member member = new Member(1L, "문채원", "라온", Role.CREW, 1L, "image");
         List<TagRequest> tagRequests = singletonList(new TagRequest("스터디로그"));
         List<TagResponse> tagResponses = singletonList(new TagResponse(null, "스터디로그"));
-        StudylogRequest studylogRequest = new StudylogRequest(title, content, null, null,
-            tagRequests);
+        StudylogRequest studylogRequest = new StudylogRequest(title, content, null, null, tagRequests, null);
         StudylogTemp studylogTemp = new StudylogTemp(member, studylogRequest.getTitle(),
             studylogRequest.getContent(), null, null, tags.getList());
 
@@ -193,6 +195,7 @@ class StudylogServiceTest {
             when(tagService.findOrCreate(anyList())).thenReturn(tags);
             when(studylogTempRepository.save(any())).thenReturn(studylogTemp);
             when(studylogTempRepository.existsByMemberId(1L)).thenReturn(true);
+            when(answerService.saveAnswerTemp(any(), any(), any())).thenReturn(emptyList());
 
             // when
             StudylogTempResponse studylogTempResponse = studylogService.insertStudylogTemp(1L,
@@ -262,6 +265,7 @@ class StudylogServiceTest {
         //given
         when(studylogRepository.findAll((Specification<Studylog>) any(), (Pageable) any()))
             .thenReturn(Page.empty());
+        when(answerService.findAnswersByStudylogs(any())).thenReturn(Collections.emptyMap());
 
         //when
         studylogService.findStudylogsWithoutKeyword(emptyList(),
@@ -321,6 +325,7 @@ class StudylogServiceTest {
             new Studylog(member, "제목", "내용", mission, emptyList()));
         when(memberService.findById(any())).thenReturn(member);
         when(tagService.findOrCreate(any())).thenReturn(new Tags(emptyList()));
+        when(answerService.saveAnswers(anyLong(), any(), any())).thenReturn(emptyList());
 
         //when
         studylogService.insertStudylogs(1L, studylogRequests);
@@ -372,6 +377,9 @@ class StudylogServiceTest {
             final LoginMember loginMember = new LoginMember(LoginMember.Authority.ANONYMOUS);
             given(studylogRepository.findById(anyLong()))
                 .willReturn(Optional.of(studylog));
+            given(answerService.findAnswersByStudylogId(anyLong()))
+                .willReturn(emptyList());
+
             final int previousViewCount = studylog.getViewCount();
 
             //when
@@ -402,6 +410,7 @@ class StudylogServiceTest {
                 .willReturn(Optional.of(new StudylogScrap(null, null)));
             given(memberService.findById(anyLong()))
                 .willReturn(new Member(otherUserId, null, null, null, null, null));
+            given(answerService.findAnswersByStudylogId(anyLong())).willReturn(emptyList());
 
             final int previousViewCount = studylog.getViewCount();
 
@@ -435,6 +444,7 @@ class StudylogServiceTest {
                 .willReturn(Optional.of(new StudylogScrap(null, null)));
             given(memberService.findById(anyLong()))
                 .willReturn(new Member(1L, null, null, null, null, null));
+            given(answerService.findAnswersByStudylogId(anyLong())).willReturn(emptyList());
 
             final int previousViewCount = studylog.getViewCount();
 
@@ -706,6 +716,9 @@ class StudylogServiceTest {
                     )
                 );
 
+            given(answerService.findAnswersByStudylogs(any()))
+                .willReturn(Collections.emptyMap());
+
             //when
             final StudylogsResponse studylogsResponse = studylogService.findStudylogs(
                 studylogsSearchRequest, 1L);
@@ -834,7 +847,7 @@ class StudylogServiceTest {
                 "변경된 내용",
                 3L,
                 5L,
-                tagRequests
+                tagRequests, null
             );
 
         final Studylog studylog = new Studylog(
@@ -863,6 +876,8 @@ class StudylogServiceTest {
 
         when(tagService.findOrCreate(any()))
             .thenReturn(newTags);
+
+        doNothing().when(answerService).updateAnswers(any(), any());
 
         //when
         studylogService.updateStudylog(
@@ -913,6 +928,9 @@ class StudylogServiceTest {
 
         when(studylogTempRepository.findByMemberId(anyLong()))
             .thenReturn(studylogTemp);
+
+        when(answerService.findAnswersTempByMemberId(any()))
+            .thenReturn(Collections.emptyList());
 
         //when
         final StudylogTempResponse studylogTempResponse = studylogService.findStudylogTemp(1L);
@@ -995,7 +1013,7 @@ class StudylogServiceTest {
 
         private List<StudylogResponse> makeStudylogResponseFor(final long id, final int times) {
             return Stream.generate(() -> new StudylogResponse(id,
-                    null, null, null, null, null, null, null, null, false, false, 0, false, 0, 0))
+                    null, null, null, null, null, null, null, null, null, false, false, 0, false, 0, 0))
                 .limit(times)
                 .collect(Collectors.toList());
         }
