@@ -63,7 +63,8 @@ dependencies {
     implementation 'org.reflections:reflections:0.9.10'
 
     //flyway
-    implementation 'org.flywaydb:flyway-core:6.4.2'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-mysql'
 
     // embedded mysql
     implementation 'com.wix:wix-embedded-mysql:4.6.2'

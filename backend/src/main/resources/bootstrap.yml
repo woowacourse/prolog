@@ -4,8 +4,4 @@ aws:
     name: prolog
     prefix: secrets
     default-context: prolog
-
-cloud:
-  aws:
-    region:
-      static: ap-northeast-2
+    region: ap-northeast-2
