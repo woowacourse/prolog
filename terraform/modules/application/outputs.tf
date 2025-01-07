@@ -13,15 +13,11 @@ output "alb_dns_name" {
     value       = aws_lb.alb.dns_name
 }
 
-output "alb_target_group_arn_blue" {
-    description = "ARN of the Blue Target Group"
-    value       = aws_lb_target_group.tg_blue.arn
+output "alb_target_group_arn" {
+    description = "ARN of the Target Group"
+    value       = aws_lb_target_group.tg.arn
 }
 
-output "alb_target_group_arn_green" {
-    description = "ARN of the Green Target Group"
-    value       = aws_lb_target_group.tg_green.arn
-}
 
 output "alb_http_listener_arn" {
     description = "ARN of the HTTP Listener"

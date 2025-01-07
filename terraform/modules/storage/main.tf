@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "bucket" {
-    bucket = var.bucket_name
+    bucket        = var.bucket_name
+    force_destroy = true
 
     tags = merge(var.storage_tags, {
         Name = "${var.project_name}_bucket"

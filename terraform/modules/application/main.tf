@@ -40,25 +40,22 @@ resource "aws_lb" "alb" {
     })
 }
 
-resource "aws_lb_target_group" "tg_blue" {
-    name     = "${var.project_name}-tg-blue"
-    port     = 80
+resource "aws_lb_target_group" "tg" {
+    name     = "${var.project_name}-tg"
+    port     = 8080
     protocol = "HTTP"
     vpc_id   = var.vpc_id
 
-    tags = merge(var.service_worker_tags, {
-        Name = "${var.project_name}_tg_blue"
-    })
-}
-
-resource "aws_lb_target_group" "tg_green" {
-    name     = "${var.project_name}-tg-green"
-    port     = 80
-    protocol = "HTTP"
-    vpc_id   = var.vpc_id
+    health_check {
+        path                = "/elb-health"
+        interval            = 30
+        timeout             = 5
+        healthy_threshold   = 2
+        unhealthy_threshold = 2
+    }
 
     tags = merge(var.service_worker_tags, {
-        Name = "${var.project_name}_tg_green"
+        Name = "${var.project_name}_tg"
     })
 }
 
@@ -98,7 +95,7 @@ resource "aws_lb_listener" "lb_https" {
 
     default_action {
         type             = "forward"
-        target_group_arn = aws_lb_target_group.tg_blue.arn
+        target_group_arn = aws_lb_target_group.tg.arn
     }
 
     tags = merge(var.service_worker_tags, {
@@ -119,8 +116,7 @@ resource "aws_autoscaling_group" "asg" {
 
     // Note: 이후 target_group_arns는 CodeDeploy에서 알아서 관리 예정
     target_group_arns = [
-        aws_lb_target_group.tg_blue.arn,
-        aws_lb_target_group.tg_green.arn
+        aws_lb_target_group.tg.arn
     ]
 
     dynamic "tag" {
@@ -246,6 +242,28 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
 }
 
 /*
+resource "aws_lb_target_group" "tg_blue" {
+    name     = "${var.project_name}-tg-blue"
+    port     = 80
+    protocol = "HTTP"
+    vpc_id   = var.vpc_id
+
+    tags = merge(var.service_worker_tags, {
+        Name = "${var.project_name}_tg_blue"
+    })
+}
+
+resource "aws_lb_target_group" "tg_green" {
+    name     = "${var.project_name}-tg-green"
+    port     = 80
+    protocol = "HTTP"
+    vpc_id   = var.vpc_id
+
+    tags = merge(var.service_worker_tags, {
+        Name = "${var.project_name}_tg_green"
+    })
+}
+
 resource "aws_codedeploy_deployment_group" "deployment_group" {
     app_name              = aws_codedeploy_app.deploy.name
     deployment_group_name = var.project_name
