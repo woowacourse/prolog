@@ -1,17 +1,17 @@
 package wooteco.prolog.article.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
 public class RssFeeds {
+
     private final List<RssFeed> rssFeeds;
 
     public RssFeed findLatestRssFeed() {

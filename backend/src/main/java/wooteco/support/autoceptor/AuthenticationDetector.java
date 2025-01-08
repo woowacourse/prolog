@@ -2,11 +2,10 @@ package wooteco.support.autoceptor;
 
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpMethod;
-
 import java.util.List;
 import java.util.Objects;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 
 @RequiredArgsConstructor
 public class AuthenticationDetector {

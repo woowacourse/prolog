@@ -1,9 +1,8 @@
 package wooteco.prolog.studylog.application.dto;
 
+import java.time.LocalDate;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDate;
 
 @Data
 public class StudylogSearchRequest {

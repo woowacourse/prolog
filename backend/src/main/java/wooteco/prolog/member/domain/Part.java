@@ -1,9 +1,8 @@
 package wooteco.prolog.member.domain;
 
+import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.util.Arrays;
 
 @Getter
 @AllArgsConstructor

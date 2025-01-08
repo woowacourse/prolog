@@ -1,11 +1,11 @@
 package wooteco.prolog.common.exception;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static wooteco.prolog.common.exception.BadRequestCode.GITHUB_API_FAIL;
 import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_FOUND;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class BadRequestCodeTest {
 

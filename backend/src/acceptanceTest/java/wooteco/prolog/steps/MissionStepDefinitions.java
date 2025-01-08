@@ -1,8 +1,11 @@
 package wooteco.prolog.steps;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.MissionAcceptanceFixture;
@@ -10,10 +13,6 @@ import wooteco.prolog.fixtures.SessionAcceptanceFixture;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionRequest;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class MissionStepDefinitions extends AcceptanceSteps {
 

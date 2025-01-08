@@ -1,7 +1,6 @@
 package wooteco.prolog.login.application;
 
 import jakarta.servlet.http.HttpServletRequest;
-
 import java.util.Enumeration;
 
 public class AuthorizationExtractor {

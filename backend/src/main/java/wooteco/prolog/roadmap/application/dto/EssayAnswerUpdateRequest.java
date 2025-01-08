@@ -8,5 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public final class EssayAnswerUpdateRequest {
+
     private String answer;
 }

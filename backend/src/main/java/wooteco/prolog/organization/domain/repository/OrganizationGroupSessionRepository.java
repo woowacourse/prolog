@@ -1,9 +1,8 @@
 package wooteco.prolog.organization.domain.repository;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import wooteco.prolog.organization.domain.OrganizationGroupSession;
-
-import java.util.List;
 
 public interface OrganizationGroupSessionRepository extends JpaRepository<OrganizationGroupSession, Long> {
 

@@ -1,18 +1,17 @@
 package wooteco.prolog.member.domain.repository;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
-import wooteco.prolog.member.domain.MemberTag;
-import wooteco.prolog.member.domain.MemberTags;
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
+import wooteco.prolog.member.domain.MemberTag;
+import wooteco.prolog.member.domain.MemberTags;
 
 @Component
 @RequiredArgsConstructor

@@ -1,5 +1,13 @@
 package wooteco.prolog.studylog.application.dto.search;
 
+import static java.util.stream.Collectors.toList;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,15 +19,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.BadRequestException;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
-import static java.util.stream.Collectors.toList;
 
 @Component
 public class SearchArgumentResolver implements HandlerMethodArgumentResolver {

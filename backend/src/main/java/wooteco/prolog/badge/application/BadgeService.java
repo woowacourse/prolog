@@ -1,13 +1,12 @@
 package wooteco.prolog.badge.application;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import wooteco.prolog.badge.domain.BadgeType;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class BadgeService {

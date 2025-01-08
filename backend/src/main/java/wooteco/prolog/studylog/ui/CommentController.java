@@ -1,5 +1,6 @@
 package wooteco.prolog.studylog.ui;
 
+import java.net.URI;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,8 +17,6 @@ import wooteco.prolog.studylog.application.CommentService;
 import wooteco.prolog.studylog.application.dto.CommentChangeRequest;
 import wooteco.prolog.studylog.application.dto.CommentCreateRequest;
 import wooteco.prolog.studylog.application.dto.CommentsResponse;
-
-import java.net.URI;
 
 @RestController
 @RequestMapping("/studylogs")

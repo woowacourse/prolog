@@ -1,13 +1,13 @@
 package wooteco.prolog.studylog.studylog.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_TITLE_NULL_OR_EMPTY;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.studylog.domain.Title;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_TITLE_NULL_OR_EMPTY;
 
 class TitleTest {
 

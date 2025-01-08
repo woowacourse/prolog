@@ -1,5 +1,16 @@
 package wooteco.prolog.studylog.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,18 +35,6 @@ import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.domain.repository.PopularStudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class PopularStudylogServiceTest {
@@ -312,7 +311,8 @@ class PopularStudylogServiceTest {
             final PageRequest pageRequest = PageRequest.of(0, 3);
             final Page<Studylog> pages = new PageImpl<>(studylogs, pageRequest, 1);
             final List<Department> departments = Arrays.asList(frontend, backend, android);
-            final List<DepartmentMember> departmentMembers = Arrays.asList(splitDepartmentMember, journeyDepartmentMember, poohDepartmentMember);
+            final List<DepartmentMember> departmentMembers = Arrays.asList(splitDepartmentMember,
+                journeyDepartmentMember, poohDepartmentMember);
 
             final PopularStudylog splitPopularStudylog = setUpPopularStudylog(1L,
                 splitStudylog.getId());

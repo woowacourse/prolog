@@ -1,5 +1,7 @@
 package wooteco.prolog.roadmap.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_QUIZ_NOT_FOUND_EXCEPTION;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,8 +13,6 @@ import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.exception.BadRequestException;
-
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_QUIZ_NOT_FOUND_EXCEPTION;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity

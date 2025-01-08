@@ -1,5 +1,8 @@
 package wooteco.prolog.member.ui;
 
+import static org.springframework.data.domain.Sort.Direction.DESC;
+
+import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,10 +23,6 @@ import wooteco.prolog.member.application.dto.MemberScrapRequest;
 import wooteco.prolog.member.application.dto.MemberScrapResponse;
 import wooteco.prolog.studylog.application.StudylogScrapService;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
-
-import java.net.URI;
-
-import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @RestController
 @RequiredArgsConstructor

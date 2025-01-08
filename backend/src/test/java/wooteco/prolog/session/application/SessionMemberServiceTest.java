@@ -1,5 +1,18 @@
 package wooteco.prolog.session.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.atMostOnce;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static wooteco.prolog.member.domain.Role.CREW;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,20 +28,6 @@ import wooteco.prolog.session.application.dto.SessionGroupMemberRequest;
 import wooteco.prolog.session.domain.SessionMember;
 import wooteco.prolog.session.domain.repository.SessionMemberRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.atMostOnce;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static wooteco.prolog.member.domain.Role.CREW;
 
 @ExtendWith(MockitoExtension.class)
 class SessionMemberServiceTest {

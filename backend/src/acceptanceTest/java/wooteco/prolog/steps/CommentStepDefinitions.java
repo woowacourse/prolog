@@ -1,20 +1,19 @@
 package wooteco.prolog.steps;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static wooteco.prolog.fixtures.CommentAcceptanceFixture.COMMENT;
+import static wooteco.prolog.fixtures.CommentAcceptanceFixture.UPDATED_COMMENT;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.studylog.application.dto.CommentMemberResponse;
 import wooteco.prolog.studylog.application.dto.CommentResponse;
 import wooteco.prolog.studylog.application.dto.CommentsResponse;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static wooteco.prolog.fixtures.CommentAcceptanceFixture.COMMENT;
-import static wooteco.prolog.fixtures.CommentAcceptanceFixture.UPDATED_COMMENT;
 
 public class CommentStepDefinitions extends AcceptanceSteps {
 

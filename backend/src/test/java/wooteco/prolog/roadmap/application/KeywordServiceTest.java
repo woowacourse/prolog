@@ -1,5 +1,14 @@
 package wooteco.prolog.roadmap.application;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
+
+import java.util.Collections;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,16 +21,6 @@ import wooteco.prolog.roadmap.application.dto.KeywordUpdateRequest;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-
-import java.util.Collections;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_NOT_FOUND_EXCEPTION;
 
 @ExtendWith(MockitoExtension.class)
 class KeywordServiceTest {

@@ -1,10 +1,26 @@
 package wooteco.prolog.steps;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG1;
+import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG10;
+import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG2;
+import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG3;
+import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG4;
+import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG1;
+import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG2;
+
 import com.google.common.collect.Iterables;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.messages.internal.com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.StudylogAcceptanceFixture;
@@ -15,23 +31,6 @@ import wooteco.prolog.studylog.application.dto.StudylogResponse;
 import wooteco.prolog.studylog.application.dto.StudylogSessionRequest;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.TagRequest;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG1;
-import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG10;
-import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG2;
-import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG3;
-import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG4;
-import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG1;
-import static wooteco.prolog.fixtures.TagAcceptanceFixture.TAG2;
 
 public class StudylogStepDefinitions extends AcceptanceSteps {
 

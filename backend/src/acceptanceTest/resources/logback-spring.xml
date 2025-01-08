@@ -18,12 +18,12 @@
         </logger>
 
         <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"
-                additivity="false">
+            additivity="false">
             <appender-ref ref="db-logger-console"/>
         </logger>
 
         <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="TRACE"
-                additivity="false">
+            additivity="false">
             <appender-ref ref="db-logger-console"/>
         </logger>
     </springProfile>

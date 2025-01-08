@@ -1,6 +1,9 @@
 package wooteco.prolog.organization.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.common.collect.Lists;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,10 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.organization.domain.Organization;
 import wooteco.prolog.organization.domain.OrganizationGroup;
 import wooteco.prolog.organization.domain.OrganizationGroupSession;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional

@@ -1,6 +1,12 @@
 package wooteco.prolog.roadmap.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import jakarta.persistence.EntityManager;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +26,6 @@ import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndTotalQuizCount;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
 import wooteco.support.utils.RepositoryTest;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 @RepositoryTest
 class KeywordRepositoryTest {
@@ -219,7 +218,8 @@ class KeywordRepositoryTest {
         essayAnswerRepository.save(new EssayAnswer(quiz2, "쓰라고 해서요ㅠ", member));
 
         //when
-        final List<KeywordIdAndAnsweredQuizCount> doneQuizCounts = keywordRepository.findAnsweredQuizCountByMemberId(member.getId());
+        final List<KeywordIdAndAnsweredQuizCount> doneQuizCounts = keywordRepository.findAnsweredQuizCountByMemberId(
+            member.getId());
 
         //then
         assertSoftly(softAssertions -> {

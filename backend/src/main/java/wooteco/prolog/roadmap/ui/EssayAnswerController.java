@@ -1,5 +1,8 @@
 package wooteco.prolog.roadmap.ui;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,10 +25,6 @@ import wooteco.prolog.roadmap.application.dto.EssayAnswerSearchRequest;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerUpdateRequest;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
 import wooteco.prolog.studylog.application.dto.EssayAnswersResponse;
-
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 
 @RestController

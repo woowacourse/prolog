@@ -1,5 +1,21 @@
 package wooteco.prolog.studylog.application;
 
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_ARGUMENT;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_DOCUMENT_NOT_FOUND;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_SCRAP_NOT_EXIST_EXCEPTION;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,23 +59,6 @@ import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
 import wooteco.prolog.studylog.domain.repository.StudylogTempRepository;
 import wooteco.prolog.studylog.domain.repository.dto.CommentCount;
 import wooteco.prolog.studylog.event.StudylogDeleteEvent;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
-import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
-import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_ARGUMENT;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_DOCUMENT_NOT_FOUND;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_SCRAP_NOT_EXIST_EXCEPTION;
 
 @Service
 @AllArgsConstructor

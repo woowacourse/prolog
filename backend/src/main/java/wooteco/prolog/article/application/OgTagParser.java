@@ -1,17 +1,16 @@
 package wooteco.prolog.article.application;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Component;
 import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.BadRequestException;
-
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 public class OgTagParser {

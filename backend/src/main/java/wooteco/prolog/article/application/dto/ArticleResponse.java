@@ -1,10 +1,9 @@
 package wooteco.prolog.article.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import wooteco.prolog.article.domain.Article;
-
-import java.time.LocalDateTime;
 
 @AllArgsConstructor
 public class ArticleResponse {

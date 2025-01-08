@@ -1,12 +1,11 @@
 package wooteco.prolog.article.application;
 
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import wooteco.prolog.article.application.OgTagParser.OgType;
 import wooteco.prolog.article.application.dto.ArticleUrlRequest;
 import wooteco.prolog.article.application.dto.ArticleUrlResponse;
-
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Service

@@ -1,12 +1,11 @@
 package wooteco.prolog.studylog.application;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor

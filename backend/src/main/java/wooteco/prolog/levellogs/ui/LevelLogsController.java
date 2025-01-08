@@ -1,5 +1,6 @@
 package wooteco.prolog.levellogs.ui;
 
+import java.net.URI;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
@@ -19,8 +20,6 @@ import wooteco.prolog.levellogs.application.dto.LevelLogSummariesResponse;
 import wooteco.prolog.login.aop.MemberOnly;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
-
-import java.net.URI;
 
 @RestController
 @RequestMapping("/levellogs")

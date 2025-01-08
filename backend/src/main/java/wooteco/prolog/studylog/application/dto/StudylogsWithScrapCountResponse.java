@@ -1,13 +1,12 @@
 package wooteco.prolog.studylog.application.dto;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 import wooteco.prolog.studylog.domain.Studylog;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor

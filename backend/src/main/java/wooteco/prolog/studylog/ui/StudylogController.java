@@ -1,6 +1,9 @@
 package wooteco.prolog.studylog.ui;
 
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
+
 import jakarta.servlet.http.HttpServletResponse;
+import java.net.URI;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -24,10 +27,6 @@ import wooteco.prolog.studylog.application.dto.StudylogTempResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.SearchParams;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
-
-import java.net.URI;
-
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
 
 @RestController
 @RequestMapping("/studylogs")

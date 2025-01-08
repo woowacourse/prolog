@@ -2,11 +2,10 @@ package wooteco.prolog.article.domain;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.OneToMany;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Embeddable
 public class ArticleLikes {

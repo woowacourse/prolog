@@ -1,5 +1,8 @@
 package wooteco.prolog.studylog.ui;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -14,10 +17,6 @@ import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.studylog.application.dto.MemberTagResponse;
-
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.List;
 
 @RestController
 @RequestMapping("/members")

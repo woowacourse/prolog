@@ -1,14 +1,13 @@
 package wooteco.prolog.studylog.application;
 
-import wooteco.prolog.common.exception.BadRequestException;
-import wooteco.prolog.studylog.domain.StudylogDocument;
-import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_DOCUMENT_NOT_FOUND;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_DOCUMENT_NOT_FOUND;
+import wooteco.prolog.common.exception.BadRequestException;
+import wooteco.prolog.studylog.domain.StudylogDocument;
+import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 
 public abstract class AbstractStudylogDocumentService implements DocumentService {
 

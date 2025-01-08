@@ -8,11 +8,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
-
-import java.util.Objects;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "LIKES")

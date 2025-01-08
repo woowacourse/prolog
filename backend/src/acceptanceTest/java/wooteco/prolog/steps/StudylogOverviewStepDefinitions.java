@@ -1,20 +1,19 @@
 package wooteco.prolog.steps;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
+
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.time.MonthDay;
+import java.time.Year;
+import java.util.List;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.fixtures.PostAcceptanceFixture;
 import wooteco.prolog.fixtures.TagAcceptanceFixture;
 import wooteco.prolog.studylog.application.dto.CalendarStudylogResponse;
 import wooteco.prolog.studylog.application.dto.MemberTagResponse;
-
-import java.time.MonthDay;
-import java.time.Year;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
 
 public class StudylogOverviewStepDefinitions extends AcceptanceSteps {
 

@@ -3,11 +3,10 @@ package wooteco.prolog.studylog.domain;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.OneToMany;
-import lombok.Getter;
-import org.hibernate.annotations.BatchSize;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import org.hibernate.annotations.BatchSize;
 
 @Getter
 @Embeddable

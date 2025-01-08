@@ -2,14 +2,13 @@ package wooteco.prolog.studylog.domain.repository;
 
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
-import org.springframework.data.jpa.domain.Specification;
-import wooteco.prolog.studylog.domain.Studylog;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.data.jpa.domain.Specification;
+import wooteco.prolog.studylog.domain.Studylog;
 
 public class StudylogSpecification {
 

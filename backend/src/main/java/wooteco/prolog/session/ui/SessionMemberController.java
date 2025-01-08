@@ -1,5 +1,6 @@
 package wooteco.prolog.session.ui;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,8 +15,6 @@ import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.session.application.SessionMemberService;
 import wooteco.prolog.session.application.dto.SessionGroupMemberRequest;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/sessions/{sessionId}/members")

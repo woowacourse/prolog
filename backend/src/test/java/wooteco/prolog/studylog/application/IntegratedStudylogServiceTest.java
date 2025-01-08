@@ -1,5 +1,11 @@
 package wooteco.prolog.studylog.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,14 +26,6 @@ import wooteco.prolog.studylog.domain.StudylogRead;
 import wooteco.prolog.studylog.domain.repository.StudylogReadRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.support.utils.RepositoryTest;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.IntStream;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 @RepositoryTest
 class IntegratedStudylogServiceTest {
@@ -84,8 +82,9 @@ class IntegratedStudylogServiceTest {
 
         List<Long> readIds = studylogService.findReadIds(judy.getId());
         SessionResponse sessionResponse = new SessionResponse(1L, "sessionResponse");
-        List<StudylogResponse> studylogs = List.of(new StudylogResponse(studylog, sessionResponse, new MissionResponse(1L, "missionResponse", sessionResponse),
-            new ArrayList<>(), false, 0L));
+        List<StudylogResponse> studylogs = List.of(
+            new StudylogResponse(studylog, sessionResponse, new MissionResponse(1L, "missionResponse", sessionResponse),
+                new ArrayList<>(), false, 0L));
 
         //when
         studylogService.updateRead(studylogs, readIds);

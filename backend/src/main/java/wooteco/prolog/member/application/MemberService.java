@@ -1,5 +1,12 @@
 package wooteco.prolog.member.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_FOUND;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -23,14 +30,6 @@ import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.organization.application.OrganizationService;
 import wooteco.prolog.organization.domain.OrganizationGroup;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
-import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_FOUND;
 
 @Service
 @Transactional(readOnly = true)

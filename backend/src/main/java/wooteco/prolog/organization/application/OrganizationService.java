@@ -1,5 +1,7 @@
 package wooteco.prolog.organization.application;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import wooteco.prolog.member.domain.MemberCreatedEvent;
@@ -12,9 +14,6 @@ import wooteco.prolog.organization.domain.repository.OrganizationGroupRepository
 import wooteco.prolog.organization.domain.repository.OrganizationGroupSessionRepository;
 import wooteco.prolog.organization.domain.repository.OrganizationRepository;
 import wooteco.prolog.session.domain.Session;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class OrganizationService {

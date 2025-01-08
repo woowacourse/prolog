@@ -1,17 +1,16 @@
 package wooteco.prolog.studylog.domain;
 
+import static java.util.stream.Collectors.groupingBy;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.OneToMany;
-import lombok.Getter;
-import org.hibernate.annotations.BatchSize;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.groupingBy;
+import lombok.Getter;
+import org.hibernate.annotations.BatchSize;
 
 @Getter
 @Embeddable

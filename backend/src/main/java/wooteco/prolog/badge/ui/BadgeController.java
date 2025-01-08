@@ -1,5 +1,7 @@
 package wooteco.prolog.badge.ui;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +13,6 @@ import wooteco.prolog.badge.application.BadgeService;
 import wooteco.prolog.badge.application.dto.BadgeResponse;
 import wooteco.prolog.badge.application.dto.BadgesResponse;
 import wooteco.prolog.badge.domain.BadgeType;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor

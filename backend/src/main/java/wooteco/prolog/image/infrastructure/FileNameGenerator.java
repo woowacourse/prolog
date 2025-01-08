@@ -1,13 +1,12 @@
 package wooteco.prolog.image.infrastructure;
 
+import static wooteco.prolog.common.exception.BadRequestCode.UNSUPPORTED_FILE_EXTENSION_EXCEPTION;
+
+import java.util.UUID;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Component;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.image.domain.FileExtension;
-
-import java.util.UUID;
-
-import static wooteco.prolog.common.exception.BadRequestCode.UNSUPPORTED_FILE_EXTENSION_EXCEPTION;
 
 @Component
 public class FileNameGenerator {

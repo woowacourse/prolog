@@ -1,5 +1,8 @@
 package wooteco.prolog.studylog.application.dto;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.member.application.dto.MemberResponse;
@@ -7,10 +10,6 @@ import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.studylog.domain.StudylogTemp;
 import wooteco.prolog.studylog.domain.StudylogTempTags;
-
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @NoArgsConstructor
 @Getter

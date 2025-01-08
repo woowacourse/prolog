@@ -1,5 +1,6 @@
 package wooteco.prolog.roadmap.ui;
 
+import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import wooteco.prolog.roadmap.application.NewSessionService;
 import wooteco.prolog.roadmap.application.dto.SessionRequest;
 import wooteco.prolog.roadmap.application.dto.SessionsResponse;
-
-import java.net.URI;
 
 @RequiredArgsConstructor
 @RestController

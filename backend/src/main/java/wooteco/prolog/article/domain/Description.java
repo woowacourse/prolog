@@ -16,6 +16,7 @@ import org.jsoup.safety.Safelist;
 @ToString
 @Embeddable
 public class Description {
+
     private String description;
 
     public Description(String description) {

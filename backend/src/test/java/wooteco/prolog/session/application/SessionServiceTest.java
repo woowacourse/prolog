@@ -1,5 +1,18 @@
 package wooteco.prolog.session.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_SESSION_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
+import static wooteco.prolog.login.ui.LoginMember.Authority.ANONYMOUS;
+import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,21 +28,6 @@ import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.SessionMember;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_SESSION_EXCEPTION;
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
-import static wooteco.prolog.login.ui.LoginMember.Authority.ANONYMOUS;
-import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
 
 @ExtendWith(MockitoExtension.class)
 class SessionServiceTest {
@@ -197,7 +195,8 @@ class SessionServiceTest {
         // then
         assertAll(
             () -> assertThat(responses.get(0).getName()).isEqualTo("session2"),
-            () -> assertThat(responses).extracting(SessionResponse::getName).contains("session1", "session2", "session3")
+            () -> assertThat(responses).extracting(SessionResponse::getName)
+                .contains("session1", "session2", "session3")
         );
     }
 
@@ -224,7 +223,8 @@ class SessionServiceTest {
         assertAll(
             () -> assertThat(firstResponse.getName()).isEqualTo("session1"),
             () -> assertThat(responses.get(0).getName()).isEqualTo("session1"),
-            () -> assertThat(responses).extracting(SessionResponse::getName).contains("session1", "session2", "session3"),
+            () -> assertThat(responses).extracting(SessionResponse::getName)
+                .contains("session1", "session2", "session3"),
             () -> assertThat(responses).hasSize(3)
         );
     }

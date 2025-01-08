@@ -1,18 +1,17 @@
 package wooteco.prolog.studylog.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_TITLE_NULL_OR_EMPTY;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_TITLE_TOO_LONG;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import wooteco.prolog.common.exception.BadRequestException;
-
-import java.util.Objects;
-
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_TITLE_NULL_OR_EMPTY;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_TITLE_TOO_LONG;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

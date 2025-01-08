@@ -1,5 +1,9 @@
 package wooteco.prolog.studylog.application.dto;
 
+import static java.util.stream.Collectors.toList;
+
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +14,6 @@ import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @NoArgsConstructor
 @AllArgsConstructor

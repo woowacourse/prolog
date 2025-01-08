@@ -1,5 +1,7 @@
 package wooteco.prolog.roadmap.ui;
 
+import java.net.URI;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,9 +19,6 @@ import wooteco.prolog.roadmap.application.dto.CurriculumQuizResponse;
 import wooteco.prolog.roadmap.application.dto.QuizRequest;
 import wooteco.prolog.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.roadmap.application.dto.QuizzesResponse;
-
-import java.net.URI;
-import java.util.List;
 
 @RestController
 @AllArgsConstructor

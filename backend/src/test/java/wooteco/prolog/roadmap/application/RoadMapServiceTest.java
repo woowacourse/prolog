@@ -1,5 +1,11 @@
 package wooteco.prolog.roadmap.application;
 
+import static java.util.Collections.emptySet;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+
+import java.util.List;
+import java.util.function.Consumer;
 import org.assertj.core.api.AbstractListAssert;
 import org.assertj.core.api.ListAssert;
 import org.assertj.core.api.ObjectAssert;
@@ -22,13 +28,6 @@ import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.roadmap.domain.repository.QuizRepository;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.SessionRepository;
-
-import java.util.List;
-import java.util.function.Consumer;
-
-import static java.util.Collections.emptySet;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @SpringBootTest
 class RoadMapServiceTest {

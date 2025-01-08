@@ -1,5 +1,8 @@
 package wooteco.prolog.studylog.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.INVALID_LIKE_REQUEST_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
+
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,9 +12,6 @@ import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.studylog.application.dto.StudylogLikeResponse;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-
-import static wooteco.prolog.common.exception.BadRequestCode.INVALID_LIKE_REQUEST_EXCEPTION;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
 
 @Service
 @AllArgsConstructor

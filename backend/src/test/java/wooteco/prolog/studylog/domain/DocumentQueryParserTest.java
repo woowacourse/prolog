@@ -1,15 +1,14 @@
 package wooteco.prolog.studylog.domain;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static java.util.Collections.emptyList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static wooteco.prolog.studylog.domain.DocumentQueryParser.removeSpecialChars;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static java.util.Collections.emptyList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static wooteco.prolog.studylog.domain.DocumentQueryParser.removeSpecialChars;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class DocumentQueryParserTest {
 

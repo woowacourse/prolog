@@ -1,5 +1,7 @@
 package wooteco.prolog.login.ui;
 
+import static wooteco.prolog.common.exception.BadRequestCode.TOKEN_NOT_VALID;
+
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -13,8 +15,6 @@ import wooteco.prolog.login.application.AuthorizationExtractor;
 import wooteco.prolog.login.application.JwtTokenProvider;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember.Authority;
-
-import static wooteco.prolog.common.exception.BadRequestCode.TOKEN_NOT_VALID;
 
 @AllArgsConstructor
 public class AuthMemberPrincipalArgumentResolver implements HandlerMethodArgumentResolver {

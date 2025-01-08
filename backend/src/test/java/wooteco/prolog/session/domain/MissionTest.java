@@ -1,12 +1,12 @@
 package wooteco.prolog.session.domain;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static wooteco.prolog.common.exception.BadRequestCode.TOO_LONG_MISSION_NAME;
+
 import com.google.common.base.Supplier;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.common.exception.BadRequestException;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static wooteco.prolog.common.exception.BadRequestCode.TOO_LONG_MISSION_NAME;
 
 class MissionTest {
 

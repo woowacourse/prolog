@@ -1,5 +1,13 @@
 package wooteco.prolog.studylog.application;
 
+import static java.util.stream.Collectors.toList;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -19,15 +27,6 @@ import wooteco.prolog.studylog.domain.PopularStudylog;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.PopularStudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @AllArgsConstructor
@@ -118,15 +117,18 @@ public class PopularStudylogService {
         return PopularStudylogsResponse.of(
             studylogsResponse(allPopularStudylogs, pageable, memberId),
             studylogsResponse(
-                filterStudylogsByDepartmets(allPopularStudylogs, new Departments(DepartmetsBygroupType.get(Part.FRONTEND)), groupedMembers),
+                filterStudylogsByDepartmets(allPopularStudylogs,
+                    new Departments(DepartmetsBygroupType.get(Part.FRONTEND)), groupedMembers),
                 pageable,
                 memberId),
             studylogsResponse(
-                filterStudylogsByDepartmets(allPopularStudylogs, new Departments(DepartmetsBygroupType.get(Part.BACKEND)), groupedMembers),
+                filterStudylogsByDepartmets(allPopularStudylogs,
+                    new Departments(DepartmetsBygroupType.get(Part.BACKEND)), groupedMembers),
                 pageable,
                 memberId),
             studylogsResponse(
-                filterStudylogsByDepartmets(allPopularStudylogs, new Departments(DepartmetsBygroupType.get(Part.ANDROID)), groupedMembers),
+                filterStudylogsByDepartmets(allPopularStudylogs,
+                    new Departments(DepartmetsBygroupType.get(Part.ANDROID)), groupedMembers),
                 pageable,
                 memberId));
     }
