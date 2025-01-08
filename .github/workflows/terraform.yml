@@ -23,12 +23,8 @@ jobs:
         with:
           terraform_version: 1.5.3
 
-      - name: Select workspace
-        run: |
-          ENVIRONMENT=${{ github.event.inputs.environment }}
-          terraform workspace select "$ENVIRONMENT" || terraform workspace new "$ENVIRONMENT"
-
       - name: Terraform Init and Apply
+        working-directory: terraform/environments/${{ github.event.inputs.environment }}
         run: |
           terraform init
           terraform plan -out=tfplan
