@@ -37,11 +37,11 @@ const EditIntroduction = ({
 }: EditIntroductionProps) => {
   return (
     <section css={[FlexStyle, FlexColumnStyle, EditorWrapperStyle, EditorStyle, markdownStyle]}>
-      <h2>자기소개 수정</h2>
       <Editor
         ref={editorRef}
         initialValue={initialContent}
         height={editorHeight}
+        hideModeSwitch={true}
         initialEditType="markdown"
         toolbarItems={[
           ['heading', 'bold', 'italic', 'strike'],
@@ -57,7 +57,7 @@ const EditIntroduction = ({
           FlexStyle,
           JustifyContentEndStyle,
           css`
-            padding: 1rem 1rem 0;
+            padding: 4rem 2rem;
           `,
         ]}
       >

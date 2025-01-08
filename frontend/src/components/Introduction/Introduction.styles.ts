@@ -11,7 +11,7 @@ export const WrapperStyle = css`
 
   background-color: ${COLOR.WHITE};
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
-  border-radius: 2rem;
+  border-radius: 8px;
 `;
 
 export const EditButtonStyle = css`
@@ -26,7 +26,7 @@ export const EditButtonStyle = css`
   background-color: ${COLOR.LIGHT_GRAY_100};
 
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
-  border-radius: 2rem;
+  border-radius: 2rem;border-radius: 2rem;
 
   font-size: 1.4rem;
   color: ${COLOR.BLACK_800};
@@ -47,7 +47,7 @@ export const EditorWrapperStyle = css`
     font-size: 2rem;
 
     background-color: ${COLOR.LIGHT_BLUE_200};
-    border-radius: inherit;
+    border-radius: 8px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
   }
@@ -55,11 +55,14 @@ export const EditorWrapperStyle = css`
 
 export const EditorStyle = css`
   .toastui-editor-defaultUI {
-    border: 0;
+    //border: 1px solid ${COLOR.LIGHT_GRAY_200};
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 2rem;
   }
 
   .toastui-editor-toolbar {
-    background-color: ${COLOR.LIGHT_BLUE_200};
+     background-color: ${COLOR.LIGHT_GRAY_50};
   }
 
   .toastui-editor-md-tab-container,
@@ -77,6 +80,15 @@ export const EditorStyle = css`
 
   .toastui-editor-main-container {
     background-color: ${COLOR.WHITE};
+    border-width: 0;
+  }
+
+  .toastui-editor-main {
+  }
+
+  .toastui-editor-defaultUI-toolbar button {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    background-color: transparent;
   }
 `;
 

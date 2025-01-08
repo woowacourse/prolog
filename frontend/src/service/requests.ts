@@ -66,6 +66,9 @@ export const requestGetMyScrap = ({ username, accessToken, postQueryParams }) =>
 /* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
 export const requestGetFilters = () => customAxios().get('/filters');
 
+export const requestGetFiltersWithAccessToken = (accessToken) =>
+  customAxios(accessToken).get('/filters');
+
 /* @deprecated 의존성 완전 삭제 이후 코드 삭제*/
 export const requestGetMissions = () => customAxios().get('/missions');
 

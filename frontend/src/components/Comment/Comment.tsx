@@ -16,6 +16,7 @@ import Editor from '../Editor/Editor';
 import { useContext, useRef, useState } from 'react';
 import { COLOR } from '../../enumerations/color';
 import { UserContext } from '../../contexts/UserProvider';
+import {ActionButton, DeleteButton} from './Comment.style';
 
 export interface CommentProps extends CommentType {
   editComment: (commentId: number, body: CommentRequest) => void;
@@ -77,24 +78,33 @@ const Comment = ({ id, author, content, createAt, editComment, deleteComment }: 
           <Styled.Left>
             <Link to={`/${username}`}>
               <Styled.Logo src={imageUrl} alt="프로필" />
-              <span>{nickname}</span>
             </Link>
-            <Styled.CreatedDate>{new Date(createAt).toLocaleString('ko-KR')}</Styled.CreatedDate>
+            <div
+              css={css`
+                display: flex;
+                flex-direction: column;
+              `}
+            >
+              <Link to={`/${username}`}>
+                <Styled.MemberName>{nickname}</Styled.MemberName>
+              </Link>
+              <Styled.CreatedDate>{new Date(createAt).toLocaleString('ko-KR')}</Styled.CreatedDate>
+            </div>
           </Styled.Left>
           {user.userId === author.id && (
             <Styled.Right>
-              <button type="button" onClick={onClickEditButton}>
+              <ActionButton type="button" onClick={onClickEditButton}>
                 수정
-              </button>
-              <button type="button" onClick={onClickDeleteButton}>
+              </ActionButton>
+              <DeleteButton type="button" onClick={onClickDeleteButton}>
                 삭제
-              </button>
+              </DeleteButton>
             </Styled.Right>
           )}
         </Styled.Top>
         <ViewerWrapper
           css={css`
-            padding-left: 46px;
+            padding-left: 60px;
           `}
         >
           <Viewer

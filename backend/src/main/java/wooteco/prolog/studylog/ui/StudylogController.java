@@ -55,8 +55,7 @@ public class StudylogController {
     @MemberOnly
     public ResponseEntity<StudylogTempResponse> createStudylogTemp(
         @AuthMemberPrincipal LoginMember member, @RequestBody StudylogRequest studylogRequest) {
-        StudylogTempResponse studylogTempResponse = studylogService.insertStudylogTemp(
-            member.getId(), studylogRequest);
+        StudylogTempResponse studylogTempResponse = studylogService.insertStudylogTemp(member.getId(), studylogRequest);
         return ResponseEntity.created(URI.create("/studylogs/temp/" + studylogTempResponse.getId()))
             .body(studylogTempResponse);
     }
@@ -65,8 +64,7 @@ public class StudylogController {
     @MemberOnly
     public ResponseEntity<StudylogTempResponse> showStudylogTemp(
         @AuthMemberPrincipal LoginMember member) {
-        StudylogTempResponse studylogTempResponse = studylogService.findStudylogTemp(
-            member.getId());
+        StudylogTempResponse studylogTempResponse = studylogService.findStudylogTemp(member.getId());
         return ResponseEntity.ok(studylogTempResponse);
     }
 
@@ -88,10 +86,10 @@ public class StudylogController {
             throw new BadRequestException(STUDYLOG_NOT_FOUND);
         }
 
-        viewedStudyLogCookieGenerator.setViewedStudyLogCookie(viewedStudyLogs, id,
-            httpServletResponse);
-        return ResponseEntity.ok(studylogService.retrieveStudylogById(member, Long.parseLong(id),
-            viewedStudyLogCookieGenerator.isViewed(viewedStudyLogs, id)));
+        viewedStudyLogCookieGenerator.setViewedStudyLogCookie(viewedStudyLogs, id, httpServletResponse);
+        boolean viewed = viewedStudyLogCookieGenerator.isViewed(viewedStudyLogs, id);
+        StudylogResponse body = studylogService.retrieveStudylogById(member, Long.parseLong(id), viewed);
+        return ResponseEntity.ok(body);
     }
 
     @PutMapping("/{id}")

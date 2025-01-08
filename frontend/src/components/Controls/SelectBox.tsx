@@ -10,22 +10,27 @@ const selectStyles = {
     ...styles,
     fontSize: '1.4rem',
   }),
-  control: (styles) => ({
+  control: (styles, { isDisabled }) => ({
     ...styles,
     outline: 'none',
-    border: 'none',
+    border: '1px solid ' + COLOR.LIGHT_GRAY_100,
     boxShadow: 'none',
-    color: COLOR.DARK_GRAY_900,
+    color: isDisabled ? COLOR.LIGHT_GRAY_500 : COLOR.DARK_GRAY_900,
     paddingLeft: '1rem',
-    cursor: 'pointer',
-    backgroundColor: COLOR.LIGHT_GRAY_100,
+    cursor: isDisabled ? 'not-allowed' : 'pointer',
+    backgroundColor: isDisabled ? COLOR.LIGHT_GRAY_200 : COLOR.WHITE,
+    fontSize: '1.2rem',
   }),
   indicatorsContainer: (styles) => ({ ...styles }),
   valueContainer: (styles) => ({ ...styles, padding: '0' }),
   menu: (styles) => ({
     ...styles,
-    fontSize: '1.4rem',
+    fontSize: '1.2rem',
     fontColor: COLOR.DARK_GRAY_900,
+  }),
+  placeholder: (styles) => ({
+    ...styles,
+    fontSize: '1.2rem',
   }),
 };
 
@@ -35,23 +40,23 @@ interface SelectOption {
 }
 
 /**
-  FIXME: value props type SelectOption['value'] 로 변경되어야 함.
-  아래 예시처럼 type을 좁힐 수 없는 문제가 있음.
+ FIXME: value props type SelectOption['value'] 로 변경되어야 함.
+ 아래 예시처럼 type을 좁힐 수 없는 문제가 있음.
 
-  const CATEGORY_OPTIONS = [
-    { value: '', label: '전체보기' },
-    { value: 'frontend', label: '프론트엔드' },
-    { value: 'backend', label: '백엔드' },
-    { value: 'android', label: '안드로이드' },
-  ];
+ const CATEGORY_OPTIONS = [
+ { value: '', label: '전체보기' },
+ { value: 'frontend', label: '프론트엔드' },
+ { value: 'backend', label: '백엔드' },
+ { value: 'android', label: '안드로이드' },
+ ];
 
-  type CategoryOptions = typeof CATEGORY_OPTIONS[number]; 
+ type CategoryOptions = typeof CATEGORY_OPTIONS[number];
 
-  ->type CategoryOptions = {
-      value: string;
-      label: string;
-    }
-  위 처럼 value type을 좁힐 수 없음.
+ ->type CategoryOptions = {
+ value: string;
+ label: string;
+ }
+ 위 처럼 value type을 좁힐 수 없음.
  */
 interface SelectBoxProps {
   isMulti?: boolean;
@@ -62,6 +67,7 @@ interface SelectBoxProps {
   value?: SelectOption;
   selectedSessionId?: string;
   isClearable?: boolean;
+  editable: boolean;
 }
 
 const SelectBox: React.VFC<SelectBoxProps> = ({
@@ -72,6 +78,7 @@ const SelectBox: React.VFC<SelectBoxProps> = ({
   onChange,
   value,
   defaultOption,
+  editable = true,
 }: SelectBoxProps) => (
   <div
     css={css`
@@ -86,7 +93,7 @@ const SelectBox: React.VFC<SelectBoxProps> = ({
       }
 
       > div:hover {
-        border: 2px solid ${COLOR.LIGHT_BLUE_500};
+        border: 2px solid ${COLOR.LIGHT_GRAY_300};
       }
 
       .css-clear-indicator {
@@ -103,6 +110,7 @@ const SelectBox: React.VFC<SelectBoxProps> = ({
       styles={selectStyles}
       defaultValue={defaultOption}
       value={value}
+      isDisabled={!editable}
     />
   </div>
 );

@@ -30,7 +30,8 @@ const pageRoutes = [
   },
   {
     path: [PATH.ROOT],
-    render: () => <MainPage />,
+    // render: () => <MainPage />,
+    render: () => <StudylogListPage />,
   },
   {
     path: [PATH.ARTICLE],

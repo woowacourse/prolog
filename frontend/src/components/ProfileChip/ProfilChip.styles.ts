@@ -16,22 +16,23 @@ const Container = styled.div<{ css?: SerializedStyles }>`
 `;
 
 const Image = styled.img`
-  width: 3.8rem;
-  height: 3.8rem;
-  border-radius: 1.3rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  padding: 0.5rem;
+  //border: 1px solid ${COLOR.LIGHT_GRAY_100};
 `;
 
 const Nickname = styled.span`
   flex-shrink: 0;
-  
+
   padding: 0 5px;
   max-width: 100px;
-  
+
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 
-  margin-left: 0.8rem;
   font-size: 1.6rem;
   line-height: 1.5;
   color: ${COLOR.DARK_GRAY_900};

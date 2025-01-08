@@ -29,9 +29,6 @@ export const DescriptionStyle = css`
     font-size: 2.8rem;
     color: ${COLOR.DARK_GRAY_900};
     font-weight: bold;
-
-    height: 100%;
-
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -53,16 +50,19 @@ export const MissionStyle = css`
 `;
 
 export const TagListStyle = css`
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: ${COLOR.LIGHT_GRAY_900};
   margin-top: auto;
+  margin-bottom: 0.5rem;
 `;
 
 export const ProfileChipLocationStyle = css`
   flex-shrink: 0;
-  margin-left: 1rem;
+  border: 1px solid ${COLOR.WHITE};
+  flex-direction: column;
+  padding: 0;
 
   &:hover {
-    background-color: ${COLOR.LIGHT_BLUE_100};
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 `;
