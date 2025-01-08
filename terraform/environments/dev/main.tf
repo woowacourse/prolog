@@ -1,3 +1,29 @@
+terraform {
+    required_providers {
+        aws = {
+            source  = "hashicorp/aws"
+            version = "5.54.1"
+        }
+    }
+
+    cloud {
+        organization = "cholog"
+
+        workspaces {
+            name = "cholog-dev"
+        }
+    }
+}
+
+provider "aws" {
+    region = var.region
+
+    /** Note: access_key와 secret_key는 환경변수를 통해 설정하면 된다.
+    export AWS_ACCESS_KEY_ID="your-access-key"
+    export AWS_SECRET_ACCESS_KEY="your-secret-key"
+     */
+}
+
 module "tags" {
     source = "../../modules/tags"
 
@@ -83,3 +109,5 @@ module "database" {
     server_tags        = module.tags.server_tags
     database_tags      = module.tags.database_tags
 }
+
+
