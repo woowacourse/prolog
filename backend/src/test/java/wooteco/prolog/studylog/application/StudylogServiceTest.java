@@ -325,7 +325,6 @@ class StudylogServiceTest {
             new Studylog(member, "제목", "내용", mission, emptyList()));
         when(memberService.findById(any())).thenReturn(member);
         when(tagService.findOrCreate(any())).thenReturn(new Tags(emptyList()));
-        when(answerService.saveAnswers(anyLong(), any(), any())).thenReturn(emptyList());
 
         //when
         studylogService.insertStudylogs(1L, studylogRequests);

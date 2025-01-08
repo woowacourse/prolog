@@ -48,3 +48,4 @@ slack:
   article:
     token: test_token
     channel: test_channel
+  logger-webhook-uri: https://hooks:slack.com/services/your/webhook/uri
