@@ -1,5 +1,7 @@
 package wooteco.prolog.roadmap.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.CURRICULUM_INVALID_EXCEPTION;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,8 +11,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.exception.BadRequestException;
-
-import static wooteco.prolog.common.exception.BadRequestCode.CURRICULUM_INVALID_EXCEPTION;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

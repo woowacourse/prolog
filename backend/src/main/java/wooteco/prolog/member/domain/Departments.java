@@ -1,9 +1,8 @@
 package wooteco.prolog.member.domain;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.util.List;
 
 @AllArgsConstructor
 @Getter

@@ -20,3 +20,4 @@ slack:
   article:
     token: token
     channel: channel
+  logger-webhook-uri: https://hooks:slack.com/services/your/webhook/uri

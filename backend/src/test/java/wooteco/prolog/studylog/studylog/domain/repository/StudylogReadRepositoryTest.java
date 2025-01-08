@@ -1,5 +1,9 @@
 package wooteco.prolog.studylog.studylog.domain.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Collections;
+import java.util.List;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,11 +21,6 @@ import wooteco.prolog.studylog.domain.StudylogRead;
 import wooteco.prolog.studylog.domain.repository.StudylogReadRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
 import wooteco.support.utils.RepositoryTest;
-
-import java.util.Collections;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RepositoryTest
 class StudylogReadRepositoryTest {

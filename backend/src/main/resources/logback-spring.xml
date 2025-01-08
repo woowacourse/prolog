@@ -60,12 +60,12 @@
         </logger>
 
         <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"
-                additivity="false">
+            additivity="false">
             <appender-ref ref="console-db-logger"/>
         </logger>
 
         <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="TRACE"
-                additivity="false">
+            additivity="false">
             <appender-ref ref="console-db-logger"/>
         </logger>
     </springProfile>

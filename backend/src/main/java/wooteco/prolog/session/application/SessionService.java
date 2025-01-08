@@ -4,11 +4,11 @@ import static java.util.stream.Collectors.toList;
 import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_SESSION_EXCEPTION;
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,6 +60,13 @@ public class SessionService {
             .collect(toList());
     }
 
+    public List<SessionResponse> findAllOrderByDesc() {
+        return sessionRepository.findAll().stream()
+            .map(SessionResponse::of)
+            .sorted((s1, s2) -> Long.compare(s2.getId(), s1.getId()))
+            .collect(toList());
+    }
+
     public List<SessionResponse> findAllByOrderByIdDesc() {
         return sessionRepository.findAllByOrderByIdDesc().stream()
             .map(SessionResponse::of)
@@ -93,5 +100,13 @@ public class SessionService {
         return Stream.of(mySessions, allSessions)
             .flatMap(Collection::stream)
             .collect(toList());
+    }
+
+    public List<SessionResponse> findMySessionResponses(LoginMember loginMember) {
+        if (loginMember.isAnonymous()) {
+            return new ArrayList<>();
+        }
+
+        return findMySessions(loginMember);
     }
 }

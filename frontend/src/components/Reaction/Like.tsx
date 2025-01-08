@@ -1,8 +1,8 @@
 import { MouseEventHandler } from 'react';
-import { Button, BUTTON_SIZE } from '..';
+import {Button, BUTTON_SIZE} from '..';
 
-import likedIcon from '../../assets/images/heart-filled.svg';
-import unLikeIcon from '../../assets/images/heart.svg';
+import { ReactComponent as LikeIcon } from '../../assets/images/heart-filled.svg';
+import { ReactComponent as UnLikeIcon } from '../../assets/images/heart.svg';
 import { LikeIconStyle } from './Like.styles';
 
 interface Props {
@@ -12,18 +12,11 @@ interface Props {
 }
 
 const Like = ({ liked, likesCount, onClick }: Props) => {
-  const likeIcon = liked ? likedIcon : unLikeIcon;
   const likeIconAlt = liked ? '좋아요' : '좋아요 취소';
 
   return (
-    <Button
-      type="button"
-      size={BUTTON_SIZE.X_SMALL}
-      icon={likeIcon}
-      alt={likeIconAlt}
-      cssProps={LikeIconStyle}
-      onClick={onClick}
-    >
+    <Button type="button" alt={likeIconAlt} cssProps={LikeIconStyle} onClick={onClick}>
+      {liked ? <LikeIcon width="2rem" height="2rem" /> : <UnLikeIcon width="2rem" height="2rem" />}
       {likesCount}
     </Button>
   );

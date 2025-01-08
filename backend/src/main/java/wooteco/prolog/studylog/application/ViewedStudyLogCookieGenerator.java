@@ -1,12 +1,11 @@
 package wooteco.prolog.studylog.application;
 
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.Duration;
+import java.time.LocalTime;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
-
-import java.time.Duration;
-import java.time.LocalTime;
 
 
 @Component

@@ -1,6 +1,5 @@
-import { Ability } from '../models/Ability';
-
 type Role = 'UNVALIDATED' | 'CREW' | 'COACH' | 'ADMIN';
+
 export interface Author {
   id: number;
   username: string;
@@ -25,6 +24,23 @@ export interface Tag {
   name: string;
 }
 
+export interface Question {
+  id: number;
+  content: string;
+}
+
+export interface Answer {
+  questionId: number;
+  answerContent: string;
+}
+
+export interface QuestionAnswer {
+  id: number;
+  answerContent: string;
+  questionId: number;
+  questionContent: string;
+}
+
 // TODO: read, scrap => isRead, isScrapped로 변경
 export interface Studylog {
   id: number;
@@ -34,6 +50,7 @@ export interface Studylog {
   session?: Session;
   title: string;
   tags: Tag[];
+  answers: Answer[];
   createdAt: Date;
   updatedAt?: Date;
   read: boolean;
@@ -47,12 +64,13 @@ export interface Studylog {
 
 export type TempSavedStudyLog = Pick<
   Studylog,
-  'id' | 'author' | 'title' | 'content' | 'session' | 'mission' | 'tags'
+  'id' | 'author' | 'title' | 'content' | 'session' | 'mission' | 'tags' | 'answers'
 >;
 
 export type TempSavedStudyLogForm = Pick<TempSavedStudyLog, 'title' | 'content' | 'tags'> & {
   missionId: number | null;
   sessionId: number | null;
+  answers: Answer[];
 };
 
 export interface StudyLogList {
@@ -66,6 +84,7 @@ export type StudylogForm = Pick<Studylog, 'title' | 'tags'> & {
   content: string | null;
   missionId: number | null;
   sessionId: number | null;
+  answers: Answer[];
 };
 
 export const studyLogCategory = {

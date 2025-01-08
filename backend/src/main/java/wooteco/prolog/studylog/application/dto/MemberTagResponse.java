@@ -1,14 +1,13 @@
 package wooteco.prolog.studylog.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.member.domain.MemberTag;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor

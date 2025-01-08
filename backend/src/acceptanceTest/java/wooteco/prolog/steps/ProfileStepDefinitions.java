@@ -1,5 +1,7 @@
 package wooteco.prolog.steps;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import wooteco.prolog.AcceptanceSteps;
@@ -8,8 +10,6 @@ import wooteco.prolog.member.application.dto.ProfileIntroRequest;
 import wooteco.prolog.member.application.dto.ProfileIntroResponse;
 import wooteco.prolog.member.application.dto.ProfileResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProfileStepDefinitions extends AcceptanceSteps {
 

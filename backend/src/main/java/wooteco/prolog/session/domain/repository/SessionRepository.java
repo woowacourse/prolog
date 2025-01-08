@@ -1,10 +1,9 @@
 package wooteco.prolog.session.domain.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import wooteco.prolog.session.domain.Session;
-
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import wooteco.prolog.session.domain.Session;
 
 public interface SessionRepository extends JpaRepository<Session, Long> {
 

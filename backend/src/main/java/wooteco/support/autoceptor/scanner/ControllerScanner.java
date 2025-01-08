@@ -1,13 +1,12 @@
 package wooteco.support.autoceptor.scanner;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
+import static java.util.stream.Collectors.toList;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 public class ControllerScanner {
 

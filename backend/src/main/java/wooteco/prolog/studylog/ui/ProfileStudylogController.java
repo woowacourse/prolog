@@ -1,5 +1,9 @@
 package wooteco.prolog.studylog.ui;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.domain.Pageable;
@@ -21,11 +25,6 @@ import wooteco.prolog.member.application.dto.ProfileIntroResponse;
 import wooteco.prolog.member.application.dto.ProfileResponse;
 import wooteco.prolog.studylog.application.StudylogService;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @RestController
 @AllArgsConstructor

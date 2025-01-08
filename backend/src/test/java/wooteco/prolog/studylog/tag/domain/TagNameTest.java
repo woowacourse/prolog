@@ -1,13 +1,13 @@
 package wooteco.prolog.studylog.tag.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static wooteco.prolog.common.exception.BadRequestCode.TAG_NAME_NULL_OR_EMPTY;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.studylog.domain.TagName;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static wooteco.prolog.common.exception.BadRequestCode.TAG_NAME_NULL_OR_EMPTY;
 
 class TagNameTest {
 

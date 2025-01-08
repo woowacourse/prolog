@@ -1,9 +1,8 @@
 package wooteco.prolog.studylog.domain.repository;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import wooteco.prolog.studylog.domain.PopularStudylog;
-
-import java.util.List;
 
 public interface PopularStudylogRepository extends JpaRepository<PopularStudylog, Long> {
 

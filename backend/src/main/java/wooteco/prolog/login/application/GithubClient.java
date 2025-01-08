@@ -1,5 +1,8 @@
 package wooteco.prolog.login.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.GITHUB_API_FAIL;
+import static wooteco.prolog.common.exception.BadRequestCode.GITHUB_CONNECTION_FAIL;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,9 +16,6 @@ import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.application.dto.GithubAccessTokenRequest;
 import wooteco.prolog.login.application.dto.GithubAccessTokenResponse;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
-
-import static wooteco.prolog.common.exception.BadRequestCode.GITHUB_API_FAIL;
-import static wooteco.prolog.common.exception.BadRequestCode.GITHUB_CONNECTION_FAIL;
 
 @Component
 public class GithubClient {

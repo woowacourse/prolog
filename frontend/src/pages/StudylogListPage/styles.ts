@@ -30,10 +30,10 @@ const SelectedFilterList = styled.div`
   }
 `;
 
-const PostListContainer = styled.div`
+const StudylogListContainer = styled.div`
   display: grid;
   grid-row-gap: 2rem;
   word-break: break-all;
 `;
 
-export { HeaderContainer, FilterListWrapper, SelectedFilterList, PostListContainer };
+export { HeaderContainer, FilterListWrapper, SelectedFilterList, StudylogListContainer };

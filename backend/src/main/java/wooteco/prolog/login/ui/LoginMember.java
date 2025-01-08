@@ -1,9 +1,8 @@
 package wooteco.prolog.login.ui;
 
-import lombok.NoArgsConstructor;
-
 import java.util.function.Function;
 import java.util.function.Supplier;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class LoginMember {

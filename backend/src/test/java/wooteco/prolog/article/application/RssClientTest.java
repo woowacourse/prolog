@@ -1,11 +1,12 @@
 package wooteco.prolog.article.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.jupiter.api.Test;
 import wooteco.prolog.article.domain.RssFeeds;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 class RssClientTest {
+
     @Test
     void fromTistoryRssFeedBy() {
         RssClient rssClient = new RssClient();
@@ -19,7 +20,8 @@ class RssClientTest {
         SSLUtil.disableSSLVerification();
 
         RssClient rssClient = new RssClient();
-        RssFeeds rssFeeds = rssClient.fromRssFeedBy("https://www.youtube.com/feeds/videos.xml?channel_id=UC-mOekGSesms0agFntnQang");
+        RssFeeds rssFeeds = rssClient.fromRssFeedBy(
+            "https://www.youtube.com/feeds/videos.xml?channel_id=UC-mOekGSesms0agFntnQang");
 
         assertThat(rssFeeds.getRssFeeds()).isNotEmpty();
     }

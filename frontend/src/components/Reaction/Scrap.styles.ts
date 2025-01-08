@@ -6,13 +6,13 @@ export const DefaultScrapButtonStyle = css`
   padding: 0;
   width: fit-content;
   font-size: 1.4rem;
+  height: inherit;
 
   background-color: transparent;
-  color: ${COLOR.BLACK_800};
+  color: ${COLOR.DARK_GRAY_400};
 
   & > img {
     margin-right: 0;
     width: 2.4rem;
-    height: 2.4rem;
   }
 `;

@@ -1,5 +1,7 @@
 package wooteco.prolog.member.ui;
 
+import static org.springframework.data.domain.Sort.Direction.DESC;
+
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,8 +22,6 @@ import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.application.dto.MemberUpdateRequest;
 import wooteco.prolog.member.application.dto.MembersResponse;
 import wooteco.prolog.member.application.dto.RoleUpdateRequest;
-
-import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @RestController
 @AllArgsConstructor

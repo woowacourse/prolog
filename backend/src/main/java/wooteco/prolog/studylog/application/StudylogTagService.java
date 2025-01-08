@@ -1,5 +1,8 @@
 package wooteco.prolog.studylog.application;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,10 +10,6 @@ import wooteco.prolog.studylog.application.dto.TagResponse;
 import wooteco.prolog.studylog.domain.StudylogTag;
 import wooteco.prolog.studylog.domain.Tag;
 import wooteco.prolog.studylog.domain.repository.StudylogTagRepository;
-
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @AllArgsConstructor

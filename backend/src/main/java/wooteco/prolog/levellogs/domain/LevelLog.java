@@ -1,5 +1,7 @@
 package wooteco.prolog.levellogs.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.INVALID_LEVEL_LOG_AUTHOR_EXCEPTION;
+
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,8 +15,6 @@ import lombok.NoArgsConstructor;
 import wooteco.prolog.common.AuditingEntity;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
-
-import static wooteco.prolog.common.exception.BadRequestCode.INVALID_LEVEL_LOG_AUTHOR_EXCEPTION;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

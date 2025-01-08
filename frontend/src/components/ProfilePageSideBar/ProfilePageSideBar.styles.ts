@@ -46,47 +46,48 @@ const Image = styled.img`
   height: 20rem;
   border-top-left-radius: 1.6rem;
   border-top-right-radius: 1.6rem;
+  padding: 2rem;
 `;
 
 const Nickname = styled.div`
   display: flex;
   align-items: center;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   border-top: none;
-  padding-left: 1.2rem;
+  color: ${COLOR.LIGHT_GRAY_900};
+`;
+
+const UpdateButton = styled.button`
+  border-radius: 8px;
 `;
 
 const RssFeedUrl = styled.div`
   display: flex;
   align-items: center;
-  font-size: 1rem;
+  font-size: 1.5rem;
   border-top: none;
-  padding-left: 1.2rem;
 `;
 
 const Role = styled.div`
   margin-bottom: 1rem;
-  padding-left: 1.2rem;
   font-size: 1.2rem;
   color: ${COLOR.LIGHT_GRAY_900};
 `;
 
 const RoleButton = styled.button`
-  margin-top: .3rem;
+  margin-top: 0.3rem;
   font-size: 1.2rem;
   color: ${COLOR.DARK_GRAY_700};
 `;
 
 const RoleLabel = styled.div`
-  margin-top: 1rem;
-  padding-left: 1.2rem;
+  margin-top: 1.5rem;
   font-size: 1.5rem;
   color: ${COLOR.DARK_GRAY_700};
 `;
 
 const RssLinkLabel = styled.div`
   margin-top: 1rem;
-  padding-left: 1.2rem;
   font-size: 1.2rem;
   color: ${COLOR.LIGHT_GRAY_900};
 `;
@@ -154,10 +155,8 @@ const MenuButton = styled.button`
 `;
 
 const NicknameInput = styled.input`
-  margin: 0.5rem 1.2rem;
-  margin-right: 0;
   padding: 0.2rem 0.5rem;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   outline: none;
   border-radius: 0.5rem;
   border: 1px solid ${COLOR.LIGHT_GRAY_900};
@@ -172,8 +171,6 @@ const NicknameWrapper = styled.div`
 `;
 
 const RssFeedInput = styled.input`
-  margin: 0.5rem 1.2rem;
-  margin-right: 0;
   padding: 0.2rem 0.5rem;
   font-size: 1.6rem;
   outline: none;
@@ -209,6 +206,7 @@ export {
   Nickname,
   RssFeedUrl,
   Role,
+  UpdateButton,
   RoleButton,
   RoleLabel,
   RssLinkLabel,

@@ -9,7 +9,7 @@ import Prism from 'prismjs';
 import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
 import { markdownStyle } from '../../styles/markdown.styles';
 import { EditorStyle } from '../Introduction/Introduction.styles';
-import { EditorTitleStyle, EditorWrapperStyle } from './Editor.styles';
+import { EditorWrapperStyle } from './Editor.styles';
 import { ChangeEventHandler, MutableRefObject } from 'react';
 import { getSize } from '../../utils/styles';
 import useImage from '../../hooks/useImage';
@@ -21,7 +21,7 @@ interface EditorProps {
   titlePlaceholder?: string;
   titleReadOnly?: boolean;
   editorContentRef: MutableRefObject<unknown>;
-  content?: string | null;
+  content?: string;
   onChangeTitle?: ChangeEventHandler<HTMLInputElement>;
   onChangeContent?: () => void;
   toolbarItems?: string[][];
@@ -35,44 +35,28 @@ const DEFAULT_TOOLBAR_ITEMS = [
 ];
 
 const Editor = (props: EditorProps): JSX.Element => {
-  const {
-    height,
-    hasTitle = true,
-    title = '',
-    titlePlaceholder = '제목을 입력하세요',
-    titleReadOnly = false,
-    content,
-    onChangeTitle,
-    editorContentRef,
-    toolbarItems = DEFAULT_TOOLBAR_ITEMS,
-  } = props;
+  const { height, content, editorContentRef, toolbarItems = DEFAULT_TOOLBAR_ITEMS } = props;
 
   const { uploadImage } = useImage();
 
   return (
     <div css={[EditorStyle, markdownStyle, EditorWrapperStyle]}>
-      {hasTitle && (
-        <div css={[EditorTitleStyle]}>
-          <input placeholder={titlePlaceholder} value={title} readOnly={titleReadOnly} onChange={onChangeTitle} />
-        </div>
-      )}
-      {/* FIXME: 임시방편 editor에 상태 값을 초기값으로 넣는 법 찾기 */}
-      {content !== null && (
-        <ToastEditor
-          ref={(element) => {
-            editorContentRef.current = element;
-          }}
-          initialValue={content}
-          height={getSize(height)}
-          initialEditType="markdown"
-          toolbarItems={toolbarItems}
-          extendedAutolinks={true}
-          plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
-          hooks={{
-            addImageBlobHook: uploadImage,
-          }}
-        />
-      )}
+      <ToastEditor
+        ref={(element) => {
+          editorContentRef.current = element;
+        }}
+        initialValue={content}
+        height={getSize(height)}
+        initialEditType="markdown"
+        hideModeSwitch={true}
+        toolbarItems={toolbarItems}
+        extendedAutolinks={true}
+        previewStyle={'tab'}
+        plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+        hooks={{
+          addImageBlobHook: uploadImage,
+        }}
+      />
     </div>
   );
 };

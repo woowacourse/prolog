@@ -1,6 +1,9 @@
 package wooteco.prolog.studylog.ui;
 
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
+
 import jakarta.servlet.http.HttpServletResponse;
+import java.net.URI;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -24,10 +27,6 @@ import wooteco.prolog.studylog.application.dto.StudylogTempResponse;
 import wooteco.prolog.studylog.application.dto.StudylogsResponse;
 import wooteco.prolog.studylog.application.dto.search.SearchParams;
 import wooteco.prolog.studylog.application.dto.search.StudylogsSearchRequest;
-
-import java.net.URI;
-
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
 
 @RestController
 @RequestMapping("/studylogs")
@@ -56,8 +55,7 @@ public class StudylogController {
     @MemberOnly
     public ResponseEntity<StudylogTempResponse> createStudylogTemp(
         @AuthMemberPrincipal LoginMember member, @RequestBody StudylogRequest studylogRequest) {
-        StudylogTempResponse studylogTempResponse = studylogService.insertStudylogTemp(
-            member.getId(), studylogRequest);
+        StudylogTempResponse studylogTempResponse = studylogService.insertStudylogTemp(member.getId(), studylogRequest);
         return ResponseEntity.created(URI.create("/studylogs/temp/" + studylogTempResponse.getId()))
             .body(studylogTempResponse);
     }
@@ -66,8 +64,7 @@ public class StudylogController {
     @MemberOnly
     public ResponseEntity<StudylogTempResponse> showStudylogTemp(
         @AuthMemberPrincipal LoginMember member) {
-        StudylogTempResponse studylogTempResponse = studylogService.findStudylogTemp(
-            member.getId());
+        StudylogTempResponse studylogTempResponse = studylogService.findStudylogTemp(member.getId());
         return ResponseEntity.ok(studylogTempResponse);
     }
 
@@ -89,10 +86,10 @@ public class StudylogController {
             throw new BadRequestException(STUDYLOG_NOT_FOUND);
         }
 
-        viewedStudyLogCookieGenerator.setViewedStudyLogCookie(viewedStudyLogs, id,
-            httpServletResponse);
-        return ResponseEntity.ok(studylogService.retrieveStudylogById(member, Long.parseLong(id),
-            viewedStudyLogCookieGenerator.isViewed(viewedStudyLogs, id)));
+        viewedStudyLogCookieGenerator.setViewedStudyLogCookie(viewedStudyLogs, id, httpServletResponse);
+        boolean viewed = viewedStudyLogCookieGenerator.isViewed(viewedStudyLogs, id);
+        StudylogResponse body = studylogService.retrieveStudylogById(member, Long.parseLong(id), viewed);
+        return ResponseEntity.ok(body);
     }
 
     @PutMapping("/{id}")

@@ -1,5 +1,6 @@
 package wooteco.prolog.session.ui;
 
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,8 +13,6 @@ import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.dto.MissionRequest;
 import wooteco.prolog.session.application.dto.MissionResponse;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/missions")

@@ -1,5 +1,8 @@
 package wooteco.prolog.roadmap.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.ESSAY_ANSWER_NOT_VALID_USER;
+import static wooteco.prolog.common.exception.BadRequestCode.NOT_EMPTY_ESSAY_ANSWER_EXCEPTION;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -18,9 +21,6 @@ import org.apache.commons.lang3.StringUtils;
 import wooteco.prolog.common.AuditingEntity;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
-
-import static wooteco.prolog.common.exception.BadRequestCode.ESSAY_ANSWER_NOT_VALID_USER;
-import static wooteco.prolog.common.exception.BadRequestCode.NOT_EMPTY_ESSAY_ANSWER_EXCEPTION;
 
 @Table(name = "essay_answer")
 @Entity

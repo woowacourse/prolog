@@ -1,5 +1,7 @@
 package wooteco.prolog.session.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.TOO_LONG_MISSION_NAME;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,8 +14,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.exception.BadRequestException;
-
-import static wooteco.prolog.common.exception.BadRequestCode.TOO_LONG_MISSION_NAME;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

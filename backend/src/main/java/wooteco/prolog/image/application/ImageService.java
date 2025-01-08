@@ -1,5 +1,8 @@
 package wooteco.prolog.image.application;
 
+import static wooteco.prolog.common.exception.BadRequestCode.FILE_NAME_EMPTY_EXCEPTION;
+
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -7,10 +10,6 @@ import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.image.application.dto.ImageUrlResponse;
 import wooteco.prolog.image.infrastructure.FileNameGenerator;
 import wooteco.prolog.image.infrastructure.S3Uploader;
-
-import java.util.Objects;
-
-import static wooteco.prolog.common.exception.BadRequestCode.FILE_NAME_EMPTY_EXCEPTION;
 
 @RequiredArgsConstructor
 @Service

@@ -1,5 +1,7 @@
 package wooteco.prolog.levellogs.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_CONTENT_NULL_OR_EMPTY;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -7,8 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import wooteco.prolog.common.exception.BadRequestException;
-
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_CONTENT_NULL_OR_EMPTY;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

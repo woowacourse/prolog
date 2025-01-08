@@ -39,6 +39,11 @@ export const FlexStyle = css`
   display: flex;
 `;
 
+export const FlexRowStyle = css`
+  flex-direction: row;
+`;
+
+
 export const FlexColumnStyle = css`
   flex-direction: column;
 `;

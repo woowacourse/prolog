@@ -1,7 +1,10 @@
 package wooteco.prolog.article.domain;
 
+import static wooteco.prolog.common.exception.BadRequestCode.ARTICLE_URL_OVER_LENGTH_EXCEPTION;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -9,10 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import wooteco.prolog.common.exception.BadRequestCode;
 import wooteco.prolog.common.exception.BadRequestException;
-
-import java.util.Objects;
-
-import static wooteco.prolog.common.exception.BadRequestCode.ARTICLE_URL_OVER_LENGTH_EXCEPTION;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

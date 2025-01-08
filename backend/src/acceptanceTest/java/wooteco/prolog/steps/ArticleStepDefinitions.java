@@ -1,20 +1,19 @@
 package wooteco.prolog.steps;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static wooteco.prolog.fixtures.ArticleFixture.ARTICLE_REQUEST1;
+import static wooteco.prolog.fixtures.ArticleFixture.ARTICLE_REQUEST2;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.article.application.dto.ArticleBookmarkRequest;
 import wooteco.prolog.article.application.dto.ArticleResponse;
 import wooteco.prolog.article.application.dto.ArticleUrlResponse;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static wooteco.prolog.fixtures.ArticleFixture.ARTICLE_REQUEST1;
-import static wooteco.prolog.fixtures.ArticleFixture.ARTICLE_REQUEST2;
 
 
 public class ArticleStepDefinitions extends AcceptanceSteps {

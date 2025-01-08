@@ -11,8 +11,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
     steps:
       - name: Checkout Source Code
@@ -21,10 +19,16 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.5.3
+          terraform_version: 1.10.3
+
+      - name: Select workspace
+        run: |
+          ENVIRONMENT=${{ github.event.inputs.environment }}
+          terraform workspace select "$ENVIRONMENT" || terraform workspace new "$ENVIRONMENT"
 
       - name: Terraform Init and Apply
-        working-directory: terraform/environments/${{ github.event.inputs.environment }}
+        env:
+          TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
         run: |
           terraform init
           terraform plan -out=tfplan

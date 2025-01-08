@@ -5,8 +5,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import TagManager from 'react-gtm-module';
 
 import Content from './Content';
-import { Button, BUTTON_SIZE } from '../../components';
-import { ButtonList, EditButtonStyle, DeleteButtonStyle, EditorForm, SubmitButton } from './styles';
+import { EditorForm, SubmitButton } from './styles';
 
 import { MainContentStyle } from '../../PageRouter';
 import { UserContext } from '../../contexts/UserProvider';
@@ -26,6 +25,9 @@ import {
   usePostLikeMutation,
   usePostScrapMutation,
 } from '../../hooks/queries/studylog';
+import { Card, SectionName } from '../../components/StudylogEditor/styles';
+import { css } from '@emotion/react';
+import QuestionAnswers from '../../components/StudylogEditor/QuestionAnswers';
 
 const StudylogPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -64,10 +66,6 @@ const StudylogPage = () => {
     }
 
     history.push(`/${author?.username}`);
-  };
-
-  const goEditTargetPost = () => {
-    history.push(`${PATH.STUDYLOG}/${id}/edit`);
   };
 
   const toggleLike = () => {
@@ -126,46 +124,45 @@ const StudylogPage = () => {
 
   return (
     <div css={MainContentStyle}>
-      {username === author?.username && (
-        <ButtonList>
-          {[
-            { title: '수정', cssProps: EditButtonStyle, onClick: goEditTargetPost },
-            {
-              title: '삭제',
-              cssProps: DeleteButtonStyle,
-              onClick: () => {
-                if (!window.confirm(CONFIRM_MESSAGE.DELETE_STUDYLOG)) return;
-                deleteStudylog({ id, accessToken });
-              },
-            },
-          ].map(({ title, cssProps, onClick }) => (
-            <Button
-              key={title}
-              size={BUTTON_SIZE.X_SMALL}
-              type="button"
-              cssProps={cssProps}
-              onClick={onClick}
-            >
-              {title}
-            </Button>
-          ))}
-        </ButtonList>
-      )}
       <Content
         studylog={studylog}
+        answers={studylog.answers}
         toggleLike={toggleLike}
         toggleScrap={toggleScrap}
         goAuthorProfilePage={goAuthorProfilePage}
       />
-      {comments && (
-        <CommentList comments={comments} editComment={editComment} deleteComment={deleteComment} />
+      {studylog.answers && studylog.answers.length > 0 && (
+        <Card
+          css={css`
+            padding: 2.5rem 4rem 5rem 4rem;
+            margin-top: 3rem;
+          `}
+        >
+          <SectionName>Question</SectionName>
+          <QuestionAnswers editable={false} questionAnswers={studylog.answers} />
+        </Card>
       )}
-      {isLoggedIn && (
-        <EditorForm onSubmit={onSubmitComment}>
-          <Editor height="25rem" hasTitle={false} editorContentRef={editorContentRef} />
-          <SubmitButton>작성 완료</SubmitButton>
-        </EditorForm>
-      )}
+      <Card
+        css={css`
+          padding: 2.5rem 4rem 5rem 4rem;
+          margin-top: 3rem;
+        `}
+      >
+        <SectionName>Comment</SectionName>
+        {isLoggedIn && (
+          <EditorForm onSubmit={onSubmitComment}>
+            <Editor height="25rem" hasTitle={false} editorContentRef={editorContentRef} />
+            <SubmitButton>작성 완료</SubmitButton>
+          </EditorForm>
+        )}
+        {comments && (
+          <CommentList
+            comments={comments}
+            editComment={editComment}
+            deleteComment={deleteComment}
+          />
+        )}
+      </Card>
     </div>
   );
 };
