@@ -1,7 +1,5 @@
 package wooteco.prolog.roadmap.ui;
 
-import java.net.URI;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +18,9 @@ import wooteco.prolog.roadmap.application.dto.QuizRequest;
 import wooteco.prolog.roadmap.application.dto.QuizResponse;
 import wooteco.prolog.roadmap.application.dto.QuizzesResponse;
 
+import java.net.URI;
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 public class QuizController {
@@ -29,7 +30,7 @@ public class QuizController {
     //: todo admin login 생기면 검증 추가
     @PostMapping("/sessions/{sessionId}/keywords/{keywordId}/quizs")
     public ResponseEntity<Void> create(@PathVariable Long sessionId, @PathVariable Long keywordId,
-        @RequestBody QuizRequest quizRequest) {
+                                       @RequestBody QuizRequest quizRequest) {
         final Long quizId = quizService.createQuiz(keywordId, quizRequest);
 
         return ResponseEntity.created(
@@ -39,7 +40,7 @@ public class QuizController {
 
     @GetMapping("/sessions/{sessionId}/keywords/{keywordId}/quizs/{quizId}")
     public ResponseEntity<QuizResponse> findQuizById(@PathVariable Long quizId,
-        @AuthMemberPrincipal LoginMember member) {
+                                                     @AuthMemberPrincipal LoginMember member) {
         return ResponseEntity.ok(quizService.findById(quizId, member.getId()));
     }
 
@@ -53,8 +54,8 @@ public class QuizController {
 
     @GetMapping("/sessions/{sessionId}/keywords/{keywordId}/quizs")
     public ResponseEntity<QuizzesResponse> findQuizzesByKeyword(@PathVariable Long sessionId,
-        @PathVariable Long keywordId,
-        @AuthMemberPrincipal LoginMember member) {
+                                                                @PathVariable Long keywordId,
+                                                                @AuthMemberPrincipal LoginMember member) {
         return ResponseEntity.ok(quizService.findQuizzesByKeywordId(keywordId, member.getId()));
     }
 
@@ -75,17 +76,17 @@ public class QuizController {
 
     @PutMapping("/sessions/{sessionId}/keywords/{keywordId}/quizs/{quizId}")
     ResponseEntity<Void> updateQuiz(@PathVariable Long sessionId,
-        @PathVariable Long keywordId,
-        @PathVariable Long quizId,
-        @RequestBody QuizRequest quizRequest) {
+                                    @PathVariable Long keywordId,
+                                    @PathVariable Long quizId,
+                                    @RequestBody QuizRequest quizRequest) {
         quizService.updateQuiz(quizId, quizRequest);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/sessions/{sessionId}/keywords/{keywordId}/quizs/{quizId}")
     public ResponseEntity<Void> deleteQuiz(@PathVariable Long sessionId,
-        @PathVariable Long keywordId,
-        @PathVariable Long quizId) {
+                                           @PathVariable Long keywordId,
+                                           @PathVariable Long quizId) {
         quizService.deleteQuiz(quizId);
         return ResponseEntity.noContent().build();
     }

@@ -1,10 +1,11 @@
 package wooteco.prolog.fixtures;
 
+import wooteco.prolog.levellogs.application.dto.LevelLogRequest;
+import wooteco.prolog.levellogs.application.dto.SelfDiscussionRequest;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import wooteco.prolog.levellogs.application.dto.LevelLogRequest;
-import wooteco.prolog.levellogs.application.dto.SelfDiscussionRequest;
 
 public class LevellogFixture {
 

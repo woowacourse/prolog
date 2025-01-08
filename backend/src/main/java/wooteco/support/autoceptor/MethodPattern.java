@@ -1,8 +1,9 @@
 package wooteco.support.autoceptor;
 
-import java.util.regex.Pattern;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpMethod;
+
+import java.util.regex.Pattern;
 
 public class MethodPattern {
 
@@ -33,9 +34,6 @@ public class MethodPattern {
         if (!pattern.matcher(request.getRequestURI()).matches()) {
             return false;
         }
-        if (!method.matches(request.getMethod())) {
-            return false;
-        }
-        return true;
+        return method.matches(request.getMethod());
     }
 }

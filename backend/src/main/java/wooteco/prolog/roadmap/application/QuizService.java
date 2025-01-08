@@ -1,12 +1,5 @@
 package wooteco.prolog.roadmap.application;
 
-import static java.util.Objects.isNull;
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_ORDER_EXCEPTION;
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_QUIZ_NOT_FOUND_EXCEPTION;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +13,14 @@ import wooteco.prolog.roadmap.domain.Quiz;
 import wooteco.prolog.roadmap.domain.repository.EssayAnswerRepository;
 import wooteco.prolog.roadmap.domain.repository.KeywordRepository;
 import wooteco.prolog.roadmap.domain.repository.QuizRepository;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_KEYWORD_ORDER_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_QUIZ_NOT_FOUND_EXCEPTION;
 
 @Service
 @Transactional(readOnly = true)

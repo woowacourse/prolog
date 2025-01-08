@@ -1,11 +1,5 @@
 package wooteco.support.autoceptor.scanner;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.GenericDeclaration;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +7,13 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.GenericDeclaration;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public enum MappingAnnotation {
     REQUEST_MAPPING(RequestMapping.class,
@@ -53,9 +54,9 @@ public enum MappingAnnotation {
             .filter(httpMethod -> declaration.isAnnotationPresent(httpMethod.typeToken))
             .findAny()
             .map(httpMethod -> httpMethod.values.apply(declaration))
-            .orElseGet(() -> Arrays.asList(""));
-        if(methodUris.isEmpty()){
-            return Arrays.asList("");
+            .orElseGet(() -> List.of(""));
+        if (methodUris.isEmpty()) {
+            return List.of("");
         }
         return methodUris;
     }

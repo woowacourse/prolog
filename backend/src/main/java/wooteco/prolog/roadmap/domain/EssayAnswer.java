@@ -1,19 +1,16 @@
 package wooteco.prolog.roadmap.domain;
 
-import static wooteco.prolog.common.exception.BadRequestCode.ESSAY_ANSWER_NOT_VALID_USER;
-import static wooteco.prolog.common.exception.BadRequestCode.NOT_EMPTY_ESSAY_ANSWER_EXCEPTION;
-
-import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.ConstraintMode;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +18,9 @@ import org.apache.commons.lang3.StringUtils;
 import wooteco.prolog.common.AuditingEntity;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
+
+import static wooteco.prolog.common.exception.BadRequestCode.ESSAY_ANSWER_NOT_VALID_USER;
+import static wooteco.prolog.common.exception.BadRequestCode.NOT_EMPTY_ESSAY_ANSWER_EXCEPTION;
 
 @Table(name = "essay_answer")
 @Entity

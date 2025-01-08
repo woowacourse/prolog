@@ -1,6 +1,5 @@
 package wooteco.prolog.login.ui;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -11,6 +10,8 @@ import wooteco.prolog.login.application.GithubLoginService;
 import wooteco.prolog.login.application.JwtTokenProvider;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.support.autoceptor.AutoInterceptorPatternMaker;
+
+import java.util.List;
 
 @Configuration
 @AllArgsConstructor

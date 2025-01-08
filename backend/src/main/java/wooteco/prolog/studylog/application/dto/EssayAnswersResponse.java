@@ -1,9 +1,6 @@
 package wooteco.prolog.studylog.application.dto;
 
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import wooteco.prolog.roadmap.application.dto.EssayAnswerResponse;
 import wooteco.prolog.roadmap.domain.EssayAnswer;
+
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @NoArgsConstructor
 @AllArgsConstructor

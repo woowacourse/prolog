@@ -1,18 +1,19 @@
 package wooteco.prolog.studylog.domain;
 
-import static java.util.Collections.emptyList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static wooteco.prolog.studylog.domain.DocumentQueryParser.removeSpecialChars;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+
+import static java.util.Collections.emptyList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static wooteco.prolog.studylog.domain.DocumentQueryParser.removeSpecialChars;
 
 class DocumentQueryParserTest {
 
-    private List<String> escapedChars = Arrays.asList(
+    private final List<String> escapedChars = Arrays.asList(
         "?", "!", "/", "\\", "!", "+", "-", "*", "[", "]", "{", "}", "&", "|", "(", ")", ":"
     );
 
@@ -130,7 +131,7 @@ class DocumentQueryParserTest {
     void makeDefaultQueryStringSingle() {
         // given
         String result = DocumentQueryParser.makeDefaultQueryString(
-            Arrays.asList("joanne")
+            List.of("joanne")
         );
         // when -  then
         assertThat(result).isEqualTo("joanne");
@@ -163,7 +164,7 @@ class DocumentQueryParserTest {
     void makeKeywordsQueryStringSingle() {
         // given
         String keyword = DocumentQueryParser.makeKeywordsQueryString(
-            Arrays.asList("java")
+            List.of("java")
         );
         // when - then
         assertThat(keyword).isEqualTo("*java*");

@@ -1,18 +1,5 @@
 package wooteco.prolog.session.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
-import static wooteco.prolog.login.ui.LoginMember.Authority.ANONYMOUS;
-import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +14,20 @@ import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.repository.MissionRepository;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
+import static wooteco.prolog.login.ui.LoginMember.Authority.ANONYMOUS;
+import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
 
 @ExtendWith(MockitoExtension.class)
 class MissionServiceTest {
@@ -83,9 +84,9 @@ class MissionServiceTest {
     void findAll() {
         // given
         final List<Mission> missions = new ArrayList<>();
-        missions.addAll(Arrays.asList(new Mission("mission1", new Session("session1"))));
-        missions.addAll(Arrays.asList(new Mission("mission2", new Session("session2"))));
-        missions.addAll(Arrays.asList(new Mission("mission3", new Session("session3"))));
+        missions.addAll(List.of(new Mission("mission1", new Session("session1"))));
+        missions.addAll(List.of(new Mission("mission2", new Session("session2"))));
+        missions.addAll(List.of(new Mission("mission3", new Session("session3"))));
         doReturn(missions).when(missionRepository).findAll();
 
         // when

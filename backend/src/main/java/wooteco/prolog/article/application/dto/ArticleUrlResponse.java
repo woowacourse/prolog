@@ -1,9 +1,10 @@
 package wooteco.prolog.article.application.dto;
 
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import wooteco.prolog.article.application.OgTagParser.OgType;
+
+import java.util.Map;
 
 @Getter
 @AllArgsConstructor

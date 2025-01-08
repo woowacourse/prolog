@@ -1,7 +1,8 @@
 package wooteco.prolog.badge.application;
 
-import java.util.Optional;
 import wooteco.prolog.badge.domain.BadgeType;
+
+import java.util.Optional;
 
 public interface BadgeCreator {
 

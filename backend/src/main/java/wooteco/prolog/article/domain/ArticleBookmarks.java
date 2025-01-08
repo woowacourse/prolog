@@ -1,11 +1,12 @@
 package wooteco.prolog.article.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.Embeddable;
-import javax.persistence.OneToMany;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Embeddable
 public class ArticleBookmarks {

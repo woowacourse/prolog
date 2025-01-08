@@ -1,13 +1,12 @@
 package wooteco.prolog.article.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import joptsimple.internal.Strings;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class TitleTest {
 
@@ -23,7 +22,7 @@ class TitleTest {
     @Test
     void createTitle_fail_overLength() {
         //given
-        final String title = Strings.repeat('.', 51);
+        final String title = ".".repeat(51);
 
         Title result = new Title(title);
         assertThat(result.getTitle()).isEqualTo(title.substring(0, 50));

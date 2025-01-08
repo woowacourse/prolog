@@ -1,8 +1,9 @@
 package wooteco.prolog.fixtures;
 
+import wooteco.prolog.session.application.dto.SessionRequest;
+
 import java.util.Arrays;
 import java.util.List;
-import wooteco.prolog.session.application.dto.SessionRequest;
 
 public class SessionAcceptanceFixture {
 

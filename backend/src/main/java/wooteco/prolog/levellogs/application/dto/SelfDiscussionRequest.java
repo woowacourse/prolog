@@ -1,11 +1,11 @@
 package wooteco.prolog.levellogs.application.dto;
 
-import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 @EqualsAndHashCode

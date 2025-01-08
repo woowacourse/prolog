@@ -1,7 +1,8 @@
 package wooteco.support.performance.annotationDataExtractor;
 
-import java.lang.reflect.Method;
 import wooteco.support.performance.RequestApi;
+
+import java.lang.reflect.Method;
 
 public interface AnnotationDataExtractor {
 

@@ -1,12 +1,13 @@
 package wooteco.prolog.article.domain;
 
-import static java.util.stream.Collectors.toList;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+
+import static java.util.stream.Collectors.toList;
 
 @Getter
 @AllArgsConstructor

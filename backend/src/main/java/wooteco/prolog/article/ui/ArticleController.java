@@ -1,7 +1,5 @@
 package wooteco.prolog.article.ui;
 
-import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +19,9 @@ import wooteco.prolog.article.application.dto.ArticleResponse;
 import wooteco.prolog.article.domain.ArticleFilterType;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
+
+import java.net.URI;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -69,8 +70,8 @@ public class ArticleController {
 
     @GetMapping
     public ResponseEntity<List<ArticleResponse>> getArticlesByPublishedAt(@AuthMemberPrincipal final LoginMember member,
-                                                                @RequestParam("course") final ArticleFilterType course,
-                                                                @RequestParam("onlyBookmarked") boolean onlyBookmarked) {
+                                                                          @RequestParam("course") final ArticleFilterType course,
+                                                                          @RequestParam("onlyBookmarked") boolean onlyBookmarked) {
         final List<ArticleResponse> articleResponses = articleService.getArticlesByPublishedAt(member);
 
         return ResponseEntity.ok(articleResponses);

@@ -1,15 +1,16 @@
 package wooteco.prolog.studylog.domain;
 
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toList;
-import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_TAG;
+import wooteco.prolog.common.exception.BadRequestException;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.MemberTag;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import wooteco.prolog.common.exception.BadRequestException;
-import wooteco.prolog.member.domain.Member;
-import wooteco.prolog.member.domain.MemberTag;
+
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toList;
+import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_TAG;
 
 public class Tags {
 

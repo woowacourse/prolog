@@ -1,18 +1,19 @@
 package wooteco.prolog.login.application;
 
-import static wooteco.prolog.common.exception.BadRequestCode.TOKEN_NOT_VALID;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.member.domain.Member;
+
+import java.util.Date;
+
+import static wooteco.prolog.common.exception.BadRequestCode.TOKEN_NOT_VALID;
 
 @Component
 @Slf4j

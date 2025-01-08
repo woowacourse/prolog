@@ -1,15 +1,16 @@
 package wooteco.prolog.steps;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import java.util.HashMap;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.fixtures.GithubResponses;
 import wooteco.prolog.login.application.dto.TokenResponse;
 import wooteco.prolog.member.application.dto.MemberResponse;
+
+import java.util.HashMap;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LoginStepDefinitions extends AcceptanceSteps {
 

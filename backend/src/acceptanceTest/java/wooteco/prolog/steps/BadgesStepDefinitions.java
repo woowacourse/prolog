@@ -1,17 +1,18 @@
 package wooteco.prolog.steps;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG8;
-import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG9;
-
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import java.util.List;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
 import wooteco.prolog.badge.domain.BadgeType;
 import wooteco.prolog.common.exception.ExceptionDto;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG8;
+import static wooteco.prolog.fixtures.StudylogAcceptanceFixture.STUDYLOG9;
 
 public class BadgesStepDefinitions extends AcceptanceSteps {
 

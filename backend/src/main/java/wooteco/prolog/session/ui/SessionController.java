@@ -1,7 +1,5 @@
 package wooteco.prolog.session.ui;
 
-import java.net.URI;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +13,9 @@ import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
+
+import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/sessions")

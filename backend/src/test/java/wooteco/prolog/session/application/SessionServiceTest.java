@@ -1,19 +1,5 @@
 package wooteco.prolog.session.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.doReturn;
-import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_SESSION_EXCEPTION;
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
-import static wooteco.prolog.login.ui.LoginMember.Authority.ANONYMOUS;
-import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +15,21 @@ import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.SessionMember;
 import wooteco.prolog.session.domain.repository.SessionRepository;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_SESSION_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
+import static wooteco.prolog.login.ui.LoginMember.Authority.ANONYMOUS;
+import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
 
 @ExtendWith(MockitoExtension.class)
 class SessionServiceTest {
@@ -142,7 +143,7 @@ class SessionServiceTest {
         sessionMembers.add(new SessionMember(1L, new Member("member1", "베베", Role.CREW, Long.MIN_VALUE, "img")));
 
         doReturn(sessionMembers).when(sessionMemberService).findByMemberId(member.getId());
-        doReturn(sessions).when(sessionRepository).findAllById(Arrays.asList(1L));
+        doReturn(sessions).when(sessionRepository).findAllByIdInOrderByIdDesc(List.of(1L));
 
         // when
         List<SessionResponse> responses = sessionService.findMySessions(member);
@@ -182,13 +183,13 @@ class SessionServiceTest {
 
         final List<Session> mySessions = new ArrayList<>();
         mySessions.add(session2);
-        doReturn(mySessions).when(sessionRepository).findAllById(Collections.emptyList());
+        doReturn(mySessions).when(sessionRepository).findAllByIdInOrderByIdDesc(any());
 
         final List<Session> allSessions = new ArrayList<>();
         allSessions.add(session1);
         allSessions.add(session2);
         allSessions.add(session3);
-        doReturn(allSessions).when(sessionRepository).findAll();
+        doReturn(allSessions).when(sessionRepository).findAllByOrderByIdDesc();
 
         // when
         List<SessionResponse> responses = sessionService.findAllWithMySessionFirst(loginMember);
@@ -213,7 +214,7 @@ class SessionServiceTest {
         allSessions.add(session1);
         allSessions.add(session2);
         allSessions.add(session3);
-        doReturn(allSessions).when(sessionRepository).findAll();
+        doReturn(allSessions).when(sessionRepository).findAllByOrderByIdDesc();
 
         // when
         final List<SessionResponse> responses = sessionService.findAllWithMySessionFirst(loginMember);

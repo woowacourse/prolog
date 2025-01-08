@@ -1,0 +1,3 @@
+aws:
+  secretsmanager:
+    enabled: true

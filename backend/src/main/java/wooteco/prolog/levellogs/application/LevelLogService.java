@@ -1,12 +1,5 @@
 package wooteco.prolog.levellogs.application;
 
-import static wooteco.prolog.common.exception.BadRequestCode.INVALID_LEVEL_LOG_AUTHOR_EXCEPTION;
-import static wooteco.prolog.common.exception.BadRequestCode.LEVEL_LOG_NOT_FOUND_EXCEPTION;
-import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_FOUND;
-import static wooteco.prolog.common.exception.BadRequestCode.SELF_DISCUSSION_NOT_FOUND_EXCEPTION;
-
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,6 +16,14 @@ import wooteco.prolog.levellogs.domain.repository.LevelLogRepository;
 import wooteco.prolog.levellogs.domain.repository.SelfDiscussionRepository;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.repository.MemberRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static wooteco.prolog.common.exception.BadRequestCode.INVALID_LEVEL_LOG_AUTHOR_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.LEVEL_LOG_NOT_FOUND_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_FOUND;
+import static wooteco.prolog.common.exception.BadRequestCode.SELF_DISCUSSION_NOT_FOUND_EXCEPTION;
 
 @Service
 @Transactional(readOnly = true)

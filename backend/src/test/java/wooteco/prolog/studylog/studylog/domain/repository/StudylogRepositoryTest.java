@@ -1,14 +1,5 @@
 package wooteco.prolog.studylog.studylog.domain.repository;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toList;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,6 +23,16 @@ import wooteco.prolog.studylog.domain.repository.StudylogSpecification;
 import wooteco.prolog.studylog.domain.repository.StudylogTagRepository;
 import wooteco.prolog.studylog.domain.repository.TagRepository;
 import wooteco.support.utils.RepositoryTest;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RepositoryTest
 class StudylogRepositoryTest {
@@ -75,7 +76,7 @@ class StudylogRepositoryTest {
     private final Studylog studylog1 = new Studylog(member1, STUDYLOG1_TITLE, "피케이와 포모의 스터디로그", session1, mission1, asList(tag1, tag2));
     private final Studylog studylog2 = new Studylog(member1, STUDYLOG2_TITLE, "피케이와 포모의 스터디로그 2", session1, mission1, asList(tag2, tag3));
     private final Studylog studylog3 = new Studylog(member2, STUDYLOG3_TITLE, "피케이 스터디로그", session2, mission2, asList(tag3, tag4, tag5));
-    private final Studylog studylog4 = new Studylog(member2, STUDYLOG4_TITLE, "포모의 스터디로그", session2, mission2, asList());
+    private final Studylog studylog4 = new Studylog(member2, STUDYLOG4_TITLE, "포모의 스터디로그", session2, mission2, List.of());
 
     @BeforeEach
     void setUp() {

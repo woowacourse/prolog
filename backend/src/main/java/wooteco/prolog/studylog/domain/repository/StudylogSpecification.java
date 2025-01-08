@@ -1,14 +1,15 @@
 package wooteco.prolog.studylog.domain.repository;
 
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.jpa.domain.Specification;
+import wooteco.prolog.studylog.domain.Studylog;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
-import org.springframework.data.jpa.domain.Specification;
-import wooteco.prolog.studylog.domain.Studylog;
 
 public class StudylogSpecification {
 
@@ -37,17 +38,7 @@ public class StudylogSpecification {
                 return builder.and();
             }
 
-            return root.get(key).in(values);
-        };
-    }
-
-    public static Specification<Studylog> equalIn(String key, List<Long> values, boolean isSearch) {
-        return (root, query, builder) -> {
-            if (!isSearch && (values == null || values.isEmpty())) {
-                return builder.and();
-            }
-
-            return root.get(key).in(values);
+            return root.get(key).get("id").in(values);
         };
     }
 
@@ -57,7 +48,7 @@ public class StudylogSpecification {
                 return builder.and();
             }
 
-            return root.join("studylogTags", JoinType.LEFT).join("values", JoinType.LEFT).get("tag")
+            return root.join("studylogTags", JoinType.LEFT).join("values", JoinType.LEFT).get("tag").get("id")
                 .in(values);
         };
     }

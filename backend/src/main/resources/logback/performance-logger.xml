@@ -3,12 +3,9 @@
     <property name="home" value="logs/performance/"/>
     <appender name="performance-logger" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${home}performance.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${home}performance-%d{yyyyMMdd}-%i.log</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy
-                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>15MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxFileSize>15MB</maxFileSize>
             <maxHistory>1</maxHistory>
         </rollingPolicy>
         <encoder>

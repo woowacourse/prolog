@@ -1,13 +1,5 @@
 package wooteco.prolog.studylog.application;
 
-import static java.util.stream.Collectors.toList;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +19,15 @@ import wooteco.prolog.studylog.domain.PopularStudylog;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.repository.PopularStudylogRepository;
 import wooteco.prolog.studylog.domain.repository.StudylogRepository;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @AllArgsConstructor
@@ -90,8 +91,8 @@ public class PopularStudylogService {
     }
 
     private List<Studylog> filterStudylogsByDepartmets(final List<Studylog> studylogs,
-                                                         final Departments departments,
-                                                         final List<DepartmentMember> departmentMembers) {
+                                                       final Departments departments,
+                                                       final List<DepartmentMember> departmentMembers) {
 
         return studylogs.stream()
             .filter(
@@ -101,7 +102,7 @@ public class PopularStudylogService {
     }
 
     private boolean checkMemberAssignedInDepartmets(Departments departments, Member member,
-                                                      List<DepartmentMember> departmentMembers) {
+                                                    List<DepartmentMember> departmentMembers) {
         return departmentMembers.stream().anyMatch(
             it -> it.getMember().equals(member) && departments.isContainsDepartments(it.getDepartment()));
     }

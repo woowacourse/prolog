@@ -1,7 +1,5 @@
 package wooteco.prolog.login.application;
 
-import static wooteco.prolog.common.exception.BadRequestCode.TOKEN_NOT_VALID;
-
 import org.springframework.stereotype.Service;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.application.dto.GithubProfileResponse;
@@ -9,6 +7,8 @@ import wooteco.prolog.login.application.dto.TokenRequest;
 import wooteco.prolog.login.application.dto.TokenResponse;
 import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.domain.Member;
+
+import static wooteco.prolog.common.exception.BadRequestCode.TOKEN_NOT_VALID;
 
 @Service
 public class GithubLoginService {

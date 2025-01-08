@@ -1,7 +1,8 @@
 package wooteco.prolog.fixtures;
 
-import java.util.Arrays;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Arrays;
 
 public enum GithubResponses {
     소롱("1", "access_token_1", "소롱", "soulG", "111111",

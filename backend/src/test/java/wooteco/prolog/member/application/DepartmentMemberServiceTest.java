@@ -1,13 +1,6 @@
 package wooteco.prolog.member.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static wooteco.prolog.member.domain.Part.BACKEND;
-import static wooteco.prolog.member.domain.Term.FIFTH;
-
 import com.google.common.collect.ImmutableList;
-import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +12,14 @@ import wooteco.prolog.member.domain.DepartmentMember;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.member.domain.repository.DepartmentMemberRepository;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static wooteco.prolog.member.domain.Part.BACKEND;
+import static wooteco.prolog.member.domain.Term.FIFTH;
 
 @ExtendWith(MockitoExtension.class)
 class DepartmentMemberServiceTest {

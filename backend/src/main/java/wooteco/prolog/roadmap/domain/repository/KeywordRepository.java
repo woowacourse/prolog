@@ -1,12 +1,13 @@
 package wooteco.prolog.roadmap.domain.repository;
 
-import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import wooteco.prolog.roadmap.domain.Keyword;
 import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndAnsweredQuizCount;
 import wooteco.prolog.roadmap.domain.repository.dto.KeywordIdAndTotalQuizCount;
+
+import java.util.List;
 
 public interface KeywordRepository extends JpaRepository<Keyword, Long> {
 

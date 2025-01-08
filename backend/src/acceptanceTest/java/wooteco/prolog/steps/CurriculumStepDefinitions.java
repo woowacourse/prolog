@@ -1,13 +1,13 @@
 package wooteco.prolog.steps;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static wooteco.prolog.fixtures.CurriculumFixture.커리큘럼1_생성_요청_DTO;
-import static wooteco.prolog.fixtures.CurriculumFixture.커리큘럼_수정_요청_DTO;
-
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.http.HttpStatus;
 import wooteco.prolog.AcceptanceSteps;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static wooteco.prolog.fixtures.CurriculumFixture.커리큘럼1_생성_요청_DTO;
+import static wooteco.prolog.fixtures.CurriculumFixture.커리큘럼_수정_요청_DTO;
 
 public class CurriculumStepDefinitions extends AcceptanceSteps {
 

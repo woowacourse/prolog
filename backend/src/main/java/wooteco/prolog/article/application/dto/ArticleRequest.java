@@ -1,6 +1,5 @@
 package wooteco.prolog.article.application.dto;
 
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +9,8 @@ import wooteco.prolog.article.domain.ImageUrl;
 import wooteco.prolog.article.domain.Title;
 import wooteco.prolog.article.domain.Url;
 import wooteco.prolog.member.domain.Member;
+
+import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor

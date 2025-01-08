@@ -1,7 +1,6 @@
 package wooteco.prolog.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +14,8 @@ import wooteco.prolog.common.slacklogger.RequestStorage;
 import wooteco.prolog.studylog.application.dto.search.SearchArgumentResolver;
 import wooteco.support.performance.PerformanceLogger;
 import wooteco.support.performance.RequestApiExtractor;
+
+import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
