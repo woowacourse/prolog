@@ -21,9 +21,13 @@ jobs:
         with:
           terraform_version: 1.10.3
 
-      - name: Terraform Init and Apply
+      - name: Terraform Login
         env:
           TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+        run: terraform login
+
+      - name: Terraform Init and Apply
+        env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         working-directory: terraform/environments/${{ github.event.inputs.environment }}
