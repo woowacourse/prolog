@@ -21,13 +21,22 @@ jobs:
         with:
           terraform_version: 1.10.3
 
-      - name: Terraform Login
-        env:
-          TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-        run: yes | terraform login
+      - name: Create Terraform Credentials File
+        run: |
+          mkdir -p ~/.terraform.d
+          cat <<EOF > ~/.terraform.d/credentials.tfrc.json
+            {
+              "credentials": {
+                "app.terraform.io": {
+                  "token": "${{ secrets.TF_API_TOKEN }}"
+                }
+              }
+            }
+          EOF
 
       - name: Terraform Init and Apply
         env:
+          TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         working-directory: terraform/environments/${{ github.event.inputs.environment }}
