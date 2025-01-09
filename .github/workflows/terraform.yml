@@ -24,7 +24,7 @@ jobs:
       - name: Terraform Login
         env:
           TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
-        run: terraform login
+        run: yes | terraform login
 
       - name: Terraform Init and Apply
         env:
