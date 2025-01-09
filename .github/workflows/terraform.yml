@@ -21,14 +21,12 @@ jobs:
         with:
           terraform_version: 1.10.3
 
-      - name: Select workspace
-        run: |
-          ENVIRONMENT=${{ github.event.inputs.environment }}
-          terraform workspace select "$ENVIRONMENT" || terraform workspace new "$ENVIRONMENT"
-
       - name: Terraform Init and Apply
         env:
           TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        working-directory: terraform/environments/${{ github.event.inputs.environment }}
         run: |
           terraform init
           terraform plan -out=tfplan
