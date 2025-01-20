@@ -204,19 +204,28 @@ const StudylogEditor = ({ mode }: StudylogEditorProps): JSX.Element => {
 
   const fetchStudylogRequest: UseQueryResult<AxiosResponse<Studylog>, AxiosError> = useQuery(
     [REACT_QUERY_KEY.STUDYLOG, id],
-    () => requestGetStudylog({ id, accessToken }),
+    async () => {
+      if (mode === 'edit') {
+        return requestGetStudylog({ id, accessToken });
+      }
+      return Promise.resolve({ data: {} } as AxiosResponse<Studylog>);
+    },
     {
       onSuccess: ({ data }) => {
-        setStudylogContent({
-          title: data.title,
-          content: data.content,
-          missionId: data.mission?.id || null,
-          sessionId: data.session?.sessionId || null,
-          tags: data.tags,
-          answers: data.answers,
-        });
+        if (mode === 'edit') {
+          setStudylogContent({
+            title: data.title,
+            content: data.content,
+            missionId: data.mission?.id || null,
+            sessionId: data.session?.sessionId || null,
+            tags: data.tags,
+            answers: data.answers,
+          });
 
-        fetchQuestions(data.mission!!.id, data.answers);
+          if (data.mission) {
+            fetchQuestions(data.mission.id, data.answers);
+          }
+        }
       },
     }
   );
