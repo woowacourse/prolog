@@ -63,7 +63,7 @@ public class MissionService {
     }
 
     public List<MissionResponse> findMyMissions(LoginMember loginMember) {
-        List<Long> mySessionIds = sessionService.findMySessionIds(loginMember.getId());
+        List<Long> mySessionIds = sessionService.findMySessionIds(loginMember);
         List<Mission> missions = missionRepository.findBySessionIdIn(mySessionIds);
         return MissionResponse.listOf(missions);
     }

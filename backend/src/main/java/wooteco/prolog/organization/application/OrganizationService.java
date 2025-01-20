@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.member.domain.MemberCreatedEvent;
 import wooteco.prolog.organization.domain.Organization;
 import wooteco.prolog.organization.domain.OrganizationGroup;
@@ -16,6 +17,7 @@ import wooteco.prolog.organization.domain.repository.OrganizationRepository;
 import wooteco.prolog.session.domain.Session;
 
 @Service
+@Transactional(readOnly = true)
 public class OrganizationService {
 
     private final OrganizationRepository organizationRepository;
@@ -33,14 +35,17 @@ public class OrganizationService {
         this.organizationGroupSessionRepository = organizationGroupSessionRepository;
     }
 
+    @Transactional
     public Organization saveOrganization(String name) {
         return organizationRepository.save(new Organization(name));
     }
 
+    @Transactional
     public OrganizationGroup saveOrganizationGroup(Long organizationId, String name) {
         return organizationGroupRepository.save(new OrganizationGroup(organizationId, name));
     }
 
+    @Transactional
     public void addOrganizationGroupMember(Long organizationGroupId,
                                            List<OrganizationGroupMemberRequest> organizationGroupMemberRequests) {
         List<OrganizationGroupMember> organizationGroupMembers = organizationGroupMemberRequests.stream()
@@ -50,6 +55,7 @@ public class OrganizationService {
         organizationGroupMemberRepository.saveAll(organizationGroupMembers);
     }
 
+    @Transactional
     public void addOrganizationGroupSessions(Long organizationGroupId, List<String> sessionNames) {
         List<OrganizationGroupSession> organizationGroupSessions = sessionNames.stream()
             .map(it -> new OrganizationGroupSession(organizationGroupId, new Session(it)))

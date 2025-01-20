@@ -8,12 +8,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.organization.application.OrganizationService;
+import wooteco.prolog.organization.domain.OrganizationGroupSession;
 import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.domain.Session;
@@ -25,8 +28,9 @@ import wooteco.prolog.session.domain.repository.SessionRepository;
 @Transactional(readOnly = true)
 public class SessionService {
 
-    private SessionMemberService sessionMemberService;
-    private SessionRepository sessionRepository;
+    private final SessionMemberService sessionMemberService;
+    private final OrganizationService organizationService;
+    private final SessionRepository sessionRepository;
 
     @Transactional
     public SessionResponse create(SessionRequest sessionRequest) {
@@ -67,46 +71,40 @@ public class SessionService {
             .collect(toList());
     }
 
-    public List<SessionResponse> findAllByOrderByIdDesc() {
-        return sessionRepository.findAllByOrderByIdDesc().stream()
+    public List<SessionResponse> findMySessions(LoginMember loginMember) {
+        List<SessionResponse> mySessionResponses = findMySessionOnlyMine(loginMember);
+        List<OrganizationGroupSession> organizationGroupSessions = organizationService.findOrganizationGroupSessionsByMemberId(
+            loginMember.getId());
+        List<SessionResponse> organizationSessions = organizationGroupSessions.stream()
+            .map(it -> SessionResponse.of(it.getSession()))
+            .collect(Collectors.toList());
+        mySessionResponses.removeAll(organizationSessions);
+
+        return Stream.of(mySessionResponses, organizationSessions)
+            .flatMap(Collection::stream)
+            .sorted((s1, s2) -> Long.compare(s2.getId(), s1.getId()))
+            .collect(toList());
+    }
+
+    public List<Long> findMySessionIds(LoginMember loginMember) {
+        return findMySessions(loginMember).stream().map(SessionResponse::getId).collect(toList());
+    }
+
+    public List<SessionResponse> findMySessionOnlyMine(LoginMember loginMember) {
+        if (loginMember.isAnonymous()) {
+            return new ArrayList<>();
+        }
+        List<Long> mySessionIds = findMySessionIds(loginMember.getId());
+
+        return sessionRepository.findAllByIdInOrderByIdDesc(mySessionIds).stream()
             .map(SessionResponse::of)
             .collect(toList());
     }
 
-    public List<SessionResponse> findMySessions(LoginMember member) {
-        List<Long> sessionIds = findMySessionIds(member.getId());
-
-        return sessionRepository.findAllByIdInOrderByIdDesc(sessionIds).stream()
-            .map(SessionResponse::of)
-            .collect(toList());
-    }
-
-    public List<Long> findMySessionIds(Long memberId) {
+    private List<Long> findMySessionIds(Long memberId) {
         return sessionMemberService.findByMemberId(memberId)
             .stream()
             .map(SessionMember::getSessionId)
             .collect(toList());
-    }
-
-    public List<SessionResponse> findAllWithMySessionFirst(LoginMember loginMember) {
-        if (loginMember.isAnonymous()) {
-            return findAllByOrderByIdDesc();
-        }
-
-        List<SessionResponse> mySessions = findMySessions(loginMember);
-        List<SessionResponse> allSessions = findAllByOrderByIdDesc();
-        allSessions.removeAll(mySessions);
-
-        return Stream.of(mySessions, allSessions)
-            .flatMap(Collection::stream)
-            .collect(toList());
-    }
-
-    public List<SessionResponse> findMySessionResponses(LoginMember loginMember) {
-        if (loginMember.isAnonymous()) {
-            return new ArrayList<>();
-        }
-
-        return findMySessions(loginMember);
     }
 }

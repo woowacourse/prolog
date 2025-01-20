@@ -183,7 +183,7 @@ class MissionServiceTest {
         final List<Mission> missions = new ArrayList<>();
         missions.add(new Mission("mission1", new Session("session1")));
 
-        when(sessionService.findMySessionIds(loginMember.getId())).thenReturn(mySessionIds);
+        when(sessionService.findMySessionIds(loginMember)).thenReturn(mySessionIds);
         when(missionRepository.findBySessionIdIn(mySessionIds)).thenReturn(missions);
 
         // when

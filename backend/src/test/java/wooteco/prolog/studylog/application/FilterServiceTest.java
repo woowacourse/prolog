@@ -54,7 +54,7 @@ class FilterServiceTest {
 
         SessionResponse session2 = new SessionResponse(2L, "session2");
         List<SessionResponse> mySessionResponses = Collections.newArrayList(session2);
-        doReturn(mySessionResponses).when(sessionService).findMySessionResponses(loginMember);
+        doReturn(mySessionResponses).when(sessionService).findMySessionOnlyMine(loginMember);
 
         Session session3 = new Session(3L, null, "session3");
         List<OrganizationGroupSession> organizationGroupSessions = Collections.newArrayList(

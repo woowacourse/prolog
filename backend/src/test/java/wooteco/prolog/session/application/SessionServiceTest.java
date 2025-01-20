@@ -3,13 +3,13 @@ package wooteco.prolog.session.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_SESSION_EXCEPTION;
 import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
 import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +22,7 @@ import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
+import wooteco.prolog.organization.application.OrganizationService;
 import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.domain.Session;
@@ -35,10 +36,11 @@ class SessionServiceTest {
     private SessionService sessionService;
 
     @Mock
-    private SessionMemberService sessionMemberService;
-
-    @Mock
     private SessionRepository sessionRepository;
+    @Mock
+    private SessionMemberService sessionMemberService;
+    @Mock
+    private OrganizationService organizationService;
 
     @DisplayName("유효한 이름 값을 매개변수로 넣으면 Session 객체가 정상적으로 생성된다.")
     @Test
@@ -128,47 +130,6 @@ class SessionServiceTest {
         );
     }
 
-    @DisplayName("현재 로그인한 Memeber의 Session을 조회한다.")
-    @Test
-    void findMySessions() {
-        // given
-        final LoginMember member = new LoginMember(1L, MEMBER);
-        final List<Session> sessions = new ArrayList<>();
-        sessions.add(new Session("session1"));
-
-        final List<SessionMember> sessionMembers = new ArrayList<>();
-        sessionMembers.add(new SessionMember(1L, new Member("member1", "베베", Role.CREW, Long.MIN_VALUE, "img")));
-
-        doReturn(sessionMembers).when(sessionMemberService).findByMemberId(member.getId());
-        doReturn(sessions).when(sessionRepository).findAllByIdInOrderByIdDesc(Arrays.asList(1L));
-
-        // when
-        List<SessionResponse> responses = sessionService.findMySessions(member);
-
-        // then
-        assertThat(responses.get(0).getName()).isEqualTo("session1");
-    }
-
-    @DisplayName("현재 로그인한 Member의 SessionId들을 조회한다.")
-    @Test
-    void findMySessionIds() {
-        // given
-        final LoginMember member = new LoginMember(1L, MEMBER);
-        final List<SessionMember> sessionMembers = new ArrayList<>();
-        sessionMembers.add(new SessionMember(1L, new Member("member1", "베베", Role.CREW, Long.MIN_VALUE, "img")));
-
-        doReturn(sessionMembers).when(sessionMemberService).findByMemberId(member.getId());
-
-        // when
-        List<Long> sessionIds = sessionService.findMySessionIds(member.getId());
-
-        // then
-        assertAll(
-            () -> assertThat(sessionIds.get(0)).isEqualTo(1L),
-            () -> assertThat(sessionIds.size()).isEqualTo(1)
-        );
-    }
-
     @DisplayName("현재 로그인한 Member의 Session을 조회한다.")
     @Test
     void findMySessionResponses() {
@@ -176,15 +137,15 @@ class SessionServiceTest {
         final LoginMember member = new LoginMember(1L, MEMBER);
         final List<Session> sessions = new ArrayList<>();
         sessions.add(new Session("session1"));
-
         final List<SessionMember> sessionMembers = new ArrayList<>();
         sessionMembers.add(new SessionMember(1L, new Member("member1", "베베", Role.CREW, Long.MIN_VALUE, "img")));
 
-        doReturn(sessionMembers).when(sessionMemberService).findByMemberId(member.getId());
-        doReturn(sessions).when(sessionRepository).findAllByIdInOrderByIdDesc(Arrays.asList(1L));
+        doReturn(List.of()).when(organizationService).findOrganizationGroupSessionsByMemberId(any());
+        doReturn(sessionMembers).when(sessionMemberService).findByMemberId(any());
+        doReturn(sessions).when(sessionRepository).findAllByIdInOrderByIdDesc(any());
 
         // when
-        List<SessionResponse> responses = sessionService.findMySessionResponses(member);
+        List<SessionResponse> responses = sessionService.findMySessions(member);
 
         // then
         assertThat(responses.get(0).getName()).isEqualTo("session1");
