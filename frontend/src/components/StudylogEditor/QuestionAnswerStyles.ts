@@ -33,7 +33,7 @@ export const AccordionButton = styled.button`
   outline: none;
 
   :not(.collapsed) {
-    background-color: ${COLOR.WHITE};
+    background-color: ${COLOR.LIGHT_BLUE_500};
     color: ${COLOR.BLACK_700};
   }
   :focus {
@@ -42,7 +42,11 @@ export const AccordionButton = styled.button`
 `;
 
 export const AnswerBody = styled.div`
-  padding: 1rem 2rem 2rem 2rem;
+  padding: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
   font-size: 1.2rem;
   color: ${COLOR.BLACK_700};
+  border: 1px solid ${COLOR.LIGHT_GRAY_200};
 `;

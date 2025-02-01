@@ -67,7 +67,7 @@ const QuestionAnswers: React.FC<QuestionAnswerProps> = (props) => {
       <div className="accordion" id="questionAccordion">
         {props.editable ? (
           props.questions.length === 0 ? (
-            <NoQuestionMessage>'질문이 없습니다. 질문을 추가해주세요.'</NoQuestionMessage>
+            <NoQuestionMessage>미션에 등록된 질문이 없습니다.</NoQuestionMessage>
           ) : (
             props.questions.map((question) => {
               const answer = answers.find((a) => a.questionId === question.id);
@@ -75,11 +75,12 @@ const QuestionAnswers: React.FC<QuestionAnswerProps> = (props) => {
                 <div className="accordion-item" key={question.id}>
                   <AccordionHeader className="accordion-header" id={`heading${question.id}`}>
                     <AccordionButton
-                      className="accordion-button collapsed"
+                      disabled={true}
+                      className="accordion-button"
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target={`#collapse${question.id}`}
-                      aria-expanded="false"
+                      aria-expanded="true"
                       aria-controls={`collapse${question.id}`}
                     >
                       {question.content}
@@ -87,14 +88,18 @@ const QuestionAnswers: React.FC<QuestionAnswerProps> = (props) => {
                   </AccordionHeader>
                   <div
                     id={`collapse${question.id}`}
-                    className="accordion-collapse collapse"
+                    className="accordion-collapse collapse show"
                     aria-labelledby={`heading${question.id}`}
                   >
                     <AnswerBody className="accordion-body">
                       <AnswerTextArea
                         value={answer?.answerContent || ''}
-                        onChange={(e) => handleAnswerChange(question.id, e.target.value)}
-                        placeholder="답변을 입력하세요..."
+                        onChange={(e) => {
+                            if (e.target.value.length <= 200) {
+                                handleAnswerChange(question.id, e.target.value);
+                            }
+                        }}
+                        placeholder="답변을 입력하세요. (최대 200자)"
                       />
                     </AnswerBody>
                   </div>
@@ -103,13 +108,13 @@ const QuestionAnswers: React.FC<QuestionAnswerProps> = (props) => {
             })
           )
         ) : props.questionAnswers.length === 0 ? (
-          <NoQuestionMessage>'질문이 없습니다. 질문을 추가해주세요.'</NoQuestionMessage>
+          <NoQuestionMessage>미션에 등록된 질문이 없습니다.</NoQuestionMessage>
         ) : (
           props.questionAnswers.map((qa) => (
             <div className="accordion-item" key={qa.id}>
               <AccordionHeader className="accordion-header" id={`heading${qa.id}`}>
                 <AccordionButton
-                  className="accordion-button collapsed"
+                  className={`accordion-button ${qa.answerContent ? '' : 'collapsed'}`}
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target={`#collapse${qa.id}`}
@@ -121,7 +126,7 @@ const QuestionAnswers: React.FC<QuestionAnswerProps> = (props) => {
               </AccordionHeader>
               <div
                 id={`collapse${qa.id}`}
-                className="accordion-collapse collapse"
+                className={`accordion-collapse collapse ${qa.answerContent ? 'show' : ''}`}
                 aria-labelledby={`heading${qa.id}`}
               >
                 <AnswerBody className="accordion-body">
