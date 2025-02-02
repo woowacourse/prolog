@@ -32,6 +32,7 @@ import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
+import wooteco.prolog.organization.application.OrganizationService;
 import wooteco.prolog.session.application.AnswerService;
 import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.SessionService;
@@ -79,6 +80,7 @@ public class StudylogService {
     private final AnswerService answerService;
     private final SessionService sessionService;
     private final MissionService missionService;
+    private final OrganizationService organizationService;
     private final StudylogRepository studylogRepository;
     private final StudylogScrapRepository studylogScrapRepository;
     private final StudylogReadRepository studylogReadRepository;
@@ -133,7 +135,10 @@ public class StudylogService {
     }
 
     private void validateMemberIsCrew(final Member member) {
-        if (member.hasLowerImportanceRoleThan(Role.CREW)) {
+        boolean isOrganizationMember = organizationService.isMemberOfOrganization(member);
+        boolean isMember = member.hasLowerImportanceRoleThan(Role.CREW);
+
+        if (!isOrganizationMember && !isMember) {
             throw new BadRequestException(MEMBER_NOT_ALLOWED);
         }
     }

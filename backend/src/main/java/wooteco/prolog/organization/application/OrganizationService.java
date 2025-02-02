@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.MemberCreatedEvent;
 import wooteco.prolog.organization.domain.Organization;
 import wooteco.prolog.organization.domain.OrganizationGroup;
@@ -105,5 +106,9 @@ public class OrganizationService {
         List<Long> organizationGroupIds = organizationGroupMemberRepository.findByMemberId(
             memberId).stream().map(OrganizationGroupMember::getOrganizationGroupId).collect(Collectors.toList());
         return organizationGroupRepository.findByIdInOrderByIdDesc(organizationGroupIds);
+    }
+
+    public boolean isMemberOfOrganization(Member member) {
+        return organizationGroupMemberRepository.existsByUsername(member.getUsername());
     }
 }

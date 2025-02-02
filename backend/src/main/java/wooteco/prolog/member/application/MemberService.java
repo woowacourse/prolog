@@ -55,15 +55,23 @@ public class MemberService {
             .orElseGet(() -> createMember(githubProfile));
     }
 
+    @Transactional
     public Member createMember(GithubProfileResponse githubProfile) {
         Member member = memberRepository.save(githubProfile.toMember());
         eventPublisher.publishEvent(new MemberCreatedEvent(member));
         return member;
     }
 
+    @Transactional
     public Member findById(Long id) {
-        return memberRepository.findById(id)
+        Member member = memberRepository.findById(id)
             .orElseThrow(() -> new BadRequestException(MEMBER_NOT_FOUND));
+
+        boolean isMemberOfOrganization = organizationService.isMemberOfOrganization(member);
+        if (isMemberOfOrganization && member.getRole().equals(Role.GUEST)) {
+            member.updateRole(Role.CREW);
+        }
+        return member;
     }
 
     public Member findByUsername(String username) {

@@ -10,4 +10,5 @@ public interface OrganizationGroupMemberRepository extends JpaRepository<Organiz
 
     List<OrganizationGroupMember> findByMemberId(Long memberId);
 
+    boolean existsByUsername(String username);
 }

@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
+import wooteco.prolog.member.domain.Member;
+import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.organization.application.OrganizationService;
 import wooteco.prolog.organization.domain.OrganizationGroupSession;
 import wooteco.prolog.session.application.dto.SessionRequest;
@@ -31,6 +33,7 @@ public class SessionService {
     private final SessionMemberService sessionMemberService;
     private final OrganizationService organizationService;
     private final SessionRepository sessionRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public SessionResponse create(SessionRequest sessionRequest) {
@@ -72,12 +75,15 @@ public class SessionService {
     }
 
     public List<SessionResponse> findMySessions(LoginMember loginMember) {
-        List<SessionResponse> mySessionResponses = findMySessionOnlyMine(loginMember);
-        List<OrganizationGroupSession> organizationGroupSessions = organizationService.findOrganizationGroupSessionsByMemberId(
-            loginMember.getId());
+        Member member = memberRepository.findById(loginMember.getId())
+            .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
+        List<OrganizationGroupSession> organizationGroupSessions = organizationService.findOrganizationGroupSessionsByMemberUsername(
+            member.getUsername());
         List<SessionResponse> organizationSessions = organizationGroupSessions.stream()
             .map(it -> SessionResponse.of(it.getSession()))
             .collect(Collectors.toList());
+
+        List<SessionResponse> mySessionResponses = findMySessionOnlyMine(loginMember);
         mySessionResponses.removeAll(organizationSessions);
 
         return Stream.of(mySessionResponses, organizationSessions)
