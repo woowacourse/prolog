@@ -102,9 +102,13 @@ const Sidebar = ({
     }
   };
 
-  const onSelectSession = (session: SelectOption) => {
+  const onSelectSession = (session: SelectOption | null) => {
     if (mode === 'edit') {
       alert('수정화면에서는 세션을 수정할 수 없습니다.');
+      return;
+    }
+
+    if (!session) {
       return;
     }
 
