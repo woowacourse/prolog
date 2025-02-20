@@ -30,6 +30,9 @@ public class Mission {
     @Column(nullable = false, length = MAX_LENGTH)
     private String name;
 
+    @Column(nullable = false)
+    private String goal;
+
     @ManyToOne
     @JoinColumn(name = "session_id")
     private Session session;
