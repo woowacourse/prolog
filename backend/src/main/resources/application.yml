@@ -22,6 +22,20 @@ spring:
     baseline-version: 0
     locations: classpath:db/migration/prod
     out-of-order: true
+  ai:
+    azure:
+      openai:
+        endpoint: {END_POINT}
+        api-key: {API_KEY}
+        chat:
+          enabled: true
+          options:
+            deployment-name: gpt-4o
+            max-tokens: 1024
+            temperature: 0.5
+            top-p: 0.4
+            n: 1
+            response-format: json
 
 management:
   endpoints:
