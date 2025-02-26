@@ -2,6 +2,8 @@ application:
   url: http://127.0.0.1:8080
 
 spring:
+  autoconfigure:
+    exclude: org.springframework.ai.autoconfigure.azure.openai.AzureOpenAiAutoConfiguration
   datasource:
     url: jdbc:mysql://localhost:13306/prolog?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
     username: root
