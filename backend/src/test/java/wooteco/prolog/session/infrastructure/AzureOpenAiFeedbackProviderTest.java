@@ -4,6 +4,7 @@ import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.azure.openai.AzureOpenAiChatModel;
 import org.springframework.ai.azure.openai.AzureOpenAiChatOptions;
@@ -12,7 +13,7 @@ import org.springframework.core.io.DefaultResourceLoader;
 import wooteco.prolog.session.domain.QnaFeedbackRequest;
 
 // Note: Azure GPT에 대해 수동으로 테스트할 경우 @Disabled를 주석하고 키 값을 추가하여 테스트하면 된다.
-//@Disabled
+@Disabled
 class AzureOpenAiFeedbackProviderTest {
 
     private AzureOpenAiFeedbackProvider feedbackProvider;

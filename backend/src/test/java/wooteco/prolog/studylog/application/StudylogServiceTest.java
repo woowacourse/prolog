@@ -243,7 +243,7 @@ class StudylogServiceTest {
     void findScrapIds() {
         //given
         final Member member = new Member(1L, "hihi", "연어", Role.CREW, 1L, "image");
-        final Mission mission = new Mission(1L, "지하철", new Session("BE 레벨2"));
+        final Mission mission = new Mission(1L, "지하철", "", new Session("BE 레벨2"));
         final Studylog studylog = new Studylog(member, "짜장면", "먹고싶다", mission,
             singletonList(new Tag("스프링")));
         final StudylogScrap scrap = new StudylogScrap(member, studylog);
@@ -320,7 +320,7 @@ class StudylogServiceTest {
         final List<StudylogRequest> studylogRequests = Arrays.asList(request, request, request);
 
         final Member member = new Member(1L, "hihi", "연어", Role.CREW, 1L, "image");
-        final Mission mission = new Mission(1L, "지하철", new Session("BE 레벨2"));
+        final Mission mission = new Mission(1L, "지하철", "", new Session("BE 레벨2"));
         when(studylogRepository.save(any())).thenReturn(
             new Studylog(member, "제목", "내용", mission, emptyList()));
         when(memberService.findById(any())).thenReturn(member);
