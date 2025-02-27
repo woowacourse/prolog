@@ -63,6 +63,7 @@ public final class AzureOpenAiFeedbackProvider implements QnaFeedbackProvider {
 
     @Override
     public QnaFeedbackContents evaluate(final QnaFeedbackRequest request) {
+        log.debug("Requesting feedback evaluation [request={}]", request);
         final var templateMessage = template.createMessage(Map.of(
             "goal", request.goal(),
             "question", request.question(),
@@ -81,6 +82,7 @@ public final class AzureOpenAiFeedbackProvider implements QnaFeedbackProvider {
 
         final var response = chatModel.call(prompt);
         final var responseText = response.getResult().getOutput().getText();
+        log.debug("Received response from chat model [responseText={}]", responseText);
 
         try {
             return objectMapper.readValue(responseText, QnaFeedbackContents.class);
