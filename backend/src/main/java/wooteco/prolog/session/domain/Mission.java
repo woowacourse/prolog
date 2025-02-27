@@ -30,7 +30,7 @@ public class Mission {
     @Column(nullable = false, length = MAX_LENGTH)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2048)
     private String goal;
 
     @ManyToOne
