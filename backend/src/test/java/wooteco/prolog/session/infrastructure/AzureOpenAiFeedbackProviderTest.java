@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.azure.openai.AzureOpenAiChatModel;
 import org.springframework.ai.azure.openai.AzureOpenAiChatOptions;
-import org.springframework.ai.azure.openai.AzureOpenAiResponseFormat;
 import org.springframework.core.io.DefaultResourceLoader;
 import wooteco.prolog.session.domain.QnaFeedbackRequest;
 
@@ -22,15 +21,11 @@ class AzureOpenAiFeedbackProviderTest {
     void setUp() {
         final var defaultResourceLoader = new DefaultResourceLoader();
         final var clientBuilder = new OpenAIClientBuilder()
-            .endpoint("/* 여기! */")
-            .credential(new AzureKeyCredential("/* 여기! */"));
+            .endpoint("")
+            .credential(new AzureKeyCredential(""));
         final var options = AzureOpenAiChatOptions.builder()
-            .deploymentName("gpt-4o")
-            .maxTokens(1024)
-            .temperature(0.5)
-            .topP(0.4)
+            .deploymentName("o1-mini")
             .N(1)
-            .responseFormat(AzureOpenAiResponseFormat.JSON)
             .build();
         final var azureOpenAiChatModel = new AzureOpenAiChatModel(clientBuilder, options);
 

@@ -5,8 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.azure.openai.AzureOpenAiChatModel;
-import org.springframework.ai.chat.messages.Message;
-import org.springframework.ai.chat.messages.MessageType;
+import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
@@ -36,12 +35,21 @@ public final class AzureOpenAiFeedbackProvider implements QnaFeedbackProvider {
             "score": Int (1~10)
         }
         """;
+    private static final String RESPONSE_EXAMPLE = """
+        {
+            "strengths": "JUnit5와 AssertJ를 활용한 테스트 작성 개념을 정확히 설명하셨네요! TDD의 핵심 원칙도 언급하셔서 기본 개념을 잘 이해하고 계신 것 같아요.",
+            "improvementPoints": "다만, 미션에서 어떻게 적용했는지에 대한 설명이 부족한 것 같아요. 예제 코드가 포함되면 더욱 명확한 답변이 될 수 있을 것 같아요!",
+            "additionalLearning": "TDD를 실제 프로젝트에서 적용한 사례를 포함하여 설명해 보시면 어떨까요? 간단한 테스트 코드 예제를 작성해 보면 더욱 깊이 있는 학습이 될 거예요!",
+            "score": 8
+        }
+        """;
 
     private final AzureOpenAiChatModel chatModel;
 
     private final ObjectMapper objectMapper;
 
-    private final PromptCreator feedbackPromptCreator;
+    private final PromptTemplate template;
+
 
     AzureOpenAiFeedbackProvider(
         final AzureOpenAiChatModel chatModel,
@@ -50,20 +58,24 @@ public final class AzureOpenAiFeedbackProvider implements QnaFeedbackProvider {
     ) {
         this.chatModel = chatModel;
         this.objectMapper = objectMapper;
-        this.feedbackPromptCreator = new PromptCreator(resource);
+        this.template = new PromptTemplate(resource);
     }
 
     @Override
     public QnaFeedbackContents evaluate(final QnaFeedbackRequest request) {
-        final var systemMessage = feedbackPromptCreator.createMessageForSystem(Map.of(
+        final var templateMessage = template.createMessage(Map.of(
             "goal", request.goal(),
             "question", request.question(),
-            "responseFormat", RESPONSE_FORMAT
+            "responseFormat", RESPONSE_FORMAT,
+            "responseExample", RESPONSE_EXAMPLE
         ));
-
+        final var assistantMessage = new AssistantMessage(
+            templateMessage.getText(),
+            templateMessage.getMetadata()
+        );
         final var userMessage = new UserMessage(request.answer());
         final var prompt = new Prompt(List.of(
-            systemMessage,
+            assistantMessage,
             userMessage
         ));
 
@@ -75,38 +87,6 @@ public final class AzureOpenAiFeedbackProvider implements QnaFeedbackProvider {
         } catch (final JsonProcessingException e) {
             log.error("Failed to parse response from chat model [responseText={}]", responseText, e);
             throw new RuntimeException("Invalid response format from AI model", e);
-        }
-    }
-
-
-    private final class PromptCreator {
-
-        private final PromptTemplate template;
-
-        public PromptCreator(final Resource resource) {
-            this.template = new PromptTemplate(resource);
-        }
-
-        public Message createMessageForSystem(final Map<String, Object> model) {
-            return new SystemMessageWrapper(template.createMessage(model));
-        }
-
-        // Note: promptTemplate으로 만들 경우 role을 지정할 수 없어 SystemMessage를 포장한다.
-        private record SystemMessageWrapper(Message message) implements Message {
-            @Override
-            public MessageType getMessageType() {
-                return MessageType.SYSTEM;
-            }
-
-            @Override
-            public String getText() {
-                return message.getText();
-            }
-
-            @Override
-            public Map<String, Object> getMetadata() {
-                return message.getMetadata();
-            }
         }
     }
 }
