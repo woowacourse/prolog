@@ -77,20 +77,6 @@ public class OrganizationService {
         return organizationGroupSessionRepository.findByOrganizationGroupIdIn(organizationGroupIds);
     }
 
-    public List<OrganizationGroupSession> findOrganizationGroupSessionsByMemberId(Long memberId) {
-
-        List<OrganizationGroupMember> organizationGroupMembers = organizationGroupMemberRepository.findByMemberId(
-            memberId);
-
-        // organizationGroupMembers 로 organizationGroupId 조회
-        List<Long> organizationGroupIds = organizationGroupMembers.stream()
-            .map(OrganizationGroupMember::getOrganizationGroupId)
-            .collect(Collectors.toList());
-
-        // organizationGroupIds 로 organizationGroupSession 조회
-        return organizationGroupSessionRepository.findByOrganizationGroupIdIn(organizationGroupIds);
-    }
-
     @EventListener
     public void handleMemberCreatedEvent(MemberCreatedEvent event) {
         // OrganizationGroupMember를 username으로 조회

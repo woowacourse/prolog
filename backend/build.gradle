@@ -15,6 +15,7 @@ targetCompatibility = JavaVersion.VERSION_21
 
 repositories {
     mavenCentral()
+    maven { url 'https://repo.spring.io/snapshot' }
 }
 
 sourceSets {
@@ -31,11 +32,16 @@ configurations {
 }
 
 dependencies {
+    implementation platform("org.springframework.ai:spring-ai-bom:1.0.0-SNAPSHOT")
+
     // spring
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.ai:spring-ai-openai'
+    implementation 'org.springframework.ai:spring-ai-azure-openai-spring-boot-starter'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // log
@@ -147,7 +153,6 @@ flyway {
     encoding = "UTF-8"
     outOfOrder = true // 여러브랜치에서 서로 다른 날짜로 만들어도 작동하도록
     validateOnMigrate = true
-    baselineVersion = 1.1 // V1.1 스크립트는 이미 실행한 것으로 기준선을 잡는다.
 }
 
 tasks.register('acceptanceTest', Test) {

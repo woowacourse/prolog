@@ -1,9 +1,9 @@
 package wooteco.prolog.session.domain.repository;
 
-import java.util.Arrays;
-import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import wooteco.prolog.session.domain.Answer;
+
+import java.util.List;
 
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
