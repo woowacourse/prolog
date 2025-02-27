@@ -549,7 +549,7 @@ class StudylogServiceTest {
     }
 
     @Nested
-    class updateStudylogMIssion {
+    class updateStudylogMission {
 
         private Studylog studylog;
         private final long studyLogId = 1L;
