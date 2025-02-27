@@ -1,34 +1,5 @@
 package wooteco.prolog.studylog.application;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static wooteco.prolog.common.exception.BadRequestCode.ONLY_AUTHOR_CAN_EDIT;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_ARGUMENT;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
-
-import java.lang.reflect.Field;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -50,6 +21,7 @@ import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
+import wooteco.prolog.organization.application.OrganizationService;
 import wooteco.prolog.session.application.AnswerService;
 import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.SessionService;
@@ -57,6 +29,7 @@ import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
+import wooteco.prolog.studylog.application.dto.AnswerRequest;
 import wooteco.prolog.studylog.application.dto.StudylogDocumentResponse;
 import wooteco.prolog.studylog.application.dto.StudylogMissionRequest;
 import wooteco.prolog.studylog.application.dto.StudylogRequest;
@@ -82,6 +55,36 @@ import wooteco.prolog.studylog.domain.repository.StudylogTempRepository;
 import wooteco.prolog.studylog.domain.repository.dto.CommentCount;
 import wooteco.prolog.studylog.event.StudylogDeleteEvent;
 
+import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static wooteco.prolog.common.exception.BadRequestCode.ONLY_AUTHOR_CAN_EDIT;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_ARGUMENT;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
+
 @ExtendWith(MockitoExtension.class)
 class StudylogServiceTest {
 
@@ -101,6 +104,8 @@ class StudylogServiceTest {
     private MissionService missionService;
     @Mock
     private AnswerService answerService;
+    @Mock
+    private OrganizationService organizationService;
     @Mock
     private StudylogRepository studylogRepository;
     @Mock
@@ -123,7 +128,8 @@ class StudylogServiceTest {
         Tags tags = Tags.of(singletonList("스터디로그"));
         Member member = new Member(1L, "김동해", "오션", Role.CREW, 1L, "image");
         List<TagRequest> tagRequests = singletonList(new TagRequest("스터디로그"));
-        StudylogRequest studylogRequest = new StudylogRequest(title, content, null, null, tagRequests, null);
+        List<AnswerRequest> answerRequests = singletonList(new AnswerRequest(1L, "열심히 잘 학습해 보았습니다."));
+        StudylogRequest studylogRequest = new StudylogRequest(title, content, null, null, tagRequests, answerRequests);
         Studylog studylog = new Studylog(member, studylogRequest.getTitle(),
             studylogRequest.getContent(), null, null, tags.getList());
         List<TagResponse> expectedTagResponses = singletonList(new TagResponse(null, "스터디로그"));
@@ -133,6 +139,7 @@ class StudylogServiceTest {
         void insertStudylog_existStudyLogTemp() {
             // given
             when(memberService.findById(anyLong())).thenReturn(member);
+            when(organizationService.isMemberOfOrganization(any())).thenReturn(true);
             when(tagService.findOrCreate(anyList())).thenReturn(tags);
             when(studylogRepository.save(any())).thenReturn(studylog);
             when(studylogTempRepository.existsByMemberId(1L)).thenReturn(true);
@@ -155,6 +162,7 @@ class StudylogServiceTest {
         void insertStudylog_notExistStudyLogTemp() {
             // given
             when(memberService.findById(anyLong())).thenReturn(member);
+            when(organizationService.isMemberOfOrganization(any())).thenReturn(true);
             when(tagService.findOrCreate(anyList())).thenReturn(tags);
             when(studylogRepository.save(any())).thenReturn(studylog);
             when(studylogTempRepository.existsByMemberId(1L)).thenReturn(false);
@@ -324,6 +332,7 @@ class StudylogServiceTest {
         when(studylogRepository.save(any())).thenReturn(
             new Studylog(member, "제목", "내용", mission, emptyList()));
         when(memberService.findById(any())).thenReturn(member);
+        when(organizationService.isMemberOfOrganization(any())).thenReturn(true);
         when(tagService.findOrCreate(any())).thenReturn(new Tags(emptyList()));
 
         //when
