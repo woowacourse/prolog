@@ -30,7 +30,7 @@ spring:
         chat:
           enabled: true
           options:
-            deployment-name: gpt-4o
+            deployment-name: o1-mini
             n: 1
 
 management:
