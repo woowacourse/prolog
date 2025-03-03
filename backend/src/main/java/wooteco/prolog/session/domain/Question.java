@@ -21,4 +21,8 @@ public class Question {
     @ManyToOne
     private Mission mission;
 
+    public Question(final String content, final Mission mission) {
+        this.content = content;
+        this.mission = mission;
+    }
 }
