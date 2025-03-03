@@ -14,6 +14,8 @@ import wooteco.prolog.session.domain.QnaFeedbackProvider;
 import wooteco.prolog.session.domain.QnaFeedbackRequest;
 import wooteco.prolog.session.domain.repository.AnswerFeedbackRepository;
 
+import java.util.List;
+
 @Service
 public class AnswerFeedbackService {
 
@@ -57,5 +59,10 @@ public class AnswerFeedbackService {
 
         answerFeedbackRepository.save(answerFeedback);
         log.debug("AnswerFeedback saved: {}", answerFeedback);
+    }
+
+    @Transactional(readOnly = true)
+    public List<AnswerFeedback> findRecentByMemberIdAndQuestionIds(final Long memberId, final List<Long> questionIds) {
+        return answerFeedbackRepository.findRecentByMemberIdAndQuestionIdsAndVisible(memberId, questionIds);
     }
 }

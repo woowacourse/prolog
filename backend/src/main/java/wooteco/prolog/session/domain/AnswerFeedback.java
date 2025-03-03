@@ -57,4 +57,16 @@ public class AnswerFeedback {
         this.contents = contents;
         this.visible = visible;
     }
+
+    public String getStrengths() {
+        return contents.strengths();
+    }
+
+    public String getImprovementPoints() {
+        return contents.improvementPoints();
+    }
+
+    public String getAdditionalLearning() {
+        return contents.additionalLearning();
+    }
 }
