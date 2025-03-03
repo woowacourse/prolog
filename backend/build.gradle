@@ -41,6 +41,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.ai:spring-ai-openai'
     implementation 'org.springframework.ai:spring-ai-azure-openai-spring-boot-starter'
+    implementation 'org.springframework.retry:spring-retry'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 

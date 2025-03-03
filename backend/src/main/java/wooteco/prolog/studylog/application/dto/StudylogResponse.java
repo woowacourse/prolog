@@ -1,9 +1,5 @@
 package wooteco.prolog.studylog.application.dto;
 
-import static java.util.stream.Collectors.toList;
-
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +7,16 @@ import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.session.application.dto.MissionResponse;
 import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.domain.Answer;
+import wooteco.prolog.session.domain.AnswerFeedback;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTag;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -172,7 +174,7 @@ public class StudylogResponse {
     }
 
     public static StudylogResponse of(Studylog studylog, List<Answer> answers) {
-        return of(studylog, answers, false, false, false);
+        return of(studylog, answers, List.of(), false, false, false);
     }
 
     public static StudylogResponse of(Studylog studylog, boolean scrap, boolean read, Long memberId) {
@@ -222,7 +224,7 @@ public class StudylogResponse {
         );
     }
 
-    public static StudylogResponse of(Studylog studylog, List<Answer> answers,
+    public static StudylogResponse of(Studylog studylog, List<Answer> answers, List<AnswerFeedback> answerFeedbacks,
                                       boolean scraped, boolean read, boolean liked) {
         List<StudylogTag> studylogTags = studylog.getStudylogTags();
         List<TagResponse> tagResponses = toTagResponses(studylogTags);
@@ -234,7 +236,7 @@ public class StudylogResponse {
             studylog.getUpdatedAt(),
             SessionResponse.of(studylog.getSession()),
             MissionResponse.of(studylog.getMission()),
-            AnswerResponse.listOf(answers),
+            AnswerResponse.listOf(answers, answerFeedbacks),
             studylog.getTitle(),
             studylog.getContent(),
             tagResponses,
