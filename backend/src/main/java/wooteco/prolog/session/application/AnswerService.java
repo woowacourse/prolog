@@ -1,13 +1,11 @@
 package wooteco.prolog.session.application;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import wooteco.prolog.session.domain.Answer;
 import wooteco.prolog.session.domain.AnswerTemp;
+import wooteco.prolog.session.domain.AnswerUpdatedEvent;
 import wooteco.prolog.session.domain.Question;
 import wooteco.prolog.session.domain.repository.AnswerRepository;
 import wooteco.prolog.session.domain.repository.AnswerTempRepository;
@@ -15,13 +13,19 @@ import wooteco.prolog.studylog.application.dto.AnswerRequest;
 import wooteco.prolog.studylog.domain.Studylog;
 import wooteco.prolog.studylog.domain.StudylogTemp;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 @AllArgsConstructor
 @Service
 public class AnswerService {
 
-    private QuestionService questionService;
-    private AnswerRepository answerRepository;
-    private AnswerTempRepository answerTempRepository;
+    private final QuestionService questionService;
+    private final AnswerRepository answerRepository;
+    private final AnswerTempRepository answerTempRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public List<Answer> saveAnswers(Long memberId, List<AnswerRequest> answerRequests, Studylog studylog) {
         List<Question> questions = questionService.findByIds(answerRequests.stream()
@@ -31,6 +35,7 @@ public class AnswerService {
         List<Answer> answers = answerRequests.stream()
             .map(answerRequest -> new Answer(studylog, findQuestionById(questions, answerRequest.getQuestionId()),
                 memberId, answerRequest.getAnswerContent()))
+            .peek(answer -> eventPublisher.publishEvent(new AnswerUpdatedEvent(answer)))
             .collect(Collectors.toList());
 
         deleteAnswerTemp(memberId);
@@ -80,7 +85,8 @@ public class AnswerService {
         answers.forEach(answer -> answerRequests.stream()
             .filter(it -> Objects.equals(it.getQuestionId(), answer.getQuestion().getId()))
             .findFirst()
-            .ifPresent(it -> answer.updateContent(it.getAnswerContent())));
+            .filter(it -> answer.updateContent(it.getAnswerContent()))
+            .ifPresent(it -> eventPublisher.publishEvent(new AnswerUpdatedEvent(answer))));
     }
 
     public Map<Long, List<Answer>> findAnswersByStudylogs(List<Studylog> studylogs) {

@@ -8,6 +8,10 @@ security:
       expire-length: 3600000
 
 spring:
+  autoconfigure:
+    exclude:
+    - org.springframework.ai.autoconfigure.azure.openai.AzureOpenAiAutoConfiguration
+    - org.springframework.ai.autoconfigure.openai.OpenAiAutoConfiguration
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect

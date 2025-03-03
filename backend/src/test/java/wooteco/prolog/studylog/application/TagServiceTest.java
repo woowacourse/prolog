@@ -36,7 +36,7 @@ class TagServiceTest {
     private static final TagRequest JAVA_TAG_REQUEST = new TagRequest("자바");
     private static final TagRequest COLLECTION_TAG_REQUEST = new TagRequest("컬렉션");
     private static final Session TEST_SESSION = new Session(4L, 5L, "세션");
-    private static final Mission TEST_MISSION = new Mission(6L, "레벨 2 - 웹 자동차 경주", TEST_SESSION);
+    private static final Mission TEST_MISSION = new Mission(6L, "레벨 2 - 웹 자동차 경주", "", TEST_SESSION);
     private static final Member TEST_MEMBER_CREW1 = new Member(1L, "홍혁준", "홍실", Role.CREW, 2L, null,
         null);
     private static final Studylog TEST_STUDYLOG1 = new Studylog(TEST_MEMBER_CREW1, "레벨 1 레벨인터뷰",

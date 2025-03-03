@@ -32,7 +32,12 @@ public class Answer {
         this.content = content;
     }
 
-    public void updateContent(String content) {
-        this.content = content;
+    public boolean updateContent(String newContent) {
+        if (this.content.equals(newContent)) {
+            return false;
+        }
+
+        this.content = newContent;
+        return true;
     }
 }

@@ -1,17 +1,5 @@
 package wooteco.prolog.session.application;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_SESSION_EXCEPTION;
-import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
-import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,12 +10,27 @@ import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.login.ui.LoginMember;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
+import wooteco.prolog.member.domain.repository.MemberRepository;
 import wooteco.prolog.organization.application.OrganizationService;
 import wooteco.prolog.session.application.dto.SessionRequest;
 import wooteco.prolog.session.application.dto.SessionResponse;
 import wooteco.prolog.session.domain.Session;
 import wooteco.prolog.session.domain.SessionMember;
 import wooteco.prolog.session.domain.repository.SessionRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static wooteco.prolog.common.exception.BadRequestCode.DUPLICATE_SESSION_EXCEPTION;
+import static wooteco.prolog.common.exception.BadRequestCode.ROADMAP_SESSION_NOT_FOUND_EXCEPTION;
+import static wooteco.prolog.login.ui.LoginMember.Authority.MEMBER;
+import static wooteco.prolog.member.domain.Role.CREW;
 
 @ExtendWith(MockitoExtension.class)
 class SessionServiceTest {
@@ -41,6 +44,8 @@ class SessionServiceTest {
     private SessionMemberService sessionMemberService;
     @Mock
     private OrganizationService organizationService;
+    @Mock
+    private MemberRepository memberRepository;
 
     @DisplayName("유효한 이름 값을 매개변수로 넣으면 Session 객체가 정상적으로 생성된다.")
     @Test
@@ -134,18 +139,20 @@ class SessionServiceTest {
     @Test
     void findMySessionResponses() {
         // given
-        final LoginMember member = new LoginMember(1L, MEMBER);
+        final LoginMember loginMember = new LoginMember(1L, MEMBER);
+        final Member member = new Member("jaeyeonling", "네오", CREW, 1L, "img");
         final List<Session> sessions = new ArrayList<>();
         sessions.add(new Session("session1"));
         final List<SessionMember> sessionMembers = new ArrayList<>();
         sessionMembers.add(new SessionMember(1L, new Member("member1", "베베", Role.CREW, Long.MIN_VALUE, "img")));
 
-        doReturn(List.of()).when(organizationService).findOrganizationGroupSessionsByMemberId(any());
+        doReturn(Optional.of(member)).when(memberRepository).findById(1L);
+        doReturn(List.of()).when(organizationService).findOrganizationGroupSessionsByMemberUsername(any());
         doReturn(sessionMembers).when(sessionMemberService).findByMemberId(any());
         doReturn(sessions).when(sessionRepository).findAllByIdInOrderByIdDesc(any());
 
         // when
-        List<SessionResponse> responses = sessionService.findMySessions(member);
+        List<SessionResponse> responses = sessionService.findMySessions(loginMember);
 
         // then
         assertThat(responses.get(0).getName()).isEqualTo("session1");

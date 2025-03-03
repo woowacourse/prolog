@@ -22,6 +22,16 @@ spring:
     baseline-version: 0
     locations: classpath:db/migration/prod
     out-of-order: true
+  ai:
+    azure:
+      openai:
+        endpoint: {END_POINT}
+        api-key: {API_KEY}
+        chat:
+          enabled: true
+          options:
+            deployment-name: o1-mini
+            n: 1
 
 management:
   endpoints:

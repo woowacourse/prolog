@@ -1,7 +1,5 @@
 package wooteco.prolog.session.domain;
 
-import static wooteco.prolog.common.exception.BadRequestCode.TOO_LONG_MISSION_NAME;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +12,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import wooteco.prolog.common.exception.BadRequestException;
+
+import static wooteco.prolog.common.exception.BadRequestCode.TOO_LONG_MISSION_NAME;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,19 +30,28 @@ public class Mission {
     @Column(nullable = false, length = MAX_LENGTH)
     private String name;
 
+    @Column(nullable = false, length = 2048)
+    private String goal;
+
     @ManyToOne
     @JoinColumn(name = "session_id")
     private Session session;
 
     public Mission(String name, Session session) {
-        this(null, name, session);
+        this(null, name, "", session);
     }
 
-    public Mission(Long id, String name, Session session) {
+    // TODO: Add goal feature from view
+    public Mission(String name, String goal, Session session) {
+        this(null, name, goal, session);
+    }
+
+    public Mission(Long id, String name, String goal, Session session) {
         validateMaxLength(name);
 
         this.id = id;
         this.name = name;
+        this.goal = goal;
         this.session = session;
     }
 
