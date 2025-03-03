@@ -2,6 +2,7 @@ package wooteco.prolog.session.ui;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ public class TempFeedbackController {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
+    @Transactional
     @GetMapping
     public void show(
         @RequestParam("startId") Long startId,
