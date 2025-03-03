@@ -2,7 +2,6 @@ package wooteco.prolog.session.application;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -38,6 +37,11 @@ public class AnswerFeedbackService {
         log.debug("AnswerUpdatedEvent: {}", event);
 
         final var answer = event.getAnswer();
+        if (answer.getContent().isEmpty() || answer.getQuestion().getMission().getGoal().isEmpty()) {
+            log.debug("Answer content or mission goal is empty: {}", answer);
+            return;
+        }
+
         final var feedbackRequest = new QnaFeedbackRequest(
             answer.getQuestion().getMission().getGoal(),
             answer.getQuestion().getContent(),
@@ -52,5 +56,6 @@ public class AnswerFeedbackService {
         );
 
         answerFeedbackRepository.save(answerFeedback);
+        log.debug("AnswerFeedback saved: {}", answerFeedback);
     }
 }
