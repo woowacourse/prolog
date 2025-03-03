@@ -25,7 +25,7 @@ import java.util.Map;
 
 @Profile({"prod", "dev"})
 @Component
-public final class AzureOpenAiFeedbackProvider implements QnaFeedbackProvider {
+public class AzureOpenAiFeedbackProvider implements QnaFeedbackProvider {
 
     private static final Logger log = LoggerFactory.getLogger(AzureOpenAiFeedbackProvider.class);
 
