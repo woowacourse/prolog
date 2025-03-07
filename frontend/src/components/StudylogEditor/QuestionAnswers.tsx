@@ -95,11 +95,11 @@ const QuestionAnswers: React.FC<QuestionAnswerProps> = (props) => {
                       <AnswerTextArea
                         value={answer?.answerContent || ''}
                         onChange={(e) => {
-                            if (e.target.value.length <= 200) {
+                            if (e.target.value.length <= 1000) {
                                 handleAnswerChange(question.id, e.target.value);
                             }
                         }}
-                        placeholder="답변을 입력하세요. (최대 200자)"
+                        placeholder="답변을 입력하세요. (최대 1000자)"
                       />
                     </AnswerBody>
                   </div>
