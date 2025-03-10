@@ -86,6 +86,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/helper-function-name": "^7.24.7",
     "@storybook/addon-actions": "6.2.9",
     "@storybook/addon-essentials": "6.2.9",
     "@storybook/addon-links": "6.2.9",
