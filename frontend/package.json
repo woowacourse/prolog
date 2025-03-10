@@ -9,6 +9,7 @@
   ],
   "private": true,
   "dependencies": {
+    "@babel/core": "7.16",
     "@emotion/react": "11.4.0",
     "@emotion/styled": "11.3.0",
     "@toast-ui/editor-plugin-code-syntax-highlight": "3.0.0",
