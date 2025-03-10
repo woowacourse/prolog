@@ -134,27 +134,23 @@ const QuestionAnswers: React.FC<QuestionAnswerProps> = (props) => {
                 <AnswerBody className="accordion-body">
                   <div>{qa.answerContent || '답변이 없습니다.'}</div>
                 </AnswerBody>
-                <FeedbackBody className="accordion-body">
-                  <div>
-                    {qa.strengths || qa.improvementPoints || qa.additionalLearning ? (
-                      <>
-                        <div>
-                          <FeedbackItemTitle>✅ 잘한 점: </FeedbackItemTitle> {qa.strengths || ''}
-                        </div>
-                        <div>
-                          <FeedbackItemTitle>⚠️ 개선할 점: </FeedbackItemTitle>{' '}
-                          {qa.improvementPoints || ''}
-                        </div>
-                        <div>
-                          <FeedbackItemTitle>📌 추가 학습 방향: </FeedbackItemTitle>{' '}
-                          {qa.additionalLearning || ''}
-                        </div>
-                      </>
-                    ) : (
-                      '피드백이 없습니다.'
-                    )}
-                  </div>
-                </FeedbackBody>
+                {qa.strengths || qa.improvementPoints || qa.additionalLearning ? (
+                  <FeedbackBody className={`accordion-body ${qa.strengths ? 'show' : ''}`}>
+                    <div>
+                      <FeedbackItemTitle>✅ 잘한 점: </FeedbackItemTitle> {qa.strengths || ''}
+                    </div>
+                    <div>
+                      <FeedbackItemTitle>⚠️ 개선할 점: </FeedbackItemTitle>{' '}
+                      {qa.improvementPoints || ''}
+                    </div>
+                    <div>
+                      <FeedbackItemTitle>📌 추가 학습 방향: </FeedbackItemTitle>{' '}
+                      {qa.additionalLearning || ''}
+                    </div>
+                  </FeedbackBody>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           ))
