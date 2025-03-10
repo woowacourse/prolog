@@ -22,6 +22,7 @@ import wooteco.prolog.member.application.dto.MemberResponse;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.organization.application.OrganizationService;
+import wooteco.prolog.session.application.AnswerFeedbackService;
 import wooteco.prolog.session.application.AnswerService;
 import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.SessionService;
@@ -104,6 +105,8 @@ class StudylogServiceTest {
     private MissionService missionService;
     @Mock
     private AnswerService answerService;
+    @Mock
+    private AnswerFeedbackService answerFeedbackService;
     @Mock
     private OrganizationService organizationService;
     @Mock

@@ -3,7 +3,9 @@ application:
 
 spring:
   autoconfigure:
-    exclude: org.springframework.ai.autoconfigure.azure.openai.AzureOpenAiAutoConfiguration
+    exclude:
+      - org.springframework.ai.autoconfigure.azure.openai.AzureOpenAiAutoConfiguration
+      - org.springframework.ai.autoconfigure.openai.OpenAiAutoConfiguration
   datasource:
     url: jdbc:mysql://localhost:13306/prolog?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
     username: root

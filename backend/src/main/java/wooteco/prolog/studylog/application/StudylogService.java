@@ -1,22 +1,5 @@
 package wooteco.prolog.studylog.application;
 
-import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
-import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
-import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_ARGUMENT;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_DOCUMENT_NOT_FOUND;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
-import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_SCRAP_NOT_EXIST_EXCEPTION;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,10 +16,12 @@ import wooteco.prolog.member.application.MemberTagService;
 import wooteco.prolog.member.domain.Member;
 import wooteco.prolog.member.domain.Role;
 import wooteco.prolog.organization.application.OrganizationService;
+import wooteco.prolog.session.application.AnswerFeedbackService;
 import wooteco.prolog.session.application.AnswerService;
 import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.SessionService;
 import wooteco.prolog.session.domain.Answer;
+import wooteco.prolog.session.domain.AnswerFeedback;
 import wooteco.prolog.session.domain.AnswerTemp;
 import wooteco.prolog.session.domain.Mission;
 import wooteco.prolog.session.domain.Session;
@@ -66,6 +51,24 @@ import wooteco.prolog.studylog.domain.repository.StudylogTempRepository;
 import wooteco.prolog.studylog.domain.repository.dto.CommentCount;
 import wooteco.prolog.studylog.event.StudylogDeleteEvent;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static wooteco.prolog.common.exception.BadRequestCode.MEMBER_NOT_ALLOWED;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_ARGUMENT;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_DOCUMENT_NOT_FOUND;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_NOT_FOUND;
+import static wooteco.prolog.common.exception.BadRequestCode.STUDYLOG_SCRAP_NOT_EXIST_EXCEPTION;
+
 @Service
 @AllArgsConstructor
 @Transactional(readOnly = true)
@@ -78,6 +81,7 @@ public class StudylogService {
     private final MemberService memberService;
     private final TagService tagService;
     private final AnswerService answerService;
+    private final AnswerFeedbackService answerFeedbackService;
     private final SessionService sessionService;
     private final MissionService missionService;
     private final OrganizationService organizationService;
@@ -311,10 +315,15 @@ public class StudylogService {
         Studylog studylog = findStudylogById(studylogId);
 
         List<Answer> answers = answerService.findAnswersByStudylogId(studylog.getId());
+        List<Long> questionIds = answers.stream()
+            .mapToLong(it -> it.getQuestion().getId())
+            .boxed()
+            .toList();
+        List<AnswerFeedback> answerFeedbacks = answerFeedbackService.findRecentByMemberIdAndQuestionIds(loginMember.getId(), questionIds);
 
         onStudylogRetrieveEvent(loginMember, studylog, isViewed);
 
-        return toStudylogResponse(loginMember, studylog, answers);
+        return toStudylogResponse(loginMember, studylog, answers, answerFeedbacks);
     }
 
     @Transactional
@@ -362,14 +371,14 @@ public class StudylogService {
         }
     }
 
-    private StudylogResponse toStudylogResponse(LoginMember loginMember, Studylog studylog, List<Answer> answers) {
+    private StudylogResponse toStudylogResponse(LoginMember loginMember, Studylog studylog, List<Answer> answers, List<AnswerFeedback> answerFeedbacks) {
         boolean liked = studylog.likedByMember(loginMember.getId());
         boolean read = studylogReadRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId())
             .isPresent();
         boolean scraped = studylogScrapRepository.findByMemberIdAndStudylogId(loginMember.getId(), studylog.getId())
             .isPresent();
 
-        return StudylogResponse.of(studylog, answers, scraped, read, liked);
+        return StudylogResponse.of(studylog, answers, answerFeedbacks, scraped, read, liked);
     }
 
     public StudylogResponse findByIdAndReturnStudylogResponse(Long id) {

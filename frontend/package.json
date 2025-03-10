@@ -25,7 +25,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-gtm-module": "^2.0.11",
-    "react-lottie": "1.2.3",
+    "react-lottie": "^1.2.10",
     "react-query": "3.34.16",
     "react-redux": "7.2.4",
     "react-router-dom": "5.2.0",
@@ -68,6 +68,9 @@
     ]
   },
   "resolutions": {
+    "babel-loader": "8.1.0"
+  },
+  "overrides": {
     "babel-loader": "8.1.0"
   },
   "browserslist": {

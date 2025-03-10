@@ -2,12 +2,14 @@ import React, { MutableRefObject, useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import {
-  AccordionHeader,
   AccordionButton,
+  AccordionHeader,
+  AnswerBody,
   AnswerTextArea,
+  FeedbackBody,
+  FeedbackItemTitle,
   MainContainer,
   NoQuestionMessage,
-  AnswerBody,
 } from './QuestionAnswerStyles';
 import { Answer, Question, QuestionAnswer } from '../../models/Studylogs';
 
@@ -95,9 +97,9 @@ const QuestionAnswers: React.FC<QuestionAnswerProps> = (props) => {
                       <AnswerTextArea
                         value={answer?.answerContent || ''}
                         onChange={(e) => {
-                            if (e.target.value.length <= 1000) {
-                                handleAnswerChange(question.id, e.target.value);
-                            }
+                          if (e.target.value.length <= 1000) {
+                            handleAnswerChange(question.id, e.target.value);
+                          }
                         }}
                         placeholder="답변을 입력하세요. (최대 1000자)"
                       />
@@ -132,6 +134,23 @@ const QuestionAnswers: React.FC<QuestionAnswerProps> = (props) => {
                 <AnswerBody className="accordion-body">
                   <div>{qa.answerContent || '답변이 없습니다.'}</div>
                 </AnswerBody>
+                {qa.strengths || qa.improvementPoints || qa.additionalLearning ? (
+                  <FeedbackBody className={`accordion-body ${qa.strengths ? 'show' : ''}`}>
+                    <div>
+                      <FeedbackItemTitle>✅ 잘한 점: </FeedbackItemTitle> {qa.strengths || ''}
+                    </div>
+                    <div>
+                      <FeedbackItemTitle>⚠️ 개선할 점: </FeedbackItemTitle>{' '}
+                      {qa.improvementPoints || ''}
+                    </div>
+                    <div>
+                      <FeedbackItemTitle>📌 추가 학습 방향: </FeedbackItemTitle>{' '}
+                      {qa.additionalLearning || ''}
+                    </div>
+                  </FeedbackBody>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           ))

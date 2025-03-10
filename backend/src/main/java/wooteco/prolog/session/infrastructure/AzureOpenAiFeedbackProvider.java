@@ -12,6 +12,9 @@ import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import wooteco.prolog.session.domain.QnaFeedbackContents;
 import wooteco.prolog.session.domain.QnaFeedbackProvider;
@@ -22,7 +25,7 @@ import java.util.Map;
 
 @Profile({"prod", "dev"})
 @Component
-public final class AzureOpenAiFeedbackProvider implements QnaFeedbackProvider {
+public class AzureOpenAiFeedbackProvider implements QnaFeedbackProvider {
 
     private static final Logger log = LoggerFactory.getLogger(AzureOpenAiFeedbackProvider.class);
 
@@ -61,6 +64,12 @@ public final class AzureOpenAiFeedbackProvider implements QnaFeedbackProvider {
         this.template = new PromptTemplate(resource);
     }
 
+    @Retryable(
+        retryFor = RuntimeJsonProcessingException.class,
+        backoff = @Backoff(delay = 1000),
+        maxAttempts = 4,
+        recover = "logging"
+    )
     @Override
     public QnaFeedbackContents evaluate(final QnaFeedbackRequest request) {
         log.debug("Requesting feedback evaluation [request={}]", request);
@@ -88,7 +97,18 @@ public final class AzureOpenAiFeedbackProvider implements QnaFeedbackProvider {
             return objectMapper.readValue(responseText, QnaFeedbackContents.class);
         } catch (final JsonProcessingException e) {
             log.error("Failed to parse response from chat model [responseText={}]", responseText, e);
-            throw new RuntimeException("Invalid response format from AI model", e);
+            throw new RuntimeJsonProcessingException("Invalid response format from AI model", e);
+        }
+    }
+
+    @Recover
+    void logging(final RuntimeException e, final QnaFeedbackRequest request) {
+        log.error("Failed to evaluate feedback [request={}]", request, e);
+    }
+
+    private static class RuntimeJsonProcessingException extends RuntimeException {
+        public RuntimeJsonProcessingException(final String message, final Throwable cause) {
+            super(message, cause);
         }
     }
 }
