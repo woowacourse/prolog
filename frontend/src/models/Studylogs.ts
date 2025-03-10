@@ -39,6 +39,9 @@ export interface QuestionAnswer {
   answerContent: string;
   questionId: number;
   questionContent: string;
+  strengths?: string;
+  improvementPoints?: string;
+  additionalLearning?: string;
 }
 
 // TODO: read, scrap => isRead, isScrapped로 변경

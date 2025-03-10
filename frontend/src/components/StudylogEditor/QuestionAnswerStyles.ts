@@ -50,3 +50,21 @@ export const AnswerBody = styled.div`
   color: ${COLOR.BLACK_700};
   border: 1px solid ${COLOR.LIGHT_GRAY_200};
 `;
+
+export const FeedbackBody = styled.div`
+  padding: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: ${COLOR.BLACK_700};
+  border: 1px solid ${COLOR.LIGHT_GRAY_200};
+  background-color: ${COLOR.LIGHT_GRAY_50};
+  border-radius: 8px;
+`;
+
+export const FeedbackItemTitle = styled.span`
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 0.3rem;
+`;
