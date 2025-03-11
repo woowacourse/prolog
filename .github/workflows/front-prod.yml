@@ -16,17 +16,24 @@ jobs:
         with:
           node-version: 16
 
-      - name: Cache node_modules
-        id: cache
+      - name: Cache Yarn cache
+        id: cache-yarn
         uses: actions/cache@v3
         with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+          path: ~/.yarn/cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-node-modules-
+            ${{ runner.os }}-yarn-
+
+      - name: Clean Dependencies
+        if: steps.cache-yarn.outputs.cache-hit != 'true'
+        run: |
+          cd frontend
+          yarn cache clean
+          rm -rf node_modules
 
       - name: Install Dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache-yarn.outputs.cache-hit != 'true'
         run: |
           cd frontend
           yarn install --frozen-lockfile --check-files
