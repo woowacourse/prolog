@@ -311,7 +311,6 @@ public class StudylogService {
     @Transactional
     public StudylogResponse retrieveStudylogById(LoginMember loginMember, Long studylogId,
                                                  boolean isViewed) {
-
         Studylog studylog = findStudylogById(studylogId);
 
         List<Answer> answers = answerService.findAnswersByStudylogId(studylog.getId());
@@ -319,7 +318,7 @@ public class StudylogService {
             .mapToLong(it -> it.getQuestion().getId())
             .boxed()
             .toList();
-        List<AnswerFeedback> answerFeedbacks = answerFeedbackService.findRecentByMemberIdAndQuestionIds(loginMember.getId(), questionIds);
+        List<AnswerFeedback> answerFeedbacks = answerFeedbackService.findRecentByMemberIdAndQuestionIds(studylog.getMember().getId(), questionIds);
 
         onStudylogRetrieveEvent(loginMember, studylog, isViewed);
 
