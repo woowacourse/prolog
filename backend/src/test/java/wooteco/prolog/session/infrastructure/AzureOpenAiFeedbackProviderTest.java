@@ -27,7 +27,10 @@ class AzureOpenAiFeedbackProviderTest {
             .deploymentName("o1-mini")
             .N(1)
             .build();
-        final var azureOpenAiChatModel = new AzureOpenAiChatModel(clientBuilder, options);
+        final var azureOpenAiChatModel = AzureOpenAiChatModel.builder()
+            .openAIClientBuilder(clientBuilder)
+            .defaultOptions(options)
+            .build();
 
         this.feedbackProvider = new AzureOpenAiFeedbackProvider(
             azureOpenAiChatModel,
