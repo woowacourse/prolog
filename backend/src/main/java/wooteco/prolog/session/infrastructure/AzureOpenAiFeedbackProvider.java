@@ -16,6 +16,7 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
+import wooteco.prolog.common.exception.AiResponseProcessingException;
 import wooteco.prolog.session.domain.QnaFeedbackContents;
 import wooteco.prolog.session.domain.QnaFeedbackProvider;
 import wooteco.prolog.session.domain.QnaFeedbackRequest;
@@ -53,7 +54,6 @@ public class AzureOpenAiFeedbackProvider implements QnaFeedbackProvider {
 
     private final PromptTemplate template;
 
-
     AzureOpenAiFeedbackProvider(
         final AzureOpenAiChatModel chatModel,
         final ObjectMapper objectMapper,
@@ -65,7 +65,7 @@ public class AzureOpenAiFeedbackProvider implements QnaFeedbackProvider {
     }
 
     @Retryable(
-        retryFor = RuntimeJsonProcessingException.class,
+        retryFor = AiResponseProcessingException.class,
         backoff = @Backoff(delay = 1000),
         maxAttempts = 4,
         recover = "logging"
@@ -97,18 +97,12 @@ public class AzureOpenAiFeedbackProvider implements QnaFeedbackProvider {
             return objectMapper.readValue(responseText, QnaFeedbackContents.class);
         } catch (final JsonProcessingException e) {
             log.error("Failed to parse response from chat model [responseText={}]", responseText, e);
-            throw new RuntimeJsonProcessingException("Invalid response format from AI model", e);
+            throw new AiResponseProcessingException(e);
         }
     }
 
     @Recover
     void logging(final RuntimeException e, final QnaFeedbackRequest request) {
         log.error("Failed to evaluate feedback [request={}]", request, e);
-    }
-
-    private static class RuntimeJsonProcessingException extends RuntimeException {
-        public RuntimeJsonProcessingException(final String message, final Throwable cause) {
-            super(message, cause);
-        }
     }
 }
