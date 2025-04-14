@@ -15,7 +15,7 @@ export interface Mission {
 }
 
 export interface Session {
-  sessionId: number;
+  id: number;
   name: string;
 }
 

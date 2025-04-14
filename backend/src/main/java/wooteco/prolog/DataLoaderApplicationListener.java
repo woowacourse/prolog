@@ -105,7 +105,9 @@ public class DataLoaderApplicationListener implements ApplicationListener<Contex
     }
 
     private boolean shouldSkip() {
-        return memberRepository.findByUsername(MemberDummy.BROWN.loginName).isPresent();
+        final var entityManager = entityManagerFactory.createEntityManager();
+        final var memberCount = entityManager.createNativeQuery("SELECT COUNT(*) FROM member").getFirstResult();
+        return memberCount > 0;
     }
 
     private void cleanUp() {

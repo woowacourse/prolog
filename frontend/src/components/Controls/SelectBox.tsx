@@ -65,7 +65,6 @@ interface SelectBoxProps {
   onChange?: (option: { value: string; label: string }) => void;
   defaultOption?: SelectOption;
   value?: SelectOption;
-  selectedSessionId?: string;
   isClearable?: boolean;
   editable: boolean;
 }

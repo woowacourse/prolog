@@ -1068,7 +1068,7 @@ class StudylogServiceTest {
                 idField.setAccessible(true);
                 idField.set(idAndDateInjectedStudylog, id);
 
-                final Field createdAtField = idAndDateInjectedStudylog.getClass().getSuperclass()
+                final Field createdAtField = idAndDateInjectedStudylog.getClass().getSuperclass().getSuperclass()
                     .getDeclaredField("createdAt");
                 createdAtField.setAccessible(true);
                 createdAtField.set(idAndDateInjectedStudylog, LocalDateTime.now());

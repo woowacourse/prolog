@@ -9,7 +9,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wooteco.prolog.common.AuditingEntity;
+import wooteco.prolog.common.entity.AuditingEntity;
 
 /**
  * 홈페이지를 클릭할 때마다 매번 조회되는 테이블(엔티티). 조회 시마다 다른 테이블들과 계속해서 JOIN이 발생함. 조회 속도가 느릴 시 temp/mainpage-popular-studylog-api 브랜치 작업

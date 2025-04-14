@@ -19,6 +19,7 @@ public class SessionStepDefinitions extends AcceptanceSteps {
         context.invokeHttpPost("/sessions", new SessionRequest("새로운강의3"));
     }
 
+    @Given("{string} 강의를 생성하고")
     @When("{string} 강의를 추가하(면)(고)")
     public void 강의를추가하면(String sessionName) {
         context.invokeHttpPost("/sessions", new SessionRequest(sessionName));

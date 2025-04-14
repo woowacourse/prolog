@@ -10,8 +10,11 @@ security:
 spring:
   autoconfigure:
     exclude:
-    - org.springframework.ai.autoconfigure.azure.openai.AzureOpenAiAutoConfiguration
-    - org.springframework.ai.autoconfigure.openai.OpenAiAutoConfiguration
+      - org.springframework.ai.model.azure.openai.autoconfigure.AzureOpenAiChatAutoConfiguration
+      - org.springframework.ai.model.azure.openai.autoconfigure.AzureOpenAiAudioTranscriptionAutoConfiguration
+      - org.springframework.ai.model.azure.openai.autoconfigure.AzureOpenAiEmbeddingAutoConfiguration
+      - org.springframework.ai.model.azure.openai.autoconfigure.AzureOpenAiImageAutoConfiguration
+      - org.springframework.ai.model.chat.client.autoconfigure.ChatClientAutoConfiguration
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect

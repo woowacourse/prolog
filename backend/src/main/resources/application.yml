@@ -62,3 +62,6 @@ cloud:
 
 manager:
   role: COACH
+
+interview:
+  total-question-count: 10

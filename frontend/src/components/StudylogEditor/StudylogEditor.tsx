@@ -217,7 +217,7 @@ const StudylogEditor = ({ mode }: StudylogEditorProps): JSX.Element => {
             title: data.title,
             content: data.content,
             missionId: data.mission?.id || null,
-            sessionId: data.session?.sessionId || null,
+            sessionId: data.session?.id || null,
             tags: data.tags,
             answers: data.answers,
           });
@@ -280,7 +280,7 @@ const StudylogEditor = ({ mode }: StudylogEditorProps): JSX.Element => {
         title: tempSavedStudylog.title ?? '',
         content: tempSavedStudylog.content,
         missionId: tempSavedStudylog.mission?.id ?? null,
-        sessionId: tempSavedStudylog.session?.sessionId ?? null,
+        sessionId: tempSavedStudylog.session?.id ?? null,
         tags: tempSavedStudylog.tags ?? [],
         answers: tempSavedStudylog.answers ?? [],
       });

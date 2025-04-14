@@ -54,16 +54,17 @@ const Sidebar = ({
     user: { username },
   } = useContext(UserContext);
   const tagOptions = tags.map(({ name }) => ({ value: name, label: `#${name}` }));
-  const missionOptions = missions.map(({ id, name, session }) => ({
+  const missionOptions = missions.filter(({session}) => session?.id === studylogContent.sessionId)
+      .map(({ id, name }) => ({
+        value: `${id}`,
+        label: `${name}`,
+      }));
+  const sessionOptions = sessions.map(({ id, name }) => ({
     value: `${id}`,
     label: `${name}`,
   }));
-  const sessionOptions = sessions.map(({ sessionId, name }) => ({
-    value: `${sessionId}`,
-    label: `${name}`,
-  }));
 
-  const selectedSession = sessions.find(({ sessionId }) => sessionId === studylogContent.sessionId);
+  const selectedSession = sessions.find(({ id }) => id === studylogContent.sessionId);
   const selectedMission = missions.find(({ id }) => id === studylogContent.missionId);
 
   const onSelectMission = async (mission: SelectOption | null) => {
@@ -152,10 +153,7 @@ const Sidebar = ({
               onChange={onSelectSession}
               value={
                 selectedSession
-                  ? {
-                      value: `${selectedSession.sessionId}`,
-                      label: selectedSession?.name,
-                    }
+                  ? { value: `${selectedSession?.id}`, label: selectedSession?.name }
                   : undefined
               }
               editable={mode === 'create'}
@@ -175,7 +173,6 @@ const Sidebar = ({
               options={missionOptions}
               placeholder="미션을 선택하세요."
               onChange={onSelectMission}
-              selectedSessionId={studylogContent.sessionId?.toString()}
               value={
                 selectedMission
                   ? { value: `${selectedMission?.id}`, label: selectedMission?.name }
