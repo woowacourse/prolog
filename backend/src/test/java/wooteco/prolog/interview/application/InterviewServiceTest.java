@@ -5,7 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import wooteco.prolog.common.exception.BadRequestCode;
+import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.interview.domain.InterviewMessage;
+import wooteco.prolog.login.application.dto.GithubProfileResponse;
+import wooteco.prolog.member.application.MemberService;
 import wooteco.prolog.session.application.MissionService;
 import wooteco.prolog.session.application.QuestionService;
 import wooteco.prolog.session.application.SessionService;
@@ -21,20 +25,27 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Transactional
 class InterviewServiceTest {
 
-    private static final long DEFAULT_MEMBER_ID = 1L;
-
     private InterviewService interviewService;
+
+    private long memberId;
 
     private long questionId;
 
     @BeforeEach
     void setUp(
+        @Autowired final MemberService memberService,
         @Autowired final InterviewService interviewService,
         @Autowired final SessionService sessionService,
         @Autowired final MissionService missionService,
         @Autowired final QuestionService questionService
     ) {
         this.interviewService = interviewService;
+
+        memberId = memberService.createMember(new GithubProfileResponse("neo",
+                "neo",
+                "1",
+                ""))
+            .getId();
 
         final var session = sessionService.create(new SessionRequest("세션1"));
         final var mission = missionService.create(new MissionRequest("미션", session.getId()));
@@ -45,11 +56,11 @@ class InterviewServiceTest {
 
     @Test
     void 세션을_시작한다() {
-        final var session = interviewService.createSession(DEFAULT_MEMBER_ID, new InterviewSessionRequest(questionId));
+        final var session = interviewService.createSession(memberId, new InterviewSessionRequest(questionId));
 
         assertAll(
             () -> assertThat(session.id()).isNotNull(),
-            () -> assertThat(session.memberId()).isEqualTo(DEFAULT_MEMBER_ID),
+            () -> assertThat(session.memberId()).isEqualTo(memberId),
             () -> assertThat(session.finished()).isFalse(),
             () -> assertThat(session.messages())
                 .hasSize(1)
@@ -65,10 +76,10 @@ class InterviewServiceTest {
 
     @Test
     void 답변을_하면_꼬리_질문이_온다() {
-        final var session = interviewService.createSession(DEFAULT_MEMBER_ID, new InterviewSessionRequest(questionId));
+        final var session = interviewService.createSession(memberId, new InterviewSessionRequest(questionId));
 
         final var newSession = interviewService.answer(
-            DEFAULT_MEMBER_ID,
+            memberId,
             session.id(),
             new InterviewAnswerRequest("답변입니다.")
         );
@@ -84,10 +95,10 @@ class InterviewServiceTest {
 
     @Test
     void 열번의_질문을_모두_답변하면_인터뷰가_종료된다() {
-        var session = interviewService.createSession(DEFAULT_MEMBER_ID, new InterviewSessionRequest(questionId));
+        var session = interviewService.createSession(memberId, new InterviewSessionRequest(questionId));
         for (int i = 0; i < 10; i++) {
             session = interviewService.answer(
-                DEFAULT_MEMBER_ID,
+                memberId,
                 session.id(),
                 new InterviewAnswerRequest("답변입니다.")
             );
@@ -102,22 +113,23 @@ class InterviewServiceTest {
 
     @Test
     void 인터뷰가_종료됐을_경우_답변은_불가능하다() {
-        var session = interviewService.createSession(DEFAULT_MEMBER_ID, new InterviewSessionRequest(questionId));
+        var session = interviewService.createSession(memberId, new InterviewSessionRequest(questionId));
         for (int i = 0; i < 10; i++) {
             session = interviewService.answer(
-                DEFAULT_MEMBER_ID,
+                memberId,
                 session.id(),
                 new InterviewAnswerRequest("답변입니다.")
             );
         }
 
         final var lastSession = session;
-        assertThrows(IllegalStateException.class, () -> {
+        BadRequestException badRequestException = assertThrows(BadRequestException.class, () -> {
             interviewService.answer(
-                DEFAULT_MEMBER_ID,
+                memberId,
                 lastSession.id(),
                 new InterviewAnswerRequest("답변입니다.")
             );
         });
+        assertThat(badRequestException.getCode()).isEqualTo(BadRequestCode.INTERVIEW_SESSION_FINISHED.getCode());
     }
 }

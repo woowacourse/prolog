@@ -37,7 +37,7 @@ public class InterviewSession extends AuditingEntity {
         final Question question
     ) {
         if (!interviewMessages.isEmpty()) {
-            throw new IllegalStateException("이미 인터뷰가 시작되었습니다.");
+            throw new BadRequestException(BadRequestCode.INTERVIEW_SESSION_ALREADY_STARTED);
         }
 
         interviewMessages = interviewer.start(
@@ -55,10 +55,10 @@ public class InterviewSession extends AuditingEntity {
             throw new BadRequestException(BadRequestCode.MEMBER_NOT_ALLOWED);
         }
         if (finished) {
-            throw new IllegalStateException("인터뷰가 종료되었습니다.");
+            throw new BadRequestException(BadRequestCode.INTERVIEW_SESSION_FINISHED);
         }
         if (interviewMessages.lastMessage().isByInterviewee()) {
-            throw new IllegalStateException("인터뷰어의 질문에 답변해야 합니다.");
+            throw new BadRequestException(BadRequestCode.INTERVIEW_SESSION_NOT_YOUR_TURN);
         }
 
         interviewMessages = interviewer.followUp(interviewMessages, message);

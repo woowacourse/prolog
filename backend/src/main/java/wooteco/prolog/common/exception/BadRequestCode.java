@@ -46,6 +46,9 @@ public enum BadRequestCode {
     QUESTION_NOT_FOUND(3012, "존재하지 않는 질문입니다."),
 
     INTERVIEW_SESSION_NOT_FOUND(4000, "존재하지 않는 인터뷰 세션입니다."),
+    INTERVIEW_SESSION_ALREADY_STARTED(4001, "이미 인터뷰가 시작되었습니다."),
+    INTERVIEW_SESSION_FINISHED(4002, "인터뷰가 종료되었습니다."),
+    INTERVIEW_SESSION_NOT_YOUR_TURN(4003, "응답할 차례가 아닙니다."),
 
     INVALID_LIKE_REQUEST_EXCEPTION(5001, "스터디로그를 좋아요 할 수 없습니다."),
     INVALID_UNLIKE_REQUEST_EXCEPTION(5002, "스터디로그를 좋아요 취소 할 수 없습니다."),
