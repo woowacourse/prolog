@@ -1,4 +1,4 @@
-create table if not exists prolog.inverview_session (
+create table if not exists prolog.interview_session (
     id bigint auto_increment primary key,
     created_at datetime not null,
     updated_at datetime not null,
@@ -11,7 +11,7 @@ create table if not exists prolog.inverview_session (
     COLLATE = utf8mb4_0900_ai_ci;
 
 
-create table if not exists prolog.inverview_session (
+create table if not exists prolog.interview_message (
     created_at datetime not null,
     session_id bigint not null,
     member_id bigint not null,
