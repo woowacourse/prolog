@@ -14,10 +14,8 @@ create table if not exists prolog.interview_session (
 create table if not exists prolog.interview_message (
     created_at datetime not null,
     session_id bigint not null,
-    member_id bigint not null,
     sender enum ('INTERVIEWEE','INTERVIEWER','SYSTEM') not null,
     type enum ('CLOSING_SUMMARY','FOLLOW_UP','INITIAL_QUESTION','SYSTEM_GUIDE') not null,
-    finished boolean not null,
     formatted_content varchar(8000) not null,
     original_content varchar(8000) not null,
     message_order integer not null,

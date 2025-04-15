@@ -16,3 +16,4 @@ export { default as ArticleListPage } from './ArticleListPage';
 export { default as NewArticlePage } from './NewArticlePage';
 export { default as StudylogListPage } from './StudylogListPage';
 export { default as StudylogPage } from './StudylogPage';
+export { default as InterviewPage } from './InterviewPage';

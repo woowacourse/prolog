@@ -31,6 +31,10 @@ const navigationConfig = [
     title: '학습로그',
   },
   {
+    path: PATH.INTERVIEW,
+    title: '인터뷰',
+  },
+  {
     path: PATH.ARTICLE,
     title: '피드',
   },
