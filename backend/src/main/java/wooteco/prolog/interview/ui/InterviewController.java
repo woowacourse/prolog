@@ -1,5 +1,6 @@
 package wooteco.prolog.interview.ui;
 
+import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,8 +13,6 @@ import wooteco.prolog.interview.application.InterviewSessionRequest;
 import wooteco.prolog.interview.application.InterviewSessionResponse;
 import wooteco.prolog.login.domain.AuthMemberPrincipal;
 import wooteco.prolog.login.ui.LoginMember;
-
-import java.net.URI;
 
 @RestController
 @RequestMapping("/interviews")
@@ -36,7 +35,7 @@ public class InterviewController {
         );
 
         return ResponseEntity.created(URI.create("/interviews/" + session.id()))
-            .build();
+            .body(session);
     }
 
     @PostMapping("/{sessionId}/answers")

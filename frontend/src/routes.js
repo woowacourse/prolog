@@ -17,6 +17,7 @@ import {
   ArticleListPage,
   StudylogListPage,
   StudylogPage,
+  InterviewPage,
 } from './pages';
 
 const pageRoutes = [
@@ -59,6 +60,10 @@ const pageRoutes = [
   },
   { path: [PATH.NEW_ARTICLE], render: () => <NewArticlePage /> },
   {
+    path: [PATH.INTERVIEW],
+    render: () => <InterviewPage />,
+  },
+  {
     path: [PATH.PROFILE],
     render: () => <ProfilePage menu={PROFILE_PAGE_MENU.OVERVIEW} />,
   },
@@ -93,7 +98,7 @@ const pageRoutes = [
   {
     path: '/essay-answers/:id/edit',
     render: () => <EditEssayAnswerPage />,
-  },
+  }
 ];
 
 export default pageRoutes;

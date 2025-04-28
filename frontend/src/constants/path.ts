@@ -16,6 +16,7 @@ const PATH = {
   ESSAY_ANSWER: '/essay-answers/:essayAnswerId',
   ESSAY_ANSWER_LIST: '/quizzes/:quizId/essay-answers',
   NEW_ARTICLE: '/article/write',
+  INTERVIEW: '/interview'
 };
 
 export default PATH;

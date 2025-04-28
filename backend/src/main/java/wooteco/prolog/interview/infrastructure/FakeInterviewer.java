@@ -1,41 +1,31 @@
 package wooteco.prolog.interview.infrastructure;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import wooteco.prolog.common.exception.AiResponseProcessingException;
-import wooteco.prolog.interview.domain.FollowUpQuestion;
 import wooteco.prolog.interview.domain.InterviewMessage;
 import wooteco.prolog.interview.domain.InterviewMessages;
 import wooteco.prolog.interview.domain.Interviewer;
-
-import java.util.List;
 
 @Profile({"local", "test"})
 @Component
 public final class FakeInterviewer implements Interviewer {
 
-    private final String interviewerMessage;
+    private static final String FIXED_RESPONSE_JSON =
+        "{\"followUpQuestion\":\"추가 질문\",\"hint\":\"힌트\"}";
 
-    FakeInterviewer(final ObjectMapper objectMapper) {
-        try {
-            interviewerMessage = objectMapper.writeValueAsString(
-                new FollowUpQuestion("추가 질문", "힌트")
-            );
-        } catch (final JsonProcessingException e) {
-            throw new AiResponseProcessingException(e);
-        }
+    private final ObjectMapper objectMapper;
+
+    public FakeInterviewer(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
     }
 
     @Override
-    public InterviewMessages start(
-        final String goal,
-        final String question
-    ) {
+    public InterviewMessages start(final String goal, final String question) {
         return new InterviewMessages(List.of(
             InterviewMessage.ofSystemGuide("시스템 가이드라인"),
-            InterviewMessage.ofInitialQuestion("초기 질문", "초기 질문")
+            InterviewMessage.ofInitialQuestion(question, question)
         ));
     }
 
@@ -44,13 +34,15 @@ public final class FakeInterviewer implements Interviewer {
         final InterviewMessages interviewMessages,
         final String answer
     ) {
-        return interviewMessages.with(InterviewMessage.ofInterviewee(answer, answer))
-            .with(InterviewMessage.ofInterviewer(interviewerMessage));
+        return interviewMessages
+            .with(InterviewMessage.ofInterviewee(answer, answer))
+            .with(InterviewMessage.ofInterviewer(FIXED_RESPONSE_JSON));
     }
 
     @Override
     public InterviewMessages finish(final InterviewMessages interviewMessages) {
-        return interviewMessages.with(InterviewMessage.ofClosingSummaryRequest("리포트 생성좀"))
+        return interviewMessages
+            .with(InterviewMessage.ofClosingSummaryRequest("리포트 생성좀"))
             .with(InterviewMessage.ofClosingSummaryResponse("리포트"));
     }
 }
