@@ -83,7 +83,7 @@ const InterviewPage = () => {
               <SectionTitle>레벨 인터뷰 설정</SectionTitle>
             </SectionHeader>
             <SectionContent>
-              <InterviewSetup 
+              <InterviewSetup
                 onSessionStart={handleSessionStart}
                 session={session}
               />

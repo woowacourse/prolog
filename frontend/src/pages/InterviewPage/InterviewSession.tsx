@@ -109,6 +109,43 @@ const EmptyState = styled.div`
   border-radius: 12px;
 `;
 
+const HintButton = styled.div`
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #bbb;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 13px;
+  color: #888;
+  position: relative;
+`;
+
+const HintTooltip = styled.div`
+  position: absolute;
+  top: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px #0001;
+  padding: 10px 14px;
+  font-size: 1rem;
+  color: #333;
+  z-index: 10;
+  min-width: 140px;
+  max-width: 320px;
+  white-space: pre-wrap;
+  font-weight: 400;
+  line-height: 1.5;
+  font-family: inherit;
+`;
+
 interface InterviewSessionProps {
   session: {
     id: number;
@@ -133,6 +170,7 @@ const InterviewSession = ({
   const [answer, setAnswer] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [hoveredHintIdx, setHoveredHintIdx] = useState<number | null>(null);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -166,7 +204,7 @@ const InterviewSession = ({
 
   const handleRestart = async () => {
     if (!session) return;
-    
+
     try {
       const accessToken = localStorage.getItem('accessToken');
       const response = await api.post(
@@ -186,7 +224,7 @@ const InterviewSession = ({
 
   const handleQuit = async () => {
     if (!session) return;
-    
+
     try {
       const accessToken = localStorage.getItem('accessToken');
       await api.post(
@@ -217,14 +255,28 @@ const InterviewSession = ({
   return (
     <Container>
       <ChatContainer ref={chatContainerRef}>
-        {session.messages.map((message, index) => (
-          <Message
-            key={index}
-            isUser={message.sender === 'INTERVIEWEE'}
-          >
-            {message.content}
-          </Message>
-        ))}
+        {session.messages.map((message, idx) => {
+          if (message.sender === 'INTERVIEWER') {
+            return (
+              <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 8, position: 'relative' }}>
+                <Message isUser={false}>{message.content}</Message>
+                <HintButton
+                  onMouseEnter={() => setHoveredHintIdx(idx)}
+                  onMouseLeave={() => setHoveredHintIdx(null)}
+                  aria-label="힌트"
+                >
+                  ?
+                  {hoveredHintIdx === idx && (
+                    <HintTooltip>
+                      {message.hint || '힌트가 없습니다.'}
+                    </HintTooltip>
+                  )}
+                </HintButton>
+              </div>
+            );
+          }
+          return <Message key={idx} isUser={message.sender === 'INTERVIEWEE'}>{message.content}</Message>;
+        })}
       </ChatContainer>
       <InputContainer>
         <Input
@@ -247,4 +299,4 @@ const InterviewSession = ({
   );
 };
 
-export default InterviewSession; 
+export default InterviewSession;
