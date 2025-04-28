@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.azure.openai.AzureOpenAiChatModel;
+import org.springframework.ai.azure.openai.AzureOpenAiChatOptions;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.UserMessage;
@@ -189,7 +190,9 @@ public class AzureOpenAiInterviewer implements Interviewer {
     }
 
     private Prompt toPrompt(final List<InterviewMessage> interviewMessages) {
-        return new Prompt(toMessages(interviewMessages));
+        AzureOpenAiChatOptions chatOptions = new AzureOpenAiChatOptions();
+        chatOptions.setTemperature(1.0);
+        return new Prompt(toMessages(interviewMessages), chatOptions);
     }
 
     private List<Message> toMessages(final List<InterviewMessage> interviewMessages) {

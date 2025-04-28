@@ -169,36 +169,53 @@ const InterviewSession = ({
 }: InterviewSessionProps) => {
   const [answer, setAnswer] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [localMessages, setLocalMessages] = useState(session?.messages ?? []);
+  const [isTyping, setIsTyping] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [hoveredHintIdx, setHoveredHintIdx] = useState<number | null>(null);
+
+  useEffect(() => {
+    setLocalMessages(session?.messages ?? []);
+  }, [session?.messages]);
 
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-  }, [session?.messages]);
+  }, [localMessages]);
 
   const handleSubmit = async () => {
     if (!answer.trim() || isSubmitting || !session) return;
 
     setIsSubmitting(true);
+    const newMessage = {
+      sender: 'INTERVIEWEE',
+      content: answer.trim(),
+      hint: '',
+      createdAt: new Date().toISOString(),
+    } as const;
+    setLocalMessages((prev) => [...prev, newMessage]);
+    setAnswer('');
+    setIsTyping(true);
+
     try {
       const accessToken = localStorage.getItem('accessToken');
       const response = await api.post(
         `/interviews/${session.id}/answers`,
-        { answer: answer.trim() },
+        { answer: newMessage.content },
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         }
       );
+      setLocalMessages(response.data.messages);
       onSessionUpdate(response.data);
-      setAnswer('');
     } catch (error) {
       console.error('Failed to submit answer:', error);
     } finally {
       setIsSubmitting(false);
+      setIsTyping(false);
     }
   };
 
@@ -255,7 +272,7 @@ const InterviewSession = ({
   return (
     <Container>
       <ChatContainer ref={chatContainerRef}>
-        {session.messages.map((message, idx) => {
+        {localMessages.map((message, idx) => {
           if (message.sender === 'INTERVIEWER') {
             return (
               <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 8, position: 'relative' }}>
@@ -277,6 +294,11 @@ const InterviewSession = ({
           }
           return <Message key={idx} isUser={message.sender === 'INTERVIEWEE'}>{message.content}</Message>;
         })}
+        {isTyping && (
+          <Message isUser={false} style={{ fontStyle: 'italic', opacity: 0.7 }}>
+            인터뷰어가 답변을 작성중입니다...
+          </Message>
+        )}
       </ChatContainer>
       <InputContainer>
         <Input
