@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import axios from 'axios';
-
-const api = axios.create({
-  baseURL: 'http://localhost:8080',
-});
+import { client } from '../../apis';
 
 const Container = styled.div`
   display: flex;
@@ -58,7 +54,7 @@ const SelectionContent = styled.div`
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  
+
   &::-webkit-scrollbar {
     width: 8px;
   }
@@ -93,7 +89,7 @@ const Select = styled.select`
   font-size: 1rem;
   background-color: white;
   cursor: pointer;
-  
+
   &:disabled {
     background-color: #f8f9fa;
     cursor: not-allowed;
@@ -198,7 +194,7 @@ const InterviewSetup = ({ onSessionStart, session }: InterviewSetupProps) => {
     const fetchSessions = async () => {
       try {
         const accessToken = localStorage.getItem('accessToken');
-        const response = await api.get('/sessions/mine', {
+        const response = await client.get('/sessions/mine', {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -214,14 +210,10 @@ const InterviewSetup = ({ onSessionStart, session }: InterviewSetupProps) => {
 
   useEffect(() => {
     const fetchMissions = async () => {
-      if (!selectedSession) {
-        setMissions([]);
-        return;
-      }
-
+      if (!selectedSession) return;
       try {
         const accessToken = localStorage.getItem('accessToken');
-        const response = await api.get(`/missions/mine`, {
+        const response = await client.get(`/missions?sessionId=${selectedSession}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -237,27 +229,23 @@ const InterviewSetup = ({ onSessionStart, session }: InterviewSetupProps) => {
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      if (!selectedMission) {
-        setQuestions([]);
-        return;
-      }
-
+      if (!selectedMission) return;
       try {
         const accessToken = localStorage.getItem('accessToken');
-        const response = await api.get(`/questions?missionId=${selectedMission}`, {
+        const response = await client.get(`/questions?missionId=${selectedMission}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
         console.log('Questions API response:', response.data);
-        
+
         // API 응답 데이터 구조 확인 및 변환
         const questionList = response.data.questions || response.data || [];
         const formattedQuestions = questionList.map((q: any) => ({
           id: q.id,
           content: q.content || q.question || q.text || '',
         }));
-        
+
         setQuestions(formattedQuestions);
       } catch (error) {
         console.error('Failed to fetch questions:', error);
@@ -269,21 +257,26 @@ const InterviewSetup = ({ onSessionStart, session }: InterviewSetupProps) => {
   }, [selectedMission]);
 
   const handleStartInterview = async () => {
-    if (!selectedQuestion) return;
+    if (!selectedSession || !selectedMission || !selectedQuestion) return;
 
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       const accessToken = localStorage.getItem('accessToken');
-      const response = await api.post('/interviews', {
-        questionId: selectedQuestion,
-      }, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
+      const response = await client.post(
+        '/interviews',
+        {
+          questionId: selectedQuestion,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
       onSessionStart(response.data);
     } catch (error) {
       console.error('Failed to start interview:', error);
+      alert('인터뷰 시작에 실패했습니다.');
     } finally {
       setIsLoading(false);
     }
@@ -398,4 +391,4 @@ const InterviewSetup = ({ onSessionStart, session }: InterviewSetupProps) => {
   );
 };
 
-export default InterviewSetup; 
+export default InterviewSetup;

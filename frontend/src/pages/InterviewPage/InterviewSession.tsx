@@ -1,10 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from '@emotion/styled';
-import axios from 'axios';
-
-const api = axios.create({
-  baseURL: 'http://localhost:8080',
-});
+import { client } from '../../apis';
 
 const Container = styled.div`
   display: flex;
@@ -200,7 +196,7 @@ const InterviewSession = ({
 
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await api.post(
+      const response = await client.post(
         `/interviews/${session.id}/answers`,
         { answer: newMessage.content },
         {
@@ -224,7 +220,7 @@ const InterviewSession = ({
 
     try {
       const accessToken = localStorage.getItem('accessToken');
-      const response = await api.post(
+      const response = await client.post(
         `/interviews/${session.id}/restart`,
         {},
         {
@@ -244,7 +240,7 @@ const InterviewSession = ({
 
     try {
       const accessToken = localStorage.getItem('accessToken');
-      await api.post(
+      await client.post(
         `/interviews/${session.id}/quit`,
         {},
         {
