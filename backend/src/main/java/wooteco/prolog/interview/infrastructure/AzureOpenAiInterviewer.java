@@ -165,7 +165,7 @@ public class AzureOpenAiInterviewer implements Interviewer {
 
     @Override
     public InterviewMessages finish(final InterviewMessages interviewMessages) {
-        if (interviewMessages.getRound() <= totalQuestionCount) {
+        if (interviewMessages.getRound() < totalQuestionCount) {
             throw new IllegalStateException("인터뷰가 종료되지 않았습니다.");
         }
 
