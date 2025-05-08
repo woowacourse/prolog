@@ -42,7 +42,8 @@ class InterviewMessagesTest {
             assertThat(interviewMessages.canFinish()).isFalse();
         }
 
-        interviewMessages = interviewMessages.with(InterviewMessage.ofInterviewee("답변입니다", "답변입니다"));
+        interviewMessages = interviewMessages.with(InterviewMessage.ofInterviewee("답변입니다", "답변입니다"))
+            .with(InterviewMessage.ofInterviewer("질문입니다"));
         assertThat(interviewMessages.canFinish()).isTrue();
     }
 
@@ -72,24 +73,6 @@ class InterviewMessagesTest {
         interviewMessages = interviewMessages.with(InterviewMessage.ofInterviewer("질문 10"));
         assertThat(interviewMessages.canFinish()).isFalse();
         assertThat(interviewMessages.getIntervieweeMessageCount()).isEqualTo(9);
-    }
-
-    @Test
-    void 종료조건_마지막이_인터뷰어_질문이면_종료불가() {
-        InterviewMessages interviewMessages = new InterviewMessages(List.of(
-            InterviewMessage.ofSystemGuide("시스템 가이드라인")
-        ));
-        for (int i = 0; i < 10; i++) {
-            interviewMessages = interviewMessages.with(InterviewMessage.ofInterviewer("질문 " + (i + 1)))
-                .with(InterviewMessage.ofInterviewee("답변 " + (i + 1), "답변 " + (i + 1)));
-        }
-        // 인터뷰이 답변으로 끝났으므로 종료 가능
-        assertThat(interviewMessages.canFinish()).isTrue();
-
-        // 인터뷰어 질문 추가
-        interviewMessages = interviewMessages.with(InterviewMessage.ofInterviewer("추가 질문"));
-        assertThat(interviewMessages.canFinish()).isFalse(); // 인터뷰어의 질문으로 끝나면 종료 불가
-        assertThat(interviewMessages.getIntervieweeMessageCount()).isEqualTo(10);
     }
 
     @Test

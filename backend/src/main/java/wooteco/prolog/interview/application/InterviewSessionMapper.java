@@ -24,7 +24,8 @@ public final class InterviewSessionMapper {
             interviewSession.getId(),
             interviewSession.getMemberId(),
             interviewSession.isFinished(),
-            mapToResponse(interviewSession.getMessages())
+            mapToResponse(interviewSession.getMessages()),
+            interviewSession.getRound()
         );
     }
 

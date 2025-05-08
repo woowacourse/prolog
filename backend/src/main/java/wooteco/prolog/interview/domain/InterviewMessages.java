@@ -40,7 +40,7 @@ public class InterviewMessages {
         return new InterviewMessages(newValues);
     }
 
-    public int getRound() {
+    public int getCurrentRound() {
         return getIntervieweeMessageCount() + START_ROUND;
     }
 
@@ -55,9 +55,12 @@ public class InterviewMessages {
     }
 
     public boolean canFinish() {
-        return getIntervieweeMessageCount() >= MAX_ROUND &&
-            !hasInterviewerClosingSummary() &&
-            !lastMessage().isByInterviewer();
+        if (values.isEmpty()) {
+            return false;
+        }
+        return getCurrentRound() > MAX_ROUND &&
+            lastMessage().isByInterviewer() &&
+            !hasInterviewerClosingSummary();
     }
 
     private boolean hasInterviewerClosingSummary() {
@@ -84,7 +87,7 @@ public class InterviewMessages {
     }
 
     List<InterviewMessage> getMessages() {
-        return values;
+        return Collections.unmodifiableList(values);
     }
 
     @Override
