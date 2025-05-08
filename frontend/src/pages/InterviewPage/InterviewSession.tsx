@@ -30,6 +30,7 @@ const Message = styled.div<{ isUser: boolean }>`
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   font-size: 1.125rem;
   line-height: 1.5;
+  white-space: pre-wrap;
 `;
 
 const EmphasizedFeedbackMessage = styled(Message)`
@@ -40,7 +41,6 @@ const EmphasizedFeedbackMessage = styled(Message)`
   display: block !important;
   width: auto !important;
   min-width: 200px !important;
-  white-space: normal !important;
   word-break: normal !important;
 
   padding: 1rem !important;
@@ -257,7 +257,7 @@ const InterviewSession = ({
       <ChatContainer ref={chatContainerRef}>
         {localMessages.map((message, idx) => {
           const isLastMessage = idx === localMessages.length - 1;
-          const isInterviewFinished = !!(session?.finished || session?.remainRound <= 0);
+          const isInterviewFinished = (session?.finished || session?.remainRound <= 0);
 
           if (message.sender === 'INTERVIEWER') {
             const CurrentMessageComponent = (isInterviewFinished && isLastMessage)
