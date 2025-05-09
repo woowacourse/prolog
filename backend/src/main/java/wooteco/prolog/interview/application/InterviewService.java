@@ -1,6 +1,7 @@
 package wooteco.prolog.interview.application;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import wooteco.prolog.common.exception.BadRequestException;
 import wooteco.prolog.interview.domain.InterviewSession;
 import wooteco.prolog.interview.domain.Interviewer;
@@ -33,6 +34,7 @@ public class InterviewService {
         this.interviewSessionMapper = interviewSessionMapper;
     }
 
+    @Transactional
     public InterviewSessionResponse createSession(
         final Long memberId,
         final InterviewSessionRequest request

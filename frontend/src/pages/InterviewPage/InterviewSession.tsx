@@ -30,6 +30,25 @@ const Message = styled.div<{ isUser: boolean }>`
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   font-size: 1.125rem;
   line-height: 1.5;
+  white-space: pre-wrap;
+`;
+
+const EmphasizedFeedbackMessage = styled(Message)`
+  border-left: 5px solid #0D6EFD !important;
+  background-color: #f0f0f0 !important;
+  color: #000000 !important;
+
+  display: block !important;
+  width: auto !important;
+  min-width: 200px !important;
+  word-break: normal !important;
+
+  padding: 1rem !important;
+  border-top: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  border-radius: 4px !important;
 `;
 
 const InputContainer = styled.div`
@@ -142,19 +161,23 @@ const HintTooltip = styled.div`
   font-family: inherit;
 `;
 
+interface InterviewSessionData {
+  id: number;
+  memberId: number;
+  finished: boolean;
+  messages: {
+    sender: 'SYSTEM' | 'INTERVIEWER' | 'INTERVIEWEE';
+    content: string;
+    hint: string;
+    createdAt: string;
+  }[];
+  currentRound: number;
+  remainRound: number;
+}
+
 interface InterviewSessionProps {
-  session: {
-    id: number;
-    memberId: number;
-    finished: boolean;
-    messages: {
-      sender: 'SYSTEM' | 'INTERVIEWER' | 'INTERVIEWEE';
-      content: string;
-      hint: string;
-      createdAt: string;
-    }[];
-  };
-  onSessionUpdate: (session: any) => void;
+  session: InterviewSessionData | null;
+  onSessionUpdate: (session: InterviewSessionData) => void;
   onSessionEnd: () => void;
 }
 
@@ -169,6 +192,7 @@ const InterviewSession = ({
   const [isTyping, setIsTyping] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const [hoveredHintIdx, setHoveredHintIdx] = useState<number | null>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     setLocalMessages(session?.messages ?? []);
@@ -206,52 +230,15 @@ const InterviewSession = ({
         }
       );
       setLocalMessages(response.data.messages);
-      onSessionUpdate(response.data);
+      onSessionUpdate(response.data as InterviewSessionData);
     } catch (error) {
       console.error('Failed to submit answer:', error);
     } finally {
       setIsSubmitting(false);
       setIsTyping(false);
-    }
-  };
-
-  const handleRestart = async () => {
-    if (!session) return;
-
-    try {
-      const accessToken = localStorage.getItem('accessToken');
-      const response = await client.post(
-        `/interviews/${session.id}/restart`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-      onSessionUpdate(response.data);
-    } catch (error) {
-      console.error('Failed to restart interview:', error);
-    }
-  };
-
-  const handleQuit = async () => {
-    if (!session) return;
-
-    try {
-      const accessToken = localStorage.getItem('accessToken');
-      await client.post(
-        `/interviews/${session.id}/quit`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-      onSessionEnd();
-    } catch (error) {
-      console.error('Failed to quit interview:', error);
+      if (session && !(session.finished || session.remainRound <= 0)) {
+        inputRef.current?.focus();
+      }
     }
   };
 
@@ -269,26 +256,41 @@ const InterviewSession = ({
     <Container>
       <ChatContainer ref={chatContainerRef}>
         {localMessages.map((message, idx) => {
+          const isLastMessage = idx === localMessages.length - 1;
+          const isInterviewFinished = (session?.finished || session?.remainRound <= 0);
+
           if (message.sender === 'INTERVIEWER') {
+            const CurrentMessageComponent = (isInterviewFinished && isLastMessage)
+                                              ? EmphasizedFeedbackMessage
+                                              : Message;
             return (
-              <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 8, position: 'relative' }}>
-                <Message isUser={false}>{message.content}</Message>
-                <HintButton
-                  onMouseEnter={() => setHoveredHintIdx(idx)}
-                  onMouseLeave={() => setHoveredHintIdx(null)}
-                  aria-label="힌트"
-                >
-                  ?
-                  {hoveredHintIdx === idx && (
-                    <HintTooltip>
-                      {message.hint || '힌트가 없습니다.'}
-                    </HintTooltip>
-                  )}
-                </HintButton>
+              <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 8, position: 'relative', alignSelf: 'flex-start' }}>
+                <CurrentMessageComponent isUser={false}>
+                  {message.content}
+                </CurrentMessageComponent>
+                {message.hint && (
+                  <HintButton
+                    onMouseEnter={() => setHoveredHintIdx(idx)}
+                    onMouseLeave={() => setHoveredHintIdx(null)}
+                    aria-label="힌트"
+                  >
+                    ?
+                    {hoveredHintIdx === idx && (
+                      <HintTooltip>
+                        {message.hint || '힌트가 없습니다.'}
+                      </HintTooltip>
+                    )}
+                  </HintButton>
+                )}
               </div>
             );
           }
-          return <Message key={idx} isUser={message.sender === 'INTERVIEWEE'}>{message.content}</Message>;
+          // INTERVIEWEE 메시지의 경우 (또는 시스템 메시지 등) - 여기서는 강조 없음
+          return (
+            <Message key={idx} isUser={message.sender === 'INTERVIEWEE'}>
+              {message.content}
+            </Message>
+          );
         })}
         {isTyping && (
           <Message isUser={false} style={{ fontStyle: 'italic', opacity: 0.7 }}>
@@ -296,23 +298,33 @@ const InterviewSession = ({
           </Message>
         )}
       </ChatContainer>
-      <InputContainer>
-        <Input
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
-          placeholder="답변을 입력하세요..."
-          onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
-          disabled={session.finished}
-        />
-        <ButtonGroup>
-          <Button onClick={handleSubmit} disabled={!answer.trim() || isSubmitting || session.finished}>
-            답변하기
-          </Button>
-          <Button onClick={handleQuit} variant="secondary">
-            결과 보기
-          </Button>
-        </ButtonGroup>
-      </InputContainer>
+
+      {/* 인터뷰가 진행 중일 때만 답변 입력창 표시 */}
+      {session && !(session.finished || session.remainRound <= 0) && (
+        <InputContainer>
+          <Input
+            ref={inputRef}
+            value={answer}
+            onChange={(e) => setAnswer(e.target.value)}
+            placeholder="답변을 입력하세요..."
+            onKeyPress={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey && !isSubmitting) {
+                e.preventDefault();
+                handleSubmit();
+              }
+            }}
+            disabled={isSubmitting || !session }
+          />
+          <ButtonGroup>
+            <Button
+              onClick={handleSubmit}
+              disabled={!answer.trim() || isSubmitting || !session }
+            >
+              {isSubmitting ? '전송 중...' : '답변 전송'}
+            </Button>
+          </ButtonGroup>
+        </InputContainer>
+      )}
     </Container>
   );
 };

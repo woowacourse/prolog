@@ -49,22 +49,23 @@ public class InterviewSession extends AuditingEntity {
     public void answer(
         final Interviewer interviewer,
         final Long memberId,
-        final String message
+        final String intervieweeAnswerContent
     ) {
         if (!this.memberId.equals(memberId)) {
             throw new BadRequestException(BadRequestCode.MEMBER_NOT_ALLOWED);
         }
-        if (finished) {
+        if (this.finished) {
             throw new BadRequestException(BadRequestCode.INTERVIEW_SESSION_FINISHED);
         }
-        if (interviewMessages.lastMessage().isByInterviewee()) {
+        if (interviewMessages.isEmpty() || interviewMessages.lastMessage().isByInterviewee()) {
             throw new BadRequestException(BadRequestCode.INTERVIEW_SESSION_NOT_YOUR_TURN);
         }
 
-        interviewMessages = interviewer.followUp(interviewMessages, message);
-        if (interviewMessages.canFinish()) {
-            finished = true;
-            interviewMessages = interviewer.finish(interviewMessages);
+        this.interviewMessages = interviewer.followUp(this.interviewMessages, intervieweeAnswerContent);
+
+        if (this.interviewMessages.canFinish()) {
+            this.finished = true;
+            this.interviewMessages = interviewer.finish(this.interviewMessages);
         }
     }
 
@@ -82,5 +83,9 @@ public class InterviewSession extends AuditingEntity {
 
     public InterviewMessages getMessages() {
         return interviewMessages;
+    }
+
+    public int getRound() {
+        return interviewMessages.getCurrentRound();
     }
 }

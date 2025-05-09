@@ -141,6 +141,10 @@ public class InterviewMessage {
         return sender == Sender.INTERVIEWEE && type == Type.FOLLOW_UP;
     }
 
+    public String getOriginalContent() {
+        return originalContent;
+    }
+
     @Override
     public String toString() {
         return "InterviewMessage{" +

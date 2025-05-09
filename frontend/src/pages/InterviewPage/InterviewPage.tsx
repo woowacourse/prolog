@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import styled from '@emotion/styled';
-import { MainContentStyle } from '../../PageRouter';
+import {MainContentStyle} from '../../PageRouter';
 import InterviewSetup from './InterviewSetup';
 import InterviewSession from './InterviewSession';
 
@@ -53,20 +53,41 @@ const SectionTitle = styled.h2`
   margin: 0;
 `;
 
+const RoundInfo = styled.span`
+  font-size: 1rem;
+  font-weight: 400;
+  color: #666;
+  margin-left: 1rem;
+`;
+
 const SectionContent = styled.div`
   flex: 1;
   min-height: 0;
   padding: 2rem;
 `;
 
-const InterviewPage = () => {
-  const [session, setSession] = useState<any>(null);
+interface InterviewSessionData {
+  id: number;
+  memberId: number;
+  finished: boolean;
+  messages: {
+    sender: 'SYSTEM' | 'INTERVIEWER' | 'INTERVIEWEE';
+    content: string;
+    hint: string;
+    createdAt: string;
+  }[];
+  currentRound: number;
+  remainRound: number;
+}
 
-  const handleSessionStart = (newSession: any) => {
+const InterviewPage = () => {
+  const [session, setSession] = useState<InterviewSessionData | null>(null);
+
+  const handleSessionStart = (newSession: InterviewSessionData) => {
     setSession(newSession);
   };
 
-  const handleSessionUpdate = (updatedSession: any) => {
+  const handleSessionUpdate = (updatedSession: InterviewSessionData) => {
     setSession(updatedSession);
   };
 
@@ -91,7 +112,14 @@ const InterviewPage = () => {
           </SetupSection>
           <SessionSection>
             <SectionHeader>
-              <SectionTitle>레벨 인터뷰 진행</SectionTitle>
+              <SectionTitle>
+                레벨 인터뷰 진행
+                {session &&
+                    <RoundInfo>
+                        남은 인터뷰: {session.remainRound}회
+                    </RoundInfo>
+                }
+              </SectionTitle>
             </SectionHeader>
             <SectionContent>
               <InterviewSession

@@ -120,20 +120,19 @@ public class AzureOpenAiInterviewer implements Interviewer {
         final InterviewMessages interviewMessages,
         final String answer
     ) {
-        if (interviewMessages.getRound() > totalQuestionCount) {
+        if (interviewMessages.getCurrentRound() > totalQuestionCount) {
             throw new IllegalStateException("인터뷰가 종료되었습니다.");
         }
 
         log.debug("Follow up [interviewMessages={}, answer={}]", interviewMessages, answer);
-        final var messages = interviewMessages.with(createUserMessage(interviewMessages.getRound(), answer));
-        if (messages.canFinish()) {
-            return messages;
-        }
 
-        final var rawFollowUpQuestion = askToInterviewer(messages);
-        checkFollowUpQuestion(rawFollowUpQuestion);
+        final var messagesWithUserAnswer = interviewMessages.with(createUserMessage(interviewMessages.getCurrentRound(), answer));
 
-        return messages.with(InterviewMessage.ofInterviewer(rawFollowUpQuestion));
+        final var rawFollowUpQuestion = askToInterviewer(messagesWithUserAnswer);
+        checkFollowUpQuestion(rawFollowUpQuestion); // Validates AI response format
+
+        // Add AI's new message (the follow-up question/statement) to the history.
+        return messagesWithUserAnswer.with(InterviewMessage.ofInterviewer(rawFollowUpQuestion));
     }
 
     private void checkFollowUpQuestion(final String rawFollowUpQuestion) {
@@ -165,7 +164,7 @@ public class AzureOpenAiInterviewer implements Interviewer {
 
     @Override
     public InterviewMessages finish(final InterviewMessages interviewMessages) {
-        if (interviewMessages.getRound() <= totalQuestionCount) {
+        if (interviewMessages.getCurrentRound() < totalQuestionCount) {
             throw new IllegalStateException("인터뷰가 종료되지 않았습니다.");
         }
 

@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 @Embeddable
 public class InterviewMessages {
 
+    private static final int START_ROUND = 1;
     private static final int MAX_ROUND = 10;
 
     @ElementCollection
@@ -39,7 +40,11 @@ public class InterviewMessages {
         return new InterviewMessages(newValues);
     }
 
-    public int getRound() {
+    public int getCurrentRound() {
+        return getIntervieweeMessageCount() + START_ROUND;
+    }
+
+    public int getIntervieweeMessageCount() {
         return (int) values.stream()
             .filter(InterviewMessage::isByInterviewee)
             .count();
@@ -50,7 +55,12 @@ public class InterviewMessages {
     }
 
     public boolean canFinish() {
-        return getRound() >= MAX_ROUND && !hasInterviewerClosingSummary();
+        if (values.isEmpty()) {
+            return false;
+        }
+        return getCurrentRound() > MAX_ROUND &&
+            lastMessage().isByInterviewer() &&
+            !hasInterviewerClosingSummary();
     }
 
     private boolean hasInterviewerClosingSummary() {
@@ -74,6 +84,10 @@ public class InterviewMessages {
 
     public InterviewMessage lastMessage() {
         return values.getLast();
+    }
+
+    List<InterviewMessage> getMessages() {
+        return Collections.unmodifiableList(values);
     }
 
     @Override
