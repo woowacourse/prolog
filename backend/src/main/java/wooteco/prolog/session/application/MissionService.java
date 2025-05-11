@@ -46,6 +46,10 @@ public class MissionService {
         return MissionResponse.listOf(missionRepository.findAll());
     }
 
+    public List<MissionResponse> findAllBySessionId(final long sessionId) {
+        return MissionResponse.listOf(missionRepository.findBySessionId(sessionId));
+    }
+
     public Mission findById(Long id) {
         return missionRepository.findById(id)
             .orElseThrow(() -> new BadRequestException(MISSION_NOT_FOUND));

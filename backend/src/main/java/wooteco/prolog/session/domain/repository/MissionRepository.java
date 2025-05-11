@@ -10,4 +10,6 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
     Optional<Mission> findByName(String name);
 
     List<Mission> findBySessionIdIn(List<Long> sessionIds);
+
+    List<Mission> findBySessionId(long sessionId);
 }
