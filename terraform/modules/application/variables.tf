@@ -20,3 +20,15 @@ variable "service_worker_tags" {
 variable "server_tags" {
     type = map(string)
 }
+variable "asg_min_size" {
+    type    = number
+    default = 1
+}
+variable "asg_max_size" {
+    type    = number
+    default = 4
+}
+variable "asg_desired_capacity" {
+    type    = number
+    default = 1
+}

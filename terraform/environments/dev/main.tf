@@ -68,6 +68,9 @@ module "application" {
     public_subnet_ids    = module.network.public_subnet_ids
     service_worker_tags  = module.tags.service_worker_tags
     server_tags          = module.tags.server_tags
+    asg_min_size         = 1
+    asg_max_size         = 4
+    asg_desired_capacity = 1
 }
 
 

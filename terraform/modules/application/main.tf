@@ -109,9 +109,9 @@ resource "aws_autoscaling_group" "asg" {
         version = "$Latest"
     }
 
-    max_size         = 4
-    min_size         = 1
-    desired_capacity = 1
+    max_size         = var.asg_max_size
+    min_size         = var.asg_min_size
+    desired_capacity = var.asg_desired_capacity
     vpc_zone_identifier = var.private_subnet_ids
 
     // Note: 이후 target_group_arns는 CodeDeploy에서 알아서 관리 예정
@@ -136,6 +136,10 @@ resource "aws_autoscaling_group" "asg" {
         key                 = "Name"
         value               = var.project_name
         propagate_at_launch = true
+    }
+
+    lifecycle {
+        ignore_changes = [desired_capacity]
     }
 }
 
