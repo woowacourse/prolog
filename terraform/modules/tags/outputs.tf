@@ -18,11 +18,6 @@ output "storage_tags" {
     value       = local.storage_tags
 }
 
-output "database_tags" {
-    description = "Tags for database resources"
-    value       = local.database_tags
-}
-
 output "service_worker_tags" {
     description = "Tags for service worker resources"
     value       = local.service_worker_tags

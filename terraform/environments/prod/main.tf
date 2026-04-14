@@ -70,18 +70,4 @@ module "application" {
     server_tags          = module.tags.server_tags
 }
 
-module "database" {
-    source = "../../modules/database"
-
-    vpc_id       = module.network.vpc_id
-    project_name = var.project_name
-    db_name      = var.db_name
-    secret_name  = var.db_secret_name
-    ingress_security_group_ids = [module.application.application_sg_id, module.bastion.bastion_sg_id]
-
-    private_subnet_ids = module.network.private_subnet_ids
-    server_tags        = module.tags.server_tags
-    database_tags      = module.tags.database_tags
-}
-
 

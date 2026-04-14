@@ -1,1 +1,0 @@
-variable "secret_name" {}
