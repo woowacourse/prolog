@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Test Tistory Blog</title>
+    <link>https://example.tistory.com</link>
+    <description>Test blog</description>
+    <image>
+      <url>https://example.com/blog-image.png</url>
+    </image>
+    <item>
+      <title>Test Article</title>
+      <link>https://example.tistory.com/1</link>
+      <description><![CDATA[<p>Test description</p>]]></description>
+      <pubDate>Mon, 14 Apr 2025 10:00:00 +0900</pubDate>
+    </item>
+  </channel>
+</rss>
