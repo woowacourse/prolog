@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns:media="http://search.yahoo.com/mrss/" xmlns="http://www.w3.org/2005/Atom">
+  <title>Test YouTube Channel</title>
+  <link rel="alternate" href="https://www.youtube.com/channel/UC-test"/>
+  <entry>
+    <title>Test Video</title>
+    <link rel="alternate" href="https://www.youtube.com/watch?v=test123"/>
+    <published>2025-04-14T10:00:00+00:00</published>
+    <media:group>
+      <media:description>Test video description</media:description>
+      <media:thumbnail url="https://i.ytimg.com/vi/test123/hqdefault.jpg"/>
+    </media:group>
+  </entry>
+</feed>

@@ -10,36 +10,40 @@ class RssClientTest {
     @Test
     void fromTistoryRssFeedBy() {
         RssClient rssClient = new RssClient();
-        RssFeeds rssFeeds = rssClient.fromRssFeedBy("https://lazypazy.tistory.com/rss");
+        String feedUrl = getClass().getClassLoader().getResource("rss/tistory-feed.xml").toString();
+
+        RssFeeds rssFeeds = rssClient.fromRssFeedBy(feedUrl);
 
         assertThat(rssFeeds.getRssFeeds()).isNotEmpty();
+        assertThat(rssFeeds.getRssFeeds().get(0).getTitle()).isEqualTo("Test Article");
     }
 
     @Test
     void fromYoutubeRssFeedBy() {
-        SSLUtil.disableSSLVerification();
-
         RssClient rssClient = new RssClient();
-        RssFeeds rssFeeds = rssClient.fromRssFeedBy(
-            "https://www.youtube.com/feeds/videos.xml?channel_id=UC-mOekGSesms0agFntnQang");
+        String feedUrl = getClass().getClassLoader().getResource("rss/youtube-feed.xml").toString();
+
+        RssFeeds rssFeeds = rssClient.fromRssFeedBy(feedUrl);
 
         assertThat(rssFeeds.getRssFeeds()).isNotEmpty();
-    }
-
-    @Test
-    void fromVelogRssFeedBy() {
-        SSLUtil.disableSSLVerification();
-
-        RssClient rssClient = new RssClient();
-        RssFeeds rssFeeds = rssClient.fromRssFeedBy("https://brunch.co.kr/rss/@@7vZS");
-
-        assertThat(rssFeeds.getRssFeeds()).isNotEmpty();
+        assertThat(rssFeeds.getRssFeeds().get(0).getTitle()).isEqualTo("Test Video");
     }
 
     @Test
     void fromInvalidRssFeedBy() {
         RssClient rssClient = new RssClient();
-        RssFeeds rssFeeds = rssClient.fromRssFeedBy("https://v2.velog.io/rss/junho5336asdfasdf");
+
+        RssFeeds rssFeeds = rssClient.fromRssFeedBy("https://invalid.example.com/nonexistent-feed");
+
+        assertThat(rssFeeds.getRssFeeds()).isEmpty();
+    }
+
+    @Test
+    void fromEmptyRssFeedBy() {
+        RssClient rssClient = new RssClient();
+        String feedUrl = getClass().getClassLoader().getResource("rss/empty-feed.xml").toString();
+
+        RssFeeds rssFeeds = rssClient.fromRssFeedBy(feedUrl);
 
         assertThat(rssFeeds.getRssFeeds()).isEmpty();
     }

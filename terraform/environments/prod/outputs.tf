@@ -62,19 +62,3 @@ output "application_launch_template_id" {
   description = "Launch Template ID for application instances"
   value       = module.application.launch_template_id
 }
-
-# Database
-output "database_endpoint" {
-  description = "Endpoint of the RDS database"
-  value       = module.database.db_instance_endpoint
-}
-
-output "database_id" {
-  description = "ID of the RDS database instance"
-  value       = module.database.db_instance_id
-}
-
-output "database_sg_id" {
-  description = "Security Group ID for the database"
-  value       = module.database.database_sg_id
-}

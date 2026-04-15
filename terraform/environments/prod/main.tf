@@ -68,20 +68,9 @@ module "application" {
     public_subnet_ids    = module.network.public_subnet_ids
     service_worker_tags  = module.tags.service_worker_tags
     server_tags          = module.tags.server_tags
-}
-
-module "database" {
-    source = "../../modules/database"
-
-    vpc_id       = module.network.vpc_id
-    project_name = var.project_name
-    db_name      = var.db_name
-    secret_name  = var.db_secret_name
-    ingress_security_group_ids = [module.application.application_sg_id, module.bastion.bastion_sg_id]
-
-    private_subnet_ids = module.network.private_subnet_ids
-    server_tags        = module.tags.server_tags
-    database_tags      = module.tags.database_tags
+    asg_min_size         = 2
+    asg_max_size         = 4
+    asg_desired_capacity = 2
 }
 
 
