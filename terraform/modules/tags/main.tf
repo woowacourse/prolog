@@ -4,7 +4,7 @@ locals {
         Environment = var.environment
     }
     server_tags = merge(local.common_tags, {
-        Role = "${var.project_name}-server"
+        Role = "prolog-server"
     })
     gateway_tags = merge(local.common_tags, {
         Role = "${var.project_name}-gateway"
